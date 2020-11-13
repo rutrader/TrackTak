@@ -25,17 +25,11 @@ const StepItem = ({ children, ...props }) => (
 );
 const GetStartedMailingList = () => (
   <SubscribeMailingList
-    subscribeText="Get Started"
+    subscribeText="Sign Me Up"
     submitSucceededMessage={
       <Flex justifyContent="center">
-        <Button
-          py={28}
-          px={76}
-          fontSize={17}
-          style={{ textTransform: "uppercase", whiteSpace: "nowrap" }}
-        >
-          Install Extension
-        </Button>
+        Thank you for subscribing!
+        We will notify you when we are live.
       </Flex>
     }
   />
