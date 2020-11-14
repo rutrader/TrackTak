@@ -47,7 +47,7 @@ const LandingPage = () => (
         </Text>
         <Box style={{ display: 'flex' }} mt={60}>
           <Box style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', flex: 1 }}>
-            <StepItem>Fully automates your models inputs based on historical data.</StepItem>
+            <StepItem>Automates your models inputs based on historical and current data.</StepItem>
             <StepItem>Store all of your model variations in one place instead of 100’s of spreadsheets.</StepItem>
             <StepItem>Diagnoses errors and unrealistic free cash flows in your models.</StepItem>
           </Box>
