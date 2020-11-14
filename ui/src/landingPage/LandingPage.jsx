@@ -4,9 +4,9 @@ import { Box, Flex } from "grid-styled";
 import styled from "styled-components";
 import { ReactComponent as BackgroundPurple } from "../icons/backgroundPurple.svg";
 import { ReactComponent as Check } from "../icons/check.svg";
-import { ReactComponent as GitHub } from "../icons/gitHub.svg";
 import { ReactComponent as TracktakLogo } from "../icons/tracktak.svg";
 import SubscribeMailingList from "./SubscribeMailingList";
+import tracktakDashboard  from "../icons/tracktakDashboard.png";
 
 const GreenCheck = styled(Check)`
   margin-right: 10px;
@@ -49,31 +49,17 @@ const LandingPage = () => (
     >
       <Box>
         <TracktakLogo />
-        <Text fontWeight="bold" fontSize={[40, 60]} mt={30} color="#292929">
+        <Text fontWeight="bold" fontSize={[40, 60]} mt={30} color="#292929" textAlign="center">
           Goodbye, spreadsheets.
           <Box>Hello, automated Discounted Cash Flows.</Box>
         </Text>
-        <Box style={{ display: "flex" }} mt={60}>
-          <Box
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-evenly",
-              flex: 1,
-            }}
-          >
-            <StepItem>
-              Automates your models inputs based on historical and current data.
-            </StepItem>
-            <StepItem>
-              Store all of your model variations in one place instead of 100’s
-              of spreadsheets.
-            </StepItem>
-            <StepItem>
-              Diagnoses errors and unrealistic free cash flows in your models.
-            </StepItem>
+        <Box style={{ display: 'flex' }} mt={60}>
+          <Box style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', maxWidth: '400px', marginRight: '5px' }}>
+            <StepItem>Automates your models inputs based on historical and current data.</StepItem>
+            <StepItem>Store all of your model variations in one place instead of 100’s of spreadsheets.</StepItem>
+            <StepItem>Diagnoses errors and unrealistic free cash flows in your models.</StepItem>
           </Box>
-          <GitHub style={{ flex: 1 }} height={250} />
+          <img src={tracktakDashboard} alt="tracktak DCF dashboard" style={{ filter: 'drop-shadow(4px 10px 5px rgba(0,0,0,0.3))', borderRadius: '5px', width: '544px', height: '278px' }} />
         </Box>
       </Box>
       <Box mt="auto" mb={65}>
