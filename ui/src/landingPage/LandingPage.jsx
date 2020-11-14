@@ -49,7 +49,7 @@ const LandingPage = () => (
           <Box style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', flex: 1 }}>
             <StepItem>Fully automates your models inputs based on historical data.</StepItem>
             <StepItem>Store all of your model variations in one place instead of 100’s of spreadsheets.</StepItem>
-            <StepItem>Diagnose errors and unrealistic free cash flows in your models.</StepItem>
+            <StepItem>Diagnoses errors and unrealistic free cash flows in your models.</StepItem>
           </Box>
           <GitHub style={{ flex: 1 }} height={250} />
         </Box>
