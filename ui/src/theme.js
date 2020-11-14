@@ -10,7 +10,12 @@ const theme = {
     secondary: {
       main: '#3d9dff'
     }
-  }
+  },
+  breakpoints: [
+    768,
+    992,
+    1200
+  ],
 };
 
 export default theme;

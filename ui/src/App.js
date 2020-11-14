@@ -12,7 +12,20 @@ const GlobalStyle = createGlobalStyle`
   ul { list-style: none; margin: 0; padding: 0; }
   li { list-style: none }
   button { border: 0; padding: 0; font: inherit; outline: none; cursor: pointer; }
-  svg { fill: #4A4A4A; }s
+  svg { fill: #4A4A4A; }
+  @media only screen and (max-width: 600px) {
+    .landing-page-title {
+      font-size: 25px;
+    }
+  }
+  @media only screen and (max-width: 900px) {
+    .landing-page-background-purple {
+      display: none;
+    }
+    .landing-page-sign-up-today-text {
+      color: #292929;
+    }
+  }
 `;
 
 function App() {
