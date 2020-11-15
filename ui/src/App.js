@@ -1,7 +1,7 @@
-import { createGlobalStyle } from 'styled-components';
-import LandingPage from './landingPage/LandingPage';
+import { createGlobalStyle } from "styled-components";
+import LandingPage from "./landingPage/LandingPage";
 import { Provider as RebassProvider } from "rebass";
-import rebassTheme from './rebassTheme';
+import rebassTheme from "./rebassTheme";
 
 const GlobalStyle = createGlobalStyle`
   * { box-sizing: border-box; }
@@ -24,6 +24,13 @@ const GlobalStyle = createGlobalStyle`
     }
     .landing-page-sign-up-today-text {
       color: #292929;
+    }
+    .landing-page-email-input {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    .landing-page-email-icon {
+      display: none;
     }
   }
 `;
