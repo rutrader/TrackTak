@@ -76,7 +76,7 @@ const LandingPage = () => (
           fontSize={28}
           color="white"
         >
-          Sign up today to start your free trial first when we launch.
+          Sign up today to start using it for free when we launch.
         </Text>
         <GetStartedMailingList />
       </Box>
