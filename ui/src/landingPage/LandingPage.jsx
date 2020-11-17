@@ -6,7 +6,7 @@ import { ReactComponent as BackgroundPurple } from "../icons/backgroundPurple.sv
 import { ReactComponent as Check } from "../icons/check.svg";
 import { ReactComponent as TracktakLogo } from "../icons/tracktak.svg";
 import SubscribeMailingList from "./SubscribeMailingList";
-import tracktakDashboard  from "../icons/tracktakDashboard.png";
+import tracktakDashboard from "../icons/tracktakDashboard.png";
 
 const GreenCheck = styled(Check)`
   margin-right: 10px;
@@ -16,11 +16,7 @@ const GreenCheck = styled(Check)`
 `;
 
 const StepItem = ({ children, ...props }) => (
-  <Box
-    is="li"
-    my={10}
-    {...props}
-  >
+  <Box is="li" my={10} {...props}>
     <Flex alignItems="center">
       <GreenCheck />
       <Text fontSize={21}>{children}</Text>
@@ -47,22 +43,55 @@ const LandingPage = () => (
     >
       <Box>
         <TracktakLogo />
-        <Text className="landing-page-title" fontWeight="bold" fontSize={40} mt={30} color="#292929" textAlign="center">
+        <Text
+          className="landing-page-title"
+          fontWeight="bold"
+          fontSize={40}
+          mt={30}
+          color="#292929"
+          textAlign="center"
+        >
           Goodbye, spreadsheets.
           <Box>Hello, automated Discounted Cash Flows.</Box>
         </Text>
         <Box mt={[30, 30, 60]}>
-          <Flex flexWrap="wrap" justifyContent={['center', 'center', 'initial']}>
+          <Flex
+            flexWrap="wrap"
+            justifyContent={["center", "center", "initial"]}
+          >
             <Box
               mr={[0, 0, 20]}
-              style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', flex: 0.78, minWidth: '300px' }}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-evenly",
+                flex: 0.78,
+                minWidth: "300px",
+              }}
             >
-              <StepItem>Automates your models inputs based on historical and current data.</StepItem>
-              <StepItem>Store all of your model variations in one place instead of 100’s of spreadsheets.</StepItem>
-              <StepItem>Diagnoses errors and unrealistic free cash flows in your models.</StepItem>
+              <StepItem>
+                Automates your models inputs based on historical and current
+                data.
+              </StepItem>
+              <StepItem>
+                Store all of your model variations in one place instead of 100’s
+                of spreadsheets.
+              </StepItem>
+              <StepItem>
+                Diagnoses errors and unrealistic free cash flows in your models.
+              </StepItem>
             </Box>
-            <Box my={[30, 30, 'initial']}>
-              <img src={tracktakDashboard} alt="tracktak DCF dashboard" style={{ filter: 'drop-shadow(4px 10px 5px rgba(0,0,0,0.3))', borderRadius: '5px', width: '100%', maxWidth: '544px' }} />
+            <Box my={[30, 30, "initial"]}>
+              <img
+                src={tracktakDashboard}
+                alt="tracktak DCF dashboard"
+                style={{
+                  filter: "drop-shadow(4px 10px 5px rgba(0,0,0,0.3))",
+                  borderRadius: "5px",
+                  width: "100%",
+                  maxWidth: "544px",
+                }}
+              />
             </Box>
           </Flex>
         </Box>
@@ -81,13 +110,17 @@ const LandingPage = () => (
         <GetStartedMailingList />
       </Box>
     </Container>
-      <Absolute className="landing-page-background-purple" style={{ width: "100%", height: 300, bottom: 0 }} zIndex={-1}>
-        <BackgroundPurple
-          height="100%"
-          width="100%"
-          style={{ transform: "rotateX(180deg)" }}
-        />
-      </Absolute>
+    <Absolute
+      className="landing-page-background-purple"
+      style={{ width: "100%", height: 300, bottom: 0 }}
+      zIndex={-1}
+    >
+      <BackgroundPurple
+        height="100%"
+        width="100%"
+        style={{ transform: "rotateX(180deg)" }}
+      />
+    </Absolute>
   </Relative>
 );
 
