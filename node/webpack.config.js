@@ -1,17 +1,17 @@
-const path = require('path');
-const nodeExternals = require('webpack-node-externals');
+const path = require("path");
+const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
-  mode: 'production',
-  devtool: 'source-map',
+  mode: "production",
+  devtool: "source-map",
   entry: {
-    server: './src/app.js',
+    server: "./src/app.js",
   },
   output: {
-    path: path.join(__dirname, 'build'),
-    filename: 'index.js'
+    path: path.join(__dirname, "build"),
+    filename: "index.js",
   },
-  target: 'node',
+  target: "node",
   node: {
     __dirname: false,
     __filename: false,
@@ -20,8 +20,8 @@ module.exports = {
   module: {
     rules: [
       {
-        exclude: /node_modules/
-      }
-    ]
-  }
+        exclude: /node_modules/,
+      },
+    ],
+  },
 };
