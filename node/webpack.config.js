@@ -1,5 +1,7 @@
+/* eslint-disable node/no-unpublished-require */
 const path = require("path");
 const nodeExternals = require("webpack-node-externals");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   mode: "production",
@@ -9,7 +11,7 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, "build"),
-    filename: "index.js",
+    filename: "app.js",
   },
   target: "node",
   node: {
@@ -24,4 +26,9 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new CopyPlugin({
+      patterns: [{ from: "package.json", to: "./" }],
+    }),
+  ],
 };
