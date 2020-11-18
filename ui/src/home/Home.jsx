@@ -35,7 +35,7 @@ const Home = () => {
       <Box>
         <Box display="flex" mt={0.5} mb={1.5}>
           <TickerTextField
-            variant="filled"
+            variant="outlined"
             label="Stock ticker e.g. AMZN"
             fullWidth
           />
