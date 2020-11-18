@@ -1,10 +1,14 @@
 require("dotenv").config();
 
 const express = require("express");
+const cors = require("cors");
 const api = require("./api");
 const app = express();
+
 const hostname = "127.0.0.1";
 const port = process.env.PORT;
+
+app.use(cors());
 
 app.get("/api/v1/get-financials/:symbol", async (req, res) => {
   const value = await api.getFinancials(req.params);

@@ -1,7 +1,13 @@
-import React from "react";
 import { Box, Button, TextField, Typography } from "@material-ui/core";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { financialsAction } from "../redux/actions/financialsAction";
 
 const Home = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(financialsAction("AMZN"));
+  }, [dispatch]);
   return (
     <>
       <Box mt={8}>
