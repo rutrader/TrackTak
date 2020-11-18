@@ -2,6 +2,8 @@ import { createGlobalStyle } from "styled-components";
 import LandingPage from "./landingPage/LandingPage";
 import { Provider as RebassProvider } from "rebass";
 import rebassTheme from "./rebassTheme";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import Home from "./home/Home";
 
 const GlobalStyle = createGlobalStyle`
   * { box-sizing: border-box; }
@@ -39,7 +41,16 @@ function App() {
   return (
     <RebassProvider theme={rebassTheme}>
       <GlobalStyle />
-      <LandingPage />
+      <BrowserRouter>
+        <Switch>
+          <Route path="/dcf">
+            <Home />
+          </Route>
+          <Route path="/">
+            <LandingPage />
+          </Route>
+        </Switch>
+      </BrowserRouter>
     </RebassProvider>
   );
 }
