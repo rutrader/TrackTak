@@ -30,7 +30,7 @@ const Home = () => {
         <Box display="flex" mt={0.5} mb={1.5}>
           <TickerTextField
             variant="filled"
-            label="Enter the stocks ticker e.g. AMZN"
+            label="Stock ticker e.g. AMZN"
             fullWidth
           />
           <SubmitButton
