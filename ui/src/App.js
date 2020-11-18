@@ -6,7 +6,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Home from "./home/Home";
 import { ThemeProvider } from "@material-ui/core";
 import theme from "./theme";
-import Layout from "./layout/Layout";
+import LayoutHome from "./layout/LayoutHome";
 
 const GlobalStyle = createGlobalStyle`
   * { box-sizing: border-box; }
@@ -46,11 +46,11 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route path={["/dcf"]}>
-            <Layout>
+            <LayoutHome>
               <Route path="/dcf">
                 <Home />
               </Route>
-            </Layout>
+            </LayoutHome>
           </Route>
           <Route path="/">
             <RebassProvider theme={rebassTheme}>

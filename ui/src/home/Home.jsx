@@ -1,18 +1,46 @@
 import React from "react";
-import { Box, Button, TextField, Typography } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  withStyles,
+} from "@material-ui/core";
+
+const TickerTextField = withStyles({
+  root: {
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
+  },
+})(TextField);
+
+const SubmitButton = withStyles({
+  root: {
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
+    position: "relative",
+    right: "1px",
+  },
+})(Button);
 
 const Home = () => {
   return (
     <>
-      <Box mt={8}>
-        <Typography color="textPrimary" variant="h4">
-          Enter the stocks ticker
-        </Typography>
+      <Box>
         <Box display="flex" mt={0.5} mb={1.5}>
-          <TextField variant="filled" label="e.g. AMZN" fullWidth />
-          <Button color="primary" variant="contained">
+          <TickerTextField
+            variant="filled"
+            label="Enter the stocks ticker e.g. AMZN"
+            fullWidth
+          />
+          <SubmitButton
+            color="primary"
+            variant="contained"
+            size="large"
+            css="margin-left: 10px;"
+          >
             SUBMIT
-          </Button>
+          </SubmitButton>
         </Box>
       </Box>
       <Typography color="textSecondary">
