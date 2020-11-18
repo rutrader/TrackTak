@@ -7,6 +7,8 @@ import Home from "./home/Home";
 import { ThemeProvider } from "@material-ui/core";
 import theme from "./theme";
 import Layout from "./layout/Layout";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 const GlobalStyle = createGlobalStyle`
   * { box-sizing: border-box; }
@@ -43,6 +45,7 @@ const GlobalStyle = createGlobalStyle`
 function App() {
   return (
     <ThemeProvider theme={theme}>
+            <Provider store={store}>
       <BrowserRouter>
         <Switch>
           <Route path={["/dcf"]}>
@@ -60,6 +63,7 @@ function App() {
           </Route>
         </Switch>
       </BrowserRouter>
+      </Provider>
     </ThemeProvider>
   );
 }
