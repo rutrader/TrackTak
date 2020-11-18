@@ -4,6 +4,9 @@ import { Provider as RebassProvider } from "rebass";
 import rebassTheme from "./rebassTheme";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Home from "./home/Home";
+import { ThemeProvider } from "@material-ui/core";
+import theme from "./theme";
+import Layout from "./layout/Layout";
 
 const GlobalStyle = createGlobalStyle`
   * { box-sizing: border-box; }
@@ -39,19 +42,25 @@ const GlobalStyle = createGlobalStyle`
 
 function App() {
   return (
-    <RebassProvider theme={rebassTheme}>
-      <GlobalStyle />
+    <ThemeProvider theme={theme}>
       <BrowserRouter>
         <Switch>
-          <Route path="/dcf">
-            <Home />
+          <Route path={["/dcf"]}>
+            <Layout>
+              <Route path="/dcf">
+                <Home />
+              </Route>
+            </Layout>
           </Route>
           <Route path="/">
-            <LandingPage />
+            <RebassProvider theme={rebassTheme}>
+              <GlobalStyle />
+              <LandingPage />
+            </RebassProvider>
           </Route>
         </Switch>
       </BrowserRouter>
-    </RebassProvider>
+    </ThemeProvider>
   );
 }
 
