@@ -7,6 +7,8 @@ import Home from "./home/Home";
 import { ThemeProvider } from "@material-ui/core";
 import theme from "./theme";
 import LayoutHome from "./layout/LayoutHome";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 const GlobalStyle = createGlobalStyle`
   * { box-sizing: border-box; }
@@ -43,23 +45,25 @@ const GlobalStyle = createGlobalStyle`
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <Switch>
-          <Route path={["/dcf"]}>
-            <LayoutHome>
-              <Route path="/dcf">
-                <Home />
-              </Route>
-            </LayoutHome>
-          </Route>
-          <Route path="/">
-            <RebassProvider theme={rebassTheme}>
-              <GlobalStyle />
-              <LandingPage />
-            </RebassProvider>
-          </Route>
-        </Switch>
-      </BrowserRouter>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Switch>
+            <Route path={["/dcf"]}>
+              <LayoutHome>
+                <Route path="/dcf">
+                  <Home />
+                </Route>
+              </LayoutHome>
+            </Route>
+            <Route path="/">
+              <RebassProvider theme={rebassTheme}>
+                <GlobalStyle />
+                <LandingPage />
+              </RebassProvider>
+            </Route>
+          </Switch>
+        </BrowserRouter>
+      </Provider>
     </ThemeProvider>
   );
 }

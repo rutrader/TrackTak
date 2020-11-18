@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Button,
@@ -6,6 +6,8 @@ import {
   Typography,
   withStyles,
 } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import { financialsAction } from "../redux/actions/financialsAction";
 
 const TickerTextField = withStyles({
   root: {
@@ -24,6 +26,10 @@ const SubmitButton = withStyles({
 })(Button);
 
 const Home = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(financialsAction("AMZN"));
+  }, [dispatch]);
   return (
     <>
       <Box>
