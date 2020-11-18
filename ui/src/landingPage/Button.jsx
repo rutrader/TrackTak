@@ -2,8 +2,9 @@ import React from "react";
 import { Button as RebassButton } from "rebass";
 import styled, { withTheme } from "styled-components";
 
-const Button = styled(({ theme, ...props }) =>
-  <RebassButton bg={theme.colors.primary} {...props} />)`
+const Button = styled(({ theme, ...props }) => (
+  <RebassButton bg={theme.colors.primary} {...props} />
+))`
   &:disabled {
     cursor: initial;
   }

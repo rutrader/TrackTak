@@ -14,7 +14,10 @@
     "react-scripts": "4.0.0",
     "rebass": "^2.1.0",
     "styled-components": "^5.2.1",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^0.2.4",
+    "lodash": "^4.17.20",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
