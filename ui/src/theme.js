@@ -1,7 +1,6 @@
 import { createMuiTheme } from "@material-ui/core";
-import { merge } from "lodash";
 
-const theme = merge(createMuiTheme(), {
+const theme = createMuiTheme({
   typography: {
     fontFamily: "Montserrat, sans-serif",
   },
@@ -10,19 +9,23 @@ const theme = merge(createMuiTheme(), {
       light: "#2fdbab",
       main: "#43cea2",
       dark: "#38ab87",
+      contrastText: "#fff",
     },
     secondary: {
       light: "#7849BF",
       main: "#51509C",
       dark: "#41407d",
+      contrastText: "#fff",
     },
     text: {
       secondary: "rgba(0,0,0,.6)",
     },
   },
-  props: {
+  components: {
     MuiButton: {
-      disableElevation: true,
+      defaultProps: {
+        disableElevation: true,
+      },
     },
   },
 });

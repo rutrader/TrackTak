@@ -5,7 +5,7 @@ import { ReactComponent as TracktakLogo } from "../icons/tracktak.svg";
 const Layout = ({ children }) => {
   return (
     <Container maxWidth="md">
-      <Box pt={2.5}>
+      <Box sx={{ pt: 2.5 }}>
         <TracktakLogo />
       </Box>
       {children}

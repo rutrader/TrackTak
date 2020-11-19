@@ -4,12 +4,17 @@
   "private": true,
   "main": "",
   "dependencies": {
-    "@material-ui/core": "^4.11.0",
+    "@emotion/react": "^11.1.1",
+    "@emotion/styled": "^11.0.0",
+    "@material-ui/core": "^5.0.0-alpha.16",
+    "@material-ui/lab": "^5.0.0-alpha.16",
+    "@reduxjs/toolkit": "^1.4.0",
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.2",
     "@testing-library/user-event": "^12.2.2",
     "axios": "^0.21.0",
     "grid-styled": "^5.0.2",
+    "lodash": "^4.17.20",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-redux": "^7.2.2",
@@ -18,11 +23,9 @@
     "react-scripts": "4.0.0",
     "rebass": "^2.1.0",
     "redux": "^4.0.5",
-    "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
     "styled-components": "^5.2.1",
-    "web-vitals": "^0.2.4",
-    "lodash": "^4.17.20"
+    "web-vitals": "^0.2.4"
   },
   "devDependencies": {
     "redux-devtools": "^3.7.0"
