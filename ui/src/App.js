@@ -4,11 +4,11 @@ import { Provider as RebassProvider } from "rebass";
 import rebassTheme from "./rebassTheme";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Home from "./home/Home";
-import { ThemeProvider } from "@material-ui/core";
-import theme from "./theme";
 import LayoutHome from "./layout/LayoutHome";
-import { Provider } from "react-redux";
-import store from "./redux/store";
+import Valuation from "./valuation/Valuation";
+import Layout from "./layout/Layout";
+import { useSelector } from "react-redux";
+import { Box, CircularProgress, useTheme } from "@material-ui/core";
 
 const GlobalStyle = createGlobalStyle`
   * { box-sizing: border-box; }
@@ -42,29 +42,67 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const Spinner = (props) => {
+  const isLoading = useSelector((state) => state.page.isLoading);
+  const theme = useTheme();
+
+  return (
+    isLoading && (
+      <Box
+        sx={{
+          position: "fixed",
+          backgroundColor: theme.palette.common.white,
+          zIndex: theme.zIndex.modal,
+          left: 0,
+          right: 0,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+          width: "100%",
+          top: 0,
+          opacity: 0.6,
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    )
+  );
+};
+
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <Provider store={store}>
-        <BrowserRouter>
-          <Switch>
-            <Route path={["/dcf"]}>
-              <LayoutHome>
-                <Route path="/dcf">
+    <>
+      <Spinner />
+      <BrowserRouter>
+        <Switch>
+          <Route path="/landingPage">
+            <RebassProvider theme={rebassTheme}>
+              <GlobalStyle />
+              <LandingPage />
+            </RebassProvider>
+          </Route>
+          <Route path={["/valuation/:symbol"]}>
+            <Layout>
+              <Switch>
+                <Route path="/valuation/:symbol">
+                  <Valuation />
+                </Route>
+              </Switch>
+            </Layout>
+          </Route>
+          <Route path={["/"]}>
+            <LayoutHome>
+              <Switch>
+                <Route path="/">
                   <Home />
                 </Route>
-              </LayoutHome>
-            </Route>
-            <Route path="/">
-              <RebassProvider theme={rebassTheme}>
-                <GlobalStyle />
-                <LandingPage />
-              </RebassProvider>
-            </Route>
-          </Switch>
-        </BrowserRouter>
-      </Provider>
-    </ThemeProvider>
+              </Switch>
+            </LayoutHome>
+          </Route>
+        </Switch>
+      </BrowserRouter>
+    </>
   );
 }
 

@@ -1,8 +1,12 @@
 import React, { useState } from "react";
-import { Box, TextField, Typography, withStyles } from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
-import { getFinancials } from "../redux/actions/financialsActions";
-import { LoadingButton } from "@material-ui/lab";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  withStyles,
+} from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 
 const TickerTextField = withStyles({
   root: {
@@ -20,12 +24,11 @@ const SubmitButton = withStyles({
     position: "relative",
     right: "1px",
   },
-})(LoadingButton);
+})(Button);
 
 const Home = () => {
   const [ticker, setTicker] = useState("");
-  const dispatch = useDispatch();
-  const isLoading = useSelector((state) => state.financials.isLoading);
+  const history = useHistory();
 
   return (
     <>
@@ -33,10 +36,10 @@ const Home = () => {
         <Box
           component="form"
           sx={{ display: "flex", mt: 0.5, mb: 1.5 }}
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault();
 
-            dispatch(getFinancials(ticker));
+            history.push(`/valuation/${ticker}`);
           }}
         >
           <TickerTextField
@@ -48,7 +51,6 @@ const Home = () => {
             }}
           />
           <SubmitButton
-            pending={isLoading}
             color="primary"
             variant="contained"
             size="large"
