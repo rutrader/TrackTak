@@ -6,7 +6,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Home from "./home/Home";
 import { ThemeProvider } from "@material-ui/core";
 import theme from "./theme";
-import Layout from "./layout/Layout";
+import LayoutHome from "./layout/LayoutHome";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 
@@ -45,24 +45,24 @@ const GlobalStyle = createGlobalStyle`
 function App() {
   return (
     <ThemeProvider theme={theme}>
-            <Provider store={store}>
-      <BrowserRouter>
-        <Switch>
-          <Route path={["/dcf"]}>
-            <Layout>
-              <Route path="/dcf">
-                <Home />
-              </Route>
-            </Layout>
-          </Route>
-          <Route path="/">
-            <RebassProvider theme={rebassTheme}>
-              <GlobalStyle />
-              <LandingPage />
-            </RebassProvider>
-          </Route>
-        </Switch>
-      </BrowserRouter>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Switch>
+            <Route path={["/dcf"]}>
+              <LayoutHome>
+                <Route path="/dcf">
+                  <Home />
+                </Route>
+              </LayoutHome>
+            </Route>
+            <Route path="/">
+              <RebassProvider theme={rebassTheme}>
+                <GlobalStyle />
+                <LandingPage />
+              </RebassProvider>
+            </Route>
+          </Switch>
+        </BrowserRouter>
       </Provider>
     </ThemeProvider>
   );

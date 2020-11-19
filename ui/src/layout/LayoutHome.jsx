@@ -2,15 +2,15 @@ import { Box, Container } from "@material-ui/core";
 import React from "react";
 import { ReactComponent as TracktakLogo } from "../icons/tracktak.svg";
 
-const Layout = ({ children }) => {
+const LayoutHome = ({ children }) => {
   return (
     <Container maxWidth="md">
-      <Box sx={{ pt: 2.5 }}>
-        <TracktakLogo />
+      <Box display="flex" justifyContent="center" pt={2.5} mb={2} mt="25%">
+        <TracktakLogo width={300} height={50} />
       </Box>
       {children}
     </Container>
   );
 };
 
-export default Layout;
+export default LayoutHome;

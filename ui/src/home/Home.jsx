@@ -1,24 +1,61 @@
-import { Box, Button, TextField, Typography } from "@material-ui/core";
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { financialsAction } from "../redux/actions/financialsAction";
+import React, { useState } from "react";
+import { Box, TextField, Typography, withStyles } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+import { getFinancials } from "../redux/actions/financialsActions";
+import { LoadingButton } from "@material-ui/lab";
+
+const TickerTextField = withStyles({
+  root: {
+    "& .MuiInputBase-root": {
+      borderTopRightRadius: 0,
+      borderBottomRightRadius: 0,
+    },
+  },
+})(TextField);
+
+const SubmitButton = withStyles({
+  root: {
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
+    position: "relative",
+    right: "1px",
+  },
+})(LoadingButton);
 
 const Home = () => {
+  const [ticker, setTicker] = useState("");
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(financialsAction("AMZN"));
-  }, [dispatch]);
+  const isLoading = useSelector((state) => state.financials.isLoading);
+
   return (
     <>
-      <Box mt={8}>
-        <Typography color="textPrimary" variant="h4">
-          Enter the stocks ticker
-        </Typography>
-        <Box display="flex" mt={0.5} mb={1.5}>
-          <TextField variant="filled" label="e.g. AMZN" fullWidth />
-          <Button color="primary" variant="contained">
+      <Box>
+        <Box
+          component="form"
+          sx={{ display: "flex", mt: 0.5, mb: 1.5 }}
+          onSubmit={(e) => {
+            e.preventDefault();
+
+            dispatch(getFinancials(ticker));
+          }}
+        >
+          <TickerTextField
+            variant="outlined"
+            label="Stock ticker e.g. AMZN"
+            fullWidth
+            onChange={(e) => {
+              setTicker(e.currentTarget.value);
+            }}
+          />
+          <SubmitButton
+            pending={isLoading}
+            color="primary"
+            variant="contained"
+            size="large"
+            type="submit"
+          >
             SUBMIT
-          </Button>
+          </SubmitButton>
         </Box>
       </Box>
       <Typography color="textSecondary">

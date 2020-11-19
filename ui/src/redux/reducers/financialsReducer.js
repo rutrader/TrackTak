@@ -1,14 +1,19 @@
-import { GET_FINANCIALS } from "../actions/financialsAction";
+import { createReducer } from "@reduxjs/toolkit";
+import { getFinancials } from "../actions/financialsActions";
 
-export const financialsReducer = (state = {}, action) => {
-  switch (action.type) {
-    case GET_FINANCIALS:
-      return {
-        ...state,
-        ...action.payload.financials,
-      };
-    default: {
-      return state;
-    }
-  }
+const initialState = {
+  data: null,
 };
+
+export const financialsReducer = createReducer(initialState, (builder) => {
+  builder.addCase(getFinancials.fulfilled, (state, action) => {
+    state.data = action.payload;
+    state.isLoading = false;
+  });
+  builder.addCase(getFinancials.rejected, (state) => {
+    state.isLoading = false;
+  });
+  builder.addCase(getFinancials.pending, (state) => {
+    state.isLoading = true;
+  });
+});
