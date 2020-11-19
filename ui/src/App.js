@@ -9,6 +9,8 @@ import theme from "./theme";
 import LayoutHome from "./layout/LayoutHome";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import Valuation from "./valuation/Valuation";
+import Layout from "./layout/Layout";
 
 const GlobalStyle = createGlobalStyle`
   * { box-sizing: border-box; }
@@ -48,18 +50,29 @@ function App() {
       <Provider store={store}>
         <BrowserRouter>
           <Switch>
-            <Route path={["/dcf"]}>
-              <LayoutHome>
-                <Route path="/dcf">
-                  <Home />
-                </Route>
-              </LayoutHome>
-            </Route>
-            <Route path="/">
+            <Route path="/landingPage">
               <RebassProvider theme={rebassTheme}>
                 <GlobalStyle />
                 <LandingPage />
               </RebassProvider>
+            </Route>
+            <Route path={["/valuation"]}>
+              <Layout>
+                <Switch>
+                  <Route path="/valuation">
+                    <Valuation />
+                  </Route>
+                </Switch>
+              </Layout>
+            </Route>
+            <Route path={["/"]}>
+              <LayoutHome>
+                <Switch>
+                  <Route path="/">
+                    <Home />
+                  </Route>
+                </Switch>
+              </LayoutHome>
             </Route>
           </Switch>
         </BrowserRouter>

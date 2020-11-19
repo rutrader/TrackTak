@@ -3,6 +3,7 @@ import { getFinancials } from "../actions/financialsActions";
 
 const initialState = {
   data: null,
+  isLoading: false,
 };
 
 export const financialsReducer = createReducer(initialState, (builder) => {

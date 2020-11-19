@@ -3,6 +3,7 @@ import { Box, TextField, Typography, withStyles } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { getFinancials } from "../redux/actions/financialsActions";
 import { LoadingButton } from "@material-ui/lab";
+import { useHistory } from "react-router-dom";
 
 const TickerTextField = withStyles({
   root: {
@@ -24,6 +25,7 @@ const SubmitButton = withStyles({
 
 const Home = () => {
   const [ticker, setTicker] = useState("");
+  const history = useHistory();
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.financials.isLoading);
 
@@ -33,10 +35,12 @@ const Home = () => {
         <Box
           component="form"
           sx={{ display: "flex", mt: 0.5, mb: 1.5 }}
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault();
 
-            dispatch(getFinancials(ticker));
+            await dispatch(getFinancials(ticker));
+
+            history.push("/valuation");
           }}
         >
           <TickerTextField
