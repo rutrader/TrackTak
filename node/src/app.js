@@ -8,7 +8,12 @@ const app = express();
 const hostname = "127.0.0.1";
 const port = process.env.PORT;
 
-app.use(cors());
+const corsOptions = {
+  origin: process.env.ORIGIN_URL,
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 
 app.get("/api/v1/get-financials/:symbol", async (req, res) => {
   const value = await api.getFinancials(req.params);
