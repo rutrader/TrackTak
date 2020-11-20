@@ -1,24 +1,23 @@
 import {
   Box,
   Container,
-  makeStyles,
   Paper,
   Tab,
   Tabs,
+  withStyles,
 } from "@material-ui/core";
 import React from "react";
 import { layoutPaths } from "../App";
 import { ReactComponent as TracktakLogo } from "../icons/tracktak.svg";
 import { generatePath, Link, useLocation, useParams } from "react-router-dom";
 
-const useStyles = makeStyles(() => ({
+const StyledPaper = withStyles({
   root: {
-    flexGrow: 1,
+    flexGow: 1,
   },
-}));
+})(Paper);
 
 const Layout = ({ children }) => {
-  const classes = useStyles();
   const location = useLocation();
   const params = useParams();
 
@@ -28,7 +27,7 @@ const Layout = ({ children }) => {
         <TracktakLogo />
       </Box>
       {children}
-      <Paper
+      <StyledPaper
         elevation={3}
         style={{
           position: "fixed",
@@ -37,7 +36,6 @@ const Layout = ({ children }) => {
           transform: "translate(-50%)",
           maxWidth: "100%",
         }}
-        className={classes.root}
       >
         <Tabs
           variant="scrollable"
@@ -60,7 +58,7 @@ const Layout = ({ children }) => {
             );
           })}
         </Tabs>
-      </Paper>
+      </StyledPaper>
     </Container>
   );
 };
