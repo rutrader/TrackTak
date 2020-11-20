@@ -70,7 +70,7 @@ const Spinner = (props) => {
   );
 };
 
-export const layoutPaths = ["/valuation/:symbol"];
+export const layoutPaths = ["/valuation/:symbol", "/option/:symbol"];
 
 function App() {
   return (

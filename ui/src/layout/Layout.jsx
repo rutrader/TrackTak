@@ -9,6 +9,7 @@ import {
 import React from "react";
 import { layoutPaths } from "../App";
 import { ReactComponent as TracktakLogo } from "../icons/tracktak.svg";
+import { generatePath, Link, useLocation, useParams } from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -18,11 +19,8 @@ const useStyles = makeStyles(() => ({
 
 const Layout = ({ children }) => {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  const location = useLocation();
+  const params = useParams();
 
   return (
     <Container maxWidth="md">
@@ -37,22 +35,30 @@ const Layout = ({ children }) => {
           bottom: "0",
           left: "50%",
           transform: "translate(-50%)",
-          maxWidth: "50%",
+          maxWidth: "100%",
         }}
         className={classes.root}
       >
         <Tabs
           variant="scrollable"
-          value={value}
-          onChange={handleChange}
+          value={location.pathname}
           indicatorColor="primary"
           textColor="primary"
-          centered
           scrollButtons="auto"
         >
-          {layoutPaths.map((path) => (
-            <Tab label={path.split("/")[1]} />
-          ))}
+          {layoutPaths.map((path) => {
+            const generatedPath = generatePath(path, { ...params });
+
+            return (
+              <Tab
+                key={path}
+                component={Link}
+                to={generatedPath}
+                value={generatedPath}
+                label={path.split("/")[1]}
+              />
+            );
+          })}
         </Tabs>
       </Paper>
     </Container>
