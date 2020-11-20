@@ -18,7 +18,7 @@ app.use(cors(corsOptions));
 app.get("/api/v1/get-financials/:symbol", async (req, res) => {
   const value = await api.getFinancials(req.params);
 
-  res.send(value.data);
+  res.send(value);
 });
 
 app.listen(port, () => {
