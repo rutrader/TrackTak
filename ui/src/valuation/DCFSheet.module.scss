@@ -1,0 +1,8 @@
+:global(.data-grid-container) .datasheet {
+  width: 100%;
+
+  > tbody > tr > td:first-child {
+    width: 190px;
+    padding: 10px;
+  }
+}
