@@ -7,7 +7,6 @@ import TTTable from "../components/TTTable";
 import dayjs from "dayjs";
 import FormatRawNumber from "../components/FormatRawNumber";
 import DCFSheet from "./DCFSheet";
-import "react-datasheet/lib/react-datasheet.css";
 
 const Section = ({ ...props }) => <Box sx={{ mt: 3, mb: 1 }} {...props} />;
 const ValueDrivingTextField = withStyles({
@@ -151,51 +150,57 @@ const Valuation = () => {
 
   return (
     <>
-      <Typography variant="h4" gutterBottom>
-        {price.longName}
-      </Typography>
-      <Typography style={{ textTransform: "uppercase" }}>
-        {price.exchangeName}:{price.symbol}
-      </Typography>
-      <Typography>
-        <Box component="span" fontWeight="bold">
-          {price.regularMarketPrice.fmt}
+      <Box sx={{ display: "flex" }}>
+        <Box sx={{ flex: 1 }}>
+          <Typography variant="h4" gutterBottom>
+            {price.longName}
+          </Typography>
+          <Typography style={{ textTransform: "uppercase" }}>
+            {price.exchangeName}:{price.symbol}
+          </Typography>
+          <Typography>
+            <Box component="span" fontWeight="bold">
+              {price.regularMarketPrice.fmt}
+            </Box>
+            &nbsp;{price.currency}
+          </Typography>
+          <Typography>
+            <Box component="span" fontWeight="bold">
+              <FormatRawNumber
+                value={
+                  annualDilutedAverageShares[
+                    annualDilutedAverageShares.length - 1
+                  ].reportedValue.raw
+                }
+                decimalScale={0}
+                suffix="M"
+              />
+            </Box>
+            &nbsp;Shares Outstanding
+          </Typography>
+          <Section>
+            <Typography variant="h5">Company Financials</Typography>
+            <TTTable columns={companyFinancialsColumns} data={rowData} />
+          </Section>
+          <Section>
+            <Typography variant="h5" gutterBottom>
+              Value Driving Inputs
+            </Typography>
+            <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+              <ValueDrivingTextField label="CAGR in years 1-5" />
+              <ValueDrivingTextField label="EBIT Target margin in year 10 (%)" />
+            </Box>
+            <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+              <ValueDrivingTextField label="Sales to capital ratio before year 5" />
+              <ValueDrivingTextField label="Sales to capital ratio after year 5" />
+            </Box>
+            <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+              <ValueDrivingTextField label="Year of convergence" />
+            </Box>
+          </Section>
         </Box>
-        &nbsp;{price.currency}
-      </Typography>
-      <Typography>
-        <Box component="span" fontWeight="bold">
-          <FormatRawNumber
-            value={
-              annualDilutedAverageShares[annualDilutedAverageShares.length - 1]
-                .reportedValue.raw
-            }
-            decimalScale={0}
-            suffix="M"
-          />
-        </Box>
-        &nbsp;Shares Outstanding
-      </Typography>
-      <Section>
-        <Typography variant="h5">Company Financials</Typography>
-        <TTTable columns={companyFinancialsColumns} data={rowData} />
-      </Section>
-      <Section>
-        <Typography variant="h5" gutterBottom>
-          Value Driving Inputs
-        </Typography>
-        <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-          <ValueDrivingTextField label="CAGR in years 1-5" />
-          <ValueDrivingTextField label="EBIT Target margin in year 10 (%)" />
-        </Box>
-        <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-          <ValueDrivingTextField label="Sales to capital ratio before year 5" />
-          <ValueDrivingTextField label="Sales to capital ratio after year 5" />
-        </Box>
-        <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-          <ValueDrivingTextField label="Year of convergence" />
-        </Box>
-      </Section>
+        <Box sx={{ flex: 1 }}>Cost Of Capital Sheet</Box>
+      </Box>
       <Section>
         <Typography variant="h5" gutterBottom>
           Valuation

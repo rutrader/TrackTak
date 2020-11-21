@@ -1,21 +1,27 @@
 import React, { useState } from "react";
 import Datasheet from "react-datasheet";
+import "react-datasheet/lib/react-datasheet.css";
+import styles from "./DCFSheet.module.scss";
 
 const DCFSheet = () => {
+  let headerNumberColumns = [];
+
+  for (let index = 1; index < 11; index++) {
+    headerNumberColumns.push({
+      readOnly: true,
+      value: index,
+    });
+  }
+
   const initialData = [
     [
       { readOnly: true, value: "" },
       { readOnly: true, value: "Base Year" },
+      ...headerNumberColumns,
       {
-        ...Array(10).reduce((acc, _, i) => {
-          return {
-            ...acc,
-            readOnly: true,
-            value: ++i,
-          };
-        }, {}),
+        readOnly: true,
+        value: "Terminal Year",
       },
-      { readOnly: true, value: "Terminal Year" },
     ],
     [
       {
@@ -112,6 +118,7 @@ const DCFSheet = () => {
 
   return (
     <Datasheet
+      className={styles.datasheet}
       data={data}
       valueRenderer={(cell) => cell.value}
       onCellsChanged={(changes) => {

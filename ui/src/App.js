@@ -6,9 +6,9 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Home from "./home/Home";
 import LayoutHome from "./layout/LayoutHome";
 import Valuation from "./valuation/Valuation";
-import Layout from "./layout/Layout";
 import { useSelector } from "react-redux";
 import { Box, CircularProgress, useTheme } from "@material-ui/core";
+import LayoutFullScreen from "./layout/LayoutFullScreen";
 
 const GlobalStyle = createGlobalStyle`
   * { box-sizing: border-box; }
@@ -83,13 +83,13 @@ function App() {
             </RebassProvider>
           </Route>
           <Route path={["/valuation/:symbol"]}>
-            <Layout>
+            <LayoutFullScreen>
               <Switch>
                 <Route path="/valuation/:symbol">
                   <Valuation />
                 </Route>
               </Switch>
-            </Layout>
+            </LayoutFullScreen>
           </Route>
           <Route path={["/"]}>
             <LayoutHome>
