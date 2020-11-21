@@ -6,9 +6,11 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Home from "./home/Home";
 import LayoutHome from "./layout/LayoutHome";
 import Valuation from "./valuation/Valuation";
-import Layout from "./layout/Layout";
 import { useSelector } from "react-redux";
 import { Box, CircularProgress, useTheme } from "@material-ui/core";
+import LayoutFullScreen from "./layout/LayoutFullScreen";
+import Layout from "./layout/Layout";
+import TTTabs from "./components/TTTabs";
 
 const GlobalStyle = createGlobalStyle`
   * { box-sizing: border-box; }
@@ -70,7 +72,10 @@ const Spinner = (props) => {
   );
 };
 
-export const layoutPaths = ["/valuation/:symbol", "/option/:symbol"];
+const layoutFullScreenPaths = ["/valuation/:symbol"];
+const layoutPaths = ["/option/:symbol"];
+
+export const allLayoutPaths = layoutFullScreenPaths.concat(layoutPaths);
 
 function App() {
   return (
@@ -84,12 +89,19 @@ function App() {
               <LandingPage />
             </RebassProvider>
           </Route>
+          <Route path={layoutFullScreenPaths}>
+            <LayoutFullScreen>
+              <Switch>
+                <Route path={layoutFullScreenPaths[0]}>
+                  <Valuation />
+                </Route>
+              </Switch>
+            </LayoutFullScreen>
+          </Route>
           <Route path={layoutPaths}>
             <Layout>
               <Switch>
-                <Route path={layoutPaths[0]}>
-                  <Valuation />
-                </Route>
+                <Route path={layoutPaths[0]}>Option Sheet</Route>
               </Switch>
             </Layout>
           </Route>
@@ -103,6 +115,9 @@ function App() {
             </LayoutHome>
           </Route>
         </Switch>
+        <Route path={allLayoutPaths}>
+          <TTTabs />
+        </Route>
       </BrowserRouter>
     </>
   );

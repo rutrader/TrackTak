@@ -2,15 +2,33 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { getFinancials } from "../redux/actions/financialsActions";
-import { Box, Typography, useTheme } from "@material-ui/core";
+import { Box, TextField, Typography, withStyles } from "@material-ui/core";
 import TTTable from "../components/TTTable";
 import dayjs from "dayjs";
 import FormatRawNumber from "../components/FormatRawNumber";
+import DCFSheet from "./DCFSheet";
+
+const Section = ({ ...props }) => <Box sx={{ mt: 3, mb: 1 }} {...props} />;
+const ValueDrivingTextField = withStyles({
+  root: {
+    flex: 1,
+    margin: 2,
+    minWidth: "300px",
+  },
+})(TextField);
+
+const mapFromArrayToDateObject = (arrayToLoop) => {
+  return arrayToLoop.reduce((acc, curr, i) => {
+    return {
+      ...acc,
+      [`date_${i}`]: <FormatRawNumber value={curr} />,
+    };
+  }, {});
+};
 
 const Valuation = () => {
   const params = useParams();
   const dispatch = useDispatch();
-  const theme = useTheme();
   const {
     data,
     currentTotalInterestBearingDebt,
@@ -53,15 +71,6 @@ const Valuation = () => {
       accessor: `date_${i}`,
     }))
   );
-
-  const mapFromArrayToDateObject = (arrayToLoop) => {
-    return arrayToLoop.reduce((acc, curr, i) => {
-      return {
-        ...acc,
-        [`date_${i}`]: <FormatRawNumber value={curr} />,
-      };
-    }, {});
-  };
 
   const getTTMValue = (valueKey) => {
     const { timeSeries } = data;
@@ -140,36 +149,65 @@ const Valuation = () => {
   ];
 
   return (
-    <Box>
-      <Typography variant="h4">{price.longName}</Typography>
-      <Typography
-        style={{ textTransform: "uppercase", marginTop: theme.spacing(1) }}
-      >
-        {price.exchangeName}:{price.symbol}
-      </Typography>
-      <Typography>
-        <Box component="span" fontWeight="bold">
-          {price.regularMarketPrice.fmt}
+    <>
+      <Box sx={{ display: "flex" }}>
+        <Box sx={{ flex: 1 }}>
+          <Typography variant="h4" gutterBottom>
+            {price.longName}
+          </Typography>
+          <Typography style={{ textTransform: "uppercase" }}>
+            {price.exchangeName}:{price.symbol}
+          </Typography>
+          <Typography>
+            <Box component="span" fontWeight="bold">
+              {price.regularMarketPrice.fmt}
+            </Box>
+            &nbsp;{price.currency}
+          </Typography>
+          <Typography>
+            <Box component="span" fontWeight="bold">
+              <FormatRawNumber
+                value={
+                  annualDilutedAverageShares[
+                    annualDilutedAverageShares.length - 1
+                  ].reportedValue.raw
+                }
+                decimalScale={0}
+                suffix="M"
+              />
+            </Box>
+            &nbsp;Shares Outstanding
+          </Typography>
+          <Section>
+            <Typography variant="h5">Company Financials</Typography>
+            <TTTable columns={companyFinancialsColumns} data={rowData} />
+          </Section>
+          <Section>
+            <Typography variant="h5" gutterBottom>
+              Value Driving Inputs
+            </Typography>
+            <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+              <ValueDrivingTextField label="CAGR in years 1-5" />
+              <ValueDrivingTextField label="EBIT Target margin in year 10 (%)" />
+            </Box>
+            <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+              <ValueDrivingTextField label="Sales to capital ratio before year 5" />
+              <ValueDrivingTextField label="Sales to capital ratio after year 5" />
+            </Box>
+            <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+              <ValueDrivingTextField label="Year of convergence" />
+            </Box>
+          </Section>
         </Box>
-        &nbsp;{price.currency}
-      </Typography>
-      <Typography>
-        <Box component="span" fontWeight="bold">
-          <FormatRawNumber
-            value={
-              annualDilutedAverageShares[annualDilutedAverageShares.length - 1]
-                .reportedValue.raw
-            }
-            decimalScale={0}
-            suffix="M"
-          />
-        </Box>
-        &nbsp;Shares Outstanding
-      </Typography>
-      <Box sx={{ mt: 5 }}></Box>
-      <Typography variant="h5">Company Financials</Typography>
-      <TTTable columns={companyFinancialsColumns} data={rowData} />
-    </Box>
+        <Box sx={{ flex: 1 }}>Cost Of Capital Sheet</Box>
+      </Box>
+      <Section>
+        <Typography variant="h5" gutterBottom>
+          Valuation
+        </Typography>
+        <DCFSheet />
+      </Section>
+    </>
   );
 };
 
