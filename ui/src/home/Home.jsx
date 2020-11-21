@@ -43,7 +43,6 @@ const Home = () => {
           }}
         >
           <TickerTextField
-            variant="outlined"
             label="Stock ticker e.g. AMZN"
             fullWidth
             onChange={(e) => {
