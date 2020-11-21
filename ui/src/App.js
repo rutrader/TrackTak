@@ -70,6 +70,10 @@ const Spinner = (props) => {
   );
 };
 
+const layoutFullScreenPaths = ["/valuation/:symbol", "/option/:symbol"];
+
+export const layoutPaths
+
 function App() {
   return (
     <>
@@ -82,10 +86,10 @@ function App() {
               <LandingPage />
             </RebassProvider>
           </Route>
-          <Route path={["/valuation/:symbol"]}>
+          <Route path={layoutPaths}>
             <LayoutFullScreen>
               <Switch>
-                <Route path="/valuation/:symbol">
+                <Route path={layoutPaths[0]}>
                   <Valuation />
                 </Route>
               </Switch>
