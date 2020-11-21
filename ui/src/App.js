@@ -9,6 +9,7 @@ import Valuation from "./valuation/Valuation";
 import Layout from "./layout/Layout";
 import { useSelector } from "react-redux";
 import { Box, CircularProgress, useTheme } from "@material-ui/core";
+import OptionValue from "./optionValue/OptionValue";
 
 const GlobalStyle = createGlobalStyle`
   * { box-sizing: border-box; }
@@ -89,6 +90,9 @@ function App() {
               <Switch>
                 <Route path={layoutPaths[0]}>
                   <Valuation />
+                </Route>
+                <Route path={layoutPaths[1]}>
+                  <OptionValue />
                 </Route>
               </Switch>
             </Layout>
