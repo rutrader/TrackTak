@@ -1,5 +1,7 @@
 const axios = require("axios");
 const cache = require("memory-cache");
+const equityRiskPremiumCountries = require("./data/equityRiskPremiumCountries.json");
+const equityRiskPremiumRegions = require("./data/equityRiskPremiumRegions.json");
 
 const baseUrl = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2";
 const headers = {
@@ -26,6 +28,12 @@ const api = {
       console.log(error);
       throw error;
     }
+  },
+  getEquityRiskPremiumCountries: () => {
+    return equityRiskPremiumCountries;
+  },
+  getEquityRiskPremiumRegions: () => {
+    return equityRiskPremiumRegions;
   },
 };
 
