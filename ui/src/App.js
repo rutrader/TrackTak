@@ -8,6 +8,7 @@ import LayoutHome from "./layout/LayoutHome";
 import Valuation from "./valuation/Valuation";
 import { useSelector } from "react-redux";
 import { Box, CircularProgress, useTheme } from "@material-ui/core";
+import OptionValue from "./optionValue/OptionValue";
 import LayoutFullScreen from "./layout/LayoutFullScreen";
 import Layout from "./layout/Layout";
 import TTTabs from "./components/TTTabs";
@@ -101,7 +102,9 @@ function App() {
           <Route path={layoutPaths}>
             <Layout>
               <Switch>
-                <Route path={layoutPaths[0]}>Option Sheet</Route>
+                <Route path={layoutPaths[0]}>
+                  <OptionValue />
+                </Route>
               </Switch>
             </Layout>
           </Route>
