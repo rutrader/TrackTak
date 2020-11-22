@@ -15,8 +15,8 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.get("/api/v1/get-financials/:symbol", async (req, res) => {
-  const value = await api.getFinancials(req.params);
+app.get("/api/v1/get-fundamentals/:ticker", async (req, res) => {
+  const value = await api.getFundamentals(req.params);
 
   res.send(value);
 });

@@ -1,8 +1,9 @@
 import { Box, Typography, withStyles } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getFinancials } from "../redux/actions/financialsActions";
+import { getFundamentals } from "../redux/actions/fundamentalsActions";
 import Section from "../components/Section";
+import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
 
 const StyledBox = ({ sx, ...props }) => (
   <Box sx={{ ml: "auto", ...sx }} {...props} />
@@ -21,18 +22,18 @@ const TypographyLabel = withStyles({
 ));
 
 const OptionValue = () => {
-  const financialsData = useSelector((state) => state.financials.data);
+  const fundamentalsData = useSelector((state) => state.fundamentals.data);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getFinancials("AMZN"));
+    dispatch(getFundamentals("AAPL"));
   }, [dispatch]);
 
-  if (!financialsData) return null;
+  if (!fundamentalsData) return null;
 
   const {
-    timeSeries: { annualDilutedAverageShares },
-  } = financialsData;
+    SharesStats: { SharesOutstanding },
+  } = fundamentalsData;
 
   return (
     <>
@@ -46,10 +47,7 @@ const OptionValue = () => {
         <TypographyLabel>
           Number of options outstanding
           <StyledBox>
-            {
-              annualDilutedAverageShares[annualDilutedAverageShares.length - 1]
-                .reportedValue.fmt
-            }
+            <FormatRawNumberToMillion value={SharesOutstanding} suffix="M" />
           </StyledBox>
         </TypographyLabel>
         <TypographyLabel>

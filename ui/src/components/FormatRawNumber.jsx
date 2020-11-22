@@ -1,6 +1,5 @@
 import React from "react";
 import NumberFormat from "react-number-format";
-import formatRawNumberToMillion from "../shared/formatRawNumber";
 
 const FormatRawNumber = ({ value, ...props }) => {
   return (
@@ -8,7 +7,7 @@ const FormatRawNumber = ({ value, ...props }) => {
       thousandSeparator
       decimalScale={0}
       defaultValue="-"
-      value={value ? formatRawNumberToMillion(value) : undefined}
+      value={value}
       displayType="text"
       {...props}
     />

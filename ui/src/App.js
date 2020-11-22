@@ -73,8 +73,8 @@ const Spinner = (props) => {
   );
 };
 
-const layoutFullScreenPaths = ["/valuation/:symbol"];
-const layoutPaths = ["/option/:symbol"];
+const layoutFullScreenPaths = ["/valuation/:ticker"];
+const layoutPaths = ["/option/:ticker"];
 
 export const allLayoutPaths = layoutFullScreenPaths.concat(layoutPaths);
 
@@ -84,7 +84,7 @@ function App() {
       <Spinner />
       <BrowserRouter>
         <Switch>
-          <Route path="/">
+          <Route path="/landingPage">
             <RebassProvider theme={rebassTheme}>
               <GlobalStyle />
               <LandingPage />
@@ -108,10 +108,10 @@ function App() {
               </Switch>
             </Layout>
           </Route>
-          <Route path={["/home"]}>
+          <Route path={["/"]}>
             <LayoutHome>
               <Switch>
-                <Route path="/home">
+                <Route path="/">
                   <Home />
                 </Route>
               </Switch>

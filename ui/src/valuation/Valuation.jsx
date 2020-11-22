@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { getFinancials } from "../redux/actions/financialsActions";
+import { getFundamentals } from "../redux/actions/fundamentalsActions";
 import { Box, TextField, Typography, withStyles } from "@material-ui/core";
 import TTTable from "../components/TTTable";
 import dayjs from "dayjs";
 import FormatRawNumber from "../components/FormatRawNumber";
+import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
 import Section from "../components/Section";
 import ValuationDCFSheet from "./ValuationDCFSheet";
 
@@ -17,11 +18,16 @@ const ValueDrivingTextField = withStyles({
   },
 })(TextField);
 
-const mapFromArrayToDateObject = (arrayToLoop) => {
-  return arrayToLoop.reduce((acc, curr, i) => {
+const mapFromStatementsToDateObject = (statementToLoop, valueKeys) => {
+  return Object.values(statementToLoop).reduce((acc, curr) => {
+    const sumOfValues = valueKeys.reduce(
+      (acc, key) => (acc += parseFloat(curr[key], 10)),
+      0
+    );
+
     return {
       ...acc,
-      [`date_${i}`]: <FormatRawNumber value={curr} />,
+      [curr.date]: <FormatRawNumberToMillion value={sumOfValues} />,
     };
   }, {});
 };
@@ -29,34 +35,22 @@ const mapFromArrayToDateObject = (arrayToLoop) => {
 const Valuation = () => {
   const params = useParams();
   const dispatch = useDispatch();
-  const {
-    data,
-    currentTotalInterestBearingDebt,
-    totalInterestBearingDebts,
-    currentCashAndMarketableSecurities,
-    cashAndMarketableSecurities,
-  } = useSelector((state) => state.financials);
+  const { data, currentPrice } = useSelector((state) => state.fundamentals);
 
   useEffect(() => {
-    dispatch(getFinancials(params.symbol));
-  }, [dispatch, params.symbol]);
+    dispatch(getFundamentals(params.ticker));
+  }, [dispatch, params.ticker]);
 
   if (!data) return null;
 
   const {
-    price,
-    timeSeries: { annualDilutedAverageShares },
-    incomeStatementHistory: { incomeStatementHistory },
-    balanceSheetHistory: { balanceSheetStatements },
-    balanceSheetHistoryQuarterly: {
-      balanceSheetStatements: balanceSheetStatementsQuarterly,
-    },
-    incomeStatementHistoryQuarterly: {
-      incomeStatementHistory: incomeStatementHistoryQuarterly,
-    },
+    General,
+    Financials: { Income_Statement, Balance_Sheet },
+    SharesStats,
+    Highlights: { MostRecentQuarter },
   } = data;
 
-  const companyFinancialsColumns = [
+  const companyFundamentalsColumns = [
     {
       Header: "",
       accessor: "dataField",
@@ -66,85 +60,107 @@ const Valuation = () => {
       accessor: "ttm",
     },
   ].concat(
-    incomeStatementHistory.map((statement, i) => ({
-      Header: dayjs(statement.endDate.fmt).format("MMM YY"),
-      accessor: `date_${i}`,
+    Object.values(Income_Statement.yearly).map((statement) => ({
+      Header: dayjs(statement.date).format("MMM YY"),
+      accessor: statement.date,
     }))
   );
 
-  const getTTMValue = (valueKey) => {
-    const { timeSeries } = data;
-    const arrayValue = timeSeries[valueKey];
-    const value = arrayValue[arrayValue.length - 1].reportedValue.raw;
+  const getIncomeSheetTTMValue = (valueKey) => {
+    const arrayValue = Object.values(Income_Statement.quarterly);
+    const sumOfFirstFourValues = arrayValue.slice(0, 4).reduce((acc, curr) => {
+      return (acc += parseFloat(curr[valueKey], 10));
+    }, 0);
 
-    return <FormatRawNumber value={value} />;
+    return <FormatRawNumberToMillion value={sumOfFirstFourValues} />;
   };
 
   const rowData = [
     {
       dataField: "Revenue",
-      ttm: getTTMValue("trailingTotalRevenue"),
-      ...mapFromArrayToDateObject(
-        incomeStatementHistory.map((x) => x.totalRevenue.raw)
-      ),
+      ttm: getIncomeSheetTTMValue("totalRevenue"),
+      ...mapFromStatementsToDateObject(Income_Statement.yearly, [
+        "totalRevenue",
+      ]),
     },
     {
       dataField: "Operating Income",
-      ttm: getTTMValue("trailingOperatingIncome"),
-      ...mapFromArrayToDateObject(
-        incomeStatementHistory.map((x) => x.operatingIncome.raw)
-      ),
+      ttm: getIncomeSheetTTMValue("operatingIncome"),
+      ...mapFromStatementsToDateObject(Income_Statement.yearly, [
+        "operatingIncome",
+      ]),
     },
     {
       dataField: "Interest Expense",
-      ttm: getTTMValue("trailingInterestExpense"),
-      ...mapFromArrayToDateObject(
-        incomeStatementHistory.map((x) => x.operatingIncome.raw)
-      ),
+      ttm: getIncomeSheetTTMValue("interestExpense"),
+      ...mapFromStatementsToDateObject(Income_Statement.yearly, [
+        "interestExpense",
+      ]),
     },
     {
       dataField: "Book Value of Equity",
       ttm: (
-        <FormatRawNumber
-          value={balanceSheetStatementsQuarterly[0].totalStockholderEquity.raw}
+        <FormatRawNumberToMillion
+          value={
+            Balance_Sheet.quarterly[MostRecentQuarter].totalStockholderEquity
+          }
         />
       ),
-      ...mapFromArrayToDateObject(
-        balanceSheetStatements.map((x) => x.totalStockholderEquity.raw)
-      ),
+      ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
+        "totalStockholderEquity",
+      ]),
     },
     {
       dataField: "Book Value of Debt",
-      ttm: <FormatRawNumber value={currentTotalInterestBearingDebt} />,
-      ...mapFromArrayToDateObject(totalInterestBearingDebts),
+      ttm: (
+        <FormatRawNumberToMillion
+          value={
+            Balance_Sheet.quarterly[MostRecentQuarter].shortLongTermDebt +
+            Balance_Sheet.quarterly[MostRecentQuarter].longTermDebt +
+            Balance_Sheet.quarterly[MostRecentQuarter].capitalLeaseObligations
+          }
+        />
+      ),
+      ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
+        "shortLongTermDebt",
+        "longTermDebt",
+        "capitalLeaseObligations",
+      ]),
     },
     {
       dataField: "Cash & Marketable Securities",
-      ttm: <FormatRawNumber value={currentCashAndMarketableSecurities} />,
-      ...mapFromArrayToDateObject(cashAndMarketableSecurities),
-    },
-    {
-      // TODO: Double check this value
-      dataField: "Cross Holdings & Other Non-Operating Assets",
       ttm: (
-        <FormatRawNumber
-          value={balanceSheetStatementsQuarterly[0].otherAssets.raw}
+        <FormatRawNumberToMillion
+          value={
+            Balance_Sheet.quarterly[MostRecentQuarter]
+              .cashAndShortTermInvestments
+          }
         />
       ),
-      ...mapFromArrayToDateObject(
-        balanceSheetStatements.map((x) => x.otherAssets.raw)
+      ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
+        "cashAndShortTermInvestments",
+      ]),
+    },
+    {
+      dataField: "Cross Holdings & Other Non-Operating Assets",
+      ttm: (
+        <FormatRawNumberToMillion
+          value={
+            Balance_Sheet.quarterly[MostRecentQuarter]
+              .noncontrollingInterestInConsolidatedEntity
+          }
+        />
       ),
+      ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
+        "noncontrollingInterestInConsolidatedEntity",
+      ]),
     },
     {
       dataField: "Minority Interests",
-      ttm: (
-        <FormatRawNumber
-          value={incomeStatementHistoryQuarterly[0].minorityInterests?.raw}
-        />
-      ),
-      ...mapFromArrayToDateObject(
-        incomeStatementHistory.map((x) => x.minorityInterests?.raw)
-      ),
+      ttm: getIncomeSheetTTMValue("minorityInterest"),
+      ...mapFromStatementsToDateObject(Income_Statement.yearly, [
+        "minorityInterest",
+      ]),
     },
   ];
 
@@ -153,34 +169,29 @@ const Valuation = () => {
       <Box sx={{ display: "flex" }}>
         <Box sx={{ flex: 1 }}>
           <Typography variant="h4" gutterBottom>
-            {price.longName}
+            {General.Name}
           </Typography>
           <Typography style={{ textTransform: "uppercase" }}>
-            {price.exchangeName}:{price.symbol}
+            {General.Exchange}:{General.Code}
           </Typography>
           <Typography>
             <Box component="span" fontWeight="bold">
-              {price.regularMarketPrice.fmt}
+              <FormatRawNumber value={currentPrice} />
             </Box>
-            &nbsp;{price.currency}
+            &nbsp;{General.CurrencyCode}
           </Typography>
           <Typography>
             <Box component="span" fontWeight="bold">
-              <FormatRawNumber
-                value={
-                  annualDilutedAverageShares[
-                    annualDilutedAverageShares.length - 1
-                  ].reportedValue.raw
-                }
-                decimalScale={0}
+              <FormatRawNumberToMillion
+                value={SharesStats.SharesOutstanding}
                 suffix="M"
               />
             </Box>
             &nbsp;Shares Outstanding
           </Typography>
           <Section>
-            <Typography variant="h5">Company Financials</Typography>
-            <TTTable columns={companyFinancialsColumns} data={rowData} />
+            <Typography variant="h5">Company Fundamentals</Typography>
+            <TTTable columns={companyFundamentalsColumns} data={rowData} />
           </Section>
           <Section>
             <Typography variant="h5" gutterBottom>
