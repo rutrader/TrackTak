@@ -83,7 +83,7 @@ function App() {
       <Spinner />
       <BrowserRouter>
         <Switch>
-          <Route path="/landingPage">
+          <Route path="/">
             <RebassProvider theme={rebassTheme}>
               <GlobalStyle />
               <LandingPage />
@@ -105,10 +105,10 @@ function App() {
               </Switch>
             </Layout>
           </Route>
-          <Route path={["/"]}>
+          <Route path={["/home"]}>
             <LayoutHome>
               <Switch>
-                <Route path="/">
+                <Route path="/home">
                   <Home />
                 </Route>
               </Switch>
