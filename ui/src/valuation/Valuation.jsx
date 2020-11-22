@@ -7,7 +7,9 @@ import { Box, TextField, Typography, withStyles } from "@material-ui/core";
 import TTTable from "../components/TTTable";
 import dayjs from "dayjs";
 import FormatRawNumber from "../components/FormatRawNumber";
-import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
+import FormatRawNumberToMillion, {
+  millionModifier,
+} from "../components/FormatRawNumberToMillion";
 import Section from "../components/Section";
 import ValuationDCFSheet from "./ValuationDCFSheet";
 import blackScholes from "../shared/blackScholesModel";
@@ -213,7 +215,7 @@ const Valuation = () => {
         <Typography variant="h5">Company Fundamentals</Typography>
         <TTTable columns={companyFundamentalsColumns} data={rowData} />
       </Section>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", gap: 20 }}>
         <Box sx={{ flex: 1 }}>
           <Section>
             <Typography variant="h5" gutterBottom>
@@ -242,7 +244,7 @@ const Valuation = () => {
                   dispatch(
                     setEmployeeOptionsValue(
                       "numberOfOptionsOutstanding",
-                      parseFloat(e.currentTarget.value, 10)
+                      parseFloat(e.currentTarget.value, 10) * millionModifier
                     )
                   );
                 }}
@@ -287,12 +289,25 @@ const Valuation = () => {
               Black Scholes Employee Options Valuation
             </Typography>
             <TypographyLabel>
-              <Box>Value Per Option</Box>
-              {valuePerOption}
+              <Box sx={{ mr: 2, minWidth: "263px" }}>Value Per Option</Box>
+              <FormatRawNumber
+                prefix={General.CurrencySymbol}
+                value={valuePerOption}
+                decimalScale={2}
+              />
             </TypographyLabel>
             <TypographyLabel>
-              <Box>Value of All Options Outstanding</Box>
-              {valuePerOption * employeeOptions.numberOfOptionsOutstanding}
+              <Box sx={{ mr: 2, minWidth: "263px" }}>
+                Value of All Options Outstanding
+              </Box>
+              <FormatRawNumberToMillion
+                prefix={General.CurrencySymbol}
+                value={
+                  valuePerOption * employeeOptions.numberOfOptionsOutstanding
+                }
+                suffix="M"
+                decimalScale={2}
+              />
             </TypographyLabel>
           </Section>
         </Box>
