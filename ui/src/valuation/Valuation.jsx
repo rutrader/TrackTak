@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { getFundamentals } from "../redux/actions/fundamentalsActions";
+import { setEmployeeOptionsValue } from "../redux/actions/employeeOptionsActions";
 import { Box, TextField, Typography, withStyles } from "@material-ui/core";
 import TTTable from "../components/TTTable";
 import dayjs from "dayjs";
@@ -9,6 +10,7 @@ import FormatRawNumber from "../components/FormatRawNumber";
 import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
 import Section from "../components/Section";
 import ValuationDCFSheet from "./ValuationDCFSheet";
+import blackScholes from "../shared/blackScholesModel";
 
 const ValueDrivingTextField = withStyles({
   root: {
@@ -17,6 +19,17 @@ const ValueDrivingTextField = withStyles({
     minWidth: "300px",
   },
 })(TextField);
+
+const TypographyLabel = withStyles({
+  root: {
+    display: "flex",
+  },
+})(({ ...props }) => (
+  <Typography color="textSecondary" gutterBottom {...props} />
+));
+
+const mockRiskFreeRate = 0.02;
+const mockStdDeviation = 0.4;
 
 const mapFromStatementsToDateObject = (statementToLoop, valueKeys) => {
   return Object.values(statementToLoop).reduce((acc, curr) => {
@@ -36,6 +49,7 @@ const Valuation = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const { data, currentPrice } = useSelector((state) => state.fundamentals);
+  const employeeOptions = useSelector((state) => state.employeeOptions);
 
   useEffect(() => {
     dispatch(getFundamentals(params.ticker));
@@ -163,54 +177,125 @@ const Valuation = () => {
       ]),
     },
   ];
+  const valuePerOption = blackScholes(
+    "call",
+    currentPrice,
+    employeeOptions.averageStrikePrice,
+    employeeOptions.averageMaturity,
+    mockRiskFreeRate,
+    mockStdDeviation
+  );
 
   return (
     <>
+      <Typography variant="h4" gutterBottom>
+        {General.Name}
+      </Typography>
+      <Typography style={{ textTransform: "uppercase" }}>
+        {General.Exchange}:{General.Code}
+      </Typography>
+      <Typography>
+        <Box component="span" fontWeight="bold">
+          <FormatRawNumber value={currentPrice} />
+        </Box>
+        &nbsp;{General.CurrencyCode}
+      </Typography>
+      <Typography>
+        <Box component="span" fontWeight="bold">
+          <FormatRawNumberToMillion
+            value={SharesStats.SharesOutstanding}
+            suffix="M"
+          />
+        </Box>
+        &nbsp;Shares Outstanding
+      </Typography>
+      <Section>
+        <Typography variant="h5">Company Fundamentals</Typography>
+        <TTTable columns={companyFundamentalsColumns} data={rowData} />
+      </Section>
       <Box sx={{ display: "flex" }}>
         <Box sx={{ flex: 1 }}>
-          <Typography variant="h4" gutterBottom>
-            {General.Name}
-          </Typography>
-          <Typography style={{ textTransform: "uppercase" }}>
-            {General.Exchange}:{General.Code}
-          </Typography>
-          <Typography>
-            <Box component="span" fontWeight="bold">
-              <FormatRawNumber value={currentPrice} />
-            </Box>
-            &nbsp;{General.CurrencyCode}
-          </Typography>
-          <Typography>
-            <Box component="span" fontWeight="bold">
-              <FormatRawNumberToMillion
-                value={SharesStats.SharesOutstanding}
-                suffix="M"
-              />
-            </Box>
-            &nbsp;Shares Outstanding
-          </Typography>
-          <Section>
-            <Typography variant="h5">Company Fundamentals</Typography>
-            <TTTable columns={companyFundamentalsColumns} data={rowData} />
-          </Section>
           <Section>
             <Typography variant="h5" gutterBottom>
               Value Driving Inputs
             </Typography>
             <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-              <ValueDrivingTextField label="CAGR in years 1-5" />
-              <ValueDrivingTextField label="EBIT Target margin in year 10 (%)" />
+              <ValueDrivingTextField label="CAGR in Years 1-5" />
+              <ValueDrivingTextField label="EBIT Target Margin in Year 10 (%)" />
+              <ValueDrivingTextField label="Year of Convergence" />
             </Box>
             <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-              <ValueDrivingTextField label="Sales to capital ratio before year 5" />
-              <ValueDrivingTextField label="Sales to capital ratio after year 5" />
+              <ValueDrivingTextField label="Sales to Capital Ratio Before Year 5" />
+              <ValueDrivingTextField label="Sales to Capital Ratio After Year 5" />
             </Box>
+          </Section>
+          <Section>
+            <Typography variant="h5" gutterBottom>
+              Employee Options Inputs
+            </Typography>
             <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-              <ValueDrivingTextField label="Year of convergence" />
+              <ValueDrivingTextField
+                label="Employee Options Oustanding (in M)"
+                type="number"
+                defaultValue={employeeOptions.numberOfOptionsOutstanding}
+                onBlur={(e) => {
+                  dispatch(
+                    setEmployeeOptionsValue(
+                      "numberOfOptionsOutstanding",
+                      parseFloat(e.currentTarget.value, 10)
+                    )
+                  );
+                }}
+              />
+              <ValueDrivingTextField
+                label="Average Strike Price"
+                type="number"
+                defaultValue={employeeOptions.averageStrikePrice}
+                onBlur={(e) => {
+                  dispatch(
+                    setEmployeeOptionsValue(
+                      "averageStrikePrice",
+                      parseFloat(e.currentTarget.value, 10)
+                    )
+                  );
+                }}
+              />
+              <ValueDrivingTextField
+                label="Average Maturity (in Years)"
+                type="number"
+                defaultValue={employeeOptions.averageMaturity}
+                onBlur={(e) => {
+                  dispatch(
+                    setEmployeeOptionsValue(
+                      "averageMaturity",
+                      parseFloat(e.currentTarget.value, 10)
+                    )
+                  );
+                }}
+              />
             </Box>
           </Section>
         </Box>
-        <Box sx={{ flex: 1 }}>Cost Of Capital Sheet</Box>
+        <Box sx={{ flex: 1 }}>
+          <Section>
+            <Typography variant="h5" gutterBottom>
+              Cost of Capital
+            </Typography>
+          </Section>
+          <Section>
+            <Typography variant="h5" gutterBottom>
+              Black Scholes Employee Options Valuation
+            </Typography>
+            <TypographyLabel>
+              <Box>Value Per Option</Box>
+              {valuePerOption}
+            </TypographyLabel>
+            <TypographyLabel>
+              <Box>Value of All Options Outstanding</Box>
+              {valuePerOption * employeeOptions.numberOfOptionsOutstanding}
+            </TypographyLabel>
+          </Section>
+        </Box>
       </Box>
       <Section>
         <Typography variant="h5" gutterBottom>

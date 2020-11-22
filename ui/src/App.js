@@ -8,9 +8,7 @@ import LayoutHome from "./layout/LayoutHome";
 import Valuation from "./valuation/Valuation";
 import { useSelector } from "react-redux";
 import { Box, CircularProgress, useTheme } from "@material-ui/core";
-import OptionValue from "./optionValue/OptionValue";
 import LayoutFullScreen from "./layout/LayoutFullScreen";
-import Layout from "./layout/Layout";
 import TTTabs from "./components/TTTabs";
 
 const GlobalStyle = createGlobalStyle`
@@ -74,9 +72,8 @@ const Spinner = (props) => {
 };
 
 const layoutFullScreenPaths = ["/valuation/:ticker"];
-const layoutPaths = ["/option/:ticker"];
 
-export const allLayoutPaths = layoutFullScreenPaths.concat(layoutPaths);
+export const allLayoutPaths = layoutFullScreenPaths;
 
 function App() {
   return (
@@ -98,15 +95,6 @@ function App() {
                 </Route>
               </Switch>
             </LayoutFullScreen>
-          </Route>
-          <Route path={layoutPaths}>
-            <Layout>
-              <Switch>
-                <Route path={layoutPaths[0]}>
-                  <OptionValue />
-                </Route>
-              </Switch>
-            </Layout>
           </Route>
           <Route path={["/"]}>
             <LayoutHome>
