@@ -6,7 +6,7 @@ import { Box, TextField, Typography, withStyles } from "@material-ui/core";
 import TTTable from "../components/TTTable";
 import dayjs from "dayjs";
 import FormatRawNumber from "../components/FormatRawNumber";
-import DCFSheet from "./DCFSheet";
+import ValuationDCFSheet from "./ValuationDCFSheet";
 
 const Section = ({ ...props }) => <Box sx={{ mt: 3, mb: 1 }} {...props} />;
 const ValueDrivingTextField = withStyles({
@@ -205,7 +205,7 @@ const Valuation = () => {
         <Typography variant="h5" gutterBottom>
           Valuation
         </Typography>
-        <DCFSheet />
+        <ValuationDCFSheet />
       </Section>
     </>
   );
