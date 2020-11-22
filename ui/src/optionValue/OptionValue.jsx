@@ -2,22 +2,23 @@ import { Box, Typography, withStyles } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getFinancials } from "../redux/actions/financialsActions";
+import Section from "../components/Section";
 
 const StyledBox = ({ sx, ...props }) => (
-  <Box sx={{ marginLeft: "auto", ...sx }} {...props} />
+  <Box sx={{ ml: "auto", ...sx }} {...props} />
 );
 
 const StyledMinWidthBox = ({ sx, ...props }) => (
-  <Box sx={{ marginRight: "10px", minWidth: "300px", ...sx }} {...props} />
+  <Box sx={{ marginRight: 1, minWidth: 300, ...sx }} {...props} />
 );
 
-const StyledTypography = withStyles((theme) => ({
+const TypographyLabel = withStyles({
   root: {
     display: "flex",
-    fontSize: "0.999rem",
-    margin: theme.spacing(0.5),
   },
-}))(({ ...props }) => <Typography color="textSecondary" {...props} />);
+})(({ ...props }) => (
+  <Typography color="textSecondary" gutterBottom {...props} />
+));
 
 const OptionValue = () => {
   const financialsData = useSelector((state) => state.financials.data);
@@ -35,17 +36,14 @@ const OptionValue = () => {
 
   return (
     <>
-      <Box sx={{ mt: 5 }}></Box>
-      <Box
-        sx={{
-          maxWidth: "400px",
-        }}
-      >
-        <Typography variant="h4">Options Valuation</Typography>
-        <Box sx={{ mt: 5 }}></Box>
-        <Typography variant="h5">Employee Options</Typography>
-        <Box sx={{ mt: 3 }}></Box>
-        <StyledTypography>
+      <Typography variant="h4" gutterBottom>
+        Options Valuation
+      </Typography>
+      <Section sx={{ maxWidth: 400 }}>
+        <Typography variant="h5" gutterBottom>
+          Employee Options
+        </Typography>
+        <TypographyLabel>
           Number of options outstanding
           <StyledBox>
             {
@@ -53,78 +51,87 @@ const OptionValue = () => {
                 .reportedValue.fmt
             }
           </StyledBox>
-        </StyledTypography>
-        <StyledTypography>
-          Average strike price <StyledBox>504.00M</StyledBox>
-        </StyledTypography>
-        <StyledTypography>
-          Average maturity <StyledBox>504.00M</StyledBox>
-        </StyledTypography>
-        <StyledTypography>
-          Standard deviation on stock price <StyledBox>504.00M</StyledBox>
-        </StyledTypography>
-        <StyledTypography>
-          Annualized dividend yield on stock <StyledBox>504.00M</StyledBox>
-        </StyledTypography>
-        <Box sx={{ mt: 3 }}></Box>
-        <Typography variant="h5">
+        </TypographyLabel>
+        <TypographyLabel>
+          Average Strike Price <StyledBox>504.00M</StyledBox>
+        </TypographyLabel>
+        <TypographyLabel>
+          Average Maturity <StyledBox>504.00M</StyledBox>
+        </TypographyLabel>
+        <TypographyLabel>
+          Standard Deviation on Stock Price <StyledBox>504.00M</StyledBox>
+        </TypographyLabel>
+        <TypographyLabel>
+          Annualized Dividend Yield on Stock <StyledBox>504.00M</StyledBox>
+        </TypographyLabel>
+      </Section>
+      <Section>
+        <Typography variant="h5" gutterBottom>
           Dilution Effect of Options Valuation
         </Typography>
-        <Box sx={{ mt: 3 }}></Box>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <StyledTypography>
-            <StyledMinWidthBox>Adjusted S</StyledMinWidthBox>
+        <Box sx={{ display: "flex" }}>
+          <TypographyLabel>
+            <StyledMinWidthBox sx={{ minWidth: 120 }}>
+              Adjusted S
+            </StyledMinWidthBox>
             504.00M
-          </StyledTypography>
-          <StyledTypography>
-            <StyledMinWidthBox>Variance</StyledMinWidthBox>
+          </TypographyLabel>
+          <TypographyLabel>
+            <StyledMinWidthBox sx={{ ml: 13.5 }}>Variance</StyledMinWidthBox>
             504.00M
-          </StyledTypography>
+          </TypographyLabel>
         </Box>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <StyledTypography>
-            <StyledMinWidthBox>Adjusted K</StyledMinWidthBox>
+        <Box sx={{ display: "flex" }}>
+          <TypographyLabel>
+            <StyledMinWidthBox sx={{ minWidth: 120 }}>
+              Adjusted K
+            </StyledMinWidthBox>
             504.00M
-          </StyledTypography>
-          <StyledTypography>
-            <StyledMinWidthBox>
+          </TypographyLabel>
+          <TypographyLabel>
+            <StyledMinWidthBox sx={{ ml: 13.6 }}>
               Dividend Adjusted Interest rate
             </StyledMinWidthBox>
             504.00M
-          </StyledTypography>
+          </TypographyLabel>
         </Box>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <StyledTypography>
-            <StyledMinWidthBox>d1</StyledMinWidthBox>
-            504.00M
-          </StyledTypography>
-          <StyledTypography>
-            <StyledMinWidthBox>d2</StyledMinWidthBox>
-            504.00M
-          </StyledTypography>
+        <Box my={2}>
+          <Box sx={{ display: "flex" }}>
+            <TypographyLabel>
+              <StyledMinWidthBox sx={{ minWidth: 120 }}>d1</StyledMinWidthBox>
+              504.00M
+            </TypographyLabel>
+            <TypographyLabel>
+              <StyledMinWidthBox sx={{ ml: 13.6 }}>d2</StyledMinWidthBox>
+              504.00M
+            </TypographyLabel>
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <TypographyLabel>
+              <StyledMinWidthBox sx={{ minWidth: 120 }}>
+                N(d1)
+              </StyledMinWidthBox>
+              504.00M
+            </TypographyLabel>
+            <TypographyLabel>
+              <StyledMinWidthBox sx={{ ml: 13.6 }}>N(d2)</StyledMinWidthBox>
+              504.00M
+            </TypographyLabel>
+          </Box>
         </Box>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <StyledTypography>
-            <StyledMinWidthBox>N(d1)</StyledMinWidthBox>
+        <Box my={2}>
+          <TypographyLabel>
+            <StyledMinWidthBox>Value Per Option</StyledMinWidthBox>
             504.00M
-          </StyledTypography>
-          <StyledTypography>
-            <StyledMinWidthBox>N(d2)</StyledMinWidthBox>
+          </TypographyLabel>
+          <TypographyLabel>
+            <StyledMinWidthBox>
+              Value of All Options Outstanding
+            </StyledMinWidthBox>
             504.00M
-          </StyledTypography>
+          </TypographyLabel>
         </Box>
-        <Box sx={{ mt: 3 }}></Box>
-        <StyledTypography>
-          <StyledMinWidthBox> Value per Option</StyledMinWidthBox>
-          504.00M
-        </StyledTypography>
-        <StyledTypography>
-          <StyledMinWidthBox>
-            Value of all Options Outstanding
-          </StyledMinWidthBox>
-          504.00M
-        </StyledTypography>
-      </Box>
+      </Section>
     </>
   );
 };
