@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import Datasheet from "react-datasheet";
 import "react-datasheet/lib/react-datasheet.css";
-import styles from "./DCFSheet.module.scss";
+import styles from "./ValuationDCFSheet.module.scss";
 
-const DCFSheet = () => {
+const ValuationDCFSheet = () => {
   let headerNumberColumns = [];
 
   for (let index = 1; index < 11; index++) {
@@ -98,6 +98,18 @@ const DCFSheet = () => {
     [
       {
         readOnly: true,
+        value: "",
+      },
+    ],
+    [
+      {
+        readOnly: true,
+        value: "Implied Variablies",
+      },
+    ],
+    [
+      {
+        readOnly: true,
         value: "Sales to Capital Ratio",
       },
     ],
@@ -111,6 +123,96 @@ const DCFSheet = () => {
       {
         readOnly: true,
         value: "ROIC",
+      },
+    ],
+    [
+      {
+        readOnly: true,
+        value: "",
+      },
+    ],
+    [
+      {
+        readOnly: true,
+        value: "Output",
+      },
+    ],
+    [
+      {
+        readOnly: true,
+        value: "Terminal Cash Flow",
+      },
+    ],
+    [
+      {
+        readOnly: true,
+        value: "Terminal Cost of Capital",
+      },
+    ],
+    [
+      {
+        readOnly: true,
+        value: "Terminal Value",
+      },
+    ],
+    [
+      {
+        readOnly: true,
+        value: "PV (Terminal Value)",
+      },
+    ],
+    [
+      {
+        readOnly: true,
+        value: "PV (Over 10 Years)",
+      },
+    ],
+    [
+      {
+        readOnly: true,
+        value: "Sum of PV",
+      },
+    ],
+    [
+      {
+        readOnly: true,
+        value: "Probability of Failure",
+      },
+    ],
+    [
+      {
+        readOnly: true,
+        value: "Proceeds if Firm Fails",
+      },
+    ],
+    [
+      {
+        readOnly: true,
+        value: "Value of Operating Assets",
+      },
+    ],
+    [
+      {
+        readOnly: true,
+        value: "Value of Equity in Common Stock",
+      },
+    ],
+    [
+      {
+        readOnly: true,
+        value: "Current Price",
+      },
+    ],
+    [
+      {
+        readOnly: true,
+        value: "Estimated Value Per Share",
+      },
+    ],
+    [
+      {
+        readOnly: true,
+        value: "Margin Of Safety",
       },
     ],
   ];
@@ -139,4 +241,4 @@ const DCFSheet = () => {
   );
 };
 
-export default DCFSheet;
+export default ValuationDCFSheet;

@@ -21,6 +21,16 @@ app.get("/api/v1/get-financials/:symbol", async (req, res) => {
   res.send(value);
 });
 
+app.get("/api/v1/equity-risk-premium-countries", async (req, res) => {
+  const value = api.getEquityRiskPremiumCountries();
+  res.send(value);
+});
+
+app.get("/api/v1/equity-risk-premium-regions", async (req, res) => {
+  const value = api.getEquityRiskPremiumRegions();
+  res.send(value);
+});
+
 app.listen(port, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
