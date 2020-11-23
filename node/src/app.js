@@ -15,7 +15,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.get("/api/v1/get-fundamentals/:ticker", async (req, res) => {
+app.get("/api/v1/fundamentals/:ticker", async (req, res) => {
   const value = await api.getFundamentals(req.params);
 
   res.send(value);
@@ -28,6 +28,11 @@ app.get("/api/v1/equity-risk-premium-countries", async (req, res) => {
 
 app.get("/api/v1/equity-risk-premium-regions", async (req, res) => {
   const value = api.getEquityRiskPremiumRegions();
+  res.send(value);
+});
+
+app.get("/api/v1/government-bonds/:ticker", async (req, res) => {
+  const value = await api.getGovernmentBonds(req.params);
   res.send(value);
 });
 

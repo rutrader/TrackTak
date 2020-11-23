@@ -30,7 +30,7 @@ const TypographyLabel = withStyles({
   <Typography color="textSecondary" gutterBottom {...props} />
 ));
 
-const mockRiskFreeRate = 0.02;
+const mockAdjustedDefaultSpread = 0.02;
 const mockStdDeviation = 0.4;
 
 const mapFromStatementsToDateObject = (statementToLoop, valueKeys) => {
@@ -50,21 +50,22 @@ const mapFromStatementsToDateObject = (statementToLoop, valueKeys) => {
 const Valuation = () => {
   const params = useParams();
   const dispatch = useDispatch();
-  const { data, currentPrice } = useSelector((state) => state.fundamentals);
+  const fundamentals = useSelector((state) => state.fundamentals);
   const employeeOptions = useSelector((state) => state.employeeOptions);
+  const governmentBonds = useSelector((state) => state.governmentBonds);
 
   useEffect(() => {
     dispatch(getFundamentals(params.ticker));
   }, [dispatch, params.ticker]);
 
-  if (!data) return null;
+  if (!fundamentals.data || !governmentBonds.data) return null;
 
   const {
     General,
     Financials: { Income_Statement, Balance_Sheet },
     SharesStats,
     Highlights: { MostRecentQuarter },
-  } = data;
+  } = fundamentals.data;
 
   const companyFundamentalsColumns = [
     {
@@ -179,12 +180,14 @@ const Valuation = () => {
       ]),
     },
   ];
+  const riskFreeRate =
+    governmentBonds.data[0].Close - mockAdjustedDefaultSpread;
   const valuePerOption = blackScholes(
     "call",
-    currentPrice,
+    fundamentals.currentPrice,
     employeeOptions.averageStrikePrice,
     employeeOptions.averageMaturity,
-    mockRiskFreeRate,
+    riskFreeRate,
     mockStdDeviation
   );
 
@@ -198,7 +201,7 @@ const Valuation = () => {
       </Typography>
       <Typography>
         <Box component="span" fontWeight="bold">
-          <FormatRawNumber value={currentPrice} />
+          <FormatRawNumber value={fundamentals.currentPrice} />
         </Box>
         &nbsp;{General.CurrencyCode}
       </Typography>
