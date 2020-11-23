@@ -13,6 +13,8 @@ import FormatRawNumberToMillion, {
 import Section from "../components/Section";
 import ValuationDCFSheet from "./ValuationDCFSheet";
 import blackScholes from "../shared/blackScholesModel";
+import { getEquityRiskPremiumCountries } from "../redux/actions/equityRiskPremiumActions";
+import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 
 const ValueDrivingTextField = withStyles({
   root: {
@@ -53,12 +55,22 @@ const Valuation = () => {
   const fundamentals = useSelector((state) => state.fundamentals);
   const employeeOptions = useSelector((state) => state.employeeOptions);
   const governmentBonds = useSelector((state) => state.governmentBonds);
+  const equityRiskPremium = useSelector((state) => state.equityRiskPremium);
 
   useEffect(() => {
     dispatch(getFundamentals(params.ticker));
   }, [dispatch, params.ticker]);
 
-  if (!fundamentals.data || !governmentBonds.data) return null;
+  useEffect(() => {
+    dispatch(getEquityRiskPremiumCountries());
+  }, [dispatch]);
+
+  if (
+    !fundamentals.data ||
+    !governmentBonds.data ||
+    !equityRiskPremium.countryData
+  )
+    return null;
 
   const {
     General,
@@ -213,6 +225,22 @@ const Valuation = () => {
           />
         </Box>
         &nbsp;Shares Outstanding
+      </Typography>
+      <Typography>
+        <Box component="span" fontWeight="bold">
+          {
+            equityRiskPremium.countryData.find(
+              (element) => element.country === General.AddressData.Country
+            ).equityRiskPremium
+          }
+        </Box>
+        &nbsp;Country Equity Risk Premium
+      </Typography>
+      <Typography>
+        <Box component="span" fontWeight="bold">
+          {equityRiskPremium.matureMarketEquityRiskPremium}
+        </Box>
+        &nbsp;Mature Market Equity Risk Premium
       </Typography>
       <Section>
         <Typography variant="h5">Company Fundamentals</Typography>
