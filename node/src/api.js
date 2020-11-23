@@ -12,9 +12,9 @@ const globalParams = {
   api_token: process.env.EOD_HISTORICAL_DATA_API_KEY,
 };
 
-const convertCommaSeperatedStringToArrayOfObjects = () => {
+const convertCommaSeperatedStringToArrayOfObjects = (commaSeperatedString) => {
   let arrayObjects = [];
-  const cells = mockUS10YearGovernmentBondData
+  const cells = commaSeperatedString
     .split("\n")
     .map((x) => x.split(","))
     .reverse();
