@@ -257,9 +257,9 @@ const Valuation = () => {
             <Box sx={{ display: "flex", flexWrap: "wrap" }}>
               <ValueDrivingTextField
                 label="CAGR in Years 1-5"
-                defaultValue={input.cagrYearrOneToFive}
+                defaultValue={input.cagrYearOneToFive}
                 onBlur={(value) => {
-                  dispatch(setValue("cagrYearrOneToFive", value));
+                  dispatch(setValue("cagrYearOneToFive", value));
                 }}
                 InputProps={{
                   inputComponent: FormatInputToPercent,

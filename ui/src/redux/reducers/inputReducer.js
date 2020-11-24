@@ -13,7 +13,7 @@ const initialState = {
   numberOfPreferredShares: null,
   marketPricePerShare: null,
   annualDividendPerShare: null,
-  cagrYearrOneToFive: null,
+  cagrYearOneToFive: null,
   ebitTargetMarginInYearTen: null,
   yearOfConvergence: null,
   salesToCapitalRatio: null,
