@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import Datasheet from "react-datasheet";
 import "react-datasheet/lib/react-datasheet.css";
 import styles from "./ValuationDCFSheet.module.scss";
 
 const ValuationDCFSheet = () => {
+  const input = useSelector((state) => state.input);
   let headerNumberColumns = [];
 
   for (let index = 1; index < 11; index++) {
@@ -27,6 +29,9 @@ const ValuationDCFSheet = () => {
       {
         readOnly: true,
         value: "Revenue Growth Rate",
+      },
+      {
+        value: "",
       },
     ],
     [
@@ -216,6 +221,7 @@ const ValuationDCFSheet = () => {
       },
     ],
   ];
+
   const [data, setData] = useState(initialData);
 
   return (
