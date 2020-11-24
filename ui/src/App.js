@@ -6,10 +6,12 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Home from "./home/Home";
 import LayoutHome from "./layout/LayoutHome";
 import Valuation from "./valuation/Valuation";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Box, CircularProgress, useTheme } from "@material-ui/core";
 import LayoutFullScreen from "./layout/LayoutFullScreen";
 import TTTabs from "./components/TTTabs";
+import { useEffect } from "react";
+import { getEquityRiskPremiumCountries } from "./redux/actions/equityRiskPremiumActions";
 
 const GlobalStyle = createGlobalStyle`
   * { box-sizing: border-box; }
@@ -76,6 +78,13 @@ const layoutFullScreenPaths = ["/valuation/:ticker"];
 export const allLayoutPaths = layoutFullScreenPaths;
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // TODO: Make sure this is resolved before user can progress
+    dispatch(getEquityRiskPremiumCountries());
+  }, [dispatch]);
+
   return (
     <>
       <Spinner />

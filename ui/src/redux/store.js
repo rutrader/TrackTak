@@ -2,13 +2,13 @@ import { combineReducers } from "redux";
 import { fundamentalsReducer } from "./reducers/fundamentalsReducer";
 import { configureStore } from "@reduxjs/toolkit";
 import { pageReducer } from "./reducers/pageReducer";
-import { employeeOptionsReducer } from "./reducers/employeeOptionsReducer";
 import { governmentBondsReducer } from "./reducers/governmentBondsReducer";
 import { equityRiskPremiumCountriesReducer } from "./reducers/equityRiskPremiumReducer";
+import { inputReducer } from "./reducers/inputReducer";
 
 export const rootReducer = combineReducers({
   fundamentals: fundamentalsReducer,
-  employeeOptions: employeeOptionsReducer,
+  input: inputReducer,
   equityRiskPremium: equityRiskPremiumCountriesReducer,
   page: pageReducer,
   governmentBonds: governmentBondsReducer,

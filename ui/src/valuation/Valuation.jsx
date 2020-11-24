@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { getFundamentals } from "../redux/actions/fundamentalsActions";
-import { setEmployeeOptionsValue } from "../redux/actions/employeeOptionsActions";
+import { setValue } from "../redux/actions/inputActions";
 import { Box, TextField, Typography, withStyles } from "@material-ui/core";
 import TTTable from "../components/TTTable";
 import dayjs from "dayjs";
@@ -13,10 +13,17 @@ import FormatRawNumberToMillion, {
 import Section from "../components/Section";
 import ValuationDCFSheet from "./ValuationDCFSheet";
 import blackScholes from "../shared/blackScholesModel";
-import { getEquityRiskPremiumCountries } from "../redux/actions/equityRiskPremiumActions";
-import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
+import SubSection from "../components/SubSection";
 
 const ValueDrivingTextField = withStyles({
+  root: {
+    flex: 1,
+    margin: 2,
+    minWidth: "300px",
+  },
+})(TextField);
+
+const CostOfCapitalTextField = withStyles({
   root: {
     flex: 1,
     margin: 2,
@@ -53,17 +60,13 @@ const Valuation = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const fundamentals = useSelector((state) => state.fundamentals);
-  const employeeOptions = useSelector((state) => state.employeeOptions);
+  const input = useSelector((state) => state.input);
   const governmentBonds = useSelector((state) => state.governmentBonds);
   const equityRiskPremium = useSelector((state) => state.equityRiskPremium);
 
   useEffect(() => {
     dispatch(getFundamentals(params.ticker));
   }, [dispatch, params.ticker]);
-
-  useEffect(() => {
-    dispatch(getEquityRiskPremiumCountries());
-  }, [dispatch]);
 
   if (
     !fundamentals.data ||
@@ -78,6 +81,9 @@ const Valuation = () => {
     SharesStats,
     Highlights: { MostRecentQuarter },
   } = fundamentals.data;
+
+  const riskFreeRate =
+    governmentBonds.data[0].Close - mockAdjustedDefaultSpread;
 
   const companyFundamentalsColumns = [
     {
@@ -95,33 +101,28 @@ const Valuation = () => {
     }))
   );
 
-  const getIncomeSheetTTMValue = (valueKey) => {
-    const arrayValue = Object.values(Income_Statement.quarterly);
-    const sumOfFirstFourValues = arrayValue.slice(0, 4).reduce((acc, curr) => {
-      return (acc += parseFloat(curr[valueKey], 10));
-    }, 0);
-
-    return <FormatRawNumberToMillion value={sumOfFirstFourValues} />;
-  };
-
   const rowData = [
     {
       dataField: "Revenue",
-      ttm: getIncomeSheetTTMValue("totalRevenue"),
+      ttm: <FormatRawNumberToMillion value={fundamentals.ttm.totalRevenue} />,
       ...mapFromStatementsToDateObject(Income_Statement.yearly, [
         "totalRevenue",
       ]),
     },
     {
       dataField: "Operating Income",
-      ttm: getIncomeSheetTTMValue("operatingIncome"),
+      ttm: (
+        <FormatRawNumberToMillion value={fundamentals.ttm.operatingIncome} />
+      ),
       ...mapFromStatementsToDateObject(Income_Statement.yearly, [
         "operatingIncome",
       ]),
     },
     {
       dataField: "Interest Expense",
-      ttm: getIncomeSheetTTMValue("interestExpense"),
+      ttm: (
+        <FormatRawNumberToMillion value={fundamentals.ttm.interestExpense} />
+      ),
       ...mapFromStatementsToDateObject(Income_Statement.yearly, [
         "interestExpense",
       ]),
@@ -142,13 +143,7 @@ const Valuation = () => {
     {
       dataField: "Book Value of Debt",
       ttm: (
-        <FormatRawNumberToMillion
-          value={
-            Balance_Sheet.quarterly[MostRecentQuarter].shortLongTermDebt +
-            Balance_Sheet.quarterly[MostRecentQuarter].longTermDebt +
-            Balance_Sheet.quarterly[MostRecentQuarter].capitalLeaseObligations
-          }
-        />
+        <FormatRawNumberToMillion value={fundamentals.currentBookValueOfDebt} />
       ),
       ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
         "shortLongTermDebt",
@@ -186,19 +181,19 @@ const Valuation = () => {
     },
     {
       dataField: "Minority Interests",
-      ttm: getIncomeSheetTTMValue("minorityInterest"),
+      ttm: (
+        <FormatRawNumberToMillion value={fundamentals.ttm.minorityInterest} />
+      ),
       ...mapFromStatementsToDateObject(Income_Statement.yearly, [
         "minorityInterest",
       ]),
     },
   ];
-  const riskFreeRate =
-    governmentBonds.data[0].Close - mockAdjustedDefaultSpread;
   const valuePerOption = blackScholes(
     "call",
     fundamentals.currentPrice,
-    employeeOptions.averageStrikePrice,
-    employeeOptions.averageMaturity,
+    input.averageStrikePrice,
+    input.averageMaturity,
     riskFreeRate,
     mockStdDeviation
   );
@@ -228,11 +223,7 @@ const Valuation = () => {
       </Typography>
       <Typography>
         <Box component="span" fontWeight="bold">
-          {
-            equityRiskPremium.countryData.find(
-              (element) => element.country === General.AddressData.Country
-            ).equityRiskPremium
-          }
+          {equityRiskPremium.currentCountry.equityRiskPremium}
         </Box>
         &nbsp;Country Equity Risk Premium
       </Typography>
@@ -241,6 +232,12 @@ const Valuation = () => {
           {equityRiskPremium.matureMarketEquityRiskPremium}
         </Box>
         &nbsp;Mature Market Equity Risk Premium
+      </Typography>
+      <Typography>
+        <Box component="span" fontWeight="bold">
+          {equityRiskPremium.currentCountry.corporateTaxRate}
+        </Box>
+        &nbsp;Corporate Tax Rate
       </Typography>
       <Section>
         <Typography variant="h5">Company Fundamentals</Typography>
@@ -253,13 +250,22 @@ const Valuation = () => {
               Value Driving Inputs
             </Typography>
             <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-              <ValueDrivingTextField label="CAGR in Years 1-5" />
+              <ValueDrivingTextField label="CAGR in Years 1-5 (%)" />
               <ValueDrivingTextField label="EBIT Target Margin in Year 10 (%)" />
-              <ValueDrivingTextField label="Year of Convergence" />
+              <ValueDrivingTextField
+                type="number"
+                label="Year of Convergence"
+              />
             </Box>
             <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-              <ValueDrivingTextField label="Sales to Capital Ratio Before Year 5" />
-              <ValueDrivingTextField label="Sales to Capital Ratio After Year 5" />
+              <ValueDrivingTextField
+                type="number"
+                label="Sales to Capital Ratio Before Year 5"
+              />
+              <ValueDrivingTextField
+                type="number"
+                label="Sales to Capital Ratio After Year 5"
+              />
             </Box>
           </Section>
           <Section>
@@ -268,14 +274,14 @@ const Valuation = () => {
             </Typography>
             <Box sx={{ display: "flex", flexWrap: "wrap" }}>
               <ValueDrivingTextField
-                label="Employee Options Oustanding (in M)"
+                label="Employee Options Oustanding"
                 type="number"
-                defaultValue={employeeOptions.numberOfOptionsOutstanding}
+                defaultValue={input.numberOfOptionsOutstanding}
                 onBlur={(e) => {
                   dispatch(
-                    setEmployeeOptionsValue(
+                    setValue(
                       "numberOfOptionsOutstanding",
-                      parseFloat(e.currentTarget.value, 10) * millionModifier
+                      parseFloat(e.currentTarget.value) * millionModifier
                     )
                   );
                 }}
@@ -283,37 +289,30 @@ const Valuation = () => {
               <ValueDrivingTextField
                 label="Average Strike Price"
                 type="number"
-                defaultValue={employeeOptions.averageStrikePrice}
+                defaultValue={input.averageStrikePrice}
                 onBlur={(e) => {
                   dispatch(
-                    setEmployeeOptionsValue(
+                    setValue(
                       "averageStrikePrice",
-                      parseFloat(e.currentTarget.value, 10)
+                      parseFloat(e.currentTarget.value)
                     )
                   );
                 }}
               />
               <ValueDrivingTextField
-                label="Average Maturity (in Years)"
+                label="Average Maturity (Year)"
                 type="number"
-                defaultValue={employeeOptions.averageMaturity}
+                defaultValue={input.averageMaturityOfOptions}
                 onBlur={(e) => {
                   dispatch(
-                    setEmployeeOptionsValue(
-                      "averageMaturity",
-                      parseFloat(e.currentTarget.value, 10)
+                    setValue(
+                      "averageMaturityOfOptions",
+                      parseFloat(e.currentTarget.value)
                     )
                   );
                 }}
               />
             </Box>
-          </Section>
-        </Box>
-        <Box sx={{ flex: 1 }}>
-          <Section>
-            <Typography variant="h5" gutterBottom>
-              Cost of Capital
-            </Typography>
           </Section>
           <Section>
             <Typography variant="h5" gutterBottom>
@@ -333,13 +332,140 @@ const Valuation = () => {
               </Box>
               <FormatRawNumberToMillion
                 prefix={General.CurrencySymbol}
-                value={
-                  valuePerOption * employeeOptions.numberOfOptionsOutstanding
-                }
+                value={valuePerOption * input.numberOfOptionsOutstanding}
                 suffix="M"
                 decimalScale={2}
               />
             </TypographyLabel>
+          </Section>
+        </Box>
+        <Box sx={{ flex: 1 }}>
+          <Section>
+            <Typography variant="h5" gutterBottom>
+              Cost of Capital Inputs
+            </Typography>
+            <Typography variant="h6" gutterBottom>
+              Normal Debt
+            </Typography>
+            <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+              <CostOfCapitalTextField
+                label="Average Maturity of Debt (Year)"
+                type="number"
+                defaultValue={input.averageMaturityOfDebt}
+                onBlur={(e) => {
+                  dispatch(
+                    setValue(
+                      "averageMaturityOfDebt",
+                      parseFloat(e.currentTarget.value)
+                    )
+                  );
+                }}
+              />
+              <CostOfCapitalTextField
+                label="Pre-tax Cost of Debt (%)"
+                defaultValue={input.pretaxCostOfDebt}
+                onBlur={(e) => {
+                  dispatch(
+                    setValue(
+                      "pretaxCostOfDebt",
+                      parseFloat(e.currentTarget.value)
+                    )
+                  );
+                }}
+              />
+            </Box>
+            <SubSection>
+              <Typography variant="h6" gutterBottom>
+                Convertible Debt
+              </Typography>
+              <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+                <CostOfCapitalTextField
+                  label="Book Value of Convertible Debt"
+                  type="number"
+                  defaultValue={input.bookValueOfConvertibleDebt}
+                  onBlur={(e) => {
+                    dispatch(
+                      setValue(
+                        "bookValueOfConvertibleDebt",
+                        parseFloat(e.currentTarget.value)
+                      )
+                    );
+                  }}
+                />
+                <CostOfCapitalTextField
+                  label="Interest Expense on Convertible Debt"
+                  type="number"
+                  defaultValue={input.interestExpenseOnConvertibleDebt}
+                  onBlur={(e) => {
+                    dispatch(
+                      setValue(
+                        "interestExpenseOnConvertibleDebt",
+                        parseFloat(e.currentTarget.value)
+                      )
+                    );
+                  }}
+                />
+                <CostOfCapitalTextField
+                  label="Maturity of Convertible Debt (Year)"
+                  type="number"
+                  defaultValue={input.maturityOfConvertibleDebt}
+                  onBlur={(e) => {
+                    dispatch(
+                      setValue(
+                        "maturityOfConvertibleDebt",
+                        parseFloat(e.currentTarget.value)
+                      )
+                    );
+                  }}
+                />
+              </Box>
+            </SubSection>
+            <SubSection>
+              <Typography variant="h6" gutterBottom>
+                Preferred Stock
+              </Typography>
+              <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+                <CostOfCapitalTextField
+                  label="Number of Preferred Shares"
+                  type="number"
+                  defaultValue={input.numberOfPreferredShares}
+                  onBlur={(e) => {
+                    dispatch(
+                      setValue(
+                        "numberOfPreferredShares",
+                        parseFloat(e.currentTarget.value)
+                      )
+                    );
+                  }}
+                />
+                <CostOfCapitalTextField
+                  label="Market Price Per Share"
+                  type="number"
+                  defaultValue={input.marketPricePerShare}
+                  onBlur={(e) => {
+                    dispatch(
+                      setValue(
+                        "marketPricePerShare",
+                        parseFloat(e.currentTarget.value)
+                      )
+                    );
+                  }}
+                />
+                <CostOfCapitalTextField
+                  label="Annual Dividend Per Share"
+                  type="number"
+                  defaultValue={input.annualDividendPerShare}
+                  onBlur={(e) => {
+                    dispatch(
+                      setValue(
+                        "annualDividendPerShare",
+                        parseFloat(e.currentTarget.value)
+                      )
+                    );
+                  }}
+                />
+              </Box>
+            </SubSection>
           </Section>
         </Box>
       </Box>
