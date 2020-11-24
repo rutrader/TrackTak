@@ -13,7 +13,6 @@ import FormatRawNumberToMillion, {
 import Section from "../components/Section";
 import ValuationDCFSheet from "./ValuationDCFSheet";
 import blackScholes from "../shared/blackScholesModel";
-import { getEquityRiskPremiumCountries } from "../redux/actions/equityRiskPremiumActions";
 import SubSection from "../components/SubSection";
 
 const ValueDrivingTextField = withStyles({
@@ -42,9 +41,6 @@ const TypographyLabel = withStyles({
 
 const mockAdjustedDefaultSpread = 0.02;
 const mockStdDeviation = 0.4;
-const mockUnleveredBeta = 0.7;
-const mockMarginalTaxRate = 0.19;
-const mockEquityRiskPremium = 0.13;
 
 const mapFromStatementsToDateObject = (statementToLoop, valueKeys) => {
   return Object.values(statementToLoop).reduce((acc, curr) => {
@@ -72,10 +68,6 @@ const Valuation = () => {
     dispatch(getFundamentals(params.ticker));
   }, [dispatch, params.ticker]);
 
-  useEffect(() => {
-    dispatch(getEquityRiskPremiumCountries());
-  }, [dispatch]);
-
   if (
     !fundamentals.data ||
     !governmentBonds.data ||
@@ -92,57 +84,6 @@ const Valuation = () => {
 
   const riskFreeRate =
     governmentBonds.data[0].Close - mockAdjustedDefaultSpread;
-
-  const estimatedMarketValueOfStraightDebt =
-    (fundamentals.ttm.interestExpense *
-      (1 - input.pretaxCostOfDebt ** -input.averageMaturity)) /
-      input.pretaxCostOfDebt +
-    fundamentals.currentBookValueOfDebt /
-      input.pretaxCostOfDebt ** input.averageMaturity;
-  const estimatedValueOfStraightDebtInConvertibleDebt =
-    (input.interestExpenseOnConvertibleDebt *
-      (1 - input.pretaxCostOfDebt ** -input.maturityOfConvertibleDebt)) /
-      input.pretaxCostOfDebt +
-    input.bookValueOfConvertibleDebt /
-      input.pretaxCostOfDebt ** input.maturityOfConvertibleDebt;
-  const estimatedValueOfEquityInConvertibleDebt =
-    input.marketValueOfConvertibleDebt -
-    estimatedValueOfStraightDebtInConvertibleDebt;
-  const marketValue = {
-    equity: fundamentals.currentPrice * SharesStats.SharesOutstanding,
-    debt:
-      estimatedMarketValueOfStraightDebt +
-      estimatedValueOfStraightDebtInConvertibleDebt,
-    preferredStock: input.numberOfPreferredShares * input.marketPricePerShare,
-    get total() {
-      return this.equity + this.debt + this.preferredStock;
-    },
-  };
-  const weightInCostOfCapital = {
-    equity: marketValue.equity / marketValue.total,
-    debt: marketValue.debt / marketValue.total,
-    preferredStock: marketValue.preferredStock / marketValue.total,
-    get total() {
-      return this.equity + this.debt + this.preferredStock;
-    },
-  };
-  const leveredBetaForEquity =
-    mockUnleveredBeta *
-    (1 + mockMarginalTaxRate) *
-    (marketValue.debt / marketValue.equity);
-
-  const costOfComponent = {
-    equity: riskFreeRate + leveredBetaForEquity * mockEquityRiskPremium,
-    debt: input.pretaxCostOfDebt * mockMarginalTaxRate,
-    preferredStock: input.annualDividendPerShare / input.marketPricePerShare,
-    get total() {
-      return (
-        weightInCostOfCapital.equity * this.equity +
-        weightInCostOfCapital.debt * this.debt +
-        weightInCostOfCapital.preferredStock * this.preferredStock
-      );
-    },
-  };
 
   const companyFundamentalsColumns = [
     {
@@ -282,11 +223,7 @@ const Valuation = () => {
       </Typography>
       <Typography>
         <Box component="span" fontWeight="bold">
-          {
-            equityRiskPremium.countryData.find(
-              (element) => element.country === General.AddressData.Country
-            ).equityRiskPremium
-          }
+          {equityRiskPremium.currentCountry.equityRiskPremium}
         </Box>
         &nbsp;Country Equity Risk Premium
       </Typography>
@@ -295,6 +232,12 @@ const Valuation = () => {
           {equityRiskPremium.matureMarketEquityRiskPremium}
         </Box>
         &nbsp;Mature Market Equity Risk Premium
+      </Typography>
+      <Typography>
+        <Box component="span" fontWeight="bold">
+          {equityRiskPremium.currentCountry.corporateTaxRate}
+        </Box>
+        &nbsp;Corporate Tax Rate
       </Typography>
       <Section>
         <Typography variant="h5">Company Fundamentals</Typography>
@@ -307,13 +250,22 @@ const Valuation = () => {
               Value Driving Inputs
             </Typography>
             <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-              <ValueDrivingTextField label="CAGR in Years 1-5" />
+              <ValueDrivingTextField label="CAGR in Years 1-5 (%)" />
               <ValueDrivingTextField label="EBIT Target Margin in Year 10 (%)" />
-              <ValueDrivingTextField label="Year of Convergence" />
+              <ValueDrivingTextField
+                type="number"
+                label="Year of Convergence"
+              />
             </Box>
             <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-              <ValueDrivingTextField label="Sales to Capital Ratio Before Year 5" />
-              <ValueDrivingTextField label="Sales to Capital Ratio After Year 5" />
+              <ValueDrivingTextField
+                type="number"
+                label="Sales to Capital Ratio Before Year 5"
+              />
+              <ValueDrivingTextField
+                type="number"
+                label="Sales to Capital Ratio After Year 5"
+              />
             </Box>
           </Section>
           <Section>
@@ -322,7 +274,7 @@ const Valuation = () => {
             </Typography>
             <Box sx={{ display: "flex", flexWrap: "wrap" }}>
               <ValueDrivingTextField
-                label="Employee Options Oustanding (in M)"
+                label="Employee Options Oustanding"
                 type="number"
                 defaultValue={input.numberOfOptionsOutstanding}
                 onBlur={(e) => {
@@ -348,7 +300,7 @@ const Valuation = () => {
                 }}
               />
               <ValueDrivingTextField
-                label="Average Maturity (in Years)"
+                label="Average Maturity (Year)"
                 type="number"
                 defaultValue={input.averageMaturityOfOptions}
                 onBlur={(e) => {
@@ -397,7 +349,7 @@ const Valuation = () => {
             </Typography>
             <Box sx={{ display: "flex", flexWrap: "wrap" }}>
               <CostOfCapitalTextField
-                label="Average Maturity of Debt"
+                label="Average Maturity of Debt (Year)"
                 type="number"
                 defaultValue={input.averageMaturityOfDebt}
                 onBlur={(e) => {
@@ -410,8 +362,7 @@ const Valuation = () => {
                 }}
               />
               <CostOfCapitalTextField
-                label="Pre-tax Cost of Debt"
-                type="percent"
+                label="Pre-tax Cost of Debt (%)"
                 defaultValue={input.pretaxCostOfDebt}
                 onBlur={(e) => {
                   dispatch(
@@ -455,26 +406,13 @@ const Valuation = () => {
                   }}
                 />
                 <CostOfCapitalTextField
-                  label="Maturity of Convertible Debt"
+                  label="Maturity of Convertible Debt (Year)"
                   type="number"
                   defaultValue={input.maturityOfConvertibleDebt}
                   onBlur={(e) => {
                     dispatch(
                       setValue(
                         "maturityOfConvertibleDebt",
-                        parseFloat(e.currentTarget.value)
-                      )
-                    );
-                  }}
-                />
-                <CostOfCapitalTextField
-                  label="Market Value of Convertible Debt"
-                  type="number"
-                  defaultValue={input.marketValueOfConvertibleDebt}
-                  onBlur={(e) => {
-                    dispatch(
-                      setValue(
-                        "marketValueOfConvertibleDebt",
                         parseFloat(e.currentTarget.value)
                       )
                     );

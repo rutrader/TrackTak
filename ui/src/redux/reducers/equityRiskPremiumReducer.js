@@ -1,9 +1,13 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { getEquityRiskPremiumCountries } from "../actions/equityRiskPremiumActions";
+import {
+  getEquityRiskPremiumCountries,
+  setCurrentEquityRiskPremium,
+} from "../actions/equityRiskPremiumActions";
 
 const initialState = {
   countryData: null,
   matureMarketEquityRiskPremium: null,
+  currentCountry: null,
 };
 
 export const equityRiskPremiumCountriesReducer = createReducer(
@@ -19,5 +23,11 @@ export const equityRiskPremiumCountriesReducer = createReducer(
         ).equityRiskPremium;
       }
     );
+    builder.addCase(setCurrentEquityRiskPremium, (state, action) => {
+      console.log(state);
+      state.currentCountry = state.countryData.find(
+        (datum) => datum.country === action.payload.currentCountry
+      );
+    });
   }
 );

@@ -10,7 +10,6 @@ const initialState = {
   bookValueOfConvertibleDebt: null,
   interestExpenseOnConvertibleDebt: null,
   maturityOfConvertibleDebt: null,
-  marketValueOfConvertibleDebt: null,
   numberOfPreferredShares: null,
   marketPricePerShare: null,
   annualDividendPerShare: null,
