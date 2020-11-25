@@ -1,17 +1,18 @@
 import React from "react";
+import { forwardRef } from "react";
 import { useState } from "react";
 import NumberFormat from "react-number-format";
 import { percentModifier } from "./FormatRawNumberToPercent";
 
-const FormatInputToPercent = ({ defaultValue, ...props }) => {
-  const { inputRef, onChange, ...other } = props;
+const FormatInputToPercent = forwardRef(({ defaultValue, ...props }, ref) => {
+  const { onChange, ...other } = props;
   const [valueAsDecimal, setValue] = useState();
 
   return (
     <NumberFormat
       {...other}
-      getInputRef={inputRef}
-      vadefaultValuelue={defaultValue * percentModifier}
+      getInputRef={ref}
+      defaultValue={defaultValue * percentModifier}
       onBlur={(e) => {
         props.onBlur(valueAsDecimal, e);
       }}
@@ -28,6 +29,6 @@ const FormatInputToPercent = ({ defaultValue, ...props }) => {
       suffix="%"
     />
   );
-};
+});
 
 export default FormatInputToPercent;

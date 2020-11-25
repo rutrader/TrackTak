@@ -9,7 +9,6 @@ import Valuation from "./valuation/Valuation";
 import { useDispatch, useSelector } from "react-redux";
 import { Box, CircularProgress, useTheme } from "@material-ui/core";
 import LayoutFullScreen from "./layout/LayoutFullScreen";
-import TTTabs from "./components/TTTabs";
 import { useEffect } from "react";
 import { getEquityRiskPremiumCountries } from "./redux/actions/equityRiskPremiumActions";
 
@@ -115,9 +114,9 @@ function App() {
             </LayoutHome>
           </Route>
         </Switch>
-        <Route path={allLayoutPaths}>
+        {/* <Route path={allLayoutPaths}>
           <TTTabs />
-        </Route>
+        </Route> */}
       </BrowserRouter>
     </>
   );

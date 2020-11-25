@@ -1,10 +1,10 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { useState } from "react";
 import NumberFormat from "react-number-format";
 import { useSelector } from "react-redux";
 
-const FormatInputToCurrency = ({ defaultValue, ...props }) => {
-  const { inputRef, onChange, ...other } = props;
+const FormatInputToCurrency = forwardRef(({ defaultValue, ...props }, ref) => {
+  const { onChange, ...other } = props;
   const [valueAsNumber, setValue] = useState();
   const currencySymbol = useSelector(
     (state) => state.fundamentals.data.General.CurrencySymbol
@@ -13,8 +13,8 @@ const FormatInputToCurrency = ({ defaultValue, ...props }) => {
   return (
     <NumberFormat
       {...other}
-      getInputRef={inputRef}
-      defaultValuelue={defaultValue}
+      getInputRef={ref}
+      defaultValue={defaultValue}
       onBlur={(e) => {
         props.onBlur(valueAsNumber, e);
       }}
@@ -30,6 +30,6 @@ const FormatInputToCurrency = ({ defaultValue, ...props }) => {
       prefix={currencySymbol}
     />
   );
-};
+});
 
 export default FormatInputToCurrency;

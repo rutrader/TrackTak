@@ -1,16 +1,16 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { useState } from "react";
 import NumberFormat from "react-number-format";
 
-const FormatInputToNumber = ({ defaultValue, ...props }) => {
-  const { inputRef, onChange, ...other } = props;
+const FormatInputToNumber = forwardRef(({ defaultValue, ...props }, ref) => {
+  const { onChange, ...other } = props;
   const [valueAsNumber, setValue] = useState();
 
   return (
     <NumberFormat
       {...other}
-      getInputRef={inputRef}
-      defaultValuelue={defaultValue}
+      getInputRef={ref}
+      defaultValue={defaultValue}
       onBlur={(e) => {
         props.onBlur(valueAsNumber, e);
       }}
@@ -25,6 +25,6 @@ const FormatInputToNumber = ({ defaultValue, ...props }) => {
       thousandSeparator
     />
   );
-};
+});
 
 export default FormatInputToNumber;

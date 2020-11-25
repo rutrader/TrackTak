@@ -1,17 +1,17 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { useState } from "react";
 import NumberFormat from "react-number-format";
 import { millionModifier } from "./FormatRawNumberToMillion";
 
-const FormatInputToMillion = ({ defaultValue, ...props }) => {
-  const { inputRef, onChange, ...other } = props;
+const FormatInputToMillion = forwardRef(({ defaultValue, ...props }, ref) => {
+  const { onChange, ...other } = props;
   const [valueAsMillion, setValue] = useState();
 
   return (
     <NumberFormat
       {...other}
-      getInputRef={inputRef}
-      defaultValuelue={defaultValue / millionModifier}
+      getInputRef={ref}
+      defaultValue={defaultValue / millionModifier}
       onBlur={(e) => {
         props.onBlur(valueAsMillion, e);
       }}
@@ -28,6 +28,6 @@ const FormatInputToMillion = ({ defaultValue, ...props }) => {
       suffix="&nbsp;mln"
     />
   );
-};
+});
 
 export default FormatInputToMillion;

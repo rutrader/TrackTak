@@ -17,6 +17,9 @@ import FormatInputToMillion from "../components/FormatInputToMillion";
 import FormatInputToNumber from "../components/FormatInputToNumber";
 import FormatInputToCurrency from "../components/FormatInputToCurrency";
 import FormatInputToYear from "../components/FormatInputToYear";
+import FormatRawNumberToPercent, {
+  percentModifier,
+} from "../components/FormatRawNumberToPercent";
 
 const ValueDrivingTextField = withStyles({
   root: {
@@ -44,7 +47,7 @@ const TypographyLabel = withStyles({
   <Typography color="textSecondary" gutterBottom {...props} />
 ));
 
-const mockAdjustedDefaultSpread = 0.02;
+const mockAdjustedDefaultSpread = 0;
 const mockStdDeviation = 0.4;
 
 const mapFromStatementsToDateObject = (statementToLoop, valueKeys) => {
@@ -88,7 +91,7 @@ const Valuation = () => {
   } = fundamentals.data;
 
   const riskFreeRate =
-    governmentBonds.data[0].Close - mockAdjustedDefaultSpread;
+    governmentBonds.data[0].Close / percentModifier - mockAdjustedDefaultSpread;
 
   const companyFundamentalsColumns = [
     {
@@ -212,13 +215,13 @@ const Valuation = () => {
         {General.Exchange}:{General.Code}
       </Typography>
       <Typography>
-        <Box component="span" fontWeight="bold">
+        <Box component="span" sx={{ fontWeight: "bold" }}>
           <FormatRawNumber value={fundamentals.currentPrice} />
         </Box>
         &nbsp;{General.CurrencyCode}
       </Typography>
       <Typography>
-        <Box component="span" fontWeight="bold">
+        <Box component="span" sx={{ fontWeight: "bold" }}>
           <FormatRawNumberToMillion
             value={SharesStats.SharesOutstanding}
             suffix="M"
@@ -227,20 +230,26 @@ const Valuation = () => {
         &nbsp;Shares Outstanding
       </Typography>
       <Typography>
-        <Box component="span" fontWeight="bold">
-          {equityRiskPremium.currentCountry.equityRiskPremium}
+        <Box component="span" sx={{ fontWeight: "bold" }}>
+          <FormatRawNumberToPercent
+            value={equityRiskPremium.currentCountry.equityRiskPremium}
+          />
         </Box>
         &nbsp;Country Equity Risk Premium
       </Typography>
       <Typography>
-        <Box component="span" fontWeight="bold">
-          {equityRiskPremium.matureMarketEquityRiskPremium}
+        <Box component="span" sx={{ fontWeight: "bold" }}>
+          <FormatRawNumberToPercent
+            value={equityRiskPremium.matureMarketEquityRiskPremium}
+          />
         </Box>
         &nbsp;Mature Market Equity Risk Premium
       </Typography>
       <Typography>
-        <Box component="span" fontWeight="bold">
-          {equityRiskPremium.currentCountry.corporateTaxRate}
+        <Box component="span" sx={{ fontWeight: "bold" }}>
+          <FormatRawNumberToPercent
+            value={equityRiskPremium.currentCountry.corporateTaxRate}
+          />
         </Box>
         &nbsp;Corporate Tax Rate
       </Typography>
@@ -339,7 +348,9 @@ const Valuation = () => {
               Black Scholes Employee Options Valuation
             </Typography>
             <TypographyLabel>
-              <Box sx={{ mr: 2, minWidth: "263px" }}>Value Per Option</Box>
+              <Box component="span" sx={{ mr: 2, minWidth: "263px" }}>
+                Value Per Option
+              </Box>
               <FormatRawNumber
                 prefix={General.CurrencySymbol}
                 value={valuePerOption}
@@ -347,7 +358,7 @@ const Valuation = () => {
               />
             </TypographyLabel>
             <TypographyLabel>
-              <Box sx={{ mr: 2, minWidth: "263px" }}>
+              <Box component="span" sx={{ mr: 2, minWidth: "263px" }}>
                 Value of All Options Outstanding
               </Box>
               <FormatRawNumberToMillion
@@ -472,7 +483,7 @@ const Valuation = () => {
         <Typography variant="h5" gutterBottom>
           Valuation
         </Typography>
-        <ValuationDCFSheet />
+        <ValuationDCFSheet riskFreeRate={riskFreeRate} />
       </Section>
     </>
   );
