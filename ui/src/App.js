@@ -12,6 +12,7 @@ import LayoutFullScreen from "./layout/LayoutFullScreen";
 import TTTabs from "./components/TTTabs";
 import { useEffect } from "react";
 import { getEquityRiskPremiumCountries } from "./redux/actions/equityRiskPremiumActions";
+import { getIndustryAverages } from "./redux/actions/industryAveragesActions";
 
 const GlobalStyle = createGlobalStyle`
   * { box-sizing: border-box; }
@@ -83,6 +84,7 @@ function App() {
   useEffect(() => {
     // TODO: Make sure this is resolved before user can progress
     dispatch(getEquityRiskPremiumCountries());
+    dispatch(getIndustryAverages());
   }, [dispatch]);
 
   return (

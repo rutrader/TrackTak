@@ -4,6 +4,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { pageReducer } from "./reducers/pageReducer";
 import { governmentBondsReducer } from "./reducers/governmentBondsReducer";
 import { equityRiskPremiumCountriesReducer } from "./reducers/equityRiskPremiumReducer";
+import { industryAveragesReducer } from "./reducers/industryAveragesReducer";
 import { inputReducer } from "./reducers/inputReducer";
 
 export const rootReducer = combineReducers({
@@ -12,6 +13,7 @@ export const rootReducer = combineReducers({
   equityRiskPremium: equityRiskPremiumCountriesReducer,
   page: pageReducer,
   governmentBonds: governmentBondsReducer,
+  industryAverages: industryAveragesReducer,
 });
 
 const store = configureStore({ reducer: rootReducer });

@@ -2,6 +2,7 @@ const axios = require("axios");
 const cache = require("memory-cache");
 const equityRiskPremiumCountries = require("./data/equityRiskPremiumCountries.json");
 const equityRiskPremiumRegions = require("./data/equityRiskPremiumRegions.json");
+const industryAverage = require("./data/industryAverages.json");
 const mockFundamentalsData = require("./mockFundamentalsData.jsx");
 const mockUS10YearGovernmentBondData = require("./mockUS10YearGovernmentBondData.jsx");
 
@@ -65,6 +66,9 @@ const api = {
   },
   getEquityRiskPremiumRegions: () => {
     return equityRiskPremiumRegions;
+  },
+  getIndustryAverages: () => {
+    return industryAverage;
   },
   getGovernmentBonds: async ({ ticker, ...params }) => {
     // const res = await axios.get(`${eodUrl}/${ticker}`, {

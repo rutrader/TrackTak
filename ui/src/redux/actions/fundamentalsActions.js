@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../axios/axios";
 import { setCurrentEquityRiskPremium } from "./equityRiskPremiumActions";
+import { setCurrentIndustryAverage } from "./industryAveragesActions";
 import { getTenYearGovernmentBonds } from "./governmentBondsActions";
 
 export const getFundamentals = createAsyncThunk(
@@ -13,6 +14,7 @@ export const getFundamentals = createAsyncThunk(
       dispatch(
         setCurrentEquityRiskPremium(res.data.General.AddressData.Country)
       );
+      dispatch(setCurrentIndustryAverage(res.data.General.Industry));
 
       return res.data;
     } catch (error) {
