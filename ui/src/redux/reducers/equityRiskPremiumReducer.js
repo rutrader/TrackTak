@@ -24,7 +24,6 @@ export const equityRiskPremiumCountriesReducer = createReducer(
       }
     );
     builder.addCase(setCurrentEquityRiskPremium, (state, action) => {
-      console.log(state);
       state.currentCountry = state.countryData.find(
         (datum) => datum.country === action.payload.currentCountry
       );
