@@ -20,6 +20,7 @@ import FormatInputToYear from "../components/FormatInputToYear";
 import FormatRawNumberToPercent, {
   percentModifier,
 } from "../components/FormatRawNumberToPercent";
+import calculateCostOfCapital from "../shared/calculateCostOfCapital";
 
 const ValueDrivingTextField = withStyles({
   root: {
@@ -87,11 +88,27 @@ const Valuation = () => {
     General,
     Financials: { Income_Statement, Balance_Sheet },
     SharesStats,
-    Highlights: { MostRecentQuarter },
   } = fundamentals.data;
 
   const riskFreeRate =
     governmentBonds.data[0].Close / percentModifier - mockAdjustedDefaultSpread;
+  const valuePerOption = blackScholes(
+    "call",
+    fundamentals.currentPrice,
+    input.averageStrikePrice,
+    input.averageMaturityOfOptions,
+    riskFreeRate,
+    mockStdDeviation
+  );
+  const costOfCapital = calculateCostOfCapital(
+    fundamentals,
+    input,
+    SharesStats,
+    equityRiskPremium,
+    riskFreeRate
+  );
+  const valueOfAllOptionsOutstanding =
+    valuePerOption * input.numberOfOptionsOutstanding;
 
   const companyFundamentalsColumns = [
     {
@@ -139,9 +156,7 @@ const Valuation = () => {
       dataField: "Book Value of Equity",
       ttm: (
         <FormatRawNumberToMillion
-          value={
-            Balance_Sheet.quarterly[MostRecentQuarter].totalStockholderEquity
-          }
+          value={fundamentals.currentBookValueOfEquity}
         />
       ),
       ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
@@ -163,10 +178,7 @@ const Valuation = () => {
       dataField: "Cash & Marketable Securities",
       ttm: (
         <FormatRawNumberToMillion
-          value={
-            Balance_Sheet.quarterly[MostRecentQuarter]
-              .cashAndShortTermInvestments
-          }
+          value={fundamentals.cashAndShortTermInvestments}
         />
       ),
       ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
@@ -177,10 +189,7 @@ const Valuation = () => {
       dataField: "Cross Holdings & Other Non-Operating Assets",
       ttm: (
         <FormatRawNumberToMillion
-          value={
-            Balance_Sheet.quarterly[MostRecentQuarter]
-              .noncontrollingInterestInConsolidatedEntity
-          }
+          value={fundamentals.noncontrollingInterestInConsolidatedEntity}
         />
       ),
       ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
@@ -197,14 +206,6 @@ const Valuation = () => {
       ]),
     },
   ];
-  const valuePerOption = blackScholes(
-    "call",
-    fundamentals.currentPrice,
-    input.averageStrikePrice,
-    input.averageMaturity,
-    riskFreeRate,
-    mockStdDeviation
-  );
 
   return (
     <>
@@ -483,7 +484,11 @@ const Valuation = () => {
         <Typography variant="h5" gutterBottom>
           Valuation
         </Typography>
-        <ValuationDCFSheet riskFreeRate={riskFreeRate} />
+        <ValuationDCFSheet
+          riskFreeRate={riskFreeRate}
+          costOfCapital={costOfCapital}
+          valueOfAllOptionsOutstanding={valueOfAllOptionsOutstanding}
+        />
       </Section>
     </>
   );

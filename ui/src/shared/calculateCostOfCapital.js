@@ -10,16 +10,23 @@ const calculateCostOfCapital = (
   const marginalTaxRate = equityRiskPremium.currentCountry.corporateTaxRate;
   const estimatedMarketValueOfStraightDebt =
     (fundamentals.ttm.interestExpense *
-      (1 - input.pretaxCostOfDebt ** -input.averageMaturity)) /
+      (1 - (1 + input.pretaxCostOfDebt) ** -input.averageMaturityOfDebt)) /
       input.pretaxCostOfDebt +
     fundamentals.currentBookValueOfDebt /
-      input.pretaxCostOfDebt ** input.averageMaturity;
-  const estimatedValueOfStraightDebtInConvertibleDebt =
+      (1 + input.pretaxCostOfDebt) ** input.averageMaturityOfDebt;
+  let estimatedValueOfStraightDebtInConvertibleDebt =
     (input.interestExpenseOnConvertibleDebt *
-      (1 - input.pretaxCostOfDebt ** -input.maturityOfConvertibleDebt)) /
+      (1 - (1 + input.pretaxCostOfDebt) ** -input.maturityOfConvertibleDebt)) /
       input.pretaxCostOfDebt +
     input.bookValueOfConvertibleDebt /
-      input.pretaxCostOfDebt ** input.maturityOfConvertibleDebt;
+      (1 + input.pretaxCostOfDebt) ** input.maturityOfConvertibleDebt;
+
+  estimatedValueOfStraightDebtInConvertibleDebt = isNaN(
+    estimatedValueOfStraightDebtInConvertibleDebt
+  )
+    ? 0
+    : estimatedValueOfStraightDebtInConvertibleDebt;
+
   const marketValue = {
     equity: fundamentals.currentPrice * SharesStats.SharesOutstanding,
     debt:
@@ -40,15 +47,18 @@ const calculateCostOfCapital = (
   };
   const leveredBetaForEquity =
     mockUnleveredBeta *
-    (1 + marginalTaxRate) *
+    (1 + (1 - marginalTaxRate)) *
     (marketValue.debt / marketValue.equity);
+
+  const costOfPreferredStock =
+    input.annualDividendPerShare / input.marketPricePerShare;
 
   const costOfComponent = {
     equity:
       riskFreeRate +
-      leveredBetaForEquity * equityRiskPremium.currentEquityRiskPremium,
+      leveredBetaForEquity * equityRiskPremium.currentCountry.equityRiskPremium,
     debt: input.pretaxCostOfDebt * marginalTaxRate,
-    preferredStock: input.annualDividendPerShare / input.marketPricePerShare,
+    preferredStock: isNaN(costOfPreferredStock) ? 0 : costOfPreferredStock,
     get total() {
       return (
         weightInCostOfCapital.equity * this.equity +

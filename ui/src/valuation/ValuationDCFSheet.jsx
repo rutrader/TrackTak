@@ -4,37 +4,93 @@ import Datasheet from "react-datasheet";
 import "react-datasheet/lib/react-datasheet.css";
 import styles from "./ValuationDCFSheet.module.scss";
 import * as mathjs from "mathjs";
-import { mapValues, each, pickBy } from "lodash";
+import { mapValues, each } from "lodash";
 import { useEffect } from "react";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import { useCallback } from "react";
 import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
+import FormatRawNumber from "../components/FormatRawNumber";
 
-const keyRegex = /([A-Z]+)([0-9]+)/;
 const spaceRegex = /\s\s+/g;
 const mockEffectiveTaxRate = 0.2;
+const columnLabels = {
+  A1: { key: "A1", value: "" },
+  A2: { key: "A2", value: "Revenue Growth Rate" },
+  A3: { key: "A3", value: "Revenues" },
+  A4: { key: "A4", value: "EBIT Margin" },
+  A5: { key: "A5", value: "EBIT Income" },
+  A6: { key: "A6", value: "Tax Rate" },
+  A7: { key: "A7", value: "EBIT (1-t)" },
+  A8: { key: "A8", value: "- Reinvestment" },
+  A9: { key: "A9", value: "FCFF" },
+  A10: { key: "A10", value: "NOL" },
+  A11: { key: "A11", value: "" },
+  A12: { key: "A12", value: "Cost of Capital" },
+  A13: { key: "A13", value: "Cumulated Discount Factor" },
+  A14: { key: "A14", value: "PV (FCFF)" },
+  A15: { key: "A15", value: "" },
+  A16: { key: "A16", value: "Sales to Capital Ratio" },
+  A17: { key: "A17", value: "Invested Capital" },
+  A18: { key: "A18", value: "ROIC" },
+  A19: { key: "A19", value: "" },
+  A20: { key: "A20", value: "Terminal Cash Flow" },
+  A21: { key: "A21", value: "Terminal Cost of Capital" },
+  A22: { key: "A22", value: "Terminal Value" },
+  A23: { key: "A23", value: "PV (Terminal Value)" },
+  A24: { key: "A24", value: "PV (CF Over Next 10 Years" },
+  A25: { key: "A25", value: "Sum of PV" },
+  A26: { key: "A26", value: "Probability of Failure" },
+  A27: { key: "A27", value: "Proceeds if the Firm Fails" },
+  D20: { key: "D20", value: "Value of Operating Assets" },
+  D21: { key: "D21", value: "- Debt" },
+  D22: { key: "D22", value: "- Minority Interests" },
+  D23: { key: "D23", value: "+ Cash" },
+  D24: { key: "D24", value: "+ Non-Operating Assets" },
+  D25: { key: "D25", value: "Value of Equity" },
+  D26: { key: "D26", value: "- Value of Options" },
+  D27: { key: "D27", value: "- Value of Equity in Common Stock" },
+  G20: { key: "G20", value: "Current Price" },
+  G21: { key: "G21", value: "Estimated Value Per Share" },
+  G22: { key: "G22", value: "Margin of Safety" },
+};
 
-const getColumnRowKeys = (data) => {
-  const keys = Object.keys(data);
+const getNumberOfRows = () => {
+  let highestNumberRow = 0;
+
+  Object.values(columnLabels).forEach((cell) => {
+    const currentNumber = parseInt(cell.key.replace(/[^0-9-]/, ""));
+
+    if (currentNumber > highestNumberRow) {
+      highestNumberRow = currentNumber;
+    }
+  });
+
+  return highestNumberRow;
+};
+
+const generateCells = () => {
+  const startColumn = "A";
+  const endColumn = "M";
+  const startRow = 1;
+  const endRow = getNumberOfRows();
   const columns = [];
   const rows = [];
-  const tempKeys = {};
 
-  keys.forEach((key) => {
-    const match = keyRegex.exec(key);
-    const characters = match[1];
-    const numbers = parseInt(match[2]);
+  const endCharCode = endColumn.charCodeAt(0);
 
-    if (!tempKeys[characters]) {
-      columns.push(characters);
-    }
+  for (
+    let currentCharCode = startColumn.charCodeAt(0);
+    currentCharCode <= endCharCode;
+    currentCharCode++
+  ) {
+    const column = String.fromCharCode(currentCharCode);
 
-    if (!tempKeys[numbers]) {
-      rows.push(numbers);
-    }
-    tempKeys[characters] = characters;
-    tempKeys[numbers] = numbers;
-  });
+    columns.push(column);
+  }
+
+  for (let currentRow = startRow; currentRow <= endRow; currentRow++) {
+    rows.push(currentRow);
+  }
 
   return {
     columns,
@@ -42,42 +98,51 @@ const getColumnRowKeys = (data) => {
   };
 };
 
-const getCellsInRow = (data, start, end) => {
-  const row = parseInt(end.charAt(1));
-  const cellsInRow = pickBy(data, (value) => {
-    const currentRow = parseInt(value.key.charAt(1));
-    const charCode = value.key.charAt(0).charCodeAt(0);
-    if (
-      charCode >= start.charCodeAt(0) &&
-      charCode <= end.charCodeAt(0) &&
-      currentRow === row
-    ) {
-      return true;
-    }
-    return false;
-  });
+const generatedCells = generateCells();
 
-  return cellsInRow;
+const getColumnsBetween = (startColumn, endColumn) => {
+  const columns = generatedCells.columns;
+  const start = columns.indexOf(startColumn);
+  const end = columns.indexOf(endColumn);
+
+  // + 1 to make it inclusive
+  return columns.slice(start, end + 1);
+};
+
+const getCellsForColumns = (columns) => {
+  return columns.flatMap((column) =>
+    generatedCells.rows.map((row) => column + row)
+  );
+};
+
+const getCellsForRows = (rows) => {
+  return rows.flatMap((row) =>
+    generatedCells.columns.map((column) => column + row)
+  );
 };
 
 const generateGrid = (data) => {
-  const { rows, columns } = getColumnRowKeys(data);
+  const rows = [...generatedCells.rows];
+  const columns = [...generatedCells.columns];
 
   rows.unshift(0);
   columns.unshift("");
 
   return rows.map((row, i) =>
     columns.map((col, j) => {
+      const key = col + row;
+      const datum = data[key];
+
       if (i === 0 && j === 0) {
-        return { readOnly: true, value: "" };
+        return { readOnly: true, value: "", className: "blank-cell" };
       }
       if (row === 0) {
-        return { readOnly: true, value: col };
+        return { readOnly: true, value: col, className: col };
       }
       if (j === 0) {
         return { readOnly: true, value: row };
       }
-      return data[col + row];
+      return datum;
     })
   );
 };
@@ -138,251 +203,136 @@ const cellUpdate = (data, changeCell, expr) => {
   return data;
 };
 
-const getAllDataWithMatch = (data, regexToMatch, newDataValue) => {
-  const newData = mapValues(data, (value) => {
-    if (value.key.match(regexToMatch)) {
-      return {
-        ...value,
-        ...newDataValue,
-      };
-    }
-    return value;
-  });
-
-  return newData;
-};
-
 const getInitialData = () => {
   let data = {
-    A1: { key: "A1", value: "" },
-    A2: { key: "A2", value: "Revenue Growth Rate" },
-    A3: { key: "A3", value: "Revenues" },
-    A4: { key: "A4", value: "EBIT Margin" },
-    A5: { key: "A5", value: "EBIT Income" },
-    A6: { key: "A6", value: "Tax Rate" },
-    A7: { key: "A7", value: "EBIT (1-t)" },
-    A8: { key: "A8", value: " -Reinvestment" },
+    ...columnLabels,
     B1: { key: "B1", value: "Base Year" },
-    B2: {
-      key: "B2",
-      value: "",
-    },
-    B3: { key: "B3", value: "" },
+    M1: { key: "M1", value: "Terminal Year" },
     B4: { key: "B4", value: "", expr: "=B5/B3" },
-    B5: { key: "B5", value: "" },
-    B6: { key: "B6", value: "" },
-    B7: { key: "B7", value: "", expr: "=B5 > 0 ? B5*(1-B6) : B5" },
-    B8: { key: "B8", value: "" },
-    C2: {
-      key: "C2",
+    B7: {
+      key: "B7",
       value: "",
-      expr: "=B2",
+      expr: "=B5 > 0 ? B5*(1-B6) : B5",
     },
-    C3: { key: "C3", value: "", expr: "=B3*(1+C2)" },
-    C4: { key: "C4", value: "" },
-    C5: { key: "C5", value: "", expr: "=C4*C3" },
-    C6: { key: "C6", value: "", expr: "=B6" },
-    C7: {
-      key: "C7",
-      value: "",
-      expr: "=C5 > 0 < B10 ? C5 : C5 > 0 <= B10 ? C5-(C5-B10)*C6 : C5",
-    },
-    C8: { key: "C8", value: "" },
-    D2: {
-      key: "D2",
-      value: "",
-      expr: "=C2",
-    },
-    D3: { key: "D3", value: "", expr: "=C3*(1+D2)" },
-    D4: { key: "D4", value: "" },
-    D5: { key: "D5", value: "", expr: "=D4*D3" },
-    D6: { key: "D6", value: "", expr: "=C6" },
-    D7: {
-      key: "D7",
-      value: "",
-      expr: "=D5 > 0 < C10 ? D5 : D5 > 0 <= C10 ? D5-(D5-C10)*D6 : D5",
-    },
-    D8: { key: "D8", value: "", expr: "=(D3-C3)/D38" },
-    E2: {
-      key: "E2",
-      value: "",
-      expr: "=D2",
-    },
-    E3: { key: "E3", value: "", expr: "=D3*(1+E2)" },
-    E4: { key: "E4", value: "" },
-    E5: { key: "E5", value: "", expr: "=E4*E3" },
-    E6: { key: "E6", value: "", expr: "=D6" },
-    E7: {
-      key: "E7",
-      value: "",
-      expr: "=E5 > 0 < D10 ? E5 : E5 > 0 <= D10 ? E5-(E5-D10)*E6 : E5",
-    },
-    E8: { key: "E8", value: "", expr: "=(E3-D3)/E38" },
-    F2: {
-      key: "F2",
-      value: "",
-      expr: "=E2",
-    },
-    F3: { key: "F3", value: "", expr: "=E3*(1+F2)" },
-    F4: { key: "F4", value: "" },
-    F5: { key: "F5", value: "", expr: "=F4*F3" },
-    F6: { key: "F6", value: "", expr: "=E6" },
-    F7: {
-      key: "F7",
-      value: "",
-      expr: "=F5 > 0 < E10 ? F5 : F5 > 0 <= E10 ? F5-(F5-E10)*F6 : F5",
-    },
-    F8: { key: "F8", value: "", expr: "=(F3-E3)/F38" },
-    G2: {
-      key: "G2",
-      value: "",
-      expr: "=F2",
-    },
-    G3: { key: "G3", value: "", expr: "=F3*(1+G2)" },
-    G4: { key: "G4", value: "" },
-    G5: { key: "G5", value: "", expr: "=G4*G3" },
-    G6: { key: "G6", value: "", expr: "=F6" },
-    G7: {
-      key: "G7",
-      value: "",
-      expr: "=G5 > 0 < F10 ? G5 : G5 > 0 <= F10 ? G5-(G5-F10)*G6 : G5",
-    },
-    G8: { key: "G8", value: "", expr: "=(G3-F3)/G38" },
-    H2: {
-      key: "H2",
-      value: "",
-      expr: "=G2-((G2-M2)/5)",
-    },
-    H3: { key: "H3", value: "", expr: "=G3*(1+H2)" },
-    H4: { key: "H4", value: "" },
-    H5: { key: "H5", value: "", expr: "=H4*H3" },
-    H6: { key: "H6", value: "", expr: "=G6+(M6-G6)/5" },
-    H7: {
-      key: "H7",
-      value: "",
-      expr: "=H5 > 0 < G10 ? H5 : H5 > 0 <= G10 ? H5-(H5-G10)*H6 : H5",
-    },
-    H8: { key: "H8", value: "", expr: "=(H3-G3)/H38" },
-    I2: {
-      key: "I2",
-      value: "",
-      expr: "=G2-((G2-M2)/5)*2",
-    },
-    I3: { key: "I3", value: "", expr: "=H3*(1+I2)" },
-    I4: { key: "I4", value: "" },
-    I5: { key: "I5", value: "", expr: "=I4*I3" },
-    I6: { key: "I6", value: "", expr: "=H6+(M6-G6)/5" },
-    I7: {
-      key: "I7",
-      value: "",
-      expr: "=I5 > 0 < H10 ? I5 : I5 > 0 <= H10 ? I5-(I5-H10)*I6 : I5",
-    },
-    I8: { key: "I8", value: "", expr: "=(I3-H3)/I38" },
-    J2: {
-      key: "J2",
-      value: "",
-      expr: "=G2-((G2-M2)/5)*3",
-    },
-    J3: { key: "J3", value: "", expr: "=I3*(1+J2)" },
-    J4: { key: "J4", value: "" },
-    J5: { key: "J5", value: "", expr: "=J4*J3" },
-    J6: { key: "J6", value: "", expr: "=I6+(M6-G6)/5" },
-    J7: {
-      key: "J7",
-      value: "",
-      expr: "=J5 > 0 < I10 ? J5 : J5 > 0 <= I10 ? J5-(J5-I10)*J6 : J5",
-    },
-    J8: { key: "J8", value: "", expr: "=(J3-I3)/J38" },
-    K2: {
-      key: "K2",
-      value: "",
-      expr: "=G2-((G2-M2)/5)*4",
-    },
-    K3: { key: "K3", value: "", expr: "=I3*(1+K2)" },
-    K4: { key: "K4", value: "" },
-    K5: { key: "K5", value: "", expr: "=K4*K3" },
-    K6: { key: "K6", value: "", expr: "=J6+(M6-G6)/5" },
-    K7: {
-      key: "K7",
-      value: "",
-      expr: "=K5 > 0 < J10 ? K5 : K5 > 0 <= J10 ? K5-(K5-J10)*K6 : K5",
-    },
-    K8: { key: "K8", value: "", expr: "=(K3-J3)/K38" },
-    L2: {
-      key: "L2",
-      value: "",
-      expr: "=G2-((G2-M2)/5)*5",
-    },
-    L3: { key: "L3", value: "", expr: "=K3*(1+L2)" },
-    L4: { key: "L4", value: "" },
-    L5: { key: "L5", value: "", expr: "=L4*L3" },
-    L6: { key: "L6", value: "", expr: "=K6+(M6-G6)/5" },
-    L7: {
-      key: "L7",
-      value: "",
-      expr: "=L5 > 0 < K10 ? L5 : L5 > 0 <= K10 ? L5-(L5-K10)*L6 : L5",
-    },
-    L8: { key: "L8", value: "", expr: "=(L3-K3)/L38" },
-    M2: {
-      key: "M2",
-      value: "",
-      expr: "",
-    },
-    M3: { key: "M3", value: "", expr: "=L3*(1+M2)" },
     M4: { key: "M4", value: "", expr: "=L4" },
-    M5: { key: "M5", value: "", expr: "=M4*M3" },
-    M6: { key: "M6", value: "" },
     M7: {
       key: "M7",
       value: "",
       expr: "=M5*(1-M6)",
     },
-    M8: { key: "M8", value: "", expr: "=M2 > 0 ? (M2 / M40) * M7 : 0" },
+    M8: {
+      key: "M8",
+      value: "",
+      expr: "=M2 > 0 ? (M2 / M40) * M7 : 0",
+    },
   };
-  data = getAllDataWithMatch(data, /^A|B1/, {
-    readOnly: true,
-  });
-  data = getAllDataWithMatch(data, /^(?!A).*2$/, {
-    type: "percent",
-  });
-  data = getAllDataWithMatch(data, /^(?!A).*3$/, {
-    type: "currency",
-  });
-  data = getAllDataWithMatch(data, /^(?!A).*4$/, {
-    type: "percent",
-  });
-  data = getAllDataWithMatch(data, /^(?!A).*5$/, {
-    type: "currency",
-  });
-  data = getAllDataWithMatch(data, /^(?!A).*6$/, {
-    type: "percent",
-  });
-  data = getAllDataWithMatch(data, /^(?!A).*7$/, {
-    type: "currency",
-  });
-  data = getAllDataWithMatch(data, /^(?!A).*8$/, {
-    type: "currency",
-  });
-  let headerNumberColumns = {};
-  let charCode = "C".charCodeAt(0);
-  const { columns } = getColumnRowKeys(data);
-  const endCharCode = charCode + columns.length - 2;
+  const { rows, columns } = generatedCells;
 
-  let value = 0;
-  for (; charCode < endCharCode; charCode++) {
-    value += 1;
-    const char = String.fromCharCode(charCode);
-    headerNumberColumns[char + 1] = {
-      key: char + 1,
+  rows.forEach((row) =>
+    columns.forEach((col) => {
+      const key = col + row;
+      const datum = data[key];
+
+      if (!datum) {
+        data[key] = {
+          key,
+          value: "",
+        };
+      }
+    })
+  );
+
+  let headerNumberColumns = {};
+
+  getColumnsBetween("C", "L").forEach((column, index) => {
+    const key = column + 1;
+
+    headerNumberColumns[key] = {
+      key,
       readOnly: true,
-      value,
+      value: index + 1,
     };
-  }
-  return { ...data, ...headerNumberColumns };
+  });
+
+  data = { ...data, ...headerNumberColumns };
+
+  getCellsForRows([13, 16]).forEach((key) => {
+    if (key.charAt(0) !== "A") {
+      data[key] = {
+        ...data[key],
+        type: "number",
+      };
+    }
+  });
+
+  getCellsForRows([2, 4, 6, 12, 18])
+    .concat(["B21", "B26", "H22"])
+    .forEach((key) => {
+      if (key.charAt(0) !== "A") {
+        data[key] = {
+          ...data[key],
+          type: "percent",
+        };
+      }
+    });
+
+  getCellsForRows([3, 5, 7, 8, 9, 10, 14, 17])
+    .concat([
+      "B20",
+      "B22",
+      "B23",
+      "B24",
+      "B25",
+      "B27",
+      "E20",
+      "E21",
+      "E22",
+      "E23",
+      "E24",
+      "E25",
+      "E26",
+      "E27",
+      "H20",
+      "H21",
+    ])
+    .forEach((key) => {
+      if (key.charAt(0) !== "A") {
+        data[key] = {
+          ...data[key],
+          type: "currency",
+        };
+      }
+    });
+
+  getCellsForColumns(["D", "G"]).forEach((key) => {
+    if (data[key].value !== "") {
+      data[key] = {
+        ...data[key],
+        readOnly: true,
+      };
+    }
+  });
+
+  getCellsForColumns(["A"])
+    .concat(getCellsForRows([1]))
+    .forEach((key) => {
+      if (data[key].value) {
+        data[key] = {
+          ...data[key],
+          readOnly: true,
+        };
+      }
+    });
+
+  return data;
 };
 const initialData = getInitialData();
 
-const ValuationDCFSheet = ({ riskFreeRate }) => {
+const ValuationDCFSheet = ({
+  riskFreeRate,
+  costOfCapital,
+  valueOfAllOptionsOutstanding,
+}) => {
   const input = useSelector((state) => state.input);
   const fundamentals = useSelector((state) => state.fundamentals);
   const equityRiskPremium = useSelector((state) => state.equityRiskPremium);
@@ -402,15 +352,230 @@ const ValuationDCFSheet = ({ riskFreeRate }) => {
     [data]
   );
 
-  const getOperatingMarginCalculation = (cell) => {
-    return `=${cell} > ${input.yearOfConvergence} ? ${input.ebitTargetMarginInYearTen} : ${input.ebitTargetMarginInYearTen} -
-    ((${input.ebitTargetMarginInYearTen} - B4) /
+  const getPreviousColumn = (cellKey) => {
+    const column = cellKey.charAt(0);
+    const previousColumn = String.fromCharCode(column.charCodeAt(0) - 1);
+
+    return previousColumn;
+  };
+
+  const getEBITMarginCalculation = (cellKey) => {
+    const column = cellKey.charAt(0);
+
+    return `=${column}4 > ${input.yearOfConvergence} ? ${input.ebitTargetMarginInYearTen} : ${input.ebitTargetMarginInYearTen} -
+    ((${input.ebitTargetMarginInYearTen} - C4) /
       ${input.yearOfConvergence}) *
-      (${input.yearOfConvergence} - ${cell})`.replace(spaceRegex, " ");
+      (${input.yearOfConvergence} - ${column}1)`.replace(spaceRegex, " ");
+  };
+
+  const getReinvestmentCalculation = (cellKey) => {
+    const column = cellKey.charAt(0);
+    const previousColumn = getPreviousColumn(cellKey);
+
+    return `=(${column}3-${previousColumn}3)/${column}16`;
+  };
+
+  const getRevenueCalculation = (cellKey) => {
+    const column = cellKey.charAt(0);
+    const previousColumn = getPreviousColumn(cellKey);
+
+    return `=${previousColumn}3*(1+${column}2)`;
+  };
+
+  const getEBITCalculation = (cellKey) => {
+    const column = cellKey.charAt(0);
+
+    return `=${column}4*${column}3`;
+  };
+
+  const getEBITAfterTax = (cellKey) => {
+    const column = cellKey.charAt(0);
+    const previousColumn = getPreviousColumn(cellKey);
+
+    return `=${column}5 > 0 < ${previousColumn}10 ? ${column}5 : ${column}5 > 0 <= ${previousColumn}10 ? ${column}5-(${column}5-${previousColumn}10)*${column}6 : ${column}5`;
+  };
+
+  const getFCFFCalculation = (cellKey) => {
+    const column = cellKey.charAt(0);
+
+    return `=${column}7 - ${column}8`;
+  };
+
+  const getOneToFiveYrTaxCalculation = (cellKey) => {
+    const previousColumn = getPreviousColumn(cellKey);
+
+    return `=${previousColumn}6`;
+  };
+
+  const getSixToTenYrTaxCalculation = (cellKey) => {
+    const previousColumn = getPreviousColumn(cellKey);
+
+    return `=${previousColumn}6+(M6-G6)/5`;
+  };
+
+  const getOneToFiveYrRevenueGrowthCalculation = (cellKey) => {
+    const previousColumn = getPreviousColumn(cellKey);
+
+    return `=${previousColumn}2`;
+  };
+
+  const getSixToTenYrRevenueGrowthCalculation = (index) => {
+    const formula = "=G2 - ((G2-M2) / 5)";
+    const number = index + 1;
+
+    return index === 0 ? formula : `${formula} * ${number}`;
+  };
+
+  const getNOLCalculation = (cellKey) => {
+    const column = cellKey.charAt(0);
+    const previousColumn = getPreviousColumn(cellKey);
+
+    return `${column}5 < 0 ? ${previousColumn}10 - ${column}5 : ${previousColumn}10 > ${column}5 ? ${previousColumn}10 - ${column}5 : 0`;
+  };
+
+  const getOneToFiveYrCostOfCapitalCalculation = (cellKey) => {
+    const previousColumn = getPreviousColumn(cellKey);
+
+    return `=${previousColumn}12`;
+  };
+
+  const getSixToTenYrCostOfCapitalCalculation = (cellKey) => {
+    const previousColumn = getPreviousColumn(cellKey);
+
+    return `=${previousColumn}12-(G12-M12)/5`;
+  };
+
+  const getCumulatedDiscountFactorCalculation = (cellKey) => {
+    const column = cellKey.charAt(0);
+    const previousColumn = getPreviousColumn(cellKey);
+
+    return `=${previousColumn}13*(1/(1+${column}12))`;
+  };
+
+  const getPVToFCFFCalculation = (cellKey) => {
+    const column = cellKey.charAt(0);
+
+    return `=${column}9*${column}13`;
+  };
+
+  const getSalesToCapitalRatioCalculation = (cellKey) => {
+    const previousColumn = getPreviousColumn(cellKey);
+
+    return `=${previousColumn}16`;
+  };
+
+  const getInvestedCapitalCalculation = (cellKey) => {
+    const column = cellKey.charAt(0);
+    const previousColumn = getPreviousColumn(cellKey);
+
+    return `=${previousColumn}17+${column}8`;
+  };
+
+  const getROICCalculation = (cellKey) => {
+    const column = cellKey.charAt(0);
+
+    return `=${column}7/${column}17`;
   };
 
   useEffect(() => {
-    updateCell(initialData.B2, input.cagrYearOneToFive);
+    getColumnsBetween("C", "G").forEach((column) => {
+      const growthKey = `${column}2`;
+      const revenueKey = `${column}6`;
+      const cocKey = `${column}12`;
+
+      updateCell(
+        data[growthKey],
+        getOneToFiveYrRevenueGrowthCalculation(growthKey)
+      );
+      updateCell(data[revenueKey], getOneToFiveYrTaxCalculation(revenueKey));
+      updateCell(data[cocKey], getOneToFiveYrCostOfCapitalCalculation(cocKey));
+    });
+
+    getColumnsBetween("H", "L").forEach((column, index) => {
+      const growthKey = `${column}2`;
+      const taxKey = `${column}6`;
+      const cocKey = `${column}12`;
+
+      updateCell(data[growthKey], getSixToTenYrRevenueGrowthCalculation(index));
+      updateCell(data[taxKey], getSixToTenYrTaxCalculation(taxKey));
+      updateCell(data[cocKey], getSixToTenYrCostOfCapitalCalculation(cocKey));
+    });
+
+    getColumnsBetween("C", "L").forEach((column) => {
+      const ebitKey = `${column}7`;
+      const pvFCFFKey = `${column}14`;
+      const investedCapKey = `${column}17`;
+
+      updateCell(data[ebitKey], getEBITAfterTax(ebitKey));
+      updateCell(data[pvFCFFKey], getPVToFCFFCalculation(pvFCFFKey));
+      updateCell(
+        data[investedCapKey],
+        getInvestedCapitalCalculation(investedCapKey)
+      );
+    });
+
+    getColumnsBetween("C", "M").forEach((column) => {
+      const ebitKey = `${column}5`;
+      const nolKey = `${column}10`;
+      const fcffKey = `${column}9`;
+      const revenueKey = `${column}3`;
+
+      updateCell(data[ebitKey], getEBITCalculation(ebitKey));
+      updateCell(data[nolKey], getNOLCalculation(nolKey));
+      updateCell(data[fcffKey], getFCFFCalculation(fcffKey));
+      updateCell(data[revenueKey], getRevenueCalculation(revenueKey));
+    });
+
+    getColumnsBetween("D", "L").forEach((column) => {
+      const reinvestmentKey = `${column}8`;
+      const discountFactorKey = `${column}13`;
+      const salesCapRatioKey = `${column}16`;
+
+      updateCell(
+        data[reinvestmentKey],
+        getReinvestmentCalculation(reinvestmentKey)
+      );
+      updateCell(
+        data[discountFactorKey],
+        getCumulatedDiscountFactorCalculation(discountFactorKey)
+      );
+      updateCell(
+        data[salesCapRatioKey],
+        getSalesToCapitalRatioCalculation(salesCapRatioKey)
+      );
+    });
+    getColumnsBetween("B", "L").forEach((column) => {
+      const roicKey = `${column}18`;
+
+      updateCell(data[roicKey], getROICCalculation(roicKey));
+    });
+    updateCell(data.C13, "=1/(1+C12)");
+    updateCell(data.M4, "=L4");
+    updateCell(data.B20, "=M9");
+    updateCell(data.B21, "=M12");
+    updateCell(data.B22, "=B20/(B21-M2)");
+    updateCell(data.B23, "=B22*L13");
+    updateCell(
+      data.B24,
+      "=sum(C14, D14, E14, F14, G14, H14, I14, J14, K14, L14)"
+    );
+    updateCell(data.B25, "=B23+B24");
+    // TODO: Implement fully at a later date from inputs
+    updateCell(data.B25, 0);
+    updateCell(data.B26, 0);
+    updateCell(data.E20, "=B25*(1-B26)+B27*B26");
+    updateCell(data.E25, "=E21*(1-E22)+E23*E24");
+    updateCell(data.H22, "=H20/H21");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    getColumnsBetween("C", "L").forEach((column) => {
+      const ebitMarginKey = `${column}4`;
+
+      updateCell(data[ebitMarginKey], getEBITMarginCalculation(ebitMarginKey));
+    });
+    updateCell(initialData.C2, input.cagrYearOneToFive);
     updateCell(initialData.B3, fundamentals.ttm.totalRevenue);
     updateCell(initialData.B5, fundamentals.ttm.operatingIncome);
     updateCell(initialData.B6, mockEffectiveTaxRate);
@@ -422,37 +587,51 @@ const ValuationDCFSheet = ({ riskFreeRate }) => {
       initialData.M6,
       equityRiskPremium.currentCountry.corporateTaxRate
     );
-    each(getCellsInRow(initialData, "C4", "L4"), (value) => {
-      const column = value.key.charAt(0);
-
-      updateCell(
-        initialData[value.key],
-        getOperatingMarginCalculation(`${column}1`)
-      );
-    });
     updateCell(initialData.M2, riskFreeRate);
+    updateCell(initialData.C12, costOfCapital);
+    updateCell(
+      initialData.M12,
+      equityRiskPremium.matureMarketEquityRiskPremium + riskFreeRate
+    );
+    updateCell(initialData.C16, input.salesToCapitalRatio);
+    updateCell(initialData.B17, fundamentals.investedCapital);
+    updateCell(data.E21, `=${fundamentals.currentBookValueOfDebt}`);
+    updateCell(data.E22, `=${fundamentals.ttm.minorityInterest}`);
+    updateCell(data.E23, `=${fundamentals.cashAndShortTermInvestments}`);
+    updateCell(
+      data.E23,
+      `=${fundamentals.noncontrollingInterestInConsolidatedEntity}`
+    );
+    updateCell(data.E26, valueOfAllOptionsOutstanding);
+    updateCell(data.H20, `=${fundamentals.currentPrice}`);
+    updateCell(
+      data.H21,
+      `=E27/${fundamentals.data.SharesStats.SharesOutstanding}`
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     input,
-    fundamentals.ttm.operatingIncome,
-    fundamentals.ttm.totalRevenue,
-    equityRiskPremium.currentCountry.corporateTaxRate,
+    fundamentals,
+    equityRiskPremium,
     riskFreeRate,
+    costOfCapital,
+    valueOfAllOptionsOutstanding,
   ]);
 
   return (
     <Datasheet
       className={styles.datasheet}
       data={generateGrid(data)}
-      valueRenderer={(cell) => {
-        if (cell.value === "error") return cell.value;
-        if (cell.type === "percent")
-          return <FormatRawNumberToPercent value={cell.value} />;
-        if (cell.type === "currency")
-          return (
-            <FormatRawNumberToCurrency value={cell.value} decimalScale={0} />
-          );
-        return cell.value;
+      valueRenderer={({ value, type }) => {
+        if (value === "error") return value;
+        if (type === "percent")
+          return <FormatRawNumberToPercent value={value} />;
+        if (type === "currency")
+          return <FormatRawNumberToCurrency value={value} decimalScale={0} />;
+        if (type === "number")
+          return <FormatRawNumber value={value} decimalScale={3} />;
+
+        return value;
       }}
       dataRenderer={(cell) => {
         return cell.expr || cell.value || "";

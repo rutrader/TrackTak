@@ -1,8 +1,18 @@
-:global(.data-grid-container) .datasheet {
-  width: 100%;
+:global {
+  :local(.datasheet) {
+    width: 100%;
 
-  > tbody > tr > td:first-child {
-    width: 190px;
-    padding: 10px;
+    > tbody > tr > td:first-child:not(.blank-cell) {
+      width: 190px;
+      padding: 10px;
+    }
+
+    .blank-cell {
+      width: 30px;
+    }
+
+    td.A {
+      width: 200px;
+    }
   }
 }
