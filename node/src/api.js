@@ -38,14 +38,25 @@ const convertCommaSeperatedStringToArrayOfObjects = (commaSeperatedString) => {
   return arrayObjects;
 };
 
+const sendReqOrGetCachedData = async (cacheKey, request) => {
+  const cachedData = cache.get(cacheKey);
+  if (cachedData) return cachedData;
+  try {
+    const res = await request();
+    if (!res.data) {
+      return cache.put(cacheKey, res.data);
+    }
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 const api = {
   getFundamentals: async ({ ticker, ...params }) => {
     return mockFundamentalsData;
-    // const cachedData = cache.get(ticker);
-
-    // if (cachedData) return cachedData;
-
-    // try {
+    // await sendReqOrGetCachedData(ticker, async () => {
     //   const res = await axios.get(`${fundamentalsUrl}/${ticker}`, {
     //     params: {
     //       ...globalParams,
@@ -53,13 +64,8 @@ const api = {
     //     },
     //   });
 
-    //   cache.put(ticker, res.data);
-
-    //   return res.data;
-    // } catch (error) {
-    //   console.log(error);
-    //   throw error;
-    // }
+    //   return res;
+    // });
   },
   getEquityRiskPremiumCountries: () => {
     return equityRiskPremiumCountries;
@@ -71,14 +77,16 @@ const api = {
     return industryAverage;
   },
   getGovernmentBonds: async ({ ticker, ...params }) => {
-    // const res = await axios.get(`${eodUrl}/${ticker}`, {
-    //   params: {
-    //     ...globalParams,
-    //     ...params,
-    //   },
-    // });
-    // return res.data;
+    // await sendReqOrGetCachedData(ticker, async () => {
+    //   const res = await axios.get(`${eodUrl}/${ticker}`, {
+    //     params: {
+    //       ...globalParams,
+    //       ...params,
+    //     },
+    //   });
 
+    //   return res;
+    // });
     return convertCommaSeperatedStringToArrayOfObjects(
       mockUS10YearGovernmentBondData
     );
