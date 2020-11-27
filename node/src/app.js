@@ -36,6 +36,11 @@ app.get("/api/v1/government-bonds/:ticker", async (req, res) => {
   res.send(value);
 });
 
+app.get("/api/v1/industry-averages", async (req, res) => {
+  const value = await api.getIndustryAverages(req.params);
+  res.send(value);
+});
+
 app.listen(port, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
