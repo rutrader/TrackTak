@@ -6,7 +6,6 @@ import { setValue } from "../redux/actions/inputActions";
 import { Box, TextField, Typography, withStyles } from "@material-ui/core";
 import TTTable from "../components/TTTable";
 import dayjs from "dayjs";
-import FormatRawNumber from "../components/FormatRawNumber";
 import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
 import Section from "../components/Section";
 import ValuationDCFSheet from "./ValuationDCFSheet";
@@ -21,6 +20,7 @@ import FormatRawNumberToPercent, {
   percentModifier,
 } from "../components/FormatRawNumberToPercent";
 import calculateCostOfCapital from "../shared/calculateCostOfCapital";
+import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
 
 const ValueDrivingTextField = withStyles({
   root: {
@@ -217,7 +217,7 @@ const Valuation = () => {
       </Typography>
       <Typography>
         <Box component="span" sx={{ fontWeight: "bold" }}>
-          <FormatRawNumber value={fundamentals.currentPrice} />
+          <FormatRawNumberToCurrency value={fundamentals.currentPrice} />
         </Box>
         &nbsp;{General.CurrencyCode}
       </Typography>
@@ -352,8 +352,7 @@ const Valuation = () => {
               <Box component="span" sx={{ mr: 2, minWidth: "263px" }}>
                 Value Per Option
               </Box>
-              <FormatRawNumber
-                prefix={General.CurrencySymbol}
+              <FormatRawNumberToCurrency
                 value={valuePerOption}
                 decimalScale={2}
               />
@@ -363,7 +362,6 @@ const Valuation = () => {
                 Value of All Options Outstanding
               </Box>
               <FormatRawNumberToMillion
-                prefix={General.CurrencySymbol}
                 value={valuePerOption * input.numberOfOptionsOutstanding}
                 suffix="M"
                 decimalScale={2}

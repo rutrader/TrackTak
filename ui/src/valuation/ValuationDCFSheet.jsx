@@ -10,6 +10,7 @@ import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import { useCallback } from "react";
 import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
 import FormatRawNumber from "../components/FormatRawNumber";
+import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
 
 const spaceRegex = /\s\s+/g;
 const mockEffectiveTaxRate = 0.2;
@@ -41,17 +42,17 @@ const columnLabels = {
   A25: { key: "A25", value: "Sum of PV" },
   A26: { key: "A26", value: "Probability of Failure" },
   A27: { key: "A27", value: "Proceeds if the Firm Fails" },
-  D20: { key: "D20", value: "Value of Operating Assets" },
-  D21: { key: "D21", value: "- Debt" },
-  D22: { key: "D22", value: "- Minority Interests" },
-  D23: { key: "D23", value: "+ Cash" },
-  D24: { key: "D24", value: "+ Non-Operating Assets" },
-  D25: { key: "D25", value: "Value of Equity" },
-  D26: { key: "D26", value: "- Value of Options" },
-  D27: { key: "D27", value: "- Value of Equity in Common Stock" },
-  G20: { key: "G20", value: "Current Price" },
-  G21: { key: "G21", value: "Estimated Value Per Share" },
-  G22: { key: "G22", value: "Margin of Safety" },
+  A28: { key: "A28", value: "Value of Operating Assets" },
+  A29: { key: "A29", value: "- Debt" },
+  A30: { key: "A30", value: "- Minority Interests" },
+  A31: { key: "A31", value: "+ Cash" },
+  A32: { key: "A32", value: "+ Non-Operating Assets" },
+  A33: { key: "A33", value: "Value of Equity" },
+  A34: { key: "A34", value: "- Value of Options" },
+  A35: { key: "A35", value: "- Value of Equity in Common Stock" },
+  A36: { key: "A36", value: "Current Price" },
+  A37: { key: "A37", value: "Estimated Value Per Share" },
+  A38: { key: "A38", value: "Margin of Safety" },
 };
 
 const getNumberOfRows = () => {
@@ -223,7 +224,7 @@ const getInitialData = () => {
     M8: {
       key: "M8",
       value: "",
-      expr: "=M2 > 0 ? (M2 / M40) * M7 : 0",
+      expr: "=M2 > 0 ? (M2 / M18) * M7 : 0",
     },
   };
   const { rows, columns } = generatedCells;
@@ -266,7 +267,7 @@ const getInitialData = () => {
   });
 
   getCellsForRows([2, 4, 6, 12, 18])
-    .concat(["B21", "B26", "H22"])
+    .concat(["B21", "B26", "B38"])
     .forEach((key) => {
       if (key.charAt(0) !== "A") {
         data[key] = {
@@ -276,6 +277,15 @@ const getInitialData = () => {
       }
     });
 
+  ["B36", "B37"].forEach((key) => {
+    if (key.charAt(0) !== "A") {
+      data[key] = {
+        ...data[key],
+        type: "currency",
+      };
+    }
+  });
+
   getCellsForRows([3, 5, 7, 8, 9, 10, 14, 17])
     .concat([
       "B20",
@@ -284,22 +294,20 @@ const getInitialData = () => {
       "B24",
       "B25",
       "B27",
-      "E20",
-      "E21",
-      "E22",
-      "E23",
-      "E24",
-      "E25",
-      "E26",
-      "E27",
-      "H20",
-      "H21",
+      "B28",
+      "B29",
+      "B30",
+      "B31",
+      "B32",
+      "B33",
+      "B34",
+      "B35",
     ])
     .forEach((key) => {
       if (key.charAt(0) !== "A") {
         data[key] = {
           ...data[key],
-          type: "currency",
+          type: "million",
         };
       }
     });
@@ -561,11 +569,13 @@ const ValuationDCFSheet = ({
     );
     updateCell(data.B25, "=B23+B24");
     // TODO: Implement fully at a later date from inputs
-    updateCell(data.B25, 0);
     updateCell(data.B26, 0);
-    updateCell(data.E20, "=B25*(1-B26)+B27*B26");
-    updateCell(data.E25, "=E21*(1-E22)+E23*E24");
-    updateCell(data.H22, "=H20/H21");
+    updateCell(data.B27, 0);
+    updateCell(data.B28, "=B25*(1-B26)+B27*B26");
+    updateCell(data.B33, "=B28-B29-B30+B31+B32");
+    updateCell(data.B38, "=(B37-B36)/B37");
+    updateCell(data.M18, "=L12");
+    updateCell(data.B35, "=B33-B34");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -595,18 +605,18 @@ const ValuationDCFSheet = ({
     );
     updateCell(initialData.C16, input.salesToCapitalRatio);
     updateCell(initialData.B17, fundamentals.investedCapital);
-    updateCell(data.E21, `=${fundamentals.currentBookValueOfDebt}`);
-    updateCell(data.E22, `=${fundamentals.ttm.minorityInterest}`);
-    updateCell(data.E23, `=${fundamentals.cashAndShortTermInvestments}`);
+    updateCell(data.B29, fundamentals.currentBookValueOfDebt);
+    updateCell(data.B30, fundamentals.ttm.minorityInterest);
+    updateCell(data.B31, fundamentals.cashAndShortTermInvestments);
     updateCell(
-      data.E23,
+      data.B32,
       `=${fundamentals.noncontrollingInterestInConsolidatedEntity}`
     );
-    updateCell(data.E26, valueOfAllOptionsOutstanding);
-    updateCell(data.H20, `=${fundamentals.currentPrice}`);
+    updateCell(data.B34, valueOfAllOptionsOutstanding);
+    updateCell(data.B36, fundamentals.currentPrice);
     updateCell(
-      data.H21,
-      `=E27/${fundamentals.data.SharesStats.SharesOutstanding}`
+      data.B37,
+      `=B35/${fundamentals.data.SharesStats.SharesOutstanding}`
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
@@ -625,11 +635,13 @@ const ValuationDCFSheet = ({
       valueRenderer={({ value, type }) => {
         if (value === "error") return value;
         if (type === "percent")
-          return <FormatRawNumberToPercent value={value} />;
+          return <FormatRawNumberToPercent value={value} decimalScale={2} />;
+        if (type === "million")
+          return <FormatRawNumberToMillion value={value} useCurrencySymbol />;
         if (type === "currency")
-          return <FormatRawNumberToCurrency value={value} decimalScale={0} />;
+          return <FormatRawNumberToCurrency value={value} />;
         if (type === "number")
-          return <FormatRawNumber value={value} decimalScale={3} />;
+          return <FormatRawNumber value={value} decimalScale={2} />;
 
         return value;
       }}

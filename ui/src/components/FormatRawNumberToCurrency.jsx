@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import FormatRawNumberToMillion from "./FormatRawNumberToMillion";
+import FormatRawNumber from "./FormatRawNumber";
 
 const FormatRawNumberToCurrency = ({ value, ...props }) => {
   const currencySymbol = useSelector(
@@ -8,7 +8,7 @@ const FormatRawNumberToCurrency = ({ value, ...props }) => {
   );
 
   return (
-    <FormatRawNumberToMillion
+    <FormatRawNumber
       value={value}
       prefix={currencySymbol}
       decimalScale={2}
