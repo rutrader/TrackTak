@@ -59,9 +59,6 @@ const Home = () => {
           </SubmitButton>
         </Box>
       </Box>
-      <Typography color="textSecondary">
-        * This must be a yahoo finance ticker
-      </Typography>
     </>
   );
 };
