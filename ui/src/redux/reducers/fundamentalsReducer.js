@@ -5,6 +5,10 @@ const initialState = {
   data: null,
   currentPrice: null,
   currentBookValueOfDebt: null,
+  currentBookValueOfEquity: null,
+  cashAndShortTermInvestments: null,
+  noncontrollingInterestInConsolidatedEntity: null,
+  investedCapital: null,
   ttm: null,
 };
 
@@ -25,13 +29,49 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
       Financials: { Balance_Sheet, Income_Statement },
     } = action.payload;
 
+    const quarterBalanceSheet = Balance_Sheet.quarterly[MostRecentQuarter];
+    let currentBookValueOfDebt = 0;
+
+    if (quarterBalanceSheet.shortLongTermDebt !== null) {
+      currentBookValueOfDebt += parseFloat(
+        Balance_Sheet.quarterly[MostRecentQuarter].shortLongTermDebt
+      );
+    }
+
+    if (quarterBalanceSheet.longTermDebt !== null) {
+      currentBookValueOfDebt += parseFloat(
+        Balance_Sheet.quarterly[MostRecentQuarter].longTermDebt
+      );
+    }
+
+    if (quarterBalanceSheet.capitalLeaseObligations !== null) {
+      currentBookValueOfDebt += parseFloat(
+        quarterBalanceSheet.capitalLeaseObligations
+      );
+    }
+
     state.data = action.payload;
 
     state.currentPrice = MarketCapitalization / SharesStats.SharesOutstanding;
-    state.currentBookValueOfDebt =
-      Balance_Sheet.quarterly[MostRecentQuarter].shortLongTermDebt +
-      Balance_Sheet.quarterly[MostRecentQuarter].longTermDebt +
-      Balance_Sheet.quarterly[MostRecentQuarter].capitalLeaseObligations;
+    state.currentBookValueOfDebt = currentBookValueOfDebt;
+    state.currentBookValueOfEquity =
+      quarterBalanceSheet.totalStockholderEquity !== null
+        ? parseFloat(quarterBalanceSheet.totalStockholderEquity)
+        : 0;
+    state.cashAndShortTermInvestments =
+      quarterBalanceSheet.cashAndShortTermInvestments !== null
+        ? parseFloat(quarterBalanceSheet.totalStockholderEquity)
+        : 0;
+    state.noncontrollingInterestInConsolidatedEntity =
+      quarterBalanceSheet.noncontrollingInterestInConsolidatedEntity !== null
+        ? parseFloat(
+            quarterBalanceSheet.noncontrollingInterestInConsolidatedEntity
+          )
+        : 0;
+    state.investedCapital =
+      state.currentBookValueOfEquity +
+      state.currentBookValueOfDebt -
+      state.cashAndShortTermInvestments;
     state.ttm = {
       totalRevenue: getIncomeSheetTTMValue(Income_Statement, "totalRevenue"),
       operatingIncome: getIncomeSheetTTMValue(

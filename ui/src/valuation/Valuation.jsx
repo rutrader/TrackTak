@@ -6,19 +6,27 @@ import { setValue } from "../redux/actions/inputActions";
 import { Box, TextField, Typography, withStyles } from "@material-ui/core";
 import TTTable from "../components/TTTable";
 import dayjs from "dayjs";
-import FormatRawNumber from "../components/FormatRawNumber";
-import FormatRawNumberToMillion, {
-  millionModifier,
-} from "../components/FormatRawNumberToMillion";
+import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
 import Section from "../components/Section";
 import ValuationDCFSheet from "./ValuationDCFSheet";
 import blackScholes from "../shared/blackScholesModel";
 import SubSection from "../components/SubSection";
+import FormatInputToPercent from "../components/FormatInputToPercent";
+import FormatInputToMillion from "../components/FormatInputToMillion";
+import FormatInputToNumber from "../components/FormatInputToNumber";
+import FormatInputToCurrency from "../components/FormatInputToCurrency";
+import FormatInputToYear from "../components/FormatInputToYear";
+import FormatRawNumberToPercent, {
+  percentModifier,
+} from "../components/FormatRawNumberToPercent";
+import calculateCostOfCapital from "../shared/calculateCostOfCapital";
+import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
 
 const ValueDrivingTextField = withStyles({
   root: {
     flex: 1,
-    margin: 2,
+    marginTop: 4,
+    marginBottom: 4,
     minWidth: "300px",
   },
 })(TextField);
@@ -26,7 +34,8 @@ const ValueDrivingTextField = withStyles({
 const CostOfCapitalTextField = withStyles({
   root: {
     flex: 1,
-    margin: 2,
+    marginTop: 4,
+    marginBottom: 4,
     minWidth: "300px",
   },
 })(TextField);
@@ -39,7 +48,7 @@ const TypographyLabel = withStyles({
   <Typography color="textSecondary" gutterBottom {...props} />
 ));
 
-const mockAdjustedDefaultSpread = 0.02;
+const mockAdjustedDefaultSpread = 0;
 const mockStdDeviation = 0.4;
 
 const mapFromStatementsToDateObject = (statementToLoop, valueKeys) => {
@@ -79,11 +88,27 @@ const Valuation = () => {
     General,
     Financials: { Income_Statement, Balance_Sheet },
     SharesStats,
-    Highlights: { MostRecentQuarter },
   } = fundamentals.data;
 
   const riskFreeRate =
-    governmentBonds.data[0].Close - mockAdjustedDefaultSpread;
+    governmentBonds.data[0].Close / percentModifier - mockAdjustedDefaultSpread;
+  const valuePerOption = blackScholes(
+    "call",
+    fundamentals.currentPrice,
+    input.averageStrikePrice,
+    input.averageMaturityOfOptions,
+    riskFreeRate,
+    mockStdDeviation
+  );
+  const costOfCapital = calculateCostOfCapital(
+    fundamentals,
+    input,
+    SharesStats,
+    equityRiskPremium,
+    riskFreeRate
+  );
+  const valueOfAllOptionsOutstanding =
+    valuePerOption * input.numberOfOptionsOutstanding;
 
   const companyFundamentalsColumns = [
     {
@@ -131,9 +156,7 @@ const Valuation = () => {
       dataField: "Book Value of Equity",
       ttm: (
         <FormatRawNumberToMillion
-          value={
-            Balance_Sheet.quarterly[MostRecentQuarter].totalStockholderEquity
-          }
+          value={fundamentals.currentBookValueOfEquity}
         />
       ),
       ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
@@ -155,10 +178,7 @@ const Valuation = () => {
       dataField: "Cash & Marketable Securities",
       ttm: (
         <FormatRawNumberToMillion
-          value={
-            Balance_Sheet.quarterly[MostRecentQuarter]
-              .cashAndShortTermInvestments
-          }
+          value={fundamentals.cashAndShortTermInvestments}
         />
       ),
       ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
@@ -169,10 +189,7 @@ const Valuation = () => {
       dataField: "Cross Holdings & Other Non-Operating Assets",
       ttm: (
         <FormatRawNumberToMillion
-          value={
-            Balance_Sheet.quarterly[MostRecentQuarter]
-              .noncontrollingInterestInConsolidatedEntity
-          }
+          value={fundamentals.noncontrollingInterestInConsolidatedEntity}
         />
       ),
       ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
@@ -189,14 +206,6 @@ const Valuation = () => {
       ]),
     },
   ];
-  const valuePerOption = blackScholes(
-    "call",
-    fundamentals.currentPrice,
-    input.averageStrikePrice,
-    input.averageMaturity,
-    riskFreeRate,
-    mockStdDeviation
-  );
 
   return (
     <>
@@ -207,13 +216,13 @@ const Valuation = () => {
         {General.Exchange}:{General.Code}
       </Typography>
       <Typography>
-        <Box component="span" fontWeight="bold">
-          <FormatRawNumber value={fundamentals.currentPrice} />
+        <Box component="span" sx={{ fontWeight: "bold" }}>
+          <FormatRawNumberToCurrency value={fundamentals.currentPrice} />
         </Box>
         &nbsp;{General.CurrencyCode}
       </Typography>
       <Typography>
-        <Box component="span" fontWeight="bold">
+        <Box component="span" sx={{ fontWeight: "bold" }}>
           <FormatRawNumberToMillion
             value={SharesStats.SharesOutstanding}
             suffix="M"
@@ -222,20 +231,26 @@ const Valuation = () => {
         &nbsp;Shares Outstanding
       </Typography>
       <Typography>
-        <Box component="span" fontWeight="bold">
-          {equityRiskPremium.currentCountry.equityRiskPremium}
+        <Box component="span" sx={{ fontWeight: "bold" }}>
+          <FormatRawNumberToPercent
+            value={equityRiskPremium.currentCountry.equityRiskPremium}
+          />
         </Box>
         &nbsp;Country Equity Risk Premium
       </Typography>
       <Typography>
-        <Box component="span" fontWeight="bold">
-          {equityRiskPremium.matureMarketEquityRiskPremium}
+        <Box component="span" sx={{ fontWeight: "bold" }}>
+          <FormatRawNumberToPercent
+            value={equityRiskPremium.matureMarketEquityRiskPremium}
+          />
         </Box>
         &nbsp;Mature Market Equity Risk Premium
       </Typography>
       <Typography>
-        <Box component="span" fontWeight="bold">
-          {equityRiskPremium.currentCountry.corporateTaxRate}
+        <Box component="span" sx={{ fontWeight: "bold" }}>
+          <FormatRawNumberToPercent
+            value={equityRiskPremium.currentCountry.corporateTaxRate}
+          />
         </Box>
         &nbsp;Corporate Tax Rate
       </Typography>
@@ -250,21 +265,45 @@ const Valuation = () => {
               Value Driving Inputs
             </Typography>
             <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-              <ValueDrivingTextField label="CAGR in Years 1-5 (%)" />
-              <ValueDrivingTextField label="EBIT Target Margin in Year 10 (%)" />
               <ValueDrivingTextField
-                type="number"
+                label="CAGR in Years 1-5"
+                defaultValue={input.cagrYearOneToFive}
+                onBlur={(value) => {
+                  dispatch(setValue("cagrYearOneToFive", value));
+                }}
+                InputProps={{
+                  inputComponent: FormatInputToPercent,
+                }}
+              />
+              <ValueDrivingTextField
+                label="EBIT Target Margin in Year 10"
+                defaultValue={input.ebitTargetMarginInYearTen}
+                onBlur={(value) => {
+                  dispatch(setValue("ebitTargetMarginInYearTen", value));
+                }}
+                InputProps={{
+                  inputComponent: FormatInputToPercent,
+                }}
+              />
+              <ValueDrivingTextField
                 label="Year of Convergence"
+                defaultValue={input.yearOfConvergence}
+                onBlur={(value) => {
+                  dispatch(setValue("yearOfConvergence", value));
+                }}
+                InputProps={{
+                  inputComponent: FormatInputToYear,
+                }}
               />
-            </Box>
-            <Box sx={{ display: "flex", flexWrap: "wrap" }}>
               <ValueDrivingTextField
-                type="number"
-                label="Sales to Capital Ratio Before Year 5"
-              />
-              <ValueDrivingTextField
-                type="number"
-                label="Sales to Capital Ratio After Year 5"
+                label="Sales to Capital Ratio"
+                defaultValue={input.salesToCapitalRatio}
+                onBlur={(value) => {
+                  dispatch(setValue("salesToCapitalRatio", value));
+                }}
+                InputProps={{
+                  inputComponent: FormatInputToNumber,
+                }}
               />
             </Box>
           </Section>
@@ -275,41 +314,32 @@ const Valuation = () => {
             <Box sx={{ display: "flex", flexWrap: "wrap" }}>
               <ValueDrivingTextField
                 label="Employee Options Oustanding"
-                type="number"
                 defaultValue={input.numberOfOptionsOutstanding}
-                onBlur={(e) => {
-                  dispatch(
-                    setValue(
-                      "numberOfOptionsOutstanding",
-                      parseFloat(e.currentTarget.value) * millionModifier
-                    )
-                  );
+                onBlur={(value) => {
+                  dispatch(setValue("numberOfOptionsOutstanding", value));
+                }}
+                InputProps={{
+                  inputComponent: FormatInputToMillion,
                 }}
               />
               <ValueDrivingTextField
                 label="Average Strike Price"
-                type="number"
                 defaultValue={input.averageStrikePrice}
-                onBlur={(e) => {
-                  dispatch(
-                    setValue(
-                      "averageStrikePrice",
-                      parseFloat(e.currentTarget.value)
-                    )
-                  );
+                onBlur={(value) => {
+                  dispatch(setValue("averageStrikePrice", value));
+                }}
+                InputProps={{
+                  inputComponent: FormatInputToCurrency,
                 }}
               />
               <ValueDrivingTextField
-                label="Average Maturity (Year)"
-                type="number"
+                label="Average Maturity"
                 defaultValue={input.averageMaturityOfOptions}
-                onBlur={(e) => {
-                  dispatch(
-                    setValue(
-                      "averageMaturityOfOptions",
-                      parseFloat(e.currentTarget.value)
-                    )
-                  );
+                onBlur={(value) => {
+                  dispatch(setValue("averageMaturityOfOptions", value));
+                }}
+                InputProps={{
+                  inputComponent: FormatInputToYear,
                 }}
               />
             </Box>
@@ -319,19 +349,19 @@ const Valuation = () => {
               Black Scholes Employee Options Valuation
             </Typography>
             <TypographyLabel>
-              <Box sx={{ mr: 2, minWidth: "263px" }}>Value Per Option</Box>
-              <FormatRawNumber
-                prefix={General.CurrencySymbol}
+              <Box component="span" sx={{ mr: 2, minWidth: "263px" }}>
+                Value Per Option
+              </Box>
+              <FormatRawNumberToCurrency
                 value={valuePerOption}
                 decimalScale={2}
               />
             </TypographyLabel>
             <TypographyLabel>
-              <Box sx={{ mr: 2, minWidth: "263px" }}>
+              <Box component="span" sx={{ mr: 2, minWidth: "263px" }}>
                 Value of All Options Outstanding
               </Box>
               <FormatRawNumberToMillion
-                prefix={General.CurrencySymbol}
                 value={valuePerOption * input.numberOfOptionsOutstanding}
                 suffix="M"
                 decimalScale={2}
@@ -349,28 +379,23 @@ const Valuation = () => {
             </Typography>
             <Box sx={{ display: "flex", flexWrap: "wrap" }}>
               <CostOfCapitalTextField
-                label="Average Maturity of Debt (Year)"
-                type="number"
+                label="Average Maturity of Debt"
                 defaultValue={input.averageMaturityOfDebt}
-                onBlur={(e) => {
-                  dispatch(
-                    setValue(
-                      "averageMaturityOfDebt",
-                      parseFloat(e.currentTarget.value)
-                    )
-                  );
+                onBlur={(value) => {
+                  dispatch(setValue("averageMaturityOfDebt", value));
+                }}
+                InputProps={{
+                  inputComponent: FormatInputToYear,
                 }}
               />
               <CostOfCapitalTextField
-                label="Pre-tax Cost of Debt (%)"
+                label="Pre-tax Cost of Debt"
                 defaultValue={input.pretaxCostOfDebt}
-                onBlur={(e) => {
-                  dispatch(
-                    setValue(
-                      "pretaxCostOfDebt",
-                      parseFloat(e.currentTarget.value)
-                    )
-                  );
+                onBlur={(value) => {
+                  dispatch(setValue("pretaxCostOfDebt", value));
+                }}
+                InputProps={{
+                  inputComponent: FormatInputToPercent,
                 }}
               />
             </Box>
@@ -381,41 +406,34 @@ const Valuation = () => {
               <Box sx={{ display: "flex", flexWrap: "wrap" }}>
                 <CostOfCapitalTextField
                   label="Book Value of Convertible Debt"
-                  type="number"
                   defaultValue={input.bookValueOfConvertibleDebt}
-                  onBlur={(e) => {
-                    dispatch(
-                      setValue(
-                        "bookValueOfConvertibleDebt",
-                        parseFloat(e.currentTarget.value)
-                      )
-                    );
+                  onBlur={(value) => {
+                    dispatch(setValue("bookValueOfConvertibleDebt", value));
+                  }}
+                  InputProps={{
+                    inputComponent: FormatInputToCurrency,
                   }}
                 />
                 <CostOfCapitalTextField
                   label="Interest Expense on Convertible Debt"
-                  type="number"
                   defaultValue={input.interestExpenseOnConvertibleDebt}
-                  onBlur={(e) => {
+                  onBlur={(value) => {
                     dispatch(
-                      setValue(
-                        "interestExpenseOnConvertibleDebt",
-                        parseFloat(e.currentTarget.value)
-                      )
+                      setValue("interestExpenseOnConvertibleDebt", value)
                     );
+                  }}
+                  InputProps={{
+                    inputComponent: FormatInputToCurrency,
                   }}
                 />
                 <CostOfCapitalTextField
-                  label="Maturity of Convertible Debt (Year)"
-                  type="number"
+                  label="Maturity of Convertible Debt"
                   defaultValue={input.maturityOfConvertibleDebt}
-                  onBlur={(e) => {
-                    dispatch(
-                      setValue(
-                        "maturityOfConvertibleDebt",
-                        parseFloat(e.currentTarget.value)
-                      )
-                    );
+                  onBlur={(value) => {
+                    dispatch(setValue("maturityOfConvertibleDebt", value));
+                  }}
+                  InputProps={{
+                    inputComponent: FormatInputToYear,
                   }}
                 />
               </Box>
@@ -427,41 +445,32 @@ const Valuation = () => {
               <Box sx={{ display: "flex", flexWrap: "wrap" }}>
                 <CostOfCapitalTextField
                   label="Number of Preferred Shares"
-                  type="number"
                   defaultValue={input.numberOfPreferredShares}
-                  onBlur={(e) => {
-                    dispatch(
-                      setValue(
-                        "numberOfPreferredShares",
-                        parseFloat(e.currentTarget.value)
-                      )
-                    );
+                  onBlur={(value) => {
+                    dispatch(setValue("numberOfPreferredShares", value));
+                  }}
+                  InputProps={{
+                    inputComponent: FormatInputToMillion,
                   }}
                 />
                 <CostOfCapitalTextField
                   label="Market Price Per Share"
-                  type="number"
                   defaultValue={input.marketPricePerShare}
-                  onBlur={(e) => {
-                    dispatch(
-                      setValue(
-                        "marketPricePerShare",
-                        parseFloat(e.currentTarget.value)
-                      )
-                    );
+                  onBlur={(value) => {
+                    dispatch(setValue("marketPricePerShare", value));
+                  }}
+                  InputProps={{
+                    inputComponent: FormatInputToCurrency,
                   }}
                 />
                 <CostOfCapitalTextField
                   label="Annual Dividend Per Share"
-                  type="number"
                   defaultValue={input.annualDividendPerShare}
-                  onBlur={(e) => {
-                    dispatch(
-                      setValue(
-                        "annualDividendPerShare",
-                        parseFloat(e.currentTarget.value)
-                      )
-                    );
+                  onBlur={(value) => {
+                    dispatch(setValue("annualDividendPerShare", value));
+                  }}
+                  InputProps={{
+                    inputComponent: FormatInputToCurrency,
                   }}
                 />
               </Box>
@@ -473,7 +482,11 @@ const Valuation = () => {
         <Typography variant="h5" gutterBottom>
           Valuation
         </Typography>
-        <ValuationDCFSheet />
+        <ValuationDCFSheet
+          riskFreeRate={riskFreeRate}
+          costOfCapital={costOfCapital}
+          valueOfAllOptionsOutstanding={valueOfAllOptionsOutstanding}
+        />
       </Section>
     </>
   );

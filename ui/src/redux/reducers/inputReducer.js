@@ -13,6 +13,10 @@ const initialState = {
   numberOfPreferredShares: null,
   marketPricePerShare: null,
   annualDividendPerShare: null,
+  cagrYearOneToFive: null,
+  ebitTargetMarginInYearTen: null,
+  yearOfConvergence: null,
+  salesToCapitalRatio: null,
 };
 
 export const inputReducer = createReducer(initialState, (builder) => {
