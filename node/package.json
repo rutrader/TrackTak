@@ -8,7 +8,9 @@
   },
   "scripts": {
     "start": "nodemon",
-    "build": "webpack"
+    "zip": "cd ./build && bestzip ../build.zip *",
+    "build": "webpack && npm run zip",
+    "deploy": "npm run build && eb deploy"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^6.3.1",

@@ -12,7 +12,8 @@
 # production
 /**/build
 /**/build.zip
-/node/.elasticbeanstalk/
+/**/.elasticbeanstalk/
+/**/.ebextensions/
 
 # misc
 .DS_Store

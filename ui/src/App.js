@@ -91,11 +91,14 @@ function App() {
       <Spinner />
       <BrowserRouter>
         <Switch>
-          <Route path="/landingPage">
-            <RebassProvider theme={rebassTheme}>
-              <GlobalStyle />
-              <LandingPage />
-            </RebassProvider>
+          <Route path={["/home"]}>
+            <LayoutHome>
+              <Switch>
+                <Route path="/home">
+                  <Home />
+                </Route>
+              </Switch>
+            </LayoutHome>
           </Route>
           <Route path={layoutFullScreenPaths}>
             <LayoutFullScreen>
@@ -106,14 +109,11 @@ function App() {
               </Switch>
             </LayoutFullScreen>
           </Route>
-          <Route path={["/"]}>
-            <LayoutHome>
-              <Switch>
-                <Route path="/">
-                  <Home />
-                </Route>
-              </Switch>
-            </LayoutHome>
+          <Route path="/">
+            <RebassProvider theme={rebassTheme}>
+              <GlobalStyle />
+              <LandingPage />
+            </RebassProvider>
           </Route>
         </Switch>
         {/* <Route path={allLayoutPaths}>

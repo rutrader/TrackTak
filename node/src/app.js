@@ -41,6 +41,10 @@ app.get("/api/v1/industry-averages", async (req, res) => {
   res.send(value);
 });
 
+app.get("/", (_, res) => {
+  res.send(200);
+});
+
 app.listen(port, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
