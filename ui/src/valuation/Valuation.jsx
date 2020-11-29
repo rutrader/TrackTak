@@ -28,6 +28,8 @@ import FormatRawNumberToPercent, {
 import calculateCostOfCapital from "../shared/calculateCostOfCapital";
 import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
 import FormatRawNumber from "../components/FormatRawNumber";
+import { ReactComponent as BackgroundPurple } from "../icons/backgroundPurple.svg";
+import SubscribeMailingList from "../shared/SubscribeMailingList";
 
 const ValueDrivingTextField = withStyles({
   root: {
@@ -537,6 +539,21 @@ const Valuation = () => {
           costOfCapital={costOfCapital}
           valueOfAllOptionsOutstanding={valueOfAllOptionsOutstanding}
         />
+      </Section>
+      <Section>
+        <Box>
+          <Typography
+            className="landing-page-sign-up-today-text"
+            sx={{
+              textAlign: "center",
+              fontWeight: "bold",
+              color: "white",
+            }}
+          >
+            Sign up today to get 50% off for life when we launch premium.
+          </Typography>
+          <SubscribeMailingList />
+        </Box>
       </Section>
     </>
   );
