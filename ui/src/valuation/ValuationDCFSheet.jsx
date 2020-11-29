@@ -14,8 +14,6 @@ import initialData, { dataDependentsTree, generatedCells } from "./initialData";
 import { getColumnsBetween, setAllDependents, validateExp } from "./utils";
 import { getEBITMarginCalculation } from "./expressionCalculations";
 
-const mockEffectiveTaxRate = 0.2;
-
 const generateGrid = (data) => {
   const rows = [...generatedCells.rows];
   const columns = [...generatedCells.columns];
@@ -126,11 +124,6 @@ const ValuationDCFSheet = ({
   }, [riskFreeRate]);
 
   useEffect(() => {
-    updateCell(initialData.B6, mockEffectiveTaxRate);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mockEffectiveTaxRate]);
-
-  useEffect(() => {
     updateCell(
       initialData.M6,
       equityRiskPremium.currentCountry.corporateTaxRate
@@ -163,6 +156,10 @@ const ValuationDCFSheet = ({
       initialData.B37,
       `=B35/${fundamentals.data.SharesStats.SharesOutstanding}`
     );
+    updateCell(
+      initialData.B6,
+      fundamentals.pastThreeYearsAverageEffectiveTaxRate
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     fundamentals.ttm.totalRevenue,
@@ -174,6 +171,7 @@ const ValuationDCFSheet = ({
     fundamentals.noncontrollingInterestInConsolidatedEntity,
     fundamentals.currentPrice,
     fundamentals.data.SharesStats.SharesOutstanding,
+    fundamentals.pastThreeYearsAverageEffectiveTaxRate,
   ]);
 
   useEffect(() => {

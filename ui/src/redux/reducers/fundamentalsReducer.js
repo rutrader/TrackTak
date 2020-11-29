@@ -10,16 +10,26 @@ const initialState = {
   noncontrollingInterestInConsolidatedEntity: null,
   investedCapital: null,
   ttm: null,
+  pastThreeYearsAverageEffectiveTaxRate: null,
 };
 
-const getIncomeSheetTTMValue = (incomeStatement, valueKey) => {
+const getIncomeSheetPastQuartersValues = (
+  incomeStatement,
+  valueKey,
+  periodsToGet
+) => {
   const arrayValue = Object.values(incomeStatement.quarterly);
-  const sumOfFirstFourValues = arrayValue.slice(0, 4).reduce((acc, curr) => {
-    return (acc += parseFloat(curr[valueKey]));
-  }, 0);
+  const sumOfFirstFourValues = arrayValue
+    .slice(0, periodsToGet)
+    .reduce((acc, curr) => {
+      return (acc += parseFloat(curr[valueKey]));
+    }, 0);
 
   return sumOfFirstFourValues;
 };
+
+const getIncomeSheetTTMValue = (incomeStatement, valueKey) =>
+  getIncomeSheetPastQuartersValues(incomeStatement, valueKey, 4);
 
 export const fundamentalsReducer = createReducer(initialState, (builder) => {
   builder.addCase(getFundamentals.fulfilled, (state, action) => {
@@ -72,6 +82,19 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
       state.currentBookValueOfEquity +
       state.currentBookValueOfDebt -
       state.cashAndShortTermInvestments;
+    const pastThreeYearPeriods = 3 * 4;
+    const incomeBeforeTax = getIncomeSheetPastQuartersValues(
+      Income_Statement,
+      "incomeBeforeTax",
+      pastThreeYearPeriods
+    );
+    const incomeTaxExpense = getIncomeSheetPastQuartersValues(
+      Income_Statement,
+      "incomeTaxExpense",
+      pastThreeYearPeriods
+    );
+    state.pastThreeYearsAverageEffectiveTaxRate =
+      incomeTaxExpense / incomeBeforeTax;
     state.ttm = {
       totalRevenue: getIncomeSheetTTMValue(Income_Statement, "totalRevenue"),
       operatingIncome: getIncomeSheetTTMValue(

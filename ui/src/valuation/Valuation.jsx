@@ -3,7 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { getFundamentals } from "../redux/actions/fundamentalsActions";
 import { setValue } from "../redux/actions/inputActions";
-import { Box, TextField, Typography, withStyles } from "@material-ui/core";
+import {
+  Box,
+  TextField,
+  Typography,
+  useTheme,
+  withStyles,
+} from "@material-ui/core";
 import TTTable from "../components/TTTable";
 import dayjs from "dayjs";
 import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
@@ -72,6 +78,7 @@ const Valuation = () => {
   const input = useSelector((state) => state.input);
   const governmentBonds = useSelector((state) => state.governmentBonds);
   const equityRiskPremium = useSelector((state) => state.equityRiskPremium);
+  const theme = useTheme();
 
   useEffect(() => {
     dispatch(getFundamentals(params.ticker));
@@ -209,51 +216,63 @@ const Valuation = () => {
 
   return (
     <>
-      <Typography variant="h4" gutterBottom>
-        {General.Name}
-      </Typography>
-      <Typography style={{ textTransform: "uppercase" }}>
+      <Typography variant="h4">{General.Name}</Typography>
+      <Typography style={{ textTransform: "uppercase" }} gutterBottom>
         {General.Exchange}:{General.Code}
       </Typography>
-      <Typography>
-        <Box component="span" sx={{ fontWeight: "bold" }}>
-          <FormatRawNumberToCurrency value={fundamentals.currentPrice} />
+      <Box sx={{ display: "flex", gap: theme.spacing(3) }}>
+        <Box>
+          <Typography>
+            <Box component="span" sx={{ fontWeight: "bold" }}>
+              <FormatRawNumberToCurrency value={fundamentals.currentPrice} />
+            </Box>
+            &nbsp;{General.CurrencyCode}
+          </Typography>
+          <Typography>
+            <Box component="span" sx={{ fontWeight: "bold" }}>
+              <FormatRawNumberToMillion
+                value={SharesStats.SharesOutstanding}
+                suffix="M"
+              />
+            </Box>
+            &nbsp;Shares Outstanding
+          </Typography>
+          <Typography>
+            <Box component="span" sx={{ fontWeight: "bold" }}>
+              <FormatRawNumberToPercent
+                value={equityRiskPremium.currentCountry.corporateTaxRate}
+              />
+            </Box>
+            &nbsp;Marginal Tax Rate
+          </Typography>
         </Box>
-        &nbsp;{General.CurrencyCode}
-      </Typography>
-      <Typography>
-        <Box component="span" sx={{ fontWeight: "bold" }}>
-          <FormatRawNumberToMillion
-            value={SharesStats.SharesOutstanding}
-            suffix="M"
-          />
+        <Box>
+          <Typography>
+            <Box component="span" sx={{ fontWeight: "bold" }}>
+              <FormatRawNumberToPercent
+                value={equityRiskPremium.currentCountry.equityRiskPremium}
+              />
+            </Box>
+            &nbsp;Country Equity Risk Premium
+          </Typography>
+          <Typography>
+            <Box component="span" sx={{ fontWeight: "bold" }}>
+              <FormatRawNumberToPercent
+                value={equityRiskPremium.matureMarketEquityRiskPremium}
+              />
+            </Box>
+            &nbsp;Mature Market Equity Risk Premium
+          </Typography>
+          <Typography>
+            <Box component="span" sx={{ fontWeight: "bold" }}>
+              <FormatRawNumberToPercent
+                value={fundamentals.pastThreeYearsAverageEffectiveTaxRate}
+              />
+            </Box>
+            &nbsp;Effective Tax Rate (Avg. past 3 yr)
+          </Typography>
         </Box>
-        &nbsp;Shares Outstanding
-      </Typography>
-      <Typography>
-        <Box component="span" sx={{ fontWeight: "bold" }}>
-          <FormatRawNumberToPercent
-            value={equityRiskPremium.currentCountry.equityRiskPremium}
-          />
-        </Box>
-        &nbsp;Country Equity Risk Premium
-      </Typography>
-      <Typography>
-        <Box component="span" sx={{ fontWeight: "bold" }}>
-          <FormatRawNumberToPercent
-            value={equityRiskPremium.matureMarketEquityRiskPremium}
-          />
-        </Box>
-        &nbsp;Mature Market Equity Risk Premium
-      </Typography>
-      <Typography>
-        <Box component="span" sx={{ fontWeight: "bold" }}>
-          <FormatRawNumberToPercent
-            value={equityRiskPremium.currentCountry.corporateTaxRate}
-          />
-        </Box>
-        &nbsp;Corporate Tax Rate
-      </Typography>
+      </Box>
       <Section>
         <Typography variant="h5">Company Fundamentals</Typography>
         <TTTable columns={companyFundamentalsColumns} data={rowData} />
