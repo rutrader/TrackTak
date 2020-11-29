@@ -81,6 +81,7 @@ const ValuationDCFSheet = ({
   const input = useSelector((state) => state.input);
   const fundamentals = useSelector((state) => state.fundamentals);
   const equityRiskPremium = useSelector((state) => state.equityRiskPremium);
+
   const [data, setData] = useState(initialData);
 
   const onCellsChanged = (changes) => {

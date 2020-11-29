@@ -1,11 +1,10 @@
-const mockUnleveredBeta = 0.7;
-
 const calculateCostOfCapital = (
   fundamentals,
   input,
   SharesStats,
   equityRiskPremium,
-  riskFreeRate
+  riskFreeRate,
+  currentIndustry
 ) => {
   const marginalTaxRate = equityRiskPremium.currentCountry.corporateTaxRate;
   const estimatedMarketValueOfStraightDebt =
@@ -46,7 +45,7 @@ const calculateCostOfCapital = (
     },
   };
   const leveredBetaForEquity =
-    mockUnleveredBeta *
+    currentIndustry.unleveredBeta *
     (1 + (1 - marginalTaxRate)) *
     (marketValue.debt / marketValue.equity);
 

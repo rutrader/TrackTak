@@ -27,6 +27,7 @@ import FormatRawNumberToPercent, {
 } from "../components/FormatRawNumberToPercent";
 import calculateCostOfCapital from "../shared/calculateCostOfCapital";
 import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
+import FormatRawNumber from "../components/FormatRawNumber";
 
 const ValueDrivingTextField = withStyles({
   root: {
@@ -54,9 +55,6 @@ const TypographyLabel = withStyles({
   <Typography color="textSecondary" gutterBottom {...props} />
 ));
 
-const mockAdjustedDefaultSpread = 0;
-const mockStdDeviation = 0.4;
-
 const mapFromStatementsToDateObject = (statementToLoop, valueKeys) => {
   return Object.values(statementToLoop).reduce((acc, curr) => {
     const sumOfValues = valueKeys.reduce(
@@ -78,6 +76,7 @@ const Valuation = () => {
   const input = useSelector((state) => state.input);
   const governmentBonds = useSelector((state) => state.governmentBonds);
   const equityRiskPremium = useSelector((state) => state.equityRiskPremium);
+  const industryAverages = useSelector((state) => state.industryAverages);
   const theme = useTheme();
 
   useEffect(() => {
@@ -87,7 +86,8 @@ const Valuation = () => {
   if (
     !fundamentals.data ||
     !governmentBonds.data ||
-    !equityRiskPremium.countryData
+    !equityRiskPremium.countryData ||
+    !industryAverages.data
   )
     return null;
 
@@ -98,21 +98,23 @@ const Valuation = () => {
   } = fundamentals.data;
 
   const riskFreeRate =
-    governmentBonds.data[0].Close / percentModifier - mockAdjustedDefaultSpread;
+    governmentBonds.data[0].Close / percentModifier -
+    equityRiskPremium.currentCountry.adjDefaultSpread;
   const valuePerOption = blackScholes(
     "call",
     fundamentals.currentPrice,
     input.averageStrikePrice,
     input.averageMaturityOfOptions,
     riskFreeRate,
-    mockStdDeviation
+    industryAverages.currentIndustry.standardDeviationInStockPrices
   );
   const costOfCapital = calculateCostOfCapital(
     fundamentals,
     input,
     SharesStats,
     equityRiskPremium,
-    riskFreeRate
+    riskFreeRate,
+    industryAverages.currentIndustry
   );
   const valueOfAllOptionsOutstanding =
     valuePerOption * input.numberOfOptionsOutstanding;
@@ -214,13 +216,18 @@ const Valuation = () => {
     },
   ];
 
+  const displayGap = theme.spacing(3);
+
   return (
     <>
       <Typography variant="h4">{General.Name}</Typography>
-      <Typography style={{ textTransform: "uppercase" }} gutterBottom>
+      <Typography style={{ textTransform: "uppercase" }}>
         {General.Exchange}:{General.Code}
       </Typography>
-      <Box sx={{ display: "flex", gap: theme.spacing(3) }}>
+      <Typography gutterBottom>
+        {industryAverages.currentIndustry.industryName}
+      </Typography>
+      <Box sx={{ display: "flex", gap: displayGap }}>
         <Box>
           <Typography>
             <Box component="span" sx={{ fontWeight: "bold" }}>
@@ -237,6 +244,8 @@ const Valuation = () => {
             </Box>
             &nbsp;Shares Outstanding
           </Typography>
+        </Box>
+        <Box>
           <Typography>
             <Box component="span" sx={{ fontWeight: "bold" }}>
               <FormatRawNumberToPercent
@@ -244,24 +253,6 @@ const Valuation = () => {
               />
             </Box>
             &nbsp;Marginal Tax Rate
-          </Typography>
-        </Box>
-        <Box>
-          <Typography>
-            <Box component="span" sx={{ fontWeight: "bold" }}>
-              <FormatRawNumberToPercent
-                value={equityRiskPremium.currentCountry.equityRiskPremium}
-              />
-            </Box>
-            &nbsp;Country Equity Risk Premium
-          </Typography>
-          <Typography>
-            <Box component="span" sx={{ fontWeight: "bold" }}>
-              <FormatRawNumberToPercent
-                value={equityRiskPremium.matureMarketEquityRiskPremium}
-              />
-            </Box>
-            &nbsp;Mature Market Equity Risk Premium
           </Typography>
           <Typography>
             <Box component="span" sx={{ fontWeight: "bold" }}>
@@ -393,6 +384,46 @@ const Valuation = () => {
             <Typography variant="h5" gutterBottom>
               Cost of Capital Inputs
             </Typography>
+            <Box sx={{ display: "flex", gap: displayGap }}>
+              <Box marginBottom={theme.spacing(1)}>
+                <Typography>
+                  <Box component="span" sx={{ fontWeight: "bold" }}>
+                    <FormatRawNumberToPercent
+                      value={equityRiskPremium.currentCountry.equityRiskPremium}
+                    />
+                  </Box>
+                  &nbsp;Country Equity Risk Premium
+                </Typography>
+                <Typography>
+                  <Box component="span" sx={{ fontWeight: "bold" }}>
+                    <FormatRawNumberToPercent
+                      value={equityRiskPremium.matureMarketEquityRiskPremium}
+                    />
+                  </Box>
+                  &nbsp;Mature Market Equity Risk Premium
+                </Typography>
+              </Box>
+              <Box>
+                <Typography>
+                  <Box component="span" sx={{ fontWeight: "bold" }}>
+                    <FormatRawNumber
+                      decimalScale={2}
+                      value={industryAverages.currentIndustry.unleveredBeta}
+                    />
+                  </Box>
+                  &nbsp;Unlevered Beta
+                </Typography>
+                <Typography>
+                  <Box component="span" sx={{ fontWeight: "bold" }}>
+                    <FormatRawNumberToPercent
+                      decimalScale={2}
+                      value={riskFreeRate}
+                    />
+                  </Box>
+                  &nbsp;Riskfree Rate
+                </Typography>
+              </Box>
+            </Box>
             <Typography variant="h6" gutterBottom>
               Normal Debt
             </Typography>
