@@ -22,7 +22,6 @@ const SubscribeMailingList = ({ subscribeText = "Join" }) => {
         <Box sx={{ display: "flex", justifyContent: "center " }}>
           <StyledTextField
             className="landing-page-email-input"
-            id="MERGE0"
             name="MERGE0"
             placeholder="Enter your email"
             type="email"

@@ -28,7 +28,6 @@ import FormatRawNumberToPercent, {
 import calculateCostOfCapital from "../shared/calculateCostOfCapital";
 import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
 import FormatRawNumber from "../components/FormatRawNumber";
-import { ReactComponent as BackgroundPurple } from "../icons/backgroundPurple.svg";
 import SubscribeMailingList from "../shared/SubscribeMailingList";
 
 const ValueDrivingTextField = withStyles({
@@ -408,7 +407,7 @@ const Valuation = () => {
               Cost of Capital Inputs
             </Typography>
             <Box sx={{ display: "flex", gap: displayGap }}>
-              <Box marginBottom={theme.spacing(1)}>
+              <Box sx={{ mb: theme.spacing(1) }}>
                 <Typography>
                   <Box component="span" sx={{ fontWeight: "bold" }}>
                     <FormatRawNumberToPercent
