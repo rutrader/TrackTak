@@ -222,48 +222,69 @@ const Valuation = () => {
 
   return (
     <>
-      <Typography variant="h4">{General.Name}</Typography>
-      <Typography style={{ textTransform: "uppercase" }}>
-        {General.Exchange}:{General.Code}
-      </Typography>
-      <Typography gutterBottom>
-        {industryAverages.currentIndustry.industryName}
-      </Typography>
-      <Box sx={{ display: "flex", gap: displayGap }}>
+      <Box sx={{ display: "flex" }}>
         <Box>
-          <Typography>
-            <Box component="span" sx={{ fontWeight: "bold" }}>
-              <FormatRawNumberToCurrency value={fundamentals.currentPrice} />
-            </Box>
-            &nbsp;{General.CurrencyCode}
+          <Typography variant="h4">{General.Name}</Typography>
+          <Typography style={{ textTransform: "uppercase" }}>
+            {General.Exchange}:{General.Code}
           </Typography>
-          <Typography>
-            <Box component="span" sx={{ fontWeight: "bold" }}>
-              <FormatRawNumberToMillion
-                value={SharesStats.SharesOutstanding}
-                suffix="M"
-              />
-            </Box>
-            &nbsp;Shares Outstanding
+          <Typography gutterBottom>
+            {industryAverages.currentIndustry.industryName}
           </Typography>
+          <Box sx={{ display: "flex", gap: displayGap }}>
+            <Box>
+              <Typography>
+                <Box component="span" sx={{ fontWeight: "bold" }}>
+                  <FormatRawNumberToCurrency
+                    value={fundamentals.currentPrice}
+                  />
+                </Box>
+                &nbsp;{General.CurrencyCode}
+              </Typography>
+              <Typography>
+                <Box component="span" sx={{ fontWeight: "bold" }}>
+                  <FormatRawNumberToMillion
+                    value={SharesStats.SharesOutstanding}
+                    suffix="M"
+                  />
+                </Box>
+                &nbsp;Shares Outstanding
+              </Typography>
+            </Box>
+            <Box>
+              <Typography>
+                <Box component="span" sx={{ fontWeight: "bold" }}>
+                  <FormatRawNumberToPercent
+                    value={equityRiskPremium.currentCountry.corporateTaxRate}
+                  />
+                </Box>
+                &nbsp;Marginal Tax Rate
+              </Typography>
+              <Typography>
+                <Box component="span" sx={{ fontWeight: "bold" }}>
+                  <FormatRawNumberToPercent
+                    value={fundamentals.pastThreeYearsAverageEffectiveTaxRate}
+                  />
+                </Box>
+                &nbsp;Effective Tax Rate (Avg. past 3 yr)
+              </Typography>
+            </Box>
+          </Box>
         </Box>
-        <Box>
-          <Typography>
-            <Box component="span" sx={{ fontWeight: "bold" }}>
-              <FormatRawNumberToPercent
-                value={equityRiskPremium.currentCountry.corporateTaxRate}
-              />
-            </Box>
-            &nbsp;Marginal Tax Rate
+        <Box
+          sx={{
+            ml: theme.spacing(10),
+          }}
+        >
+          <Typography
+            variant="h6"
+            gutterBottom
+            style={{ fontWeight: "bold" }}
+            className="landing-page-sign-up-today-text"
+          >
+            Join today to get 50% off for life when we launch premium.
           </Typography>
-          <Typography>
-            <Box component="span" sx={{ fontWeight: "bold" }}>
-              <FormatRawNumberToPercent
-                value={fundamentals.pastThreeYearsAverageEffectiveTaxRate}
-              />
-            </Box>
-            &nbsp;Effective Tax Rate (Avg. past 3 yr)
-          </Typography>
+          <SubscribeMailingList />
         </Box>
       </Box>
       <Section>
@@ -540,19 +561,23 @@ const Valuation = () => {
           valueOfAllOptionsOutstanding={valueOfAllOptionsOutstanding}
         />
       </Section>
-      <Section>
-        <Box>
+      <Section sx={{ display: "flex", marginTop: theme.spacing(2) }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            margin: "0 auto",
+          }}
+        >
           <Typography
+            variant="h6"
+            gutterBottom
+            style={{ fontWeight: "bold" }}
             className="landing-page-sign-up-today-text"
-            sx={{
-              textAlign: "center",
-              fontWeight: "bold",
-              color: "white",
-            }}
           >
-            Sign up today to get 50% off for life when we launch premium.
+            Want us to implement features you need?
           </Typography>
-          <SubscribeMailingList />
+          <SubscribeMailingList subscribeText="Sign Up" />
         </Box>
       </Section>
     </>
