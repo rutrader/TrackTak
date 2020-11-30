@@ -22,7 +22,6 @@ import {
   getSixToTenYrRevenueGrowthCalculation,
   getSixToTenYrTaxCalculation,
 } from "./expressionCalculations";
-import { mapValues } from "lodash";
 
 const getExpressionProperties = (cell, expr) => {
   return { key: cell, className: "equation", expr };

@@ -5,7 +5,7 @@ import { ReactComponent as TracktakLogo } from "../icons/tracktak.svg";
 export const TracktakLogoLayoutContainer = () => (
   <Box sx={{ pt: 0.5, mb: 2.5, display: "flex" }}>
     <TracktakLogo />
-    <Typography>beta</Typography>
+    <Typography color="textSecondary">beta</Typography>
   </Box>
 );
 

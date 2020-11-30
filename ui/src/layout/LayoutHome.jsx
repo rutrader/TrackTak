@@ -15,7 +15,7 @@ const LayoutHome = ({ children }) => {
         }}
       >
         <TracktakLogo width={300} height={50} />
-        <Typography>beta</Typography>
+        <Typography color="textSecondary">beta</Typography>
       </Box>
       {children}
     </Container>

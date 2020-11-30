@@ -17,9 +17,6 @@ const theme = createMuiTheme({
       dark: "#41407d",
       contrastText: "#fff",
     },
-    text: {
-      secondary: "rgba(0,0,0,.87)",
-    },
   },
   components: {
     MuiButton: {

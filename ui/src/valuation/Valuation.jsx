@@ -28,7 +28,6 @@ import FormatRawNumberToPercent, {
 import calculateCostOfCapital from "../shared/calculateCostOfCapital";
 import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
 import FormatRawNumber from "../components/FormatRawNumber";
-import { ReactComponent as BackgroundPurple } from "../icons/backgroundPurple.svg";
 import SubscribeMailingList from "../shared/SubscribeMailingList";
 
 const ValueDrivingTextField = withStyles({
@@ -218,14 +217,17 @@ const Valuation = () => {
     },
   ];
 
-  const displayGap = theme.spacing(3);
+  const displayGap = theme.spacing(2);
 
   return (
     <>
       <Box sx={{ display: "flex" }}>
         <Box>
           <Typography variant="h4">{General.Name}</Typography>
-          <Typography style={{ textTransform: "uppercase" }}>
+          <Typography
+            color="textSecondary"
+            style={{ textTransform: "uppercase" }}
+          >
             {General.Exchange}:{General.Code}
           </Typography>
           <Typography gutterBottom>
@@ -297,7 +299,7 @@ const Valuation = () => {
             <Typography variant="h5" gutterBottom>
               Value Driving Inputs
             </Typography>
-            <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: displayGap }}>
               <ValueDrivingTextField
                 label="CAGR in Years 1-5"
                 defaultValue={input.cagrYearOneToFive}
@@ -344,7 +346,7 @@ const Valuation = () => {
             <Typography variant="h5" gutterBottom>
               Employee Options Inputs
             </Typography>
-            <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: displayGap }}>
               <ValueDrivingTextField
                 label="Employee Options Oustanding"
                 defaultValue={input.numberOfOptionsOutstanding}
@@ -450,7 +452,7 @@ const Valuation = () => {
             <Typography variant="h6" gutterBottom>
               Normal Debt
             </Typography>
-            <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: displayGap }}>
               <CostOfCapitalTextField
                 label="Average Maturity of Debt"
                 defaultValue={input.averageMaturityOfDebt}
@@ -476,7 +478,7 @@ const Valuation = () => {
               <Typography variant="h6" gutterBottom>
                 Convertible Debt
               </Typography>
-              <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: displayGap }}>
                 <CostOfCapitalTextField
                   label="Book Value of Convertible Debt"
                   defaultValue={input.bookValueOfConvertibleDebt}
@@ -515,7 +517,7 @@ const Valuation = () => {
               <Typography variant="h6" gutterBottom>
                 Preferred Stock
               </Typography>
-              <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: displayGap }}>
                 <CostOfCapitalTextField
                   label="Number of Preferred Shares"
                   defaultValue={input.numberOfPreferredShares}
