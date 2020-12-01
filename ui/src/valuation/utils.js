@@ -1,4 +1,3 @@
-import { all } from "mathjs";
 import { generatedCells } from "./initialData";
 
 export const getColumnsBetween = (startColumn, endColumn) => {
