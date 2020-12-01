@@ -12,7 +12,7 @@ const FormatInputToPercent = forwardRef(({ defaultValue, ...props }, ref) => {
     <NumberFormat
       {...other}
       getInputRef={ref}
-      defaultValue={defaultValue * percentModifier}
+      defaultValue={defaultValue ? defaultValue * percentModifier : undefined}
       onBlur={(e) => {
         props.onBlur(valueAsDecimal, e);
       }}
