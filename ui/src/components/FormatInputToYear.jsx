@@ -4,7 +4,7 @@ import NumberFormat from "react-number-format";
 
 const FormatInputToYear = forwardRef(({ defaultValue, ...props }, ref) => {
   const { onChange, ...other } = props;
-  const [valueAsYear, setValue] = useState();
+  const [valueAsYear, setValue] = useState(null);
 
   return (
     <NumberFormat
