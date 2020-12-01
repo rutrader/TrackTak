@@ -11,7 +11,7 @@ const FormatInputToMillion = forwardRef(({ defaultValue, ...props }, ref) => {
     <NumberFormat
       {...other}
       getInputRef={ref}
-      defaultValue={defaultValue ? "/ millionModifier" : "undefined"}
+      defaultValue={defaultValue ? defaultValue / millionModifier : undefined}
       onBlur={(e) => {
         props.onBlur(valueAsMillion, e);
       }}
