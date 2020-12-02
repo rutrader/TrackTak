@@ -2,8 +2,8 @@ import { Box, Button, TextField, withStyles } from "@material-ui/core";
 import React from "react";
 
 const StyledTextField = withStyles({
-  "@global": {
-    ".MuiInputBase-root": {
+  root: {
+    "& .MuiInputBase-root": {
       borderTopRightRadius: "0px",
       borderBottomRightRadius: "0px",
     },
