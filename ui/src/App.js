@@ -79,12 +79,20 @@ export const allLayoutPaths = layoutFullScreenPaths;
 
 function App() {
   const dispatch = useDispatch();
+  const equityRiskPremiumData = useSelector(
+    (state) => state.equityRiskPremium.countryData
+  );
+  const industryAveragesData = useSelector(
+    (state) => state.industryAverages.data
+  );
 
   useEffect(() => {
     // TODO: Make sure this is resolved before user can progress
     dispatch(getEquityRiskPremiumCountries());
     dispatch(getIndustryAverages());
   }, [dispatch]);
+
+  if (!equityRiskPremiumData || !industryAveragesData) return null;
 
   return (
     <>

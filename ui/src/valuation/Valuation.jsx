@@ -402,7 +402,7 @@ const Valuation = () => {
               Cost of Capital Inputs
             </Typography>
             <Box sx={{ display: "flex", gap: displayGap }}>
-              <Box marginBottom={theme.spacing(1)}>
+              <Box sx={{ mb: theme.spacing(1) }}>
                 <Typography>
                   <Box component="span" sx={{ fontWeight: "bold" }}>
                     <FormatRawNumberToPercent
