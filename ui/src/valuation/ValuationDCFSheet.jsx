@@ -80,7 +80,13 @@ const ValuationDCFSheet = ({
 
       cellUpdate(data, key, value?.toString());
 
-      Object.values(allDependents).forEach((key) => {
+      const sortedDependents = Object.keys(allDependents);
+
+      sortedDependents.sort((a, b) => {
+        return a.localeCompare(b, "en", { numeric: true });
+      });
+
+      sortedDependents.forEach((key) => {
         const cell = data[key];
 
         cellUpdate(data, key, cell.expr);
