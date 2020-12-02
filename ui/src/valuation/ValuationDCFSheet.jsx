@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import Datasheet from "react-datasheet";
-import "react-datasheet/lib/react-datasheet.css";
-import styles from "./ValuationDCFSheet.module.scss";
+import "@blueprintjs/icons/lib/css/blueprint-icons.css";
+import "@blueprintjs/core/lib/css/blueprint.css";
+import "@blueprintjs/table/lib/css/table.css";
 import * as mathjs from "mathjs";
 import { useEffect } from "react";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
@@ -10,37 +10,16 @@ import { useCallback } from "react";
 import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
 import FormatRawNumber from "../components/FormatRawNumber";
 import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
-import initialData, { dataDependentsTree, generatedCells } from "./initialData";
+import initialData, {
+  dataDependentsTree,
+  columns,
+  numberOfRows,
+} from "./initialData";
 import { getColumnsBetween, setAllDependents, validateExp } from "./utils";
 import { getEBITMarginCalculation } from "./expressionCalculations";
+import { Cell, Column, Table } from "@blueprintjs/table";
 
-const generateGrid = (data) => {
-  const rows = [...generatedCells.rows];
-  const columns = [...generatedCells.columns];
-
-  rows.unshift(0);
-  columns.unshift("");
-
-  return rows.map((row, i) =>
-    columns.map((col, j) => {
-      const key = col + row;
-      const datum = data[key];
-
-      if (i === 0 && j === 0) {
-        return { readOnly: true, value: "", className: "blank-cell" };
-      }
-      if (row === 0) {
-        return { readOnly: true, value: col, className: col };
-      }
-      if (j === 0) {
-        return { readOnly: true, value: row };
-      }
-      return datum;
-    })
-  );
-};
-
-const computeExpr = (data, key, expr, scope) => {
+const computeExpr = (key, expr, scope) => {
   let value = null;
 
   if (expr?.charAt(0) !== "=") {
@@ -52,24 +31,27 @@ const computeExpr = (data, key, expr, scope) => {
       value = null;
     }
 
-    if (value !== null && validateExp(data, [key], expr)) {
+    if (value !== null && validateExp([key], expr)) {
       return { className: "equation", value, expr };
     } else {
-      return { className: "error", value: "error", expr: "" };
+      return { className: "error", value: "error", expr };
     }
   }
 };
 
-const cellUpdate = (data, changeCell, expr) => {
+const cellUpdate = (data, key, expr) => {
   const scope = {};
+  const cellToUpdate = data[key];
 
-  Object.values(data).forEach(({ key, value }) => {
+  Object.keys(data).forEach((key) => {
+    const { value } = data[key];
+
     scope[key] = value === "" || isNaN(value) ? 0 : parseFloat(value);
   });
 
-  data[changeCell.key] = {
-    ...changeCell,
-    ...computeExpr(data, changeCell.key, expr, scope),
+  data[key] = {
+    ...cellToUpdate,
+    ...computeExpr(key, expr, scope),
   };
 };
 
@@ -81,27 +63,20 @@ const ValuationDCFSheet = ({
   const input = useSelector((state) => state.input);
   const fundamentals = useSelector((state) => state.fundamentals);
   const equityRiskPremium = useSelector((state) => state.equityRiskPremium);
-
   const [data, setData] = useState(initialData);
 
-  const onCellsChanged = (changes) => {
-    changes.forEach(({ cell, value }) => {
-      updateCell(cell, value);
-    });
-  };
-
   const updateCell = useCallback(
-    (cell, value) => {
+    (key, value) => {
       const allDependents = {};
 
-      setAllDependents(cell.key, dataDependentsTree, allDependents);
+      setAllDependents(key, dataDependentsTree, allDependents);
 
-      cellUpdate(data, cell, value?.toString());
+      cellUpdate(data, key, value?.toString());
 
       Object.values(allDependents).forEach((key) => {
         const cell = data[key];
 
-        cellUpdate(data, cell, cell.expr);
+        cellUpdate(data, key, cell.expr);
       });
 
       setData({ ...data });
@@ -110,27 +85,24 @@ const ValuationDCFSheet = ({
   );
 
   useEffect(() => {
-    updateCell(initialData.B34, valueOfAllOptionsOutstanding);
+    updateCell("B34", valueOfAllOptionsOutstanding);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [valueOfAllOptionsOutstanding]);
 
   useEffect(() => {
-    updateCell(initialData.C12, costOfCapital);
+    updateCell("C12", costOfCapital);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [costOfCapital]);
 
   useEffect(() => {
-    updateCell(initialData.M2, riskFreeRate);
+    updateCell("M2", riskFreeRate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [riskFreeRate]);
 
   useEffect(() => {
+    updateCell("M6", equityRiskPremium.currentCountry.corporateTaxRate);
     updateCell(
-      initialData.M6,
-      equityRiskPremium.currentCountry.corporateTaxRate
-    );
-    updateCell(
-      initialData.M12,
+      "M12",
       equityRiskPremium.matureMarketEquityRiskPremium + riskFreeRate
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -142,25 +114,22 @@ const ValuationDCFSheet = ({
   ]);
 
   useEffect(() => {
-    updateCell(initialData.B3, fundamentals.ttm.totalRevenue);
-    updateCell(initialData.B5, fundamentals.ttm.operatingIncome);
-    updateCell(initialData.B17, fundamentals.investedCapital);
-    updateCell(initialData.B29, fundamentals.currentBookValueOfDebt);
-    updateCell(initialData.B30, fundamentals.ttm.minorityInterest);
-    updateCell(initialData.B31, fundamentals.cashAndShortTermInvestments);
+    updateCell("B3", fundamentals.ttm.totalRevenue);
+    updateCell("B5", fundamentals.ttm.operatingIncome);
+    updateCell("B17", fundamentals.investedCapital);
+    updateCell("B29", fundamentals.currentBookValueOfDebt);
+    updateCell("B30", fundamentals.ttm.minorityInterest);
+    updateCell("B31", fundamentals.cashAndShortTermInvestments);
     updateCell(
-      initialData.B32,
+      "B32",
       `=${fundamentals.noncontrollingInterestInConsolidatedEntity}`
     );
-    updateCell(initialData.B36, fundamentals.currentPrice);
+    updateCell("B36", fundamentals.currentPrice);
     updateCell(
-      initialData.B37,
+      "B37",
       `=B35/${fundamentals.data.SharesStats.SharesOutstanding}`
     );
-    updateCell(
-      initialData.B6,
-      fundamentals.pastThreeYearsAverageEffectiveTaxRate
-    );
+    updateCell("B6", fundamentals.pastThreeYearsAverageEffectiveTaxRate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     fundamentals.ttm.totalRevenue,
@@ -176,24 +145,21 @@ const ValuationDCFSheet = ({
   ]);
 
   useEffect(() => {
-    updateCell(initialData.C16, input.salesToCapitalRatio);
-    updateCell(
-      initialData.C8,
-      `=C3 > B3 ? (C3-B3) / ${input.salesToCapitalRatio} : 0`
-    );
+    updateCell("C16", input.salesToCapitalRatio);
+    updateCell("C8", `=C3 > B3 ? (C3-B3) / ${input.salesToCapitalRatio} : 0`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [input.salesToCapitalRatio]);
 
   useEffect(() => {
-    updateCell(data.C2, input.cagrYearOneToFive);
+    updateCell("C2", input.cagrYearOneToFive);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [input.cagrYearOneToFive]);
 
   useEffect(() => {
-    getColumnsBetween("C", "L").forEach((column) => {
+    getColumnsBetween(columns, "C", "L").forEach((column) => {
       const ebitMarginKey = `${column}4`;
       updateCell(
-        initialData[ebitMarginKey],
+        ebitMarginKey,
         getEBITMarginCalculation(
           input.yearOfConvergence,
           input.ebitTargetMarginInYearTen,
@@ -204,28 +170,39 @@ const ValuationDCFSheet = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [input.yearOfConvergence, input.ebitTargetMarginInYearTen]);
 
-  return (
-    <Datasheet
-      className={styles.datasheet}
-      data={generateGrid(data)}
-      valueRenderer={({ value, type }) => {
-        if (value === "error") return value;
-        if (type === "percent")
-          return <FormatRawNumberToPercent value={value} decimalScale={2} />;
-        if (type === "million")
-          return <FormatRawNumberToMillion value={value} useCurrencySymbol />;
-        if (type === "currency")
-          return <FormatRawNumberToCurrency value={value} />;
-        if (type === "number")
-          return <FormatRawNumber value={value} decimalScale={2} />;
+  const cellRenderer = (column) => (rowIndex) => {
+    const row = (rowIndex += 1);
+    const key = column + row;
+    const cell = data[key];
 
-        return value;
-      }}
-      dataRenderer={(cell) => {
-        return cell.expr || cell.value || "";
-      }}
-      onCellsChanged={onCellsChanged}
-    />
+    if (!cell) return <Cell />;
+
+    const { value, type } = cell;
+
+    let node = cell.value;
+
+    if (type === "percent") {
+      node = <FormatRawNumberToPercent value={value} decimalScale={2} />;
+    }
+    if (type === "million") {
+      node = <FormatRawNumberToMillion value={value} useCurrencySymbol />;
+    }
+    if (type === "currency") {
+      node = <FormatRawNumberToCurrency value={value} />;
+    }
+    if (type === "number") {
+      node = <FormatRawNumber value={value} decimalScale={2} />;
+    }
+
+    return <Cell>{node}</Cell>;
+  };
+
+  return (
+    <Table numRows={numberOfRows}>
+      {columns.map((column) => {
+        return <Column name={column} cellRenderer={cellRenderer(column)} />;
+      })}
+    </Table>
   );
 };
 

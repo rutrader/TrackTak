@@ -6,7 +6,7 @@ import { percentModifier } from "./FormatRawNumberToPercent";
 
 const FormatInputToPercent = forwardRef(({ defaultValue, ...props }, ref) => {
   const { onChange, ...other } = props;
-  const [valueAsDecimal, setValue] = useState();
+  const [valueAsDecimal, setValue] = useState(null);
 
   return (
     <NumberFormat
