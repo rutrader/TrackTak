@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  TextField,
-  Typography,
-  withStyles,
-} from "@material-ui/core";
+import { Box, Button, TextField, withStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 
 const TickerTextField = withStyles({
@@ -39,15 +33,21 @@ const Home = () => {
           onSubmit={async (e) => {
             e.preventDefault();
 
-            history.push(`/valuation/${ticker}`);
+            const replacedWhiteSpace = ticker.replace(/ /g, "");
+
+            if (replacedWhiteSpace !== "") {
+              history.push(`/valuation/${ticker}`);
+            }
           }}
         >
           <TickerTextField
-            label="Stock ticker e.g. AMZN"
+            value={ticker}
             fullWidth
+            required
             onChange={(e) => {
               setTicker(e.currentTarget.value);
             }}
+            placeholder="Stock ticker e.g. AMZN"
           />
           <SubmitButton
             color="primary"
