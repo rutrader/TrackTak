@@ -5,6 +5,7 @@ import { getFundamentals } from "../redux/actions/fundamentalsActions";
 import { setValue } from "../redux/actions/inputActions";
 import {
   Box,
+  Hidden,
   TextField,
   Typography,
   useTheme,
@@ -30,31 +31,24 @@ import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
 import FormatRawNumber from "../components/FormatRawNumber";
 import SubscribeMailingList from "../shared/SubscribeMailingList";
 
+const textFieldRootStyles = {
+  flex: 1,
+  marginTop: 4,
+  marginBottom: 4,
+  minWidth: "272px",
+};
+
 const ValueDrivingTextField = withStyles({
   root: {
-    flex: 1,
-    marginTop: 4,
-    marginBottom: 4,
-    minWidth: "300px",
+    ...textFieldRootStyles,
   },
 })(TextField);
 
 const CostOfCapitalTextField = withStyles({
   root: {
-    flex: 1,
-    marginTop: 4,
-    marginBottom: 4,
-    minWidth: "300px",
+    ...textFieldRootStyles,
   },
 })(TextField);
-
-const TypographyLabel = withStyles({
-  root: {
-    display: "flex",
-  },
-})(({ ...props }) => (
-  <Typography color="textSecondary" gutterBottom {...props} />
-));
 
 const mapFromStatementsToDateObject = (statementToLoop, valueKeys) => {
   return Object.values(statementToLoop).reduce((acc, curr) => {
@@ -221,7 +215,7 @@ const Valuation = () => {
 
   return (
     <>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", gap: theme.spacing(10) }}>
         <Box>
           <Typography variant="h4">{General.Name}</Typography>
           <Typography
@@ -273,27 +267,25 @@ const Valuation = () => {
             </Box>
           </Box>
         </Box>
-        <Box
-          sx={{
-            ml: theme.spacing(10),
-          }}
-        >
-          <Typography
-            variant="h6"
-            gutterBottom
-            style={{ fontWeight: "bold" }}
-            className="landing-page-sign-up-today-text"
-          >
-            Join today to get 50% off for life when we launch premium.
-          </Typography>
-          <SubscribeMailingList />
-        </Box>
+        <Hidden smDown>
+          <Box>
+            <Typography
+              variant="h6"
+              gutterBottom
+              style={{ fontWeight: "bold" }}
+              className="landing-page-sign-up-today-text"
+            >
+              Join today to get 50% off for life when we launch premium.
+            </Typography>
+            <SubscribeMailingList />
+          </Box>
+        </Hidden>
       </Box>
       <Section>
         <Typography variant="h5">Company Fundamentals</Typography>
         <TTTable columns={companyFundamentalsColumns} data={rowData} />
       </Section>
-      <Box sx={{ display: "flex", gap: 20 }}>
+      <Box sx={{ display: "flex", gridColumnGap: 20, flexWrap: "wrap" }}>
         <Box sx={{ flex: 1 }}>
           <Section>
             <Typography variant="h5" gutterBottom>
@@ -383,25 +375,25 @@ const Valuation = () => {
             <Typography variant="h5" gutterBottom>
               Black Scholes Employee Options Valuation
             </Typography>
-            <TypographyLabel>
-              <Box component="span" sx={{ mr: 2, minWidth: "263px" }}>
-                Value Per Option
+            <Typography gutterBottom>
+              Value Per Option&nbsp;
+              <Box component="span" sx={{ fontWeight: "bold" }}>
+                <FormatRawNumberToCurrency
+                  value={valuePerOption}
+                  decimalScale={2}
+                />
               </Box>
-              <FormatRawNumberToCurrency
-                value={valuePerOption}
-                decimalScale={2}
-              />
-            </TypographyLabel>
-            <TypographyLabel>
-              <Box component="span" sx={{ mr: 2, minWidth: "263px" }}>
-                Value of All Options Outstanding
+            </Typography>
+            <Typography gutterBottom>
+              Value of All Options Outstanding&nbsp;
+              <Box component="span" sx={{ fontWeight: "bold" }}>
+                <FormatRawNumberToMillion
+                  value={valuePerOption * input.numberOfOptionsOutstanding}
+                  suffix="M"
+                  decimalScale={2}
+                />
               </Box>
-              <FormatRawNumberToMillion
-                value={valuePerOption * input.numberOfOptionsOutstanding}
-                suffix="M"
-                decimalScale={2}
-              />
-            </TypographyLabel>
+            </Typography>
           </Section>
         </Box>
         <Box sx={{ flex: 1 }}>

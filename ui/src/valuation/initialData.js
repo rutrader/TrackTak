@@ -9,6 +9,7 @@ import {
   getCumulatedDiscountFactorCalculation,
   getEBITAfterTax,
   getEBITCalculation,
+  getEBITMarginCalculation,
   getFCFFCalculation,
   getInvestedCapitalCalculation,
   getNOLCalculation,
@@ -57,14 +58,14 @@ const initialData = {
   A25: { value: "Sum of PV" },
   A26: { value: "Probability of Failure" },
   A27: { value: "Proceeds if the Firm Fails" },
-  A28: { value: "Value of Operating Assets" },
+  A28: { value: "Operating Assets" },
   A29: { value: "- Debt" },
   A30: { value: "- Minority Interests" },
   A31: { value: "+ Cash" },
   A32: { value: "+ Non-Operating Assets" },
-  A33: { value: "Value of Equity" },
-  A34: { value: "- Value of Options" },
-  A35: { value: "- Value of Equity in Common Stock" },
+  A33: { value: "Equity" },
+  A34: { value: "- Options" },
+  A35: { value: "Common Stock Equity" },
   A36: { value: "Current Price" },
   A37: {
     value: "Estimated Value Per Share",
@@ -89,7 +90,9 @@ const initialData = {
   B28: getExpressionProperties("=B25*(1-B26)+B27*B26"),
   B33: getExpressionProperties("=B28-B29-B30+B31+B32"),
   B35: getExpressionProperties("=B33-B34"),
+  B37: getExpressionProperties("=B35/{sharesOutstanding}"),
   B38: getExpressionProperties("=(B37-B36)/B37"),
+  C8: getExpressionProperties("=C3 > B3 ? (C3-B3) / {salesToCapitalRatio} : 0"),
   C13: getExpressionProperties("=1/(1+C12)"),
   M18: getExpressionProperties("=L12"),
   M4: getExpressionProperties("=L4"),
@@ -194,7 +197,13 @@ getColumnsBetween(columns, "C", "L").forEach((column) => {
   const ebitAfterTaxKey = `${column}7`;
   const pvFCFFKey = `${column}14`;
   const investedCapKey = `${column}17`;
+  const ebitMarginKey = `${column}4`;
 
+  initialData[ebitMarginKey].expr = getEBITMarginCalculation(
+    "{yearOfConvergence}",
+    "{ebitTargetMarginInYearTen}",
+    ebitMarginKey
+  );
   initialData[ebitAfterTaxKey].expr = getEBITAfterTax(ebitAfterTaxKey);
   initialData[pvFCFFKey].expr = getPVToFCFFCalculation(pvFCFFKey);
   initialData[investedCapKey].expr = getInvestedCapitalCalculation(

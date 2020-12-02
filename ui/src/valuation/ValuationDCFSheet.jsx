@@ -15,9 +15,15 @@ import initialData, {
   columns,
   numberOfRows,
 } from "./initialData";
-import { getColumnsBetween, setAllDependents, validateExp } from "./utils";
+import {
+  getColumnsBetween,
+  replacePlaceholderWithValue,
+  setAllDependents,
+  validateExp,
+} from "./utils";
 import { getEBITMarginCalculation } from "./expressionCalculations";
 import { Cell, Column, Table } from "@blueprintjs/table";
+import { useTheme } from "@material-ui/core";
 
 const computeExpr = (key, expr, scope) => {
   let value = null;
@@ -64,6 +70,7 @@ const ValuationDCFSheet = ({
   const fundamentals = useSelector((state) => state.fundamentals);
   const equityRiskPremium = useSelector((state) => state.equityRiskPremium);
   const [data, setData] = useState(initialData);
+  const theme = useTheme();
 
   const updateCell = useCallback(
     (key, value) => {
@@ -82,6 +89,46 @@ const ValuationDCFSheet = ({
       setData({ ...data });
     },
     [data]
+  );
+
+  const cellRenderer = useCallback(
+    (column) => (rowIndex) => {
+      const row = (rowIndex += 1);
+      const key = column + row;
+      const cell = data[key];
+
+      if (!cell) return <Cell />;
+
+      const { value, type } = cell;
+
+      let node = cell.value;
+
+      if (type === "percent") {
+        node = <FormatRawNumberToPercent value={value} decimalScale={2} />;
+      }
+      if (type === "million") {
+        node = <FormatRawNumberToMillion value={value} useCurrencySymbol />;
+      }
+      if (type === "currency") {
+        node = <FormatRawNumberToCurrency value={value} />;
+      }
+      if (type === "number") {
+        node = <FormatRawNumber value={value} decimalScale={2} />;
+      }
+
+      return (
+        <Cell
+          style={{
+            fontSize: theme.typography.fontSize,
+            fontFamily: theme.typography.fontFamily,
+            color: key === "B37" ? theme.palette.primary.main : "initial",
+          }}
+        >
+          {node}
+        </Cell>
+      );
+    },
+    [data, theme]
   );
 
   useEffect(() => {
@@ -120,14 +167,15 @@ const ValuationDCFSheet = ({
     updateCell("B29", fundamentals.currentBookValueOfDebt);
     updateCell("B30", fundamentals.ttm.minorityInterest);
     updateCell("B31", fundamentals.cashAndShortTermInvestments);
-    updateCell(
-      "B32",
-      `=${fundamentals.noncontrollingInterestInConsolidatedEntity}`
-    );
+    updateCell("B32", fundamentals.noncontrollingInterestInConsolidatedEntity);
     updateCell("B36", fundamentals.currentPrice);
     updateCell(
       "B37",
-      `=B35/${fundamentals.data.SharesStats.SharesOutstanding}`
+      replacePlaceholderWithValue(
+        data.B37,
+        "sharesOutstanding",
+        fundamentals.data.SharesStats.SharesOutstanding
+      )
     );
     updateCell("B6", fundamentals.pastThreeYearsAverageEffectiveTaxRate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -146,7 +194,14 @@ const ValuationDCFSheet = ({
 
   useEffect(() => {
     updateCell("C16", input.salesToCapitalRatio);
-    updateCell("C8", `=C3 > B3 ? (C3-B3) / ${input.salesToCapitalRatio} : 0`);
+    updateCell(
+      "C8",
+      replacePlaceholderWithValue(
+        data.C8,
+        "salesToCapitalRatio",
+        input.salesToCapitalRatio
+      )
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [input.salesToCapitalRatio]);
 
@@ -158,6 +213,7 @@ const ValuationDCFSheet = ({
   useEffect(() => {
     getColumnsBetween(columns, "C", "L").forEach((column) => {
       const ebitMarginKey = `${column}4`;
+
       updateCell(
         ebitMarginKey,
         getEBITMarginCalculation(
@@ -170,37 +226,25 @@ const ValuationDCFSheet = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [input.yearOfConvergence, input.ebitTargetMarginInYearTen]);
 
-  const cellRenderer = (column) => (rowIndex) => {
-    const row = (rowIndex += 1);
-    const key = column + row;
-    const cell = data[key];
-
-    if (!cell) return <Cell />;
-
-    const { value, type } = cell;
-
-    let node = cell.value;
-
-    if (type === "percent") {
-      node = <FormatRawNumberToPercent value={value} decimalScale={2} />;
-    }
-    if (type === "million") {
-      node = <FormatRawNumberToMillion value={value} useCurrencySymbol />;
-    }
-    if (type === "currency") {
-      node = <FormatRawNumberToCurrency value={value} />;
-    }
-    if (type === "number") {
-      node = <FormatRawNumber value={value} decimalScale={2} />;
-    }
-
-    return <Cell>{node}</Cell>;
-  };
-
   return (
-    <Table numRows={numberOfRows}>
+    <Table
+      enableGhostCells
+      numRows={numberOfRows}
+      columnWidths={columns.map((column) => {
+        if (column === "A") {
+          return 220;
+        }
+        return 120;
+      })}
+    >
       {columns.map((column) => {
-        return <Column name={column} cellRenderer={cellRenderer(column)} />;
+        return (
+          <Column
+            key={column}
+            name={column}
+            cellRenderer={cellRenderer(column)}
+          />
+        );
       })}
     </Table>
   );
