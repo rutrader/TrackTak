@@ -90,9 +90,9 @@ const initialData = {
   B28: getExpressionProperties("=B25*(1-B26)+B27*B26"),
   B33: getExpressionProperties("=B28-B29-B30+B31+B32"),
   B35: getExpressionProperties("=B33-B34"),
-  B37: getExpressionProperties("=B35/{sharesOutstanding}"),
+  B37: getExpressionProperties("=B35/{shares}"),
   B38: getExpressionProperties("=(B37-B36)/B37"),
-  C8: getExpressionProperties("=C3 > B3 ? (C3-B3) / {salesToCapitalRatio} : 0"),
+  C8: getExpressionProperties("=C3 > B3 ? (C3-B3) / C16 : 0"),
   C13: getExpressionProperties("=1/(1+C12)"),
   M18: getExpressionProperties("=L12"),
   M4: getExpressionProperties("=L4"),
@@ -200,8 +200,8 @@ getColumnsBetween(columns, "C", "L").forEach((column) => {
   const ebitMarginKey = `${column}4`;
 
   initialData[ebitMarginKey].expr = getEBITMarginCalculation(
-    "{yearOfConvergence}",
-    "{ebitTargetMarginInYearTen}",
+    null,
+    null,
     ebitMarginKey
   );
   initialData[ebitAfterTaxKey].expr = getEBITAfterTax(ebitAfterTaxKey);

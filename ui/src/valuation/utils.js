@@ -86,6 +86,3 @@ export const getHighestColumn = (data) => {
 
   return String.fromCharCode(highestColumnCharCode);
 };
-
-export const replacePlaceholderWithValue = (cell, placeholder, value) =>
-  cell.expr.replace(`{${placeholder}}`, value);
