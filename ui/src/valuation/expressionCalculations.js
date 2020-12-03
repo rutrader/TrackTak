@@ -15,7 +15,7 @@ export const getEBITMarginCalculation = (
   const column = cellKey.charAt(0);
 
   return `=${column}1 > ${yearOfConvergence} ? ${ebitTargetMarginInYearTen} : ${ebitTargetMarginInYearTen} -
-    ((${ebitTargetMarginInYearTen} - C4) /
+    ((${ebitTargetMarginInYearTen} - B4) /
       ${yearOfConvergence}) *
       (${yearOfConvergence} - ${column}1)`.replace(spaceRegex, " ");
 };

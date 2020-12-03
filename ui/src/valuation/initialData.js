@@ -245,7 +245,6 @@ getColumnsBetween(columns, "B", "L").forEach((column) => {
   initialData[roicKey].expr = getROICCalculation(roicKey);
 });
 
-// parent: [children]
 export const dataDependentsTree = {};
 
 Object.keys(initialData).forEach((key) => {

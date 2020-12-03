@@ -27,14 +27,20 @@ export const validateExp = (trailKeys, expr) => {
   return valid;
 };
 
-export const setAllDependents = (key, dataDependentsTree, allDependents) => {
+export const setAllDependents = (
+  key,
+  dataDependentsTree,
+  allDependents,
+  testDependents
+) => {
   const cellsToUpdate = dataDependentsTree[key] || [];
 
   cellsToUpdate.forEach((key) => {
     if (!allDependents[key]) {
       allDependents[key] = key;
+      testDependents.push(key);
 
-      setAllDependents(key, dataDependentsTree, allDependents);
+      setAllDependents(key, dataDependentsTree, allDependents, testDependents);
     }
   });
 };
@@ -85,4 +91,53 @@ export const getHighestColumn = (data) => {
   });
 
   return String.fromCharCode(highestColumnCharCode);
+};
+
+const arrayMove = (arr, fromIndex, toIndex) => {
+  const element = arr[fromIndex];
+
+  arr.splice(fromIndex, 1);
+  arr.splice(toIndex, 0, element);
+};
+
+const assignDependents = (dataDependentsTree, allDependents, rootKey) => {
+  let currentKeyArray = dataDependentsTree[rootKey];
+
+  // BFS as we must update the most recent
+  // children before moving to grandchildren
+  while (currentKeyArray.length > 0) {
+    let next = [];
+
+    currentKeyArray.forEach((key) => {
+      // If we find the element again it means another is dependent
+      // on it, so let's move it to the back of the array
+      const existingIndex = allDependents[rootKey].findIndex((x) => x === key);
+
+      if (existingIndex === -1) {
+        allDependents[rootKey].push(key);
+      } else {
+        arrayMove(
+          allDependents[rootKey],
+          existingIndex,
+          allDependents[rootKey].length - 1
+        );
+      }
+
+      if (dataDependentsTree[key]) {
+        next.push(...dataDependentsTree[key]);
+      }
+    });
+
+    currentKeyArray = next;
+  }
+};
+
+export const getAllDependents = (dataDependentsTree, rootKey) => {
+  const allDependents = {
+    [rootKey]: [],
+  };
+
+  assignDependents(dataDependentsTree, allDependents, rootKey);
+
+  return allDependents;
 };

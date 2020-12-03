@@ -15,7 +15,7 @@ import initialData, {
   columns,
   numberOfRows,
 } from "./initialData";
-import { getColumnsBetween, setAllDependents, validateExp } from "./utils";
+import { getAllDependents, getColumnsBetween, validateExp } from "./utils";
 import { getEBITMarginCalculation } from "./expressionCalculations";
 import { Cell, Column, Table } from "@blueprintjs/table";
 import { useTheme } from "@material-ui/core";
@@ -69,19 +69,13 @@ const ValuationDCFSheet = ({
 
   const updateCell = useCallback(
     (key, value) => {
-      const allDependents = {};
-
-      setAllDependents(key, dataDependentsTree, allDependents);
+      const allDependents = getAllDependents(dataDependentsTree, key);
 
       cellUpdate(data, key, value?.toString());
 
-      const sortedDependents = Object.keys(allDependents);
+      const currentDependents = allDependents[key] || [];
 
-      sortedDependents.sort((a, b) => {
-        return a.localeCompare(b, "en", { numeric: true });
-      });
-
-      sortedDependents.forEach((key) => {
+      currentDependents.forEach((key) => {
         const cell = data[key];
 
         cellUpdate(data, key, cell.expr);
