@@ -15,12 +15,7 @@ import initialData, {
   columns,
   numberOfRows,
 } from "./initialData";
-import {
-  getColumnsBetween,
-  replacePlaceholderWithValue,
-  setAllDependents,
-  validateExp,
-} from "./utils";
+import { getAllDependents, getColumnsBetween, validateExp } from "./utils";
 import { getEBITMarginCalculation } from "./expressionCalculations";
 import { Cell, Column, Table } from "@blueprintjs/table";
 import { useTheme } from "@material-ui/core";
@@ -74,19 +69,13 @@ const ValuationDCFSheet = ({
 
   const updateCell = useCallback(
     (key, value) => {
-      const allDependents = {};
-
-      setAllDependents(key, dataDependentsTree, allDependents);
+      const allDependents = getAllDependents(dataDependentsTree, key);
 
       cellUpdate(data, key, value?.toString());
 
-      const sortedDependents = Object.keys(allDependents);
+      const currentDependents = allDependents[key] || [];
 
-      sortedDependents.sort((a, b) => {
-        return a.localeCompare(b, "en", { numeric: true });
-      });
-
-      sortedDependents.forEach((key) => {
+      currentDependents.forEach((key) => {
         const cell = data[key];
 
         cellUpdate(data, key, cell.expr);
@@ -162,7 +151,6 @@ const ValuationDCFSheet = ({
   }, [
     equityRiskPremium.currentCountry.corporateTaxRate,
     equityRiskPremium.matureMarketEquityRiskPremium,
-    input.salesToCapitalRatio,
     riskFreeRate,
   ]);
 
@@ -177,11 +165,7 @@ const ValuationDCFSheet = ({
     updateCell("B36", fundamentals.currentPrice);
     updateCell(
       "B37",
-      replacePlaceholderWithValue(
-        data.B37,
-        "sharesOutstanding",
-        fundamentals.data.SharesStats.SharesOutstanding
-      )
+      `=B35/${fundamentals.data.SharesStats.SharesOutstanding}`
     );
     updateCell("B6", fundamentals.pastThreeYearsAverageEffectiveTaxRate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -200,14 +184,6 @@ const ValuationDCFSheet = ({
 
   useEffect(() => {
     updateCell("C16", input.salesToCapitalRatio);
-    updateCell(
-      "C8",
-      replacePlaceholderWithValue(
-        data.C8,
-        "salesToCapitalRatio",
-        input.salesToCapitalRatio
-      )
-    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [input.salesToCapitalRatio]);
 
