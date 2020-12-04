@@ -21,6 +21,6 @@ const initialState = {
 
 export const inputReducer = createReducer(initialState, (builder) => {
   builder.addCase(setValue, (state, action) => {
-    state[action.payload.key] = action.payload.value;
+    state[action.payload.key] = action.payload.value || null;
   });
 });
