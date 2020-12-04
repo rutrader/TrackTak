@@ -78,13 +78,7 @@ const Valuation = () => {
     dispatch(getFundamentals(params.ticker));
   }, [dispatch, params.ticker]);
 
-  if (
-    !fundamentals.data ||
-    !governmentBonds.data ||
-    !equityRiskPremium.countryData ||
-    !industryAverages.data
-  )
-    return null;
+  if (!fundamentals.data || !governmentBonds.data) return null;
 
   const {
     General,
@@ -97,7 +91,7 @@ const Valuation = () => {
     equityRiskPremium.currentCountry.adjDefaultSpread;
   const valuePerOption = blackScholes(
     "call",
-    fundamentals.currentPrice,
+    fundamentals.price,
     input.averageStrikePrice,
     input.averageMaturityOfOptions,
     riskFreeRate,
@@ -133,45 +127,45 @@ const Valuation = () => {
   const rowData = [
     {
       dataField: "Revenue",
-      ttm: <FormatRawNumberToMillion value={fundamentals.ttm.totalRevenue} />,
+      ttm: fundamentals.hasIncomeTTM ? (
+        <FormatRawNumberToMillion value={fundamentals.current.totalRevenue} />
+      ) : null,
       ...mapFromStatementsToDateObject(Income_Statement.yearly, [
         "totalRevenue",
       ]),
     },
     {
       dataField: "Operating Income",
-      ttm: (
-        <FormatRawNumberToMillion value={fundamentals.ttm.operatingIncome} />
-      ),
+      ttm: fundamentals.hasIncomeTTM ? (
+        <FormatRawNumberToMillion
+          value={fundamentals.current.operatingIncome}
+        />
+      ) : null,
       ...mapFromStatementsToDateObject(Income_Statement.yearly, [
         "operatingIncome",
       ]),
     },
     {
       dataField: "Interest Expense",
-      ttm: (
-        <FormatRawNumberToMillion value={fundamentals.ttm.interestExpense} />
-      ),
+      ttm: fundamentals.hasIncomeTTM ? (
+        <FormatRawNumberToMillion
+          value={fundamentals.current.interestExpense}
+        />
+      ) : null,
       ...mapFromStatementsToDateObject(Income_Statement.yearly, [
         "interestExpense",
       ]),
     },
     {
       dataField: "Book Value of Equity",
-      ttm: (
-        <FormatRawNumberToMillion
-          value={fundamentals.currentBookValueOfEquity}
-        />
-      ),
+      ttm: <FormatRawNumberToMillion value={fundamentals.bookValueOfEquity} />,
       ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
         "totalStockholderEquity",
       ]),
     },
     {
       dataField: "Book Value of Debt",
-      ttm: (
-        <FormatRawNumberToMillion value={fundamentals.currentBookValueOfDebt} />
-      ),
+      ttm: <FormatRawNumberToMillion value={fundamentals.bookValueOfDebt} />,
       ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
         "shortLongTermDebt",
         "longTermDebt",
@@ -202,9 +196,11 @@ const Valuation = () => {
     },
     {
       dataField: "Minority Interests",
-      ttm: (
-        <FormatRawNumberToMillion value={fundamentals.ttm.minorityInterest} />
-      ),
+      ttm: fundamentals.hasIncomeTTM ? (
+        <FormatRawNumberToMillion
+          value={fundamentals.current.minorityInterest}
+        />
+      ) : null,
       ...mapFromStatementsToDateObject(Income_Statement.yearly, [
         "minorityInterest",
       ]),
@@ -231,9 +227,7 @@ const Valuation = () => {
             <Box>
               <Typography>
                 <Box component="span" sx={{ fontWeight: "bold" }}>
-                  <FormatRawNumberToCurrency
-                    value={fundamentals.currentPrice}
-                  />
+                  <FormatRawNumberToCurrency value={fundamentals.price} />
                 </Box>
                 &nbsp;{General.CurrencyCode}
               </Typography>

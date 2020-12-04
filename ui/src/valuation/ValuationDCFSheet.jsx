@@ -155,14 +155,14 @@ const ValuationDCFSheet = ({
   ]);
 
   useEffect(() => {
-    updateCell("B3", fundamentals.ttm.totalRevenue);
-    updateCell("B5", fundamentals.ttm.operatingIncome);
+    updateCell("B3", fundamentals.current.totalRevenue);
+    updateCell("B5", fundamentals.current.operatingIncome);
     updateCell("B17", fundamentals.investedCapital);
-    updateCell("B29", fundamentals.currentBookValueOfDebt);
-    updateCell("B30", fundamentals.ttm.minorityInterest);
+    updateCell("B29", fundamentals.bookValueOfDebt);
+    updateCell("B30", fundamentals.current.minorityInterest);
     updateCell("B31", fundamentals.cashAndShortTermInvestments);
     updateCell("B32", fundamentals.noncontrollingInterestInConsolidatedEntity);
-    updateCell("B36", fundamentals.currentPrice);
+    updateCell("B36", fundamentals.price);
     updateCell(
       "B37",
       `=B35/${fundamentals.data.SharesStats.SharesOutstanding}`
@@ -170,14 +170,14 @@ const ValuationDCFSheet = ({
     updateCell("B6", fundamentals.pastThreeYearsAverageEffectiveTaxRate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    fundamentals.ttm.totalRevenue,
-    fundamentals.ttm.operatingIncome,
+    fundamentals.current.totalRevenue,
+    fundamentals.current.operatingIncome,
     fundamentals.investedCapital,
-    fundamentals.ttm.minorityInterest,
-    fundamentals.currentBookValueOfDebt,
+    fundamentals.current.minorityInterest,
+    fundamentals.bookValueOfDebt,
     fundamentals.cashAndShortTermInvestments,
     fundamentals.noncontrollingInterestInConsolidatedEntity,
-    fundamentals.currentPrice,
+    fundamentals.price,
     fundamentals.data.SharesStats.SharesOutstanding,
     fundamentals.pastThreeYearsAverageEffectiveTaxRate,
   ]);
