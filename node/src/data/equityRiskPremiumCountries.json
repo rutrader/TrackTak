@@ -640,7 +640,7 @@
     "corporateTaxRate": "30.62%"
   },
   {
-    "country": "Jersey (States of)",
+    "country": "Jersey",
     "moodysRating": "Aa3",
     "adjDefaultSpread": "0.71%",
     "equityRiskPremium": "6.12%",
@@ -1032,7 +1032,7 @@
     "corporateTaxRate": "10.00%"
   },
   {
-    "country": "Ras Al Khaimah (Emirate of)",
+    "country": "Ras Al Khaimah",
     "moodysRating": "A2",
     "adjDefaultSpread": "1.00%",
     "equityRiskPremium": "6.48%",
