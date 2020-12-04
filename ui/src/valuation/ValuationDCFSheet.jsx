@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import "@blueprintjs/icons/lib/css/blueprint-icons.css";
-import "@blueprintjs/core/lib/css/blueprint.css";
-import "@blueprintjs/table/lib/css/table.css";
 import * as mathjs from "mathjs";
 import { useEffect } from "react";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
@@ -19,6 +16,7 @@ import { getAllDependents, getColumnsBetween, validateExp } from "./utils";
 import { getEBITMarginCalculation } from "./expressionCalculations";
 import { Cell, Column, Table } from "@blueprintjs/table";
 import { useTheme } from "@material-ui/core";
+import "../shared/blueprintTheme.scss";
 
 const computeExpr = (key, expr, scope) => {
   let value = null;
