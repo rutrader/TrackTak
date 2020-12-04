@@ -24,7 +24,7 @@
     "corporateTaxRate": "26.00%"
   },
   {
-    "country": "Andorra (Principality of)",
+    "country": "Andorra",
     "moodysRating": "Baa2",
     "adjDefaultSpread": "2.82%",
     "equityRiskPremium": "9.48%",
@@ -48,7 +48,7 @@
     "corporateTaxRate": "23.88%"
   },
   {
-    "country": "Antigua & Barbuda",
+    "country": "Antigua",
     "moodysRating": "NA",
     "adjDefaultSpread": "16.30%",
     "equityRiskPremium": "26.06%",
@@ -134,6 +134,14 @@
     "equityRiskPremium": "19.68%",
     "countryRiskPremium": "13.67%",
     "corporateTaxRate": "5.50%"
+  },
+  {
+    "country": "Barbuda",
+    "moodysRating": "NA",
+    "adjDefaultSpread": "16.30%",
+    "equityRiskPremium": "26.06%",
+    "countryRiskPremium": "20.05%",
+    "corporateTaxRate": "23.88%"
   },
   {
     "country": "Belarus",
@@ -312,20 +320,12 @@
     "corporateTaxRate": "33.00%"
   },
   {
-    "country": "Congo (Democratic Republic of)",
+    "country": "Congo",
     "moodysRating": "Caa1",
     "adjDefaultSpread": "11.12%",
     "equityRiskPremium": "19.68%",
     "countryRiskPremium": "13.67%",
     "corporateTaxRate": "35.00%"
-  },
-  {
-    "country": "Congo (Republic of)",
-    "moodysRating": "Caa2",
-    "adjDefaultSpread": "13.35%",
-    "equityRiskPremium": "22.43%",
-    "countryRiskPremium": "16.42%",
-    "corporateTaxRate": "32.36%"
   },
   {
     "country": "Cook Islands",
@@ -544,7 +544,7 @@
     "corporateTaxRate": "25.00%"
   },
   {
-    "country": "Guernsey (States of)",
+    "country": "Guernsey",
     "moodysRating": "Baa1",
     "adjDefaultSpread": "2.37%",
     "equityRiskPremium": "8.92%",
@@ -704,7 +704,7 @@
     "corporateTaxRate": "30.62%"
   },
   {
-    "country": "Jersey (States of)",
+    "country": "Jersey",
     "moodysRating": "A1",
     "adjDefaultSpread": "1.04%",
     "equityRiskPremium": "7.29%",
@@ -736,7 +736,7 @@
     "corporateTaxRate": "30.00%"
   },
   {
-    "country": "Korea, D.P.R.",
+    "country": "North Korea",
     "moodysRating": "NR",
     "adjDefaultSpread": "17.03%",
     "equityRiskPremium": "26.96%",
@@ -1032,7 +1032,7 @@
     "corporateTaxRate": "30.00%"
   },
   {
-    "country": "Palestinian Authority",
+    "country": "Palestinian National Authority",
     "moodysRating": "NA",
     "adjDefaultSpread": "4.74%",
     "equityRiskPremium": "11.84%",
@@ -1104,7 +1104,7 @@
     "corporateTaxRate": "10.00%"
   },
   {
-    "country": "Ras Al Khaimah (Emirate of)",
+    "country": "Ras Al Khaimah",
     "moodysRating": "Caa1",
     "adjDefaultSpread": "11.12%",
     "equityRiskPremium": "19.68%",
@@ -1272,7 +1272,7 @@
     "corporateTaxRate": "35.00%"
   },
   {
-    "country": "St. Vincent & the Grenadines",
+    "country": "Saint Vincent and the Grenadines",
     "moodysRating": "B3",
     "adjDefaultSpread": "9.65%",
     "equityRiskPremium": "17.87%",
@@ -1464,7 +1464,7 @@
     "corporateTaxRate": "20.00%"
   },
   {
-    "country": "Yemen, Republic",
+    "country": "Yemen",
     "moodysRating": "NR",
     "adjDefaultSpread": "17.03%",
     "equityRiskPremium": "26.96%",

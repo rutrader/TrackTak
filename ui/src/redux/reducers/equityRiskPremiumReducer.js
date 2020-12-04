@@ -33,9 +33,11 @@ export const equityRiskPremiumCountriesReducer = createReducer(
         countryRiskPremium,
         equityRiskPremium,
         adjDefaultSpread,
-      } = state.countryData.find(
-        (datum) => datum.country === action.payload.currentCountry
-      );
+      } = state.countryData.find((datum) => {
+        const country = datum.country.toUpperCase();
+
+        return country === action.payload.currentCountry.toUpperCase();
+      });
 
       state.currentCountry = {
         corporateTaxRate: parseFloat(corporateTaxRate) / percentModifier,

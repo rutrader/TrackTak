@@ -11,6 +11,15 @@ const initialState = {
   currentIndustry: null,
 };
 
+const spaceRegex = /\s/g;
+const industryMappingsMutated = {};
+
+Object.keys(industryMapping).forEach((key) => {
+  const noSpaceKey = key.replace(spaceRegex, "").toUpperCase();
+
+  industryMappingsMutated[noSpaceKey] = industryMapping[key];
+});
+
 export const industryAveragesReducer = createReducer(
   initialState,
   (builder) => {
@@ -18,12 +27,15 @@ export const industryAveragesReducer = createReducer(
       state.data = action.payload;
     });
     builder.addCase(setCurrentIndustryAverage, (state, action) => {
+      const currentIndustryMutated = action.payload.currentIndustry
+        .replace(spaceRegex, "")
+        .toUpperCase();
       const mappedCurrentIndustry =
-        industryMapping[action.payload.currentIndustry];
+        industryMappingsMutated[currentIndustryMutated];
 
-      state.currentIndustry = state.data.find(
-        (datum) => datum.industryName === mappedCurrentIndustry
-      );
+      state.currentIndustry = state.data.find((datum) => {
+        return datum.industryName === mappedCurrentIndustry;
+      });
       state.currentIndustry.standardDeviationInStockPrices =
         parseFloat(state.currentIndustry.standardDeviationInStockPrices) /
         percentModifier;

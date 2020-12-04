@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Box, Button, TextField, withStyles } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  withStyles,
+} from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 
 const TickerTextField = withStyles({
@@ -59,6 +65,9 @@ const Home = () => {
           </SubmitButton>
         </Box>
       </Box>
+      <Typography color="textSecondary">
+        Foreign stocks in this format: TICKER.EXCHANGE
+      </Typography>
     </>
   );
 };

@@ -3,14 +3,17 @@ import { getFundamentals } from "../actions/fundamentalsActions";
 
 const initialState = {
   data: null,
-  currentPrice: null,
-  currentBookValueOfDebt: null,
-  currentBookValueOfEquity: null,
+  price: null,
+  bookValueOfDebt: null,
+  bookValueOfEquity: null,
   cashAndShortTermInvestments: null,
   noncontrollingInterestInConsolidatedEntity: null,
   investedCapital: null,
-  ttm: null,
+  current: null,
   pastThreeYearsAverageEffectiveTaxRate: null,
+  incomeTaxExpense: null,
+  incomeBeforeTax: null,
+  hasIncomeTTM: null,
 };
 
 const getIncomeSheetPastQuartersValues = (
@@ -34,44 +37,69 @@ const getIncomeSheetTTMValue = (incomeStatement, valueKey) =>
 export const fundamentalsReducer = createReducer(initialState, (builder) => {
   builder.addCase(getFundamentals.fulfilled, (state, action) => {
     const {
+      General,
       Highlights: { MostRecentQuarter, MarketCapitalization },
       SharesStats,
       Financials: { Balance_Sheet, Income_Statement },
     } = action.payload;
 
     const quarterBalanceSheet = Balance_Sheet.quarterly[MostRecentQuarter];
-    let currentBookValueOfDebt = 0;
+    const recentYearlyIncomeStatement = Object.values(
+      Income_Statement.yearly
+    )[0];
+
+    let bookValueOfDebt = 0;
 
     if (quarterBalanceSheet.shortLongTermDebt !== null) {
-      currentBookValueOfDebt += parseFloat(
+      bookValueOfDebt += parseFloat(
         Balance_Sheet.quarterly[MostRecentQuarter].shortLongTermDebt
       );
     }
 
     if (quarterBalanceSheet.longTermDebt !== null) {
-      currentBookValueOfDebt += parseFloat(
+      bookValueOfDebt += parseFloat(
         Balance_Sheet.quarterly[MostRecentQuarter].longTermDebt
       );
     }
 
     if (quarterBalanceSheet.capitalLeaseObligations !== null) {
-      currentBookValueOfDebt += parseFloat(
+      bookValueOfDebt += parseFloat(
         quarterBalanceSheet.capitalLeaseObligations
       );
     }
 
     state.data = action.payload;
 
-    state.currentPrice = MarketCapitalization / SharesStats.SharesOutstanding;
-    state.currentBookValueOfDebt = currentBookValueOfDebt;
-    state.currentBookValueOfEquity =
+    state.price = MarketCapitalization / SharesStats.SharesOutstanding;
+    state.bookValueOfDebt = bookValueOfDebt;
+    state.bookValueOfEquity =
       quarterBalanceSheet.totalStockholderEquity !== null
         ? parseFloat(quarterBalanceSheet.totalStockholderEquity)
         : 0;
-    state.cashAndShortTermInvestments =
-      quarterBalanceSheet.cashAndShortTermInvestments !== null
-        ? parseFloat(quarterBalanceSheet.totalStockholderEquity)
-        : 0;
+
+    // Non U.S Stocks report cash + shortTermInvestments seperately
+    if (quarterBalanceSheet.cashAndShortTermInvestments !== null) {
+      state.cashAndShortTermInvestments = parseFloat(
+        quarterBalanceSheet.totalStockholderEquity
+      );
+    } else if (
+      quarterBalanceSheet.cash !== null ||
+      quarterBalanceSheet.shortTermInvestments !== null
+    ) {
+      const cash =
+        quarterBalanceSheet.cash !== null
+          ? parseFloat(quarterBalanceSheet.cash)
+          : 0;
+      const shortTermInvestments =
+        quarterBalanceSheet.shortTermInvestments !== null
+          ? parseFloat(quarterBalanceSheet.shortTermInvestments)
+          : 0;
+
+      state.cashAndShortTermInvestments = cash + shortTermInvestments;
+    } else {
+      state.cashAndShortTermInvestments = 0;
+    }
+
     state.noncontrollingInterestInConsolidatedEntity =
       quarterBalanceSheet.noncontrollingInterestInConsolidatedEntity !== null
         ? parseFloat(
@@ -79,36 +107,68 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
           )
         : 0;
     state.investedCapital =
-      state.currentBookValueOfEquity +
-      state.currentBookValueOfDebt -
+      state.bookValueOfEquity +
+      state.bookValueOfDebt -
       state.cashAndShortTermInvestments;
-    const pastThreeYearPeriods = 3 * 4;
-    const incomeBeforeTax = getIncomeSheetPastQuartersValues(
-      Income_Statement,
-      "incomeBeforeTax",
-      pastThreeYearPeriods
-    );
-    const incomeTaxExpense = getIncomeSheetPastQuartersValues(
-      Income_Statement,
-      "incomeTaxExpense",
-      pastThreeYearPeriods
-    );
-    state.pastThreeYearsAverageEffectiveTaxRate =
-      incomeTaxExpense / incomeBeforeTax;
-    state.ttm = {
-      totalRevenue: getIncomeSheetTTMValue(Income_Statement, "totalRevenue"),
-      operatingIncome: getIncomeSheetTTMValue(
+
+    let current;
+
+    state.hasIncomeTTM = General.CountryISO === "US";
+
+    // TODO: Fix when the API fixes the TTM for non-US stocks
+    if (state.hasIncomeTTM) {
+      const pastThreeYearPeriods = 3 * 4;
+
+      state.incomeBeforeTax = getIncomeSheetPastQuartersValues(
         Income_Statement,
-        "operatingIncome"
-      ),
-      interestExpense: getIncomeSheetTTMValue(
+        "incomeBeforeTax",
+        pastThreeYearPeriods
+      );
+      state.incomeTaxExpense = getIncomeSheetPastQuartersValues(
         Income_Statement,
-        "interestExpense"
-      ),
-      minorityInterest: getIncomeSheetTTMValue(
-        Income_Statement,
-        "minorityInterest"
-      ),
+        "incomeTaxExpense",
+        pastThreeYearPeriods
+      );
+      current = {
+        totalRevenue: getIncomeSheetTTMValue(Income_Statement, "totalRevenue"),
+        operatingIncome: getIncomeSheetTTMValue(
+          Income_Statement,
+          "operatingIncome"
+        ),
+        interestExpense: getIncomeSheetTTMValue(
+          Income_Statement,
+          "interestExpense"
+        ),
+        minorityInterest: getIncomeSheetTTMValue(
+          Income_Statement,
+          "minorityInterest"
+        ),
+      };
+    } else {
+      state.incomeBeforeTax = parseFloat(
+        recentYearlyIncomeStatement.incomeBeforeTax
+      );
+      state.incomeTaxExpense = parseFloat(
+        recentYearlyIncomeStatement.incomeTaxExpense
+      );
+      current = {
+        totalRevenue: parseFloat(recentYearlyIncomeStatement.totalRevenue),
+        operatingIncome: parseFloat(
+          recentYearlyIncomeStatement.operatingIncome
+        ),
+        interestExpense: parseFloat(
+          recentYearlyIncomeStatement.interestExpense
+        ),
+        minorityInterest: parseFloat(
+          recentYearlyIncomeStatement.minorityInterest
+        ),
+      };
+    }
+
+    state.current = {
+      ...current,
     };
+    state.pastThreeYearsAverageEffectiveTaxRate =
+      state.incomeTaxExpense / state.incomeBeforeTax;
   });
 });
