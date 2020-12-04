@@ -46,18 +46,19 @@ const calculateCostOfCapital = (
   };
   const leveredBetaForEquity =
     currentIndustry.unleveredBeta *
-    (1 + (1 - marginalTaxRate)) *
-    (marketValue.debt / marketValue.equity);
+    (1 + (1 - marginalTaxRate) * (marketValue.debt / marketValue.equity));
 
-  const costOfPreferredStock =
+  let costOfPreferredStock =
     input.annualDividendPerShare / input.marketPricePerShare;
+
+  costOfPreferredStock = isNaN(costOfPreferredStock) ? 0 : costOfPreferredStock;
 
   const costOfComponent = {
     equity:
       riskFreeRate +
       leveredBetaForEquity * equityRiskPremium.currentCountry.equityRiskPremium,
     debt: input.pretaxCostOfDebt * marginalTaxRate,
-    preferredStock: isNaN(costOfPreferredStock) ? 0 : costOfPreferredStock,
+    preferredStock: costOfPreferredStock,
     get total() {
       return (
         weightInCostOfCapital.equity * this.equity +
