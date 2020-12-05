@@ -4,12 +4,13 @@
   "main": "./src/app.js",
   "private": true,
   "engines": {
-    "node": ">=8.10.0"
+    "node": ">=12.18.3"
   },
   "scripts": {
     "start": "nodemon",
     "zip": "cd ./build && bestzip ../build.zip *",
     "build": "webpack && npm run zip",
+    "clean": "rimraf ./node_modules",
     "deploy": "npm run build && eb deploy"
   },
   "devDependencies": {

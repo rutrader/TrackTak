@@ -3,7 +3,6 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const api = require("./api");
-const app = express();
 const {
   cronEmitter,
   events,
@@ -13,6 +12,7 @@ const {
 
 const hostname = "127.0.0.1";
 const port = process.env.PORT;
+const app = express();
 
 const corsOptions = {
   origin: process.env.ORIGIN_URL,
