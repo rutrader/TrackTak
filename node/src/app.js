@@ -4,6 +4,12 @@ const express = require("express");
 const cors = require("cors");
 const api = require("./api");
 const app = express();
+const {
+  cronEmitter,
+  events,
+  getListOfExchangesJob,
+  getExchangeRatesLastCloseJob,
+} = require("./scheduler");
 
 const hostname = "127.0.0.1";
 const port = process.env.PORT;
@@ -15,36 +21,107 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.get("/api/v1/fundamentals/:ticker", async (req, res) => {
-  const value = await api.getFundamentals(req.params);
+let currencyCodes;
+const exchangeRates = {
+  baseCurrency: "EUR",
+  exchangeRatesLastCloses: {},
+};
 
-  res.send(value);
-});
+const getListOfExchanges = async () => {
+  const values = await api.getListOfExchanges();
 
-app.get("/api/v1/equity-risk-premium-countries", async (req, res) => {
-  const value = api.getEquityRiskPremiumCountries();
-  res.send(value);
-});
+  const unknownValue = "UNKNOWN";
 
-app.get("/api/v1/equity-risk-premium-regions", async (req, res) => {
-  const value = api.getEquityRiskPremiumRegions();
-  res.send(value);
-});
+  currencyCodes = [
+    ...new Set(
+      values
+        .filter((x) => x.Currency.toUpperCase() !== unknownValue)
+        .map(({ Currency }) => Currency)
+    ),
+  ];
+};
 
-app.get("/api/v1/government-bonds/:ticker", async (req, res) => {
-  const value = await api.getGovernmentBonds(req.params);
-  res.send(value);
-});
+const getExchangeRatesLastClose = async () => {
+  const missingCurrencies = ["PKR", "SAR", "CLP", "VND", "ARS", "PEN", "TWD"];
+  const removedCurrencies = [exchangeRates.baseCurrency].concat(
+    missingCurrencies
+  );
+  const quoteCurrencies = currencyCodes.filter(
+    (code) => !removedCurrencies.includes(code)
+  );
+  const failedQuotes = [];
 
-app.get("/api/v1/industry-averages", async (req, res) => {
-  const value = await api.getIndustryAverages(req.params);
-  res.send(value);
-});
+  for (let i = 0; i < quoteCurrencies.length; i++) {
+    try {
+      const quoteCurrency = quoteCurrencies[i];
+      const exchangeRate = await api.getExchangeRateLastClose({
+        quoteCurrency,
+      });
 
-app.get("/", (_, res) => {
-  res.send(200);
-});
+      exchangeRates.exchangeRatesLastCloses[quoteCurrency] = exchangeRate;
+    } catch (error) {
+      // TODO: Handle the missing currencies gracefully on the FE
+      failedQuotes.push(quoteCurrencies[i]);
+      console.error(error);
+    }
+  }
+  if (failedQuotes.length) {
+    console.log(
+      `failed for these quoteCurrencies: ${JSON.stringify(failedQuotes)}`
+    );
+  }
+};
 
-app.listen(port, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
+cronEmitter.on(events.getListOfExchangesJob, getListOfExchanges);
+cronEmitter.on(events.getExchangeRatesLastCloseJob, getExchangeRatesLastClose);
+
+(async function () {
+  await getListOfExchanges();
+  await getExchangeRatesLastClose();
+
+  getListOfExchangesJob.start();
+  getExchangeRatesLastCloseJob.start();
+
+  app.get("/api/v1/fundamentals/:ticker", async (req, res) => {
+    const value = await api.getFundamentals(req.params);
+
+    res.send(value);
+  });
+
+  app.get("/api/v1/equity-risk-premium-countries", async (req, res) => {
+    const value = api.getEquityRiskPremiumCountries();
+    res.send(value);
+  });
+
+  app.get("/api/v1/equity-risk-premium-regions", async (req, res) => {
+    const value = api.getEquityRiskPremiumRegions();
+    res.send(value);
+  });
+
+  app.get(
+    "/api/v1/government-bond-last-close/:countryCode",
+    async (req, res) => {
+      const governmentBondLastClose = await api.getGovernmentBondLastClose(
+        req.params
+      );
+      res.send({ governmentBondLastClose });
+    }
+  );
+
+  app.get("/api/v1/industry-averages", async (req, res) => {
+    const value = await api.getIndustryAverages(req.params);
+    res.send(value);
+  });
+
+  app.get("/api/v1/exchange-rates-last-closes", async (req, res) => {
+    res.send({ exchangeRates });
+  });
+
+  app.get("/", (_, res) => {
+    res.send(200);
+  });
+
+  app.listen(port, () => {
+    console.log(`Server running at http://${hostname}:${port}/`);
+  });
+})();

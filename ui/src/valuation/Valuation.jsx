@@ -69,7 +69,7 @@ const Valuation = () => {
   const dispatch = useDispatch();
   const fundamentals = useSelector((state) => state.fundamentals);
   const input = useSelector((state) => state.input);
-  const governmentBonds = useSelector((state) => state.governmentBonds);
+  const economicData = useSelector((state) => state.economicData);
   const equityRiskPremium = useSelector((state) => state.equityRiskPremium);
   const industryAverages = useSelector((state) => state.industryAverages);
   const theme = useTheme();
@@ -78,7 +78,8 @@ const Valuation = () => {
     dispatch(getFundamentals(params.ticker));
   }, [dispatch, params.ticker]);
 
-  if (!fundamentals.data || !governmentBonds.data) return null;
+  if (!fundamentals.data || !economicData.governmentBondTenYearLastClose)
+    return null;
 
   const {
     General,
@@ -87,7 +88,7 @@ const Valuation = () => {
   } = fundamentals.data;
 
   const riskFreeRate =
-    governmentBonds.data[0].Close / percentModifier -
+    economicData.governmentBondTenYearLastClose / percentModifier -
     equityRiskPremium.currentCountry.adjDefaultSpread;
   const valuePerOption = blackScholes(
     "call",
@@ -128,7 +129,9 @@ const Valuation = () => {
     {
       dataField: "Revenue",
       ttm: fundamentals.hasIncomeTTM ? (
-        <FormatRawNumberToMillion value={fundamentals.current.totalRevenue} />
+        <FormatRawNumberToMillion
+          value={fundamentals.incomeStatement.totalRevenue}
+        />
       ) : null,
       ...mapFromStatementsToDateObject(Income_Statement.yearly, [
         "totalRevenue",
@@ -138,7 +141,7 @@ const Valuation = () => {
       dataField: "Operating Income",
       ttm: fundamentals.hasIncomeTTM ? (
         <FormatRawNumberToMillion
-          value={fundamentals.current.operatingIncome}
+          value={fundamentals.incomeStatement.operatingIncome}
         />
       ) : null,
       ...mapFromStatementsToDateObject(Income_Statement.yearly, [
@@ -149,7 +152,7 @@ const Valuation = () => {
       dataField: "Interest Expense",
       ttm: fundamentals.hasIncomeTTM ? (
         <FormatRawNumberToMillion
-          value={fundamentals.current.interestExpense}
+          value={fundamentals.incomeStatement.interestExpense}
         />
       ) : null,
       ...mapFromStatementsToDateObject(Income_Statement.yearly, [
@@ -158,14 +161,22 @@ const Valuation = () => {
     },
     {
       dataField: "Book Value of Equity",
-      ttm: <FormatRawNumberToMillion value={fundamentals.bookValueOfEquity} />,
+      ttm: (
+        <FormatRawNumberToMillion
+          value={fundamentals.balanceSheet.bookValueOfEquity}
+        />
+      ),
       ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
         "totalStockholderEquity",
       ]),
     },
     {
       dataField: "Book Value of Debt",
-      ttm: <FormatRawNumberToMillion value={fundamentals.bookValueOfDebt} />,
+      ttm: (
+        <FormatRawNumberToMillion
+          value={fundamentals.balanceSheet.bookValueOfDebt}
+        />
+      ),
       ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
         "shortLongTermDebt",
         "longTermDebt",
@@ -176,7 +187,7 @@ const Valuation = () => {
       dataField: "Cash & Marketable Securities",
       ttm: (
         <FormatRawNumberToMillion
-          value={fundamentals.cashAndShortTermInvestments}
+          value={fundamentals.balanceSheet.cashAndShortTermInvestments}
         />
       ),
       ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
@@ -187,7 +198,9 @@ const Valuation = () => {
       dataField: "Cross Holdings & Other Non-Operating Assets",
       ttm: (
         <FormatRawNumberToMillion
-          value={fundamentals.noncontrollingInterestInConsolidatedEntity}
+          value={
+            fundamentals.balanceSheet.noncontrollingInterestInConsolidatedEntity
+          }
         />
       ),
       ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
@@ -198,7 +211,7 @@ const Valuation = () => {
       dataField: "Minority Interests",
       ttm: fundamentals.hasIncomeTTM ? (
         <FormatRawNumberToMillion
-          value={fundamentals.current.minorityInterest}
+          value={fundamentals.incomeStatement.minorityInterest}
         />
       ) : null,
       ...mapFromStatementsToDateObject(Income_Statement.yearly, [
@@ -226,13 +239,22 @@ const Valuation = () => {
           <Box sx={{ display: "flex", gap: displayGap }}>
             <Box>
               <Typography>
-                <Box component="span" sx={{ fontWeight: "bold" }}>
-                  <FormatRawNumberToCurrency value={fundamentals.price} />
+                <Box
+                  component="span"
+                  sx={{ fontWeight: theme.typography.fontWeightBold }}
+                >
+                  <FormatRawNumber
+                    value={fundamentals.price}
+                    decimalScale={2}
+                  />
                 </Box>
-                &nbsp;{General.CurrencyCode}
+                &nbsp;{fundamentals.valuationCurrencyCode}
               </Typography>
               <Typography>
-                <Box component="span" sx={{ fontWeight: "bold" }}>
+                <Box
+                  component="span"
+                  sx={{ fontWeight: theme.typography.fontWeightBold }}
+                >
                   <FormatRawNumberToMillion
                     value={SharesStats.SharesOutstanding}
                     suffix="M"
@@ -243,7 +265,10 @@ const Valuation = () => {
             </Box>
             <Box>
               <Typography>
-                <Box component="span" sx={{ fontWeight: "bold" }}>
+                <Box
+                  component="span"
+                  sx={{ fontWeight: theme.typography.fontWeightBold }}
+                >
                   <FormatRawNumberToPercent
                     value={equityRiskPremium.currentCountry.corporateTaxRate}
                   />
@@ -251,9 +276,15 @@ const Valuation = () => {
                 &nbsp;Marginal Tax Rate
               </Typography>
               <Typography>
-                <Box component="span" sx={{ fontWeight: "bold" }}>
+                <Box
+                  component="span"
+                  sx={{ fontWeight: theme.typography.fontWeightBold }}
+                >
                   <FormatRawNumberToPercent
-                    value={fundamentals.pastThreeYearsAverageEffectiveTaxRate}
+                    value={
+                      fundamentals.incomeStatement
+                        .pastThreeYearsAverageEffectiveTaxRate
+                    }
                   />
                 </Box>
                 &nbsp;Effective Tax Rate (Avg. past 3 yr)
@@ -266,7 +297,7 @@ const Valuation = () => {
             <Typography
               variant="h6"
               gutterBottom
-              style={{ fontWeight: "bold" }}
+              style={{ fontWeight: theme.typography.fontWeightBold }}
               className="landing-page-sign-up-today-text"
             >
               Join today to get 50% off for life when we launch premium.
@@ -276,7 +307,18 @@ const Valuation = () => {
         </Hidden>
       </Box>
       <Section>
-        <Typography variant="h5">Company Fundamentals</Typography>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Typography variant="h5">Company Fundamentals</Typography>
+          <Typography
+            style={{
+              marginLeft: theme.spacing(1),
+              fontWeight: theme.typography.fontWeightBold,
+            }}
+          >
+            ({fundamentals.valuationCurrencySymbol}:
+            {fundamentals.valuationCurrencyCode})
+          </Typography>
+        </Box>
         <TTTable columns={companyFundamentalsColumns} data={rowData} />
       </Section>
       <Box sx={{ display: "flex", gridColumnGap: 20, flexWrap: "wrap" }}>
@@ -371,7 +413,10 @@ const Valuation = () => {
             </Typography>
             <Typography gutterBottom>
               Value Per Option&nbsp;
-              <Box component="span" sx={{ fontWeight: "bold" }}>
+              <Box
+                component="span"
+                sx={{ fontWeight: theme.typography.fontWeightBold }}
+              >
                 <FormatRawNumberToCurrency
                   value={valuePerOption}
                   decimalScale={2}
@@ -380,7 +425,10 @@ const Valuation = () => {
             </Typography>
             <Typography gutterBottom>
               Value of All Options Outstanding&nbsp;
-              <Box component="span" sx={{ fontWeight: "bold" }}>
+              <Box
+                component="span"
+                sx={{ fontWeight: theme.typography.fontWeightBold }}
+              >
                 <FormatRawNumberToMillion
                   value={valuePerOption * input.numberOfOptionsOutstanding}
                   suffix="M"
@@ -398,7 +446,10 @@ const Valuation = () => {
             <Box sx={{ display: "flex", gap: displayGap }}>
               <Box sx={{ mb: theme.spacing(1) }}>
                 <Typography>
-                  <Box component="span" sx={{ fontWeight: "bold" }}>
+                  <Box
+                    component="span"
+                    sx={{ fontWeight: theme.typography.fontWeightBold }}
+                  >
                     <FormatRawNumberToPercent
                       value={equityRiskPremium.currentCountry.equityRiskPremium}
                     />
@@ -406,7 +457,10 @@ const Valuation = () => {
                   &nbsp;Country Equity Risk Premium
                 </Typography>
                 <Typography>
-                  <Box component="span" sx={{ fontWeight: "bold" }}>
+                  <Box
+                    component="span"
+                    sx={{ fontWeight: theme.typography.fontWeightBold }}
+                  >
                     <FormatRawNumberToPercent
                       value={equityRiskPremium.matureMarketEquityRiskPremium}
                     />
@@ -416,7 +470,10 @@ const Valuation = () => {
               </Box>
               <Box>
                 <Typography>
-                  <Box component="span" sx={{ fontWeight: "bold" }}>
+                  <Box
+                    component="span"
+                    sx={{ fontWeight: theme.typography.fontWeightBold }}
+                  >
                     <FormatRawNumber
                       decimalScale={2}
                       value={industryAverages.currentIndustry.unleveredBeta}
@@ -425,7 +482,10 @@ const Valuation = () => {
                   &nbsp;Unlevered Beta
                 </Typography>
                 <Typography>
-                  <Box component="span" sx={{ fontWeight: "bold" }}>
+                  <Box
+                    component="span"
+                    sx={{ fontWeight: theme.typography.fontWeightBold }}
+                  >
                     <FormatRawNumberToPercent
                       decimalScale={2}
                       value={riskFreeRate}
@@ -560,7 +620,7 @@ const Valuation = () => {
           <Typography
             variant="h6"
             gutterBottom
-            style={{ fontWeight: "bold" }}
+            style={{ fontWeight: theme.typography.fontWeightBold }}
             className="landing-page-sign-up-today-text"
           >
             Want us to implement features you need?

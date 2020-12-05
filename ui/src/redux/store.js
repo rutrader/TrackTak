@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 import { fundamentalsReducer } from "./reducers/fundamentalsReducer";
 import { configureStore } from "@reduxjs/toolkit";
 import { pageReducer } from "./reducers/pageReducer";
-import { governmentBondsReducer } from "./reducers/governmentBondsReducer";
+import { economicDataReducer } from "./reducers/economicDataReducer";
 import { equityRiskPremiumCountriesReducer } from "./reducers/equityRiskPremiumReducer";
 import { industryAveragesReducer } from "./reducers/industryAveragesReducer";
 import { inputReducer } from "./reducers/inputReducer";
@@ -12,7 +12,7 @@ export const rootReducer = combineReducers({
   input: inputReducer,
   equityRiskPremium: equityRiskPremiumCountriesReducer,
   page: pageReducer,
-  governmentBonds: governmentBondsReducer,
+  economicData: economicDataReducer,
   industryAverages: industryAveragesReducer,
 });
 

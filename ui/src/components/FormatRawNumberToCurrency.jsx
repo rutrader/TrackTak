@@ -4,7 +4,7 @@ import FormatRawNumber from "./FormatRawNumber";
 
 const FormatRawNumberToCurrency = ({ value, ...props }) => {
   const currencySymbol = useSelector(
-    (state) => state.fundamentals.data.General.CurrencySymbol
+    (state) => state.fundamentals.valuationCurrencySymbol
   );
 
   return (
