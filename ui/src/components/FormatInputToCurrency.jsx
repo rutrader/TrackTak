@@ -7,7 +7,7 @@ const FormatInputToCurrency = forwardRef(({ defaultValue, ...props }, ref) => {
   const { onChange, ...other } = props;
   const [valueAsNumber, setValue] = useState(null);
   const currencySymbol = useSelector(
-    (state) => state.fundamentals.valuationCurrency
+    (state) => state.fundamentals.valuationCurrencySymbol
   );
 
   return (

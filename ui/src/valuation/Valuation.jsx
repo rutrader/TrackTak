@@ -129,7 +129,9 @@ const Valuation = () => {
     {
       dataField: "Revenue",
       ttm: fundamentals.hasIncomeTTM ? (
-        <FormatRawNumberToMillion value={fundamentals.current.totalRevenue} />
+        <FormatRawNumberToMillion
+          value={fundamentals.incomeStatement.totalRevenue}
+        />
       ) : null,
       ...mapFromStatementsToDateObject(Income_Statement.yearly, [
         "totalRevenue",
@@ -139,7 +141,7 @@ const Valuation = () => {
       dataField: "Operating Income",
       ttm: fundamentals.hasIncomeTTM ? (
         <FormatRawNumberToMillion
-          value={fundamentals.current.operatingIncome}
+          value={fundamentals.incomeStatement.operatingIncome}
         />
       ) : null,
       ...mapFromStatementsToDateObject(Income_Statement.yearly, [
@@ -150,7 +152,7 @@ const Valuation = () => {
       dataField: "Interest Expense",
       ttm: fundamentals.hasIncomeTTM ? (
         <FormatRawNumberToMillion
-          value={fundamentals.current.interestExpense}
+          value={fundamentals.incomeStatement.interestExpense}
         />
       ) : null,
       ...mapFromStatementsToDateObject(Income_Statement.yearly, [
@@ -159,14 +161,22 @@ const Valuation = () => {
     },
     {
       dataField: "Book Value of Equity",
-      ttm: <FormatRawNumberToMillion value={fundamentals.bookValueOfEquity} />,
+      ttm: (
+        <FormatRawNumberToMillion
+          value={fundamentals.balanceSheet.bookValueOfEquity}
+        />
+      ),
       ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
         "totalStockholderEquity",
       ]),
     },
     {
       dataField: "Book Value of Debt",
-      ttm: <FormatRawNumberToMillion value={fundamentals.bookValueOfDebt} />,
+      ttm: (
+        <FormatRawNumberToMillion
+          value={fundamentals.balanceSheet.bookValueOfDebt}
+        />
+      ),
       ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
         "shortLongTermDebt",
         "longTermDebt",
@@ -177,7 +187,7 @@ const Valuation = () => {
       dataField: "Cash & Marketable Securities",
       ttm: (
         <FormatRawNumberToMillion
-          value={fundamentals.cashAndShortTermInvestments}
+          value={fundamentals.balanceSheet.cashAndShortTermInvestments}
         />
       ),
       ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
@@ -188,7 +198,9 @@ const Valuation = () => {
       dataField: "Cross Holdings & Other Non-Operating Assets",
       ttm: (
         <FormatRawNumberToMillion
-          value={fundamentals.noncontrollingInterestInConsolidatedEntity}
+          value={
+            fundamentals.balanceSheet.noncontrollingInterestInConsolidatedEntity
+          }
         />
       ),
       ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
@@ -199,7 +211,7 @@ const Valuation = () => {
       dataField: "Minority Interests",
       ttm: fundamentals.hasIncomeTTM ? (
         <FormatRawNumberToMillion
-          value={fundamentals.current.minorityInterest}
+          value={fundamentals.incomeStatement.minorityInterest}
         />
       ) : null,
       ...mapFromStatementsToDateObject(Income_Statement.yearly, [
@@ -236,7 +248,7 @@ const Valuation = () => {
                     decimalScale={2}
                   />
                 </Box>
-                &nbsp;{General.CurrencyCode}
+                &nbsp;{fundamentals.valuationCurrencyCode}
               </Typography>
               <Typography>
                 <Box
@@ -269,7 +281,10 @@ const Valuation = () => {
                   sx={{ fontWeight: theme.typography.fontWeightBold }}
                 >
                   <FormatRawNumberToPercent
-                    value={fundamentals.pastThreeYearsAverageEffectiveTaxRate}
+                    value={
+                      fundamentals.incomeStatement
+                        .pastThreeYearsAverageEffectiveTaxRate
+                    }
                   />
                 </Box>
                 &nbsp;Effective Tax Rate (Avg. past 3 yr)
@@ -300,7 +315,8 @@ const Valuation = () => {
               fontWeight: theme.typography.fontWeightBold,
             }}
           >
-            ({Balance_Sheet.currency_symbol}:{fundamentals.valuationCurrency})
+            ({fundamentals.valuationCurrencySymbol}:
+            {fundamentals.valuationCurrencyCode})
           </Typography>
         </Box>
         <TTTable columns={companyFundamentalsColumns} data={rowData} />

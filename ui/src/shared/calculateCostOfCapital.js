@@ -8,10 +8,10 @@ const calculateCostOfCapital = (
 ) => {
   const marginalTaxRate = equityRiskPremium.currentCountry.corporateTaxRate;
   const estimatedMarketValueOfStraightDebt =
-    (fundamentals.current.interestExpense *
+    (fundamentals.incomeStatement.interestExpense *
       (1 - (1 + input.pretaxCostOfDebt) ** -input.averageMaturityOfDebt)) /
       input.pretaxCostOfDebt +
-    fundamentals.bookValueOfDebt /
+    fundamentals.balanceSheet.bookValueOfDebt /
       (1 + input.pretaxCostOfDebt) ** input.averageMaturityOfDebt;
   let estimatedValueOfStraightDebtInConvertibleDebt =
     (input.interestExpenseOnConvertibleDebt *

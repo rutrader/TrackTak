@@ -6,7 +6,7 @@ import { getTenYearGovernmentBondLastClose } from "./economicDataActions";
 
 export const getFundamentals = createAsyncThunk(
   "fundamentals/getFundamentals",
-  async (ticker, { dispatch }) => {
+  async (ticker, { dispatch, getState }) => {
     try {
       const res = await axios.get(`/api/v1/fundamentals/${ticker}`);
 
@@ -16,7 +16,12 @@ export const getFundamentals = createAsyncThunk(
       );
       dispatch(setCurrentIndustryAverage(res.data.General.Industry));
 
-      return res.data;
+      const state = getState();
+
+      return {
+        data: res.data,
+        exchangeRatePairs: state.economicData.exchangeRatePairs,
+      };
     } catch (error) {
       console.log(error);
       throw error;

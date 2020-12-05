@@ -5,15 +5,23 @@ import getSymbolFromCurrency from "currency-symbol-map";
 const initialState = {
   data: null,
   price: null,
-  bookValueOfDebt: null,
-  bookValueOfEquity: null,
-  cashAndShortTermInvestments: null,
-  noncontrollingInterestInConsolidatedEntity: null,
-  investedCapital: null,
-  current: null,
-  pastThreeYearsAverageEffectiveTaxRate: null,
+  balanceSheet: {
+    bookValueOfDebt: null,
+    bookValueOfEquity: null,
+    cashAndShortTermInvestments: null,
+    noncontrollingInterestInConsolidatedEntity: null,
+    investedCapital: null,
+  },
+  incomeStatement: {
+    totalRevenue: null,
+    operatingIncome: null,
+    interestExpense: null,
+    minorityInterest: null,
+    pastThreeYearsAverageEffectiveTaxRate: null,
+  },
   hasIncomeTTM: null,
-  valuationCurrency: null,
+  valuationCurrencySymbol: null,
+  valuationCurrencyCode: null,
 };
 
 export const getValueFromString = (value) => {
@@ -47,6 +55,18 @@ const getIncomeSheetPastQuartersValues = (
   );
 };
 
+const getConvertCurrency = (exchangeRatePairs) => (
+  valueToConvert,
+  baseCurrency,
+  quotedCurrency
+) => {
+  if (baseCurrency === quotedCurrency) return valueToConvert;
+
+  const newCurrencyValue = exchangeRatePairs[baseCurrency][quotedCurrency];
+
+  return (valueToConvert *= newCurrencyValue);
+};
+
 const getIncomeSheetTTMValue = (incomeStatement, valueKey) =>
   getIncomeSheetPastQuartersValues(incomeStatement, valueKey, 4);
 
@@ -57,45 +77,41 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
       Highlights: { MostRecentQuarter, MarketCapitalization },
       SharesStats,
       Financials: { Balance_Sheet, Income_Statement },
-    } = action.payload;
-
-    state.valuationCurrency = getSymbolFromCurrency(
-      Balance_Sheet.currency_symbol
-    );
+    } = action.payload.data;
+    state.data = action.payload.data;
 
     const quarterBalanceSheet = Balance_Sheet.quarterly[MostRecentQuarter];
     const recentYearlyIncomeStatement = Object.values(
       Income_Statement.yearly
     )[0];
 
-    state.bookValueOfDebt += getValueFromString(
+    let bookValueOfDebt = 0;
+
+    bookValueOfDebt += getValueFromString(
       quarterBalanceSheet.shortLongTermDebt
     );
 
-    state.bookValueOfDebt += getValueFromString(
-      quarterBalanceSheet.longTermDebt
-    );
+    bookValueOfDebt += getValueFromString(quarterBalanceSheet.longTermDebt);
 
-    state.bookValueOfDebt += getValueFromString(
+    bookValueOfDebt += getValueFromString(
       quarterBalanceSheet.capitalLeaseObligations
     );
 
-    state.data = action.payload;
+    state.balanceSheet = {
+      bookValueOfDebt,
+      bookValueOfEquity: getValueFromString(
+        quarterBalanceSheet.totalStockholderEquity
+      ),
+      noncontrollingInterestInConsolidatedEntity: getValueFromString(
+        quarterBalanceSheet.noncontrollingInterestInConsolidatedEntity
+      ),
+    };
 
     state.price = MarketCapitalization / SharesStats.SharesOutstanding;
 
-    // UK stocks are quoted in pence so multiply it
-    if (General.CountryISO === "UK") {
-      state.price *= 100;
-    }
-
-    state.bookValueOfEquity = getValueFromString(
-      quarterBalanceSheet.totalStockholderEquity
-    );
-
     // Non U.S Stocks report cash + shortTermInvestments seperately
     if (quarterBalanceSheet.cashAndShortTermInvestments !== null) {
-      state.cashAndShortTermInvestments = getValueFromString(
+      state.balanceSheet.cashAndShortTermInvestments = getValueFromString(
         quarterBalanceSheet.totalStockholderEquity
       );
     } else if (
@@ -107,20 +123,16 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
         quarterBalanceSheet.shortTermInvestments
       );
 
-      state.cashAndShortTermInvestments = cash + shortTermInvestments;
+      state.balanceSheet.cashAndShortTermInvestments =
+        cash + shortTermInvestments;
     } else {
-      state.cashAndShortTermInvestments = 0;
+      state.balanceSheet.cashAndShortTermInvestments = 0;
     }
 
-    state.noncontrollingInterestInConsolidatedEntity = getValueFromString(
-      quarterBalanceSheet.noncontrollingInterestInConsolidatedEntity
-    );
-    state.investedCapital =
+    state.balanceSheet.investedCapital =
       state.bookValueOfEquity +
       state.bookValueOfDebt -
       state.cashAndShortTermInvestments;
-
-    let current;
 
     state.hasIncomeTTM = General.CountryISO === "US";
 
@@ -145,7 +157,7 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
         pastThreeYearPeriods
       );
 
-      current = {
+      state.incomeStatement = {
         totalRevenue: getIncomeSheetTTMValue(Income_Statement, "totalRevenue"),
         operatingIncome: getIncomeSheetTTMValue(
           Income_Statement,
@@ -172,7 +184,7 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
         pastPeriodsToGet
       );
 
-      current = {
+      state.incomeStatement = {
         totalRevenue: getValueFromString(
           recentYearlyIncomeStatement.totalRevenue
         ),
@@ -187,10 +199,32 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
         ),
       };
     }
-    state.current = {
-      ...current,
-    };
-    state.pastThreeYearsAverageEffectiveTaxRate =
+    state.incomeStatement.pastThreeYearsAverageEffectiveTaxRate =
       pastThreeYearIncomeTaxExpense / pastThreeYearIncomeBeforeTax;
+
+    const exchangeRatePairs = action.payload.exchangeRatePairs;
+    const convertCurrency = getConvertCurrency(exchangeRatePairs);
+    // UK stocks are quoted in pence so we convert it to GBP for ease of use
+    const valuationCurrencyCode =
+      General.CurrencyCode === "GBX" ? "GBP" : General.CurrencyCode;
+
+    Object.keys(state.incomeStatement).forEach((property) => {
+      state.incomeStatement[property] = convertCurrency(
+        state.incomeStatement[property],
+        Income_Statement.currency_symbol,
+        valuationCurrencyCode
+      );
+    });
+    Object.keys(state.balanceSheet).forEach((property) => {
+      state.balanceSheet[property] = convertCurrency(
+        state.balanceSheet[property],
+        Balance_Sheet.currency_symbol,
+        valuationCurrencyCode
+      );
+    });
+    state.valuationCurrencyCode = valuationCurrencyCode;
+    state.valuationCurrencySymbol = getSymbolFromCurrency(
+      valuationCurrencyCode
+    );
   });
 });
