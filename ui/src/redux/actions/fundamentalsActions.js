@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../axios/axios";
 import { setCurrentEquityRiskPremium } from "./equityRiskPremiumActions";
 import { setCurrentIndustryAverage } from "./industryAveragesActions";
-import { getTenYearGovernmentBonds } from "./governmentBondsActions";
+import { getTenYearGovernmentBondLastClose } from "./economicDataActions";
 
 export const getFundamentals = createAsyncThunk(
   "fundamentals/getFundamentals",
@@ -10,7 +10,7 @@ export const getFundamentals = createAsyncThunk(
     try {
       const res = await axios.get(`/api/v1/fundamentals/${ticker}`);
 
-      dispatch(getTenYearGovernmentBonds(res.data.General.CountryISO));
+      dispatch(getTenYearGovernmentBondLastClose(res.data.General.CountryISO));
       dispatch(
         setCurrentEquityRiskPremium(res.data.General.AddressData.Country)
       );

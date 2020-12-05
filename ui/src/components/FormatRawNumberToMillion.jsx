@@ -6,7 +6,7 @@ export const millionModifier = 1.0e6;
 
 const FormatRawNumberToMillion = ({ value, useCurrencySymbol, ...props }) => {
   const currencySymbol = useSelector(
-    (state) => state.fundamentals.data.General.CurrencySymbol
+    (state) => state.fundamentals.valuationCurrency
   );
 
   const newValue = value ? parseFloat(value) / millionModifier : undefined;

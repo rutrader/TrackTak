@@ -1,5 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { getFundamentals } from "../actions/fundamentalsActions";
+import getSymbolFromCurrency from "currency-symbol-map";
 
 const initialState = {
   data: null,
@@ -12,6 +13,7 @@ const initialState = {
   current: null,
   pastThreeYearsAverageEffectiveTaxRate: null,
   hasIncomeTTM: null,
+  valuationCurrency: null,
 };
 
 export const getValueFromString = (value) => {
@@ -57,6 +59,10 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
       Financials: { Balance_Sheet, Income_Statement },
     } = action.payload;
 
+    state.valuationCurrency = getSymbolFromCurrency(
+      Balance_Sheet.currency_symbol
+    );
+
     const quarterBalanceSheet = Balance_Sheet.quarterly[MostRecentQuarter];
     const recentYearlyIncomeStatement = Object.values(
       Income_Statement.yearly
@@ -77,6 +83,12 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
     state.data = action.payload;
 
     state.price = MarketCapitalization / SharesStats.SharesOutstanding;
+
+    // UK stocks are quoted in pence so multiply it
+    if (General.CountryISO === "UK") {
+      state.price *= 100;
+    }
+
     state.bookValueOfEquity = getValueFromString(
       quarterBalanceSheet.totalStockholderEquity
     );
