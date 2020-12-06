@@ -1,22 +1,23 @@
-import { Box, Container, Typography } from "@material-ui/core";
+import { Container } from "@material-ui/core";
 import React from "react";
-import { ReactComponent as TracktakLogo } from "../icons/tracktak.svg";
+import TracktakLogo from "../shared/TracktakLogo";
 
 const LayoutHome = ({ children }) => {
   return (
     <Container maxWidth="md">
-      <Box
+      <TracktakLogo
+        isLink={false}
+        logoProps={{
+          width: 300,
+          height: 50,
+        }}
         sx={{
-          display: "flex",
           justifyContent: "center",
           pt: 2.5,
           mb: 2,
           mt: "25%",
         }}
-      >
-        <TracktakLogo width={300} height={50} />
-        <Typography color="textSecondary">beta</Typography>
-      </Box>
+      />
       {children}
     </Container>
   );
