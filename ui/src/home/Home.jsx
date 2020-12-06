@@ -79,38 +79,36 @@ const Home = () => {
             }
           }}
         >
-          <div style={{ width: "100%" }}>
-            <TickerAutocomplete
-              onChange={handleOnChangeAutoComplete}
-              freeSolo
-              id="free-solo-2-demo"
-              disableClearable
-              getOptionLabel={({ name, code, exchange }) => {
-                if (!name || !code || !exchange) return ticker;
-                return `${name} (${code}.${exchange})`;
-              }}
-              options={autoComplete.map((option) => ({
-                name: option.Name,
-                code: option.Code,
-                exchange: option.Exchange,
-              }))}
-              renderInput={(params) => {
-                return (
-                  <>
-                    <TickerTextField
-                      {...params}
-                      variant="outlined"
-                      value={ticker}
-                      fullWidth
-                      required
-                      onChange={handleOnChangeSearch}
-                      placeholder="Stock ticker e.g. AMZN"
-                    />
-                  </>
-                );
-              }}
-            />
-          </div>
+          <TickerAutocomplete
+            style={{ flex: 1 }}
+            onChange={handleOnChangeAutoComplete}
+            freeSolo
+            disableClearable
+            getOptionLabel={({ name, code, exchange }) => {
+              if (!name || !code || !exchange) return ticker;
+              return `${name} (${code}.${exchange})`;
+            }}
+            options={autoComplete.map((option) => ({
+              name: option.Name,
+              code: option.Code,
+              exchange: option.Exchange,
+            }))}
+            renderInput={(params) => {
+              return (
+                <>
+                  <TickerTextField
+                    {...params}
+                    variant="outlined"
+                    value={ticker}
+                    fullWidth
+                    required
+                    onChange={handleOnChangeSearch}
+                    placeholder="Stock ticker e.g. AMZN"
+                  />
+                </>
+              );
+            }}
+          />
           <SubmitButton
             color="primary"
             variant="contained"
