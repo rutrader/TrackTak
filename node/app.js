@@ -117,6 +117,11 @@ cronEmitter.on(events.getExchangeRatesLastCloseJob, getExchangeRatesLastClose);
     res.send({ exchangeRates });
   });
 
+  app.get("/api/v1/autocomplete-query/:queryString", async (req, res) => {
+    const value = await api.getAutocompleteQuery(req.params);
+    res.send(value);
+  });
+
   app.get("/", (_, res) => {
     res.send(200);
   });
