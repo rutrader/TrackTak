@@ -28,7 +28,7 @@ import FormatRawNumberToPercent, {
 import calculateCostOfCapital from "../shared/calculateCostOfCapital";
 import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
 import FormatRawNumber from "../components/FormatRawNumber";
-import SubscribeMailingList from "../shared/SubscribeMailingList";
+import SubscribeMailingList from "../components/SubscribeMailingList";
 import parseInputQueryParams from "../shared/parseInputQueryParams";
 import setInputQueryParams from "../shared/setInputQueryParams";
 
@@ -297,7 +297,7 @@ const Valuation = () => {
           </Box>
         </Box>
         <Hidden smDown>
-          <Box>
+          <Box sx={{ mt: "auto" }}>
             <Typography
               variant="h6"
               gutterBottom

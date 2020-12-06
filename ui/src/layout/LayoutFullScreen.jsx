@@ -1,11 +1,11 @@
 import { Container } from "@material-ui/core";
 import React from "react";
-import { TracktakLogoLayoutContainer } from "./Layout";
+import Header from "../components/Header";
 
 const LayoutFullScreen = ({ children }) => {
   return (
     <Container maxWidth={false}>
-      <TracktakLogoLayoutContainer />
+      <Header />
       {children}
     </Container>
   );
