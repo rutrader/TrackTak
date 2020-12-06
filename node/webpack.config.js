@@ -7,7 +7,7 @@ module.exports = {
   mode: "production",
   devtool: "source-map",
   entry: {
-    server: "./src/app.js",
+    server: "./app.js",
   },
   output: {
     path: path.join(__dirname, "build"),

@@ -1,13 +1,14 @@
 {
   "name": "tracktak-node",
   "version": "0.1.0",
-  "main": "./src/app.js",
+  "main": "./app.js",
   "private": true,
   "engines": {
-    "node": ">=12.18.3"
+    "node": "12.18.3"
   },
   "scripts": {
-    "start": "nodemon",
+    "start": "node ./app.js",
+    "start:dev": "nodemon",
     "zip": "cd ./build && bestzip ../build.zip *",
     "build": "webpack && npm run zip",
     "clean": "rimraf ./node_modules",

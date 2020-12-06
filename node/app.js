@@ -2,13 +2,13 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
-const api = require("./api");
+const api = require("./src/api");
 const {
   cronEmitter,
   events,
   getListOfExchangesJob,
   getExchangeRatesLastCloseJob,
-} = require("./scheduler");
+} = require("./src/scheduler");
 
 const hostname = "127.0.0.1";
 const port = process.env.PORT;

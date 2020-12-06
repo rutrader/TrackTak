@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "node": "npm run start --prefix ./node",
+    "node": "npm run start:dev --prefix ./node",
     "ui": "npm run start --prefix ./ui",
     "start": "run-p node ui",
     "clean": "rimraf ./node_modules",
