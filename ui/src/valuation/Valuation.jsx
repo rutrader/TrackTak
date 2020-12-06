@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useHistory, useLocation, useParams } from "react-router";
 import { getFundamentals } from "../redux/actions/fundamentalsActions";
-import { setValue } from "../redux/actions/inputActions";
 import {
   Box,
   Hidden,
@@ -30,6 +29,8 @@ import calculateCostOfCapital from "../shared/calculateCostOfCapital";
 import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
 import FormatRawNumber from "../components/FormatRawNumber";
 import SubscribeMailingList from "../shared/SubscribeMailingList";
+import parseInputQueryParams from "../shared/parseInputQueryParams";
+import setInputQueryParams from "../shared/setInputQueryParams";
 
 const textFieldRootStyles = {
   flex: 1,
@@ -66,13 +67,16 @@ const mapFromStatementsToDateObject = (statementToLoop, valueKeys) => {
 
 const Valuation = () => {
   const params = useParams();
+  const location = useLocation();
+  const history = useHistory();
   const dispatch = useDispatch();
   const fundamentals = useSelector((state) => state.fundamentals);
-  const input = useSelector((state) => state.input);
   const economicData = useSelector((state) => state.economicData);
   const equityRiskPremium = useSelector((state) => state.equityRiskPremium);
   const industryAverages = useSelector((state) => state.industryAverages);
   const theme = useTheme();
+  const inputQueryParams = parseInputQueryParams(location);
+  const queryParams = new URLSearchParams(location.search);
 
   useEffect(() => {
     dispatch(getFundamentals(params.ticker));
@@ -93,21 +97,21 @@ const Valuation = () => {
   const valuePerOption = blackScholes(
     "call",
     fundamentals.price,
-    input.averageStrikePrice,
-    input.averageMaturityOfOptions,
+    inputQueryParams.averageStrikePrice,
+    inputQueryParams.averageMaturityOfOptions,
     riskFreeRate,
     industryAverages.currentIndustry.standardDeviationInStockPrices
   );
   const costOfCapital = calculateCostOfCapital(
     fundamentals,
-    input,
+    inputQueryParams,
     SharesStats,
     equityRiskPremium,
     riskFreeRate,
     industryAverages.currentIndustry
   );
   const valueOfAllOptionsOutstanding =
-    valuePerOption * input.numberOfOptionsOutstanding;
+    valuePerOption * inputQueryParams.numberOfOptionsOutstanding;
 
   const companyFundamentalsColumns = [
     {
@@ -330,9 +334,12 @@ const Valuation = () => {
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: displayGap }}>
               <ValueDrivingTextField
                 label="CAGR in Years 1-5"
-                defaultValue={input.cagrYearOneToFive}
+                defaultValue={inputQueryParams.cagrYearOneToFive}
                 onBlur={(value) => {
-                  dispatch(setValue("cagrYearOneToFive", value));
+                  setInputQueryParams(queryParams, "cagrYearOneToFive", value);
+                  history.push({
+                    search: queryParams.toString(),
+                  });
                 }}
                 InputProps={{
                   inputComponent: FormatInputToPercent,
@@ -340,9 +347,16 @@ const Valuation = () => {
               />
               <ValueDrivingTextField
                 label="EBIT Target Margin in Year 10"
-                defaultValue={input.ebitTargetMarginInYearTen}
+                defaultValue={inputQueryParams.ebitTargetMarginInYearTen}
                 onBlur={(value) => {
-                  dispatch(setValue("ebitTargetMarginInYearTen", value));
+                  setInputQueryParams(
+                    queryParams,
+                    "ebitTargetMarginInYearTen",
+                    value
+                  );
+                  history.push({
+                    search: queryParams.toString(),
+                  });
                 }}
                 InputProps={{
                   inputComponent: FormatInputToPercent,
@@ -350,9 +364,12 @@ const Valuation = () => {
               />
               <ValueDrivingTextField
                 label="Year of Convergence"
-                defaultValue={input.yearOfConvergence}
+                defaultValue={inputQueryParams.yearOfConvergence}
                 onBlur={(value) => {
-                  dispatch(setValue("yearOfConvergence", value));
+                  setInputQueryParams(queryParams, "yearOfConvergence", value);
+                  history.push({
+                    search: queryParams.toString(),
+                  });
                 }}
                 InputProps={{
                   inputComponent: FormatInputToYear,
@@ -360,9 +377,16 @@ const Valuation = () => {
               />
               <ValueDrivingTextField
                 label="Sales to Capital Ratio"
-                defaultValue={input.salesToCapitalRatio}
+                defaultValue={inputQueryParams.salesToCapitalRatio}
                 onBlur={(value) => {
-                  dispatch(setValue("salesToCapitalRatio", value));
+                  setInputQueryParams(
+                    queryParams,
+                    "salesToCapitalRatio",
+                    value
+                  );
+                  history.push({
+                    search: queryParams.toString(),
+                  });
                 }}
                 InputProps={{
                   inputComponent: FormatInputToNumber,
@@ -377,9 +401,16 @@ const Valuation = () => {
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: displayGap }}>
               <ValueDrivingTextField
                 label="Employee Options Oustanding"
-                defaultValue={input.numberOfOptionsOutstanding}
+                defaultValue={inputQueryParams.numberOfOptionsOutstanding}
                 onBlur={(value) => {
-                  dispatch(setValue("numberOfOptionsOutstanding", value));
+                  setInputQueryParams(
+                    queryParams,
+                    "numberOfOptionsOutstanding",
+                    value
+                  );
+                  history.push({
+                    search: queryParams.toString(),
+                  });
                 }}
                 InputProps={{
                   inputComponent: FormatInputToMillion,
@@ -387,9 +418,12 @@ const Valuation = () => {
               />
               <ValueDrivingTextField
                 label="Average Strike Price"
-                defaultValue={input.averageStrikePrice}
+                defaultValue={inputQueryParams.averageStrikePrice}
                 onBlur={(value) => {
-                  dispatch(setValue("averageStrikePrice", value));
+                  setInputQueryParams(queryParams, "averageStrikePrice", value);
+                  history.push({
+                    search: queryParams.toString(),
+                  });
                 }}
                 InputProps={{
                   inputComponent: FormatInputToCurrency,
@@ -397,9 +431,16 @@ const Valuation = () => {
               />
               <ValueDrivingTextField
                 label="Average Maturity"
-                defaultValue={input.averageMaturityOfOptions}
+                defaultValue={inputQueryParams.averageMaturityOfOptions}
                 onBlur={(value) => {
-                  dispatch(setValue("averageMaturityOfOptions", value));
+                  setInputQueryParams(
+                    queryParams,
+                    "averageMaturityOfOptions",
+                    value
+                  );
+                  history.push({
+                    search: queryParams.toString(),
+                  });
                 }}
                 InputProps={{
                   inputComponent: FormatInputToYear,
@@ -430,7 +471,9 @@ const Valuation = () => {
                 sx={{ fontWeight: theme.typography.fontWeightBold }}
               >
                 <FormatRawNumberToMillion
-                  value={valuePerOption * input.numberOfOptionsOutstanding}
+                  value={
+                    valuePerOption * inputQueryParams.numberOfOptionsOutstanding
+                  }
                   suffix="M"
                   decimalScale={2}
                 />
@@ -501,9 +544,16 @@ const Valuation = () => {
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: displayGap }}>
               <CostOfCapitalTextField
                 label="Average Maturity of Debt"
-                defaultValue={input.averageMaturityOfDebt}
+                defaultValue={inputQueryParams.averageMaturityOfDebt}
                 onBlur={(value) => {
-                  dispatch(setValue("averageMaturityOfDebt", value));
+                  setInputQueryParams(
+                    queryParams,
+                    "averageMaturityOfDebt",
+                    value
+                  );
+                  history.push({
+                    search: queryParams.toString(),
+                  });
                 }}
                 InputProps={{
                   inputComponent: FormatInputToYear,
@@ -511,9 +561,12 @@ const Valuation = () => {
               />
               <CostOfCapitalTextField
                 label="Pre-tax Cost of Debt"
-                defaultValue={input.pretaxCostOfDebt}
+                defaultValue={inputQueryParams.pretaxCostOfDebt}
                 onBlur={(value) => {
-                  dispatch(setValue("pretaxCostOfDebt", value));
+                  setInputQueryParams(queryParams, "pretaxCostOfDebt", value);
+                  history.push({
+                    search: queryParams.toString(),
+                  });
                 }}
                 InputProps={{
                   inputComponent: FormatInputToPercent,
@@ -527,9 +580,16 @@ const Valuation = () => {
               <Box sx={{ display: "flex", flexWrap: "wrap", gap: displayGap }}>
                 <CostOfCapitalTextField
                   label="Book Value of Convertible Debt"
-                  defaultValue={input.bookValueOfConvertibleDebt}
+                  defaultValue={inputQueryParams.bookValueOfConvertibleDebt}
                   onBlur={(value) => {
-                    dispatch(setValue("bookValueOfConvertibleDebt", value));
+                    setInputQueryParams(
+                      queryParams,
+                      "bookValueOfConvertibleDebt",
+                      value
+                    );
+                    history.push({
+                      search: queryParams.toString(),
+                    });
                   }}
                   InputProps={{
                     inputComponent: FormatInputToCurrency,
@@ -537,11 +597,18 @@ const Valuation = () => {
                 />
                 <CostOfCapitalTextField
                   label="Interest Expense on Convertible Debt"
-                  defaultValue={input.interestExpenseOnConvertibleDebt}
+                  defaultValue={
+                    inputQueryParams.interestExpenseOnConvertibleDebt
+                  }
                   onBlur={(value) => {
-                    dispatch(
-                      setValue("interestExpenseOnConvertibleDebt", value)
+                    setInputQueryParams(
+                      queryParams,
+                      "interestExpenseOnConvertibleDebt",
+                      value
                     );
+                    history.push({
+                      search: queryParams.toString(),
+                    });
                   }}
                   InputProps={{
                     inputComponent: FormatInputToCurrency,
@@ -549,9 +616,16 @@ const Valuation = () => {
                 />
                 <CostOfCapitalTextField
                   label="Maturity of Convertible Debt"
-                  defaultValue={input.maturityOfConvertibleDebt}
+                  defaultValue={inputQueryParams.maturityOfConvertibleDebt}
                   onBlur={(value) => {
-                    dispatch(setValue("maturityOfConvertibleDebt", value));
+                    setInputQueryParams(
+                      queryParams,
+                      "maturityOfConvertibleDebt",
+                      value
+                    );
+                    history.push({
+                      search: queryParams.toString(),
+                    });
                   }}
                   InputProps={{
                     inputComponent: FormatInputToYear,
@@ -566,9 +640,16 @@ const Valuation = () => {
               <Box sx={{ display: "flex", flexWrap: "wrap", gap: displayGap }}>
                 <CostOfCapitalTextField
                   label="Number of Preferred Shares"
-                  defaultValue={input.numberOfPreferredShares}
+                  defaultValue={inputQueryParams.numberOfPreferredShares}
                   onBlur={(value) => {
-                    dispatch(setValue("numberOfPreferredShares", value));
+                    setInputQueryParams(
+                      queryParams,
+                      "numberOfPreferredShares",
+                      value
+                    );
+                    history.push({
+                      search: queryParams.toString(),
+                    });
                   }}
                   InputProps={{
                     inputComponent: FormatInputToMillion,
@@ -576,9 +657,16 @@ const Valuation = () => {
                 />
                 <CostOfCapitalTextField
                   label="Market Price Per Share"
-                  defaultValue={input.marketPricePerShare}
+                  defaultValue={inputQueryParams.marketPricePerShare}
                   onBlur={(value) => {
-                    dispatch(setValue("marketPricePerShare", value));
+                    setInputQueryParams(
+                      queryParams,
+                      "marketPricePerShare",
+                      value
+                    );
+                    history.push({
+                      search: queryParams.toString(),
+                    });
                   }}
                   InputProps={{
                     inputComponent: FormatInputToCurrency,
@@ -586,9 +674,16 @@ const Valuation = () => {
                 />
                 <CostOfCapitalTextField
                   label="Annual Dividend Per Share"
-                  defaultValue={input.annualDividendPerShare}
+                  defaultValue={inputQueryParams.annualDividendPerShare}
                   onBlur={(value) => {
-                    dispatch(setValue("annualDividendPerShare", value));
+                    setInputQueryParams(
+                      queryParams,
+                      "annualDividendPerShare",
+                      value
+                    );
+                    history.push({
+                      search: queryParams.toString(),
+                    });
                   }}
                   InputProps={{
                     inputComponent: FormatInputToCurrency,
