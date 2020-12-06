@@ -56,40 +56,46 @@ const api = {
   },
   getGovernmentBondLastClose: async ({ countryCode, year = 10, ...params }) => {
     const countryAndYearGBond = `${countryCode}${year}Y.GBOND`;
-    const data = await sendReqOrGetCachedData(countryAndYearGBond, async () => {
-      const res = await axios.get(`${eodUrl}/${countryAndYearGBond}`, {
-        params: {
-          ...globalParams,
-          ...params,
-          fmt: "json",
-          filter: "last_close",
-        },
-      });
+    const data = await sendReqOrGetCachedData(
+      `bond_${countryAndYearGBond}`,
+      async () => {
+        const res = await axios.get(`${eodUrl}/${countryAndYearGBond}`, {
+          params: {
+            ...globalParams,
+            ...params,
+            fmt: "json",
+            filter: "last_close",
+          },
+        });
 
-      return res;
-    });
+        return res;
+      }
+    );
 
     return data;
   },
   // Base currency is always EUR
   getExchangeRateLastClose: async ({ quoteCurrency, ...params }) => {
-    const data = await sendReqOrGetCachedData(quoteCurrency, async () => {
-      const res = await axios.get(`${eodUrl}/ECBEUR${quoteCurrency}.MONEY`, {
-        params: {
-          ...globalParams,
-          ...params,
-          fmt: "json",
-          filter: "last_close",
-        },
-      });
+    const data = await sendReqOrGetCachedData(
+      `exchangeRate_${quoteCurrency}`,
+      async () => {
+        const res = await axios.get(`${eodUrl}/ECBEUR${quoteCurrency}.MONEY`, {
+          params: {
+            ...globalParams,
+            ...params,
+            fmt: "json",
+            filter: "last_close",
+          },
+        });
 
-      return res;
-    });
+        return res;
+      }
+    );
 
     return data;
   },
   getListOfExchanges: async (params) => {
-    const data = await sendReqOrGetCachedData("exchanges", async () => {
+    const data = await sendReqOrGetCachedData("listOfExchanges", async () => {
       const res = await axios.get(`${exchangesUrl}`, {
         params: {
           ...globalParams,
