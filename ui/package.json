@@ -21,6 +21,8 @@
     "mathjs": "^8.0.1",
     "node-sass": "^4.0.0",
     "react": "^17.0.1",
+    "grid-styled": "^5.0.2",
+    "rebass": "^2.1.0",
     "react-datasheet": "^1.4.8",
     "react-dom": "^17.0.1",
     "react-number-format": "^4.4.1",
