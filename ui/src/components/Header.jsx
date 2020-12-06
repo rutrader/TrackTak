@@ -3,6 +3,7 @@ import React from "react";
 import TracktakLogo from "../shared/TracktakLogo";
 import { ReactComponent as TracktakSmallLogo } from "../icons/tracktakSmallLogo.svg";
 import SearchTicker from "./SearchTicker";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const theme = useTheme();
@@ -21,7 +22,9 @@ const Header = () => {
             </Hidden>
             <Hidden smUp>
               <Box sx={{ mr: 2 }}>
-                <TracktakSmallLogo width={52} height={38} />
+                <Link to="/">
+                  <TracktakSmallLogo width={52} height={38} />
+                </Link>
               </Box>
             </Hidden>
             <Box sx={{ flex: "0 1 450px", minWidth: "200px" }}>
