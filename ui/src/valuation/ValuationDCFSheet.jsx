@@ -17,6 +17,8 @@ import { getEBITMarginCalculation } from "./expressionCalculations";
 import { Cell, Column, Table } from "@blueprintjs/table";
 import { useTheme } from "@material-ui/core";
 import "../shared/blueprintTheme.scss";
+import { useLocation } from "react-router";
+import parseInputQueryParams from "../shared/parseInputQueryParams";
 
 const computeExpr = (key, expr, scope) => {
   let value = null;
@@ -59,7 +61,8 @@ const ValuationDCFSheet = ({
   costOfCapital,
   valueOfAllOptionsOutstanding,
 }) => {
-  const input = useSelector((state) => state.input);
+  const location = useLocation();
+  const inputQueryParams = parseInputQueryParams(location);
   const fundamentals = useSelector((state) => state.fundamentals);
   const equityRiskPremium = useSelector((state) => state.equityRiskPremium);
   const [data, setData] = useState(initialData);
@@ -187,14 +190,14 @@ const ValuationDCFSheet = ({
   ]);
 
   useEffect(() => {
-    updateCell("C16", input.salesToCapitalRatio);
+    updateCell("C16", inputQueryParams.salesToCapitalRatio);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [input.salesToCapitalRatio]);
+  }, [inputQueryParams.salesToCapitalRatio]);
 
   useEffect(() => {
-    updateCell("C2", input.cagrYearOneToFive);
+    updateCell("C2", inputQueryParams.cagrYearOneToFive);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [input.cagrYearOneToFive]);
+  }, [inputQueryParams.cagrYearOneToFive]);
 
   useEffect(() => {
     getColumnsBetween(columns, "C", "L").forEach((column) => {
@@ -203,14 +206,17 @@ const ValuationDCFSheet = ({
       updateCell(
         ebitMarginKey,
         getEBITMarginCalculation(
-          input.yearOfConvergence,
-          input.ebitTargetMarginInYearTen,
+          inputQueryParams.yearOfConvergence,
+          inputQueryParams.ebitTargetMarginInYearTen,
           ebitMarginKey
         )
       );
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [input.yearOfConvergence, input.ebitTargetMarginInYearTen]);
+  }, [
+    inputQueryParams.yearOfConvergence,
+    inputQueryParams.ebitTargetMarginInYearTen,
+  ]);
 
   return (
     <Table
