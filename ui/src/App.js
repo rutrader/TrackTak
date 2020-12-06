@@ -8,6 +8,7 @@ import LayoutFullScreen from "./layout/LayoutFullScreen";
 import { useEffect } from "react";
 import { getEquityRiskPremiumCountries } from "./redux/actions/equityRiskPremiumActions";
 import { getIndustryAverages } from "./redux/actions/industryAveragesActions";
+import { getExchangeRatesLastCloses } from "./redux/actions/economicDataActions";
 
 const Spinner = () => {
   const isLoading = useSelector((state) => state.page.isLoading);
@@ -49,13 +50,18 @@ function App() {
   const industryAveragesData = useSelector(
     (state) => state.industryAverages.data
   );
+  const exchangeRatePairs = useSelector(
+    (state) => state.economicData.exchangeRatePairs
+  );
 
   useEffect(() => {
+    dispatch(getExchangeRatesLastCloses());
     dispatch(getEquityRiskPremiumCountries());
     dispatch(getIndustryAverages());
   }, [dispatch]);
 
-  if (!equityRiskPremiumData || !industryAveragesData) return null;
+  if (!equityRiskPremiumData || !industryAveragesData || !exchangeRatePairs)
+    return null;
 
   return (
     <>

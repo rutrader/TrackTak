@@ -153,31 +153,37 @@ const ValuationDCFSheet = ({
   ]);
 
   useEffect(() => {
-    updateCell("B3", fundamentals.current.totalRevenue);
-    updateCell("B5", fundamentals.current.operatingIncome);
-    updateCell("B17", fundamentals.investedCapital);
-    updateCell("B29", fundamentals.bookValueOfDebt);
-    updateCell("B30", fundamentals.current.minorityInterest);
-    updateCell("B31", fundamentals.cashAndShortTermInvestments);
-    updateCell("B32", fundamentals.noncontrollingInterestInConsolidatedEntity);
+    updateCell("B3", fundamentals.incomeStatement.totalRevenue);
+    updateCell("B5", fundamentals.incomeStatement.operatingIncome);
+    updateCell("B17", fundamentals.balanceSheet.investedCapital);
+    updateCell("B29", fundamentals.balanceSheet.bookValueOfDebt);
+    updateCell("B30", fundamentals.incomeStatement.minorityInterest);
+    updateCell("B31", fundamentals.balanceSheet.cashAndShortTermInvestments);
+    updateCell(
+      "B32",
+      fundamentals.balanceSheet.noncontrollingInterestInConsolidatedEntity
+    );
     updateCell("B36", fundamentals.price);
     updateCell(
       "B37",
       `=B35/${fundamentals.data.SharesStats.SharesOutstanding}`
     );
-    updateCell("B6", fundamentals.pastThreeYearsAverageEffectiveTaxRate);
+    updateCell(
+      "B6",
+      fundamentals.incomeStatement.pastThreeYearsAverageEffectiveTaxRate
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    fundamentals.current.totalRevenue,
-    fundamentals.current.operatingIncome,
-    fundamentals.investedCapital,
-    fundamentals.current.minorityInterest,
-    fundamentals.bookValueOfDebt,
-    fundamentals.cashAndShortTermInvestments,
-    fundamentals.noncontrollingInterestInConsolidatedEntity,
+    fundamentals.incomeStatement.totalRevenue,
+    fundamentals.incomeStatement.operatingIncome,
+    fundamentals.balanceSheet.investedCapital,
+    fundamentals.incomeStatement.minorityInterest,
+    fundamentals.balanceSheet.bookValueOfDebt,
+    fundamentals.balanceSheet.cashAndShortTermInvestments,
+    fundamentals.balanceSheet.noncontrollingInterestInConsolidatedEntity,
     fundamentals.price,
     fundamentals.data.SharesStats.SharesOutstanding,
-    fundamentals.pastThreeYearsAverageEffectiveTaxRate,
+    fundamentals.incomeStatement.pastThreeYearsAverageEffectiveTaxRate,
   ]);
 
   useEffect(() => {

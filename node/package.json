@@ -1,15 +1,17 @@
 {
   "name": "tracktak-node",
   "version": "0.1.0",
-  "main": "./src/app.js",
+  "main": "./app.js",
   "private": true,
   "engines": {
-    "node": ">=8.10.0"
+    "node": "12.18.3"
   },
   "scripts": {
-    "start": "nodemon",
+    "start": "node ./app.js",
+    "start:dev": "nodemon",
     "zip": "cd ./build && bestzip ../build.zip *",
     "build": "webpack && npm run zip",
+    "clean": "rimraf ./node_modules",
     "deploy": "npm run build && eb deploy"
   },
   "devDependencies": {
@@ -24,6 +26,7 @@
   "dependencies": {
     "axios": "^0.21.0",
     "cors": "^2.8.5",
+    "cron": "^1.8.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "memory-cache": "^0.2.0"

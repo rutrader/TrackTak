@@ -15,6 +15,7 @@
     "@testing-library/react": "^11.1.2",
     "@testing-library/user-event": "^12.2.2",
     "axios": "^0.21.0",
+    "currency-symbol-map": "^4.0.4",
     "dayjs": "^1.9.6",
     "lodash": "^4.17.20",
     "mathjs": "^8.0.1",
@@ -40,7 +41,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "clean": "rimraf ./node_modules"
   },
   "eslintConfig": {
     "extends": [
