@@ -7,6 +7,7 @@ const industryAverage = require("./data/industryAverages.json");
 const baseUrl = "https://eodhistoricaldata.com/api";
 const fundamentalsUrl = `${baseUrl}/fundamentals`;
 const eodUrl = `${baseUrl}/eod`;
+const searchUrl = `${baseUrl}/search`;
 const globalParams = {
   api_token: process.env.EOD_HISTORICAL_DATA_API_KEY,
 };
@@ -55,7 +56,7 @@ const sendReqOrGetCachedData = async (cacheKey, request) => {
 
 const api = {
   getFundamentals: async ({ ticker, ...params }) => {
-    const data = await sendReqOrGetCachedData(ticker, async () => {
+    const data = await sendReqOrGetCachedData(`fund_${ticker}`, async () => {
       const res = await axios.get(`${fundamentalsUrl}/${ticker}`, {
         params: {
           ...globalParams,
@@ -90,6 +91,23 @@ const api = {
     });
 
     return convertCommaSeperatedStringToArrayOfObjects(data);
+  },
+
+  getAutocompleteQuery: async ({ queryString, ...params }) => {
+    const data = await sendReqOrGetCachedData(
+      `query_${queryString}`,
+      async () => {
+        const res = await axios.get(`${searchUrl}/${queryString}`, {
+          params: {
+            ...globalParams,
+            ...params,
+          },
+        });
+
+        return res;
+      }
+    );
+    return data;
   },
 };
 

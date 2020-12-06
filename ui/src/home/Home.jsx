@@ -6,7 +6,9 @@ import {
   Typography,
   withStyles,
 } from "@material-ui/core";
+import { Autocomplete } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
+import axios from "../axios/axios";
 
 const TickerTextField = withStyles({
   root: {
@@ -16,6 +18,15 @@ const TickerTextField = withStyles({
     },
   },
 })(TextField);
+
+const TickerAutocomplete = withStyles({
+  root: {
+    "& .MuiInputBase-root": {
+      borderTopRightRadius: 0,
+      borderBottomRightRadius: 0,
+    },
+  },
+})(Autocomplete);
 
 const SubmitButton = withStyles({
   root: {
@@ -28,7 +39,32 @@ const SubmitButton = withStyles({
 
 const Home = () => {
   const [ticker, setTicker] = useState("");
+  const [autoComplete, setAutoComplete] = useState([]);
   const history = useHistory();
+
+  const handleOnChangeAutoComplete = (_, value) => {
+    if (value.code && value.exchange) {
+      setTicker(`${value.code}.${value.exchange}`);
+    }
+  };
+
+  const handleOnChangeSearch = (e) => {
+    const value = e.target.value;
+
+    if (value.length > 2 && hasTickerNotOnlyWhiteSpace()) {
+      axios.get(`/api/v1/autocomplete-query/${value}`).then((response) => {
+        setAutoComplete(response.data);
+      });
+    } else {
+      setAutoComplete([]);
+    }
+    setTicker(value);
+  };
+
+  const hasTickerNotOnlyWhiteSpace = () => {
+    const replacedWhiteSpace = ticker.replace(/ /g, "");
+    return replacedWhiteSpace.length > 0;
+  };
 
   return (
     <>
@@ -38,23 +74,43 @@ const Home = () => {
           sx={{ display: "flex", mt: 0.5, mb: 1.5 }}
           onSubmit={async (e) => {
             e.preventDefault();
-
-            const replacedWhiteSpace = ticker.replace(/ /g, "");
-
-            if (replacedWhiteSpace !== "") {
+            if (hasTickerNotOnlyWhiteSpace()) {
               history.push(`/valuation/${ticker}`);
             }
           }}
         >
-          <TickerTextField
-            value={ticker}
-            fullWidth
-            required
-            onChange={(e) => {
-              setTicker(e.currentTarget.value);
-            }}
-            placeholder="Stock ticker e.g. AMZN"
-          />
+          <div style={{ width: "100%" }}>
+            <TickerAutocomplete
+              onChange={handleOnChangeAutoComplete}
+              freeSolo
+              id="free-solo-2-demo"
+              disableClearable
+              getOptionLabel={({ name, code, exchange }) => {
+                if (!name || !code || !exchange) return ticker;
+                return `${name} (${code}.${exchange})`;
+              }}
+              options={autoComplete.map((option) => ({
+                name: option.Name,
+                code: option.Code,
+                exchange: option.Exchange,
+              }))}
+              renderInput={(params) => {
+                return (
+                  <>
+                    <TickerTextField
+                      {...params}
+                      variant="outlined"
+                      value={ticker}
+                      fullWidth
+                      required
+                      onChange={handleOnChangeSearch}
+                      placeholder="Stock ticker e.g. AMZN"
+                    />
+                  </>
+                );
+              }}
+            />
+          </div>
           <SubmitButton
             color="primary"
             variant="contained"

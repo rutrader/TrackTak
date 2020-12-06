@@ -41,6 +41,11 @@ app.get("/api/v1/industry-averages", async (req, res) => {
   res.send(value);
 });
 
+app.get("/api/v1/autocomplete-query/:queryString", async (req, res) => {
+  const value = await api.getAutocompleteQuery(req.params);
+  res.send(value);
+});
+
 app.get("/", (_, res) => {
   res.send(200);
 });
