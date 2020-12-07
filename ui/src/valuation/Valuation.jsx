@@ -51,18 +51,16 @@ const CostOfCapitalTextField = withStyles({
   },
 })(TextField);
 
-const mapFromStatementsToDateObject = (statementToLoop, valueKeys) => {
-  return Object.values(statementToLoop).reduce((acc, curr) => {
-    const sumOfValues = valueKeys.reduce(
-      (acc, key) => (acc += parseFloat(curr[key], 10)),
-      0
-    );
+const mapFromStatementsToDateObject = (objectToLoop, valueKey) => {
+  const dateObject = {};
 
-    return {
-      ...acc,
-      [curr.date]: <FormatRawNumberToMillion value={sumOfValues} />,
-    };
-  }, {});
+  Object.keys(objectToLoop).forEach((key) => {
+    const value = objectToLoop[key];
+
+    dateObject[key] = <FormatRawNumberToMillion value={value[valueKey]} />;
+  });
+
+  return dateObject;
 };
 
 const Valuation = () => {
@@ -85,11 +83,7 @@ const Valuation = () => {
   if (!fundamentals.data || !economicData.governmentBondTenYearLastClose)
     return null;
 
-  const {
-    General,
-    Financials: { Income_Statement, Balance_Sheet },
-    SharesStats,
-  } = fundamentals.data;
+  const { General, SharesStats } = fundamentals.data;
 
   const riskFreeRate =
     economicData.governmentBondTenYearLastClose / percentModifier -
@@ -123,7 +117,7 @@ const Valuation = () => {
       accessor: "ttm",
     },
   ].concat(
-    Object.values(Income_Statement.yearly).map((statement) => ({
+    Object.values(fundamentals.yearlyIncomeStatements).map((statement) => ({
       Header: dayjs(statement.date).format("MMM YY"),
       accessor: statement.date,
     }))
@@ -137,9 +131,10 @@ const Valuation = () => {
           value={fundamentals.incomeStatement.totalRevenue}
         />
       ) : null,
-      ...mapFromStatementsToDateObject(Income_Statement.yearly, [
-        "totalRevenue",
-      ]),
+      ...mapFromStatementsToDateObject(
+        fundamentals.yearlyIncomeStatements,
+        "totalRevenue"
+      ),
     },
     {
       dataField: "Operating Income",
@@ -148,9 +143,10 @@ const Valuation = () => {
           value={fundamentals.incomeStatement.operatingIncome}
         />
       ) : null,
-      ...mapFromStatementsToDateObject(Income_Statement.yearly, [
-        "operatingIncome",
-      ]),
+      ...mapFromStatementsToDateObject(
+        fundamentals.yearlyIncomeStatements,
+        "operatingIncome"
+      ),
     },
     {
       dataField: "Interest Expense",
@@ -159,9 +155,10 @@ const Valuation = () => {
           value={fundamentals.incomeStatement.interestExpense}
         />
       ) : null,
-      ...mapFromStatementsToDateObject(Income_Statement.yearly, [
-        "interestExpense",
-      ]),
+      ...mapFromStatementsToDateObject(
+        fundamentals.yearlyIncomeStatements,
+        "interestExpense"
+      ),
     },
     {
       dataField: "Book Value of Equity",
@@ -170,9 +167,10 @@ const Valuation = () => {
           value={fundamentals.balanceSheet.bookValueOfEquity}
         />
       ),
-      ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
-        "totalStockholderEquity",
-      ]),
+      ...mapFromStatementsToDateObject(
+        fundamentals.yearlyBalanceSheets,
+        "bookValueOfEquity"
+      ),
     },
     {
       dataField: "Book Value of Debt",
@@ -181,11 +179,10 @@ const Valuation = () => {
           value={fundamentals.balanceSheet.bookValueOfDebt}
         />
       ),
-      ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
-        "shortLongTermDebt",
-        "longTermDebt",
-        "capitalLeaseObligations",
-      ]),
+      ...mapFromStatementsToDateObject(
+        fundamentals.yearlyBalanceSheets,
+        "bookValueOfDebt"
+      ),
     },
     {
       dataField: "Cash & Marketable Securities",
@@ -194,9 +191,10 @@ const Valuation = () => {
           value={fundamentals.balanceSheet.cashAndShortTermInvestments}
         />
       ),
-      ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
-        "cashAndShortTermInvestments",
-      ]),
+      ...mapFromStatementsToDateObject(
+        fundamentals.yearlyBalanceSheets,
+        "cashAndShortTermInvestments"
+      ),
     },
     {
       dataField: "Cross Holdings & Other Non-Operating Assets",
@@ -207,9 +205,10 @@ const Valuation = () => {
           }
         />
       ),
-      ...mapFromStatementsToDateObject(Balance_Sheet.yearly, [
-        "noncontrollingInterestInConsolidatedEntity",
-      ]),
+      ...mapFromStatementsToDateObject(
+        fundamentals.yearlyBalanceSheets,
+        "noncontrollingInterestInConsolidatedEntity"
+      ),
     },
     {
       dataField: "Minority Interests",
@@ -218,9 +217,10 @@ const Valuation = () => {
           value={fundamentals.incomeStatement.minorityInterest}
         />
       ) : null,
-      ...mapFromStatementsToDateObject(Income_Statement.yearly, [
-        "minorityInterest",
-      ]),
+      ...mapFromStatementsToDateObject(
+        fundamentals.yearlyIncomeStatements,
+        "minorityInterest"
+      ),
     },
   ];
 
