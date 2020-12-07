@@ -3,8 +3,8 @@ import { getFundamentals } from "../actions/fundamentalsActions";
 import getSymbolFromCurrency from "currency-symbol-map";
 
 const initialState = {
-  data: null,
   price: null,
+  data: null,
   balanceSheet: {
     bookValueOfDebt: null,
     bookValueOfEquity: null,
@@ -19,13 +19,21 @@ const initialState = {
     minorityInterest: null,
     pastThreeYearsAverageEffectiveTaxRate: null,
   },
+  yearlyBalanceSheets: null,
+  yearlyIncomeStatements: null,
   hasIncomeTTM: null,
   valuationCurrencySymbol: null,
   valuationCurrencyCode: null,
 };
 
 export const getValueFromString = (value) => {
-  return value ? parseFloat(value) : 0;
+  const newValue = value ? parseFloat(value) : 0;
+
+  if (isNaN(newValue)) {
+    return value;
+  }
+
+  return newValue;
 };
 
 const getFinancialSheetPastValues = (
@@ -60,82 +68,81 @@ const getConvertCurrency = (exchangeRatePairs) => (
   baseCurrency,
   quotedCurrency
 ) => {
-  if (baseCurrency === quotedCurrency) return valueToConvert;
+  const valueAsANumber = getValueFromString(valueToConvert);
+
+  if (baseCurrency === quotedCurrency || isNaN(parseFloat(valueAsANumber)))
+    return valueAsANumber;
 
   const newCurrencyValue = exchangeRatePairs[baseCurrency][quotedCurrency];
 
-  return (valueToConvert *= newCurrencyValue);
+  return valueAsANumber * newCurrencyValue;
 };
 
 const getIncomeSheetTTMValue = (incomeStatement, valueKey) =>
   getIncomeSheetPastQuartersValues(incomeStatement, valueKey, 4);
 
+const getBookValueOfDebt = (balanceSheet) => {
+  let bookValueOfDebt = 0;
+
+  bookValueOfDebt += getValueFromString(balanceSheet.shortLongTermDebt);
+
+  bookValueOfDebt += getValueFromString(balanceSheet.longTermDebt);
+
+  bookValueOfDebt += getValueFromString(balanceSheet.capitalLeaseObligations);
+
+  return bookValueOfDebt;
+};
+
+const getCashAndShortTermInvestments = (balanceSheet) => {
+  // Non U.S Stocks report cash + shortTermInvestments seperately
+  if (balanceSheet.cashAndShortTermInvestments !== null) {
+    return balanceSheet.cashAndShortTermInvestments;
+  } else if (
+    balanceSheet.cash !== null ||
+    balanceSheet.shortTermInvestments !== null
+  ) {
+    const cash = getValueFromString(balanceSheet.cash);
+    const shortTermInvestments = getValueFromString(
+      balanceSheet.shortTermInvestments
+    );
+
+    return cash + shortTermInvestments;
+  } else {
+    return 0;
+  }
+};
+
 export const fundamentalsReducer = createReducer(initialState, (builder) => {
   builder.addCase(getFundamentals.fulfilled, (state, action) => {
+    const { Financials, ...otherData } = action.payload.data;
     const {
       General,
       Highlights: { MostRecentQuarter, MarketCapitalization },
       SharesStats,
       Financials: { Balance_Sheet, Income_Statement },
     } = action.payload.data;
-    state.data = action.payload.data;
+
+    state.data = {
+      ...otherData,
+    };
 
     const quarterBalanceSheet = Balance_Sheet.quarterly[MostRecentQuarter];
     const recentYearlyIncomeStatement = Object.values(
       Income_Statement.yearly
     )[0];
 
-    let bookValueOfDebt = 0;
-
-    bookValueOfDebt += getValueFromString(
-      quarterBalanceSheet.shortLongTermDebt
-    );
-
-    bookValueOfDebt += getValueFromString(quarterBalanceSheet.longTermDebt);
-
-    bookValueOfDebt += getValueFromString(
-      quarterBalanceSheet.capitalLeaseObligations
-    );
-
+    // TODO: Put all this on the backend
     state.balanceSheet = {
-      bookValueOfDebt,
-      bookValueOfEquity: getValueFromString(
-        quarterBalanceSheet.totalStockholderEquity
-      ),
-      noncontrollingInterestInConsolidatedEntity: getValueFromString(
-        quarterBalanceSheet.noncontrollingInterestInConsolidatedEntity
+      bookValueOfDebt: getBookValueOfDebt(quarterBalanceSheet),
+      bookValueOfEquity: quarterBalanceSheet.totalStockholderEquity,
+      noncontrollingInterestInConsolidatedEntity:
+        quarterBalanceSheet.noncontrollingInterestInConsolidatedEntity,
+      cashAndShortTermInvestments: getCashAndShortTermInvestments(
+        quarterBalanceSheet
       ),
     };
 
-    state.price = MarketCapitalization / SharesStats.SharesOutstanding;
-
-    // Non U.S Stocks report cash + shortTermInvestments seperately
-    if (quarterBalanceSheet.cashAndShortTermInvestments !== null) {
-      state.balanceSheet.cashAndShortTermInvestments = getValueFromString(
-        quarterBalanceSheet.totalStockholderEquity
-      );
-    } else if (
-      quarterBalanceSheet.cash !== null ||
-      quarterBalanceSheet.shortTermInvestments !== null
-    ) {
-      const cash = getValueFromString(quarterBalanceSheet.cash);
-      const shortTermInvestments = getValueFromString(
-        quarterBalanceSheet.shortTermInvestments
-      );
-
-      state.balanceSheet.cashAndShortTermInvestments =
-        cash + shortTermInvestments;
-    } else {
-      state.balanceSheet.cashAndShortTermInvestments = 0;
-    }
-
-    state.balanceSheet.investedCapital =
-      state.bookValueOfEquity +
-      state.bookValueOfDebt -
-      state.cashAndShortTermInvestments;
-
     state.hasIncomeTTM = General.CountryISO === "US";
-
     const pastPeriodsToGet = 3;
 
     let pastThreeYearIncomeBeforeTax;
@@ -185,25 +192,16 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
       );
 
       state.incomeStatement = {
-        totalRevenue: getValueFromString(
-          recentYearlyIncomeStatement.totalRevenue
-        ),
-        operatingIncome: getValueFromString(
-          recentYearlyIncomeStatement.operatingIncome
-        ),
-        interestExpense: getValueFromString(
-          recentYearlyIncomeStatement.interestExpense
-        ),
-        minorityInterest: getValueFromString(
-          recentYearlyIncomeStatement.minorityInterest
-        ),
+        totalRevenue: recentYearlyIncomeStatement.totalRevenue,
+        operatingIncome: recentYearlyIncomeStatement.operatingIncome,
+        interestExpense: recentYearlyIncomeStatement.interestExpense,
+        minorityInterest: recentYearlyIncomeStatement.minorityInterest,
       };
     }
-    state.incomeStatement.pastThreeYearsAverageEffectiveTaxRate =
-      pastThreeYearIncomeTaxExpense / pastThreeYearIncomeBeforeTax;
 
     const exchangeRatePairs = action.payload.exchangeRatePairs;
     const convertCurrency = getConvertCurrency(exchangeRatePairs);
+
     // UK stocks are quoted in pence so we convert it to GBP for ease of use
     const valuationCurrencyCode =
       General.CurrencyCode === "GBX" ? "GBP" : General.CurrencyCode;
@@ -215,6 +213,7 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
         valuationCurrencyCode
       );
     });
+
     Object.keys(state.balanceSheet).forEach((property) => {
       state.balanceSheet[property] = convertCurrency(
         state.balanceSheet[property],
@@ -222,6 +221,78 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
         valuationCurrencyCode
       );
     });
+
+    state.yearlyIncomeStatements = {};
+
+    Object.keys(Income_Statement.yearly).forEach((property) => {
+      const incomeStatement = Income_Statement.yearly[property];
+
+      state.yearlyIncomeStatements[property] = {
+        totalRevenue: incomeStatement.totalRevenue,
+        operatingIncome: incomeStatement.operatingIncome,
+        interestExpense: incomeStatement.interestExpense,
+        minorityInterest: incomeStatement.minorityInterest,
+      };
+
+      Object.keys(state.yearlyIncomeStatements[property]).forEach((key) => {
+        state.yearlyIncomeStatements[property][key] = convertCurrency(
+          incomeStatement[key],
+          Income_Statement.currency_symbol,
+          valuationCurrencyCode
+        );
+      });
+
+      state.yearlyIncomeStatements[property].date = incomeStatement.date;
+    });
+
+    state.yearlyBalanceSheets = {};
+
+    Object.keys(Balance_Sheet.yearly).forEach((property) => {
+      const balanceSheet = Balance_Sheet.yearly[property];
+
+      state.yearlyBalanceSheets[property] = {
+        bookValueOfDebt: convertCurrency(
+          getBookValueOfDebt(balanceSheet),
+          Balance_Sheet.currency_symbol,
+          valuationCurrencyCode
+        ),
+        cashAndShortTermInvestments: convertCurrency(
+          getCashAndShortTermInvestments(balanceSheet),
+          Balance_Sheet.currency_symbol,
+          valuationCurrencyCode
+        ),
+        bookValueOfEquity: convertCurrency(
+          balanceSheet.totalStockholderEquity,
+          Balance_Sheet.currency_symbol,
+          valuationCurrencyCode
+        ),
+        noncontrollingInterestInConsolidatedEntity:
+          balanceSheet.noncontrollingInterestInConsolidatedEntity,
+      };
+
+      Object.keys(state.yearlyBalanceSheets[property]).forEach((key) => {
+        state.yearlyBalanceSheets[property][key] = balanceSheet[key]
+          ? convertCurrency(
+              balanceSheet[key],
+              Balance_Sheet.currency_symbol,
+              valuationCurrencyCode
+            )
+          : state.yearlyBalanceSheets[property][key];
+      });
+
+      state.yearlyBalanceSheets[property].date = balanceSheet.date;
+    });
+
+    state.incomeStatement.pastThreeYearsAverageEffectiveTaxRate =
+      pastThreeYearIncomeTaxExpense / pastThreeYearIncomeBeforeTax;
+
+    state.price = MarketCapitalization / SharesStats.SharesOutstanding;
+
+    state.balanceSheet.investedCapital =
+      state.balanceSheet.bookValueOfEquity +
+      state.balanceSheet.bookValueOfDebt -
+      state.balanceSheet.cashAndShortTermInvestments;
+
     state.valuationCurrencyCode = valuationCurrencyCode;
     state.valuationCurrencySymbol = getSymbolFromCurrency(
       valuationCurrencyCode
