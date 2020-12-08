@@ -63,17 +63,10 @@ const getIncomeSheetPastQuartersValues = (
   );
 };
 
-const getConvertCurrency = (exchangeRatePairs) => (
-  valueToConvert,
-  baseCurrency,
-  quotedCurrency
-) => {
+const getConvertCurrency = (exchangeRates) => (valueToConvert) => {
   const valueAsANumber = getValueFromString(valueToConvert);
 
-  if (baseCurrency === quotedCurrency || isNaN(parseFloat(valueAsANumber)))
-    return valueAsANumber;
-
-  const newCurrencyValue = exchangeRatePairs[baseCurrency][quotedCurrency];
+  if (isNaN(parseFloat(valueAsANumber))) return valueAsANumber;
 
   return valueAsANumber * newCurrencyValue;
 };
@@ -199,12 +192,9 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
       };
     }
 
-    const exchangeRatePairs = action.payload.exchangeRatePairs;
-    const convertCurrency = getConvertCurrency(exchangeRatePairs);
+    const convertCurrency = getConvertCurrency(action.payload.exchangeRates);
 
-    // UK stocks are quoted in pence so we convert it to GBP for ease of use
-    const valuationCurrencyCode =
-      General.CurrencyCode === "GBX" ? "GBP" : General.CurrencyCode;
+    const valuationCurrencyCode = action.payload.valuationCurrencyCode;
 
     Object.keys(state.incomeStatement).forEach((property) => {
       state.incomeStatement[property] = convertCurrency(

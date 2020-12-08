@@ -17,7 +17,7 @@
     "@testing-library/user-event": "^12.2.2",
     "axios": "^0.21.0",
     "currency-symbol-map": "^4.0.4",
-    "dayjs": "^1.9.6",
+    "dayjs": "^1.9.7",
     "grid-styled": "^5.0.2",
     "lodash": "^4.17.20",
     "mathjs": "^8.0.1",

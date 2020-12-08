@@ -75,18 +75,29 @@ const api = {
     return data;
   },
   // Base currency is always EUR
-  getExchangeRateLastClose: async ({ quoteCurrency, ...params }) => {
+  getExchangeRateHistory: async ({
+    baseCurrency,
+    quoteCurrency,
+    from,
+    to,
+    ...params
+  }) => {
     const data = await sendReqOrGetCachedData(
-      `exchangeRate_${quoteCurrency}`,
+      `exchangeRateHistory_${baseCurrency}_${quoteCurrency}_${from}_${to}`,
       async () => {
-        const res = await axios.get(`${eodUrl}/ECBEUR${quoteCurrency}.MONEY`, {
-          params: {
-            ...globalParams,
-            ...params,
-            fmt: "json",
-            filter: "last_close",
-          },
-        });
+        const res = await axios.get(
+          `${eodUrl}/${baseCurrency}${quoteCurrency}.FOREX`,
+          {
+            params: {
+              ...globalParams,
+              ...params,
+              from,
+              to,
+              period: "m",
+              fmt: "json",
+            },
+          }
+        );
 
         return res;
       }
