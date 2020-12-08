@@ -24,6 +24,13 @@ const theme = createMuiTheme({
         disableElevation: true,
       },
     },
+    MuiAccordion: {
+      styleOverrides: {
+        rounded: {
+          borderRadius: "4px",
+        },
+      },
+    },
   },
 });
 

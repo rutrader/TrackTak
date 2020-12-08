@@ -68,7 +68,10 @@ const calculateCostOfCapital = (
     },
   };
 
-  return costOfComponent.total;
+  return {
+    leveredBetaForEquity,
+    costOfCapital: costOfComponent.total,
+  };
 };
 
 export default calculateCostOfCapital;
