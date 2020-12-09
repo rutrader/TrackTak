@@ -1,5 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import dayjs from "dayjs";
 import axios from "../../axios/axios";
+import { yearMonthDateFormat } from "../../shared/utils";
 
 export const getTenYearGovernmentBondLastClose = createAsyncThunk(
   "economicData/getTenYearGovernmentBondLastClose",
@@ -11,10 +13,16 @@ export const getTenYearGovernmentBondLastClose = createAsyncThunk(
   }
 );
 
-export const getExchangeRatesLastCloses = createAsyncThunk(
-  "economicData/getExchangeRatesLastCloses",
-  async () => {
-    const res = await axios.get(`/api/v1/exchange-rates-last-closes`);
-    return res.data;
+export const getExchangeRateHistory = createAsyncThunk(
+  "economicData/getExchangeRateHistory",
+  async ({ baseCurrency, quoteCurrency, from, to }) => {
+    if (baseCurrency !== quoteCurrency) {
+      const formattedFrom = dayjs(from).format(yearMonthDateFormat);
+
+      const res = await axios.get(
+        `/api/v1/exchange-rate-history/${baseCurrency}/${quoteCurrency}?from=${formattedFrom}`
+      );
+      return res.data;
+    }
   }
 );

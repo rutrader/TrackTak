@@ -6,6 +6,10 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import theme from "./theme";
 import store from "./redux/store";
+import minMax from "dayjs/plugin/minMax";
+import dayjs from "dayjs";
+
+dayjs.extend(minMax);
 
 ReactDOM.render(
   <React.StrictMode>

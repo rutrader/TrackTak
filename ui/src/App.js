@@ -12,7 +12,6 @@ import LayoutFullScreen from "./layout/LayoutFullScreen";
 import { useEffect } from "react";
 import { getEquityRiskPremiumCountries } from "./redux/actions/equityRiskPremiumActions";
 import { getIndustryAverages } from "./redux/actions/industryAveragesActions";
-import { getExchangeRatesLastCloses } from "./redux/actions/economicDataActions";
 
 const GlobalStyle = createGlobalStyle`
   * { box-sizing: border-box; }
@@ -86,18 +85,13 @@ function App() {
   const industryAveragesData = useSelector(
     (state) => state.industryAverages.data
   );
-  const exchangeRatePairs = useSelector(
-    (state) => state.economicData.exchangeRatePairs
-  );
 
   useEffect(() => {
-    dispatch(getExchangeRatesLastCloses());
     dispatch(getEquityRiskPremiumCountries());
     dispatch(getIndustryAverages());
   }, [dispatch]);
 
-  if (!equityRiskPremiumData || !industryAveragesData || !exchangeRatePairs)
-    return null;
+  if (!equityRiskPremiumData || !industryAveragesData) return null;
 
   return (
     <>
