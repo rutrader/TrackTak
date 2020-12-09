@@ -1,6 +1,8 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { getFundamentals } from "../actions/fundamentalsActions";
 import getSymbolFromCurrency from "currency-symbol-map";
+import { monthDateFormat } from "../../shared/utils";
+import dayjs from "dayjs";
 
 const initialState = {
   price: null,
@@ -63,16 +65,28 @@ const getIncomeSheetPastQuartersValues = (
   );
 };
 
-const getConvertCurrency = (exchangeRates) => (valueToConvert) => {
+const getConvertCurrency = (exchangeRates) => (
+  datePeriodsToConverAt,
+  valueToConvert
+) => {
   const valueAsANumber = getValueFromString(valueToConvert);
 
-  if (isNaN(parseFloat(valueAsANumber))) return valueAsANumber;
+  if (isNaN(parseFloat(valueAsANumber)) || !exchangeRates)
+    return valueAsANumber;
 
-  return valueAsANumber * newCurrencyValue;
+  // TODO: Make this exact day later
+  const sumOfExchangeRateCloses = datePeriodsToConverAt.reduce((prev, date) => {
+    // Get exchange rate for that month
+    const datePeriodAsMonthDate = dayjs(date).format(monthDateFormat);
+
+    return prev + exchangeRates[datePeriodAsMonthDate].close;
+  }, 0);
+
+  const averageOfExchangeRateCloses =
+    sumOfExchangeRateCloses / datePeriodsToConverAt.length;
+
+  return valueAsANumber * averageOfExchangeRateCloses;
 };
-
-const getIncomeSheetTTMValue = (incomeStatement, valueKey) =>
-  getIncomeSheetPastQuartersValues(incomeStatement, valueKey, 4);
 
 const getBookValueOfDebt = (balanceSheet) => {
   let bookValueOfDebt = 0;
@@ -140,10 +154,12 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
 
     let pastThreeYearIncomeBeforeTax;
     let pastThreeYearIncomeTaxExpense;
+    let incomeSheetDates;
 
     // TODO: Fix when the API fixes the TTM for non-US stocks
     if (state.hasIncomeTTM) {
-      const pastThreeYearPeriods = pastPeriodsToGet * 4;
+      const quarters = 4;
+      const pastThreeYearPeriods = pastPeriodsToGet * quarters;
 
       pastThreeYearIncomeBeforeTax = getIncomeSheetPastQuartersValues(
         Income_Statement,
@@ -157,19 +173,28 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
         pastThreeYearPeriods
       );
 
+      incomeSheetDates = Object.keys(Income_Statement.quarterly).slice(0, 4);
+
       state.incomeStatement = {
-        totalRevenue: getIncomeSheetTTMValue(Income_Statement, "totalRevenue"),
-        operatingIncome: getIncomeSheetTTMValue(
+        totalRevenue: getIncomeSheetPastQuartersValues(
           Income_Statement,
-          "operatingIncome"
+          "totalRevenue",
+          quarters
         ),
-        interestExpense: getIncomeSheetTTMValue(
+        operatingIncome: getIncomeSheetPastQuartersValues(
           Income_Statement,
-          "interestExpense"
+          "operatingIncome",
+          quarters
         ),
-        minorityInterest: getIncomeSheetTTMValue(
+        interestExpense: getIncomeSheetPastQuartersValues(
           Income_Statement,
-          "minorityInterest"
+          "interestExpense",
+          quarters
+        ),
+        minorityInterest: getIncomeSheetPastQuartersValues(
+          Income_Statement,
+          "minorityInterest",
+          quarters
         ),
       };
     } else {
@@ -183,6 +208,8 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
         "incomeTaxExpense",
         pastPeriodsToGet
       );
+
+      incomeSheetDates = [recentYearlyIncomeStatement.date];
 
       state.incomeStatement = {
         totalRevenue: recentYearlyIncomeStatement.totalRevenue,
@@ -198,79 +225,65 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
 
     Object.keys(state.incomeStatement).forEach((property) => {
       state.incomeStatement[property] = convertCurrency(
-        state.incomeStatement[property],
-        Income_Statement.currency_symbol,
-        valuationCurrencyCode
+        incomeSheetDates,
+        state.incomeStatement[property]
       );
     });
 
     Object.keys(state.balanceSheet).forEach((property) => {
       state.balanceSheet[property] = convertCurrency(
-        state.balanceSheet[property],
-        Balance_Sheet.currency_symbol,
-        valuationCurrencyCode
+        [MostRecentQuarter],
+        state.balanceSheet[property]
       );
     });
 
     state.yearlyIncomeStatements = {};
 
-    Object.keys(Income_Statement.yearly).forEach((property) => {
-      const incomeStatement = Income_Statement.yearly[property];
+    Object.keys(Income_Statement.yearly).forEach((date) => {
+      const incomeStatement = Income_Statement.yearly[date];
 
-      state.yearlyIncomeStatements[property] = {
+      state.yearlyIncomeStatements[date] = {
         totalRevenue: incomeStatement.totalRevenue,
         operatingIncome: incomeStatement.operatingIncome,
         interestExpense: incomeStatement.interestExpense,
         minorityInterest: incomeStatement.minorityInterest,
       };
 
-      Object.keys(state.yearlyIncomeStatements[property]).forEach((key) => {
-        state.yearlyIncomeStatements[property][key] = convertCurrency(
-          incomeStatement[key],
-          Income_Statement.currency_symbol,
-          valuationCurrencyCode
+      Object.keys(state.yearlyIncomeStatements[date]).forEach((key) => {
+        state.yearlyIncomeStatements[date][key] = convertCurrency(
+          [date],
+          incomeStatement[key]
         );
       });
 
-      state.yearlyIncomeStatements[property].date = incomeStatement.date;
+      state.yearlyIncomeStatements[date].date = incomeStatement.date;
     });
 
     state.yearlyBalanceSheets = {};
 
-    Object.keys(Balance_Sheet.yearly).forEach((property) => {
-      const balanceSheet = Balance_Sheet.yearly[property];
+    Object.keys(Balance_Sheet.yearly).forEach((date) => {
+      const balanceSheet = Balance_Sheet.yearly[date];
 
-      state.yearlyBalanceSheets[property] = {
+      state.yearlyBalanceSheets[date] = {
         bookValueOfDebt: convertCurrency(
-          getBookValueOfDebt(balanceSheet),
-          Balance_Sheet.currency_symbol,
-          valuationCurrencyCode
+          [date],
+          getBookValueOfDebt(balanceSheet)
         ),
         cashAndShortTermInvestments: convertCurrency(
-          getCashAndShortTermInvestments(balanceSheet),
-          Balance_Sheet.currency_symbol,
-          valuationCurrencyCode
+          [date],
+          getCashAndShortTermInvestments(balanceSheet)
         ),
         bookValueOfEquity: convertCurrency(
-          balanceSheet.totalStockholderEquity,
-          Balance_Sheet.currency_symbol,
-          valuationCurrencyCode
+          [date],
+          balanceSheet.totalStockholderEquity
         ),
-        noncontrollingInterestInConsolidatedEntity:
-          balanceSheet.noncontrollingInterestInConsolidatedEntity,
+        noncontrollingInterestInConsolidatedEntity: convertCurrency(
+          [date],
+          balanceSheet.noncontrollingInterestInConsolidatedEntity
+        ),
       };
 
-      Object.keys(state.yearlyBalanceSheets[property]).forEach((key) => {
-        state.yearlyBalanceSheets[property][key] = balanceSheet[key]
-          ? convertCurrency(
-              balanceSheet[key],
-              Balance_Sheet.currency_symbol,
-              valuationCurrencyCode
-            )
-          : state.yearlyBalanceSheets[property][key];
-      });
-
-      state.yearlyBalanceSheets[property].date = balanceSheet.date;
+      state.yearlyBalanceSheets[date].date = balanceSheet.date;
     });
 
     state.incomeStatement.pastThreeYearsAverageEffectiveTaxRate =

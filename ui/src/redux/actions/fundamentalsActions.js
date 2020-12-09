@@ -7,6 +7,7 @@ import {
   getTenYearGovernmentBondLastClose,
 } from "./economicDataActions";
 import dayjs from "dayjs";
+import { monthDateFormat } from "../../shared/utils";
 
 export const getFundamentals = createAsyncThunk(
   "fundamentals/getFundamentals",
@@ -25,18 +26,22 @@ export const getFundamentals = createAsyncThunk(
       };
 
       let minDate;
-      let maxDate;
+
+      const yearlyDatesAsMonths = [];
+
+      Object.keys(mergedStatements).forEach((key) => {
+        yearlyDatesAsMonths.push(dayjs(key).format(monthDateFormat));
+      });
 
       Object.keys(mergedStatements).forEach((date, i) => {
-        const newDate = dayjs(date);
+        const formattedDate = `${dayjs(date).format(monthDateFormat)}-01`;
+        const newDate = dayjs(formattedDate);
 
         if (i === 0) {
           minDate = newDate;
-          maxDate = newDate;
         }
 
         minDate = dayjs.min(minDate, newDate);
-        maxDate = dayjs.max(maxDate, newDate);
       });
 
       // UK stocks are quoted in pence so we convert it to GBP for ease of use
@@ -48,7 +53,6 @@ export const getFundamentals = createAsyncThunk(
           baseCurrency: data.Financials.Balance_Sheet.currency_symbol,
           quoteCurrency: valuationCurrencyCode,
           from: minDate,
-          to: maxDate,
         })
       );
 

@@ -19,11 +19,11 @@ const sendReqOrGetCachedData = async (cacheKey, request, time = 2.16e7) => {
 
   if (cachedData) return cachedData;
   try {
-    const res = await request();
-    if (res.data) {
-      return cache.put(cacheKey, res.data, time);
+    const { data } = await request();
+    if (data) {
+      return cache.put(cacheKey, data, time);
     }
-    return res.data;
+    return data;
   } catch (error) {
     console.log(error);
     throw error;
@@ -79,11 +79,10 @@ const api = {
     baseCurrency,
     quoteCurrency,
     from,
-    to,
     ...params
   }) => {
     const data = await sendReqOrGetCachedData(
-      `exchangeRateHistory_${baseCurrency}_${quoteCurrency}_${from}_${to}`,
+      `exchangeRateHistory_${baseCurrency}_${quoteCurrency}_${from}`,
       async () => {
         const res = await axios.get(
           `${eodUrl}/${baseCurrency}${quoteCurrency}.FOREX`,
@@ -92,14 +91,26 @@ const api = {
               ...globalParams,
               ...params,
               from,
-              to,
+              order: "d",
               period: "m",
               fmt: "json",
             },
           }
         );
 
-        return res;
+        const data = {};
+
+        res.data.forEach((exchangeObject) => {
+          const dateKeyWithoutDay = exchangeObject.date.slice(0, -3);
+
+          data[dateKeyWithoutDay] = {
+            ...exchangeObject,
+          };
+        });
+
+        return {
+          data,
+        };
       }
     );
 
