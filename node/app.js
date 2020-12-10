@@ -21,26 +21,11 @@ app.get("/api/v1/fundamentals/:ticker", async (req, res) => {
   res.send(value);
 });
 
-app.get("/api/v1/equity-risk-premium-countries", async (req, res) => {
-  const value = api.getEquityRiskPremiumCountries();
-  res.send(value);
-});
-
-app.get("/api/v1/equity-risk-premium-regions", async (req, res) => {
-  const value = api.getEquityRiskPremiumRegions();
-  res.send(value);
-});
-
 app.get("/api/v1/government-bond-last-close/:countryCode", async (req, res) => {
   const governmentBondLastClose = await api.getGovernmentBondLastClose(
     req.params
   );
   res.send({ governmentBondLastClose });
-});
-
-app.get("/api/v1/industry-averages", async (req, res) => {
-  const value = await api.getIndustryAverages(req.params);
-  res.send(value);
 });
 
 app.get(

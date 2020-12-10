@@ -1,8 +1,5 @@
 const axios = require("axios");
 const cache = require("memory-cache");
-const equityRiskPremiumCountries = require("./data/equityRiskPremiumCountries.json");
-const equityRiskPremiumRegions = require("./data/equityRiskPremiumRegions.json");
-const industryAverage = require("./data/industryAverages.json");
 
 const baseUrl = "https://eodhistoricaldata.com/api";
 const fundamentalsUrl = `${baseUrl}/fundamentals`;
@@ -44,15 +41,6 @@ const api = {
     });
 
     return data;
-  },
-  getEquityRiskPremiumCountries: () => {
-    return equityRiskPremiumCountries;
-  },
-  getEquityRiskPremiumRegions: () => {
-    return equityRiskPremiumRegions;
-  },
-  getIndustryAverages: () => {
-    return industryAverage;
   },
   getGovernmentBondLastClose: async ({ countryCode, year = 10, ...params }) => {
     const countryAndYearGBond = `${countryCode}${year}Y.GBOND`;

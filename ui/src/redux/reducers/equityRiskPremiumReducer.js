@@ -1,32 +1,24 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { percentModifier } from "../../components/FormatRawNumberToPercent";
-import {
-  getEquityRiskPremiumCountries,
-  setCurrentEquityRiskPremium,
-} from "../actions/equityRiskPremiumActions";
+import { setCurrentEquityRiskPremium } from "../actions/equityRiskPremiumActions";
+import equityRiskPremiumCountries from "../../data/equityRiskPremiumCountries.json";
 
 const initialState = {
-  countryData: null,
+  countryData: equityRiskPremiumCountries,
   matureMarketEquityRiskPremium: null,
   currentCountry: null,
 };
 
+const matureMarketEquityRiskPremium = initialState.countryData.find(
+  (x) => x.country === "United States"
+).equityRiskPremium;
+
+initialState.matureMarketEquityRiskPremium =
+  parseFloat(matureMarketEquityRiskPremium) / percentModifier;
+
 export const equityRiskPremiumCountriesReducer = createReducer(
   initialState,
   (builder) => {
-    builder.addCase(
-      getEquityRiskPremiumCountries.fulfilled,
-      (state, action) => {
-        const equityRiskPremiumCountriesData = action.payload;
-        state.countryData = equityRiskPremiumCountriesData;
-        const matureMarketEquityRiskPremium = equityRiskPremiumCountriesData.find(
-          (x) => x.country === "United States"
-        ).equityRiskPremium;
-
-        state.matureMarketEquityRiskPremium =
-          parseFloat(matureMarketEquityRiskPremium) / percentModifier;
-      }
-    );
     builder.addCase(setCurrentEquityRiskPremium, (state, action) => {
       const {
         corporateTaxRate,
