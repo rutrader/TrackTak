@@ -12,13 +12,6 @@ import LayoutFullScreen from "./layout/LayoutFullScreen";
 import { useEffect } from "react";
 import { getEquityRiskPremiumCountries } from "./redux/actions/equityRiskPremiumActions";
 import { getIndustryAverages } from "./redux/actions/industryAveragesActions";
-import TagManager from "react-gtm-module";
-
-const tagManagerArgs = {
-  gtmId: "GTM-TXZ7QPT",
-};
-
-TagManager.initialize(tagManagerArgs);
 
 const GlobalStyle = createGlobalStyle`
   * { box-sizing: border-box; }
