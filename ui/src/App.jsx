@@ -15,7 +15,7 @@ import { getIndustryAverages } from "./redux/actions/industryAveragesActions";
 import TagManager from "react-gtm-module";
 
 const tagManagerArgs = {
-  gtmId: "G-WFB538909G",
+  gtmId: "GTM-TXZ7QPT",
 };
 
 TagManager.initialize(tagManagerArgs);
