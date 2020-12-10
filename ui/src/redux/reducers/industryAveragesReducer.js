@@ -5,9 +5,10 @@ import {
 } from "../actions/industryAveragesActions";
 import industryMapping from "../../shared/industryMapping.json";
 import { percentModifier } from "../../components/FormatRawNumberToPercent";
+import industryAverages from "../../data/industryAverages.json";
 
 const initialState = {
-  data: null,
+  data: industryAverages,
   currentIndustry: null,
 };
 
@@ -23,9 +24,6 @@ Object.keys(industryMapping).forEach((key) => {
 export const industryAveragesReducer = createReducer(
   initialState,
   (builder) => {
-    builder.addCase(getIndustryAverages.fulfilled, (state, action) => {
-      state.data = action.payload;
-    });
     builder.addCase(setCurrentIndustryAverage, (state, action) => {
       const currentIndustryMutated = action.payload.currentIndustry
         .replace(spaceRegex, "")

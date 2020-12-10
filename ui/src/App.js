@@ -6,12 +6,9 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Home from "./home/Home";
 import LayoutHome from "./layout/LayoutHome";
 import Valuation from "./valuation/Valuation";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Box, CircularProgress, useTheme } from "@material-ui/core";
 import LayoutFullScreen from "./layout/LayoutFullScreen";
-import { useEffect } from "react";
-import { getEquityRiskPremiumCountries } from "./redux/actions/equityRiskPremiumActions";
-import { getIndustryAverages } from "./redux/actions/industryAveragesActions";
 
 const GlobalStyle = createGlobalStyle`
   * { box-sizing: border-box; }
@@ -78,21 +75,6 @@ const layoutFullScreenPaths = ["/valuation/:ticker"];
 export const allLayoutPaths = layoutFullScreenPaths;
 
 function App() {
-  const dispatch = useDispatch();
-  const equityRiskPremiumData = useSelector(
-    (state) => state.equityRiskPremium.countryData
-  );
-  const industryAveragesData = useSelector(
-    (state) => state.industryAverages.data
-  );
-
-  useEffect(() => {
-    dispatch(getEquityRiskPremiumCountries());
-    dispatch(getIndustryAverages());
-  }, [dispatch]);
-
-  if (!equityRiskPremiumData || !industryAveragesData) return null;
-
   return (
     <>
       <Spinner />
