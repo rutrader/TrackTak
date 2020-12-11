@@ -15,7 +15,7 @@ import initialData, {
 import { getAllDependents, getColumnsBetween, validateExp } from "./utils";
 import { getEBITMarginCalculation } from "./expressionCalculations";
 import { Cell, Column, Table } from "@blueprintjs/table";
-import { useTheme } from "@material-ui/core";
+import { Box, useTheme } from "@material-ui/core";
 import "../shared/blueprintTheme.scss";
 import { useLocation } from "react-router";
 import parseInputQueryParams from "../shared/parseInputQueryParams";
@@ -56,7 +56,7 @@ const cellUpdate = (data, key, expr) => {
   };
 };
 
-const ValuationDCFSheet = ({
+const DiscountedCashFlowSheet = ({
   riskFreeRate,
   costOfCapital,
   valueOfAllOptionsOutstanding,
@@ -242,4 +242,4 @@ const ValuationDCFSheet = ({
   );
 };
 
-export default ValuationDCFSheet;
+export default DiscountedCashFlowSheet;

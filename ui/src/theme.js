@@ -1,6 +1,7 @@
 import { createMuiTheme } from "@material-ui/core";
+import merge from "lodash/merge";
 
-const theme = createMuiTheme({
+const theme = merge(createMuiTheme(), {
   typography: {
     fontFamily: "Montserrat, sans-serif",
   },

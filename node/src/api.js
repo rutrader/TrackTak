@@ -1,5 +1,6 @@
 const axios = require("axios");
 const cache = require("memory-cache");
+const contentful = require("./contentful");
 
 const baseUrl = "https://eodhistoricaldata.com/api";
 const fundamentalsUrl = `${baseUrl}/fundamentals`;
@@ -134,6 +135,14 @@ const api = {
       }
     );
     return data;
+  },
+  getContentfulEntries: async (query) => {
+    try {
+      return await contentful.getEntries(query);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   },
 };
 

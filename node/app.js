@@ -1,7 +1,10 @@
-require("dotenv").config();
+require("dotenv-flow").config();
+
+console.log(process.env.ORIGIN_URL);
 
 const express = require("express");
 const cors = require("cors");
+
 const api = require("./src/api");
 
 const hostname = "127.0.0.1";
@@ -45,8 +48,14 @@ app.get("/api/v1/autocomplete-query/:queryString", async (req, res) => {
   res.send(value);
 });
 
+app.get("/api/v1/contentful/getEntries", async (req, res) => {
+  const value = await api.getContentfulEntries(req.query);
+
+  res.send(value);
+});
+
 app.get("/", (_, res) => {
-  res.send(200);
+  res.sendStatus(200);
 });
 
 app.listen(port, () => {

@@ -1,9 +1,17 @@
-import { AppBar, Box, Container, Hidden, useTheme } from "@material-ui/core";
+import {
+  AppBar,
+  Box,
+  Button,
+  Container,
+  Hidden,
+  useTheme,
+} from "@material-ui/core";
 import React from "react";
 import TracktakLogo from "../shared/TracktakLogo";
 import { ReactComponent as TracktakSmallLogo } from "../icons/tracktakSmallLogo.svg";
 import SearchTicker from "./SearchTicker";
 import { Link } from "react-router-dom";
+import MenuIcon from "@material-ui/icons/Menu";
 
 const Header = () => {
   const theme = useTheme();
@@ -15,20 +23,28 @@ const Header = () => {
       <AppBar color="inherit">
         <Container maxWidth={false}>
           <Box sx={{ display: "flex", py: 1 }}>
-            <Hidden smDown>
-              <Box sx={{ mr: 5 }}>
+            <Box sx={{ mr: 2 }}>
+              <Hidden smDown>
                 <TracktakLogo />
-              </Box>
-            </Hidden>
-            <Hidden smUp>
-              <Box sx={{ mr: 2 }}>
+              </Hidden>
+              <Hidden smUp>
                 <Link to="/">
                   <TracktakSmallLogo width={52} height={38} />
                 </Link>
-              </Box>
-            </Hidden>
-            <Box sx={{ flex: "0 1 450px", minWidth: "200px" }}>
+              </Hidden>
+            </Box>
+            <Box sx={{ flex: "0 1 450px", minWidth: "120px", mr: 2 }}>
               <SearchTicker removeInputPadding />
+            </Box>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Hidden smDown>
+                <Button variant="outlined" to="/valuations" component={Link}>
+                  Valuations
+                </Button>
+              </Hidden>
+              <Hidden smUp>
+                <MenuIcon color="primary" />
+              </Hidden>
             </Box>
           </Box>
         </Container>
