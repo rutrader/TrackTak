@@ -64,7 +64,7 @@ export const getFundamentals = createAsyncThunk(
         exchangeRates: state.economicData.exchangeRates,
       };
     } catch (error) {
-      console.log(error);
+      console.error(error);
       throw error;
     }
   }

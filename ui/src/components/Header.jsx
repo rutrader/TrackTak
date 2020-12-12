@@ -13,7 +13,7 @@ import SearchTicker from "./SearchTicker";
 import { Link } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
 
-const Header = () => {
+const Header = ({ hideSearch }) => {
   const theme = useTheme();
   const extraMargin = 20;
   const mb = `${theme.mixins.toolbar.minHeight + extraMargin}px`;
@@ -22,7 +22,14 @@ const Header = () => {
     <Box sx={{ mb }}>
       <AppBar color="inherit">
         <Container maxWidth={false}>
-          <Box sx={{ display: "flex", py: 1 }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              py: 1,
+            }}
+          >
             <Box sx={{ mr: 2 }}>
               <Hidden smDown>
                 <TracktakLogo />
@@ -33,19 +40,21 @@ const Header = () => {
                 </Link>
               </Hidden>
             </Box>
-            <Box sx={{ flex: "0 1 450px", minWidth: "120px", mr: 2 }}>
-              <SearchTicker removeInputPadding />
-            </Box>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Hidden smDown>
+            <Hidden smDown>
+              <Box sx={{ display: "flex", alignItems: "center", mr: 2 }}>
                 <Button variant="outlined" to="/valuations" component={Link}>
                   Valuations
                 </Button>
-              </Hidden>
-              <Hidden smUp>
-                <MenuIcon color="primary" />
-              </Hidden>
+              </Box>
+            </Hidden>
+            <Box sx={{ flex: "0 1 450px", minWidth: "120px" }}>
+              {!hideSearch && <SearchTicker removeInputPadding />}
             </Box>
+            <Hidden smUp>
+              <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
+                <MenuIcon color="primary" />
+              </Box>
+            </Hidden>
           </Box>
         </Container>
       </AppBar>

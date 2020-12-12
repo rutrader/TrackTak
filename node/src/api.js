@@ -12,43 +12,52 @@ const globalParams = {
 };
 
 // 6 hour
-const sendReqOrGetCachedData = async (cacheKey, request, time = 2.16e7) => {
+const sendReqOrGetCachedData = async (
+  request,
+  keyPrefix,
+  cacheParams = {},
+  time = 2.16e7
+) => {
+  const cacheKey = `${keyPrefix}_${JSON.stringify(cacheParams)}`;
   const cachedData = cache.get(cacheKey);
 
   if (cachedData) return cachedData;
   try {
-    const { data } = await request();
+    const data = await request();
     if (data) {
       return cache.put(cacheKey, data, time);
     }
     return data;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
 
 const api = {
   getFundamentals: async ({ ticker, ...params }) => {
-    const data = await sendReqOrGetCachedData(`fund_${ticker}`, async () => {
-      const res = await axios.get(`${fundamentalsUrl}/${ticker}`, {
-        params: {
-          ...globalParams,
-          ...params,
-        },
-      });
+    const data = await sendReqOrGetCachedData(
+      async () => {
+        const { data } = await axios.get(`${fundamentalsUrl}/${ticker}`, {
+          params: {
+            ...globalParams,
+            ...params,
+          },
+        });
 
-      return res;
-    });
+        return data;
+      },
+      "fund",
+      { ticker }
+    );
 
     return data;
   },
   getGovernmentBondLastClose: async ({ countryCode, year = 10, ...params }) => {
     const countryAndYearGBond = `${countryCode}${year}Y.GBOND`;
     const data = await sendReqOrGetCachedData(
-      `bond_${countryAndYearGBond}`,
       async () => {
-        const res = await axios.get(`${eodUrl}/${countryAndYearGBond}`, {
+        const { data } = await axios.get(`${eodUrl}/${countryAndYearGBond}`, {
           params: {
             ...globalParams,
             ...params,
@@ -57,8 +66,10 @@ const api = {
           },
         });
 
-        return res;
-      }
+        return data;
+      },
+      "bond",
+      { countryAndYearGBond }
     );
 
     return data;
@@ -71,9 +82,8 @@ const api = {
     ...params
   }) => {
     const data = await sendReqOrGetCachedData(
-      `exchangeRateHistory_${baseCurrency}_${quoteCurrency}_${from}`,
       async () => {
-        const res = await axios.get(
+        const { data } = await axios.get(
           `${eodUrl}/${baseCurrency}${quoteCurrency}.FOREX`,
           {
             params: {
@@ -87,9 +97,9 @@ const api = {
           }
         );
 
-        const data = {};
+        const newData = {};
 
-        res.data.forEach((exchangeObject) => {
+        data.forEach((exchangeObject) => {
           const dateKeyWithoutDay = exchangeObject.date.slice(0, -3);
 
           data[dateKeyWithoutDay] = {
@@ -98,51 +108,70 @@ const api = {
         });
 
         return {
-          data,
+          data: newData,
         };
-      }
+      },
+      "exchangeRateHistory",
+      { baseCurrency, quoteCurrency, from }
     );
 
     return data;
   },
   getListOfExchanges: async (params) => {
-    const data = await sendReqOrGetCachedData("listOfExchanges", async () => {
-      const res = await axios.get(`${exchangesUrl}`, {
+    const data = await sendReqOrGetCachedData(async () => {
+      const { data } = await axios.get(`${exchangesUrl}`, {
         params: {
           ...globalParams,
           ...params,
         },
       });
 
-      return res;
-    });
+      return { data };
+    }, "listOfExchanges");
 
     return data;
   },
 
   getAutocompleteQuery: async ({ queryString, ...params }) => {
     const data = await sendReqOrGetCachedData(
-      `query_${queryString}`,
       async () => {
-        const res = await axios.get(`${searchUrl}/${queryString}`, {
+        const { data } = await axios.get(`${searchUrl}/${queryString}`, {
           params: {
             ...globalParams,
             ...params,
           },
         });
 
-        return res;
-      }
+        return data;
+      },
+      "autocompleteQuery",
+      { queryString }
     );
     return data;
   },
   getContentfulEntries: async (query) => {
-    try {
-      return await contentful.getEntries(query);
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
+    const data = await sendReqOrGetCachedData(
+      async () => {
+        const res = await contentful.getEntries(query);
+
+        return res;
+      },
+      "contentfulEntries",
+      { query }
+    );
+    return data;
+  },
+  getContentfulEntry: async (id, query) => {
+    const data = await sendReqOrGetCachedData(
+      async () => {
+        const res = await contentful.getEntry(id, query);
+
+        return res;
+      },
+      "contentfulEntry",
+      { id, query }
+    );
+    return data;
   },
 };
 

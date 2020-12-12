@@ -1,7 +1,5 @@
 require("dotenv-flow").config();
 
-console.log(process.env.ORIGIN_URL);
-
 const express = require("express");
 const cors = require("cors");
 
@@ -50,6 +48,12 @@ app.get("/api/v1/autocomplete-query/:queryString", async (req, res) => {
 
 app.get("/api/v1/contentful/getEntries", async (req, res) => {
   const value = await api.getContentfulEntries(req.query);
+
+  res.send(value);
+});
+
+app.get("/api/v1/contentful/getEntry/:id", async (req, res) => {
+  const value = await api.getContentfulEntry(req.params.id, req.query);
 
   res.send(value);
 });
