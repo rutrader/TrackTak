@@ -1,8 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import {
-  getIndustryAverages,
-  setCurrentIndustryAverage,
-} from "../actions/industryAveragesActions";
+import { setCurrentIndustryAverage } from "../actions/industryAveragesActions";
 import industryMapping from "../../shared/industryMapping.json";
 import { percentModifier } from "../../components/FormatRawNumberToPercent";
 import industryAverages from "../../data/industryAverages.json";
