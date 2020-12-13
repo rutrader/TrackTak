@@ -39,7 +39,6 @@ export const InfoOutlinedIconWrapper = ({ children, text, ...props }) => {
         color="secondary"
       />
       <PopoverOnHover
-        id="mouse-over-popover"
         open={open}
         anchorEl={anchorEl}
         anchorOrigin={{
