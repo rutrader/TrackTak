@@ -1,19 +1,20 @@
-import { Box, Typography, withStyles } from "@material-ui/core";
+import { Box, Typography, withStyles, useTheme } from "@material-ui/core";
 import React, { useState } from "react";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import Popover from "@material-ui/core/Popover";
 
-const PopoverOnHover = withStyles({
+const PopoverOnHover = withStyles((theme) => ({
   root: {
     pointerEvents: "none",
   },
   paper: {
-    padding: "10px",
+    padding: theme.spacing(1.2),
     maxWidth: "500px",
   },
-})(Popover);
+}))(Popover);
 
 export const InfoOutlinedIconWrapper = ({ children, text, ...props }) => {
+  const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handlePopoverOpen = (event) => {
@@ -31,7 +32,10 @@ export const InfoOutlinedIconWrapper = ({ children, text, ...props }) => {
       <InfoOutlinedIcon
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
-        style={{ fontSize: "17px" }}
+        style={{
+          fontSize: theme.typography.htmlFontSize,
+          position: "absolute",
+        }}
         color="secondary"
       />
       <PopoverOnHover
