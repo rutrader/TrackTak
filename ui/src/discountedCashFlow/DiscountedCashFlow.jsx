@@ -284,19 +284,6 @@ const DiscountedCashFlow = () => {
             </Box>
           </Box>
         </Box>
-        <Hidden smDown>
-          <Box sx={{ mt: "auto" }}>
-            <Typography
-              variant="h6"
-              gutterBottom
-              style={{ fontWeight: theme.typography.fontWeightBold }}
-              className="landing-page-sign-up-today-text"
-            >
-              Join today to get 50% off for life when we launch premium.
-            </Typography>
-            <SubscribeMailingList />
-          </Box>
-        </Hidden>
       </Box>
       <Section>
         <Box sx={{ display: "flex", alignItems: "center" }}>
