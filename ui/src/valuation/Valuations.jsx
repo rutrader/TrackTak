@@ -60,7 +60,7 @@ const Valuations = () => {
           const valuationUrl = `/valuations/${sys.id}`;
 
           return (
-            <ListItem>
+            <ListItem key={fields.ticker}>
               <Card>
                 <CardActionArea
                   style={{ padding: theme.spacing(2) }}

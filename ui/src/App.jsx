@@ -76,7 +76,7 @@ const Spinner = () => {
 };
 
 const layoutFullScreenPaths = ["/discounted-cash-flow/:ticker"];
-const layoutPaths = ["/valuations/:ticker", "/valuations"];
+const layoutPaths = ["/valuations/:id", "/valuations"];
 
 export const allLayoutPaths = [...layoutFullScreenPaths, layoutPaths];
 
