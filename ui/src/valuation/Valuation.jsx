@@ -1,26 +1,47 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+
 import axios from "../axios/axios";
+import { getFundamentals } from "../redux/actions/fundamentalsActions";
+import CompanyOverviewStats from "../shared/CompanyOverviewStats";
+import { Typography } from "@material-ui/core";
 
 const Valuation = () => {
   const params = useParams();
-  const [entry, setEntry] = useState();
+  const dispatch = useDispatch();
+  const [contentfulData, setContentfulData] = useState();
+  const fundamentals = useSelector((state) => state.fundamentals);
 
   useEffect(() => {
     const fetchStockData = async () => {
       try {
-        const res = await axios.get(`/api/v1/contentful/getEntry/${params.id}`);
-
-        setEntry(res.data);
+        const contentfulData = await axios.get(
+          `/api/v1/contentful/getEntry/${params.id}`
+        );
+        dispatch(getFundamentals(contentfulData.data.fields.ticker));
+        setContentfulData(contentfulData.data);
       } catch (error) {
         console.error(error);
         throw error;
       }
     };
     fetchStockData();
-  }, [params.id]);
+  }, [dispatch, params.id]);
 
-  return "Valuation";
+  if (!fundamentals.data || !contentfulData) return null;
+
+  const { fields } = contentfulData;
+
+  return (
+    <>
+      <CompanyOverviewStats />
+      <Typography variant="h5" gutterBottom>
+        Business Description
+      </Typography>
+      <Typography paragraph>{fields.businessDescription}</Typography>
+    </>
+  );
 };
 
 export default Valuation;

@@ -42,7 +42,7 @@ const Header = ({ hideSearch }) => {
             </Box>
             <Hidden smDown>
               <Box sx={{ display: "flex", alignItems: "center", mr: 2 }}>
-                <Button variant="outlined" to="/valuations" component={Link}>
+                <Button to="/valuations" component={Link}>
                   Valuations
                 </Button>
               </Box>

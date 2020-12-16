@@ -7,7 +7,6 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
-  Hidden,
   TextField,
   Typography,
   useTheme,
@@ -34,6 +33,7 @@ import SubscribeMailingList from "../components/SubscribeMailingList";
 import parseInputQueryParams from "../shared/parseInputQueryParams";
 import setInputQueryParams from "../shared/setInputQueryParams";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import CompanyOverviewStats from "../shared/CompanyOverviewStats";
 
 const textFieldRootStyles = {
   flex: 1,
@@ -98,7 +98,7 @@ const DiscountedCashFlow = () => {
   if (!fundamentals.data || !economicData.governmentBondTenYearLastClose)
     return null;
 
-  const { General, SharesStats } = fundamentals.data;
+  const { SharesStats } = fundamentals.data;
 
   const riskFreeRate =
     economicData.governmentBondTenYearLastClose / percentModifier -
@@ -244,46 +244,7 @@ const DiscountedCashFlow = () => {
   return (
     <>
       <Box sx={{ display: "flex", gap: theme.spacing(10) }}>
-        <Box>
-          <Typography variant="h4">{General.Name}</Typography>
-          <Typography
-            color="textSecondary"
-            style={{ textTransform: "uppercase" }}
-          >
-            {General.Exchange}:{General.Code}
-          </Typography>
-          <Typography gutterBottom>
-            {industryAverages.currentIndustry.industryName}
-          </Typography>
-          <Box sx={{ display: "flex", gap: displayGap }}>
-            <Box>
-              <Typography>
-                <Box
-                  component="span"
-                  sx={{ fontWeight: theme.typography.fontWeightBold }}
-                >
-                  <FormatRawNumber
-                    value={fundamentals.price}
-                    decimalScale={2}
-                  />
-                </Box>
-                &nbsp;{fundamentals.valuationCurrencyCode}
-              </Typography>
-              <Typography>
-                <Box
-                  component="span"
-                  sx={{ fontWeight: theme.typography.fontWeightBold }}
-                >
-                  <FormatRawNumberToMillion
-                    value={SharesStats.SharesOutstanding}
-                    suffix="M"
-                  />
-                </Box>
-                &nbsp;Shares Outstanding
-              </Typography>
-            </Box>
-          </Box>
-        </Box>
+        <CompanyOverviewStats />
       </Box>
       <Section>
         <Box sx={{ display: "flex", alignItems: "center" }}>
