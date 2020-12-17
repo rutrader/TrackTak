@@ -9,6 +9,8 @@ import Valuation from "./valuation/Valuation";
 import { useSelector } from "react-redux";
 import { Box, CircularProgress, useTheme } from "@material-ui/core";
 import LayoutFullScreen from "./layout/LayoutFullScreen";
+import Docs from "./documentation/Docs";
+import Layout from "./layout/Layout";
 
 const GlobalStyle = createGlobalStyle`
   * { box-sizing: border-box; }
@@ -71,8 +73,9 @@ const Spinner = () => {
 };
 
 const layoutFullScreenPaths = ["/valuation/:ticker"];
+const layoutPaths = ["/docs"];
 
-export const allLayoutPaths = layoutFullScreenPaths;
+export const allLayoutPaths = layoutFullScreenPaths.concat(layoutPaths);
 
 function App() {
   return (
@@ -85,6 +88,15 @@ function App() {
               <GlobalStyle />
               <LandingPage />
             </RebassProvider>
+          </Route>
+          <Route path={layoutPaths}>
+            <Layout>
+              <Switch>
+                <Route path={layoutPaths[0]}>
+                  <Docs />
+                </Route>
+              </Switch>
+            </Layout>
           </Route>
           <Route path={layoutFullScreenPaths}>
             <LayoutFullScreen>
