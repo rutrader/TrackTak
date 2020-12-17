@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router";
+import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 
 import axios from "../axios/axios";
 import { getFundamentals } from "../redux/actions/fundamentalsActions";
-import CompanyOverviewStats from "../shared/CompanyOverviewStats";
+import CompanyOverviewStats from "../components/CompanyOverviewStats";
 import { Typography } from "@material-ui/core";
+import ValueDrivingInputs from "../components/ValueDrivingInputs";
 
 const Valuation = () => {
   const params = useParams();
@@ -40,6 +41,7 @@ const Valuation = () => {
         Business Description
       </Typography>
       <Typography paragraph>{fields.businessDescription}</Typography>
+      <ValueDrivingInputs />
     </>
   );
 };

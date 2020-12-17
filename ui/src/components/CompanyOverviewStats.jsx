@@ -1,8 +1,8 @@
 import { Box, Typography, useTheme } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
-import FormatRawNumber from "../components/FormatRawNumber";
-import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
+import FormatRawNumber from "./FormatRawNumber";
+import FormatRawNumberToMillion from "./FormatRawNumberToMillion";
 
 const CompanyOverviewStats = () => {
   const fundamentals = useSelector((state) => state.fundamentals);

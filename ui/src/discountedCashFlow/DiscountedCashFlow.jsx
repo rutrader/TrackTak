@@ -19,9 +19,7 @@ import Section from "../components/Section";
 import ValuationDCFSheet from "./DiscountedCashFlowSheet";
 import blackScholes from "../shared/blackScholesModel";
 import SubSection from "../components/SubSection";
-import FormatInputToPercent from "../components/FormatInputToPercent";
 import FormatInputToMillion from "../components/FormatInputToMillion";
-import FormatInputToNumber from "../components/FormatInputToNumber";
 import FormatInputToCurrency from "../components/FormatInputToCurrency";
 import FormatInputToYear from "../components/FormatInputToYear";
 import FormatRawNumberToPercent, {
@@ -33,18 +31,9 @@ import SubscribeMailingList from "../components/SubscribeMailingList";
 import parseInputQueryParams from "../shared/parseInputQueryParams";
 import setInputQueryParams from "../shared/setInputQueryParams";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import CompanyOverviewStats from "../shared/CompanyOverviewStats";
-
-const textFieldRootStyles = {
-  flex: 1,
-  minWidth: "272px",
-};
-
-const ValueDrivingTextField = withStyles({
-  root: {
-    ...textFieldRootStyles,
-  },
-})(TextField);
+import CompanyOverviewStats from "../components/CompanyOverviewStats";
+import ValueDrivingInputs from "../components/ValueDrivingInputs";
+import { textFieldRootStyles } from "../shared/utils";
 
 const CostOfCapitalTextField = withStyles({
   root: {
@@ -265,86 +254,7 @@ const DiscountedCashFlow = () => {
       </Section>
       <Section sx={{ display: "flex", gridColumnGap: 20, flexWrap: "wrap" }}>
         <Box sx={{ flex: 1 }}>
-          <SubSection>
-            <Typography variant="h5" gutterBottom>
-              Value Driving Inputs
-            </Typography>
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: displayGap }}>
-              <ValueDrivingTextField
-                label="CAGR in Years 1-5"
-                defaultValue={inputQueryParams.cagrYearOneToFive}
-                onBlur={(value) => {
-                  setInputQueryParams(queryParams, "cagrYearOneToFive", value);
-                  history.push({
-                    search: queryParams.toString(),
-                  });
-                }}
-                InputProps={{
-                  inputComponent: FormatInputToPercent,
-                }}
-              />
-              <ValueDrivingTextField
-                label="EBIT Target Margin in Year 10"
-                defaultValue={inputQueryParams.ebitTargetMarginInYearTen}
-                onBlur={(value) => {
-                  setInputQueryParams(
-                    queryParams,
-                    "ebitTargetMarginInYearTen",
-                    value
-                  );
-                  history.push({
-                    search: queryParams.toString(),
-                  });
-                }}
-                InputProps={{
-                  inputComponent: FormatInputToPercent,
-                }}
-              />
-              <ValueDrivingTextField
-                label="Year of Convergence"
-                defaultValue={inputQueryParams.yearOfConvergence}
-                onBlur={(value) => {
-                  setInputQueryParams(queryParams, "yearOfConvergence", value);
-                  history.push({
-                    search: queryParams.toString(),
-                  });
-                }}
-                InputProps={{
-                  inputComponent: FormatInputToYear,
-                }}
-              />
-              <ValueDrivingTextField
-                label="Sales to Capital Ratio"
-                defaultValue={inputQueryParams.salesToCapitalRatio}
-                onBlur={(value) => {
-                  setInputQueryParams(
-                    queryParams,
-                    "salesToCapitalRatio",
-                    value
-                  );
-                  history.push({
-                    search: queryParams.toString(),
-                  });
-                }}
-                InputProps={{
-                  inputComponent: FormatInputToNumber,
-                }}
-              />
-              <CostOfCapitalTextField
-                label="Pre-tax Cost of Debt"
-                defaultValue={inputQueryParams.pretaxCostOfDebt}
-                onBlur={(value) => {
-                  setInputQueryParams(queryParams, "pretaxCostOfDebt", value);
-                  history.push({
-                    search: queryParams.toString(),
-                  });
-                }}
-                InputProps={{
-                  inputComponent: FormatInputToPercent,
-                }}
-              />
-            </Box>
-          </SubSection>
+          <ValueDrivingInputs />
           <SubSection>
             <Typography variant="h5" gutterBottom>
               Cost of Capital Results
