@@ -15,7 +15,7 @@ import initialData, {
 import { getAllDependents, getColumnsBetween, validateExp } from "./utils";
 import { getEBITMarginCalculation } from "./expressionCalculations";
 import { Cell, Column, Table } from "@blueprintjs/table";
-import { Box, useTheme } from "@material-ui/core";
+import { useTheme } from "@material-ui/core";
 import "../shared/blueprintTheme.scss";
 import { useLocation } from "react-router";
 import parseInputQueryParams from "../shared/parseInputQueryParams";
@@ -60,6 +60,7 @@ const DiscountedCashFlowSheet = ({
   riskFreeRate,
   costOfCapital,
   valueOfAllOptionsOutstanding,
+  columnWidths,
 }) => {
   const location = useLocation();
   const inputQueryParams = parseInputQueryParams(location);
@@ -226,7 +227,7 @@ const DiscountedCashFlowSheet = ({
         if (column === "A") {
           return 220;
         }
-        return 120;
+        return columnWidths?.[column] ?? 120;
       })}
     >
       {columns.map((column) => {

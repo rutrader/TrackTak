@@ -5,7 +5,7 @@ import { millionModifier } from "./FormatRawNumberToMillion";
 
 const FormatInputToMillion = forwardRef(({ defaultValue, ...props }, ref) => {
   const { onChange, ...other } = props;
-  const [valueAsMillion, setValue] = useState(null);
+  const [valueAsMillion, setValue] = useState(defaultValue);
 
   return (
     <NumberFormat

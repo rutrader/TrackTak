@@ -1,59 +1,22 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useLocation, useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import { getFundamentals } from "../redux/actions/fundamentalsActions";
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  TextField,
-  Typography,
-  useTheme,
-  withStyles,
-} from "@material-ui/core";
+import { Box, Typography, useTheme } from "@material-ui/core";
 import TTTable from "../components/TTTable";
 import dayjs from "dayjs";
 import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
 import Section from "../components/Section";
-import ValuationDCFSheet from "./DiscountedCashFlowSheet";
+import DiscountedCashFlowSheet from "./DiscountedCashFlowSheet";
 import blackScholes from "../shared/blackScholesModel";
 import SubSection from "../components/SubSection";
-import FormatInputToMillion from "../components/FormatInputToMillion";
-import FormatInputToCurrency from "../components/FormatInputToCurrency";
-import FormatInputToYear from "../components/FormatInputToYear";
-import FormatRawNumberToPercent, {
-  percentModifier,
-} from "../components/FormatRawNumberToPercent";
 import calculateCostOfCapital from "../shared/calculateCostOfCapital";
-import FormatRawNumber from "../components/FormatRawNumber";
 import SubscribeMailingList from "../components/SubscribeMailingList";
 import parseInputQueryParams from "../shared/parseInputQueryParams";
-import setInputQueryParams from "../shared/setInputQueryParams";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import CompanyOverviewStats from "../components/CompanyOverviewStats";
 import ValueDrivingInputs from "../components/ValueDrivingInputs";
-import { textFieldRootStyles } from "../shared/utils";
-
-const CostOfCapitalTextField = withStyles({
-  root: {
-    ...textFieldRootStyles,
-  },
-})(TextField);
-
-const OptionalInputAccordion = withStyles({
-  root: {
-    "&.Mui-expanded": {
-      margin: 0,
-    },
-    "& .MuiAccordionSummary-root": {
-      padding: 0,
-    },
-    "& .MuiAccordionDetails-root": {
-      padding: 0,
-    },
-  },
-})((props) => <Accordion elevation={0} {...props} />);
+import OptionalInputs from "../components/OptionalInputs";
+import CostOfCapitalResults from "../components/CostOfCapitalResults";
 
 const mapFromStatementsToDateObject = (objectToLoop, valueKey) => {
   const dateObject = {};
@@ -70,7 +33,6 @@ const mapFromStatementsToDateObject = (objectToLoop, valueKey) => {
 const DiscountedCashFlow = () => {
   const params = useParams();
   const location = useLocation();
-  const history = useHistory();
   const dispatch = useDispatch();
   const fundamentals = useSelector((state) => state.fundamentals);
   const economicData = useSelector((state) => state.economicData);
@@ -78,7 +40,6 @@ const DiscountedCashFlow = () => {
   const industryAverages = useSelector((state) => state.industryAverages);
   const theme = useTheme();
   const inputQueryParams = parseInputQueryParams(location);
-  const queryParams = new URLSearchParams(location.search);
 
   useEffect(() => {
     dispatch(getFundamentals(params.ticker));
@@ -90,7 +51,7 @@ const DiscountedCashFlow = () => {
   const { SharesStats } = fundamentals.data;
 
   const riskFreeRate =
-    economicData.governmentBondTenYearLastClose / percentModifier -
+    economicData.governmentBondTenYearLastClose / 100 -
     equityRiskPremium.currentCountry.adjDefaultSpread;
   const valuePerOption = blackScholes(
     "call",
@@ -100,7 +61,7 @@ const DiscountedCashFlow = () => {
     riskFreeRate,
     industryAverages.currentIndustry.standardDeviationInStockPrices
   );
-  const { costOfCapital, leveredBetaForEquity } = calculateCostOfCapital(
+  const { costOfCapital } = calculateCostOfCapital(
     fundamentals,
     inputQueryParams,
     SharesStats,
@@ -228,8 +189,6 @@ const DiscountedCashFlow = () => {
     },
   ];
 
-  const displayGap = theme.spacing(2);
-
   return (
     <>
       <Box sx={{ display: "flex", gap: theme.spacing(10) }}>
@@ -254,115 +213,17 @@ const DiscountedCashFlow = () => {
       </Section>
       <Section sx={{ display: "flex", gridColumnGap: 20, flexWrap: "wrap" }}>
         <Box sx={{ flex: 1 }}>
-          <ValueDrivingInputs />
+          <SubSection>
+            <Typography variant="h5" gutterBottom>
+              Value Driving Inputs
+            </Typography>
+            <ValueDrivingInputs />
+          </SubSection>
           <SubSection>
             <Typography variant="h5" gutterBottom>
               Cost of Capital Results
             </Typography>
-            <Box
-              sx={{
-                display: "flex",
-                gap: "8px",
-                flexWrap: "wrap",
-                flexDirection: "column",
-              }}
-            >
-              <Box
-                sx={{ display: "flex", gridColumnGap: "8px", flexWrap: "wrap" }}
-              >
-                <Typography>
-                  <Box
-                    component="span"
-                    sx={{ fontWeight: theme.typography.fontWeightBold }}
-                  >
-                    <FormatRawNumber
-                      decimalScale={2}
-                      value={industryAverages.currentIndustry.unleveredBeta}
-                    />
-                  </Box>
-                  &nbsp;Unlevered Beta
-                </Typography>
-                <Typography>
-                  <Box
-                    component="span"
-                    sx={{ fontWeight: theme.typography.fontWeightBold }}
-                  >
-                    <FormatRawNumber
-                      decimalScale={2}
-                      value={leveredBetaForEquity}
-                    />
-                  </Box>
-                  &nbsp;Levered Beta
-                </Typography>
-                <Typography>
-                  <Box
-                    component="span"
-                    sx={{ fontWeight: theme.typography.fontWeightBold }}
-                  >
-                    <FormatRawNumberToPercent
-                      decimalScale={2}
-                      value={riskFreeRate}
-                    />
-                  </Box>
-                  &nbsp;Riskfree Rate
-                </Typography>
-              </Box>
-              <Box
-                sx={{ display: "flex", gridColumnGap: "8px", flexWrap: "wrap" }}
-              >
-                <Typography>
-                  <Box
-                    component="span"
-                    sx={{ fontWeight: theme.typography.fontWeightBold }}
-                  >
-                    <FormatRawNumberToPercent
-                      value={equityRiskPremium.currentCountry.equityRiskPremium}
-                    />
-                  </Box>
-                  &nbsp;Country Equity Risk Premium
-                </Typography>
-                <Typography>
-                  <Box
-                    component="span"
-                    sx={{ fontWeight: theme.typography.fontWeightBold }}
-                  >
-                    <FormatRawNumberToPercent
-                      value={equityRiskPremium.matureMarketEquityRiskPremium}
-                    />
-                  </Box>
-                  &nbsp;Mature Market Equity Risk Premium
-                </Typography>
-              </Box>
-              <Box
-                sx={{ display: "flex", gridColumnGap: "8px", flexWrap: "wrap" }}
-              >
-                <Typography>
-                  <Box
-                    component="span"
-                    sx={{ fontWeight: theme.typography.fontWeightBold }}
-                  >
-                    <FormatRawNumberToPercent
-                      value={equityRiskPremium.currentCountry.corporateTaxRate}
-                    />
-                  </Box>
-                  &nbsp;Marginal Tax Rate
-                </Typography>
-                <Typography>
-                  <Box
-                    component="span"
-                    sx={{ fontWeight: theme.typography.fontWeightBold }}
-                  >
-                    <FormatRawNumberToPercent
-                      value={
-                        fundamentals.incomeStatement
-                          .pastThreeYearsAverageEffectiveTaxRate
-                      }
-                    />
-                  </Box>
-                  &nbsp;Effective Tax Rate (Avg. past 3 yr)
-                </Typography>
-              </Box>
-            </Box>
+            <CostOfCapitalResults />
           </SubSection>
         </Box>
         <Box sx={{ flex: 1 }}>
@@ -370,169 +231,7 @@ const DiscountedCashFlow = () => {
             <Typography variant="h5" gutterBottom>
               Optional Inputs
             </Typography>
-            <Box
-              sx={{
-                display: "flex",
-                gap: displayGap,
-                flexWrap: "wrap",
-                flexDirection: "column",
-              }}
-            >
-              <OptionalInputAccordion>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography variant="h6">Normal Debt</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Box
-                    sx={{ display: "flex", flexWrap: "wrap", gap: displayGap }}
-                  >
-                    <CostOfCapitalTextField
-                      label="Average Maturity of Debt"
-                      defaultValue={inputQueryParams.averageMaturityOfDebt}
-                      onBlur={(value) => {
-                        setInputQueryParams(
-                          queryParams,
-                          "averageMaturityOfDebt",
-                          value
-                        );
-                        history.push({
-                          search: queryParams.toString(),
-                        });
-                      }}
-                      InputProps={{
-                        inputComponent: FormatInputToYear,
-                      }}
-                    />
-                  </Box>
-                </AccordionDetails>
-              </OptionalInputAccordion>
-              <OptionalInputAccordion>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography variant="h6">Convertible Debt</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Box
-                    sx={{ display: "flex", flexWrap: "wrap", gap: displayGap }}
-                  >
-                    <CostOfCapitalTextField
-                      label="Book Value of Convertible Debt"
-                      defaultValue={inputQueryParams.bookValueOfConvertibleDebt}
-                      onBlur={(value) => {
-                        setInputQueryParams(
-                          queryParams,
-                          "bookValueOfConvertibleDebt",
-                          value
-                        );
-                        history.push({
-                          search: queryParams.toString(),
-                        });
-                      }}
-                      InputProps={{
-                        inputComponent: FormatInputToCurrency,
-                      }}
-                    />
-                    <CostOfCapitalTextField
-                      label="Interest Expense on Convertible Debt"
-                      defaultValue={
-                        inputQueryParams.interestExpenseOnConvertibleDebt
-                      }
-                      onBlur={(value) => {
-                        setInputQueryParams(
-                          queryParams,
-                          "interestExpenseOnConvertibleDebt",
-                          value
-                        );
-                        history.push({
-                          search: queryParams.toString(),
-                        });
-                      }}
-                      InputProps={{
-                        inputComponent: FormatInputToCurrency,
-                      }}
-                    />
-                    <CostOfCapitalTextField
-                      label="Maturity of Convertible Debt"
-                      defaultValue={inputQueryParams.maturityOfConvertibleDebt}
-                      onBlur={(value) => {
-                        setInputQueryParams(
-                          queryParams,
-                          "maturityOfConvertibleDebt",
-                          value
-                        );
-                        history.push({
-                          search: queryParams.toString(),
-                        });
-                      }}
-                      InputProps={{
-                        inputComponent: FormatInputToYear,
-                      }}
-                    />
-                  </Box>
-                </AccordionDetails>
-              </OptionalInputAccordion>
-              <OptionalInputAccordion>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography variant="h6">Preferred Stock</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Box
-                    sx={{ display: "flex", flexWrap: "wrap", gap: displayGap }}
-                  >
-                    <CostOfCapitalTextField
-                      label="Number of Preferred Shares"
-                      defaultValue={inputQueryParams.numberOfPreferredShares}
-                      onBlur={(value) => {
-                        setInputQueryParams(
-                          queryParams,
-                          "numberOfPreferredShares",
-                          value
-                        );
-                        history.push({
-                          search: queryParams.toString(),
-                        });
-                      }}
-                      InputProps={{
-                        inputComponent: FormatInputToMillion,
-                      }}
-                    />
-                    <CostOfCapitalTextField
-                      label="Market Price Per Share"
-                      defaultValue={inputQueryParams.marketPricePerShare}
-                      onBlur={(value) => {
-                        setInputQueryParams(
-                          queryParams,
-                          "marketPricePerShare",
-                          value
-                        );
-                        history.push({
-                          search: queryParams.toString(),
-                        });
-                      }}
-                      InputProps={{
-                        inputComponent: FormatInputToCurrency,
-                      }}
-                    />
-                    <CostOfCapitalTextField
-                      label="Annual Dividend Per Share"
-                      defaultValue={inputQueryParams.annualDividendPerShare}
-                      onBlur={(value) => {
-                        setInputQueryParams(
-                          queryParams,
-                          "annualDividendPerShare",
-                          value
-                        );
-                        history.push({
-                          search: queryParams.toString(),
-                        });
-                      }}
-                      InputProps={{
-                        inputComponent: FormatInputToCurrency,
-                      }}
-                    />
-                  </Box>
-                </AccordionDetails>
-              </OptionalInputAccordion>
-            </Box>
+            <OptionalInputs />
           </SubSection>
         </Box>
       </Section>
@@ -540,13 +239,13 @@ const DiscountedCashFlow = () => {
         <Typography variant="h5" gutterBottom>
           Valuation
         </Typography>
-        <ValuationDCFSheet
+        <DiscountedCashFlowSheet
           riskFreeRate={riskFreeRate}
           costOfCapital={costOfCapital}
           valueOfAllOptionsOutstanding={valueOfAllOptionsOutstanding}
         />
       </Section>
-      <Section sx={{ display: "flex", mt: theme.spacing(2) }}>
+      <Section sx={{ display: "flex", mt: 2 }}>
         <Box
           sx={{
             display: "flex",
@@ -558,7 +257,6 @@ const DiscountedCashFlow = () => {
             variant="h6"
             gutterBottom
             style={{ fontWeight: theme.typography.fontWeightBold }}
-            className="landing-page-sign-up-today-text"
           >
             Want us to implement features you need?
           </Typography>

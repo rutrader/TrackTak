@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import FormatRawNumber from "./FormatRawNumber";
 import FormatRawNumberToMillion from "./FormatRawNumberToMillion";
 
-const CompanyOverviewStats = () => {
+const CompanyOverviewStats = ({ dateOfValuation }) => {
   const fundamentals = useSelector((state) => state.fundamentals);
   const industryAverages = useSelector((state) => state.industryAverages);
   const { General, SharesStats } = fundamentals.data;
@@ -12,7 +12,16 @@ const CompanyOverviewStats = () => {
 
   return (
     <Box>
-      <Typography variant="h4">{General.Name}</Typography>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h4">{General.Name}</Typography>
+        {dateOfValuation && <Typography>{dateOfValuation}</Typography>}
+      </Box>
       <Typography color="textSecondary" style={{ textTransform: "uppercase" }}>
         {General.Exchange}:{General.Code}
       </Typography>

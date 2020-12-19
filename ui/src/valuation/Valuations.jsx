@@ -12,6 +12,7 @@ import {
 import { useSelector } from "react-redux";
 import axios from "../axios/axios";
 import { useHistory } from "react-router";
+import { inputQueryNames } from "../shared/parseInputQueryParams";
 
 const EOD_URL = "https://eodhistoricaldata.com";
 
@@ -57,7 +58,17 @@ const Valuations = () => {
       <List>
         {entries.items.map(({ fields, sys }) => {
           const { General } = stocks[fields.ticker];
-          const valuationUrl = `/valuations/${sys.id}`;
+          const searchParams = new URLSearchParams();
+
+          inputQueryNames.forEach((inputQueryName) => {
+            if (fields[inputQueryName]) {
+              searchParams.set(inputQueryName, fields[inputQueryName]);
+            }
+          });
+
+          const valuationUrl = `/valuations/${
+            sys.id
+          }?${searchParams.toString()}`;
 
           return (
             <ListItem key={fields.ticker}>

@@ -1,12 +1,5 @@
-import {
-  Box,
-  TextField,
-  Typography,
-  useTheme,
-  withStyles,
-} from "@material-ui/core";
+import { Box, TextField, useTheme, withStyles } from "@material-ui/core";
 import React from "react";
-import SubSection from "./SubSection";
 import parseInputQueryParams from "../shared/parseInputQueryParams";
 import { useHistory, useLocation } from "react-router";
 import setInputQueryParams from "../shared/setInputQueryParams";
@@ -21,6 +14,12 @@ const ValueDrivingTextField = withStyles({
   },
 })(TextField);
 
+export const cagrInYearsOneToFiveLabel = "CAGR in Years 1-5";
+export const ebitTargetMarginInYearTenLabel = "EBIT Target Margin in Year 10";
+export const yearOfConvergenceLabel = "Year of Convergence";
+export const salesToCapitalRatioLabel = "Sales to Capital Ratio";
+export const pretaxCostOfDebtLabel = "Pre-tax Cost of Debt";
+
 const ValueDrivingInputs = () => {
   const theme = useTheme();
   const location = useLocation();
@@ -29,82 +28,73 @@ const ValueDrivingInputs = () => {
   const history = useHistory();
 
   return (
-    <SubSection>
-      <Typography variant="h5" gutterBottom>
-        Value Driving Inputs
-      </Typography>
-      <Box sx={{ display: "flex", flexWrap: "wrap", gap: theme.spacing(2) }}>
-        <ValueDrivingTextField
-          label="CAGR in Years 1-5"
-          defaultValue={inputQueryParams.cagrYearOneToFive}
-          onBlur={(value) => {
-            setInputQueryParams(queryParams, "cagrYearOneToFive", value);
-            history.push({
-              search: queryParams.toString(),
-            });
-          }}
-          InputProps={{
-            inputComponent: FormatInputToPercent,
-          }}
-        />
-        <ValueDrivingTextField
-          label="EBIT Target Margin in Year 10"
-          defaultValue={inputQueryParams.ebitTargetMarginInYearTen}
-          onBlur={(value) => {
-            setInputQueryParams(
-              queryParams,
-              "ebitTargetMarginInYearTen",
-              value
-            );
-            history.push({
-              search: queryParams.toString(),
-            });
-          }}
-          InputProps={{
-            inputComponent: FormatInputToPercent,
-          }}
-        />
-        <ValueDrivingTextField
-          label="Year of Convergence"
-          defaultValue={inputQueryParams.yearOfConvergence}
-          onBlur={(value) => {
-            setInputQueryParams(queryParams, "yearOfConvergence", value);
-            history.push({
-              search: queryParams.toString(),
-            });
-          }}
-          InputProps={{
-            inputComponent: FormatInputToYear,
-          }}
-        />
-        <ValueDrivingTextField
-          label="Sales to Capital Ratio"
-          defaultValue={inputQueryParams.salesToCapitalRatio}
-          onBlur={(value) => {
-            setInputQueryParams(queryParams, "salesToCapitalRatio", value);
-            history.push({
-              search: queryParams.toString(),
-            });
-          }}
-          InputProps={{
-            inputComponent: FormatInputToNumber,
-          }}
-        />
-        <ValueDrivingTextField
-          label="Pre-tax Cost of Debt"
-          defaultValue={inputQueryParams.pretaxCostOfDebt}
-          onBlur={(value) => {
-            setInputQueryParams(queryParams, "pretaxCostOfDebt", value);
-            history.push({
-              search: queryParams.toString(),
-            });
-          }}
-          InputProps={{
-            inputComponent: FormatInputToPercent,
-          }}
-        />
-      </Box>
-    </SubSection>
+    <Box sx={{ display: "flex", flexWrap: "wrap", gap: theme.spacing(2) }}>
+      <ValueDrivingTextField
+        label={cagrInYearsOneToFiveLabel}
+        defaultValue={inputQueryParams.cagrYearOneToFive}
+        onBlur={(value) => {
+          setInputQueryParams(queryParams, "cagrYearOneToFive", value);
+          history.push({
+            search: queryParams.toString(),
+          });
+        }}
+        InputProps={{
+          inputComponent: FormatInputToPercent,
+        }}
+      />
+      <ValueDrivingTextField
+        label={ebitTargetMarginInYearTenLabel}
+        defaultValue={inputQueryParams.ebitTargetMarginInYearTen}
+        onBlur={(value) => {
+          setInputQueryParams(queryParams, "ebitTargetMarginInYearTen", value);
+          history.push({
+            search: queryParams.toString(),
+          });
+        }}
+        InputProps={{
+          inputComponent: FormatInputToPercent,
+        }}
+      />
+      <ValueDrivingTextField
+        label={yearOfConvergenceLabel}
+        defaultValue={inputQueryParams.yearOfConvergence}
+        onBlur={(value) => {
+          setInputQueryParams(queryParams, "yearOfConvergence", value);
+          history.push({
+            search: queryParams.toString(),
+          });
+        }}
+        InputProps={{
+          inputComponent: FormatInputToYear,
+        }}
+      />
+      <ValueDrivingTextField
+        label={salesToCapitalRatioLabel}
+        defaultValue={inputQueryParams.salesToCapitalRatio}
+        onBlur={(value) => {
+          setInputQueryParams(queryParams, "salesToCapitalRatio", value);
+          history.push({
+            search: queryParams.toString(),
+          });
+        }}
+        InputProps={{
+          inputComponent: FormatInputToNumber,
+        }}
+      />
+      <ValueDrivingTextField
+        label={pretaxCostOfDebtLabel}
+        defaultValue={inputQueryParams.pretaxCostOfDebt}
+        onBlur={(value) => {
+          setInputQueryParams(queryParams, "pretaxCostOfDebt", value);
+          history.push({
+            search: queryParams.toString(),
+          });
+        }}
+        InputProps={{
+          inputComponent: FormatInputToPercent,
+        }}
+      />
+    </Box>
   );
 };
 export default ValueDrivingInputs;
