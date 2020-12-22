@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Button,
   Card,
@@ -10,7 +10,6 @@ import {
   useTheme,
 } from "@material-ui/core";
 import { useSelector } from "react-redux";
-import axios from "../axios/axios";
 import { useHistory } from "react-router";
 import { inputQueryNames } from "../shared/parseInputQueryParams";
 
@@ -18,37 +17,10 @@ const EOD_URL = "https://eodhistoricaldata.com";
 
 const Valuations = () => {
   const entries = useSelector((state) => state.contentful.entries);
-  const [stocks, setStocks] = useState();
   const theme = useTheme();
   const history = useHistory();
 
-  useEffect(() => {
-    if (entries) {
-      const fetchStockData = async () => {
-        try {
-          const promises = entries.items.map(({ fields }) => {
-            return axios.get(`/api/v1/fundamentals/${fields.ticker}`);
-          });
-          const responses = await Promise.all(promises);
-          const valuesAsObject = {};
-
-          responses.forEach(({ data }) => {
-            const ticker = data.General.Code;
-
-            valuesAsObject[ticker] = data;
-          });
-
-          setStocks(valuesAsObject);
-        } catch (error) {
-          console.error(error);
-          throw error;
-        }
-      };
-      fetchStockData();
-    }
-  }, [entries]);
-
-  if (!stocks || !entries) return null;
+  if (!entries) return null;
 
   return (
     <>
@@ -57,7 +29,7 @@ const Valuations = () => {
       </Typography>
       <List>
         {entries.items.map(({ fields, sys }) => {
-          const { General } = stocks[fields.ticker];
+          const { General } = fields.data;
           const searchParams = new URLSearchParams();
 
           inputQueryNames.forEach((inputQueryName) => {

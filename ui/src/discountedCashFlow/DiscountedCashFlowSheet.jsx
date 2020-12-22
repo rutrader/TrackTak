@@ -128,6 +128,8 @@ const DiscountedCashFlowSheet = ({
     [data, theme]
   );
 
+  // TODO: Put all the calculations in redux so we can
+  // use the estimated values elsewhere
   useEffect(() => {
     updateCell("B34", valueOfAllOptionsOutstanding);
     // eslint-disable-next-line react-hooks/exhaustive-deps

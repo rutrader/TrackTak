@@ -3,9 +3,10 @@ import { useLocation, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { BLOCKS } from "@contentful/rich-text-types";
+import ContainerDimensions from "react-container-dimensions";
 
 import axios from "../axios/axios";
-import { getFundamentals } from "../redux/actions/fundamentalsActions";
+import { setFundamentals } from "../redux/actions/fundamentalsActions";
 import CompanyOverviewStats from "../components/CompanyOverviewStats";
 import { Box, Typography, useTheme } from "@material-ui/core";
 import ValueDrivingInputs, {
@@ -24,13 +25,13 @@ import DiscountedCashFlowSheet from "../discountedCashFlow/DiscountedCashFlowShe
 import calculateCostOfCapital from "../shared/calculateCostOfCapital";
 import blackScholes from "../shared/blackScholesModel";
 import SubscribeMailingList from "../components/SubscribeMailingList";
+import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
 
 const options = {
   renderNode: {
     [BLOCKS.EMBEDDED_ASSET]: (node) => {
       const { fields } = node.data.target;
       const { file } = fields;
-      const { image } = file.details;
 
       return (
         <Box
@@ -40,12 +41,11 @@ const options = {
             my: 2,
           }}
         >
-          <img
-            width={image.width}
-            height={image.height}
-            src={file.url}
-            alt={fields.title}
-          />
+          <ContainerDimensions>
+            {({ width }) => (
+              <img src={`${file.url}?w=${width}`} alt={fields.title} />
+            )}
+          </ContainerDimensions>
         </Box>
       );
     },
@@ -70,7 +70,6 @@ const Valuation = () => {
   const dispatch = useDispatch();
   const [contentfulData, setContentfulData] = useState();
   const fundamentals = useSelector((state) => state.fundamentals);
-  const queryParams = parseInputQueryParams(location);
   const economicData = useSelector((state) => state.economicData);
   const equityRiskPremium = useSelector((state) => state.equityRiskPremium);
   const industryAverages = useSelector((state) => state.industryAverages);
@@ -82,7 +81,7 @@ const Valuation = () => {
         const contentfulData = await axios.get(
           `/api/v1/contentful/getEntry/${params.id}`
         );
-        dispatch(getFundamentals(contentfulData.data.fields.ticker));
+        dispatch(setFundamentals(contentfulData.data.fields.data));
         setContentfulData(contentfulData.data);
       } catch (error) {
         console.error(error);
@@ -95,6 +94,7 @@ const Valuation = () => {
   if (!fundamentals.data || !contentfulData) return null;
 
   const { SharesStats, General } = fundamentals.data;
+  const { fields } = contentfulData;
 
   const riskFreeRate =
     economicData.governmentBondTenYearLastClose / 100 -
@@ -107,7 +107,6 @@ const Valuation = () => {
     riskFreeRate,
     industryAverages.currentIndustry.standardDeviationInStockPrices
   );
-  const { fields } = contentfulData;
   const { costOfCapital } = calculateCostOfCapital(
     fundamentals,
     inputQueryParams,
@@ -118,6 +117,10 @@ const Valuation = () => {
   );
   const valueOfAllOptionsOutstanding =
     valuePerOption * inputQueryParams.numberOfOptionsOutstanding;
+  // TODO: share this with the B38 cell calculation
+  const marginOfSafety =
+    (fields.estimatedValuePerShare - fundamentals.price) /
+    fields.estimatedValuePerShare;
 
   return (
     <>
@@ -145,7 +148,7 @@ const Valuation = () => {
         </Typography>
         <Typography paragraph>
           <NumberSpan>
-            <FormatRawNumberToPercent value={queryParams.cagrYearOneToFive} />
+            <FormatRawNumberToPercent value={fields.cagrYearOneToFive} />
           </NumberSpan>
           {fields.cagrYearOneToFiveDescription}
         </Typography>
@@ -155,7 +158,7 @@ const Valuation = () => {
         <Typography paragraph>
           <NumberSpan>
             <FormatRawNumberToPercent
-              value={queryParams.ebitTargetMarginInYearTen}
+              value={fields.ebitTargetMarginInYearTen}
             />
           </NumberSpan>
           {fields.ebitTargetMarginInYearTenDescription}
@@ -165,7 +168,7 @@ const Valuation = () => {
         </Typography>
         <Typography paragraph>
           <NumberSpan>
-            <FormatRawNumberToYear value={queryParams.yearOfConvergence} />
+            <FormatRawNumberToYear value={fields.yearOfConvergence} />
           </NumberSpan>
           {fields.yearOfConvergenceDescription}
         </Typography>
@@ -176,7 +179,7 @@ const Valuation = () => {
           <NumberSpan>
             <FormatRawNumber
               decimalScale={2}
-              value={queryParams.salesToCapitalRatio}
+              value={fields.salesToCapitalRatio}
             />
           </NumberSpan>
           {fields.salesToCapitalRatioDescription}
@@ -186,7 +189,7 @@ const Valuation = () => {
         </Typography>
         <Typography paragraph>
           <NumberSpan>
-            <FormatRawNumberToPercent value={queryParams.pretaxCostOfDebt} />
+            <FormatRawNumberToPercent value={fields.pretaxCostOfDebt} />
           </NumberSpan>
           {fields.pretaxCostOfDebtDescription}
         </Typography>
@@ -222,12 +225,26 @@ const Valuation = () => {
           Conclusion
         </Typography>
         <Typography paragraph>
-          I have estimated the shares to have a share price of $127.57 per
-          share. They currently trade for $83.05 a share which gives a margin of
-          safety of 34.9%.
+          I have estimated the shares to have a share price of
+          <b>
+            &nbsp;
+            <FormatRawNumberToCurrency value={fields.estimatedValuePerShare} />
+          </b>
+          &nbsp;per share.
+          <Box>
+            They currently trade for&nbsp;
+            <b>
+              <FormatRawNumberToCurrency value={fundamentals.price} />
+            </b>
+            &nbsp;a share which gives a margin of safety of&nbsp;
+            <b>
+              <FormatRawNumberToPercent value={marginOfSafety} />
+            </b>
+            .
+          </Box>
         </Typography>
       </Section>
-      <Section sx={{ display: "flex", mt: 2 }}>
+      <Section sx={{ display: "flex", mt: 4 }}>
         <Box
           sx={{
             display: "flex",
