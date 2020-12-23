@@ -26,6 +26,8 @@ import calculateCostOfCapital from "../shared/calculateCostOfCapital";
 import blackScholes from "../shared/blackScholesModel";
 import SubscribeMailingList from "../components/SubscribeMailingList";
 import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
+import { InfoOutlinedIconWrapper } from "../components/InfoOutlinedIconWrapper";
+import { InfoTextValueDrivingInputs } from "../components/InfoText";
 
 const options = {
   renderNode: {
@@ -196,7 +198,9 @@ const Valuation = () => {
       </Section>
       <Section>
         <Typography variant="h5" gutterBottom>
-          Value Driving Inputs
+          <InfoOutlinedIconWrapper text={<InfoTextValueDrivingInputs />}>
+            Value Driving Inputs
+          </InfoOutlinedIconWrapper>
         </Typography>
         <ValueDrivingInputs />
         <Box sx={{ mt: 1 }}>

@@ -3,6 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import FormatRawNumber from "./FormatRawNumber";
 import FormatRawNumberToMillion from "./FormatRawNumberToMillion";
+import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 
 const CompanyOverviewStats = ({ dateOfValuation }) => {
   const fundamentals = useSelector((state) => state.fundamentals);
@@ -50,7 +51,10 @@ const CompanyOverviewStats = ({ dateOfValuation }) => {
                 suffix="M"
               />
             </Box>
-            &nbsp;Shares Outstanding
+            &nbsp;
+            <InfoOutlinedIconWrapper text="Refers to a company's total stock currently held by public investors, including share blocks held by institutional investors and restricted shares owned by the company’s officers and insiders.">
+              Shares Outstanding
+            </InfoOutlinedIconWrapper>
           </Typography>
         </Box>
       </Box>

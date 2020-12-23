@@ -17,6 +17,12 @@ import setInputQueryParams from "../shared/setInputQueryParams";
 import FormatInputToYear from "./FormatInputToYear";
 import FormatInputToCurrency from "./FormatInputToCurrency";
 import FormatInputToMillion from "./FormatInputToMillion";
+import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
+import {
+  InfoTextConvertibleDebt,
+  InfoTextNormalDebt,
+  InfoTextPreferredStock,
+} from "./InfoText";
 
 const CostOfCapitalTextField = withStyles({
   root: {
@@ -56,7 +62,11 @@ const OptionalInputs = () => {
     >
       <OptionalInputAccordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant="h6">Normal Debt</Typography>
+          <Typography variant="h6">
+            <InfoOutlinedIconWrapper text={<InfoTextNormalDebt />}>
+              Normal Debt
+            </InfoOutlinedIconWrapper>
+          </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Box
@@ -88,7 +98,11 @@ const OptionalInputs = () => {
       </OptionalInputAccordion>
       <OptionalInputAccordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant="h6">Convertible Debt</Typography>
+          <Typography variant="h6">
+            <InfoOutlinedIconWrapper text={<InfoTextConvertibleDebt />}>
+              Convertible Debt
+            </InfoOutlinedIconWrapper>
+          </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Box
@@ -150,7 +164,11 @@ const OptionalInputs = () => {
       </OptionalInputAccordion>
       <OptionalInputAccordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant="h6">Preferred Stock</Typography>
+          <Typography variant="h6">
+            <InfoOutlinedIconWrapper text={<InfoTextPreferredStock />}>
+              Preferred Stock
+            </InfoOutlinedIconWrapper>
+          </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Box
