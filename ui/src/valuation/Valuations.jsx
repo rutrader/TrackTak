@@ -82,6 +82,7 @@ const Valuations = () => {
                     sx={{
                       display: "flex",
                       justifyContent: "space-between",
+                      alignItems: "center",
                       flex: 1,
                     }}
                   >
