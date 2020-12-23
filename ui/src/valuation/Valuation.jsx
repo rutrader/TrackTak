@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
-import { BLOCKS } from "@contentful/rich-text-types";
+import { BLOCKS, INLINES } from "@contentful/rich-text-types";
 import ContainerDimensions from "react-container-dimensions";
+import YouTube from "react-youtube";
 
 import axios from "../axios/axios";
 import { setFundamentals } from "../redux/actions/fundamentalsActions";
@@ -28,6 +29,7 @@ import SubscribeMailingList from "../components/SubscribeMailingList";
 import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
 import { InfoOutlinedIconWrapper } from "../components/InfoOutlinedIconWrapper";
 import { InfoTextValueDrivingInputs } from "../components/InfoText";
+import * as styles from "./Valuation.module.scss";
 
 const options = {
   renderNode: {
@@ -50,6 +52,25 @@ const options = {
           </ContainerDimensions>
         </Box>
       );
+    },
+    [INLINES.HYPERLINK]: (node) => {
+      if (node.data.uri.includes("youtube.com")) {
+        const videoId = node.data.uri.split("v=")[1];
+        console.log(styles);
+        return (
+          <Box sx={{ mt: 2 }}>
+            <YouTube
+              containerClassName={styles.videoWrapper}
+              videoId={videoId}
+              opts={{
+                width: 1500,
+                height: 600,
+              }}
+            />
+          </Box>
+        );
+      }
+      return node;
     },
   },
 };

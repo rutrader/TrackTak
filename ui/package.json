@@ -33,6 +33,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
     "react-table": "^7.6.2",
+    "react-youtube": "^7.13.0",
     "rebass": "^2.1.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",

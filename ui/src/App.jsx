@@ -4,15 +4,13 @@ import { Provider as RebassProvider } from "rebass";
 import rebassTheme from "./rebassTheme";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Home from "./home/Home";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Box, CircularProgress, useTheme } from "@material-ui/core";
 import LayoutFullScreen from "./layout/LayoutFullScreen";
 import Layout from "./layout/Layout";
 import DiscountedCashFlow from "./discountedCashFlow/DiscountedCashFlow";
 import Valuation from "./valuation/Valuation";
 import Valuations from "./valuation/Valuations";
-import { useEffect } from "react";
-import { getDCFTemplateEntries } from "./redux/actions/contentfulActions";
 import LayoutHome from "./layout/LayoutHome";
 
 const GlobalStyle = createGlobalStyle`

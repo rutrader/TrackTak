@@ -24,8 +24,8 @@ export const InfoOutlinedIconWrapper = ({ children, text, ...props }) => {
   const handlePopoverClose = () => {
     setAnchorEl(null);
   };
-
   const open = Boolean(anchorEl);
+
   return (
     <Box {...props}>
       {children}
@@ -47,7 +47,7 @@ export const InfoOutlinedIconWrapper = ({ children, text, ...props }) => {
         }}
         transformOrigin={{
           vertical: "top",
-          horizontal: "center",
+          horizontal: "right",
         }}
         onClose={handlePopoverClose}
         disableRestoreFocus

@@ -33,12 +33,11 @@ const CostOfCapitalResults = () => {
     <Box
       sx={{
         display: "flex",
-        gap: "8px",
         flexWrap: "wrap",
-        flexDirection: "column",
+        gridColumnGap: theme.spacing(3),
       }}
     >
-      <Box sx={{ display: "flex", gridColumnGap: "8px", flexWrap: "wrap" }}>
+      <Box>
         <Typography>
           <Box
             component="span"
@@ -69,8 +68,6 @@ const CostOfCapitalResults = () => {
           </Box>
           &nbsp;Riskfree Rate
         </Typography>
-      </Box>
-      <Box sx={{ display: "flex", gridColumnGap: "8px", flexWrap: "wrap" }}>
         <Typography>
           <Box
             component="span"
@@ -82,6 +79,8 @@ const CostOfCapitalResults = () => {
           </Box>
           &nbsp;Country Equity Risk Premium
         </Typography>
+      </Box>
+      <Box>
         <Typography>
           <Box
             component="span"
@@ -93,8 +92,6 @@ const CostOfCapitalResults = () => {
           </Box>
           &nbsp;Mature Market Equity Risk Premium
         </Typography>
-      </Box>
-      <Box sx={{ display: "flex", gridColumnGap: "8px", flexWrap: "wrap" }}>
         <Typography>
           <Box
             component="span"
