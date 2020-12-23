@@ -5,11 +5,12 @@ import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import { BLOCKS, INLINES } from "@contentful/rich-text-types";
 import ContainerDimensions from "react-container-dimensions";
 import YouTube from "react-youtube";
+import { Link as RouterLink } from "react-router-dom";
 
 import axios from "../axios/axios";
 import { setFundamentals } from "../redux/actions/fundamentalsActions";
 import CompanyOverviewStats from "../components/CompanyOverviewStats";
-import { Box, Typography, useTheme } from "@material-ui/core";
+import { Box, Link, Typography, useTheme } from "@material-ui/core";
 import ValueDrivingInputs, {
   cagrInYearsOneToFiveLabel,
   ebitTargetMarginInYearTenLabel,
@@ -27,9 +28,8 @@ import calculateCostOfCapital from "../shared/calculateCostOfCapital";
 import blackScholes from "../shared/blackScholesModel";
 import SubscribeMailingList from "../components/SubscribeMailingList";
 import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
-import { InfoOutlinedIconWrapper } from "../components/InfoOutlinedIconWrapper";
-import { InfoTextValueDrivingInputs } from "../components/InfoText";
 import * as styles from "./Valuation.module.scss";
+import CostOfCapitalResults from "../components/CostOfCapitalResults";
 
 const options = {
   renderNode: {
@@ -218,11 +218,9 @@ const Valuation = () => {
         </Typography>
       </Section>
       <Section>
-        <Typography variant="h5" gutterBottom>
-          <InfoOutlinedIconWrapper text={<InfoTextValueDrivingInputs />}>
-            Value Driving Inputs
-          </InfoOutlinedIconWrapper>
-        </Typography>
+        <CostOfCapitalResults />
+      </Section>
+      <Section>
         <ValueDrivingInputs />
         <Box sx={{ mt: 1 }}>
           <Typography paragraph>
@@ -249,7 +247,7 @@ const Valuation = () => {
         <Typography variant="h5" gutterBottom>
           Conclusion
         </Typography>
-        <Typography paragraph>
+        <Typography paragraph gutterBottom>
           I have estimated the shares to have a share price of
           <b>
             &nbsp;
@@ -267,6 +265,13 @@ const Valuation = () => {
             </b>
             .
           </Box>
+        </Typography>
+        <Typography>
+          <Link component={RouterLink} to="/">
+            <b>
+              Click here to do your own Automated DCF for any company you want.
+            </b>
+          </Link>
         </Typography>
       </Section>
       <Section sx={{ display: "flex", mt: 4 }}>

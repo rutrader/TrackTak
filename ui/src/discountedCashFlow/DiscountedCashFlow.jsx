@@ -18,10 +18,6 @@ import ValueDrivingInputs from "../components/ValueDrivingInputs";
 import OptionalInputs from "../components/OptionalInputs";
 import CostOfCapitalResults from "../components/CostOfCapitalResults";
 import { InfoOutlinedIconWrapper } from "../components/InfoOutlinedIconWrapper";
-import {
-  InfoTextCostOfCapital,
-  InfoTextValueDrivingInputs,
-} from "../components/InfoText";
 
 const mapFromStatementsToDateObject = (objectToLoop, valueKey) => {
   const dateObject = {};
@@ -260,19 +256,9 @@ const DiscountedCashFlow = () => {
       <Section sx={{ display: "flex", gridColumnGap: 20, flexWrap: "wrap" }}>
         <Box sx={{ flex: 1 }}>
           <SubSection>
-            <Typography variant="h5" gutterBottom>
-              <InfoOutlinedIconWrapper text={<InfoTextValueDrivingInputs />}>
-                Value Driving Inputs
-              </InfoOutlinedIconWrapper>
-            </Typography>
             <ValueDrivingInputs />
           </SubSection>
           <SubSection>
-            <Typography variant="h5" gutterBottom>
-              <InfoOutlinedIconWrapper text={<InfoTextCostOfCapital />}>
-                Cost of Capital Results
-              </InfoOutlinedIconWrapper>
-            </Typography>
             <CostOfCapitalResults />
           </SubSection>
         </Box>

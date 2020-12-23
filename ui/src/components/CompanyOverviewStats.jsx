@@ -25,7 +25,7 @@ const CompanyOverviewStats = ({ dateOfValuation }) => {
         {dateOfValuation && <Typography>{dateOfValuation}</Typography>}
       </Box>
       <Typography color="textSecondary" style={{ textTransform: "uppercase" }}>
-        {General.Exchange}:{General.Code}
+        {General.Code}.{General.Exchange}
       </Typography>
       <Typography gutterBottom>
         {industryAverages.currentIndustry.industryName}

@@ -96,7 +96,7 @@ const SearchTicker = ({ buttonSize, removeInputPadding }) => {
                 fullWidth
                 required
                 onChange={handleOnChangeSearch}
-                placeholder="Search"
+                placeholder="Search, e.g. AAPL"
               />
             </>
           );
