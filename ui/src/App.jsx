@@ -81,12 +81,6 @@ const layoutPaths = ["/valuations/:id", "/valuations"];
 export const allLayoutPaths = [...layoutFullScreenPaths, layoutPaths];
 
 function App() {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getDCFTemplateEntries());
-  }, [dispatch]);
-
   return (
     <>
       <Spinner />

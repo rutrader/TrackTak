@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
+  Box,
   Button,
   Card,
   CardActionArea,
@@ -9,16 +10,23 @@ import {
   Typography,
   useTheme,
 } from "@material-ui/core";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { inputQueryNames } from "../shared/parseInputQueryParams";
+import { Link } from "react-router-dom";
+import { getDCFTemplateEntries } from "../redux/actions/contentfulActions";
 
 const EOD_URL = "https://eodhistoricaldata.com";
 
 const Valuations = () => {
+  const dispatch = useDispatch();
   const entries = useSelector((state) => state.contentful.entries);
   const theme = useTheme();
   const history = useHistory();
+
+  useEffect(() => {
+    dispatch(getDCFTemplateEntries());
+  }, [dispatch]);
 
   if (!entries) return null;
 
@@ -65,18 +73,28 @@ const Valuations = () => {
                   <Typography gutterBottom variant="h5">
                     {General.Name} Valuation
                   </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
+                  <Typography variant="body2" color="textSecondary" paragraph>
                     {General.Description}
                   </Typography>
                 </CardActionArea>
                 <CardActions>
-                  <Button to={valuationUrl} size="small" color="primary">
-                    Learn More
-                  </Button>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      flex: 1,
+                    }}
+                  >
+                    <Button
+                      to={valuationUrl}
+                      size="small"
+                      color="primary"
+                      component={Link}
+                    >
+                      Learn More
+                    </Button>
+                    <Typography>{fields.dateOfValuation}</Typography>
+                  </Box>
                 </CardActions>
               </Card>
             </ListItem>

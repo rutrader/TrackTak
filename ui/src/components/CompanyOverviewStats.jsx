@@ -17,6 +17,7 @@ const CompanyOverviewStats = ({ dateOfValuation }) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          gridColumnGap: theme.spacing(2.5),
         }}
       >
         <Typography variant="h4">{General.Name}</Typography>

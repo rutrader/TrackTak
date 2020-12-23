@@ -43,8 +43,7 @@ const getFinancialSheetPastValues = (
   valueKey,
   periodsToGet
 ) => {
-  const arrayValue = Object.values(financialSheetValues);
-  const sumOfFirstFourValues = arrayValue
+  const sumOfFirstFourValues = financialSheetValues
     .slice(0, periodsToGet)
     .reduce((acc, curr) => {
       return (acc += getValueFromString(curr[valueKey]));
@@ -107,6 +106,8 @@ const getCashAndShortTermInvestments = (balanceSheet) => {
   }
 };
 
+const dateSortComparer = (a, b) => new Date(b.date) - new Date(a.date);
+
 export const fundamentalsReducer = createReducer(initialState, (builder) => {
   builder.addCase(setFundamentals.fulfilled, (state, action) => {
     const { Financials, ...otherData } = action.payload.data;
@@ -122,36 +123,19 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
     };
 
     const quarterBalanceSheet = Balance_Sheet.quarterly[MostRecentQuarter];
-    const sortedYearlyIncomeValues = Object.keys(
+    const sortedYearlyIncomeValues = Object.values(
       Income_Statement.yearly
-    ).reduce((accumulator, currentValue) => {
-      return {
-        [currentValue]: Income_Statement.yearly[currentValue],
-        ...accumulator,
-      };
-    }, {});
+    ).sort(dateSortComparer);
 
-    const sortedQuarterlyIncomeValues = Object.keys(
+    const sortedQuarterlyIncomeValues = Object.values(
       Income_Statement.quarterly
-    ).reduce((accumulator, currentValue) => {
-      return {
-        [currentValue]: Income_Statement.quarterly[currentValue],
-        ...accumulator,
-      };
-    }, {});
+    ).sort(dateSortComparer);
 
-    const sortedBalanceSheetYearlyValues = Object.keys(
+    const sortedBalanceSheetYearlyValues = Object.values(
       Balance_Sheet.yearly
-    ).reduce((accumulator, currentValue) => {
-      return {
-        [currentValue]: Income_Statement.yearly[currentValue],
-        ...accumulator,
-      };
-    }, {});
+    ).sort(dateSortComparer);
 
-    const recentYearlyIncomeStatement = Object.values(
-      sortedYearlyIncomeValues
-    )[0];
+    const recentYearlyIncomeStatement = sortedYearlyIncomeValues[0];
 
     // TODO: Put all this on the backend
     state.balanceSheet = {
@@ -188,7 +172,7 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
         pastThreeYearPeriods
       );
 
-      incomeSheetDates = Object.keys(sortedQuarterlyIncomeValues).slice(0, 4);
+      incomeSheetDates = [...sortedQuarterlyIncomeValues].slice(0, 4);
 
       state.incomeStatement = {
         totalRevenue: getFinancialSheetPastValues(
@@ -254,8 +238,8 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
 
     state.yearlyIncomeStatements = {};
 
-    Object.keys(sortedYearlyIncomeValues).forEach((date) => {
-      const incomeStatement = sortedYearlyIncomeValues[date];
+    sortedYearlyIncomeValues.forEach(({ date }) => {
+      const incomeStatement = Income_Statement.yearly[date];
 
       state.yearlyIncomeStatements[date] = {
         totalRevenue: incomeStatement.totalRevenue,
@@ -276,8 +260,8 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
 
     state.yearlyBalanceSheets = {};
 
-    Object.keys(sortedBalanceSheetYearlyValues).forEach((date) => {
-      const balanceSheet = sortedBalanceSheetYearlyValues[date];
+    sortedBalanceSheetYearlyValues.forEach(({ date }) => {
+      const balanceSheet = Balance_Sheet.yearly[date];
 
       state.yearlyBalanceSheets[date] = {
         bookValueOfDebt: convertCurrency(

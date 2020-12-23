@@ -19,7 +19,6 @@ export const setFundamentals = createAsyncThunk(
     const mergedStatements = {
       ...data.Financials.Income_Statement.yearly,
       ...data.Financials.Balance_Sheet.yearly,
-      ...data.Financials.Cash_Flow.yearly,
     };
 
     let minDate;
@@ -65,9 +64,17 @@ export const setFundamentals = createAsyncThunk(
 
 export const getFundamentals = createAsyncThunk(
   "fundamentals/getFundamentals",
-  async (ticker, { dispatch }) => {
+  async ({ ticker, filter }, { dispatch }) => {
     try {
-      const { data } = await axios.get(`/api/v1/fundamentals/${ticker}`);
+      const urlParams = new URLSearchParams();
+
+      if (filter) {
+        urlParams.set("filter", filter);
+      }
+
+      const { data } = await axios.get(
+        `/api/v1/fundamentals/${ticker}?${urlParams.toString()}`
+      );
       dispatch(setFundamentals(data));
     } catch (error) {
       console.error(error);

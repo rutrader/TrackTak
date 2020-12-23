@@ -30,6 +30,9 @@ const mapFromStatementsToDateObject = (objectToLoop, valueKey) => {
   return dateObject;
 };
 
+const fundamentalsFilter =
+  "General,Highlights,SharesStats,Financials::Balance_Sheet,Financials::Income_Statement";
+
 const DiscountedCashFlow = () => {
   const params = useParams();
   const location = useLocation();
@@ -42,7 +45,9 @@ const DiscountedCashFlow = () => {
   const inputQueryParams = parseInputQueryParams(location);
 
   useEffect(() => {
-    dispatch(getFundamentals(params.ticker));
+    dispatch(
+      getFundamentals({ ticker: params.ticker, filter: fundamentalsFilter })
+    );
   }, [dispatch, params.ticker]);
 
   if (!fundamentals.data || !economicData.governmentBondTenYearLastClose)
