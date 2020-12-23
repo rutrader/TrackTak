@@ -4,7 +4,7 @@ import NumberFormat from "react-number-format";
 
 const FormatInputToNumber = forwardRef(({ defaultValue, ...props }, ref) => {
   const { onChange, ...other } = props;
-  const [valueAsNumber, setValue] = useState(null);
+  const [valueAsNumber, setValue] = useState(defaultValue);
 
   return (
     <NumberFormat

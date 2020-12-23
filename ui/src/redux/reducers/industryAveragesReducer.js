@@ -1,7 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { setCurrentIndustryAverage } from "../actions/industryAveragesActions";
 import industryMapping from "../../shared/industryMapping.json";
-import { percentModifier } from "../../components/FormatRawNumberToPercent";
 import industryAverages from "../../data/industryAverages.json";
 
 const initialState = {
@@ -32,8 +31,7 @@ export const industryAveragesReducer = createReducer(
         return datum.industryName === mappedCurrentIndustry;
       });
       state.currentIndustry.standardDeviationInStockPrices =
-        parseFloat(state.currentIndustry.standardDeviationInStockPrices) /
-        percentModifier;
+        parseFloat(state.currentIndustry.standardDeviationInStockPrices) / 100;
     });
   }
 );

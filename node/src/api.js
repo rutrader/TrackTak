@@ -1,5 +1,6 @@
 const axios = require("axios");
 const cache = require("memory-cache");
+const contentful = require("./contentful");
 
 const baseUrl = "https://eodhistoricaldata.com/api";
 const fundamentalsUrl = `${baseUrl}/fundamentals`;
@@ -11,74 +12,105 @@ const globalParams = {
 };
 
 // 6 hour
-const sendReqOrGetCachedData = async (cacheKey, request, time = 2.16e7) => {
+const sendReqOrGetCachedData = async (
+  request,
+  keyPrefix,
+  cacheParams = {},
+  time = 2.16e7
+) => {
+  const cacheKey = `${keyPrefix}_${JSON.stringify(cacheParams)}`;
   const cachedData = cache.get(cacheKey);
 
   if (cachedData) return cachedData;
   try {
-    const { data } = await request();
+    const data = await request();
     if (data) {
       return cache.put(cacheKey, data, time);
     }
     return data;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
 
-const api = {
-  getFundamentals: async ({ ticker, ...params }) => {
-    const data = await sendReqOrGetCachedData(`fund_${ticker}`, async () => {
-      const res = await axios.get(`${fundamentalsUrl}/${ticker}`, {
-        params: {
-          ...globalParams,
-          ...params,
-        },
-      });
+const assignNestedObject = (obj, keyPath, value) => {
+  const lastKeyIndex = keyPath.length - 1;
 
-      return res;
-    });
+  for (var i = 0; i < lastKeyIndex; ++i) {
+    const key = keyPath[i];
+
+    if (!(key in obj)) {
+      obj[key] = {};
+    }
+    obj = obj[key];
+  }
+  obj[keyPath[lastKeyIndex]] = value;
+};
+
+const replaceDoubleColonWithObject = (data) => {
+  const newData = {};
+
+  Object.keys(data).forEach((key) => {
+    const value = data[key];
+    const splits = key.split("::");
+
+    assignNestedObject(newData, splits, value);
+  });
+
+  return newData;
+};
+
+const api = {
+  getFundamentals: async (ticker, query) => {
+    const data = await sendReqOrGetCachedData(
+      async () => {
+        const { data } = await axios.get(`${fundamentalsUrl}/${ticker}`, {
+          params: {
+            ...globalParams,
+            ...query,
+          },
+        });
+
+        return replaceDoubleColonWithObject(data);
+      },
+      "fund",
+      { ticker, query }
+    );
 
     return data;
   },
-  getGovernmentBondLastClose: async ({ countryCode, year = 10, ...params }) => {
+  getGovernmentBondLastClose: async (countryCode, query, year = 10) => {
     const countryAndYearGBond = `${countryCode}${year}Y.GBOND`;
     const data = await sendReqOrGetCachedData(
-      `bond_${countryAndYearGBond}`,
       async () => {
-        const res = await axios.get(`${eodUrl}/${countryAndYearGBond}`, {
+        const { data } = await axios.get(`${eodUrl}/${countryAndYearGBond}`, {
           params: {
             ...globalParams,
-            ...params,
+            ...query,
             fmt: "json",
             filter: "last_close",
           },
         });
 
-        return res;
-      }
+        return data;
+      },
+      "bond",
+      { countryAndYearGBond, query }
     );
 
     return data;
   },
   // Base currency is always EUR
-  getExchangeRateHistory: async ({
-    baseCurrency,
-    quoteCurrency,
-    from,
-    ...params
-  }) => {
+  getExchangeRateHistory: async (baseCurrency, quoteCurrency, query) => {
     const data = await sendReqOrGetCachedData(
-      `exchangeRateHistory_${baseCurrency}_${quoteCurrency}_${from}`,
       async () => {
-        const res = await axios.get(
+        const { data } = await axios.get(
           `${eodUrl}/${baseCurrency}${quoteCurrency}.FOREX`,
           {
             params: {
               ...globalParams,
-              ...params,
-              from,
+              ...query,
               order: "d",
               period: "m",
               fmt: "json",
@@ -86,9 +118,9 @@ const api = {
           }
         );
 
-        const data = {};
+        const newData = {};
 
-        res.data.forEach((exchangeObject) => {
+        data.forEach((exchangeObject) => {
           const dateKeyWithoutDay = exchangeObject.date.slice(0, -3);
 
           data[dateKeyWithoutDay] = {
@@ -97,42 +129,80 @@ const api = {
         });
 
         return {
-          data,
+          data: newData,
         };
-      }
+      },
+      "exchangeRateHistory",
+      { baseCurrency, quoteCurrency, query }
     );
 
     return data;
   },
-  getListOfExchanges: async (params) => {
-    const data = await sendReqOrGetCachedData("listOfExchanges", async () => {
-      const res = await axios.get(`${exchangesUrl}`, {
-        params: {
-          ...globalParams,
-          ...params,
-        },
-      });
-
-      return res;
-    });
-
-    return data;
-  },
-
-  getAutocompleteQuery: async ({ queryString, ...params }) => {
+  getListOfExchanges: async (query) => {
     const data = await sendReqOrGetCachedData(
-      `query_${queryString}`,
       async () => {
-        const res = await axios.get(`${searchUrl}/${queryString}`, {
+        const { data } = await axios.get(`${exchangesUrl}`, {
           params: {
             ...globalParams,
-            ...params,
+            ...query,
           },
         });
 
-        return res;
-      }
+        return { data };
+      },
+      "listOfExchanges",
+      { query }
     );
+
+    return data;
+  },
+
+  getAutocompleteQuery: async (queryString, query) => {
+    const data = await sendReqOrGetCachedData(
+      async () => {
+        const { data } = await axios.get(`${searchUrl}/${queryString}`, {
+          params: {
+            ...globalParams,
+            ...query,
+          },
+        });
+
+        return data;
+      },
+      "autocompleteQuery",
+      { queryString, query }
+    );
+    return data;
+  },
+  getContentfulEntries: async (query) => {
+    const data = await sendReqOrGetCachedData(
+      async () => {
+        const res = await contentful.getEntries(query);
+
+        return res;
+      },
+      "contentfulEntries",
+      { query }
+    );
+    return data;
+  },
+  getContentfulEntry: async (id, query) => {
+    const data = await sendReqOrGetCachedData(
+      async () => {
+        const data = await contentful.getEntry(id, query);
+
+        return {
+          ...data,
+          fields: {
+            ...data.fields,
+            data: replaceDoubleColonWithObject(data.fields.data),
+          },
+        };
+      },
+      "contentfulEntry",
+      { id, query }
+    );
+
     return data;
   },
 };

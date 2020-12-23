@@ -6,6 +6,7 @@
   "dependencies": {
     "@blueprintjs/core": "^3.36.0",
     "@blueprintjs/table": "^3.8.18",
+    "@contentful/rich-text-react-renderer": "^14.1.2",
     "@emotion/react": "^11.1.1",
     "@emotion/styled": "^11.0.0",
     "@material-ui/core": "^5.0.0-alpha.16",
@@ -23,6 +24,7 @@
     "mathjs": "^8.0.1",
     "node-sass": "^4.0.0",
     "react": "^17.0.1",
+    "react-container-dimensions": "^1.4.1",
     "react-datasheet": "^1.4.8",
     "react-dom": "^17.0.1",
     "react-number-format": "^4.4.1",

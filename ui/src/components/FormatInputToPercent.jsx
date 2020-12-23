@@ -2,22 +2,22 @@ import React from "react";
 import { forwardRef } from "react";
 import { useState } from "react";
 import NumberFormat from "react-number-format";
-import { percentModifier } from "./FormatRawNumberToPercent";
+import roundDecimal from "../shared/roundDecimal";
 
 const FormatInputToPercent = forwardRef(({ defaultValue, ...props }, ref) => {
   const { onChange, ...other } = props;
-  const [valueAsDecimal, setValue] = useState(null);
+  const [valueAsDecimal, setValue] = useState(defaultValue);
 
   return (
     <NumberFormat
       {...other}
       getInputRef={ref}
-      defaultValue={defaultValue ? defaultValue * percentModifier : undefined}
+      defaultValue={defaultValue ? roundDecimal(defaultValue, 4) : undefined}
       onBlur={(e) => {
         props.onBlur(valueAsDecimal, e);
       }}
       onValueChange={(values) => {
-        const valueAsDecimal = values.floatValue / percentModifier;
+        const valueAsDecimal = values.floatValue / 100;
         setValue(valueAsDecimal);
         onChange({
           target: {

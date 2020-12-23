@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Box, Button, TextField, withStyles } from "@material-ui/core";
+import { Box, IconButton, TextField, withStyles } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/core";
 import { useHistory } from "react-router";
 import axios from "../axios/axios";
+import SearchIcon from "@material-ui/icons/Search";
 
 const TickerTextField = withStyles({
   root: ({ $removeInputPadding }) => {
@@ -14,31 +15,20 @@ const TickerTextField = withStyles({
 
     return {
       "& .MuiInputBase-root": {
-        borderTopRightRadius: 0,
-        borderBottomRightRadius: 0,
         ...values,
       },
     };
   },
 })(TextField);
 
-const TickerAutocomplete = withStyles({
-  root: {
-    "& .MuiInputBase-root": {
-      borderTopRightRadius: 0,
-      borderBottomRightRadius: 0,
-    },
-  },
-})(Autocomplete);
-
 const SubmitButton = withStyles({
   root: {
-    borderTopLeftRadius: 0,
-    borderBottomLeftRadius: 0,
-    position: "relative",
-    right: "1px",
+    borderRadius: 0,
+    position: "absolute",
+    right: 0,
+    height: "100%",
   },
-})(Button);
+})(IconButton);
 
 const SearchTicker = ({ buttonSize, removeInputPadding }) => {
   const [ticker, setTicker] = useState("");
@@ -73,15 +63,15 @@ const SearchTicker = ({ buttonSize, removeInputPadding }) => {
   return (
     <Box
       component="form"
-      sx={{ display: "flex" }}
+      sx={{ display: "flex", position: "relative" }}
       onSubmit={async (e) => {
         e.preventDefault();
         if (hasTickerNotOnlyWhiteSpace()) {
-          history.push(`/valuation/${ticker}`);
+          history.push(`/discounted-cash-flow/${ticker}`);
         }
       }}
     >
-      <TickerAutocomplete
+      <Autocomplete
         style={{ flex: 1 }}
         onChange={handleOnChangeAutoComplete}
         freeSolo
@@ -106,14 +96,14 @@ const SearchTicker = ({ buttonSize, removeInputPadding }) => {
                 fullWidth
                 required
                 onChange={handleOnChangeSearch}
-                placeholder="Search for a stock"
+                placeholder="Search"
               />
             </>
           );
         }}
       />
-      <SubmitButton variant="contained" size={buttonSize} type="submit">
-        Search
+      <SubmitButton type="submit">
+        <SearchIcon color="primary" />
       </SubmitButton>
     </Box>
   );

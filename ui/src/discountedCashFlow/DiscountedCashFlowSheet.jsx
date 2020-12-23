@@ -56,10 +56,11 @@ const cellUpdate = (data, key, expr) => {
   };
 };
 
-const ValuationDCFSheet = ({
+const DiscountedCashFlowSheet = ({
   riskFreeRate,
   costOfCapital,
   valueOfAllOptionsOutstanding,
+  columnWidths,
 }) => {
   const location = useLocation();
   const inputQueryParams = parseInputQueryParams(location);
@@ -127,6 +128,8 @@ const ValuationDCFSheet = ({
     [data, theme]
   );
 
+  // TODO: Put all the calculations in redux so we can
+  // use the estimated values elsewhere
   useEffect(() => {
     updateCell("B34", valueOfAllOptionsOutstanding);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -226,7 +229,7 @@ const ValuationDCFSheet = ({
         if (column === "A") {
           return 220;
         }
-        return 120;
+        return columnWidths?.[column] ?? 120;
       })}
     >
       {columns.map((column) => {
@@ -242,4 +245,4 @@ const ValuationDCFSheet = ({
   );
 };
 
-export default ValuationDCFSheet;
+export default DiscountedCashFlowSheet;

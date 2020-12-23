@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { getFundamentals } from "../actions/fundamentalsActions";
+import { setFundamentals } from "../actions/fundamentalsActions";
 import getSymbolFromCurrency from "currency-symbol-map";
 import { monthDateFormat } from "../../shared/utils";
 import dayjs from "dayjs";
@@ -43,26 +43,13 @@ const getFinancialSheetPastValues = (
   valueKey,
   periodsToGet
 ) => {
-  const arrayValue = Object.values(financialSheetValues);
-  const sumOfFirstFourValues = arrayValue
+  const sumOfFirstFourValues = financialSheetValues
     .slice(0, periodsToGet)
     .reduce((acc, curr) => {
       return (acc += getValueFromString(curr[valueKey]));
     }, 0);
 
   return sumOfFirstFourValues;
-};
-
-const getIncomeSheetPastQuartersValues = (
-  incomeStatement,
-  valueKey,
-  periodsToGet
-) => {
-  return getFinancialSheetPastValues(
-    incomeStatement.quarterly,
-    valueKey,
-    periodsToGet
-  );
 };
 
 const getConvertCurrency = (exchangeRates) => (
@@ -119,8 +106,10 @@ const getCashAndShortTermInvestments = (balanceSheet) => {
   }
 };
 
+const dateSortComparer = (a, b) => new Date(b.date) - new Date(a.date);
+
 export const fundamentalsReducer = createReducer(initialState, (builder) => {
-  builder.addCase(getFundamentals.fulfilled, (state, action) => {
+  builder.addCase(setFundamentals.fulfilled, (state, action) => {
     const { Financials, ...otherData } = action.payload.data;
     const {
       General,
@@ -134,9 +123,19 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
     };
 
     const quarterBalanceSheet = Balance_Sheet.quarterly[MostRecentQuarter];
-    const recentYearlyIncomeStatement = Object.values(
+    const sortedYearlyIncomeValues = Object.values(
       Income_Statement.yearly
-    )[0];
+    ).sort(dateSortComparer);
+
+    const sortedQuarterlyIncomeValues = Object.values(
+      Income_Statement.quarterly
+    ).sort(dateSortComparer);
+
+    const sortedBalanceSheetYearlyValues = Object.values(
+      Balance_Sheet.yearly
+    ).sort(dateSortComparer);
+
+    const recentYearlyIncomeStatement = sortedYearlyIncomeValues[0];
 
     // TODO: Put all this on the backend
     state.balanceSheet = {
@@ -161,50 +160,50 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
       const quarters = 4;
       const pastThreeYearPeriods = pastPeriodsToGet * quarters;
 
-      pastThreeYearIncomeBeforeTax = getIncomeSheetPastQuartersValues(
-        Income_Statement,
+      pastThreeYearIncomeBeforeTax = getFinancialSheetPastValues(
+        sortedQuarterlyIncomeValues,
         "incomeBeforeTax",
         pastThreeYearPeriods
       );
 
-      pastThreeYearIncomeTaxExpense = getIncomeSheetPastQuartersValues(
-        Income_Statement,
+      pastThreeYearIncomeTaxExpense = getFinancialSheetPastValues(
+        sortedQuarterlyIncomeValues,
         "incomeTaxExpense",
         pastThreeYearPeriods
       );
 
-      incomeSheetDates = Object.keys(Income_Statement.quarterly).slice(0, 4);
+      incomeSheetDates = [...sortedQuarterlyIncomeValues].slice(0, 4);
 
       state.incomeStatement = {
-        totalRevenue: getIncomeSheetPastQuartersValues(
-          Income_Statement,
+        totalRevenue: getFinancialSheetPastValues(
+          sortedQuarterlyIncomeValues,
           "totalRevenue",
           quarters
         ),
-        operatingIncome: getIncomeSheetPastQuartersValues(
-          Income_Statement,
+        operatingIncome: getFinancialSheetPastValues(
+          sortedQuarterlyIncomeValues,
           "operatingIncome",
           quarters
         ),
-        interestExpense: getIncomeSheetPastQuartersValues(
-          Income_Statement,
+        interestExpense: getFinancialSheetPastValues(
+          sortedQuarterlyIncomeValues,
           "interestExpense",
           quarters
         ),
-        minorityInterest: getIncomeSheetPastQuartersValues(
-          Income_Statement,
+        minorityInterest: getFinancialSheetPastValues(
+          sortedQuarterlyIncomeValues,
           "minorityInterest",
           quarters
         ),
       };
     } else {
       pastThreeYearIncomeBeforeTax = getFinancialSheetPastValues(
-        Income_Statement.yearly,
+        sortedYearlyIncomeValues,
         "incomeBeforeTax",
         pastPeriodsToGet
       );
       pastThreeYearIncomeTaxExpense = getFinancialSheetPastValues(
-        Income_Statement.yearly,
+        sortedYearlyIncomeValues,
         "incomeTaxExpense",
         pastPeriodsToGet
       );
@@ -239,7 +238,7 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
 
     state.yearlyIncomeStatements = {};
 
-    Object.keys(Income_Statement.yearly).forEach((date) => {
+    sortedYearlyIncomeValues.forEach(({ date }) => {
       const incomeStatement = Income_Statement.yearly[date];
 
       state.yearlyIncomeStatements[date] = {
@@ -261,7 +260,7 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
 
     state.yearlyBalanceSheets = {};
 
-    Object.keys(Balance_Sheet.yearly).forEach((date) => {
+    sortedBalanceSheetYearlyValues.forEach(({ date }) => {
       const balanceSheet = Balance_Sheet.yearly[date];
 
       state.yearlyBalanceSheets[date] = {

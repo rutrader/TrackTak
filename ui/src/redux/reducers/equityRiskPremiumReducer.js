@@ -1,5 +1,4 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { percentModifier } from "../../components/FormatRawNumberToPercent";
 import { setCurrentEquityRiskPremium } from "../actions/equityRiskPremiumActions";
 import equityRiskPremiumCountries from "../../data/equityRiskPremiumCountries.json";
 
@@ -14,7 +13,7 @@ const matureMarketEquityRiskPremium = initialState.countryData.find(
 ).equityRiskPremium;
 
 initialState.matureMarketEquityRiskPremium =
-  parseFloat(matureMarketEquityRiskPremium) / percentModifier;
+  parseFloat(matureMarketEquityRiskPremium) / 100;
 
 export const equityRiskPremiumCountriesReducer = createReducer(
   initialState,
@@ -32,10 +31,10 @@ export const equityRiskPremiumCountriesReducer = createReducer(
       });
 
       state.currentCountry = {
-        corporateTaxRate: parseFloat(corporateTaxRate) / percentModifier,
-        countryRiskPremium: parseFloat(countryRiskPremium) / percentModifier,
-        equityRiskPremium: parseFloat(equityRiskPremium) / percentModifier,
-        adjDefaultSpread: parseFloat(adjDefaultSpread) / percentModifier,
+        corporateTaxRate: parseFloat(corporateTaxRate) / 100,
+        countryRiskPremium: parseFloat(countryRiskPremium) / 100,
+        equityRiskPremium: parseFloat(equityRiskPremium) / 100,
+        adjDefaultSpread: parseFloat(adjDefaultSpread) / 100,
       };
     });
   }

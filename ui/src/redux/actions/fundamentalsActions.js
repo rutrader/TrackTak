@@ -9,62 +9,75 @@ import {
 import dayjs from "dayjs";
 import { monthDateFormat } from "../../shared/utils";
 
+export const setFundamentals = createAsyncThunk(
+  "fundamentals/setFundamentals",
+  async (data, { dispatch, getState }) => {
+    dispatch(getTenYearGovernmentBondLastClose(data.General.CountryISO));
+    dispatch(setCurrentEquityRiskPremium(data.General.AddressData.Country));
+    dispatch(setCurrentIndustryAverage(data.General.Industry));
+
+    const mergedStatements = {
+      ...data.Financials.Income_Statement.yearly,
+      ...data.Financials.Balance_Sheet.yearly,
+    };
+
+    let minDate;
+
+    const yearlyDatesAsMonths = [];
+
+    Object.keys(mergedStatements).forEach((key) => {
+      yearlyDatesAsMonths.push(dayjs(key).format(monthDateFormat));
+    });
+
+    Object.keys(mergedStatements).forEach((date, i) => {
+      const formattedDate = `${dayjs(date).format(monthDateFormat)}-01`;
+      const newDate = dayjs(formattedDate);
+
+      if (i === 0) {
+        minDate = newDate;
+      }
+
+      minDate = dayjs.min(minDate, newDate);
+    });
+
+    // UK stocks are quoted in pence so we convert it to GBP for ease of use
+    const valuationCurrencyCode =
+      data.General.CurrencyCode === "GBX" ? "GBP" : data.General.CurrencyCode;
+
+    await dispatch(
+      getExchangeRateHistory({
+        baseCurrency: data.Financials.Balance_Sheet.currency_symbol,
+        quoteCurrency: valuationCurrencyCode,
+        from: minDate,
+      })
+    );
+
+    const state = getState();
+
+    return {
+      data,
+      valuationCurrencyCode,
+      exchangeRates: state.economicData.exchangeRates,
+    };
+  }
+);
+
 export const getFundamentals = createAsyncThunk(
   "fundamentals/getFundamentals",
-  async (ticker, { dispatch, getState }) => {
+  async ({ ticker, filter }, { dispatch }) => {
     try {
-      const { data } = await axios.get(`/api/v1/fundamentals/${ticker}`);
+      const urlParams = new URLSearchParams();
 
-      dispatch(getTenYearGovernmentBondLastClose(data.General.CountryISO));
-      dispatch(setCurrentEquityRiskPremium(data.General.AddressData.Country));
-      dispatch(setCurrentIndustryAverage(data.General.Industry));
+      if (filter) {
+        urlParams.set("filter", filter);
+      }
 
-      const mergedStatements = {
-        ...data.Financials.Income_Statement.yearly,
-        ...data.Financials.Balance_Sheet.yearly,
-        ...data.Financials.Cash_Flow.yearly,
-      };
-
-      let minDate;
-
-      const yearlyDatesAsMonths = [];
-
-      Object.keys(mergedStatements).forEach((key) => {
-        yearlyDatesAsMonths.push(dayjs(key).format(monthDateFormat));
-      });
-
-      Object.keys(mergedStatements).forEach((date, i) => {
-        const formattedDate = `${dayjs(date).format(monthDateFormat)}-01`;
-        const newDate = dayjs(formattedDate);
-
-        if (i === 0) {
-          minDate = newDate;
-        }
-
-        minDate = dayjs.min(minDate, newDate);
-      });
-
-      // UK stocks are quoted in pence so we convert it to GBP for ease of use
-      const valuationCurrencyCode =
-        data.General.CurrencyCode === "GBX" ? "GBP" : data.General.CurrencyCode;
-
-      await dispatch(
-        getExchangeRateHistory({
-          baseCurrency: data.Financials.Balance_Sheet.currency_symbol,
-          quoteCurrency: valuationCurrencyCode,
-          from: minDate,
-        })
+      const { data } = await axios.get(
+        `/api/v1/fundamentals/${ticker}?${urlParams.toString()}`
       );
-
-      const state = getState();
-
-      return {
-        data,
-        valuationCurrencyCode,
-        exchangeRates: state.economicData.exchangeRates,
-      };
+      dispatch(setFundamentals(data));
     } catch (error) {
-      console.log(error);
+      console.error(error);
       throw error;
     }
   }

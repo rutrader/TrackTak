@@ -4,11 +4,16 @@ import { Provider as RebassProvider } from "rebass";
 import rebassTheme from "./rebassTheme";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Home from "./home/Home";
-import LayoutHome from "./layout/LayoutHome";
-import Valuation from "./valuation/Valuation";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Box, CircularProgress, useTheme } from "@material-ui/core";
 import LayoutFullScreen from "./layout/LayoutFullScreen";
+import Layout from "./layout/Layout";
+import DiscountedCashFlow from "./discountedCashFlow/DiscountedCashFlow";
+import Valuation from "./valuation/Valuation";
+import Valuations from "./valuation/Valuations";
+import { useEffect } from "react";
+import { getDCFTemplateEntries } from "./redux/actions/contentfulActions";
+import LayoutHome from "./layout/LayoutHome";
 
 const GlobalStyle = createGlobalStyle`
   * { box-sizing: border-box; }
@@ -70,9 +75,10 @@ const Spinner = () => {
   );
 };
 
-const layoutFullScreenPaths = ["/valuation/:ticker"];
+const layoutFullScreenPaths = ["/discounted-cash-flow/:ticker"];
+const layoutPaths = ["/valuations/:id", "/valuations"];
 
-export const allLayoutPaths = layoutFullScreenPaths;
+export const allLayoutPaths = [...layoutFullScreenPaths, layoutPaths];
 
 function App() {
   return (
@@ -90,10 +96,22 @@ function App() {
             <LayoutFullScreen>
               <Switch>
                 <Route path={layoutFullScreenPaths[0]}>
-                  <Valuation />
+                  <DiscountedCashFlow />
                 </Route>
               </Switch>
             </LayoutFullScreen>
+          </Route>
+          <Route path={layoutPaths}>
+            <Layout>
+              <Switch>
+                <Route path={layoutPaths[0]}>
+                  <Valuation />
+                </Route>
+                <Route path={layoutPaths[1]}>
+                  <Valuations />
+                </Route>
+              </Switch>
+            </Layout>
           </Route>
           <Route path={["/"]}>
             <LayoutHome>

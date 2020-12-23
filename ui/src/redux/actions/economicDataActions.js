@@ -15,7 +15,7 @@ export const getTenYearGovernmentBondLastClose = createAsyncThunk(
 
 export const getExchangeRateHistory = createAsyncThunk(
   "economicData/getExchangeRateHistory",
-  async ({ baseCurrency, quoteCurrency, from, to }) => {
+  async ({ baseCurrency, quoteCurrency, from }) => {
     if (baseCurrency !== quoteCurrency) {
       const formattedFrom = dayjs(from).format(yearMonthDateFormat);
 
