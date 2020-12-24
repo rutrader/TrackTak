@@ -30,6 +30,9 @@ import SubscribeMailingList from "../components/SubscribeMailingList";
 import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
 import * as styles from "./Valuation.module.scss";
 import CostOfCapitalResults from "../components/CostOfCapitalResults";
+import { setCurrentEquityRiskPremium } from "../redux/actions/equityRiskPremiumActions";
+import { setCurrentIndustryAverage } from "../redux/actions/industryAveragesActions";
+import { getTenYearGovernmentBondLastClose } from "../redux/actions/economicDataActions";
 
 const options = {
   renderNode: {
@@ -104,7 +107,23 @@ const Valuation = () => {
         const contentfulData = await axios.get(
           `/api/v1/contentful/getEntry/${params.id}`
         );
-        dispatch(setFundamentals(contentfulData.data.fields.data));
+        const fundamentalsData = contentfulData.data.fields.data;
+
+        dispatch(setFundamentals(fundamentalsData));
+        dispatch(
+          setCurrentEquityRiskPremium(
+            fundamentalsData.General.AddressData.Country
+          )
+        );
+        dispatch(setCurrentIndustryAverage(fundamentalsData.General.Industry));
+        dispatch(
+          getTenYearGovernmentBondLastClose({
+            countryISO: fundamentalsData.General.CountryISO,
+            from: "2020-12-22",
+            to: "2020-12-22",
+          })
+        );
+
         setContentfulData(contentfulData.data);
       } catch (error) {
         console.error(error);
@@ -255,7 +274,7 @@ const Valuation = () => {
           </b>
           &nbsp;per share.
           <Box>
-            They currently trade for&nbsp;
+            On <b>{fields.dateOfValuation}</b> they trade for&nbsp;
             <b>
               <FormatRawNumberToCurrency value={fundamentals.price} />
             </b>

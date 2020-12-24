@@ -5,9 +5,19 @@ import { yearMonthDateFormat } from "../../shared/utils";
 
 export const getTenYearGovernmentBondLastClose = createAsyncThunk(
   "economicData/getTenYearGovernmentBondLastClose",
-  async (countryISO) => {
+  async ({ countryISO, from, to }) => {
+    const urlParams = new URLSearchParams();
+
+    if (from) {
+      urlParams.set("from", from);
+    }
+
+    if (to) {
+      urlParams.set("to", to);
+    }
+
     const res = await axios.get(
-      `/api/v1/government-bond-last-close/${countryISO}`
+      `/api/v1/government-bond-last-close/${countryISO}?${urlParams.toString()}`
     );
     return res.data;
   }
