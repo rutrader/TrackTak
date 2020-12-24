@@ -22,7 +22,11 @@ const CompanyOverviewStats = ({ dateOfValuation }) => {
         }}
       >
         <Typography variant="h4">{General.Name}</Typography>
-        {dateOfValuation && <Typography>{dateOfValuation}</Typography>}
+        {dateOfValuation && (
+          <Typography>
+            <b>This valuation was done on {dateOfValuation}</b>
+          </Typography>
+        )}
       </Box>
       <Typography color="textSecondary" style={{ textTransform: "uppercase" }}>
         {General.Code}.{General.Exchange}
@@ -42,19 +46,21 @@ const CompanyOverviewStats = ({ dateOfValuation }) => {
             &nbsp;{fundamentals.valuationCurrencyCode}
           </Typography>
           <Typography>
-            <Box
-              component="span"
-              sx={{ fontWeight: theme.typography.fontWeightBold }}
-            >
-              <FormatRawNumberToMillion
-                value={SharesStats.SharesOutstanding}
-                suffix="M"
-              />
+            <Box sx={{ display: "flex" }}>
+              <Box
+                component="span"
+                sx={{ fontWeight: theme.typography.fontWeightBold }}
+              >
+                <FormatRawNumberToMillion
+                  value={SharesStats.SharesOutstanding}
+                  suffix="M"
+                />
+              </Box>
+              &nbsp;
+              <InfoOutlinedIconWrapper text="Refers to a company's total stock currently held by public investors, including share blocks held by institutional investors and restricted shares owned by the company’s officers and insiders.">
+                Shares Outstanding
+              </InfoOutlinedIconWrapper>
             </Box>
-            &nbsp;
-            <InfoOutlinedIconWrapper text="Refers to a company's total stock currently held by public investors, including share blocks held by institutional investors and restricted shares owned by the company’s officers and insiders.">
-              Shares Outstanding
-            </InfoOutlinedIconWrapper>
           </Typography>
         </Box>
       </Box>

@@ -3,6 +3,7 @@ import { setFundamentals } from "../actions/fundamentalsActions";
 import getSymbolFromCurrency from "currency-symbol-map";
 import { monthDateFormat } from "../../shared/utils";
 import dayjs from "dayjs";
+import convertGBXToGBP from "../../shared/convertGBXToGBP";
 
 const initialState = {
   price: null,
@@ -108,196 +109,196 @@ const getCashAndShortTermInvestments = (balanceSheet) => {
 
 const dateSortComparer = (a, b) => new Date(b.date) - new Date(a.date);
 
-export const fundamentalsReducer = createReducer(initialState, (builder) => {
-  builder.addCase(setFundamentals.fulfilled, (state, action) => {
-    const { Financials, ...otherData } = action.payload.data;
-    const {
-      General,
-      Highlights: { MostRecentQuarter, MarketCapitalization },
-      SharesStats,
-      Financials: { Balance_Sheet, Income_Statement },
-    } = action.payload.data;
+const fundamentalsCaseReducer = (state, action) => {
+  const { Financials, ...otherData } = action.payload.data;
+  const {
+    General,
+    Highlights: { MostRecentQuarter, MarketCapitalization },
+    SharesStats,
+    Financials: { Balance_Sheet, Income_Statement },
+  } = action.payload.data;
 
-    state.data = {
-      ...otherData,
+  state.data = {
+    ...otherData,
+  };
+
+  const quarterBalanceSheet = Balance_Sheet.quarterly[MostRecentQuarter];
+  const sortedYearlyIncomeValues = Object.values(Income_Statement.yearly).sort(
+    dateSortComparer
+  );
+
+  const sortedQuarterlyIncomeValues = Object.values(
+    Income_Statement.quarterly
+  ).sort(dateSortComparer);
+
+  const sortedBalanceSheetYearlyValues = Object.values(
+    Balance_Sheet.yearly
+  ).sort(dateSortComparer);
+
+  const recentYearlyIncomeStatement = sortedYearlyIncomeValues[0];
+
+  // TODO: Put all this on the backend
+  state.balanceSheet = {
+    bookValueOfDebt: getBookValueOfDebt(quarterBalanceSheet),
+    bookValueOfEquity: quarterBalanceSheet.totalStockholderEquity,
+    noncontrollingInterestInConsolidatedEntity:
+      quarterBalanceSheet.noncontrollingInterestInConsolidatedEntity,
+    cashAndShortTermInvestments: getCashAndShortTermInvestments(
+      quarterBalanceSheet
+    ),
+  };
+
+  state.hasIncomeTTM = General.CountryISO === "US";
+  const pastPeriodsToGet = 3;
+
+  let pastThreeYearIncomeBeforeTax;
+  let pastThreeYearIncomeTaxExpense;
+  let incomeSheetDates;
+
+  // TODO: Fix when the API fixes the TTM for non-US stocks
+  if (state.hasIncomeTTM) {
+    const quarters = 4;
+    const pastThreeYearPeriods = pastPeriodsToGet * quarters;
+
+    pastThreeYearIncomeBeforeTax = getFinancialSheetPastValues(
+      sortedQuarterlyIncomeValues,
+      "incomeBeforeTax",
+      pastThreeYearPeriods
+    );
+
+    pastThreeYearIncomeTaxExpense = getFinancialSheetPastValues(
+      sortedQuarterlyIncomeValues,
+      "incomeTaxExpense",
+      pastThreeYearPeriods
+    );
+
+    incomeSheetDates = [...sortedQuarterlyIncomeValues].slice(0, 4);
+
+    state.incomeStatement = {
+      totalRevenue: getFinancialSheetPastValues(
+        sortedQuarterlyIncomeValues,
+        "totalRevenue",
+        quarters
+      ),
+      operatingIncome: getFinancialSheetPastValues(
+        sortedQuarterlyIncomeValues,
+        "operatingIncome",
+        quarters
+      ),
+      interestExpense: getFinancialSheetPastValues(
+        sortedQuarterlyIncomeValues,
+        "interestExpense",
+        quarters
+      ),
+      minorityInterest: getFinancialSheetPastValues(
+        sortedQuarterlyIncomeValues,
+        "minorityInterest",
+        quarters
+      ),
+    };
+  } else {
+    pastThreeYearIncomeBeforeTax = getFinancialSheetPastValues(
+      sortedYearlyIncomeValues,
+      "incomeBeforeTax",
+      pastPeriodsToGet
+    );
+    pastThreeYearIncomeTaxExpense = getFinancialSheetPastValues(
+      sortedYearlyIncomeValues,
+      "incomeTaxExpense",
+      pastPeriodsToGet
+    );
+
+    incomeSheetDates = [recentYearlyIncomeStatement.date];
+
+    state.incomeStatement = {
+      totalRevenue: recentYearlyIncomeStatement.totalRevenue,
+      operatingIncome: recentYearlyIncomeStatement.operatingIncome,
+      interestExpense: recentYearlyIncomeStatement.interestExpense,
+      minorityInterest: recentYearlyIncomeStatement.minorityInterest,
+    };
+  }
+
+  const convertCurrency = getConvertCurrency(action.payload.exchangeRates);
+
+  Object.keys(state.incomeStatement).forEach((property) => {
+    state.incomeStatement[property] = convertCurrency(
+      incomeSheetDates,
+      state.incomeStatement[property]
+    );
+  });
+
+  Object.keys(state.balanceSheet).forEach((property) => {
+    state.balanceSheet[property] = convertCurrency(
+      [MostRecentQuarter],
+      state.balanceSheet[property]
+    );
+  });
+
+  state.yearlyIncomeStatements = {};
+
+  sortedYearlyIncomeValues.forEach(({ date }) => {
+    const incomeStatement = Income_Statement.yearly[date];
+
+    state.yearlyIncomeStatements[date] = {
+      totalRevenue: incomeStatement.totalRevenue,
+      operatingIncome: incomeStatement.operatingIncome,
+      interestExpense: incomeStatement.interestExpense,
+      minorityInterest: incomeStatement.minorityInterest,
     };
 
-    const quarterBalanceSheet = Balance_Sheet.quarterly[MostRecentQuarter];
-    const sortedYearlyIncomeValues = Object.values(
-      Income_Statement.yearly
-    ).sort(dateSortComparer);
+    Object.keys(state.yearlyIncomeStatements[date]).forEach((key) => {
+      state.yearlyIncomeStatements[date][key] = convertCurrency(
+        [date],
+        incomeStatement[key]
+      );
+    });
 
-    const sortedQuarterlyIncomeValues = Object.values(
-      Income_Statement.quarterly
-    ).sort(dateSortComparer);
+    state.yearlyIncomeStatements[date].date = incomeStatement.date;
+  });
 
-    const sortedBalanceSheetYearlyValues = Object.values(
-      Balance_Sheet.yearly
-    ).sort(dateSortComparer);
+  state.yearlyBalanceSheets = {};
 
-    const recentYearlyIncomeStatement = sortedYearlyIncomeValues[0];
+  sortedBalanceSheetYearlyValues.forEach(({ date }) => {
+    const balanceSheet = Balance_Sheet.yearly[date];
 
-    // TODO: Put all this on the backend
-    state.balanceSheet = {
-      bookValueOfDebt: getBookValueOfDebt(quarterBalanceSheet),
-      bookValueOfEquity: quarterBalanceSheet.totalStockholderEquity,
-      noncontrollingInterestInConsolidatedEntity:
-        quarterBalanceSheet.noncontrollingInterestInConsolidatedEntity,
-      cashAndShortTermInvestments: getCashAndShortTermInvestments(
-        quarterBalanceSheet
+    state.yearlyBalanceSheets[date] = {
+      bookValueOfDebt: convertCurrency(
+        [date],
+        getBookValueOfDebt(balanceSheet)
+      ),
+      cashAndShortTermInvestments: convertCurrency(
+        [date],
+        getCashAndShortTermInvestments(balanceSheet)
+      ),
+      bookValueOfEquity: convertCurrency(
+        [date],
+        balanceSheet.totalStockholderEquity
+      ),
+      noncontrollingInterestInConsolidatedEntity: convertCurrency(
+        [date],
+        balanceSheet.noncontrollingInterestInConsolidatedEntity
       ),
     };
 
-    state.hasIncomeTTM = General.CountryISO === "US";
-    const pastPeriodsToGet = 3;
-
-    let pastThreeYearIncomeBeforeTax;
-    let pastThreeYearIncomeTaxExpense;
-    let incomeSheetDates;
-
-    // TODO: Fix when the API fixes the TTM for non-US stocks
-    if (state.hasIncomeTTM) {
-      const quarters = 4;
-      const pastThreeYearPeriods = pastPeriodsToGet * quarters;
-
-      pastThreeYearIncomeBeforeTax = getFinancialSheetPastValues(
-        sortedQuarterlyIncomeValues,
-        "incomeBeforeTax",
-        pastThreeYearPeriods
-      );
-
-      pastThreeYearIncomeTaxExpense = getFinancialSheetPastValues(
-        sortedQuarterlyIncomeValues,
-        "incomeTaxExpense",
-        pastThreeYearPeriods
-      );
-
-      incomeSheetDates = [...sortedQuarterlyIncomeValues].slice(0, 4);
-
-      state.incomeStatement = {
-        totalRevenue: getFinancialSheetPastValues(
-          sortedQuarterlyIncomeValues,
-          "totalRevenue",
-          quarters
-        ),
-        operatingIncome: getFinancialSheetPastValues(
-          sortedQuarterlyIncomeValues,
-          "operatingIncome",
-          quarters
-        ),
-        interestExpense: getFinancialSheetPastValues(
-          sortedQuarterlyIncomeValues,
-          "interestExpense",
-          quarters
-        ),
-        minorityInterest: getFinancialSheetPastValues(
-          sortedQuarterlyIncomeValues,
-          "minorityInterest",
-          quarters
-        ),
-      };
-    } else {
-      pastThreeYearIncomeBeforeTax = getFinancialSheetPastValues(
-        sortedYearlyIncomeValues,
-        "incomeBeforeTax",
-        pastPeriodsToGet
-      );
-      pastThreeYearIncomeTaxExpense = getFinancialSheetPastValues(
-        sortedYearlyIncomeValues,
-        "incomeTaxExpense",
-        pastPeriodsToGet
-      );
-
-      incomeSheetDates = [recentYearlyIncomeStatement.date];
-
-      state.incomeStatement = {
-        totalRevenue: recentYearlyIncomeStatement.totalRevenue,
-        operatingIncome: recentYearlyIncomeStatement.operatingIncome,
-        interestExpense: recentYearlyIncomeStatement.interestExpense,
-        minorityInterest: recentYearlyIncomeStatement.minorityInterest,
-      };
-    }
-
-    const convertCurrency = getConvertCurrency(action.payload.exchangeRates);
-
-    const valuationCurrencyCode = action.payload.valuationCurrencyCode;
-
-    Object.keys(state.incomeStatement).forEach((property) => {
-      state.incomeStatement[property] = convertCurrency(
-        incomeSheetDates,
-        state.incomeStatement[property]
-      );
-    });
-
-    Object.keys(state.balanceSheet).forEach((property) => {
-      state.balanceSheet[property] = convertCurrency(
-        [MostRecentQuarter],
-        state.balanceSheet[property]
-      );
-    });
-
-    state.yearlyIncomeStatements = {};
-
-    sortedYearlyIncomeValues.forEach(({ date }) => {
-      const incomeStatement = Income_Statement.yearly[date];
-
-      state.yearlyIncomeStatements[date] = {
-        totalRevenue: incomeStatement.totalRevenue,
-        operatingIncome: incomeStatement.operatingIncome,
-        interestExpense: incomeStatement.interestExpense,
-        minorityInterest: incomeStatement.minorityInterest,
-      };
-
-      Object.keys(state.yearlyIncomeStatements[date]).forEach((key) => {
-        state.yearlyIncomeStatements[date][key] = convertCurrency(
-          [date],
-          incomeStatement[key]
-        );
-      });
-
-      state.yearlyIncomeStatements[date].date = incomeStatement.date;
-    });
-
-    state.yearlyBalanceSheets = {};
-
-    sortedBalanceSheetYearlyValues.forEach(({ date }) => {
-      const balanceSheet = Balance_Sheet.yearly[date];
-
-      state.yearlyBalanceSheets[date] = {
-        bookValueOfDebt: convertCurrency(
-          [date],
-          getBookValueOfDebt(balanceSheet)
-        ),
-        cashAndShortTermInvestments: convertCurrency(
-          [date],
-          getCashAndShortTermInvestments(balanceSheet)
-        ),
-        bookValueOfEquity: convertCurrency(
-          [date],
-          balanceSheet.totalStockholderEquity
-        ),
-        noncontrollingInterestInConsolidatedEntity: convertCurrency(
-          [date],
-          balanceSheet.noncontrollingInterestInConsolidatedEntity
-        ),
-      };
-
-      state.yearlyBalanceSheets[date].date = balanceSheet.date;
-    });
-
-    state.incomeStatement.pastThreeYearsAverageEffectiveTaxRate =
-      pastThreeYearIncomeTaxExpense / pastThreeYearIncomeBeforeTax;
-
-    state.price = MarketCapitalization / SharesStats.SharesOutstanding;
-
-    state.balanceSheet.investedCapital =
-      state.balanceSheet.bookValueOfEquity +
-      state.balanceSheet.bookValueOfDebt -
-      state.balanceSheet.cashAndShortTermInvestments;
-
-    state.valuationCurrencyCode = valuationCurrencyCode;
-    state.valuationCurrencySymbol = getSymbolFromCurrency(
-      valuationCurrencyCode
-    );
+    state.yearlyBalanceSheets[date].date = balanceSheet.date;
   });
+
+  state.incomeStatement.pastThreeYearsAverageEffectiveTaxRate =
+    pastThreeYearIncomeTaxExpense / pastThreeYearIncomeBeforeTax;
+
+  state.price = MarketCapitalization / SharesStats.SharesOutstanding;
+
+  state.balanceSheet.investedCapital =
+    state.balanceSheet.bookValueOfEquity +
+    state.balanceSheet.bookValueOfDebt -
+    state.balanceSheet.cashAndShortTermInvestments;
+
+  state.valuationCurrencyCode = convertGBXToGBP(General.CurrencyCode);
+  state.valuationCurrencySymbol = getSymbolFromCurrency(
+    state.valuationCurrencyCode
+  );
+};
+
+export const fundamentalsReducer = createReducer(initialState, (builder) => {
+  builder.addCase(setFundamentals, fundamentalsCaseReducer);
 });
