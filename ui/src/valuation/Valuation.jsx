@@ -268,10 +268,14 @@ const Valuation = () => {
         </Typography>
         <Typography>
           <Link component={RouterLink} to="/">
-            <b>
-              Click here to do your own Automated DCF for any company you want.
-            </b>
+            <b>Click here&nbsp;</b>
           </Link>
+          to do your own Automated DCF for any company you want or see more
+          valuations from us
+          <Link component={RouterLink} to="/valuations">
+            <b>&nbsp;here</b>
+          </Link>
+          .
         </Typography>
       </Section>
       <Section sx={{ display: "flex", mt: 4 }}>
