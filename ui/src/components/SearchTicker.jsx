@@ -46,7 +46,7 @@ const SearchTicker = ({ buttonSize, removeInputPadding }) => {
 
     setTicker(value);
 
-    if (value.length > 2 && hasTickerNotOnlyWhiteSpace()) {
+    if (value.length > 1 && hasTickerNotOnlyWhiteSpace()) {
       const res = await axios.get(`/api/v1/autocomplete-query/${value}`);
       setAutoComplete(res.data);
     } else {

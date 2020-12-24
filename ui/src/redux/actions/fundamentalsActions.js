@@ -8,6 +8,7 @@ import {
 } from "./economicDataActions";
 import dayjs from "dayjs";
 import { monthDateFormat } from "../../shared/utils";
+import convertGBXToGBP from "../../shared/convertGBXToGBP";
 
 export const setFundamentals = createAsyncThunk(
   "fundamentals/setFundamentals",
@@ -41,12 +42,13 @@ export const setFundamentals = createAsyncThunk(
     });
 
     // UK stocks are quoted in pence so we convert it to GBP for ease of use
-    const valuationCurrencyCode =
-      data.General.CurrencyCode === "GBX" ? "GBP" : data.General.CurrencyCode;
+    const valuationCurrencyCode = convertGBXToGBP(data.General.CurrencyCode);
 
     await dispatch(
       getExchangeRateHistory({
-        baseCurrency: data.Financials.Balance_Sheet.currency_symbol,
+        baseCurrency: convertGBXToGBP(
+          data.Financials.Balance_Sheet.currency_symbol
+        ),
         quoteCurrency: valuationCurrencyCode,
         from: minDate,
       })

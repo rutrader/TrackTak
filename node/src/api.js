@@ -123,14 +123,12 @@ const api = {
         data.forEach((exchangeObject) => {
           const dateKeyWithoutDay = exchangeObject.date.slice(0, -3);
 
-          data[dateKeyWithoutDay] = {
+          newData[dateKeyWithoutDay] = {
             ...exchangeObject,
           };
         });
 
-        return {
-          data: newData,
-        };
+        return newData;
       },
       "exchangeRateHistory",
       { baseCurrency, quoteCurrency, query }
