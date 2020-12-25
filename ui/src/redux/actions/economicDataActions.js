@@ -5,12 +5,8 @@ import { yearMonthDateFormat } from "../../shared/utils";
 
 export const getTenYearGovernmentBondLastClose = createAsyncThunk(
   "economicData/getTenYearGovernmentBondLastClose",
-  async ({ countryISO, from, to }) => {
+  async ({ countryISO, to }) => {
     const urlParams = new URLSearchParams();
-
-    if (from) {
-      urlParams.set("from", from);
-    }
 
     if (to) {
       urlParams.set("to", to);

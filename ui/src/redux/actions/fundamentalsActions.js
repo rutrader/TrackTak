@@ -10,6 +10,25 @@ import dayjs from "dayjs";
 import { monthDateFormat } from "../../shared/utils";
 import convertGBXToGBP from "../../shared/convertGBXToGBP";
 
+export const getLastPriceClose = createAsyncThunk(
+  "fundamentals/getLastPriceClose",
+  async ({ ticker, currencyCode, to }) => {
+    const urlParams = new URLSearchParams();
+
+    if (to) {
+      urlParams.set("to", to);
+    }
+
+    const res = await axios.get(
+      `/api/v1/last-price-close/${ticker}?${urlParams.toString()}`
+    );
+    return {
+      priceLastClose: res.data.priceLastClose,
+      currencyCode,
+    };
+  }
+);
+
 export const setFundamentals = createAction(
   "fundamentals/setFundamentals",
   (data, exchangeRates) => {
@@ -35,6 +54,7 @@ export const getFundamentals = createAsyncThunk(
       const { data } = await axios.get(
         `/api/v1/fundamentals/${ticker}?${urlParams.toString()}`
       );
+
       dispatch(
         getTenYearGovernmentBondLastClose({
           countryISO: data.General.CountryISO,
@@ -78,6 +98,10 @@ export const getFundamentals = createAsyncThunk(
           quoteCurrency: valuationCurrencyCode,
           from: minDate,
         })
+      );
+
+      await dispatch(
+        getLastPriceClose({ ticker, currencyCode: data.General.CurrencyCode })
       );
 
       const state = getState();

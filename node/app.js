@@ -22,6 +22,12 @@ app.get("/api/v1/fundamentals/:ticker", async (req, res) => {
   res.send(value);
 });
 
+app.get("/api/v1/last-price-close/:ticker", async (req, res) => {
+  const priceLastClose = await api.getPrices(req.params.ticker, req.query);
+
+  res.send({ priceLastClose });
+});
+
 app.get("/api/v1/government-bond-last-close/:countryCode", async (req, res) => {
   const governmentBondLastClose = await api.getGovernmentBondLastClose(
     req.params.countryCode,

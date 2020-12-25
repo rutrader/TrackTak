@@ -80,6 +80,19 @@ const api = {
 
     return data;
   },
+  getPrices: async (ticker, query) => {
+    // TODO: Cache this and remove the cache every time it updates
+    const { data } = await axios.get(`${eodUrl}/${ticker}`, {
+      params: {
+        ...globalParams,
+        ...query,
+        fmt: "json",
+        filter: "last_close",
+      },
+    });
+
+    return data;
+  },
   getGovernmentBondLastClose: async (countryCode, query, year = 10) => {
     const countryAndYearGBond = `${countryCode}${year}Y.GBOND`;
     const data = await sendReqOrGetCachedData(
