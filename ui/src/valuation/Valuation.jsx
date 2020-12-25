@@ -36,6 +36,7 @@ import CostOfCapitalResults from "../components/CostOfCapitalResults";
 import { setCurrentEquityRiskPremium } from "../redux/actions/equityRiskPremiumActions";
 import { setCurrentIndustryAverage } from "../redux/actions/industryAveragesActions";
 import { getTenYearGovernmentBondLastClose } from "../redux/actions/economicDataActions";
+import dayjs from "dayjs";
 
 const options = {
   renderNode: {
@@ -129,7 +130,7 @@ const Valuation = () => {
           getLastPriceClose({
             ticker: contentfulData.data.fields.ticker,
             to: contentfulData.data.fields.dateOfValuation,
-            currencyCode: contentfulData.data.fields.General.CurrencyCode,
+            currencyCode: fundamentalsData.General.CurrencyCode,
           })
         );
 
@@ -172,10 +173,13 @@ const Valuation = () => {
   const marginOfSafety =
     (fields.estimatedValuePerShare - fundamentals.price) /
     fields.estimatedValuePerShare;
+  const formattedDateOfValuation = dayjs(fields.dateOfValuation).format(
+    "Do MMM. YYYY"
+  );
 
   return (
     <>
-      <CompanyOverviewStats dateOfValuation={fields.dateOfValuation} />
+      <CompanyOverviewStats dateOfValuation={formattedDateOfValuation} />
       <Section>
         <Typography variant="h5" gutterBottom>
           Business Description
@@ -283,7 +287,7 @@ const Valuation = () => {
           </b>
           &nbsp;per share.
           <Box>
-            On <b>{fields.dateOfValuation}</b> they trade for&nbsp;
+            On the <b>{formattedDateOfValuation}</b> they traded for&nbsp;
             <b>
               <FormatRawNumberToCurrency value={fundamentals.price} />
             </b>

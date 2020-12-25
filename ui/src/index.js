@@ -7,9 +7,11 @@ import reportWebVitals from "./reportWebVitals";
 import theme from "./theme";
 import store from "./redux/store";
 import minMax from "dayjs/plugin/minMax";
+import advancedFormat from "dayjs/plugin/advancedFormat";
 import dayjs from "dayjs";
 
 dayjs.extend(minMax);
+dayjs.extend(advancedFormat);
 
 ReactDOM.render(
   <React.StrictMode>
