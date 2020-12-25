@@ -1,4 +1,5 @@
 import { Box, Typography, useTheme } from "@material-ui/core";
+import dayjs from "dayjs";
 import React from "react";
 import { useSelector } from "react-redux";
 import FormatRawNumber from "./FormatRawNumber";
@@ -24,7 +25,10 @@ const CompanyOverviewStats = ({ dateOfValuation }) => {
         <Typography variant="h4">{General.Name}</Typography>
         {dateOfValuation && (
           <Typography>
-            <b>This valuation was done on {dateOfValuation}</b>
+            <b>
+              This valuation was done on&nbsp;
+              {dayjs(dateOfValuation).format("DD MMM. YYYY")}
+            </b>
           </Typography>
         )}
       </Box>

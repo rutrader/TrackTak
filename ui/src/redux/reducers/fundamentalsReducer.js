@@ -1,5 +1,8 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { setFundamentals } from "../actions/fundamentalsActions";
+import {
+  getLastPriceClose,
+  setFundamentals,
+} from "../actions/fundamentalsActions";
 import getSymbolFromCurrency from "currency-symbol-map";
 import { monthDateFormat } from "../../shared/utils";
 import dayjs from "dayjs";
@@ -113,8 +116,7 @@ const fundamentalsCaseReducer = (state, action) => {
   const { Financials, ...otherData } = action.payload.data;
   const {
     General,
-    Highlights: { MostRecentQuarter, MarketCapitalization },
-    SharesStats,
+    Highlights: { MostRecentQuarter },
     Financials: { Balance_Sheet, Income_Statement },
   } = action.payload.data;
 
@@ -286,8 +288,6 @@ const fundamentalsCaseReducer = (state, action) => {
   state.incomeStatement.pastThreeYearsAverageEffectiveTaxRate =
     pastThreeYearIncomeTaxExpense / pastThreeYearIncomeBeforeTax;
 
-  state.price = MarketCapitalization / SharesStats.SharesOutstanding;
-
   state.balanceSheet.investedCapital =
     state.balanceSheet.bookValueOfEquity +
     state.balanceSheet.bookValueOfDebt -
@@ -299,6 +299,16 @@ const fundamentalsCaseReducer = (state, action) => {
   );
 };
 
+const getLastPriceReducer = (state, action) => {
+  const priceLastClose = action.payload.priceLastClose;
+
+  state.price =
+    action.payload.currencyCode === "GBX"
+      ? priceLastClose / 100
+      : priceLastClose;
+};
+
 export const fundamentalsReducer = createReducer(initialState, (builder) => {
+  builder.addCase(getLastPriceClose.fulfilled, getLastPriceReducer);
   builder.addCase(setFundamentals, fundamentalsCaseReducer);
 });

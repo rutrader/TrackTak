@@ -8,7 +8,10 @@ import YouTube from "react-youtube";
 import { Link as RouterLink } from "react-router-dom";
 
 import axios from "../axios/axios";
-import { setFundamentals } from "../redux/actions/fundamentalsActions";
+import {
+  getLastPriceClose,
+  setFundamentals,
+} from "../redux/actions/fundamentalsActions";
 import CompanyOverviewStats from "../components/CompanyOverviewStats";
 import { Box, Link, Typography, useTheme } from "@material-ui/core";
 import ValueDrivingInputs, {
@@ -59,7 +62,7 @@ const options = {
     [INLINES.HYPERLINK]: (node) => {
       if (node.data.uri.includes("youtube.com")) {
         const videoId = node.data.uri.split("v=")[1];
-        console.log(styles);
+
         return (
           <Box sx={{ mt: 2 }}>
             <YouTube
@@ -119,8 +122,14 @@ const Valuation = () => {
         dispatch(
           getTenYearGovernmentBondLastClose({
             countryISO: fundamentalsData.General.CountryISO,
-            from: "2020-12-22",
-            to: "2020-12-22",
+            to: contentfulData.data.fields.dateOfValuation,
+          })
+        );
+        dispatch(
+          getLastPriceClose({
+            ticker: contentfulData.data.fields.ticker,
+            to: contentfulData.data.fields.dateOfValuation,
+            currencyCode: contentfulData.data.fields.General.CurrencyCode,
           })
         );
 
