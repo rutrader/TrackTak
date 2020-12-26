@@ -7,7 +7,6 @@ import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 
 const CompanyOverviewStats = ({ dateOfValuation }) => {
   const fundamentals = useSelector((state) => state.fundamentals);
-  const industryAverages = useSelector((state) => state.industryAverages);
   const { General, SharesStats } = fundamentals.data;
   const theme = useTheme();
 
@@ -32,7 +31,7 @@ const CompanyOverviewStats = ({ dateOfValuation }) => {
         {General.Code}.{General.Exchange}
       </Typography>
       <Typography gutterBottom>
-        {industryAverages.currentIndustry.industryName}
+        {fundamentals.currentIndustry.industryName}
       </Typography>
       <Box sx={{ display: "flex", gap: theme.spacing(2) }}>
         <Box>

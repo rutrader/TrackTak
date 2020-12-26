@@ -1,49 +1,126 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../axios/axios";
-import { setCurrentEquityRiskPremium } from "./equityRiskPremiumActions";
-import { setCurrentIndustryAverage } from "./industryAveragesActions";
-import {
-  getExchangeRateHistory,
-  getTenYearGovernmentBondLastClose,
-} from "./economicDataActions";
+
 import dayjs from "dayjs";
 import { monthDateFormat } from "../../shared/utils";
 import convertGBXToGBP from "../../shared/convertGBXToGBP";
+import { yearMonthDateFormat } from "../../shared/utils";
 
-export const getLastPriceClose = createAsyncThunk(
-  "fundamentals/getLastPriceClose",
-  async ({ ticker, currencyCode, to }) => {
-    const urlParams = new URLSearchParams();
-
-    if (to) {
-      urlParams.set("to", to);
-    }
-
-    const res = await axios.get(
-      `/api/v1/last-price-close/${ticker}?${urlParams.toString()}`
-    );
-    return {
-      priceLastClose: res.data.priceLastClose,
-      currencyCode,
-    };
-  }
+export const setTenYearGovernmentBondLastClose = createAction(
+  "fundamentals/setTenYearGovernmentBondLastClose"
 );
 
-export const setFundamentals = createAction(
-  "fundamentals/setFundamentals",
-  (data, exchangeRates) => {
+export const setExchangeRateHistory = createAction(
+  "fundamentals/setExchangeRateHistory"
+);
+
+export const setLastPriceClose = createAction("fundamentals/setLastPriceClose");
+
+const getMinimumHistoricalDateFromFinancialStatements = (data) => {
+  const mergedStatements = {
+    ...data.Financials.Income_Statement.yearly,
+    ...data.Financials.Balance_Sheet.yearly,
+  };
+
+  let minDate;
+
+  const yearlyDatesAsMonths = [];
+
+  Object.keys(mergedStatements).forEach((key) => {
+    yearlyDatesAsMonths.push(dayjs(key).format(monthDateFormat));
+  });
+
+  Object.keys(mergedStatements).forEach((date, i) => {
+    const formattedDate = `${dayjs(date).format(monthDateFormat)}-01`;
+    const newDate = dayjs(formattedDate);
+
+    if (i === 0) {
+      minDate = newDate;
+    }
+
+    minDate = dayjs.min(minDate, newDate);
+  });
+
+  return minDate;
+};
+
+export const getTenYearGovernmentBondLastClose = async ({ countryISO, to }) => {
+  const urlParams = new URLSearchParams();
+
+  if (to) {
+    urlParams.set("to", to);
+  }
+
+  return axios.get(
+    `/api/v1/government-bond-last-close/${countryISO}?${urlParams.toString()}`
+  );
+};
+
+export const getExchangeRateHistory = async ({
+  baseCurrency,
+  quoteCurrency,
+  from,
+}) => {
+  // UK stocks are quoted in pence so we convert it to GBP for ease of use
+  const convertedBaseCurrency = convertGBXToGBP(baseCurrency);
+  const convertedQuoteCurrency = convertGBXToGBP(quoteCurrency);
+
+  if (convertedBaseCurrency === convertedQuoteCurrency) {
+    return Promise.resolve();
+  }
+  const formattedFrom = dayjs(from).format(yearMonthDateFormat);
+
+  return axios.get(
+    `/api/v1/exchange-rate-history/${convertedBaseCurrency}/${convertedQuoteCurrency}?from=${formattedFrom}`
+  );
+};
+
+export const getLastPriceClose = async ({ ticker, to }) => {
+  const urlParams = new URLSearchParams();
+
+  if (to) {
+    urlParams.set("to", to);
+  }
+
+  return axios.get(
+    `/api/v1/last-price-close/${ticker}?${urlParams.toString()}`
+  );
+};
+
+export const setFundamentalsData = createAsyncThunk(
+  "fundamentals/setFundamentalsData",
+  async (
+    { data, ticker, tenYearGovernmentBondLastCloseTo, lastPriceCloseTo },
+    { dispatch }
+  ) => {
+    const res = await Promise.all([
+      getTenYearGovernmentBondLastClose({
+        countryISO: data.General.CountryISO,
+        to: tenYearGovernmentBondLastCloseTo,
+      }),
+      getExchangeRateHistory({
+        baseCurrency: data.Financials.Balance_Sheet.currency_symbol,
+        quoteCurrency: data.General.CurrencyCode,
+        from: getMinimumHistoricalDateFromFinancialStatements(data),
+      }),
+      getLastPriceClose({ ticker, to: lastPriceCloseTo }),
+    ]);
+
+    dispatch(
+      setTenYearGovernmentBondLastClose(res[0].data.governmentBondLastClose)
+    );
+    dispatch(setExchangeRateHistory(res[1]?.data.exchangeRates));
+    dispatch(setLastPriceClose(res[2].data.priceLastClose));
+
     return {
-      payload: {
-        data,
-        exchangeRates,
-      },
+      data,
     };
   }
 );
 
 export const getFundamentals = createAsyncThunk(
   "fundamentals/getFundamentals",
-  async ({ ticker, filter }, { dispatch, getState }) => {
+  async ({ ticker, filter }, { dispatch }) => {
     try {
       const urlParams = new URLSearchParams();
 
@@ -55,58 +132,7 @@ export const getFundamentals = createAsyncThunk(
         `/api/v1/fundamentals/${ticker}?${urlParams.toString()}`
       );
 
-      dispatch(
-        getTenYearGovernmentBondLastClose({
-          countryISO: data.General.CountryISO,
-        })
-      );
-      dispatch(setCurrentEquityRiskPremium(data.General.AddressData.Country));
-      dispatch(setCurrentIndustryAverage(data.General.Industry));
-
-      const mergedStatements = {
-        ...data.Financials.Income_Statement.yearly,
-        ...data.Financials.Balance_Sheet.yearly,
-      };
-
-      let minDate;
-
-      const yearlyDatesAsMonths = [];
-
-      Object.keys(mergedStatements).forEach((key) => {
-        yearlyDatesAsMonths.push(dayjs(key).format(monthDateFormat));
-      });
-
-      Object.keys(mergedStatements).forEach((date, i) => {
-        const formattedDate = `${dayjs(date).format(monthDateFormat)}-01`;
-        const newDate = dayjs(formattedDate);
-
-        if (i === 0) {
-          minDate = newDate;
-        }
-
-        minDate = dayjs.min(minDate, newDate);
-      });
-
-      // UK stocks are quoted in pence so we convert it to GBP for ease of use
-      const valuationCurrencyCode = convertGBXToGBP(data.General.CurrencyCode);
-
-      await dispatch(
-        getExchangeRateHistory({
-          baseCurrency: convertGBXToGBP(
-            data.Financials.Balance_Sheet.currency_symbol
-          ),
-          quoteCurrency: valuationCurrencyCode,
-          from: minDate,
-        })
-      );
-
-      await dispatch(
-        getLastPriceClose({ ticker, currencyCode: data.General.CurrencyCode })
-      );
-
-      const state = getState();
-
-      dispatch(setFundamentals(data, state.economicData.exchangeRates));
+      dispatch(setFundamentalsData({ data, ticker }));
     } catch (error) {
       console.error(error);
       throw error;

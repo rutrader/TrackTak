@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useParams } from "react-router";
+import { useParams } from "react-router";
 import { getFundamentals } from "../redux/actions/fundamentalsActions";
 import { Box, Typography, useTheme } from "@material-ui/core";
 import TTTable from "../components/TTTable";
@@ -8,11 +8,8 @@ import dayjs from "dayjs";
 import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
 import Section from "../components/Section";
 import DiscountedCashFlowSheet from "./DiscountedCashFlowSheet";
-import blackScholes from "../shared/blackScholesModel";
 import SubSection from "../components/SubSection";
-import calculateCostOfCapital from "../shared/calculateCostOfCapital";
 import SubscribeMailingList from "../components/SubscribeMailingList";
-import parseInputQueryParams from "../shared/parseInputQueryParams";
 import CompanyOverviewStats from "../components/CompanyOverviewStats";
 import ValueDrivingInputs from "../components/ValueDrivingInputs";
 import OptionalInputs from "../components/OptionalInputs";
@@ -36,14 +33,9 @@ const fundamentalsFilter =
 
 const DiscountedCashFlow = () => {
   const params = useParams();
-  const location = useLocation();
   const dispatch = useDispatch();
   const fundamentals = useSelector((state) => state.fundamentals);
-  const economicData = useSelector((state) => state.economicData);
-  const equityRiskPremium = useSelector((state) => state.equityRiskPremium);
-  const industryAverages = useSelector((state) => state.industryAverages);
   const theme = useTheme();
-  const inputQueryParams = parseInputQueryParams(location);
 
   useEffect(() => {
     dispatch(
@@ -51,32 +43,7 @@ const DiscountedCashFlow = () => {
     );
   }, [dispatch, params.ticker]);
 
-  if (!fundamentals.data || !economicData.governmentBondTenYearLastClose)
-    return null;
-
-  const { SharesStats } = fundamentals.data;
-
-  const riskFreeRate =
-    economicData.governmentBondTenYearLastClose / 100 -
-    equityRiskPremium.currentCountry.adjDefaultSpread;
-  const valuePerOption = blackScholes(
-    "call",
-    fundamentals.price,
-    inputQueryParams.averageStrikePrice,
-    inputQueryParams.averageMaturityOfOptions,
-    riskFreeRate,
-    industryAverages.currentIndustry.standardDeviationInStockPrices
-  );
-  const { costOfCapital } = calculateCostOfCapital(
-    fundamentals,
-    inputQueryParams,
-    SharesStats,
-    equityRiskPremium,
-    riskFreeRate,
-    industryAverages.currentIndustry
-  );
-  const valueOfAllOptionsOutstanding =
-    valuePerOption * inputQueryParams.numberOfOptionsOutstanding;
+  if (!fundamentals.data) return null;
 
   const companyFundamentalsColumns = [
     {
@@ -275,11 +242,7 @@ const DiscountedCashFlow = () => {
         <Typography variant="h5" gutterBottom>
           Valuation
         </Typography>
-        <DiscountedCashFlowSheet
-          riskFreeRate={riskFreeRate}
-          costOfCapital={costOfCapital}
-          valueOfAllOptionsOutstanding={valueOfAllOptionsOutstanding}
-        />
+        <DiscountedCashFlowSheet />
       </Section>
       <Section sx={{ display: "flex", mt: 2 }}>
         <Box

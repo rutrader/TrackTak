@@ -17,6 +17,7 @@
     "@testing-library/react": "^11.1.2",
     "@testing-library/user-event": "^12.2.2",
     "axios": "^0.21.0",
+    "connected-react-router": "^6.8.0",
     "currency-symbol-map": "^4.0.4",
     "dayjs": "^1.9.7",
     "grid-styled": "^5.0.2",

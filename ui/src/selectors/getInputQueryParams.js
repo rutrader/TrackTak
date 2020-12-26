@@ -1,3 +1,5 @@
+import { createSelector } from "@reduxjs/toolkit";
+
 export const inputQueryNames = [
   "cagrYearOneToFive",
   "ebitTargetMarginInYearTen",
@@ -16,17 +18,20 @@ export const inputQueryNames = [
   "annualDividendPerShare",
 ];
 
-const parseInputQueryParams = (location) => {
-  const search = location.search;
-  const queryParams = new URLSearchParams(search);
+const getInputQueryParams = (query) => {
   const inputQueryParams = {};
 
   inputQueryNames.forEach((inputQueryName) => {
     inputQueryParams[inputQueryName] =
-      parseFloat(queryParams.get(inputQueryName)) || null;
+      parseFloat(query[inputQueryName]) || null;
   });
 
   return inputQueryParams;
 };
 
-export default parseInputQueryParams;
+export const selectQueryParams = createSelector(
+  (state) => state.router.location.query,
+  getInputQueryParams
+);
+
+export default getInputQueryParams;

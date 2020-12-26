@@ -9,8 +9,7 @@ import {
   withStyles,
 } from "@material-ui/core";
 import React from "react";
-import { useHistory, useLocation } from "react-router";
-import parseInputQueryParams from "../shared/parseInputQueryParams";
+import { useHistory } from "react-router";
 import { textFieldRootStyles } from "../shared/utils";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import setInputQueryParams from "../shared/setInputQueryParams";
@@ -23,6 +22,8 @@ import {
   InfoTextNormalDebt,
   InfoTextPreferredStock,
 } from "./InfoText";
+import { selectQueryParams } from "../selectors/getInputQueryParams";
+import { useSelector } from "react-redux";
 
 const CostOfCapitalTextField = withStyles({
   root: {
@@ -46,9 +47,7 @@ const OptionalInputAccordion = withStyles({
 
 const OptionalInputs = () => {
   const theme = useTheme();
-  const location = useLocation();
-  const inputQueryParams = parseInputQueryParams(location);
-  const queryParams = new URLSearchParams(location.search);
+  const queryParams = useSelector(selectQueryParams);
   const history = useHistory();
 
   return (
@@ -78,7 +77,7 @@ const OptionalInputs = () => {
           >
             <CostOfCapitalTextField
               label="Average Maturity of Debt"
-              defaultValue={inputQueryParams.averageMaturityOfDebt}
+              defaultValue={queryParams.averageMaturityOfDebt}
               onBlur={(value) => {
                 setInputQueryParams(
                   queryParams,
@@ -110,7 +109,7 @@ const OptionalInputs = () => {
           >
             <CostOfCapitalTextField
               label="Book Value of Convertible Debt"
-              defaultValue={inputQueryParams.bookValueOfConvertibleDebt}
+              defaultValue={queryParams.bookValueOfConvertibleDebt}
               onBlur={(value) => {
                 setInputQueryParams(
                   queryParams,
@@ -127,7 +126,7 @@ const OptionalInputs = () => {
             />
             <CostOfCapitalTextField
               label="Interest Expense on Convertible Debt"
-              defaultValue={inputQueryParams.interestExpenseOnConvertibleDebt}
+              defaultValue={queryParams.interestExpenseOnConvertibleDebt}
               onBlur={(value) => {
                 setInputQueryParams(
                   queryParams,
@@ -144,7 +143,7 @@ const OptionalInputs = () => {
             />
             <CostOfCapitalTextField
               label="Maturity of Convertible Debt"
-              defaultValue={inputQueryParams.maturityOfConvertibleDebt}
+              defaultValue={queryParams.maturityOfConvertibleDebt}
               onBlur={(value) => {
                 setInputQueryParams(
                   queryParams,
@@ -176,7 +175,7 @@ const OptionalInputs = () => {
           >
             <CostOfCapitalTextField
               label="Number of Preferred Shares"
-              defaultValue={inputQueryParams.numberOfPreferredShares}
+              defaultValue={queryParams.numberOfPreferredShares}
               onBlur={(value) => {
                 setInputQueryParams(
                   queryParams,
@@ -193,7 +192,7 @@ const OptionalInputs = () => {
             />
             <CostOfCapitalTextField
               label="Market Price Per Share"
-              defaultValue={inputQueryParams.marketPricePerShare}
+              defaultValue={queryParams.marketPricePerShare}
               onBlur={(value) => {
                 setInputQueryParams(queryParams, "marketPricePerShare", value);
                 history.push({
@@ -206,7 +205,7 @@ const OptionalInputs = () => {
             />
             <CostOfCapitalTextField
               label="Annual Dividend Per Share"
-              defaultValue={inputQueryParams.annualDividendPerShare}
+              defaultValue={queryParams.annualDividendPerShare}
               onBlur={(value) => {
                 setInputQueryParams(
                   queryParams,
