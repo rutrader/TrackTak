@@ -1,14 +1,41 @@
 import { createReducer } from "@reduxjs/toolkit";
 import {
-  getLastPriceClose,
-  setFundamentals,
+  setExchangeRateHistory,
+  setFundamentalsData,
+  setLastPriceClose,
+  setTenYearGovernmentBondLastClose,
 } from "../actions/fundamentalsActions";
 import getSymbolFromCurrency from "currency-symbol-map";
 import { monthDateFormat } from "../../shared/utils";
 import dayjs from "dayjs";
 import convertGBXToGBP from "../../shared/convertGBXToGBP";
+import industryMapping from "../../shared/industryMapping.json";
+import industryAverages from "../../data/industryAverages.json";
+import equityRiskPremiumCountries from "../../data/equityRiskPremiumCountries.json";
+
+const spaceRegex = /\s/g;
+const industryMappingsMutated = {};
+
+Object.keys(industryMapping).forEach((key) => {
+  const noSpaceKey = key.replace(spaceRegex, "").toUpperCase();
+
+  industryMappingsMutated[noSpaceKey] = industryMapping[key];
+});
+
+const matureMarketEquityRiskPremium =
+  parseFloat(
+    equityRiskPremiumCountries.find((x) => x.country === "United States")
+      .equityRiskPremium
+  ) / 100;
 
 const initialState = {
+  industryAverages,
+  equityRiskPremiumCountries,
+  matureMarketEquityRiskPremium,
+  currentIndustry: null,
+  currentEquityRiskPremiumCountry: null,
+  governmentBondTenYearLastClose: null,
+  exchangeRates: null,
   price: null,
   data: null,
   balanceSheet: {
@@ -112,7 +139,7 @@ const getCashAndShortTermInvestments = (balanceSheet) => {
 
 const dateSortComparer = (a, b) => new Date(b.date) - new Date(a.date);
 
-const fundamentalsCaseReducer = (state, action) => {
+const setFundamentalsReducer = (state, action) => {
   const { Financials, ...otherData } = action.payload.data;
   const {
     General,
@@ -220,7 +247,7 @@ const fundamentalsCaseReducer = (state, action) => {
     };
   }
 
-  const convertCurrency = getConvertCurrency(action.payload.exchangeRates);
+  const convertCurrency = getConvertCurrency(state.exchangeRates);
 
   Object.keys(state.incomeStatement).forEach((property) => {
     state.incomeStatement[property] = convertCurrency(
@@ -293,22 +320,72 @@ const fundamentalsCaseReducer = (state, action) => {
     state.balanceSheet.bookValueOfDebt -
     state.balanceSheet.cashAndShortTermInvestments;
 
+  state.price =
+    General.CurrencyCode === "GBX" ? state.price / 100 : state.price;
   state.valuationCurrencyCode = convertGBXToGBP(General.CurrencyCode);
   state.valuationCurrencySymbol = getSymbolFromCurrency(
     state.valuationCurrencyCode
   );
 };
 
-const getLastPriceReducer = (state, action) => {
-  const priceLastClose = action.payload.priceLastClose;
+const setLastPriceCloseReducer = (state, action) => {
+  const priceLastClose = action.payload;
 
-  state.price =
-    action.payload.currencyCode === "GBX"
-      ? priceLastClose / 100
-      : priceLastClose;
+  state.price = priceLastClose;
+};
+
+const setCurrentIndustryAverageReducer = (state) => {
+  const currentIndustryMutated = state.data.General.Industry.replace(
+    spaceRegex,
+    ""
+  ).toUpperCase();
+  const mappedCurrentIndustry = industryMappingsMutated[currentIndustryMutated];
+
+  state.currentIndustry = state.industryAverages.find((datum) => {
+    return datum.industryName === mappedCurrentIndustry;
+  });
+  state.currentIndustry.standardDeviationInStockPrices =
+    parseFloat(state.currentIndustry.standardDeviationInStockPrices) / 100;
+};
+
+const setCurrentEquityRiskPremiumReducer = (state) => {
+  const {
+    corporateTaxRate,
+    countryRiskPremium,
+    equityRiskPremium,
+    adjDefaultSpread,
+  } = state.equityRiskPremiumCountries.find((datum) => {
+    const country = datum.country.toUpperCase();
+
+    return country === state.data.General.AddressData.Country.toUpperCase();
+  });
+
+  state.currentEquityRiskPremiumCountry = {
+    corporateTaxRate: parseFloat(corporateTaxRate) / 100,
+    countryRiskPremium: parseFloat(countryRiskPremium) / 100,
+    equityRiskPremium: parseFloat(equityRiskPremium) / 100,
+    adjDefaultSpread: parseFloat(adjDefaultSpread) / 100,
+  };
+};
+
+const setGovernmentBondTenYearLastCloseReducer = (state, action) => {
+  state.governmentBondTenYearLastClose = action.payload;
+};
+
+const setExchangeRateHistoryReducer = (state, action) => {
+  state.exchangeRates = action.payload;
 };
 
 export const fundamentalsReducer = createReducer(initialState, (builder) => {
-  builder.addCase(getLastPriceClose.fulfilled, getLastPriceReducer);
-  builder.addCase(setFundamentals, fundamentalsCaseReducer);
+  builder.addCase(setLastPriceClose, setLastPriceCloseReducer);
+  builder.addCase(setFundamentalsData.fulfilled, (state, action) => {
+    setFundamentalsReducer(state, action);
+    setCurrentEquityRiskPremiumReducer(state, action);
+    setCurrentIndustryAverageReducer(state, action);
+  });
+  builder.addCase(
+    setTenYearGovernmentBondLastClose,
+    setGovernmentBondTenYearLastCloseReducer
+  );
+  builder.addCase(setExchangeRateHistory, setExchangeRateHistoryReducer);
 });

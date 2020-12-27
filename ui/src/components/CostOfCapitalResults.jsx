@@ -1,35 +1,18 @@
 import { Box, Typography, useTheme } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router";
-import calculateCostOfCapital from "../shared/calculateCostOfCapital";
-import parseInputQueryParams from "../shared/parseInputQueryParams";
+import { selectCostOfCapital } from "../selectors/calculateCostOfCapital";
 import FormatRawNumber from "./FormatRawNumber";
 import FormatRawNumberToPercent from "./FormatRawNumberToPercent";
 import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 import { InfoTextCostOfCapital } from "./InfoText";
+import { selectRiskFreeRate } from "../selectors/calculateRiskFreeRate";
 
 const CostOfCapitalResults = () => {
   const theme = useTheme();
-  const industryAverages = useSelector((state) => state.industryAverages);
-  const location = useLocation();
-  const economicData = useSelector((state) => state.economicData);
   const fundamentals = useSelector((state) => state.fundamentals);
-  const equityRiskPremium = useSelector((state) => state.equityRiskPremium);
-  const inputQueryParams = parseInputQueryParams(location);
-  const { SharesStats } = fundamentals.data;
-  const riskFreeRate =
-    economicData.governmentBondTenYearLastClose / 100 -
-    equityRiskPremium.currentCountry.adjDefaultSpread;
-
-  const { leveredBetaForEquity } = calculateCostOfCapital(
-    fundamentals,
-    inputQueryParams,
-    SharesStats,
-    equityRiskPremium,
-    riskFreeRate,
-    industryAverages.currentIndustry
-  );
+  const costOfCapital = useSelector(selectCostOfCapital);
+  const riskFreeRate = useSelector(selectRiskFreeRate);
 
   return (
     <>
@@ -53,7 +36,7 @@ const CostOfCapitalResults = () => {
             >
               <FormatRawNumber
                 decimalScale={2}
-                value={industryAverages.currentIndustry.unleveredBeta}
+                value={fundamentals.currentIndustry.unleveredBeta}
               />
             </Box>
             &nbsp;Unlevered Beta
@@ -63,7 +46,10 @@ const CostOfCapitalResults = () => {
               component="span"
               sx={{ fontWeight: theme.typography.fontWeightBold }}
             >
-              <FormatRawNumber decimalScale={2} value={leveredBetaForEquity} />
+              <FormatRawNumber
+                decimalScale={2}
+                value={costOfCapital.leveredBetaForEquity}
+              />
             </Box>
             &nbsp;Levered Beta
           </Typography>
@@ -82,7 +68,9 @@ const CostOfCapitalResults = () => {
               sx={{ fontWeight: theme.typography.fontWeightBold }}
             >
               <FormatRawNumberToPercent
-                value={equityRiskPremium.currentCountry.equityRiskPremium}
+                value={
+                  fundamentals.currentEquityRiskPremiumCountry.equityRiskPremium
+                }
               />
             </Box>
             &nbsp;Country Equity Risk Premium
@@ -95,7 +83,7 @@ const CostOfCapitalResults = () => {
               sx={{ fontWeight: theme.typography.fontWeightBold }}
             >
               <FormatRawNumberToPercent
-                value={equityRiskPremium.matureMarketEquityRiskPremium}
+                value={fundamentals.matureMarketEquityRiskPremium}
               />
             </Box>
             &nbsp;Mature Market Equity Risk Premium
@@ -106,7 +94,9 @@ const CostOfCapitalResults = () => {
               sx={{ fontWeight: theme.typography.fontWeightBold }}
             >
               <FormatRawNumberToPercent
-                value={equityRiskPremium.currentCountry.corporateTaxRate}
+                value={
+                  fundamentals.currentEquityRiskPremiumCountry.corporateTaxRate
+                }
               />
             </Box>
             &nbsp;Marginal Tax Rate

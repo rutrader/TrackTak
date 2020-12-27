@@ -2,20 +2,27 @@ import { combineReducers } from "redux";
 import { fundamentalsReducer } from "./reducers/fundamentalsReducer";
 import { configureStore } from "@reduxjs/toolkit";
 import { pageReducer } from "./reducers/pageReducer";
-import { economicDataReducer } from "./reducers/economicDataReducer";
-import { equityRiskPremiumCountriesReducer } from "./reducers/equityRiskPremiumReducer";
-import { industryAveragesReducer } from "./reducers/industryAveragesReducer";
 import { contentfulReducer } from "./reducers/contentfulReducer";
+import { connectRouter, routerMiddleware } from "connected-react-router";
+import { createBrowserHistory } from "history";
 
-export const rootReducer = combineReducers({
-  fundamentals: fundamentalsReducer,
-  equityRiskPremium: equityRiskPremiumCountriesReducer,
-  page: pageReducer,
-  economicData: economicDataReducer,
-  industryAverages: industryAveragesReducer,
-  contentful: contentfulReducer,
+const createRootReducer = (history) => {
+  const router = connectRouter(history);
+
+  return combineReducers({
+    router,
+    fundamentals: fundamentalsReducer,
+    page: pageReducer,
+    contentful: contentfulReducer,
+  });
+};
+
+export const history = createBrowserHistory();
+
+const store = configureStore({
+  reducer: createRootReducer(history),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(routerMiddleware(history)),
 });
-
-const store = configureStore({ reducer: rootReducer });
 
 export default store;

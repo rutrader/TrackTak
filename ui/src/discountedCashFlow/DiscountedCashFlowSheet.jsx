@@ -17,8 +17,10 @@ import { getEBITMarginCalculation } from "./expressionCalculations";
 import { Cell, Column, Table } from "@blueprintjs/table";
 import { useTheme } from "@material-ui/core";
 import "../shared/blueprintTheme.scss";
-import { useLocation } from "react-router";
-import parseInputQueryParams from "../shared/parseInputQueryParams";
+import { selectCostOfCapital } from "../selectors/calculateCostOfCapital";
+import { selectQueryParams } from "../selectors/getInputQueryParams";
+import { selectRiskFreeRate } from "../selectors/calculateRiskFreeRate";
+import { selectValueOfAllOptionsOutstanding } from "../selectors/calculateBlackScholesModel";
 
 const computeExpr = (key, expr, scope) => {
   let value = null;
@@ -56,16 +58,14 @@ const cellUpdate = (data, key, expr) => {
   };
 };
 
-const DiscountedCashFlowSheet = ({
-  riskFreeRate,
-  costOfCapital,
-  valueOfAllOptionsOutstanding,
-  columnWidths,
-}) => {
-  const location = useLocation();
-  const inputQueryParams = parseInputQueryParams(location);
+const DiscountedCashFlowSheet = ({ columnWidths }) => {
+  const queryParams = useSelector(selectQueryParams);
   const fundamentals = useSelector((state) => state.fundamentals);
-  const equityRiskPremium = useSelector((state) => state.equityRiskPremium);
+  const costOfCapital = useSelector(selectCostOfCapital);
+  const riskFreeRate = useSelector(selectRiskFreeRate);
+  const valueOfAllOptionsOutstanding = useSelector(
+    selectValueOfAllOptionsOutstanding
+  );
   const [data, setData] = useState(initialData);
   const theme = useTheme();
 
@@ -136,9 +136,9 @@ const DiscountedCashFlowSheet = ({
   }, [valueOfAllOptionsOutstanding]);
 
   useEffect(() => {
-    updateCell("C12", costOfCapital);
+    updateCell("C12", costOfCapital.totalCostOfCapital);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [costOfCapital]);
+  }, [costOfCapital.totalCostOfCapital]);
 
   useEffect(() => {
     updateCell("M2", riskFreeRate);
@@ -146,17 +146,12 @@ const DiscountedCashFlowSheet = ({
   }, [riskFreeRate]);
 
   useEffect(() => {
-    updateCell("M6", equityRiskPremium.currentCountry.corporateTaxRate);
     updateCell(
       "M12",
-      equityRiskPremium.matureMarketEquityRiskPremium + riskFreeRate
+      fundamentals.matureMarketEquityRiskPremium + riskFreeRate
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    equityRiskPremium.currentCountry.corporateTaxRate,
-    equityRiskPremium.matureMarketEquityRiskPremium,
-    riskFreeRate,
-  ]);
+  }, [fundamentals.matureMarketEquityRiskPremium, riskFreeRate]);
 
   useEffect(() => {
     updateCell("B3", fundamentals.incomeStatement.totalRevenue);
@@ -178,29 +173,22 @@ const DiscountedCashFlowSheet = ({
       "B6",
       fundamentals.incomeStatement.pastThreeYearsAverageEffectiveTaxRate
     );
+    updateCell(
+      "M6",
+      fundamentals.currentEquityRiskPremiumCountry.corporateTaxRate
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    fundamentals.incomeStatement.totalRevenue,
-    fundamentals.incomeStatement.operatingIncome,
-    fundamentals.balanceSheet.investedCapital,
-    fundamentals.incomeStatement.minorityInterest,
-    fundamentals.balanceSheet.bookValueOfDebt,
-    fundamentals.balanceSheet.cashAndShortTermInvestments,
-    fundamentals.balanceSheet.noncontrollingInterestInConsolidatedEntity,
-    fundamentals.price,
-    fundamentals.data.SharesStats.SharesOutstanding,
-    fundamentals.incomeStatement.pastThreeYearsAverageEffectiveTaxRate,
-  ]);
+  }, [fundamentals]);
 
   useEffect(() => {
-    updateCell("C16", inputQueryParams.salesToCapitalRatio);
+    updateCell("C16", queryParams.salesToCapitalRatio);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inputQueryParams.salesToCapitalRatio]);
+  }, [queryParams.salesToCapitalRatio]);
 
   useEffect(() => {
-    updateCell("C2", inputQueryParams.cagrYearOneToFive);
+    updateCell("C2", queryParams.cagrYearOneToFive);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inputQueryParams.cagrYearOneToFive]);
+  }, [queryParams.cagrYearOneToFive]);
 
   useEffect(() => {
     getColumnsBetween(columns, "C", "L").forEach((column) => {
@@ -209,17 +197,14 @@ const DiscountedCashFlowSheet = ({
       updateCell(
         ebitMarginKey,
         getEBITMarginCalculation(
-          inputQueryParams.yearOfConvergence,
-          inputQueryParams.ebitTargetMarginInYearTen,
+          queryParams.yearOfConvergence,
+          queryParams.ebitTargetMarginInYearTen,
           ebitMarginKey
         )
       );
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    inputQueryParams.yearOfConvergence,
-    inputQueryParams.ebitTargetMarginInYearTen,
-  ]);
+  }, [queryParams.yearOfConvergence, queryParams.ebitTargetMarginInYearTen]);
 
   return (
     <Table

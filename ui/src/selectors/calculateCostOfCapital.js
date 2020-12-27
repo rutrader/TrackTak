@@ -1,24 +1,22 @@
-const calculateCostOfCapital = (
-  fundamentals,
-  input,
-  SharesStats,
-  equityRiskPremium,
-  riskFreeRate,
-  currentIndustry
-) => {
-  const marginalTaxRate = equityRiskPremium.currentCountry.corporateTaxRate;
+import { createSelector } from "@reduxjs/toolkit";
+import { selectRiskFreeRate } from "./calculateRiskFreeRate";
+import { selectQueryParams } from "./getInputQueryParams";
+
+const calculateCostOfCapital = (fundamentals, query, riskFreeRate) => {
+  const marginalTaxRate =
+    fundamentals.currentEquityRiskPremiumCountry.corporateTaxRate;
   const estimatedMarketValueOfStraightDebt =
     (fundamentals.incomeStatement.interestExpense *
-      (1 - (1 + input.pretaxCostOfDebt) ** -input.averageMaturityOfDebt)) /
-      input.pretaxCostOfDebt +
+      (1 - (1 + query.pretaxCostOfDebt) ** -query.averageMaturityOfDebt)) /
+      query.pretaxCostOfDebt +
     fundamentals.balanceSheet.bookValueOfDebt /
-      (1 + input.pretaxCostOfDebt) ** input.averageMaturityOfDebt;
+      (1 + query.pretaxCostOfDebt) ** query.averageMaturityOfDebt;
   let estimatedValueOfStraightDebtInConvertibleDebt =
-    (input.interestExpenseOnConvertibleDebt *
-      (1 - (1 + input.pretaxCostOfDebt) ** -input.maturityOfConvertibleDebt)) /
-      input.pretaxCostOfDebt +
-    input.bookValueOfConvertibleDebt /
-      (1 + input.pretaxCostOfDebt) ** input.maturityOfConvertibleDebt;
+    (query.interestExpenseOnConvertibleDebt *
+      (1 - (1 + query.pretaxCostOfDebt) ** -query.maturityOfConvertibleDebt)) /
+      query.pretaxCostOfDebt +
+    query.bookValueOfConvertibleDebt /
+      (1 + query.pretaxCostOfDebt) ** query.maturityOfConvertibleDebt;
 
   estimatedValueOfStraightDebtInConvertibleDebt = isNaN(
     estimatedValueOfStraightDebtInConvertibleDebt
@@ -27,11 +25,12 @@ const calculateCostOfCapital = (
     : estimatedValueOfStraightDebtInConvertibleDebt;
 
   const marketValue = {
-    equity: fundamentals.price * SharesStats.SharesOutstanding,
+    equity:
+      fundamentals.price * fundamentals.data.SharesStats.SharesOutstanding,
     debt:
       estimatedMarketValueOfStraightDebt +
       estimatedValueOfStraightDebtInConvertibleDebt,
-    preferredStock: input.numberOfPreferredShares * input.marketPricePerShare,
+    preferredStock: query.numberOfPreferredShares * query.marketPricePerShare,
     get total() {
       return this.equity + this.debt + this.preferredStock;
     },
@@ -45,19 +44,20 @@ const calculateCostOfCapital = (
     },
   };
   const leveredBetaForEquity =
-    currentIndustry.unleveredBeta *
+    fundamentals.currentIndustry.unleveredBeta *
     (1 + (1 - marginalTaxRate) * (marketValue.debt / marketValue.equity));
 
   let costOfPreferredStock =
-    input.annualDividendPerShare / input.marketPricePerShare;
+    query.annualDividendPerShare / query.marketPricePerShare;
 
   costOfPreferredStock = isNaN(costOfPreferredStock) ? 0 : costOfPreferredStock;
 
   const costOfComponent = {
     equity:
       riskFreeRate +
-      leveredBetaForEquity * equityRiskPremium.currentCountry.equityRiskPremium,
-    debt: input.pretaxCostOfDebt * marginalTaxRate,
+      leveredBetaForEquity *
+        fundamentals.currentEquityRiskPremiumCountry.equityRiskPremium,
+    debt: query.pretaxCostOfDebt * marginalTaxRate,
     preferredStock: costOfPreferredStock,
     get total() {
       return (
@@ -70,8 +70,15 @@ const calculateCostOfCapital = (
 
   return {
     leveredBetaForEquity,
-    costOfCapital: costOfComponent.total,
+    totalCostOfCapital: costOfComponent.total,
   };
 };
+
+export const selectCostOfCapital = createSelector(
+  (state) => state.fundamentals,
+  selectQueryParams,
+  selectRiskFreeRate,
+  calculateCostOfCapital
+);
 
 export default calculateCostOfCapital;

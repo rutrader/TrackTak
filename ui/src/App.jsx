@@ -2,7 +2,7 @@ import { createGlobalStyle } from "styled-components";
 import LandingPage from "./landingPage/LandingPage";
 import { Provider as RebassProvider } from "rebass";
 import rebassTheme from "./rebassTheme";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import Home from "./home/Home";
 import { useSelector } from "react-redux";
 import { Box, CircularProgress, useTheme } from "@material-ui/core";
@@ -12,6 +12,8 @@ import DiscountedCashFlow from "./discountedCashFlow/DiscountedCashFlow";
 import Valuation from "./valuation/Valuation";
 import Valuations from "./valuation/Valuations";
 import LayoutHome from "./layout/LayoutHome";
+import { ConnectedRouter } from "connected-react-router";
+import { history } from "./redux/store";
 
 const GlobalStyle = createGlobalStyle`
   * { box-sizing: border-box; }
@@ -82,7 +84,7 @@ function App() {
   return (
     <>
       <Spinner />
-      <BrowserRouter>
+      <ConnectedRouter history={history}>
         <Switch>
           <Route path={["/landingPage"]}>
             <RebassProvider theme={rebassTheme}>
@@ -124,7 +126,7 @@ function App() {
         {/* <Route path={allLayoutPaths}>
           <TTTabs />
         </Route> */}
-      </BrowserRouter>
+      </ConnectedRouter>
     </>
   );
 }

@@ -12,9 +12,9 @@ import {
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
-import { inputQueryNames } from "../shared/parseInputQueryParams";
 import { Link } from "react-router-dom";
 import { getDCFTemplateEntries } from "../redux/actions/contentfulActions";
+import { inputQueryNames } from "../selectors/getInputQueryParams";
 
 const EOD_URL = "https://eodhistoricaldata.com";
 

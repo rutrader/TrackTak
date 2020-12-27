@@ -6,8 +6,7 @@ import {
   withStyles,
 } from "@material-ui/core";
 import React from "react";
-import parseInputQueryParams from "../shared/parseInputQueryParams";
-import { useHistory, useLocation } from "react-router";
+import { useHistory } from "react-router";
 import setInputQueryParams from "../shared/setInputQueryParams";
 import FormatInputToPercent from "./FormatInputToPercent";
 import FormatInputToYear from "./FormatInputToYear";
@@ -15,6 +14,8 @@ import FormatInputToNumber from "./FormatInputToNumber";
 import { textFieldRootStyles } from "../shared/utils";
 import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 import { InfoTextValueDrivingInputs } from "./InfoText";
+import { selectQueryParams } from "../selectors/getInputQueryParams";
+import { useSelector } from "react-redux";
 
 const ValueDrivingTextField = withStyles({
   root: {
@@ -30,9 +31,7 @@ export const pretaxCostOfDebtLabel = "Pre-tax Cost of Debt";
 
 const ValueDrivingInputs = () => {
   const theme = useTheme();
-  const location = useLocation();
-  const inputQueryParams = parseInputQueryParams(location);
-  const queryParams = new URLSearchParams(location.search);
+  const queryParams = useSelector(selectQueryParams);
   const history = useHistory();
 
   return (
@@ -45,7 +44,7 @@ const ValueDrivingInputs = () => {
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: theme.spacing(2) }}>
         <ValueDrivingTextField
           label={cagrInYearsOneToFiveLabel}
-          defaultValue={inputQueryParams.cagrYearOneToFive}
+          defaultValue={queryParams.cagrYearOneToFive}
           onBlur={(value) => {
             setInputQueryParams(queryParams, "cagrYearOneToFive", value);
             history.push({
@@ -58,7 +57,7 @@ const ValueDrivingInputs = () => {
         />
         <ValueDrivingTextField
           label={ebitTargetMarginInYearTenLabel}
-          defaultValue={inputQueryParams.ebitTargetMarginInYearTen}
+          defaultValue={queryParams.ebitTargetMarginInYearTen}
           onBlur={(value) => {
             setInputQueryParams(
               queryParams,
@@ -75,7 +74,7 @@ const ValueDrivingInputs = () => {
         />
         <ValueDrivingTextField
           label={yearOfConvergenceLabel}
-          defaultValue={inputQueryParams.yearOfConvergence}
+          defaultValue={queryParams.yearOfConvergence}
           onBlur={(value) => {
             setInputQueryParams(queryParams, "yearOfConvergence", value);
             history.push({
@@ -88,7 +87,7 @@ const ValueDrivingInputs = () => {
         />
         <ValueDrivingTextField
           label={salesToCapitalRatioLabel}
-          defaultValue={inputQueryParams.salesToCapitalRatio}
+          defaultValue={queryParams.salesToCapitalRatio}
           onBlur={(value) => {
             setInputQueryParams(queryParams, "salesToCapitalRatio", value);
             history.push({
@@ -101,7 +100,7 @@ const ValueDrivingInputs = () => {
         />
         <ValueDrivingTextField
           label={pretaxCostOfDebtLabel}
-          defaultValue={inputQueryParams.pretaxCostOfDebt}
+          defaultValue={queryParams.pretaxCostOfDebt}
           onBlur={(value) => {
             setInputQueryParams(queryParams, "pretaxCostOfDebt", value);
             history.push({

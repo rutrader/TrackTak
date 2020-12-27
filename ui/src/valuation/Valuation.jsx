@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router";
+import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { BLOCKS, INLINES } from "@contentful/rich-text-types";
@@ -8,10 +8,7 @@ import YouTube from "react-youtube";
 import { Link as RouterLink } from "react-router-dom";
 
 import axios from "../axios/axios";
-import {
-  getLastPriceClose,
-  setFundamentals,
-} from "../redux/actions/fundamentalsActions";
+import { setFundamentalsData } from "../redux/actions/fundamentalsActions";
 import CompanyOverviewStats from "../components/CompanyOverviewStats";
 import { Box, Link, Typography, useTheme } from "@material-ui/core";
 import ValueDrivingInputs, {
@@ -21,21 +18,15 @@ import ValueDrivingInputs, {
   salesToCapitalRatioLabel,
   yearOfConvergenceLabel,
 } from "../components/ValueDrivingInputs";
-import parseInputQueryParams from "../shared/parseInputQueryParams";
 import Section from "../components/Section";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import FormatRawNumberToYear from "../components/FormatRawNumberToYear";
 import FormatRawNumber from "../components/FormatRawNumber";
 import DiscountedCashFlowSheet from "../discountedCashFlow/DiscountedCashFlowSheet";
-import calculateCostOfCapital from "../shared/calculateCostOfCapital";
-import blackScholes from "../shared/blackScholesModel";
 import SubscribeMailingList from "../components/SubscribeMailingList";
 import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
 import * as styles from "./Valuation.module.scss";
 import CostOfCapitalResults from "../components/CostOfCapitalResults";
-import { setCurrentEquityRiskPremium } from "../redux/actions/equityRiskPremiumActions";
-import { setCurrentIndustryAverage } from "../redux/actions/industryAveragesActions";
-import { getTenYearGovernmentBondLastClose } from "../redux/actions/economicDataActions";
 import dayjs from "dayjs";
 
 const options = {
@@ -95,15 +86,10 @@ const NumberSpan = ({ children, ...props }) => {
 
 const Valuation = () => {
   const params = useParams();
-  const location = useLocation();
   const theme = useTheme();
   const dispatch = useDispatch();
   const [contentfulData, setContentfulData] = useState();
   const fundamentals = useSelector((state) => state.fundamentals);
-  const economicData = useSelector((state) => state.economicData);
-  const equityRiskPremium = useSelector((state) => state.equityRiskPremium);
-  const industryAverages = useSelector((state) => state.industryAverages);
-  const inputQueryParams = parseInputQueryParams(location);
 
   useEffect(() => {
     const fetchStockData = async () => {
@@ -111,26 +97,15 @@ const Valuation = () => {
         const contentfulData = await axios.get(
           `/api/v1/contentful/getEntry/${params.id}`
         );
-        const fundamentalsData = contentfulData.data.fields.data;
+        const data = contentfulData.data.fields.data;
 
-        dispatch(setFundamentals(fundamentalsData));
         dispatch(
-          setCurrentEquityRiskPremium(
-            fundamentalsData.General.AddressData.Country
-          )
-        );
-        dispatch(setCurrentIndustryAverage(fundamentalsData.General.Industry));
-        dispatch(
-          getTenYearGovernmentBondLastClose({
-            countryISO: fundamentalsData.General.CountryISO,
-            to: contentfulData.data.fields.dateOfValuation,
-          })
-        );
-        dispatch(
-          getLastPriceClose({
+          setFundamentalsData({
+            data,
             ticker: contentfulData.data.fields.ticker,
-            to: contentfulData.data.fields.dateOfValuation,
-            currencyCode: fundamentalsData.General.CurrencyCode,
+            tenYearGovernmentBondLastCloseTo:
+              contentfulData.data.fields.dateOfValuation,
+            lastPriceCloseTo: contentfulData.data.fields.dateOfValuation,
           })
         );
 
@@ -145,30 +120,9 @@ const Valuation = () => {
 
   if (!fundamentals.data || !contentfulData) return null;
 
-  const { SharesStats, General } = fundamentals.data;
+  const { General } = fundamentals.data;
   const { fields } = contentfulData;
 
-  const riskFreeRate =
-    economicData.governmentBondTenYearLastClose / 100 -
-    equityRiskPremium.currentCountry.adjDefaultSpread;
-  const valuePerOption = blackScholes(
-    "call",
-    fundamentals.price,
-    inputQueryParams.averageStrikePrice,
-    inputQueryParams.averageMaturityOfOptions,
-    riskFreeRate,
-    industryAverages.currentIndustry.standardDeviationInStockPrices
-  );
-  const { costOfCapital } = calculateCostOfCapital(
-    fundamentals,
-    inputQueryParams,
-    SharesStats,
-    equityRiskPremium,
-    riskFreeRate,
-    industryAverages.currentIndustry
-  );
-  const valueOfAllOptionsOutstanding =
-    valuePerOption * inputQueryParams.numberOfOptionsOutstanding;
   // TODO: share this with the B38 cell calculation
   const marginOfSafety =
     (fields.estimatedValuePerShare - fundamentals.price) /
@@ -270,9 +224,6 @@ const Valuation = () => {
           columnWidths={{
             B: 90,
           }}
-          riskFreeRate={riskFreeRate}
-          costOfCapital={costOfCapital}
-          valueOfAllOptionsOutstanding={valueOfAllOptionsOutstanding}
         />
       </Section>
       <Section>

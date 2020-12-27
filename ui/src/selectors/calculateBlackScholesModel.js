@@ -1,5 +1,11 @@
 // https://gist.github.com/santacruz123/3623310
 
+import { createSelector } from "@reduxjs/toolkit";
+import calculateRiskFreeRate, {
+  selectRiskFreeRate,
+} from "./calculateRiskFreeRate";
+import { selectQueryParams } from "./getInputQueryParams";
+
 /*
   PutCallFlag: Either "put" or "call"
   S: Stock Price
@@ -14,7 +20,7 @@
   the end)
 */
 
-const blackScholes = (PutCallFlag, S, X, T, r, v) => {
+const calculateBlackScholesModel = (PutCallFlag, S, X, T, r, v) => {
   var d1 = (Math.log(S / X) + (r + (v * v) / 2) * T) / (v * Math.sqrt(T));
   var d2 = d1 - v * Math.sqrt(T);
   if (PutCallFlag === "call") {
@@ -42,4 +48,29 @@ const CND = (x) => {
   }
 };
 
-export default blackScholes;
+export const selectValueOption = createSelector(
+  (state) => state.fundamentals.price,
+  selectQueryParams,
+  selectRiskFreeRate,
+  (state) => state.fundamentals.currentIndustry?.standardDeviationInStockPrices,
+  (price, queryParams, riskFreeRate, standardDeviationInStockPrices) => {
+    return calculateBlackScholesModel(
+      "call",
+      price,
+      queryParams.averageStrikePrice ?? 0,
+      queryParams.averageMaturityOfOptions ?? 0,
+      riskFreeRate,
+      standardDeviationInStockPrices
+    );
+  }
+);
+
+export const selectValueOfAllOptionsOutstanding = createSelector(
+  selectValueOption,
+  selectQueryParams,
+  (valuePerOption, queryParams) => {
+    return valuePerOption * queryParams.numberOfOptionsOutstanding;
+  }
+);
+
+export default calculateBlackScholesModel;
