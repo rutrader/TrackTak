@@ -216,10 +216,6 @@ const Valuation = () => {
         </Box>
       </Section>
       <Section>
-        <Typography variant="h5" gutterBottom>
-          DCF Valuation
-        </Typography>
-        {/* TODO: Add an expand button to see it full screen */}
         <DiscountedCashFlowSheet
           columnWidths={{
             B: 90,

@@ -243,9 +243,6 @@ const DiscountedCashFlow = () => {
         </Box>
       </Section>
       <Section>
-        <Typography variant="h5" gutterBottom>
-          Valuation
-        </Typography>
         <DiscountedCashFlowSheet />
       </Section>
       <Section sx={{ display: "flex", mt: 2 }}>

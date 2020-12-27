@@ -59,7 +59,7 @@ export const getNumberOfRows = (data) => {
   return highestNumberRow;
 };
 
-const startColumn = "A";
+export const startColumn = "A";
 
 export const getColumnsTo = (endColumnLetter) => {
   const endCharCode = endColumnLetter.charCodeAt(0);
