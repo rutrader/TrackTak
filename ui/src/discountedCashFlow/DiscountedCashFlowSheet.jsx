@@ -12,10 +12,21 @@ import initialData, {
   columns,
   numberOfRows,
 } from "./initialData";
-import { getAllDependents, getColumnsBetween, validateExp } from "./utils";
+import {
+  getAllDependents,
+  getColumnsBetween,
+  validateExp,
+  startColumn,
+} from "./utils";
 import { getEBITMarginCalculation } from "./expressionCalculations";
 import { Cell, Column, Table } from "@blueprintjs/table";
-import { useTheme } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@material-ui/core";
 import "../shared/blueprintTheme.scss";
 import { selectCostOfCapital } from "../selectors/calculateCostOfCapital";
 import { selectQueryParams } from "../selectors/getInputQueryParams";
@@ -66,8 +77,10 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
   const valueOfAllOptionsOutstanding = useSelector(
     selectValueOfAllOptionsOutstanding
   );
-  const [data, setData] = useState(initialData);
   const theme = useTheme();
+  const [data, setData] = useState(initialData);
+  const [showFormulas, setShowFormulas] = useState(false);
+  const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const updateCell = useCallback(
     (key, value) => {
@@ -89,16 +102,21 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
   );
 
   const cellRenderer = useCallback(
-    (column) => (rowIndex) => {
+    (rowIndex, columnIndex) => {
+      const column = String.fromCharCode(
+        startColumn.charCodeAt(0) + columnIndex
+      );
       const row = (rowIndex += 1);
       const key = column + row;
       const cell = data[key];
 
-      if (!cell) return <Cell />;
+      if (!cell?.value) return <Cell />;
 
-      const { value, type } = cell;
+      const { value, type, expr } = cell;
 
-      let node = cell.value;
+      let node = value;
+
+      const isOutputCell = key === "B37";
 
       if (type === "percent") {
         node = <FormatRawNumberToPercent value={value} decimalScale={2} />;
@@ -113,19 +131,33 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
         node = <FormatRawNumber value={value} decimalScale={2} />;
       }
 
+      let intent = "none";
+
+      if (column === startColumn || rowIndex === 1) {
+        intent = "primary";
+      } else if (showFormulas) {
+        node = expr;
+      }
+
+      if (isOutputCell) {
+        intent = "success";
+      }
+
       return (
         <Cell
           style={{
             fontSize: theme.typography.fontSize,
             fontFamily: theme.typography.fontFamily,
-            color: key === "B37" ? theme.palette.primary.main : "initial",
+            fontWeight: isOutputCell ? "bold" : "initial",
+            color: "initial",
           }}
+          intent={intent}
         >
           {node}
         </Cell>
       );
     },
-    [data, theme]
+    [data, showFormulas, theme.typography.fontFamily, theme.typography.fontSize]
   );
 
   // TODO: Put all the calculations in redux so we can
@@ -206,27 +238,52 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams.yearOfConvergence, queryParams.ebitTargetMarginInYearTen]);
 
+  // TODO: Add an expand button to see it full screen
   return (
-    <Table
-      enableGhostCells
-      numRows={numberOfRows}
-      columnWidths={columns.map((column) => {
-        if (column === "A") {
-          return 220;
-        }
-        return columnWidths?.[column] ?? 120;
-      })}
-    >
-      {columns.map((column) => {
-        return (
-          <Column
-            key={column}
-            name={column}
-            cellRenderer={cellRenderer(column)}
-          />
-        );
-      })}
-    </Table>
+    <Box>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          mb: 1,
+        }}
+      >
+        <Typography variant="h5">DCF Valuation</Typography>
+        <Button
+          onClick={() => {
+            setShowFormulas((state) => !state);
+          }}
+          variant="outlined"
+        >
+          {showFormulas ? "Hide Formulas" : "Show Formulas"}
+        </Button>
+      </Box>
+      <Table
+        enableGhostCells
+        numFrozenColumns={isOnMobile ? 0 : 1}
+        numRows={numberOfRows}
+        columnWidths={columns.map((column) => {
+          if (column === "A") {
+            return 220;
+          } else if (showFormulas) {
+            return 200;
+          }
+          return columnWidths?.[column] ?? 120;
+        })}
+      >
+        {columns.map((column) => {
+          return (
+            <Column
+              key={column}
+              id={column}
+              name={column}
+              cellRenderer={cellRenderer}
+            />
+          );
+        })}
+      </Table>
+    </Box>
   );
 };
 
