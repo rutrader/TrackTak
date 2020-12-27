@@ -15,6 +15,7 @@ import ValueDrivingInputs from "../components/ValueDrivingInputs";
 import OptionalInputs from "../components/OptionalInputs";
 import CostOfCapitalResults from "../components/CostOfCapitalResults";
 import { InfoOutlinedIconWrapper } from "../components/InfoOutlinedIconWrapper";
+import BlackScholesResults from "../components/BlackScholesResults";
 
 const mapFromStatementsToDateObject = (objectToLoop, valueKey) => {
   const dateObject = {};
@@ -227,6 +228,9 @@ const DiscountedCashFlow = () => {
           </SubSection>
           <SubSection>
             <CostOfCapitalResults />
+          </SubSection>
+          <SubSection>
+            <BlackScholesResults />
           </SubSection>
         </Box>
         <Box sx={{ flex: 1 }}>

@@ -9,23 +9,23 @@ import {
   withStyles,
 } from "@material-ui/core";
 import React from "react";
-import { useHistory } from "react-router";
 import { textFieldRootStyles } from "../shared/utils";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import setInputQueryParams from "../shared/setInputQueryParams";
 import FormatInputToYear from "./FormatInputToYear";
 import FormatInputToCurrency from "./FormatInputToCurrency";
 import FormatInputToMillion from "./FormatInputToMillion";
 import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 import {
   InfoTextConvertibleDebt,
+  InfoTextEmployeeOptions,
   InfoTextNormalDebt,
   InfoTextPreferredStock,
 } from "./InfoText";
-import { selectQueryParams } from "../selectors/getInputQueryParams";
 import { useSelector } from "react-redux";
+import useSetURLInput from "../hooks/useSetURLInput";
+import { selectQueryParams } from "../selectors/getInputQueryParams";
 
-const CostOfCapitalTextField = withStyles({
+const OptionalTextField = withStyles({
   root: {
     ...textFieldRootStyles,
   },
@@ -48,7 +48,7 @@ const OptionalInputAccordion = withStyles({
 const OptionalInputs = () => {
   const theme = useTheme();
   const queryParams = useSelector(selectQueryParams);
-  const history = useHistory();
+  const setURLInput = useSetURLInput();
 
   return (
     <Box
@@ -75,18 +75,11 @@ const OptionalInputs = () => {
               gap: theme.spacing(2),
             }}
           >
-            <CostOfCapitalTextField
+            <OptionalTextField
               label="Average Maturity of Debt"
               defaultValue={queryParams.averageMaturityOfDebt}
               onBlur={(value) => {
-                setInputQueryParams(
-                  queryParams,
-                  "averageMaturityOfDebt",
-                  value
-                );
-                history.push({
-                  search: queryParams.toString(),
-                });
+                setURLInput("averageMaturityOfDebt", value);
               }}
               InputProps={{
                 inputComponent: FormatInputToYear,
@@ -107,52 +100,31 @@ const OptionalInputs = () => {
           <Box
             sx={{ display: "flex", flexWrap: "wrap", gap: theme.spacing(2) }}
           >
-            <CostOfCapitalTextField
+            <OptionalTextField
               label="Book Value of Convertible Debt"
               defaultValue={queryParams.bookValueOfConvertibleDebt}
               onBlur={(value) => {
-                setInputQueryParams(
-                  queryParams,
-                  "bookValueOfConvertibleDebt",
-                  value
-                );
-                history.push({
-                  search: queryParams.toString(),
-                });
+                setURLInput("bookValueOfConvertibleDebt", value);
               }}
               InputProps={{
                 inputComponent: FormatInputToCurrency,
               }}
             />
-            <CostOfCapitalTextField
+            <OptionalTextField
               label="Interest Expense on Convertible Debt"
               defaultValue={queryParams.interestExpenseOnConvertibleDebt}
               onBlur={(value) => {
-                setInputQueryParams(
-                  queryParams,
-                  "interestExpenseOnConvertibleDebt",
-                  value
-                );
-                history.push({
-                  search: queryParams.toString(),
-                });
+                setURLInput("interestExpenseOnConvertibleDebt", value);
               }}
               InputProps={{
                 inputComponent: FormatInputToCurrency,
               }}
             />
-            <CostOfCapitalTextField
+            <OptionalTextField
               label="Maturity of Convertible Debt"
               defaultValue={queryParams.maturityOfConvertibleDebt}
               onBlur={(value) => {
-                setInputQueryParams(
-                  queryParams,
-                  "maturityOfConvertibleDebt",
-                  value
-                );
-                history.push({
-                  search: queryParams.toString(),
-                });
+                setURLInput("maturityOfConvertibleDebt", value);
               }}
               InputProps={{
                 inputComponent: FormatInputToYear,
@@ -173,51 +145,79 @@ const OptionalInputs = () => {
           <Box
             sx={{ display: "flex", flexWrap: "wrap", gap: theme.spacing(2) }}
           >
-            <CostOfCapitalTextField
+            <OptionalTextField
               label="Number of Preferred Shares"
               defaultValue={queryParams.numberOfPreferredShares}
               onBlur={(value) => {
-                setInputQueryParams(
-                  queryParams,
-                  "numberOfPreferredShares",
-                  value
-                );
-                history.push({
-                  search: queryParams.toString(),
-                });
+                setURLInput("numberOfPreferredShares", value);
               }}
               InputProps={{
                 inputComponent: FormatInputToMillion,
               }}
             />
-            <CostOfCapitalTextField
+            <OptionalTextField
               label="Market Price Per Share"
               defaultValue={queryParams.marketPricePerShare}
               onBlur={(value) => {
-                setInputQueryParams(queryParams, "marketPricePerShare", value);
-                history.push({
-                  search: queryParams.toString(),
-                });
+                setURLInput("marketPricePerShare", value);
               }}
               InputProps={{
                 inputComponent: FormatInputToCurrency,
               }}
             />
-            <CostOfCapitalTextField
+            <OptionalTextField
               label="Annual Dividend Per Share"
               defaultValue={queryParams.annualDividendPerShare}
               onBlur={(value) => {
-                setInputQueryParams(
-                  queryParams,
-                  "annualDividendPerShare",
-                  value
-                );
-                history.push({
-                  search: queryParams.toString(),
-                });
+                setURLInput("annualDividendPerShare", value);
               }}
               InputProps={{
                 inputComponent: FormatInputToCurrency,
+              }}
+            />
+          </Box>
+        </AccordionDetails>
+      </OptionalInputAccordion>
+      <OptionalInputAccordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography variant="h6">
+            <InfoOutlinedIconWrapper text={<InfoTextEmployeeOptions />}>
+              Employee Options
+            </InfoOutlinedIconWrapper>
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Box
+            sx={{ display: "flex", flexWrap: "wrap", gap: theme.spacing(2) }}
+          >
+            <OptionalTextField
+              label="Employee Options Oustanding"
+              defaultValue={queryParams.numberOfOptionsOutstanding}
+              onBlur={(value) => {
+                setURLInput("numberOfOptionsOutstanding", value);
+              }}
+              InputProps={{
+                inputComponent: FormatInputToMillion,
+              }}
+            />
+            <OptionalTextField
+              label="Average Strike Price"
+              defaultValue={queryParams.averageStrikePrice}
+              onBlur={(value) => {
+                setURLInput("averageStrikePrice", value);
+              }}
+              InputProps={{
+                inputComponent: FormatInputToCurrency,
+              }}
+            />
+            <OptionalTextField
+              label="Average Maturity"
+              defaultValue={queryParams.averageMaturityOfOptions}
+              onBlur={(value) => {
+                setURLInput("averageMaturityOfOptions", value);
+              }}
+              InputProps={{
+                inputComponent: FormatInputToYear,
               }}
             />
           </Box>

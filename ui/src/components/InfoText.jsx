@@ -128,3 +128,37 @@ export const InfoTextPreferredStock = () => {
     </>
   );
 };
+
+export const InfoTextEmployeeOptions = () => {
+  return (
+    <>
+      <Box>
+        <b>Employee Options Outstanding</b> - The same as shares outstanding but
+        specifically for the employees options outstanding instead. If the
+        company does have employee options outstanding, enter the total number
+        here, vested and non vested, in the money and out of the money. This is
+        found in the financial statements.
+      </Box>
+      <Box>
+        <b>Average Strike Price</b> - Enter the weighted average strike price of
+        the employee options outstanding. This is found in the financial
+        statements.
+      </Box>
+      <Box>
+        <b>Average Maturity</b> - The weighted average maturity of the employee
+        options outstanding. This is found in the financial statements.
+      </Box>
+    </>
+  );
+};
+
+export const InfoTextBlackScholes = () => {
+  return (
+    <Box>
+      Calculated from the inputs you entered in the Employee Options section. We
+      use the Black Scholes methodology to work out the estimted market price
+      per employee option. We then minus this from the 'Equity' cell in the
+      Valuation Output (cell B34).
+    </Box>
+  );
+};

@@ -1,9 +1,7 @@
 // https://gist.github.com/santacruz123/3623310
 
 import { createSelector } from "@reduxjs/toolkit";
-import calculateRiskFreeRate, {
-  selectRiskFreeRate,
-} from "./calculateRiskFreeRate";
+import { selectRiskFreeRate } from "./calculateRiskFreeRate";
 import { selectQueryParams } from "./getInputQueryParams";
 
 /*
@@ -54,11 +52,14 @@ export const selectValueOption = createSelector(
   selectRiskFreeRate,
   (state) => state.fundamentals.currentIndustry?.standardDeviationInStockPrices,
   (price, queryParams, riskFreeRate, standardDeviationInStockPrices) => {
+    if (queryParams.averageStrikePrice === undefined) return null;
+    if (queryParams.averageMaturityOfOptions === undefined) return null;
+
     return calculateBlackScholesModel(
       "call",
       price,
-      queryParams.averageStrikePrice ?? 0,
-      queryParams.averageMaturityOfOptions ?? 0,
+      queryParams.averageStrikePrice,
+      queryParams.averageMaturityOfOptions,
       riskFreeRate,
       standardDeviationInStockPrices
     );
@@ -69,6 +70,9 @@ export const selectValueOfAllOptionsOutstanding = createSelector(
   selectValueOption,
   selectQueryParams,
   (valuePerOption, queryParams) => {
+    if (valuePerOption === null) return null;
+    if (queryParams.numberOfOptionsOutstanding === undefined) return null;
+
     return valuePerOption * queryParams.numberOfOptionsOutstanding;
   }
 );

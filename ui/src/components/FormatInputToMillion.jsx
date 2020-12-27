@@ -16,7 +16,10 @@ const FormatInputToMillion = forwardRef(({ defaultValue, ...props }, ref) => {
         props.onBlur(valueAsMillion, e);
       }}
       onValueChange={(values) => {
-        const valueAsMillion = values.floatValue * millionModifier;
+        const valueAsMillion =
+          values.floatValue !== undefined
+            ? values.floatValue * millionModifier
+            : null;
         setValue(valueAsMillion);
         onChange({
           target: {

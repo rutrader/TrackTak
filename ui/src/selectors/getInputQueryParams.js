@@ -22,16 +22,16 @@ const getInputQueryParams = (query) => {
   const inputQueryParams = {};
 
   inputQueryNames.forEach((inputQueryName) => {
-    inputQueryParams[inputQueryName] =
-      parseFloat(query[inputQueryName]) || null;
+    if (query[inputQueryName]) {
+      inputQueryParams[inputQueryName] = parseFloat(query[inputQueryName]);
+    }
   });
 
   return inputQueryParams;
 };
 
-export const selectQueryParams = createSelector(
-  (state) => state.router.location.query,
-  getInputQueryParams
-);
+export const selectQueryParams = createSelector((state) => {
+  return state.router.location.query;
+}, getInputQueryParams);
 
 export default getInputQueryParams;
