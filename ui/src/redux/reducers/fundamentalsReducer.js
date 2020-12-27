@@ -9,7 +9,7 @@ import getSymbolFromCurrency from "currency-symbol-map";
 import { monthDateFormat } from "../../shared/utils";
 import dayjs from "dayjs";
 import convertGBXToGBP from "../../shared/convertGBXToGBP";
-import industryMapping from "../../shared/industryMapping.json";
+import industryMapping from "../../data/industryMapping.json";
 import industryAverages from "../../data/industryAverages.json";
 import equityRiskPremiumCountries from "../../data/equityRiskPremiumCountries.json";
 

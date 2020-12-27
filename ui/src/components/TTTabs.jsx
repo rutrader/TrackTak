@@ -1,8 +1,8 @@
-import { Paper, Tab, Tabs, withStyles } from "@material-ui/core";
+import { Paper, Tab, Tabs, useTheme, withStyles } from "@material-ui/core";
 import React from "react";
 import { generatePath, useLocation, useParams } from "react-router";
 import { Link } from "react-router-dom";
-import { allLayoutPaths } from "../App";
+import { tabPaths } from "../App";
 
 const StyledPaper = withStyles({
   root: {
@@ -13,6 +13,7 @@ const StyledPaper = withStyles({
 const TTTabs = () => {
   const location = useLocation();
   const params = useParams();
+  const theme = useTheme();
 
   return (
     <StyledPaper
@@ -25,6 +26,7 @@ const TTTabs = () => {
         left: 0,
         bottom: 0,
         width: "100%",
+        zIndex: theme.zIndex.appBar,
       }}
     >
       <Tabs
@@ -34,7 +36,7 @@ const TTTabs = () => {
         textColor="primary"
         scrollButtons="auto"
       >
-        {allLayoutPaths.map((path) => {
+        {tabPaths.map((path) => {
           const generatedPath = generatePath(path, { ...params });
 
           return (
