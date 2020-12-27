@@ -17,7 +17,8 @@ const FormatInputToPercent = forwardRef(({ defaultValue, ...props }, ref) => {
         props.onBlur(valueAsDecimal, e);
       }}
       onValueChange={(values) => {
-        const valueAsDecimal = values.floatValue / 100;
+        const valueAsDecimal =
+          values.floatValue !== undefined ? values.floatValue / 100 : null;
         setValue(valueAsDecimal);
         onChange({
           target: {

@@ -3,20 +3,31 @@ import { selectRiskFreeRate } from "./calculateRiskFreeRate";
 import { selectQueryParams } from "./getInputQueryParams";
 
 const calculateCostOfCapital = (fundamentals, query, riskFreeRate) => {
+  // TODO: Maybe calculate averageMaturityOfDebt automatically based on the average
+  const averageMaturityOfDebt = query.averageMaturityOfDebt ?? 0;
+  const maturityOfConvertibleDebt = query.maturityOfConvertibleDebt ?? 0;
+  const pretaxCostOfDebt = query.pretaxCostOfDebt ?? 0;
+  const interestExpenseOnConvertibleDebt =
+    query.interestExpenseOnConvertibleDebt ?? 0;
+  const bookValueOfConvertibleDebt = query.bookValueOfConvertibleDebt ?? 0;
+  const numberOfPreferredShares = query.numberOfPreferredShares ?? 0;
+  const marketPricePerShare = query.marketPricePerShare ?? 0;
+  const annualDividendPerShare = query.annualDividendPerShare ?? 0;
+
   const marginalTaxRate =
     fundamentals.currentEquityRiskPremiumCountry.corporateTaxRate;
   const estimatedMarketValueOfStraightDebt =
     (fundamentals.incomeStatement.interestExpense *
-      (1 - (1 + query.pretaxCostOfDebt) ** -query.averageMaturityOfDebt)) /
-      query.pretaxCostOfDebt +
+      (1 - (1 + pretaxCostOfDebt) ** -averageMaturityOfDebt)) /
+      pretaxCostOfDebt +
     fundamentals.balanceSheet.bookValueOfDebt /
-      (1 + query.pretaxCostOfDebt) ** query.averageMaturityOfDebt;
+      (1 + pretaxCostOfDebt) ** averageMaturityOfDebt;
   let estimatedValueOfStraightDebtInConvertibleDebt =
-    (query.interestExpenseOnConvertibleDebt *
-      (1 - (1 + query.pretaxCostOfDebt) ** -query.maturityOfConvertibleDebt)) /
-      query.pretaxCostOfDebt +
-    query.bookValueOfConvertibleDebt /
-      (1 + query.pretaxCostOfDebt) ** query.maturityOfConvertibleDebt;
+    (interestExpenseOnConvertibleDebt *
+      (1 - (1 + pretaxCostOfDebt) ** -maturityOfConvertibleDebt)) /
+      pretaxCostOfDebt +
+    bookValueOfConvertibleDebt /
+      (1 + pretaxCostOfDebt) ** maturityOfConvertibleDebt;
 
   estimatedValueOfStraightDebtInConvertibleDebt = isNaN(
     estimatedValueOfStraightDebtInConvertibleDebt
@@ -30,7 +41,7 @@ const calculateCostOfCapital = (fundamentals, query, riskFreeRate) => {
     debt:
       estimatedMarketValueOfStraightDebt +
       estimatedValueOfStraightDebtInConvertibleDebt,
-    preferredStock: query.numberOfPreferredShares * query.marketPricePerShare,
+    preferredStock: numberOfPreferredShares * marketPricePerShare,
     get total() {
       return this.equity + this.debt + this.preferredStock;
     },
@@ -47,8 +58,7 @@ const calculateCostOfCapital = (fundamentals, query, riskFreeRate) => {
     fundamentals.currentIndustry.unleveredBeta *
     (1 + (1 - marginalTaxRate) * (marketValue.debt / marketValue.equity));
 
-  let costOfPreferredStock =
-    query.annualDividendPerShare / query.marketPricePerShare;
+  let costOfPreferredStock = annualDividendPerShare / marketPricePerShare;
 
   costOfPreferredStock = isNaN(costOfPreferredStock) ? 0 : costOfPreferredStock;
 
@@ -57,7 +67,7 @@ const calculateCostOfCapital = (fundamentals, query, riskFreeRate) => {
       riskFreeRate +
       leveredBetaForEquity *
         fundamentals.currentEquityRiskPremiumCountry.equityRiskPremium,
-    debt: query.pretaxCostOfDebt * marginalTaxRate,
+    debt: pretaxCostOfDebt * marginalTaxRate,
     preferredStock: costOfPreferredStock,
     get total() {
       return (

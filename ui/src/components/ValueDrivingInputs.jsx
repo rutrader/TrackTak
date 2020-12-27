@@ -6,8 +6,6 @@ import {
   withStyles,
 } from "@material-ui/core";
 import React from "react";
-import { useHistory } from "react-router";
-import setInputQueryParams from "../shared/setInputQueryParams";
 import FormatInputToPercent from "./FormatInputToPercent";
 import FormatInputToYear from "./FormatInputToYear";
 import FormatInputToNumber from "./FormatInputToNumber";
@@ -16,6 +14,7 @@ import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 import { InfoTextValueDrivingInputs } from "./InfoText";
 import { selectQueryParams } from "../selectors/getInputQueryParams";
 import { useSelector } from "react-redux";
+import useSetURLInput from "../hooks/useSetURLInput";
 
 const ValueDrivingTextField = withStyles({
   root: {
@@ -32,7 +31,7 @@ export const pretaxCostOfDebtLabel = "Pre-tax Cost of Debt";
 const ValueDrivingInputs = () => {
   const theme = useTheme();
   const queryParams = useSelector(selectQueryParams);
-  const history = useHistory();
+  const setURLInput = useSetURLInput();
 
   return (
     <>
@@ -46,10 +45,7 @@ const ValueDrivingInputs = () => {
           label={cagrInYearsOneToFiveLabel}
           defaultValue={queryParams.cagrYearOneToFive}
           onBlur={(value) => {
-            setInputQueryParams(queryParams, "cagrYearOneToFive", value);
-            history.push({
-              search: queryParams.toString(),
-            });
+            setURLInput("cagrYearOneToFive", value);
           }}
           InputProps={{
             inputComponent: FormatInputToPercent,
@@ -59,14 +55,7 @@ const ValueDrivingInputs = () => {
           label={ebitTargetMarginInYearTenLabel}
           defaultValue={queryParams.ebitTargetMarginInYearTen}
           onBlur={(value) => {
-            setInputQueryParams(
-              queryParams,
-              "ebitTargetMarginInYearTen",
-              value
-            );
-            history.push({
-              search: queryParams.toString(),
-            });
+            setURLInput("ebitTargetMarginInYearTen", value);
           }}
           InputProps={{
             inputComponent: FormatInputToPercent,
@@ -76,10 +65,7 @@ const ValueDrivingInputs = () => {
           label={yearOfConvergenceLabel}
           defaultValue={queryParams.yearOfConvergence}
           onBlur={(value) => {
-            setInputQueryParams(queryParams, "yearOfConvergence", value);
-            history.push({
-              search: queryParams.toString(),
-            });
+            setURLInput("yearOfConvergence", value);
           }}
           InputProps={{
             inputComponent: FormatInputToYear,
@@ -89,10 +75,7 @@ const ValueDrivingInputs = () => {
           label={salesToCapitalRatioLabel}
           defaultValue={queryParams.salesToCapitalRatio}
           onBlur={(value) => {
-            setInputQueryParams(queryParams, "salesToCapitalRatio", value);
-            history.push({
-              search: queryParams.toString(),
-            });
+            setURLInput("salesToCapitalRatio", value);
           }}
           InputProps={{
             inputComponent: FormatInputToNumber,
@@ -102,10 +85,7 @@ const ValueDrivingInputs = () => {
           label={pretaxCostOfDebtLabel}
           defaultValue={queryParams.pretaxCostOfDebt}
           onBlur={(value) => {
-            setInputQueryParams(queryParams, "pretaxCostOfDebt", value);
-            history.push({
-              search: queryParams.toString(),
-            });
+            setURLInput("pretaxCostOfDebt", value);
           }}
           InputProps={{
             inputComponent: FormatInputToPercent,
