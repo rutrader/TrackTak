@@ -27,7 +27,7 @@ export const InfoOutlinedIconWrapper = ({ children, text, ...props }) => {
   const open = Boolean(anchorEl);
 
   return (
-    <Box {...props}>
+    <Box {...props} sx={{ position: "relative", ...props.sx }}>
       {children}
       <InfoOutlinedIcon
         onMouseEnter={handlePopoverOpen}
