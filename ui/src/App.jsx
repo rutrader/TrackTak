@@ -15,7 +15,7 @@ import LayoutHome from "./layout/LayoutHome";
 import { ConnectedRouter } from "connected-react-router";
 import { history } from "./redux/store";
 import TTTabs from "./components/TTTabs";
-import SyntheticRatings from "./syntheticRatings/SyntheticRating";
+import SyntheticRating from "./syntheticRatings/SyntheticRating";
 
 const GlobalStyle = createGlobalStyle`
   * { box-sizing: border-box; }
@@ -79,7 +79,7 @@ const Spinner = () => {
 
 const layoutFullScreenPaths = [
   "/discounted-cash-flow/:ticker",
-  "/synthetic-ratings/:ticker",
+  "/synthetic-rating/:ticker",
 ];
 const layoutPaths = ["/valuations/:id", "/valuations"];
 
@@ -106,7 +106,7 @@ function App() {
                   <DiscountedCashFlow />
                 </Route>
                 <Route path={layoutFullScreenPaths[1]}>
-                  <SyntheticRatings />
+                  <SyntheticRating />
                 </Route>
               </Switch>
             </LayoutFullScreen>

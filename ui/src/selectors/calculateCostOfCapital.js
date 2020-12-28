@@ -79,8 +79,12 @@ const calculateCostOfCapital = (fundamentals, query, riskFreeRate) => {
   };
 
   return {
-    leveredBetaForEquity,
-    totalCostOfCapital: costOfComponent.total,
+    leveredBetaForEquity: isNaN(leveredBetaForEquity)
+      ? null
+      : leveredBetaForEquity,
+    totalCostOfCapital: isNaN(costOfComponent.total)
+      ? null
+      : costOfComponent.total,
   };
 };
 

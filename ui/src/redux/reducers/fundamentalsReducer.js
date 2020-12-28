@@ -368,12 +368,15 @@ const setCurrentEquityRiskPremiumReducer = (state) => {
   };
 };
 
-const setGovernmentBondTenYearLastCloseReducer = (state, action) => {
-  state.governmentBondTenYearLastClose = action.payload;
+const setGovernmentBondTenYearLastCloseReducer = (
+  state,
+  { payload = null }
+) => {
+  state.governmentBondTenYearLastClose = payload;
 };
 
-const setExchangeRateHistoryReducer = (state, action) => {
-  state.exchangeRates = action.payload;
+const setExchangeRateHistoryReducer = (state, { payload = null }) => {
+  state.exchangeRates = payload;
 };
 
 export const fundamentalsReducer = createReducer(initialState, (builder) => {
