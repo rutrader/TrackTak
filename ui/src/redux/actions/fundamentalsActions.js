@@ -109,7 +109,7 @@ export const setFundamentalsData = createAsyncThunk(
     dispatch(
       setTenYearGovernmentBondLastClose(res[0].data.governmentBondLastClose)
     );
-    dispatch(setExchangeRateHistory(res[1]?.data.exchangeRates));
+    dispatch(setExchangeRateHistory(res[1]?.data));
     dispatch(setLastPriceClose(res[2].data.priceLastClose));
 
     return {
