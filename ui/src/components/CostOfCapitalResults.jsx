@@ -1,13 +1,13 @@
 import { Box, Typography, useTheme } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectCostOfCapital } from "../selectors/calculateCostOfCapital";
 import FormatRawNumber from "./FormatRawNumber";
 import FormatRawNumberToPercent from "./FormatRawNumberToPercent";
 import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 import { InfoTextCostOfCapital } from "./InfoText";
-import { selectRiskFreeRate } from "../selectors/calculateRiskFreeRate";
 import BoldValueLabel from "./BoldValueLabel";
+import selectRiskFreeRate from "../selectors/selectRiskFreeRate";
+import selectCostOfCapital from "../selectors/selectCostOfCapital";
 
 const CostOfCapitalResults = () => {
   const theme = useTheme();

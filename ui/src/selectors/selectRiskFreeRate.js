@@ -17,7 +17,7 @@ const calculateRiskFreeRate = (
   return riskFreeRate;
 };
 
-export const selectRiskFreeRate = createSelector(
+const selectRiskFreeRate = createSelector(
   (state) => state.fundamentals.governmentBondTenYearLastClose,
   (state) =>
     state.fundamentals.currentEquityRiskPremiumCountry?.adjDefaultSpread ??
@@ -25,4 +25,4 @@ export const selectRiskFreeRate = createSelector(
   calculateRiskFreeRate
 );
 
-export default calculateRiskFreeRate;
+export default selectRiskFreeRate;

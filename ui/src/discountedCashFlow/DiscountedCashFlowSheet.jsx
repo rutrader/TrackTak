@@ -28,10 +28,10 @@ import {
   useTheme,
 } from "@material-ui/core";
 import "../shared/blueprintTheme.scss";
-import { selectCostOfCapital } from "../selectors/calculateCostOfCapital";
-import { selectQueryParams } from "../selectors/getInputQueryParams";
-import { selectRiskFreeRate } from "../selectors/calculateRiskFreeRate";
-import { selectValueOfAllOptionsOutstanding } from "../selectors/calculateBlackScholesModel";
+import selectQueryParams from "../selectors/selectQueryParams";
+import selectCostOfCapital from "../selectors/selectCostOfCapital";
+import selectRiskFreeRate from "../selectors/selectRiskFreeRate";
+import selectValueOfAllOptionsOutstanding from "../selectors/selectValueOfAllOptionsOutstanding";
 
 const computeExpr = (key, expr, scope) => {
   let value = null;

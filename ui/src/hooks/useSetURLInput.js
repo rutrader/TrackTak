@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
-import { selectQueryParams } from "../selectors/getInputQueryParams";
+import selectQueryParams from "../selectors/selectQueryParams";
 import getInputQueryURLSearchParams from "../shared/getInputQueryURLSearchParams";
 
 const useSetURLInput = () => {

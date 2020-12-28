@@ -1,7 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit";
 import {
-  setExchangeRateHistory,
-  setFundamentalsData,
+  setExchangeRate,
+  setFundamentalsDataThunk,
   setLastPriceClose,
   setTenYearGovernmentBondLastClose,
 } from "../actions/fundamentalsActions";
@@ -29,15 +29,14 @@ const matureMarketEquityRiskPremium =
   ) / 100;
 
 const initialState = {
-  industryAverages,
-  equityRiskPremiumCountries,
   matureMarketEquityRiskPremium,
   currentIndustry: null,
   currentEquityRiskPremiumCountry: null,
   governmentBondTenYearLastClose: null,
-  exchangeRates: null,
   price: null,
   data: null,
+  exchangeRates: null,
+  mostRecentExchangeRate: null,
   balanceSheet: {
     bookValueOfDebt: null,
     bookValueOfEquity: null,
@@ -344,7 +343,7 @@ const setCurrentIndustryAverageReducer = (state) => {
   ).toUpperCase();
   const mappedCurrentIndustry = industryMappingsMutated[currentIndustryMutated];
 
-  state.currentIndustry = state.industryAverages.find((datum) => {
+  state.currentIndustry = industryAverages.find((datum) => {
     return datum.industryName === mappedCurrentIndustry;
   });
   state.currentIndustry.standardDeviationInStockPrices =
@@ -357,7 +356,7 @@ const setCurrentEquityRiskPremiumReducer = (state) => {
     countryRiskPremium,
     equityRiskPremium,
     adjDefaultSpread,
-  } = state.equityRiskPremiumCountries.find((datum) => {
+  } = equityRiskPremiumCountries.find((datum) => {
     const country = datum.country.toUpperCase();
 
     return country === state.data.General.AddressData.Country.toUpperCase();
@@ -378,13 +377,14 @@ const setGovernmentBondTenYearLastCloseReducer = (
   state.governmentBondTenYearLastClose = payload;
 };
 
-const setExchangeRateHistoryReducer = (state, { payload = null }) => {
+const setExchangeRateReducer = (state, { payload = null }) => {
   state.exchangeRates = payload;
+  state.mostRecentExchangeRate = payload ? Object.values(payload)[0] : null;
 };
 
 export const fundamentalsReducer = createReducer(initialState, (builder) => {
   builder.addCase(setLastPriceClose, setLastPriceCloseReducer);
-  builder.addCase(setFundamentalsData.fulfilled, (state, action) => {
+  builder.addCase(setFundamentalsDataThunk.fulfilled, (state, action) => {
     setFundamentalsReducer(state, action);
     setCurrentEquityRiskPremiumReducer(state, action);
     setCurrentIndustryAverageReducer(state, action);
@@ -393,5 +393,5 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
     setTenYearGovernmentBondLastClose,
     setGovernmentBondTenYearLastCloseReducer
   );
-  builder.addCase(setExchangeRateHistory, setExchangeRateHistoryReducer);
+  builder.addCase(setExchangeRate, setExchangeRateReducer);
 });

@@ -12,9 +12,9 @@ import FormatInputToNumber from "./FormatInputToNumber";
 import { textFieldRootStyles } from "../shared/utils";
 import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 import { InfoTextValueDrivingInputs } from "./InfoText";
-import { selectQueryParams } from "../selectors/getInputQueryParams";
 import { useSelector } from "react-redux";
 import useSetURLInput from "../hooks/useSetURLInput";
+import selectQueryParams from "../selectors/selectQueryParams";
 
 const ValueDrivingTextField = withStyles({
   root: {

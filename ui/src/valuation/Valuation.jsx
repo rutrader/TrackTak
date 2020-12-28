@@ -7,7 +7,6 @@ import ContainerDimensions from "react-container-dimensions";
 import YouTube from "react-youtube";
 import { Link as RouterLink } from "react-router-dom";
 
-import axios from "../axios/axios";
 import { setFundamentalsDataThunk } from "../redux/actions/fundamentalsActions";
 import CompanyOverviewStats from "../components/CompanyOverviewStats";
 import { Box, Link, Typography, useTheme } from "@material-ui/core";
@@ -28,6 +27,7 @@ import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
 import * as styles from "./Valuation.module.scss";
 import CostOfCapitalResults from "../components/CostOfCapitalResults";
 import dayjs from "dayjs";
+import { getContentfulEntry } from "../api/api";
 
 const options = {
   renderNode: {
@@ -93,27 +93,20 @@ const Valuation = () => {
 
   useEffect(() => {
     const fetchStockData = async () => {
-      try {
-        const contentfulData = await axios.get(
-          `/api/v1/contentful/getEntry/${params.id}`
-        );
-        const data = contentfulData.data.fields.data;
+      const contentfulData = await getContentfulEntry(params.id);
+      const data = contentfulData.data.fields.data;
 
-        dispatch(
-          setFundamentalsDataThunk({
-            data,
-            ticker: contentfulData.data.fields.ticker,
-            tenYearGovernmentBondLastCloseTo:
-              contentfulData.data.fields.dateOfValuation,
-            lastPriceCloseTo: contentfulData.data.fields.dateOfValuation,
-          })
-        );
+      dispatch(
+        setFundamentalsDataThunk({
+          data,
+          ticker: contentfulData.data.fields.ticker,
+          tenYearGovernmentBondLastCloseTo:
+            contentfulData.data.fields.dateOfValuation,
+          lastPriceCloseTo: contentfulData.data.fields.dateOfValuation,
+        })
+      );
 
-        setContentfulData(contentfulData.data);
-      } catch (error) {
-        console.error(error);
-        throw error;
-      }
+      setContentfulData(contentfulData.data);
     };
     fetchStockData();
   }, [dispatch, params.id]);

@@ -87,28 +87,29 @@ const api = {
         ...globalParams,
         ...query,
         fmt: "json",
-        filter: "last_close",
       },
     });
 
     return data;
   },
   getGovernmentBond: async (countryCode, year, query) => {
-    const countryAndYearGBond = `${countryCode}${year}Y.GBOND`;
     const data = await sendReqOrGetCachedData(
       async () => {
-        const { data } = await axios.get(`${eodUrl}/${countryAndYearGBond}`, {
-          params: {
-            ...globalParams,
-            ...query,
-            fmt: "json",
-          },
-        });
+        const { data } = await axios.get(
+          `${eodUrl}/${countryCode}${year}Y.GBOND`,
+          {
+            params: {
+              ...globalParams,
+              ...query,
+              fmt: "json",
+            },
+          }
+        );
 
         return data;
       },
-      "governmentBOnd",
-      { countryAndYearGBond, year, query }
+      "governmentBond",
+      { countryCode, year, query }
     );
 
     return data;
@@ -128,10 +129,47 @@ const api = {
           }
         );
 
+        if (Array.isArray(data)) {
+          const newData = {};
+
+          data.forEach((exchangeObject) => {
+            const dateKeyWithoutDay = exchangeObject.date.slice(0, -3);
+
+            newData[dateKeyWithoutDay] = {
+              ...exchangeObject,
+            };
+          });
+
+          return newData;
+        }
         return data;
       },
       "exchangeRate",
       { baseCurrency, quoteCurrency, query }
+    );
+
+    return data;
+  },
+  // Base currency is always EUR
+  getEURBaseExchangeRate: async (quoteCurrency, query) => {
+    const data = await sendReqOrGetCachedData(
+      async () => {
+        const { data } = await axios.get(
+          `${eodUrl}/ECBEUR${quoteCurrency}.MONEY`,
+          {
+            params: {
+              ...globalParams,
+              ...query,
+              order: "d",
+              fmt: "json",
+            },
+          }
+        );
+
+        return data;
+      },
+      "eurBaseExchangeRate",
+      { quoteCurrency, query }
     );
 
     return data;

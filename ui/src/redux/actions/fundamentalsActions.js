@@ -1,23 +1,21 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 
-import dayjs from "dayjs";
 import convertGBXToGBP from "../../shared/convertGBXToGBP";
-import { yearMonthDateFormat } from "../../shared/utils";
-import getMinimumHistoricalDateFromFinancialStatements from "../../shared/getMinimumHistoricalDateFromFinancialStatements";
 import {
   getExchangeRate,
   getFundamentals,
   getGovernmentBond,
   getPrices,
 } from "../../api/api";
+import dayjs from "dayjs";
+import { yearMonthDateFormat } from "../../shared/utils";
+import getMinimumHistoricalDateFromFinancialStatements from "../../shared/getMinimumHistoricalDateFromFinancialStatements";
 
 export const setTenYearGovernmentBondLastClose = createAction(
   "fundamentals/setTenYearGovernmentBondLastClose"
 );
 
-export const setExchangeRateHistory = createAction(
-  "fundamentals/setExchangeRateHistory"
-);
+export const setExchangeRate = createAction("fundamentals/setExchangeRate");
 
 export const setLastPriceClose = createAction("fundamentals/setLastPriceClose");
 
@@ -49,7 +47,8 @@ export const setFundamentalsDataThunk = createAsyncThunk(
 
     if (convertedBaseCurrency !== convertedQuoteCurrency) {
       promises.push(
-        getExchangeRate(baseCurrency, quoteCurrency, {
+        getExchangeRate(convertedBaseCurrency, convertedQuoteCurrency, {
+          period: "m",
           from,
         })
       );
@@ -57,11 +56,9 @@ export const setFundamentalsDataThunk = createAsyncThunk(
 
     const res = await Promise.all(promises);
 
-    dispatch(setTenYearGovernmentBondLastClose(res[0].data));
-    dispatch(setLastPriceClose(res[1].data));
-    if (res[2]) {
-      dispatch(setExchangeRateHistory(res[2].data));
-    }
+    dispatch(setTenYearGovernmentBondLastClose(res[0].data.value));
+    dispatch(setLastPriceClose(res[1].data.value));
+    dispatch(setExchangeRate(res[2]?.data.value));
 
     return {
       data,
@@ -76,6 +73,6 @@ export const getFundamentalsThunk = createAsyncThunk(
       filter,
     });
 
-    dispatch(setFundamentalsDataThunk({ data, ticker }));
+    dispatch(setFundamentalsDataThunk({ data: data.value, ticker }));
   }
 );

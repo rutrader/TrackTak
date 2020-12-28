@@ -1,15 +1,13 @@
-import { Box, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
 import FormatRawNumberToCurrency from "./FormatRawNumberToCurrency";
 import FormatRawNumberToMillion from "./FormatRawNumberToMillion";
-import {
-  selectValueOption,
-  selectValueOfAllOptionsOutstanding,
-} from "../selectors/calculateBlackScholesModel";
 import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 import { InfoTextBlackScholes } from "./InfoText";
 import BoldValueLabel from "./BoldValueLabel";
+import selectValueOption from "../selectors/selectValueOption";
+import selectValueOfAllOptionsOutstanding from "../selectors/selectValueOfAllOptionsOutstanding";
 
 const BlackScholesResults = () => {
   const valuePerOption = useSelector(selectValueOption);

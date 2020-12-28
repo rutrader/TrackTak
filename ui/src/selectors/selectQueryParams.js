@@ -30,8 +30,9 @@ const getInputQueryParams = (query) => {
   return inputQueryParams;
 };
 
-export const selectQueryParams = createSelector((state) => {
-  return state.router.location.query;
-}, getInputQueryParams);
+const selectQueryParams = createSelector(
+  (state) => state.router.location.query,
+  getInputQueryParams
+);
 
-export default getInputQueryParams;
+export default selectQueryParams;

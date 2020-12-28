@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { selectRiskFreeRate } from "./calculateRiskFreeRate";
-import { selectQueryParams } from "./getInputQueryParams";
+import selectRiskFreeRate from "./selectRiskFreeRate";
+import selectQueryParams from "./selectQueryParams";
 
 const calculateCostOfCapital = (fundamentals, query, riskFreeRate) => {
   // TODO: Maybe calculate averageMaturityOfDebt automatically based on the average
@@ -88,11 +88,11 @@ const calculateCostOfCapital = (fundamentals, query, riskFreeRate) => {
   };
 };
 
-export const selectCostOfCapital = createSelector(
+const selectCostOfCapital = createSelector(
   (state) => state.fundamentals,
   selectQueryParams,
   selectRiskFreeRate,
   calculateCostOfCapital
 );
 
-export default calculateCostOfCapital;
+export default selectCostOfCapital;

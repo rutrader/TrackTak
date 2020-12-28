@@ -1,9 +1,5 @@
 // https://gist.github.com/santacruz123/3623310
 
-import { createSelector } from "@reduxjs/toolkit";
-import { selectRiskFreeRate } from "./calculateRiskFreeRate";
-import { selectQueryParams } from "./getInputQueryParams";
-
 /*
   PutCallFlag: Either "put" or "call"
   S: Stock Price
@@ -45,36 +41,5 @@ const CND = (x) => {
     );
   }
 };
-
-export const selectValueOption = createSelector(
-  (state) => state.fundamentals.price,
-  selectQueryParams,
-  selectRiskFreeRate,
-  (state) => state.fundamentals.currentIndustry?.standardDeviationInStockPrices,
-  (price, queryParams, riskFreeRate, standardDeviationInStockPrices) => {
-    if (queryParams.averageStrikePrice === undefined) return null;
-    if (queryParams.averageMaturityOfOptions === undefined) return null;
-
-    return calculateBlackScholesModel(
-      "call",
-      price,
-      queryParams.averageStrikePrice,
-      queryParams.averageMaturityOfOptions,
-      riskFreeRate,
-      standardDeviationInStockPrices
-    );
-  }
-);
-
-export const selectValueOfAllOptionsOutstanding = createSelector(
-  selectValueOption,
-  selectQueryParams,
-  (valuePerOption, queryParams) => {
-    if (valuePerOption === null) return null;
-    if (queryParams.numberOfOptionsOutstanding === undefined) return null;
-
-    return valuePerOption * queryParams.numberOfOptionsOutstanding;
-  }
-);
 
 export default calculateBlackScholesModel;
