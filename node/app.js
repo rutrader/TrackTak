@@ -22,18 +22,28 @@ app.get("/api/v1/fundamentals/:ticker", async (req, res) => {
   res.send(value);
 });
 
-app.get("/api/v1/last-price-close/:ticker", async (req, res) => {
-  const priceLastClose = await api.getPrices(req.params.ticker, req.query);
+app.get("/api/v1/prices/:ticker", async (req, res) => {
+  const value = await api.getPrices(req.params.ticker, req.query);
 
-  res.send({ priceLastClose });
+  res.send(value);
 });
 
-app.get("/api/v1/government-bond-last-close/:countryCode", async (req, res) => {
-  const governmentBondLastClose = await api.getGovernmentBondLastClose(
-    req.params.countryCode,
-    req.query
-  );
-  res.send({ governmentBondLastClose });
+app.get(
+  "/api/v1/exchange-rate/:baseCurrency/:quoteCurrency",
+  async (req, res) => {
+    const value = await api.getExchangeRate(
+      req.params.baseCurrency,
+      req.params.quoteCurrency,
+      req.query
+    );
+
+    res.send(value);
+  }
+);
+
+app.get("/api/v1/government-bond/:countryCode/:year", async (req, res) => {
+  const value = await api.getGovernmentBond(req.params.countryCode, req.query);
+  res.send(value);
 });
 
 app.get(

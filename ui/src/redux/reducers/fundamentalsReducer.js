@@ -84,7 +84,7 @@ const getFinancialSheetPastValues = (
 };
 
 const getConvertCurrency = (exchangeRates) => (
-  datePeriodsToConverAt,
+  datePeriodsToConvertAt,
   valueToConvert
 ) => {
   const valueAsANumber = getValueFromString(valueToConvert);
@@ -93,15 +93,18 @@ const getConvertCurrency = (exchangeRates) => (
     return valueAsANumber;
 
   // TODO: Make this exact day later
-  const sumOfExchangeRateCloses = datePeriodsToConverAt.reduce((prev, date) => {
-    // Get exchange rate for that month
-    const datePeriodAsMonthDate = dayjs(date).format(monthDateFormat);
+  const sumOfExchangeRateCloses = datePeriodsToConvertAt.reduce(
+    (prev, date) => {
+      // Get exchange rate for that month
+      const datePeriodAsMonthDate = dayjs(date).format(monthDateFormat);
 
-    return prev + exchangeRates[datePeriodAsMonthDate].close;
-  }, 0);
+      return prev + exchangeRates[datePeriodAsMonthDate].close;
+    },
+    0
+  );
 
   const averageOfExchangeRateCloses =
-    sumOfExchangeRateCloses / datePeriodsToConverAt.length;
+    sumOfExchangeRateCloses / datePeriodsToConvertAt.length;
 
   return valueAsANumber * averageOfExchangeRateCloses;
 };

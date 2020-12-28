@@ -93,7 +93,7 @@ const api = {
 
     return data;
   },
-  getGovernmentBondLastClose: async (countryCode, query, year = 10) => {
+  getGovernmentBond: async (countryCode, year, query) => {
     const countryAndYearGBond = `${countryCode}${year}Y.GBOND`;
     const data = await sendReqOrGetCachedData(
       async () => {
@@ -102,20 +102,18 @@ const api = {
             ...globalParams,
             ...query,
             fmt: "json",
-            filter: "last_close",
           },
         });
 
         return data;
       },
-      "bond",
-      { countryAndYearGBond, query }
+      "governmentBOnd",
+      { countryAndYearGBond, year, query }
     );
 
     return data;
   },
-  // Base currency is always EUR
-  getExchangeRateHistory: async (baseCurrency, quoteCurrency, query) => {
+  getExchangeRate: async (baseCurrency, quoteCurrency, query) => {
     const data = await sendReqOrGetCachedData(
       async () => {
         const { data } = await axios.get(
@@ -125,25 +123,14 @@ const api = {
               ...globalParams,
               ...query,
               order: "d",
-              period: "m",
               fmt: "json",
             },
           }
         );
 
-        const newData = {};
-
-        data.forEach((exchangeObject) => {
-          const dateKeyWithoutDay = exchangeObject.date.slice(0, -3);
-
-          newData[dateKeyWithoutDay] = {
-            ...exchangeObject,
-          };
-        });
-
-        return newData;
+        return data;
       },
-      "exchangeRateHistory",
+      "exchangeRate",
       { baseCurrency, quoteCurrency, query }
     );
 

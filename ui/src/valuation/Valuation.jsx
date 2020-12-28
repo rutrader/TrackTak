@@ -8,7 +8,7 @@ import YouTube from "react-youtube";
 import { Link as RouterLink } from "react-router-dom";
 
 import axios from "../axios/axios";
-import { setFundamentalsData } from "../redux/actions/fundamentalsActions";
+import { setFundamentalsDataThunk } from "../redux/actions/fundamentalsActions";
 import CompanyOverviewStats from "../components/CompanyOverviewStats";
 import { Box, Link, Typography, useTheme } from "@material-ui/core";
 import ValueDrivingInputs, {
@@ -100,7 +100,7 @@ const Valuation = () => {
         const data = contentfulData.data.fields.data;
 
         dispatch(
-          setFundamentalsData({
+          setFundamentalsDataThunk({
             data,
             ticker: contentfulData.data.fields.ticker,
             tenYearGovernmentBondLastCloseTo:

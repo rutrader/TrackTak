@@ -7,14 +7,12 @@ import Section from "../components/Section";
 import { useSelector } from "react-redux";
 import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
 import BoldValueLabel from "../components/BoldValueLabel";
-
-const thresholdMarketCap = 5000000000;
+import useThresholdMarketCap from "../selectors/useThresholdMarketCap";
 
 const SyntheticRating = () => {
   const theme = useTheme();
   const fundamentals = useSelector((state) => state.fundamentals);
-
-  if (!fundamentals.data) return null;
+  const thresholdMarketCap = useThresholdMarketCap();
 
   const {
     data: { General, Highlights },
@@ -38,13 +36,11 @@ const SyntheticRating = () => {
       accessor: "spread",
     },
   ];
+  const isLargeCompany = Highlights.MarketCapitalization >= thresholdMarketCap;
 
   // TODO: Calculate whether riskier firm based on these fields as well:
   // - Past Volatile Earnings
   // - Risky industry
-
-  const isLargeCompany = Highlights.MarketCapitalization >= thresholdMarketCap;
-
   return (
     <Section>
       <Typography variant="h4" gutterBottom>

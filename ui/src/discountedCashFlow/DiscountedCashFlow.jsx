@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { getFundamentals } from "../redux/actions/fundamentalsActions";
+import {
+  fundamentalsFilter,
+  getFundamentalsThunk,
+} from "../redux/actions/fundamentalsActions";
 import { Box, Typography, useTheme } from "@material-ui/core";
 import TTTable from "../components/TTTable";
 import dayjs from "dayjs";
@@ -29,9 +32,6 @@ const mapFromStatementsToDateObject = (objectToLoop, valueKey) => {
   return dateObject;
 };
 
-const fundamentalsFilter =
-  "General,Highlights,SharesStats,Financials::Balance_Sheet,Financials::Income_Statement";
-
 const DiscountedCashFlow = () => {
   const params = useParams();
   const dispatch = useDispatch();
@@ -40,7 +40,10 @@ const DiscountedCashFlow = () => {
 
   useEffect(() => {
     dispatch(
-      getFundamentals({ ticker: params.ticker, filter: fundamentalsFilter })
+      getFundamentalsThunk({
+        ticker: params.ticker,
+        filter: fundamentalsFilter,
+      })
     );
   }, [dispatch, params.ticker]);
 
