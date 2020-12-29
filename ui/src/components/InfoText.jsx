@@ -15,6 +15,18 @@ export const InfoTextCostOfCapital = () => {
         on the company. This determines how much risk comes with owning a stock.
       </Box>
       <Box>
+        <b>Pre-tax Cost of Debt</b> - By default this is the synthetic rating
+        pre-tax cost of debt that we have automatically calculated for you which
+        is fine for most cases. If you manually input a cost of debt in the
+        Normal Debt input field then it will overwrite this synthetic cost of
+        debt.
+      </Box>
+      <Box>
+        <b>Cost of Capital (WACC)</b> - The total cost of raising capital (cash)
+        for the company, weighted by equity and debt. Full formula details
+        cominng soon.
+      </Box>
+      <Box>
         <b>Riskfree Rate</b> - Refers to the theoretical rate of return of an
         investment with zero risk. Formula: today's 10yr annual government yield
         - the default spread for the government.
@@ -67,11 +79,6 @@ export const InfoTextValueDrivingInputs = () => {
         set this number, the more efficiently you are growing and the higher the
         value of your growth.
       </Box>
-      <Box>
-        <b>Pre-tax Cost of Debt</b> - Current, long term cost of borrowing
-        money. If it has a credit rating from Moody's or similar then use it
-        here.
-      </Box>
     </>
   );
 };
@@ -80,8 +87,52 @@ export const InfoTextNormalDebt = () => {
   return (
     <>
       <Box>
-        <b>Average Maturity of Debt</b> - Generally found in the footnotes to
+        <b>Pre-tax Cost of Debt</b> - If you don't enter an input we will use a
+        synthetic pre-tax cost of debt. You can override this by entering your
+        own calculated pre-tax cost of debt here if you want.
+      </Box>
+      <Box>
+        <b>Average Maturity of Debt</b> - Years until all of the companies
+        outstanding debt matures on average.Generally found in the footnotes to
         the financial statements.
+      </Box>
+    </>
+  );
+};
+
+export const InfoSyntheticRating = () => {
+  return (
+    <>
+      <Box>
+        <b>Large/Small Company</b> - Large companies usually have stable
+        earnings and less chance of defaulting on their debt. Smaller companies
+        are usually risker, therefore they have higher costs of debts.
+      </Box>
+      <Box>
+        <b>Interest Coverage</b> - How many times over a company can satisfy
+        it's interest expenses with just it's operating income. A good interest
+        coverage is usually above 5. Companies with volatile operating income
+        can produce misleading interest coverages as they differ each year.
+      </Box>
+      <Box>
+        <b>Estimated Bond Rating</b> - The estimated bond rating that we have
+        worked out based on the companies interest coverage. It is similar to
+        Moody's, S&amp;P and Fitch's ratings. We use our own synthetic rating
+        because a lot of companies do not have any rating assigned by these
+        agencies.
+      </Box>
+      <Box>
+        <b>Estimated Company Default Spread</b> - The chance of a company
+        defaulting on it's debts within a year.
+      </Box>
+      <Box>
+        <b>Estimated Country Default Spread</b> - The chance of a country
+        defaulting on it's debts within a year.
+      </Box>
+      <Box>
+        <b>Estimated Pre-tax Cost of Debt</b> - The Synthetic Rating pre-tax
+        cost of debt that we have automatically calculated for you. This is used
+        to work out the cost of capital.
       </Box>
     </>
   );

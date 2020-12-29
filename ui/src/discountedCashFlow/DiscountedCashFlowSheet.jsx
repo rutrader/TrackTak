@@ -28,10 +28,11 @@ import {
   useTheme,
 } from "@material-ui/core";
 import "../shared/blueprintTheme.scss";
-import { selectCostOfCapital } from "../selectors/calculateCostOfCapital";
-import { selectQueryParams } from "../selectors/getInputQueryParams";
-import { selectRiskFreeRate } from "../selectors/calculateRiskFreeRate";
-import { selectValueOfAllOptionsOutstanding } from "../selectors/calculateBlackScholesModel";
+import selectQueryParams from "../selectors/selectQueryParams";
+import selectCostOfCapital from "../selectors/selectCostOfCapital";
+import selectRiskFreeRate from "../selectors/selectRiskFreeRate";
+import selectValueOfAllOptionsOutstanding from "../selectors/selectValueOfAllOptionsOutstanding";
+import LazyLoad from "react-lazyload";
 
 const computeExpr = (key, expr, scope) => {
   let value = null;
@@ -269,25 +270,27 @@ const DiscountedCashFlowSheet = (props) => {
           {showFormulas ? "Hide Formulas" : "Show Formulas"}
         </Button>
       </Box>
-      {/* Key: Hack to force re-render the table when formula state changes */}
-      <Table
-        key={showFormulas}
-        enableGhostCells
-        numFrozenColumns={isOnMobile ? 0 : 1}
-        numRows={numberOfRows}
-        columnWidths={columnWidths}
-      >
-        {columns.map((column) => {
-          return (
-            <Column
-              key={column}
-              id={column}
-              name={column}
-              cellRenderer={cellRenderer}
-            />
-          );
-        })}
-      </Table>
+      <LazyLoad offset={300} height={810}>
+        {/* Key: Hack to force re-render the table when formula state changes */}
+        <Table
+          key={showFormulas}
+          enableGhostCells
+          numFrozenColumns={isOnMobile ? 0 : 1}
+          numRows={numberOfRows}
+          columnWidths={columnWidths}
+        >
+          {columns.map((column) => {
+            return (
+              <Column
+                key={column}
+                id={column}
+                name={column}
+                cellRenderer={cellRenderer}
+              />
+            );
+          })}
+        </Table>
+      </LazyLoad>
     </Box>
   );
 };

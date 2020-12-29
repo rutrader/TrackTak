@@ -7,14 +7,15 @@ import ContainerDimensions from "react-container-dimensions";
 import YouTube from "react-youtube";
 import { Link as RouterLink } from "react-router-dom";
 
-import axios from "../axios/axios";
-import { setFundamentalsData } from "../redux/actions/fundamentalsActions";
+import {
+  setFundamentalsDataThunk,
+  setLastPriceClose,
+} from "../redux/actions/fundamentalsActions";
 import CompanyOverviewStats from "../components/CompanyOverviewStats";
 import { Box, Link, Typography, useTheme } from "@material-ui/core";
 import ValueDrivingInputs, {
   cagrInYearsOneToFiveLabel,
   ebitTargetMarginInYearTenLabel,
-  pretaxCostOfDebtLabel,
   salesToCapitalRatioLabel,
   yearOfConvergenceLabel,
 } from "../components/ValueDrivingInputs";
@@ -22,12 +23,14 @@ import Section from "../components/Section";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import FormatRawNumberToYear from "../components/FormatRawNumberToYear";
 import FormatRawNumber from "../components/FormatRawNumber";
-import DiscountedCashFlowSheet from "../discountedCashFlow/DiscountedCashFlowSheet";
 import SubscribeMailingList from "../components/SubscribeMailingList";
 import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
 import * as styles from "./Valuation.module.scss";
 import CostOfCapitalResults from "../components/CostOfCapitalResults";
 import dayjs from "dayjs";
+import { getContentfulEntry, getPrices } from "../api/api";
+import { pretaxCostOfDebtLabel } from "../components/OptionalInputs";
+import DiscountedCashFlowSheet from "../discountedCashFlow/DiscountedCashFlowSheet";
 
 const options = {
   renderNode: {
@@ -93,27 +96,26 @@ const Valuation = () => {
 
   useEffect(() => {
     const fetchStockData = async () => {
-      try {
-        const contentfulData = await axios.get(
-          `/api/v1/contentful/getEntry/${params.id}`
-        );
-        const data = contentfulData.data.fields.data;
+      const contentfulData = await getContentfulEntry(params.id);
+      const data = contentfulData.data.fields.data;
+      const ticker = contentfulData.data.fields.ticker;
 
-        dispatch(
-          setFundamentalsData({
-            data,
-            ticker: contentfulData.data.fields.ticker,
-            tenYearGovernmentBondLastCloseTo:
-              contentfulData.data.fields.dateOfValuation,
-            lastPriceCloseTo: contentfulData.data.fields.dateOfValuation,
-          })
-        );
+      dispatch(
+        setFundamentalsDataThunk({
+          data,
+          ticker,
+          tenYearGovernmentBondLastCloseTo:
+            contentfulData.data.fields.dateOfValuation,
+        })
+      );
+      const res = await getPrices(ticker, {
+        to: contentfulData.data.fields.dateOfValuation,
+        filter: "last_close",
+      });
 
-        setContentfulData(contentfulData.data);
-      } catch (error) {
-        console.error(error);
-        throw error;
-      }
+      dispatch(setLastPriceClose(res.data.value));
+
+      setContentfulData(contentfulData.data);
     };
     fetchStockData();
   }, [dispatch, params.id]);

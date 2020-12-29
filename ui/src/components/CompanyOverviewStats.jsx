@@ -1,13 +1,16 @@
 import { Box, Typography, useTheme } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
+import BoldValueLabel from "./BoldValueLabel";
 import FormatRawNumber from "./FormatRawNumber";
 import FormatRawNumberToMillion from "./FormatRawNumberToMillion";
 import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 
 const CompanyOverviewStats = ({ dateOfValuation }) => {
-  const fundamentals = useSelector((state) => state.fundamentals);
-  const { General, SharesStats } = fundamentals.data;
+  const {
+    data: { General, SharesStats },
+    ...fundamentals
+  } = useSelector((state) => state.fundamentals);
   const theme = useTheme();
 
   return (
@@ -35,32 +38,25 @@ const CompanyOverviewStats = ({ dateOfValuation }) => {
       </Typography>
       <Box sx={{ display: "flex", gap: theme.spacing(2) }}>
         <Box>
-          <Typography>
-            <Box
-              component="span"
-              sx={{ fontWeight: theme.typography.fontWeightBold }}
-            >
+          <BoldValueLabel
+            value={
               <FormatRawNumber value={fundamentals.price} decimalScale={2} />
-            </Box>
-            &nbsp;{fundamentals.valuationCurrencyCode}
-          </Typography>
-          <Typography>
-            <Box sx={{ display: "flex" }}>
-              <Box
-                component="span"
-                sx={{ fontWeight: theme.typography.fontWeightBold }}
-              >
-                <FormatRawNumberToMillion
-                  value={SharesStats.SharesOutstanding}
-                  suffix="M"
-                />
-              </Box>
-              &nbsp;
+            }
+            label={fundamentals.valuationCurrencyCode}
+          />
+          <BoldValueLabel
+            value={
+              <FormatRawNumberToMillion
+                value={SharesStats.SharesOutstanding}
+                suffix="m"
+              />
+            }
+            label={
               <InfoOutlinedIconWrapper text="Refers to a company's total stock currently held by public investors, including share blocks held by institutional investors and restricted shares owned by the company’s officers and insiders.">
                 Shares Outstanding
               </InfoOutlinedIconWrapper>
-            </Box>
-          </Typography>
+            }
+          />
         </Box>
       </Box>
     </Box>

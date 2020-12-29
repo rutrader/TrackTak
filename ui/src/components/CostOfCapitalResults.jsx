@@ -1,18 +1,27 @@
 import { Box, Typography, useTheme } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectCostOfCapital } from "../selectors/calculateCostOfCapital";
 import FormatRawNumber from "./FormatRawNumber";
 import FormatRawNumberToPercent from "./FormatRawNumberToPercent";
 import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 import { InfoTextCostOfCapital } from "./InfoText";
-import { selectRiskFreeRate } from "../selectors/calculateRiskFreeRate";
+import BoldValueLabel from "./BoldValueLabel";
+import selectRiskFreeRate from "../selectors/selectRiskFreeRate";
+import selectCostOfCapital from "../selectors/selectCostOfCapital";
+import { pretaxCostOfDebtLabel } from "./OptionalInputs";
+import selectPretaxCostOfDebt from "../selectors/selectPretaxCostOfDebt";
+import selectQueryParams from "../selectors/selectQueryParams";
+import { Link, useParams } from "react-router-dom";
 
 const CostOfCapitalResults = () => {
   const theme = useTheme();
   const fundamentals = useSelector((state) => state.fundamentals);
   const costOfCapital = useSelector(selectCostOfCapital);
   const riskFreeRate = useSelector(selectRiskFreeRate);
+  const queryParams = useSelector(selectQueryParams);
+  const pretaxCostOfDebt = useSelector(selectPretaxCostOfDebt);
+  const useQueryPretaxCostOfDebt = queryParams.pretaxCostOfDebt !== undefined;
+  const params = useParams();
 
   return (
     <>
@@ -29,92 +38,94 @@ const CostOfCapitalResults = () => {
         }}
       >
         <Box>
-          <Typography>
-            <Box
-              component="span"
-              sx={{ fontWeight: theme.typography.fontWeightBold }}
-            >
+          <BoldValueLabel
+            value={
               <FormatRawNumber
                 decimalScale={2}
                 value={fundamentals.currentIndustry.unleveredBeta}
               />
-            </Box>
-            &nbsp;Unlevered Beta
-          </Typography>
-          <Typography>
-            <Box
-              component="span"
-              sx={{ fontWeight: theme.typography.fontWeightBold }}
-            >
+            }
+            label="Unlevered Beta"
+          />
+          <BoldValueLabel
+            value={
               <FormatRawNumber
                 decimalScale={2}
                 value={costOfCapital.leveredBetaForEquity}
               />
-            </Box>
-            &nbsp;Levered Beta
-          </Typography>
-          <Typography>
-            <Box
-              component="span"
-              sx={{ fontWeight: theme.typography.fontWeightBold }}
-            >
+            }
+            label="Levered Beta"
+          />
+          <BoldValueLabel
+            value={<FormatRawNumberToPercent value={pretaxCostOfDebt} />}
+            label={
+              useQueryPretaxCostOfDebt ? (
+                `${pretaxCostOfDebtLabel} (Direct Input)`
+              ) : (
+                <>
+                  {pretaxCostOfDebtLabel}&nbsp;
+                  <Link to={`/synthetic-rating/${params.ticker}`}>
+                    (Synthetic Rating)
+                  </Link>
+                </>
+              )
+            }
+          />
+          <BoldValueLabel
+            value={
+              <FormatRawNumberToPercent
+                value={costOfCapital.totalCostOfCapital}
+              />
+            }
+            label="Cost of Capital"
+          />
+          <BoldValueLabel
+            value={
               <FormatRawNumberToPercent decimalScale={2} value={riskFreeRate} />
-            </Box>
-            &nbsp;Riskfree Rate
-          </Typography>
-          <Typography>
-            <Box
-              component="span"
-              sx={{ fontWeight: theme.typography.fontWeightBold }}
-            >
+            }
+            label="Riskfree Rate"
+          />
+        </Box>
+        <Box>
+          <BoldValueLabel
+            value={
               <FormatRawNumberToPercent
                 value={
                   fundamentals.currentEquityRiskPremiumCountry.equityRiskPremium
                 }
               />
-            </Box>
-            &nbsp;Country Equity Risk Premium
-          </Typography>
-        </Box>
-        <Box>
-          <Typography>
-            <Box
-              component="span"
-              sx={{ fontWeight: theme.typography.fontWeightBold }}
-            >
+            }
+            label="Country Equity Risk Premium"
+          />
+          <BoldValueLabel
+            value={
               <FormatRawNumberToPercent
                 value={fundamentals.matureMarketEquityRiskPremium}
               />
-            </Box>
-            &nbsp;Mature Market Equity Risk Premium
-          </Typography>
-          <Typography>
-            <Box
-              component="span"
-              sx={{ fontWeight: theme.typography.fontWeightBold }}
-            >
+            }
+            label="Mature Market Equity Risk Premium"
+          />
+          <BoldValueLabel
+            value={
               <FormatRawNumberToPercent
                 value={
                   fundamentals.currentEquityRiskPremiumCountry.corporateTaxRate
                 }
               />
-            </Box>
-            &nbsp;Marginal Tax Rate
-          </Typography>
-          <Typography>
-            <Box
-              component="span"
-              sx={{ fontWeight: theme.typography.fontWeightBold }}
-            >
+            }
+            label="Marginal Tax Rate"
+          />
+          <BoldValueLabel
+            value={
               <FormatRawNumberToPercent
                 value={
                   fundamentals.incomeStatement
                     .pastThreeYearsAverageEffectiveTaxRate
                 }
               />
-            </Box>
-            &nbsp;Effective Tax Rate (Avg. past 3 yr)
-          </Typography>
+            }
+            label="Effective Tax Rate (Avg. past 3 yr)"
+          />
         </Box>
       </Box>
     </>

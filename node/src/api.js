@@ -87,35 +87,34 @@ const api = {
         ...globalParams,
         ...query,
         fmt: "json",
-        filter: "last_close",
       },
     });
 
     return data;
   },
-  getGovernmentBondLastClose: async (countryCode, query, year = 10) => {
-    const countryAndYearGBond = `${countryCode}${year}Y.GBOND`;
+  getGovernmentBond: async (countryCode, year, query) => {
     const data = await sendReqOrGetCachedData(
       async () => {
-        const { data } = await axios.get(`${eodUrl}/${countryAndYearGBond}`, {
-          params: {
-            ...globalParams,
-            ...query,
-            fmt: "json",
-            filter: "last_close",
-          },
-        });
+        const { data } = await axios.get(
+          `${eodUrl}/${countryCode}${year}Y.GBOND`,
+          {
+            params: {
+              ...globalParams,
+              ...query,
+              fmt: "json",
+            },
+          }
+        );
 
         return data;
       },
-      "bond",
-      { countryAndYearGBond, query }
+      "governmentBond",
+      { countryCode, year, query }
     );
 
     return data;
   },
-  // Base currency is always EUR
-  getExchangeRateHistory: async (baseCurrency, quoteCurrency, query) => {
+  getExchangeRate: async (baseCurrency, quoteCurrency, query) => {
     const data = await sendReqOrGetCachedData(
       async () => {
         const { data } = await axios.get(
@@ -125,26 +124,52 @@ const api = {
               ...globalParams,
               ...query,
               order: "d",
-              period: "m",
               fmt: "json",
             },
           }
         );
 
-        const newData = {};
+        if (Array.isArray(data)) {
+          const newData = {};
 
-        data.forEach((exchangeObject) => {
-          const dateKeyWithoutDay = exchangeObject.date.slice(0, -3);
+          data.forEach((exchangeObject) => {
+            const dateKeyWithoutDay = exchangeObject.date.slice(0, -3);
 
-          newData[dateKeyWithoutDay] = {
-            ...exchangeObject,
-          };
-        });
+            newData[dateKeyWithoutDay] = {
+              ...exchangeObject,
+            };
+          });
 
-        return newData;
+          return newData;
+        }
+        return data;
       },
-      "exchangeRateHistory",
+      "exchangeRate",
       { baseCurrency, quoteCurrency, query }
+    );
+
+    return data;
+  },
+  // Base currency is always EUR
+  getEURBaseExchangeRate: async (quoteCurrency, query) => {
+    const data = await sendReqOrGetCachedData(
+      async () => {
+        const { data } = await axios.get(
+          `${eodUrl}/ECBEUR${quoteCurrency}.MONEY`,
+          {
+            params: {
+              ...globalParams,
+              ...query,
+              order: "d",
+              fmt: "json",
+            },
+          }
+        );
+
+        return data;
+      },
+      "eurBaseExchangeRate",
+      { quoteCurrency, query }
     );
 
     return data;

@@ -23,7 +23,8 @@ import {
 } from "./InfoText";
 import { useSelector } from "react-redux";
 import useSetURLInput from "../hooks/useSetURLInput";
-import { selectQueryParams } from "../selectors/getInputQueryParams";
+import selectQueryParams from "../selectors/selectQueryParams";
+import FormatInputToPercent from "./FormatInputToPercent";
 
 const OptionalTextField = withStyles({
   root: {
@@ -44,6 +45,8 @@ const OptionalInputAccordion = withStyles({
     },
   },
 })((props) => <Accordion elevation={0} {...props} />);
+
+export const pretaxCostOfDebtLabel = "Pre-tax Cost of Debt";
 
 const OptionalInputs = () => {
   const theme = useTheme();
@@ -75,6 +78,16 @@ const OptionalInputs = () => {
               gap: theme.spacing(2),
             }}
           >
+            <OptionalTextField
+              label={pretaxCostOfDebtLabel}
+              defaultValue={queryParams.pretaxCostOfDebt}
+              onBlur={(value) => {
+                setURLInput("pretaxCostOfDebt", value);
+              }}
+              InputProps={{
+                inputComponent: FormatInputToPercent,
+              }}
+            />
             <OptionalTextField
               label="Average Maturity of Debt"
               defaultValue={queryParams.averageMaturityOfDebt}

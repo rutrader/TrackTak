@@ -1,7 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit";
 import {
-  setExchangeRateHistory,
-  setFundamentalsData,
+  setExchangeRate,
+  setFundamentalsDataThunk,
   setLastPriceClose,
   setTenYearGovernmentBondLastClose,
 } from "../actions/fundamentalsActions";
@@ -9,7 +9,7 @@ import getSymbolFromCurrency from "currency-symbol-map";
 import { monthDateFormat } from "../../shared/utils";
 import dayjs from "dayjs";
 import convertGBXToGBP from "../../shared/convertGBXToGBP";
-import industryMapping from "../../shared/industryMapping.json";
+import industryMapping from "../../data/industryMapping.json";
 import industryAverages from "../../data/industryAverages.json";
 import equityRiskPremiumCountries from "../../data/equityRiskPremiumCountries.json";
 
@@ -29,15 +29,15 @@ const matureMarketEquityRiskPremium =
   ) / 100;
 
 const initialState = {
-  industryAverages,
-  equityRiskPremiumCountries,
   matureMarketEquityRiskPremium,
   currentIndustry: null,
   currentEquityRiskPremiumCountry: null,
   governmentBondTenYearLastClose: null,
-  exchangeRates: null,
   price: null,
   data: null,
+  isLoaded: false,
+  exchangeRates: null,
+  mostRecentExchangeRate: null,
   balanceSheet: {
     bookValueOfDebt: null,
     bookValueOfEquity: null,
@@ -84,7 +84,7 @@ const getFinancialSheetPastValues = (
 };
 
 const getConvertCurrency = (exchangeRates) => (
-  datePeriodsToConverAt,
+  datePeriodsToConvertAt,
   valueToConvert
 ) => {
   const valueAsANumber = getValueFromString(valueToConvert);
@@ -93,15 +93,18 @@ const getConvertCurrency = (exchangeRates) => (
     return valueAsANumber;
 
   // TODO: Make this exact day later
-  const sumOfExchangeRateCloses = datePeriodsToConverAt.reduce((prev, date) => {
-    // Get exchange rate for that month
-    const datePeriodAsMonthDate = dayjs(date).format(monthDateFormat);
+  const sumOfExchangeRateCloses = datePeriodsToConvertAt.reduce(
+    (prev, date) => {
+      // Get exchange rate for that month
+      const datePeriodAsMonthDate = dayjs(date).format(monthDateFormat);
 
-    return prev + exchangeRates[datePeriodAsMonthDate].close;
-  }, 0);
+      return prev + exchangeRates[datePeriodAsMonthDate].close;
+    },
+    0
+  );
 
   const averageOfExchangeRateCloses =
-    sumOfExchangeRateCloses / datePeriodsToConverAt.length;
+    sumOfExchangeRateCloses / datePeriodsToConvertAt.length;
 
   return valueAsANumber * averageOfExchangeRateCloses;
 };
@@ -340,12 +343,15 @@ const setCurrentIndustryAverageReducer = (state) => {
     ""
   ).toUpperCase();
   const mappedCurrentIndustry = industryMappingsMutated[currentIndustryMutated];
-
-  state.currentIndustry = state.industryAverages.find((datum) => {
+  const currentIndustry = industryAverages.find((datum) => {
     return datum.industryName === mappedCurrentIndustry;
   });
-  state.currentIndustry.standardDeviationInStockPrices =
-    parseFloat(state.currentIndustry.standardDeviationInStockPrices) / 100;
+
+  state.currentIndustry = {
+    ...currentIndustry,
+    standardDeviationInStockPrices:
+      parseFloat(currentIndustry.standardDeviationInStockPrices) / 100,
+  };
 };
 
 const setCurrentEquityRiskPremiumReducer = (state) => {
@@ -354,7 +360,7 @@ const setCurrentEquityRiskPremiumReducer = (state) => {
     countryRiskPremium,
     equityRiskPremium,
     adjDefaultSpread,
-  } = state.equityRiskPremiumCountries.find((datum) => {
+  } = equityRiskPremiumCountries.find((datum) => {
     const country = datum.country.toUpperCase();
 
     return country === state.data.General.AddressData.Country.toUpperCase();
@@ -368,24 +374,32 @@ const setCurrentEquityRiskPremiumReducer = (state) => {
   };
 };
 
-const setGovernmentBondTenYearLastCloseReducer = (state, action) => {
-  state.governmentBondTenYearLastClose = action.payload;
+const setGovernmentBondTenYearLastCloseReducer = (
+  state,
+  { payload = null }
+) => {
+  state.governmentBondTenYearLastClose = payload;
 };
 
-const setExchangeRateHistoryReducer = (state, action) => {
-  state.exchangeRates = action.payload;
+const setExchangeRateReducer = (state, { payload = null }) => {
+  state.exchangeRates = payload;
+  state.mostRecentExchangeRate = payload ? Object.values(payload)[0] : null;
 };
 
 export const fundamentalsReducer = createReducer(initialState, (builder) => {
   builder.addCase(setLastPriceClose, setLastPriceCloseReducer);
-  builder.addCase(setFundamentalsData.fulfilled, (state, action) => {
+  builder.addCase(setFundamentalsDataThunk.pending, (state) => {
+    state.isLoaded = false;
+  });
+  builder.addCase(setFundamentalsDataThunk.fulfilled, (state, action) => {
     setFundamentalsReducer(state, action);
     setCurrentEquityRiskPremiumReducer(state, action);
     setCurrentIndustryAverageReducer(state, action);
+    state.isLoaded = true;
   });
   builder.addCase(
     setTenYearGovernmentBondLastClose,
     setGovernmentBondTenYearLastCloseReducer
   );
-  builder.addCase(setExchangeRateHistory, setExchangeRateHistoryReducer);
+  builder.addCase(setExchangeRate, setExchangeRateReducer);
 });

@@ -1,17 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "../../axios/axios";
+import { getContentfulEntries } from "../../api/api";
 
 export const getDCFTemplateEntries = createAsyncThunk(
   "contentful/getDCFTemplateEntries",
   async () => {
-    try {
-      const res = await axios.get(
-        `/api/v1/contentful/getEntries?content_type=dcfTemplate`
-      );
-      return res.data;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+    const res = await getContentfulEntries({
+      content_type: "dcfTemplate",
+    });
+    return res.data;
   }
 );

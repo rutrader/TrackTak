@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Box, IconButton, TextField, withStyles } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/core";
 import { useHistory } from "react-router";
-import axios from "../axios/axios";
 import SearchIcon from "@material-ui/icons/Search";
+import { getAutocompleteQuery } from "../api/api";
 
 const TickerTextField = withStyles({
   root: ({ $removeInputPadding }) => {
@@ -30,7 +30,7 @@ const SubmitButton = withStyles({
   },
 })(IconButton);
 
-const SearchTicker = ({ buttonSize, removeInputPadding }) => {
+const SearchTicker = ({ removeInputPadding }) => {
   const [ticker, setTicker] = useState("");
   const [autoComplete, setAutoComplete] = useState([]);
   const history = useHistory();
@@ -47,8 +47,8 @@ const SearchTicker = ({ buttonSize, removeInputPadding }) => {
     setTicker(value);
 
     if (value.length > 1 && hasTickerNotOnlyWhiteSpace()) {
-      const res = await axios.get(`/api/v1/autocomplete-query/${value}`);
-      setAutoComplete(res.data);
+      const { data } = await getAutocompleteQuery(value);
+      setAutoComplete(data.value);
     } else {
       setAutoComplete([]);
     }

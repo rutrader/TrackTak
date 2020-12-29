@@ -1,14 +1,13 @@
-import { Box, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
 import FormatRawNumberToCurrency from "./FormatRawNumberToCurrency";
 import FormatRawNumberToMillion from "./FormatRawNumberToMillion";
-import {
-  selectValueOption,
-  selectValueOfAllOptionsOutstanding,
-} from "../selectors/calculateBlackScholesModel";
 import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 import { InfoTextBlackScholes } from "./InfoText";
+import BoldValueLabel from "./BoldValueLabel";
+import selectValueOption from "../selectors/selectValueOption";
+import selectValueOfAllOptionsOutstanding from "../selectors/selectValueOfAllOptionsOutstanding";
 
 const BlackScholesResults = () => {
   const valuePerOption = useSelector(selectValueOption);
@@ -24,20 +23,27 @@ const BlackScholesResults = () => {
         </InfoOutlinedIconWrapper>
       </Typography>
       <Typography gutterBottom>
-        Value Per Employee Option&nbsp;
-        <Box component="span" sx={{ fontWeight: "bold" }}>
-          <FormatRawNumberToCurrency value={valuePerOption} decimalScale={2} />
-        </Box>
+        <BoldValueLabel
+          value={
+            <FormatRawNumberToCurrency
+              value={valuePerOption}
+              decimalScale={2}
+            />
+          }
+          label="Value Per Employee Option"
+        />
       </Typography>
       <Typography gutterBottom>
-        Total Value of All Employee Options&nbsp;
-        <Box component="span" sx={{ fontWeight: "bold" }}>
-          <FormatRawNumberToMillion
-            value={valueOfAllOptionsOutstanding}
-            suffix="M"
-            decimalScale={2}
-          />
-        </Box>
+        <BoldValueLabel
+          value={
+            <FormatRawNumberToMillion
+              value={valueOfAllOptionsOutstanding}
+              suffix="m"
+              decimalScale={2}
+            />
+          }
+          label="Total Value of All Employee Options"
+        />
       </Typography>
     </>
   );

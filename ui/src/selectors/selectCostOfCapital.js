@@ -1,12 +1,17 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { selectRiskFreeRate } from "./calculateRiskFreeRate";
-import { selectQueryParams } from "./getInputQueryParams";
+import selectRiskFreeRate from "./selectRiskFreeRate";
+import selectQueryParams from "./selectQueryParams";
+import selectPretaxCostOfDebt from "./selectPretaxCostOfDebt";
 
-const calculateCostOfCapital = (fundamentals, query, riskFreeRate) => {
+const calculateCostOfCapital = (
+  fundamentals,
+  query,
+  pretaxCostOfDebt,
+  riskFreeRate
+) => {
   // TODO: Maybe calculate averageMaturityOfDebt automatically based on the average
   const averageMaturityOfDebt = query.averageMaturityOfDebt ?? 0;
   const maturityOfConvertibleDebt = query.maturityOfConvertibleDebt ?? 0;
-  const pretaxCostOfDebt = query.pretaxCostOfDebt ?? 0;
   const interestExpenseOnConvertibleDebt =
     query.interestExpenseOnConvertibleDebt ?? 0;
   const bookValueOfConvertibleDebt = query.bookValueOfConvertibleDebt ?? 0;
@@ -79,16 +84,21 @@ const calculateCostOfCapital = (fundamentals, query, riskFreeRate) => {
   };
 
   return {
-    leveredBetaForEquity,
-    totalCostOfCapital: costOfComponent.total,
+    leveredBetaForEquity: isNaN(leveredBetaForEquity)
+      ? null
+      : leveredBetaForEquity,
+    totalCostOfCapital: isNaN(costOfComponent.total)
+      ? null
+      : costOfComponent.total,
   };
 };
 
-export const selectCostOfCapital = createSelector(
+const selectCostOfCapital = createSelector(
   (state) => state.fundamentals,
   selectQueryParams,
+  selectPretaxCostOfDebt,
   selectRiskFreeRate,
   calculateCostOfCapital
 );
 
-export default calculateCostOfCapital;
+export default selectCostOfCapital;

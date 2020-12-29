@@ -12,9 +12,9 @@ import FormatInputToNumber from "./FormatInputToNumber";
 import { textFieldRootStyles } from "../shared/utils";
 import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 import { InfoTextValueDrivingInputs } from "./InfoText";
-import { selectQueryParams } from "../selectors/getInputQueryParams";
 import { useSelector } from "react-redux";
 import useSetURLInput from "../hooks/useSetURLInput";
+import selectQueryParams from "../selectors/selectQueryParams";
 
 const ValueDrivingTextField = withStyles({
   root: {
@@ -26,7 +26,6 @@ export const cagrInYearsOneToFiveLabel = "CAGR in Years 1-5";
 export const ebitTargetMarginInYearTenLabel = "EBIT Target Margin in Year 10";
 export const yearOfConvergenceLabel = "Year of Convergence";
 export const salesToCapitalRatioLabel = "Sales to Capital Ratio";
-export const pretaxCostOfDebtLabel = "Pre-tax Cost of Debt";
 
 const ValueDrivingInputs = () => {
   const theme = useTheme();
@@ -79,16 +78,6 @@ const ValueDrivingInputs = () => {
           }}
           InputProps={{
             inputComponent: FormatInputToNumber,
-          }}
-        />
-        <ValueDrivingTextField
-          label={pretaxCostOfDebtLabel}
-          defaultValue={queryParams.pretaxCostOfDebt}
-          onBlur={(value) => {
-            setURLInput("pretaxCostOfDebt", value);
-          }}
-          InputProps={{
-            inputComponent: FormatInputToPercent,
           }}
         />
       </Box>

@@ -1,13 +1,9 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
-import { getFundamentals } from "../redux/actions/fundamentalsActions";
+import React from "react";
 import { Box, Typography, useTheme } from "@material-ui/core";
 import TTTable from "../components/TTTable";
 import dayjs from "dayjs";
 import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
 import Section from "../components/Section";
-import DiscountedCashFlowSheet from "./DiscountedCashFlowSheet";
 import SubSection from "../components/SubSection";
 import SubscribeMailingList from "../components/SubscribeMailingList";
 import CompanyOverviewStats from "../components/CompanyOverviewStats";
@@ -16,6 +12,12 @@ import OptionalInputs from "../components/OptionalInputs";
 import CostOfCapitalResults from "../components/CostOfCapitalResults";
 import { InfoOutlinedIconWrapper } from "../components/InfoOutlinedIconWrapper";
 import BlackScholesResults from "../components/BlackScholesResults";
+import { useSelector } from "react-redux";
+import DiscountedCashFlowSheet from "./DiscountedCashFlowSheet";
+
+const TableValueMillionFormatter = (props) => (
+  <FormatRawNumberToMillion decimalScale={2} {...props} />
+);
 
 const mapFromStatementsToDateObject = (objectToLoop, valueKey) => {
   const dateObject = {};
@@ -23,28 +25,17 @@ const mapFromStatementsToDateObject = (objectToLoop, valueKey) => {
   Object.keys(objectToLoop).forEach((key) => {
     const value = objectToLoop[key];
 
-    dateObject[key] = <FormatRawNumberToMillion value={value[valueKey]} />;
+    dateObject[key] = <TableValueMillionFormatter value={value[valueKey]} />;
   });
 
   return dateObject;
 };
 
-const fundamentalsFilter =
-  "General,Highlights,SharesStats,Financials::Balance_Sheet,Financials::Income_Statement";
-
 const DiscountedCashFlow = () => {
-  const params = useParams();
-  const dispatch = useDispatch();
   const fundamentals = useSelector((state) => state.fundamentals);
   const theme = useTheme();
 
-  useEffect(() => {
-    dispatch(
-      getFundamentals({ ticker: params.ticker, filter: fundamentalsFilter })
-    );
-  }, [dispatch, params.ticker]);
-
-  if (!fundamentals.data) return null;
+  if (!fundamentals.isLoaded) return null;
 
   const companyFundamentalsColumns = [
     {
@@ -70,7 +61,7 @@ const DiscountedCashFlow = () => {
         </InfoOutlinedIconWrapper>
       ),
       ttm: fundamentals.hasIncomeTTM ? (
-        <FormatRawNumberToMillion
+        <TableValueMillionFormatter
           value={fundamentals.incomeStatement.totalRevenue}
         />
       ) : null,
@@ -86,7 +77,7 @@ const DiscountedCashFlow = () => {
         </InfoOutlinedIconWrapper>
       ),
       ttm: fundamentals.hasIncomeTTM ? (
-        <FormatRawNumberToMillion
+        <TableValueMillionFormatter
           value={fundamentals.incomeStatement.operatingIncome}
         />
       ) : null,
@@ -102,7 +93,7 @@ const DiscountedCashFlow = () => {
         </InfoOutlinedIconWrapper>
       ),
       ttm: fundamentals.hasIncomeTTM ? (
-        <FormatRawNumberToMillion
+        <TableValueMillionFormatter
           value={fundamentals.incomeStatement.interestExpense}
         />
       ) : null,
@@ -118,7 +109,7 @@ const DiscountedCashFlow = () => {
         </InfoOutlinedIconWrapper>
       ),
       ttm: (
-        <FormatRawNumberToMillion
+        <TableValueMillionFormatter
           value={fundamentals.balanceSheet.bookValueOfEquity}
         />
       ),
@@ -134,7 +125,7 @@ const DiscountedCashFlow = () => {
         </InfoOutlinedIconWrapper>
       ),
       ttm: (
-        <FormatRawNumberToMillion
+        <TableValueMillionFormatter
           value={fundamentals.balanceSheet.bookValueOfDebt}
         />
       ),
@@ -150,7 +141,7 @@ const DiscountedCashFlow = () => {
         </InfoOutlinedIconWrapper>
       ),
       ttm: (
-        <FormatRawNumberToMillion
+        <TableValueMillionFormatter
           value={fundamentals.balanceSheet.cashAndShortTermInvestments}
         />
       ),
@@ -166,7 +157,7 @@ const DiscountedCashFlow = () => {
         </InfoOutlinedIconWrapper>
       ),
       ttm: (
-        <FormatRawNumberToMillion
+        <TableValueMillionFormatter
           value={
             fundamentals.balanceSheet.noncontrollingInterestInConsolidatedEntity
           }
@@ -188,7 +179,7 @@ const DiscountedCashFlow = () => {
         </InfoOutlinedIconWrapper>
       ),
       ttm: fundamentals.hasIncomeTTM ? (
-        <FormatRawNumberToMillion
+        <TableValueMillionFormatter
           value={fundamentals.incomeStatement.minorityInterest}
         />
       ) : null,
