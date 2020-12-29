@@ -26,7 +26,6 @@ export const cagrInYearsOneToFiveLabel = "CAGR in Years 1-5";
 export const ebitTargetMarginInYearTenLabel = "EBIT Target Margin in Year 10";
 export const yearOfConvergenceLabel = "Year of Convergence";
 export const salesToCapitalRatioLabel = "Sales to Capital Ratio";
-export const pretaxCostOfDebtLabel = "Pre-tax Cost of Debt";
 
 const ValueDrivingInputs = () => {
   const theme = useTheme();
@@ -79,16 +78,6 @@ const ValueDrivingInputs = () => {
           }}
           InputProps={{
             inputComponent: FormatInputToNumber,
-          }}
-        />
-        <ValueDrivingTextField
-          label={pretaxCostOfDebtLabel}
-          defaultValue={queryParams.pretaxCostOfDebt}
-          onBlur={(value) => {
-            setURLInput("pretaxCostOfDebt", value);
-          }}
-          InputProps={{
-            inputComponent: FormatInputToPercent,
           }}
         />
       </Box>

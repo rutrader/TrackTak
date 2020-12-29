@@ -35,6 +35,7 @@ const initialState = {
   governmentBondTenYearLastClose: null,
   price: null,
   data: null,
+  isLoaded: false,
   exchangeRates: null,
   mostRecentExchangeRate: null,
   balanceSheet: {
@@ -342,12 +343,15 @@ const setCurrentIndustryAverageReducer = (state) => {
     ""
   ).toUpperCase();
   const mappedCurrentIndustry = industryMappingsMutated[currentIndustryMutated];
-
-  state.currentIndustry = industryAverages.find((datum) => {
+  const currentIndustry = industryAverages.find((datum) => {
     return datum.industryName === mappedCurrentIndustry;
   });
-  state.currentIndustry.standardDeviationInStockPrices =
-    parseFloat(state.currentIndustry.standardDeviationInStockPrices) / 100;
+
+  state.currentIndustry = {
+    ...currentIndustry,
+    standardDeviationInStockPrices:
+      parseFloat(currentIndustry.standardDeviationInStockPrices) / 100,
+  };
 };
 
 const setCurrentEquityRiskPremiumReducer = (state) => {
@@ -384,10 +388,14 @@ const setExchangeRateReducer = (state, { payload = null }) => {
 
 export const fundamentalsReducer = createReducer(initialState, (builder) => {
   builder.addCase(setLastPriceClose, setLastPriceCloseReducer);
+  builder.addCase(setFundamentalsDataThunk.pending, (state) => {
+    state.isLoaded = false;
+  });
   builder.addCase(setFundamentalsDataThunk.fulfilled, (state, action) => {
     setFundamentalsReducer(state, action);
     setCurrentEquityRiskPremiumReducer(state, action);
     setCurrentIndustryAverageReducer(state, action);
+    state.isLoaded = true;
   });
   builder.addCase(
     setTenYearGovernmentBondLastClose,

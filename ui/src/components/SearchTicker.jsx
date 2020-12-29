@@ -30,7 +30,7 @@ const SubmitButton = withStyles({
   },
 })(IconButton);
 
-const SearchTicker = ({ buttonSize, removeInputPadding }) => {
+const SearchTicker = ({ removeInputPadding }) => {
   const [ticker, setTicker] = useState("");
   const [autoComplete, setAutoComplete] = useState([]);
   const history = useHistory();

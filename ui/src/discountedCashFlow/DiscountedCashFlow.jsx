@@ -4,7 +4,6 @@ import TTTable from "../components/TTTable";
 import dayjs from "dayjs";
 import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
 import Section from "../components/Section";
-import DiscountedCashFlowSheet from "./DiscountedCashFlowSheet";
 import SubSection from "../components/SubSection";
 import SubscribeMailingList from "../components/SubscribeMailingList";
 import CompanyOverviewStats from "../components/CompanyOverviewStats";
@@ -14,6 +13,7 @@ import CostOfCapitalResults from "../components/CostOfCapitalResults";
 import { InfoOutlinedIconWrapper } from "../components/InfoOutlinedIconWrapper";
 import BlackScholesResults from "../components/BlackScholesResults";
 import { useSelector } from "react-redux";
+import DiscountedCashFlowSheet from "./DiscountedCashFlowSheet";
 
 const TableValueMillionFormatter = (props) => (
   <FormatRawNumberToMillion decimalScale={2} {...props} />
@@ -34,6 +34,8 @@ const mapFromStatementsToDateObject = (objectToLoop, valueKey) => {
 const DiscountedCashFlow = () => {
   const fundamentals = useSelector((state) => state.fundamentals);
   const theme = useTheme();
+
+  if (!fundamentals.isLoaded) return null;
 
   const companyFundamentalsColumns = [
     {

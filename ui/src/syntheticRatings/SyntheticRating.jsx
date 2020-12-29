@@ -14,18 +14,19 @@ import selectEstimatedCostOfDebt from "../selectors/selectEstimatedCostOfDebt";
 import selectInterestSpread from "../selectors/selectInterestSpread";
 import smallCompaniesInterestSpreads from "../data/smallCompaniesInterestSpreads.json";
 import largeCompaniesInterestSpreads from "../data/largeCompaniesInterestSpreads.json";
+import { InfoSyntheticRating } from "../components/InfoText";
+import { InfoOutlinedIconWrapper } from "../components/InfoOutlinedIconWrapper";
 
 const SyntheticRating = () => {
   const theme = useTheme();
-  const {
-    data: { General },
-    currentEquityRiskPremiumCountry,
-  } = useSelector((state) => state.fundamentals);
+  const fundamentals = useSelector((state) => state.fundamentals);
   const thresholdMarketCap = useSelector(selectThresholdMarketCap);
   const interestCoverage = useSelector(selectInterestCoverage);
   const isLargeCompany = useSelector(selectIsLargeCompany);
   const interestSpread = useSelector(selectInterestSpread);
   const estimatedCostOfDebt = useSelector(selectEstimatedCostOfDebt);
+
+  if (!fundamentals.isLoaded) return null;
 
   const syntheticRatingColumns = [
     {
@@ -50,12 +51,14 @@ const SyntheticRating = () => {
   // - Past Volatile Earnings
   // - Risky industry
   return (
-    <Section>
+    <>
       <Typography variant="h4" gutterBottom>
-        {General.Name}
+        {fundamentals.data.General.Name}
       </Typography>
       <Typography variant="h6" gutterBottom>
-        Synthetic Rating Results
+        <InfoOutlinedIconWrapper text={<InfoSyntheticRating />}>
+          Synthetic Rating Results
+        </InfoOutlinedIconWrapper>
       </Typography>
       <Box>
         <Typography style={{ fontWeight: theme.typography.fontWeightBold }}>
@@ -76,20 +79,22 @@ const SyntheticRating = () => {
           label="Estimated Bond Rating"
         />
         <BoldValueLabel
-          value={interestSpread.spread}
+          value={<FormatRawNumberToPercent value={interestSpread.spread} />}
           label="Estimated Company Default Spread"
         />
         <BoldValueLabel
           value={
             <FormatRawNumberToPercent
-              value={currentEquityRiskPremiumCountry.adjDefaultSpread}
+              value={
+                fundamentals.currentEquityRiskPremiumCountry.adjDefaultSpread
+              }
             />
           }
           label="Estimated Country Default Spread"
         />
         <BoldValueLabel
           value={<FormatRawNumberToPercent value={estimatedCostOfDebt} />}
-          label="Estimated Cost of Debt"
+          label="Estimated Pre-tax Cost of Debt"
         />
       </Box>
       <Section
@@ -118,7 +123,7 @@ const SyntheticRating = () => {
           />
         </Box>
       </Section>
-    </Section>
+    </>
   );
 };
 

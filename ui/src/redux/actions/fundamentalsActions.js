@@ -21,10 +21,7 @@ export const setLastPriceClose = createAction("fundamentals/setLastPriceClose");
 
 export const setFundamentalsDataThunk = createAsyncThunk(
   "fundamentals/setFundamentalsData",
-  async (
-    { data, ticker, tenYearGovernmentBondLastCloseTo, lastPriceCloseTo },
-    { dispatch }
-  ) => {
+  async ({ data, tenYearGovernmentBondLastCloseTo }, { dispatch }) => {
     const baseCurrency = data.Financials.Balance_Sheet.currency_symbol;
     const quoteCurrency = data.General.CurrencyCode;
     // UK stocks are quoted in pence so we convert it to GBP for ease of use
@@ -37,10 +34,6 @@ export const setFundamentalsDataThunk = createAsyncThunk(
     const promises = [
       getGovernmentBond(data.General.CountryISO, 10, {
         to: tenYearGovernmentBondLastCloseTo,
-        filter: "last_close",
-      }),
-      getPrices(ticker, {
-        to: lastPriceCloseTo,
         filter: "last_close",
       }),
     ];
@@ -57,8 +50,7 @@ export const setFundamentalsDataThunk = createAsyncThunk(
     const res = await Promise.all(promises);
 
     dispatch(setTenYearGovernmentBondLastClose(res[0].data.value));
-    dispatch(setLastPriceClose(res[1].data.value));
-    dispatch(setExchangeRate(res[2]?.data.value));
+    dispatch(setExchangeRate(res[1]?.data.value));
 
     return {
       data,
@@ -69,10 +61,16 @@ export const setFundamentalsDataThunk = createAsyncThunk(
 export const getFundamentalsThunk = createAsyncThunk(
   "fundamentals/getFundamentals",
   async ({ ticker, filter }, { dispatch }) => {
-    const { data } = await getFundamentals(ticker, {
+    const pricesPromise = getPrices(ticker, {
+      filter: "last_close",
+    });
+    const fundamentalsPromise = getFundamentals(ticker, {
       filter,
     });
 
-    dispatch(setFundamentalsDataThunk({ data: data.value, ticker }));
+    const res = await Promise.all([pricesPromise, fundamentalsPromise]);
+
+    dispatch(setLastPriceClose(res[0].data.value));
+    dispatch(setFundamentalsDataThunk({ data: res[1].data.value, ticker }));
   }
 );

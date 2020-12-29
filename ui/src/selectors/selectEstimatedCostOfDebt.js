@@ -6,9 +6,14 @@ const selectEstimatedCostOfDebt = createSelector(
   selectRiskFreeRate,
   selectInterestSpread,
   (state) =>
-    state.fundamentals.currentEquityRiskPremiumCountry.adjDefaultSpread,
-  (riskFreeRate, interestSpread, adjDefaultSpread) =>
-    riskFreeRate + interestSpread.spread + adjDefaultSpread
+    state.fundamentals.currentEquityRiskPremiumCountry?.adjDefaultSpread,
+  (riskFreeRate, interestSpread, adjDefaultSpread) => {
+    const value = riskFreeRate + interestSpread?.spread + adjDefaultSpread;
+
+    if (isNaN(value)) return null;
+
+    return value;
+  }
 );
 
 export default selectEstimatedCostOfDebt;
