@@ -12,8 +12,6 @@ import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import selectIsLargeCompany from "../selectors/selectIsLargeCompany";
 import selectEstimatedCostOfDebt from "../selectors/selectEstimatedCostOfDebt";
 import selectInterestSpread from "../selectors/selectInterestSpread";
-import smallCompaniesInterestSpreads from "../data/smallCompaniesInterestSpreads.json";
-import largeCompaniesInterestSpreads from "../data/largeCompaniesInterestSpreads.json";
 import { InfoSyntheticRating } from "../components/InfoText";
 import { InfoOutlinedIconWrapper } from "../components/InfoOutlinedIconWrapper";
 
@@ -30,12 +28,52 @@ const SyntheticRating = () => {
 
   const syntheticRatingColumns = [
     {
-      Header: "From",
-      accessor: "from",
+      Header: (
+        <Typography variant="h6">
+          Large Companies (&gt;=&nbsp;
+          <FormatRawNumberToMillion
+            useCurrencySymbol
+            value={thresholdMarketCap}
+            suffix="m"
+          />
+          &nbsp;Market Capitalization)
+        </Typography>
+      ),
+      columns: [
+        {
+          Header: "Interest Coverage From",
+          accessor: "large.from",
+        },
+        {
+          Header: "Interest Coverage To",
+          accessor: "large.to",
+        },
+      ],
+      id: "large",
     },
     {
-      Header: "To",
-      accessor: "to",
+      Header: (
+        <Typography variant="h6">
+          Smaller &amp; Riskier Companies (&lt;&nbsp;
+          <FormatRawNumberToMillion
+            useCurrencySymbol
+            value={thresholdMarketCap}
+            suffix="m"
+          />
+          &nbsp;Market Capitalization)
+        </Typography>
+      ),
+      columns: [
+        {
+          Header: "Interest Coverage From",
+          accessor: "small.from",
+        },
+        {
+          Header: "Interest Coverage To",
+          accessor: "small.to",
+        },
+      ],
+      id: "small",
     },
     {
       Header: "Rating",
@@ -97,31 +135,22 @@ const SyntheticRating = () => {
           label="Estimated Pre-tax Cost of Debt"
         />
       </Box>
-      <Section
-        sx={{ display: "flex", flexWrap: "wrap", gridGap: theme.spacing(4) }}
-      >
-        <Box sx={{ flex: 1 }}>
-          <Typography variant="h6">
-            Large Companies (&gt;=&nbsp;
-            <FormatRawNumberToMillion
-              useCurrencySymbol
-              value={thresholdMarketCap}
-              suffix="m"
-            />
-            &nbsp;Market Capitalization)
-          </Typography>
-          <TTTable
-            columns={syntheticRatingColumns}
-            data={largeCompaniesInterestSpreads}
-          />
-        </Box>
-        <Box sx={{ flex: 1 }}>
-          <Typography variant="h6">Smaller &amp; Riskier Companies</Typography>
-          <TTTable
-            columns={syntheticRatingColumns}
-            data={smallCompaniesInterestSpreads}
-          />
-        </Box>
+      <Section>
+        <TTTable
+          columns={syntheticRatingColumns}
+          data={fundamentals.companiesInterestSpreads.map(
+            (companiesInterestSpread) => {
+              return {
+                ...companiesInterestSpread,
+                spread: (
+                  <FormatRawNumberToPercent
+                    value={companiesInterestSpread.spread}
+                  />
+                ),
+              };
+            }
+          )}
+        />
       </Section>
     </>
   );
