@@ -12,9 +12,6 @@ import convertGBXToGBP from "../../shared/convertGBXToGBP";
 import industryMapping from "../../data/industryMapping.json";
 import industryAverages from "../../data/industryAverages.json";
 import equityRiskPremiumCountriesJson from "../../data/equityRiskPremiumCountries.json";
-import smallCompaniesInterestSpreadsJson from "../../data/smallCompaniesInterestSpreads.json";
-import largeCompaniesInterestSpreadsJson from "../../data/largeCompaniesInterestSpreads.json";
-import mergeWith from "lodash/mergeWith";
 
 const spaceRegex = /\s/g;
 const industryMappingsMutated = {};
@@ -25,39 +22,7 @@ Object.keys(industryMapping).forEach((key) => {
   industryMappingsMutated[noSpaceKey] = industryMapping[key];
 });
 
-const matureMarketEquityRiskPremium =
-  parseFloat(
-    equityRiskPremiumCountriesJson.find((x) => x.country === "United States")
-      .equityRiskPremium
-  ) / 100;
-
-const companiesInterestSpreads = mergeWith(
-  smallCompaniesInterestSpreadsJson,
-  largeCompaniesInterestSpreadsJson,
-  (objValue, srcValue) => {
-    if (objValue.rating !== srcValue.rating)
-      throw new Error("obj rating does not match src rating when it should");
-    if (objValue.spread !== srcValue.spread)
-      throw new Error("obj spread does not match src spread when it should");
-
-    return {
-      rating: objValue.rating,
-      spread: parseFloat(objValue.spread) / 100,
-      small: {
-        from: objValue.from,
-        to: objValue.to,
-      },
-      large: {
-        from: srcValue.from,
-        to: srcValue.to,
-      },
-    };
-  }
-).reverse();
-
 const initialState = {
-  matureMarketEquityRiskPremium,
-  companiesInterestSpreads,
   currentIndustry: null,
   currentEquityRiskPremiumCountry: null,
   governmentBondTenYearLastClose: null,

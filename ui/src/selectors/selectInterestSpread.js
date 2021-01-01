@@ -1,14 +1,11 @@
 import { createSelector } from "@reduxjs/toolkit";
 import selectIsLargeCompany from "./selectIsLargeCompany";
 import selectInterestCoverage from "./selectInterestCoverage";
+import companiesInterestSpreads from "../shared/companiesInterestSpreads";
 
-const calculateInterestSpread = (
-  companiesInterestSpreads,
-  isLargeCompany,
-  interestCoverage
-) => {
-  const findCurrentSpread = (spreads, key) => {
-    return spreads.find((spread) => {
+const calculateInterestSpread = (isLargeCompany, interestCoverage) => {
+  const findCurrentSpread = (key) => {
+    return companiesInterestSpreads.find((spread) => {
       const parsedFrom = parseFloat(spread[key].from);
       const parsedTo = parseFloat(spread[key].to);
 
@@ -17,12 +14,11 @@ const calculateInterestSpread = (
   };
 
   return isLargeCompany
-    ? findCurrentSpread(companiesInterestSpreads, "large")
-    : findCurrentSpread(companiesInterestSpreads, "small");
+    ? findCurrentSpread("large")
+    : findCurrentSpread("small");
 };
 
 const selectInterestSpread = createSelector(
-  (state) => state.fundamentals.companiesInterestSpreads,
   selectIsLargeCompany,
   selectInterestCoverage,
   calculateInterestSpread

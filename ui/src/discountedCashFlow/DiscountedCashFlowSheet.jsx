@@ -33,6 +33,7 @@ import selectCostOfCapital from "../selectors/selectCostOfCapital";
 import selectRiskFreeRate from "../selectors/selectRiskFreeRate";
 import selectValueOfAllOptionsOutstanding from "../selectors/selectValueOfAllOptionsOutstanding";
 import LazyLoad from "react-lazyload";
+import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
 
 const computeExpr = (key, expr, scope) => {
   let value = null;
@@ -130,12 +131,9 @@ const DiscountedCashFlowSheet = (props) => {
   }, [riskFreeRate]);
 
   useEffect(() => {
-    updateCell(
-      "M12",
-      fundamentals.matureMarketEquityRiskPremium + riskFreeRate
-    );
+    updateCell("M12", matureMarketEquityRiskPremium + riskFreeRate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fundamentals.matureMarketEquityRiskPremium, riskFreeRate]);
+  }, [riskFreeRate]);
 
   useEffect(() => {
     updateCell("B3", fundamentals.incomeStatement.totalRevenue);
