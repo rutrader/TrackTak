@@ -14,6 +14,7 @@ import selectEstimatedCostOfDebt from "../selectors/selectEstimatedCostOfDebt";
 import selectInterestSpread from "../selectors/selectInterestSpread";
 import { InfoSyntheticRating } from "../components/InfoText";
 import { InfoOutlinedIconWrapper } from "../components/InfoOutlinedIconWrapper";
+import companiesInterestSpreads from "../shared/companiesInterestSpreads";
 
 const SyntheticRating = () => {
   const theme = useTheme();
@@ -138,18 +139,16 @@ const SyntheticRating = () => {
       <Section>
         <TTTable
           columns={syntheticRatingColumns}
-          data={fundamentals.companiesInterestSpreads.map(
-            (companiesInterestSpread) => {
-              return {
-                ...companiesInterestSpread,
-                spread: (
-                  <FormatRawNumberToPercent
-                    value={companiesInterestSpread.spread}
-                  />
-                ),
-              };
-            }
-          )}
+          data={companiesInterestSpreads.map((companiesInterestSpread) => {
+            return {
+              ...companiesInterestSpread,
+              spread: (
+                <FormatRawNumberToPercent
+                  value={companiesInterestSpread.spread}
+                />
+              ),
+            };
+          })}
         />
       </Section>
     </>

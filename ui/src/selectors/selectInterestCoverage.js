@@ -1,8 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 const calculateInterestCoverage = (operatingIncome, interestExpense) => {
-  if (operatingIncome === undefined || interestExpense === undefined)
-    return null;
+  if (operatingIncome === null || interestExpense === null) return null;
   if (interestExpense === 0) return Infinity;
   if (operatingIncome < 0) return -Infinity;
 

@@ -12,6 +12,7 @@ import { pretaxCostOfDebtLabel } from "./OptionalInputs";
 import selectPretaxCostOfDebt from "../selectors/selectPretaxCostOfDebt";
 import selectQueryParams from "../selectors/selectQueryParams";
 import { Link, useParams } from "react-router-dom";
+import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
 
 const CostOfCapitalResults = () => {
   const theme = useTheme();
@@ -99,9 +100,7 @@ const CostOfCapitalResults = () => {
           />
           <BoldValueLabel
             value={
-              <FormatRawNumberToPercent
-                value={fundamentals.matureMarketEquityRiskPremium}
-              />
+              <FormatRawNumberToPercent value={matureMarketEquityRiskPremium} />
             }
             label="Mature Market Equity Risk Premium"
           />
