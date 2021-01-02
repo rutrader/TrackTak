@@ -68,7 +68,7 @@ const DiscountedCashFlow = () => {
           Revenue
         </InfoOutlinedIconWrapper>
       ),
-      ttm: fundamentals.hasIncomeTTM ? (
+      ttm: fundamentals.isInUS ? (
         <TableValueMillionFormatter
           value={fundamentals.incomeStatement.totalRevenue}
         />
@@ -84,7 +84,7 @@ const DiscountedCashFlow = () => {
           Operating Income
         </InfoOutlinedIconWrapper>
       ),
-      ttm: fundamentals.hasIncomeTTM ? (
+      ttm: fundamentals.isInUS ? (
         <TableValueMillionFormatter
           value={fundamentals.incomeStatement.operatingIncome}
         />
@@ -100,7 +100,7 @@ const DiscountedCashFlow = () => {
           Operating Margin
         </InfoOutlinedIconWrapper>
       ),
-      ttm: fundamentals.hasIncomeTTM ? (
+      ttm: fundamentals.isInUS ? (
         <FormatRawNumberToPercent
           value={fundamentals.incomeStatement.operatingMargin}
         />
@@ -117,7 +117,7 @@ const DiscountedCashFlow = () => {
           Interest Expense
         </InfoOutlinedIconWrapper>
       ),
-      ttm: fundamentals.hasIncomeTTM ? (
+      ttm: fundamentals.isInUS ? (
         <TableValueMillionFormatter
           value={fundamentals.incomeStatement.interestExpense}
         />
@@ -155,7 +155,7 @@ const DiscountedCashFlow = () => {
           Minority Interests
         </InfoOutlinedIconWrapper>
       ),
-      ttm: fundamentals.hasIncomeTTM ? (
+      ttm: fundamentals.isInUS ? (
         <TableValueMillionFormatter
           value={fundamentals.incomeStatement.minorityInterest}
         />
@@ -281,6 +281,14 @@ const DiscountedCashFlow = () => {
           </SubSection>
           <SubSection>
             <BlackScholesResults />
+          </SubSection>
+        </Box>
+        <Box sx={{ flex: 1 }}>
+          <SubSection>
+            <Typography variant="h5" gutterBottom>
+              Industry Averages
+            </Typography>
+            <OptionalInputs />
           </SubSection>
         </Box>
         <Box sx={{ flex: 1 }}>

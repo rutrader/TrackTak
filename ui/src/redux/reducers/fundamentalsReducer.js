@@ -9,18 +9,9 @@ import getSymbolFromCurrency from "currency-symbol-map";
 import { monthDateFormat } from "../../shared/utils";
 import dayjs from "dayjs";
 import convertGBXToGBP from "../../shared/convertGBXToGBP";
-import industryMapping from "../../data/industryMapping.json";
-import industryAverages from "../../data/industryAverages.json";
 import equityRiskPremiumCountriesJson from "../../data/equityRiskPremiumCountries.json";
-
-const spaceRegex = /\s/g;
-const industryMappingsMutated = {};
-
-Object.keys(industryMapping).forEach((key) => {
-  const noSpaceKey = key.replace(spaceRegex, "").toUpperCase();
-
-  industryMappingsMutated[noSpaceKey] = industryMapping[key];
-});
+import industryMapping, { spaceRegex } from "../../shared/industryMappings";
+import industryAverage from "../../shared/industryAverage";
 
 const initialState = {
   currentIndustry: null,
@@ -49,7 +40,7 @@ const initialState = {
   },
   yearlyBalanceSheets: null,
   yearlyIncomeStatements: null,
-  hasIncomeTTM: null,
+  isInUS: null,
   valuationCurrencySymbol: null,
   valuationCurrencyCode: null,
 };
@@ -180,7 +171,7 @@ const setFundamentalsReducer = (state, action) => {
 
   const recentYearlyIncomeStatement = sortedYearlyIncomeValues[0];
 
-  const hasIncomeTTM = General.CountryISO === "US";
+  const isInUS = General.CountryISO === "US";
   const pastPeriodsToGet = 3;
 
   let pastThreeYearIncomeBeforeTax;
@@ -189,7 +180,7 @@ const setFundamentalsReducer = (state, action) => {
   let incomeStatement;
 
   // TODO: Fix when the API fixes the TTM for non-US stocks
-  if (hasIncomeTTM) {
+  if (isInUS) {
     const quarters = 4;
     const pastThreeYearPeriods = pastPeriodsToGet * quarters;
 
@@ -348,7 +339,7 @@ const setFundamentalsReducer = (state, action) => {
 
   state.incomeStatement = incomeStatement;
   state.balanceSheet = balanceSheet;
-  state.hasIncomeTTM = hasIncomeTTM;
+  state.isInUS = isInUS;
   state.price =
     General.CurrencyCode === "GBX" ? state.price / 100 : state.price;
   state.valuationCurrencyCode = convertGBXToGBP(General.CurrencyCode);
@@ -368,7 +359,10 @@ const setCurrentIndustryAverageReducer = (state) => {
     spaceRegex,
     ""
   ).toUpperCase();
-  const mappedCurrentIndustry = industryMappingsMutated[currentIndustryMutated];
+  const mappedCurrentIndustry = industryMapping[currentIndustryMutated];
+  const industryAverages = state.isInUS
+    ? industryAverage.US
+    : industryAverage.global;
   const currentIndustry = industryAverages.find((datum) => {
     return datum.industryName === mappedCurrentIndustry;
   });
