@@ -2,10 +2,7 @@ import { Box, Typography, useTheme } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
 import BoldValueLabel from "./BoldValueLabel";
-import FormatRawNumber from "./FormatRawNumber";
 import FormatRawNumberToPercent from "./FormatRawNumberToPercent";
-import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
-import { InfoTextIndustryAverages } from "./InfoText";
 
 const IndustryAverages = () => {
   const theme = useTheme();
@@ -57,6 +54,10 @@ const IndustryAverages = () => {
             }
             label="ROIC (TTM)"
           />
+          <BoldValueLabel
+            value={currentIndustry.salesToCapital}
+            label="Sales to Capital Ratio"
+          />
         </Box>
         <Box>
           <BoldValueLabel
@@ -66,21 +67,11 @@ const IndustryAverages = () => {
             label="Cost of Capital"
           />
           <BoldValueLabel
-            value={
-              <FormatRawNumber
-                decimalScale={2}
-                value={currentIndustry.unleveredBeta}
-              />
-            }
+            value={currentIndustry.unleveredBeta}
             label="Unlevered Beta"
           />
           <BoldValueLabel
-            value={
-              <FormatRawNumber
-                decimalScale={2}
-                value={currentIndustry.equityLeveredBeta}
-              />
-            }
+            value={currentIndustry.equityLeveredBeta}
             label="Levered Beta"
           />
         </Box>
