@@ -1,4 +1,4 @@
-import React from "react";
+import React, { cloneElement } from "react";
 import { Box, Typography, useTheme } from "@material-ui/core";
 import TTTable from "../components/TTTable";
 import dayjs from "dayjs";
@@ -14,18 +14,26 @@ import { InfoOutlinedIconWrapper } from "../components/InfoOutlinedIconWrapper";
 import BlackScholesResults from "../components/BlackScholesResults";
 import { useSelector } from "react-redux";
 import DiscountedCashFlowSheet from "./DiscountedCashFlowSheet";
+import FormatRawNumber from "../components/FormatRawNumber";
+import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 
 const TableValueMillionFormatter = (props) => (
   <FormatRawNumberToMillion decimalScale={2} {...props} />
 );
 
-const mapFromStatementsToDateObject = (objectToLoop, valueKey) => {
+const mapFromStatementsToDateObject = (
+  objectToLoop,
+  valueKey,
+  valueFormatter = <TableValueMillionFormatter />
+) => {
   const dateObject = {};
 
   Object.keys(objectToLoop).forEach((key) => {
     const value = objectToLoop[key];
 
-    dateObject[key] = <TableValueMillionFormatter value={value[valueKey]} />;
+    dateObject[key] = cloneElement(valueFormatter, {
+      value: value[valueKey],
+    });
   });
 
   return dateObject;
@@ -88,6 +96,23 @@ const DiscountedCashFlow = () => {
     },
     {
       dataField: (
+        <InfoOutlinedIconWrapper text="Measures how much profit a company makes after paying for variable costs of production, such as wages and raw materials, but before paying interest or tax. Formula: Operating Income / Revenue.">
+          Operating Margin
+        </InfoOutlinedIconWrapper>
+      ),
+      ttm: fundamentals.hasIncomeTTM ? (
+        <FormatRawNumberToPercent
+          value={fundamentals.incomeStatement.operatingMargin}
+        />
+      ) : null,
+      ...mapFromStatementsToDateObject(
+        fundamentals.yearlyIncomeStatements,
+        "operatingMargin",
+        <FormatRawNumberToPercent />
+      ),
+    },
+    {
+      dataField: (
         <InfoOutlinedIconWrapper text="The costs of borrowing money. Usually paid at a recurring rate every set date and time. For example: bonds, loans, convertible debt or lines of credit.">
           Interest Expense
         </InfoOutlinedIconWrapper>
@@ -100,54 +125,6 @@ const DiscountedCashFlow = () => {
       ...mapFromStatementsToDateObject(
         fundamentals.yearlyIncomeStatements,
         "interestExpense"
-      ),
-    },
-    {
-      dataField: (
-        <InfoOutlinedIconWrapper text="Also known as Book Value of Equity is the amount of assets remaining after all of it's liabilities have been paid. This is because Assets = Liabilities + Equity.">
-          Total Stockholders Equity
-        </InfoOutlinedIconWrapper>
-      ),
-      ttm: (
-        <TableValueMillionFormatter
-          value={fundamentals.balanceSheet.bookValueOfEquity}
-        />
-      ),
-      ...mapFromStatementsToDateObject(
-        fundamentals.yearlyBalanceSheets,
-        "bookValueOfEquity"
-      ),
-    },
-    {
-      dataField: (
-        <InfoOutlinedIconWrapper text="The total amount of debt of which the company owes, which is recorded in the books of the company. We include capital lease obligations in this number as lease obligations are a form of debt.">
-          Book Value of Debt
-        </InfoOutlinedIconWrapper>
-      ),
-      ttm: (
-        <TableValueMillionFormatter
-          value={fundamentals.balanceSheet.bookValueOfDebt}
-        />
-      ),
-      ...mapFromStatementsToDateObject(
-        fundamentals.yearlyBalanceSheets,
-        "bookValueOfDebt"
-      ),
-    },
-    {
-      dataField: (
-        <InfoOutlinedIconWrapper text="Marketable securities are assets that can be readily bought and sold in a public market and can be liquidated to cash quickly.">
-          Cash &amp; Marketable Securities
-        </InfoOutlinedIconWrapper>
-      ),
-      ttm: (
-        <TableValueMillionFormatter
-          value={fundamentals.balanceSheet.cashAndShortTermInvestments}
-        />
-      ),
-      ...mapFromStatementsToDateObject(
-        fundamentals.yearlyBalanceSheets,
-        "cashAndShortTermInvestments"
       ),
     },
     {
@@ -188,6 +165,88 @@ const DiscountedCashFlow = () => {
         "minorityInterest"
       ),
     },
+    {
+      dataField: (
+        <InfoOutlinedIconWrapper text="Marketable securities are assets that can be readily bought and sold in a public market and can be liquidated to cash quickly.">
+          Cash &amp; Marketable Securities
+        </InfoOutlinedIconWrapper>
+      ),
+      ttm: (
+        <TableValueMillionFormatter
+          value={fundamentals.balanceSheet.cashAndShortTermInvestments}
+        />
+      ),
+      ...mapFromStatementsToDateObject(
+        fundamentals.yearlyBalanceSheets,
+        "cashAndShortTermInvestments"
+      ),
+    },
+    {
+      dataField: (
+        <InfoOutlinedIconWrapper text="Also known as Total Stockholders Equity is the amount of assets remaining after all of it's liabilities have been paid. This is because Assets = Liabilities + Equity.">
+          Book Value of Equity
+        </InfoOutlinedIconWrapper>
+      ),
+      ttm: (
+        <TableValueMillionFormatter
+          value={fundamentals.balanceSheet.bookValueOfEquity}
+        />
+      ),
+      ...mapFromStatementsToDateObject(
+        fundamentals.yearlyBalanceSheets,
+        "bookValueOfEquity"
+      ),
+    },
+    {
+      dataField: (
+        <InfoOutlinedIconWrapper text="The total amount of debt of which the company owes, which is recorded in the books of the company. We include capital lease obligations in this number as lease obligations are a form of debt.">
+          Book Value of Debt
+        </InfoOutlinedIconWrapper>
+      ),
+      ttm: (
+        <TableValueMillionFormatter
+          value={fundamentals.balanceSheet.bookValueOfDebt}
+        />
+      ),
+      ...mapFromStatementsToDateObject(
+        fundamentals.yearlyBalanceSheets,
+        "bookValueOfDebt"
+      ),
+    },
+    {
+      dataField: (
+        <InfoOutlinedIconWrapper text="The amount of capital that has been invested into the business. The formula is: (Equity + Debt) - Cash &amp; Marketable Securities. We minus the cash out because cash is not an investment as it returns nothing.">
+          Invested Capital
+        </InfoOutlinedIconWrapper>
+      ),
+      ttm: (
+        <TableValueMillionFormatter
+          value={fundamentals.balanceSheet.investedCapital}
+        />
+      ),
+      ...mapFromStatementsToDateObject(
+        fundamentals.yearlyBalanceSheets,
+        "investedCapital"
+      ),
+    },
+    {
+      dataField: (
+        <InfoOutlinedIconWrapper text="The efficiency of how much the company has to reinvest into the business to grow. The formula is: Total Revenue / Invested Capital. The higher the number the more efficient the company is.">
+          Sales to Capital Ratio
+        </InfoOutlinedIconWrapper>
+      ),
+      ttm: (
+        <FormatRawNumber
+          value={fundamentals.balanceSheet.salesToCapitalRatio}
+          decimalScale={2}
+        />
+      ),
+      ...mapFromStatementsToDateObject(
+        fundamentals.yearlyBalanceSheets,
+        "salesToCapitalRatio",
+        <FormatRawNumber decimalScale={2} />
+      ),
+    },
   ];
 
   return (
@@ -197,7 +256,7 @@ const DiscountedCashFlow = () => {
       </Box>
       <Section>
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Typography variant="h5">Company Fundamentals</Typography>
+          <Typography variant="h5">Past Fundamentals</Typography>
           <Typography
             style={{
               marginLeft: theme.spacing(1),

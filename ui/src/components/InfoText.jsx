@@ -74,10 +74,12 @@ export const InfoTextValueDrivingInputs = () => {
         current EBIT margin will converge on the target EBIT margin.
       </Box>
       <Box>
-        <b>Sales to Capital Ratio</b> - I compute how much you are going to
-        reinvest to keep your business growing in future years. The higher you
-        set this number, the more efficiently you are growing and the higher the
-        value of your growth.
+        <b>Sales to Capital Ratio</b> - We compute how much the company is going
+        to reinvest to keep the business growing in future years. The higher you
+        set this number, the more efficiently the business is growing and the
+        higher the value of your growth. You should look at the previous years
+        sales to capital ratio's in the above table and the industry average for
+        an idea of this value.
       </Box>
     </>
   );
