@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import DiscountedCashFlowSheet from "./DiscountedCashFlowSheet";
 import FormatRawNumber from "../components/FormatRawNumber";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
+import IndustryAverages from "../components/IndustryAverages";
 
 const TableValueMillionFormatter = (props) => (
   <FormatRawNumberToMillion decimalScale={2} {...props} />
@@ -68,7 +69,7 @@ const DiscountedCashFlow = () => {
           Revenue
         </InfoOutlinedIconWrapper>
       ),
-      ttm: fundamentals.hasIncomeTTM ? (
+      ttm: fundamentals.isInUS ? (
         <TableValueMillionFormatter
           value={fundamentals.incomeStatement.totalRevenue}
         />
@@ -84,7 +85,7 @@ const DiscountedCashFlow = () => {
           Operating Income
         </InfoOutlinedIconWrapper>
       ),
-      ttm: fundamentals.hasIncomeTTM ? (
+      ttm: fundamentals.isInUS ? (
         <TableValueMillionFormatter
           value={fundamentals.incomeStatement.operatingIncome}
         />
@@ -100,7 +101,7 @@ const DiscountedCashFlow = () => {
           Operating Margin
         </InfoOutlinedIconWrapper>
       ),
-      ttm: fundamentals.hasIncomeTTM ? (
+      ttm: fundamentals.isInUS ? (
         <FormatRawNumberToPercent
           value={fundamentals.incomeStatement.operatingMargin}
         />
@@ -117,7 +118,7 @@ const DiscountedCashFlow = () => {
           Interest Expense
         </InfoOutlinedIconWrapper>
       ),
-      ttm: fundamentals.hasIncomeTTM ? (
+      ttm: fundamentals.isInUS ? (
         <TableValueMillionFormatter
           value={fundamentals.incomeStatement.interestExpense}
         />
@@ -155,7 +156,7 @@ const DiscountedCashFlow = () => {
           Minority Interests
         </InfoOutlinedIconWrapper>
       ),
-      ttm: fundamentals.hasIncomeTTM ? (
+      ttm: fundamentals.isInUS ? (
         <TableValueMillionFormatter
           value={fundamentals.incomeStatement.minorityInterest}
         />
@@ -277,18 +278,18 @@ const DiscountedCashFlow = () => {
             <ValueDrivingInputs />
           </SubSection>
           <SubSection>
-            <CostOfCapitalResults />
-          </SubSection>
-          <SubSection>
-            <BlackScholesResults />
+            <OptionalInputs />
           </SubSection>
         </Box>
         <Box sx={{ flex: 1 }}>
           <SubSection>
-            <Typography variant="h5" gutterBottom>
-              Optional Inputs
-            </Typography>
-            <OptionalInputs />
+            <IndustryAverages />
+          </SubSection>
+          <SubSection>
+            <CostOfCapitalResults />
+          </SubSection>
+          <SubSection>
+            <BlackScholesResults />
           </SubSection>
         </Box>
       </Section>
