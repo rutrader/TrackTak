@@ -370,7 +370,7 @@ const setCurrentIndustryAverageReducer = (state) => {
   state.currentIndustry = {
     ...currentIndustry,
     standardDeviationInStockPrices:
-      parseFloat(currentIndustry.standardDeviationInStockPrices) / 100,
+      currentIndustry.standardDeviationInStockPrices,
   };
 };
 

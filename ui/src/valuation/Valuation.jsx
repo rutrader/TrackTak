@@ -31,6 +31,7 @@ import dayjs from "dayjs";
 import { getContentfulEntry, getPrices } from "../api/api";
 import { pretaxCostOfDebtLabel } from "../components/OptionalInputs";
 import DiscountedCashFlowSheet from "../discountedCashFlow/DiscountedCashFlowSheet";
+import IndustryAverages from "../components/IndustryAverages";
 
 const options = {
   renderNode: {
@@ -204,6 +205,9 @@ const Valuation = () => {
           </NumberSpan>
           {fields.pretaxCostOfDebtDescription}
         </Typography>
+      </Section>
+      <Section>
+        <IndustryAverages />
       </Section>
       <Section>
         <CostOfCapitalResults />

@@ -2,16 +2,18 @@ import industryAveragesGlobalJson from "../data/industryAveragesGlobal.json";
 import industryAveragesUSJson from "../data/industryAveragesUS.json";
 
 const getConvertedIndustryAverages = (industryAverages) => {
-  industryAverages.map((industryAverage) => {
+  return industryAverages.map((industryAverage) => {
     const industryAverageObject = {};
 
     Object.keys(industryAverage).forEach((key) => {
       const value = industryAverage[key];
 
       if (typeof value === "string") {
-        const parsedNumber = parseFloat(industryAverage);
+        const parsedNumber = parseFloat(value);
 
-        industryAverageObject[key] = isNaN(parsedNumber) ? value : parsedNumber;
+        industryAverageObject[key] = isNaN(parsedNumber)
+          ? value
+          : parsedNumber / 100;
       } else {
         industryAverageObject[key] = value;
       }

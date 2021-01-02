@@ -30,12 +30,14 @@ const CompanyOverviewStats = ({ dateOfValuation }) => {
           </Typography>
         )}
       </Box>
-      <Typography color="textSecondary" style={{ textTransform: "uppercase" }}>
+      <Typography
+        gutterBottom
+        color="textSecondary"
+        style={{ textTransform: "uppercase" }}
+      >
         {General.Code}.{General.Exchange}
       </Typography>
-      <Typography gutterBottom>
-        {fundamentals.currentIndustry.industryName}
-      </Typography>
+
       <Box sx={{ display: "flex", gap: theme.spacing(2) }}>
         <Box>
           <BoldValueLabel

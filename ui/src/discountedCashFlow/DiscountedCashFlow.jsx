@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import DiscountedCashFlowSheet from "./DiscountedCashFlowSheet";
 import FormatRawNumber from "../components/FormatRawNumber";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
+import IndustryAverages from "../components/IndustryAverages";
 
 const TableValueMillionFormatter = (props) => (
   <FormatRawNumberToMillion decimalScale={2} {...props} />
@@ -277,26 +278,18 @@ const DiscountedCashFlow = () => {
             <ValueDrivingInputs />
           </SubSection>
           <SubSection>
+            <OptionalInputs />
+          </SubSection>
+        </Box>
+        <Box sx={{ flex: 1 }}>
+          <SubSection>
+            <IndustryAverages />
+          </SubSection>
+          <SubSection>
             <CostOfCapitalResults />
           </SubSection>
           <SubSection>
             <BlackScholesResults />
-          </SubSection>
-        </Box>
-        <Box sx={{ flex: 1 }}>
-          <SubSection>
-            <Typography variant="h5" gutterBottom>
-              Industry Averages
-            </Typography>
-            <OptionalInputs />
-          </SubSection>
-        </Box>
-        <Box sx={{ flex: 1 }}>
-          <SubSection>
-            <Typography variant="h5" gutterBottom>
-              Optional Inputs
-            </Typography>
-            <OptionalInputs />
           </SubSection>
         </Box>
       </Section>
