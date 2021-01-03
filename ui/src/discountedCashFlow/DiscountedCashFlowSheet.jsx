@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import * as mathjs from "mathjs";
+import { evaluate } from "mathjs";
 import { useEffect } from "react";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import { useCallback } from "react";
@@ -42,7 +42,7 @@ const computeExpr = (key, expr, scope) => {
     return { value: expr, expr: expr };
   } else {
     try {
-      value = mathjs.evaluate(expr.substring(1), scope);
+      value = evaluate(expr.substring(1), scope);
     } catch (e) {
       value = null;
     }

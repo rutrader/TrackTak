@@ -2,7 +2,6 @@ import React from "react";
 import TTTable from "../components/TTTable";
 import { makeStyles, Typography } from "@material-ui/core";
 import { useSelector } from "react-redux";
-import { sentenceCase } from "change-case";
 import industryAveragesUSJson from "../data/industryAveragesUS.json";
 import industryAveragesGlobalJson from "../data/industryAveragesGlobal.json";
 import SubSection from "../components/SubSection";
