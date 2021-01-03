@@ -33,7 +33,7 @@ const IndustryAverages = () => {
           <BoldValueLabel
             value={
               <FormatRawNumberToPercent
-                value={currentIndustry.annualAverageRevenueGrowthLastFiveYears}
+                value={currentIndustry.annualAverageCAGRLastFiveYears}
               />
             }
             label="CAGR Past Five Years"
@@ -48,14 +48,12 @@ const IndustryAverages = () => {
           />
           <BoldValueLabel
             value={
-              <FormatRawNumberToPercent
-                value={currentIndustry.afterTaxReturnOnCapital}
-              />
+              <FormatRawNumberToPercent value={currentIndustry.afterTaxROIC} />
             }
             label="ROIC (TTM)"
           />
           <BoldValueLabel
-            value={currentIndustry.salesToCapital}
+            value={currentIndustry["sales/Capital"]}
             label="Sales to Capital Ratio"
           />
         </Box>
