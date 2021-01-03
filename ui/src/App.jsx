@@ -8,11 +8,12 @@ import { Box, CircularProgress, useTheme } from "@material-ui/core";
 import LayoutFullScreen from "./layout/LayoutFullScreen";
 import Layout from "./layout/Layout";
 import LayoutHome from "./layout/LayoutHome";
-import SyntheticRating from "./syntheticRatings/SyntheticRating";
+import SyntheticRating from "./syntheticRating/SyntheticRating";
 import { ConnectedRouter } from "connected-react-router";
 import { history } from "./redux/store";
 import { lazy, Suspense } from "react";
 import Valuations from "./valuation/Valuations";
+import IndustryAverages from "./industryAverages/IndustryAverages";
 
 const LandingPage = lazy(() => import("./landingPage/LandingPage"));
 const DiscountedCashFlow = lazy(() =>
@@ -81,6 +82,7 @@ const Spinner = () => {
 export const layoutFullScreenPaths = [
   "/discounted-cash-flow/:ticker",
   "/synthetic-rating/:ticker",
+  "/industry-averages/:ticker",
 ];
 const layoutPaths = ["/valuations/:id", "/valuations"];
 
@@ -107,6 +109,9 @@ function App() {
                   </Route>
                   <Route path={layoutFullScreenPaths[1]}>
                     <SyntheticRating />
+                  </Route>
+                  <Route path={layoutFullScreenPaths[2]}>
+                    <IndustryAverages />
                   </Route>
                 </Switch>
               </LayoutFullScreen>

@@ -1,7 +1,6 @@
 import React from "react";
 import TTTable from "../components/TTTable";
 import { Box, Typography, useTheme } from "@material-ui/core";
-import Section from "../components/Section";
 import { useSelector } from "react-redux";
 import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
 import BoldValueLabel from "../components/BoldValueLabel";
@@ -15,6 +14,7 @@ import selectInterestSpread from "../selectors/selectInterestSpread";
 import { InfoSyntheticRating } from "../components/InfoText";
 import { InfoOutlinedIconWrapper } from "../components/InfoOutlinedIconWrapper";
 import companiesInterestSpreads from "../shared/companiesInterestSpreads";
+import SubSection from "../components/SubSection";
 
 const SyntheticRating = () => {
   const theme = useTheme();
@@ -94,49 +94,50 @@ const SyntheticRating = () => {
       <Typography variant="h4" gutterBottom>
         {fundamentals.data.General.Name}
       </Typography>
-      <Typography variant="h6" gutterBottom>
-        <InfoOutlinedIconWrapper text={<InfoSyntheticRating />}>
-          Synthetic Rating Results
-        </InfoOutlinedIconWrapper>
-      </Typography>
-      <Box>
-        <Typography style={{ fontWeight: theme.typography.fontWeightBold }}>
-          {isLargeCompany ? "Large Company" : "Small Company"}
+      <SubSection>
+        <Typography variant="h6" gutterBottom>
+          <InfoOutlinedIconWrapper text={<InfoSyntheticRating />}>
+            Synthetic Rating Results
+          </InfoOutlinedIconWrapper>
         </Typography>
-        <BoldValueLabel
-          value={
-            interestCoverage === Infinity || interestCoverage === -Infinity ? (
-              interestCoverage
-            ) : (
-              <FormatRawNumber value={interestCoverage} />
-            )
-          }
-          label="Interest Coverage"
-        />
-        <BoldValueLabel
-          value={interestSpread.rating}
-          label="Estimated Bond Rating"
-        />
-        <BoldValueLabel
-          value={<FormatRawNumberToPercent value={interestSpread.spread} />}
-          label="Estimated Company Default Spread"
-        />
-        <BoldValueLabel
-          value={
-            <FormatRawNumberToPercent
-              value={
-                fundamentals.currentEquityRiskPremiumCountry.adjDefaultSpread
-              }
-            />
-          }
-          label="Estimated Country Default Spread"
-        />
-        <BoldValueLabel
-          value={<FormatRawNumberToPercent value={estimatedCostOfDebt} />}
-          label="Estimated Pre-tax Cost of Debt"
-        />
-      </Box>
-      <Section>
+        <Box>
+          <Typography style={{ fontWeight: theme.typography.fontWeightBold }}>
+            {isLargeCompany ? "Large Company" : "Small Company"}
+          </Typography>
+          <BoldValueLabel
+            value={
+              interestCoverage === Infinity ||
+              interestCoverage === -Infinity ? (
+                interestCoverage
+              ) : (
+                <FormatRawNumber value={interestCoverage} />
+              )
+            }
+            label="Interest Coverage"
+          />
+          <BoldValueLabel
+            value={interestSpread.rating}
+            label="Estimated Bond Rating"
+          />
+          <BoldValueLabel
+            value={<FormatRawNumberToPercent value={interestSpread.spread} />}
+            label="Estimated Company Default Spread"
+          />
+          <BoldValueLabel
+            value={
+              <FormatRawNumberToPercent
+                value={
+                  fundamentals.currentEquityRiskPremiumCountry.adjDefaultSpread
+                }
+              />
+            }
+            label="Estimated Country Default Spread"
+          />
+          <BoldValueLabel
+            value={<FormatRawNumberToPercent value={estimatedCostOfDebt} />}
+            label="Estimated Pre-tax Cost of Debt"
+          />
+        </Box>
         <TTTable
           columns={syntheticRatingColumns}
           data={companiesInterestSpreads.map((companiesInterestSpread) => {
@@ -150,7 +151,7 @@ const SyntheticRating = () => {
             };
           })}
         />
-      </Section>
+      </SubSection>
     </>
   );
 };
