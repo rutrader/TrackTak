@@ -45,7 +45,8 @@
     "web-vitals": "^0.2.4"
   },
   "devDependencies": {
-    "redux-devtools": "^3.7.0"
+    "redux-devtools": "^3.7.0",
+    "webpack-bundle-analyzer": "^4.3.0"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -1,4 +1,4 @@
-import { mergeWith } from "lodash";
+import mergeWith from "lodash/mergeWith";
 
 import smallCompaniesInterestSpreadsJson from "../data/smallCompaniesInterestSpreads.json";
 import largeCompaniesInterestSpreadsJson from "../data/largeCompaniesInterestSpreads.json";
