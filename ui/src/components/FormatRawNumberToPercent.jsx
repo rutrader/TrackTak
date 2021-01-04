@@ -1,10 +1,9 @@
 import React from "react";
+import roundDecimal from "../shared/roundDecimal";
 import FormatRawNumber from "./FormatRawNumber";
 
-export const percentModifier = 100;
-
-const FormatRawNumberToPercent = ({ value, ...props }) => {
-  const newValue = value ? value * percentModifier : undefined;
+const FormatRawNumberToPercent = ({ value = null, ...props }) => {
+  const newValue = value !== null ? roundDecimal(value, 4) : null;
 
   return (
     <FormatRawNumber value={newValue} suffix="%" decimalScale={2} {...props} />

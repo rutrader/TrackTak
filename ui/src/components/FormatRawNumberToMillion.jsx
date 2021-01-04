@@ -9,7 +9,7 @@ const FormatRawNumberToMillion = ({ value, useCurrencySymbol, ...props }) => {
     (state) => state.fundamentals.valuationCurrencySymbol
   );
 
-  const newValue = value ? parseFloat(value) / millionModifier : undefined;
+  const newValue = value ? parseFloat(value) / millionModifier : null;
 
   return (
     <FormatRawNumber

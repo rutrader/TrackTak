@@ -1,71 +1,76 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "../../axios/axios";
-import { setCurrentEquityRiskPremium } from "./equityRiskPremiumActions";
-import { setCurrentIndustryAverage } from "./industryAveragesActions";
+import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
+
+import convertGBXToGBP from "../../shared/convertGBXToGBP";
 import {
-  getExchangeRateHistory,
-  getTenYearGovernmentBondLastClose,
-} from "./economicDataActions";
+  getExchangeRate,
+  getFundamentals,
+  getGovernmentBond,
+  getPrices,
+} from "../../api/api";
 import dayjs from "dayjs";
-import { monthDateFormat } from "../../shared/utils";
+import { yearMonthDateFormat } from "../../shared/utils";
+import getMinimumHistoricalDateFromFinancialStatements from "../../shared/getMinimumHistoricalDateFromFinancialStatements";
 
-export const getFundamentals = createAsyncThunk(
-  "fundamentals/getFundamentals",
-  async (ticker, { dispatch, getState }) => {
-    try {
-      const { data } = await axios.get(`/api/v1/fundamentals/${ticker}`);
+export const setTenYearGovernmentBondLastClose = createAction(
+  "fundamentals/setTenYearGovernmentBondLastClose"
+);
 
-      dispatch(getTenYearGovernmentBondLastClose(data.General.CountryISO));
-      dispatch(setCurrentEquityRiskPremium(data.General.AddressData.Country));
-      dispatch(setCurrentIndustryAverage(data.General.Industry));
+export const setExchangeRate = createAction("fundamentals/setExchangeRate");
 
-      const mergedStatements = {
-        ...data.Financials.Income_Statement.yearly,
-        ...data.Financials.Balance_Sheet.yearly,
-        ...data.Financials.Cash_Flow.yearly,
-      };
+export const setLastPriceClose = createAction("fundamentals/setLastPriceClose");
 
-      let minDate;
+export const setFundamentalsDataThunk = createAsyncThunk(
+  "fundamentals/setFundamentalsData",
+  async ({ data, tenYearGovernmentBondLastCloseTo }, { dispatch }) => {
+    const baseCurrency = data.Financials.Balance_Sheet.currency_symbol;
+    const quoteCurrency = data.General.CurrencyCode;
+    // UK stocks are quoted in pence so we convert it to GBP for ease of use
+    const convertedBaseCurrency = convertGBXToGBP(baseCurrency);
+    const convertedQuoteCurrency = convertGBXToGBP(quoteCurrency);
+    const from = dayjs(
+      getMinimumHistoricalDateFromFinancialStatements(data)
+    ).format(yearMonthDateFormat);
 
-      const yearlyDatesAsMonths = [];
+    const promises = [
+      getGovernmentBond(data.General.CountryISO, 10, {
+        to: tenYearGovernmentBondLastCloseTo,
+        filter: "last_close",
+      }),
+    ];
 
-      Object.keys(mergedStatements).forEach((key) => {
-        yearlyDatesAsMonths.push(dayjs(key).format(monthDateFormat));
-      });
-
-      Object.keys(mergedStatements).forEach((date, i) => {
-        const formattedDate = `${dayjs(date).format(monthDateFormat)}-01`;
-        const newDate = dayjs(formattedDate);
-
-        if (i === 0) {
-          minDate = newDate;
-        }
-
-        minDate = dayjs.min(minDate, newDate);
-      });
-
-      // UK stocks are quoted in pence so we convert it to GBP for ease of use
-      const valuationCurrencyCode =
-        data.General.CurrencyCode === "GBX" ? "GBP" : data.General.CurrencyCode;
-
-      await dispatch(
-        getExchangeRateHistory({
-          baseCurrency: data.Financials.Balance_Sheet.currency_symbol,
-          quoteCurrency: valuationCurrencyCode,
-          from: minDate,
+    if (convertedBaseCurrency !== convertedQuoteCurrency) {
+      promises.push(
+        getExchangeRate(convertedBaseCurrency, convertedQuoteCurrency, {
+          period: "m",
+          from,
         })
       );
-
-      const state = getState();
-
-      return {
-        data,
-        valuationCurrencyCode,
-        exchangeRates: state.economicData.exchangeRates,
-      };
-    } catch (error) {
-      console.log(error);
-      throw error;
     }
+
+    const res = await Promise.all(promises);
+
+    dispatch(setTenYearGovernmentBondLastClose(res[0].data.value));
+    dispatch(setExchangeRate(res[1]?.data.value));
+
+    return {
+      data,
+    };
+  }
+);
+
+export const getFundamentalsThunk = createAsyncThunk(
+  "fundamentals/getFundamentals",
+  async ({ ticker, filter }, { dispatch }) => {
+    const pricesPromise = getPrices(ticker, {
+      filter: "last_close",
+    });
+    const fundamentalsPromise = getFundamentals(ticker, {
+      filter,
+    });
+
+    const res = await Promise.all([pricesPromise, fundamentalsPromise]);
+
+    dispatch(setLastPriceClose(res[0].data.value));
+    dispatch(setFundamentalsDataThunk({ data: res[1].data.value, ticker }));
   }
 );

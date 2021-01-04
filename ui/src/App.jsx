@@ -1,16 +1,26 @@
 import { createGlobalStyle } from "styled-components";
-import LandingPage from "./landingPage/LandingPage";
 import { Provider as RebassProvider } from "rebass";
 import rebassTheme from "./rebassTheme";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import Home from "./home/Home";
-import LayoutHome from "./layout/LayoutHome";
-import Valuation from "./valuation/Valuation";
 import { useSelector } from "react-redux";
 import { Box, CircularProgress, useTheme } from "@material-ui/core";
 import LayoutFullScreen from "./layout/LayoutFullScreen";
-import Docs from "./documentation/Docs";
 import Layout from "./layout/Layout";
+import LayoutHome from "./layout/LayoutHome";
+import SyntheticRating from "./syntheticRating/SyntheticRating";
+import { ConnectedRouter } from "connected-react-router";
+import { history } from "./redux/store";
+import { lazy, Suspense } from "react";
+import Valuations from "./valuation/Valuations";
+import IndustryAverages from "./industryAverages/IndustryAverages";
+import Docs from "./documentation/Docs";
+
+const LandingPage = lazy(() => import("./landingPage/LandingPage"));
+const DiscountedCashFlow = lazy(() =>
+  import("./discountedCashFlow/DiscountedCashFlow")
+);
+const Valuation = lazy(() => import("./valuation/Valuation"));
 
 const GlobalStyle = createGlobalStyle`
   * { box-sizing: border-box; }
@@ -48,79 +58,93 @@ const Spinner = () => {
   const isLoading = useSelector((state) => state.page.isLoading);
   const theme = useTheme();
 
-  return (
-    isLoading && (
-      <Box
-        sx={{
-          position: "fixed",
-          backgroundColor: theme.palette.common.white,
-          zIndex: theme.zIndex.modal,
-          left: 0,
-          right: 0,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100%",
-          width: "100%",
-          top: 0,
-          opacity: 0.6,
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    )
-  );
+  return isLoading ? (
+    <Box
+      sx={{
+        position: "fixed",
+        backgroundColor: theme.palette.common.white,
+        zIndex: theme.zIndex.modal,
+        left: 0,
+        right: 0,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100%",
+        width: "100%",
+        top: 0,
+        opacity: 0.6,
+      }}
+    >
+      <CircularProgress />
+    </Box>
+  ) : null;
 };
 
-const layoutFullScreenPaths = ["/valuation/:ticker"];
-const layoutPaths = ["/docs"];
+export const layoutFullScreenPaths = [
+  "/discounted-cash-flow/:ticker",
+  "/synthetic-rating/:ticker",
+  "/industry-averages/:ticker",
+];
+const layoutPaths = ["/valuations/:id", "/valuations", "/docs"];
 
-export const allLayoutPaths = layoutFullScreenPaths.concat(layoutPaths);
+export const allLayoutPaths = [...layoutFullScreenPaths, layoutPaths];
+export const allPaths = ["/", "/landingPage", ...allLayoutPaths];
 
 function App() {
   return (
     <>
       <Spinner />
-      <BrowserRouter>
-        <Switch>
-          <Route path={["/landingPage"]}>
-            <RebassProvider theme={rebassTheme}>
-              <GlobalStyle />
-              <LandingPage />
-            </RebassProvider>
-          </Route>
-          <Route path={layoutPaths}>
-            <Layout>
-              <Switch>
-                <Route path={layoutPaths[0]}>
-                  <Docs />
-                </Route>
-              </Switch>
-            </Layout>
-          </Route>
-          <Route path={layoutFullScreenPaths}>
-            <LayoutFullScreen>
-              <Switch>
-                <Route path={layoutFullScreenPaths[0]}>
-                  <Valuation />
-                </Route>
-              </Switch>
-            </LayoutFullScreen>
-          </Route>
-          <Route path={["/"]}>
-            <LayoutHome>
-              <Switch>
-                <Route path="/">
-                  <Home />
-                </Route>
-              </Switch>
-            </LayoutHome>
-          </Route>
-        </Switch>
-        {/* <Route path={allLayoutPaths}>
-          <TTTabs />
-        </Route> */}
-      </BrowserRouter>
+      <ConnectedRouter history={history}>
+        <Suspense fallback={<Spinner />}>
+          <Switch>
+            <Route path={[allPaths[1]]}>
+              <RebassProvider theme={rebassTheme}>
+                <GlobalStyle />
+                <LandingPage />
+              </RebassProvider>
+            </Route>
+            <Route path={layoutFullScreenPaths}>
+              <LayoutFullScreen>
+                <Switch>
+                  <Route path={layoutFullScreenPaths[0]}>
+                    <DiscountedCashFlow />
+                  </Route>
+                  <Route path={layoutFullScreenPaths[1]}>
+                    <SyntheticRating />
+                  </Route>
+                  <Route path={layoutFullScreenPaths[2]}>
+                    <IndustryAverages />
+                  </Route>
+                </Switch>
+              </LayoutFullScreen>
+            </Route>
+            <Route path={layoutPaths}>
+              <Layout>
+                <Switch>
+                  <Route path={layoutPaths[0]}>
+                    <Valuation />
+                  </Route>
+                  <Route path={layoutPaths[1]}>
+                    <Valuations />
+                  </Route>
+                  <Route path={layoutPaths[2]}>
+                    <Docs />
+                  </Route>
+                </Switch>
+              </Layout>
+            </Route>
+            <Route path={[allPaths[0]]}>
+              <LayoutHome>
+                <Switch>
+                  <Route path={allPaths[0]}>
+                    <Home />
+                  </Route>
+                </Switch>
+              </LayoutHome>
+            </Route>
+          </Switch>
+        </Suspense>
+      </ConnectedRouter>
     </>
   );
 }
