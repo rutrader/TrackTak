@@ -56,16 +56,23 @@ export const InfoOutlinedIconWrapper = ({ children, text, hash, ...props }) => {
         disableRestoreFocus
       >
         <Box onMouseLeave={handlePopoverClose}>
-          <Typography>{text}</Typography>
-          <Button
-            component={Link}
-            to={`/docs#${hash}`}
-            // variant="contained"
-            color="primary"
-            size="medium"
+          <Typography gutterBottom>{text}</Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
           >
-            Click here
-          </Button>
+            <Button
+              component={Link}
+              to={`/documentation#${hash}`}
+              variant="outlined"
+              color="primary"
+              size="medium"
+            >
+              Learn More
+            </Button>
+          </Box>
         </Box>
       </PopoverOnHover>
     </Box>

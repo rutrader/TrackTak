@@ -85,7 +85,7 @@ export const layoutFullScreenPaths = [
   "/synthetic-rating/:ticker",
   "/industry-averages/:ticker",
 ];
-const layoutPaths = ["/valuations/:id", "/valuations", "/docs"];
+const layoutPaths = ["/valuations/:id", "/valuations", "/documentation"];
 
 export const allLayoutPaths = [...layoutFullScreenPaths, layoutPaths];
 export const allPaths = ["/", "/landingPage", ...allLayoutPaths];

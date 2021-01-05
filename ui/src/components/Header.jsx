@@ -52,9 +52,14 @@ const Header = ({ hideSearch }) => {
               </Hidden>
             </Box>
             <Hidden smDown>
-              <Box sx={{ display: "flex", alignItems: "center", mr: 2 }}>
+              <Box sx={{ mr: 2 }}>
                 <Button variant="outlined" to="/valuations" component={Link}>
                   Valuations
+                </Button>
+              </Box>
+              <Box sx={{ mr: 2 }}>
+                <Button variant="outlined" to="/documentation" component={Link}>
+                  Documentation
                 </Button>
               </Box>
             </Hidden>
@@ -83,6 +88,13 @@ const Header = ({ hideSearch }) => {
                     onClick={handleClose}
                   >
                     Valuations
+                  </MenuItem>
+                  <MenuItem
+                    to="/documentation"
+                    component={Link}
+                    onClick={handleClose}
+                  >
+                    Documentation
                   </MenuItem>
                 </Menu>
               </Box>

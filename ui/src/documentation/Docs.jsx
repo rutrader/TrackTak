@@ -1,10 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
@@ -13,9 +10,11 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
-import { ListItemText } from "@material-ui/core";
+import { Box, Hidden, ListItemText, useMediaQuery } from "@material-ui/core";
 import { HashRouter, Link } from "react-router-dom";
 import { useEffect } from "react";
+import { Fragment } from "react";
+import wikiContent from "../data/wikiContent";
 
 const drawerWidth = 240;
 
@@ -76,10 +75,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Docs() {
+const Docs = () => {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -94,76 +94,62 @@ function Docs() {
   }, []);
 
   return (
-    <HashRouter>
-      <div className={classes.root}>
-        <CssBaseline />
-        <AppBar
-          color="inherit"
-          position="fixed"
-          className={clsx(classes.appBar, {
-            [classes.appBarShift]: open,
-          })}
-        >
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              className={clsx(classes.menuButton, open && classes.hide)}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" noWrap>
-              Documentation
-            </Typography>
-          </Toolbar>
-        </AppBar>
+    <HashRouter hashType="noslash">
+      <Box className={classes.root}>
         <Drawer
           className={classes.drawer}
-          variant="persistent"
+          variant={isOnMobile ? "persistent" : "permanent"}
           anchor="left"
           open={open}
           classes={{
             paper: classes.drawerPaper,
           }}
         >
-          <div className={classes.drawerHeader}>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === "ltr" ? (
-                <ChevronLeftIcon />
-              ) : (
-                <ChevronRightIcon />
-              )}
-            </IconButton>
-          </div>
+          <Hidden smUp>
+            <Box className={classes.drawerHeader}>
+              <IconButton onClick={handleDrawerClose}>
+                {theme.direction === "ltr" ? (
+                  <ChevronLeftIcon />
+                ) : (
+                  <ChevronRightIcon />
+                )}
+              </IconButton>
+            </Box>
+          </Hidden>
           <Divider />
           <List>
-            {[
-              "Revenue",
-              "Operating Income",
-              "Interest Expense",
-              "Total Stockholders Equity",
-            ].map((text, index) => (
-              <ListItem component={Link} to={text} button key={text}>
-                <ListItemText primary={text} />
+            {wikiContent.map(({ title }) => (
+              <ListItem component={Link} to={title} button key={title}>
+                <ListItemText primary={title} />
               </ListItem>
             ))}
           </List>
         </Drawer>
-        <main
-          className={clsx(classes.content, {
-            [classes.contentShift]: open,
+        <Hidden smUp>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            className={clsx(classes.menuButton, open && classes.hide)}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Hidden>
+        <Box component="main">
+          {wikiContent.map(({ title, text }) => {
+            return (
+              <Fragment key={title}>
+                <Typography variant="h6" gutterBottom>
+                  {title}
+                </Typography>
+                <Typography paragraph>{text}</Typography>
+              </Fragment>
+            );
           })}
-        >
-          <div className={classes.drawerHeader} />
-          <Typography paragraph>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-          </Typography>
-        </main>
-      </div>
+        </Box>
+      </Box>
     </HashRouter>
   );
-}
+};
 export default Docs;
