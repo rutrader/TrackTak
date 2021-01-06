@@ -24,7 +24,7 @@ export const InfoTextCostOfCapital = () => {
       <Box>
         <b>Cost of Capital (WACC)</b> - The total cost of raising capital (cash)
         for the company, weighted by equity and debt. Full formula details
-        cominng soon.
+        coming soon.
       </Box>
       <Box>
         <b>Riskfree Rate</b> - Refers to the theoretical rate of return of an

@@ -1,14 +1,8 @@
-import {
-  Box,
-  Typography,
-  withStyles,
-  useTheme,
-  Button,
-} from "@material-ui/core";
+import { Box, Typography, withStyles, useTheme, Link } from "@material-ui/core";
 import React, { useState } from "react";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import Popover from "@material-ui/core/Popover";
-import { Link } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
 
 const PopoverOnHover = withStyles((theme) => ({
   paper: {
@@ -63,15 +57,7 @@ export const InfoOutlinedIconWrapper = ({ children, text, hash, ...props }) => {
               justifyContent: "flex-end",
             }}
           >
-            <Button
-              component={Link}
-              to={`/documentation#${hash}`}
-              variant="outlined"
-              color="primary"
-              size="medium"
-            >
-              Learn More
-            </Button>
+            <Link to={`/documentation#${hash}`}>Learn More</Link>
           </Box>
         </Box>
       </PopoverOnHover>

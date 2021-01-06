@@ -1,20 +1,19 @@
 import React, { useState } from "react";
-import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
-import { Box, Hidden, ListItemText, useMediaQuery } from "@material-ui/core";
-import { HashRouter, Link } from "react-router-dom";
+import { Box, ListItemText, useMediaQuery } from "@material-ui/core";
 import { useEffect } from "react";
 import { Fragment } from "react";
 import wikiContent from "../data/wikiContent";
+import { NavHashLink } from "react-router-hash-link";
+import useScrollWithOffset from "../shared/useScrollWithOffset";
 
 const drawerWidth = 240;
 
@@ -22,64 +21,29 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
   },
-  appBar: {
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  hide: {
-    display: "none",
-  },
   drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
+    [theme.breakpoints.down(1550)]: {
+      width: ({ open }) => (open ? drawerWidth : "initial"),
+    },
   },
   drawerPaper: {
+    top: theme.mixins.toolbar.minHeight - 2,
     width: drawerWidth,
   },
-  drawerHeader: {
-    display: "flex",
-    alignItems: "center",
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-    justifyContent: "flex-end",
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: -drawerWidth,
-  },
-  contentShift: {
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
+  menuButton: {
+    position: "fixed",
+    padding: 0,
+    left: 0,
+    top: theme.mixins.toolbar.minHeight + 10,
   },
 }));
 
 const Docs = () => {
-  const classes = useStyles();
   const theme = useTheme();
+  const getScrollWithOffset = useScrollWithOffset();
   const [open, setOpen] = useState(false);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const classes = useStyles({ open });
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -94,7 +58,7 @@ const Docs = () => {
   }, []);
 
   return (
-    <HashRouter hashType="noslash">
+    <>
       <Box className={classes.root}>
         <Drawer
           className={classes.drawer}
@@ -105,42 +69,44 @@ const Docs = () => {
             paper: classes.drawerPaper,
           }}
         >
-          <Hidden smUp>
-            <Box className={classes.drawerHeader}>
-              <IconButton onClick={handleDrawerClose}>
-                {theme.direction === "ltr" ? (
+          {isOnMobile && (
+            <>
+              <Box className={classes.drawerHeader}>
+                <IconButton onClick={handleDrawerClose}>
                   <ChevronLeftIcon />
-                ) : (
-                  <ChevronRightIcon />
-                )}
-              </IconButton>
-            </Box>
-          </Hidden>
-          <Divider />
+                </IconButton>
+              </Box>
+              <Divider />
+            </>
+          )}
           <List>
             {wikiContent.map(({ title }) => (
-              <ListItem component={Link} to={title} button key={title}>
+              <ListItem
+                key={title}
+                component={NavHashLink}
+                to={`/documentation#${title}`}
+                scroll={getScrollWithOffset()}
+                button
+              >
                 <ListItemText primary={title} />
               </ListItem>
             ))}
           </List>
         </Drawer>
-        <Hidden smUp>
+        {isOnMobile && (
           <IconButton
-            color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}
+            className={classes.menuButton}
           >
-            <MenuIcon />
+            <ChevronRightIcon />
           </IconButton>
-        </Hidden>
+        )}
         <Box component="main">
           {wikiContent.map(({ title, text }) => {
             return (
               <Fragment key={title}>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="h6" gutterBottom id={title}>
                   {title}
                 </Typography>
                 <Typography paragraph>{text}</Typography>
@@ -149,7 +115,7 @@ const Docs = () => {
           })}
         </Box>
       </Box>
-    </HashRouter>
+    </>
   );
 };
 export default Docs;
