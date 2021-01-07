@@ -17,26 +17,31 @@ import useScrollWithOffset from "../shared/useScrollWithOffset";
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-  },
-  drawer: {
-    [theme.breakpoints.down(1550)]: {
-      width: ({ open }) => (open ? drawerWidth : "initial"),
+const useStyles = makeStyles((theme) => {
+  const top = theme.mixins.toolbar.minHeight - 2;
+
+  return {
+    root: {
+      display: "flex",
     },
-  },
-  drawerPaper: {
-    top: theme.mixins.toolbar.minHeight - 2,
-    width: drawerWidth,
-  },
-  menuButton: {
-    position: "fixed",
-    padding: 0,
-    left: 0,
-    top: theme.mixins.toolbar.minHeight + 10,
-  },
-}));
+    drawer: {
+      [theme.breakpoints.down(1550)]: {
+        width: ({ open }) => (open ? drawerWidth : "initial"),
+      },
+    },
+    drawerPaper: {
+      top,
+      width: drawerWidth,
+      height: `calc(100% - ${top}px)`,
+    },
+    menuButton: {
+      position: "fixed",
+      padding: 0,
+      left: 0,
+      top: theme.mixins.toolbar.minHeight + 10,
+    },
+  };
+});
 
 const Docs = () => {
   const theme = useTheme();
