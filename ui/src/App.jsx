@@ -14,6 +14,7 @@ import { history } from "./redux/store";
 import { lazy, Suspense } from "react";
 import Valuations from "./valuation/Valuations";
 import IndustryAverages from "./industryAverages/IndustryAverages";
+import Docs from "./documentation/Docs";
 
 const LandingPage = lazy(() => import("./landingPage/LandingPage"));
 const DiscountedCashFlow = lazy(() =>
@@ -84,9 +85,10 @@ export const layoutFullScreenPaths = [
   "/synthetic-rating/:ticker",
   "/industry-averages/:ticker",
 ];
-const layoutPaths = ["/valuations/:id", "/valuations"];
+const layoutPaths = ["/valuations/:id", "/valuations", "/documentation"];
 
 export const allLayoutPaths = [...layoutFullScreenPaths, layoutPaths];
+export const allPaths = ["/", "/landingPage", ...allLayoutPaths];
 
 function App() {
   return (
@@ -95,7 +97,7 @@ function App() {
       <ConnectedRouter history={history}>
         <Suspense fallback={<Spinner />}>
           <Switch>
-            <Route path={["/landingPage"]}>
+            <Route path={[allPaths[1]]}>
               <RebassProvider theme={rebassTheme}>
                 <GlobalStyle />
                 <LandingPage />
@@ -125,13 +127,16 @@ function App() {
                   <Route path={layoutPaths[1]}>
                     <Valuations />
                   </Route>
+                  <Route path={layoutPaths[2]}>
+                    <Docs />
+                  </Route>
                 </Switch>
               </Layout>
             </Route>
-            <Route path={["/"]}>
+            <Route path={[allPaths[0]]}>
               <LayoutHome>
                 <Switch>
-                  <Route path="/">
+                  <Route path={allPaths[0]}>
                     <Home />
                   </Route>
                 </Switch>

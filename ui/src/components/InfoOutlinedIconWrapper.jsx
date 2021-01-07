@@ -13,7 +13,7 @@ const PopoverOnHover = withStyles((theme) => ({
   },
 }))(Popover);
 
-export const InfoOutlinedIconWrapper = ({ children, text, ...props }) => {
+export const InfoOutlinedIconWrapper = ({ children, text, hash, ...props }) => {
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
 
