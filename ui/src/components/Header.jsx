@@ -41,8 +41,8 @@ const Header = ({ hideSearch }) => {
           <Box
             sx={{
               display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              alignItems: "left",
+              justifyContent: "left",
               py: 1,
             }}
           >
