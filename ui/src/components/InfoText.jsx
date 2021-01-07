@@ -23,13 +23,11 @@ export const InfoTextCostOfCapital = () => {
       </Box>
       <Box>
         <b>Cost of Capital (WACC)</b> - The total cost of raising capital (cash)
-        for the company, weighted by equity and debt. Full formula details
-        coming soon.
+        for the company, weighted by equity and debt.
       </Box>
       <Box>
         <b>Riskfree Rate</b> - Refers to the theoretical rate of return of an
-        investment with zero risk. Formula: today's 10yr annual government yield
-        - the default spread for the government.
+        investment with zero risk.
       </Box>
       <Box>
         <b>Country Equity Risk Premium</b> - Defined as the additional returns
@@ -49,8 +47,7 @@ export const InfoTextCostOfCapital = () => {
       </Box>
       <Box>
         <b>Effective Tax Rate</b> - The percent of income that a corporation
-        pays in taxes. We use the past three years average. Formula: Effective
-        tax rate = Taxes paid / Taxable income.
+        pays in taxes. We use the past three years average.
       </Box>
     </>
   );
