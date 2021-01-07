@@ -26,6 +26,7 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
+  Link,
 } from "@material-ui/core";
 import "../shared/blueprintTheme.scss";
 import selectQueryParams from "../selectors/selectQueryParams";
@@ -34,6 +35,7 @@ import selectRiskFreeRate from "../selectors/selectRiskFreeRate";
 import selectValueOfAllOptionsOutstanding from "../selectors/selectValueOfAllOptionsOutstanding";
 import LazyLoad from "react-lazyload";
 import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
+import { Link as RouterLink } from "react-router-dom";
 
 const computeExpr = (key, expr, scope) => {
   let value = null;
@@ -255,7 +257,7 @@ const DiscountedCashFlowSheet = (props) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          mb: 1,
+          mb: 0.5,
         }}
       >
         <Typography variant="h5">DCF Valuation</Typography>
@@ -268,6 +270,17 @@ const DiscountedCashFlowSheet = (props) => {
           {showFormulas ? "Hide Formulas" : "Show Formulas"}
         </Button>
       </Box>
+      <Typography gutterBottom>
+        Need help? Check out the DCF docs&nbsp;
+        <Link
+          component={RouterLink}
+          to="/documentation"
+          rel="noreferrer"
+          target="_blank"
+        >
+          here.
+        </Link>
+      </Typography>
       <LazyLoad offset={300} height={810}>
         {/* Key: Hack to force re-render the table when formula state changes */}
         <Table

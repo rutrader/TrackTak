@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Box, IconButton, TextField, withStyles } from "@material-ui/core";
+import {
+  Box,
+  IconButton,
+  TextField,
+  useMediaQuery,
+  useTheme,
+  withStyles,
+} from "@material-ui/core";
 import { Autocomplete } from "@material-ui/core";
 import { useHistory } from "react-router";
 import SearchIcon from "@material-ui/icons/Search";
@@ -31,9 +38,11 @@ const SubmitButton = withStyles({
 })(IconButton);
 
 const SearchTicker = ({ removeInputPadding }) => {
+  const theme = useTheme();
   const [ticker, setTicker] = useState("");
   const [autoComplete, setAutoComplete] = useState([]);
   const history = useHistory();
+  const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleOnChangeAutoComplete = (_, value) => {
     if (value.code && value.exchange) {
@@ -96,7 +105,7 @@ const SearchTicker = ({ removeInputPadding }) => {
                 fullWidth
                 required
                 onChange={handleOnChangeSearch}
-                placeholder="Search, e.g. AAPL"
+                placeholder={isOnMobile ? "Search" : "Search, e.g. AAPL"}
               />
             </>
           );

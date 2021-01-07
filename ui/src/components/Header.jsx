@@ -15,6 +15,11 @@ import SearchTicker from "./SearchTicker";
 import { Link } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
 
+const links = [
+  { to: "/valuations", text: "Valuations" },
+  { to: "/documentation", text: "Documentation" },
+];
+
 const Header = ({ hideSearch }) => {
   const theme = useTheme();
   const extraMargin = 20;
@@ -42,31 +47,28 @@ const Header = ({ hideSearch }) => {
             }}
           >
             <Box sx={{ mr: 2 }}>
-              <Hidden smDown>
+              <Hidden mdDown>
                 <TracktakLogo />
               </Hidden>
-              <Hidden smUp>
+              <Hidden mdUp>
                 <Link to="/">
                   <TracktakSmallLogo width={52} height={38} />
                 </Link>
               </Hidden>
             </Box>
-            <Hidden smDown>
-              <Box sx={{ mr: 2 }}>
-                <Button variant="outlined" to="/valuations" component={Link}>
-                  Valuations
-                </Button>
-              </Box>
-              <Box sx={{ mr: 2 }}>
-                <Button variant="outlined" to="/documentation" component={Link}>
-                  Documentation
-                </Button>
-              </Box>
+            <Hidden mdDown>
+              {links.map((link) => (
+                <Box sx={{ mr: 2 }}>
+                  <Button variant="outlined" to={link.to} component={Link}>
+                    {link.text}
+                  </Button>
+                </Box>
+              ))}
             </Hidden>
             <Box sx={{ flex: "0 1 450px", minWidth: "120px" }}>
               {!hideSearch && <SearchTicker removeInputPadding />}
             </Box>
-            <Hidden smUp>
+            <Hidden mdUp>
               <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
                 <Button
                   aria-controls="simple-menu"
@@ -82,20 +84,15 @@ const Header = ({ hideSearch }) => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  <MenuItem
-                    to="/valuations"
-                    component={Link}
-                    onClick={handleClose}
-                  >
-                    Valuations
-                  </MenuItem>
-                  <MenuItem
-                    to="/documentation"
-                    component={Link}
-                    onClick={handleClose}
-                  >
-                    Documentation
-                  </MenuItem>
+                  {links.map((link) => (
+                    <MenuItem
+                      to={link.to}
+                      component={Link}
+                      onClick={handleClose}
+                    >
+                      {link.text}
+                    </MenuItem>
+                  ))}
                 </Menu>
               </Box>
             </Hidden>
