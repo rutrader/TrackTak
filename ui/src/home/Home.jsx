@@ -54,7 +54,7 @@ const Home = () => {
           mt: 12,
         }}
       >
-        <TypographyHeader isOnMobile={isOnMobile} variant="h4">
+        <TypographyHeader isOnMobile={isOnMobile} align="center" variant="h4">
           Goodbye, spreadsheets.
           <Box>Hello, automated Discounted Cash Flows.</Box>
         </TypographyHeader>
@@ -85,8 +85,8 @@ const Home = () => {
               color="primary"
             />
           </Box>
-          Fully transparent and based on Aswath Damoradan's model showing you
-          each formula for every calculation.
+          Fully transparent and based on Aswath Damoradan's model showing each
+          you formula.
         </TypographyText>
         <TypographyText isOnMobile={isOnMobile}>
           <Box>
