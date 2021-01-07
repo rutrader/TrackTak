@@ -5,134 +5,115 @@ import {
   Hidden,
   useMediaQuery,
   useTheme,
+  makeStyles,
 } from "@material-ui/core";
 import React from "react";
 import SearchTicker from "../components/SearchTicker";
-import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import SettingsIcon from "@material-ui/icons/Settings";
-import VerticalSplitIcon from "@material-ui/icons/VerticalSplit";
+import TrendingUpIcon from "@material-ui/icons/TrendingUp";
+import PublicIcon from "@material-ui/icons/Public";
 import { ReactComponent as BackgroundPurple } from "../icons/backgroundPurple.svg";
 
-const VerifiedUserIconHome = withStyles((theme) => ({
-  root: {
-    marginRight: theme.spacing(1),
-    minWidth: "40px",
-    minHeight: "40px",
-    color: theme.palette.primary.main,
-  },
-}))(VerifiedUserIcon);
+const textColor = "#292929";
 
-const SettingsIconHome = withStyles((theme) => ({
+const useIconStyles = makeStyles({
   root: {
-    marginRight: theme.spacing(1),
-    minWidth: "40px",
-    minHeight: "40px",
-    color: theme.palette.primary.main,
+    minWidth: 50,
+    minHeight: 50,
   },
-}))(SettingsIcon);
+});
 
-const VerticalSplitIconHome = withStyles((theme) => ({
-  root: {
-    marginRight: theme.spacing(1),
-    minWidth: "40px",
-    minHeight: "40px",
-    color: theme.palette.primary.main,
-  },
-}))(VerticalSplitIcon);
-
-const TypographyHeader = withStyles((theme) => ({
+const TypographyHeader = withStyles({
   root: {
     fontWeight: "bold",
-    fontSize: 37,
-    textAlign: "center",
-    color: "#292929",
+    fontSize: ({ isOnMobile }) => (isOnMobile ? 30 : 37),
+    color: textColor,
   },
-}))(Typography);
+})(Typography);
 
-const TypographyText = withStyles((theme) => ({
+const TypographyText = withStyles({
   root: {
     fontSize: 20,
     textAlign: "center",
-    color: "#292929",
+    color: textColor,
+    flexGrow: 0,
+    flexShrink: 0,
+    flexBasis: ({ isOnMobile }) => (isOnMobile ? "100%" : "30%"),
   },
-}))(Typography);
+})(Typography);
 
 const Home = () => {
+  const iconClasses = useIconStyles();
   const theme = useTheme();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <>
-      <Box style={{ height: "100%" }}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <TypographyHeader>
-            Goodbye, spreadsheets.
-            <Box>Hello, automated Discounted Cash Flows.</Box>
-          </TypographyHeader>
-        </Box>
-
-        <Box>
-          <Box flexWrap="wrap" justifyContent={["center", "center", "initial"]}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-evenly",
-                minWidth: "300px",
-                mt: "5%",
-              }}
-            >
-              <TypographyText>
-                <Box>
-                  <SettingsIconHome />
-                </Box>
-                Automates your models inputs based on historical and current
-                data.
-              </TypographyText>
-
-              <TypographyText>
-                <Box>
-                  <VerticalSplitIconHome />
-                </Box>
-                Store all of your model variations in one place instead of 100’s
-                of spreadsheets.
-              </TypographyText>
-
-              <TypographyText>
-                <Box>
-                  <VerifiedUserIconHome />
-                </Box>
-                Diagnoses errors and unrealistic free cash flows in your models.
-              </TypographyText>
-            </Box>
+      <Box
+        sx={{
+          mt: 12,
+        }}
+      >
+        <TypographyHeader isOnMobile={isOnMobile} variant="h4">
+          Goodbye, spreadsheets.
+          <Box>Hello, automated Discounted Cash Flows.</Box>
+        </TypographyHeader>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          flexWrap: "wrap",
+          gap: 20,
+          my: 5,
+        }}
+      >
+        <TypographyText isOnMobile={isOnMobile}>
+          <Box>
+            <SettingsIcon
+              classes={{ root: iconClasses.root }}
+              color="primary"
+            />
           </Box>
-        </Box>
-
-        <Box
-          sx={{
-            justifyContent: "center",
-            pt: 2.5,
-            mb: 2,
-            mt: "5%",
-          }}
+          Automate your DCF's in seconds with guidance from historical and
+          current data.
+        </TypographyText>
+        <TypographyText isOnMobile={isOnMobile}>
+          <Box>
+            <TrendingUpIcon
+              classes={{ root: iconClasses.root }}
+              color="primary"
+            />
+          </Box>
+          Fully transparent and based on Aswath Damoradan's model showing you
+          each formula for every calculation.
+        </TypographyText>
+        <TypographyText isOnMobile={isOnMobile}>
+          <Box>
+            <PublicIcon classes={{ root: iconClasses.root }} color="primary" />
+          </Box>
+          Support for over 60+ stock exchanges and more than 120,000 tickers all
+          over the world.
+        </TypographyText>
+      </Box>
+      <Box
+        sx={{
+          justifyContent: "center",
+          mt: 7,
+        }}
+      >
+        <Typography
+          style={{ color: textColor }}
+          variant="h5"
+          align="center"
+          gutterBottom
         >
-          <Typography
-            style={{ color: "#292929" }}
-            variant="h5"
-            align="center"
-            gutterBottom
-          >
-            Search now to automate your DCF.
-          </Typography>
-          <SearchTicker />
-        </Box>
+          Search now to automate your DCF.
+        </Typography>
+        <SearchTicker />
+      </Box>
+      <Hidden mdDown>
         <Box
-          className="landing-page-background-purple"
           style={{
             width: "100%",
             height: 240,
@@ -142,15 +123,13 @@ const Home = () => {
           }}
           zIndex={-1}
         >
-          <Hidden smDown>
-            <BackgroundPurple
-              height="100%"
-              width="100%"
-              style={{ transform: "rotateX(180deg)" }}
-            />
-          </Hidden>
+          <BackgroundPurple
+            height="100%"
+            width="100%"
+            style={{ transform: "rotateX(180deg)" }}
+          />
         </Box>
-      </Box>
+      </Hidden>
     </>
   );
 };
