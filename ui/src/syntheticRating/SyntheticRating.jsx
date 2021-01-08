@@ -1,6 +1,6 @@
 import React from "react";
 import TTTable from "../components/TTTable";
-import { Box, Typography, useTheme } from "@material-ui/core";
+import { Box, makeStyles, Typography } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
 import BoldValueLabel from "../components/BoldValueLabel";
@@ -15,15 +15,29 @@ import { InfoSyntheticRating } from "../components/InfoText";
 import { InfoOutlinedIconWrapper } from "../components/InfoOutlinedIconWrapper";
 import companiesInterestSpreads from "../shared/companiesInterestSpreads";
 import SubSection from "../components/SubSection";
+import getTableRowBackgroundOpacity from "../shared/getTableRowBackgroundOpacity";
+
+const useTableClasses = makeStyles((theme) => ({
+  root: ({ currentCompanyInterestIndex }) => ({
+    [`& .table_row_${currentCompanyInterestIndex}`]: {
+      backgroundColor: getTableRowBackgroundOpacity(
+        theme.palette.primary.light
+      ),
+    },
+  }),
+}));
 
 const SyntheticRating = () => {
-  const theme = useTheme();
   const fundamentals = useSelector((state) => state.fundamentals);
   const thresholdMarketCap = useSelector(selectThresholdMarketCap);
   const interestCoverage = useSelector(selectInterestCoverage);
   const isLargeCompany = useSelector(selectIsLargeCompany);
   const interestSpread = useSelector(selectInterestSpread);
   const estimatedCostOfDebt = useSelector(selectEstimatedCostOfDebt);
+  const currentCompanyInterestIndex = companiesInterestSpreads.indexOf(
+    interestSpread
+  );
+  const tableClasses = useTableClasses({ currentCompanyInterestIndex });
 
   if (!fundamentals.isLoaded) return null;
 
@@ -140,6 +154,7 @@ const SyntheticRating = () => {
           />
         </Box>
         <TTTable
+          classes={tableClasses}
           columns={syntheticRatingColumns}
           data={companiesInterestSpreads.map((companiesInterestSpread) => {
             return {

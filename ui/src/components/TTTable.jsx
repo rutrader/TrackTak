@@ -91,8 +91,8 @@ const TTTable = ({
               {renderRow}
             </FixedSizeList>
           ) : (
-            rows.map((row) => (
-              <RenderTableRow row={row} prepareRow={prepareRow} />
+            rows.map((row, i) => (
+              <RenderTableRow index={i} row={row} prepareRow={prepareRow} />
             ))
           )}
         </TableBody>

@@ -7,15 +7,12 @@ import industryAveragesGlobalJson from "../data/industryAveragesGlobal.json";
 import SubSection from "../components/SubSection";
 import getHeader from "./getHeader";
 import BoldValueLabel from "../components/BoldValueLabel";
+import getTableRowBackgroundOpacity from "../shared/getTableRowBackgroundOpacity";
 
 const commonTableRootClasses = {
   "& th": {
     marginTop: "auto",
   },
-};
-
-const getTableRowBackgroundOpacity = (color) => {
-  return `${color}60`;
 };
 
 const useUSTableClasses = makeStyles((theme) => ({
@@ -118,7 +115,8 @@ const IndustryAverages = () => {
           style={{ fontWeight: theme.typography.fontWeightBold }}
         >
           {currentIndustry.industryName}
-        </Typography>{" "}
+        </Typography>
+        &nbsp;
         <BoldValueLabel
           value={isInUS ? "US" : "Global"}
           label="Company Region"
