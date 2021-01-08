@@ -49,14 +49,10 @@ const cellUpdate = (cells, key, expr) => {
 export const dcfReducer = createReducer(initialState, (builder) => {
   builder.addCase(updateCells, (state, action) => {
     const cells = state.cells;
-
     action.payload.forEach(([key, value]) => {
       const allDependents = getAllDependents(cellsTree, key);
-
       cells[key] = cellUpdate(cells, key, value?.toString());
-
       const currentDependents = allDependents[key] || [];
-
       currentDependents.forEach((key) => {
         cells[key] = cellUpdate(cells, key, cells[key].expr);
       });

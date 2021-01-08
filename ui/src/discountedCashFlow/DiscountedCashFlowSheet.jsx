@@ -23,10 +23,10 @@ import selectQueryParams from "../selectors/selectQueryParams";
 import selectCostOfCapital from "../selectors/selectCostOfCapital";
 import selectRiskFreeRate from "../selectors/selectRiskFreeRate";
 import selectValueOfAllOptionsOutstanding from "../selectors/selectValueOfAllOptionsOutstanding";
-import LazyLoad from "react-lazyload";
 import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
 import { Link as RouterLink } from "react-router-dom";
 import { updateCells } from "../redux/actions/dcfActions";
+import LazyLoad from "react-lazyload";
 
 const DiscountedCashFlowSheet = (props) => {
   const dispatch = useDispatch();
@@ -126,7 +126,6 @@ const DiscountedCashFlowSheet = (props) => {
 
   const cellRenderer = useCallback(
     (rowIndex, columnIndex) => {
-      console.log("test");
       const column = String.fromCharCode(
         startColumn.charCodeAt(0) + columnIndex
       );
