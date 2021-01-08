@@ -30,7 +30,7 @@ const getExpressionProperties = (expr) => {
   return { className: "equation", expr };
 };
 
-const initialData = {
+const cells = {
   A1: { value: "" },
   A2: { value: "Revenue Growth Rate" },
   A3: { value: "Revenues" },
@@ -100,13 +100,13 @@ const initialData = {
   M8: getExpressionProperties("=M2 > 0 ? (M2 / M18) * M7 : 0"),
 };
 
-export const columns = getColumnsTo(getHighestColumn(initialData));
-export const numberOfRows = getNumberOfRows(initialData);
+export const columns = getColumnsTo(getHighestColumn(cells));
+export const numberOfRows = getNumberOfRows(cells);
 
 getColumnsBetween(columns, "C", "L").forEach((column, index) => {
   const key = column + 1;
 
-  initialData[key] = {
+  cells[key] = {
     readOnly: true,
     value: index + 1,
   };
@@ -114,8 +114,8 @@ getColumnsBetween(columns, "C", "L").forEach((column, index) => {
 
 getCellsForRows(columns, [13, 16]).forEach((key) => {
   if (key.charAt(0) !== "A") {
-    initialData[key] = {
-      ...initialData[key],
+    cells[key] = {
+      ...cells[key],
       type: "number",
     };
   }
@@ -125,8 +125,8 @@ getCellsForRows(columns, [2, 4, 6, 12, 18])
   .concat(["B21", "B26", "B38"])
   .forEach((key) => {
     if (key.charAt(0) !== "A") {
-      initialData[key] = {
-        ...initialData[key],
+      cells[key] = {
+        ...cells[key],
         type: "percent",
       };
     }
@@ -134,8 +134,8 @@ getCellsForRows(columns, [2, 4, 6, 12, 18])
 
 ["B36", "B37"].forEach((key) => {
   if (key.charAt(0) !== "A") {
-    initialData[key] = {
-      ...initialData[key],
+    cells[key] = {
+      ...cells[key],
       type: "currency",
     };
   }
@@ -160,8 +160,8 @@ getCellsForRows(columns, [3, 5, 7, 8, 9, 10, 14, 17])
   ])
   .forEach((key) => {
     if (key.charAt(0) !== "A") {
-      initialData[key] = {
-        ...initialData[key],
+      cells[key] = {
+        ...cells[key],
         type: "million",
       };
     }
@@ -170,17 +170,15 @@ getCellsForRows(columns, [3, 5, 7, 8, 9, 10, 14, 17])
 getColumnsBetween(columns, "C", "G").forEach((column) => {
   const taxKey = `${column}6`;
 
-  initialData[taxKey].expr = getOneToFiveYrTaxCalculation(taxKey);
+  cells[taxKey].expr = getOneToFiveYrTaxCalculation(taxKey);
 });
 
 getColumnsBetween(columns, "D", "G").forEach((column) => {
   const growthKey = `${column}2`;
   const cocKey = `${column}12`;
 
-  initialData[growthKey].expr = getOneToFiveYrRevenueGrowthCalculation(
-    growthKey
-  );
-  initialData[cocKey].expr = getOneToFiveYrCostOfCapitalCalculation(cocKey);
+  cells[growthKey].expr = getOneToFiveYrRevenueGrowthCalculation(growthKey);
+  cells[cocKey].expr = getOneToFiveYrCostOfCapitalCalculation(cocKey);
 });
 
 getColumnsBetween(columns, "H", "L").forEach((column, index) => {
@@ -188,9 +186,9 @@ getColumnsBetween(columns, "H", "L").forEach((column, index) => {
   const taxKey = `${column}6`;
   const cocKey = `${column}12`;
 
-  initialData[growthKey].expr = getSixToTenYrRevenueGrowthCalculation(index);
-  initialData[taxKey].expr = getSixToTenYrTaxCalculation(taxKey);
-  initialData[cocKey].expr = getSixToTenYrCostOfCapitalCalculation(cocKey);
+  cells[growthKey].expr = getSixToTenYrRevenueGrowthCalculation(index);
+  cells[taxKey].expr = getSixToTenYrTaxCalculation(taxKey);
+  cells[cocKey].expr = getSixToTenYrCostOfCapitalCalculation(cocKey);
 });
 
 getColumnsBetween(columns, "C", "L").forEach((column) => {
@@ -199,16 +197,14 @@ getColumnsBetween(columns, "C", "L").forEach((column) => {
   const investedCapKey = `${column}17`;
   const ebitMarginKey = `${column}4`;
 
-  initialData[ebitMarginKey].expr = getEBITMarginCalculation(
+  cells[ebitMarginKey].expr = getEBITMarginCalculation(
     null,
     null,
     ebitMarginKey
   );
-  initialData[ebitAfterTaxKey].expr = getEBITAfterTax(ebitAfterTaxKey);
-  initialData[pvFCFFKey].expr = getPVToFCFFCalculation(pvFCFFKey);
-  initialData[investedCapKey].expr = getInvestedCapitalCalculation(
-    investedCapKey
-  );
+  cells[ebitAfterTaxKey].expr = getEBITAfterTax(ebitAfterTaxKey);
+  cells[pvFCFFKey].expr = getPVToFCFFCalculation(pvFCFFKey);
+  cells[investedCapKey].expr = getInvestedCapitalCalculation(investedCapKey);
 });
 
 getColumnsBetween(columns, "C", "M").forEach((column) => {
@@ -217,10 +213,10 @@ getColumnsBetween(columns, "C", "M").forEach((column) => {
   const fcffKey = `${column}9`;
   const revenueKey = `${column}3`;
 
-  initialData[ebitKey].expr = getEBITCalculation(ebitKey);
-  initialData[nolKey].expr = getNOLCalculation(nolKey);
-  initialData[fcffKey].expr = getFCFFCalculation(fcffKey);
-  initialData[revenueKey].expr = getRevenueCalculation(revenueKey);
+  cells[ebitKey].expr = getEBITCalculation(ebitKey);
+  cells[nolKey].expr = getNOLCalculation(nolKey);
+  cells[fcffKey].expr = getFCFFCalculation(fcffKey);
+  cells[revenueKey].expr = getRevenueCalculation(revenueKey);
 });
 
 getColumnsBetween(columns, "D", "L").forEach((column) => {
@@ -228,13 +224,11 @@ getColumnsBetween(columns, "D", "L").forEach((column) => {
   const discountFactorKey = `${column}13`;
   const salesCapRatioKey = `${column}16`;
 
-  initialData[reinvestmentKey].expr = getReinvestmentCalculation(
-    reinvestmentKey
-  );
-  initialData[discountFactorKey].expr = getCumulatedDiscountFactorCalculation(
+  cells[reinvestmentKey].expr = getReinvestmentCalculation(reinvestmentKey);
+  cells[discountFactorKey].expr = getCumulatedDiscountFactorCalculation(
     discountFactorKey
   );
-  initialData[salesCapRatioKey].expr = getSalesToCapitalRatioCalculation(
+  cells[salesCapRatioKey].expr = getSalesToCapitalRatioCalculation(
     salesCapRatioKey
   );
 });
@@ -242,24 +236,7 @@ getColumnsBetween(columns, "D", "L").forEach((column) => {
 getColumnsBetween(columns, "B", "L").forEach((column) => {
   const roicKey = `${column}18`;
 
-  initialData[roicKey].expr = getROICCalculation(roicKey);
+  cells[roicKey].expr = getROICCalculation(roicKey);
 });
 
-export const dataDependentsTree = {};
-
-Object.keys(initialData).forEach((key) => {
-  const { expr } = initialData[key];
-
-  if (expr) {
-    const matches = expr.match(/([A-Z])\w+/g);
-    const uniqueMatches = [...new Set(matches)];
-
-    uniqueMatches.forEach((uniqueMatchKey) => {
-      dataDependentsTree[uniqueMatchKey] = dataDependentsTree[uniqueMatchKey]
-        ? [...dataDependentsTree[uniqueMatchKey], key]
-        : [key];
-    });
-  }
-});
-
-export default initialData;
+export default cells;
