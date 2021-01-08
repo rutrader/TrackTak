@@ -27,24 +27,6 @@ export const validateExp = (trailKeys, expr) => {
   return valid;
 };
 
-export const setAllDependents = (
-  key,
-  dataDependentsTree,
-  allDependents,
-  testDependents
-) => {
-  const cellsToUpdate = dataDependentsTree[key] || [];
-
-  cellsToUpdate.forEach((key) => {
-    if (!allDependents[key]) {
-      allDependents[key] = key;
-      testDependents.push(key);
-
-      setAllDependents(key, dataDependentsTree, allDependents, testDependents);
-    }
-  });
-};
-
 export const getNumberOfRows = (data) => {
   let highestNumberRow = 0;
 
@@ -100,8 +82,8 @@ const arrayMove = (arr, fromIndex, toIndex) => {
   arr.splice(toIndex, 0, element);
 };
 
-const assignDependents = (dataDependentsTree, allDependents, rootKey) => {
-  let currentKeyArray = dataDependentsTree[rootKey];
+const assignDependents = (cellsTree, allDependents, rootKey) => {
+  let currentKeyArray = cellsTree[rootKey];
 
   // BFS as we must update the most recent
   // children before moving to grandchildren
@@ -123,8 +105,8 @@ const assignDependents = (dataDependentsTree, allDependents, rootKey) => {
         );
       }
 
-      if (dataDependentsTree[key]) {
-        next.push(...dataDependentsTree[key]);
+      if (cellsTree[key]) {
+        next.push(...cellsTree[key]);
       }
     });
 
@@ -132,12 +114,12 @@ const assignDependents = (dataDependentsTree, allDependents, rootKey) => {
   }
 };
 
-export const getAllDependents = (dataDependentsTree, rootKey) => {
+export const getAllDependents = (cellsTree, rootKey) => {
   const allDependents = {
     [rootKey]: [],
   };
 
-  assignDependents(dataDependentsTree, allDependents, rootKey);
+  assignDependents(cellsTree, allDependents, rootKey);
 
   return allDependents;
 };

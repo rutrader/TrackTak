@@ -1,23 +1,13 @@
 import React, { useMemo, useState } from "react";
-import { useSelector } from "react-redux";
-import { evaluate } from "mathjs";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import { useCallback } from "react";
 import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
 import FormatRawNumber from "../components/FormatRawNumber";
 import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
-import initialData, {
-  dataDependentsTree,
-  columns,
-  numberOfRows,
-} from "./initialData";
-import {
-  getAllDependents,
-  getColumnsBetween,
-  validateExp,
-  startColumn,
-} from "./utils";
+import { columns, numberOfRows } from "./cells";
+import { getColumnsBetween, startColumn } from "./utils";
 import { getEBITMarginCalculation } from "./expressionCalculations";
 import { Cell, Column, Table } from "@blueprintjs/table";
 import {
@@ -36,53 +26,19 @@ import selectValueOfAllOptionsOutstanding from "../selectors/selectValueOfAllOpt
 import LazyLoad from "react-lazyload";
 import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
 import { Link as RouterLink } from "react-router-dom";
-
-const computeExpr = (key, expr, scope) => {
-  let value = null;
-
-  if (expr?.charAt(0) !== "=") {
-    return { value: expr, expr: expr };
-  } else {
-    try {
-      value = evaluate(expr.substring(1), scope);
-    } catch (e) {
-      value = null;
-    }
-
-    if (value !== null && validateExp([key], expr)) {
-      return { className: "equation", value, expr };
-    } else {
-      return { className: "error", value: "error", expr };
-    }
-  }
-};
-
-const cellUpdate = (data, key, expr) => {
-  const scope = {};
-  const cellToUpdate = data[key];
-
-  Object.keys(data).forEach((key) => {
-    const { value } = data[key];
-
-    scope[key] = value === "" || isNaN(value) ? 0 : parseFloat(value);
-  });
-
-  data[key] = {
-    ...cellToUpdate,
-    ...computeExpr(key, expr, scope),
-  };
-};
+import { updateCells } from "../redux/actions/dcfActions";
 
 const DiscountedCashFlowSheet = (props) => {
+  const dispatch = useDispatch();
   const queryParams = useSelector(selectQueryParams);
   const fundamentals = useSelector((state) => state.fundamentals);
+  const cells = useSelector((state) => state.dcf.cells);
   const costOfCapital = useSelector(selectCostOfCapital);
   const riskFreeRate = useSelector(selectRiskFreeRate);
   const valueOfAllOptionsOutstanding = useSelector(
     selectValueOfAllOptionsOutstanding
   );
   const theme = useTheme();
-  const [data, setData] = useState(initialData);
   const [showFormulas, setShowFormulas] = useState(false);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const columnWidths = useMemo(() => {
@@ -96,108 +52,87 @@ const DiscountedCashFlowSheet = (props) => {
     });
   }, [props.columnWidths, showFormulas]);
 
-  const updateCell = useCallback(
-    (key, value) => {
-      const allDependents = getAllDependents(dataDependentsTree, key);
-
-      cellUpdate(data, key, value?.toString());
-
-      const currentDependents = allDependents[key] || [];
-
-      currentDependents.forEach((key) => {
-        const cell = data[key];
-
-        cellUpdate(data, key, cell.expr);
-      });
-
-      setData({ ...data });
-    },
-    [data]
-  );
-
-  // TODO: Put all the calculations in redux so we can
-  // use the estimated values elsewhere
   useEffect(() => {
-    updateCell("B34", valueOfAllOptionsOutstanding);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [valueOfAllOptionsOutstanding]);
+    dispatch(updateCells([["B34", valueOfAllOptionsOutstanding]]));
+  }, [dispatch, valueOfAllOptionsOutstanding]);
 
   useEffect(() => {
-    updateCell("C12", costOfCapital.totalCostOfCapital);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [costOfCapital.totalCostOfCapital]);
+    dispatch(updateCells([["C12", costOfCapital.totalCostOfCapital]]));
+  }, [costOfCapital.totalCostOfCapital, dispatch]);
 
   useEffect(() => {
-    updateCell("M2", riskFreeRate);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [riskFreeRate]);
-
-  useEffect(() => {
-    updateCell("M12", matureMarketEquityRiskPremium + riskFreeRate);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [riskFreeRate]);
-
-  useEffect(() => {
-    updateCell("B3", fundamentals.incomeStatement.totalRevenue);
-    updateCell("B5", fundamentals.incomeStatement.operatingIncome);
-    updateCell("B17", fundamentals.balanceSheet.investedCapital);
-    updateCell("B29", fundamentals.balanceSheet.bookValueOfDebt);
-    updateCell("B30", fundamentals.incomeStatement.minorityInterest);
-    updateCell("B31", fundamentals.balanceSheet.cashAndShortTermInvestments);
-    updateCell(
-      "B32",
-      fundamentals.balanceSheet.noncontrollingInterestInConsolidatedEntity
+    dispatch(
+      updateCells([
+        ["M2", riskFreeRate],
+        ["M12", matureMarketEquityRiskPremium + riskFreeRate],
+      ])
     );
-    updateCell("B36", fundamentals.price);
-    updateCell(
-      "B37",
-      `=B35/${fundamentals.data.SharesStats.SharesOutstanding}`
-    );
-    updateCell(
-      "B6",
-      fundamentals.incomeStatement.pastThreeYearsAverageEffectiveTaxRate
-    );
-    updateCell(
-      "M6",
-      fundamentals.currentEquityRiskPremiumCountry.corporateTaxRate
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fundamentals]);
+  }, [dispatch, riskFreeRate]);
 
   useEffect(() => {
-    updateCell("C16", queryParams.salesToCapitalRatio);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryParams.salesToCapitalRatio]);
+    dispatch(
+      updateCells([
+        ["B3", fundamentals.incomeStatement.totalRevenue],
+        ["B5", fundamentals.incomeStatement.operatingIncome],
+        ["B17", fundamentals.balanceSheet.investedCapital],
+        ["B29", fundamentals.balanceSheet.bookValueOfDebt],
+        ["B30", fundamentals.incomeStatement.minorityInterest],
+        ["B31", fundamentals.balanceSheet.cashAndShortTermInvestments],
+        [
+          "B32",
+          fundamentals.balanceSheet.noncontrollingInterestInConsolidatedEntity,
+        ],
+        ["B36", fundamentals.price],
+        ["B37", `=B35/${fundamentals.data.SharesStats.SharesOutstanding}`],
+        [
+          "B6",
+          fundamentals.incomeStatement.pastThreeYearsAverageEffectiveTaxRate,
+        ],
+        ["M6", fundamentals.currentEquityRiskPremiumCountry.corporateTaxRate],
+      ])
+    );
+  }, [dispatch, fundamentals]);
 
   useEffect(() => {
-    updateCell("C2", queryParams.cagrYearOneToFive);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryParams.cagrYearOneToFive]);
+    dispatch(updateCells([["C16", queryParams.salesToCapitalRatio]]));
+  }, [dispatch, queryParams.salesToCapitalRatio]);
 
   useEffect(() => {
-    getColumnsBetween(columns, "C", "L").forEach((column) => {
-      const ebitMarginKey = `${column}4`;
+    dispatch(updateCells([["C2", queryParams.cagrYearOneToFive]]));
+  }, [dispatch, queryParams.cagrYearOneToFive]);
 
-      updateCell(
-        ebitMarginKey,
-        getEBITMarginCalculation(
-          queryParams.yearOfConvergence,
-          queryParams.ebitTargetMarginInYearTen,
-          ebitMarginKey
-        )
-      );
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryParams.yearOfConvergence, queryParams.ebitTargetMarginInYearTen]);
+  useEffect(() => {
+    const cellsToUpdate = getColumnsBetween(columns, "C", "L").map(
+      (column) => `${column}4`
+    );
+
+    dispatch(
+      updateCells(
+        cellsToUpdate.map((ebitMarginKey) => [
+          ebitMarginKey,
+          getEBITMarginCalculation(
+            queryParams.yearOfConvergence,
+            queryParams.ebitTargetMarginInYearTen,
+            ebitMarginKey
+          ),
+        ])
+      )
+    );
+  }, [
+    queryParams.yearOfConvergence,
+    queryParams.ebitTargetMarginInYearTen,
+    dispatch,
+  ]);
 
   const cellRenderer = useCallback(
     (rowIndex, columnIndex) => {
+      console.log("test");
       const column = String.fromCharCode(
         startColumn.charCodeAt(0) + columnIndex
       );
       const row = (rowIndex += 1);
       const key = column + row;
-      const cell = data[key];
+      const cell = cells[key];
 
       if (!cell?.value) return <Cell />;
 
@@ -246,7 +181,12 @@ const DiscountedCashFlowSheet = (props) => {
         </Cell>
       );
     },
-    [data, showFormulas, theme.typography.fontFamily, theme.typography.fontSize]
+    [
+      cells,
+      showFormulas,
+      theme.typography.fontFamily,
+      theme.typography.fontSize,
+    ]
   );
 
   // TODO: Add an expand button to see it full screen

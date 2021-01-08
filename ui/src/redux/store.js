@@ -3,6 +3,7 @@ import { fundamentalsReducer } from "./reducers/fundamentalsReducer";
 import { configureStore } from "@reduxjs/toolkit";
 import { pageReducer } from "./reducers/pageReducer";
 import { contentfulReducer } from "./reducers/contentfulReducer";
+import { dcfReducer } from "./reducers/dcfReducer";
 import { connectRouter, routerMiddleware } from "connected-react-router";
 import { createBrowserHistory } from "history";
 
@@ -14,6 +15,7 @@ const createRootReducer = (history) => {
     fundamentals: fundamentalsReducer,
     page: pageReducer,
     contentful: contentfulReducer,
+    dcf: dcfReducer,
   });
 };
 
