@@ -101,9 +101,10 @@ const SyntheticRating = () => {
           </InfoOutlinedIconWrapper>
         </Typography>
         <Box>
-          <Typography style={{ fontWeight: theme.typography.fontWeightBold }}>
-            {isLargeCompany ? "Large Company" : "Small Company"}
-          </Typography>
+          <BoldValueLabel
+            value={isLargeCompany ? "Large Company" : "Small Company"}
+            label="Size"
+          />
           <BoldValueLabel
             value={
               interestCoverage === Infinity ||

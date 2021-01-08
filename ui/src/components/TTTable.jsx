@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import {
+  Box,
   Table,
   TableBody,
   TableCell,
@@ -9,10 +10,10 @@ import {
 import { useBlockLayout, useTable } from "react-table";
 import { FixedSizeList } from "react-window";
 
-const RenderTableRow = ({ prepareRow, row, ...props }) => {
+const RenderTableRow = ({ prepareRow, row, index, ...props }) => {
   prepareRow(row);
   return (
-    <TableRow {...row.getRowProps(props)}>
+    <TableRow {...row.getRowProps(props)} className={`table_row_${index}`}>
       {row.cells.map((cell) => {
         return (
           <TableCell {...cell.getCellProps()}>{cell.render("Cell")}</TableCell>
@@ -28,7 +29,7 @@ const TTTable = ({
   tableOptions,
   tableHeadProps,
   useVirtualization,
-  virtualizationProps,
+  fixedSizeListProps,
   ...props
 }) => {
   const {
@@ -50,14 +51,20 @@ const TTTable = ({
   const renderRow = useCallback(
     ({ index, style }) => {
       const row = rows[index];
-
-      return <RenderTableRow style={style} row={row} prepareRow={prepareRow} />;
+      return (
+        <RenderTableRow
+          index={index}
+          style={style}
+          row={row}
+          prepareRow={prepareRow}
+        />
+      );
     },
     [prepareRow, rows]
   );
 
   return (
-    <div style={{ overflow: "auto" }}>
+    <Box sx={{ overflow: "auto" }}>
       <Table {...getTableProps()} {...props}>
         <TableHead {...tableHeadProps}>
           {headerGroups.map((headerGroup) => {
@@ -79,7 +86,7 @@ const TTTable = ({
             <FixedSizeList
               itemCount={rows.length}
               width={totalColumnsWidth}
-              {...virtualizationProps}
+              {...fixedSizeListProps}
             >
               {renderRow}
             </FixedSizeList>
@@ -90,7 +97,7 @@ const TTTable = ({
           )}
         </TableBody>
       </Table>
-    </div>
+    </Box>
   );
 };
 
