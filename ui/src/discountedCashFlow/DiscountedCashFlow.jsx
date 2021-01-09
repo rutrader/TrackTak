@@ -2,7 +2,6 @@ import React, { cloneElement } from "react";
 import { Box, Typography, useTheme } from "@material-ui/core";
 import TTTable from "../components/TTTable";
 import dayjs from "dayjs";
-import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
 import Section from "../components/Section";
 import SubSection from "../components/SubSection";
 import SubscribeMailingList from "../components/SubscribeMailingList";
@@ -17,15 +16,12 @@ import DiscountedCashFlowSheet from "./DiscountedCashFlowSheet";
 import FormatRawNumber from "../components/FormatRawNumber";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import IndustryAverages from "../components/IndustryAverages";
-
-const TableValueMillionFormatter = (props) => (
-  <FormatRawNumberToMillion decimalScale={2} {...props} />
-);
+import TableMillionFormatter from "../components/TableMillionFormatter";
 
 const mapFromStatementsToDateObject = (
   objectToLoop,
   valueKey,
-  valueFormatter = <TableValueMillionFormatter />
+  valueFormatter = <TableMillionFormatter />
 ) => {
   const dateObject = {};
 
@@ -46,7 +42,7 @@ const DiscountedCashFlow = () => {
 
   if (!fundamentals.isLoaded) return null;
 
-  const companyFundamentalsColumns = [
+  const columns = [
     {
       Header: "",
       accessor: "dataField",
@@ -55,14 +51,14 @@ const DiscountedCashFlow = () => {
       Header: "TTM",
       accessor: "ttm",
     },
-  ].concat(
-    Object.values(fundamentals.yearlyIncomeStatements).map((statement) => ({
-      Header: dayjs(statement.date).format("MMM YY"),
-      accessor: statement.date,
-    }))
-  );
-
-  const rowData = [
+    ...Object.values(fundamentals.yearlyIncomeStatements).map((statement) => {
+      return {
+        Header: dayjs(statement.date).format("MMM YY"),
+        accessor: statement.date,
+      };
+    }),
+  ];
+  const data = [
     {
       dataField: (
         <InfoOutlinedIconWrapper
@@ -73,7 +69,7 @@ const DiscountedCashFlow = () => {
         </InfoOutlinedIconWrapper>
       ),
       ttm: fundamentals.isInUS ? (
-        <TableValueMillionFormatter
+        <TableMillionFormatter
           value={fundamentals.incomeStatement.totalRevenue}
         />
       ) : null,
@@ -89,7 +85,7 @@ const DiscountedCashFlow = () => {
         </InfoOutlinedIconWrapper>
       ),
       ttm: fundamentals.isInUS ? (
-        <TableValueMillionFormatter
+        <TableMillionFormatter
           value={fundamentals.incomeStatement.operatingIncome}
         />
       ) : null,
@@ -122,7 +118,7 @@ const DiscountedCashFlow = () => {
         </InfoOutlinedIconWrapper>
       ),
       ttm: fundamentals.isInUS ? (
-        <TableValueMillionFormatter
+        <TableMillionFormatter
           value={fundamentals.incomeStatement.interestExpense}
         />
       ) : null,
@@ -138,7 +134,7 @@ const DiscountedCashFlow = () => {
         </InfoOutlinedIconWrapper>
       ),
       ttm: (
-        <TableValueMillionFormatter
+        <TableMillionFormatter
           value={
             fundamentals.balanceSheet.noncontrollingInterestInConsolidatedEntity
           }
@@ -160,7 +156,7 @@ const DiscountedCashFlow = () => {
         </InfoOutlinedIconWrapper>
       ),
       ttm: fundamentals.isInUS ? (
-        <TableValueMillionFormatter
+        <TableMillionFormatter
           value={fundamentals.incomeStatement.minorityInterest}
         />
       ) : null,
@@ -176,7 +172,7 @@ const DiscountedCashFlow = () => {
         </InfoOutlinedIconWrapper>
       ),
       ttm: (
-        <TableValueMillionFormatter
+        <TableMillionFormatter
           value={fundamentals.balanceSheet.cashAndShortTermInvestments}
         />
       ),
@@ -192,7 +188,7 @@ const DiscountedCashFlow = () => {
         </InfoOutlinedIconWrapper>
       ),
       ttm: (
-        <TableValueMillionFormatter
+        <TableMillionFormatter
           value={fundamentals.balanceSheet.bookValueOfEquity}
         />
       ),
@@ -208,29 +204,13 @@ const DiscountedCashFlow = () => {
         </InfoOutlinedIconWrapper>
       ),
       ttm: (
-        <TableValueMillionFormatter
+        <TableMillionFormatter
           value={fundamentals.balanceSheet.bookValueOfDebt}
         />
       ),
       ...mapFromStatementsToDateObject(
         fundamentals.yearlyBalanceSheets,
         "bookValueOfDebt"
-      ),
-    },
-    {
-      dataField: (
-        <InfoOutlinedIconWrapper text="The amount of capital that has been invested into the business. The formula is: (Equity + Debt) - Cash &amp; Marketable Securities. We minus the cash out because cash is not an investment as it returns nothing.">
-          Invested Capital
-        </InfoOutlinedIconWrapper>
-      ),
-      ttm: (
-        <TableValueMillionFormatter
-          value={fundamentals.balanceSheet.investedCapital}
-        />
-      ),
-      ...mapFromStatementsToDateObject(
-        fundamentals.yearlyBalanceSheets,
-        "investedCapital"
       ),
     },
     {
@@ -249,6 +229,22 @@ const DiscountedCashFlow = () => {
         fundamentals.yearlyBalanceSheets,
         "salesToCapitalRatio",
         <FormatRawNumber decimalScale={2} />
+      ),
+    },
+    {
+      dataField: (
+        <InfoOutlinedIconWrapper text="The amount of capital that has been invested into the business. The formula is: (Equity + Debt) - Cash &amp; Marketable Securities. We minus the cash out because cash is not an investment as it returns nothing.">
+          Invested Capital
+        </InfoOutlinedIconWrapper>
+      ),
+      ttm: (
+        <TableMillionFormatter
+          value={fundamentals.balanceSheet.investedCapital}
+        />
+      ),
+      ...mapFromStatementsToDateObject(
+        fundamentals.yearlyBalanceSheets,
+        "investedCapital"
       ),
     },
   ];
@@ -272,7 +268,7 @@ const DiscountedCashFlow = () => {
           </Typography>
         </Box>
         <Box style={{ overflowX: "auto" }}>
-          <TTTable columns={companyFundamentalsColumns} data={rowData} />
+          <TTTable columns={columns} data={data} />
         </Box>
       </Section>
       <Section sx={{ display: "flex", gridColumnGap: 20, flexWrap: "wrap" }}>

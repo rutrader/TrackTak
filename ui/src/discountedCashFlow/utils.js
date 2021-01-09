@@ -14,6 +14,18 @@ export const getCellsForRows = (columns, rows) => {
   return rows.flatMap((row) => columns.map((column) => column + row));
 };
 
+export const getCellsForRowsBetween = (
+  columns,
+  startColumn,
+  endColumn,
+  rows
+) => {
+  const columnsSliced = getColumnsBetween(columns, startColumn, endColumn);
+  const cells = getCellsForRows(columnsSliced, rows);
+
+  return cells;
+};
+
 export const validateExp = (trailKeys, expr) => {
   let valid = true;
   const matches = expr?.match(/[A-Z][1-9]+/g) || [];
