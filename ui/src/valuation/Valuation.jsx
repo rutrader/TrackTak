@@ -28,7 +28,7 @@ import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
 import * as styles from "./Valuation.module.scss";
 import CostOfCapitalResults from "../components/CostOfCapitalResults";
 import dayjs from "dayjs";
-import { getContentfulEntry, getPrices } from "../api/api";
+import { getContentfulEntries, getPrices } from "../api/api";
 import { pretaxCostOfDebtLabel } from "../components/OptionalInputs";
 import DiscountedCashFlowSheet from "../discountedCashFlow/DiscountedCashFlowSheet";
 import IndustryAverages from "../components/IndustryAverages";
@@ -92,44 +92,47 @@ const Valuation = () => {
   const params = useParams();
   const theme = useTheme();
   const dispatch = useDispatch();
-  const [contentfulData, setContentfulData] = useState();
+  const [fields, setContentfulFields] = useState();
   const fundamentals = useSelector((state) => state.fundamentals);
+  const estimatedValuePerShare = useSelector(
+    (state) => state.dcf.cells.B37.value
+  );
 
   useEffect(() => {
     const fetchStockData = async () => {
-      const contentfulData = await getContentfulEntry(params.id);
-      const data = contentfulData.data.fields.data;
-      const ticker = contentfulData.data.fields.ticker;
+      const contentfulRes = await getContentfulEntries({
+        "fields.ticker": params.ticker,
+        content_type: "dcfTemplate",
+      });
+      const fields = contentfulRes.data.items[0].fields;
+      const data = fields.data;
+      const ticker = params.ticker;
 
       dispatch(
         setFundamentalsDataThunk({
           data,
           ticker,
-          tenYearGovernmentBondLastCloseTo:
-            contentfulData.data.fields.dateOfValuation,
+          tenYearGovernmentBondLastCloseTo: fields.dateOfValuation,
         })
       );
       const res = await getPrices(ticker, {
-        to: contentfulData.data.fields.dateOfValuation,
+        to: fields.dateOfValuation,
         filter: "last_close",
       });
 
       dispatch(setLastPriceClose(res.data.value));
 
-      setContentfulData(contentfulData.data);
+      setContentfulFields(fields);
     };
     fetchStockData();
-  }, [dispatch, params.id]);
+  }, [dispatch, params.ticker]);
 
-  if (!fundamentals.data || !contentfulData) return null;
+  if (!fundamentals.data || !fields) return null;
 
   const { General } = fundamentals.data;
-  const { fields } = contentfulData;
 
-  // TODO: share this with the B38 cell calculation
   const marginOfSafety =
-    (fields.estimatedValuePerShare - fundamentals.price) /
-    fields.estimatedValuePerShare;
+    (estimatedValuePerShare - fundamentals.price) / estimatedValuePerShare;
   const formattedDateOfValuation = dayjs(fields.dateOfValuation).format(
     "Do MMM. YYYY"
   );
@@ -196,15 +199,19 @@ const Valuation = () => {
           </NumberSpan>
           {fields.salesToCapitalRatioDescription}
         </Typography>
-        <Typography variant="h6" gutterBottom>
-          {pretaxCostOfDebtLabel}
-        </Typography>
-        <Typography paragraph>
-          <NumberSpan>
-            <FormatRawNumberToPercent value={fields.pretaxCostOfDebt} />
-          </NumberSpan>
-          {fields.pretaxCostOfDebtDescription}
-        </Typography>
+        {fields.pretaxCostOfDebt && (
+          <>
+            <Typography variant="h6" gutterBottom>
+              {pretaxCostOfDebtLabel}
+            </Typography>
+            <Typography paragraph>
+              <NumberSpan>
+                <FormatRawNumberToPercent value={fields.pretaxCostOfDebt} />
+              </NumberSpan>
+              {fields.pretaxCostOfDebtDescription}
+            </Typography>
+          </>
+        )}
       </Section>
       <Section>
         <IndustryAverages />
@@ -236,7 +243,7 @@ const Valuation = () => {
           I have estimated the shares to have a share price of
           <b>
             &nbsp;
-            <FormatRawNumberToCurrency value={fields.estimatedValuePerShare} />
+            <FormatRawNumberToCurrency value={estimatedValuePerShare} />
           </b>
           &nbsp;per share.
           <Box>

@@ -1,6 +1,7 @@
 const axios = require("axios");
 const cache = require("memory-cache");
 const contentful = require("./contentful");
+const replaceDoubleColonWithObject = require("./replaceDoubleColonWithObject");
 
 const baseUrl = "https://eodhistoricaldata.com/api";
 const fundamentalsUrl = `${baseUrl}/fundamentals`;
@@ -32,33 +33,6 @@ const sendReqOrGetCachedData = async (
     console.error(error);
     throw error;
   }
-};
-
-const assignNestedObject = (obj, keyPath, value) => {
-  const lastKeyIndex = keyPath.length - 1;
-
-  for (var i = 0; i < lastKeyIndex; ++i) {
-    const key = keyPath[i];
-
-    if (!(key in obj)) {
-      obj[key] = {};
-    }
-    obj = obj[key];
-  }
-  obj[keyPath[lastKeyIndex]] = value;
-};
-
-const replaceDoubleColonWithObject = (data) => {
-  const newData = {};
-
-  Object.keys(data).forEach((key) => {
-    const value = data[key];
-    const splits = key.split("::");
-
-    assignNestedObject(newData, splits, value);
-  });
-
-  return newData;
 };
 
 const api = {
@@ -225,15 +199,9 @@ const api = {
   getContentfulEntry: async (id, query) => {
     const data = await sendReqOrGetCachedData(
       async () => {
-        const data = await contentful.getEntry(id, query);
+        const res = await contentful.getEntry(id, query);
 
-        return {
-          ...data,
-          fields: {
-            ...data.fields,
-            data: replaceDoubleColonWithObject(data.fields.data),
-          },
-        };
+        return res;
       },
       "contentfulEntry",
       { id, query }
