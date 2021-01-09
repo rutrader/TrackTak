@@ -85,8 +85,8 @@ const Home = () => {
               color="primary"
             />
           </Box>
-          Fully transparent and based on Aswath Damoradan's model showing each
-          you formula.
+          Fully transparent and based on Aswath Damoradan's model showing you
+          each formula.
         </TypographyText>
         <TypographyText isOnMobile={isOnMobile}>
           <Box>
