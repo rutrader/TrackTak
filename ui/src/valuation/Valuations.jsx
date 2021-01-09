@@ -36,7 +36,7 @@ const Valuations = () => {
         Intrinsic Stock Valuations
       </Typography>
       <List>
-        {entries.items.map(({ fields, sys }) => {
+        {entries.items.map(({ fields }) => {
           const { General } = fields.data;
           const searchParams = new URLSearchParams();
 
@@ -47,7 +47,7 @@ const Valuations = () => {
           });
 
           const valuationUrl = `/valuations/${
-            sys.id
+            fields.ticker
           }?${searchParams.toString()}`;
 
           return (
