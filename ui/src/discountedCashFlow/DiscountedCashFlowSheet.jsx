@@ -86,6 +86,7 @@ const DiscountedCashFlowSheet = (props) => {
         ["B37", `=B35/${fundamentals.data.SharesStats.SharesOutstanding}`],
         [
           "B6",
+          // TODO: Change this to Base Year tax effective tax rate
           fundamentals.incomeStatement.pastThreeYearsAverageEffectiveTaxRate,
         ],
         ["M6", fundamentals.currentEquityRiskPremiumCountry.corporateTaxRate],
