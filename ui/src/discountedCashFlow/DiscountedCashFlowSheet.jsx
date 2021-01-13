@@ -27,6 +27,15 @@ import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremi
 import { Link as RouterLink } from "react-router-dom";
 import { updateCells } from "../redux/actions/dcfActions";
 import LazyLoad from "react-lazyload";
+import { CSVLink } from "react-csv";
+
+const getChunksOfArray = (array, size) =>
+  array.reduce((acc, _, i) => {
+    if (i % size === 0) {
+      acc.push(array.slice(i, i + size));
+    }
+    return acc;
+  }, []);
 
 const DiscountedCashFlowSheet = (props) => {
   const dispatch = useDispatch();
@@ -51,6 +60,36 @@ const DiscountedCashFlowSheet = (props) => {
       return props.columnWidths?.[column] ?? 120;
     });
   }, [props.columnWidths, showFormulas]);
+
+  // const headerCellKeys = getCellsForRowsBetween(columns, "A", "M", [1]);
+  // const headerColumns = headerCellKeys.map((cellKey) => {
+  //   return cells[cellKey].value;
+  // });
+  // // console.log(headerCellKeys);
+  // // console.log(headerColumns);
+
+  // const dataColumns = Object.keys(cells)
+  //   .filter((key) => headerCellKeys.indexOf(key) === -1)
+  //   .map((key) => cells[key].value);
+  // console.log(dataColumns);
+  const cellKeysSorted = Object.keys(cells).sort((a, b) => {
+    const aNumber = parseInt(a.replace(/[A-Za-z]/, ""));
+    const bNumber = parseInt(b.replace(/[A-Za-z]/, ""));
+    const aColumn = a.replace(/[0-9]/, "").charCodeAt(0);
+    const bColumn = b.replace(/[0-9]/, "").charCodeAt(0);
+
+    return 0;
+  });
+  console.log(cellKeysSorted);
+
+  const chunkedData = getChunksOfArray(cellKeysSorted, 13).map((arr) => {
+    return arr.map((cellKey) => cells[cellKey].value);
+  });
+
+  const csvReport = {
+    data: chunkedData,
+    filename: `DCF_${fundamentals.data.General.Code}.${fundamentals.data.General.Exchange}.csv`,
+  };
 
   useEffect(() => {
     dispatch(updateCells([["B34", valueOfAllOptionsOutstanding]]));
@@ -201,14 +240,19 @@ const DiscountedCashFlowSheet = (props) => {
         }}
       >
         <Typography variant="h5">DCF Valuation</Typography>
-        <Button
-          onClick={() => {
-            setShowFormulas((state) => !state);
-          }}
-          variant="outlined"
-        >
-          {showFormulas ? "Hide Formulas" : "Show Formulas"}
-        </Button>
+        <Box>
+          <Button
+            onClick={() => {
+              setShowFormulas((state) => !state);
+            }}
+            variant="outlined"
+          >
+            {showFormulas ? "Hide Formulas" : "Show Formulas"}
+          </Button>
+          <CSVLink {...csvReport}>
+            <Button variant="outlined">Export to CSV</Button>
+          </CSVLink>
+        </Box>
       </Box>
       <Typography gutterBottom>
         Need help? Check out the DCF docs&nbsp;
