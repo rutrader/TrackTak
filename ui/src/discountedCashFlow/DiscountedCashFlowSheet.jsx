@@ -8,7 +8,12 @@ import FormatRawNumber from "../components/FormatRawNumber";
 import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
 import { columns, numberOfRows } from "./cells";
 import { getColumnsBetween, startColumn } from "./utils";
-import { getEBITMarginCalculation } from "./expressionCalculations";
+import {
+  getEBITMarginCalculation,
+  getRevenueOneToFiveYrCalculation,
+  getRevenueSixToTenYrCalculation,
+  getRevenueCalculation,
+} from "./expressionCalculations";
 import { Cell, Column, Table } from "@blueprintjs/table";
 import {
   Box,
@@ -53,58 +58,71 @@ const DiscountedCashFlowSheet = (props) => {
   }, [props.columnWidths, showFormulas]);
 
   useEffect(() => {
-    dispatch(updateCells([["B34", valueOfAllOptionsOutstanding]]));
-  }, [dispatch, valueOfAllOptionsOutstanding]);
-
-  useEffect(() => {
-    dispatch(updateCells([["C12", costOfCapital.totalCostOfCapital]]));
-  }, [costOfCapital.totalCostOfCapital, dispatch]);
-
-  useEffect(() => {
     dispatch(
       updateCells([
-        ["M2", riskFreeRate],
-        ["M12", matureMarketEquityRiskPremium + riskFreeRate],
-      ])
-    );
-  }, [dispatch, riskFreeRate]);
-
-  useEffect(() => {
-    dispatch(
-      updateCells([
-        ["B3", fundamentals.incomeStatement.totalRevenue],
-        ["B5", fundamentals.incomeStatement.operatingIncome],
-        ["B17", fundamentals.balanceSheet.investedCapital],
-        ["B29", fundamentals.balanceSheet.bookValueOfDebt],
-        ["B30", fundamentals.incomeStatement.minorityInterest],
-        ["B31", fundamentals.balanceSheet.cashAndShortTermInvestments],
+        ["B2", fundamentals.incomeStatement.totalRevenue],
+        ["B4", fundamentals.incomeStatement.operatingIncome],
+        ["B16", fundamentals.balanceSheet.investedCapital],
+        ["B28", fundamentals.balanceSheet.bookValueOfDebt],
+        ["B29", fundamentals.incomeStatement.minorityInterest],
+        ["B30", fundamentals.balanceSheet.cashAndShortTermInvestments],
         [
-          "B32",
+          "B31",
           fundamentals.balanceSheet.noncontrollingInterestInConsolidatedEntity,
         ],
-        ["B36", fundamentals.price],
-        ["B37", `=B35/${fundamentals.data.SharesStats.SharesOutstanding}`],
+        ["B35", fundamentals.price],
+        ["B36", `=B34/${fundamentals.data.SharesStats.SharesOutstanding}`],
         [
-          "B6",
+          "B5",
           // TODO: Change this to Base Year tax effective tax rate
           fundamentals.incomeStatement.pastThreeYearsAverageEffectiveTaxRate,
         ],
-        ["M6", fundamentals.currentEquityRiskPremiumCountry.corporateTaxRate],
+        ["M5", fundamentals.currentEquityRiskPremiumCountry.corporateTaxRate],
       ])
     );
   }, [dispatch, fundamentals]);
 
   useEffect(() => {
-    dispatch(updateCells([["C16", queryParams.salesToCapitalRatio]]));
-  }, [dispatch, queryParams.salesToCapitalRatio]);
+    const revenueOneToFiveCellsToUpdate = getColumnsBetween(
+      columns,
+      "C",
+      "G"
+    ).map((column) => `${column}2`);
+    const revenueSixToTenCellsToUpdate = getColumnsBetween(
+      columns,
+      "H",
+      "L"
+    ).map((column) => `${column}2`);
 
-  useEffect(() => {
-    dispatch(updateCells([["C2", queryParams.cagrYearOneToFive]]));
-  }, [dispatch, queryParams.cagrYearOneToFive]);
+    dispatch(
+      updateCells(
+        revenueOneToFiveCellsToUpdate.map((revenueKey) => [
+          revenueKey,
+          getRevenueOneToFiveYrCalculation(
+            queryParams.cagrYearOneToFive,
+            revenueKey
+          ),
+        ])
+      )
+    );
+    dispatch(
+      updateCells(
+        revenueSixToTenCellsToUpdate.map((revenueKey, index) => [
+          revenueKey,
+          getRevenueSixToTenYrCalculation(
+            queryParams.cagrYearOneToFive,
+            riskFreeRate,
+            index,
+            revenueKey
+          ),
+        ])
+      )
+    );
+  }, [dispatch, queryParams.cagrYearOneToFive, riskFreeRate]);
 
   useEffect(() => {
     const cellsToUpdate = getColumnsBetween(columns, "C", "L").map(
-      (column) => `${column}4`
+      (column) => `${column}3`
     );
 
     dispatch(
@@ -125,6 +143,29 @@ const DiscountedCashFlowSheet = (props) => {
     dispatch,
   ]);
 
+  useEffect(() => {
+    dispatch(updateCells([["C11", costOfCapital.totalCostOfCapital]]));
+  }, [costOfCapital.totalCostOfCapital, dispatch]);
+
+  useEffect(() => {
+    dispatch(updateCells([["C15", queryParams.salesToCapitalRatio]]));
+  }, [dispatch, queryParams.salesToCapitalRatio]);
+
+  useEffect(() => {
+    dispatch(
+      updateCells([
+        ["M2", getRevenueCalculation(riskFreeRate, "M2")],
+        ["M11", matureMarketEquityRiskPremium + riskFreeRate],
+        ["M7", `=${riskFreeRate} > 0 ? (${riskFreeRate} / M17) * M6 : 0`],
+        ["B21", `=B19/(B20-${riskFreeRate})`],
+      ])
+    );
+  }, [dispatch, riskFreeRate]);
+
+  useEffect(() => {
+    dispatch(updateCells([["B33", valueOfAllOptionsOutstanding]]));
+  }, [dispatch, valueOfAllOptionsOutstanding]);
+
   const cellRenderer = useCallback(
     (rowIndex, columnIndex) => {
       const column = String.fromCharCode(
@@ -140,7 +181,7 @@ const DiscountedCashFlowSheet = (props) => {
 
       let node = value;
 
-      const isOutputCell = key === "B37";
+      const isOutputCell = key === "B36";
 
       if (type === "percent") {
         node = <FormatRawNumberToPercent value={value} decimalScale={2} />;
@@ -201,14 +242,17 @@ const DiscountedCashFlowSheet = (props) => {
         }}
       >
         <Typography variant="h5">DCF Valuation</Typography>
-        <Button
-          onClick={() => {
-            setShowFormulas((state) => !state);
-          }}
-          variant="outlined"
-        >
-          {showFormulas ? "Hide Formulas" : "Show Formulas"}
-        </Button>
+        <Box>
+          <Button
+            onClick={() => {
+              setShowFormulas((state) => !state);
+            }}
+            variant="outlined"
+          >
+            {showFormulas ? "Hide Formulas" : "Show Formulas"}
+          </Button>
+          <Button variant="outlined">% YOY</Button>
+        </Box>
       </Box>
       <Typography gutterBottom>
         Need help? Check out the DCF docs&nbsp;

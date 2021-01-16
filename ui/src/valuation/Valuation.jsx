@@ -95,7 +95,7 @@ const Valuation = () => {
   const [fields, setContentfulFields] = useState();
   const fundamentals = useSelector((state) => state.fundamentals);
   const estimatedValuePerShare = useSelector(
-    (state) => state.dcf.cells.B37.value
+    (state) => state.dcf.cells.B36.value
   );
 
   useEffect(() => {

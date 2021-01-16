@@ -93,7 +93,7 @@ const wikiContent = [
     ),
   },
   {
-    title: "Revenue Growth Rate - Cells C2-M2",
+    title: "Revenue - Cells C2-M2",
     text: (
       <>
         <Typography paragraph>
@@ -125,14 +125,14 @@ const wikiContent = [
           This is to safe guard you against putting in an unreasonably large
           revenue growth rate. It's also more realistic in most cases due to
           companies growth slowing as their revenue becomes bigger and the
-          company matures. The terminal growth (M2) is then set to be equal year
-          10's growth rate.
+          company matures. The terminal growth (M2) is then set to be equal to
+          year 10's growth rate.
         </Typography>
       </>
     ),
   },
   {
-    title: "EBIT Margin - Cells B4-M4",
+    title: "EBIT Margin - Cells B3-M3",
     text: (
       <>
         <Typography paragraph>
@@ -151,8 +151,8 @@ const wikiContent = [
           />
         </InputExampleBox>
         <Typography paragraph>
-          We use this input in Years 1-10 (B4-L4) and set the terminal year to
-          be equal to year 10 (L4). To figure out what to put in this input you
+          We use this input in Years 1-10 (B3-L3) and set the terminal year to
+          be equal to year 10 (L3). To figure out what to put in this input you
           need to check the companies current EBIT margin, the industries
           average EBIT margin and also your thoughts on what type of margin the
           company can acheive by year 10. This will differ grealy depending on
@@ -184,19 +184,19 @@ const wikiContent = [
         </InputExampleBox>
         <Typography paragraph>
           The EBIT Margin will slowly converge from the base years margin (B4)
-          to your EBIT margin in year 10 (L4). The speed at which this happens
+          to your EBIT margin in year 10 (L3). The speed at which this happens
           depends on the Year of Convergence that you type in to this input.
         </Typography>
       </>
     ),
   },
   {
-    title: "Tax Rate - Cells B6-M6",
+    title: "Tax Rate - Cells B5-M5",
     text: (
       <>
         The tax rate in the base year is set to be the effective tax rate for
         your company. This tax rate then converges to the marginal tax rate
-        after year 5 (H6). The reason we converge from the effective tax rate to
+        after year 5 (H5). The reason we converge from the effective tax rate to
         the marginal is because a company cannot defer it's taxes forever,
         eventually the company has to pay the countries marginal corporation tax
         rate.
@@ -204,7 +204,7 @@ const wikiContent = [
     ),
   },
   {
-    title: "EBIT (1-t) - Cells B7-M7",
+    title: "EBIT (1-t) - Cells B6-M6",
     text: (
       <>
         This is essentially the Earnings Before Interest. The difference between
@@ -213,7 +213,7 @@ const wikiContent = [
     ),
   },
   {
-    title: "Reinvestment - Cells C8-M8",
+    title: "Reinvestment - Cells C7-M7",
     text: (
       <>
         This is how much the company is reinvesting into the company to grow.
@@ -226,7 +226,7 @@ const wikiContent = [
     ),
   },
   {
-    title: "FCFF - Cells C9-M9",
+    title: "FCFF - Cells C8-M8",
     text: (
       <>
         Free Cash Flow to the Firm (FCFF) is the amount of money the company has
@@ -240,7 +240,7 @@ const wikiContent = [
     text: <>Net Operating Loss (NOL). Not implemented yet. Coming soon</>,
   },
   {
-    title: "Cost of Capital - Cells C12-M12",
+    title: "Cost of Capital - Cells C11-M11",
     text: (
       <>
         <Typography paragraph>
@@ -480,7 +480,7 @@ const wikiContent = [
     ),
   },
   {
-    title: "Cumulated Discount Factor - Cells C13-L13",
+    title: "Cumulated Discount Factor - Cells C12-L12",
     text: (
       <>
         This is the opposite of the Cost of Capital in decimal form. We take the
@@ -489,7 +489,7 @@ const wikiContent = [
     ),
   },
   {
-    title: "PV (FCFF) - Cells C14-L14",
+    title: "PV (FCFF) - Cells C13-L13",
     text: (
       <>
         Present Value of Free Cash Flow to the Firm (PV (FCFF)) is the FCFF
@@ -501,21 +501,21 @@ const wikiContent = [
     ),
   },
   {
-    title: "Terminal Cash Flow - Cell B20",
+    title: "Terminal Cash Flow - Cell B19",
     text: (
       <>The cash flows that the company generates each year after year 10.</>
     ),
   },
   {
-    title: "Terminal Cost of Capital - Cell B21",
+    title: "Terminal Cost of Capital - Cell B20",
     text: <>The cost of capital for the compeny each year after year 10.</>,
   },
   {
-    title: "Terminal Value - Cell B22",
+    title: "Terminal Value - Cell B21",
     text: <>The total value of the cash flows after year 10.</>,
   },
   {
-    title: "PV (Terminal Value) - Cell B23",
+    title: "PV (Terminal Value) - Cell B22",
     text: (
       <>
         The total value of the cash flows after year 10 discounted to today's
@@ -524,7 +524,7 @@ const wikiContent = [
     ),
   },
   {
-    title: "PV (CF Over Next 10 Years) - Cell B24",
+    title: "PV (CF Over Next 10 Years) - Cell B23",
     text: (
       <>
         The total value of the cash flows in the next 10 years discounted to
@@ -533,19 +533,19 @@ const wikiContent = [
     ),
   },
   {
-    title: "Sum of PV - Cell B25",
+    title: "Sum of PV - Cell B24",
     text: <>The total sum of the present values of the previous two fields.</>,
   },
   {
-    title: "Probability of Failure - Cell B26",
+    title: "Probability of Failure - Cell B25",
     text: <>Not implemented yet. Coming soon.</>,
   },
   {
-    title: "Proceeds if the Firm Fails - Cell B27",
+    title: "Proceeds if the Firm Fails - Cell B26",
     text: <>Not implemented yet. Coming soon.</>,
   },
   {
-    title: "Operating Assets - Cell B28",
+    title: "Operating Assets - Cell B27",
     text: (
       <>
         We take the Sum of the Present Value and modify it. We minus debt and
@@ -556,7 +556,7 @@ const wikiContent = [
     ),
   },
   {
-    title: "Equity - Cell B33",
+    title: "Equity - Cell B32",
     text: (
       <>
         This is the sum of the above calculations after Operating Assets has
@@ -565,7 +565,7 @@ const wikiContent = [
     ),
   },
   {
-    title: "Options - Cell B34",
+    title: "Options - Cell B33",
     text: (
       <>
         We minus Employee Options from Equity due to the company having to pay
@@ -575,7 +575,7 @@ const wikiContent = [
     ),
   },
   {
-    title: "Common Stock Equity - Cell B35",
+    title: "Common Stock Equity - Cell B34",
     text: (
       <>
         This is Equity with the employee options taken away. This is the final
@@ -585,7 +585,7 @@ const wikiContent = [
     ),
   },
   {
-    title: "Estimated Value Per Share - Cell B37",
+    title: "Estimated Value Per Share - Cell B36",
     text: (
       <>
         The intrinsic value per share that the share price should be trading at
@@ -595,7 +595,7 @@ const wikiContent = [
     ),
   },
   {
-    title: "Margin of Safety - Cell B38",
+    title: "Margin of Safety - Cell B37",
     text: (
       <>
         How undervalued or overvalued the current price of the stock, if it is
