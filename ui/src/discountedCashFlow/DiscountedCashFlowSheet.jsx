@@ -7,7 +7,12 @@ import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
 import FormatRawNumber from "../components/FormatRawNumber";
 import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
 import { columns, numberOfRows } from "./cells";
-import { getColumnsBetween, startColumn } from "./utils";
+import {
+  getColumnLetterFromCellKey,
+  getColumnsBetween,
+  getRowNumberFromCellKey,
+  startColumn,
+} from "./utils";
 import { getEBITMarginCalculation } from "./expressionCalculations";
 import { Cell, Column, Table } from "@blueprintjs/table";
 import {
@@ -37,6 +42,62 @@ const getChunksOfArray = (array, size) =>
     return acc;
   }, []);
 
+const formatCellValue = (cell) => {
+  if (!cell) return cell;
+
+  const { value, type } = cell;
+
+  const newValue = {
+    percent: <FormatRawNumberToPercent value={value} />,
+    million: <FormatRawNumberToMillion value={value} useCurrencySymbol />,
+    currency: <FormatRawNumberToCurrency value={value} />,
+    number: <FormatRawNumber value={value} decimalScale={2} />,
+  };
+
+  return newValue[type] || value;
+};
+
+const padCellKeys = (sortedCellKeys) => {
+  const paddedCellKeys = [];
+
+  sortedCellKeys.forEach((cellKey, i) => {
+    paddedCellKeys.push(cellKey);
+
+    if (!sortedCellKeys[i + 1]) return;
+
+    const columnCharCode = getColumnLetterFromCellKey(cellKey).charCodeAt(0);
+    const nextColumnCharCode = getColumnLetterFromCellKey(
+      sortedCellKeys[i + 1]
+    ).charCodeAt(0);
+
+    const column = String.fromCharCode(columnCharCode);
+    const isNextColumnAlphabetically =
+      nextColumnCharCode === columnCharCode + 1;
+
+    if (!isNextColumnAlphabetically && column !== "M") {
+      const row = getRowNumberFromCellKey(cellKey);
+      const diffInColumnsToEnd =
+        parseInt("M".charCodeAt(0), 10) - columnCharCode;
+
+      for (let index = 1; index <= diffInColumnsToEnd; index++) {
+        const nextColumn = String.fromCharCode(columnCharCode + index);
+        const nextCellKey = `${nextColumn}${row}`;
+
+        paddedCellKeys.push(nextCellKey);
+      }
+    }
+  });
+  return paddedCellKeys;
+};
+
+const sortAlphaNum = (a, b) => {
+  const diff = getRowNumberFromCellKey(a) - getRowNumberFromCellKey(b);
+
+  return diff || a.localeCompare(b);
+};
+
+const numberOfColumns = 13;
+
 const DiscountedCashFlowSheet = (props) => {
   const dispatch = useDispatch();
   const queryParams = useSelector(selectQueryParams);
@@ -61,30 +122,17 @@ const DiscountedCashFlowSheet = (props) => {
     });
   }, [props.columnWidths, showFormulas]);
 
-  // const headerCellKeys = getCellsForRowsBetween(columns, "A", "M", [1]);
-  // const headerColumns = headerCellKeys.map((cellKey) => {
-  //   return cells[cellKey].value;
-  // });
-  // // console.log(headerCellKeys);
-  // // console.log(headerColumns);
+  const cellKeysSorted = padCellKeys(Object.keys(cells).sort(sortAlphaNum));
 
-  // const dataColumns = Object.keys(cells)
-  //   .filter((key) => headerCellKeys.indexOf(key) === -1)
-  //   .map((key) => cells[key].value);
-  // console.log(dataColumns);
-  const cellKeysSorted = Object.keys(cells).sort((a, b) => {
-    const aNumber = parseInt(a.replace(/[A-Za-z]/, ""));
-    const bNumber = parseInt(b.replace(/[A-Za-z]/, ""));
-    const aColumn = a.replace(/[0-9]/, "").charCodeAt(0);
-    const bColumn = b.replace(/[0-9]/, "").charCodeAt(0);
+  const chunkedData = getChunksOfArray(cellKeysSorted, numberOfColumns).map(
+    (arr) => {
+      return arr.map((cellKey) => {
+        const value = cells[cellKey]?.value;
 
-    return 0;
-  });
-  console.log(cellKeysSorted);
-
-  const chunkedData = getChunksOfArray(cellKeysSorted, 13).map((arr) => {
-    return arr.map((cellKey) => cells[cellKey].value);
-  });
+        return value;
+      });
+    }
+  );
 
   const csvReport = {
     data: chunkedData,
@@ -175,31 +223,16 @@ const DiscountedCashFlowSheet = (props) => {
 
       if (!cell?.value) return <Cell />;
 
-      const { value, type, expr } = cell;
-
-      let node = value;
+      let node = formatCellValue(cell);
 
       const isOutputCell = key === "B37";
-
-      if (type === "percent") {
-        node = <FormatRawNumberToPercent value={value} decimalScale={2} />;
-      }
-      if (type === "million") {
-        node = <FormatRawNumberToMillion value={value} useCurrencySymbol />;
-      }
-      if (type === "currency") {
-        node = <FormatRawNumberToCurrency value={value} />;
-      }
-      if (type === "number") {
-        node = <FormatRawNumber value={value} decimalScale={2} />;
-      }
 
       let intent = "none";
 
       if (column === startColumn || rowIndex === 1) {
         intent = "primary";
       } else if (showFormulas) {
-        node = expr;
+        node = cell.expr;
       }
 
       if (isOutputCell) {

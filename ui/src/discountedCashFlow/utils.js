@@ -14,6 +14,12 @@ export const getCellsForRows = (columns, rows) => {
   return rows.flatMap((row) => columns.map((column) => column + row));
 };
 
+export const getRowNumberFromCellKey = (cellKey) =>
+  parseInt(cellKey.replaceAll(/[A-Z]+/gi, ""), 10);
+
+export const getColumnLetterFromCellKey = (cellKey) =>
+  cellKey.replaceAll(/[0-9]/gi, "");
+
 export const getCellsForRowsBetween = (
   columns,
   startColumn,
@@ -43,7 +49,7 @@ export const getNumberOfRows = (data) => {
   let highestNumberRow = 0;
 
   Object.keys(data).forEach((key) => {
-    const currentNumber = parseInt(key.replace(/[A-Za-z]/, ""));
+    const currentNumber = getRowNumberFromCellKey(key);
 
     if (currentNumber > highestNumberRow) {
       highestNumberRow = currentNumber;
@@ -76,7 +82,7 @@ export const getHighestColumn = (data) => {
   let highestColumnCharCode = 0;
 
   Object.keys(data).forEach((key) => {
-    const currentColumn = key.replace(/[0-9]/, "");
+    const currentColumn = getColumnLetterFromCellKey(key);
     const charCode = currentColumn.charCodeAt(0);
 
     if (charCode > highestColumnCharCode) {
