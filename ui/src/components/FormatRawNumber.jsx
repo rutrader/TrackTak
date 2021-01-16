@@ -1,7 +1,9 @@
 import React from "react";
 import NumberFormat from "react-number-format";
 
-const FormatRawNumber = ({ value, ...props }) => {
+const fixedDecimalScale = 0;
+
+const modifyValue = (value) => {
   let newValue = value;
 
   // Allows defaultValue to show for null values
@@ -9,12 +11,20 @@ const FormatRawNumber = ({ value, ...props }) => {
     newValue = undefined;
   }
 
+  return newValue;
+};
+
+export const formatRawNumber = (value, decimalScale = fixedDecimalScale) => {
+  return modifyValue(parseFloat(value, 10), decimalScale);
+};
+
+const FormatRawNumber = ({ value, ...props }) => {
   return (
     <NumberFormat
       thousandSeparator
-      decimalScale={0}
+      decimalScale={fixedDecimalScale}
       defaultValue="-"
-      value={newValue}
+      value={modifyValue(value)}
       displayType="text"
       {...props}
     />

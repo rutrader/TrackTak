@@ -2,11 +2,29 @@ import React from "react";
 import roundDecimal from "../shared/roundDecimal";
 import FormatRawNumber from "./FormatRawNumber";
 
-const FormatRawNumberToPercent = ({ value = null, ...props }) => {
-  const newValue = value !== null ? roundDecimal(value, 4) : null;
+const fixedDecimalScale = 2;
 
+const roundValue = (value) => {
+  return value !== null ? roundDecimal(value, 4) : null;
+};
+
+export const formatRawNumberToPercent = (
+  value,
+  decimalScale = fixedDecimalScale
+) => {
+  if (!value) return value;
+
+  return `${roundValue(parseFloat(value, 10)).toFixed(decimalScale)}%`;
+};
+
+const FormatRawNumberToPercent = ({ value = null, ...props }) => {
   return (
-    <FormatRawNumber value={newValue} suffix="%" decimalScale={2} {...props} />
+    <FormatRawNumber
+      value={roundValue(value)}
+      suffix="%"
+      decimalScale={fixedDecimalScale}
+      {...props}
+    />
   );
 };
 

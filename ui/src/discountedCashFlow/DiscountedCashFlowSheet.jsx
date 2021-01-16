@@ -1,16 +1,25 @@
 import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
+import FormatRawNumberToPercent, {
+  formatRawNumberToPercent,
+} from "../components/FormatRawNumberToPercent";
 import { useCallback } from "react";
-import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
-import FormatRawNumber from "../components/FormatRawNumber";
-import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
+import FormatRawNumberToCurrency, {
+  formatRawNumberToCurrency,
+} from "../components/FormatRawNumberToCurrency";
+import FormatRawNumber, {
+  formatRawNumber,
+} from "../components/FormatRawNumber";
+import FormatRawNumberToMillion, {
+  formatRawNumberToMillion,
+} from "../components/FormatRawNumberToMillion";
 import { columns, numberOfRows } from "./cells";
 import {
   getColumnLetterFromCellKey,
   getColumnsBetween,
   getRowNumberFromCellKey,
+  isExpressionDependency,
   startColumn,
 } from "./utils";
 import { getEBITMarginCalculation } from "./expressionCalculations";
@@ -42,19 +51,52 @@ const getChunksOfArray = (array, size) =>
     return acc;
   }, []);
 
+const formatCellValueForCSVOutput = (cell, currencySymbol) => {
+  if (!cell) return cell;
+
+  const { value, type, expr } = cell;
+  let node = value;
+
+  if (type === "percent") {
+    node = formatRawNumberToPercent(value);
+  }
+  if (type === "million") {
+    node = formatRawNumberToMillion(value, currencySymbol);
+  }
+  if (type === "currency") {
+    node = formatRawNumberToCurrency(value, currencySymbol);
+  }
+  if (type === "number") {
+    node = formatRawNumber(value, 2);
+  }
+
+  if (isExpressionDependency(expr)) {
+    return expr;
+  }
+
+  return node;
+};
+
 const formatCellValue = (cell) => {
   if (!cell) return cell;
 
   const { value, type } = cell;
+  let node = value;
 
-  const newValue = {
-    percent: <FormatRawNumberToPercent value={value} />,
-    million: <FormatRawNumberToMillion value={value} useCurrencySymbol />,
-    currency: <FormatRawNumberToCurrency value={value} />,
-    number: <FormatRawNumber value={value} decimalScale={2} />,
-  };
+  if (type === "percent") {
+    node = <FormatRawNumberToPercent value={value} />;
+  }
+  if (type === "million") {
+    node = <FormatRawNumberToMillion value={value} useCurrencySymbol />;
+  }
+  if (type === "currency") {
+    node = <FormatRawNumberToCurrency value={value} />;
+  }
+  if (type === "number") {
+    node = <FormatRawNumber value={value} decimalScale={2} />;
+  }
 
-  return newValue[type] || value;
+  return node;
 };
 
 const padCellKeys = (sortedCellKeys) => {
@@ -108,6 +150,9 @@ const DiscountedCashFlowSheet = (props) => {
   const valueOfAllOptionsOutstanding = useSelector(
     selectValueOfAllOptionsOutstanding
   );
+  const currencySymbol = useSelector(
+    (state) => state.fundamentals.valuationCurrencySymbol
+  );
   const theme = useTheme();
   const [showFormulas, setShowFormulas] = useState(false);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -127,9 +172,7 @@ const DiscountedCashFlowSheet = (props) => {
   const chunkedData = getChunksOfArray(cellKeysSorted, numberOfColumns).map(
     (arr) => {
       return arr.map((cellKey) => {
-        const value = cells[cellKey]?.value;
-
-        return value;
+        return formatCellValueForCSVOutput(cells[cellKey], currencySymbol);
       });
     }
   );

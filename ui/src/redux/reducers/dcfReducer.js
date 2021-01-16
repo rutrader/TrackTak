@@ -2,7 +2,11 @@ import { createReducer } from "@reduxjs/toolkit";
 import { updateCells } from "../actions/dcfActions";
 import cells from "../../discountedCashFlow/cells";
 import cellsTree from "../../discountedCashFlow/cellsTree";
-import { getAllDependents, validateExp } from "../../discountedCashFlow/utils";
+import {
+  getAllDependents,
+  isExpressionDependency,
+  validateExp,
+} from "../../discountedCashFlow/utils";
 import { evaluate } from "mathjs";
 
 const initialState = {
@@ -13,7 +17,7 @@ const initialState = {
 const computeExpr = (key, expr, scope) => {
   let value = null;
 
-  if (expr?.charAt(0) !== "=") {
+  if (!isExpressionDependency(expr)) {
     return { value: expr, expr: expr };
   } else {
     try {
