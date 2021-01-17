@@ -1,13 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { dcfFixedDecimalScale } from "../discountedCashFlow/DiscountedCashFlowSheet";
 import FormatRawNumber from "./FormatRawNumber";
-
-const fixedDecimalScale = 2;
 
 export const formatRawNumberToCurrency = (
   value,
   currencySymbol,
-  decimalScale = fixedDecimalScale
+  decimalScale = dcfFixedDecimalScale
 ) => {
   if (!value) return value;
 
@@ -23,7 +22,7 @@ const FormatRawNumberToCurrency = ({ value, ...props }) => {
     <FormatRawNumber
       value={value}
       prefix={currencySymbol}
-      decimalScale={fixedDecimalScale}
+      decimalScale={dcfFixedDecimalScale}
       {...props}
     />
   );

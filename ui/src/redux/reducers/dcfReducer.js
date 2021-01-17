@@ -4,6 +4,7 @@ import cells from "../../discountedCashFlow/cells";
 import cellsTree from "../../discountedCashFlow/cellsTree";
 import {
   getAllDependents,
+  getExpressionWithoutEqualsSign,
   isExpressionDependency,
   validateExp,
 } from "../../discountedCashFlow/utils";
@@ -37,12 +38,10 @@ const computeExpr = (key, expr, scope) => {
   let value = null;
 
   if (!isExpressionDependency(expr)) {
-    return { value: expr, expr: expr };
+    return { value: expr, expr };
   } else {
     try {
-      const exprWithoutEqualsSign = expr.substring(1);
-
-      value = math.evaluate(exprWithoutEqualsSign, scope);
+      value = math.evaluate(getExpressionWithoutEqualsSign(expr), scope);
     } catch (e) {
       value = null;
     }

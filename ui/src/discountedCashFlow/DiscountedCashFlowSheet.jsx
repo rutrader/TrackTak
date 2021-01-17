@@ -8,16 +8,12 @@ import { useCallback } from "react";
 import FormatRawNumberToCurrency, {
   formatRawNumberToCurrency,
 } from "../components/FormatRawNumberToCurrency";
-import FormatRawNumber, {
-  formatRawNumber,
-} from "../components/FormatRawNumber";
-import FormatRawNumberToMillion, {
-  formatRawNumberToMillion,
-} from "../components/FormatRawNumberToMillion";
+import { modifyValue } from "../components/FormatRawNumberToMillion";
 import { columns, numberOfRows } from "./cells";
 import {
   getColumnLetterFromCellKey,
   getColumnsBetween,
+  getExpressionWithoutEqualsSign,
   getRowNumberFromCellKey,
   isExpressionDependency,
   startColumn,
@@ -43,7 +39,7 @@ import { updateCells } from "../redux/actions/dcfActions";
 import LazyLoad from "react-lazyload";
 import { CSVLink } from "react-csv";
 
-const dcfFixedDecimalScale = 2;
+export const dcfFixedDecimalScale = 2;
 
 const getChunksOfArray = (array, size) =>
   array.reduce((acc, _, i) => {
@@ -62,17 +58,18 @@ const formatCellValueForCSVOutput = (cell, currencySymbol) => {
   if (type === "percent") {
     node = formatRawNumberToPercent(value);
   }
-  if (type === "million") {
-    node = formatRawNumberToMillion(value, currencySymbol);
-  }
-  if (type === "currency") {
+  if (type === "currency" || type === "million") {
     node = formatRawNumberToCurrency(value, currencySymbol);
-  }
-  if (type === "number") {
-    node = formatRawNumber(value, dcfFixedDecimalScale);
   }
 
   if (isExpressionDependency(expr)) {
+    const expressionWithoutEqualsSign = getExpressionWithoutEqualsSign(expr);
+
+    if (type === "percent") {
+      // Fix for Microsoft Excel: https://stackoverflow.com/questions/65763262/how-to-format-a-formula-in-microsoft-excel-to-be-in-percentage-format-directly-i/65763962#65763962
+      return `=TRUNC((${expressionWithoutEqualsSign}) * 100, ${dcfFixedDecimalScale})&""%""`;
+    }
+
     return expr;
   }
 
@@ -88,18 +85,8 @@ const formatCellValue = (cell) => {
   if (type === "percent") {
     node = <FormatRawNumberToPercent value={value} />;
   }
-  // TODO: Change actual values to be divided by a million, not just formatting
-  // to match CSV output
-  if (type === "million") {
-    node = <FormatRawNumberToMillion value={value} useCurrencySymbol />;
-  }
-  if (type === "currency") {
+  if (type === "currency" || type === "million") {
     node = <FormatRawNumberToCurrency value={value} />;
-  }
-  if (type === "number") {
-    node = (
-      <FormatRawNumber value={value} decimalScale={dcfFixedDecimalScale} />
-    );
   }
 
   return node;
@@ -189,7 +176,7 @@ const DiscountedCashFlowSheet = (props) => {
   };
 
   useEffect(() => {
-    dispatch(updateCells([["B34", valueOfAllOptionsOutstanding]]));
+    dispatch(updateCells([["B34", modifyValue(valueOfAllOptionsOutstanding)]]));
   }, [dispatch, valueOfAllOptionsOutstanding]);
 
   useEffect(() => {
@@ -208,18 +195,28 @@ const DiscountedCashFlowSheet = (props) => {
   useEffect(() => {
     dispatch(
       updateCells([
-        ["B3", fundamentals.incomeStatement.totalRevenue],
-        ["B5", fundamentals.incomeStatement.operatingIncome],
-        ["B17", fundamentals.balanceSheet.investedCapital],
-        ["B29", fundamentals.balanceSheet.bookValueOfDebt],
-        ["B30", fundamentals.incomeStatement.minorityInterest],
-        ["B31", fundamentals.balanceSheet.cashAndShortTermInvestments],
+        ["B3", modifyValue(fundamentals.incomeStatement.totalRevenue)],
+        ["B5", modifyValue(fundamentals.incomeStatement.operatingIncome)],
+        ["B17", modifyValue(fundamentals.balanceSheet.investedCapital)],
+        ["B29", modifyValue(fundamentals.balanceSheet.bookValueOfDebt)],
+        ["B30", modifyValue(fundamentals.incomeStatement.minorityInterest)],
+        [
+          "B31",
+          modifyValue(fundamentals.balanceSheet.cashAndShortTermInvestments),
+        ],
         [
           "B32",
-          fundamentals.balanceSheet.noncontrollingInterestInConsolidatedEntity,
+          modifyValue(
+            fundamentals.balanceSheet.noncontrollingInterestInConsolidatedEntity
+          ),
         ],
         ["B36", fundamentals.price],
-        ["B37", `=B35/${fundamentals.data.SharesStats.SharesOutstanding}`],
+        [
+          "B37",
+          `=B35/${modifyValue(
+            fundamentals.data.SharesStats.SharesOutstanding
+          )}`,
+        ],
         [
           "B6",
           // TODO: Change this to Base Year tax effective tax rate

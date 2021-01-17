@@ -16,6 +16,8 @@ export const getCellsForRows = (columns, rows) => {
 
 export const isExpressionDependency = (expr) => expr?.charAt(0) === "=";
 
+export const getExpressionWithoutEqualsSign = (expr) => expr?.substring(1);
+
 export const getRowNumberFromCellKey = (cellKey) =>
   parseInt(cellKey.replaceAll(/[A-Z]+/gi, ""), 10);
 

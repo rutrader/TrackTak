@@ -1,8 +1,7 @@
 import React from "react";
+import { dcfFixedDecimalScale } from "../discountedCashFlow/DiscountedCashFlowSheet";
 import roundDecimal from "../shared/roundDecimal";
 import FormatRawNumber from "./FormatRawNumber";
-
-const fixedDecimalScale = 2;
 
 const roundValue = (value) => {
   return value !== null ? roundDecimal(value, 4) : null;
@@ -10,7 +9,7 @@ const roundValue = (value) => {
 
 export const formatRawNumberToPercent = (
   value,
-  decimalScale = fixedDecimalScale
+  decimalScale = dcfFixedDecimalScale
 ) => {
   if (!value) return value;
 
@@ -22,7 +21,7 @@ const FormatRawNumberToPercent = ({ value = null, ...props }) => {
     <FormatRawNumber
       value={roundValue(value)}
       suffix="%"
-      decimalScale={fixedDecimalScale}
+      decimalScale={dcfFixedDecimalScale}
       {...props}
     />
   );
