@@ -6,6 +6,7 @@ import {
   getNumberOfRows,
 } from "./utils";
 import {
+  cumulatedDiscountFactorFixedDecimalScale,
   getCumulatedDiscountFactorCalculation,
   getEBITAfterTax,
   getEBITCalculation,
@@ -75,13 +76,13 @@ const cells = {
   B1: { value: "Base Year" },
   M1: { value: "Terminal Year" },
   B4: getExpressionProperties("=B5/B3"),
-  B7: getExpressionProperties("=B5 > 0 ? B5*(1-B6) : B5"),
+  B7: getExpressionProperties("=IF(B5 > 0, B5 * (1-B6), B5)"),
   B20: getExpressionProperties("=M9"),
   B21: getExpressionProperties("=M12"),
   B22: getExpressionProperties("=B20/(B21-M2)"),
   B23: getExpressionProperties("=B22*L13"),
   B24: getExpressionProperties(
-    "=sum(C14, D14, E14, F14, G14, H14, I14, J14, K14, L14)"
+    "=SUM(C14, D14, E14, F14, G14, H14, I14, J14, K14, L14)"
   ),
   B25: getExpressionProperties("=B23+B24"),
   // TODO: Implement fully at a later date from inputs
@@ -92,12 +93,14 @@ const cells = {
   B35: getExpressionProperties("=B33-B34"),
   B37: getExpressionProperties("=B35/{shares}"),
   B38: getExpressionProperties("=(B37-B36)/B37"),
-  C8: getExpressionProperties("=C3 > B3 ? (C3-B3) / C16 : 0"),
-  C13: getExpressionProperties("=1/(1+C12)"),
+  C8: getExpressionProperties("=IF(C3 > B3, (C3-B3) / C16, 0)"),
+  C13: getExpressionProperties(
+    `=TRUNC(1/(1+C12), ${cumulatedDiscountFactorFixedDecimalScale})`
+  ),
   M18: getExpressionProperties("=L12"),
   M4: getExpressionProperties("=L4"),
   M7: getExpressionProperties("=M5*(1-M6)"),
-  M8: getExpressionProperties("=M2 > 0 ? (M2 / M18) * M7 : 0"),
+  M8: getExpressionProperties("=IF(M2 > 0, (M2 / M18) * M7, 0)"),
 };
 
 export const columns = getColumnsTo(getHighestColumn(cells));

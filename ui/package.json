@@ -9,6 +9,7 @@
     "@contentful/rich-text-react-renderer": "^14.1.2",
     "@emotion/react": "^11.1.1",
     "@emotion/styled": "^11.0.0",
+    "@formulajs/formulajs": "^2.6.2",
     "@material-ui/core": "^5.0.0-alpha.16",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^5.0.0-alpha.16",

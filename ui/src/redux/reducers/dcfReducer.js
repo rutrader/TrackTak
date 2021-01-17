@@ -7,7 +7,26 @@ import {
   isExpressionDependency,
   validateExp,
 } from "../../discountedCashFlow/utils";
-import { evaluate } from "mathjs";
+import {
+  create,
+  evaluateDependencies,
+  addDependencies,
+  divideDependencies,
+} from "mathjs";
+import { IF } from "@formulajs/formulajs/lib/logical";
+import { SUM, TRUNC } from "@formulajs/formulajs/lib/math-trig";
+
+const math = create({
+  evaluateDependencies,
+  addDependencies,
+  divideDependencies,
+});
+
+math.import({
+  IF,
+  SUM,
+  TRUNC,
+});
 
 const initialState = {
   cells,
@@ -21,7 +40,9 @@ const computeExpr = (key, expr, scope) => {
     return { value: expr, expr: expr };
   } else {
     try {
-      value = evaluate(expr.substring(1), scope);
+      const exprWithoutEqualsSign = expr.substring(1);
+
+      value = math.evaluate(exprWithoutEqualsSign, scope);
     } catch (e) {
       value = null;
     }

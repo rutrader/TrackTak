@@ -43,6 +43,8 @@ import { updateCells } from "../redux/actions/dcfActions";
 import LazyLoad from "react-lazyload";
 import { CSVLink } from "react-csv";
 
+const dcfFixedDecimalScale = 2;
+
 const getChunksOfArray = (array, size) =>
   array.reduce((acc, _, i) => {
     if (i % size === 0) {
@@ -67,7 +69,7 @@ const formatCellValueForCSVOutput = (cell, currencySymbol) => {
     node = formatRawNumberToCurrency(value, currencySymbol);
   }
   if (type === "number") {
-    node = formatRawNumber(value, 2);
+    node = formatRawNumber(value, dcfFixedDecimalScale);
   }
 
   if (isExpressionDependency(expr)) {
@@ -86,6 +88,8 @@ const formatCellValue = (cell) => {
   if (type === "percent") {
     node = <FormatRawNumberToPercent value={value} />;
   }
+  // TODO: Change actual values to be divided by a million, not just formatting
+  // to match CSV output
   if (type === "million") {
     node = <FormatRawNumberToMillion value={value} useCurrencySymbol />;
   }
@@ -93,7 +97,9 @@ const formatCellValue = (cell) => {
     node = <FormatRawNumberToCurrency value={value} />;
   }
   if (type === "number") {
-    node = <FormatRawNumber value={value} decimalScale={2} />;
+    node = (
+      <FormatRawNumber value={value} decimalScale={dcfFixedDecimalScale} />
+    );
   }
 
   return node;

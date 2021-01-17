@@ -1,4 +1,4 @@
-const spaceRegex = /\s\s+/g;
+export const cumulatedDiscountFactorFixedDecimalScale = 4;
 
 export const getPreviousColumn = (cellKey) => {
   const column = cellKey.charAt(0);
@@ -13,11 +13,12 @@ export const getEBITMarginCalculation = (
   cellKey
 ) => {
   const column = cellKey.charAt(0);
+  const falsyCondition = `${ebitTargetMarginInYearTen} -
+  ((${ebitTargetMarginInYearTen} - B4) /
+    ${yearOfConvergence}) *
+    (${yearOfConvergence} - ${column}1)`;
 
-  return `=${column}1 > ${yearOfConvergence} ? ${ebitTargetMarginInYearTen} : ${ebitTargetMarginInYearTen} -
-    ((${ebitTargetMarginInYearTen} - B4) /
-      ${yearOfConvergence}) *
-      (${yearOfConvergence} - ${column}1)`.replace(spaceRegex, " ");
+  return `=IF(${column}1 > ${yearOfConvergence}, ${ebitTargetMarginInYearTen}, ${falsyCondition})`;
 };
 
 export const getReinvestmentCalculation = (cellKey) => {
@@ -44,7 +45,7 @@ export const getEBITAfterTax = (cellKey) => {
   const column = cellKey.charAt(0);
   const previousColumn = getPreviousColumn(cellKey);
 
-  return `=${column}5 > 0 < ${previousColumn}10 ? ${column}5 : ${column}5 > 0 <= ${previousColumn}10 ? ${column}5-(${column}5-${previousColumn}10)*${column}6 : ${column}5`;
+  return `=IF(${column}5 > 0, IF(${column}5 < ${previousColumn}10, ${column}5, ${column}5 - (${column}5 - ${previousColumn}10) * ${column}6), ${column}5)`;
 };
 
 export const getFCFFCalculation = (cellKey) => {
@@ -82,7 +83,7 @@ export const getNOLCalculation = (cellKey) => {
   const column = cellKey.charAt(0);
   const previousColumn = getPreviousColumn(cellKey);
 
-  return `${column}5 < 0 ? ${previousColumn}10 - ${column}5 : ${previousColumn}10 > ${column}5 ? ${previousColumn}10 - ${column}5 : 0`;
+  return `=IF(${column}5 < 0, ${previousColumn}10 - ${column}5, IF(${previousColumn}10 > ${column}5, ${previousColumn}10 - ${column}5, 0))`;
 };
 
 export const getOneToFiveYrCostOfCapitalCalculation = (cellKey) => {
@@ -101,7 +102,7 @@ export const getCumulatedDiscountFactorCalculation = (cellKey) => {
   const column = cellKey.charAt(0);
   const previousColumn = getPreviousColumn(cellKey);
 
-  return `=${previousColumn}13*(1/(1+${column}12))`;
+  return `=TRUNC(${previousColumn}13*(1/(1+${column}12)), ${cumulatedDiscountFactorFixedDecimalScale})`;
 };
 
 export const getPVToFCFFCalculation = (cellKey) => {
