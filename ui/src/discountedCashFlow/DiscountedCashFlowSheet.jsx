@@ -319,7 +319,7 @@ const DiscountedCashFlowSheet = (props) => {
         }}
       >
         <Typography variant="h5">DCF Valuation</Typography>
-        <Box>
+        <Box sx={{ display: "flex" }}>
           <Button
             onClick={() => {
               setShowFormulas((state) => !state);
@@ -328,9 +328,15 @@ const DiscountedCashFlowSheet = (props) => {
           >
             {showFormulas ? "Hide Formulas" : "Show Formulas"}
           </Button>
-          <CSVLink {...csvReport}>
-            <Button variant="outlined">Export to CSV</Button>
-          </CSVLink>
+          <Box
+            sx={{
+              ml: 1,
+            }}
+          >
+            <CSVLink {...csvReport}>
+              <Button variant="outlined">Export to CSV</Button>
+            </CSVLink>
+          </Box>
         </Box>
       </Box>
       <Typography gutterBottom>
