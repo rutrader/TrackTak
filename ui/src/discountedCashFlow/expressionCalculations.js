@@ -14,7 +14,7 @@ export const getEBITMarginCalculation = (
 ) => {
   const column = cellKey.charAt(0);
   const falsyCondition = `${ebitTargetMarginInYearTen} -
-  ((${ebitTargetMarginInYearTen} - B4) /
+  ((${ebitTargetMarginInYearTen} - B3) /
     ${yearOfConvergence}) *
     (${yearOfConvergence} - ${column}1)`;
 
@@ -25,107 +25,108 @@ export const getReinvestmentCalculation = (cellKey) => {
   const column = cellKey.charAt(0);
   const previousColumn = getPreviousColumn(cellKey);
 
-  return `=(${column}3-${previousColumn}3)/${column}16`;
+  return `=(${column}2-${previousColumn}2)/${column}15`;
 };
 
-export const getRevenueCalculation = (cellKey) => {
-  const column = cellKey.charAt(0);
+export const getRevenueCalculation = (growthRate, cellKey) => {
   const previousColumn = getPreviousColumn(cellKey);
 
-  return `=${previousColumn}3*(1+${column}2)`;
+  return `=${previousColumn}2*(1+${growthRate})`;
+};
+
+export const getRevenueOneToFiveYrCalculation = getRevenueCalculation;
+
+export const getRevenueSixToTenYrCalculation = (
+  growthRate,
+  riskFreeRate,
+  index,
+  cellKey
+) => {
+  const formula = `${growthRate} - ((${growthRate}-${riskFreeRate}) / 5)`;
+  const number = index + 1;
+  const growthRevenueFormula = index === 0 ? formula : `${formula} * ${number}`;
+
+  return getRevenueCalculation(growthRevenueFormula, cellKey);
 };
 
 export const getEBITCalculation = (cellKey) => {
   const column = cellKey.charAt(0);
 
-  return `=${column}4*${column}3`;
+  return `=${column}3*${column}2`;
 };
 
 export const getEBITAfterTax = (cellKey) => {
   const column = cellKey.charAt(0);
   const previousColumn = getPreviousColumn(cellKey);
 
-  return `=IF(${column}5 > 0, IF(${column}5 < ${previousColumn}10, ${column}5, ${column}5 - (${column}5 - ${previousColumn}10) * ${column}6), ${column}5)`;
+  return `=IF(${column}4 > 0, IF(${column}4 < ${previousColumn}9, ${column}4, ${column}4 - (${column}4 - ${previousColumn}9) * ${column}5), ${column}4)`;
 };
 
 export const getFCFFCalculation = (cellKey) => {
   const column = cellKey.charAt(0);
 
-  return `=${column}7 - ${column}8`;
+  return `=${column}6 - ${column}7`;
 };
 
 export const getOneToFiveYrTaxCalculation = (cellKey) => {
   const previousColumn = getPreviousColumn(cellKey);
 
-  return `=${previousColumn}6`;
+  return `=${previousColumn}5`;
 };
 
 export const getSixToTenYrTaxCalculation = (cellKey) => {
   const previousColumn = getPreviousColumn(cellKey);
 
-  return `=${previousColumn}6+(M6-G6)/5`;
-};
-
-export const getOneToFiveYrRevenueGrowthCalculation = (cellKey) => {
-  const previousColumn = getPreviousColumn(cellKey);
-
-  return `=${previousColumn}2`;
-};
-
-export const getSixToTenYrRevenueGrowthCalculation = (index) => {
-  const formula = "=G2 - ((G2-M2) / 5)";
-  const number = index + 1;
-
-  return index === 0 ? formula : `${formula} * ${number}`;
+  return `=${previousColumn}5+(M5-G5)/5`;
 };
 
 export const getNOLCalculation = (cellKey) => {
   const column = cellKey.charAt(0);
   const previousColumn = getPreviousColumn(cellKey);
 
-  return `=IF(${column}5 < 0, ${previousColumn}10 - ${column}5, IF(${previousColumn}10 > ${column}5, ${previousColumn}10 - ${column}5, 0))`;
+  return `=IF(${column}4 < 0, ${previousColumn}9 - ${column}4, IF(${previousColumn}9 > ${column}4, ${previousColumn}9 - ${column}4, 0))`;
 };
 
 export const getOneToFiveYrCostOfCapitalCalculation = (cellKey) => {
   const previousColumn = getPreviousColumn(cellKey);
 
-  return `=${previousColumn}12`;
+  return `=${previousColumn}11`;
 };
 
 export const getSixToTenYrCostOfCapitalCalculation = (cellKey) => {
   const previousColumn = getPreviousColumn(cellKey);
 
-  return `=${previousColumn}12-(G12-M12)/5`;
+  return `=${previousColumn}11-(G11-M11)/5`;
 };
 
 export const getCumulatedDiscountFactorCalculation = (cellKey) => {
   const column = cellKey.charAt(0);
   const previousColumn = getPreviousColumn(cellKey);
 
-  return `=TRUNC(${previousColumn}13*(1/(1+${column}12)), ${cumulatedDiscountFactorFixedDecimalScale})`;
+  return `=TRUNC(${previousColumn}12*(1/(1+${column}11)), ${cumulatedDiscountFactorFixedDecimalScale})`;
 };
 
 export const getPVToFCFFCalculation = (cellKey) => {
   const column = cellKey.charAt(0);
 
-  return `=${column}9*${column}13`;
+  return `=${column}8*${column}12`;
 };
 
 export const getSalesToCapitalRatioCalculation = (cellKey) => {
   const previousColumn = getPreviousColumn(cellKey);
 
-  return `=${previousColumn}16`;
+  return `=${previousColumn}15`;
 };
 
 export const getInvestedCapitalCalculation = (cellKey) => {
   const column = cellKey.charAt(0);
   const previousColumn = getPreviousColumn(cellKey);
 
-  return `=${previousColumn}17+${column}8`;
+  return `=${previousColumn}16+${column}7`;
 };
 
 export const getROICCalculation = (cellKey) => {
   const column = cellKey.charAt(0);
 
-  return `=${column}7/${column}17`;
+  return `=${column}6/${column}16`;
 };

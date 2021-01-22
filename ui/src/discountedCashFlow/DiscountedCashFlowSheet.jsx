@@ -8,7 +8,6 @@ import { useCallback } from "react";
 import FormatRawNumberToCurrency, {
   formatRawNumberToCurrency,
 } from "../components/FormatRawNumberToCurrency";
-import { modifyValue } from "../components/FormatRawNumberToMillion";
 import { columns, numberOfRows } from "./cells";
 import {
   getColumnLetterFromCellKey,
@@ -18,7 +17,12 @@ import {
   isExpressionDependency,
   startColumn,
 } from "./utils";
-import { getEBITMarginCalculation } from "./expressionCalculations";
+import {
+  getEBITMarginCalculation,
+  getRevenueOneToFiveYrCalculation,
+  getRevenueSixToTenYrCalculation,
+  getRevenueCalculation,
+} from "./expressionCalculations";
 import { Cell, Column, Table } from "@blueprintjs/table";
 import {
   Box,
@@ -176,68 +180,71 @@ const DiscountedCashFlowSheet = (props) => {
   };
 
   useEffect(() => {
-    dispatch(updateCells([["B34", modifyValue(valueOfAllOptionsOutstanding)]]));
-  }, [dispatch, valueOfAllOptionsOutstanding]);
-
-  useEffect(() => {
-    dispatch(updateCells([["C12", costOfCapital.totalCostOfCapital]]));
-  }, [costOfCapital.totalCostOfCapital, dispatch]);
-
-  useEffect(() => {
     dispatch(
       updateCells([
-        ["M2", riskFreeRate],
-        ["M12", matureMarketEquityRiskPremium + riskFreeRate],
-      ])
-    );
-  }, [dispatch, riskFreeRate]);
-
-  useEffect(() => {
-    dispatch(
-      updateCells([
-        ["B3", modifyValue(fundamentals.incomeStatement.totalRevenue)],
-        ["B5", modifyValue(fundamentals.incomeStatement.operatingIncome)],
-        ["B17", modifyValue(fundamentals.balanceSheet.investedCapital)],
-        ["B29", modifyValue(fundamentals.balanceSheet.bookValueOfDebt)],
-        ["B30", modifyValue(fundamentals.incomeStatement.minorityInterest)],
+        ["B2", fundamentals.incomeStatement.totalRevenue],
+        ["B4", fundamentals.incomeStatement.operatingIncome],
+        ["B16", fundamentals.balanceSheet.investedCapital],
+        ["B28", fundamentals.balanceSheet.bookValueOfDebt],
+        ["B29", fundamentals.incomeStatement.minorityInterest],
+        ["B30", fundamentals.balanceSheet.cashAndShortTermInvestments],
         [
           "B31",
-          modifyValue(fundamentals.balanceSheet.cashAndShortTermInvestments),
+          fundamentals.balanceSheet.noncontrollingInterestInConsolidatedEntity,
         ],
+        ["B35", fundamentals.price],
+        ["B36", `=B34/${fundamentals.data.SharesStats.SharesOutstanding}`],
         [
-          "B32",
-          modifyValue(
-            fundamentals.balanceSheet.noncontrollingInterestInConsolidatedEntity
-          ),
-        ],
-        ["B36", fundamentals.price],
-        [
-          "B37",
-          `=B35/${modifyValue(
-            fundamentals.data.SharesStats.SharesOutstanding
-          )}`,
-        ],
-        [
-          "B6",
+          "B5",
           // TODO: Change this to Base Year tax effective tax rate
           fundamentals.incomeStatement.pastThreeYearsAverageEffectiveTaxRate,
         ],
-        ["M6", fundamentals.currentEquityRiskPremiumCountry.corporateTaxRate],
+        ["M5", fundamentals.currentEquityRiskPremiumCountry.corporateTaxRate],
       ])
     );
   }, [dispatch, fundamentals]);
 
   useEffect(() => {
-    dispatch(updateCells([["C16", queryParams.salesToCapitalRatio]]));
-  }, [dispatch, queryParams.salesToCapitalRatio]);
+    const revenueOneToFiveCellsToUpdate = getColumnsBetween(
+      columns,
+      "C",
+      "G"
+    ).map((column) => `${column}2`);
+    const revenueSixToTenCellsToUpdate = getColumnsBetween(
+      columns,
+      "H",
+      "L"
+    ).map((column) => `${column}2`);
 
-  useEffect(() => {
-    dispatch(updateCells([["C2", queryParams.cagrYearOneToFive]]));
-  }, [dispatch, queryParams.cagrYearOneToFive]);
+    dispatch(
+      updateCells(
+        revenueOneToFiveCellsToUpdate.map((revenueKey) => [
+          revenueKey,
+          getRevenueOneToFiveYrCalculation(
+            queryParams.cagrYearOneToFive,
+            revenueKey
+          ),
+        ])
+      )
+    );
+    dispatch(
+      updateCells(
+        revenueSixToTenCellsToUpdate.map((revenueKey, index) => [
+          revenueKey,
+          getRevenueSixToTenYrCalculation(
+            queryParams.cagrYearOneToFive,
+            riskFreeRate,
+            index,
+            revenueKey
+          ),
+        ])
+      )
+    );
+  }, [dispatch, queryParams.cagrYearOneToFive, riskFreeRate]);
 
   useEffect(() => {
     const cellsToUpdate = getColumnsBetween(columns, "C", "L").map(
-      (column) => `${column}4`
+      (column) => `${column}3`
     );
 
     dispatch(
@@ -258,6 +265,29 @@ const DiscountedCashFlowSheet = (props) => {
     dispatch,
   ]);
 
+  useEffect(() => {
+    dispatch(updateCells([["C11", costOfCapital.totalCostOfCapital]]));
+  }, [costOfCapital.totalCostOfCapital, dispatch]);
+
+  useEffect(() => {
+    dispatch(updateCells([["C15", queryParams.salesToCapitalRatio]]));
+  }, [dispatch, queryParams.salesToCapitalRatio]);
+
+  useEffect(() => {
+    dispatch(
+      updateCells([
+        ["M2", getRevenueCalculation(riskFreeRate, "M2")],
+        ["M11", matureMarketEquityRiskPremium + riskFreeRate],
+        ["M7", `=${riskFreeRate} > 0 ? (${riskFreeRate} / M17) * M6 : 0`],
+        ["B21", `=B19/(B20-${riskFreeRate})`],
+      ])
+    );
+  }, [dispatch, riskFreeRate]);
+
+  useEffect(() => {
+    dispatch(updateCells([["B33", valueOfAllOptionsOutstanding]]));
+  }, [dispatch, valueOfAllOptionsOutstanding]);
+
   const cellRenderer = useCallback(
     (rowIndex, columnIndex) => {
       const column = String.fromCharCode(
@@ -271,7 +301,7 @@ const DiscountedCashFlowSheet = (props) => {
 
       let node = formatCellValue(cell);
 
-      const isOutputCell = key === "B37";
+      const isOutputCell = key === "B36";
 
       let intent = "none";
 
@@ -337,6 +367,7 @@ const DiscountedCashFlowSheet = (props) => {
               <Button variant="outlined">Export to CSV</Button>
             </CSVLink>
           </Box>
+          <Button variant="outlined">% YOY</Button>
         </Box>
       </Box>
       <Typography gutterBottom>
@@ -352,6 +383,7 @@ const DiscountedCashFlowSheet = (props) => {
       </Typography>
       <LazyLoad offset={300} height={810}>
         {/* Key: Hack to force re-render the table when formula state changes */}
+
         <Table
           key={showFormulas}
           enableGhostCells
