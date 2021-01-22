@@ -6,11 +6,9 @@ import {
   getNumberOfRows,
 } from "./utils";
 import {
-  cumulatedDiscountFactorFixedDecimalScale,
   getCumulatedDiscountFactorCalculation,
   getEBITAfterTax,
   getEBITCalculation,
-  getEBITMarginCalculation,
   getFCFFCalculation,
   getInvestedCapitalCalculation,
   getNOLCalculation,
@@ -89,9 +87,7 @@ const cells = {
   B36: getExpressionProperties("=B34/{shares}"),
   B37: getExpressionProperties("=(B36-B35)/B36"),
   C7: getExpressionProperties("=IF(C2 > B2, (C2-B2) / C15, 0)"),
-  C12: getExpressionProperties(
-    `=TRUNC(1/(1+C11), ${cumulatedDiscountFactorFixedDecimalScale})`
-  ),
+  C12: getExpressionProperties(`=1/(1+C11)`),
   M17: getExpressionProperties("=L11"),
   M3: getExpressionProperties("=L3"),
   M6: getExpressionProperties("=M4*(1-M5)"),
@@ -106,6 +102,7 @@ getColumnsBetween(columns, "C", "L").forEach((column, index) => {
   cells[key] = {
     readOnly: true,
     value: index + 1,
+    type: "number",
   };
 });
 
@@ -188,13 +185,7 @@ getColumnsBetween(columns, "C", "L").forEach((column) => {
   const ebitAfterTaxKey = `${column}6`;
   const pvFCFFKey = `${column}13`;
   const investedCapKey = `${column}16`;
-  const ebitMarginKey = `${column}3`;
 
-  cells[ebitMarginKey].expr = getEBITMarginCalculation(
-    null,
-    null,
-    ebitMarginKey
-  );
   cells[ebitAfterTaxKey].expr = getEBITAfterTax(ebitAfterTaxKey);
   cells[pvFCFFKey].expr = getPVToFCFFCalculation(pvFCFFKey);
   cells[investedCapKey].expr = getInvestedCapitalCalculation(investedCapKey);

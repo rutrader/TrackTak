@@ -23,7 +23,8 @@ const ValueDrivingTextField = withStyles({
 })(TextField);
 
 export const cagrInYearsOneToFiveLabel = "CAGR in Years 1-5";
-export const ebitTargetMarginInYearTenLabel = "EBIT Target Margin in Year 10";
+export const ebitTargetMarginInYearTenLabel =
+  "Operating Target Margin in Year 10";
 export const yearOfConvergenceLabel = "Year of Convergence";
 export const salesToCapitalRatioLabel = "Sales to Capital Ratio";
 

@@ -1,5 +1,3 @@
-export const cumulatedDiscountFactorFixedDecimalScale = 4;
-
 export const getPreviousColumn = (cellKey) => {
   const column = cellKey.charAt(0);
   const previousColumn = String.fromCharCode(column.charCodeAt(0) - 1);
@@ -13,10 +11,7 @@ export const getEBITMarginCalculation = (
   cellKey
 ) => {
   const column = cellKey.charAt(0);
-  const falsyCondition = `${ebitTargetMarginInYearTen} -
-  ((${ebitTargetMarginInYearTen} - B3) /
-    ${yearOfConvergence}) *
-    (${yearOfConvergence} - ${column}1)`;
+  const falsyCondition = `${ebitTargetMarginInYearTen} - ((${ebitTargetMarginInYearTen} - B3) / ${yearOfConvergence}) * (${yearOfConvergence} - ${column}1)`;
 
   return `=IF(${column}1 > ${yearOfConvergence}, ${ebitTargetMarginInYearTen}, ${falsyCondition})`;
 };
@@ -103,7 +98,7 @@ export const getCumulatedDiscountFactorCalculation = (cellKey) => {
   const column = cellKey.charAt(0);
   const previousColumn = getPreviousColumn(cellKey);
 
-  return `=TRUNC(${previousColumn}12*(1/(1+${column}11)), ${cumulatedDiscountFactorFixedDecimalScale})`;
+  return `=${previousColumn}12*(1/(1+${column}11))`;
 };
 
 export const getPVToFCFFCalculation = (cellKey) => {

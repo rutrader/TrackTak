@@ -1,13 +1,9 @@
 import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import FormatRawNumberToPercent, {
-  formatRawNumberToPercent,
-} from "../components/FormatRawNumberToPercent";
+import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import { useCallback } from "react";
-import FormatRawNumberToCurrency, {
-  formatRawNumberToCurrency,
-} from "../components/FormatRawNumberToCurrency";
+import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
 import { columns, numberOfRows } from "./cells";
 import {
   getColumnLetterFromCellKey,
@@ -41,9 +37,9 @@ import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremi
 import { Link as RouterLink } from "react-router-dom";
 import { updateCells } from "../redux/actions/dcfActions";
 import LazyLoad from "react-lazyload";
-import { CSVLink } from "react-csv";
-
-export const dcfFixedDecimalScale = 2;
+import XLSX from "xlsx";
+import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
+import FormatRawNumber from "../components/FormatRawNumber";
 
 const getChunksOfArray = (array, size) =>
   array.reduce((acc, _, i) => {
@@ -57,27 +53,53 @@ const formatCellValueForCSVOutput = (cell, currencySymbol) => {
   if (!cell) return cell;
 
   const { value, type, expr } = cell;
-  let node = value;
+
+  const obj = {
+    f: isExpressionDependency(expr)
+      ? getExpressionWithoutEqualsSign(expr)
+      : undefined,
+  };
 
   if (type === "percent") {
-    node = formatRawNumberToPercent(value);
-  }
-  if (type === "currency" || type === "million") {
-    node = formatRawNumberToCurrency(value, currencySymbol);
-  }
-
-  if (isExpressionDependency(expr)) {
-    const expressionWithoutEqualsSign = getExpressionWithoutEqualsSign(expr);
-
-    if (type === "percent") {
-      // Fix for Microsoft Excel: https://stackoverflow.com/questions/65763262/how-to-format-a-formula-in-microsoft-excel-to-be-in-percentage-format-directly-i/65763962#65763962
-      return `=TRUNC((${expressionWithoutEqualsSign}) * 100, ${dcfFixedDecimalScale})&""%""`;
-    }
-
-    return expr;
+    return {
+      ...obj,
+      v: value,
+      z: "0.00%",
+      t: "n",
+    };
   }
 
-  return node;
+  if (type === "million") {
+    return {
+      ...obj,
+      v: value,
+      z: `${currencySymbol}#,###,,.00`,
+      t: "n",
+    };
+  }
+
+  if (type === "currency") {
+    return {
+      ...obj,
+      v: value,
+      z: `${currencySymbol}#,###.00`,
+      t: "n",
+    };
+  }
+
+  if (type === "number") {
+    return {
+      ...obj,
+      v: value,
+      z: ".00",
+      t: "n",
+    };
+  }
+
+  return {
+    ...obj,
+    v: value,
+  };
 };
 
 const formatCellValue = (cell) => {
@@ -89,11 +111,31 @@ const formatCellValue = (cell) => {
   if (type === "percent") {
     node = <FormatRawNumberToPercent value={value} />;
   }
-  if (type === "currency" || type === "million") {
+  if (type === "million") {
+    node = <FormatRawNumberToMillion value={value} useCurrencySymbol />;
+  }
+  if (type === "currency") {
     node = <FormatRawNumberToCurrency value={value} />;
+  }
+  if (type === "number") {
+    node = <FormatRawNumber value={value} decimalScale={2} />;
   }
 
   return node;
+};
+
+const setColumnWidths = (worksheet) => {
+  const newWorksheet = { ...worksheet };
+  const objectMaxLength = [];
+  const columns = XLSX.utils.decode_range(worksheet["!ref"]);
+
+  for (let index = columns.s.c; index <= columns.e.c; index++) {
+    objectMaxLength.push({ width: index === 0 ? 25 : 15 });
+  }
+
+  newWorksheet["!cols"] = objectMaxLength;
+
+  return newWorksheet;
 };
 
 const padCellKeys = (sortedCellKeys) => {
@@ -173,11 +215,10 @@ const DiscountedCashFlowSheet = (props) => {
       });
     }
   );
+  const worksheet = setColumnWidths(XLSX.utils.aoa_to_sheet(chunkedData));
+  const workBook = XLSX.utils.book_new();
 
-  const csvReport = {
-    data: chunkedData,
-    filename: `DCF_${fundamentals.data.General.Code}.${fundamentals.data.General.Exchange}.csv`,
-  };
+  XLSX.utils.book_append_sheet(workBook, worksheet, "Valuation");
 
   useEffect(() => {
     dispatch(
@@ -278,7 +319,7 @@ const DiscountedCashFlowSheet = (props) => {
       updateCells([
         ["M2", getRevenueCalculation(riskFreeRate, "M2")],
         ["M11", matureMarketEquityRiskPremium + riskFreeRate],
-        ["M7", `=${riskFreeRate} > 0 ? (${riskFreeRate} / M17) * M6 : 0`],
+        ["M7", `=IF(${riskFreeRate} > 0, (${riskFreeRate} / M17) * M6, 0)`],
         ["B21", `=B19/(B20-${riskFreeRate})`],
       ])
     );
@@ -363,9 +404,17 @@ const DiscountedCashFlowSheet = (props) => {
               ml: 1,
             }}
           >
-            <CSVLink {...csvReport}>
-              <Button variant="outlined">Export to CSV</Button>
-            </CSVLink>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                XLSX.writeFile(
+                  workBook,
+                  `${fundamentals.data.General.Code}.${fundamentals.data.General.Exchange}_DCF.xlsx`
+                );
+              }}
+            >
+              Export to CSV
+            </Button>
           </Box>
           <Button variant="outlined">% YOY</Button>
         </Box>
@@ -383,7 +432,6 @@ const DiscountedCashFlowSheet = (props) => {
       </Typography>
       <LazyLoad offset={300} height={810}>
         {/* Key: Hack to force re-render the table when formula state changes */}
-
         <Table
           key={showFormulas}
           enableGhostCells
