@@ -14,15 +14,12 @@ import {
   getInvestedCapitalCalculation,
   getNOLCalculation,
   getOneToFiveYrCostOfCapitalCalculation,
-  getOneToFiveYrRevenueGrowthCalculation,
   getOneToFiveYrTaxCalculation,
   getPVToFCFFCalculation,
   getReinvestmentCalculation,
-  getRevenueCalculation,
   getROICCalculation,
   getSalesToCapitalRatioCalculation,
   getSixToTenYrCostOfCapitalCalculation,
-  getSixToTenYrRevenueGrowthCalculation,
   getSixToTenYrTaxCalculation,
 } from "./expressionCalculations";
 
@@ -32,72 +29,69 @@ const getExpressionProperties = (expr) => {
 
 const cells = {
   A1: { value: "" },
-  A2: { value: "Revenue Growth Rate" },
-  A3: { value: "Revenues" },
-  A4: { value: "Operating Margin" },
-  A5: { value: "Operating Income" },
-  A6: { value: "Tax Rate" },
-  A7: { value: "NOPAT" },
-  A8: { value: "- Reinvestment" },
-  A9: { value: "FCFF" },
-  A10: { value: "NOL" },
-  A11: { value: "" },
-  A12: { value: "Cost of Capital" },
-  A13: { value: "Cumulated Discount Factor" },
-  A14: { value: "PV (FCFF)" },
-  A15: { value: "" },
-  A16: { value: "Sales to Capital Ratio" },
-  A17: { value: "Invested Capital" },
-  A18: { value: "ROIC" },
-  A19: { value: "" },
-  A20: { value: "Terminal Cash Flow" },
-  A21: { value: "Terminal Cost of Capital" },
-  A22: { value: "Terminal Value" },
-  A23: { value: "PV (Terminal Value)" },
-  A24: { value: "PV (CF Over Next 10 Years" },
-  A25: { value: "Sum of PV" },
-  A26: { value: "Probability of Failure" },
-  A27: { value: "Proceeds if the Firm Fails" },
-  A28: { value: "Operating Assets" },
-  A29: { value: "- Debt" },
-  A30: { value: "- Minority Interests" },
-  A31: { value: "+ Cash" },
-  A32: { value: "+ Non-Operating Assets" },
-  A33: { value: "Equity" },
-  A34: { value: "- Options" },
-  A35: { value: "Common Stock Equity" },
-  A36: { value: "Current Price" },
-  A37: {
+  A2: { value: "Revenues" },
+  A3: { value: "Operating Margin" },
+  A4: { value: "EBIT Income" },
+  A5: { value: "Tax Rate" },
+  A6: { value: "NOPAT" },
+  A7: { value: "- Reinvestment" },
+  A8: { value: "FCFF" },
+  A9: { value: "NOL" },
+  A10: { value: "" },
+  A11: { value: "Cost of Capital" },
+  A12: { value: "Cumulated Discount Factor" },
+  A13: { value: "PV (FCFF)" },
+  A14: { value: "" },
+  A15: { value: "Sales to Capital Ratio" },
+  A16: { value: "Invested Capital" },
+  A17: { value: "ROIC" },
+  A18: { value: "" },
+  A19: { value: "Terminal Cash Flow" },
+  A20: { value: "Terminal Cost of Capital" },
+  A21: { value: "Terminal Value" },
+  A22: { value: "PV (Terminal Value)" },
+  A23: { value: "PV (CF Over Next 10 Years" },
+  A24: { value: "Sum of PV" },
+  A25: { value: "Probability of Failure" },
+  A26: { value: "Proceeds if the Firm Fails" },
+  A27: { value: "Operating Assets" },
+  A28: { value: "- Debt" },
+  A29: { value: "- Minority Interests" },
+  A30: { value: "+ Cash" },
+  A31: { value: "+ Non-Operating Assets" },
+  A32: { value: "Equity" },
+  A33: { value: "- Options" },
+  A34: { value: "Common Stock Equity" },
+  A35: { value: "Current Price" },
+  A36: {
     value: "Estimated Value Per Share",
     className: "estimated-value-per-share-label",
   },
-  A38: { value: "Margin of Safety" },
+  A37: { value: "Margin of Safety" },
   B1: { value: "Base Year" },
   M1: { value: "Terminal Year" },
-  B4: getExpressionProperties("=B5/B3"),
-  B7: getExpressionProperties("=B5 > 0 ? B5*(1-B6) : B5"),
-  B20: getExpressionProperties("=M9"),
-  B21: getExpressionProperties("=M12"),
-  B22: getExpressionProperties("=B20/(B21-M2)"),
-  B23: getExpressionProperties("=B22*L13"),
-  B24: getExpressionProperties(
-    "=sum(C14, D14, E14, F14, G14, H14, I14, J14, K14, L14)"
+  B3: getExpressionProperties("=B4/B2"),
+  B6: getExpressionProperties("=B4 > 0 ? B4*(1-B5) : B4"),
+  B19: getExpressionProperties("=M8"),
+  B20: getExpressionProperties("=M11"),
+  B22: getExpressionProperties("=B21*L12"),
+  B23: getExpressionProperties(
+    "=sum(C13, D13, E13, F13, G13, H13, I13, J13, K13, L13)"
   ),
-  B25: getExpressionProperties("=B23+B24"),
+  B24: getExpressionProperties("=B22+B23"),
   // TODO: Implement fully at a later date from inputs
+  B25: getExpressionProperties("0"),
   B26: getExpressionProperties("0"),
-  B27: getExpressionProperties("0"),
-  B28: getExpressionProperties("=B25*(1-B26)+B27*B26"),
-  B33: getExpressionProperties("=B28-B29-B30+B31+B32"),
-  B35: getExpressionProperties("=B33-B34"),
-  B37: getExpressionProperties("=B35/{shares}"),
-  B38: getExpressionProperties("=(B37-B36)/B37"),
-  C8: getExpressionProperties("=C3 > B3 ? (C3-B3) / C16 : 0"),
-  C13: getExpressionProperties("=1/(1+C12)"),
-  M18: getExpressionProperties("=L12"),
-  M4: getExpressionProperties("=L4"),
-  M7: getExpressionProperties("=M5*(1-M6)"),
-  M8: getExpressionProperties("=M2 > 0 ? (M2 / M18) * M7 : 0"),
+  B27: getExpressionProperties("=B24*(1-B25)+B26*B25"),
+  B32: getExpressionProperties("=B27-B28-B29+B30+B31"),
+  B34: getExpressionProperties("=B32-B33"),
+  B36: getExpressionProperties("=B34/{shares}"),
+  B37: getExpressionProperties("=(B36-B35)/B36"),
+  C7: getExpressionProperties("=C2 > B2 ? (C2-B2) / C15 : 0"),
+  C12: getExpressionProperties("=1/(1+C11)"),
+  M17: getExpressionProperties("=L11"),
+  M3: getExpressionProperties("=L3"),
+  M6: getExpressionProperties("=M4*(1-M5)"),
 };
 
 export const columns = getColumnsTo(getHighestColumn(cells));
@@ -112,7 +106,7 @@ getColumnsBetween(columns, "C", "L").forEach((column, index) => {
   };
 });
 
-getCellsForRows(columns, [13, 16]).forEach((key) => {
+getCellsForRows(columns, [12, 15]).forEach((key) => {
   if (key.charAt(0) !== "A") {
     cells[key] = {
       ...cells[key],
@@ -121,8 +115,8 @@ getCellsForRows(columns, [13, 16]).forEach((key) => {
   }
 });
 
-getCellsForRows(columns, [2, 4, 6, 12, 18])
-  .concat(["B21", "B26", "B38"])
+getCellsForRows(columns, [3, 5, 11, 17])
+  .concat(["B20", "B25", "B37"])
   .forEach((key) => {
     if (key.charAt(0) !== "A") {
       cells[key] = {
@@ -132,7 +126,7 @@ getCellsForRows(columns, [2, 4, 6, 12, 18])
     }
   });
 
-["B36", "B37"].forEach((key) => {
+["B35", "B36"].forEach((key) => {
   if (key.charAt(0) !== "A") {
     cells[key] = {
       ...cells[key],
@@ -141,13 +135,14 @@ getCellsForRows(columns, [2, 4, 6, 12, 18])
   }
 });
 
-getCellsForRows(columns, [3, 5, 7, 8, 9, 10, 14, 17])
+getCellsForRows(columns, [2, 4, 6, 7, 8, 9, 13, 16])
   .concat([
-    "B20",
+    "B19",
+    "B21",
     "B22",
     "B23",
     "B24",
-    "B25",
+    "B26",
     "B27",
     "B28",
     "B29",
@@ -156,7 +151,6 @@ getCellsForRows(columns, [3, 5, 7, 8, 9, 10, 14, 17])
     "B32",
     "B33",
     "B34",
-    "B35",
   ])
   .forEach((key) => {
     if (key.charAt(0) !== "A") {
@@ -168,34 +162,30 @@ getCellsForRows(columns, [3, 5, 7, 8, 9, 10, 14, 17])
   });
 
 getColumnsBetween(columns, "C", "G").forEach((column) => {
-  const taxKey = `${column}6`;
+  const taxKey = `${column}5`;
 
   cells[taxKey].expr = getOneToFiveYrTaxCalculation(taxKey);
 });
 
 getColumnsBetween(columns, "D", "G").forEach((column) => {
-  const growthKey = `${column}2`;
-  const cocKey = `${column}12`;
+  const cocKey = `${column}11`;
 
-  cells[growthKey].expr = getOneToFiveYrRevenueGrowthCalculation(growthKey);
   cells[cocKey].expr = getOneToFiveYrCostOfCapitalCalculation(cocKey);
 });
 
-getColumnsBetween(columns, "H", "L").forEach((column, index) => {
-  const growthKey = `${column}2`;
-  const taxKey = `${column}6`;
-  const cocKey = `${column}12`;
+getColumnsBetween(columns, "H", "L").forEach((column) => {
+  const taxKey = `${column}5`;
+  const cocKey = `${column}11`;
 
-  cells[growthKey].expr = getSixToTenYrRevenueGrowthCalculation(index);
   cells[taxKey].expr = getSixToTenYrTaxCalculation(taxKey);
   cells[cocKey].expr = getSixToTenYrCostOfCapitalCalculation(cocKey);
 });
 
 getColumnsBetween(columns, "C", "L").forEach((column) => {
-  const ebitAfterTaxKey = `${column}7`;
-  const pvFCFFKey = `${column}14`;
-  const investedCapKey = `${column}17`;
-  const ebitMarginKey = `${column}4`;
+  const ebitAfterTaxKey = `${column}6`;
+  const pvFCFFKey = `${column}13`;
+  const investedCapKey = `${column}16`;
+  const ebitMarginKey = `${column}3`;
 
   cells[ebitMarginKey].expr = getEBITMarginCalculation(
     null,
@@ -208,21 +198,19 @@ getColumnsBetween(columns, "C", "L").forEach((column) => {
 });
 
 getColumnsBetween(columns, "C", "M").forEach((column) => {
-  const ebitKey = `${column}5`;
-  const nolKey = `${column}10`;
-  const fcffKey = `${column}9`;
-  const revenueKey = `${column}3`;
+  const ebitKey = `${column}4`;
+  const nolKey = `${column}9`;
+  const fcffKey = `${column}8`;
 
   cells[ebitKey].expr = getEBITCalculation(ebitKey);
   cells[nolKey].expr = getNOLCalculation(nolKey);
   cells[fcffKey].expr = getFCFFCalculation(fcffKey);
-  cells[revenueKey].expr = getRevenueCalculation(revenueKey);
 });
 
 getColumnsBetween(columns, "D", "L").forEach((column) => {
-  const reinvestmentKey = `${column}8`;
-  const discountFactorKey = `${column}13`;
-  const salesCapRatioKey = `${column}16`;
+  const reinvestmentKey = `${column}7`;
+  const discountFactorKey = `${column}12`;
+  const salesCapRatioKey = `${column}15`;
 
   cells[reinvestmentKey].expr = getReinvestmentCalculation(reinvestmentKey);
   cells[discountFactorKey].expr = getCumulatedDiscountFactorCalculation(
@@ -234,7 +222,7 @@ getColumnsBetween(columns, "D", "L").forEach((column) => {
 });
 
 getColumnsBetween(columns, "B", "L").forEach((column) => {
-  const roicKey = `${column}18`;
+  const roicKey = `${column}17`;
 
   cells[roicKey].expr = getROICCalculation(roicKey);
 });
