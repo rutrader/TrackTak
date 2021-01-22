@@ -30,10 +30,10 @@ const getExpressionProperties = (expr) => {
 const cells = {
   A1: { value: "" },
   A2: { value: "Revenues" },
-  A3: { value: "EBIT Margin" },
+  A3: { value: "Operating Margin" },
   A4: { value: "EBIT Income" },
   A5: { value: "Tax Rate" },
-  A6: { value: "EBIT (1-t)" },
+  A6: { value: "NOPAT" },
   A7: { value: "- Reinvestment" },
   A8: { value: "FCFF" },
   A9: { value: "NOL" },

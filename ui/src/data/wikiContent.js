@@ -132,13 +132,12 @@ const wikiContent = [
     ),
   },
   {
-    title: "EBIT Margin - Cells B3-M3",
+    title: "Operating Margin - Cells B3-M3",
     text: (
       <>
         <Typography paragraph>
-          The Earnings Before Interest or Taxes (EBIT) Margin is the other main
-          value driving input that heavily affects your DCF. We provide an input
-          for you that looks like this:
+          Operating Margin is the other main value driving input that heavily
+          affects your DCF. We provide an input for you that looks like this:
         </Typography>
         <InputExampleBox>
           <TextField
@@ -153,8 +152,8 @@ const wikiContent = [
         <Typography paragraph>
           We use this input in Years 1-10 (B3-L3) and set the terminal year to
           be equal to year 10 (L3). To figure out what to put in this input you
-          need to check the companies current EBIT margin, the industries
-          average EBIT margin and also your thoughts on what type of margin the
+          need to check the companies current Operating margin, the industries
+          average Operating margin and also your thoughts on what type of margin the
           company can acheive by year 10. This will differ grealy depending on
           how much of a&nbsp;
           <a
@@ -169,7 +168,7 @@ const wikiContent = [
           for a very long time.
         </Typography>
         <Typography paragraph>
-          The Year of Convergence input also affects the EBIT Margin
+          The Year of Convergence input also affects the Operating Margin
           calculations, it looks like this:
         </Typography>
         <InputExampleBox>
@@ -183,8 +182,8 @@ const wikiContent = [
           />
         </InputExampleBox>
         <Typography paragraph>
-          The EBIT Margin will slowly converge from the base years margin (B4)
-          to your EBIT margin in year 10 (L3). The speed at which this happens
+          The Operating Margin will slowly converge from the base years margin (B4)
+          to your Operating margin in year 10 (L3). The speed at which this happens
           depends on the Year of Convergence that you type in to this input.
         </Typography>
       </>
@@ -204,11 +203,11 @@ const wikiContent = [
     ),
   },
   {
-    title: "EBIT (1-t) - Cells B6-M6",
+    title: "NOPAT - Cells B6-M6",
     text: (
       <>
         This is essentially the Earnings Before Interest. The difference between
-        this and the EBIT is that taxes are included in this calculation.
+        this and the NOPAT is that taxes are included in this calculation.
       </>
     ),
   },
