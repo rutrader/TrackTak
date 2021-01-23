@@ -2,9 +2,17 @@ import { createSelector } from "@reduxjs/toolkit";
 import selectRiskFreeRate from "./selectRiskFreeRate";
 import selectQueryParams from "./selectQueryParams";
 import selectPretaxCostOfDebt from "./selectPretaxCostOfDebt";
+import selectRecentIncomeStatement from "./selectRecentIncomeStatement";
+import selectRecentBalanceSheet from "./selectRecentBalanceSheet";
+import selectPrice from "./selectPrice";
 
 const calculateCostOfCapital = (
-  fundamentals,
+  currentEquityRiskPremiumCountry,
+  currentIndustry,
+  incomeStatement,
+  balanceSheet,
+  price,
+  sharesOutstanding,
   query,
   pretaxCostOfDebt,
   riskFreeRate
@@ -19,13 +27,12 @@ const calculateCostOfCapital = (
   const marketPricePerShare = query.marketPricePerShare ?? 0;
   const annualDividendPerShare = query.annualDividendPerShare ?? 0;
 
-  const marginalTaxRate =
-    fundamentals.currentEquityRiskPremiumCountry.corporateTaxRate;
+  const marginalTaxRate = currentEquityRiskPremiumCountry.corporateTaxRate;
   const estimatedMarketValueOfStraightDebt =
-    (fundamentals.incomeStatement.interestExpense *
+    (incomeStatement.interestExpense *
       (1 - (1 + pretaxCostOfDebt) ** -averageMaturityOfDebt)) /
       pretaxCostOfDebt +
-    fundamentals.balanceSheet.bookValueOfDebt /
+    balanceSheet.bookValueOfDebt /
       (1 + pretaxCostOfDebt) ** averageMaturityOfDebt;
   let estimatedValueOfStraightDebtInConvertibleDebt =
     (interestExpenseOnConvertibleDebt *
@@ -41,8 +48,7 @@ const calculateCostOfCapital = (
     : estimatedValueOfStraightDebtInConvertibleDebt;
 
   const marketValue = {
-    equity:
-      fundamentals.price * fundamentals.data.SharesStats.SharesOutstanding,
+    equity: price * sharesOutstanding,
     debt:
       estimatedMarketValueOfStraightDebt +
       estimatedValueOfStraightDebtInConvertibleDebt,
@@ -60,7 +66,7 @@ const calculateCostOfCapital = (
     },
   };
   const leveredBetaForEquity =
-    fundamentals.currentIndustry.unleveredBeta *
+    currentIndustry.unleveredBeta *
     (1 + (1 - marginalTaxRate) * (marketValue.debt / marketValue.equity));
 
   let costOfPreferredStock = annualDividendPerShare / marketPricePerShare;
@@ -70,8 +76,7 @@ const calculateCostOfCapital = (
   const costOfComponent = {
     equity:
       riskFreeRate +
-      leveredBetaForEquity *
-        fundamentals.currentEquityRiskPremiumCountry.equityRiskPremium,
+      leveredBetaForEquity * currentEquityRiskPremiumCountry.equityRiskPremium,
     debt: pretaxCostOfDebt * marginalTaxRate,
     preferredStock: costOfPreferredStock,
     get total() {
@@ -94,7 +99,12 @@ const calculateCostOfCapital = (
 };
 
 const selectCostOfCapital = createSelector(
-  (state) => state.fundamentals,
+  (state) => state.fundamentals.currentEquityRiskPremiumCountry,
+  (state) => state.fundamentals.currentIndustry,
+  selectRecentIncomeStatement,
+  selectRecentBalanceSheet,
+  selectPrice,
+  (state) => state.fundamentals.data.SharesStats.SharesOutstanding,
   selectQueryParams,
   selectPretaxCostOfDebt,
   selectRiskFreeRate,

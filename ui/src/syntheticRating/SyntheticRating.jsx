@@ -28,7 +28,11 @@ const useTableClasses = makeStyles((theme) => ({
 }));
 
 const SyntheticRating = () => {
-  const fundamentals = useSelector((state) => state.fundamentals);
+  const isLoaded = useSelector((state) => state.fundamentals.isLoaded);
+  const currentEquityRiskPremiumCountry = useSelector(
+    (state) => state.fundamentals.currentEquityRiskPremiumCountry
+  );
+  const general = useSelector((state) => state.fundamentals.data?.General);
   const thresholdMarketCap = useSelector(selectThresholdMarketCap);
   const interestCoverage = useSelector(selectInterestCoverage);
   const isLargeCompany = useSelector(selectIsLargeCompany);
@@ -39,7 +43,7 @@ const SyntheticRating = () => {
   );
   const tableClasses = useTableClasses({ currentCompanyInterestIndex });
 
-  if (!fundamentals.isLoaded) return null;
+  if (!isLoaded) return null;
 
   const syntheticRatingColumns = [
     {
@@ -106,7 +110,7 @@ const SyntheticRating = () => {
   return (
     <>
       <Typography variant="h4" gutterBottom>
-        {fundamentals.data.General.Name}
+        {general.Name}
       </Typography>
       <SubSection>
         <Typography variant="h6" gutterBottom>
@@ -141,9 +145,7 @@ const SyntheticRating = () => {
           <BoldValueLabel
             value={
               <FormatRawNumberToPercent
-                value={
-                  fundamentals.currentEquityRiskPremiumCountry.adjDefaultSpread
-                }
+                value={currentEquityRiskPremiumCountry.adjDefaultSpread}
               />
             }
             label="Estimated Country Default Spread"

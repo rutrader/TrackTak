@@ -47,9 +47,7 @@ const computeExpr = (key, expr, scope) => {
     } catch (e) {
       value = null;
     }
-    if (key === "B34") {
-      console.log(value);
-    }
+
     if (value !== null && validateExp([key], expr)) {
       return { className: "equation", value, expr };
     } else {

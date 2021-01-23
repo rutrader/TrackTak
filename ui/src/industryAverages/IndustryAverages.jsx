@@ -8,6 +8,7 @@ import SubSection from "../components/SubSection";
 import getHeader from "./getHeader";
 import BoldValueLabel from "../components/BoldValueLabel";
 import getTableRowBackgroundOpacity from "../shared/getTableRowBackgroundOpacity";
+import selectIsInUS from "../selectors/selectIsInUS";
 
 const commonTableRootClasses = {
   "& th": {
@@ -76,23 +77,20 @@ const getIndustryAveragesSortComparer = (industryName) => (a) => {
 
 const IndustryAverages = () => {
   const theme = useTheme();
-  const fundamentalsIsLoaded = useSelector(
-    (state) => state.fundamentals.isLoaded
-  );
-  const isInUS = useSelector((state) => state.fundamentals.isInUS);
+  const isLoaded = useSelector((state) => state.fundamentals.isLoaded);
+  const isInUS = useSelector(selectIsInUS);
   const currentIndustry = useSelector(
     (state) => state.fundamentals.currentIndustry
   );
   const companyName = useSelector(
     (state) => state.fundamentals.data?.General.Name
   );
-
   const usTableClasses = useUSTableClasses({ isInUS });
   const globalTableClasses = useGlobalTableClasses({
     isInUS,
   });
 
-  if (!fundamentalsIsLoaded) return null;
+  if (!isLoaded) return null;
 
   const industryAveragesSortComparer = getIndustryAveragesSortComparer(
     currentIndustry.industryName

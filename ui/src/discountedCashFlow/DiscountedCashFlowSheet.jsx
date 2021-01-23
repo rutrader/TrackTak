@@ -40,6 +40,10 @@ import LazyLoad from "react-lazyload";
 import XLSX from "xlsx";
 import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
 import FormatRawNumber from "../components/FormatRawNumber";
+import selectValuationCurrencySymbol from "../selectors/selectValuationCurrencySymbol";
+import selectRecentIncomeStatement from "../selectors/selectRecentIncomeStatement";
+import selectRecentBalanceSheet from "../selectors/selectRecentBalanceSheet";
+import selectPrice from "../selectors/selectPrice";
 
 const getChunksOfArray = (array, size) =>
   array.reduce((acc, _, i) => {
@@ -182,16 +186,21 @@ const numberOfColumns = 13;
 const DiscountedCashFlowSheet = (props) => {
   const dispatch = useDispatch();
   const queryParams = useSelector(selectQueryParams);
-  const fundamentals = useSelector((state) => state.fundamentals);
+  const incomeStatement = useSelector(selectRecentIncomeStatement);
+  const balanceSheet = useSelector(selectRecentBalanceSheet);
+  const general = useSelector((state) => state.fundamentals.data?.General);
+  const corporateTaxRate = useSelector(
+    (state) =>
+      state.fundamentals.currentEquityRiskPremiumCountry.corporateTaxRate
+  );
+  const price = useSelector(selectPrice);
   const cells = useSelector((state) => state.dcf.cells);
   const costOfCapital = useSelector(selectCostOfCapital);
   const riskFreeRate = useSelector(selectRiskFreeRate);
   const valueOfAllOptionsOutstanding = useSelector(
     selectValueOfAllOptionsOutstanding
   );
-  const currencySymbol = useSelector(
-    (state) => state.fundamentals.valuationCurrencySymbol
-  );
+  const valuationCurrencySymbol = useSelector(selectValuationCurrencySymbol);
   const theme = useTheme();
   const [showFormulas, setShowFormulas] = useState(false);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -211,7 +220,10 @@ const DiscountedCashFlowSheet = (props) => {
   const chunkedData = getChunksOfArray(cellKeysSorted, numberOfColumns).map(
     (arr) => {
       return arr.map((cellKey) => {
-        return formatCellValueForCSVOutput(cells[cellKey], currencySymbol);
+        return formatCellValueForCSVOutput(
+          cells[cellKey],
+          valuationCurrencySymbol
+        );
       });
     }
   );
@@ -223,26 +235,23 @@ const DiscountedCashFlowSheet = (props) => {
   useEffect(() => {
     dispatch(
       updateCells([
-        ["B2", fundamentals.incomeStatement.totalRevenue],
-        ["B4", fundamentals.incomeStatement.operatingIncome],
-        ["B16", fundamentals.balanceSheet.investedCapital],
-        ["B28", fundamentals.balanceSheet.bookValueOfDebt],
-        ["B29", fundamentals.incomeStatement.minorityInterest],
-        ["B30", fundamentals.balanceSheet.cashAndShortTermInvestments],
-        [
-          "B31",
-          fundamentals.balanceSheet.noncontrollingInterestInConsolidatedEntity,
-        ],
-        ["B35", fundamentals.price],
+        ["B2", incomeStatement.totalRevenue],
+        ["B4", incomeStatement.operatingIncome],
+        ["B16", balanceSheet.investedCapital],
+        ["B28", balanceSheet.bookValueOfDebt],
+        ["B29", incomeStatement.minorityInterest],
+        ["B30", balanceSheet.cashAndShortTermInvestments],
+        ["B31", balanceSheet.noncontrollingInterestInConsolidatedEntity],
+        ["B35", price],
         [
           "B5",
           // TODO: Change this to Base Year tax effective tax rate
-          fundamentals.incomeStatement.pastThreeYearsAverageEffectiveTaxRate,
+          incomeStatement.pastThreeYearsAverageEffectiveTaxRate,
         ],
-        ["M5", fundamentals.currentEquityRiskPremiumCountry.corporateTaxRate],
+        ["M5", corporateTaxRate],
       ])
     );
-  }, [dispatch, fundamentals]);
+  }, [balanceSheet, incomeStatement, corporateTaxRate, dispatch, price]);
 
   useEffect(() => {
     const revenueOneToFiveCellsToUpdate = getColumnsBetween(
@@ -408,7 +417,7 @@ const DiscountedCashFlowSheet = (props) => {
               onClick={() => {
                 XLSX.writeFile(
                   workBook,
-                  `${fundamentals.data.General.Code}.${fundamentals.data.General.Exchange}_DCF.xlsx`
+                  `${general.Code}.${general.Exchange}_DCF.xlsx`
                 );
               }}
             >

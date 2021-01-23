@@ -17,6 +17,13 @@ import FormatRawNumber from "../components/FormatRawNumber";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import IndustryAverages from "../components/IndustryAverages";
 import TableMillionFormatter from "../components/TableMillionFormatter";
+import selectRecentBalanceSheet from "../selectors/selectRecentBalanceSheet";
+import selectIsInUS from "../selectors/selectIsInUS";
+import selectYearlyIncomeStatements from "../selectors/selectYearlyIncomeStatements";
+import selectRecentIncomeStatement from "../selectors/selectRecentIncomeStatement";
+import selectYearlyBalanceSheets from "../selectors/selectYearlyBalanceSheets";
+import selectValuationCurrencyCode from "../selectors/selectValuationCurrencyCode";
+import selectValuationCurrencySymbol from "../selectors/selectValuationCurrencySymbol";
 
 const mapFromStatementsToDateObject = (
   objectToLoop,
@@ -37,10 +44,17 @@ const mapFromStatementsToDateObject = (
 };
 
 const DiscountedCashFlow = () => {
-  const fundamentals = useSelector((state) => state.fundamentals);
+  const isLoaded = useSelector((state) => state.fundamentals.isLoaded);
+  const isInUS = useSelector(selectIsInUS);
+  const yearlyIncomeStatements = useSelector(selectYearlyIncomeStatements);
+  const incomeStatement = useSelector(selectRecentIncomeStatement);
+  const yearlyBalanceSheets = useSelector(selectYearlyBalanceSheets);
+  const valuationCurrencyCode = useSelector(selectValuationCurrencyCode);
+  const valuationCurrencySymbol = useSelector(selectValuationCurrencySymbol);
+  const balanceSheet = useSelector(selectRecentBalanceSheet);
   const theme = useTheme();
 
-  if (!fundamentals.isLoaded) return null;
+  if (!isLoaded) return null;
 
   const columns = [
     {
@@ -51,7 +65,7 @@ const DiscountedCashFlow = () => {
       Header: "TTM",
       accessor: "ttm",
     },
-    ...Object.values(fundamentals.yearlyIncomeStatements).map((statement) => {
+    ...Object.values(yearlyIncomeStatements).map((statement) => {
       return {
         Header: dayjs(statement.date).format("MMM YY"),
         accessor: statement.date,
@@ -68,15 +82,10 @@ const DiscountedCashFlow = () => {
           Revenue
         </InfoOutlinedIconWrapper>
       ),
-      ttm: fundamentals.isInUS ? (
-        <TableMillionFormatter
-          value={fundamentals.incomeStatement.totalRevenue}
-        />
+      ttm: isInUS ? (
+        <TableMillionFormatter value={incomeStatement.totalRevenue} />
       ) : null,
-      ...mapFromStatementsToDateObject(
-        fundamentals.yearlyIncomeStatements,
-        "totalRevenue"
-      ),
+      ...mapFromStatementsToDateObject(yearlyIncomeStatements, "totalRevenue"),
     },
     {
       dataField: (
@@ -84,13 +93,11 @@ const DiscountedCashFlow = () => {
           Operating Income
         </InfoOutlinedIconWrapper>
       ),
-      ttm: fundamentals.isInUS ? (
-        <TableMillionFormatter
-          value={fundamentals.incomeStatement.operatingIncome}
-        />
+      ttm: isInUS ? (
+        <TableMillionFormatter value={incomeStatement.operatingIncome} />
       ) : null,
       ...mapFromStatementsToDateObject(
-        fundamentals.yearlyIncomeStatements,
+        yearlyIncomeStatements,
         "operatingIncome"
       ),
     },
@@ -100,13 +107,11 @@ const DiscountedCashFlow = () => {
           Operating Margin
         </InfoOutlinedIconWrapper>
       ),
-      ttm: fundamentals.isInUS ? (
-        <FormatRawNumberToPercent
-          value={fundamentals.incomeStatement.operatingMargin}
-        />
+      ttm: isInUS ? (
+        <FormatRawNumberToPercent value={incomeStatement.operatingMargin} />
       ) : null,
       ...mapFromStatementsToDateObject(
-        fundamentals.yearlyIncomeStatements,
+        yearlyIncomeStatements,
         "operatingMargin",
         <FormatRawNumberToPercent />
       ),
@@ -117,13 +122,11 @@ const DiscountedCashFlow = () => {
           Interest Expense
         </InfoOutlinedIconWrapper>
       ),
-      ttm: fundamentals.isInUS ? (
-        <TableMillionFormatter
-          value={fundamentals.incomeStatement.interestExpense}
-        />
+      ttm: isInUS ? (
+        <TableMillionFormatter value={incomeStatement.interestExpense} />
       ) : null,
       ...mapFromStatementsToDateObject(
-        fundamentals.yearlyIncomeStatements,
+        yearlyIncomeStatements,
         "interestExpense"
       ),
     },
@@ -135,13 +138,11 @@ const DiscountedCashFlow = () => {
       ),
       ttm: (
         <TableMillionFormatter
-          value={
-            fundamentals.balanceSheet.noncontrollingInterestInConsolidatedEntity
-          }
+          value={balanceSheet.noncontrollingInterestInConsolidatedEntity}
         />
       ),
       ...mapFromStatementsToDateObject(
-        fundamentals.yearlyBalanceSheets,
+        yearlyBalanceSheets,
         "noncontrollingInterestInConsolidatedEntity"
       ),
     },
@@ -155,13 +156,11 @@ const DiscountedCashFlow = () => {
           Minority Interests
         </InfoOutlinedIconWrapper>
       ),
-      ttm: fundamentals.isInUS ? (
-        <TableMillionFormatter
-          value={fundamentals.incomeStatement.minorityInterest}
-        />
+      ttm: isInUS ? (
+        <TableMillionFormatter value={incomeStatement.minorityInterest} />
       ) : null,
       ...mapFromStatementsToDateObject(
-        fundamentals.yearlyIncomeStatements,
+        yearlyIncomeStatements,
         "minorityInterest"
       ),
     },
@@ -173,11 +172,11 @@ const DiscountedCashFlow = () => {
       ),
       ttm: (
         <TableMillionFormatter
-          value={fundamentals.balanceSheet.cashAndShortTermInvestments}
+          value={balanceSheet.cashAndShortTermInvestments}
         />
       ),
       ...mapFromStatementsToDateObject(
-        fundamentals.yearlyBalanceSheets,
+        yearlyBalanceSheets,
         "cashAndShortTermInvestments"
       ),
     },
@@ -187,13 +186,9 @@ const DiscountedCashFlow = () => {
           Book Value of Equity
         </InfoOutlinedIconWrapper>
       ),
-      ttm: (
-        <TableMillionFormatter
-          value={fundamentals.balanceSheet.bookValueOfEquity}
-        />
-      ),
+      ttm: <TableMillionFormatter value={balanceSheet.bookValueOfEquity} />,
       ...mapFromStatementsToDateObject(
-        fundamentals.yearlyBalanceSheets,
+        yearlyBalanceSheets,
         "bookValueOfEquity"
       ),
     },
@@ -203,15 +198,8 @@ const DiscountedCashFlow = () => {
           Book Value of Debt
         </InfoOutlinedIconWrapper>
       ),
-      ttm: (
-        <TableMillionFormatter
-          value={fundamentals.balanceSheet.bookValueOfDebt}
-        />
-      ),
-      ...mapFromStatementsToDateObject(
-        fundamentals.yearlyBalanceSheets,
-        "bookValueOfDebt"
-      ),
+      ttm: <TableMillionFormatter value={balanceSheet.bookValueOfDebt} />,
+      ...mapFromStatementsToDateObject(yearlyBalanceSheets, "bookValueOfDebt"),
     },
     {
       dataField: (
@@ -221,12 +209,12 @@ const DiscountedCashFlow = () => {
       ),
       ttm: (
         <FormatRawNumber
-          value={fundamentals.balanceSheet.salesToCapitalRatio}
+          value={balanceSheet.salesToCapitalRatio}
           decimalScale={2}
         />
       ),
       ...mapFromStatementsToDateObject(
-        fundamentals.yearlyBalanceSheets,
+        yearlyBalanceSheets,
         "salesToCapitalRatio",
         <FormatRawNumber decimalScale={2} />
       ),
@@ -237,15 +225,8 @@ const DiscountedCashFlow = () => {
           Invested Capital
         </InfoOutlinedIconWrapper>
       ),
-      ttm: (
-        <TableMillionFormatter
-          value={fundamentals.balanceSheet.investedCapital}
-        />
-      ),
-      ...mapFromStatementsToDateObject(
-        fundamentals.yearlyBalanceSheets,
-        "investedCapital"
-      ),
+      ttm: <TableMillionFormatter value={balanceSheet.investedCapital} />,
+      ...mapFromStatementsToDateObject(yearlyBalanceSheets, "investedCapital"),
     },
   ];
 
@@ -263,8 +244,7 @@ const DiscountedCashFlow = () => {
               fontWeight: theme.typography.fontWeightBold,
             }}
           >
-            ({fundamentals.valuationCurrencySymbol}:
-            {fundamentals.valuationCurrencyCode})
+            ({valuationCurrencySymbol}:{valuationCurrencyCode})
           </Typography>
         </Box>
         <Box style={{ overflowX: "auto" }}>

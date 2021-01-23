@@ -2,9 +2,10 @@ import { createSelector } from "@reduxjs/toolkit";
 import selectRiskFreeRate from "./selectRiskFreeRate";
 import selectQueryParams from "./selectQueryParams";
 import calculateBlackScholesModel from "../shared/calculateBlackScholesModel";
+import selectPrice from "./selectPrice";
 
 const selectValueOption = createSelector(
-  (state) => state.fundamentals.price,
+  selectPrice,
   selectQueryParams,
   selectRiskFreeRate,
   (state) => state.fundamentals.currentIndustry?.standardDeviationInStockPrices,
