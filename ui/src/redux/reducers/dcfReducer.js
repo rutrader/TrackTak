@@ -16,6 +16,7 @@ import {
 } from "mathjs";
 import { IF } from "@formulajs/formulajs/lib/logical";
 import { SUM, TRUNC } from "@formulajs/formulajs/lib/math-trig";
+import { setFundamentalsDataThunk } from "../actions/fundamentalsActions";
 
 const math = create({
   evaluateDependencies,
@@ -32,6 +33,7 @@ math.import({
 const initialState = {
   cells,
   cellsTree,
+  extraScope: {},
 };
 
 const computeExpr = (key, expr, scope) => {
@@ -45,7 +47,9 @@ const computeExpr = (key, expr, scope) => {
     } catch (e) {
       value = null;
     }
-
+    if (key === "B34") {
+      console.log(value);
+    }
     if (value !== null && validateExp([key], expr)) {
       return { className: "equation", value, expr };
     } else {
@@ -54,8 +58,10 @@ const computeExpr = (key, expr, scope) => {
   }
 };
 
-const cellUpdate = (cells, key, expr) => {
-  const scope = {};
+const makeCellUpdate = ({ cells, extraScope }) => (key, expr) => {
+  const scope = {
+    ...extraScope,
+  };
   const cellToUpdate = cells[key];
 
   Object.keys(cells).forEach((key) => {
@@ -72,16 +78,25 @@ const cellUpdate = (cells, key, expr) => {
 
 export const dcfReducer = createReducer(initialState, (builder) => {
   builder.addCase(updateCells, (state, action) => {
-    const cells = state.cells;
+    const { cells } = state;
+    const cellsUpdate = makeCellUpdate(state);
+
     action.payload.forEach(([key, value]) => {
       const allDependents = getAllDependents(cellsTree, key);
-      cells[key] = cellUpdate(cells, key, value?.toString());
+
+      cells[key] = cellsUpdate(key, value?.toString());
+
       const currentDependents = allDependents[key] || [];
+
       currentDependents.forEach((key) => {
-        cells[key] = cellUpdate(cells, key, cells[key].expr);
+        cells[key] = cellsUpdate(key, cells[key].expr);
       });
     });
 
     state.cells = cells;
+  });
+  builder.addCase(setFundamentalsDataThunk.fulfilled, (state, action) => {
+    state.extraScope.sharesOutstanding =
+      action.payload.data.SharesStats.SharesOutstanding;
   });
 });

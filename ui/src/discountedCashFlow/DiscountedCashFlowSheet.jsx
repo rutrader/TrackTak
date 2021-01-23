@@ -234,7 +234,6 @@ const DiscountedCashFlowSheet = (props) => {
           fundamentals.balanceSheet.noncontrollingInterestInConsolidatedEntity,
         ],
         ["B35", fundamentals.price],
-        ["B36", `=B34/${fundamentals.data.SharesStats.SharesOutstanding}`],
         [
           "B5",
           // TODO: Change this to Base Year tax effective tax rate

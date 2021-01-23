@@ -16,6 +16,7 @@ import {
   getOneToFiveYrTaxCalculation,
   getPVToFCFFCalculation,
   getReinvestmentCalculation,
+  getRevenueOneToFiveYrCalculation,
   getROICCalculation,
   getSalesToCapitalRatioCalculation,
   getSixToTenYrCostOfCapitalCalculation,
@@ -84,7 +85,7 @@ const cells = {
   B27: getExpressionProperties("=B24*(1-B25)+B26*B25"),
   B32: getExpressionProperties("=B27-B28-B29+B30+B31"),
   B34: getExpressionProperties("=B32-B33"),
-  B36: getExpressionProperties("=B34/{shares}"),
+  B36: getExpressionProperties("=B34/sharesOutstanding"),
   B37: getExpressionProperties("=(B36-B35)/B36"),
   C7: getExpressionProperties("=IF(C2 > B2, (C2-B2) / C15, 0)"),
   C12: getExpressionProperties(`=1/(1+C11)`),
@@ -162,8 +163,13 @@ getCellsForRows(columns, [2, 4, 6, 7, 8, 9, 13, 16])
   });
 
 getColumnsBetween(columns, "C", "G").forEach((column) => {
+  const revenueOneToFiveYearKey = `${column}2`;
   const taxKey = `${column}5`;
 
+  // cells[revenueOneToFiveYearKey].expr = getRevenueOneToFiveYrCalculation(
+  //   "{growthRate}",
+  //   revenueOneToFiveYearKey
+  // );
   cells[taxKey].expr = getOneToFiveYrTaxCalculation(taxKey);
 });
 
