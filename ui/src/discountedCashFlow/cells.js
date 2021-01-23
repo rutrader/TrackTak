@@ -16,7 +16,6 @@ import {
   getOneToFiveYrTaxCalculation,
   getPVToFCFFCalculation,
   getReinvestmentCalculation,
-  getRevenueOneToFiveYrCalculation,
   getROICCalculation,
   getSalesToCapitalRatioCalculation,
   getSixToTenYrCostOfCapitalCalculation,
@@ -163,13 +162,8 @@ getCellsForRows(columns, [2, 4, 6, 7, 8, 9, 13, 16])
   });
 
 getColumnsBetween(columns, "C", "G").forEach((column) => {
-  const revenueOneToFiveYearKey = `${column}2`;
   const taxKey = `${column}5`;
 
-  // cells[revenueOneToFiveYearKey].expr = getRevenueOneToFiveYrCalculation(
-  //   "{growthRate}",
-  //   revenueOneToFiveYearKey
-  // );
   cells[taxKey].expr = getOneToFiveYrTaxCalculation(taxKey);
 });
 
