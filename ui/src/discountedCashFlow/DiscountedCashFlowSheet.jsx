@@ -12,6 +12,7 @@ import {
   getRowNumberFromCellKey,
   isExpressionDependency,
   startColumn,
+  doesReferenceAnotherCell,
 } from "./utils";
 import { Cell, Column, Table } from "@blueprintjs/table";
 import {
@@ -41,6 +42,7 @@ import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
 import selectCells from "../selectors/dcfSelectors/selectCells";
 import selectSharesStats from "../selectors/fundamentalSelectors/selectSharesStats";
+import selectScope from "../selectors/dcfSelectors/selectScope";
 
 const getChunksOfArray = (array, size) =>
   array.reduce((acc, _, i) => {
@@ -50,21 +52,41 @@ const getChunksOfArray = (array, size) =>
     return acc;
   }, []);
 
-const formatCellValueForCSVOutput = (cell, currencySymbol) => {
+const formatCellValueForCSVOutput = (cell, currencySymbol, scope) => {
   if (!cell) return cell;
 
   const { value, type, expr } = cell;
 
-  const obj = {
-    f: isExpressionDependency(expr)
-      ? getExpressionWithoutEqualsSign(expr)
-      : undefined,
-  };
+  const obj = {};
+
+  if (isExpressionDependency(expr)) {
+    let formula = getExpressionWithoutEqualsSign(expr);
+
+    Object.keys(scope).forEach((key) => {
+      let value = scope[key];
+
+      if (value === undefined || value === null) {
+        value = 0;
+      }
+
+      formula = formula.replaceAll(key, value);
+    });
+
+    if (doesReferenceAnotherCell(expr)) {
+      obj.f = formula;
+    }
+  }
+
+  let newValue = value;
+
+  if (value === "error") {
+    newValue = 0;
+  }
 
   if (type === "percent") {
     return {
       ...obj,
-      v: value,
+      v: newValue,
       z: "0.00%",
       t: "n",
     };
@@ -73,7 +95,7 @@ const formatCellValueForCSVOutput = (cell, currencySymbol) => {
   if (type === "million") {
     return {
       ...obj,
-      v: value,
+      v: newValue,
       z: `${currencySymbol}#,###,,.00`,
       t: "n",
     };
@@ -82,7 +104,7 @@ const formatCellValueForCSVOutput = (cell, currencySymbol) => {
   if (type === "currency") {
     return {
       ...obj,
-      v: value,
+      v: newValue,
       z: `${currencySymbol}#,###.00`,
       t: "n",
     };
@@ -91,7 +113,7 @@ const formatCellValueForCSVOutput = (cell, currencySymbol) => {
   if (type === "number") {
     return {
       ...obj,
-      v: value,
+      v: newValue,
       z: ".00",
       t: "n",
     };
@@ -99,7 +121,7 @@ const formatCellValueForCSVOutput = (cell, currencySymbol) => {
 
   return {
     ...obj,
-    v: value,
+    v: newValue,
   };
 };
 
@@ -191,6 +213,7 @@ const DiscountedCashFlowSheet = (props) => {
   const cells = useSelector(selectCells);
   const costOfCapital = useSelector(selectCostOfCapital);
   const riskFreeRate = useSelector(selectRiskFreeRate);
+  const scope = useSelector(selectScope);
   const sharesStats = useSelector(selectSharesStats);
   const valueOfAllOptionsOutstanding = useSelector(
     selectValueOfAllOptionsOutstanding
@@ -365,22 +388,25 @@ const DiscountedCashFlowSheet = (props) => {
     ]
   );
 
-  const cellKeysSorted = padCellKeys(Object.keys(cells).sort(sortAlphaNum));
-
-  const chunkedData = getChunksOfArray(cellKeysSorted, numberOfColumns).map(
-    (arr) => {
-      return arr.map((cellKey) => {
-        return formatCellValueForCSVOutput(
-          cells[cellKey],
-          valuationCurrencySymbol
-        );
-      });
-    }
-  );
-  const worksheet = setColumnWidths(XLSX.utils.aoa_to_sheet(chunkedData));
-  const workBook = XLSX.utils.book_new();
-
-  XLSX.utils.book_append_sheet(workBook, worksheet, "Valuation");
+  const exportToCSVOnClick = useCallback(() => {
+    const cellKeysSorted = padCellKeys(Object.keys(cells).sort(sortAlphaNum));
+    const chunkedData = getChunksOfArray(cellKeysSorted, numberOfColumns).map(
+      (arr) => {
+        return arr.map((cellKey) => {
+          return formatCellValueForCSVOutput(
+            cells[cellKey],
+            valuationCurrencySymbol,
+            scope
+          );
+        });
+      }
+    );
+    const worksheet = setColumnWidths(XLSX.utils.aoa_to_sheet(chunkedData));
+    const workBook = XLSX.utils.book_new();
+    console.log(chunkedData);
+    XLSX.utils.book_append_sheet(workBook, worksheet, "Valuation");
+    XLSX.writeFile(workBook, `${general.Code}.${general.Exchange}_DCF.xlsx`);
+  }, [cells, general.Code, general.Exchange, scope, valuationCurrencySymbol]);
 
   // TODO: Add an expand button to see it full screen
   return (
@@ -408,15 +434,7 @@ const DiscountedCashFlowSheet = (props) => {
               ml: 1,
             }}
           >
-            <Button
-              variant="outlined"
-              onClick={() => {
-                XLSX.writeFile(
-                  workBook,
-                  `${general.Code}.${general.Exchange}_DCF.xlsx`
-                );
-              }}
-            >
+            <Button variant="outlined" onClick={exportToCSVOnClick}>
               Export to CSV
             </Button>
           </Box>

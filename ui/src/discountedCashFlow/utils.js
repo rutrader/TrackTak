@@ -14,6 +14,11 @@ export const getCellsForRows = (columns, rows) => {
   return rows.flatMap((row) => columns.map((column) => column + row));
 };
 
+export const cellKeyRegex = /([A-Z]+\d+)/g;
+
+export const doesReferenceAnotherCell = (expr) =>
+  isExpressionDependency(expr) && cellKeyRegex.test(expr);
+
 export const isExpressionDependency = (expr) =>
   typeof expr === "string" && expr?.charAt(0) === "=";
 
