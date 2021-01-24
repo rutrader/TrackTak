@@ -24,7 +24,9 @@ import {
   Link,
 } from "@material-ui/core";
 import "../shared/blueprintTheme.scss";
-import selectQueryParams from "../selectors/routerSelectors/selectQueryParams";
+import selectQueryParams, {
+  inputQueryNames,
+} from "../selectors/routerSelectors/selectQueryParams";
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
 import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
 import selectValueOfAllOptionsOutstanding from "../selectors/fundamentalSelectors/selectValueOfAllOptionsOutstanding";
@@ -390,23 +392,53 @@ const DiscountedCashFlowSheet = (props) => {
 
   const exportToCSVOnClick = useCallback(() => {
     const cellKeysSorted = padCellKeys(Object.keys(cells).sort(sortAlphaNum));
-    const chunkedData = getChunksOfArray(cellKeysSorted, numberOfColumns).map(
-      (arr) => {
-        return arr.map((cellKey) => {
-          return formatCellValueForCSVOutput(
-            cells[cellKey],
-            valuationCurrencySymbol,
-            scope
-          );
-        });
-      }
+    const inputsData = [];
+
+    inputQueryNames.forEach((inputQueryName) => {
+      const value = queryParams[inputQueryName];
+
+      inputsData.push(inputQueryName);
+      inputsData.push(value ?? 0);
+    });
+
+    const valuationChunkedData = getChunksOfArray(
+      cellKeysSorted,
+      numberOfColumns
+    ).map((arr) => {
+      return arr.map((cellKey) => {
+        return formatCellValueForCSVOutput(
+          cells[cellKey],
+          valuationCurrencySymbol,
+          scope
+        );
+      });
+    });
+
+    const inputsWorksheet = XLSX.utils.aoa_to_sheet(
+      getChunksOfArray(inputsData, 2)
     );
-    const worksheet = setColumnWidths(XLSX.utils.aoa_to_sheet(chunkedData));
+    const valuationOutputWorksheet = setColumnWidths(
+      XLSX.utils.aoa_to_sheet(valuationChunkedData)
+    );
+
     const workBook = XLSX.utils.book_new();
-    console.log(chunkedData);
-    XLSX.utils.book_append_sheet(workBook, worksheet, "Valuation");
+
+    XLSX.utils.book_append_sheet(workBook, inputsWorksheet, "Inputs");
+    XLSX.utils.book_append_sheet(
+      workBook,
+      valuationOutputWorksheet,
+      "Valuation"
+    );
+
     XLSX.writeFile(workBook, `${general.Code}.${general.Exchange}_DCF.xlsx`);
-  }, [cells, general.Code, general.Exchange, scope, valuationCurrencySymbol]);
+  }, [
+    cells,
+    general.Code,
+    general.Exchange,
+    queryParams,
+    scope,
+    valuationCurrencySymbol,
+  ]);
 
   // TODO: Add an expand button to see it full screen
   return (
