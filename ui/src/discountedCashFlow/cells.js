@@ -9,6 +9,7 @@ import {
   getCumulatedDiscountFactorCalculation,
   getEBITAfterTax,
   getEBITCalculation,
+  getEBITMarginCalculation,
   getFCFFCalculation,
   getInvestedCapitalCalculation,
   getNOLCalculation,
@@ -16,11 +17,15 @@ import {
   getOneToFiveYrTaxCalculation,
   getPVToFCFFCalculation,
   getReinvestmentCalculation,
+  getRevenueCalculation,
+  getRevenueOneToFiveYrCalculation,
+  getRevenueSixToTenYrCalculation,
   getROICCalculation,
   getSalesToCapitalRatioCalculation,
   getSixToTenYrCostOfCapitalCalculation,
   getSixToTenYrTaxCalculation,
 } from "./expressionCalculations";
+import { salesToCapitalRatioQueryName } from "../selectors/routerSelectors/selectQueryParams";
 
 const getExpressionProperties = (expr) => {
   return { className: "equation", expr };
@@ -68,11 +73,15 @@ const cells = {
   },
   A37: { value: "Margin of Safety" },
   B1: { value: "Base Year" },
-  M1: { value: "Terminal Year" },
+  B2: getExpressionProperties("=totalRevenue"),
   B3: getExpressionProperties("=B4/B2"),
+  B4: getExpressionProperties("=operatingIncome"),
+  B5: getExpressionProperties("=pastThreeYearsAverageEffectiveTaxRate"),
   B6: getExpressionProperties("=IF(B4 > 0, B4 * (1-B5), B4)"),
+  B16: getExpressionProperties("=investedCapital"),
   B19: getExpressionProperties("=M8"),
   B20: getExpressionProperties("=M11"),
+  B21: getExpressionProperties(`=B19/(B20-riskFreeRate)`),
   B22: getExpressionProperties("=B21*L12"),
   B23: getExpressionProperties(
     "=SUM(C13, D13, E13, F13, G13, H13, I13, J13, K13, L13)"
@@ -82,15 +91,30 @@ const cells = {
   B25: getExpressionProperties("0"),
   B26: getExpressionProperties("0"),
   B27: getExpressionProperties("=B24*(1-B25)+B26*B25"),
+  B28: getExpressionProperties("=bookValueOfDebt"),
+  B29: getExpressionProperties("=minorityInterest"),
+  B30: getExpressionProperties("=cashAndShortTermInvestments"),
+  B31: getExpressionProperties("=noncontrollingInterestInConsolidatedEntity"),
   B32: getExpressionProperties("=B27-B28-B29+B30+B31"),
+  B33: getExpressionProperties("=valueOfAllOptionsOutstanding"),
   B34: getExpressionProperties("=B32-B33"),
+  B35: getExpressionProperties("=price"),
   B36: getExpressionProperties("=B34/sharesOutstanding"),
   B37: getExpressionProperties("=(B36-B35)/B36"),
   C7: getExpressionProperties("=IF(C2 > B2, (C2-B2) / C15, 0)"),
+  C11: getExpressionProperties("=totalCostOfCapital"),
   C12: getExpressionProperties(`=1/(1+C11)`),
-  M17: getExpressionProperties("=L11"),
+  C15: getExpressionProperties(`=${salesToCapitalRatioQueryName}`),
+  M1: { value: "Terminal Year" },
+  M2: getExpressionProperties(getRevenueCalculation("M2", "riskFreeRate")),
   M3: getExpressionProperties("=L3"),
+  M5: getExpressionProperties("=corporateTaxRate"),
   M6: getExpressionProperties("=M4*(1-M5)"),
+  M7: getExpressionProperties(
+    `=IF(riskFreeRate > 0, (riskFreeRate / M17) * M6, 0)`
+  ),
+  M11: getExpressionProperties("=matureMarketEquityRiskPremium + riskFreeRate"),
+  M17: getExpressionProperties("=L11"),
 };
 
 export const columns = getColumnsTo(getHighestColumn(cells));
@@ -162,8 +186,12 @@ getCellsForRows(columns, [2, 4, 6, 7, 8, 9, 13, 16])
   });
 
 getColumnsBetween(columns, "C", "G").forEach((column) => {
+  const revenueOneToFiveYrKey = `${column}2`;
   const taxKey = `${column}5`;
 
+  cells[revenueOneToFiveYrKey].expr = getRevenueOneToFiveYrCalculation(
+    revenueOneToFiveYrKey
+  );
   cells[taxKey].expr = getOneToFiveYrTaxCalculation(taxKey);
 });
 
@@ -173,19 +201,26 @@ getColumnsBetween(columns, "D", "G").forEach((column) => {
   cells[cocKey].expr = getOneToFiveYrCostOfCapitalCalculation(cocKey);
 });
 
-getColumnsBetween(columns, "H", "L").forEach((column) => {
+getColumnsBetween(columns, "H", "L").forEach((column, index) => {
+  const revenueSixToTenYrKey = `${column}2`;
   const taxKey = `${column}5`;
   const cocKey = `${column}11`;
 
+  cells[revenueSixToTenYrKey].expr = getRevenueSixToTenYrCalculation(
+    index,
+    revenueSixToTenYrKey
+  );
   cells[taxKey].expr = getSixToTenYrTaxCalculation(taxKey);
   cells[cocKey].expr = getSixToTenYrCostOfCapitalCalculation(cocKey);
 });
 
 getColumnsBetween(columns, "C", "L").forEach((column) => {
+  const ebitMarginKey = `${column}3`;
   const ebitAfterTaxKey = `${column}6`;
   const pvFCFFKey = `${column}13`;
   const investedCapKey = `${column}16`;
 
+  cells[ebitMarginKey].expr = getEBITMarginCalculation(ebitMarginKey);
   cells[ebitAfterTaxKey].expr = getEBITAfterTax(ebitAfterTaxKey);
   cells[pvFCFFKey].expr = getPVToFCFFCalculation(pvFCFFKey);
   cells[investedCapKey].expr = getInvestedCapitalCalculation(investedCapKey);

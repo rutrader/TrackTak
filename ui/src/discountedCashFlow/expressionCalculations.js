@@ -1,3 +1,9 @@
+import {
+  cagrYearOneToFiveQueryName,
+  ebitTargetMarginInYearTenQueryName,
+  yearOfConvergenceQueryName,
+} from "../selectors/routerSelectors/selectQueryParams";
+
 export const getPreviousColumn = (cellKey) => {
   const column = cellKey.charAt(0);
   const previousColumn = String.fromCharCode(column.charCodeAt(0) - 1);
@@ -5,15 +11,12 @@ export const getPreviousColumn = (cellKey) => {
   return previousColumn;
 };
 
-export const getEBITMarginCalculation = (
-  yearOfConvergence,
-  ebitTargetMarginInYearTen,
-  cellKey
-) => {
+export const getEBITMarginCalculation = (cellKey) => {
   const column = cellKey.charAt(0);
-  const falsyCondition = `${ebitTargetMarginInYearTen} - ((${ebitTargetMarginInYearTen} - B3) / ${yearOfConvergence}) * (${yearOfConvergence} - ${column}1)`;
 
-  return `=IF(${column}1 > ${yearOfConvergence}, ${ebitTargetMarginInYearTen}, ${falsyCondition})`;
+  const falsyCondition = `${ebitTargetMarginInYearTenQueryName} - ((${ebitTargetMarginInYearTenQueryName} - B3) / ${yearOfConvergenceQueryName}) * (${yearOfConvergenceQueryName} - ${column}1)`;
+
+  return `=IF(${column}1 > ${yearOfConvergenceQueryName}, ${ebitTargetMarginInYearTenQueryName}, ${falsyCondition})`;
 };
 
 export const getReinvestmentCalculation = (cellKey) => {
@@ -23,25 +26,21 @@ export const getReinvestmentCalculation = (cellKey) => {
   return `=(${column}2-${previousColumn}2)/${column}15`;
 };
 
-export const getRevenueCalculation = (growthRate, cellKey) => {
+export const getRevenueCalculation = (cellKey, growthRate) => {
   const previousColumn = getPreviousColumn(cellKey);
 
   return `=${previousColumn}2*(1+${growthRate})`;
 };
 
-export const getRevenueOneToFiveYrCalculation = getRevenueCalculation;
+export const getRevenueOneToFiveYrCalculation = (cellKey) =>
+  getRevenueCalculation(cellKey, cagrYearOneToFiveQueryName);
 
-export const getRevenueSixToTenYrCalculation = (
-  growthRate,
-  riskFreeRate,
-  index,
-  cellKey
-) => {
-  const formula = `${growthRate} - ((${growthRate}-${riskFreeRate}) / 5)`;
+export const getRevenueSixToTenYrCalculation = (index, cellKey) => {
+  const formula = `${cagrYearOneToFiveQueryName} - ((${cagrYearOneToFiveQueryName}-riskFreeRate) / 5)`;
   const number = index + 1;
   const growthRevenueFormula = index === 0 ? formula : `${formula} * ${number}`;
 
-  return getRevenueCalculation(growthRevenueFormula, cellKey);
+  return getRevenueCalculation(cellKey, growthRevenueFormula);
 };
 
 export const getEBITCalculation = (cellKey) => {

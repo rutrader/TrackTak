@@ -6,7 +6,7 @@ Object.keys(cells).forEach((key) => {
   const { expr } = cells[key];
 
   if (expr) {
-    const matches = expr.match(/([A-Z])\w+/g);
+    const matches = expr.match(/([A-Z]+\d+)/g);
     const uniqueMatches = [...new Set(matches)];
 
     uniqueMatches.forEach((uniqueMatchKey) => {

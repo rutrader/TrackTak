@@ -1,5 +1,6 @@
 import { getCellsForRowsBetween } from "../../discountedCashFlow/utils";
 import { columns } from "../../discountedCashFlow/cells";
+import selectCells from "./selectCells";
 
 const makeCellKeysSelector = (startColumn, endColumn, rows) => {
   const cellKeys = getCellsForRowsBetween(
@@ -9,7 +10,7 @@ const makeCellKeysSelector = (startColumn, endColumn, rows) => {
     rows
   );
   return cellKeys.map((cellKey) => {
-    return (state) => state.dcf.cells[cellKey];
+    return (state) => selectCells(state)[cellKey];
   });
 };
 

@@ -13,12 +13,6 @@ import {
   isExpressionDependency,
   startColumn,
 } from "./utils";
-import {
-  getEBITMarginCalculation,
-  getRevenueOneToFiveYrCalculation,
-  getRevenueSixToTenYrCalculation,
-  getRevenueCalculation,
-} from "./expressionCalculations";
 import { Cell, Column, Table } from "@blueprintjs/table";
 import {
   Box,
@@ -33,7 +27,6 @@ import selectQueryParams from "../selectors/routerSelectors/selectQueryParams";
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
 import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
 import selectValueOfAllOptionsOutstanding from "../selectors/fundamentalSelectors/selectValueOfAllOptionsOutstanding";
-import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
 import { Link as RouterLink } from "react-router-dom";
 import { updateCells } from "../redux/actions/dcfActions";
 import LazyLoad from "react-lazyload";
@@ -47,6 +40,7 @@ import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
 import selectCells from "../selectors/dcfSelectors/selectCells";
+import selectSharesStats from "../selectors/fundamentalSelectors/selectSharesStats";
 
 const getChunksOfArray = (array, size) =>
   array.reduce((acc, _, i) => {
@@ -197,6 +191,7 @@ const DiscountedCashFlowSheet = (props) => {
   const cells = useSelector(selectCells);
   const costOfCapital = useSelector(selectCostOfCapital);
   const riskFreeRate = useSelector(selectRiskFreeRate);
+  const sharesStats = useSelector(selectSharesStats);
   const valueOfAllOptionsOutstanding = useSelector(
     selectValueOfAllOptionsOutstanding
   );
@@ -215,104 +210,63 @@ const DiscountedCashFlowSheet = (props) => {
     });
   }, [props.columnWidths, showFormulas]);
 
-  const cellKeysSorted = padCellKeys(Object.keys(cells).sort(sortAlphaNum));
-
-  const chunkedData = getChunksOfArray(cellKeysSorted, numberOfColumns).map(
-    (arr) => {
-      return arr.map((cellKey) => {
-        return formatCellValueForCSVOutput(
-          cells[cellKey],
-          valuationCurrencySymbol
-        );
-      });
-    }
-  );
-  const worksheet = setColumnWidths(XLSX.utils.aoa_to_sheet(chunkedData));
-  const workBook = XLSX.utils.book_new();
-
-  XLSX.utils.book_append_sheet(workBook, worksheet, "Valuation");
-
   useEffect(() => {
     dispatch(
-      updateCells([
-        ["B2", incomeStatement.totalRevenue],
-        ["B4", incomeStatement.operatingIncome],
-        ["B16", balanceSheet.investedCapital],
-        ["B28", balanceSheet.bookValueOfDebt],
-        ["B29", incomeStatement.minorityInterest],
-        ["B30", balanceSheet.cashAndShortTermInvestments],
-        ["B31", balanceSheet.noncontrollingInterestInConsolidatedEntity],
-        ["B35", price],
+      updateCells(
         [
+          "B2",
+          "B4",
           "B5",
-          // TODO: Change this to Base Year tax effective tax rate
-          incomeStatement.pastThreeYearsAverageEffectiveTaxRate,
+          "B16",
+          "B28",
+          "B29",
+          "B30",
+          "B31",
+          "B35",
+          "B36",
+          "M5",
         ],
-        ["M5", currentEquityRiskPremium.corporateTaxRate],
-      ])
+        {
+          ...incomeStatement,
+          ...balanceSheet,
+          ...currentEquityRiskPremium,
+          sharesOutstanding: sharesStats.SharesOutstanding,
+          price,
+        }
+      )
     );
   }, [
     balanceSheet,
-    incomeStatement,
+    currentEquityRiskPremium,
     dispatch,
+    incomeStatement,
     price,
-    currentEquityRiskPremium.corporateTaxRate,
+    sharesStats.SharesOutstanding,
   ]);
 
   useEffect(() => {
-    const revenueOneToFiveCellsToUpdate = getColumnsBetween(
-      columns,
-      "C",
-      "G"
-    ).map((column) => `${column}2`);
-    const revenueSixToTenCellsToUpdate = getColumnsBetween(
-      columns,
-      "H",
-      "L"
-    ).map((column) => `${column}2`);
+    const cagrCellsToUpdate = getColumnsBetween(columns, "C", "L").map(
+      (column) => `${column}2`
+    );
 
     dispatch(
-      updateCells(
-        revenueOneToFiveCellsToUpdate.map((revenueKey) => [
-          revenueKey,
-          getRevenueOneToFiveYrCalculation(
-            queryParams.cagrYearOneToFive,
-            revenueKey
-          ),
-        ])
-      )
-    );
-    dispatch(
-      updateCells(
-        revenueSixToTenCellsToUpdate.map((revenueKey, index) => [
-          revenueKey,
-          getRevenueSixToTenYrCalculation(
-            queryParams.cagrYearOneToFive,
-            riskFreeRate,
-            index,
-            revenueKey
-          ),
-        ])
-      )
+      updateCells(cagrCellsToUpdate, {
+        cagrYearOneToFive: queryParams.cagrYearOneToFive,
+        riskFreeRate,
+      })
     );
   }, [dispatch, queryParams.cagrYearOneToFive, riskFreeRate]);
 
   useEffect(() => {
-    const cellsToUpdate = getColumnsBetween(columns, "C", "L").map(
+    const ebitMarginCellsToUpdate = getColumnsBetween(columns, "C", "L").map(
       (column) => `${column}3`
     );
 
     dispatch(
-      updateCells(
-        cellsToUpdate.map((ebitMarginKey) => [
-          ebitMarginKey,
-          getEBITMarginCalculation(
-            queryParams.yearOfConvergence,
-            queryParams.ebitTargetMarginInYearTen,
-            ebitMarginKey
-          ),
-        ])
-      )
+      updateCells(ebitMarginCellsToUpdate, {
+        yearOfConvergence: queryParams.yearOfConvergence,
+        ebitTargetMarginInYearTen: queryParams.ebitTargetMarginInYearTen,
+      })
     );
   }, [
     queryParams.yearOfConvergence,
@@ -321,26 +275,31 @@ const DiscountedCashFlowSheet = (props) => {
   ]);
 
   useEffect(() => {
-    dispatch(updateCells([["C11", costOfCapital.totalCostOfCapital]]));
+    dispatch(
+      updateCells(["C11"], {
+        totalCostOfCapital: costOfCapital.totalCostOfCapital,
+      })
+    );
   }, [costOfCapital.totalCostOfCapital, dispatch]);
 
   useEffect(() => {
-    dispatch(updateCells([["C15", queryParams.salesToCapitalRatio]]));
+    dispatch(
+      updateCells(["C15"], {
+        salesToCapitalRatio: queryParams.salesToCapitalRatio,
+      })
+    );
   }, [dispatch, queryParams.salesToCapitalRatio]);
 
   useEffect(() => {
     dispatch(
-      updateCells([
-        ["M2", getRevenueCalculation(riskFreeRate, "M2")],
-        ["M11", matureMarketEquityRiskPremium + riskFreeRate],
-        ["M7", `=IF(${riskFreeRate} > 0, (${riskFreeRate} / M17) * M6, 0)`],
-        ["B21", `=B19/(B20-${riskFreeRate})`],
-      ])
+      updateCells(["M2", "M11", "M7", "B21"], {
+        riskFreeRate,
+      })
     );
   }, [dispatch, riskFreeRate]);
 
   useEffect(() => {
-    dispatch(updateCells([["B33", valueOfAllOptionsOutstanding]]));
+    dispatch(updateCells(["B33"], { valueOfAllOptionsOutstanding }));
   }, [dispatch, valueOfAllOptionsOutstanding]);
 
   const cellRenderer = useCallback(
@@ -391,6 +350,23 @@ const DiscountedCashFlowSheet = (props) => {
       theme.typography.fontSize,
     ]
   );
+
+  const cellKeysSorted = padCellKeys(Object.keys(cells).sort(sortAlphaNum));
+
+  const chunkedData = getChunksOfArray(cellKeysSorted, numberOfColumns).map(
+    (arr) => {
+      return arr.map((cellKey) => {
+        return formatCellValueForCSVOutput(
+          cells[cellKey],
+          valuationCurrencySymbol
+        );
+      });
+    }
+  );
+  const worksheet = setColumnWidths(XLSX.utils.aoa_to_sheet(chunkedData));
+  const workBook = XLSX.utils.book_new();
+
+  XLSX.utils.book_append_sheet(workBook, worksheet, "Valuation");
 
   // TODO: Add an expand button to see it full screen
   return (

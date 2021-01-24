@@ -34,6 +34,7 @@ import DiscountedCashFlowSheet from "../discountedCashFlow/DiscountedCashFlowShe
 import IndustryAverages from "../components/IndustryAverages";
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
+import selectCells from "../selectors/dcfSelectors/selectCells";
 
 const options = {
   renderNode: {
@@ -98,7 +99,7 @@ const Valuation = () => {
   const price = useSelector(selectPrice);
   const general = useSelector(selectGeneral);
   const estimatedValuePerShare = useSelector(
-    (state) => state.dcf.cells.B36.value
+    (state) => selectCells(state).B36.value
   );
 
   useEffect(() => {
