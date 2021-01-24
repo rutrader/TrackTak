@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
-import getBalanceSheet from "../shared/getBalanceSheet";
+import getBalanceSheet from "../../shared/getBalanceSheet";
 import selectConvertCurrency from "./selectConvertCurrency";
-import dateSortComparer from "../shared/dateSortComparer";
+import dateSortComparer from "../../shared/dateSortComparer";
 import selectYearlyIncomeStatements from "./selectYearlyIncomeStatements";
 
 export const selectSortedYearlyBalanceSheets = createSelector(

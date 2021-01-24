@@ -17,13 +17,14 @@ import FormatRawNumber from "../components/FormatRawNumber";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import IndustryAverages from "../components/IndustryAverages";
 import TableMillionFormatter from "../components/TableMillionFormatter";
-import selectRecentBalanceSheet from "../selectors/selectRecentBalanceSheet";
-import selectIsInUS from "../selectors/selectIsInUS";
-import selectYearlyIncomeStatements from "../selectors/selectYearlyIncomeStatements";
-import selectRecentIncomeStatement from "../selectors/selectRecentIncomeStatement";
-import selectYearlyBalanceSheets from "../selectors/selectYearlyBalanceSheets";
-import selectValuationCurrencyCode from "../selectors/selectValuationCurrencyCode";
-import selectValuationCurrencySymbol from "../selectors/selectValuationCurrencySymbol";
+import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
+import selectIsInUS from "../selectors/fundamentalSelectors/selectIsInUS";
+import selectYearlyIncomeStatements from "../selectors/fundamentalSelectors/selectYearlyIncomeStatements";
+import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
+import selectYearlyBalanceSheets from "../selectors/fundamentalSelectors/selectYearlyBalanceSheets";
+import selectValuationCurrencyCode from "../selectors/fundamentalSelectors/selectValuationCurrencyCode";
+import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
+import selectFundamentalsIsLoaded from "../selectors/fundamentalSelectors/selectFundamentalsIsLoaded";
 
 const mapFromStatementsToDateObject = (
   objectToLoop,
@@ -44,7 +45,7 @@ const mapFromStatementsToDateObject = (
 };
 
 const DiscountedCashFlow = () => {
-  const isLoaded = useSelector((state) => state.fundamentals.isLoaded);
+  const isLoaded = useSelector(selectFundamentalsIsLoaded);
   const isInUS = useSelector(selectIsInUS);
   const yearlyIncomeStatements = useSelector(selectYearlyIncomeStatements);
   const incomeStatement = useSelector(selectRecentIncomeStatement);

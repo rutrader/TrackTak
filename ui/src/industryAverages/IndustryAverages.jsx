@@ -8,7 +8,10 @@ import SubSection from "../components/SubSection";
 import getHeader from "./getHeader";
 import BoldValueLabel from "../components/BoldValueLabel";
 import getTableRowBackgroundOpacity from "../shared/getTableRowBackgroundOpacity";
-import selectIsInUS from "../selectors/selectIsInUS";
+import selectIsInUS from "../selectors/fundamentalSelectors/selectIsInUS";
+import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
+import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
+import selectFundamentalsIsLoaded from "../selectors/fundamentalSelectors/selectFundamentalsIsLoaded";
 
 const commonTableRootClasses = {
   "& th": {
@@ -77,14 +80,10 @@ const getIndustryAveragesSortComparer = (industryName) => (a) => {
 
 const IndustryAverages = () => {
   const theme = useTheme();
-  const isLoaded = useSelector((state) => state.fundamentals.isLoaded);
+  const isLoaded = useSelector(selectFundamentalsIsLoaded);
   const isInUS = useSelector(selectIsInUS);
-  const currentIndustry = useSelector(
-    (state) => state.fundamentals.currentIndustry
-  );
-  const companyName = useSelector(
-    (state) => state.fundamentals.data?.General.Name
-  );
+  const currentIndustry = useSelector(selectCurrentIndustry);
+  const general = useSelector(selectGeneral);
   const usTableClasses = useUSTableClasses({ isInUS });
   const globalTableClasses = useGlobalTableClasses({
     isInUS,
@@ -107,7 +106,7 @@ const IndustryAverages = () => {
   return (
     <>
       <Box sx={{ mb: 3 }}>
-        <Typography variant="h4">{companyName}</Typography>
+        <Typography variant="h4">{general.Name}</Typography>
         <Typography
           gutterBottom
           style={{ fontWeight: theme.typography.fontWeightBold }}

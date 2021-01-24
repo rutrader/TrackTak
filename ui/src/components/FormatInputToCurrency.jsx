@@ -2,13 +2,12 @@ import React, { forwardRef } from "react";
 import { useState } from "react";
 import NumberFormat from "react-number-format";
 import { useSelector } from "react-redux";
+import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
 
 const FormatInputToCurrency = forwardRef(({ defaultValue, ...props }, ref) => {
   const { onChange, ...other } = props;
   const [valueAsNumber, setValue] = useState(defaultValue);
-  const currencySymbol = useSelector(
-    (state) => state.fundamentals.valuationCurrencySymbol
-  );
+  const currencySymbol = useSelector(selectValuationCurrencySymbol);
 
   return (
     <NumberFormat

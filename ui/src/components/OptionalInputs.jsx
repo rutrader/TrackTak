@@ -23,7 +23,7 @@ import {
 } from "./InfoText";
 import { useSelector } from "react-redux";
 import useSetURLInput from "../hooks/useSetURLInput";
-import selectQueryParams from "../selectors/selectQueryParams";
+import selectQueryParams from "../selectors/routerSelectors/selectQueryParams";
 import FormatInputToPercent from "./FormatInputToPercent";
 
 const OptionalTextField = withStyles({

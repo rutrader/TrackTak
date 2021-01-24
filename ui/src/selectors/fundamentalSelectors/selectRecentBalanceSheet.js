@@ -1,5 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
-import getBalanceSheet from "../shared/getBalanceSheet";
+import getBalanceSheet from "../../shared/getBalanceSheet";
 import { selectSortedQuarterlyBalanceSheets } from "./selectYearlyBalanceSheets";
 import selectConvertCurrency from "./selectConvertCurrency";
 import selectMostRecentQuarter from "./selectMostRecentQuarter";

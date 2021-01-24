@@ -1,16 +1,15 @@
 import { Box, Typography, useTheme } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
-import selectIsInUS from "../selectors/selectIsInUS";
+import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
+import selectIsInUS from "../selectors/fundamentalSelectors/selectIsInUS";
 import BoldValueLabel from "./BoldValueLabel";
 import FormatRawNumberToPercent from "./FormatRawNumberToPercent";
 
 const IndustryAverages = () => {
   const theme = useTheme();
   const isInUS = useSelector(selectIsInUS);
-  const currentIndustry = useSelector(
-    (state) => state.fundamentals.currentIndustry
-  );
+  const currentIndustry = useSelector(selectCurrentIndustry);
 
   return (
     <>

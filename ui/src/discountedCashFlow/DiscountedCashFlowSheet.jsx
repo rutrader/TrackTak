@@ -29,10 +29,10 @@ import {
   Link,
 } from "@material-ui/core";
 import "../shared/blueprintTheme.scss";
-import selectQueryParams from "../selectors/selectQueryParams";
-import selectCostOfCapital from "../selectors/selectCostOfCapital";
-import selectRiskFreeRate from "../selectors/selectRiskFreeRate";
-import selectValueOfAllOptionsOutstanding from "../selectors/selectValueOfAllOptionsOutstanding";
+import selectQueryParams from "../selectors/routerSelectors/selectQueryParams";
+import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
+import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
+import selectValueOfAllOptionsOutstanding from "../selectors/fundamentalSelectors/selectValueOfAllOptionsOutstanding";
 import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
 import { Link as RouterLink } from "react-router-dom";
 import { updateCells } from "../redux/actions/dcfActions";
@@ -40,10 +40,13 @@ import LazyLoad from "react-lazyload";
 import XLSX from "xlsx";
 import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
 import FormatRawNumber from "../components/FormatRawNumber";
-import selectValuationCurrencySymbol from "../selectors/selectValuationCurrencySymbol";
-import selectRecentIncomeStatement from "../selectors/selectRecentIncomeStatement";
-import selectRecentBalanceSheet from "../selectors/selectRecentBalanceSheet";
-import selectPrice from "../selectors/selectPrice";
+import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
+import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
+import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
+import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
+import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
+import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
+import selectCells from "../selectors/dcfSelectors/selectCells";
 
 const getChunksOfArray = (array, size) =>
   array.reduce((acc, _, i) => {
@@ -188,13 +191,10 @@ const DiscountedCashFlowSheet = (props) => {
   const queryParams = useSelector(selectQueryParams);
   const incomeStatement = useSelector(selectRecentIncomeStatement);
   const balanceSheet = useSelector(selectRecentBalanceSheet);
-  const general = useSelector((state) => state.fundamentals.data?.General);
-  const corporateTaxRate = useSelector(
-    (state) =>
-      state.fundamentals.currentEquityRiskPremiumCountry.corporateTaxRate
-  );
+  const general = useSelector(selectGeneral);
+  const currentEquityRiskPremium = useSelector(selectCurrentEquityRiskPremium);
   const price = useSelector(selectPrice);
-  const cells = useSelector((state) => state.dcf.cells);
+  const cells = useSelector(selectCells);
   const costOfCapital = useSelector(selectCostOfCapital);
   const riskFreeRate = useSelector(selectRiskFreeRate);
   const valueOfAllOptionsOutstanding = useSelector(
@@ -248,10 +248,16 @@ const DiscountedCashFlowSheet = (props) => {
           // TODO: Change this to Base Year tax effective tax rate
           incomeStatement.pastThreeYearsAverageEffectiveTaxRate,
         ],
-        ["M5", corporateTaxRate],
+        ["M5", currentEquityRiskPremium.corporateTaxRate],
       ])
     );
-  }, [balanceSheet, incomeStatement, corporateTaxRate, dispatch, price]);
+  }, [
+    balanceSheet,
+    incomeStatement,
+    dispatch,
+    price,
+    currentEquityRiskPremium.corporateTaxRate,
+  ]);
 
   useEffect(() => {
     const revenueOneToFiveCellsToUpdate = getColumnsBetween(

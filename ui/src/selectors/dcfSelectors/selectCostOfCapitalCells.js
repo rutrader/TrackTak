@@ -1,8 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
-import getCellKeysSelector from "./getCellKeysSelector";
+import makeCellKeysSelector from "./makeCellKeysSelector";
 
 const selectCostOfCapitalCells = createSelector(
-  getCellKeysSelector("C", "M", [12]),
+  makeCellKeysSelector("C", "M", [12]),
   (...cells) => {
     return cells;
   }

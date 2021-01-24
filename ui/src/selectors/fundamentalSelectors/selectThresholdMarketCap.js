@@ -1,4 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
+import selectMostRecentExchangeRate from "./selectMostRecentExchangeRate";
 
 export const thresholdMarketCapUSD = 5000000000;
 
@@ -11,7 +12,7 @@ const calculateThresholdMarketCap = (mostRecentExchangeRate) => {
 };
 
 const selectThresholdMarketCap = createSelector(
-  (state) => state.fundamentals.mostRecentExchangeRate,
+  selectMostRecentExchangeRate,
   calculateThresholdMarketCap
 );
 

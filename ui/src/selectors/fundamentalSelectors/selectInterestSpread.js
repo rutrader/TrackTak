@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import selectIsLargeCompany from "./selectIsLargeCompany";
 import selectInterestCoverage from "./selectInterestCoverage";
-import companiesInterestSpreads from "../shared/companiesInterestSpreads";
+import companiesInterestSpreads from "../../shared/companiesInterestSpreads";
 
 const calculateInterestSpread = (isLargeCompany, interestCoverage) => {
   const findCurrentSpread = (key) => {

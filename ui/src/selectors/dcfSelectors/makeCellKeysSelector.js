@@ -1,7 +1,7 @@
 import { getCellsForRowsBetween } from "../../discountedCashFlow/utils";
 import { columns } from "../../discountedCashFlow/cells";
 
-const getCellKeysSelector = (startColumn, endColumn, rows) => {
+const makeCellKeysSelector = (startColumn, endColumn, rows) => {
   const cellKeys = getCellsForRowsBetween(
     columns,
     startColumn,
@@ -13,4 +13,4 @@ const getCellKeysSelector = (startColumn, endColumn, rows) => {
   });
 };
 
-export default getCellKeysSelector;
+export default makeCellKeysSelector;

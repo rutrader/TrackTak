@@ -1,10 +1,13 @@
 import { createSelector } from "@reduxjs/toolkit";
 import selectRiskFreeRate from "./selectRiskFreeRate";
-import selectQueryParams from "./selectQueryParams";
+import selectQueryParams from "../routerSelectors/selectQueryParams";
 import selectPretaxCostOfDebt from "./selectPretaxCostOfDebt";
 import selectRecentIncomeStatement from "./selectRecentIncomeStatement";
 import selectRecentBalanceSheet from "./selectRecentBalanceSheet";
 import selectPrice from "./selectPrice";
+import selectCurrentIndustry from "./selectCurrentIndustry";
+import selectCurrentEquityRiskPremium from "./selectCurrentEquityRiskPremium";
+import selectSharesStats from "./selectSharesStats";
 
 const calculateCostOfCapital = (
   currentEquityRiskPremiumCountry,
@@ -12,7 +15,7 @@ const calculateCostOfCapital = (
   incomeStatement,
   balanceSheet,
   price,
-  sharesOutstanding,
+  sharesStats,
   query,
   pretaxCostOfDebt,
   riskFreeRate
@@ -48,7 +51,7 @@ const calculateCostOfCapital = (
     : estimatedValueOfStraightDebtInConvertibleDebt;
 
   const marketValue = {
-    equity: price * sharesOutstanding,
+    equity: price * sharesStats.SharesOutstanding,
     debt:
       estimatedMarketValueOfStraightDebt +
       estimatedValueOfStraightDebtInConvertibleDebt,
@@ -99,12 +102,12 @@ const calculateCostOfCapital = (
 };
 
 const selectCostOfCapital = createSelector(
-  (state) => state.fundamentals.currentEquityRiskPremiumCountry,
-  (state) => state.fundamentals.currentIndustry,
+  selectCurrentEquityRiskPremium,
+  selectCurrentIndustry,
   selectRecentIncomeStatement,
   selectRecentBalanceSheet,
   selectPrice,
-  (state) => state.fundamentals.data.SharesStats.SharesOutstanding,
+  selectSharesStats,
   selectQueryParams,
   selectPretaxCostOfDebt,
   selectRiskFreeRate,

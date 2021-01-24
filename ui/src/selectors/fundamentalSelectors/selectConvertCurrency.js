@@ -1,7 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
 import dayjs from "dayjs";
-import getValueFromString from "../shared/getValueFromString";
-import { monthDateFormat } from "../shared/utils";
+import getValueFromString from "../../shared/getValueFromString";
+import { monthDateFormat } from "../../shared/utils";
+import selectExchangeRates from "./selectExchangeRates";
 
 const convertCurrency = (exchangeRates) => (
   datePeriodsToConvertAt,
@@ -30,7 +31,7 @@ const convertCurrency = (exchangeRates) => (
 };
 
 const selectConvertCurrency = createSelector(
-  (state) => state.fundamentals.exchangeRates,
+  selectExchangeRates,
   convertCurrency
 );
 

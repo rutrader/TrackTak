@@ -1,5 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
-import selectQueryParams from "./selectQueryParams";
+import selectQueryParams from "../routerSelectors/selectQueryParams";
 import selectValueOption from "./selectValueOption";
 
 const selectValueOfAllOptionsOutstanding = createSelector(

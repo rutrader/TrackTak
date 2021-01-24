@@ -1,19 +1,19 @@
 import { createSelector } from "@reduxjs/toolkit";
-import getIncomeStatement from "../shared/getIncomeStatement";
+import getIncomeStatement from "../../shared/getIncomeStatement";
 import selectConvertCurrency from "./selectConvertCurrency";
-import dateSortComparer from "../shared/dateSortComparer";
+import dateSortComparer from "../../shared/dateSortComparer";
+
+export const selectSortedYearlyIncomeStatements = createSelector(
+  (state) => state.fundamentals.data?.Financials.Income_Statement.yearly ?? {},
+  (yearlyIncomeStatements) =>
+    Object.values(yearlyIncomeStatements).sort(dateSortComparer)
+);
 
 export const sortedQuarterlyIncomeStatements = createSelector(
   (state) =>
     state.fundamentals.data?.Financials.Income_Statement.quarterly ?? {},
   (quarterlyIncomeStatements) =>
     Object.values(quarterlyIncomeStatements).sort(dateSortComparer)
-);
-
-export const selectSortedYearlyIncomeStatements = createSelector(
-  (state) => state.fundamentals.data?.Financials.Income_Statement.yearly ?? {},
-  (yearlyIncomeStatements) =>
-    Object.values(yearlyIncomeStatements).sort(dateSortComparer)
 );
 
 const selectYearlyIncomeStatements = createSelector(

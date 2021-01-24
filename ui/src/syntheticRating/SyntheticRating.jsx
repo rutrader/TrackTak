@@ -4,18 +4,21 @@ import { Box, makeStyles, Typography } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
 import BoldValueLabel from "../components/BoldValueLabel";
-import selectThresholdMarketCap from "../selectors/selectThresholdMarketCap";
-import selectInterestCoverage from "../selectors/selectInterestCoverage";
+import selectThresholdMarketCap from "../selectors/fundamentalSelectors/selectThresholdMarketCap";
+import selectInterestCoverage from "../selectors/fundamentalSelectors/selectInterestCoverage";
 import FormatRawNumber from "../components/FormatRawNumber";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
-import selectIsLargeCompany from "../selectors/selectIsLargeCompany";
-import selectEstimatedCostOfDebt from "../selectors/selectEstimatedCostOfDebt";
-import selectInterestSpread from "../selectors/selectInterestSpread";
+import selectIsLargeCompany from "../selectors/fundamentalSelectors/selectIsLargeCompany";
+import selectEstimatedCostOfDebt from "../selectors/fundamentalSelectors/selectEstimatedCostOfDebt";
+import selectInterestSpread from "../selectors/fundamentalSelectors/selectInterestSpread";
 import { InfoSyntheticRating } from "../components/InfoText";
 import { InfoOutlinedIconWrapper } from "../components/InfoOutlinedIconWrapper";
 import companiesInterestSpreads from "../shared/companiesInterestSpreads";
 import SubSection from "../components/SubSection";
 import getTableRowBackgroundOpacity from "../shared/getTableRowBackgroundOpacity";
+import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
+import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
+import selectFundamentalsIsLoaded from "../selectors/fundamentalSelectors/selectFundamentalsIsLoaded";
 
 const useTableClasses = makeStyles((theme) => ({
   root: ({ currentCompanyInterestIndex }) => ({
@@ -28,11 +31,11 @@ const useTableClasses = makeStyles((theme) => ({
 }));
 
 const SyntheticRating = () => {
-  const isLoaded = useSelector((state) => state.fundamentals.isLoaded);
+  const isLoaded = useSelector(selectFundamentalsIsLoaded);
   const currentEquityRiskPremiumCountry = useSelector(
-    (state) => state.fundamentals.currentEquityRiskPremiumCountry
+    selectCurrentEquityRiskPremium
   );
-  const general = useSelector((state) => state.fundamentals.data?.General);
+  const general = useSelector(selectGeneral);
   const thresholdMarketCap = useSelector(selectThresholdMarketCap);
   const interestCoverage = useSelector(selectInterestCoverage);
   const isLargeCompany = useSelector(selectIsLargeCompany);

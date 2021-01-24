@@ -32,7 +32,8 @@ import { getContentfulEntries, getPrices } from "../api/api";
 import { pretaxCostOfDebtLabel } from "../components/OptionalInputs";
 import DiscountedCashFlowSheet from "../discountedCashFlow/DiscountedCashFlowSheet";
 import IndustryAverages from "../components/IndustryAverages";
-import selectPrice from "../selectors/selectPrice";
+import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
+import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
 
 const options = {
   renderNode: {
@@ -95,7 +96,7 @@ const Valuation = () => {
   const dispatch = useDispatch();
   const [fields, setContentfulFields] = useState();
   const price = useSelector(selectPrice);
-  const general = useSelector((state) => state.fundamentals.data?.General);
+  const general = useSelector(selectGeneral);
   const estimatedValuePerShare = useSelector(
     (state) => state.dcf.cells.B36.value
   );

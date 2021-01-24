@@ -14,7 +14,7 @@ import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 import { InfoTextValueDrivingInputs } from "./InfoText";
 import { useSelector } from "react-redux";
 import useSetURLInput from "../hooks/useSetURLInput";
-import selectQueryParams from "../selectors/selectQueryParams";
+import selectQueryParams from "../selectors/routerSelectors/selectQueryParams";
 
 const ValueDrivingTextField = withStyles({
   root: {

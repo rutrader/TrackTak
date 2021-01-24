@@ -6,23 +6,23 @@ import FormatRawNumberToPercent from "./FormatRawNumberToPercent";
 import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 import { InfoTextCostOfCapital } from "./InfoText";
 import BoldValueLabel from "./BoldValueLabel";
-import selectRiskFreeRate from "../selectors/selectRiskFreeRate";
-import selectCostOfCapital from "../selectors/selectCostOfCapital";
+import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
+import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
 import { pretaxCostOfDebtLabel } from "./OptionalInputs";
-import selectPretaxCostOfDebt from "../selectors/selectPretaxCostOfDebt";
-import selectQueryParams from "../selectors/selectQueryParams";
+import selectPretaxCostOfDebt from "../selectors/fundamentalSelectors/selectPretaxCostOfDebt";
+import selectQueryParams from "../selectors/routerSelectors/selectQueryParams";
 import { Link, useParams } from "react-router-dom";
 import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
-import selectRecentIncomeStatement from "../selectors/selectRecentIncomeStatement";
+import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
+import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
+import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
 
 const CostOfCapitalResults = () => {
   const theme = useTheme();
-  const currentIndustry = useSelector(
-    (state) => state.fundamentals.currentIndustry
-  );
+  const currentIndustry = useSelector(selectCurrentIndustry);
   const incomeStatement = useSelector(selectRecentIncomeStatement);
   const currentEquityRiskPremiumCountry = useSelector(
-    (state) => state.fundamentals.currentEquityRiskPremiumCountry
+    selectCurrentEquityRiskPremium
   );
   const costOfCapital = useSelector(selectCostOfCapital);
   const riskFreeRate = useSelector(selectRiskFreeRate);

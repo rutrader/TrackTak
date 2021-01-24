@@ -1,12 +1,12 @@
 import { createSelector } from "@reduxjs/toolkit";
 import selectIsInUS from "./selectIsInUS";
-import getFinancialSheetPastValues from "../shared/getFinancialSheetPastValues";
+import getFinancialSheetPastValues from "../../shared/getFinancialSheetPastValues";
 import {
   selectSortedYearlyIncomeStatements,
   sortedQuarterlyIncomeStatements,
 } from "./selectYearlyIncomeStatements";
 import selectConvertCurrency from "./selectConvertCurrency";
-import getIncomeStatement from "../shared/getIncomeStatement";
+import getIncomeStatement from "../../shared/getIncomeStatement";
 
 const pastPeriodsToGet = 3;
 const quarters = 4;
