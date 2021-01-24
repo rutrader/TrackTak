@@ -2,22 +2,42 @@ import { createReducer } from "@reduxjs/toolkit";
 import { updateCells } from "../actions/dcfActions";
 import cells from "../../discountedCashFlow/cells";
 import cellsTree from "../../discountedCashFlow/cellsTree";
-import { getAllDependents, validateExp } from "../../discountedCashFlow/utils";
-import { evaluate } from "mathjs";
+import {
+  getAllDependents,
+  getExpressionWithoutEqualsSign,
+  isExpressionDependency,
+  validateExp,
+} from "../../discountedCashFlow/utils";
+import {
+  create,
+  evaluateDependencies,
+  addDependencies,
+  divideDependencies,
+} from "mathjs";
+import { IF } from "@formulajs/formulajs/lib/logical";
+import { SUM, TRUNC } from "@formulajs/formulajs/lib/math-trig";
+import matureMarketEquityRiskPremium from "../../shared/matureMarketEquityRiskPremium";
 
-const initialState = {
-  cells,
-  cellsTree,
-};
+const math = create({
+  evaluateDependencies,
+  addDependencies,
+  divideDependencies,
+});
+
+math.import({
+  IF,
+  SUM,
+  TRUNC,
+});
 
 const computeExpr = (key, expr, scope) => {
   let value = null;
 
-  if (expr?.charAt(0) !== "=") {
-    return { value: expr, expr: expr };
+  if (!isExpressionDependency(expr)) {
+    return { value: expr, expr };
   } else {
     try {
-      value = evaluate(expr.substring(1), scope);
+      value = math.evaluate(getExpressionWithoutEqualsSign(expr), scope);
     } catch (e) {
       value = null;
     }
@@ -30,34 +50,57 @@ const computeExpr = (key, expr, scope) => {
   }
 };
 
-const cellUpdate = (cells, key, expr) => {
-  const scope = {};
+const makeCellUpdate = (cells, scope) => (key, expr) => {
+  const newScope = {
+    ...scope,
+  };
   const cellToUpdate = cells[key];
 
   Object.keys(cells).forEach((key) => {
     const { value } = cells[key];
 
-    scope[key] = value === "" || isNaN(value) ? 0 : parseFloat(value);
+    newScope[key] = value === "" || isNaN(value) ? 0 : parseFloat(value);
   });
 
   return {
     ...cellToUpdate,
-    ...computeExpr(key, expr, scope),
+    ...computeExpr(key, expr, newScope),
   };
+};
+
+const calculateNewCells = (cells, cellsToUpdate, scope) => {
+  const newCells = { ...cells };
+  const cellsUpdate = makeCellUpdate(newCells, scope);
+
+  cellsToUpdate.forEach((key) => {
+    const allDependents = getAllDependents(cellsTree, key);
+    const currentDependents = allDependents[key] || [];
+
+    [key, ...currentDependents].forEach((key) => {
+      newCells[key] = cellsUpdate(key, newCells[key].expr);
+    });
+  });
+
+  return newCells;
+};
+
+const initialState = {
+  cells,
+  scope: {
+    matureMarketEquityRiskPremium,
+  },
 };
 
 export const dcfReducer = createReducer(initialState, (builder) => {
   builder.addCase(updateCells, (state, action) => {
-    const cells = state.cells;
-    action.payload.forEach(([key, value]) => {
-      const allDependents = getAllDependents(cellsTree, key);
-      cells[key] = cellUpdate(cells, key, value?.toString());
-      const currentDependents = allDependents[key] || [];
-      currentDependents.forEach((key) => {
-        cells[key] = cellUpdate(cells, key, cells[key].expr);
-      });
-    });
+    const { cellsToUpdate, scope } = action.payload;
+    const newScope = {
+      ...state.scope,
+      ...scope,
+    };
+    const newCells = calculateNewCells(state.cells, cellsToUpdate, newScope);
 
-    state.cells = cells;
+    state.cells = newCells;
+    state.scope = newScope;
   });
 });

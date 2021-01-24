@@ -6,8 +6,8 @@ import FormatRawNumberToMillion from "./FormatRawNumberToMillion";
 import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 import { InfoTextBlackScholes } from "./InfoText";
 import BoldValueLabel from "./BoldValueLabel";
-import selectValueOption from "../selectors/selectValueOption";
-import selectValueOfAllOptionsOutstanding from "../selectors/selectValueOfAllOptionsOutstanding";
+import selectValueOption from "../selectors/fundamentalSelectors/selectValueOption";
+import selectValueOfAllOptionsOutstanding from "../selectors/fundamentalSelectors/selectValueOfAllOptionsOutstanding";
 
 const BlackScholesResults = () => {
   const valuePerOption = useSelector(selectValueOption);

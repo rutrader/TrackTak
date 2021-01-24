@@ -1,14 +1,17 @@
 import { createSelector } from "@reduxjs/toolkit";
 import selectRiskFreeRate from "./selectRiskFreeRate";
 import selectInterestSpread from "./selectInterestSpread";
+import selectCurrentEquityRiskPremium from "./selectCurrentEquityRiskPremium";
 
 const selectEstimatedCostOfDebt = createSelector(
   selectRiskFreeRate,
   selectInterestSpread,
-  (state) =>
-    state.fundamentals.currentEquityRiskPremiumCountry?.adjDefaultSpread,
-  (riskFreeRate, interestSpread, adjDefaultSpread) => {
-    const value = riskFreeRate + interestSpread?.spread + adjDefaultSpread;
+  selectCurrentEquityRiskPremium,
+  (riskFreeRate, interestSpread, currentEquityRiskPremium) => {
+    const value =
+      riskFreeRate +
+      interestSpread?.spread +
+      currentEquityRiskPremium?.adjDefaultSpread;
 
     if (isNaN(value)) return null;
 

@@ -2,13 +2,15 @@ import { createSelector } from "@reduxjs/toolkit";
 import selectNetOperatingProfitAfterTaxCells from "./cellSelectors/selectNetOperatingProfitAfterTaxCells";
 import selectCostOfCapitals from "./selectCostOfCapitals";
 import selectInvestedCapitals from "./selectInvestedCapitals";
+import selectRecentBalanceSheet from "./selectRecentBalanceSheet";
 
 const selectReturnOnInvestmentCapitals = createSelector(
   selectNetOperatingProfitAfterTaxCells,
-  (state) => state.fundamentals.balanceSheet.investedCapital,
+  selectRecentBalanceSheet,
   selectInvestedCapitals,
   selectCostOfCapitals,
-  (nopatCells, currentInvestedCapital, investedCapitals, costOfCapitals) => {
+  (nopatCells, balanceSheet, investedCapitals, costOfCapitals) => {
+    const investedCapital = balanceSheet.investedCapital;
     const newNopatCells = [...nopatCells];
     const baseYear = newNopatCells.shift();
 
@@ -16,7 +18,7 @@ const selectReturnOnInvestmentCapitals = createSelector(
     newNopatCells.pop();
 
     const returnOnInvestmentCapitals = {
-      baseYear: baseYear.value / currentInvestedCapital,
+      baseYear: baseYear.value / investedCapital,
       terminalYear: costOfCapitals[10],
     };
 

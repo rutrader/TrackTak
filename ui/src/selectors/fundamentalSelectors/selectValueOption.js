@@ -1,14 +1,16 @@
 import { createSelector } from "@reduxjs/toolkit";
 import selectRiskFreeRate from "./selectRiskFreeRate";
-import selectQueryParams from "./selectQueryParams";
-import calculateBlackScholesModel from "../shared/calculateBlackScholesModel";
+import selectQueryParams from "../routerSelectors/selectQueryParams";
+import calculateBlackScholesModel from "../../shared/calculateBlackScholesModel";
+import selectPrice from "./selectPrice";
+import selectCurrentIndustry from "./selectCurrentIndustry";
 
 const selectValueOption = createSelector(
-  (state) => state.fundamentals.price,
+  selectPrice,
   selectQueryParams,
   selectRiskFreeRate,
-  (state) => state.fundamentals.currentIndustry?.standardDeviationInStockPrices,
-  (price, queryParams, riskFreeRate, standardDeviationInStockPrices) => {
+  selectCurrentIndustry,
+  (price, queryParams, riskFreeRate, currentIndustry) => {
     if (queryParams.averageStrikePrice === undefined) return null;
     if (queryParams.averageMaturityOfOptions === undefined) return null;
 
@@ -18,7 +20,7 @@ const selectValueOption = createSelector(
       queryParams.averageStrikePrice,
       queryParams.averageMaturityOfOptions,
       riskFreeRate,
-      standardDeviationInStockPrices
+      currentIndustry.standardDeviationInStockPrices
     );
   }
 );

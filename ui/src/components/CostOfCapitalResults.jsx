@@ -6,17 +6,24 @@ import FormatRawNumberToPercent from "./FormatRawNumberToPercent";
 import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 import { InfoTextCostOfCapital } from "./InfoText";
 import BoldValueLabel from "./BoldValueLabel";
-import selectRiskFreeRate from "../selectors/selectRiskFreeRate";
-import selectCostOfCapital from "../selectors/selectCostOfCapital";
+import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
+import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
 import { pretaxCostOfDebtLabel } from "./OptionalInputs";
-import selectPretaxCostOfDebt from "../selectors/selectPretaxCostOfDebt";
-import selectQueryParams from "../selectors/selectQueryParams";
+import selectPretaxCostOfDebt from "../selectors/fundamentalSelectors/selectPretaxCostOfDebt";
+import selectQueryParams from "../selectors/routerSelectors/selectQueryParams";
 import { Link, useParams } from "react-router-dom";
 import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
+import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
+import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
+import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
 
 const CostOfCapitalResults = () => {
   const theme = useTheme();
-  const fundamentals = useSelector((state) => state.fundamentals);
+  const currentIndustry = useSelector(selectCurrentIndustry);
+  const incomeStatement = useSelector(selectRecentIncomeStatement);
+  const currentEquityRiskPremiumCountry = useSelector(
+    selectCurrentEquityRiskPremium
+  );
   const costOfCapital = useSelector(selectCostOfCapital);
   const riskFreeRate = useSelector(selectRiskFreeRate);
   const queryParams = useSelector(selectQueryParams);
@@ -43,7 +50,7 @@ const CostOfCapitalResults = () => {
             value={
               <FormatRawNumber
                 decimalScale={2}
-                value={fundamentals.currentIndustry.unleveredBeta}
+                value={currentIndustry.unleveredBeta}
               />
             }
             label="Unlevered Beta"
@@ -91,9 +98,7 @@ const CostOfCapitalResults = () => {
           <BoldValueLabel
             value={
               <FormatRawNumberToPercent
-                value={
-                  fundamentals.currentEquityRiskPremiumCountry.equityRiskPremium
-                }
+                value={currentEquityRiskPremiumCountry.equityRiskPremium}
               />
             }
             label="Country Equity Risk Premium"
@@ -107,9 +112,7 @@ const CostOfCapitalResults = () => {
           <BoldValueLabel
             value={
               <FormatRawNumberToPercent
-                value={
-                  fundamentals.currentEquityRiskPremiumCountry.corporateTaxRate
-                }
+                value={currentEquityRiskPremiumCountry.corporateTaxRate}
               />
             }
             label="Marginal Tax Rate"
@@ -117,10 +120,7 @@ const CostOfCapitalResults = () => {
           <BoldValueLabel
             value={
               <FormatRawNumberToPercent
-                value={
-                  fundamentals.incomeStatement
-                    .pastThreeYearsAverageEffectiveTaxRate
-                }
+                value={incomeStatement.pastThreeYearsAverageEffectiveTaxRate}
               />
             }
             label="Effective Tax Rate (Avg. past 3 yr)"

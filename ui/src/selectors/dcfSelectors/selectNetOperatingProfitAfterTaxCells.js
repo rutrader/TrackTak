@@ -1,8 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
-import getCellKeysSelector from "./getCellKeysSelector";
+import makeCellKeysSelector from "./makeCellKeysSelector";
 
 const selectNetOperatingProfitAfterTaxCells = createSelector(
-  getCellKeysSelector("B", "M", [7]),
+  makeCellKeysSelector("B", "M", [7]),
   (...cells) => {
     return cells;
   }

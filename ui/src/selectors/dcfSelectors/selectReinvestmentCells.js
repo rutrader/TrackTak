@@ -1,8 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
-import getCellKeysSelector from "./getCellKeysSelector";
+import makeCellKeysSelector from "./makeCellKeysSelector";
 
 const selectReinvestmentCells = createSelector(
-  getCellKeysSelector("C", "M", [8]),
+  makeCellKeysSelector("C", "M", [8]),
   (...cells) => {
     return cells;
   }

@@ -1,10 +1,15 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+export const cagrYearOneToFiveQueryName = "cagrYearOneToFive";
+export const ebitTargetMarginInYearTenQueryName = "ebitTargetMarginInYearTen";
+export const yearOfConvergenceQueryName = "yearOfConvergence";
+export const salesToCapitalRatioQueryName = "salesToCapitalRatio";
+
 export const inputQueryNames = [
-  "cagrYearOneToFive",
-  "ebitTargetMarginInYearTen",
-  "yearOfConvergence",
-  "salesToCapitalRatio",
+  cagrYearOneToFiveQueryName,
+  ebitTargetMarginInYearTenQueryName,
+  yearOfConvergenceQueryName,
+  salesToCapitalRatioQueryName,
   "numberOfOptionsOutstanding",
   "averageStrikePrice",
   "averageMaturityOfOptions",

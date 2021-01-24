@@ -4,16 +4,16 @@ import { useEffect } from "react";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import { useCallback } from "react";
 import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
-import FormatRawNumber from "../components/FormatRawNumber";
-import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
 import { columns, numberOfRows } from "./cells";
-import { getColumnsBetween, startColumn } from "./utils";
 import {
-  getEBITMarginCalculation,
-  getRevenueOneToFiveYrCalculation,
-  getRevenueSixToTenYrCalculation,
-  getRevenueCalculation,
-} from "./expressionCalculations";
+  getColumnLetterFromCellKey,
+  getColumnsBetween,
+  getExpressionWithoutEqualsSign,
+  getRowNumberFromCellKey,
+  isExpressionDependency,
+  startColumn,
+  doesReferenceAnotherCell,
+} from "./utils";
 import { Cell, Column, Table } from "@blueprintjs/table";
 import {
   Box,
@@ -24,25 +24,201 @@ import {
   Link,
 } from "@material-ui/core";
 import "../shared/blueprintTheme.scss";
-import selectQueryParams from "../selectors/selectQueryParams";
-import selectCostOfCapital from "../selectors/selectCostOfCapital";
-import selectRiskFreeRate from "../selectors/selectRiskFreeRate";
-import selectValueOfAllOptionsOutstanding from "../selectors/selectValueOfAllOptionsOutstanding";
-import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
+import selectQueryParams from "../selectors/routerSelectors/selectQueryParams";
+import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
+import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
+import selectValueOfAllOptionsOutstanding from "../selectors/fundamentalSelectors/selectValueOfAllOptionsOutstanding";
 import { Link as RouterLink } from "react-router-dom";
 import { updateCells } from "../redux/actions/dcfActions";
 import LazyLoad from "react-lazyload";
+import XLSX from "xlsx";
+import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
+import FormatRawNumber from "../components/FormatRawNumber";
+import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
+import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
+import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
+import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
+import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
+import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
+import selectCells from "../selectors/dcfSelectors/selectCells";
+import selectSharesStats from "../selectors/fundamentalSelectors/selectSharesStats";
+import selectScope from "../selectors/dcfSelectors/selectScope";
+
+const getChunksOfArray = (array, size) =>
+  array.reduce((acc, _, i) => {
+    if (i % size === 0) {
+      acc.push(array.slice(i, i + size));
+    }
+    return acc;
+  }, []);
+
+const formatCellValueForCSVOutput = (cell, currencySymbol, scope) => {
+  if (!cell) return cell;
+
+  const { value, type, expr } = cell;
+
+  const obj = {};
+
+  if (isExpressionDependency(expr)) {
+    let formula = getExpressionWithoutEqualsSign(expr);
+
+    Object.keys(scope).forEach((key) => {
+      let value = scope[key];
+
+      if (value === undefined || value === null) {
+        value = 0;
+      }
+
+      formula = formula.replaceAll(key, value);
+    });
+
+    if (doesReferenceAnotherCell(expr)) {
+      obj.f = formula;
+    }
+  }
+
+  let newValue = value;
+
+  if (value === "error") {
+    newValue = 0;
+  }
+
+  if (type === "percent") {
+    return {
+      ...obj,
+      v: newValue,
+      z: "0.00%",
+      t: "n",
+    };
+  }
+
+  if (type === "million") {
+    return {
+      ...obj,
+      v: newValue,
+      z: `${currencySymbol}#,###,,.00`,
+      t: "n",
+    };
+  }
+
+  if (type === "currency") {
+    return {
+      ...obj,
+      v: newValue,
+      z: `${currencySymbol}#,###.00`,
+      t: "n",
+    };
+  }
+
+  if (type === "number") {
+    return {
+      ...obj,
+      v: newValue,
+      z: ".00",
+      t: "n",
+    };
+  }
+
+  return {
+    ...obj,
+    v: newValue,
+  };
+};
+
+const formatCellValue = (cell) => {
+  if (!cell) return cell;
+
+  const { value, type } = cell;
+  let node = value;
+
+  if (type === "percent") {
+    node = <FormatRawNumberToPercent value={value} />;
+  }
+  if (type === "million") {
+    node = <FormatRawNumberToMillion value={value} useCurrencySymbol />;
+  }
+  if (type === "currency") {
+    node = <FormatRawNumberToCurrency value={value} />;
+  }
+  if (type === "number") {
+    node = <FormatRawNumber value={value} decimalScale={2} />;
+  }
+
+  return node;
+};
+
+const setColumnWidths = (worksheet) => {
+  const newWorksheet = { ...worksheet };
+  const objectMaxLength = [];
+  const columns = XLSX.utils.decode_range(worksheet["!ref"]);
+
+  for (let index = columns.s.c; index <= columns.e.c; index++) {
+    objectMaxLength.push({ width: index === 0 ? 25 : 15 });
+  }
+
+  newWorksheet["!cols"] = objectMaxLength;
+
+  return newWorksheet;
+};
+
+const padCellKeys = (sortedCellKeys) => {
+  const paddedCellKeys = [];
+
+  sortedCellKeys.forEach((cellKey, i) => {
+    paddedCellKeys.push(cellKey);
+
+    if (!sortedCellKeys[i + 1]) return;
+
+    const columnCharCode = getColumnLetterFromCellKey(cellKey).charCodeAt(0);
+    const nextColumnCharCode = getColumnLetterFromCellKey(
+      sortedCellKeys[i + 1]
+    ).charCodeAt(0);
+
+    const column = String.fromCharCode(columnCharCode);
+    const isNextColumnAlphabetically =
+      nextColumnCharCode === columnCharCode + 1;
+
+    if (!isNextColumnAlphabetically && column !== "M") {
+      const row = getRowNumberFromCellKey(cellKey);
+      const diffInColumnsToEnd =
+        parseInt("M".charCodeAt(0), 10) - columnCharCode;
+
+      for (let index = 1; index <= diffInColumnsToEnd; index++) {
+        const nextColumn = String.fromCharCode(columnCharCode + index);
+        const nextCellKey = `${nextColumn}${row}`;
+
+        paddedCellKeys.push(nextCellKey);
+      }
+    }
+  });
+  return paddedCellKeys;
+};
+
+const sortAlphaNum = (a, b) => {
+  const diff = getRowNumberFromCellKey(a) - getRowNumberFromCellKey(b);
+
+  return diff || a.localeCompare(b);
+};
+
+const numberOfColumns = 13;
 
 const DiscountedCashFlowSheet = (props) => {
   const dispatch = useDispatch();
   const queryParams = useSelector(selectQueryParams);
-  const fundamentals = useSelector((state) => state.fundamentals);
-  const cells = useSelector((state) => state.dcf.cells);
+  const incomeStatement = useSelector(selectRecentIncomeStatement);
+  const balanceSheet = useSelector(selectRecentBalanceSheet);
+  const general = useSelector(selectGeneral);
+  const currentEquityRiskPremium = useSelector(selectCurrentEquityRiskPremium);
+  const price = useSelector(selectPrice);
+  const cells = useSelector(selectCells);
   const costOfCapital = useSelector(selectCostOfCapital);
   const riskFreeRate = useSelector(selectRiskFreeRate);
+  const scope = useSelector(selectScope);
+  const sharesStats = useSelector(selectSharesStats);
   const valueOfAllOptionsOutstanding = useSelector(
     selectValueOfAllOptionsOutstanding
   );
+  const valuationCurrencySymbol = useSelector(selectValuationCurrencySymbol);
   const theme = useTheme();
   const [showFormulas, setShowFormulas] = useState(false);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -59,83 +235,75 @@ const DiscountedCashFlowSheet = (props) => {
 
   useEffect(() => {
     dispatch(
-      updateCells([
-        ["B2", fundamentals.incomeStatement.totalRevenue],
-        ["B4", fundamentals.incomeStatement.operatingIncome],
-        ["B16", fundamentals.balanceSheet.investedCapital],
-        ["B28", fundamentals.balanceSheet.bookValueOfDebt],
-        ["B29", fundamentals.incomeStatement.minorityInterest],
-        ["B30", fundamentals.balanceSheet.cashAndShortTermInvestments],
+      updateCells(
         [
-          "B31",
-          fundamentals.balanceSheet.noncontrollingInterestInConsolidatedEntity,
-        ],
-        ["B35", fundamentals.price],
-        ["B36", `=B34/${fundamentals.data.SharesStats.SharesOutstanding}`],
-        [
+          "B2",
+          "B4",
           "B5",
-          // TODO: Change this to Base Year tax effective tax rate
-          fundamentals.incomeStatement.pastThreeYearsAverageEffectiveTaxRate,
+          "B16",
+          "B28",
+          "B29",
+          "B30",
+          "B31",
+          "B35",
+          "B36",
+          "M5",
         ],
-        ["M5", fundamentals.currentEquityRiskPremiumCountry.corporateTaxRate],
-      ])
+        {
+          totalRevenue: incomeStatement.totalRevenue,
+          operatingIncome: incomeStatement.operatingIncome,
+          minorityInterest: incomeStatement.minorityInterest,
+          pastThreeYearsAverageEffectiveTaxRate:
+            incomeStatement.pastThreeYearsAverageEffectiveTaxRate,
+          investedCapital: balanceSheet.investedCapital,
+          bookValueOfDebt: balanceSheet.bookValueOfDebt,
+          cashAndShortTermInvestments: balanceSheet.cashAndShortTermInvestments,
+          noncontrollingInterestInConsolidatedEntity:
+            balanceSheet.noncontrollingInterestInConsolidatedEntity,
+          corporateTaxRate: currentEquityRiskPremium.corporateTaxRate,
+          sharesOutstanding: sharesStats.SharesOutstanding,
+          price,
+        }
+      )
     );
-  }, [dispatch, fundamentals]);
+  }, [
+    balanceSheet.bookValueOfDebt,
+    balanceSheet.cashAndShortTermInvestments,
+    balanceSheet.investedCapital,
+    balanceSheet.noncontrollingInterestInConsolidatedEntity,
+    currentEquityRiskPremium.corporateTaxRate,
+    dispatch,
+    incomeStatement.minorityInterest,
+    incomeStatement.operatingIncome,
+    incomeStatement.pastThreeYearsAverageEffectiveTaxRate,
+    incomeStatement.totalRevenue,
+    price,
+    sharesStats.SharesOutstanding,
+  ]);
 
   useEffect(() => {
-    const revenueOneToFiveCellsToUpdate = getColumnsBetween(
-      columns,
-      "C",
-      "G"
-    ).map((column) => `${column}2`);
-    const revenueSixToTenCellsToUpdate = getColumnsBetween(
-      columns,
-      "H",
-      "L"
-    ).map((column) => `${column}2`);
+    const cagrCellsToUpdate = getColumnsBetween(columns, "C", "L").map(
+      (column) => `${column}2`
+    );
 
     dispatch(
-      updateCells(
-        revenueOneToFiveCellsToUpdate.map((revenueKey) => [
-          revenueKey,
-          getRevenueOneToFiveYrCalculation(
-            queryParams.cagrYearOneToFive,
-            revenueKey
-          ),
-        ])
-      )
-    );
-    dispatch(
-      updateCells(
-        revenueSixToTenCellsToUpdate.map((revenueKey, index) => [
-          revenueKey,
-          getRevenueSixToTenYrCalculation(
-            queryParams.cagrYearOneToFive,
-            riskFreeRate,
-            index,
-            revenueKey
-          ),
-        ])
-      )
+      updateCells(cagrCellsToUpdate, {
+        cagrYearOneToFive: queryParams.cagrYearOneToFive,
+        riskFreeRate,
+      })
     );
   }, [dispatch, queryParams.cagrYearOneToFive, riskFreeRate]);
 
   useEffect(() => {
-    const cellsToUpdate = getColumnsBetween(columns, "C", "L").map(
+    const ebitMarginCellsToUpdate = getColumnsBetween(columns, "C", "L").map(
       (column) => `${column}3`
     );
 
     dispatch(
-      updateCells(
-        cellsToUpdate.map((ebitMarginKey) => [
-          ebitMarginKey,
-          getEBITMarginCalculation(
-            queryParams.yearOfConvergence,
-            queryParams.ebitTargetMarginInYearTen,
-            ebitMarginKey
-          ),
-        ])
-      )
+      updateCells(ebitMarginCellsToUpdate, {
+        yearOfConvergence: queryParams.yearOfConvergence,
+        ebitTargetMarginInYearTen: queryParams.ebitTargetMarginInYearTen,
+      })
     );
   }, [
     queryParams.yearOfConvergence,
@@ -144,26 +312,31 @@ const DiscountedCashFlowSheet = (props) => {
   ]);
 
   useEffect(() => {
-    dispatch(updateCells([["C11", costOfCapital.totalCostOfCapital]]));
+    dispatch(
+      updateCells(["C11"], {
+        totalCostOfCapital: costOfCapital.totalCostOfCapital,
+      })
+    );
   }, [costOfCapital.totalCostOfCapital, dispatch]);
 
   useEffect(() => {
-    dispatch(updateCells([["C15", queryParams.salesToCapitalRatio]]));
+    dispatch(
+      updateCells(["C15"], {
+        salesToCapitalRatio: queryParams.salesToCapitalRatio,
+      })
+    );
   }, [dispatch, queryParams.salesToCapitalRatio]);
 
   useEffect(() => {
     dispatch(
-      updateCells([
-        ["M2", getRevenueCalculation(riskFreeRate, "M2")],
-        ["M11", matureMarketEquityRiskPremium + riskFreeRate],
-        ["M7", `=${riskFreeRate} > 0 ? (${riskFreeRate} / M17) * M6 : 0`],
-        ["B21", `=B19/(B20-${riskFreeRate})`],
-      ])
+      updateCells(["M2", "M11", "M7", "B21"], {
+        riskFreeRate,
+      })
     );
   }, [dispatch, riskFreeRate]);
 
   useEffect(() => {
-    dispatch(updateCells([["B33", valueOfAllOptionsOutstanding]]));
+    dispatch(updateCells(["B33"], { valueOfAllOptionsOutstanding }));
   }, [dispatch, valueOfAllOptionsOutstanding]);
 
   const cellRenderer = useCallback(
@@ -177,31 +350,16 @@ const DiscountedCashFlowSheet = (props) => {
 
       if (!cell?.value) return <Cell />;
 
-      const { value, type, expr } = cell;
-
-      let node = value;
+      let node = formatCellValue(cell);
 
       const isOutputCell = key === "B36";
-
-      if (type === "percent") {
-        node = <FormatRawNumberToPercent value={value} decimalScale={2} />;
-      }
-      if (type === "million") {
-        node = <FormatRawNumberToMillion value={value} useCurrencySymbol />;
-      }
-      if (type === "currency") {
-        node = <FormatRawNumberToCurrency value={value} />;
-      }
-      if (type === "number") {
-        node = <FormatRawNumber value={value} decimalScale={2} />;
-      }
 
       let intent = "none";
 
       if (column === startColumn || rowIndex === 1) {
         intent = "primary";
       } else if (showFormulas) {
-        node = expr;
+        node = cell.expr;
       }
 
       if (isOutputCell) {
@@ -230,6 +388,26 @@ const DiscountedCashFlowSheet = (props) => {
     ]
   );
 
+  const exportToCSVOnClick = useCallback(() => {
+    const cellKeysSorted = padCellKeys(Object.keys(cells).sort(sortAlphaNum));
+    const chunkedData = getChunksOfArray(cellKeysSorted, numberOfColumns).map(
+      (arr) => {
+        return arr.map((cellKey) => {
+          return formatCellValueForCSVOutput(
+            cells[cellKey],
+            valuationCurrencySymbol,
+            scope
+          );
+        });
+      }
+    );
+    const worksheet = setColumnWidths(XLSX.utils.aoa_to_sheet(chunkedData));
+    const workBook = XLSX.utils.book_new();
+    console.log(chunkedData);
+    XLSX.utils.book_append_sheet(workBook, worksheet, "Valuation");
+    XLSX.writeFile(workBook, `${general.Code}.${general.Exchange}_DCF.xlsx`);
+  }, [cells, general.Code, general.Exchange, scope, valuationCurrencySymbol]);
+
   // TODO: Add an expand button to see it full screen
   return (
     <Box>
@@ -242,7 +420,7 @@ const DiscountedCashFlowSheet = (props) => {
         }}
       >
         <Typography variant="h5">DCF Valuation</Typography>
-        <Box>
+        <Box sx={{ display: "flex" }}>
           <Button
             onClick={() => {
               setShowFormulas((state) => !state);
@@ -251,6 +429,15 @@ const DiscountedCashFlowSheet = (props) => {
           >
             {showFormulas ? "Hide Formulas" : "Show Formulas"}
           </Button>
+          <Box
+            sx={{
+              ml: 1,
+            }}
+          >
+            <Button variant="outlined" onClick={exportToCSVOnClick}>
+              Export to CSV
+            </Button>
+          </Box>
           <Button variant="outlined">% YOY</Button>
         </Box>
       </Box>

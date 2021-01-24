@@ -32,6 +32,9 @@ import { getContentfulEntries, getPrices } from "../api/api";
 import { pretaxCostOfDebtLabel } from "../components/OptionalInputs";
 import DiscountedCashFlowSheet from "../discountedCashFlow/DiscountedCashFlowSheet";
 import IndustryAverages from "../components/IndustryAverages";
+import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
+import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
+import selectCells from "../selectors/dcfSelectors/selectCells";
 
 const options = {
   renderNode: {
@@ -93,9 +96,10 @@ const Valuation = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [fields, setContentfulFields] = useState();
-  const fundamentals = useSelector((state) => state.fundamentals);
+  const price = useSelector(selectPrice);
+  const general = useSelector(selectGeneral);
   const estimatedValuePerShare = useSelector(
-    (state) => state.dcf.cells.B36.value
+    (state) => selectCells(state).B36.value
   );
 
   useEffect(() => {
@@ -127,12 +131,10 @@ const Valuation = () => {
     fetchStockData();
   }, [dispatch, params.ticker]);
 
-  if (!fundamentals.data || !fields) return null;
-
-  const { General } = fundamentals.data;
+  if (!general || !fields) return null;
 
   const marginOfSafety =
-    (estimatedValuePerShare - fundamentals.price) / estimatedValuePerShare;
+    (estimatedValuePerShare - price) / estimatedValuePerShare;
   const formattedDateOfValuation = dayjs(fields.dateOfValuation).format(
     "Do MMM. YYYY"
   );
@@ -144,7 +146,7 @@ const Valuation = () => {
         <Typography variant="h5" gutterBottom>
           Business Description
         </Typography>
-        <Typography paragraph>{General.Description}</Typography>
+        <Typography paragraph>{general.Description}</Typography>
       </Section>
       <Section>
         <Typography variant="h5" gutterBottom>
@@ -249,7 +251,7 @@ const Valuation = () => {
           <Box>
             On the <b>{formattedDateOfValuation}</b> they traded for&nbsp;
             <b>
-              <FormatRawNumberToCurrency value={fundamentals.price} />
+              <FormatRawNumberToCurrency value={price} />
             </b>
             &nbsp;a share which gives a margin of safety of&nbsp;
             <b>

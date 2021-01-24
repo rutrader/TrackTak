@@ -15,6 +15,7 @@ import { lazy, Suspense } from "react";
 import Valuations from "./valuation/Valuations";
 import IndustryAverages from "./industryAverages/IndustryAverages";
 import Docs from "./documentation/Docs";
+import selectPageIsLoading from "./selectors/pageSelectors/selectPageIsLoading";
 
 const LandingPage = lazy(() => import("./landingPage/LandingPage"));
 const DiscountedCashFlow = lazy(() =>
@@ -55,7 +56,7 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const Spinner = () => {
-  const isLoading = useSelector((state) => state.page.isLoading);
+  const isLoading = useSelector(selectPageIsLoading);
   const theme = useTheme();
 
   return isLoading ? (

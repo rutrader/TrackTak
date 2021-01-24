@@ -14,13 +14,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { getDCFTemplateEntries } from "../redux/actions/contentfulActions";
-import { inputQueryNames } from "../selectors/selectQueryParams";
+import { inputQueryNames } from "../selectors/routerSelectors/selectQueryParams";
+import selectEntries from "../selectors/contentfulSelectors/selectEntries";
 
 const EOD_URL = "https://eodhistoricaldata.com";
 
 const Valuations = () => {
   const dispatch = useDispatch();
-  const entries = useSelector((state) => state.contentful.entries);
+  const entries = useSelector(selectEntries);
   const theme = useTheme();
   const history = useHistory();
 

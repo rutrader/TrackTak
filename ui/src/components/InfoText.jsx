@@ -62,13 +62,12 @@ export const InfoTextValueDrivingInputs = () => {
         overall market size and larger players in the sector.
       </Box>
       <Box>
-        <b>Earnings Before Interest and Taxes (EBIT)</b> - Start by looking at
-        your company's current pre-tax operating margin but also look at the
-        average for your industry.
+        <b>Operating Income</b> - Start by looking at your company's current
+        pre-tax operating margin but also look at the average for your industry.
       </Box>
       <Box>
         <b>Year of Convergence</b> - The forecast year in which the companies
-        current EBIT margin will converge on the target EBIT margin.
+        current Operating margin will converge on the target Operating margin.
       </Box>
       <Box>
         <b>Sales to Capital Ratio</b> - We compute how much the company is going

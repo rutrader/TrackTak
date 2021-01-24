@@ -1,10 +1,12 @@
 import { createSelector } from "@reduxjs/toolkit";
 import selectReinvestmentCells from "./cellSelectors/selectReinvestmentCells";
+import selectRecentBalanceSheet from "./selectRecentBalanceSheet";
 
 const selectInvestedCapitals = createSelector(
-  (state) => state.fundamentals.balanceSheet.investedCapital,
+  selectRecentBalanceSheet,
   selectReinvestmentCells,
-  (currentInvestedCapital, reinvestmentCells) => {
+  (balanceSheet, reinvestmentCells) => {
+    const currentInvestedCapital = balanceSheet.investedCapital;
     const newReinvestmentCells = [...reinvestmentCells];
     const investedCapitals = {
       baseYear: currentInvestedCapital,

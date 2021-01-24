@@ -1,16 +1,20 @@
 import { Box, Typography, useTheme } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
+import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
+import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
+import selectSharesStats from "../selectors/fundamentalSelectors/selectSharesStats";
+import selectValuationCurrencyCode from "../selectors/fundamentalSelectors/selectValuationCurrencyCode";
 import BoldValueLabel from "./BoldValueLabel";
 import FormatRawNumber from "./FormatRawNumber";
 import FormatRawNumberToMillion from "./FormatRawNumberToMillion";
 import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 
 const CompanyOverviewStats = ({ dateOfValuation }) => {
-  const {
-    data: { General, SharesStats },
-    ...fundamentals
-  } = useSelector((state) => state.fundamentals);
+  const general = useSelector(selectGeneral);
+  const price = useSelector(selectPrice);
+  const sharesStats = useSelector(selectSharesStats);
+  const valuationCurrencyCode = useSelector(selectValuationCurrencyCode);
   const theme = useTheme();
 
   return (
@@ -23,7 +27,7 @@ const CompanyOverviewStats = ({ dateOfValuation }) => {
           gridColumnGap: theme.spacing(2.5),
         }}
       >
-        <Typography variant="h4">{General.Name}</Typography>
+        <Typography variant="h4">{general.Name}</Typography>
         {dateOfValuation && (
           <Typography>
             <b>This valuation was done on the {dateOfValuation}</b>
@@ -35,21 +39,19 @@ const CompanyOverviewStats = ({ dateOfValuation }) => {
         color="textSecondary"
         style={{ textTransform: "uppercase" }}
       >
-        {General.Code}.{General.Exchange}
+        {general.Code}.{general.Exchange}
       </Typography>
 
       <Box sx={{ display: "flex", gap: theme.spacing(2) }}>
         <Box>
           <BoldValueLabel
-            value={
-              <FormatRawNumber value={fundamentals.price} decimalScale={2} />
-            }
-            label={fundamentals.valuationCurrencyCode}
+            value={<FormatRawNumber value={price} decimalScale={2} />}
+            label={valuationCurrencyCode}
           />
           <BoldValueLabel
             value={
               <FormatRawNumberToMillion
-                value={SharesStats.SharesOutstanding}
+                value={sharesStats.SharesOutstanding}
                 suffix="m"
               />
             }
