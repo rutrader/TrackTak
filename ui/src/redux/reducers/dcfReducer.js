@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { updateCells } from "../actions/dcfActions";
+import { setYoyToggled, updateCells } from "../actions/dcfActions";
 import cells from "../../discountedCashFlow/cells";
 import cellsTree from "../../discountedCashFlow/cellsTree";
 import {
@@ -29,6 +29,16 @@ math.import({
   SUM,
   TRUNC,
 });
+
+// Every single cell from C2 to M18 will have % difference YOY in the cell from the previous year
+// In the cells.js file, at the bottom, loop through each cell in cells (object.keys)
+// if the key is between C2 to M18 then set a property called yoyExpr to be:
+// =(c-p)/c, where c = The current cell, p = The previous cell (row) => utils.js
+// convert to a number, charCodeAt() -1 and add current number.
+
+// Then on line 30 in dcfReducer, if the isYoyToggled is true then evaluate the yoyExpr NOT the expr.
+
+// Also add another if branch to DiscountedCashFlow file on line 205 for yoyExpr
 
 const computeExpr = (key, expr, scope) => {
   let value = null;
@@ -102,5 +112,8 @@ export const dcfReducer = createReducer(initialState, (builder) => {
 
     state.cells = newCells;
     state.scope = newScope;
+  });
+  builder.addCase(setYoyToggled, (state, action) => {
+    state.isYoyToggled = action.payload;
   });
 });
