@@ -227,19 +227,33 @@ const DiscountedCashFlowSheet = (props) => {
           "M5",
         ],
         {
-          ...incomeStatement,
-          ...balanceSheet,
-          ...currentEquityRiskPremium,
+          totalRevenue: incomeStatement.totalRevenue,
+          operatingIncome: incomeStatement.operatingIncome,
+          minorityInterest: incomeStatement.minorityInterest,
+          pastThreeYearsAverageEffectiveTaxRate:
+            incomeStatement.pastThreeYearsAverageEffectiveTaxRate,
+          investedCapital: balanceSheet.investedCapital,
+          bookValueOfDebt: balanceSheet.bookValueOfDebt,
+          cashAndShortTermInvestments: balanceSheet.cashAndShortTermInvestments,
+          noncontrollingInterestInConsolidatedEntity:
+            balanceSheet.noncontrollingInterestInConsolidatedEntity,
+          corporateTaxRate: currentEquityRiskPremium.corporateTaxRate,
           sharesOutstanding: sharesStats.SharesOutstanding,
           price,
         }
       )
     );
   }, [
-    balanceSheet,
-    currentEquityRiskPremium,
+    balanceSheet.bookValueOfDebt,
+    balanceSheet.cashAndShortTermInvestments,
+    balanceSheet.investedCapital,
+    balanceSheet.noncontrollingInterestInConsolidatedEntity,
+    currentEquityRiskPremium.corporateTaxRate,
     dispatch,
-    incomeStatement,
+    incomeStatement.minorityInterest,
+    incomeStatement.operatingIncome,
+    incomeStatement.pastThreeYearsAverageEffectiveTaxRate,
+    incomeStatement.totalRevenue,
     price,
     sharesStats.SharesOutstanding,
   ]);
