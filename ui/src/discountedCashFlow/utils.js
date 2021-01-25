@@ -54,10 +54,10 @@ export const validateExp = (trailKeys, expr) => {
   return valid;
 };
 
-export const getNumberOfRows = (data) => {
+export const getNumberOfRows = (cells) => {
   let highestNumberRow = 0;
 
-  Object.keys(data).forEach((key) => {
+  Object.keys(cells).forEach((key) => {
     const currentNumber = getRowNumberFromCellKey(key);
 
     if (currentNumber > highestNumberRow) {
@@ -67,6 +67,9 @@ export const getNumberOfRows = (data) => {
 
   return highestNumberRow;
 };
+
+export const getNumberOfColumns = (cells) =>
+  getColumnsTo(getHighestColumn(cells)).length;
 
 export const startColumn = "A";
 
@@ -149,4 +152,37 @@ export const getAllDependents = (cellsTree, rootKey) => {
   assignDependents(cellsTree, allDependents, rootKey);
 
   return allDependents;
+};
+
+export const padCellKeys = (sortedCellKeys) => {
+  const paddedCellKeys = [];
+
+  sortedCellKeys.forEach((cellKey, i) => {
+    paddedCellKeys.push(cellKey);
+
+    if (!sortedCellKeys[i + 1]) return;
+
+    const columnCharCode = getColumnLetterFromCellKey(cellKey).charCodeAt(0);
+    const nextColumnCharCode = getColumnLetterFromCellKey(
+      sortedCellKeys[i + 1]
+    ).charCodeAt(0);
+
+    const column = String.fromCharCode(columnCharCode);
+    const isNextColumnAlphabetically =
+      nextColumnCharCode === columnCharCode + 1;
+
+    if (!isNextColumnAlphabetically && column !== "M") {
+      const row = getRowNumberFromCellKey(cellKey);
+      const diffInColumnsToEnd =
+        parseInt("M".charCodeAt(0), 10) - columnCharCode;
+
+      for (let index = 1; index <= diffInColumnsToEnd; index++) {
+        const nextColumn = String.fromCharCode(columnCharCode + index);
+        const nextCellKey = `${nextColumn}${row}`;
+
+        paddedCellKeys.push(nextCellKey);
+      }
+    }
+  });
+  return paddedCellKeys;
 };

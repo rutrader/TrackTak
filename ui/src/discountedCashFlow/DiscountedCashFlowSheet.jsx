@@ -1,18 +1,13 @@
 import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import { useCallback } from "react";
-import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
 import { columns, numberOfRows } from "./cells";
 import {
-  getColumnLetterFromCellKey,
   getColumnsBetween,
-  getExpressionWithoutEqualsSign,
-  getRowNumberFromCellKey,
-  isExpressionDependency,
+  getNumberOfColumns,
+  padCellKeys,
   startColumn,
-  doesReferenceAnotherCell,
 } from "./utils";
 import { Cell, Column, Table } from "@blueprintjs/table";
 import {
@@ -33,9 +28,7 @@ import selectValueOfAllOptionsOutstanding from "../selectors/fundamentalSelector
 import { Link as RouterLink } from "react-router-dom";
 import { updateCells } from "../redux/actions/dcfActions";
 import LazyLoad from "react-lazyload";
-import XLSX from "xlsx";
-import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
-import FormatRawNumber from "../components/FormatRawNumber";
+import { utils, writeFile } from "xlsx";
 import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
 import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
@@ -46,176 +39,15 @@ import selectCells from "../selectors/dcfSelectors/selectCells";
 import selectSharesStats from "../selectors/fundamentalSelectors/selectSharesStats";
 import selectScope from "../selectors/dcfSelectors/selectScope";
 import { sentenceCase } from "change-case";
+import formatCellValue from "./formatCellValue";
+import formatValueForExcelOutput from "./formatValueForExcelExport";
+import formatCellValueForExcelOutput from "./formatCellValueForExcelOutput";
+import setColumnWidths from "./setColumnWidths";
+import sortAlphaNumeric from "./sortAlphaNumeric";
+import getChunksOfArray from "../shared/getChunksOfArray";
 
-const inputsWorksheetName = "Inputs";
-const valuationWorksheetName = "Valuation";
-
-const getChunksOfArray = (array, size) =>
-  array.reduce((acc, _, i) => {
-    if (i % size === 0) {
-      acc.push(array.slice(i, i + size));
-    }
-    return acc;
-  }, []);
-
-const formatValueForExcelOutput = (value = 0, currencySymbol, type) => {
-  let newValue = value;
-
-  // TODO: Fix properly in dcfReducer to now allow error values
-  if (newValue === "error") {
-    newValue = 0;
-  }
-
-  if (type === "percent") {
-    return {
-      v: newValue,
-      z: "0.00%",
-      t: "n",
-    };
-  }
-
-  if (type === "million") {
-    return {
-      v: newValue,
-      z: `${currencySymbol}#,##0,,.00`,
-      t: "n",
-    };
-  }
-
-  if (type === "currency") {
-    return {
-      v: newValue,
-      z: `${currencySymbol}#,##0.00`,
-      t: "n",
-    };
-  }
-
-  if (type === "number") {
-    return {
-      v: newValue,
-      z: "0.00",
-      t: "n",
-    };
-  }
-
-  return {
-    v: newValue,
-  };
-};
-
-const formatCellValueForExcelOutput = (cell, currencySymbol, scope) => {
-  if (!cell) return cell;
-
-  const { value, type, expr } = cell;
-
-  let f;
-
-  if (isExpressionDependency(expr)) {
-    let formula = getExpressionWithoutEqualsSign(expr);
-
-    inputQueries.forEach(({ name }, i) => {
-      const row = i + 1;
-
-      formula = formula.replaceAll(name, `${inputsWorksheetName}!B${row}`);
-    });
-
-    Object.keys(scope).forEach((key) => {
-      let value = scope[key];
-
-      if (value === undefined || value === null) {
-        value = 0;
-      }
-
-      formula = formula.replaceAll(key, value);
-    });
-
-    if (doesReferenceAnotherCell(expr)) {
-      f = formula;
-    }
-  }
-
-  return {
-    ...formatValueForExcelOutput(value, currencySymbol, type),
-    f,
-  };
-};
-
-const formatCellValue = (cell) => {
-  if (!cell) return cell;
-
-  const { value, type } = cell;
-  let node = value;
-
-  if (type === "percent") {
-    node = <FormatRawNumberToPercent value={value} />;
-  }
-  if (type === "million") {
-    node = <FormatRawNumberToMillion value={value} useCurrencySymbol />;
-  }
-  if (type === "currency") {
-    node = <FormatRawNumberToCurrency value={value} />;
-  }
-  if (type === "number") {
-    node = <FormatRawNumber value={value} decimalScale={2} />;
-  }
-
-  return node;
-};
-
-const setColumnWidths = (worksheet) => {
-  const newWorksheet = { ...worksheet };
-  const objectMaxLength = [];
-  const columns = XLSX.utils.decode_range(worksheet["!ref"]);
-
-  for (let index = columns.s.c; index <= columns.e.c; index++) {
-    objectMaxLength.push({ width: index === 0 ? 25 : 15 });
-  }
-
-  newWorksheet["!cols"] = objectMaxLength;
-
-  return newWorksheet;
-};
-
-const padCellKeys = (sortedCellKeys) => {
-  const paddedCellKeys = [];
-
-  sortedCellKeys.forEach((cellKey, i) => {
-    paddedCellKeys.push(cellKey);
-
-    if (!sortedCellKeys[i + 1]) return;
-
-    const columnCharCode = getColumnLetterFromCellKey(cellKey).charCodeAt(0);
-    const nextColumnCharCode = getColumnLetterFromCellKey(
-      sortedCellKeys[i + 1]
-    ).charCodeAt(0);
-
-    const column = String.fromCharCode(columnCharCode);
-    const isNextColumnAlphabetically =
-      nextColumnCharCode === columnCharCode + 1;
-
-    if (!isNextColumnAlphabetically && column !== "M") {
-      const row = getRowNumberFromCellKey(cellKey);
-      const diffInColumnsToEnd =
-        parseInt("M".charCodeAt(0), 10) - columnCharCode;
-
-      for (let index = 1; index <= diffInColumnsToEnd; index++) {
-        const nextColumn = String.fromCharCode(columnCharCode + index);
-        const nextCellKey = `${nextColumn}${row}`;
-
-        paddedCellKeys.push(nextCellKey);
-      }
-    }
-  });
-  return paddedCellKeys;
-};
-
-const sortAlphaNum = (a, b) => {
-  const diff = getRowNumberFromCellKey(a) - getRowNumberFromCellKey(b);
-
-  return diff || a.localeCompare(b);
-};
-
-const numberOfColumns = 13;
+export const inputsWorksheetName = "Inputs";
+export const valuationWorksheetName = "Valuation";
 
 const DiscountedCashFlowSheet = (props) => {
   const dispatch = useDispatch();
@@ -404,7 +236,9 @@ const DiscountedCashFlowSheet = (props) => {
   );
 
   const exportToCSVOnClick = useCallback(() => {
-    const cellKeysSorted = padCellKeys(Object.keys(cells).sort(sortAlphaNum));
+    const cellKeysSorted = padCellKeys(
+      Object.keys(cells).sort(sortAlphaNumeric)
+    );
     const inputsData = [];
 
     inputQueries.forEach(({ name, type }) => {
@@ -420,6 +254,7 @@ const DiscountedCashFlowSheet = (props) => {
         formatValueForExcelOutput(value, valuationCurrencySymbol, type)
       );
     });
+    const numberOfColumns = getNumberOfColumns(cells);
 
     const valuationChunkedData = getChunksOfArray(
       cellKeysSorted,
@@ -435,28 +270,22 @@ const DiscountedCashFlowSheet = (props) => {
     });
 
     const inputsWorksheet = setColumnWidths(
-      XLSX.utils.aoa_to_sheet(getChunksOfArray(inputsData, 2))
+      utils.aoa_to_sheet(getChunksOfArray(inputsData, 2))
     );
     const valuationOutputWorksheet = setColumnWidths(
-      XLSX.utils.aoa_to_sheet(valuationChunkedData)
+      utils.aoa_to_sheet(valuationChunkedData)
     );
 
-    console.log(inputsData);
-    console.log(valuationChunkedData);
-    const workBook = XLSX.utils.book_new();
+    const workBook = utils.book_new();
 
-    XLSX.utils.book_append_sheet(
-      workBook,
-      inputsWorksheet,
-      inputsWorksheetName
-    );
-    XLSX.utils.book_append_sheet(
+    utils.book_append_sheet(workBook, inputsWorksheet, inputsWorksheetName);
+    utils.book_append_sheet(
       workBook,
       valuationOutputWorksheet,
       valuationWorksheetName
     );
 
-    XLSX.writeFile(workBook, `${general.Code}.${general.Exchange}_DCF.xlsx`);
+    writeFile(workBook, `${general.Code}.${general.Exchange}_DCF.xlsx`);
   }, [
     cells,
     general.Code,
@@ -493,10 +322,9 @@ const DiscountedCashFlowSheet = (props) => {
             }}
           >
             <Button variant="outlined" onClick={exportToCSVOnClick}>
-              Export to CSV
+              Export to Excel
             </Button>
           </Box>
-          <Button variant="outlined">% YOY</Button>
         </Box>
       </Box>
       <Typography gutterBottom>
