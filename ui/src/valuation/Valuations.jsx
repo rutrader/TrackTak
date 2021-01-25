@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { getDCFTemplateEntries } from "../redux/actions/contentfulActions";
-import { inputQueryNames } from "../selectors/routerSelectors/selectQueryParams";
+import { inputQueries } from "../selectors/routerSelectors/selectQueryParams";
 import selectEntries from "../selectors/contentfulSelectors/selectEntries";
 
 const EOD_URL = "https://eodhistoricaldata.com";
@@ -41,9 +41,9 @@ const Valuations = () => {
           const { General } = fields.data;
           const searchParams = new URLSearchParams();
 
-          inputQueryNames.forEach((inputQueryName) => {
-            if (fields[inputQueryName]) {
-              searchParams.set(inputQueryName, fields[inputQueryName]);
+          inputQueries.forEach(({ name }) => {
+            if (fields[name]) {
+              searchParams.set(name, fields[name]);
             }
           });
 

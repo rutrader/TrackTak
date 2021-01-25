@@ -25,7 +25,7 @@ import {
 } from "@material-ui/core";
 import "../shared/blueprintTheme.scss";
 import selectQueryParams, {
-  inputQueryNames,
+  inputQueries,
 } from "../selectors/routerSelectors/selectQueryParams";
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
 import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
@@ -45,6 +45,10 @@ import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/se
 import selectCells from "../selectors/dcfSelectors/selectCells";
 import selectSharesStats from "../selectors/fundamentalSelectors/selectSharesStats";
 import selectScope from "../selectors/dcfSelectors/selectScope";
+import { sentenceCase } from "change-case";
+
+const inputsWorksheetName = "Inputs";
+const valuationWorksheetName = "Valuation";
 
 const getChunksOfArray = (array, size) =>
   array.reduce((acc, _, i) => {
@@ -54,15 +58,66 @@ const getChunksOfArray = (array, size) =>
     return acc;
   }, []);
 
-const formatCellValueForCSVOutput = (cell, currencySymbol, scope) => {
+const formatValueForExcelOutput = (value = 0, currencySymbol, type) => {
+  let newValue = value;
+
+  // TODO: Fix properly in dcfReducer to now allow error values
+  if (newValue === "error") {
+    newValue = 0;
+  }
+
+  if (type === "percent") {
+    return {
+      v: newValue,
+      z: "0.00%",
+      t: "n",
+    };
+  }
+
+  if (type === "million") {
+    return {
+      v: newValue,
+      z: `${currencySymbol}#,##0,,.00`,
+      t: "n",
+    };
+  }
+
+  if (type === "currency") {
+    return {
+      v: newValue,
+      z: `${currencySymbol}#,##0.00`,
+      t: "n",
+    };
+  }
+
+  if (type === "number") {
+    return {
+      v: newValue,
+      z: "0.00",
+      t: "n",
+    };
+  }
+
+  return {
+    v: newValue,
+  };
+};
+
+const formatCellValueForExcelOutput = (cell, currencySymbol, scope) => {
   if (!cell) return cell;
 
   const { value, type, expr } = cell;
 
-  const obj = {};
+  let f;
 
   if (isExpressionDependency(expr)) {
     let formula = getExpressionWithoutEqualsSign(expr);
+
+    inputQueries.forEach(({ name }, i) => {
+      const row = i + 1;
+
+      formula = formula.replaceAll(name, `${inputsWorksheetName}!B${row}`);
+    });
 
     Object.keys(scope).forEach((key) => {
       let value = scope[key];
@@ -75,55 +130,13 @@ const formatCellValueForCSVOutput = (cell, currencySymbol, scope) => {
     });
 
     if (doesReferenceAnotherCell(expr)) {
-      obj.f = formula;
+      f = formula;
     }
   }
 
-  let newValue = value;
-
-  if (value === "error") {
-    newValue = 0;
-  }
-
-  if (type === "percent") {
-    return {
-      ...obj,
-      v: newValue,
-      z: "0.00%",
-      t: "n",
-    };
-  }
-
-  if (type === "million") {
-    return {
-      ...obj,
-      v: newValue,
-      z: `${currencySymbol}#,###,,.00`,
-      t: "n",
-    };
-  }
-
-  if (type === "currency") {
-    return {
-      ...obj,
-      v: newValue,
-      z: `${currencySymbol}#,###.00`,
-      t: "n",
-    };
-  }
-
-  if (type === "number") {
-    return {
-      ...obj,
-      v: newValue,
-      z: ".00",
-      t: "n",
-    };
-  }
-
   return {
-    ...obj,
-    v: newValue,
+    ...formatValueForExcelOutput(value, currencySymbol, type),
+    f,
   };
 };
 
@@ -394,11 +407,18 @@ const DiscountedCashFlowSheet = (props) => {
     const cellKeysSorted = padCellKeys(Object.keys(cells).sort(sortAlphaNum));
     const inputsData = [];
 
-    inputQueryNames.forEach((inputQueryName) => {
-      const value = queryParams[inputQueryName];
+    inputQueries.forEach(({ name, type }) => {
+      const value = queryParams[name];
+      let newName = sentenceCase(name);
 
-      inputsData.push(inputQueryName);
-      inputsData.push(value ?? 0);
+      if (type === "million") {
+        newName += " (mln)";
+      }
+
+      inputsData.push(newName);
+      inputsData.push(
+        formatValueForExcelOutput(value, valuationCurrencySymbol, type)
+      );
     });
 
     const valuationChunkedData = getChunksOfArray(
@@ -406,7 +426,7 @@ const DiscountedCashFlowSheet = (props) => {
       numberOfColumns
     ).map((arr) => {
       return arr.map((cellKey) => {
-        return formatCellValueForCSVOutput(
+        return formatCellValueForExcelOutput(
           cells[cellKey],
           valuationCurrencySymbol,
           scope
@@ -414,20 +434,26 @@ const DiscountedCashFlowSheet = (props) => {
       });
     });
 
-    const inputsWorksheet = XLSX.utils.aoa_to_sheet(
-      getChunksOfArray(inputsData, 2)
+    const inputsWorksheet = setColumnWidths(
+      XLSX.utils.aoa_to_sheet(getChunksOfArray(inputsData, 2))
     );
     const valuationOutputWorksheet = setColumnWidths(
       XLSX.utils.aoa_to_sheet(valuationChunkedData)
     );
 
+    console.log(inputsData);
+    console.log(valuationChunkedData);
     const workBook = XLSX.utils.book_new();
 
-    XLSX.utils.book_append_sheet(workBook, inputsWorksheet, "Inputs");
+    XLSX.utils.book_append_sheet(
+      workBook,
+      inputsWorksheet,
+      inputsWorksheetName
+    );
     XLSX.utils.book_append_sheet(
       workBook,
       valuationOutputWorksheet,
-      "Valuation"
+      valuationWorksheetName
     );
 
     XLSX.writeFile(workBook, `${general.Code}.${general.Exchange}_DCF.xlsx`);
