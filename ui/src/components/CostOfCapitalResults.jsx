@@ -59,7 +59,7 @@ const CostOfCapitalResults = () => {
             value={
               <FormatRawNumber
                 decimalScale={2}
-                value={costOfCapital.leveredBetaForEquity}
+                value={costOfCapital.leveredBeta}
               />
             }
             label="Levered Beta"

@@ -4,10 +4,10 @@ import {
   getExpressionWithoutEqualsSign,
   isExpressionDependency,
 } from "./utils";
-import { inputsWorksheetName } from "./DiscountedCashFlowSheet";
-import formatValueForExcelOutput from "./formatValueForExcelExport";
+import formatValueForExcelOutput from "./makeFormatValueForExcelOutput";
+import { inputsWorksheetName } from "./ExportToExcel";
 
-const formatCellValueForExcelOutput = (cell, currencySymbol, scope) => {
+const makeFormatCellValueForExcelOutput = (currencySymbol) => (cell, scope) => {
   if (!cell) return cell;
 
   const { value, type, expr } = cell;
@@ -44,4 +44,4 @@ const formatCellValueForExcelOutput = (cell, currencySymbol, scope) => {
   };
 };
 
-export default formatCellValueForExcelOutput;
+export default makeFormatCellValueForExcelOutput;

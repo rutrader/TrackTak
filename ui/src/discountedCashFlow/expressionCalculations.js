@@ -124,3 +124,41 @@ export const getROICCalculation = (cellKey) => {
 
   return `=${column}6/${column}16`;
 };
+
+export const riskFreeRateCalculation =
+  "=governmentBondTenYearLastClose / 100 - adjDefaultSpread";
+
+export const estimatedCostOfDebtCalculation =
+  "=riskFreeRate + interestSpread + adjDefaultSpread";
+
+export const estimatedMarketValueOfStraightDebtCalculation =
+  "=(interestExpense * (1 - (1 + pretaxCostOfDebt) ^ -averageMaturityOfDebt)) / pretaxCostOfDebt + bookValueOfDebt / (1 + pretaxCostOfDebt) ^ averageMaturityOfDebt";
+
+export const estimatedValueOfStraightDebtInConvertibleDebtCalculation =
+  "=(interestExpenseOnConvertibleDebt * (1 - (1 + pretaxCostOfDebt) ^ -maturityOfConvertibleDebt)) / pretaxCostOfDebt + bookValueOfConvertibleDebt / (1 + pretaxCostOfDebt) ^ maturityOfConvertibleDebt";
+
+export const leveredBetaCalculation =
+  "=unleveredBeta * (1 + (1 - marginalTaxRate) * (mDebt / mEquity))";
+
+export const marketValueCalculation = {
+  mEquity: "=price * sharesOutstanding",
+  mDebt:
+    "=estimatedMarketValueOfStraightDebt + estimatedValueOfStraightDebtInConvertibleDebt",
+  mPreferredStock: "=numberOfPreferredShares * marketPricePerShare",
+  mTotal: "=mEquity + mDebt + mPreferredStock",
+};
+
+export const weightInCostOfCapitalCalculation = {
+  wEquity: "=mEquity / mTotal",
+  wDebt: "=mDebt / mTotal",
+  wPreferredStock: "=mPreferredStock / mTotal",
+  wTotal: "=wEquity + wDebt + wPreferredStock",
+};
+
+export const costOfComponentCalculation = {
+  cEquity: "=riskFreeRate + leveredBeta * equityRiskPremium",
+  cDebt: "=pretaxCostOfDebt * marginalTaxRate",
+  cPreferredStock: "=costOfPreferredStock",
+  cTotal:
+    "=wEquity * cEquity + wDebt * cDebt + wPreferredStock * cPreferredStock",
+};

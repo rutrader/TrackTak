@@ -3,12 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useCallback } from "react";
 import { columns, numberOfRows } from "./cells";
-import {
-  getColumnsBetween,
-  getNumberOfColumns,
-  padCellKeys,
-  startColumn,
-} from "./utils";
+import { getColumnsBetween, startColumn } from "./utils";
 import { Cell, Column, Table } from "@blueprintjs/table";
 import {
   Box,
@@ -19,53 +14,36 @@ import {
   Link,
 } from "@material-ui/core";
 import "../shared/blueprintTheme.scss";
-import selectQueryParams, {
-  inputQueries,
-} from "../selectors/routerSelectors/selectQueryParams";
+import selectQueryParams from "../selectors/routerSelectors/selectQueryParams";
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
 import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
 import selectValueOfAllOptionsOutstanding from "../selectors/fundamentalSelectors/selectValueOfAllOptionsOutstanding";
 import { Link as RouterLink } from "react-router-dom";
 import { updateCells } from "../redux/actions/dcfActions";
 import LazyLoad from "react-lazyload";
-import { utils, writeFile } from "xlsx";
-import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
 import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
-import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
 import selectCells from "../selectors/dcfSelectors/selectCells";
 import selectSharesStats from "../selectors/fundamentalSelectors/selectSharesStats";
-import selectScope from "../selectors/dcfSelectors/selectScope";
-import { sentenceCase } from "change-case";
 import formatCellValue from "./formatCellValue";
-import formatValueForExcelOutput from "./formatValueForExcelExport";
-import formatCellValueForExcelOutput from "./formatCellValueForExcelOutput";
-import setColumnWidths from "./setColumnWidths";
-import sortAlphaNumeric from "./sortAlphaNumeric";
-import getChunksOfArray from "../shared/getChunksOfArray";
-
-export const inputsWorksheetName = "Inputs";
-export const valuationWorksheetName = "Valuation";
+import ExportToExcel from "./ExportToExcel";
 
 const DiscountedCashFlowSheet = (props) => {
   const dispatch = useDispatch();
   const queryParams = useSelector(selectQueryParams);
   const incomeStatement = useSelector(selectRecentIncomeStatement);
   const balanceSheet = useSelector(selectRecentBalanceSheet);
-  const general = useSelector(selectGeneral);
   const currentEquityRiskPremium = useSelector(selectCurrentEquityRiskPremium);
   const price = useSelector(selectPrice);
   const cells = useSelector(selectCells);
   const costOfCapital = useSelector(selectCostOfCapital);
   const riskFreeRate = useSelector(selectRiskFreeRate);
-  const scope = useSelector(selectScope);
   const sharesStats = useSelector(selectSharesStats);
   const valueOfAllOptionsOutstanding = useSelector(
     selectValueOfAllOptionsOutstanding
   );
-  const valuationCurrencySymbol = useSelector(selectValuationCurrencySymbol);
   const theme = useTheme();
   const [showFormulas, setShowFormulas] = useState(false);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -235,66 +213,6 @@ const DiscountedCashFlowSheet = (props) => {
     ]
   );
 
-  const exportToCSVOnClick = useCallback(() => {
-    const cellKeysSorted = padCellKeys(
-      Object.keys(cells).sort(sortAlphaNumeric)
-    );
-    const inputsData = [];
-
-    inputQueries.forEach(({ name, type }) => {
-      const value = queryParams[name];
-      let newName = sentenceCase(name);
-
-      if (type === "million") {
-        newName += " (mln)";
-      }
-
-      inputsData.push(newName);
-      inputsData.push(
-        formatValueForExcelOutput(value, valuationCurrencySymbol, type)
-      );
-    });
-    const numberOfColumns = getNumberOfColumns(cells);
-
-    const valuationChunkedData = getChunksOfArray(
-      cellKeysSorted,
-      numberOfColumns
-    ).map((arr) => {
-      return arr.map((cellKey) => {
-        return formatCellValueForExcelOutput(
-          cells[cellKey],
-          valuationCurrencySymbol,
-          scope
-        );
-      });
-    });
-
-    const inputsWorksheet = setColumnWidths(
-      utils.aoa_to_sheet(getChunksOfArray(inputsData, 2))
-    );
-    const valuationOutputWorksheet = setColumnWidths(
-      utils.aoa_to_sheet(valuationChunkedData)
-    );
-
-    const workBook = utils.book_new();
-
-    utils.book_append_sheet(workBook, inputsWorksheet, inputsWorksheetName);
-    utils.book_append_sheet(
-      workBook,
-      valuationOutputWorksheet,
-      valuationWorksheetName
-    );
-
-    writeFile(workBook, `${general.Code}.${general.Exchange}_DCF.xlsx`);
-  }, [
-    cells,
-    general.Code,
-    general.Exchange,
-    queryParams,
-    scope,
-    valuationCurrencySymbol,
-  ]);
-
   // TODO: Add an expand button to see it full screen
   return (
     <Box>
@@ -321,9 +239,7 @@ const DiscountedCashFlowSheet = (props) => {
               ml: 1,
             }}
           >
-            <Button variant="outlined" onClick={exportToCSVOnClick}>
-              Export to Excel
-            </Button>
+            <ExportToExcel />
           </Box>
         </Box>
       </Box>

@@ -1,4 +1,4 @@
-const formatValueForExcelOutput = (value = 0, currencySymbol, type) => {
+const makeFormatValueForExcelOutput = (currencySymbol) => (value = 0, type) => {
   let newValue = value;
 
   // TODO: Fix properly in dcfReducer to now allow error values
@@ -43,4 +43,4 @@ const formatValueForExcelOutput = (value = 0, currencySymbol, type) => {
   };
 };
 
-export default formatValueForExcelOutput;
+export default makeFormatValueForExcelOutput;
