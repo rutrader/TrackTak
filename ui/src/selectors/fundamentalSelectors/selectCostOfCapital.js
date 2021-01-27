@@ -16,6 +16,7 @@ import {
   leveredBetaCalculation,
   marketValueCalculation,
   weightInCostOfCapitalCalculation,
+  costOfPreferredStockCalculation,
 } from "../../discountedCashFlow/expressionCalculations";
 
 const calculateCostOfCapital = (
@@ -108,7 +109,10 @@ const calculateCostOfCapital = (
     mEquity: marketValue.mEquity,
   });
 
-  let costOfPreferredStock = annualDividendPerShare / marketPricePerShare;
+  let costOfPreferredStock = evaluate(costOfPreferredStockCalculation, {
+    annualDividendPerShare,
+    marketPricePerShare,
+  });
 
   costOfPreferredStock = isNaN(costOfPreferredStock) ? 0 : costOfPreferredStock;
 

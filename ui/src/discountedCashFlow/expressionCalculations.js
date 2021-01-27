@@ -140,6 +140,9 @@ export const estimatedValueOfStraightDebtInConvertibleDebtCalculation =
 export const leveredBetaCalculation =
   "=unleveredBeta * (1 + (1 - marginalTaxRate) * (mDebt / mEquity))";
 
+export const costOfPreferredStockCalculation =
+  "=annualDividendPerShare / marketPricePerShare";
+
 export const marketValueCalculation = {
   mEquity: "=price * sharesOutstanding",
   mDebt:
