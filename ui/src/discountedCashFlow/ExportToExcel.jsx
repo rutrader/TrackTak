@@ -7,7 +7,7 @@ import selectQueryParams, {
 import { utils, writeFile } from "xlsx";
 import { sentenceCase } from "change-case";
 import makeFormatCellForExcelOutput from "./makeFormatCellForExcelOutput";
-import setColumnWidths from "./setColumnWidths";
+import makeFormatValueForExcelOutput from "./makeFormatValueForExcelOutput";
 import sortAlphaNumeric from "./sortAlphaNumeric";
 import getChunksOfArray from "../shared/getChunksOfArray";
 import { useSelector } from "react-redux";
@@ -58,13 +58,9 @@ const ExportToExcel = () => {
   const { SharesOutstanding } = useSelector(selectSharesStats);
 
   const exportToCSVOnClick = () => {
-    const formatCellForExcelOutput = makeFormatCellForExcelOutput(
-      valuationCurrencySymbol
-    );
     const cellKeysSorted = padCellKeys(
       Object.keys(cells).sort(sortAlphaNumeric)
     );
-    const transformedInputsData = [];
     const getNameFromKey = (key, type) => {
       let newName = sentenceCase(key);
 
@@ -74,13 +70,6 @@ const ExportToExcel = () => {
 
       return newName;
     };
-
-    inputQueries.forEach(({ name, type }) => {
-      const value = queryParams[name];
-
-      transformedInputsData.push(getNameFromKey(name));
-      transformedInputsData.push(formatCellForExcelOutput({ value, type }));
-    });
 
     const costOfCapitalData = {
       marginalTaxRate: {
@@ -166,71 +155,82 @@ const ExportToExcel = () => {
         expr,
       };
     });
+    const costOfCapitalDataKeys = Object.keys(costOfCapitalData);
+    const formatCellForExcelOutput = makeFormatCellForExcelOutput(
+      valuationCurrencySymbol,
+      costOfCapitalDataKeys
+    );
+    const formatValueForExcelOutput = makeFormatValueForExcelOutput(
+      valuationCurrencySymbol
+    );
+
+    const transformedInputsData = [];
+
+    inputQueries.forEach(({ name, type }) => {
+      const value = queryParams[name];
+
+      transformedInputsData.push(getNameFromKey(name));
+      transformedInputsData.push(formatValueForExcelOutput(value, type));
+    });
 
     const transformedCostOfCapitalData = [];
-    const costOfCapitalDataKeys = Object.keys(costOfCapitalData);
 
     costOfCapitalDataKeys.forEach((key) => {
       const { value, expr } = costOfCapitalData[key];
       let formula = expr;
 
       transformedCostOfCapitalData.push(getNameFromKey(key));
-
-      if (formula) {
-        const matches = formula.match(/[A-Za-z]+/g);
-
-        matches.forEach((match) => {
-          let row = costOfCapitalDataKeys.indexOf(match) + 1;
-          let cellDependency = `B${row}`;
-
-          if (row === 0) {
-            row = inputQueries.findIndex(({ name }) => name === match);
-            cellDependency = `${inputsWorksheetName}!B${row}`;
-          }
-
-          formula = formula.replaceAll(match, cellDependency);
-        });
-      }
-
       transformedCostOfCapitalData.push(
-        formatCellForExcelOutput({
-          ...costOfCapitalData[key],
-          expr: formula,
-          value,
-        })
+        formatCellForExcelOutput(
+          {
+            ...costOfCapitalData[key],
+            expr: formula,
+            value,
+          },
+          scope,
+          costOfCapitalWorksheetName
+        )
       );
     });
 
-    console.log(transformedCostOfCapitalData);
+    const numberOfValuationColumns = getNumberOfColumns(cells);
 
-    const numberOfColumns = getNumberOfColumns(cells);
+    const transformedValuationData = cellKeysSorted.map((cellKey) => {
+      const cell = cells[cellKey];
 
-    const valuationChunkedData = getChunksOfArray(
-      cellKeysSorted,
-      numberOfColumns
-    ).map((arr) => {
-      return arr.map((cellKey) => {
-        return formatCellForExcelOutput(cells[cellKey], scope);
-      });
+      return formatCellForExcelOutput(cell, scope, valuationWorksheetName);
     });
+    const chunkedInputsData = getChunksOfArray(transformedInputsData, 2);
+    const chunkedCostOfCapitalData = getChunksOfArray(
+      transformedCostOfCapitalData,
+      2
+    );
+    const chunkedValuationData = getChunksOfArray(
+      transformedValuationData,
+      numberOfValuationColumns
+    );
+    const inputsWorksheet = utils.aoa_to_sheet(chunkedInputsData);
+    const costOfCapitalWorksheet = utils.aoa_to_sheet(chunkedCostOfCapitalData);
+    const valuationOutputWorksheet = utils.aoa_to_sheet(chunkedValuationData);
 
-    const inputsWorksheet = setColumnWidths(
-      utils.aoa_to_sheet(getChunksOfArray(transformedInputsData, 2))
-    );
-    // const costOfCapitalWorksheet = setColumnWidths(
-    //   utils.aoa_to_sheet(costOfCapitalData)
-    // );
-    const valuationOutputWorksheet = setColumnWidths(
-      utils.aoa_to_sheet(valuationChunkedData)
-    );
+    inputsWorksheet["!cols"] = [{ width: 35 }, { width: 15 }];
+    costOfCapitalWorksheet["!cols"] = [{ width: 43 }, { width: 20 }];
+    valuationOutputWorksheet["!cols"] = [
+      ...new Array(numberOfValuationColumns),
+    ].map((_, i) => {
+      if (i === 0) {
+        return { width: 23 };
+      }
+      return { width: 15 };
+    });
 
     const workBook = utils.book_new();
 
     utils.book_append_sheet(workBook, inputsWorksheet, inputsWorksheetName);
     utils.book_append_sheet(
       workBook,
-      // costOfCapitalWorksheet,
-      inputsWorksheetName
+      costOfCapitalWorksheet,
+      costOfCapitalWorksheetName
     );
     utils.book_append_sheet(
       workBook,

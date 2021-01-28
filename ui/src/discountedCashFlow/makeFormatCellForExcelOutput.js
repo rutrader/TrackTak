@@ -1,88 +1,78 @@
+import { inputQueries } from "../selectors/routerSelectors/selectQueryParams";
 import {
-  doesReferenceAnotherCell,
-  getExpressionWithoutEqualsSign,
-  isExpressionDependency,
-} from "./utils";
+  costOfCapitalWorksheetName,
+  inputsWorksheetName,
+} from "./ExportToExcel";
+import makeFormatValueForExcelOutput from "./makeFormatValueForExcelOutput";
+import { isExpressionDependency } from "./utils";
 
-const formatValueForExcelOutput = (currencySymbol, value = 0, type) => {
-  let newValue = value;
+const makeFormatCellForExcelOutput = (
+  currencySymbol,
+  costOfCapitalDataKeys
+) => {
+  const formatValueForExcelOutput = makeFormatValueForExcelOutput(
+    currencySymbol
+  );
 
-  // TODO: Fix properly in dcfReducer to now allow error values
-  if (newValue === "error") {
-    newValue = 0;
-  }
+  return (cell, scope, currentSheetName) => {
+    if (!cell) return cell;
 
-  if (type === "percent") {
-    return {
-      v: newValue,
-      z: "0.00%",
-      t: "n",
-    };
-  }
+    const { value, type, expr } = cell;
 
-  if (type === "million") {
-    return {
-      v: newValue,
-      z: `${currencySymbol}#,##0,,.00`,
-      t: "n",
-    };
-  }
+    let formula = expr;
 
-  if (type === "currency") {
-    return {
-      v: newValue,
-      z: `${currencySymbol}#,##0.00`,
-      t: "n",
-    };
-  }
+    if (isExpressionDependency(formula)) {
+      // TODO: Fix for H2
+      const matches = formula.match(/[A-Za-z]+/g);
 
-  if (type === "number") {
-    return {
-      v: newValue,
-      z: "0.00",
-      t: "n",
-    };
-  }
+      matches.forEach((match) => {
+        let index = costOfCapitalDataKeys.indexOf(match);
+        let dependency = "";
 
-  return {
-    v: newValue,
-  };
-};
+        if (index === -1) {
+          const inputIndex = inputQueries.findIndex(
+            ({ name }) => name === match
+          );
 
-const makeFormatCellForExcelOutput = (currencySymbol) => (cell) => {
-  if (!cell) return cell;
+          if (inputIndex !== -1) {
+            dependency = `B${inputIndex + 1}`;
 
-  const { value, type, expr } = cell;
+            if (currentSheetName !== inputsWorksheetName) {
+              dependency = `${inputsWorksheetName}!` + dependency;
+            }
+            formula = formula.replaceAll(match, dependency);
+          }
+        } else {
+          dependency = `B${index + 1}`;
 
-  let f;
+          if (currentSheetName !== costOfCapitalWorksheetName) {
+            dependency = `'${costOfCapitalWorksheetName}'!` + dependency;
+          }
+          formula = formula.replaceAll(match, dependency);
+        }
+      });
 
-  if (isExpressionDependency(expr)) {
-    let formula = getExpressionWithoutEqualsSign(expr);
+      inputQueries.forEach(({ name }, i) => {
+        const row = i + 1;
 
-    // inputQueries.forEach(({ name }, i) => {
-    //   const row = i + 1;
+        formula = formula.replaceAll(name, `${inputsWorksheetName}!B${row}`);
+      });
 
-    //   formula = formula.replaceAll(name, `${inputsWorksheetName}!B${row}`);
-    // });
+      Object.keys(scope).forEach((key) => {
+        let value = scope[key];
 
-    // Object.keys(scope).forEach((key) => {
-    //   let value = scope[key];
+        if (value === undefined || value === null) {
+          value = 0;
+        }
 
-    //   if (value === undefined || value === null) {
-    //     value = 0;
-    //   }
-
-    //   formula = formula.replaceAll(key, value);
-    // });
-
-    if (doesReferenceAnotherCell(expr)) {
-      f = formula;
+        formula = formula.replaceAll(key, value);
+      });
     }
-  }
 
-  return {
-    ...formatValueForExcelOutput(currencySymbol, value, type),
-    f,
+    return {
+      ...formatValueForExcelOutput(value, type),
+      f: formula,
+    };
   };
 };
 

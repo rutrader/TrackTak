@@ -138,30 +138,31 @@ export const estimatedValueOfStraightDebtInConvertibleDebtCalculation =
   "=(interestExpenseOnConvertibleDebt * (1 - (1 + pretaxCostOfDebt) ^ -maturityOfConvertibleDebt)) / pretaxCostOfDebt + bookValueOfConvertibleDebt / (1 + pretaxCostOfDebt) ^ maturityOfConvertibleDebt";
 
 export const leveredBetaCalculation =
-  "=unleveredBeta * (1 + (1 - marginalTaxRate) * (mDebt / mEquity))";
+  "=unleveredBeta * (1 + (1 - marginalTaxRate) * (debtMarketValue / equityMarketValue))";
 
 export const costOfPreferredStockCalculation =
   "=annualDividendPerShare / marketPricePerShare";
 
 export const marketValueCalculation = {
-  mEquity: "=price * sharesOutstanding",
-  mDebt:
+  equityMarketValue: "=price * sharesOutstanding",
+  debtMarketValue:
     "=estimatedMarketValueOfStraightDebt + estimatedValueOfStraightDebtInConvertibleDebt",
-  mPreferredStock: "=numberOfPreferredShares * marketPricePerShare",
-  mTotal: "=mEquity + mDebt + mPreferredStock",
+  preferredStockMarketValue: "=numberOfPreferredShares * marketPricePerShare",
+  totalMarketValue:
+    "=equityMarketValue + debtMarketValue + preferredStockMarketValue",
 };
 
 export const weightInCostOfCapitalCalculation = {
-  wEquity: "=mEquity / mTotal",
-  wDebt: "=mDebt / mTotal",
-  wPreferredStock: "=mPreferredStock / mTotal",
-  wTotal: "=wEquity + wDebt + wPreferredStock",
+  equityWeight: "=equityMarketValue / totalMarketValue",
+  debtWeight: "=debtMarketValue / totalMarketValue",
+  preferredStockWeight: "=preferredStockMarketValue / totalMarketValue",
+  totalWeight: "=equityWeight + debtWeight + preferredStockWeight",
 };
 
 export const costOfComponentCalculation = {
-  cEquity: "=riskFreeRate + leveredBeta * equityRiskPremium",
-  cDebt: "=pretaxCostOfDebt * marginalTaxRate",
-  cPreferredStock: "=costOfPreferredStock",
-  cTotal:
-    "=wEquity * cEquity + wDebt * cDebt + wPreferredStock * cPreferredStock",
+  equityCostOfCapital: "=riskFreeRate + leveredBeta * equityRiskPremium",
+  debtCostOfCapital: "=pretaxCostOfDebt * marginalTaxRate",
+  preferredStockCostOfCapital: "=costOfPreferredStock",
+  totalCostOfCapital:
+    "=equityWeight * equityCostOfCapital + debtWeight * debtCostOfCapital + preferredStockWeight * preferredStockCostOfCapital",
 };

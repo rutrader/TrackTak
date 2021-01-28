@@ -71,7 +71,7 @@ const calculateCostOfCapital = (
 
   Object.keys(marketValueCalculation).forEach((key) => {
     const value = marketValueCalculation[key];
-    const { mTotal, ...restMarket } = marketValue;
+    const { totalMarketValue, ...restMarket } = marketValue;
 
     marketValue[key] = evaluate(value, {
       price,
@@ -80,9 +80,9 @@ const calculateCostOfCapital = (
       estimatedValueOfStraightDebtInConvertibleDebt,
       numberOfPreferredShares,
       marketPricePerShare,
-      mEquity: marketValue.mEquity,
-      mDebt: marketValue.mDebt,
-      mPreferredStock: marketValue.mPreferredStock,
+      equityMarketValue: marketValue.equityMarketValue,
+      debtMarketValue: marketValue.debtMarketValue,
+      preferredStockMarketValue: marketValue.preferredStockMarketValue,
       ...restMarket,
     });
   });
@@ -91,13 +91,13 @@ const calculateCostOfCapital = (
 
   Object.keys(weightInCostOfCapitalCalculation).forEach((key) => {
     const value = weightInCostOfCapitalCalculation[key];
-    const { wTotal, ...restWeight } = weightInCostOfCapital;
+    const { totalWeight, ...restWeight } = weightInCostOfCapital;
 
     weightInCostOfCapital[key] = evaluate(value, {
-      mEquity: marketValue.mEquity,
-      mDebt: marketValue.mDebt,
-      mPreferredStock: marketValue.mPreferredStock,
-      mTotal: marketValue.mTotal,
+      equityMarketValue: marketValue.equityMarketValue,
+      debtMarketValue: marketValue.debtMarketValue,
+      preferredStockMarketValue: marketValue.preferredStockMarketValue,
+      totalMarketValue: marketValue.totalMarketValue,
       ...restWeight,
     });
   });
@@ -105,8 +105,8 @@ const calculateCostOfCapital = (
   const leveredBeta = evaluate(leveredBetaCalculation, {
     unleveredBeta: currentIndustry.unleveredBeta,
     marginalTaxRate,
-    mDebt: marketValue.mDebt,
-    mEquity: marketValue.mEquity,
+    debtMarketValue: marketValue.debtMarketValue,
+    equityMarketValue: marketValue.equityMarketValue,
   });
 
   let costOfPreferredStock = evaluate(costOfPreferredStockCalculation, {
@@ -120,8 +120,8 @@ const calculateCostOfCapital = (
 
   Object.keys(costOfComponentCalculation).forEach((key) => {
     const value = costOfComponentCalculation[key];
-    const { wTotal, ...restWeight } = weightInCostOfCapital;
-    const { cTotal, ...restCost } = costOfComponent;
+    const { totalWeight, ...restWeight } = weightInCostOfCapital;
+    const { totalCostOfCapital, ...restCost } = costOfComponent;
 
     costOfComponent[key] = evaluate(value, {
       riskFreeRate,
@@ -137,9 +137,9 @@ const calculateCostOfCapital = (
 
   return {
     leveredBeta: isNaN(leveredBeta) ? null : leveredBeta,
-    totalCostOfCapital: isNaN(costOfComponent.cTotal)
+    totalCostOfCapital: isNaN(costOfComponent.totalCostOfCapital)
       ? null
-      : costOfComponent.cTotal,
+      : costOfComponent.totalCostOfCapital,
   };
 };
 
