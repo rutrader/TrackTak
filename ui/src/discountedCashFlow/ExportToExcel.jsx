@@ -158,7 +158,9 @@ const ExportToExcel = () => {
     const costOfCapitalDataKeys = Object.keys(costOfCapitalData);
     const formatCellForExcelOutput = makeFormatCellForExcelOutput(
       valuationCurrencySymbol,
-      costOfCapitalDataKeys
+      inputQueries.map(({ name }) => name),
+      costOfCapitalDataKeys,
+      scope
     );
     const formatValueForExcelOutput = makeFormatValueForExcelOutput(
       valuationCurrencySymbol
@@ -187,7 +189,6 @@ const ExportToExcel = () => {
             expr: formula,
             value,
           },
-          scope,
           costOfCapitalWorksheetName
         )
       );
@@ -198,7 +199,7 @@ const ExportToExcel = () => {
     const transformedValuationData = cellKeysSorted.map((cellKey) => {
       const cell = cells[cellKey];
 
-      return formatCellForExcelOutput(cell, scope, valuationWorksheetName);
+      return formatCellForExcelOutput(cell, valuationWorksheetName);
     });
     const chunkedInputsData = getChunksOfArray(transformedInputsData, 2);
     const chunkedCostOfCapitalData = getChunksOfArray(
