@@ -40,7 +40,12 @@ const TTTabs = () => {
               <Tab
                 key={path}
                 component={Link}
-                to={generatedPath}
+                to={({ search }) => {
+                  return {
+                    pathname: generatedPath,
+                    search,
+                  };
+                }}
                 value={generatedPath}
                 label={label}
               />
