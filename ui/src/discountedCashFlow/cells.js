@@ -78,6 +78,7 @@ const cells = {
   B4: getExpressionProperties("=operatingIncome"),
   B5: getExpressionProperties("=pastThreeYearsAverageEffectiveTaxRate"),
   B6: getExpressionProperties("=IF(B4 > 0, B4 * (1-B5), B4)"),
+  B9: getExpressionProperties("=netOperatingLoss"),
   B16: getExpressionProperties("=investedCapital"),
   B19: getExpressionProperties("=M8"),
   B20: getExpressionProperties("=M11"),

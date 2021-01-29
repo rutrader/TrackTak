@@ -191,6 +191,14 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
 
   useEffect(() => {
     dispatch(
+      updateCells(["B9"], {
+        netOperatingLoss: queryParams.netOperatingLoss,
+      })
+    );
+  }, [dispatch, queryParams.netOperatingLoss]);
+
+  useEffect(() => {
+    dispatch(
       updateCells(["M2", "M11", "M7", "B21"], {
         riskFreeRate,
       })

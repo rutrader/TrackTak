@@ -15,12 +15,13 @@ export const inputQueries = [
   { name: "averageMaturityOfOptions", type: "number" },
   { name: "averageMaturityOfDebt", type: "number" },
   { name: "pretaxCostOfDebt", type: "percent" },
-  { name: "bookValueOfConvertibleDebt", type: "currency" },
-  { name: "interestExpenseOnConvertibleDebt", type: "currency" },
+  { name: "bookValueOfConvertibleDebt", type: "million" },
+  { name: "interestExpenseOnConvertibleDebt", type: "million" },
   { name: "maturityOfConvertibleDebt", type: "number" },
   { name: "numberOfPreferredShares", type: "million" },
   { name: "marketPricePerShare", type: "currency" },
   { name: "annualDividendPerShare", type: "currency" },
+  { name: "netOperatingLoss", type: "million" },
 ];
 
 const getInputQueryParams = (query) => {

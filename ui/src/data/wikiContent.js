@@ -153,9 +153,9 @@ const wikiContent = [
           We use this input in Years 1-10 (B3-L3) and set the terminal year to
           be equal to year 10 (L3). To figure out what to put in this input you
           need to check the companies current Operating margin, the industries
-          average Operating margin and also your thoughts on what type of margin the
-          company can acheive by year 10. This will differ grealy depending on
-          how much of a&nbsp;
+          average Operating margin and also your thoughts on what type of margin
+          the company can acheive by year 10. This will differ grealy depending
+          on how much of a&nbsp;
           <a
             rel="noreferrer"
             target="_blank"
@@ -182,9 +182,10 @@ const wikiContent = [
           />
         </InputExampleBox>
         <Typography paragraph>
-          The Operating Margin will slowly converge from the base years margin (B4)
-          to your Operating margin in year 10 (L3). The speed at which this happens
-          depends on the Year of Convergence that you type in to this input.
+          The Operating Margin will slowly converge from the base years margin
+          (B4) to your Operating margin in year 10 (L3). The speed at which this
+          happens depends on the Year of Convergence that you type in to this
+          input.
         </Typography>
       </>
     ),
@@ -235,8 +236,15 @@ const wikiContent = [
     ),
   },
   {
-    title: "NOL",
-    text: <>Net Operating Loss (NOL). Not implemented yet. Coming soon</>,
+    title: "NOL - Cells B9-M9",
+    text: (
+      <>
+        Net Operating Loss (NOL). Any losses from the previous years that the
+        company is carrying over to this year. The reason this is important in a
+        DCF is because it reduces the taxable income so the company has to pay
+        less tax.
+      </>
+    ),
   },
   {
     title: "Cost of Capital - Cells C11-M11",
