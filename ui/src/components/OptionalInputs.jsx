@@ -209,9 +209,9 @@ const OptionalInputs = () => {
             >
               <OptionalTextField
                 label="Employee Options Oustanding"
-                defaultValue={queryParams.numberOfOptionsOutstanding}
+                defaultValue={queryParams.numberOfEmployeeOptionsOutstanding}
                 onBlur={(value) => {
-                  setURLInput("numberOfOptionsOutstanding", value);
+                  setURLInput("numberOfEmployeeOptionsOutstanding", value);
                 }}
                 InputProps={{
                   inputComponent: FormatInputToMillion,

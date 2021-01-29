@@ -1,5 +1,4 @@
 import cells from "./cells";
-import { cellKeyRegex } from "./utils";
 
 const cellsTree = {};
 
@@ -7,7 +6,7 @@ Object.keys(cells).forEach((key) => {
   const { expr } = cells[key];
 
   if (expr) {
-    const matches = expr.match(cellKeyRegex);
+    const matches = expr.match(/([A-Z]+\d+)/g);
     const uniqueMatches = [...new Set(matches)];
 
     uniqueMatches.forEach((uniqueMatchKey) => {

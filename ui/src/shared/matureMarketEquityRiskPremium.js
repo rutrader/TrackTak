@@ -6,4 +6,5 @@ const matureMarketEquityRiskPremium =
       .equityRiskPremium
   ) / 100;
 
+console.log(matureMarketEquityRiskPremium);
 export default matureMarketEquityRiskPremium;

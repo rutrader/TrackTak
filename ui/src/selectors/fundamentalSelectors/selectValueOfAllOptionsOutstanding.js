@@ -7,9 +7,10 @@ const selectValueOfAllOptionsOutstanding = createSelector(
   selectQueryParams,
   (valuePerOption, queryParams) => {
     if (valuePerOption === null) return null;
-    if (queryParams.numberOfOptionsOutstanding === undefined) return null;
+    if (queryParams.numberOfEmployeeOptionsOutstanding === undefined)
+      return null;
 
-    return valuePerOption * queryParams.numberOfOptionsOutstanding;
+    return valuePerOption * queryParams.numberOfEmployeeOptionsOutstanding;
   }
 );
 
