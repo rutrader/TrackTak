@@ -1,7 +1,19 @@
 import React, { forwardRef } from "react";
 import { useState } from "react";
 import NumberFormat from "react-number-format";
+import { useSelector } from "react-redux";
+import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
 import { millionModifier } from "./FormatRawNumberToMillion";
+
+export const FormatInputToMillionCurrency = forwardRef(
+  ({ defaultValue, ...props }, ref) => {
+    const currencySymbol = useSelector(selectValuationCurrencySymbol);
+
+    return (
+      <FormatInputToMillion ref={ref} prefix={currencySymbol} {...props} />
+    );
+  }
+);
 
 const FormatInputToMillion = forwardRef(({ defaultValue, ...props }, ref) => {
   const { onChange, ...other } = props;

@@ -1,7 +1,4 @@
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Box,
   TextField,
   Typography,
@@ -9,22 +6,26 @@ import {
   withStyles,
 } from "@material-ui/core";
 import React from "react";
-import { textFieldRootStyles } from "../shared/utils";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import FormatInputToYear from "./FormatInputToYear";
 import FormatInputToCurrency from "./FormatInputToCurrency";
-import FormatInputToMillion from "./FormatInputToMillion";
-import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
+import FormatInputToMillion, {
+  FormatInputToMillionCurrency,
+} from "./FormatInputToMillion";
 import {
   InfoTextConvertibleDebt,
   InfoTextEmployeeOptions,
   InfoTextNormalDebt,
   InfoTextPreferredStock,
+  InfoTextCarryforwards,
 } from "./InfoText";
 import { useSelector } from "react-redux";
 import useSetURLInput from "../hooks/useSetURLInput";
 import selectQueryParams from "../selectors/routerSelectors/selectQueryParams";
 import FormatInputToPercent from "./FormatInputToPercent";
+import { textFieldRootStyles } from "../shared/utils";
+import OptionalInput from "./OptionalInput";
+
+export const pretaxCostOfDebtLabel = "Pre-tax Cost of Debt";
 
 const OptionalTextField = withStyles({
   root: {
@@ -32,26 +33,173 @@ const OptionalTextField = withStyles({
   },
 })(TextField);
 
-const OptionalInputAccordion = withStyles({
-  root: {
-    "&.Mui-expanded": {
-      margin: 0,
-    },
-    "& .MuiAccordionSummary-root": {
-      padding: 0,
-    },
-    "& .MuiAccordionDetails-root": {
-      padding: 0,
-    },
-  },
-})((props) => <Accordion elevation={0} {...props} />);
-
-export const pretaxCostOfDebtLabel = "Pre-tax Cost of Debt";
-
 const OptionalInputs = () => {
-  const theme = useTheme();
   const queryParams = useSelector(selectQueryParams);
   const setURLInput = useSetURLInput();
+  const theme = useTheme();
+
+  const optionalInputs = [
+    {
+      title: "Normal Debt",
+      tooltipTextNode: <InfoTextNormalDebt />,
+      children: (
+        <>
+          <OptionalTextField
+            label={pretaxCostOfDebtLabel}
+            defaultValue={queryParams.pretaxCostOfDebt}
+            onBlur={(value) => {
+              setURLInput("pretaxCostOfDebt", value);
+            }}
+            InputProps={{
+              inputComponent: FormatInputToPercent,
+            }}
+          />
+          <OptionalTextField
+            label="Average Maturity of Debt"
+            defaultValue={queryParams.averageMaturityOfDebt}
+            onBlur={(value) => {
+              setURLInput("averageMaturityOfDebt", value);
+            }}
+            InputProps={{
+              inputComponent: FormatInputToYear,
+            }}
+          />
+        </>
+      ),
+    },
+    {
+      title: "Convertible Debt",
+      tooltipTextNode: <InfoTextConvertibleDebt />,
+      children: (
+        <>
+          <OptionalTextField
+            label="Book Value of Convertible Debt"
+            defaultValue={queryParams.bookValueOfConvertibleDebt}
+            onBlur={(value) => {
+              setURLInput("bookValueOfConvertibleDebt", value);
+            }}
+            InputProps={{
+              inputComponent: FormatInputToMillionCurrency,
+            }}
+          />
+          <OptionalTextField
+            label="Interest Expense on Convertible Debt"
+            defaultValue={queryParams.interestExpenseOnConvertibleDebt}
+            onBlur={(value) => {
+              setURLInput("interestExpenseOnConvertibleDebt", value);
+            }}
+            InputProps={{
+              inputComponent: FormatInputToMillionCurrency,
+            }}
+          />
+          <OptionalTextField
+            label="Maturity of Convertible Debt"
+            defaultValue={queryParams.maturityOfConvertibleDebt}
+            onBlur={(value) => {
+              setURLInput("maturityOfConvertibleDebt", value);
+            }}
+            InputProps={{
+              inputComponent: FormatInputToYear,
+            }}
+          />
+        </>
+      ),
+    },
+    {
+      title: "Preferred Stock",
+      tooltipTextNode: <InfoTextPreferredStock />,
+      children: (
+        <>
+          <OptionalTextField
+            label="Number of Preferred Shares"
+            defaultValue={queryParams.numberOfPreferredShares}
+            onBlur={(value) => {
+              setURLInput("numberOfPreferredShares", value);
+            }}
+            InputProps={{
+              inputComponent: FormatInputToMillion,
+            }}
+          />
+          <OptionalTextField
+            label="Market Price Per Share"
+            defaultValue={queryParams.marketPricePerShare}
+            onBlur={(value) => {
+              setURLInput("marketPricePerShare", value);
+            }}
+            InputProps={{
+              inputComponent: FormatInputToCurrency,
+            }}
+          />
+          <OptionalTextField
+            label="Annual Dividend Per Share"
+            defaultValue={queryParams.annualDividendPerShare}
+            onBlur={(value) => {
+              setURLInput("annualDividendPerShare", value);
+            }}
+            InputProps={{
+              inputComponent: FormatInputToCurrency,
+            }}
+          />
+        </>
+      ),
+    },
+    {
+      title: "Employee Options",
+      tooltipTextNode: <InfoTextEmployeeOptions />,
+      children: (
+        <>
+          <OptionalTextField
+            label="Employee Options Oustanding"
+            defaultValue={queryParams.numberOfEmployeeOptionsOutstanding}
+            onBlur={(value) => {
+              setURLInput("numberOfEmployeeOptionsOutstanding", value);
+            }}
+            InputProps={{
+              inputComponent: FormatInputToMillion,
+            }}
+          />
+          <OptionalTextField
+            label="Average Strike Price"
+            defaultValue={queryParams.averageStrikePrice}
+            onBlur={(value) => {
+              setURLInput("averageStrikePrice", value);
+            }}
+            InputProps={{
+              inputComponent: FormatInputToCurrency,
+            }}
+          />
+          <OptionalTextField
+            label="Average Maturity"
+            defaultValue={queryParams.averageMaturityOfOptions}
+            onBlur={(value) => {
+              setURLInput("averageMaturityOfOptions", value);
+            }}
+            InputProps={{
+              inputComponent: FormatInputToYear,
+            }}
+          />
+        </>
+      ),
+    },
+    {
+      title: "Carryforwards",
+      tooltipTextNode: <InfoTextCarryforwards />,
+      children: (
+        // TODO: Automate this by default but still keep this input
+        // to allow overriding
+        <OptionalTextField
+          label="Net Operating Loss"
+          defaultValue={queryParams.netOperatingLoss}
+          onBlur={(value) => {
+            setURLInput("netOperatingLoss", value);
+          }}
+          InputProps={{
+            inputComponent: FormatInputToMillionCurrency,
+          }}
+        />
+      ),
+    },
+  ];
 
   return (
     <>
@@ -66,180 +214,9 @@ const OptionalInputs = () => {
           flexDirection: "column",
         }}
       >
-        <OptionalInputAccordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography variant="h6">
-              <InfoOutlinedIconWrapper text={<InfoTextNormalDebt />}>
-                Normal Debt
-              </InfoOutlinedIconWrapper>
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Box
-              sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: theme.spacing(2),
-              }}
-            >
-              <OptionalTextField
-                label={pretaxCostOfDebtLabel}
-                defaultValue={queryParams.pretaxCostOfDebt}
-                onBlur={(value) => {
-                  setURLInput("pretaxCostOfDebt", value);
-                }}
-                InputProps={{
-                  inputComponent: FormatInputToPercent,
-                }}
-              />
-              <OptionalTextField
-                label="Average Maturity of Debt"
-                defaultValue={queryParams.averageMaturityOfDebt}
-                onBlur={(value) => {
-                  setURLInput("averageMaturityOfDebt", value);
-                }}
-                InputProps={{
-                  inputComponent: FormatInputToYear,
-                }}
-              />
-            </Box>
-          </AccordionDetails>
-        </OptionalInputAccordion>
-        <OptionalInputAccordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography variant="h6">
-              <InfoOutlinedIconWrapper text={<InfoTextConvertibleDebt />}>
-                Convertible Debt
-              </InfoOutlinedIconWrapper>
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Box
-              sx={{ display: "flex", flexWrap: "wrap", gap: theme.spacing(2) }}
-            >
-              <OptionalTextField
-                label="Book Value of Convertible Debt"
-                defaultValue={queryParams.bookValueOfConvertibleDebt}
-                onBlur={(value) => {
-                  setURLInput("bookValueOfConvertibleDebt", value);
-                }}
-                InputProps={{
-                  inputComponent: FormatInputToCurrency,
-                }}
-              />
-              <OptionalTextField
-                label="Interest Expense on Convertible Debt"
-                defaultValue={queryParams.interestExpenseOnConvertibleDebt}
-                onBlur={(value) => {
-                  setURLInput("interestExpenseOnConvertibleDebt", value);
-                }}
-                InputProps={{
-                  inputComponent: FormatInputToCurrency,
-                }}
-              />
-              <OptionalTextField
-                label="Maturity of Convertible Debt"
-                defaultValue={queryParams.maturityOfConvertibleDebt}
-                onBlur={(value) => {
-                  setURLInput("maturityOfConvertibleDebt", value);
-                }}
-                InputProps={{
-                  inputComponent: FormatInputToYear,
-                }}
-              />
-            </Box>
-          </AccordionDetails>
-        </OptionalInputAccordion>
-        <OptionalInputAccordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography variant="h6">
-              <InfoOutlinedIconWrapper text={<InfoTextPreferredStock />}>
-                Preferred Stock
-              </InfoOutlinedIconWrapper>
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Box
-              sx={{ display: "flex", flexWrap: "wrap", gap: theme.spacing(2) }}
-            >
-              <OptionalTextField
-                label="Number of Preferred Shares"
-                defaultValue={queryParams.numberOfPreferredShares}
-                onBlur={(value) => {
-                  setURLInput("numberOfPreferredShares", value);
-                }}
-                InputProps={{
-                  inputComponent: FormatInputToMillion,
-                }}
-              />
-              <OptionalTextField
-                label="Market Price Per Share"
-                defaultValue={queryParams.marketPricePerShare}
-                onBlur={(value) => {
-                  setURLInput("marketPricePerShare", value);
-                }}
-                InputProps={{
-                  inputComponent: FormatInputToCurrency,
-                }}
-              />
-              <OptionalTextField
-                label="Annual Dividend Per Share"
-                defaultValue={queryParams.annualDividendPerShare}
-                onBlur={(value) => {
-                  setURLInput("annualDividendPerShare", value);
-                }}
-                InputProps={{
-                  inputComponent: FormatInputToCurrency,
-                }}
-              />
-            </Box>
-          </AccordionDetails>
-        </OptionalInputAccordion>
-        <OptionalInputAccordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography variant="h6">
-              <InfoOutlinedIconWrapper text={<InfoTextEmployeeOptions />}>
-                Employee Options
-              </InfoOutlinedIconWrapper>
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Box
-              sx={{ display: "flex", flexWrap: "wrap", gap: theme.spacing(2) }}
-            >
-              <OptionalTextField
-                label="Employee Options Oustanding"
-                defaultValue={queryParams.numberOfEmployeeOptionsOutstanding}
-                onBlur={(value) => {
-                  setURLInput("numberOfEmployeeOptionsOutstanding", value);
-                }}
-                InputProps={{
-                  inputComponent: FormatInputToMillion,
-                }}
-              />
-              <OptionalTextField
-                label="Average Strike Price"
-                defaultValue={queryParams.averageStrikePrice}
-                onBlur={(value) => {
-                  setURLInput("averageStrikePrice", value);
-                }}
-                InputProps={{
-                  inputComponent: FormatInputToCurrency,
-                }}
-              />
-              <OptionalTextField
-                label="Average Maturity"
-                defaultValue={queryParams.averageMaturityOfOptions}
-                onBlur={(value) => {
-                  setURLInput("averageMaturityOfOptions", value);
-                }}
-                InputProps={{
-                  inputComponent: FormatInputToYear,
-                }}
-              />
-            </Box>
-          </AccordionDetails>
-        </OptionalInputAccordion>
+        {optionalInputs.map((optionalInput) => (
+          <OptionalInput {...optionalInput} />
+        ))}
       </Box>
     </>
   );

@@ -91,7 +91,7 @@ export const InfoTextNormalDebt = () => {
       </Box>
       <Box>
         <b>Average Maturity of Debt</b> - Years until all of the companies
-        outstanding debt matures on average.Generally found in the footnotes to
+        outstanding debt matures on average. Generally found in the footnotes to
         the financial statements.
       </Box>
     </>
@@ -196,6 +196,19 @@ export const InfoTextEmployeeOptions = () => {
       <Box>
         <b>Average Maturity</b> - The weighted average maturity of the employee
         options outstanding. This is found in the financial statements.
+      </Box>
+    </>
+  );
+};
+
+export const InfoTextCarryforwards = () => {
+  return (
+    <>
+      <Box>
+        <b>Net Operating Loss (NOL)</b> - Any losses from the previous years
+        that the company is carrying over to this year. It allows the company to
+        reduce it's taxable income for the current year. This is found in the
+        financial statements.
       </Box>
     </>
   );
