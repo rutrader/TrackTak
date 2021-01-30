@@ -199,6 +199,30 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
 
   useEffect(() => {
     dispatch(
+      updateCells(["B25"], {
+        probabilityOfFailure: queryParams.probabilityOfFailure,
+      })
+    );
+  }, [dispatch, queryParams.probabilityOfFailure]);
+
+  useEffect(() => {
+    dispatch(
+      updateCells(["B26"], {
+        proceedsAsAPercentageOfBookValue:
+          queryParams.proceedsAsAPercentageOfBookValue,
+        bookValueOfDebt: balanceSheet.bookValueOfDebt,
+        bookValueOfEquity: balanceSheet.bookValueOfEquity,
+      })
+    );
+  }, [
+    dispatch,
+    queryParams.proceedsAsAPercentageOfBookValue,
+    balanceSheet.bookValueOfDebt,
+    balanceSheet.bookValueOfEquity,
+  ]);
+
+  useEffect(() => {
+    dispatch(
       updateCells(["M2", "M11", "M7", "B21"], {
         riskFreeRate,
       })
