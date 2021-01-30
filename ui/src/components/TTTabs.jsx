@@ -32,13 +32,13 @@ const TTTabs = () => {
           textColor="primary"
           scrollButtons="auto"
         >
-          {layoutFullScreenPaths.map((path) => {
-            const generatedPath = generatePath(path, { ...params });
-            const label = path.split("/")[1].replace(/-/g, " ");
+          {layoutFullScreenPaths.map(({ url }) => {
+            const generatedPath = generatePath(url, { ...params });
+            const label = url.split("/")[1].replace(/-/g, " ");
 
             return (
               <Tab
-                key={path}
+                key={url}
                 component={Link}
                 to={({ search }) => {
                   return {
