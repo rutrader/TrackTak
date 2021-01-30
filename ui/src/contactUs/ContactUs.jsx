@@ -1,8 +1,6 @@
 import { Box, Link, Typography } from "@material-ui/core";
 import React from "react";
 
-const AddressBox = (props) => <Box sx={{ ml: 1 }} {...props} />;
-
 const ContactUs = () => {
   return (
     <>
@@ -24,12 +22,12 @@ const ContactUs = () => {
       <Typography>
         <Box>Address:</Box>
         <address>
-          <AddressBox>
+          <Box>
             <b>Tracktak Ltd</b>
-          </AddressBox>
-          <AddressBox>26 Calder View</AddressBox>
-          <AddressBox>Brighouse, Rastrick</AddressBox>
-          <AddressBox>United Kingdom</AddressBox>
+          </Box>
+          <Box>26 Calder View</Box>
+          <Box>Brighouse, Rastrick</Box>
+          <Box>United Kingdom</Box>
         </address>
       </Typography>
     </>
