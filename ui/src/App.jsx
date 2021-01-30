@@ -16,6 +16,8 @@ import Valuations from "./valuation/Valuations";
 import IndustryAverages from "./industryAverages/IndustryAverages";
 import Docs from "./documentation/Docs";
 import selectPageIsLoading from "./selectors/pageSelectors/selectPageIsLoading";
+import ContactUs from "./contactUs/ContactUs";
+import AboutUs from "./aboutUs/AboutUs";
 
 const LandingPage = lazy(() => import("./landingPage/LandingPage"));
 const DiscountedCashFlow = lazy(() =>
@@ -82,14 +84,27 @@ const Spinner = () => {
 };
 
 export const layoutFullScreenPaths = [
-  "/discounted-cash-flow/:ticker",
-  "/synthetic-rating/:ticker",
-  "/industry-averages/:ticker",
+  { url: "/discounted-cash-flow/:ticker", component: <DiscountedCashFlow /> },
+  { url: "/synthetic-rating/:ticker", component: <SyntheticRating /> },
+  { url: "/industry-averages/:ticker", component: <IndustryAverages /> },
 ];
-const layoutPaths = ["/valuations/:ticker", "/valuations", "/documentation"];
+const layoutPaths = [
+  { url: "/valuations/:ticker", component: <Valuation /> },
+  { url: "/valuations", component: <Valuations /> },
+  { url: "/documentation", component: <Docs /> },
+  { url: "/contact-us", component: <ContactUs /> },
+  { url: "/about-us", component: <AboutUs /> },
+];
 
 export const allLayoutPaths = [...layoutFullScreenPaths, layoutPaths];
-export const allPaths = ["/", "/landingPage", ...allLayoutPaths];
+export const allPaths = [
+  { url: "/", component: <Home /> },
+  {
+    url: "/landingPage",
+    component: <LandingPage />,
+  },
+  ...allLayoutPaths,
+];
 
 function App() {
   return (
@@ -98,48 +113,34 @@ function App() {
       <ConnectedRouter history={history}>
         <Suspense fallback={<Spinner />}>
           <Switch>
-            <Route path={[allPaths[1]]}>
+            <Route path={[allPaths[1].url]}>
               <RebassProvider theme={rebassTheme}>
                 <GlobalStyle />
-                <LandingPage />
+                {allPaths[1].component}
               </RebassProvider>
             </Route>
-            <Route path={layoutFullScreenPaths}>
+            <Route path={layoutFullScreenPaths.map((x) => x.url)}>
               <LayoutFullScreen>
                 <Switch>
-                  <Route path={layoutFullScreenPaths[0]}>
-                    <DiscountedCashFlow />
-                  </Route>
-                  <Route path={layoutFullScreenPaths[1]}>
-                    <SyntheticRating />
-                  </Route>
-                  <Route path={layoutFullScreenPaths[2]}>
-                    <IndustryAverages />
-                  </Route>
+                  {layoutFullScreenPaths.map(({ url, component }) => (
+                    <Route path={url}>{component}</Route>
+                  ))}
                 </Switch>
               </LayoutFullScreen>
             </Route>
-            <Route path={layoutPaths}>
+            <Route path={layoutPaths.map((x) => x.url)}>
               <Layout>
                 <Switch>
-                  <Route path={layoutPaths[0]}>
-                    <Valuation />
-                  </Route>
-                  <Route path={layoutPaths[1]}>
-                    <Valuations />
-                  </Route>
-                  <Route path={layoutPaths[2]}>
-                    <Docs />
-                  </Route>
+                  {layoutPaths.map(({ url, component }) => (
+                    <Route path={url}>{component}</Route>
+                  ))}
                 </Switch>
               </Layout>
             </Route>
-            <Route path={[allPaths[0]]}>
+            <Route path={[allPaths[0].url]}>
               <LayoutHome>
                 <Switch>
-                  <Route path={allPaths[0]}>
-                    <Home />
-                  </Route>
+                  <Route path={allPaths[0].url}>{allPaths[0].component}</Route>
                 </Switch>
               </LayoutHome>
             </Route>

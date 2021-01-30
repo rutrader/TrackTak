@@ -15,10 +15,30 @@ import SearchTicker from "./SearchTicker";
 import { Link } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
 
-const links = [
+const leftLinks = [
   { to: "/valuations", text: "Valuations" },
   { to: "/documentation", text: "Documentation" },
 ];
+
+const rightLinks = [
+  { to: "/contact-us", text: "Contact Us" },
+  {
+    to: "/about-us",
+    text: "About us",
+  },
+];
+
+const allLinks = [...leftLinks, ...rightLinks];
+
+const HeaderLink = ({ to, text, sx }) => {
+  return (
+    <Box sx={{ mx: 1, whiteSpace: "nowrap", ...sx }}>
+      <Button variant="outlined" to={to} component={Link}>
+        {text}
+      </Button>
+    </Box>
+  );
+};
 
 const Header = ({ hideSearch }) => {
   const theme = useTheme();
@@ -57,17 +77,20 @@ const Header = ({ hideSearch }) => {
               </Hidden>
             </Box>
             <Hidden mdDown>
-              {links.map((link) => (
-                <Box sx={{ mr: 2 }}>
-                  <Button variant="outlined" to={link.to} component={Link}>
-                    {link.text}
-                  </Button>
-                </Box>
+              {leftLinks.map((link) => (
+                <HeaderLink {...link} />
               ))}
             </Hidden>
-            <Box sx={{ flex: "0 1 450px", minWidth: "120px" }}>
+            <Box
+              sx={{ flex: "0 1 450px", minWidth: "120px", ml: 1, mr: "auto" }}
+            >
               {!hideSearch && <SearchTicker removeInputPadding />}
             </Box>
+            <Hidden mdDown>
+              {rightLinks.map((link, i) => (
+                <HeaderLink sx={{ ml: i === 0 ? 2 : 0 }} {...link} />
+              ))}
+            </Hidden>
             <Hidden mdUp>
               <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
                 <Button
@@ -84,7 +107,7 @@ const Header = ({ hideSearch }) => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  {links.map((link) => (
+                  {allLinks.map((link) => (
                     <MenuItem
                       to={link.to}
                       component={Link}
