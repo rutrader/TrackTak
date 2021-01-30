@@ -13,6 +13,8 @@ const InputExampleBox = ({ sx, ...props }) => (
   <Box sx={{ my: 2, ...sx }} {...props} />
 );
 
+// TODO: Think of what to do with the duplicate content from tooltips and wiki
+// do we share it or delete one? etc.
 const wikiContent = [
   {
     title: "What is a DCF?",
@@ -545,11 +547,29 @@ const wikiContent = [
   },
   {
     title: "Probability of Failure - Cell B25",
-    text: <>Not implemented yet. Coming soon.</>,
+    text: (
+      <>
+        Many young, growth companies fail, especially if they have trouble
+        raising cash. Many distressed companies fail because they have trouble
+        making debt payments. This is a tough input to estimate but try to use
+        the agencies credit rating if the company has one, if not then use the
+        synthetic rating default spread as a guide.
+      </>
+    ),
   },
   {
     title: "Proceeds if the Firm Fails - Cell B26",
-    text: <>Not implemented yet. Coming soon.</>,
+    text: (
+      <>
+        If the company fails then sometimes there will be assets that get sold
+        off (usually at fire sale prices) or cash left over to distribute to
+        shareholders. This is only true if all liabilites have been paid first
+        as shareholders are last in line if a company goes bankrupt. Sometimes
+        however, companies will continue to run themselves into the ground with
+        more debt to continue giving the executives a job and therefore will
+        never have proceeds to distribute to shareholders.
+      </>
+    ),
   },
   {
     title: "Operating Assets - Cell B27",

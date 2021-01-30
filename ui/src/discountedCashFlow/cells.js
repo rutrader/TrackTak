@@ -88,9 +88,10 @@ const cells = {
     "=SUM(C13, D13, E13, F13, G13, H13, I13, J13, K13, L13)"
   ),
   B24: getExpressionProperties("=B22+B23"),
-  // TODO: Implement fully at a later date from inputs
-  B25: getExpressionProperties("0"),
-  B26: getExpressionProperties("0"),
+  B25: getExpressionProperties("=probabilityOfFailure"),
+  B26: getExpressionProperties(
+    "=(bookValueOfEquity+bookValueOfDebt)*proceedsAsAPercentageOfBookValue"
+  ),
   B27: getExpressionProperties("=B24*(1-B25)+B26*B25"),
   B28: getExpressionProperties("=bookValueOfDebt"),
   B29: getExpressionProperties("=minorityInterest"),

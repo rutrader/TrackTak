@@ -201,7 +201,7 @@ export const InfoTextEmployeeOptions = () => {
   );
 };
 
-export const InfoTextCarryforwards = () => {
+export const InfoTextOther = () => {
   return (
     <>
       <Box>
@@ -209,6 +209,24 @@ export const InfoTextCarryforwards = () => {
         that the company is carrying over to this year. It allows the company to
         reduce it's taxable income for the current year. This is found in the
         financial statements.
+      </Box>
+      <Box>
+        <b>Probability of Failure</b> - Many young, growth companies fail,
+        especially if they have trouble raising cash. Many distressed companies
+        fail because they have trouble making debt payments. This is a tough
+        input to estimate but try to use the agencies credit rating if the
+        company has one, if not then use the synthetic rating default spread as
+        a guide.
+      </Box>
+      <Box>
+        <b>Proceeds as a Percentage of Book value</b> - If the company fails
+        then sometimes there will be assets that get sold off (usually at fire
+        sale prices) or cash left over to distribute to shareholders. This is
+        only true if all liabilites have been paid first as shareholders are
+        last in line if a company goes bankrupt. Sometimes however, companies
+        will continue to run themselves into the ground with more debt to
+        continue giving the executives a job and therefore will never have
+        proceeds to distribute to shareholders.
       </Box>
     </>
   );

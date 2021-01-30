@@ -16,7 +16,7 @@ import {
   InfoTextEmployeeOptions,
   InfoTextNormalDebt,
   InfoTextPreferredStock,
-  InfoTextCarryforwards,
+  InfoTextOther,
 } from "./InfoText";
 import { useSelector } from "react-redux";
 import useSetURLInput from "../hooks/useSetURLInput";
@@ -182,21 +182,45 @@ const OptionalInputs = () => {
       ),
     },
     {
-      title: "Carryforwards",
-      tooltipTextNode: <InfoTextCarryforwards />,
+      title: "Other",
+      tooltipTextNode: <InfoTextOther />,
       children: (
         // TODO: Automate this by default but still keep this input
         // to allow overriding
-        <OptionalTextField
-          label="Net Operating Loss"
-          defaultValue={queryParams.netOperatingLoss}
-          onBlur={(value) => {
-            setURLInput("netOperatingLoss", value);
-          }}
-          InputProps={{
-            inputComponent: FormatInputToMillionCurrency,
-          }}
-        />
+        <>
+          <OptionalTextField
+            label="Net Operating Loss"
+            defaultValue={queryParams.netOperatingLoss}
+            onBlur={(value) => {
+              setURLInput("netOperatingLoss", value);
+            }}
+            InputProps={{
+              inputComponent: FormatInputToMillionCurrency,
+            }}
+          />
+          {/* TODO: Attempt to automate this by default but allow this override anyway */}
+          <OptionalTextField
+            label="Probability of Failure"
+            defaultValue={queryParams.probabilityOfFailure}
+            onBlur={(value) => {
+              setURLInput("probabilityOfFailure", value);
+            }}
+            InputProps={{
+              inputComponent: FormatInputToPercent,
+            }}
+          />
+          {/* TODO: Add fair value option as well later */}
+          <OptionalTextField
+            label="Proceeds as a Percentage of Book value"
+            defaultValue={queryParams.proceedsAsAPercentageOfBookValue}
+            onBlur={(value) => {
+              setURLInput("proceedsAsAPercentageOfBookValue", value);
+            }}
+            InputProps={{
+              inputComponent: FormatInputToPercent,
+            }}
+          />
+        </>
       ),
     },
   ];

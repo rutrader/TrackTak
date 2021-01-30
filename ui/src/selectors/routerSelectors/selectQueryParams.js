@@ -22,6 +22,8 @@ export const inputQueries = [
   { name: "marketPricePerShare", type: "currency" },
   { name: "annualDividendPerShare", type: "currency" },
   { name: "netOperatingLoss", type: "million" },
+  { name: "probabilityOfFailure", type: "percent" },
+  { name: "proceedsAsAPercentageOfBookValue", type: "percent" },
 ];
 
 const getInputQueryParams = (query) => {
