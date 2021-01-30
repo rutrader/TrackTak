@@ -124,3 +124,45 @@ export const getROICCalculation = (cellKey) => {
 
   return `=${column}6/${column}16`;
 };
+
+export const riskFreeRateCalculation =
+  "=governmentBondTenYearLastClose / 100 - adjDefaultSpread";
+
+export const estimatedCostOfDebtCalculation =
+  "=riskFreeRate + interestSpread + adjDefaultSpread";
+
+export const estimatedMarketValueOfStraightDebtCalculation =
+  "=(interestExpense * (1 - (1 + pretaxCostOfDebt) ^ -averageMaturityOfDebt)) / pretaxCostOfDebt + bookValueOfDebt / (1 + pretaxCostOfDebt) ^ averageMaturityOfDebt";
+
+export const estimatedValueOfStraightDebtInConvertibleDebtCalculation =
+  "=(interestExpenseOnConvertibleDebt * (1 - (1 + pretaxCostOfDebt) ^ -maturityOfConvertibleDebt)) / pretaxCostOfDebt + bookValueOfConvertibleDebt / (1 + pretaxCostOfDebt) ^ maturityOfConvertibleDebt";
+
+export const leveredBetaCalculation =
+  "=unleveredBeta * (1 + (1 - marginalTaxRate) * (debtMarketValue / equityMarketValue))";
+
+export const costOfPreferredStockCalculation =
+  "=annualDividendPerShare / marketPricePerShare";
+
+export const marketValueCalculation = {
+  equityMarketValue: "=price * sharesOutstanding",
+  debtMarketValue:
+    "=estimatedMarketValueOfStraightDebt + estimatedValueOfStraightDebtInConvertibleDebt",
+  preferredStockMarketValue: "=numberOfPreferredShares * marketPricePerShare",
+  totalMarketValue:
+    "=equityMarketValue + debtMarketValue + preferredStockMarketValue",
+};
+
+export const weightInCostOfCapitalCalculation = {
+  equityWeight: "=equityMarketValue / totalMarketValue",
+  debtWeight: "=debtMarketValue / totalMarketValue",
+  preferredStockWeight: "=preferredStockMarketValue / totalMarketValue",
+  totalWeight: "=equityWeight + debtWeight + preferredStockWeight",
+};
+
+export const costOfComponentCalculation = {
+  equityCostOfCapital: "=riskFreeRate + leveredBeta * equityRiskPremium",
+  debtCostOfCapital: "=pretaxCostOfDebt * marginalTaxRate",
+  preferredStockCostOfCapital: "=costOfPreferredStock",
+  totalCostOfCapital:
+    "=equityWeight * equityCostOfCapital + debtWeight * debtCostOfCapital + preferredStockWeight * preferredStockCostOfCapital",
+};

@@ -5,30 +5,31 @@ export const ebitTargetMarginInYearTenQueryName = "ebitTargetMarginInYearTen";
 export const yearOfConvergenceQueryName = "yearOfConvergence";
 export const salesToCapitalRatioQueryName = "salesToCapitalRatio";
 
-export const inputQueryNames = [
-  cagrYearOneToFiveQueryName,
-  ebitTargetMarginInYearTenQueryName,
-  yearOfConvergenceQueryName,
-  salesToCapitalRatioQueryName,
-  "numberOfOptionsOutstanding",
-  "averageStrikePrice",
-  "averageMaturityOfOptions",
-  "averageMaturityOfDebt",
-  "pretaxCostOfDebt",
-  "bookValueOfConvertibleDebt",
-  "interestExpenseOnConvertibleDebt",
-  "maturityOfConvertibleDebt",
-  "numberOfPreferredShares",
-  "marketPricePerShare",
-  "annualDividendPerShare",
+export const inputQueries = [
+  { name: cagrYearOneToFiveQueryName, type: "percent" },
+  { name: ebitTargetMarginInYearTenQueryName, type: "percent" },
+  { name: yearOfConvergenceQueryName, type: "number" },
+  { name: salesToCapitalRatioQueryName, type: "number" },
+  { name: "numberOfEmployeeOptionsOutstanding", type: "million" },
+  { name: "averageStrikePrice", type: "currency" },
+  { name: "averageMaturityOfOptions", type: "number" },
+  { name: "averageMaturityOfDebt", type: "number" },
+  { name: "pretaxCostOfDebt", type: "percent" },
+  { name: "bookValueOfConvertibleDebt", type: "million" },
+  { name: "interestExpenseOnConvertibleDebt", type: "million" },
+  { name: "maturityOfConvertibleDebt", type: "number" },
+  { name: "numberOfPreferredShares", type: "million" },
+  { name: "marketPricePerShare", type: "currency" },
+  { name: "annualDividendPerShare", type: "currency" },
+  { name: "netOperatingLoss", type: "million" },
 ];
 
 const getInputQueryParams = (query) => {
   const inputQueryParams = {};
 
-  inputQueryNames.forEach((inputQueryName) => {
-    if (query[inputQueryName]) {
-      inputQueryParams[inputQueryName] = parseFloat(query[inputQueryName]);
+  inputQueries.forEach(({ name }) => {
+    if (query[name]) {
+      inputQueryParams[name] = parseFloat(query[name]);
     }
   });
 

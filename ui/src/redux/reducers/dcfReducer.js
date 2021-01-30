@@ -4,31 +4,11 @@ import cells from "../../discountedCashFlow/cells";
 import cellsTree from "../../discountedCashFlow/cellsTree";
 import {
   getAllDependents,
-  getExpressionWithoutEqualsSign,
   isExpressionDependency,
   validateExp,
 } from "../../discountedCashFlow/utils";
-import {
-  create,
-  evaluateDependencies,
-  addDependencies,
-  divideDependencies,
-} from "mathjs";
-import { IF } from "@formulajs/formulajs/lib/logical";
-import { SUM, TRUNC } from "@formulajs/formulajs/lib/math-trig";
 import matureMarketEquityRiskPremium from "../../shared/matureMarketEquityRiskPremium";
-
-const math = create({
-  evaluateDependencies,
-  addDependencies,
-  divideDependencies,
-});
-
-math.import({
-  IF,
-  SUM,
-  TRUNC,
-});
+import { evaluate } from "../../shared/math";
 
 // Every single cell from C2 to M18 will have % difference YOY in the cell from the previous year
 // In the cells.js file, at the bottom, loop through each cell in cells (object.keys)
@@ -47,7 +27,7 @@ const computeExpr = (key, expr, scope) => {
     return { value: expr, expr };
   } else {
     try {
-      value = math.evaluate(getExpressionWithoutEqualsSign(expr), scope);
+      value = evaluate(expr, scope);
     } catch (e) {
       value = null;
     }
