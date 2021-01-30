@@ -12,6 +12,9 @@ import { Link as RouterLink } from "react-router-dom";
 import LazyLoad from "react-lazyload";
 import ExportToExcel from "./ExportToExcel";
 import DiscountedCashFlowTable from "./DiscountedCashFlowTable";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsYoyGrowthToggled } from "../redux/actions/dcfActions";
+import selectIsYoyGrowthToggled from "../selectors/dcfSelectors/selectIsYoyGrowthToggled";
 
 const Placeholder = () => {
   const theme = useTheme();
@@ -32,6 +35,8 @@ const Placeholder = () => {
 
 const DiscountedCashFlowSheet = ({ columnWidths }) => {
   const [showFormulas, setShowFormulas] = useState(false);
+  const dispatch = useDispatch();
+  const isYoyGrowthToggled = useSelector(selectIsYoyGrowthToggled);
 
   // TODO: Add an expand button to see it full screen
   return (
@@ -54,6 +59,20 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
           >
             {showFormulas ? "Hide Formulas" : "Show Formulas"}
           </Button>
+          <Box
+            sx={{
+              ml: 1,
+            }}
+          >
+            <Button
+              onClick={() => {
+                dispatch(setIsYoyGrowthToggled(!isYoyGrowthToggled));
+              }}
+              variant="outlined"
+            >
+              {isYoyGrowthToggled ? "Hide YOY% " : "Show YOY%"}
+            </Button>
+          </Box>
           <Box
             sx={{
               ml: 1,

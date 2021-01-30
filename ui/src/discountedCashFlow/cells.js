@@ -258,6 +258,4 @@ getColumnsBetween(columns, "B", "L").forEach((column) => {
   cells[roicKey].expr = getROICCalculation(roicKey);
 });
 
-Object.keys();
-
 export default cells;

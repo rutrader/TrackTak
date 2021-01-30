@@ -1,24 +1,16 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { setYoyToggled, updateCells } from "../actions/dcfActions";
+import { setIsYoyGrowthToggled, updateCells } from "../actions/dcfActions";
 import cells from "../../discountedCashFlow/cells";
 import cellsTree from "../../discountedCashFlow/cellsTree";
 import {
   getAllDependents,
+  getColumnLetterFromCellKey,
+  getRowNumberFromCellKey,
   isExpressionDependency,
   validateExp,
 } from "../../discountedCashFlow/utils";
 import matureMarketEquityRiskPremium from "../../shared/matureMarketEquityRiskPremium";
 import { evaluate } from "../../shared/math";
-
-// Every single cell from C2 to M18 will have % difference YOY in the cell from the previous year
-// In the cells.js file, at the bottom, loop through each cell in cells (object.keys)
-// if the key is between C2 to M18 then set a property called yoyExpr to be:
-// =(c-p)/c, where c = The current cell, p = The previous cell (row) => utils.js
-// convert to a number, charCodeAt() -1 and add current number.
-
-// Then on line 30 in dcfReducer, if the isYoyToggled is true then evaluate the yoyExpr NOT the expr.
-
-// Also add another if branch to DiscountedCashFlow file on line 205 for yoyExpr
 
 const computeExpr = (key, expr, scope) => {
   let value = null;
@@ -76,6 +68,7 @@ const calculateNewCells = (cells, cellsToUpdate, scope) => {
 
 const initialState = {
   cells,
+  isYoyGrowthToggled: false,
   scope: {
     matureMarketEquityRiskPremium,
   },
@@ -93,7 +86,31 @@ export const dcfReducer = createReducer(initialState, (builder) => {
     state.cells = newCells;
     state.scope = newScope;
   });
-  builder.addCase(setYoyToggled, (state, action) => {
-    state.isYoyToggled = action.payload;
+  builder.addCase(setIsYoyGrowthToggled, (state, action) => {
+    state.isYoyGrowthToggled = action.payload;
+
+    Object.keys(state.cells).forEach((key) => {
+      const currentCell = state.cells[key];
+      const cCharCode = "C".charCodeAt(0);
+      const mCharCode = "M".charCodeAt(0);
+      const currentColumn = getColumnLetterFromCellKey(key);
+      const charCode = currentColumn.charCodeAt(0);
+      const currentRow = getRowNumberFromCellKey(key);
+      const previousRowColumn = String.fromCharCode(charCode - 1);
+      const previousCellKey = `${previousRowColumn}${currentRow}`;
+      const previousCell = state.cells[previousCellKey];
+
+      if (
+        charCode >= cCharCode &&
+        charCode <= mCharCode &&
+        currentRow >= 2 &&
+        currentRow <= 17
+      ) {
+        if (previousCell.value !== undefined) {
+          state.cells[key].yoyGrowthValue =
+            (currentCell.value - previousCell.value) / currentCell.value;
+        }
+      }
+    });
   });
 });
