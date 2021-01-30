@@ -25,7 +25,7 @@ const ContactUs = () => {
         <Box>Address:</Box>
         <address>
           <AddressBox>
-            <b>Tracktak LTD</b>
+            <b>Tracktak Ltd</b>
           </AddressBox>
           <AddressBox>26 Calder View</AddressBox>
           <AddressBox>Brighouse, Rastrick</AddressBox>
