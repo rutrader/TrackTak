@@ -18,8 +18,9 @@ const convertCurrency = (exchangeRates) => (
     (prev, date) => {
       // Get exchange rate for that month
       const datePeriodAsMonthDate = dayjs(date).format(monthDateFormat);
+      const close = exchangeRates[datePeriodAsMonthDate]?.close ?? 0;
 
-      return prev + exchangeRates[datePeriodAsMonthDate].close;
+      return prev + close;
     },
     0
   );

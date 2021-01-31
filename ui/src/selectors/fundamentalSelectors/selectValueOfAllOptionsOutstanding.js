@@ -10,6 +10,7 @@ const selectValueOfAllOptionsOutstanding = createSelector(
     if (queryParams.numberOfEmployeeOptionsOutstanding === undefined)
       return null;
 
+    // TODO: Use expression and put in excel export sheet
     return valuePerOption * queryParams.numberOfEmployeeOptionsOutstanding;
   }
 );

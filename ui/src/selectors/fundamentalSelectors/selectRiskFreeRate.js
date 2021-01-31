@@ -1,15 +1,15 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { riskFreeRateCalculation } from "../../discountedCashFlow/expressionCalculations";
 import selectCurrentEquityRiskPremium from "./selectCurrentEquityRiskPremium";
-import selectGovernmentBondTenYearLastClose from "./selectGovernmentBondTenYearLastClose";
+import selectGovernmentBondTenYearYield from "./selectGovernmentBondTenYearYield";
 import { evaluate } from "../../shared/math";
 
 const calculateRiskFreeRate = (
-  governmentBondTenYearLastClose,
+  governmentBondTenYearYield,
   currentEquityRiskPremium
 ) => {
   if (
-    governmentBondTenYearLastClose === null ||
+    governmentBondTenYearYield === null ||
     currentEquityRiskPremium?.adjDefaultSpread === null ||
     currentEquityRiskPremium?.adjDefaultSpread === undefined
   ) {
@@ -17,7 +17,7 @@ const calculateRiskFreeRate = (
   }
 
   const riskFreeRate = evaluate(riskFreeRateCalculation, {
-    governmentBondTenYearLastClose,
+    governmentBondTenYearYield,
     adjDefaultSpread: currentEquityRiskPremium.adjDefaultSpread,
   });
 
@@ -25,7 +25,7 @@ const calculateRiskFreeRate = (
 };
 
 const selectRiskFreeRate = createSelector(
-  selectGovernmentBondTenYearLastClose,
+  selectGovernmentBondTenYearYield,
   selectCurrentEquityRiskPremium,
   calculateRiskFreeRate
 );

@@ -122,7 +122,7 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
           cashAndShortTermInvestments: balanceSheet.cashAndShortTermInvestments,
           noncontrollingInterestInConsolidatedEntity:
             balanceSheet.noncontrollingInterestInConsolidatedEntity,
-          corporateTaxRate: currentEquityRiskPremium.corporateTaxRate,
+          marginalTaxRate: currentEquityRiskPremium.marginalTaxRate,
           sharesOutstanding: sharesStats.SharesOutstanding,
           price,
         }
@@ -133,7 +133,7 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
     balanceSheet.cashAndShortTermInvestments,
     balanceSheet.investedCapital,
     balanceSheet.noncontrollingInterestInConsolidatedEntity,
-    currentEquityRiskPremium.corporateTaxRate,
+    currentEquityRiskPremium.marginalTaxRate,
     dispatch,
     incomeStatement.minorityInterest,
     incomeStatement.operatingIncome,
