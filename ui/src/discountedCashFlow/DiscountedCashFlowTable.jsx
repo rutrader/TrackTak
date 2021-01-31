@@ -74,9 +74,7 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
       } else if (isYoyGrowthToggled && cell.yoyGrowthValue !== undefined) {
         node = <FormatRawNumberToPercent value={cell.yoyGrowthValue} />;
       }
-      //TODO highlight yoy cells with diffrent colour
-      // fix toggle formula
-      // move dcfreducer logic to utils
+
       if (isOutputCell) {
         intent = "success";
       }

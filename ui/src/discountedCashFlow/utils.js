@@ -186,3 +186,42 @@ export const padCellKeys = (sortedCellKeys) => {
   });
   return paddedCellKeys;
 };
+
+export const getCellsBetween = (
+  startColumnCharCode,
+  endColumnCharCode,
+  startRowNumber,
+  endRowNumber,
+  cells
+) => {
+  const cellsBetween = [];
+
+  Object.keys(cells).forEach((key) => {
+    const startCharCode = startColumnCharCode.charCodeAt(0);
+    const endCharCode = endColumnCharCode.charCodeAt(0);
+    const currentColumn = getColumnLetterFromCellKey(key);
+    const charCode = currentColumn.charCodeAt(0);
+    const currentRow = getRowNumberFromCellKey(key);
+
+    if (
+      charCode >= startCharCode &&
+      charCode <= endCharCode &&
+      currentRow >= startRowNumber &&
+      currentRow <= endRowNumber
+    ) {
+      cellsBetween.push(key);
+    }
+  });
+  return cellsBetween;
+};
+
+export const getPreviousRowCellKey = (currentCellKey) => {
+  const currentColumn = getColumnLetterFromCellKey(currentCellKey);
+  const charCode = currentColumn.charCodeAt(0);
+  const currentRow = getRowNumberFromCellKey(currentCellKey);
+
+  const previousRowColumn = String.fromCharCode(charCode - 1);
+  const previousCellKey = `${previousRowColumn}${currentRow}`;
+
+  return previousCellKey;
+};

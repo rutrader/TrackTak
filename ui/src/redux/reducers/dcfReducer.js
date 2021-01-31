@@ -4,8 +4,8 @@ import cells from "../../discountedCashFlow/cells";
 import cellsTree from "../../discountedCashFlow/cellsTree";
 import {
   getAllDependents,
-  getColumnLetterFromCellKey,
-  getRowNumberFromCellKey,
+  getCellsBetween,
+  getPreviousRowCellKey,
   isExpressionDependency,
   validateExp,
 } from "../../discountedCashFlow/utils";
@@ -88,28 +88,16 @@ export const dcfReducer = createReducer(initialState, (builder) => {
   });
   builder.addCase(setIsYoyGrowthToggled, (state, action) => {
     state.isYoyGrowthToggled = action.payload;
+    const cellsBetween = getCellsBetween("C", "M", 2, 17, state.cells);
 
-    Object.keys(state.cells).forEach((key) => {
+    cellsBetween.forEach((key) => {
       const currentCell = state.cells[key];
-      const cCharCode = "C".charCodeAt(0);
-      const mCharCode = "M".charCodeAt(0);
-      const currentColumn = getColumnLetterFromCellKey(key);
-      const charCode = currentColumn.charCodeAt(0);
-      const currentRow = getRowNumberFromCellKey(key);
-      const previousRowColumn = String.fromCharCode(charCode - 1);
-      const previousCellKey = `${previousRowColumn}${currentRow}`;
+      const previousCellKey = getPreviousRowCellKey(key);
       const previousCell = state.cells[previousCellKey];
 
-      if (
-        charCode >= cCharCode &&
-        charCode <= mCharCode &&
-        currentRow >= 2 &&
-        currentRow <= 17
-      ) {
-        if (previousCell.value !== undefined) {
-          state.cells[key].yoyGrowthValue =
-            (currentCell.value - previousCell.value) / currentCell.value;
-        }
+      if (previousCell.value !== undefined) {
+        state.cells[key].yoyGrowthValue =
+          (currentCell.value - previousCell.value) / currentCell.value;
       }
     });
   });
