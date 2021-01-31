@@ -182,7 +182,7 @@ getCellsForRows(columns, [2, 4, 6, 7, 8, 9, 13, 16])
     if (key.charAt(0) !== "A") {
       cells[key] = {
         ...cells[key],
-        type: "million",
+        type: "million-currency",
       };
     }
   });

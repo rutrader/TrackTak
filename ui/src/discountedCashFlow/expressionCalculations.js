@@ -126,7 +126,7 @@ export const getROICCalculation = (cellKey) => {
 };
 
 export const riskFreeRateCalculation =
-  "=governmentBondTenYearLastClose / 100 - adjDefaultSpread";
+  "=governmentBondTenYearYield - adjDefaultSpread";
 
 export const estimatedCostOfDebtCalculation =
   "=riskFreeRate + interestSpread + adjDefaultSpread";

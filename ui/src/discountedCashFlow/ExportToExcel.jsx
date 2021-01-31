@@ -12,7 +12,7 @@ import sortAlphaNumeric from "./sortAlphaNumeric";
 import getChunksOfArray from "../shared/getChunksOfArray";
 import { useSelector } from "react-redux";
 import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
-import selectGovernmentBondTenYearLastClose from "../selectors/fundamentalSelectors/selectGovernmentBondTenYearLastClose";
+import selectGovernmentBondTenYearYield from "../selectors/fundamentalSelectors/selectGovernmentBondTenYearYield";
 import selectScope from "../selectors/dcfSelectors/selectScope";
 import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
 import cells from "./cells";
@@ -41,8 +41,8 @@ export const valuationWorksheetName = "Valuation";
 
 const ExportToExcel = () => {
   const general = useSelector(selectGeneral);
-  const governmentBondTenYearLastClose = useSelector(
-    selectGovernmentBondTenYearLastClose
+  const governmentBondTenYearYield = useSelector(
+    selectGovernmentBondTenYearYield
   );
   const currentEquityRiskPremium = useSelector(selectCurrentEquityRiskPremium);
   const scope = useSelector(selectScope);
@@ -62,8 +62,12 @@ const ExportToExcel = () => {
     const getNameFromKey = (key, type) => {
       let newName = sentenceCase(key);
 
-      if (type === "million") {
+      if (type === "million" || type === "million-currency") {
         newName += " (mln)";
+      }
+
+      if (type === "year") {
+        newName += " (yr)";
       }
 
       return newName;
@@ -78,9 +82,9 @@ const ExportToExcel = () => {
         type: "percent",
         value: currentEquityRiskPremium.equityRiskPremium,
       },
-      governmentBondTenYearLastClose: {
-        type: "currency",
-        value: governmentBondTenYearLastClose,
+      governmentBondTenYearYield: {
+        type: "percent",
+        value: governmentBondTenYearYield,
       },
       adjDefaultSpread: {
         type: "percent",
@@ -89,11 +93,11 @@ const ExportToExcel = () => {
       riskFreeRate: { type: "percent", expr: riskFreeRateCalculation },
       interestSpread: { type: "percent", value: interestSpread.spread },
       bookValueOfDebt: {
-        type: "currency",
+        type: "million-currency",
         value: balanceSheet.bookValueOfDebt,
       },
       interestExpense: {
-        type: "currency",
+        type: "million-currency",
         value: incomeStatement.interestExpense,
       },
       price: {
@@ -105,7 +109,7 @@ const ExportToExcel = () => {
         value: SharesOutstanding,
       },
       costOfPreferredStock: {
-        type: "currency",
+        type: "percent",
         expr: costOfPreferredStockCalculation,
       },
       pretaxCostOfDebt: {
@@ -114,11 +118,11 @@ const ExportToExcel = () => {
       unleveredBeta: { type: "number", value: currentIndustry.unleveredBeta },
       leveredBeta: { type: "number", expr: leveredBetaCalculation },
       estimatedMarketValueOfStraightDebt: {
-        type: "currency",
+        type: "million-currency",
         expr: estimatedMarketValueOfStraightDebtCalculation,
       },
       estimatedValueOfStraightDebtInConvertibleDebt: {
-        type: "currency",
+        type: "million-currency",
         expr: estimatedValueOfStraightDebtInConvertibleDebtCalculation,
       },
     };
@@ -133,7 +137,7 @@ const ExportToExcel = () => {
       const expr = marketValueCalculation[key];
 
       costOfCapitalData[key] = {
-        type: "currency",
+        type: "million-currency",
         expr,
       };
     });
@@ -171,17 +175,17 @@ const ExportToExcel = () => {
     inputQueries.forEach(({ name, type }) => {
       const value = queryParams[name];
 
-      transformedInputsData.push(getNameFromKey(name));
+      transformedInputsData.push(getNameFromKey(name, type));
       transformedInputsData.push(formatValueForExcelOutput(value, type));
     });
 
     const transformedCostOfCapitalData = [];
 
     costOfCapitalDataKeys.forEach((key) => {
-      const { value, expr } = costOfCapitalData[key];
+      const { value, expr, type } = costOfCapitalData[key];
       let formula = expr;
 
-      transformedCostOfCapitalData.push(getNameFromKey(key));
+      transformedCostOfCapitalData.push(getNameFromKey(key, type));
       transformedCostOfCapitalData.push(
         formatCellForExcelOutput(
           {
@@ -214,8 +218,8 @@ const ExportToExcel = () => {
     const costOfCapitalWorksheet = utils.aoa_to_sheet(chunkedCostOfCapitalData);
     const valuationOutputWorksheet = utils.aoa_to_sheet(chunkedValuationData);
 
-    inputsWorksheet["!cols"] = [{ width: 35 }, { width: 15 }];
-    costOfCapitalWorksheet["!cols"] = [{ width: 43 }, { width: 20 }];
+    inputsWorksheet["!cols"] = [{ width: 39 }, { width: 15 }];
+    costOfCapitalWorksheet["!cols"] = [{ width: 47 }, { width: 20 }];
     valuationOutputWorksheet["!cols"] = [
       ...new Array(numberOfValuationColumns),
     ].map((_, i) => {

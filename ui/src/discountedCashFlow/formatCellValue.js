@@ -12,8 +12,11 @@ const formatCellValue = (cell) => {
   if (type === "percent") {
     node = <FormatRawNumberToPercent value={value} />;
   }
-  if (type === "million") {
+  if (type === "million-currency") {
     node = <FormatRawNumberToMillion value={value} useCurrencySymbol />;
+  }
+  if (type === "million") {
+    node = <FormatRawNumberToMillion value={value} />;
   }
   if (type === "currency") {
     node = <FormatRawNumberToCurrency value={value} />;

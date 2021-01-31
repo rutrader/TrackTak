@@ -7,7 +7,7 @@ import {
 } from "../actions/fundamentalsActions";
 
 const initialState = {
-  governmentBondTenYearLastClose: null,
+  governmentBondTenYearYield: null,
   priceLastClose: null,
   data: null,
   isLoaded: false,
@@ -29,7 +29,7 @@ const setGovernmentBondTenYearLastCloseReducer = (
   state,
   { payload = null }
 ) => {
-  state.governmentBondTenYearLastClose = payload;
+  state.governmentBondTenYearYield = payload / 100;
 };
 
 const setExchangeRateReducer = (state, { payload = {} }) => {
