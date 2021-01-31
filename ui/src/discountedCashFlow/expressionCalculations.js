@@ -141,7 +141,7 @@ export const leveredBetaCalculation =
   "=unleveredBeta * (1 + (1 - marginalTaxRate) * (debtMarketValue / equityMarketValue))";
 
 export const costOfPreferredStockCalculation =
-  "=annualDividendPerShare / marketPricePerShare";
+  "=IFERROR(annualDividendPerShare / marketPricePerShare, 0)";
 
 export const marketValueCalculation = {
   equityMarketValue: "=price * sharesOutstanding",

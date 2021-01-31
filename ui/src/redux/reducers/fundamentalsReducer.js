@@ -37,6 +37,8 @@ const setExchangeRateReducer = (state, { payload = {} }) => {
 
   if (values.length) {
     state.exchangeRates = payload;
+  } else {
+    state.exchangeRates = null;
   }
 };
 
