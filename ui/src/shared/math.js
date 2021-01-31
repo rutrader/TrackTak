@@ -20,5 +20,14 @@ math.import({
   TRUNC,
 });
 
-export const evaluate = (expr, scope) =>
-  math.evaluate(getExpressionWithoutEqualsSign(expr), scope);
+export const evaluate = (expr, scope) => {
+  const newScope = {};
+
+  Object.keys(scope).forEach((key) => {
+    newScope[key] = scope[key] ?? 0;
+  });
+
+  const result = math.evaluate(getExpressionWithoutEqualsSign(expr), newScope);
+
+  return isNaN(result) ? null : result;
+};

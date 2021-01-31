@@ -29,13 +29,11 @@ import {
   weightInCostOfCapitalCalculation,
 } from "./expressionCalculations";
 import selectInterestSpread from "../selectors/fundamentalSelectors/selectInterestSpread";
-import { getPretaxCostOfDebt } from "../selectors/fundamentalSelectors/selectPretaxCostOfDebt";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
 import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import selectSharesStats from "../selectors/fundamentalSelectors/selectSharesStats";
-import { evaluate } from "../shared/math";
 
 export const inputsWorksheetName = "Inputs";
 export const costOfCapitalWorksheetName = "Cost of Capital";
@@ -74,7 +72,7 @@ const ExportToExcel = () => {
     const costOfCapitalData = {
       marginalTaxRate: {
         type: "percent",
-        value: currentEquityRiskPremium.corporateTaxRate,
+        value: currentEquityRiskPremium.marginalTaxRate,
       },
       equityRiskPremium: {
         type: "percent",
@@ -108,14 +106,10 @@ const ExportToExcel = () => {
       },
       costOfPreferredStock: {
         type: "currency",
-        expr: evaluate(costOfPreferredStockCalculation, {
-          marketPricePerShare: queryParams.marketPricePerShare ?? 0,
-          annualDividendPerShare: queryParams.annualDividendPerShare ?? 0,
-        }),
+        expr: costOfPreferredStockCalculation,
       },
       pretaxCostOfDebt: {
         type: "percent",
-        expr: getPretaxCostOfDebt(queryParams, estimatedCostOfDebtCalculation),
       },
       unleveredBeta: { type: "number", value: currentIndustry.unleveredBeta },
       leveredBeta: { type: "number", expr: leveredBetaCalculation },
@@ -128,6 +122,12 @@ const ExportToExcel = () => {
         expr: estimatedValueOfStraightDebtInConvertibleDebtCalculation,
       },
     };
+
+    if (queryParams.pretaxCostOfDebt !== undefined) {
+      costOfCapitalData.pretaxCostOfDebt.value = queryParams.pretaxCostOfDebt;
+    } else {
+      costOfCapitalData.pretaxCostOfDebt.expr = estimatedCostOfDebtCalculation;
+    }
 
     Object.keys(marketValueCalculation).forEach((key) => {
       const expr = marketValueCalculation[key];

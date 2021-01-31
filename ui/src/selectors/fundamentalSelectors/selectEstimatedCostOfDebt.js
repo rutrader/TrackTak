@@ -16,8 +16,6 @@ const selectEstimatedCostOfDebt = createSelector(
       adjDefaultSpread: currentEquityRiskPremium?.adjDefaultSpread,
     });
 
-    if (isNaN(value)) return null;
-
     return value;
   }
 );

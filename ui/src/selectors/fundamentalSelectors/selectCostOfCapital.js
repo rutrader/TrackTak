@@ -31,16 +31,15 @@ const calculateCostOfCapital = (
   riskFreeRate
 ) => {
   // TODO: Maybe calculate averageMaturityOfDebt automatically based on the average
-  const averageMaturityOfDebt = query.averageMaturityOfDebt ?? 0;
-  const maturityOfConvertibleDebt = query.maturityOfConvertibleDebt ?? 0;
+  const averageMaturityOfDebt = query.averageMaturityOfDebt;
+  const maturityOfConvertibleDebt = query.maturityOfConvertibleDebt;
   const interestExpenseOnConvertibleDebt =
-    query.interestExpenseOnConvertibleDebt ?? 0;
-  const bookValueOfConvertibleDebt = query.bookValueOfConvertibleDebt ?? 0;
-  const numberOfPreferredShares = query.numberOfPreferredShares ?? 0;
-  const marketPricePerShare = query.marketPricePerShare ?? 0;
-  const annualDividendPerShare = query.annualDividendPerShare ?? 0;
-
-  const marginalTaxRate = currentEquityRiskPremiumCountry.corporateTaxRate;
+    query.interestExpenseOnConvertibleDebt;
+  const bookValueOfConvertibleDebt = query.bookValueOfConvertibleDebt;
+  const numberOfPreferredShares = query.numberOfPreferredShares;
+  const marketPricePerShare = query.marketPricePerShare;
+  const annualDividendPerShare = query.annualDividendPerShare;
+  const marginalTaxRate = currentEquityRiskPremiumCountry.marginalTaxRate;
   const estimatedMarketValueOfStraightDebt = evaluate(
     estimatedMarketValueOfStraightDebtCalculation,
     {
@@ -109,12 +108,11 @@ const calculateCostOfCapital = (
     equityMarketValue: marketValue.equityMarketValue,
   });
 
-  let costOfPreferredStock = evaluate(costOfPreferredStockCalculation, {
-    annualDividendPerShare,
-    marketPricePerShare,
-  });
-
-  costOfPreferredStock = isNaN(costOfPreferredStock) ? 0 : costOfPreferredStock;
+  let costOfPreferredStock =
+    evaluate(costOfPreferredStockCalculation, {
+      annualDividendPerShare,
+      marketPricePerShare,
+    }) ?? 0;
 
   const costOfComponent = {};
 
@@ -136,10 +134,8 @@ const calculateCostOfCapital = (
   });
 
   return {
-    leveredBeta: isNaN(leveredBeta) ? null : leveredBeta,
-    totalCostOfCapital: isNaN(costOfComponent.totalCostOfCapital)
-      ? null
-      : costOfComponent.totalCostOfCapital,
+    leveredBeta,
+    totalCostOfCapital: costOfComponent.totalCostOfCapital,
   };
 };
 

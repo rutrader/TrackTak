@@ -110,7 +110,7 @@ const cells = {
   M1: { value: "Terminal Year" },
   M2: getExpressionProperties(getRevenueCalculation("M2", "riskFreeRate")),
   M3: getExpressionProperties("=L3"),
-  M5: getExpressionProperties("=corporateTaxRate"),
+  M5: getExpressionProperties("=marginalTaxRate"),
   M6: getExpressionProperties("=M4*(1-M5)"),
   M7: getExpressionProperties(
     `=IF(riskFreeRate > 0, (riskFreeRate / M17) * M6, 0)`
