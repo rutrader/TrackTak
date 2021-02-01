@@ -115,7 +115,7 @@ const selectRecentIncomeStatement = createSelector(
 
     const incomeStatement = isInUS
       ? getUSFinancialData(quarterlyIncomeStatements, convertCurrency)
-      : getNonUSFinancialData(yearlyIncomeStatements);
+      : getNonUSFinancialData(yearlyIncomeStatements, convertCurrency);
 
     return incomeStatement;
   }

@@ -112,7 +112,7 @@ const CostOfCapitalResults = () => {
           <BoldValueLabel
             value={
               <FormatRawNumberToPercent
-                value={currentEquityRiskPremiumCountry.corporateTaxRate}
+                value={currentEquityRiskPremiumCountry.marginalTaxRate}
               />
             }
             label="Marginal Tax Rate"

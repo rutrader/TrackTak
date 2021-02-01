@@ -10,7 +10,7 @@ const selectCurrentEquityRiskPremium = createSelector(
   selectPriceLastClose,
   (general) => {
     const {
-      corporateTaxRate,
+      corporateTaxRate: marginalTaxRate,
       countryRiskPremium,
       equityRiskPremium,
       adjDefaultSpread,
@@ -21,7 +21,7 @@ const selectCurrentEquityRiskPremium = createSelector(
     });
 
     const currentEquityRiskPremium = {
-      corporateTaxRate,
+      marginalTaxRate,
       countryRiskPremium,
       equityRiskPremium,
       adjDefaultSpread,
