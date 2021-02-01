@@ -1,7 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 import { Provider as RebassProvider } from "rebass";
 import rebassTheme from "./rebassTheme";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import Home from "./home/Home";
 import { useSelector } from "react-redux";
 import { Box, CircularProgress, useTheme } from "@material-ui/core";
@@ -85,13 +85,14 @@ const Spinner = () => {
 
 export const layoutFullScreenPaths = [
   { url: "/discounted-cash-flow/:ticker", component: <DiscountedCashFlow /> },
-  { url: "/synthetic-rating/:ticker", component: <SyntheticRating /> },
+  { url: "/synthetic-credit-rating/:ticker", component: <SyntheticRating /> },
   { url: "/industry-averages/:ticker", component: <IndustryAverages /> },
 ];
+
 const layoutPaths = [
-  { url: "/valuations/:ticker", component: <Valuation /> },
-  { url: "/valuations", component: <Valuations /> },
-  { url: "/documentation", component: <Docs /> },
+  { url: "/stock-valuations/:ticker", component: <Valuation /> },
+  { url: "/stock-valuations", component: <Valuations /> },
+  { url: "/how-to-do-a-dcf", component: <Docs /> },
   { url: "/contact-us", component: <ContactUs /> },
   { url: "/about-us", component: <AboutUs /> },
 ];
@@ -145,6 +146,33 @@ function App() {
               </LayoutHome>
             </Route>
           </Switch>
+          {/* TODO: Remove route redirects at a later date*/}
+          <Route exact path="/documentation">
+            <Redirect to="/how-to-do-a-dcf" />
+          </Route>
+          <Route exact path="/valuations">
+            <Redirect to="/stock-valuations" />
+          </Route>
+          <Route
+            exact
+            path="/valuations/:ticker"
+            render={({ match }) => {
+              return (
+                <Redirect to={`/stock-valuations/${match.params.ticker}`} />
+              );
+            }}
+          />
+          <Route
+            exact
+            path="/synthetic-rating/:ticker"
+            render={({ match }) => {
+              return (
+                <Redirect
+                  to={`/synthetic-credit-rating/${match.params.ticker}`}
+                />
+              );
+            }}
+          />
         </Suspense>
       </ConnectedRouter>
     </>

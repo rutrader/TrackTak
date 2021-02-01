@@ -13,6 +13,9 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import PublicIcon from "@material-ui/icons/Public";
 import { ReactComponent as BackgroundPurple } from "../icons/backgroundPurple.svg";
+import { Helmet } from "react-helmet";
+import getTitle from "../shared/getTitle";
+import resourceName from "../shared/resourceName";
 
 const textColor = "#292929";
 
@@ -26,7 +29,7 @@ const useIconStyles = makeStyles({
 const TypographyHeader = withStyles({
   root: {
     fontWeight: "bold",
-    fontSize: ({ isOnMobile }) => (isOnMobile ? 30 : 37),
+    fontSize: ({ isOnMobile }) => (isOnMobile ? 30 : 30),
     color: textColor,
   },
 })(Typography);
@@ -49,13 +52,17 @@ const Home = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{getTitle("Discounted Cash Flow (DCF) Calculator")}</title>
+        <link rel="canonical" href={`${resourceName}`} />
+      </Helmet>
       <Box
         sx={{
           mt: 12,
         }}
       >
-        <TypographyHeader isOnMobile={isOnMobile} align="center" variant="h4">
-          Goodbye, spreadsheets.
+        <TypographyHeader isOnMobile={isOnMobile} align="center">
+          Goodbye, Excel.
           <Box>Hello, automated Discounted Cash Flows.</Box>
         </TypographyHeader>
       </Box>
@@ -75,8 +82,8 @@ const Home = () => {
               color="primary"
             />
           </Box>
-          Automate your DCF's in seconds with guidance from historical and
-          current data.
+          Use our DCF calculator to find a companies true intrinsic value for
+          free within seconds.
         </TypographyText>
         <TypographyText isOnMobile={isOnMobile}>
           <Box>
@@ -85,7 +92,7 @@ const Home = () => {
               color="primary"
             />
           </Box>
-          Fully transparent and based on Aswath Damoradan's model showing you
+          Fully transparent and based on Aswath Damoradan's models showing you
           each formula.
         </TypographyText>
         <TypographyText isOnMobile={isOnMobile}>
@@ -108,7 +115,7 @@ const Home = () => {
           align="center"
           gutterBottom
         >
-          Search now to automate your DCF.
+          Search for a company to begin.
         </Typography>
         <SearchTicker />
       </Box>

@@ -16,8 +16,8 @@ import { Link } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
 
 const leftLinks = [
-  { to: "/valuations", text: "Valuations" },
-  { to: "/documentation", text: "Documentation" },
+  { to: "/stock-valuations", text: "Valuations" },
+  { to: "/how-to-do-a-dcf", text: "Documentation" },
 ];
 
 const rightLinks = [

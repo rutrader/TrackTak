@@ -1,9 +1,16 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
+import { Helmet } from "react-helmet";
+import getTitle from "../shared/getTitle";
+import resourceName from "../shared/resourceName";
 
 const AboutUs = () => {
   return (
     <>
+      <Helmet>
+        <title>{getTitle("About Us")}</title>
+        <link rel="canonical" href={`${resourceName}/about-us`} />
+      </Helmet>
       <Typography variant="h5" gutterBottom>
         About Us
       </Typography>

@@ -25,6 +25,11 @@ import selectYearlyBalanceSheets from "../selectors/fundamentalSelectors/selectY
 import selectValuationCurrencyCode from "../selectors/fundamentalSelectors/selectValuationCurrencyCode";
 import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
 import selectFundamentalsIsLoaded from "../selectors/fundamentalSelectors/selectFundamentalsIsLoaded";
+import { Helmet } from "react-helmet";
+import getTitle from "../shared/getTitle";
+import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
+import resourceName from "../shared/resourceName";
+import useVirtualExchange from "../hooks/useVirtualExchange";
 
 const mapFromStatementsToDateObject = (
   objectToLoop,
@@ -54,6 +59,8 @@ const DiscountedCashFlow = () => {
   const valuationCurrencySymbol = useSelector(selectValuationCurrencySymbol);
   const balanceSheet = useSelector(selectRecentBalanceSheet);
   const theme = useTheme();
+  const general = useSelector(selectGeneral);
+  const exchange = useVirtualExchange();
 
   if (!isLoaded) return null;
 
@@ -233,6 +240,13 @@ const DiscountedCashFlow = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{getTitle(`${general.Name} Discounted Cash Flow (DCF)`)}</title>
+        <link
+          rel="canonical"
+          href={`${resourceName}/discounted-cash-flow/${general.Code}.${exchange}`}
+        />
+      </Helmet>
       <Box sx={{ display: "flex", gap: theme.spacing(10) }}>
         <CompanyOverviewStats />
       </Box>

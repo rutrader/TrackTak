@@ -72,8 +72,8 @@ const CostOfCapitalResults = () => {
               ) : (
                 <>
                   {pretaxCostOfDebtLabel}&nbsp;
-                  <Link to={`/synthetic-rating/${params.ticker}`}>
-                    (Synthetic Rating)
+                  <Link to={`/synthetic-credit-rating/${params.ticker}`}>
+                    (Synthetic Credit Rating)
                   </Link>
                 </>
               )

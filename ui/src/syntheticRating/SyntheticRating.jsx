@@ -19,6 +19,10 @@ import getTableRowBackgroundOpacity from "../shared/getTableRowBackgroundOpacity
 import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
 import selectFundamentalsIsLoaded from "../selectors/fundamentalSelectors/selectFundamentalsIsLoaded";
+import { Helmet } from "react-helmet";
+import getTitle from "../shared/getTitle";
+import resourceName from "../shared/resourceName";
+import useVirtualExchange from "../hooks/useVirtualExchange";
 
 const useTableClasses = makeStyles((theme) => ({
   root: ({ currentCompanyInterestIndex }) => ({
@@ -45,6 +49,7 @@ const SyntheticRating = () => {
     interestSpread
   );
   const tableClasses = useTableClasses({ currentCompanyInterestIndex });
+  const exchange = useVirtualExchange();
 
   if (!isLoaded) return null;
 
@@ -112,13 +117,20 @@ const SyntheticRating = () => {
   // - Risky industry
   return (
     <>
+      <Helmet>
+        <title>{getTitle(`${general.Name} Credit Rating`)}</title>
+        <link
+          rel="canonical"
+          href={`${resourceName}/synthetic-credit-rating/${general.Code}.${exchange}`}
+        />
+      </Helmet>
       <Typography variant="h4" gutterBottom>
         {general.Name}
       </Typography>
       <SubSection>
         <Typography variant="h6" gutterBottom>
           <InfoOutlinedIconWrapper text={<InfoSyntheticRating />}>
-            Synthetic Rating Results
+            Synthetic Credit Rating Results
           </InfoOutlinedIconWrapper>
         </Typography>
         <Box>

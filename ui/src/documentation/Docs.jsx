@@ -13,7 +13,11 @@ import { useEffect } from "react";
 import { Fragment } from "react";
 import wikiContent from "../data/wikiContent";
 import { NavHashLink } from "react-router-hash-link";
-import useScrollWithOffset from "../shared/useScrollWithOffset";
+import useScrollWithOffset from "../hooks/useScrollWithOffset";
+import replaceSpaceWithHyphen from "../shared/replaceSpaceWithHyphen";
+import { Helmet } from "react-helmet";
+import getTitle from "../shared/getTitle";
+import resourceName from "../shared/resourceName";
 
 const drawerWidth = 240;
 
@@ -64,6 +68,10 @@ const Docs = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{getTitle("How to do a Discounted Cash Flow (DCF)")}</title>
+        <link rel="canonical" href={`${resourceName}/how-to-do-a-dcf`} />
+      </Helmet>
       <Box className={classes.root}>
         <Drawer
           className={classes.drawer}
@@ -89,7 +97,7 @@ const Docs = () => {
               <ListItem
                 key={title}
                 component={NavHashLink}
-                to={`/documentation#${title}`}
+                to={`/how-to-do-a-dcf#${replaceSpaceWithHyphen(title)}`}
                 scroll={getScrollWithOffset()}
                 button
               >
@@ -108,11 +116,11 @@ const Docs = () => {
           </IconButton>
         )}
         <Box component="main">
-          {wikiContent.map(({ title, text }) => {
+          {wikiContent.map(({ title, text, cellsText = "" }) => {
             return (
               <Fragment key={title}>
                 <Typography variant="h6" gutterBottom id={title}>
-                  {title}
+                  {cellsText ? title.concat(` - Cells: ${cellsText}`) : title}
                 </Typography>
                 <Typography paragraph>{text}</Typography>
               </Fragment>

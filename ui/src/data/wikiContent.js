@@ -65,7 +65,8 @@ const wikiContent = [
     ),
   },
   {
-    title: "Base Year, Years 1-10 & Terminal Year - Cells B1-M1",
+    title: "Base Year, Years 1-10 & Terminal Year",
+    cellsText: "B1-M1",
     text: (
       <>
         <Typography paragraph>
@@ -95,7 +96,8 @@ const wikiContent = [
     ),
   },
   {
-    title: "Revenue - Cells C2-M2",
+    title: "Revenue",
+    cellsText: "C2-M2",
     text: (
       <>
         <Typography paragraph>
@@ -134,7 +136,8 @@ const wikiContent = [
     ),
   },
   {
-    title: "Operating Margin - Cells B3-M3",
+    title: "Operating Margin",
+    cellsText: "B3-M3",
     text: (
       <>
         <Typography paragraph>
@@ -193,7 +196,8 @@ const wikiContent = [
     ),
   },
   {
-    title: "Tax Rate - Cells B5-M5",
+    title: "Tax Rate",
+    cellsText: "B5-M5",
     text: (
       <>
         The tax rate in the base year is set to be the effective tax rate for
@@ -206,7 +210,8 @@ const wikiContent = [
     ),
   },
   {
-    title: "NOPAT - Cells B6-M6",
+    title: "NOPAT",
+    cellsText: "B6-M6",
     text: (
       <>
         This is essentially the Earnings Before Interest. The difference between
@@ -215,7 +220,8 @@ const wikiContent = [
     ),
   },
   {
-    title: "Reinvestment - Cells C7-M7",
+    title: "Reinvestment",
+    cellsText: "C7-M7",
     text: (
       <>
         This is how much the company is reinvesting into the company to grow.
@@ -228,7 +234,8 @@ const wikiContent = [
     ),
   },
   {
-    title: "FCFF - Cells C8-M8",
+    title: "FCFF",
+    cellsText: "C8-M8",
     text: (
       <>
         Free Cash Flow to the Firm (FCFF) is the amount of money the company has
@@ -238,7 +245,8 @@ const wikiContent = [
     ),
   },
   {
-    title: "NOL - Cells B9-M9",
+    title: "NOL",
+    cellsText: "B9-M9",
     text: (
       <>
         Net Operating Loss (NOL). Any losses from the previous years that the
@@ -249,7 +257,8 @@ const wikiContent = [
     ),
   },
   {
-    title: "Cost of Capital - Cells C11-M11",
+    title: "Cost of Capital",
+    cellsText: "C11-M11",
     text: (
       <>
         <Typography paragraph>
@@ -489,7 +498,8 @@ const wikiContent = [
     ),
   },
   {
-    title: "Cumulated Discount Factor - Cells C12-L12",
+    title: "Cumulated Discount Factor",
+    cellsText: "C12-L12",
     text: (
       <>
         This is the opposite of the Cost of Capital in decimal form. We take the
@@ -498,7 +508,8 @@ const wikiContent = [
     ),
   },
   {
-    title: "PV (FCFF) - Cells C13-L13",
+    title: "PV (FCFF)",
+    cellsText: "C13-L13",
     text: (
       <>
         Present Value of Free Cash Flow to the Firm (PV (FCFF)) is the FCFF
@@ -510,21 +521,25 @@ const wikiContent = [
     ),
   },
   {
-    title: "Terminal Cash Flow - Cell B19",
+    title: "Terminal Cash Flow",
+    cellsText: "B19",
     text: (
       <>The cash flows that the company generates each year after year 10.</>
     ),
   },
   {
-    title: "Terminal Cost of Capital - Cell B20",
+    title: "Terminal Cost of Capital",
+    cellsText: "B20",
     text: <>The cost of capital for the compeny each year after year 10.</>,
   },
   {
-    title: "Terminal Value - Cell B21",
+    title: "Terminal Value",
+    cellsText: "B21",
     text: <>The total value of the cash flows after year 10.</>,
   },
   {
-    title: "PV (Terminal Value) - Cell B22",
+    title: "PV (Terminal Value)",
+    cellsText: "B22",
     text: (
       <>
         The total value of the cash flows after year 10 discounted to today's
@@ -533,7 +548,8 @@ const wikiContent = [
     ),
   },
   {
-    title: "PV (CF Over Next 10 Years) - Cell B23",
+    title: "PV (CF Over Next 10 Years)",
+    cellsText: "B23",
     text: (
       <>
         The total value of the cash flows in the next 10 years discounted to
@@ -542,23 +558,26 @@ const wikiContent = [
     ),
   },
   {
-    title: "Sum of PV - Cell B24",
+    title: "Sum of PV",
+    cellsText: "B24",
     text: <>The total sum of the present values of the previous two fields.</>,
   },
   {
-    title: "Probability of Failure - Cell B25",
+    title: "Probability of Failure",
+    cellsText: "B25",
     text: (
       <>
         Many young, growth companies fail, especially if they have trouble
         raising cash. Many distressed companies fail because they have trouble
         making debt payments. This is a tough input to estimate but try to use
         the agencies credit rating if the company has one, if not then use the
-        synthetic rating default spread as a guide.
+        synthetic credit rating default spread as a guide.
       </>
     ),
   },
   {
-    title: "Proceeds if the Firm Fails - Cell B26",
+    title: "Proceeds if the Firm Fails",
+    cellsText: "B26",
     text: (
       <>
         If the company fails then sometimes there will be assets that get sold
@@ -572,7 +591,8 @@ const wikiContent = [
     ),
   },
   {
-    title: "Operating Assets - Cell B27",
+    title: "Operating Assets",
+    cellsText: "B27",
     text: (
       <>
         We take the Sum of the Present Value and modify it. We minus debt and
@@ -583,7 +603,8 @@ const wikiContent = [
     ),
   },
   {
-    title: "Equity - Cell B32",
+    title: "Equity",
+    cellsText: "B32",
     text: (
       <>
         This is the sum of the above calculations after Operating Assets has
@@ -592,7 +613,8 @@ const wikiContent = [
     ),
   },
   {
-    title: "Options - Cell B33",
+    title: "Options",
+    cellsText: "B33",
     text: (
       <>
         We minus Employee Options from Equity due to the company having to pay
@@ -602,7 +624,8 @@ const wikiContent = [
     ),
   },
   {
-    title: "Common Stock Equity - Cell B34",
+    title: "Common Stock Equity",
+    cellsText: "B34",
     text: (
       <>
         This is Equity with the employee options taken away. This is the final
@@ -612,7 +635,8 @@ const wikiContent = [
     ),
   },
   {
-    title: "Estimated Value Per Share - Cell B36",
+    title: "Estimated Value Per Share",
+    cellsText: "B36",
     text: (
       <>
         The intrinsic value per share that the share price should be trading at
@@ -622,7 +646,8 @@ const wikiContent = [
     ),
   },
   {
-    title: "Margin of Safety - Cell B37",
+    title: "Margin of Safety",
+    cellsText: "B37",
     text: (
       <>
         How undervalued or overvalued the current price of the stock, if it is
