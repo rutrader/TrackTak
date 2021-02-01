@@ -15,6 +15,9 @@ import DiscountedCashFlowTable from "./DiscountedCashFlowTable";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsYoyGrowthToggled } from "../redux/actions/dcfActions";
 import selectIsYoyGrowthToggled from "../selectors/dcfSelectors/selectIsYoyGrowthToggled";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
 
 const Placeholder = () => {
   const theme = useTheme();
@@ -34,9 +37,19 @@ const Placeholder = () => {
 };
 
 const DiscountedCashFlowSheet = ({ columnWidths }) => {
-  const [showFormulas, setShowFormulas] = useState(false);
   const dispatch = useDispatch();
+  const [showFormulas, setShowFormulas] = useState(false);
   const isYoyGrowthToggled = useSelector(selectIsYoyGrowthToggled);
+
+  const showFormulasToggledOnChange = (event) => {
+    setShowFormulas((state) => !state);
+    dispatch(setIsYoyGrowthToggled(false));
+  };
+
+  const isYoyGrowthToggledOnChange = (event) => {
+    dispatch(setIsYoyGrowthToggled(!isYoyGrowthToggled));
+    setShowFormulas(false);
+  };
 
   // TODO: Add an expand button to see it full screen
   return (
@@ -51,27 +64,33 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
       >
         <Typography variant="h5">DCF Valuation</Typography>
         <Box sx={{ display: "flex" }}>
-          <Button
-            onClick={() => {
-              setShowFormulas((state) => !state);
-            }}
-            variant="outlined"
-          >
-            {showFormulas ? "Hide Formulas" : "Show Formulas"}
-          </Button>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={showFormulas}
+                onChange={showFormulasToggledOnChange}
+                name="checkedB"
+                color="primary"
+              />
+            }
+            label="Formulas"
+          />
           <Box
             sx={{
               ml: 1,
             }}
           >
-            <Button
-              onClick={() => {
-                dispatch(setIsYoyGrowthToggled(!isYoyGrowthToggled));
-              }}
-              variant="outlined"
-            >
-              {isYoyGrowthToggled ? "Hide YOY% " : "Show YOY%"}
-            </Button>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={isYoyGrowthToggled}
+                  onChange={isYoyGrowthToggledOnChange}
+                  name="checkedB"
+                  color="primary"
+                />
+              }
+              label="YOY%"
+            />
           </Box>
           <Box
             sx={{
