@@ -67,7 +67,6 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
               <Switch
                 checked={showFormulas}
                 onChange={showFormulasToggledOnChange}
-                name="checkedB"
                 color="primary"
               />
             }
@@ -83,7 +82,6 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
                 <Switch
                   checked={isYoyGrowthToggled}
                   onChange={isYoyGrowthToggledOnChange}
-                  name="checkedB"
                   color="primary"
                 />
               }
