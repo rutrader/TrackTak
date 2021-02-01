@@ -85,7 +85,7 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
                   color="primary"
                 />
               }
-              label="YOY%"
+              label="%YOY Growth"
             />
           </Box>
           <Box
