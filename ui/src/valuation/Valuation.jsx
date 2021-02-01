@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { BLOCKS, INLINES } from "@contentful/rich-text-types";
@@ -35,6 +35,10 @@ import IndustryAverages from "../components/IndustryAverages";
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
 import selectCells from "../selectors/dcfSelectors/selectCells";
+import { Helmet } from "react-helmet";
+import getTitle from "../shared/getTitle";
+import resourceName from "../shared/resourceName";
+import useVirtualExchange from "../hooks/useVirtualExchange";
 
 const options = {
   renderNode: {
@@ -93,6 +97,7 @@ const NumberSpan = ({ children, ...props }) => {
 
 const Valuation = () => {
   const params = useParams();
+  const location = useLocation();
   const theme = useTheme();
   const dispatch = useDispatch();
   const [fields, setContentfulFields] = useState();
@@ -101,6 +106,7 @@ const Valuation = () => {
   const estimatedValuePerShare = useSelector(
     (state) => selectCells(state).B36.value
   );
+  const exchange = useVirtualExchange();
 
   useEffect(() => {
     const fetchStockData = async () => {
@@ -141,6 +147,13 @@ const Valuation = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{getTitle(`${general.Name} Valuation`)}</title>
+        <link
+          rel="canonical"
+          href={`${resourceName}/stock-valuations/${general.Code}.${exchange}${location.search}`}
+        />
+      </Helmet>
       <CompanyOverviewStats dateOfValuation={formattedDateOfValuation} />
       <Section>
         <Typography variant="h5" gutterBottom>
@@ -266,7 +279,7 @@ const Valuation = () => {
           </Link>
           to do your own Automated DCF for any company you want or see more
           valuations from us
-          <Link component={RouterLink} to="/valuations">
+          <Link component={RouterLink} to="/stock-valuations">
             <b>&nbsp;here</b>
           </Link>
           .

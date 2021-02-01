@@ -16,6 +16,9 @@ import { Link } from "react-router-dom";
 import { getDCFTemplateEntries } from "../redux/actions/contentfulActions";
 import { inputQueries } from "../selectors/routerSelectors/selectQueryParams";
 import selectEntries from "../selectors/contentfulSelectors/selectEntries";
+import { Helmet } from "react-helmet";
+import getTitle from "../shared/getTitle";
+import resourceName from "../shared/resourceName";
 
 const EOD_URL = "https://eodhistoricaldata.com";
 
@@ -33,8 +36,12 @@ const Valuations = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{getTitle("Stock Valuations")}</title>
+        <link rel="canonical" href={`${resourceName}/stock-valuations`} />
+      </Helmet>
       <Typography variant="h5" gutterBottom>
-        Intrinsic Stock Valuations
+        Stock Valuations
       </Typography>
       <List>
         {entries.items.map(({ fields }) => {
@@ -47,7 +54,7 @@ const Valuations = () => {
             }
           });
 
-          const valuationUrl = `/valuations/${
+          const valuationUrl = `/stock-valuations/${
             fields.ticker
           }?${searchParams.toString()}`;
 

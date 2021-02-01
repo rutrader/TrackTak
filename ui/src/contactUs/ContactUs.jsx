@@ -1,9 +1,16 @@
 import { Box, Link, Typography } from "@material-ui/core";
 import React from "react";
+import { Helmet } from "react-helmet";
+import getTitle from "../shared/getTitle";
+import resourceName from "../shared/resourceName";
 
 const ContactUs = () => {
   return (
     <>
+      <Helmet>
+        <title>{getTitle("Contact Us")}</title>
+        <link rel="canonical" href={`${resourceName}/contact-us`} />
+      </Helmet>
       <Typography variant="h5" gutterBottom>
         Contact Us
       </Typography>

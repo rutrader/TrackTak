@@ -101,7 +101,7 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
         Need help? Check out the DCF docs&nbsp;
         <Link
           component={RouterLink}
-          to="/documentation"
+          to="/how-to-do-a-dcf"
           rel="noreferrer"
           target="_blank"
         >

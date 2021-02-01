@@ -15,11 +15,11 @@ export const InfoTextCostOfCapital = () => {
         on the company. This determines how much risk comes with owning a stock.
       </Box>
       <Box>
-        <b>Pre-tax Cost of Debt</b> - By default this is the synthetic rating
-        pre-tax cost of debt that we have automatically calculated for you which
-        is fine for most cases. If you manually input a cost of debt in the
-        Normal Debt input field then it will overwrite this synthetic cost of
-        debt.
+        <b>Pre-tax Cost of Debt</b> - By default this is the synthetic credit
+        rating pre-tax cost of debt that we have automatically calculated for
+        you which is fine for most cases. If you manually input a cost of debt
+        in the Normal Debt input field then it will overwrite this synthetic
+        cost of debt.
       </Box>
       <Box>
         <b>Cost of Capital (WACC)</b> - The total cost of raising capital (cash)
@@ -115,9 +115,9 @@ export const InfoSyntheticRating = () => {
       <Box>
         <b>Estimated Bond Rating</b> - The estimated bond rating that we have
         worked out based on the companies interest coverage. It is similar to
-        Moody's, S&amp;P and Fitch's ratings. We use our own synthetic rating
-        because a lot of companies do not have any rating assigned by these
-        agencies.
+        Moody's, S&amp;P and Fitch's ratings. We use our own synthetic credit
+        rating because a lot of companies do not have any rating assigned by
+        these agencies.
       </Box>
       <Box>
         <b>Estimated Company Default Spread</b> - The chance of a company
@@ -128,9 +128,9 @@ export const InfoSyntheticRating = () => {
         defaulting on it's debts within a year.
       </Box>
       <Box>
-        <b>Estimated Pre-tax Cost of Debt</b> - The Synthetic Rating pre-tax
-        cost of debt that we have automatically calculated for you. This is used
-        to work out the cost of capital.
+        <b>Estimated Pre-tax Cost of Debt</b> - The Synthetic Credit Rating
+        pre-tax cost of debt that we have automatically calculated for you. This
+        is used to work out the cost of capital.
       </Box>
     </>
   );
@@ -215,8 +215,8 @@ export const InfoTextOther = () => {
         especially if they have trouble raising cash. Many distressed companies
         fail because they have trouble making debt payments. This is a tough
         input to estimate but try to use the agencies credit rating if the
-        company has one, if not then use the synthetic rating default spread as
-        a guide.
+        company has one, if not then use the synthetic credit rating default
+        spread as a guide.
       </Box>
       <Box>
         <b>Proceeds as a Percentage of Book value</b> - If the company fails
