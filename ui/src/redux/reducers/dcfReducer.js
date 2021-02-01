@@ -1,9 +1,11 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { updateCells } from "../actions/dcfActions";
+import { setIsYoyGrowthToggled, updateCells } from "../actions/dcfActions";
 import cells from "../../discountedCashFlow/cells";
 import cellsTree from "../../discountedCashFlow/cellsTree";
 import {
   getAllDependents,
+  getCellsBetween,
+  getPreviousRowCellKey,
   isExpressionDependency,
   validateExp,
 } from "../../discountedCashFlow/utils";
@@ -66,6 +68,7 @@ const calculateNewCells = (cells, cellsToUpdate, scope) => {
 
 const initialState = {
   cells,
+  isYoyGrowthToggled: false,
   scope: {
     matureMarketEquityRiskPremium,
   },
@@ -82,5 +85,20 @@ export const dcfReducer = createReducer(initialState, (builder) => {
 
     state.cells = newCells;
     state.scope = newScope;
+  });
+  builder.addCase(setIsYoyGrowthToggled, (state, action) => {
+    state.isYoyGrowthToggled = action.payload;
+    const cellsBetween = getCellsBetween("C", "M", 2, 17, state.cells);
+
+    cellsBetween.forEach((key) => {
+      const currentCell = state.cells[key];
+      const previousCellKey = getPreviousRowCellKey(key);
+      const previousCell = state.cells[previousCellKey];
+
+      if (previousCell.value !== undefined) {
+        state.cells[key].yoyGrowthValue =
+          (currentCell.value - previousCell.value) / currentCell.value;
+      }
+    });
   });
 });

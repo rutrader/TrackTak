@@ -19,6 +19,8 @@ import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/se
 import selectCells from "../selectors/dcfSelectors/selectCells";
 import selectSharesStats from "../selectors/fundamentalSelectors/selectSharesStats";
 import formatCellValue from "./formatCellValue";
+import selectIsYoyGrowthToggled from "../selectors/dcfSelectors/selectIsYoyGrowthToggled";
+import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 
 const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
   const theme = useTheme();
@@ -36,6 +38,8 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
   const valueOfAllOptionsOutstanding = useSelector(
     selectValueOfAllOptionsOutstanding
   );
+  const isYoyGrowthToggled = useSelector(selectIsYoyGrowthToggled);
+
   const cellColumnWidths = useMemo(() => {
     return columns.map((column) => {
       if (column === "A") {
@@ -67,6 +71,8 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
         intent = "primary";
       } else if (showFormulas) {
         node = cell.expr;
+      } else if (isYoyGrowthToggled && cell.yoyGrowthValue !== undefined) {
+        node = <FormatRawNumberToPercent value={cell.yoyGrowthValue} />;
       }
 
       if (isOutputCell) {
@@ -89,6 +95,7 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
     },
     [
       cells,
+      isYoyGrowthToggled,
       showFormulas,
       theme.typography.fontFamily,
       theme.typography.fontSize,
@@ -234,9 +241,19 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
   }, [dispatch, valueOfAllOptionsOutstanding]);
 
   // Key: Hack to force re-render the table when formula state changes
+  let key = 0;
+
+  if (showFormulas) {
+    key = 1;
+  }
+
+  if (isYoyGrowthToggled) {
+    key = 2;
+  }
+
   return (
     <Table
-      key={showFormulas}
+      key={key}
       enableGhostCells
       numFrozenColumns={isOnMobile ? 0 : 1}
       numRows={numberOfRows}

@@ -11,3 +11,5 @@ export const updateCells = createAction(
     };
   }
 );
+
+export const setIsYoyGrowthToggled = createAction("dcf/setIsYoyGrowthToggled");
