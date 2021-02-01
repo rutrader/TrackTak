@@ -15,7 +15,6 @@ import selectFundamentalsIsLoaded from "../selectors/fundamentalSelectors/select
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
-import { useParams } from "react-router";
 import useVirtualExchange from "../hooks/useVirtualExchange";
 
 const commonTableRootClasses = {
