@@ -114,7 +114,9 @@ const Valuation = () => {
         "fields.ticker": params.ticker,
         content_type: "dcfTemplate",
       });
-      const fields = contentfulRes.data.items[0].fields;
+      const fields = contentfulRes.data.items.find(
+        ({ fields }) => fields.ticker === params.ticker
+      ).fields;
       const data = fields.data;
       const ticker = params.ticker;
 
