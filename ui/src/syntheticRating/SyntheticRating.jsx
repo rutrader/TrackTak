@@ -18,7 +18,6 @@ import SubSection from "../components/SubSection";
 import getTableRowBackgroundOpacity from "../shared/getTableRowBackgroundOpacity";
 import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
-import selectFundamentalsIsLoaded from "../selectors/fundamentalSelectors/selectFundamentalsIsLoaded";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
@@ -35,7 +34,6 @@ const useTableClasses = makeStyles((theme) => ({
 }));
 
 const SyntheticRating = () => {
-  const isLoaded = useSelector(selectFundamentalsIsLoaded);
   const currentEquityRiskPremiumCountry = useSelector(
     selectCurrentEquityRiskPremium
   );
@@ -50,9 +48,6 @@ const SyntheticRating = () => {
   );
   const tableClasses = useTableClasses({ currentCompanyInterestIndex });
   const exchange = useVirtualExchange();
-
-  if (!isLoaded) return null;
-
   const syntheticRatingColumns = [
     {
       Header: (

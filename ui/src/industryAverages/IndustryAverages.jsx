@@ -11,7 +11,6 @@ import getTableRowBackgroundOpacity from "../shared/getTableRowBackgroundOpacity
 import selectIsInUS from "../selectors/fundamentalSelectors/selectIsInUS";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
-import selectFundamentalsIsLoaded from "../selectors/fundamentalSelectors/selectFundamentalsIsLoaded";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
@@ -84,7 +83,6 @@ const getIndustryAveragesSortComparer = (industryName) => (a) => {
 
 const IndustryAverages = () => {
   const theme = useTheme();
-  const isLoaded = useSelector(selectFundamentalsIsLoaded);
   const isInUS = useSelector(selectIsInUS);
   const currentIndustry = useSelector(selectCurrentIndustry);
   const general = useSelector(selectGeneral);
@@ -93,8 +91,6 @@ const IndustryAverages = () => {
     isInUS,
   });
   const exchange = useVirtualExchange();
-
-  if (!isLoaded) return null;
 
   const industryAveragesSortComparer = getIndustryAveragesSortComparer(
     currentIndustry.industryName

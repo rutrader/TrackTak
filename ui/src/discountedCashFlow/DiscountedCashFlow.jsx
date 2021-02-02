@@ -24,7 +24,6 @@ import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selec
 import selectYearlyBalanceSheets from "../selectors/fundamentalSelectors/selectYearlyBalanceSheets";
 import selectValuationCurrencyCode from "../selectors/fundamentalSelectors/selectValuationCurrencyCode";
 import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
-import selectFundamentalsIsLoaded from "../selectors/fundamentalSelectors/selectFundamentalsIsLoaded";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
@@ -50,7 +49,6 @@ const mapFromStatementsToDateObject = (
 };
 
 const DiscountedCashFlow = () => {
-  const isLoaded = useSelector(selectFundamentalsIsLoaded);
   const isInUS = useSelector(selectIsInUS);
   const yearlyIncomeStatements = useSelector(selectYearlyIncomeStatements);
   const incomeStatement = useSelector(selectRecentIncomeStatement);
@@ -61,8 +59,6 @@ const DiscountedCashFlow = () => {
   const theme = useTheme();
   const general = useSelector(selectGeneral);
   const exchange = useVirtualExchange();
-
-  if (!isLoaded) return null;
 
   const columns = [
     {
