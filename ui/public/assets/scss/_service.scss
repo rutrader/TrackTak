@@ -1,0 +1,43 @@
+// service-section css
+
+.service-section {
+
+    .single-service {
+
+        &:hover {
+            .service-icon {
+                &::after {
+                    @include transform(scale(1));
+                }
+            }
+        }
+    }
+}
+
+.icon-gradient {
+    position: relative;
+    width: 69px;
+    height: 69px;
+    line-height: 75px;
+    border-radius: 50%;
+    color: $white;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 28px;
+    z-index: 1;
+
+    &::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background-image: inherit;
+        opacity: .15;
+        z-index: -1;
+        left: 0;
+        top: 0;
+        @include transform(scale(1.3));
+        @include transition(.3s);
+    }
+}

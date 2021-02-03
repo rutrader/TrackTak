@@ -1,0 +1,98 @@
+// subscribe-section css
+
+.subscribe-section {
+
+    .subscribe-wrapper {
+        border-radius: 30px;
+        background: linear-gradient(to right bottom, #6240c8 0%, #a145fe 100%);
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+
+        @media #{$xs} {
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+
+        .shape {
+            position: absolute;
+            width: 367px;
+            height: 367px;
+            border-radius: 50%;
+            background: rgba($white, .04);
+            top: -220px;
+            left: -220px;
+            z-index: -1;
+
+            &::before,
+            &::after {
+                content: '';
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background: inherit;
+                border-radius: 50%;
+                @include transform(scale(1.2));
+            }
+            &::after {
+                @include transform(scale(1.4));
+            }
+
+            &.shape-2 {
+                bottom: -220px;
+                right: -220px;
+                top: auto;
+                left: auto;
+            }
+        }
+
+        .subscribe-form {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            @media #{$md} {
+                flex-direction: column;
+            }
+            @media #{$xs} {
+                flex-direction: column;
+            }
+
+            input {
+                width: 487px;
+                border-radius: 33px;
+                background: rgba($white, .15);
+                color: $white;
+                font-size: 16px;
+                margin-right: 15px;
+                height: 65px;
+                padding: 0 30px;
+                border: 1px solid transparent;
+                margin-bottom: 20px;
+                @include transition(.3s);
+
+                &:focus {
+                    border-color: $white;
+                }
+
+                &::placeholder {
+                    color: $white;
+                }
+
+                @media #{$xs} {
+                    width: 100%;
+                }
+            }
+
+            button {
+                color: $theme-color;
+                margin-bottom: 20px;
+
+                &:hover {
+                    color: $white;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,41 @@
+// process-section css
+
+.process-section {
+    position: relative;
+    z-index: 1;
+
+    .shape {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        z-index: -1;
+
+        @media #{$md} {
+            bottom: -50px;
+        }
+        @media #{$xs} {
+            bottom: -30px;
+            width: 50%;
+        }
+    }
+
+    .process-img {
+
+        img {
+
+            @media #{$xs} {
+                width: 100%;
+            }
+        }
+    }
+
+    .process-faq {
+
+        @media #{$md} {
+            margin-bottom: 50px;
+        }
+        @media #{$xs} {
+            margin-bottom: 50px;
+        }
+    }
+}

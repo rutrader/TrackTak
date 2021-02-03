@@ -1,0 +1,79 @@
+/*===========================
+    13.footer css 
+===========================*/
+.footer {
+    position: relative;
+
+    .footer-bg {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: -1;
+    }
+
+    .footer-links {
+
+        .logo {
+            margin-bottom: 30px;
+        }
+        .footer-social-links {
+            margin-bottom: 30px;
+
+            ul {
+                text-align: center;
+
+                li {
+                    display: inline-block;
+
+                    a {
+                        display: inline-block;
+                        width: 45px;
+                        height: 45px;
+                        line-height: 48px;
+                        border-radius: 50%;
+                        color: $body-color;
+                        background: $white;
+                        margin: 0 8px;
+
+                        &:hover {
+                            color: $white;
+                            background: $theme-color;
+                        }
+                    }
+                }
+            }
+        }
+
+        .footer-menu {
+            background: $white;
+            border-radius: 10px;
+
+            ul {
+                li {
+                    display: inline-block;
+
+                    a {
+                        display: inline-block;
+                        font-size: 16px;
+                        font-weight: 600;
+                        color: $heading-color;
+                        padding: 16px;
+
+                        &:hover {
+                            color: $theme-color;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .copyright-area {
+        padding: 30px 0;
+
+        p {
+            font-size: 16px;
+        }
+    }
+
+}

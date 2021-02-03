@@ -1,0 +1,99 @@
+/*===========================
+    10.Testimonial css 
+===========================*/
+.testimonial-section {
+
+    .container {
+        position: relative;
+        z-index: 1;
+
+        .shape {
+            position: absolute;
+            left: -50px;
+            bottom: -70px;
+            z-index: -1;
+        }
+    }
+    .single-testimonial {
+        padding: 35px;
+        border-radius: 10px;
+        background: $white;
+        margin-bottom: 60px;
+
+        .testimonial-info-wrapper {
+            display: flex;
+            margin-bottom: 25px;
+            justify-content: space-between;
+
+            @media #{$xs} {
+                flex-direction: column;
+            }
+
+            .testimonial-info {
+                display: flex;
+                align-items: center;
+
+                .testimonial-img {
+                    margin-right: 20px;
+                }
+                .testimonial-meta {
+                    h5 {
+                        font-weight: 600;
+                    }
+                    span {
+                        font-size: 16px;
+                        color: $heading-color;
+                    }
+                }
+            }
+            .rating {
+                padding-right: 40px;
+                color: $theme-color;
+                i {
+                    font-size: 14px;
+                    margin: 0 4px;
+                }
+
+                @media #{$xs} {
+                    margin-top: 15px;
+                }
+            }
+        }
+    }
+
+    .testimonial-active-wrapper {
+        position: relative;
+
+
+        .tns-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            width: 100%;
+            text-align: center;
+            z-index: 2;
+
+            button {
+                text-indent: -99999px;
+                width: 15px;
+                height: 15px;
+                border-radius: 50%;
+                margin: 5px;
+                background: rgba($theme-color, .5);
+                border: none;
+                cursor: pointer;
+                @include transition(.3s);
+
+                &.tns-nav-active {
+                    background: $theme-color;
+                }
+            }
+        }
+    }
+}
+
+
+
+

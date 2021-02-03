@@ -1,0 +1,59 @@
+/*===========================
+    11.Blog css 
+===========================*/
+.single-blog {
+    
+    .blog-img {
+
+        a {
+            display: block;
+
+            img {
+                width: 100%;
+            }
+        }
+
+        
+    }
+
+    .blog-meta {
+        display: flex;
+        justify-content: space-between;
+
+        .blog-author {
+            display: flex;
+            align-items: center;
+            img {
+                border-radius: 50%;
+            }
+            span {
+                color: $heading-color;
+                font-weight: 600;
+                font-size: 18px;
+                margin-left: 10px;
+            }
+        }
+
+        .blog-comment {
+            display: flex;
+            align-items: center;
+
+            span {
+                font-size: 16px;
+                color: #505478;
+                margin-left: 10px;
+            }
+
+            @media #{$lg} {
+                display: none;
+            }
+        }
+    }
+
+    .blog-title {
+        h4 {
+            font-weight: 600;
+        }
+    }
+
+}

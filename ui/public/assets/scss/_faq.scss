@@ -1,0 +1,22 @@
+// faq-section css
+
+.faq-section {
+    position: relative;
+
+    .faq-img {
+        margin-left: -300px;
+
+        @media #{$md} {
+            margin-left: 0;
+            margin-bottom: 50px;
+        }
+        @media #{$xs} {
+            margin-left: 0;
+            margin-bottom: 50px;
+        }
+
+        img {
+            width: 100%;
+        }
+    }
+}

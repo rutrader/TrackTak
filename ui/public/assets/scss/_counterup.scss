@@ -1,0 +1,88 @@
+/*===========================
+    08.Counterup css 
+===========================*/
+
+.counterup-section {
+    position: relative;
+    z-index: 1;
+
+    .container {
+        position: relative;
+
+        .counter-shape-1 {
+            left: -35px;
+            top: -50px;
+        }
+        .counter-shape-2 {
+            right: -35px;
+            bottom: -50px;
+        }
+    }
+
+    .shape {
+        position: absolute;
+    }
+
+    .counter-wrapper {
+        border-radius: 10px;
+        position: relative;
+        overflow: hidden;
+        padding-left: 50px;
+        padding-right: 50px;
+
+        @media #{$md} {
+            padding-left: 0;
+            padding-right: 0;
+        }
+        @media #{$xs} {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        &::after, &::before {
+            content: '';
+            position: absolute;
+            width: 211px;
+            height: 211px;
+            border-radius: 50%;
+            background: $gradient-color-2;
+        }
+        &::before {
+            bottom: -100px;
+            left: -100px;
+        }
+        &::after {
+            top: -100px;
+            right: -100px;
+        }
+
+        .single-counter {
+
+            i {
+                line-height: 69px;
+            }
+
+            h3 {
+                font-size: 30px;
+                font-weight: 800;
+                margin-bottom: 12px;
+            }
+
+            p {
+                font-size: 20px;
+                color: $white;
+                font-weight: 600;
+            }
+
+            &:hover {
+                i {
+                    &::after {
+                        @include transform(scale(1));
+                    }
+                }
+            }
+        }
+    }
+}
+
+
