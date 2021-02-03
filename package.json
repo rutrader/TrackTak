@@ -12,6 +12,7 @@
     "install": "run-p install:ui install:node"
   },
   "devDependencies": {
+    "axios": "^0.21.1",
     "editorconfig": "^0.15.3",
     "eslint": "^7.13.0",
     "eslint-config-prettier": "^6.15.0",
