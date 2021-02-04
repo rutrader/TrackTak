@@ -1,4 +1,5 @@
 import React from "react";
+import { ReactComponent as TracktakPurple } from "../icons/tracktak-purple.svg";
 
 const Footer = () => {
   return (
@@ -9,7 +10,7 @@ const Footer = () => {
           <div class="col-xl-12">
             <div class="footer-links text-center">
               <a href="index.html" class="logo">
-                <img src="assets/img/logo/logo-2.svg" alt="" />{" "}
+                <TracktakPurple src="icons/tracktak-black.svg" alt="" />
               </a>
               <div class="footer-social-links">
                 <ul>

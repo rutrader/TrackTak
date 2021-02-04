@@ -4,6 +4,8 @@
   "private": true,
   "main": "",
   "dependencies": {
+    "react-anchor-link-smooth-scroll": "^1.0.12",
+    "react-scrollspy": "^3.4.0",
     "@blueprintjs/core": "^3.36.0",
     "@blueprintjs/table": "^3.8.18",
     "@contentful/rich-text-react-renderer": "^14.1.2",

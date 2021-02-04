@@ -1,4 +1,5 @@
 import React from "react";
+import { ReactComponent as TracktakWhite } from "../icons/tracktak-white.svg";
 
 const HeaderHome = () => {
   return (
@@ -9,7 +10,7 @@ const HeaderHome = () => {
             <div class="col-lg-12">
               <nav class="navbar navbar-expand-lg">
                 <a class="navbar-brand" href="index.html">
-                  <img src="assets/img/logo/logo.svg" alt="Logo" />
+                  <TracktakWhite alt="Logo" />
                 </a>
                 <button
                   class="navbar-toggler"
