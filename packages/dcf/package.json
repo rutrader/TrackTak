@@ -1,0 +1,27 @@
+{
+  "name": "@tracktak/dcf",
+  "version": "0.0.0",
+  "description": "A private package that allows external websites to use our DCF",
+  "homepage": "https://github.com/TrackTak/TrackTak#readme",
+  "license": "CC-BY-ND-2.5",
+  "main": "lib/dcf.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TrackTak/TrackTak.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/TrackTak/TrackTak/issues"
+  }
+}
