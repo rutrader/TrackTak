@@ -27,10 +27,12 @@ const generateSitemap = async () => {
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
         ...chunk.flatMap(({ code, exchange_short_name }) => {
+          const decodedCode = code.replace("&", "&amp;");
+
           return [
-            `<url><loc>https://tracktak.com/discounted-cash-flow/${code}.${exchange_short_name}</loc></url>`,
-            `<url><loc>https://tracktak.com/synthetic-credit-rating/${code}.${exchange_short_name}</loc></url>`,
-            `<url><loc>https://tracktak.com/industry-averages/${code}.${exchange_short_name}</loc></url>`,
+            `<url><loc>https://tracktak.com/discounted-cash-flow/${decodedCode}.${exchange_short_name}</loc></url>`,
+            `<url><loc>https://tracktak.com/synthetic-credit-rating/${decodedCode}.${exchange_short_name}</loc></url>`,
+            `<url><loc>https://tracktak.com/industry-averages/${decodedCode}.${exchange_short_name}</loc></url>`,
           ];
         }),
         "</urlset>",
