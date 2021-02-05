@@ -33,7 +33,7 @@ import useVirtualExchange from "../hooks/useVirtualExchange";
 const mapFromStatementsToDateObject = (
   objectToLoop,
   valueKey,
-  valueFormatter = <TableMillionFormatter />
+  valueFormatter = <TableMillionFormatter />,
 ) => {
   const dateObject = {};
 
@@ -102,7 +102,7 @@ const DiscountedCashFlow = () => {
       ) : null,
       ...mapFromStatementsToDateObject(
         yearlyIncomeStatements,
-        "operatingIncome"
+        "operatingIncome",
       ),
     },
     {
@@ -117,7 +117,7 @@ const DiscountedCashFlow = () => {
       ...mapFromStatementsToDateObject(
         yearlyIncomeStatements,
         "operatingMargin",
-        <FormatRawNumberToPercent />
+        <FormatRawNumberToPercent />,
       ),
     },
     {
@@ -131,7 +131,7 @@ const DiscountedCashFlow = () => {
       ) : null,
       ...mapFromStatementsToDateObject(
         yearlyIncomeStatements,
-        "interestExpense"
+        "interestExpense",
       ),
     },
     {
@@ -147,7 +147,7 @@ const DiscountedCashFlow = () => {
       ),
       ...mapFromStatementsToDateObject(
         yearlyBalanceSheets,
-        "noncontrollingInterestInConsolidatedEntity"
+        "noncontrollingInterestInConsolidatedEntity",
       ),
     },
     {
@@ -165,7 +165,7 @@ const DiscountedCashFlow = () => {
       ) : null,
       ...mapFromStatementsToDateObject(
         yearlyIncomeStatements,
-        "minorityInterest"
+        "minorityInterest",
       ),
     },
     {
@@ -181,7 +181,7 @@ const DiscountedCashFlow = () => {
       ),
       ...mapFromStatementsToDateObject(
         yearlyBalanceSheets,
-        "cashAndShortTermInvestments"
+        "cashAndShortTermInvestments",
       ),
     },
     {
@@ -193,7 +193,7 @@ const DiscountedCashFlow = () => {
       ttm: <TableMillionFormatter value={balanceSheet.bookValueOfEquity} />,
       ...mapFromStatementsToDateObject(
         yearlyBalanceSheets,
-        "bookValueOfEquity"
+        "bookValueOfEquity",
       ),
     },
     {
@@ -220,7 +220,7 @@ const DiscountedCashFlow = () => {
       ...mapFromStatementsToDateObject(
         yearlyBalanceSheets,
         "salesToCapitalRatio",
-        <FormatRawNumber decimalScale={2} />
+        <FormatRawNumber decimalScale={2} />,
       ),
     },
     {

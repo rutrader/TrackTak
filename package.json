@@ -7,21 +7,31 @@
     "ui": "npm run start --prefix ./ui",
     "start": "run-p node ui",
     "clean": "rimraf ./node_modules",
-    "install:ui": "cd ./ui && npm install",
-    "install:node": "cd ./node && npm install",
-    "install": "run-p install:ui install:node"
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^6.1.17",
+    "@storybook/addon-essentials": "^6.1.17",
+    "@storybook/addon-links": "^6.1.17",
+    "@storybook/node-logger": "^6.1.17",
+    "@storybook/preset-create-react-app": "^3.1.5",
+    "@storybook/react": "^6.1.17",
+    "@octokit/core": "^3.2.5",
     "axios": "^0.21.1",
+    "babel-eslint": "^10.1.0",
     "editorconfig": "^0.15.3",
     "eslint": "^7.13.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-node": "^11.1.0",
     "lerna": "^3.22.1",
     "npm-run-all": "^4.1.5",
+    "prettier": "^2.0.4",
     "rimraf": "^3.0.2"
   },
   "dependencies": {
-    "@tracktak/dcf": "file:packages\\dcf"
+    "@tracktak/dcf": "file:packages\\dcf",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   }
 }

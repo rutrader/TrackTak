@@ -1,27 +1,38 @@
 {
   "name": "@tracktak/dcf",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A private package that allows external websites to use our DCF",
-  "homepage": "https://github.com/TrackTak/TrackTak#readme",
+  "author": "tracktak",
   "license": "CC-BY-ND-2.5",
-  "main": "lib/dcf.js",
-  "directories": {
-    "lib": "lib"
-  },
-  "files": [
-    "lib"
-  ],
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/TrackTak/TrackTak.git"
+  "repository": "tracktak/@tracktak/dcf",
+  "main": "dist/index.js",
+  "source": "src/index.js",
+  "engines": {
+    "node": ">=10"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "build": "microbundle-crl --format umd",
+    "start": "microbundle-crl watch --format umd",
+    "prepare": "run-s build",
+    "test": "run-s test:unit test:lint test:build",
+    "test:build": "run-s build",
+    "test:lint": "eslint .",
+    "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
+    "test:watch": "react-scripts test --env=jsdom",
+    "predeploy": "cd example && npm install && npm run build",
+    "deploy": "gh-pages -d example/build"
   },
-  "bugs": {
-    "url": "https://github.com/TrackTak/TrackTak/issues"
-  }
+  "devDependencies": {
+    "cross-env": "^7.0.2",
+    "gh-pages": "^2.2.0",
+    "microbundle-crl": "^0.13.10",
+    "npm-run-all": "^4.1.5",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-scripts": "^4.0.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {}
 }
