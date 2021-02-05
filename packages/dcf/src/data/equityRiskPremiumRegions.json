@@ -1,0 +1,72 @@
+[
+  {
+    "region": "Africa",
+    "equityRiskPremium": "12.42%",
+    "defaultSpread": "5.74%",
+    "taxRate": "28.49%",
+    "countryRiskPremium": "7.19%"
+  },
+  {
+    "region": "Asia",
+    "equityRiskPremium": "6.78%",
+    "defaultSpread": "1.24%",
+    "taxRate": "26.12%",
+    "countryRiskPremium": "1.55%"
+  },
+  {
+    "region": "Australia & New Zealand",
+    "equityRiskPremium": "5.23%",
+    "defaultSpread": "0.00%",
+    "taxRate": "29.75%",
+    "countryRiskPremium": "0.00%"
+  },
+  {
+    "region": "Caribbean",
+    "equityRiskPremium": "13.37%",
+    "defaultSpread": "6.50%",
+    "taxRate": "23.88%",
+    "countryRiskPremium": "8.14%"
+  },
+  {
+    "region": "Central and South America",
+    "equityRiskPremium": "10.70%",
+    "defaultSpread": "4.37%",
+    "taxRate": "30.96%",
+    "countryRiskPremium": "5.47%"
+  },
+  {
+    "region": "Eastern Europe & Russia",
+    "equityRiskPremium": "8.42%",
+    "defaultSpread": "2.54%",
+    "taxRate": "18.36%",
+    "countryRiskPremium": "3.19%"
+  },
+  {
+    "region": "Middle East",
+    "equityRiskPremium": "7.70%",
+    "defaultSpread": "1.98%",
+    "taxRate": "27.37%",
+    "countryRiskPremium": "2.47%"
+  },
+  {
+    "region": "North America",
+    "equityRiskPremium": "5.23%",
+    "defaultSpread": "0.00%",
+    "taxRate": "25.12%",
+    "countryRiskPremium": "0.00%"
+  },
+  {
+    "region": "Western Europe",
+    "equityRiskPremium": "6.44%",
+    "defaultSpread": "0.96%",
+    "taxRate": "25.04%",
+    "countryRiskPremium": "1.21%"
+  },
+  {
+    "region": "Global",
+    "equityRiskPremium": "6.76%",
+    "defaultSpread": "1.22%",
+    "taxRate": "25.70%",
+    "countryRiskPremium": "1.53%"
+  }
+]

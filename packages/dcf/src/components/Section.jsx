@@ -1,0 +1,5 @@
+import { Box } from "@material-ui/core";
+
+const Section = ({ sx, ...props }) => <Box sx={{ mt: 4, ...sx }} {...props} />;
+
+export default Section;

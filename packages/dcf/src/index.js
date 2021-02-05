@@ -1,5 +1,3 @@
-import React from "react";
+import IndustryAveragesSummary from "./components/IndustryAveragesSummary";
 
-export const ExampleComponent = ({ text }) => {
-  return <div>Example Component: {text}</div>;
-};
+export { IndustryAveragesSummary };
