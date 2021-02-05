@@ -9,31 +9,48 @@ import {
   useTheme,
 } from "@material-ui/core";
 import React, { useState } from "react";
-import TracktakLogo from "../shared/TracktakLogo";
-import { ReactComponent as TracktakSmallLogo } from "../icons/tracktakSmallLogo.svg";
 import SearchTicker from "./SearchTicker";
 import { Link } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
-
-const leftLinks = [
-  { to: "/stock-valuations", text: "Valuations" },
-  { to: "/how-to-do-a-dcf", text: "Documentation" },
-];
+import { makeStyles } from "@material-ui/core";
+import { ReactComponent as TracktakWhite } from "../icons/tracktak-white.svg";
+import { ReactComponent as TracktakWhiteSmall } from "../icons/tracktak-white-small.svg";
 
 const rightLinks = [
-  { to: "/contact-us", text: "Contact Us" },
+  { to: "/features", text: "Features" },
+  { to: "/features", text: "Process" },
+  { to: "/how-to-do-a-dcf", text: "Docs" },
+  { to: "/stock-valuations", text: "Blog" },
+  { to: "/contact-us", text: "Contact" },
   {
     to: "/about-us",
     text: "About us",
   },
 ];
 
-const allLinks = [...leftLinks, ...rightLinks];
+const allLinks = [...rightLinks];
+
+const useStyles = makeStyles((theme) => ({
+  app: {
+    padding: "10px 10px",
+    background: "#7950D6",
+    // borderRadius: "10px",
+    // position: "absolute",
+    // top: "30px",
+    // left: "0",
+    // width: "100%",
+    // zIndex: "99",
+  },
+}));
 
 const HeaderLink = ({ to, text, sx }) => {
   return (
     <Box sx={{ mx: 1, whiteSpace: "nowrap", ...sx }}>
-      <Button variant="outlined" to={to} component={Link}>
+      <Button
+        style={{ textTransform: "none", fontSize: "16px", fontWeight: 600 }}
+        to={to}
+        component={Link}
+      >
         {text}
       </Button>
     </Box>
@@ -41,6 +58,7 @@ const HeaderLink = ({ to, text, sx }) => {
 };
 
 const Header = ({ hideSearch }) => {
+  const classes = useStyles();
   const theme = useTheme();
   const extraMargin = 20;
   const mb = `${theme.mixins.toolbar.minHeight + extraMargin}px`;
@@ -56,7 +74,7 @@ const Header = ({ hideSearch }) => {
 
   return (
     <Box sx={{ mb }}>
-      <AppBar color="inherit">
+      <AppBar className={classes.app}>
         <Container maxWidth={false}>
           <Box
             sx={{
@@ -68,19 +86,14 @@ const Header = ({ hideSearch }) => {
           >
             <Box sx={{ mr: 2 }}>
               <Hidden mdDown>
-                <TracktakLogo />
+                <TracktakWhite />
               </Hidden>
               <Hidden mdUp>
                 <Link to="/">
-                  <TracktakSmallLogo width={52} height={38} />
+                  <TracktakWhiteSmall width={52} height={38} />
                 </Link>
               </Hidden>
             </Box>
-            <Hidden mdDown>
-              {leftLinks.map((link) => (
-                <HeaderLink {...link} />
-              ))}
-            </Hidden>
             <Box
               sx={{ flex: "0 1 450px", minWidth: "120px", ml: 1, mr: "auto" }}
             >

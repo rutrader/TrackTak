@@ -16,6 +16,7 @@ import { ReactComponent as BackgroundPurple } from "../icons/backgroundPurple.sv
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
+import SubscribeSection from "../landingHomepage/sections/SubscribeSection";
 
 const textColor = "#292929";
 
@@ -66,43 +67,7 @@ const Home = () => {
           <Box>Hello, automated Discounted Cash Flows.</Box>
         </TypographyHeader>
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          flexWrap: "wrap",
-          gap: 20,
-          my: 5,
-        }}
-      >
-        <TypographyText isOnMobile={isOnMobile}>
-          <Box>
-            <SettingsIcon
-              classes={{ root: iconClasses.root }}
-              color="primary"
-            />
-          </Box>
-          Use our DCF calculator to find a companies true intrinsic value for
-          free within seconds.
-        </TypographyText>
-        <TypographyText isOnMobile={isOnMobile}>
-          <Box>
-            <TrendingUpIcon
-              classes={{ root: iconClasses.root }}
-              color="primary"
-            />
-          </Box>
-          Fully transparent and based on Aswath Damoradan's models showing you
-          each formula.
-        </TypographyText>
-        <TypographyText isOnMobile={isOnMobile}>
-          <Box>
-            <PublicIcon classes={{ root: iconClasses.root }} color="primary" />
-          </Box>
-          Support for over 60+ stock exchanges and more than 120,000 tickers all
-          over the world.
-        </TypographyText>
-      </Box>
+      <Box></Box>
       <Box
         sx={{
           justifyContent: "center",
@@ -119,24 +84,9 @@ const Home = () => {
         </Typography>
         <SearchTicker />
       </Box>
-      <Hidden mdDown>
-        <Box
-          style={{
-            width: "100%",
-            height: 240,
-            bottom: 0,
-            left: 0,
-            position: "absolute",
-          }}
-          zIndex={-1}
-        >
-          <BackgroundPurple
-            height="100%"
-            width="100%"
-            style={{ transform: "rotateX(180deg)" }}
-          />
-        </Box>
-      </Hidden>
+      <Box>
+        <SubscribeSection />
+      </Box>
     </>
   );
 };
