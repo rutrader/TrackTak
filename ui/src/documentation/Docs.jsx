@@ -119,7 +119,11 @@ const Docs = () => {
           {wikiContent.map(({ title, text, cellsText = "" }) => {
             return (
               <Fragment key={title}>
-                <Typography variant="h6" gutterBottom id={title}>
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  id={replaceSpaceWithHyphen(title)}
+                >
                   {cellsText ? title.concat(` - Cells: ${cellsText}`) : title}
                 </Typography>
                 <Typography paragraph>{text}</Typography>
