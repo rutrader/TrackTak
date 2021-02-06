@@ -1,9 +1,9 @@
 import { createSelector } from "@reduxjs/toolkit";
 import selectEstimatedCostOfDebt from "./selectEstimatedCostOfDebt";
-import selectQueryParams from "../routerSelectors/selectQueryParams";
+import selectInputQueryParams from "../routerSelectors/selectInputQueryParams";
 
 const selectPretaxCostOfDebt = createSelector(
-  selectQueryParams,
+  selectInputQueryParams,
   selectEstimatedCostOfDebt,
   (queryParams, estimatedCostOfDebt) =>
     queryParams.pretaxCostOfDebt !== undefined

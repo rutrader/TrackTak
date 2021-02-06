@@ -1,4 +1,4 @@
-const getInputQueryURLSearchParams = (queryParams) => {
+const convertParamsObjectToURLSearchParams = (queryParams) => {
   const urlSearchParams = new URLSearchParams();
 
   Object.keys(queryParams).forEach((param) => {
@@ -8,4 +8,4 @@ const getInputQueryURLSearchParams = (queryParams) => {
   return urlSearchParams;
 };
 
-export default getInputQueryURLSearchParams;
+export default convertParamsObjectToURLSearchParams;

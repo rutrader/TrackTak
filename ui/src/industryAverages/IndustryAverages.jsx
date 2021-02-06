@@ -115,53 +115,54 @@ const IndustryAverages = () => {
           href={`${resourceName}/industry-averages/${general.Code}.${exchange}`}
         />
       </Helmet>
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h4">{general.Name}</Typography>
-        <Typography
-          gutterBottom
-          style={{ fontWeight: theme.typography.fontWeightBold }}
-        >
-          {currentIndustry.industryName}
+      <SubSection>
+        <Typography variant="h6" gutterBottom>
+          Industry Averages
         </Typography>
-        &nbsp;
-        <BoldValueLabel
-          value={isInUS ? "US" : "Global"}
-          label="Company Region"
-        />
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: isInUS ? "column" : "column-reverse",
-        }}
-      >
         <Box>
-          <Typography variant="h6">Industry Averages (US)</Typography>
-          <SubSection>
-            <TTTable
-              columns={industryAveragesColumns}
-              data={industryAveragesUS}
-              classes={usTableClasses}
-              tableOptions={tableOptions}
-              useVirtualization
-              fixedSizeListProps={fixedSizeListProps}
-            />
-          </SubSection>
+          <Typography style={{ fontWeight: theme.typography.fontWeightBold }}>
+            {currentIndustry.industryName}
+          </Typography>
+          <BoldValueLabel
+            value={isInUS ? "US" : "Global"}
+            label="Company Region"
+          />
         </Box>
-        <Box>
-          <Typography variant="h6">Industry Averages (Global)</Typography>
-          <SubSection>
-            <TTTable
-              columns={industryAveragesColumns}
-              data={industryAveragesGlobal}
-              classes={globalTableClasses}
-              tableOptions={tableOptions}
-              useVirtualization
-              fixedSizeListProps={fixedSizeListProps}
-            />
-          </SubSection>
+        <Box
+          sx={{
+            mt: 2,
+            display: "flex",
+            flexDirection: isInUS ? "column" : "column-reverse",
+          }}
+        >
+          <Box>
+            <Typography variant="h6">United States</Typography>
+            <SubSection>
+              <TTTable
+                columns={industryAveragesColumns}
+                data={industryAveragesUS}
+                classes={usTableClasses}
+                tableOptions={tableOptions}
+                useVirtualization
+                fixedSizeListProps={fixedSizeListProps}
+              />
+            </SubSection>
+          </Box>
+          <Box>
+            <Typography variant="h6">Global</Typography>
+            <SubSection>
+              <TTTable
+                columns={industryAveragesColumns}
+                data={industryAveragesGlobal}
+                classes={globalTableClasses}
+                tableOptions={tableOptions}
+                useVirtualization
+                fixedSizeListProps={fixedSizeListProps}
+              />
+            </SubSection>
+          </Box>
         </Box>
-      </Box>
+      </SubSection>
     </>
   );
 };

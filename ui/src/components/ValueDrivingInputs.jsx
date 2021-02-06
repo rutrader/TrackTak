@@ -14,7 +14,7 @@ import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 import { InfoTextValueDrivingInputs } from "./InfoText";
 import { useSelector } from "react-redux";
 import useSetURLInput from "../hooks/useSetURLInput";
-import selectQueryParams from "../selectors/routerSelectors/selectQueryParams";
+import selectInputQueryParams from "../selectors/routerSelectors/selectInputQueryParams";
 
 const ValueDrivingTextField = withStyles({
   root: {
@@ -30,7 +30,7 @@ export const salesToCapitalRatioLabel = "Sales to Capital Ratio";
 
 const ValueDrivingInputs = () => {
   const theme = useTheme();
-  const queryParams = useSelector(selectQueryParams);
+  const queryParams = useSelector(selectInputQueryParams);
   const setURLInput = useSetURLInput();
 
   return (
