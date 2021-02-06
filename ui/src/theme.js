@@ -27,7 +27,7 @@ const theme = createMuiTheme({
     MuiAccordion: {
       styleOverrides: {
         rounded: {
-          borderRadius: "4px",
+          borderRadius: "50px",
         },
       },
     },

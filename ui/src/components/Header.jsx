@@ -32,14 +32,15 @@ const allLinks = [...rightLinks];
 
 const useStyles = makeStyles((theme) => ({
   app: {
-    padding: "10px 10px",
+    padding: "16px 30px",
     background: "#7950D6",
-    // borderRadius: "10px",
-    // position: "absolute",
-    // top: "30px",
-    // left: "0",
-    // width: "100%",
-    // zIndex: "99",
+    transition: "all 0.3s ease-out 0s",
+    borderRadius: "10px",
+    top: "30px",
+    left: "0",
+    width: "100%",
+    zIndex: "99",
+    position: "relative",
   },
 }));
 

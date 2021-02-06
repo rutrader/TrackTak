@@ -63,8 +63,8 @@ const Home = () => {
         }}
       >
         <TypographyHeader isOnMobile={isOnMobile} align="center">
-          Goodbye, Excel.
-          <Box>Hello, automated Discounted Cash Flows.</Box>
+          text
+          <Box>text</Box>
         </TypographyHeader>
       </Box>
       <Box></Box>
