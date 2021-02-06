@@ -29,6 +29,7 @@ import getTitle from "../shared/getTitle";
 import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
 import resourceName from "../shared/resourceName";
 import useVirtualExchange from "../hooks/useVirtualExchange";
+import selectIsIframe from "../selectors/routerSelectors/selectIsIframe";
 
 const mapFromStatementsToDateObject = (
   objectToLoop,
@@ -59,6 +60,7 @@ const DiscountedCashFlow = () => {
   const theme = useTheme();
   const general = useSelector(selectGeneral);
   const exchange = useVirtualExchange();
+  const isIframe = useSelector(selectIsIframe);
 
   const columns = [
     {
@@ -246,22 +248,20 @@ const DiscountedCashFlow = () => {
       <Box sx={{ display: "flex", gap: theme.spacing(10) }}>
         <CompanyOverviewStats />
       </Box>
-      <Section>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Typography variant="h5">Past Fundamentals</Typography>
-          <Typography
-            style={{
-              marginLeft: theme.spacing(1),
-              fontWeight: theme.typography.fontWeightBold,
-            }}
-          >
-            ({valuationCurrencySymbol}:{valuationCurrencyCode})
-          </Typography>
-        </Box>
-        <Box style={{ overflowX: "auto" }}>
-          <TTTable columns={columns} data={data} />
-        </Box>
-      </Section>
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Typography variant="h5">Past Fundamentals</Typography>
+        <Typography
+          style={{
+            marginLeft: theme.spacing(1),
+            fontWeight: theme.typography.fontWeightBold,
+          }}
+        >
+          ({valuationCurrencySymbol}:{valuationCurrencyCode})
+        </Typography>
+      </Box>
+      <Box style={{ overflowX: "auto" }}>
+        <TTTable columns={columns} data={data} />
+      </Box>
       <Section sx={{ display: "flex", gridColumnGap: 20, flexWrap: "wrap" }}>
         <Box sx={{ flex: 1 }}>
           <SubSection>
@@ -286,24 +286,26 @@ const DiscountedCashFlow = () => {
       <Section>
         <DiscountedCashFlowSheet />
       </Section>
-      <Section sx={{ display: "flex", mt: 2 }}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            margin: "0 auto",
-          }}
-        >
-          <Typography
-            variant="h6"
-            gutterBottom
-            style={{ fontWeight: theme.typography.fontWeightBold }}
+      {isIframe ? null : (
+        <Section sx={{ display: "flex", mt: 2 }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              margin: "0 auto",
+            }}
           >
-            Want us to implement features you need?
-          </Typography>
-          <SubscribeMailingList subscribeText="Sign Up" />
-        </Box>
-      </Section>
+            <Typography
+              variant="h6"
+              gutterBottom
+              style={{ fontWeight: theme.typography.fontWeightBold }}
+            >
+              Want us to implement features you need?
+            </Typography>
+            <SubscribeMailingList subscribeText="Sign Up" />
+          </Box>
+        </Section>
+      )}
     </>
   );
 };

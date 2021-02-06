@@ -1,14 +1,14 @@
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import selectQueryParams from "../selectors/routerSelectors/selectQueryParams";
-import getInputQueryURLSearchParams from "../shared/getInputQueryURLSearchParams";
+import convertParamsObjectToURLSearchParams from "../shared/convertParamsObjectToURLSearchParams";
 
 const useSetURLInput = () => {
   const history = useHistory();
   const queryParams = useSelector(selectQueryParams);
 
   return (key, value = null) => {
-    const urlSearchParams = getInputQueryURLSearchParams(queryParams);
+    const urlSearchParams = convertParamsObjectToURLSearchParams(queryParams);
 
     const existingValue = urlSearchParams.get(key);
     const parsedExistingValue =

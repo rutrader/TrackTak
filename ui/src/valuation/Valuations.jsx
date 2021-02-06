@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { getDCFTemplateEntries } from "../redux/actions/contentfulActions";
-import { inputQueries } from "../selectors/routerSelectors/selectQueryParams";
+import { inputQueries } from "../selectors/routerSelectors/selectInputQueryParams";
 import selectEntries from "../selectors/contentfulSelectors/selectEntries";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";

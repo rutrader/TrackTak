@@ -1,9 +1,9 @@
 import { Button } from "@material-ui/core";
 import React from "react";
 import { getNumberOfColumns, padCellKeys } from "./utils";
-import selectQueryParams, {
+import selectInputQueryParams, {
   inputQueries,
-} from "../selectors/routerSelectors/selectQueryParams";
+} from "../selectors/routerSelectors/selectInputQueryParams";
 import { utils, writeFile } from "xlsx";
 import { sentenceCase } from "change-case";
 import makeFormatCellForExcelOutput from "./makeFormatCellForExcelOutput";
@@ -47,7 +47,7 @@ const ExportToExcel = () => {
   const currentEquityRiskPremium = useSelector(selectCurrentEquityRiskPremium);
   const scope = useSelector(selectScope);
   const valuationCurrencySymbol = useSelector(selectValuationCurrencySymbol);
-  const queryParams = useSelector(selectQueryParams);
+  const queryParams = useSelector(selectInputQueryParams);
   const interestSpread = useSelector(selectInterestSpread);
   const currentIndustry = useSelector(selectCurrentIndustry);
   const incomeStatement = useSelector(selectRecentIncomeStatement);

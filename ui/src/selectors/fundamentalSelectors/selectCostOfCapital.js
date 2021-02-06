@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import selectRiskFreeRate from "./selectRiskFreeRate";
-import selectQueryParams from "../routerSelectors/selectQueryParams";
+import selectInputQueryParams from "../routerSelectors/selectInputQueryParams";
 import selectPretaxCostOfDebt from "./selectPretaxCostOfDebt";
 import selectRecentIncomeStatement from "./selectRecentIncomeStatement";
 import selectRecentBalanceSheet from "./selectRecentBalanceSheet";
@@ -146,7 +146,7 @@ const selectCostOfCapital = createSelector(
   selectRecentBalanceSheet,
   selectPrice,
   selectSharesStats,
-  selectQueryParams,
+  selectInputQueryParams,
   selectPretaxCostOfDebt,
   selectRiskFreeRate,
   calculateCostOfCapital

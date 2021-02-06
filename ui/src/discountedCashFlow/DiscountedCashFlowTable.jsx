@@ -7,7 +7,7 @@ import { getColumnsBetween, startColumn } from "./utils";
 import { Cell, Column, Table } from "@blueprintjs/table";
 import { useMediaQuery, useTheme } from "@material-ui/core";
 import "../shared/blueprintTheme.scss";
-import selectQueryParams from "../selectors/routerSelectors/selectQueryParams";
+import selectInputQueryParams from "../selectors/routerSelectors/selectInputQueryParams";
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
 import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
 import selectValueOfAllOptionsOutstanding from "../selectors/fundamentalSelectors/selectValueOfAllOptionsOutstanding";
@@ -27,7 +27,7 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const cells = useSelector(selectCells);
   const dispatch = useDispatch();
-  const queryParams = useSelector(selectQueryParams);
+  const queryParams = useSelector(selectInputQueryParams);
   const incomeStatement = useSelector(selectRecentIncomeStatement);
   const balanceSheet = useSelector(selectRecentBalanceSheet);
   const currentEquityRiskPremium = useSelector(selectCurrentEquityRiskPremium);

@@ -119,9 +119,6 @@ const SyntheticRating = () => {
           href={`${resourceName}/synthetic-credit-rating/${general.Code}.${exchange}`}
         />
       </Helmet>
-      <Typography variant="h4" gutterBottom>
-        {general.Name}
-      </Typography>
       <SubSection>
         <Typography variant="h6" gutterBottom>
           <InfoOutlinedIconWrapper text={<InfoSyntheticRating />}>
