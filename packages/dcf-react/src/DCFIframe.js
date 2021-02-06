@@ -7,12 +7,23 @@ const StyledDCFIframe = styled.iframe`
   height: 100%;
 `;
 
-const DCFIframe = ({ ticker, domain }) => {
+const origin =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:3000"
+    : "https://tracktak.com";
+
+const DCFIframe = ({ ticker, domain, params, ...props }) => {
+  const urlSearchParams = new URLSearchParams(params);
+
+  urlSearchParams.set("isIframe", true);
+  urlSearchParams.set("domain", domain);
+
+  console.log(urlSearchParams.toString());
+
   return (
     <StyledDCFIframe
-      url={`https://tracktak.com/discounted-cash-flow/${ticker}?isIframe=true&domain=${domain}`}
-      width="100%"
-      height="100%"
+      src={`${origin}/discounted-cash-flow/${ticker}?${urlSearchParams.toString()}`}
+      {...props}
     />
   );
 };

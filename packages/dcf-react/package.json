@@ -1,21 +1,23 @@
 {
-  "name": "@tracktak/dcf-react-react",
+  "name": "@tracktak/dcf-react",
   "version": "1.0.0",
   "description": "A private react package that allows external websites to use our DCF",
   "author": "tracktak",
   "license": "CC-BY-ND-2.5",
-  "repository": "tracktak/@tracktak/dcf-react-react",
+  "repository": "tracktak/@tracktak/dcf-react",
   "main": "dist/index.js",
   "source": "src/index.js",
   "engines": {
     "node": ">=10"
   },
   "scripts": {
-    "build": "microbundle-crl",
-    "start": "microbundle-crl watch",
-    "prepare": "run-s build",
-    "storybook": "start-storybook -p 6006",
+    "build": "cross-env NODE_ENV=production microbundle-crl",
+    "start": "cross-env NODE_ENV=development microbundle-crl watch",
+    "storybook": "cross-env NODE_ENV=development start-storybook -p 6006",
     "build-storybook": "build-storybook"
+  },
+  "dependencies": {
+    "cross-env": "^7.0.2"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^6.1.17",

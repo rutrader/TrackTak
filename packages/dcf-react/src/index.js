@@ -1,3 +1,3 @@
-import DCFIframe from "./components/DCFIframe";
+import DCFIframe from "./DCFIframe";
 
 export { DCFIframe };
