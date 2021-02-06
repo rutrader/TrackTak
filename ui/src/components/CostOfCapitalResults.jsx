@@ -10,7 +10,7 @@ import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFree
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
 import { pretaxCostOfDebtLabel } from "./OptionalInputs";
 import selectPretaxCostOfDebt from "../selectors/fundamentalSelectors/selectPretaxCostOfDebt";
-import selectQueryParams from "../selectors/routerSelectors/selectQueryParams";
+import selectInputQueryParams from "../selectors/routerSelectors/selectInputQueryParams";
 import { Link, useParams } from "react-router-dom";
 import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
@@ -26,7 +26,7 @@ const CostOfCapitalResults = () => {
   );
   const costOfCapital = useSelector(selectCostOfCapital);
   const riskFreeRate = useSelector(selectRiskFreeRate);
-  const queryParams = useSelector(selectQueryParams);
+  const queryParams = useSelector(selectInputQueryParams);
   const pretaxCostOfDebt = useSelector(selectPretaxCostOfDebt);
   const useQueryPretaxCostOfDebt = queryParams.pretaxCostOfDebt !== undefined;
   const params = useParams();
@@ -72,7 +72,14 @@ const CostOfCapitalResults = () => {
               ) : (
                 <>
                   {pretaxCostOfDebtLabel}&nbsp;
-                  <Link to={`/synthetic-credit-rating/${params.ticker}`}>
+                  <Link
+                    to={({ search }) => {
+                      return {
+                        pathname: `/synthetic-credit-rating/${params.ticker}`,
+                        search,
+                      };
+                    }}
+                  >
                     (Synthetic Credit Rating)
                   </Link>
                 </>

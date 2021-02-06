@@ -14,6 +14,8 @@ import { ReactComponent as TracktakSmallLogo } from "../icons/tracktakSmallLogo.
 import SearchTicker from "./SearchTicker";
 import { Link } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
+import { useSelector } from "react-redux";
+import selectIsIframe from "../selectors/routerSelectors/selectIsIframe";
 
 const leftLinks = [
   { to: "/stock-valuations", text: "Valuations" },
@@ -42,6 +44,7 @@ const HeaderLink = ({ to, text, sx }) => {
 
 const Header = ({ hideSearch }) => {
   const theme = useTheme();
+  const isIframe = useSelector(selectIsIframe);
   const extraMargin = 20;
   const mb = `${theme.mixins.toolbar.minHeight + extraMargin}px`;
   const [anchorEl, setAnchorEl] = useState(null);
@@ -54,7 +57,7 @@ const Header = ({ hideSearch }) => {
     setAnchorEl(null);
   };
 
-  return (
+  return isIframe ? null : (
     <Box sx={{ mb }}>
       <AppBar color="inherit">
         <Container maxWidth={false}>

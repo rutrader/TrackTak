@@ -1,13 +1,13 @@
 import { createSelector } from "@reduxjs/toolkit";
 import selectRiskFreeRate from "./selectRiskFreeRate";
-import selectQueryParams from "../routerSelectors/selectQueryParams";
+import selectInputQueryParams from "../routerSelectors/selectInputQueryParams";
 import calculateBlackScholesModel from "../../shared/calculateBlackScholesModel";
 import selectPrice from "./selectPrice";
 import selectCurrentIndustry from "./selectCurrentIndustry";
 
 const selectValueOption = createSelector(
   selectPrice,
-  selectQueryParams,
+  selectInputQueryParams,
   selectRiskFreeRate,
   selectCurrentIndustry,
   (price, queryParams, riskFreeRate, currentIndustry) => {

@@ -18,6 +18,7 @@ import Docs from "./documentation/Docs";
 import selectPageIsLoading from "./selectors/pageSelectors/selectPageIsLoading";
 import ContactUs from "./contactUs/ContactUs";
 import AboutUs from "./aboutUs/AboutUs";
+import Test from "./Test";
 
 const LandingPage = lazy(() => import("./landingPage/LandingPage"));
 const DiscountedCashFlow = lazy(() =>
@@ -104,6 +105,10 @@ export const allPaths = [
     url: "/landingPage",
     component: <LandingPage />,
   },
+  {
+    url: "/iframe-test",
+    component: <Test />,
+  },
   ...allLayoutPaths,
 ];
 
@@ -120,6 +125,7 @@ function App() {
                 {allPaths[1].component}
               </RebassProvider>
             </Route>
+            <Route path={[allPaths[2].url]}>{allPaths[2].component}</Route>
             <Route path={layoutFullScreenPaths.map((x) => x.url)}>
               <LayoutFullScreen>
                 <Switch>
