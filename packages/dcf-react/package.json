@@ -1,6 +1,6 @@
 {
   "name": "@tracktak/dcf-react",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A react package that allows external websites to use our DCF",
   "author": "tracktak",
   "license": "MIT",
@@ -17,20 +17,20 @@
     "build-storybook": "build-storybook"
   },
   "peerDependencies": {
-    "react-dom": "10 - 17",
-    "react": "10 - 17"
+    "react": "10 - 17",
+    "react-dom": "10 - 17"
   },
   "devDependencies": {
-    "@tracktak/dcf-react": "file:./",
     "@storybook/addon-actions": "^6.1.17",
     "@storybook/addon-essentials": "^6.1.17",
     "@storybook/addon-links": "^6.1.17",
     "@storybook/react": "^6.1.17",
+    "@tracktak/dcf-react": "file:./",
     "cross-env": "^7.0.2",
+    "dotenv-flow": "^3.2.0",
     "microbundle-crl": "^0.13.10",
     "npm-run-all": "^4.1.5",
     "react": "^17.0.1",
-    "dotenv-flow": "^3.2.0",
     "react-dom": "^17.0.1"
   },
   "files": [
