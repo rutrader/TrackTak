@@ -1,6 +1,5 @@
 import React from "react";
-
-import { DCFIframe } from "../src/index";
+import { DCFIframe } from "@tracktak/dcf-react";
 
 const config = {
   title: "DCF",

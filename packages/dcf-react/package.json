@@ -24,6 +24,7 @@
     "cross-env": "^7.0.2"
   },
   "devDependencies": {
+    "@tracktak/dcf-react": "file:./",
     "@storybook/addon-actions": "^6.1.17",
     "@storybook/addon-essentials": "^6.1.17",
     "@storybook/addon-links": "^6.1.17",
