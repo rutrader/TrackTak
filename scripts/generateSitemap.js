@@ -31,8 +31,9 @@ const generateSitemap = async () => {
 
           return [
             `<url><loc>https://tracktak.com/discounted-cash-flow/${decodedCode}.${exchange_short_name}</loc></url>`,
-            `<url><loc>https://tracktak.com/synthetic-credit-rating/${decodedCode}.${exchange_short_name}</loc></url>`,
-            `<url><loc>https://tracktak.com/industry-averages/${decodedCode}.${exchange_short_name}</loc></url>`,
+            // TODO: Add back when we have the crawl budget
+            // `<url><loc>https://tracktak.com/synthetic-credit-rating/${decodedCode}.${exchange_short_name}</loc></url>`,
+            // `<url><loc>https://tracktak.com/industry-averages/${decodedCode}.${exchange_short_name}</loc></url>`,
           ];
         }),
         "</urlset>",
