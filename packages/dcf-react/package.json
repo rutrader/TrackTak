@@ -17,8 +17,8 @@
     "build-storybook": "build-storybook"
   },
   "peerDependencies": {
-    "react": "10 - 17",
-    "react-dom": "10 - 17"
+    "react": ">= 10",
+    "react-dom": ">= 10"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^6.1.17",
@@ -35,5 +35,12 @@
   },
   "files": [
     "dist"
+  ],
+  "keywords": [
+    "discounted cash flow",
+    "dcf",
+    "react",
+    "tracktak",
+    "cash flow"
   ]
 }
