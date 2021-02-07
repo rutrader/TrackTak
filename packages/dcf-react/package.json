@@ -1,9 +1,9 @@
 {
   "name": "@tracktak/dcf-react",
   "version": "1.0.0",
-  "description": "A private react package that allows external websites to use our DCF",
+  "description": "A react package that allows external websites to use our DCF",
   "author": "tracktak",
-  "license": "CC-BY-ND-2.5",
+  "license": "MIT",
   "repository": "tracktak/@tracktak/dcf-react",
   "main": "dist/index.js",
   "source": "src/index.js",
@@ -15,6 +15,10 @@
     "start": "cross-env NODE_ENV=development microbundle-crl watch",
     "storybook": "cross-env NODE_ENV=development start-storybook -p 6006",
     "build-storybook": "build-storybook"
+  },
+  "peerDependencies": {
+    "react-dom": "10 - 17",
+    "react": "10 - 17"
   },
   "dependencies": {
     "cross-env": "^7.0.2"
@@ -28,6 +32,7 @@
     "microbundle-crl": "^0.13.10",
     "npm-run-all": "^4.1.5",
     "react": "^17.0.1",
+    "dotenv-flow": "^3.2.0",
     "react-dom": "^17.0.1"
   },
   "files": [

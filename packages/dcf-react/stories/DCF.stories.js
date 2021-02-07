@@ -10,7 +10,7 @@ const config = {
 const Template = (args) => {
   return (
     <div style={{ height: 820 }}>
-      <DCFIframe ticker="IRBT.US" domain="storybook" {...args} />
+      <DCFIframe ticker="IRBT.US" sourceDomain="storybook" {...args} />
     </div>
   );
 };
