@@ -9,7 +9,8 @@
     "clean": "rimraf ./node_modules",
     "install:ui": "cd ./ui && npm install",
     "install:node": "cd ./node && npm install",
-    "install": "run-p install:ui install:node"
+    "install": "run-p install:ui install:node",
+    "sitemap": "node ./scripts/generateSitemap.js"
   },
   "devDependencies": {
     "axios": "^0.21.1",

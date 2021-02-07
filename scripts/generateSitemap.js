@@ -18,7 +18,7 @@ const generateSitemap = async () => {
     const jsons = jsonNames.flatMap((name) => require(`../data/${name}`));
 
     // Sitemap must be 50k urls max
-    const chunks = getChunksOfArray(jsons, 16000);
+    const chunks = getChunksOfArray(jsons, 49000);
 
     const sitemapNumbers = chunks.map((chunk, i) => {
       const sitemapNumber = i + 1;
