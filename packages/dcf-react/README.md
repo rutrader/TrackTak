@@ -30,6 +30,8 @@ const YourComponent = ({ ticker }) => {
 }
 ```
 
+## Props
+
 `ticker` - The ticker for the stock to display the DCF for. It must be in the format `EXCHANGE.SYMBOL`, for example AAPL.US, IAG.LSE etc.
 
 The US is a virtual exchange that covers all US exchanges, for the full list of exchanges see the Exchange Code column here: https://eodhistoricaldata.com/financial-apis//list-supported-exchanges/
