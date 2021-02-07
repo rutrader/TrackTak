@@ -143,7 +143,7 @@ const SubscribeSection = () => {
   const classes = useStyles();
   return (
     <Box style={{ paddingTop: "100px" }}>
-      <Box style={{ maxWidth: "960px" }}>
+      <Box>
         <Box className={classes.subscribeWrapper}>
           <Box className={classes.shapeOne}></Box>
           <Box className={classes.shapeTwo}></Box>

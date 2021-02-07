@@ -20,7 +20,7 @@ const rightLinks = [
   { to: "/features", text: "Features" },
   { to: "/features", text: "Process" },
   { to: "/how-to-do-a-dcf", text: "Docs" },
-  { to: "/stock-valuations", text: "Blog" },
+  { to: "/stock-valuations", text: "Valuations" },
   { to: "/contact-us", text: "Contact" },
   {
     to: "/about-us",
