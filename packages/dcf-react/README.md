@@ -1,6 +1,6 @@
 # @tracktak/dcf-react
 
-> A package that allows external websites to use our DCF.
+> A react package that allows external websites to use our discounted cash flow calculator.
 
 [![NPM](https://img.shields.io/npm/v/@tracktak/dcf-react.svg)](https://www.npmjs.com/package/@tracktak/dcf-react) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
