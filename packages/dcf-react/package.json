@@ -1,6 +1,6 @@
 {
   "name": "@tracktak/dcf-react",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "A react package that allows external websites to use our DCF",
   "author": "tracktak",
   "license": "MIT",
@@ -19,9 +19,6 @@
   "peerDependencies": {
     "react-dom": "10 - 17",
     "react": "10 - 17"
-  },
-  "dependencies": {
-    "cross-env": "^7.0.2"
   },
   "devDependencies": {
     "@tracktak/dcf-react": "file:./",
