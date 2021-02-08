@@ -33,6 +33,54 @@ const CssTextField = withStyles({
   },
 })(TextField);
 
+const TypographyHeader = withStyles({
+  root: {
+    fontWeight: 700,
+    marginBottom: "15px",
+    color: "#fff",
+    animationDuration: "1.3s",
+    animationDelay: "0.4s",
+    animationName: "fadeInDown",
+  },
+})(Typography);
+
+const TypographySubHeader = withStyles({
+  root: {
+    fontSize: "25px",
+    fontWeight: 600,
+    display: "block",
+    marginBottom: "12px",
+    color: "#fff",
+    visibility: "visible",
+    animationDelay: "0.2s",
+    animationName: "fadeInDown",
+    animationDuration: "1.3s",
+  },
+})(Typography);
+
+const TypographyText = withStyles({
+  root: {
+    fontSize: "18px",
+    fontWeight: 400,
+    lineHeight: "28px",
+    color: "#fff",
+    animationDuration: "1.3s",
+    animationDelay: "0.6s",
+    animationName: "fadeInLeft",
+  },
+})(Typography);
+
+const CustomButton = withStyles({
+  root: {
+    background: "#43cea2",
+    fontWeight: 600,
+    padding: "17px 44px",
+    fontSize: "20px",
+    borderRadius: "50px",
+    transition: "all .4s ease-in-out",
+  },
+})(Button);
+
 const useStyles = makeStyles((theme) => {
   const shapePseudo = {
     content: '""',
@@ -102,40 +150,6 @@ const useStyles = makeStyles((theme) => {
       border: "1px solid transparent",
       transition: "all 0.3s ease-out 0s",
     },
-    button: {
-      background: "#43cea2",
-      fontWeight: 600,
-      padding: "17px 44px",
-      fontSize: "20px",
-      borderRadius: "50px",
-      transition: "all .4s ease-in-out",
-    },
-    h4: {
-      fontSize: "25px",
-      fontWeight: 600,
-      display: "block",
-      marginBottom: "12px",
-      color: "#fff",
-      visibility: "visible",
-      animationDelay: "0.2s",
-      animationName: "fadeInDown",
-    },
-    h3: {
-      fontWeight: 700,
-      marginBottom: "15px",
-      color: "#fff",
-      visibility: "visible",
-      animationDelay: "0.4s",
-      animationName: "fadeInLeft",
-    },
-    h6: {
-      fontSize: "18px",
-      fontWeight: 400,
-      lineHeight: "28px",
-      color: "#fff",
-      visibility: "visible",
-      animationDelay: "0.6s",
-    },
   };
 });
 
@@ -148,16 +162,14 @@ const SubscribeSection = () => {
           <Box className={classes.shapeOne}></Box>
           <Box className={classes.shapeTwo}></Box>
           <Box className={classes.row}>
-            <Typography className={classes.h4} variant="h4">
-              Newsletter
-            </Typography>
-            <Typography className={classes.h3} variant="h3">
+            <TypographySubHeader variant="h4">Newsletter</TypographySubHeader>
+            <TypographyHeader variant="h3">
               Subscribe Our Newsletter
-            </Typography>
-            <Typography className={classes.h6} variant="h6">
+            </TypographyHeader>
+            <TypographyText variant="h6">
               Sign up today to get exclusive access to the premium and 50% off
               for life.
-            </Typography>
+            </TypographyText>
             <Box
               style={{
                 display: "flex",
@@ -174,13 +186,13 @@ const SubscribeSection = () => {
                     disableUnderline: true,
                   }}
                 />
-                <Button
+                <CustomButton
                   variant="contained"
                   type="submit"
                   className={classes.button}
                 >
                   SUBSCRIBE
-                </Button>
+                </CustomButton>
               </form>
             </Box>
           </Box>

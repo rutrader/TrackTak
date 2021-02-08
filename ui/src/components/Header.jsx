@@ -13,8 +13,8 @@ import SearchTicker from "./SearchTicker";
 import { Link } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
 import { makeStyles } from "@material-ui/core";
-import { ReactComponent as TracktakWhite } from "../icons/tracktak-white.svg";
-import { ReactComponent as TracktakWhiteSmall } from "../icons/tracktak-white-small.svg";
+import { ReactComponent as TracktakPurpleSmall } from "../icons/tracktak-logo-small.svg";
+import { ReactComponent as TracktakPurple } from "../icons/tracktak-purple.svg";
 
 const rightLinks = [
   { to: "/features", text: "Features" },
@@ -33,7 +33,7 @@ const allLinks = [...rightLinks];
 const useStyles = makeStyles((theme) => ({
   app: {
     padding: "16px 30px",
-    background: "#7950D6",
+    background: "#fff",
     transition: "all 0.3s ease-out 0s",
     borderRadius: "10px",
     top: "30px",
@@ -48,7 +48,12 @@ const HeaderLink = ({ to, text, sx }) => {
   return (
     <Box sx={{ mx: 1, whiteSpace: "nowrap", ...sx }}>
       <Button
-        style={{ textTransform: "none", fontSize: "16px", fontWeight: 600 }}
+        style={{
+          textTransform: "none",
+          fontSize: "16px",
+          fontWeight: 600,
+          color: "#313450",
+        }}
         to={to}
         component={Link}
       >
@@ -87,11 +92,11 @@ const Header = ({ hideSearch }) => {
           >
             <Box sx={{ mr: 2 }}>
               <Hidden mdDown>
-                <TracktakWhite />
+                <TracktakPurple src="icons/tracktak-black.svg" alt="" />
               </Hidden>
               <Hidden mdUp>
                 <Link to="/">
-                  <TracktakWhiteSmall width={52} height={38} />
+                  <TracktakPurpleSmall width={52} height={38} />
                 </Link>
               </Hidden>
             </Box>

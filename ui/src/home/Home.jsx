@@ -9,14 +9,11 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import SearchTicker from "../components/SearchTicker";
-import SettingsIcon from "@material-ui/icons/Settings";
-import TrendingUpIcon from "@material-ui/icons/TrendingUp";
-import PublicIcon from "@material-ui/icons/Public";
-import { ReactComponent as BackgroundPurple } from "../icons/backgroundPurple.svg";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
 import SubscribeSection from "../landingHomepage/sections/SubscribeSection";
+import LandingPageHome from "../landingHomepage/LandingPageHome";
 
 const textColor = "#292929";
 
@@ -57,7 +54,8 @@ const Home = () => {
         <title>{getTitle("Discounted Cash Flow (DCF) Calculator")}</title>
         <link rel="canonical" href={`${resourceName}`} />
       </Helmet>
-      <Box
+      <LandingPageHome />
+      {/* <Box
         sx={{
           mt: 12,
         }}
@@ -66,8 +64,7 @@ const Home = () => {
           text
           <Box>text</Box>
         </TypographyHeader>
-      </Box>
-      <Box></Box>
+      </Box> */}
       <Box
         sx={{
           justifyContent: "center",
