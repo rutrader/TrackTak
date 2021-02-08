@@ -7,7 +7,11 @@
     "ui": "npm run start --prefix ./ui",
     "start": "run-p node ui",
     "clean": "rimraf ./node_modules",
-    "lint": "eslint ./packages/dcf"
+    "lint": "eslint ./packages/dcf",
+    "install:ui": "cd ./ui && npm install",
+    "install:node": "cd ./node && npm install",
+    "install": "run-p install:ui install:node",
+    "sitemap": "node ./scripts/generateSitemap.js"
   },
   "devDependencies": {
     "@octokit/core": "^3.2.5",
