@@ -25,14 +25,14 @@
     "webpack-node-externals": "^2.5.2"
   },
   "dependencies": {
-    "cross-env": "^7.0.2",
     "aws-sdk": "^2.814.0",
     "axios": "^0.21.0",
     "contentful": "^8.1.4",
     "cors": "^2.8.5",
-    "memory-cache": "^0.2.0",
     "cron": "^1.8.2",
+    "cross-env": "^7.0.2",
     "dotenv-flow": "^3.2.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "memory-cache": "^0.2.0"
   }
 }
