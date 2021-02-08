@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import {
   Box,
   IconButton,
@@ -11,6 +11,7 @@ import { Autocomplete } from "@material-ui/core";
 import { useHistory } from "react-router";
 import SearchIcon from "@material-ui/icons/Search";
 import { getAutocompleteQuery } from "../api/api";
+import useDebouncedCallback from "../hooks/useDebouncedCallback";
 
 const TickerTextField = withStyles({
   root: ({ $removeInputPadding }) => {
@@ -43,9 +44,16 @@ const SearchTicker = ({ removeInputPadding }) => {
   const [autoComplete, setAutoComplete] = useState([]);
   const history = useHistory();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [isLoadingAutocomplete, setIsLoadingAutocomplete] = useState(false);
+  const getAutoCompleteDebounced = useDebouncedCallback(async (value) => {
+    const { data } = await getAutocompleteQuery(`${value}?limit=9`);
+
+    setIsLoadingAutocomplete(false);
+    setAutoComplete(data.value);
+  }, 500);
 
   const handleOnChangeAutoComplete = (_, value) => {
-    if (value.code && value.exchange) {
+    if (value?.code && value?.exchange) {
       setTicker(`${value.code}.${value.exchange}`);
     }
   };
@@ -53,20 +61,12 @@ const SearchTicker = ({ removeInputPadding }) => {
   const handleOnChangeSearch = async (e) => {
     const value = e.target.value;
 
-    setTicker(value);
-
-    if (value.length > 1 && hasTickerNotOnlyWhiteSpace()) {
-      const { data } = await getAutocompleteQuery(value);
-      setAutoComplete(data.value);
+    if (value.length > 1) {
+      setIsLoadingAutocomplete(true);
+      getAutoCompleteDebounced(value);
     } else {
       setAutoComplete([]);
     }
-  };
-
-  const hasTickerNotOnlyWhiteSpace = () => {
-    const replacedWhiteSpace = ticker.replace(/ /g, "");
-
-    return replacedWhiteSpace.length > 0;
   };
 
   return (
@@ -75,7 +75,8 @@ const SearchTicker = ({ removeInputPadding }) => {
       sx={{ display: "flex", position: "relative" }}
       onSubmit={async (e) => {
         e.preventDefault();
-        if (hasTickerNotOnlyWhiteSpace()) {
+
+        if (ticker) {
           history.push(`/discounted-cash-flow/${ticker}`);
         }
       }}
@@ -83,17 +84,34 @@ const SearchTicker = ({ removeInputPadding }) => {
       <Autocomplete
         style={{ flex: 1 }}
         onChange={handleOnChangeAutoComplete}
-        freeSolo
-        disableClearable
         getOptionLabel={({ name, code, exchange }) => {
-          if (!name || !code || !exchange) return ticker;
           return `${name} (${code}.${exchange})`;
         }}
-        options={autoComplete.map((option) => ({
-          name: option.Name,
-          code: option.Code,
-          exchange: option.Exchange,
-        }))}
+        getOptionSelected={(option, value) => {
+          return (
+            option.code === value.code && option.exchange === value.exchange
+          );
+        }}
+        options={autoComplete.map((option) => {
+          return {
+            name: option.Name,
+            code: option.Code,
+            exchange: option.Exchange,
+          };
+        })}
+        maxSearchResults={5}
+        autoHighlight
+        loading={isLoadingAutocomplete}
+        popupIcon={null}
+        onBlur={() => {
+          if (!ticker) {
+            setAutoComplete([]);
+          }
+        }}
+        closeIcon={null}
+        popoverProps={{
+          canAutoPosition: true,
+        }}
         renderInput={(params) => {
           return (
             <>
@@ -101,9 +119,7 @@ const SearchTicker = ({ removeInputPadding }) => {
                 {...params}
                 $removeInputPadding={removeInputPadding}
                 variant="outlined"
-                value={ticker}
                 fullWidth
-                required
                 onChange={handleOnChangeSearch}
                 placeholder={isOnMobile ? "Search" : "Search, e.g. AAPL"}
               />

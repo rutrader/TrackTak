@@ -12,7 +12,7 @@ import { yearMonthDateFormat } from "../../shared/utils";
 import getMinimumHistoricalDateFromFinancialStatements from "../../shared/getMinimumHistoricalDateFromFinancialStatements";
 
 export const setTenYearGovernmentBondLastClose = createAction(
-  "fundamentals/setTenYearGovernmentBondLastClose"
+  "fundamentals/setTenYearGovernmentBondLastClose",
 );
 
 export const setExchangeRate = createAction("fundamentals/setExchangeRate");
@@ -28,7 +28,7 @@ export const setFundamentalsDataThunk = createAsyncThunk(
     const convertedBaseCurrency = convertGBXToGBP(baseCurrency);
     const convertedQuoteCurrency = convertGBXToGBP(quoteCurrency);
     const from = dayjs(
-      getMinimumHistoricalDateFromFinancialStatements(data)
+      getMinimumHistoricalDateFromFinancialStatements(data),
     ).format(yearMonthDateFormat);
 
     const promises = [
@@ -43,7 +43,7 @@ export const setFundamentalsDataThunk = createAsyncThunk(
         getExchangeRate(convertedBaseCurrency, convertedQuoteCurrency, {
           period: "m",
           from,
-        })
+        }),
       );
     }
 
@@ -55,7 +55,7 @@ export const setFundamentalsDataThunk = createAsyncThunk(
     return {
       data,
     };
-  }
+  },
 );
 
 export const getFundamentalsThunk = createAsyncThunk(
@@ -72,5 +72,5 @@ export const getFundamentalsThunk = createAsyncThunk(
 
     dispatch(setLastPriceClose(res[0].data.value));
     dispatch(setFundamentalsDataThunk({ data: res[1].data.value, ticker }));
-  }
+  },
 );
