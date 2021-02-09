@@ -27,7 +27,7 @@ const setLastPriceCloseReducer = (state, action) => {
 
 const setGovernmentBondTenYearLastCloseReducer = (
   state,
-  { payload = null }
+  { payload = null },
 ) => {
   state.governmentBondTenYearYield = payload / 100;
 };
@@ -48,9 +48,12 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
     state.isLoaded = false;
   });
   builder.addCase(setFundamentalsDataThunk.fulfilled, setFundamentalsReducer);
+  builder.addCase(setFundamentalsDataThunk.rejected, (state) => {
+    state.isLoaded = false;
+  });
   builder.addCase(
     setTenYearGovernmentBondLastClose,
-    setGovernmentBondTenYearLastCloseReducer
+    setGovernmentBondTenYearLastCloseReducer,
   );
   builder.addCase(setExchangeRate, setExchangeRateReducer);
 });

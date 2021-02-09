@@ -17,22 +17,19 @@ const sendReqOrGetCachedData = async (
   request,
   keyPrefix,
   cacheParams = {},
-  time = 2.16e7
+  time = 2.16e7,
 ) => {
   const cacheKey = `${keyPrefix}_${JSON.stringify(cacheParams)}`;
   const cachedData = cache.get(cacheKey);
 
   if (cachedData) return cachedData;
-  try {
-    const data = await request();
-    if (data) {
-      return cache.put(cacheKey, data, time);
-    }
-    return data;
-  } catch (error) {
-    console.error(error);
-    throw error;
+
+  const data = await request();
+
+  if (data) {
+    return cache.put(cacheKey, data, time);
   }
+  return data;
 };
 
 const api = {
@@ -49,7 +46,7 @@ const api = {
         return replaceDoubleColonWithObject(data);
       },
       "fund",
-      { ticker, query }
+      { ticker, query },
     );
 
     return data;
@@ -77,13 +74,13 @@ const api = {
               ...query,
               fmt: "json",
             },
-          }
+          },
         );
 
         return data;
       },
       "governmentBond",
-      { countryCode, year, query }
+      { countryCode, year, query },
     );
 
     return data;
@@ -100,7 +97,7 @@ const api = {
               order: "d",
               fmt: "json",
             },
-          }
+          },
         );
 
         if (Array.isArray(data)) {
@@ -119,7 +116,7 @@ const api = {
         return data;
       },
       "exchangeRate",
-      { baseCurrency, quoteCurrency, query }
+      { baseCurrency, quoteCurrency, query },
     );
 
     return data;
@@ -137,13 +134,13 @@ const api = {
               order: "d",
               fmt: "json",
             },
-          }
+          },
         );
 
         return data;
       },
       "eurBaseExchangeRate",
-      { quoteCurrency, query }
+      { quoteCurrency, query },
     );
 
     return data;
@@ -161,7 +158,7 @@ const api = {
         return { data };
       },
       "listOfExchanges",
-      { query }
+      { query },
     );
 
     return data;
@@ -180,7 +177,7 @@ const api = {
         return data;
       },
       "autocompleteQuery",
-      { queryString, query }
+      { queryString, query },
     );
     return data;
   },
@@ -192,7 +189,7 @@ const api = {
         return res;
       },
       "contentfulEntries",
-      { query }
+      { query },
     );
     return data;
   },
@@ -204,7 +201,7 @@ const api = {
         return res;
       },
       "contentfulEntry",
-      { id, query }
+      { id, query },
     );
 
     return data;
