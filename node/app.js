@@ -25,13 +25,9 @@ app.get("/api/v1/fundamentals/:ticker", async (req, res) => {
 });
 
 app.get("/api/v1/prices/:ticker", async (req, res) => {
-  try {
-    const value = await api.getPrices(req.params.ticker, req.query);
-    res.send({ value });
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+  const value = await api.getPrices(req.params.ticker, req.query);
+
+  res.send({ value });
 });
 
 app.get("/api/v1/eur-base-exchange-rate/:quoteCurrency", async (req, res) => {
