@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   IconButton,
@@ -46,7 +46,7 @@ const SearchTicker = ({ removeInputPadding }) => {
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [isLoadingAutocomplete, setIsLoadingAutocomplete] = useState(false);
   const getAutoCompleteDebounced = useDebouncedCallback(async (value) => {
-    const { data } = await getAutocompleteQuery(`${value}?limit=9`);
+    const { data } = await getAutocompleteQuery(`${value}?limit=9&type=stock`);
 
     setIsLoadingAutocomplete(false);
     setAutoComplete(data.value);
