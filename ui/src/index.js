@@ -9,6 +9,12 @@ import store from "./redux/store";
 import minMax from "dayjs/plugin/minMax";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import dayjs from "dayjs";
+import reactGA from "react-ga";
+
+const googleId =
+  process.env.NODE_ENV === "production" ? "G-WFB538909G" : "development";
+
+reactGA.initialize(googleId);
 
 dayjs.extend(minMax);
 dayjs.extend(advancedFormat);
@@ -21,7 +27,7 @@ ReactDOM.render(
       </Provider>
     </ThemeProvider>
   </React.StrictMode>,
-  document.getElementById("root")
+  document.getElementById("root"),
 );
 
 // If you want to start measuring performance in your app, pass a function
