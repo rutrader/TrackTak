@@ -1,6 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
 import {
-  getFundamentalsThunk,
   setExchangeRate,
   setFundamentalsDataThunk,
   setLastPriceClose,
