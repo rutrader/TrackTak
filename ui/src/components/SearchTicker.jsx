@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   IconButton,
@@ -45,29 +45,37 @@ const SearchTicker = ({ removeInputPadding }) => {
   const history = useHistory();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [isLoadingAutocomplete, setIsLoadingAutocomplete] = useState(false);
+  const [text, setText] = useState("");
   const getAutoCompleteDebounced = useDebouncedCallback(async (value) => {
     const { data } = await getAutocompleteQuery(`${value}?limit=9&type=stock`);
 
     setIsLoadingAutocomplete(false);
     setAutoComplete(data.value);
-  }, 500);
+  }, 300);
 
   const handleOnChangeAutoComplete = (_, value) => {
     if (value?.code && value?.exchange) {
       setTicker(`${value.code}.${value.exchange}`);
+      setText("");
     }
   };
 
   const handleOnChangeSearch = async (e) => {
     const value = e.target.value;
 
-    if (value.length > 1) {
+    setText(value);
+
+    if (value.length > 0) {
       setIsLoadingAutocomplete(true);
       getAutoCompleteDebounced(value);
-    } else {
-      setAutoComplete([]);
     }
   };
+
+  useEffect(() => {
+    if (text.length === 0) {
+      setAutoComplete([]);
+    }
+  }, [text]);
 
   return (
     <Box
@@ -83,6 +91,7 @@ const SearchTicker = ({ removeInputPadding }) => {
     >
       <Autocomplete
         style={{ flex: 1 }}
+        open={text.length > 0}
         onChange={handleOnChangeAutoComplete}
         getOptionLabel={({ name, code, exchange }) => {
           return `${name} (${code}.${exchange})`;
@@ -92,6 +101,7 @@ const SearchTicker = ({ removeInputPadding }) => {
             option.code === value.code && option.exchange === value.exchange
           );
         }}
+        autoComplete
         options={autoComplete.map((option) => {
           return {
             name: option.Name,
@@ -99,14 +109,11 @@ const SearchTicker = ({ removeInputPadding }) => {
             exchange: option.Exchange,
           };
         })}
-        maxSearchResults={5}
         autoHighlight
         loading={isLoadingAutocomplete}
         popupIcon={null}
         onBlur={() => {
-          if (!ticker) {
-            setAutoComplete([]);
-          }
+          setText("");
         }}
         closeIcon={null}
         popoverProps={{
