@@ -44,7 +44,7 @@ const CustomButton = withStyles({
   },
 })(Button);
 
-const ButtonChevron = withStyles({
+const ButtonChevron = withStyles((theme) => ({
   root: {
     width: "45px",
     height: "45px",
@@ -59,8 +59,9 @@ const ButtonChevron = withStyles({
     bottom: "30px",
     right: "30px",
     transition: "all 0.3s ease-out 0s",
+    zIndex: theme.zIndex.scrollTopButton,
   },
-})(IconButton);
+}))(IconButton);
 
 const TypographyHeader = withStyles({
   root: {
@@ -112,9 +113,9 @@ const LandingPageHome = () => {
   const [showScroll, setShowScroll] = useState(false);
 
   const checkScrollTop = () => {
-    if (!showScroll && window.pageYOffset > 400) {
+    if (window.pageYOffset > 400) {
       setShowScroll(true);
-    } else if (showScroll && window.pageYOffset <= 400) {
+    } else {
       setShowScroll(false);
     }
   };
@@ -154,11 +155,11 @@ const LandingPageHome = () => {
           </Box>
         </Container>
       </CustomBox>
-      <Box>
+      {showScroll && (
         <ButtonChevron onClick={scrollTop}>
           <KeyboardArrowUpIcon fontSize="large" />
         </ButtonChevron>
-      </Box>
+      )}
     </>
   );
 };

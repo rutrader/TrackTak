@@ -14,6 +14,7 @@ import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
 import SubscribeSection from "../landingHomepage/sections/SubscribeSection";
 import LandingPageHome from "../landingHomepage/LandingPageHome";
+import FeaturesSection from "../landingHomepage/sections/FeaturesSection";
 
 const textColor = "#292929";
 
@@ -81,6 +82,7 @@ const Home = () => {
         </Typography>
         <SearchTicker />
       </Box>
+      <FeaturesSection />
       <Box>
         <SubscribeSection />
       </Box>

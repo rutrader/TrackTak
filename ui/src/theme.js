@@ -32,6 +32,9 @@ const theme = createMuiTheme({
       },
     },
   },
+  zIndex: {
+    scrollTopButton: 900,
+  },
 });
 
 export default theme;
