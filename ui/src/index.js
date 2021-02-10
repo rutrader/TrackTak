@@ -10,6 +10,8 @@ import minMax from "dayjs/plugin/minMax";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import dayjs from "dayjs";
 import reactGA from "react-ga";
+import { ConnectedRouter } from "connected-react-router";
+import { history } from "./redux/store";
 
 const googleId =
   process.env.NODE_ENV === "production" ? "G-WFB538909G" : "development";
@@ -23,7 +25,9 @@ ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <Provider store={store}>
-        <App />
+        <ConnectedRouter history={history}>
+          <App />
+        </ConnectedRouter>
       </Provider>
     </ThemeProvider>
   </React.StrictMode>,

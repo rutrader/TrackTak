@@ -1,7 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 import { Provider as RebassProvider } from "rebass";
 import rebassTheme from "./rebassTheme";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect, useLocation } from "react-router-dom";
 import Home from "./home/Home";
 import { useSelector } from "react-redux";
 import { Box, CircularProgress, useTheme } from "@material-ui/core";
@@ -9,9 +9,7 @@ import LayoutFullScreen from "./layout/LayoutFullScreen";
 import Layout from "./layout/Layout";
 import LayoutHome from "./layout/LayoutHome";
 import SyntheticRating from "./syntheticRating/SyntheticRating";
-import { ConnectedRouter } from "connected-react-router";
-import { history } from "./redux/store";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useLayoutEffect } from "react";
 import Valuations from "./valuation/Valuations";
 import IndustryAverages from "./industryAverages/IndustryAverages";
 import Docs from "./documentation/Docs";
@@ -109,83 +107,83 @@ export const allPaths = [
 ];
 
 function App() {
+  const location = useLocation();
+
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   return (
     <>
       <Spinner />
-      <ConnectedRouter history={history}>
-        <Suspense fallback={<Spinner />}>
-          <Switch>
-            <Route path={[allPaths[1].url]}>
-              <RebassProvider theme={rebassTheme}>
-                <GlobalStyle />
-                {allPaths[1].component}
-              </RebassProvider>
-            </Route>
-            <Route path={layoutFullScreenPaths.map((x) => x.url)}>
-              <LayoutFullScreen>
-                <Switch>
-                  {layoutFullScreenPaths.map(({ url, component }) => (
-                    <Route path={url}>{component}</Route>
-                  ))}
-                </Switch>
-              </LayoutFullScreen>
-            </Route>
-            <Route path={layoutPaths.map((x) => x.url)}>
-              <Layout>
-                <Switch>
-                  {layoutPaths.map(({ url, component }) => (
-                    <Route path={url}>{component}</Route>
-                  ))}
-                </Switch>
-              </Layout>
-            </Route>
-            <Route path={[allPaths[0].url]}>
-              <LayoutHome>
-                <Switch>
-                  <Route path={allPaths[0].url}>{allPaths[0].component}</Route>
-                </Switch>
-              </LayoutHome>
-            </Route>
-          </Switch>
-          {/* TODO: Remove route redirects at a later date*/}
-          <Route exact path="/documentation">
-            <Redirect to="/how-to-do-a-dcf" />
+      <Suspense fallback={<Spinner />}>
+        <Switch>
+          <Route path={[allPaths[1].url]}>
+            <RebassProvider theme={rebassTheme}>
+              <GlobalStyle />
+              {allPaths[1].component}
+            </RebassProvider>
           </Route>
-          <Route exact path="/valuations">
-            <Redirect to="/stock-valuations" />
+          <Route path={layoutFullScreenPaths.map((x) => x.url)}>
+            <LayoutFullScreen>
+              <Switch>
+                {layoutFullScreenPaths.map(({ url, component }) => (
+                  <Route path={url}>{component}</Route>
+                ))}
+              </Switch>
+            </LayoutFullScreen>
           </Route>
-          <Route
-            exact
-            path="/valuations/:ticker"
-            render={({ match }) => {
-              return (
-                <Redirect to={`/stock-valuations/${match.params.ticker}`} />
-              );
-            }}
-          />
-          <Route
-            exact
-            path="/synthetic-rating/:ticker"
-            render={({ match }) => {
-              return (
-                <Redirect
-                  to={`/synthetic-credit-rating/${match.params.ticker}`}
-                />
-              );
-            }}
-          />
-          <Route
-            path="/"
-            render={(props) => {
-              reactGA.pageview(
-                props.location.pathname + window.location.search,
-              );
+          <Route path={layoutPaths.map((x) => x.url)}>
+            <Layout>
+              <Switch>
+                {layoutPaths.map(({ url, component }) => (
+                  <Route path={url}>{component}</Route>
+                ))}
+              </Switch>
+            </Layout>
+          </Route>
+          <Route path={[allPaths[0].url]}>
+            <LayoutHome>
+              <Switch>
+                <Route path={allPaths[0].url}>{allPaths[0].component}</Route>
+              </Switch>
+            </LayoutHome>
+          </Route>
+        </Switch>
+        {/* TODO: Remove route redirects at a later date*/}
+        <Route exact path="/documentation">
+          <Redirect to="/how-to-do-a-dcf" />
+        </Route>
+        <Route exact path="/valuations">
+          <Redirect to="/stock-valuations" />
+        </Route>
+        <Route
+          exact
+          path="/valuations/:ticker"
+          render={({ match }) => {
+            return <Redirect to={`/stock-valuations/${match.params.ticker}`} />;
+          }}
+        />
+        <Route
+          exact
+          path="/synthetic-rating/:ticker"
+          render={({ match }) => {
+            return (
+              <Redirect
+                to={`/synthetic-credit-rating/${match.params.ticker}`}
+              />
+            );
+          }}
+        />
+        <Route
+          path="/"
+          render={(props) => {
+            reactGA.pageview(props.location.pathname + window.location.search);
 
-              return null;
-            }}
-          />
-        </Suspense>
-      </ConnectedRouter>
+            return null;
+          }}
+        />
+      </Suspense>
     </>
   );
 }
