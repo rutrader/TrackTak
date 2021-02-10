@@ -7,13 +7,13 @@ import selectYearlyIncomeStatements from "./selectYearlyIncomeStatements";
 export const selectSortedYearlyBalanceSheets = createSelector(
   (state) => state.fundamentals.data?.Financials.Balance_Sheet.yearly ?? {},
   (yearlyBalanceSheets) =>
-    Object.values(yearlyBalanceSheets).sort(dateSortComparer)
+    Object.values(yearlyBalanceSheets).sort(dateSortComparer),
 );
 
 export const selectSortedQuarterlyBalanceSheets = createSelector(
   (state) => state.fundamentals.data?.Financials.Balance_Sheet.quarterly ?? {},
   (quarterlyBalanceSheets) =>
-    Object.values(quarterlyBalanceSheets).sort(dateSortComparer)
+    Object.values(quarterlyBalanceSheets).sort(dateSortComparer),
 );
 
 const selectYearlyBalanceSheets = createSelector(
@@ -26,16 +26,18 @@ const selectYearlyBalanceSheets = createSelector(
     const newYearlyBalanceSheets = {};
 
     yearlyBalanceSheets.forEach((balanceSheet) => {
+      const incomeStatement = yearlyIncomeStatements[balanceSheet.date];
+
       newYearlyBalanceSheets[balanceSheet.date] = getBalanceSheet(
         balanceSheet,
         convertCurrency,
-        yearlyIncomeStatements[balanceSheet.date].totalRevenue,
-        balanceSheet.date
+        incomeStatement?.totalRevenue ?? 0,
+        balanceSheet.date,
       );
     });
 
     return newYearlyBalanceSheets;
-  }
+  },
 );
 
 export default selectYearlyBalanceSheets;
