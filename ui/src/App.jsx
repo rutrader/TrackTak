@@ -16,7 +16,6 @@ import Docs from "./documentation/Docs";
 import selectPageIsLoading from "./selectors/pageSelectors/selectPageIsLoading";
 import ContactUs from "./contactUs/ContactUs";
 import AboutUs from "./aboutUs/AboutUs";
-import reactGA from "react-ga";
 
 const LandingPage = lazy(() => import("./landingPage/LandingPage"));
 const DiscountedCashFlow = lazy(() =>
@@ -173,14 +172,6 @@ function App() {
                 to={`/synthetic-credit-rating/${match.params.ticker}`}
               />
             );
-          }}
-        />
-        <Route
-          path="/"
-          render={(props) => {
-            reactGA.pageview(props.location.pathname + window.location.search);
-
-            return null;
           }}
         />
       </Suspense>
