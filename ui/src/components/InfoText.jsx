@@ -62,8 +62,9 @@ export const InfoTextValueDrivingInputs = () => {
         overall market size and larger players in the sector.
       </Box>
       <Box>
-        <b>Operating Income</b> - Start by looking at your company's current
-        pre-tax operating margin but also look at the average for your industry.
+        <b>Operating Target Margin in Year 10</b> - Start by looking at your
+        company's current pre-tax operating margin but also look at the average
+        for your industry.
       </Box>
       <Box>
         <b>Year of Convergence</b> - The forecast year in which the companies
