@@ -1,4 +1,4 @@
-import { Button } from "@material-ui/core";
+import { Button, withStyles } from "@material-ui/core";
 import React from "react";
 import { getNumberOfColumns, padCellKeys } from "./utils";
 import selectInputQueryParams, {
@@ -252,15 +252,27 @@ const ExportToExcel = () => {
   };
 
   return (
-    <Button
+    <ExportToExcelButton
       variant="outlined"
       onClick={exportToCSVOnClick}
       disabled={!hasAllRequiredInputsFilledIn}
       title={getRequiredInputsNotFilledInTitle(hasAllRequiredInputsFilledIn)}
     >
       Export to Excel
-    </Button>
+    </ExportToExcelButton>
   );
 };
+
+const ExportToExcelButton = withStyles((theme) => ({
+  root: {
+    "&.Mui-disabled": {
+      pointerEvents: "auto",
+      backgroundColor: theme.palette.action.hover,
+      "&:hover": {
+        borderColor: theme.palette.action.disabledBackground,
+      },
+    },
+  },
+}))(Button);
 
 export default ExportToExcel;
