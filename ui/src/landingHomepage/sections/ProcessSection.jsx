@@ -8,7 +8,6 @@ import {
   makeStyles,
   Typography,
   withStyles,
-  useTheme,
 } from "@material-ui/core";
 import processImage from "../../icons/process-img.jpg";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -230,16 +229,6 @@ const BoxGradientIconTime = styled.div`
 
 const ProcessSection = () => {
   const classes = useStyles();
-  const theme = useTheme();
-  const [activeStep, setActiveStep] = React.useState(0);
-
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
   return (
     <CustomBox>
       <Container maxWidth="lg">
