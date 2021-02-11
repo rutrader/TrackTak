@@ -6,11 +6,15 @@ export const ebitTargetMarginInYearTenQueryName = "ebitTargetMarginInYearTen";
 export const yearOfConvergenceQueryName = "yearOfConvergence";
 export const salesToCapitalRatioQueryName = "salesToCapitalRatio";
 
-export const inputQueries = [
+export const requiredInputQueries = [
   { name: cagrYearOneToFiveQueryName, type: "percent" },
   { name: ebitTargetMarginInYearTenQueryName, type: "percent" },
   { name: yearOfConvergenceQueryName, type: "year" },
   { name: salesToCapitalRatioQueryName, type: "number" },
+];
+
+export const inputQueries = [
+  ...requiredInputQueries,
   { name: "numberOfEmployeeOptionsOutstanding", type: "million" },
   { name: "averageStrikePrice", type: "currency" },
   { name: "averageMaturityOfOptions", type: "year" },
@@ -41,7 +45,7 @@ const getInputQueryParams = (query) => {
 
 const selectInputQueryParams = createSelector(
   selectQueryParams,
-  getInputQueryParams
+  getInputQueryParams,
 );
 
 export default selectInputQueryParams;
