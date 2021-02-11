@@ -16,6 +16,8 @@ import { setIsYoyGrowthToggled } from "../redux/actions/dcfActions";
 import selectIsYoyGrowthToggled from "../selectors/dcfSelectors/selectIsYoyGrowthToggled";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
+import getRequiredInputsNotFilledInTitle from "../shared/getRequiredInputsNotFilledInTitle";
+import selectHasAllRequiredInputsFilledIn from "../selectors/routerSelectors/selectHasAllRequiredInputsFilledIn";
 
 const Placeholder = () => {
   const theme = useTheme();
@@ -38,6 +40,9 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
   const dispatch = useDispatch();
   const [showFormulas, setShowFormulas] = useState(false);
   const isYoyGrowthToggled = useSelector(selectIsYoyGrowthToggled);
+  const hasAllRequiredInputsFilledIn = useSelector(
+    selectHasAllRequiredInputsFilledIn,
+  );
 
   const showFormulasToggledOnChange = (event) => {
     setShowFormulas((state) => !state);
@@ -63,6 +68,10 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
         <Typography variant="h5">DCF Valuation</Typography>
         <Box sx={{ display: "flex" }}>
           <FormControlLabel
+            disabled={!hasAllRequiredInputsFilledIn}
+            title={getRequiredInputsNotFilledInTitle(
+              hasAllRequiredInputsFilledIn,
+            )}
             control={
               <Switch
                 checked={showFormulas}
@@ -78,6 +87,10 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
             }}
           >
             <FormControlLabel
+              disabled={!hasAllRequiredInputsFilledIn}
+              title={getRequiredInputsNotFilledInTitle(
+                hasAllRequiredInputsFilledIn,
+              )}
               control={
                 <Switch
                   checked={isYoyGrowthToggled}

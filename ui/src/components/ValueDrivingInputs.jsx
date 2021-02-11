@@ -27,6 +27,7 @@ export const ebitTargetMarginInYearTenLabel =
   "Operating Target Margin in Year 10";
 export const yearOfConvergenceLabel = "Year of Convergence";
 export const salesToCapitalRatioLabel = "Sales to Capital Ratio";
+export const valueDrivingInputsHeader = "Value Driving Inputs";
 
 const ValueDrivingInputs = () => {
   const theme = useTheme();
@@ -37,7 +38,7 @@ const ValueDrivingInputs = () => {
     <>
       <Typography variant="h5" gutterBottom>
         <InfoOutlinedIconWrapper text={<InfoTextValueDrivingInputs />}>
-          Value Driving Inputs
+          {valueDrivingInputsHeader}
         </InfoOutlinedIconWrapper>
       </Typography>
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: theme.spacing(2) }}>

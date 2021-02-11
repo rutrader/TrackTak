@@ -1,4 +1,4 @@
-import { Button } from "@material-ui/core";
+import { Button, withStyles } from "@material-ui/core";
 import React from "react";
 import { getNumberOfColumns, padCellKeys } from "./utils";
 import selectInputQueryParams, {
@@ -34,6 +34,8 @@ import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selec
 import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import selectSharesStats from "../selectors/fundamentalSelectors/selectSharesStats";
+import selectHasAllRequiredInputsFilledIn from "../selectors/routerSelectors/selectHasAllRequiredInputsFilledIn";
+import getRequiredInputsNotFilledInTitle from "../shared/getRequiredInputsNotFilledInTitle";
 
 export const inputsWorksheetName = "Inputs";
 export const costOfCapitalWorksheetName = "Cost of Capital";
@@ -42,7 +44,7 @@ export const valuationWorksheetName = "Valuation";
 const ExportToExcel = () => {
   const general = useSelector(selectGeneral);
   const governmentBondTenYearYield = useSelector(
-    selectGovernmentBondTenYearYield
+    selectGovernmentBondTenYearYield,
   );
   const currentEquityRiskPremium = useSelector(selectCurrentEquityRiskPremium);
   const scope = useSelector(selectScope);
@@ -54,10 +56,13 @@ const ExportToExcel = () => {
   const balanceSheet = useSelector(selectRecentBalanceSheet);
   const price = useSelector(selectPrice);
   const { SharesOutstanding } = useSelector(selectSharesStats);
+  const hasAllRequiredInputsFilledIn = useSelector(
+    selectHasAllRequiredInputsFilledIn,
+  );
 
   const exportToCSVOnClick = () => {
     const cellKeysSorted = padCellKeys(
-      Object.keys(cells).sort(sortAlphaNumeric)
+      Object.keys(cells).sort(sortAlphaNumeric),
     );
     const getNameFromKey = (key, type) => {
       let newName = sentenceCase(key);
@@ -164,10 +169,10 @@ const ExportToExcel = () => {
       valuationCurrencySymbol,
       inputQueries.map(({ name }) => name),
       costOfCapitalDataKeys,
-      scope
+      scope,
     );
     const formatValueForExcelOutput = makeFormatValueForExcelOutput(
-      valuationCurrencySymbol
+      valuationCurrencySymbol,
     );
 
     const transformedInputsData = [];
@@ -193,8 +198,8 @@ const ExportToExcel = () => {
             expr: formula,
             value,
           },
-          costOfCapitalWorksheetName
-        )
+          costOfCapitalWorksheetName,
+        ),
       );
     });
 
@@ -208,11 +213,11 @@ const ExportToExcel = () => {
     const chunkedInputsData = getChunksOfArray(transformedInputsData, 2);
     const chunkedCostOfCapitalData = getChunksOfArray(
       transformedCostOfCapitalData,
-      2
+      2,
     );
     const chunkedValuationData = getChunksOfArray(
       transformedValuationData,
-      numberOfValuationColumns
+      numberOfValuationColumns,
     );
     const inputsWorksheet = utils.aoa_to_sheet(chunkedInputsData);
     const costOfCapitalWorksheet = utils.aoa_to_sheet(chunkedCostOfCapitalData);
@@ -235,22 +240,39 @@ const ExportToExcel = () => {
     utils.book_append_sheet(
       workBook,
       costOfCapitalWorksheet,
-      costOfCapitalWorksheetName
+      costOfCapitalWorksheetName,
     );
     utils.book_append_sheet(
       workBook,
       valuationOutputWorksheet,
-      valuationWorksheetName
+      valuationWorksheetName,
     );
 
     writeFile(workBook, `${general.Code}.${general.Exchange}_DCF.xlsx`);
   };
 
   return (
-    <Button variant="outlined" onClick={exportToCSVOnClick}>
+    <ExportToExcelButton
+      variant="outlined"
+      onClick={exportToCSVOnClick}
+      disabled={!hasAllRequiredInputsFilledIn}
+      title={getRequiredInputsNotFilledInTitle(hasAllRequiredInputsFilledIn)}
+    >
       Export to Excel
-    </Button>
+    </ExportToExcelButton>
   );
 };
+
+const ExportToExcelButton = withStyles((theme) => ({
+  root: {
+    "&.Mui-disabled": {
+      pointerEvents: "auto",
+      backgroundColor: theme.palette.action.hover,
+      "&:hover": {
+        borderColor: theme.palette.action.disabledBackground,
+      },
+    },
+  },
+}))(Button);
 
 export default ExportToExcel;
