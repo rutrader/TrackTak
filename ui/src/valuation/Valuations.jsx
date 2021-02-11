@@ -69,7 +69,6 @@ const Valuations = () => {
                 >
                   <img
                     alt={General.Name}
-                    height={200}
                     width={200}
                     src={EOD_URL + General.LogoURL}
                     title={General.Name}

@@ -55,6 +55,7 @@ const CompanyOverviewStats = ({ dateOfValuation }) => {
               <FormatRawNumberToMillion
                 value={sharesStats.SharesOutstanding}
                 suffix="m"
+                decimalScale={2}
               />
             }
             label={

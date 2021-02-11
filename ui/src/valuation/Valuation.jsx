@@ -104,7 +104,7 @@ const Valuation = () => {
   const price = useSelector(selectPrice);
   const general = useSelector(selectGeneral);
   const estimatedValuePerShare = useSelector(
-    (state) => selectCells(state).B36.value
+    (state) => selectCells(state).B36.value,
   );
   const exchange = useVirtualExchange();
 
@@ -115,7 +115,7 @@ const Valuation = () => {
         content_type: "dcfTemplate",
       });
       const fields = contentfulRes.data.items.find(
-        ({ fields }) => fields.ticker === params.ticker
+        ({ fields }) => fields.ticker === params.ticker,
       ).fields;
       const data = fields.data;
       const ticker = params.ticker;
@@ -125,7 +125,7 @@ const Valuation = () => {
           data,
           ticker,
           tenYearGovernmentBondLastCloseTo: fields.dateOfValuation,
-        })
+        }),
       );
       const res = await getPrices(ticker, {
         to: fields.dateOfValuation,
@@ -144,7 +144,7 @@ const Valuation = () => {
   const marginOfSafety =
     (estimatedValuePerShare - price) / estimatedValuePerShare;
   const formattedDateOfValuation = dayjs(fields.dateOfValuation).format(
-    "Do MMM. YYYY"
+    "Do MMM. YYYY",
   );
 
   return (
@@ -171,6 +171,26 @@ const Valuation = () => {
           {documentToReactComponents(fields.competitors, options)}
         </Typography>
       </Section>
+      {fields.lookingForward && (
+        <Section>
+          <Typography variant="h5" gutterBottom>
+            Looking Forward
+          </Typography>
+          <Typography paragraph>
+            {documentToReactComponents(fields.lookingForward, options)}
+          </Typography>
+        </Section>
+      )}
+      {fields.relativeNumbers && (
+        <Section>
+          <Typography variant="h5" gutterBottom>
+            Relative Numbers
+          </Typography>
+          <Typography paragraph>
+            {documentToReactComponents(fields.relativeNumbers, options)}
+          </Typography>
+        </Section>
+      )}
       <Section>
         <Typography variant="h5" gutterBottom>
           The input values I chose for the DCF
@@ -276,15 +296,13 @@ const Valuation = () => {
           </Box>
         </Typography>
         <Typography>
-          <Link component={RouterLink} to="/">
+          <Link
+            component={RouterLink}
+            to={`/discounted-cash-flow/${general.Code}.${exchange}${location.search}`}
+          >
             <b>Click here&nbsp;</b>
           </Link>
-          to do your own Automated DCF for any company you want or see more
-          valuations from us
-          <Link component={RouterLink} to="/stock-valuations">
-            <b>&nbsp;here</b>
-          </Link>
-          .
+          to do your own Automated DCF for any company you want.
         </Typography>
       </Section>
       <Section sx={{ display: "flex", mt: 4 }}>
