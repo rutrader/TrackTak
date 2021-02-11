@@ -15,6 +15,7 @@ import resourceName from "../shared/resourceName";
 import SubscribeSection from "../landingHomepage/sections/SubscribeSection";
 import LandingPageHome from "../landingHomepage/LandingPageHome";
 import FeaturesSection from "../landingHomepage/sections/FeaturesSection";
+import ProcessSection from "../landingHomepage/sections/ProcessSection";
 
 const textColor = "#292929";
 
@@ -66,7 +67,7 @@ const Home = () => {
           <Box>text</Box>
         </TypographyHeader>
       </Box> */}
-      <Box
+      {/* <Box
         sx={{
           justifyContent: "center",
           mt: 7,
@@ -81,11 +82,10 @@ const Home = () => {
           Search for a company to begin.
         </Typography>
         <SearchTicker />
-      </Box>
+      </Box> */}
       <FeaturesSection />
-      <Box>
-        <SubscribeSection />
-      </Box>
+      <ProcessSection />
+      <SubscribeSection />
     </>
   );
 };
