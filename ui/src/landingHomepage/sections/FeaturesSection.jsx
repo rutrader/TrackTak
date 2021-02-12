@@ -10,8 +10,7 @@ const CustomBox = ({ sx, ...props }) => {
   return (
     <Box
       sx={{
-        background: "#F4F7FC",
-        paddingTop: "150px",
+        background: "#fff",
         paddingBottom: "70px",
         ...sx,
       }}

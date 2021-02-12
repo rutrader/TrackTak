@@ -7,11 +7,15 @@ import {
   IconButton,
   makeStyles,
   Container,
+  useMediaQuery,
+  useTheme,
 } from "@material-ui/core";
 import purpleBackground from "../icons/purple-background.svg";
 import { ReactComponent as GridDots } from "../icons/grid-dots.svg";
 import laptopImage from "../icons/laptop-img.png";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import SearchTicker from "../components/SearchTicker";
+import styled from "styled-components";
 
 const useStyles = makeStyles((theme) => ({
   laptopImage: {
@@ -65,7 +69,7 @@ const ButtonChevron = withStyles((theme) => ({
 
 const TypographyHeader = withStyles({
   root: {
-    fontSize: "55px",
+    fontSize: ({ isOnMobile }) => (isOnMobile ? 30 : 55),
     lineHeight: "65px",
     fontWeight: 800,
     marginBottom: "20px",
@@ -86,31 +90,38 @@ const TypographyText = withStyles({
     animationDuration: "1.3s",
     animationDelay: "0.6s",
     animationName: "fadeInLeft",
+    flexGrow: 0,
+    flexShrink: 0,
+    flexBasis: ({ isOnMobile }) => (isOnMobile ? "100%" : "30%"),
   },
 })(Typography);
 
-const CustomBox = ({ sx, ...props }) => {
-  return (
-    <Box
-      sx={{
-        backgroundPosition: "center center",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        width: "100%",
-        height: "100%",
-        paddingTop: "300px",
-        paddingBottom: "240px",
-        backgroundImage: `url(${purpleBackground})`,
-        ...sx,
-      }}
-      {...props}
-    />
-  );
-};
+const CustomBox = styled.div`
+  padding-top: 300px;
+  padding-bottom: 240px;
+  width: 100%;
+  height: 100%;
+  &:before {
+    content: "";
+    background-image: url(${purpleBackground});
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+`;
 
 const LandingPageHome = () => {
+  const theme = useTheme();
   const classes = useStyles();
+
   const [showScroll, setShowScroll] = useState(false);
+  const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const checkScrollTop = () => {
     if (window.pageYOffset > 400) {
@@ -134,7 +145,7 @@ const LandingPageHome = () => {
           style={{ display: "flex", alignItems: "center" }}
         >
           <Box>
-            <TypographyHeader variant="h1">
+            <TypographyHeader isOnMobile={isOnMobile} variant="h1">
               Hello, automated Discounted Cash Flows.
             </TypographyHeader>
             <TypographyText variant="h6">
@@ -154,6 +165,17 @@ const LandingPageHome = () => {
             </Box>
           </Box>
         </Container>
+        <Box
+          sx={{
+            justifyContent: "center",
+            mt: 7,
+          }}
+        >
+          <Typography variant="h5" align="center" gutterBottom>
+            Search for a company to begin.
+          </Typography>
+          <SearchTicker />
+        </Box>
       </CustomBox>
       {showScroll && (
         <ButtonChevron onClick={scrollTop}>

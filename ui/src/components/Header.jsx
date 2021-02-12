@@ -37,10 +37,9 @@ const useStyles = makeStyles((theme) => ({
     transition: "all 0.3s ease-out 0s",
     borderRadius: "10px",
     top: "30px",
-    left: "0",
     width: "100%",
-    zIndex: "99",
     position: "relative",
+    boxShadow: "none",
   },
 }));
 
@@ -79,7 +78,7 @@ const Header = ({ hideSearch }) => {
   };
 
   return (
-    <Box sx={{ mb }}>
+    <Box>
       <AppBar className={classes.app}>
         <Container maxWidth={false}>
           <Box
@@ -87,12 +86,11 @@ const Header = ({ hideSearch }) => {
               display: "flex",
               alignItems: "left",
               justifyContent: "left",
-              py: 1,
             }}
           >
             <Box sx={{ mr: 2 }}>
               <Hidden mdDown>
-                <TracktakPurple src="icons/tracktak-black.svg" alt="" />
+                <TracktakPurple src="icons/tracktak-purple.svg" alt="" />
               </Hidden>
               <Hidden mdUp>
                 <Link to="/">

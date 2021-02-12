@@ -92,7 +92,7 @@ const Footer = () => {
                         "https://linkedin.com/company/tracktak";
                     }}
                   >
-                    <LinkedInIcon />
+                    <LinkedInIcon style={{ color: "#43cea2" }} />
                   </CustomIconButton>
                 </Box>
               </Box>

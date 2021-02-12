@@ -52,7 +52,7 @@ const CustomBox = ({ sx, ...props }) => {
         zIndex: 1,
         paddingBottom: "150px",
         paddingTop: "150px",
-        background: "#f8f9fa",
+        background: "#F4F7FC",
         ...sx,
       }}
       {...props}
