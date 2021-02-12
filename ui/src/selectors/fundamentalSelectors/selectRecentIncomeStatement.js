@@ -2,8 +2,8 @@ import { createSelector } from "@reduxjs/toolkit";
 import selectIsInUS from "./selectIsInUS";
 import getFinancialSheetPastValues from "../../shared/getFinancialSheetPastValues";
 import {
+  selectSortedQuarterlyIncomeStatements,
   selectSortedYearlyIncomeStatements,
-  sortedQuarterlyIncomeStatements,
 } from "./selectYearlyIncomeStatements";
 import selectConvertCurrency from "./selectConvertCurrency";
 import getIncomeStatement from "../../shared/getIncomeStatement";
@@ -14,7 +14,7 @@ const pastThreeYearPeriods = pastPeriodsToGet * quarters;
 
 const getPastThreeYearsAverageEffectiveTaxRate = (
   pastThreeYearIncomeTaxExpense,
-  pastThreeYearIncomeBeforeTax
+  pastThreeYearIncomeBeforeTax,
 ) => pastThreeYearIncomeTaxExpense / pastThreeYearIncomeBeforeTax;
 
 // TODO: Fix when the API fixes the TTM for non-US stocks
@@ -22,41 +22,41 @@ const getUSFinancialData = (quarterlyIncomeStatements, convertCurrency) => {
   const pastThreeYearIncomeBeforeTax = getFinancialSheetPastValues(
     quarterlyIncomeStatements,
     "incomeBeforeTax",
-    pastThreeYearPeriods
+    pastThreeYearPeriods,
   );
   const pastThreeYearIncomeTaxExpense = getFinancialSheetPastValues(
     quarterlyIncomeStatements,
     "incomeTaxExpense",
-    pastThreeYearPeriods
+    pastThreeYearPeriods,
   );
   const incomeSheetDates = [...quarterlyIncomeStatements].slice(0, 4);
   const incomeStatement = {
     totalRevenue: getFinancialSheetPastValues(
       quarterlyIncomeStatements,
       "totalRevenue",
-      quarters
+      quarters,
     ),
     operatingIncome: getFinancialSheetPastValues(
       quarterlyIncomeStatements,
       "operatingIncome",
-      quarters
+      quarters,
     ),
     interestExpense: getFinancialSheetPastValues(
       quarterlyIncomeStatements,
       "interestExpense",
-      quarters
+      quarters,
     ),
     minorityInterest: getFinancialSheetPastValues(
       quarterlyIncomeStatements,
       "minorityInterest",
-      quarters
+      quarters,
     ),
   };
 
   Object.keys(incomeStatement).forEach((property) => {
     incomeStatement[property] = convertCurrency(
       incomeSheetDates,
-      incomeStatement[property]
+      incomeStatement[property],
     );
   });
 
@@ -66,7 +66,7 @@ const getUSFinancialData = (quarterlyIncomeStatements, convertCurrency) => {
   return {
     pastThreeYearsAverageEffectiveTaxRate: getPastThreeYearsAverageEffectiveTaxRate(
       pastThreeYearIncomeTaxExpense,
-      pastThreeYearIncomeBeforeTax
+      pastThreeYearIncomeBeforeTax,
     ),
     ...incomeStatement,
   };
@@ -77,24 +77,24 @@ const getNonUSFinancialData = (yearlyIncomeStatements, convertCurrency) => {
   const pastThreeYearIncomeBeforeTax = getFinancialSheetPastValues(
     yearlyIncomeStatements,
     "incomeBeforeTax",
-    pastPeriodsToGet
+    pastPeriodsToGet,
   );
   const pastThreeYearIncomeTaxExpense = getFinancialSheetPastValues(
     yearlyIncomeStatements,
     "incomeTaxExpense",
-    pastPeriodsToGet
+    pastPeriodsToGet,
   );
 
   const incomeStatement = getIncomeStatement(
     recentYearlyIncomeStatement,
     convertCurrency,
-    recentYearlyIncomeStatement.date
+    recentYearlyIncomeStatement.date,
   );
 
   return {
     pastThreeYearsAverageEffectiveTaxRate: getPastThreeYearsAverageEffectiveTaxRate(
       pastThreeYearIncomeTaxExpense,
-      pastThreeYearIncomeBeforeTax
+      pastThreeYearIncomeBeforeTax,
     ),
     ...incomeStatement,
   };
@@ -103,13 +103,13 @@ const getNonUSFinancialData = (yearlyIncomeStatements, convertCurrency) => {
 const selectRecentIncomeStatement = createSelector(
   selectConvertCurrency,
   selectIsInUS,
-  sortedQuarterlyIncomeStatements,
+  selectSortedQuarterlyIncomeStatements,
   selectSortedYearlyIncomeStatements,
   (
     convertCurrency,
     isInUS,
     quarterlyIncomeStatements,
-    yearlyIncomeStatements
+    yearlyIncomeStatements,
   ) => {
     if (!yearlyIncomeStatements.length) return null;
 
@@ -118,7 +118,7 @@ const selectRecentIncomeStatement = createSelector(
       : getNonUSFinancialData(yearlyIncomeStatements, convertCurrency);
 
     return incomeStatement;
-  }
+  },
 );
 
 export default selectRecentIncomeStatement;
