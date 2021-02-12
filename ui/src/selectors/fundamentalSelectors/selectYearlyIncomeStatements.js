@@ -6,14 +6,14 @@ import dateSortComparer from "../../shared/dateSortComparer";
 export const selectSortedYearlyIncomeStatements = createSelector(
   (state) => state.fundamentals.data?.Financials.Income_Statement.yearly ?? {},
   (yearlyIncomeStatements) =>
-    Object.values(yearlyIncomeStatements).sort(dateSortComparer)
+    Object.values(yearlyIncomeStatements).sort(dateSortComparer),
 );
 
-export const sortedQuarterlyIncomeStatements = createSelector(
+export const selectSortedQuarterlyIncomeStatements = createSelector(
   (state) =>
     state.fundamentals.data?.Financials.Income_Statement.quarterly ?? {},
   (quarterlyIncomeStatements) =>
-    Object.values(quarterlyIncomeStatements).sort(dateSortComparer)
+    Object.values(quarterlyIncomeStatements).sort(dateSortComparer),
 );
 
 const selectYearlyIncomeStatements = createSelector(
@@ -28,12 +28,12 @@ const selectYearlyIncomeStatements = createSelector(
       newYearlyIncomeStatements[incomeStatement.date] = getIncomeStatement(
         incomeStatement,
         convertCurrency,
-        incomeStatement.date
+        incomeStatement.date,
       );
     });
 
     return newYearlyIncomeStatements;
-  }
+  },
 );
 
 export default selectYearlyIncomeStatements;

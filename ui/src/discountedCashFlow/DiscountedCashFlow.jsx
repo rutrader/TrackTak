@@ -67,17 +67,24 @@ const DiscountedCashFlow = () => {
       Header: "",
       accessor: "dataField",
     },
-    {
+  ];
+
+  if (isInUS) {
+    columns.push({
       Header: "TTM",
       accessor: "ttm",
-    },
+    });
+  }
+
+  columns.push(
     ...Object.values(yearlyIncomeStatements).map((statement) => {
       return {
         Header: dayjs(statement.date).format("MMM YY"),
         accessor: statement.date,
       };
     }),
-  ];
+  );
+
   const data = [
     {
       dataField: (
@@ -88,9 +95,7 @@ const DiscountedCashFlow = () => {
           Revenue
         </InfoOutlinedIconWrapper>
       ),
-      ttm: isInUS ? (
-        <TableMillionFormatter value={incomeStatement.totalRevenue} />
-      ) : null,
+      ttm: <TableMillionFormatter value={incomeStatement.totalRevenue} />,
       ...mapFromStatementsToDateObject(yearlyIncomeStatements, "totalRevenue"),
     },
     {
@@ -99,9 +104,7 @@ const DiscountedCashFlow = () => {
           Operating Income
         </InfoOutlinedIconWrapper>
       ),
-      ttm: isInUS ? (
-        <TableMillionFormatter value={incomeStatement.operatingIncome} />
-      ) : null,
+      ttm: <TableMillionFormatter value={incomeStatement.operatingIncome} />,
       ...mapFromStatementsToDateObject(
         yearlyIncomeStatements,
         "operatingIncome",
@@ -113,9 +116,7 @@ const DiscountedCashFlow = () => {
           Operating Margin
         </InfoOutlinedIconWrapper>
       ),
-      ttm: isInUS ? (
-        <FormatRawNumberToPercent value={incomeStatement.operatingMargin} />
-      ) : null,
+      ttm: <FormatRawNumberToPercent value={incomeStatement.operatingMargin} />,
       ...mapFromStatementsToDateObject(
         yearlyIncomeStatements,
         "operatingMargin",
@@ -128,9 +129,7 @@ const DiscountedCashFlow = () => {
           Interest Expense
         </InfoOutlinedIconWrapper>
       ),
-      ttm: isInUS ? (
-        <TableMillionFormatter value={incomeStatement.interestExpense} />
-      ) : null,
+      ttm: <TableMillionFormatter value={incomeStatement.interestExpense} />,
       ...mapFromStatementsToDateObject(
         yearlyIncomeStatements,
         "interestExpense",
@@ -162,9 +161,7 @@ const DiscountedCashFlow = () => {
           Minority Interests
         </InfoOutlinedIconWrapper>
       ),
-      ttm: isInUS ? (
-        <TableMillionFormatter value={incomeStatement.minorityInterest} />
-      ) : null,
+      ttm: <TableMillionFormatter value={incomeStatement.minorityInterest} />,
       ...mapFromStatementsToDateObject(
         yearlyIncomeStatements,
         "minorityInterest",
@@ -234,7 +231,15 @@ const DiscountedCashFlow = () => {
       ttm: <TableMillionFormatter value={balanceSheet.investedCapital} />,
       ...mapFromStatementsToDateObject(yearlyBalanceSheets, "investedCapital"),
     },
-  ];
+  ].map((datum) => {
+    const newDatum = { ...datum };
+
+    if (!isInUS) {
+      delete newDatum.ttm;
+    }
+
+    return newDatum;
+  });
 
   return (
     <>
