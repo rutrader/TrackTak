@@ -19,8 +19,11 @@ import selectInputQueryParams from "../selectors/routerSelectors/selectInputQuer
 const ValueDrivingTextField = withStyles({
   root: {
     ...textFieldRootStyles,
+    "& .MuiFormHelperText-root": {
+      marginLeft: 0,
+    },
   },
-})(TextField);
+})((props) => <TextField helperText="Required" {...props} />);
 
 export const cagrInYearsOneToFiveLabel = "CAGR in Years 1-5";
 export const ebitTargetMarginInYearTenLabel =

@@ -21,6 +21,8 @@ import selectSharesStats from "../selectors/fundamentalSelectors/selectSharesSta
 import formatCellValue from "./formatCellValue";
 import selectIsYoyGrowthToggled from "../selectors/dcfSelectors/selectIsYoyGrowthToggled";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
+import getRequiredInputsNotFilledInTitle from "../shared/getRequiredInputsNotFilledInTitle";
+import selectHasAllRequiredInputsFilledIn from "../selectors/routerSelectors/selectHasAllRequiredInputsFilledIn";
 
 const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
   const theme = useTheme();
@@ -36,9 +38,12 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
   const riskFreeRate = useSelector(selectRiskFreeRate);
   const sharesStats = useSelector(selectSharesStats);
   const valueOfAllOptionsOutstanding = useSelector(
-    selectValueOfAllOptionsOutstanding
+    selectValueOfAllOptionsOutstanding,
   );
   const isYoyGrowthToggled = useSelector(selectIsYoyGrowthToggled);
+  const hasAllRequiredInputsFilledIn = useSelector(
+    selectHasAllRequiredInputsFilledIn,
+  );
 
   const cellColumnWidths = useMemo(() => {
     return columns.map((column) => {
@@ -53,13 +58,18 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
   const cellRenderer = useCallback(
     (rowIndex, columnIndex) => {
       const column = String.fromCharCode(
-        startColumn.charCodeAt(0) + columnIndex
+        startColumn.charCodeAt(0) + columnIndex,
       );
       const row = (rowIndex += 1);
       const key = column + row;
       const cell = cells[key];
+      const loading =
+        !hasAllRequiredInputsFilledIn && row !== 1 && column !== "A";
+      const tooltip = getRequiredInputsNotFilledInTitle(
+        hasAllRequiredInputsFilledIn,
+      );
 
-      if (!cell?.value) return <Cell />;
+      if (!cell?.value) return <Cell loading={loading} tooltip={tooltip} />;
 
       let node = formatCellValue(cell);
 
@@ -88,6 +98,8 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
             color: "initial",
           }}
           intent={intent}
+          loading={loading}
+          tooltip={tooltip}
         >
           {node}
         </Cell>
@@ -95,11 +107,12 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
     },
     [
       cells,
+      hasAllRequiredInputsFilledIn,
       isYoyGrowthToggled,
       showFormulas,
       theme.typography.fontFamily,
       theme.typography.fontSize,
-    ]
+    ],
   );
 
   useEffect(() => {
@@ -132,8 +145,8 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
           marginalTaxRate: currentEquityRiskPremium.marginalTaxRate,
           sharesOutstanding: sharesStats.SharesOutstanding,
           price,
-        }
-      )
+        },
+      ),
     );
   }, [
     balanceSheet.bookValueOfDebt,
@@ -152,27 +165,27 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
 
   useEffect(() => {
     const cagrCellsToUpdate = getColumnsBetween(columns, "C", "L").map(
-      (column) => `${column}2`
+      (column) => `${column}2`,
     );
 
     dispatch(
       updateCells(cagrCellsToUpdate, {
         cagrYearOneToFive: queryParams.cagrYearOneToFive,
         riskFreeRate,
-      })
+      }),
     );
   }, [dispatch, queryParams.cagrYearOneToFive, riskFreeRate]);
 
   useEffect(() => {
     const ebitMarginCellsToUpdate = getColumnsBetween(columns, "C", "L").map(
-      (column) => `${column}3`
+      (column) => `${column}3`,
     );
 
     dispatch(
       updateCells(ebitMarginCellsToUpdate, {
         yearOfConvergence: queryParams.yearOfConvergence,
         ebitTargetMarginInYearTen: queryParams.ebitTargetMarginInYearTen,
-      })
+      }),
     );
   }, [
     queryParams.yearOfConvergence,
@@ -184,7 +197,7 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
     dispatch(
       updateCells(["C11"], {
         totalCostOfCapital: costOfCapital.totalCostOfCapital,
-      })
+      }),
     );
   }, [costOfCapital.totalCostOfCapital, dispatch]);
 
@@ -192,7 +205,7 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
     dispatch(
       updateCells(["C15"], {
         salesToCapitalRatio: queryParams.salesToCapitalRatio,
-      })
+      }),
     );
   }, [dispatch, queryParams.salesToCapitalRatio]);
 
@@ -200,7 +213,7 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
     dispatch(
       updateCells(["B9"], {
         netOperatingLoss: queryParams.netOperatingLoss,
-      })
+      }),
     );
   }, [dispatch, queryParams.netOperatingLoss]);
 
@@ -208,7 +221,7 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
     dispatch(
       updateCells(["B25"], {
         probabilityOfFailure: queryParams.probabilityOfFailure,
-      })
+      }),
     );
   }, [dispatch, queryParams.probabilityOfFailure]);
 
@@ -219,7 +232,7 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
           queryParams.proceedsAsAPercentageOfBookValue,
         bookValueOfDebt: balanceSheet.bookValueOfDebt,
         bookValueOfEquity: balanceSheet.bookValueOfEquity,
-      })
+      }),
     );
   }, [
     dispatch,
@@ -232,7 +245,7 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
     dispatch(
       updateCells(["M2", "M11", "M7", "B21"], {
         riskFreeRate,
-      })
+      }),
     );
   }, [dispatch, riskFreeRate]);
 

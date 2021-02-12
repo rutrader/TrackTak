@@ -35,7 +35,7 @@ const cells = {
   A1: { value: "" },
   A2: { value: "Revenues" },
   A3: { value: "Operating Margin" },
-  A4: { value: "EBIT Income" },
+  A4: { value: "Operating Income" },
   A5: { value: "Tax Rate" },
   A6: { value: "NOPAT" },
   A7: { value: "- Reinvestment" },
@@ -85,12 +85,12 @@ const cells = {
   B21: getExpressionProperties(`=B19/(B20-riskFreeRate)`),
   B22: getExpressionProperties("=B21*L12"),
   B23: getExpressionProperties(
-    "=SUM(C13, D13, E13, F13, G13, H13, I13, J13, K13, L13)"
+    "=SUM(C13, D13, E13, F13, G13, H13, I13, J13, K13, L13)",
   ),
   B24: getExpressionProperties("=B22+B23"),
   B25: getExpressionProperties("=probabilityOfFailure"),
   B26: getExpressionProperties(
-    "=(bookValueOfEquity+bookValueOfDebt)*proceedsAsAPercentageOfBookValue"
+    "=(bookValueOfEquity+bookValueOfDebt)*proceedsAsAPercentageOfBookValue",
   ),
   B27: getExpressionProperties("=B24*(1-B25)+B26*B25"),
   B28: getExpressionProperties("=bookValueOfDebt"),
@@ -113,7 +113,7 @@ const cells = {
   M5: getExpressionProperties("=marginalTaxRate"),
   M6: getExpressionProperties("=M4*(1-M5)"),
   M7: getExpressionProperties(
-    `=IF(riskFreeRate > 0, (riskFreeRate / M17) * M6, 0)`
+    `=IF(riskFreeRate > 0, (riskFreeRate / M17) * M6, 0)`,
   ),
   M11: getExpressionProperties("=matureMarketEquityRiskPremium + riskFreeRate"),
   M17: getExpressionProperties("=L11"),
@@ -192,7 +192,7 @@ getColumnsBetween(columns, "C", "G").forEach((column) => {
   const taxKey = `${column}5`;
 
   cells[revenueOneToFiveYrKey].expr = getRevenueOneToFiveYrCalculation(
-    revenueOneToFiveYrKey
+    revenueOneToFiveYrKey,
   );
   cells[taxKey].expr = getOneToFiveYrTaxCalculation(taxKey);
 });
@@ -210,7 +210,7 @@ getColumnsBetween(columns, "H", "L").forEach((column, index) => {
 
   cells[revenueSixToTenYrKey].expr = getRevenueSixToTenYrCalculation(
     index,
-    revenueSixToTenYrKey
+    revenueSixToTenYrKey,
   );
   cells[taxKey].expr = getSixToTenYrTaxCalculation(taxKey);
   cells[cocKey].expr = getSixToTenYrCostOfCapitalCalculation(cocKey);
@@ -245,10 +245,10 @@ getColumnsBetween(columns, "D", "L").forEach((column) => {
 
   cells[reinvestmentKey].expr = getReinvestmentCalculation(reinvestmentKey);
   cells[discountFactorKey].expr = getCumulatedDiscountFactorCalculation(
-    discountFactorKey
+    discountFactorKey,
   );
   cells[salesCapRatioKey].expr = getSalesToCapitalRatioCalculation(
-    salesCapRatioKey
+    salesCapRatioKey,
   );
 });
 

@@ -2,7 +2,7 @@ import { valueDrivingInputsHeader } from "../components/ValueDrivingInputs";
 
 const getRequiredInputsNotFilledInTitle = (hasAllRequiredInputsFilledIn) =>
   hasAllRequiredInputsFilledIn
-    ? null
+    ? undefined
     : `The '${valueDrivingInputsHeader}' section above needs to be filled out first.`;
 
 export default getRequiredInputsNotFilledInTitle;
