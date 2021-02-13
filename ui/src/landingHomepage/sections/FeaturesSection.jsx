@@ -220,7 +220,6 @@ const TypographyText = withStyles({
     fontWeight: 400,
     lineHeight: "28px",
     color: "#6B6F92",
-    margin: "0px",
     visibility: "visible",
     animationDelay: "0.6s",
     animationName: "fadeInUp",

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   Box,
   IconButton,
+  makeStyles,
   TextField,
   useMediaQuery,
   useTheme,
@@ -22,11 +23,24 @@ const TickerTextField = withStyles({
 
     return {
       "& .MuiInputBase-root": {
+        // borderColor: "#fff",
+        // backgroundColor: "#fff",
         ...values,
       },
     };
   },
 })(TextField);
+
+const useStyles = makeStyles((theme) => ({
+  input: {
+    width: "900px",
+    borderRadius: "33px",
+    fontSize: "16px",
+    marginRight: "15px",
+    height: "69px",
+    padding: "0 30px",
+  },
+}));
 
 const SubmitButton = withStyles({
   root: {
@@ -38,6 +52,7 @@ const SubmitButton = withStyles({
 })(IconButton);
 
 const SearchTicker = ({ removeInputPadding }) => {
+  const classes = useStyles();
   const theme = useTheme();
   const [ticker, setTicker] = useState("");
   const [autoComplete, setAutoComplete] = useState([]);
@@ -95,10 +110,12 @@ const SearchTicker = ({ removeInputPadding }) => {
           exchange: option.Exchange,
         }))}
         renderInput={(params) => {
+          console.log(params);
           return (
             <>
               <TickerTextField
                 {...params}
+                style={{ display: "flex", alignItems: "center" }}
                 $removeInputPadding={removeInputPadding}
                 variant="outlined"
                 value={ticker}
@@ -106,14 +123,21 @@ const SearchTicker = ({ removeInputPadding }) => {
                 required
                 onChange={handleOnChangeSearch}
                 placeholder={isOnMobile ? "Search" : "Search, e.g. AAPL"}
+                InputProps={{
+                  ...params.InputProps,
+                  className: classes.input,
+                  disableUnderline: true,
+                  startAdornment: (
+                    <SubmitButton type="submit">
+                      <SearchIcon color="primary" />
+                    </SubmitButton>
+                  ),
+                }}
               />
             </>
           );
         }}
       />
-      <SubmitButton type="submit">
-        <SearchIcon color="primary" />
-      </SubmitButton>
     </Box>
   );
 };

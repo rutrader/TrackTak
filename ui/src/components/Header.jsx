@@ -88,7 +88,7 @@ const Header = ({ hideSearch }) => {
               justifyContent: "left",
             }}
           >
-            <Box sx={{ mr: 2 }}>
+            <Box sx={{ mr: 2, display: "flex", alignItems: "center" }} >
               <Hidden mdDown>
                 <TracktakPurple src="icons/tracktak-purple.svg" alt="" />
               </Hidden>

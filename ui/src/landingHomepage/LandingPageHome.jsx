@@ -96,9 +96,17 @@ const TypographyText = withStyles({
   },
 })(Typography);
 
+const TypographySearchText = withStyles({
+  root: {
+    fontWeight: 700,
+    lineHeight: "28px",
+    color: "#fff",
+  },
+})(Typography);
+
 const CustomBox = styled.div`
-  padding-top: 300px;
-  padding-bottom: 240px;
+  margin-top: 80px;
+  margin-bottom: 240px;
   width: 100%;
   height: 100%;
   &:before {
@@ -168,12 +176,12 @@ const LandingPageHome = () => {
         <Box
           sx={{
             justifyContent: "center",
-            mt: 7,
+            mt: "126px",
           }}
         >
-          <Typography variant="h5" align="center" gutterBottom>
+          <TypographySearchText variant="h4" align="center" gutterBottom>
             Search for a company to begin.
-          </Typography>
+          </TypographySearchText>
           <SearchTicker />
         </Box>
       </CustomBox>
