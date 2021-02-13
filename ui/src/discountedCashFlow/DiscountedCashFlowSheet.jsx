@@ -134,10 +134,14 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
 };
 
 export const DCFControlTypography = (props) => {
+  const hasAllRequiredInputsFilledIn = useSelector(
+    selectHasAllRequiredInputsFilledIn,
+  );
+
   return (
     <Typography
       variant="body2"
-      color="textPrimary"
+      color={hasAllRequiredInputsFilledIn ? "textPrimary" : "textSecondary"}
       whiteSpace="nowrap"
       style={{
         ...props.style,
