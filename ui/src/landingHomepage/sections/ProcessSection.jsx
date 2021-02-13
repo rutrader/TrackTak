@@ -9,7 +9,6 @@ import {
   Typography,
   withStyles,
 } from "@material-ui/core";
-import processImage from "../../icons/process-img.jpg";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import styled from "styled-components";
 
@@ -35,39 +34,37 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.default,
   },
   img: {
-    height: 489,
     maxWidth: 688,
-    width: "100%",
     position: "absolute",
     top: "50%",
     transform: "translateY(-50%)",
   },
 }));
 
-const CustomBox = ({ sx, ...props }) => {
+const CustomBox = ({ style, ...props }) => {
   return (
     <Box
-      sx={{
+      style={{
         position: "relative",
         zIndex: 1,
         paddingBottom: "150px",
         paddingTop: "150px",
         background: "#F4F7FC",
-        ...sx,
+        ...style,
       }}
       {...props}
     />
   );
 };
 
-const BoxRowWrapper = ({ sx, ...props }) => {
+const BoxRowWrapper = ({ style, ...props }) => {
   return (
     <Box
-      sx={{
+      style={{
         display: "flex",
         flex: "1 0 100%",
         flexWrap: "wrap",
-        ...sx,
+        ...style,
       }}
       {...props}
     />
@@ -227,27 +224,50 @@ const BoxGradientIconTime = styled.div`
   }
 `;
 
+const images = [
+  {
+    label: "San Francisco – Oakland Bay Bridge, United States",
+    imgPath:
+      "https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60",
+  },
+  {
+    label: "Bird",
+    imgPath:
+      "https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=400&h=250&q=60",
+  },
+  {
+    label: "Bali, Indonesia",
+    imgPath:
+      "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250&q=80",
+  },
+];
+
 const ProcessSection = () => {
   const classes = useStyles();
+  const [expandedIndex, setExpandedIndex] = React.useState(0);
+  const imageIndex = expandedIndex ?? 0;
+
+  const handleChange = (panel) => (_, isExpanded) => {
+    setExpandedIndex(isExpanded ? panel : null);
+  };
+
   return (
     <CustomBox>
       <Container maxWidth="lg">
         <BoxRowWrapper>
           <Box
-            sx={{
+            style={{
               flex: "0 0 auto",
               width: "50%",
               paddingLeft: "10px",
               paddingRight: "10px",
             }}
           >
-            <Box sx={{ marginBottom: "50px" }}>
+            <Box style={{ marginBottom: "50px" }}>
               <TypographySubHeader variant="h4">
                 Easy to Use
               </TypographySubHeader>
-              <TypographyHeader variant="h3">
-                Project Management System
-              </TypographyHeader>
+              <TypographyHeader variant="h3">How it Works</TypographyHeader>
               <TypographyText>
                 Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
                 seddinonumy eirmod tempor invidunt ut labore.Smratseo is a brand
@@ -255,7 +275,10 @@ const ProcessSection = () => {
               </TypographyText>
             </Box>
             <Box className={classes.accordion}>
-              <AccordionCustom>
+              <AccordionCustom
+                expanded={expandedIndex === 0}
+                onChange={handleChange(0)}
+              >
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel1a-content"
@@ -274,7 +297,10 @@ const ProcessSection = () => {
                   </TypographyText>
                 </AccordionDetails>
               </AccordionCustom>
-              <AccordionCustom>
+              <AccordionCustom
+                expanded={expandedIndex === 1}
+                onChange={handleChange(1)}
+              >
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel1a-content"
@@ -293,7 +319,10 @@ const ProcessSection = () => {
                   </TypographyText>
                 </AccordionDetails>
               </AccordionCustom>
-              <AccordionCustom>
+              <AccordionCustom
+                expanded={expandedIndex === 2}
+                onChange={handleChange(2)}
+              >
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel1a-content"
@@ -317,8 +346,8 @@ const ProcessSection = () => {
           <Box className={classes.root}>
             <img
               className={classes.img}
-              src={processImage}
-              alt="processImage"
+              src={images[imageIndex].imgPath}
+              alt={images[imageIndex].label}
             />
           </Box>
         </BoxRowWrapper>

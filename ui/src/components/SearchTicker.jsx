@@ -23,8 +23,6 @@ const TickerTextField = withStyles({
 
     return {
       "& .MuiInputBase-root": {
-        // borderColor: "#fff",
-        // backgroundColor: "#fff",
         ...values,
       },
     };
@@ -110,7 +108,6 @@ const SearchTicker = ({ removeInputPadding }) => {
           exchange: option.Exchange,
         }))}
         renderInput={(params) => {
-          console.log(params);
           return (
             <>
               <TickerTextField

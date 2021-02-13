@@ -16,6 +16,8 @@ import laptopImage from "../icons/laptop-img.png";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import SearchTicker from "../components/SearchTicker";
 import styled from "styled-components";
+import { NavHashLink } from "react-router-hash-link";
+import useScrollWithOffset from "../hooks/useScrollWithOffset";
 
 const useStyles = makeStyles((theme) => ({
   laptopImage: {
@@ -130,6 +132,7 @@ const LandingPageHome = () => {
 
   const [showScroll, setShowScroll] = useState(false);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const getScrollWithOffset = useScrollWithOffset();
 
   const checkScrollTop = () => {
     if (window.pageYOffset > 400) {
@@ -160,7 +163,14 @@ const LandingPageHome = () => {
               Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
               nonumy eirmod tempor invidunt ut labore et dolore.
             </TypographyText>
-            <CustomButton variant="contained">Explore Features</CustomButton>
+            <CustomButton
+              component={NavHashLink}
+              scroll={getScrollWithOffset()}
+              to="#features"
+              variant="contained"
+            >
+              Explore Features
+            </CustomButton>
           </Box>
           <Box sx={{ flex: "0 0 auto", width: "41.666667%" }}>
             <Box sx={{ position: "relative", zIndex: 1 }}>

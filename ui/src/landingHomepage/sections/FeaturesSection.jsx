@@ -6,40 +6,40 @@ import { AiOutlineGlobal } from "react-icons/ai";
 import { BiBookOpen } from "react-icons/bi";
 import styled from "styled-components";
 
-const CustomBox = ({ sx, ...props }) => {
+const CustomBox = ({ style, ...props }) => {
   return (
     <Box
-      sx={{
+      style={{
         background: "#fff",
         paddingBottom: "70px",
-        ...sx,
+        ...style,
       }}
       {...props}
     />
   );
 };
 
-const BoxRowWrapper = ({ sx, ...props }) => {
+const BoxRowWrapper = ({ style, ...props }) => {
   return (
     <Box
-      sx={{
+      style={{
         display: "flex",
         flex: "1 0 100%",
         flexWrap: "wrap",
-        ...sx,
+        ...style,
       }}
       {...props}
     />
   );
 };
 
-const BoxColumnWrapper = ({ sx, ...props }) => {
+const BoxColumnWrapper = ({ style, ...props }) => {
   return (
     <Box
-      sx={{
+      style={{
         flex: "0 0 auto",
         width: "25%",
-        ...sx,
+        ...style,
       }}
       {...props}
     />
@@ -174,16 +174,16 @@ const BoxGradientIconGlobal = styled.div`
   }
 `;
 
-const BoxIcon = ({ sx, ...props }) => {
+const BoxIcon = ({ style, ...props }) => {
   return (
     <Box
-      sx={{
+      style={{
         textAlign: "center",
         visibility: "visible",
         animationDuration: "1.3s",
         animationDelay: "0.8s",
         animationName: "fadeInUp",
-        ...sx,
+        ...style,
       }}
       {...props}
     />
@@ -228,11 +228,11 @@ const TypographyText = withStyles({
 
 const FeaturesSection = () => {
   return (
-    <CustomBox>
+    <CustomBox id="features">
       <Container maxWidth="lg">
         <BoxRowWrapper>
           <Box
-            sx={{
+            style={{
               marginLeft: "auto",
               marginRight: "auto",
               marginBottom: "55px",

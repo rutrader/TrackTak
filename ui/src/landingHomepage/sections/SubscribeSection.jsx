@@ -5,6 +5,7 @@ import {
   Button,
   TextField,
   withStyles,
+  Container,
 } from "@material-ui/core";
 import React from "react";
 
@@ -157,7 +158,7 @@ const SubscribeSection = () => {
   const classes = useStyles();
   return (
     <Box style={{ paddingTop: "100px" }}>
-      <Box>
+      <Container maxWidth="lg">
         <Box className={classes.subscribeWrapper}>
           <Box className={classes.shapeOne}></Box>
           <Box className={classes.shapeTwo}></Box>
@@ -197,7 +198,7 @@ const SubscribeSection = () => {
             </Box>
           </Box>
         </Box>
-      </Box>
+      </Container>
     </Box>
   );
 };

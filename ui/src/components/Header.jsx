@@ -17,8 +17,6 @@ import { ReactComponent as TracktakPurpleSmall } from "../icons/tracktak-logo-sm
 import { ReactComponent as TracktakPurple } from "../icons/tracktak-purple.svg";
 
 const rightLinks = [
-  { to: "/features", text: "Features" },
-  { to: "/features", text: "Process" },
   { to: "/how-to-do-a-dcf", text: "Docs" },
   { to: "/stock-valuations", text: "Valuations" },
   { to: "/contact-us", text: "Contact" },
@@ -88,7 +86,7 @@ const Header = ({ hideSearch }) => {
               justifyContent: "left",
             }}
           >
-            <Box sx={{ mr: 2, display: "flex", alignItems: "center" }} >
+            <Box sx={{ mr: 2, display: "flex", alignItems: "center" }}>
               <Hidden mdDown>
                 <TracktakPurple src="icons/tracktak-purple.svg" alt="" />
               </Hidden>
