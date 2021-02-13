@@ -30,7 +30,8 @@ const TTTabs = () => {
           value={location.pathname}
           indicatorColor="primary"
           textColor="primary"
-          scrollButtons="auto"
+          scrollButtons
+          allowScrollButtonsMobile
         >
           {layoutFullScreenPaths.map(({ url }) => {
             const generatedPath = generatePath(url, { ...params });
