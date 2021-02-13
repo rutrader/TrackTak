@@ -26,10 +26,14 @@ const CompanyOverviewStats = ({ dateOfValuation }) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          gridColumnGap: theme.spacing(2.5),
+          gridGap: theme.spacing(1.5),
+          flexWrap: "wrap",
+          marginBottom: theme.spacing(1.5),
         }}
       >
-        <Typography variant="h4">{general.Name}</Typography>
+        <Typography variant="h4" style={{ flex: 1 }}>
+          {general.Name}
+        </Typography>
         {dateOfValuation && (
           <Typography>
             <b>This valuation was done on the {dateOfValuation}</b>

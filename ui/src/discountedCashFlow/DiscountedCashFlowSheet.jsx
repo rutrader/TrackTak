@@ -65,7 +65,22 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
           mb: 0.5,
         }}
       >
-        <Typography variant="h5">DCF Valuation</Typography>
+        <Box>
+          <Typography variant="h5" gutterBottom>
+            DCF Valuation
+          </Typography>
+          <Typography gutterBottom>
+            Need help? Check out the DCF docs&nbsp;
+            <Link
+              component={RouterLink}
+              to="/how-to-do-a-dcf"
+              rel="noreferrer"
+              target="_blank"
+            >
+              here.
+            </Link>
+          </Typography>
+        </Box>
         <Box sx={{ display: "flex" }}>
           <FormControlLabel
             disabled={!hasAllRequiredInputsFilledIn}
@@ -110,17 +125,6 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
           </Box>
         </Box>
       </Box>
-      <Typography gutterBottom>
-        Need help? Check out the DCF docs&nbsp;
-        <Link
-          component={RouterLink}
-          to="/how-to-do-a-dcf"
-          rel="noreferrer"
-          target="_blank"
-        >
-          here.
-        </Link>
-      </Typography>
       <LazyLoad offset={300} placeholder={<Placeholder />}>
         <DiscountedCashFlowTable
           columnWidths={columnWidths}

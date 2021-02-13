@@ -265,6 +265,7 @@ const ExportToExcel = () => {
 
 const ExportToExcelButton = withStyles((theme) => ({
   root: {
+    whiteSpace: "nowrap",
     "&.Mui-disabled": {
       pointerEvents: "auto",
       backgroundColor: theme.palette.action.hover,
