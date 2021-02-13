@@ -115,7 +115,7 @@ const SearchTicker = ({ removeInputPadding }) => {
         onBlur={() => {
           setText("");
         }}
-        closeIcon={null}
+        clearIcon={null}
         popoverProps={{
           canAutoPosition: true,
         }}
