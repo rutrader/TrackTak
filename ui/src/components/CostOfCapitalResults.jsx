@@ -16,13 +16,14 @@ import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremi
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
+import StatsContainer from "../shared/StatsContainer";
 
 const CostOfCapitalResults = () => {
   const theme = useTheme();
   const currentIndustry = useSelector(selectCurrentIndustry);
   const incomeStatement = useSelector(selectRecentIncomeStatement);
   const currentEquityRiskPremiumCountry = useSelector(
-    selectCurrentEquityRiskPremium
+    selectCurrentEquityRiskPremium,
   );
   const costOfCapital = useSelector(selectCostOfCapital);
   const riskFreeRate = useSelector(selectRiskFreeRate);
@@ -45,7 +46,7 @@ const CostOfCapitalResults = () => {
           gridColumnGap: theme.spacing(3),
         }}
       >
-        <Box>
+        <StatsContainer>
           <BoldValueLabel
             value={
               <FormatRawNumber
@@ -70,7 +71,7 @@ const CostOfCapitalResults = () => {
               useQueryPretaxCostOfDebt ? (
                 `${pretaxCostOfDebtLabel} (Direct Input)`
               ) : (
-                <>
+                <Box>
                   {pretaxCostOfDebtLabel}&nbsp;
                   <Link
                     to={({ search }) => {
@@ -82,7 +83,7 @@ const CostOfCapitalResults = () => {
                   >
                     (Synthetic Credit Rating)
                   </Link>
-                </>
+                </Box>
               )
             }
           />
@@ -100,8 +101,8 @@ const CostOfCapitalResults = () => {
             }
             label="Riskfree Rate"
           />
-        </Box>
-        <Box>
+        </StatsContainer>
+        <StatsContainer>
           <BoldValueLabel
             value={
               <FormatRawNumberToPercent
@@ -132,7 +133,7 @@ const CostOfCapitalResults = () => {
             }
             label="Effective Tax Rate (Avg. past 3 yr)"
           />
-        </Box>
+        </StatsContainer>
       </Box>
     </>
   );

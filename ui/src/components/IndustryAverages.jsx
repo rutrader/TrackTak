@@ -3,6 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 import selectIsInUS from "../selectors/fundamentalSelectors/selectIsInUS";
+import StatsContainer from "../shared/StatsContainer";
 import BoldValueLabel from "./BoldValueLabel";
 import FormatRawNumberToPercent from "./FormatRawNumberToPercent";
 
@@ -29,7 +30,7 @@ const IndustryAverages = () => {
           gridColumnGap: theme.spacing(3),
         }}
       >
-        <Box>
+        <StatsContainer>
           <BoldValueLabel
             value={
               <FormatRawNumberToPercent
@@ -56,8 +57,8 @@ const IndustryAverages = () => {
             value={currentIndustry["sales/Capital"]}
             label="Sales to Capital Ratio"
           />
-        </Box>
-        <Box>
+        </StatsContainer>
+        <StatsContainer>
           <BoldValueLabel
             value={
               <FormatRawNumberToPercent value={currentIndustry.costOfCapital} />
@@ -72,7 +73,7 @@ const IndustryAverages = () => {
             value={currentIndustry.equityLeveredBeta}
             label="Levered Beta"
           />
-        </Box>
+        </StatsContainer>
       </Box>
     </>
   );

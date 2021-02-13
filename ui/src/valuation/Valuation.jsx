@@ -283,17 +283,17 @@ const Valuation = () => {
             <FormatRawNumberToCurrency value={estimatedValuePerShare} />
           </b>
           &nbsp;per share.
-          <Box>
-            On the <b>{formattedDateOfValuation}</b> they traded for&nbsp;
-            <b>
-              <FormatRawNumberToCurrency value={price} />
-            </b>
-            &nbsp;a share which gives a margin of safety of&nbsp;
-            <b>
-              <FormatRawNumberToPercent value={marginOfSafety} />
-            </b>
-            .
-          </Box>
+        </Typography>
+        <Typography paragraph gutterBottom>
+          On the <b>{formattedDateOfValuation}</b> they traded for&nbsp;
+          <b>
+            <FormatRawNumberToCurrency value={price} />
+          </b>
+          &nbsp;a share which gives a margin of safety of&nbsp;
+          <b>
+            <FormatRawNumberToPercent value={marginOfSafety} />
+          </b>
+          .
         </Typography>
         <Typography>
           <Link

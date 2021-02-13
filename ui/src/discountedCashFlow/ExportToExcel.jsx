@@ -1,4 +1,4 @@
-import { Button, withStyles } from "@material-ui/core";
+import { Box, IconButton } from "@material-ui/core";
 import React from "react";
 import { getNumberOfColumns, padCellKeys } from "./utils";
 import selectInputQueryParams, {
@@ -36,6 +36,8 @@ import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import selectSharesStats from "../selectors/fundamentalSelectors/selectSharesStats";
 import selectHasAllRequiredInputsFilledIn from "../selectors/routerSelectors/selectHasAllRequiredInputsFilledIn";
 import getRequiredInputsNotFilledInTitle from "../shared/getRequiredInputsNotFilledInTitle";
+import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
+import { DCFControlTypography } from "./DiscountedCashFlowSheet";
 
 export const inputsWorksheetName = "Inputs";
 export const costOfCapitalWorksheetName = "Cost of Capital";
@@ -252,27 +254,20 @@ const ExportToExcel = () => {
   };
 
   return (
-    <ExportToExcelButton
-      variant="outlined"
-      onClick={exportToCSVOnClick}
-      disabled={!hasAllRequiredInputsFilledIn}
+    <Box
+      sx={{ display: "flex", alignItems: "center" }}
       title={getRequiredInputsNotFilledInTitle(hasAllRequiredInputsFilledIn)}
     >
-      Export to Excel
-    </ExportToExcelButton>
+      <IconButton
+        variant="outlined"
+        onClick={exportToCSVOnClick}
+        disabled={!hasAllRequiredInputsFilledIn}
+      >
+        <CloudDownloadIcon />
+      </IconButton>
+      <DCFControlTypography>Excel</DCFControlTypography>
+    </Box>
   );
 };
-
-const ExportToExcelButton = withStyles((theme) => ({
-  root: {
-    "&.Mui-disabled": {
-      pointerEvents: "auto",
-      backgroundColor: theme.palette.action.hover,
-      "&:hover": {
-        borderColor: theme.palette.action.disabledBackground,
-      },
-    },
-  },
-}))(Button);
 
 export default ExportToExcel;

@@ -71,7 +71,7 @@ const Home = () => {
           display: "flex",
           justifyContent: "center",
           flexWrap: "wrap",
-          gap: 20,
+          gap: 2.5,
           my: 5,
         }}
       >

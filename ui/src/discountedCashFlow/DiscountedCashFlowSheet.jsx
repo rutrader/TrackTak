@@ -5,6 +5,7 @@ import {
   Link,
   CircularProgress,
   useTheme,
+  withStyles,
 } from "@material-ui/core";
 import "../shared/blueprintTheme.scss";
 import { Link as RouterLink } from "react-router-dom";
@@ -62,12 +63,36 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          flexWrap: "wrap",
           mb: 0.5,
         }}
       >
-        <Typography variant="h5">DCF Valuation</Typography>
-        <Box sx={{ display: "flex" }}>
-          <FormControlLabel
+        <Box>
+          <Typography variant="h5" gutterBottom>
+            DCF Valuation
+          </Typography>
+          <Typography gutterBottom>
+            Need help? Check out the DCF docs&nbsp;
+            <Link
+              component={RouterLink}
+              to="/how-to-do-a-dcf"
+              rel="noreferrer"
+              target="_blank"
+            >
+              here.
+            </Link>
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            flexWrap: "wrap",
+            rowGap: 1.2,
+            columnGap: 2.5,
+          }}
+        >
+          <DCFControlLabel
             disabled={!hasAllRequiredInputsFilledIn}
             title={getRequiredInputsNotFilledInTitle(
               hasAllRequiredInputsFilledIn,
@@ -79,48 +104,25 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
                 color="primary"
               />
             }
-            label="Formulas"
+            label={<DCFControlTypography>Formulas</DCFControlTypography>}
           />
-          <Box
-            sx={{
-              ml: 1,
-            }}
-          >
-            <FormControlLabel
-              disabled={!hasAllRequiredInputsFilledIn}
-              title={getRequiredInputsNotFilledInTitle(
-                hasAllRequiredInputsFilledIn,
-              )}
-              control={
-                <Switch
-                  checked={isYoyGrowthToggled}
-                  onChange={isYoyGrowthToggledOnChange}
-                  color="primary"
-                />
-              }
-              label="%YOY Growth"
-            />
-          </Box>
-          <Box
-            sx={{
-              ml: 1,
-            }}
-          >
-            <ExportToExcel />
-          </Box>
+          <DCFControlLabel
+            disabled={!hasAllRequiredInputsFilledIn}
+            title={getRequiredInputsNotFilledInTitle(
+              hasAllRequiredInputsFilledIn,
+            )}
+            control={
+              <Switch
+                checked={isYoyGrowthToggled}
+                onChange={isYoyGrowthToggledOnChange}
+                color="primary"
+              />
+            }
+            label={<DCFControlTypography>%YOY Growth</DCFControlTypography>}
+          />
+          <ExportToExcel />
         </Box>
       </Box>
-      <Typography gutterBottom>
-        Need help? Check out the DCF docs&nbsp;
-        <Link
-          component={RouterLink}
-          to="/how-to-do-a-dcf"
-          rel="noreferrer"
-          target="_blank"
-        >
-          here.
-        </Link>
-      </Typography>
       <LazyLoad offset={300} placeholder={<Placeholder />}>
         <DiscountedCashFlowTable
           columnWidths={columnWidths}
@@ -130,5 +132,27 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
     </Box>
   );
 };
+
+export const DCFControlTypography = (props) => {
+  return (
+    <Typography
+      variant="body2"
+      color="textPrimary"
+      whiteSpace="nowrap"
+      style={{
+        ...props.style,
+        cursor: "default",
+      }}
+      {...props}
+    />
+  );
+};
+
+const DCFControlLabel = withStyles({
+  root: {
+    marginLeft: 0,
+    marginRight: 0,
+  },
+})(FormControlLabel);
 
 export default DiscountedCashFlowSheet;
