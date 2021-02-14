@@ -7,4 +7,5 @@
 <url><loc>https://tracktak.com/about-us</loc><priority>0.5</priority></url>
 <url><loc>https://tracktak.com/stock-valuations/IRBT.US?cagrYearOneToFive=0.18&amp;ebitTargetMarginInYearTen=0.1&amp;yearOfConvergence=3&amp;salesToCapitalRatio=2.5</loc><priority>0.5</priority></url>
 <url><loc>https://tracktak.com/stock-valuations/EDUC.US?cagrYearOneToFive=0.1&amp;ebitTargetMarginInYearTen=0.07&amp;yearOfConvergence=2&amp;salesToCapitalRatio=2.8</loc><priority>0.5</priority></url>
+<url><loc>https://tracktak.com/stock-valuations/FNX.LSE?cagrYearOneToFive=0.17&amp;ebitTargetMarginInYearTen=0.2&amp;yearOfConvergence=3&amp;salesToCapitalRatio=1.8</loc><priority>0.5</priority></url>
 </urlset>
