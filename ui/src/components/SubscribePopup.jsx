@@ -10,12 +10,17 @@ import {
 } from "@material-ui/core";
 import SubscribeMailingList from "./SubscribeMailingList";
 import { useTheme } from "@emotion/react";
+import { useSelector } from "react-redux";
+import selectHasAllRequiredInputsFilledIn from "../selectors/routerSelectors/selectHasAllRequiredInputsFilledIn";
 
 const SubscribePopup = () => {
   const [open, setOpen] = useState(true);
   const theme = useTheme();
   const subscribePopupShown = localStorage.getItem("subscribePopupShown");
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const hasAllRequiredInputsFilledIn = useSelector(
+    selectHasAllRequiredInputsFilledIn,
+  );
 
   const handleClose = (_, reason) => {
     if (reason !== "backdropClick") {
@@ -24,7 +29,7 @@ const SubscribePopup = () => {
     }
   };
 
-  return subscribePopupShown === "true" ? null : (
+  return subscribePopupShown !== "true" && hasAllRequiredInputsFilledIn ? (
     <Dialog
       open={open}
       fullScreen={isOnMobile}
@@ -44,7 +49,7 @@ const SubscribePopup = () => {
         </Button>
       </DialogActions>
     </Dialog>
-  );
+  ) : null;
 };
 
 export default SubscribePopup;
