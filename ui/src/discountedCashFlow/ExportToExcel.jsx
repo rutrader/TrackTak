@@ -33,11 +33,11 @@ import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurre
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
 import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
-import selectSharesStats from "../selectors/fundamentalSelectors/selectSharesStats";
 import selectHasAllRequiredInputsFilledIn from "../selectors/routerSelectors/selectHasAllRequiredInputsFilledIn";
 import getRequiredInputsNotFilledInTitle from "../shared/getRequiredInputsNotFilledInTitle";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import { DCFControlTypography } from "./DiscountedCashFlowSheet";
+import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 
 export const inputsWorksheetName = "Inputs";
 export const costOfCapitalWorksheetName = "Cost of Capital";
@@ -57,7 +57,7 @@ const ExportToExcel = () => {
   const incomeStatement = useSelector(selectRecentIncomeStatement);
   const balanceSheet = useSelector(selectRecentBalanceSheet);
   const price = useSelector(selectPrice);
-  const { SharesOutstanding } = useSelector(selectSharesStats);
+  const sharesOutstanding = useSelector(selectSharesOutstanding);
   const hasAllRequiredInputsFilledIn = useSelector(
     selectHasAllRequiredInputsFilledIn,
   );
@@ -113,7 +113,7 @@ const ExportToExcel = () => {
       },
       sharesOutstanding: {
         type: "million",
-        value: SharesOutstanding,
+        value: sharesOutstanding,
       },
       costOfPreferredStock: {
         type: "percent",

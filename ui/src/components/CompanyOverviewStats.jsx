@@ -3,7 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
-import selectSharesStats from "../selectors/fundamentalSelectors/selectSharesStats";
+import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 import selectValuationCurrencyCode from "../selectors/fundamentalSelectors/selectValuationCurrencyCode";
 import selectIsIframe from "../selectors/routerSelectors/selectIsIframe";
 import BoldValueLabel from "./BoldValueLabel";
@@ -14,7 +14,7 @@ import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 const CompanyOverviewStats = ({ dateOfValuation }) => {
   const general = useSelector(selectGeneral);
   const price = useSelector(selectPrice);
-  const sharesStats = useSelector(selectSharesStats);
+  const sharesOutstanding = useSelector(selectSharesOutstanding);
   const isIframe = useSelector(selectIsIframe);
   const valuationCurrencyCode = useSelector(selectValuationCurrencyCode);
   const theme = useTheme();
@@ -57,7 +57,7 @@ const CompanyOverviewStats = ({ dateOfValuation }) => {
           <BoldValueLabel
             value={
               <FormatRawNumberToMillion
-                value={sharesStats.SharesOutstanding}
+                value={sharesOutstanding}
                 suffix="m"
                 decimalScale={2}
               />
