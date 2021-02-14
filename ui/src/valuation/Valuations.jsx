@@ -19,6 +19,7 @@ import selectEntries from "../selectors/contentfulSelectors/selectEntries";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
+import LinesEllipsis from "react-lines-ellipsis";
 
 const EOD_URL = "https://eodhistoricaldata.com";
 
@@ -81,7 +82,7 @@ const Valuations = () => {
                     {General.Name} Valuation
                   </Typography>
                   <Typography variant="body2" color="textSecondary" paragraph>
-                    {General.Description}
+                    <LinesEllipsis text={General.Description} maxLine="3" />
                   </Typography>
                 </CardActionArea>
                 <CardActions>
