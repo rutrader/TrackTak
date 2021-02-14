@@ -83,7 +83,7 @@ const Home = () => {
             />
           </Box>
           Use our DCF calculator to find a companies true intrinsic value for
-          free within seconds.
+          free within minutes.
         </TypographyText>
         <TypographyText isOnMobile={isOnMobile}>
           <Box>

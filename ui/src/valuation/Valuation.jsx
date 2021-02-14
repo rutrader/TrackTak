@@ -95,6 +95,8 @@ const NumberSpan = ({ children, ...props }) => {
   );
 };
 
+const renderField = (field) => documentToReactComponents(field, options);
+
 const Valuation = () => {
   const params = useParams();
   const location = useLocation();
@@ -162,14 +164,17 @@ const Valuation = () => {
           Business Description
         </Typography>
         <Typography paragraph>{general.Description}</Typography>
+        {fields.extraBusinessDescription && (
+          <Typography paragraph>
+            {renderField(fields.extraBusinessDescription)}
+          </Typography>
+        )}
       </Section>
       <Section>
         <Typography variant="h5" gutterBottom>
           Competitors
         </Typography>
-        <Typography paragraph>
-          {documentToReactComponents(fields.competitors, options)}
-        </Typography>
+        <Typography paragraph>{renderField(fields.competitors)}</Typography>
       </Section>
       {fields.lookingForward && (
         <Section>
@@ -177,7 +182,7 @@ const Valuation = () => {
             Looking Forward
           </Typography>
           <Typography paragraph>
-            {documentToReactComponents(fields.lookingForward, options)}
+            {renderField(fields.lookingForward)}
           </Typography>
         </Section>
       )}
@@ -187,7 +192,7 @@ const Valuation = () => {
             Relative Numbers
           </Typography>
           <Typography paragraph>
-            {documentToReactComponents(fields.relativeNumbers, options)}
+            {renderField(fields.relativeNumbers)}
           </Typography>
         </Section>
       )}
