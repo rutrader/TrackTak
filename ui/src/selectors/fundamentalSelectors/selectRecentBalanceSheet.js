@@ -24,14 +24,14 @@ const selectRecentBalanceSheet = createSelector(
     recentIncomeStatement,
     isInUS,
   ) => {
-    if (!quarterlyBalanceSheets.length) return null;
+    if (!yearlyBalanceSheets.length) return null;
 
-    const mostRecentBalanceSheet = isInUS
+    const balanceSheet = isInUS
       ? quarterlyBalanceSheets[0]
       : yearlyBalanceSheets[0];
 
     return getBalanceSheet(
-      mostRecentBalanceSheet,
+      balanceSheet,
       convertCurrency,
       recentIncomeStatement.totalRevenue,
       mostRecentQuarter,

@@ -7,7 +7,6 @@ import selectRecentBalanceSheet from "./selectRecentBalanceSheet";
 import selectPrice from "./selectPrice";
 import selectCurrentIndustry from "./selectCurrentIndustry";
 import selectCurrentEquityRiskPremium from "./selectCurrentEquityRiskPremium";
-import selectSharesStats from "./selectSharesStats";
 import { evaluate } from "../../shared/math";
 import {
   costOfComponentCalculation,
@@ -18,6 +17,7 @@ import {
   weightInCostOfCapitalCalculation,
   costOfPreferredStockCalculation,
 } from "../../discountedCashFlow/expressionCalculations";
+import selectSharesOutstanding from "./selectSharesOutstanding";
 
 const calculateCostOfCapital = (
   currentEquityRiskPremiumCountry,
@@ -25,10 +25,10 @@ const calculateCostOfCapital = (
   incomeStatement,
   balanceSheet,
   price,
-  sharesStats,
+  sharesOutstanding,
   query,
   pretaxCostOfDebt,
-  riskFreeRate
+  riskFreeRate,
 ) => {
   // TODO: Maybe calculate averageMaturityOfDebt automatically based on the average
   const averageMaturityOfDebt = query.averageMaturityOfDebt;
@@ -47,7 +47,7 @@ const calculateCostOfCapital = (
       pretaxCostOfDebt,
       averageMaturityOfDebt,
       bookValueOfDebt: balanceSheet.bookValueOfDebt,
-    }
+    },
   );
 
   let estimatedValueOfStraightDebtInConvertibleDebt = evaluate(
@@ -57,11 +57,11 @@ const calculateCostOfCapital = (
       pretaxCostOfDebt,
       maturityOfConvertibleDebt,
       bookValueOfConvertibleDebt,
-    }
+    },
   );
 
   estimatedValueOfStraightDebtInConvertibleDebt = isNaN(
-    estimatedValueOfStraightDebtInConvertibleDebt
+    estimatedValueOfStraightDebtInConvertibleDebt,
   )
     ? 0
     : estimatedValueOfStraightDebtInConvertibleDebt;
@@ -74,7 +74,7 @@ const calculateCostOfCapital = (
 
     marketValue[key] = evaluate(value, {
       price,
-      sharesOutstanding: sharesStats.SharesOutstanding,
+      sharesOutstanding,
       estimatedMarketValueOfStraightDebt,
       estimatedValueOfStraightDebtInConvertibleDebt,
       numberOfPreferredShares,
@@ -145,11 +145,11 @@ const selectCostOfCapital = createSelector(
   selectRecentIncomeStatement,
   selectRecentBalanceSheet,
   selectPrice,
-  selectSharesStats,
+  selectSharesOutstanding,
   selectInputQueryParams,
   selectPretaxCostOfDebt,
   selectRiskFreeRate,
-  calculateCostOfCapital
+  calculateCostOfCapital,
 );
 
 export default selectCostOfCapital;

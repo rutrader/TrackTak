@@ -17,12 +17,12 @@ import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRe
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
 import selectCells from "../selectors/dcfSelectors/selectCells";
-import selectSharesStats from "../selectors/fundamentalSelectors/selectSharesStats";
 import formatCellValue from "./formatCellValue";
 import selectIsYoyGrowthToggled from "../selectors/dcfSelectors/selectIsYoyGrowthToggled";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import getRequiredInputsNotFilledInTitle from "../shared/getRequiredInputsNotFilledInTitle";
 import selectHasAllRequiredInputsFilledIn from "../selectors/routerSelectors/selectHasAllRequiredInputsFilledIn";
+import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 
 const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
   const theme = useTheme();
@@ -36,7 +36,7 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
   const price = useSelector(selectPrice);
   const costOfCapital = useSelector(selectCostOfCapital);
   const riskFreeRate = useSelector(selectRiskFreeRate);
-  const sharesStats = useSelector(selectSharesStats);
+  const sharesOutstanding = useSelector(selectSharesOutstanding);
   const valueOfAllOptionsOutstanding = useSelector(
     selectValueOfAllOptionsOutstanding,
   );
@@ -143,7 +143,7 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
           noncontrollingInterestInConsolidatedEntity:
             balanceSheet.noncontrollingInterestInConsolidatedEntity,
           marginalTaxRate: currentEquityRiskPremium.marginalTaxRate,
-          sharesOutstanding: sharesStats.SharesOutstanding,
+          sharesOutstanding,
           price,
         },
       ),
@@ -160,7 +160,7 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
     incomeStatement.pastThreeYearsAverageEffectiveTaxRate,
     incomeStatement.totalRevenue,
     price,
-    sharesStats.SharesOutstanding,
+    sharesOutstanding,
   ]);
 
   useEffect(() => {

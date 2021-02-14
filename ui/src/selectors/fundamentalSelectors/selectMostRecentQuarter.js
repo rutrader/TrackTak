@@ -1,4 +1,6 @@
+import selectHighlights from "./selectHighlights";
+
 const selectMostRecentQuarter = (state) =>
-  state.fundamentals.data?.Highlights.MostRecentQuarter;
+  selectHighlights(state)?.MostRecentQuarter;
 
 export default selectMostRecentQuarter;
