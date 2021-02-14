@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
 import { makeStyles } from "@material-ui/core";
 import { ReactComponent as TracktakPurpleSmall } from "../icons/tracktak-logo-small.svg";
-import { ReactComponent as TracktakPurple } from "../icons/tracktak-purple.svg";
+import TracktakLogo from "../shared/TracktakLogo";
 
 const rightLinks = [
   { to: "/how-to-do-a-dcf", text: "Docs" },
@@ -30,14 +30,17 @@ const allLinks = [...rightLinks];
 
 const useStyles = makeStyles((theme) => ({
   app: {
-    padding: "16px 30px",
+    padding: "10px 25px",
     background: "#fff",
     transition: "all 0.3s ease-out 0s",
     borderRadius: "10px",
     top: "30px",
     width: "100%",
-    position: "relative",
+    position: "fixed",
     boxShadow: "none",
+    transform: "translate(-50%, 0)",
+    left: "50%",
+    maxWidth: "1280px",
   },
 }));
 
@@ -77,8 +80,8 @@ const Header = ({ hideSearch }) => {
 
   return (
     <Box>
-      <AppBar className={classes.app}>
-        <Container maxWidth={false}>
+      <Container maxWidth="lg">
+        <AppBar className={classes.app}>
           <Box
             sx={{
               display: "flex",
@@ -88,7 +91,7 @@ const Header = ({ hideSearch }) => {
           >
             <Box sx={{ mr: 2, display: "flex", alignItems: "center" }}>
               <Hidden mdDown>
-                <TracktakPurple src="icons/tracktak-purple.svg" alt="" />
+                <TracktakLogo />
               </Hidden>
               <Hidden mdUp>
                 <Link to="/">
@@ -135,8 +138,8 @@ const Header = ({ hideSearch }) => {
               </Box>
             </Hidden>
           </Box>
-        </Container>
-      </AppBar>
+        </AppBar>
+      </Container>
     </Box>
   );
 };

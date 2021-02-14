@@ -107,7 +107,7 @@ const TypographySearchText = withStyles({
 })(Typography);
 
 const CustomBox = styled.div`
-  margin-top: 80px;
+  margin-top: 175px;
   margin-bottom: 240px;
   width: 100%;
   height: 100%;

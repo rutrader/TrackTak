@@ -5,6 +5,7 @@ import {
   Button,
   withStyles,
   IconButton,
+  Container,
 } from "@material-ui/core";
 import React from "react";
 import { ReactComponent as TracktakPurple } from "../icons/tracktak-purple.svg";
@@ -70,60 +71,43 @@ const Footer = () => {
   const classes = useStyles();
   return (
     <Box className={classes.footer}>
-      <FooterImage className={classes.image} />
-      <Box>
-        <Box className={classes.row}>
-          <Box style={{ width: "100%" }}>
-            <Box
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <Box style={{ marginBottom: "30px" }}>
-                <TracktakPurple src="icons/tracktak-black.svg" alt="" />
-              </Box>
-              <Box style={{ marginBottom: "30px" }}>
-                <Box style={{ display: "flex", justifyContent: "center" }}>
-                  <CustomIconButton
-                    onClick={() => {
-                      window.location.href =
-                        "https://linkedin.com/company/tracktak";
-                    }}
-                  >
-                    <LinkedInIcon style={{ color: "#43cea2" }} />
-                  </CustomIconButton>
+      <Container maxWidth="lg">
+        <FooterImage className={classes.image} />
+        <Box>
+          <Box className={classes.row}>
+            <Box style={{ width: "100%" }}>
+              <Box
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <Box style={{ marginBottom: "30px" }}>
+                  <TracktakPurple src="icons/tracktak-black.svg" alt="" />
                 </Box>
-              </Box>
-              <Box className={classes.footerMenu}>
-                <Box style={{ display: "flex", justifyContent: "center" }}>
-                  <Box>
-                    <CustomButton>Home</CustomButton>
-                  </Box>
-                  <Box>
-                    <CustomButton>Features</CustomButton>
-                  </Box>
-                  <Box>
-                    <CustomButton>Process</CustomButton>
-                  </Box>
-                  <Box>
-                    <CustomButton>Valuations</CustomButton>
-                  </Box>
-                  <Box>
-                    <CustomButton>Contact</CustomButton>
+                <Box>
+                  <Box style={{ display: "flex", justifyContent: "center" }}>
+                    <CustomIconButton
+                      onClick={() => {
+                        window.location.href =
+                          "https://linkedin.com/company/tracktak";
+                      }}
+                    >
+                      <LinkedInIcon style={{ color: "#43cea2" }} />
+                    </CustomIconButton>
                   </Box>
                 </Box>
               </Box>
             </Box>
           </Box>
+          <Box className={classes.footerCopyright}>
+            <Typography style={{ fontSize: "16px" }}>
+              © 2021 tracktak ltd. All rights reserved.
+            </Typography>
+          </Box>
         </Box>
-        <Box className={classes.footerCopyright}>
-          <Typography style={{ fontSize: "16px" }}>
-            © 2021 tracktak ltd. All rights reserved.
-          </Typography>
-        </Box>
-      </Box>
+      </Container>
     </Box>
   );
 };
