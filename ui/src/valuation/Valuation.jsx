@@ -12,7 +12,7 @@ import {
   setLastPriceClose,
 } from "../redux/actions/fundamentalsActions";
 import CompanyOverviewStats from "../components/CompanyOverviewStats";
-import { Box, Link, Typography, useTheme } from "@material-ui/core";
+import { Box, Link, Typography } from "@material-ui/core";
 import ValueDrivingInputs, {
   cagrInYearsOneToFiveLabel,
   ebitTargetMarginInYearTenLabel,
@@ -100,7 +100,6 @@ const renderField = (field) => documentToReactComponents(field, options);
 const Valuation = () => {
   const params = useParams();
   const location = useLocation();
-  const theme = useTheme();
   const dispatch = useDispatch();
   const [fields, setContentfulFields] = useState();
   const price = useSelector(selectPrice);
@@ -175,6 +174,23 @@ const Valuation = () => {
           Competitors
         </Typography>
         <Typography paragraph>{renderField(fields.competitors)}</Typography>
+      </Section>
+      <Section sx={{ display: "flex" }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            margin: "0 auto",
+          }}
+        >
+          <Typography variant="h6" gutterBottom>
+            Get notified immediately when we post a valuation.
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <b>Free</b>&nbsp;forever.
+            </Box>
+          </Typography>
+          <SubscribeMailingList subscribeText="Sign Up" />
+        </Box>
       </Section>
       {fields.lookingForward && (
         <Section>
@@ -309,24 +325,6 @@ const Valuation = () => {
           </Link>
           to do your own Automated DCF for any company you want.
         </Typography>
-      </Section>
-      <Section sx={{ display: "flex", mt: 4 }}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            margin: "0 auto",
-          }}
-        >
-          <Typography
-            variant="h6"
-            gutterBottom
-            style={{ fontWeight: theme.typography.fontWeightBold }}
-          >
-            Get notified immediately when we post a valuation.
-          </Typography>
-          <SubscribeMailingList subscribeText="Sign Up" />
-        </Box>
       </Section>
     </>
   );
