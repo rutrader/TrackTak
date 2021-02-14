@@ -7,11 +7,12 @@ import Button from "./Button";
 const SubscribeMailingList = ({ subscribeText }) => (
   <Box mx="auto">
     <form
-      action="https://tracktak.us18.list-manage.com/subscribe/post?u=77ebb5b550a15c12b38bd913e&id=81167d9c5b"
+      action="https://tracktak.us18.list-manage.com/subscribe/post"
       method="POST"
     >
-      <input type="hidden" name="u" value="a123cd45678ef90g7h1j7k9lm" />
-      <input type="hidden" name="id" value="ab2c468d10" />
+      <input type="hidden" name="u" value="77ebb5b550a15c12b38bd913e" />
+      <input type="hidden" name="id" value="81167d9c5b" />
+      <input type="hidden" name="LOCATION" value="landingPage" />
       <Flex justifyContent="center">
         <Relative>
           <Input
@@ -20,7 +21,6 @@ const SubscribeMailingList = ({ subscribeText }) => (
             py={27}
             fontSize={17}
             bg="white"
-            id="MERGE0"
             name="MERGE0"
             placeholder="Enter your email"
             type="email"

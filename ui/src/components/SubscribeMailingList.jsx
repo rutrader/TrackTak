@@ -10,15 +10,20 @@ const StyledTextField = withStyles({
   },
 })(TextField);
 
-const SubscribeMailingList = ({ subscribeText = "Join" }) => {
+const SubscribeMailingList = ({ subscribeText = "Join", locationSignup }) => {
   return (
     <Box>
       <form
-        action="https://tracktak.us18.list-manage.com/subscribe/post?u=77ebb5b550a15c12b38bd913e&id=81167d9c5b"
+        target="_blank"
+        action="https://tracktak.us18.list-manage.com/subscribe/post"
         method="POST"
+        onSubmit={() => {
+          localStorage.setItem("subscribePopupShown", "true");
+        }}
       >
-        <input type="hidden" name="u" value="a123cd45678ef90g7h1j7k9lm" />
-        <input type="hidden" name="id" value="ab2c468d10" />
+        <input type="hidden" name="u" value="77ebb5b550a15c12b38bd913e" />
+        <input type="hidden" name="id" value="81167d9c5b" />
+        <input type="hidden" name="LOCATION" value={locationSignup} />
         <Box sx={{ display: "flex", justifyContent: "center " }}>
           <StyledTextField
             className="landing-page-email-input"

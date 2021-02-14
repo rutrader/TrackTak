@@ -23,6 +23,7 @@ import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import getRequiredInputsNotFilledInTitle from "../shared/getRequiredInputsNotFilledInTitle";
 import selectHasAllRequiredInputsFilledIn from "../selectors/routerSelectors/selectHasAllRequiredInputsFilledIn";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
+import SubscribePopup from "../components/SubscribePopup";
 
 const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
   const theme = useTheme();
@@ -265,24 +266,27 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
   }
 
   return (
-    <Table
-      key={key}
-      enableGhostCells
-      numFrozenColumns={isOnMobile ? 0 : 1}
-      numRows={numberOfRows}
-      columnWidths={cellColumnWidths}
-    >
-      {columns.map((column) => {
-        return (
-          <Column
-            key={column}
-            id={column}
-            name={column}
-            cellRenderer={cellRenderer}
-          />
-        );
-      })}
-    </Table>
+    <>
+      <SubscribePopup />
+      <Table
+        key={key}
+        enableGhostCells
+        numFrozenColumns={isOnMobile ? 0 : 1}
+        numRows={numberOfRows}
+        columnWidths={cellColumnWidths}
+      >
+        {columns.map((column) => {
+          return (
+            <Column
+              key={column}
+              id={column}
+              name={column}
+              cellRenderer={cellRenderer}
+            />
+          );
+        })}
+      </Table>
+    </>
   );
 };
 
