@@ -307,7 +307,10 @@ const DiscountedCashFlow = () => {
             >
               Want us to implement features you need?
             </Typography>
-            <SubscribeMailingList subscribeText="Sign Up" />
+            <SubscribeMailingList
+              subscribeText="Sign Up"
+              locationSignup="Discounted Cash Flow"
+            />
           </Box>
         </Section>
       )}

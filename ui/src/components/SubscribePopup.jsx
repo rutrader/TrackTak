@@ -6,17 +6,20 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  useMediaQuery,
 } from "@material-ui/core";
 import SubscribeMailingList from "./SubscribeMailingList";
+import { useTheme } from "@emotion/react";
 
 const SubscribePopup = () => {
   const [open, setOpen] = useState(true);
+  const theme = useTheme();
   const subscribePopupShown = localStorage.getItem("subscribePopupShown");
+  const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleClose = (_, reason) => {
     if (reason !== "backdropClick") {
       localStorage.setItem("subscribePopupShown", "true");
-
       setOpen(false);
     }
   };
@@ -24,7 +27,7 @@ const SubscribePopup = () => {
   return subscribePopupShown === "true" ? null : (
     <Dialog
       open={open}
-      fullScreen
+      fullScreen={isOnMobile}
       onClose={handleClose}
       aria-labelledby="subscribe-popup-title"
     >
@@ -33,7 +36,7 @@ const SubscribePopup = () => {
         <DialogContentText color="textPrimary">
           Want new features and <b>free</b> valuations immediately?
         </DialogContentText>
-        <SubscribeMailingList subscribeText="Sign Up" />
+        <SubscribeMailingList subscribeText="Sign Up" locationSignup="Popup" />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">

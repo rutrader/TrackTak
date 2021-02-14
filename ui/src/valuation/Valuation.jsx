@@ -189,7 +189,10 @@ const Valuation = () => {
               <b>Free</b>&nbsp;forever.
             </Box>
           </Typography>
-          <SubscribeMailingList subscribeText="Sign Up" />
+          <SubscribeMailingList
+            subscribeText="Sign Up"
+            locationSignup="Valuation"
+          />
         </Box>
       </Section>
       {fields.lookingForward && (
