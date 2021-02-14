@@ -18,7 +18,7 @@ const InputExampleBox = ({ sx, ...props }) => (
 const wikiContent = [
   {
     title: "What is a DCF?",
-    text: `A Discounted Cash Flow (DCF) is a tool that helps investors find the intrinsic value of a cash flow producting asset.
+    text: `A Discounted Cash Flow (DCF) is a tool that helps investors find the intrinsic value of a cash flow producing asset.
       In simple terms it's there to help you find if a stocks current price is undervalued based on the real value of the stock.`,
   },
   {
@@ -89,7 +89,7 @@ const wikiContent = [
           It's not possible to model that far out into the future and even 10
           years is hard so we just assign a terminal year to solve this as best
           we can. The reason why it works doing it forever is because the
-          discount rate eventually makes the termianl value worthless after so
+          discount rate eventually makes the terminal value worthless after so
           many years.
         </Typography>
       </>
@@ -121,8 +121,8 @@ const wikiContent = [
           think will happen for the company from year 1-5 (B2-G2). We then use
           this as the revenue growth for years 1-5. To figure out what to put in
           this input you need to check the companies previous revenue growth
-          rates, the industry average compared to year 10 reveue growth and also
-          your thoughts on the future of the company.
+          rates, the industry average compared to year 10 revenue growth and
+          also your thoughts on the future of the company.
         </Typography>
         <Typography paragraph>
           From years 6-10 (H2-L2) we slightly reduce the growth rate each year.
@@ -159,7 +159,7 @@ const wikiContent = [
           be equal to year 10 (L3). To figure out what to put in this input you
           need to check the companies current Operating margin, the industries
           average Operating margin and also your thoughts on what type of margin
-          the company can acheive by year 10. This will differ grealy depending
+          the company can achieve by year 10. This will differ greatly depending
           on how much of a&nbsp;
           <a
             rel="noreferrer"
@@ -264,8 +264,8 @@ const wikiContent = [
         <Typography paragraph>
           Weighted Cost of Capital (WACC) has multiple elements that go in to
           calculating it. There are also different techniques to working out the
-          WACC. We use Aswath Damoradan's bottom-up beta instead of the CAPM
-          model. We beleive this is a much better representation of risk. The
+          WACC. We use Aswath Damodaran's bottom-up beta instead of the CAPM
+          model. We believe this is a much better representation of risk. The
           elements that go into a companies WACC are:
         </Typography>
         <List disablePadding>
@@ -278,9 +278,9 @@ const wikiContent = [
               use the last closing daily price for the gb in the same currency
               that the valuation is being done in. The ads is the default chance
               in % for the country where the government bond is being used. The
-              reaason for this is that a lot of countries do not Aaa ratings so
-              they have default risk and therefore are not risk free so we have
-              to adjust for that.
+              reason for this is that a lot of countries do not have Aaa ratings
+              so they have default risk and therefore are not risk free so we
+              have to adjust for that.
               <Formula
                 formula="rfr = gb / 100 - ads"
                 explanations={[
@@ -393,7 +393,7 @@ const wikiContent = [
               </Box>
               - The market value of equity. We use the market value and not book
               value because it's the theoretical price you would have to pay to
-              aquire the company.
+              acquire the company.
               <Formula
                 formula="e = p * so"
                 explanations={[
@@ -414,7 +414,7 @@ const wikiContent = [
                 formula="ps = n * mp"
                 explanations={[
                   "ps = Preferred Stock",
-                  "n = Number of Preferred Sshares Outstanding",
+                  "n = Number of Preferred Shares Outstanding",
                   "mp = Market Price Per Share",
                 ]}
               />
@@ -449,11 +449,11 @@ const wikiContent = [
               - The risk a company has in it's industry relative to other
               companies including how leveraged it is, i.e debt. Leverage varies
               across industries, for example the air transport industry has to
-              take on a lot of debt to purchase or lease expensive aeroplanes,
+              take on a lot of debt to purchase or lease expensive airplanes,
               whereas a software company might only have to take on a small
-              ammount of debt. We need to take this into account when
-              determining risk as the more debt a company has, the more likely
-              it is to default on that debt.
+              amount of debt. We need to take this into account when determining
+              risk as the more debt a company has, the more likely it is to
+              default on that debt.
               <Formula
                 formula="lb = ub * (1 + (1 - t) * (d / e))"
                 explanations={[
@@ -530,7 +530,7 @@ const wikiContent = [
   {
     title: "Terminal Cost of Capital",
     cellsText: "B20",
-    text: <>The cost of capital for the compeny each year after year 10.</>,
+    text: <>The cost of capital for the company each year after year 10.</>,
   },
   {
     title: "Terminal Value",
@@ -582,7 +582,7 @@ const wikiContent = [
       <>
         If the company fails then sometimes there will be assets that get sold
         off (usually at fire sale prices) or cash left over to distribute to
-        shareholders. This is only true if all liabilites have been paid first
+        shareholders. This is only true if all liabilities have been paid first
         as shareholders are last in line if a company goes bankrupt. Sometimes
         however, companies will continue to run themselves into the ground with
         more debt to continue giving the executives a job and therefore will
