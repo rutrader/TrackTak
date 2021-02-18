@@ -1,3 +1,5 @@
+require("dotenv-flow").config();
+
 module.exports = {
   siteMetadata: {
     title: "tracktak",
@@ -6,8 +8,9 @@ module.exports = {
     {
       resolve: "gatsby-source-contentful",
       options: {
-        accessToken: process.env.REACT_APP_CONTENTFUL_API_KEY,
-        spaceId: process.env.REACT_APP_CONTENTFUL_SPACE_ID,
+        accessToken: process.env.CONTENTFUL_API_KEY,
+        spaceId: process.env.CONTENTFUL_SPACE_ID,
+        host: "preview.contentful.com",
       },
     },
     "gatsby-plugin-styled-components",

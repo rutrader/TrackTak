@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import industryAveragesUSJson from "../data/industryAveragesUS.json";
 import industryAveragesGlobalJson from "../data/industryAveragesGlobal.json";
 import SubSection from "../components/SubSection";
-import getHeader from "./getHeader";
+import getHeader from "../shared/getHeader";
 import BoldValueLabel from "../components/BoldValueLabel";
 import getTableRowBackgroundOpacity from "../shared/getTableRowBackgroundOpacity";
 import selectIsInUS from "../selectors/fundamentalSelectors/selectIsInUS";
@@ -71,7 +71,7 @@ const industryAveragesColumns = Object.keys(industryAveragesUSJson[0]).map(
     }
 
     return columnObject;
-  }
+  },
 );
 
 const getIndustryAveragesSortComparer = (industryName) => (a) => {
@@ -93,14 +93,14 @@ const IndustryAverages = () => {
   const exchange = useVirtualExchange();
 
   const industryAveragesSortComparer = getIndustryAveragesSortComparer(
-    currentIndustry.industryName
+    currentIndustry.industryName,
   );
 
   const industryAveragesUS = industryAveragesUSJson.sort(
-    industryAveragesSortComparer
+    industryAveragesSortComparer,
   );
   const industryAveragesGlobal = industryAveragesGlobalJson.sort(
-    industryAveragesSortComparer
+    industryAveragesSortComparer,
   );
 
   // TODO: Implement sticky first column

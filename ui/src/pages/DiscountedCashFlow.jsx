@@ -12,7 +12,7 @@ import CostOfCapitalResults from "../components/CostOfCapitalResults";
 import { InfoOutlinedIconWrapper } from "../components/InfoOutlinedIconWrapper";
 import BlackScholesResults from "../components/BlackScholesResults";
 import { useSelector } from "react-redux";
-import DiscountedCashFlowSheet from "./DiscountedCashFlowSheet";
+import DiscountedCashFlowSheet from "../discountedCashFlow/DiscountedCashFlowSheet";
 import FormatRawNumber from "../components/FormatRawNumber";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import IndustryAverages from "../components/IndustryAverages";

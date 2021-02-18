@@ -25,7 +25,7 @@ import FormatRawNumberToYear from "../components/FormatRawNumberToYear";
 import FormatRawNumber from "../components/FormatRawNumber";
 import SubscribeMailingList from "../components/SubscribeMailingList";
 import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
-import * as styles from "./Valuation.module.scss";
+import * as styles from "../shared/valuation.module.scss";
 import CostOfCapitalResults from "../components/CostOfCapitalResults";
 import dayjs from "dayjs";
 import { getContentfulEntries, getPrices } from "../api/api";
