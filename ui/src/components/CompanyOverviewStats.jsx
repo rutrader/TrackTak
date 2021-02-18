@@ -5,7 +5,6 @@ import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 import selectValuationCurrencyCode from "../selectors/fundamentalSelectors/selectValuationCurrencyCode";
-import selectIsIframe from "../selectors/routerSelectors/selectIsIframe";
 import BoldValueLabel from "./BoldValueLabel";
 import FormatRawNumber from "./FormatRawNumber";
 import FormatRawNumberToMillion from "./FormatRawNumberToMillion";
@@ -15,11 +14,10 @@ const CompanyOverviewStats = ({ dateOfValuation }) => {
   const general = useSelector(selectGeneral);
   const price = useSelector(selectPrice);
   const sharesOutstanding = useSelector(selectSharesOutstanding);
-  const isIframe = useSelector(selectIsIframe);
   const valuationCurrencyCode = useSelector(selectValuationCurrencyCode);
   const theme = useTheme();
 
-  return isIframe ? null : (
+  return (
     <Box sx={{ mb: 4 }}>
       <Box
         sx={{

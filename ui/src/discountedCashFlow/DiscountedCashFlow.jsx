@@ -29,7 +29,6 @@ import getTitle from "../shared/getTitle";
 import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
 import resourceName from "../shared/resourceName";
 import useVirtualExchange from "../hooks/useVirtualExchange";
-import selectIsIframe from "../selectors/routerSelectors/selectIsIframe";
 
 const mapFromStatementsToDateObject = (
   objectToLoop,
@@ -60,7 +59,6 @@ const DiscountedCashFlow = () => {
   const theme = useTheme();
   const general = useSelector(selectGeneral);
   const exchange = useVirtualExchange();
-  const isIframe = useSelector(selectIsIframe);
 
   const columns = [
     {
@@ -291,29 +289,27 @@ const DiscountedCashFlow = () => {
       <Section>
         <DiscountedCashFlowSheet />
       </Section>
-      {isIframe ? null : (
-        <Section sx={{ display: "flex", mt: 2 }}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              margin: "0 auto",
-            }}
+      <Section sx={{ display: "flex", mt: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            margin: "0 auto",
+          }}
+        >
+          <Typography
+            variant="h6"
+            gutterBottom
+            style={{ fontWeight: theme.typography.fontWeightBold }}
           >
-            <Typography
-              variant="h6"
-              gutterBottom
-              style={{ fontWeight: theme.typography.fontWeightBold }}
-            >
-              Want us to implement features you need?
-            </Typography>
-            <SubscribeMailingList
-              subscribeText="Sign Up"
-              locationSignup="Discounted Cash Flow"
-            />
-          </Box>
-        </Section>
-      )}
+            Want us to implement features you need?
+          </Typography>
+          <SubscribeMailingList
+            subscribeText="Sign Up"
+            locationSignup="Discounted Cash Flow"
+          />
+        </Box>
+      </Section>
     </>
   );
 };
