@@ -1,0 +1,32 @@
+import { combineReducers } from "redux";
+import { fundamentalsReducer } from "./reducers/fundamentalsReducer";
+import { configureStore } from "@reduxjs/toolkit";
+import { pageReducer } from "./reducers/pageReducer";
+import { contentfulReducer } from "./reducers/contentfulReducer";
+import { dcfReducer } from "./reducers/dcfReducer";
+import { connectRouter, routerMiddleware } from "connected-react-router";
+import { createBrowserHistory } from "history";
+
+const createRootReducer = (history) => {
+  const router = connectRouter(history);
+
+  return combineReducers({
+    router,
+    fundamentals: fundamentalsReducer,
+    page: pageReducer,
+    contentful: contentfulReducer,
+    dcf: dcfReducer,
+  });
+};
+
+export const history = createBrowserHistory();
+
+const createStore = (preloadedState) =>
+  configureStore({
+    reducer: createRootReducer(history),
+    preloadedState,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(routerMiddleware(history)),
+  });
+
+export default createStore;
