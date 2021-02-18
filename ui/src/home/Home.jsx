@@ -12,7 +12,7 @@ import SearchTicker from "../components/SearchTicker";
 import SettingsIcon from "@material-ui/icons/Settings";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import PublicIcon from "@material-ui/icons/Public";
-import { ReactComponent as BackgroundPurple } from "../icons/backgroundPurple.svg";
+import { ReactComponent as BackgroundPurple } from "../images/backgroundPurple.svg";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";

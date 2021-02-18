@@ -2,11 +2,11 @@ import React from "react";
 import { Container, Text, Absolute, Relative } from "rebass";
 import { Box, Flex } from "grid-styled";
 import styled from "styled-components";
-import { ReactComponent as BackgroundPurple } from "../icons/backgroundPurple.svg";
-import { ReactComponent as Check } from "../icons/check.svg";
-import { ReactComponent as TracktakLogo } from "../icons/tracktak.svg";
+import { ReactComponent as BackgroundPurple } from "../images/backgroundPurple.svg";
+import { ReactComponent as Check } from "../images/check.svg";
+import { ReactComponent as TracktakLogo } from "../images/tracktak.svg";
 import SubscribeMailingList from "./SubscribeMailingList";
-import tracktakDashboard from "../icons/tracktakDashboard.png";
+import tracktakDashboard from "../images/tracktakDashboard.png";
 
 const GreenCheck = styled(Check)`
   margin-right: 10px;

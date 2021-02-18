@@ -50,6 +50,7 @@
     "xlsx": "^0.16.9"
   },
   "devDependencies": {
+    "gatsby": "^2.32.4",
     "redux-devtools": "^3.7.0",
     "webpack-bundle-analyzer": "^4.3.0"
   },

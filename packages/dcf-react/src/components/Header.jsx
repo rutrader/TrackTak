@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import React, { useState } from "react";
 import TracktakLogo from "../shared/TracktakLogo";
-import { ReactComponent as TracktakSmallLogo } from "../icons/tracktakSmallLogo.svg";
+import { ReactComponent as TracktakSmallLogo } from "../images/tracktakSmallLogo.svg";
 import SearchTicker from "./SearchTicker";
 import { Link } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
