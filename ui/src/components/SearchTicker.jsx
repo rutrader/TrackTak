@@ -7,7 +7,7 @@ import {
   useTheme,
   withStyles,
 } from "@material-ui/core";
-import { Autocomplete } from "@material-ui/core";
+import { Autocomplete } from "@material-ui/lab";
 import { useHistory } from "react-router";
 import SearchIcon from "@material-ui/icons/Search";
 import { getAutocompleteQuery } from "../api/api";
@@ -115,7 +115,7 @@ const SearchTicker = ({ removeInputPadding }) => {
         onBlur={() => {
           setText("");
         }}
-        clearIcon={null}
+        clearText={null}
         popoverProps={{
           canAutoPosition: true,
         }}

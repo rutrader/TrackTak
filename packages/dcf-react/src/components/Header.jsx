@@ -10,11 +10,10 @@ import {
 } from "@material-ui/core";
 import React, { useState } from "react";
 import TracktakLogo from "../shared/TracktakLogo";
-import { ReactComponent as TracktakSmallLogo } from "../images/tracktakSmallLogo.svg";
+import TracktakSmallLogo from "../assets/tracktakSmallLogo.svg";
 import SearchTicker from "./SearchTicker";
 import { Link } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
-import { useSelector } from "react-redux";
 
 const leftLinks = [
   { to: "/stock-valuations", text: "Valuations" },

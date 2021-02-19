@@ -1,6 +1,6 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
-import { ReactComponent as Tracktak } from "../images/tracktak.svg";
+import Tracktak from "../assets/tracktak.svg";
 import { Link } from "react-router-dom";
 
 const TracktakLogo = ({ width, height, logoProps, ...props }) => {

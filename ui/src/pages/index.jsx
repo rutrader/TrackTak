@@ -12,7 +12,7 @@ import SearchTicker from "../components/SearchTicker";
 import SettingsIcon from "@material-ui/icons/Settings";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import PublicIcon from "@material-ui/icons/Public";
-import { ReactComponent as BackgroundPurple } from "../images/backgroundPurple.svg";
+import BackgroundPurple from "../assets/backgroundPurple.svg";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
@@ -45,7 +45,7 @@ const TypographyText = withStyles({
   },
 })(Typography);
 
-const Home = () => {
+const Index = () => {
   const iconClasses = useIconStyles();
   const theme = useTheme();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -141,4 +141,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Index;

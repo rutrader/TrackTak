@@ -2,9 +2,9 @@ import React from "react";
 import { Container, Text, Absolute, Relative } from "rebass";
 import { Box, Flex } from "grid-styled";
 import styled from "styled-components";
-import { ReactComponent as BackgroundPurple } from "../images/backgroundPurple.svg";
-import { ReactComponent as Check } from "../images/check.svg";
-import { ReactComponent as TracktakLogo } from "../images/tracktak.svg";
+import BackgroundPurple from "../assets/backgroundPurple.svg";
+import Check from "../assets/check.svg";
+import TracktakLogo from "../assets/tracktak.svg";
 import SubscribeMailingList from "./SubscribeMailingList";
 import tracktakDashboard from "../images/tracktakDashboard.png";
 

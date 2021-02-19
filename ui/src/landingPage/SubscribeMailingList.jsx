@@ -1,7 +1,7 @@
 import { Box, Flex } from "grid-styled";
 import React from "react";
 import { Absolute, Relative, Label, Input } from "rebass";
-import { ReactComponent as EmailIcon } from "../images/email-green.svg";
+import EmailIcon from "../assets/email-green.svg";
 import Button from "./Button";
 
 const SubscribeMailingList = ({ subscribeText }) => (
