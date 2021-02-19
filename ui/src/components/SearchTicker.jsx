@@ -14,18 +14,25 @@ import SearchIcon from "@material-ui/icons/Search";
 import { getAutocompleteQuery } from "../api/api";
 
 const TickerTextField = withStyles({
-  root: ({ $removeInputPadding }) => {
-    const values = {};
+  root: ({ $isSmallSearch }) => {
+    const styles = {};
 
-    if ($removeInputPadding) {
-      values.padding = 0;
+    if ($isSmallSearch) {
+      styles["& .MuiInputBase-root"] = {
+        padding: 0,
+        width: "487px",
+        height: "40px",
+      };
+
+      styles["& .PrivateNotchedOutline-root-7"] = {
+        top: 0,
+      };
+      styles["& .MuiOutlinedInput-inputAdornedStart"] = {
+        marginLeft: "15px",
+      };
     }
 
-    return {
-      "& .MuiInputBase-root": {
-        ...values,
-      },
-    };
+    return styles;
   },
 })(TextField);
 
@@ -49,7 +56,7 @@ const SubmitButton = withStyles({
   },
 })(IconButton);
 
-const SearchTicker = ({ removeInputPadding }) => {
+const SearchTicker = ({ isSmallSearch }) => {
   const classes = useStyles();
   const theme = useTheme();
   const [ticker, setTicker] = useState("");
@@ -113,7 +120,7 @@ const SearchTicker = ({ removeInputPadding }) => {
               <TickerTextField
                 {...params}
                 style={{ display: "flex", alignItems: "center" }}
-                $removeInputPadding={removeInputPadding}
+                $isSmallSearch={isSmallSearch}
                 variant="outlined"
                 value={ticker}
                 fullWidth

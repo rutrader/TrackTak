@@ -4,7 +4,6 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
-  Container,
   makeStyles,
   Typography,
   withStyles,
@@ -49,7 +48,6 @@ const CustomBox = ({ style, ...props }) => {
         zIndex: 1,
         paddingBottom: "150px",
         paddingTop: "150px",
-        background: "#F4F7FC",
         ...style,
       }}
       {...props}
@@ -253,105 +251,101 @@ const ProcessSection = () => {
 
   return (
     <CustomBox>
-      <Container maxWidth="lg">
-        <BoxRowWrapper>
-          <Box
-            style={{
-              flex: "0 0 auto",
-              width: "50%",
-              paddingLeft: "10px",
-              paddingRight: "10px",
-            }}
-          >
-            <Box style={{ marginBottom: "50px" }}>
-              <TypographySubHeader variant="h4">
-                Easy to Use
-              </TypographySubHeader>
-              <TypographyHeader variant="h3">How it Works</TypographyHeader>
-              <TypographyText>
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-                seddinonumy eirmod tempor invidunt ut labore.Smratseo is a brand
-                of digital agency. Competen.
-              </TypographyText>
-            </Box>
-            <Box className={classes.accordion}>
-              <AccordionCustom
-                expanded={expandedIndex === 0}
-                onChange={handleChange(0)}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <BoxGradientIconTransparent>
-                    <TypographyNumber>1</TypographyNumber>
-                  </BoxGradientIconTransparent>
-                  <TypographyStepHeader>Search for stock</TypographyStepHeader>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <TypographyText>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse malesuada lacus ex, sit amet blandit leo
-                    lobortis eget.
-                  </TypographyText>
-                </AccordionDetails>
-              </AccordionCustom>
-              <AccordionCustom
-                expanded={expandedIndex === 1}
-                onChange={handleChange(1)}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <BoxGradientIconAuto>
-                    <TypographyNumber>2</TypographyNumber>
-                  </BoxGradientIconAuto>
-                  <TypographyStepHeader>Fill in inputs</TypographyStepHeader>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <TypographyText>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse malesuada lacus ex, sit amet blandit leo
-                    lobortis eget.
-                  </TypographyText>
-                </AccordionDetails>
-              </AccordionCustom>
-              <AccordionCustom
-                expanded={expandedIndex === 2}
-                onChange={handleChange(2)}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <BoxGradientIconTime>
-                    <TypographyNumber>3</TypographyNumber>
-                  </BoxGradientIconTime>
-                  <TypographyStepHeader>View the output</TypographyStepHeader>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <TypographyText>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse malesuada lacus ex, sit amet blandit leo
-                    lobortis eget.
-                  </TypographyText>
-                </AccordionDetails>
-              </AccordionCustom>
-            </Box>
+      <BoxRowWrapper>
+        <Box
+          style={{
+            flex: "0 0 auto",
+            width: "50%",
+            paddingLeft: "10px",
+            paddingRight: "10px",
+          }}
+        >
+          <Box style={{ marginBottom: "50px" }}>
+            <TypographySubHeader variant="h4">Easy to Use</TypographySubHeader>
+            <TypographyHeader variant="h3">How it Works</TypographyHeader>
+            <TypographyText>
+              Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
+              seddinonumy eirmod tempor invidunt ut labore.Smratseo is a brand
+              of digital agency. Competen.
+            </TypographyText>
           </Box>
-          <Box className={classes.root}>
-            <img
-              className={classes.img}
-              src={images[imageIndex].imgPath}
-              alt={images[imageIndex].label}
-            />
+          <Box className={classes.accordion}>
+            <AccordionCustom
+              expanded={expandedIndex === 0}
+              onChange={handleChange(0)}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <BoxGradientIconTransparent>
+                  <TypographyNumber>1</TypographyNumber>
+                </BoxGradientIconTransparent>
+                <TypographyStepHeader>Search for stock</TypographyStepHeader>
+              </AccordionSummary>
+              <AccordionDetails>
+                <TypographyText>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
+                  eget.
+                </TypographyText>
+              </AccordionDetails>
+            </AccordionCustom>
+            <AccordionCustom
+              expanded={expandedIndex === 1}
+              onChange={handleChange(1)}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <BoxGradientIconAuto>
+                  <TypographyNumber>2</TypographyNumber>
+                </BoxGradientIconAuto>
+                <TypographyStepHeader>Fill in inputs</TypographyStepHeader>
+              </AccordionSummary>
+              <AccordionDetails>
+                <TypographyText>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
+                  eget.
+                </TypographyText>
+              </AccordionDetails>
+            </AccordionCustom>
+            <AccordionCustom
+              expanded={expandedIndex === 2}
+              onChange={handleChange(2)}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <BoxGradientIconTime>
+                  <TypographyNumber>3</TypographyNumber>
+                </BoxGradientIconTime>
+                <TypographyStepHeader>View the output</TypographyStepHeader>
+              </AccordionSummary>
+              <AccordionDetails>
+                <TypographyText>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
+                  eget.
+                </TypographyText>
+              </AccordionDetails>
+            </AccordionCustom>
           </Box>
-        </BoxRowWrapper>
-      </Container>
+        </Box>
+        <Box className={classes.root}>
+          <img
+            className={classes.img}
+            src={images[imageIndex].imgPath}
+            alt={images[imageIndex].label}
+          />
+        </Box>
+      </BoxRowWrapper>
     </CustomBox>
   );
 };

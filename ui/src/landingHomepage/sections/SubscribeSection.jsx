@@ -5,7 +5,6 @@ import {
   Button,
   TextField,
   withStyles,
-  Container,
 } from "@material-ui/core";
 import React from "react";
 
@@ -158,47 +157,44 @@ const SubscribeSection = () => {
   const classes = useStyles();
   return (
     <Box style={{ paddingTop: "100px" }}>
-      <Container maxWidth="lg">
-        <Box className={classes.subscribeWrapper}>
-          <Box className={classes.shapeOne}></Box>
-          <Box className={classes.shapeTwo}></Box>
-          <Box className={classes.row}>
-            <TypographySubHeader variant="h4">Newsletter</TypographySubHeader>
-            <TypographyHeader variant="h3">
-              Subscribe Our Newsletter
-            </TypographyHeader>
-            <TypographyText variant="h6">
-              Sign up today to get exclusive access to the premium and 50% off
-              for life.
-            </TypographyText>
-            <Box
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                marginTop: "30px",
-              }}
-            >
-              <form className={classes.subscribeForm}>
-                <CssTextField
-                  variant="outlined"
-                  placeholder="Enter your email"
-                  InputProps={{
-                    className: classes.input,
-                    disableUnderline: true,
-                  }}
-                />
-                <CustomButton
-                  variant="contained"
-                  type="submit"
-                  className={classes.button}
-                >
-                  SUBSCRIBE
-                </CustomButton>
-              </form>
-            </Box>
+      <Box className={classes.subscribeWrapper}>
+        <Box className={classes.shapeOne}></Box>
+        <Box className={classes.shapeTwo}></Box>
+        <Box className={classes.row}>
+          <TypographySubHeader variant="h4">Newsletter</TypographySubHeader>
+          <TypographyHeader variant="h3">
+            Subscribe Our Newsletter
+          </TypographyHeader>
+          <TypographyText variant="h6">
+            Sign up today to get exclusive access to the premium and more.
+          </TypographyText>
+          <Box
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              marginTop: "30px",
+            }}
+          >
+            <form className={classes.subscribeForm}>
+              <CssTextField
+                variant="outlined"
+                placeholder="Enter your email"
+                InputProps={{
+                  className: classes.input,
+                  disableUnderline: true,
+                }}
+              />
+              <CustomButton
+                variant="contained"
+                type="submit"
+                className={classes.button}
+              >
+                SUBSCRIBE
+              </CustomButton>
+            </form>
           </Box>
         </Box>
-      </Container>
+      </Box>
     </Box>
   );
 };

@@ -10,7 +10,6 @@ const CustomBox = ({ style, ...props }) => {
   return (
     <Box
       style={{
-        background: "#fff",
         paddingBottom: "70px",
         ...style,
       }}

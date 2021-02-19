@@ -6,18 +6,17 @@ import {
   Button,
   IconButton,
   makeStyles,
-  Container,
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
-import purpleBackground from "../icons/purple-background.svg";
 import { ReactComponent as GridDots } from "../icons/grid-dots.svg";
 import laptopImage from "../icons/laptop-img.png";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import SearchTicker from "../components/SearchTicker";
-import styled from "styled-components";
 import { NavHashLink } from "react-router-hash-link";
 import useScrollWithOffset from "../hooks/useScrollWithOffset";
+import purpleBackground from "../icons/purple-background.svg";
+import styled from "styled-components";
 
 const useStyles = makeStyles((theme) => ({
   laptopImage: {
@@ -106,16 +105,17 @@ const TypographySearchText = withStyles({
   },
 })(Typography);
 
-const CustomBox = styled.div`
-  margin-top: 175px;
+const Container = styled(Box)`
+  padding-top: 175px;
   margin-bottom: 240px;
   width: 100%;
   height: 100%;
+`;
+
+const Background = styled.div`
   &:before {
     content: "";
     background-image: url(${purpleBackground});
-    background-position: center center;
-    background-size: cover;
     background-repeat: no-repeat;
     position: absolute;
     left: 0;
@@ -149,58 +149,54 @@ const LandingPageHome = () => {
   window.addEventListener("scroll", checkScrollTop);
 
   return (
-    <>
-      <CustomBox>
-        <Container
-          maxWidth="lg"
-          style={{ display: "flex", alignItems: "center" }}
-        >
-          <Box>
-            <TypographyHeader isOnMobile={isOnMobile} variant="h1">
-              Hello, automated Discounted Cash Flows.
-            </TypographyHeader>
-            <TypographyText variant="h6">
-              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-              nonumy eirmod tempor invidunt ut labore et dolore.
-            </TypographyText>
-            <CustomButton
-              component={NavHashLink}
-              scroll={getScrollWithOffset()}
-              to="#features"
-              variant="contained"
-            >
-              Explore Features
-            </CustomButton>
-          </Box>
-          <Box sx={{ flex: "0 0 auto", width: "41.666667%" }}>
-            <Box sx={{ position: "relative", zIndex: 1 }}>
-              <img
-                className={classes.laptopImage}
-                alt="laptopImage"
-                src={laptopImage}
-              />
-              <GridDots className={classes.gridDot} />
-            </Box>
-          </Box>
-        </Container>
-        <Box
-          sx={{
-            justifyContent: "center",
-            mt: "126px",
-          }}
-        >
-          <TypographySearchText variant="h4" align="center" gutterBottom>
-            Search for a company to begin.
-          </TypographySearchText>
-          <SearchTicker />
+    <Container>
+      <Background />
+      <Box style={{ display: "flex", alignItems: "center" }}>
+        <Box>
+          <TypographyHeader isOnMobile={isOnMobile} variant="h1">
+            Hello, automated Discounted Cash Flows.
+          </TypographyHeader>
+          <TypographyText variant="h6">
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+            nonumy eirmod tempor invidunt ut labore et dolore.
+          </TypographyText>
+          <CustomButton
+            component={NavHashLink}
+            scroll={getScrollWithOffset()}
+            to="#features"
+            variant="contained"
+          >
+            Explore Features
+          </CustomButton>
         </Box>
-      </CustomBox>
+        <Box style={{ flex: "0 0 auto", width: "41.666667%" }}>
+          <Box style={{ position: "relative", zIndex: 1 }}>
+            <img
+              className={classes.laptopImage}
+              alt="laptopImage"
+              src={laptopImage}
+            />
+            <GridDots className={classes.gridDot} />
+          </Box>
+        </Box>
+      </Box>
+      <Box
+        style={{
+          justifyContent: "center",
+          mt: "126px",
+        }}
+      >
+        <TypographySearchText variant="h4" align="center" gutterBottom>
+          Search for a company to begin.
+        </TypographySearchText>
+        <SearchTicker />
+      </Box>
       {showScroll && (
         <ButtonChevron onClick={scrollTop}>
           <KeyboardArrowUpIcon fontSize="large" />
         </ButtonChevron>
       )}
-    </>
+    </Container>
   );
 };
 

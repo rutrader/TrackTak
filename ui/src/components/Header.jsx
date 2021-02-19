@@ -2,7 +2,6 @@ import {
   AppBar,
   Box,
   Button,
-  Container,
   Hidden,
   Menu,
   MenuItem,
@@ -34,10 +33,9 @@ const useStyles = makeStyles((theme) => ({
     background: "#fff",
     transition: "all 0.3s ease-out 0s",
     borderRadius: "10px",
-    top: "30px",
+    top: "15px",
     width: "100%",
     position: "fixed",
-    boxShadow: "none",
     transform: "translate(-50%, 0)",
     left: "50%",
     maxWidth: "1280px",
@@ -79,68 +77,60 @@ const Header = ({ hideSearch }) => {
   };
 
   return (
-    <Box>
-      <Container maxWidth="lg">
-        <AppBar className={classes.app}>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "left",
-              justifyContent: "left",
-            }}
-          >
-            <Box sx={{ mr: 2, display: "flex", alignItems: "center" }}>
-              <Hidden mdDown>
-                <TracktakLogo />
-              </Hidden>
-              <Hidden mdUp>
-                <Link to="/">
-                  <TracktakPurpleSmall width={52} height={38} />
-                </Link>
-              </Hidden>
-            </Box>
-            <Box
-              sx={{ flex: "0 1 450px", minWidth: "120px", ml: 1, mr: "auto" }}
-            >
-              {!hideSearch && <SearchTicker removeInputPadding />}
-            </Box>
+    <>
+      <AppBar className={classes.app}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "left",
+            justifyContent: "left",
+          }}
+        >
+          <Box sx={{ mr: 2, display: "flex", alignItems: "center" }}>
             <Hidden mdDown>
-              {rightLinks.map((link, i) => (
-                <HeaderLink sx={{ ml: i === 0 ? 2 : 0 }} {...link} />
-              ))}
+              <TracktakLogo />
             </Hidden>
             <Hidden mdUp>
-              <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
-                <Button
-                  aria-controls="simple-menu"
-                  aria-haspopup="true"
-                  onClick={handleClick}
-                >
-                  <MenuIcon color="primary" />
-                </Button>
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  keepMounted
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  {allLinks.map((link) => (
-                    <MenuItem
-                      to={link.to}
-                      component={Link}
-                      onClick={handleClose}
-                    >
-                      {link.text}
-                    </MenuItem>
-                  ))}
-                </Menu>
-              </Box>
+              <Link to="/">
+                <TracktakPurpleSmall width={52} height={38} />
+              </Link>
             </Hidden>
           </Box>
-        </AppBar>
-      </Container>
-    </Box>
+          <Box sx={{ flex: "0 1 450px", minWidth: "120px", ml: 1, mr: "auto" }}>
+            {!hideSearch && <SearchTicker isSmallSearch />}
+          </Box>
+          <Hidden mdDown>
+            {rightLinks.map((link, i) => (
+              <HeaderLink sx={{ ml: i === 0 ? 2 : 0 }} {...link} />
+            ))}
+          </Hidden>
+          <Hidden mdUp>
+            <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
+              <Button
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={handleClick}
+              >
+                <MenuIcon color="primary" />
+              </Button>
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                {allLinks.map((link) => (
+                  <MenuItem to={link.to} component={Link} onClick={handleClose}>
+                    {link.text}
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          </Hidden>
+        </Box>
+      </AppBar>
+    </>
   );
 };
 
