@@ -8,7 +8,7 @@ import {
   withStyles,
 } from "@material-ui/core";
 import "../shared/blueprintTheme.scss";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "gatsby";
 import LazyLoad from "react-lazyload";
 import ExportToExcel from "./ExportToExcel";
 import DiscountedCashFlowTable from "./DiscountedCashFlowTable";

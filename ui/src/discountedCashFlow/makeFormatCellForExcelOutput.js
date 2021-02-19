@@ -4,6 +4,7 @@ import {
 } from "./ExportToExcel";
 import makeFormatValueForExcelOutput from "./makeFormatValueForExcelOutput";
 import { isExpressionDependency } from "./utils";
+import replaceAll from "../shared/replaceAll";
 
 const getMatchInFormula = (dataKeys, match, formula, callback) => {
   let index = dataKeys.indexOf(match);
@@ -18,7 +19,7 @@ const makeGetDependency = (currentSheetName) => (
   sheetToMatchAgainst,
   dataKeys,
   match,
-  formula
+  formula,
 ) => {
   return getMatchInFormula(dataKeys, match, formula, (index) => {
     let dependency = `B${index + 1}`;
@@ -26,7 +27,7 @@ const makeGetDependency = (currentSheetName) => (
     if (currentSheetName !== sheetToMatchAgainst) {
       dependency = `'${sheetToMatchAgainst}'!` + dependency;
     }
-    return formula.replaceAll(match, dependency);
+    return replaceAll(formula, match, dependency);
   });
 };
 
@@ -34,10 +35,10 @@ const makeFormatCellForExcelOutput = (
   currencySymbol,
   inputDataKeys,
   costOfCapitalDataKeys,
-  scope
+  scope,
 ) => {
   const formatValueForExcelOutput = makeFormatValueForExcelOutput(
-    currencySymbol
+    currencySymbol,
   );
   const scopeKeys = Object.keys(scope);
 
@@ -58,14 +59,14 @@ const makeFormatCellForExcelOutput = (
           costOfCapitalWorksheetName,
           costOfCapitalDataKeys,
           match,
-          formula
+          formula,
         );
 
         formula = getDependency(
           inputsWorksheetName,
           inputDataKeys,
           match,
-          formula
+          formula,
         );
 
         getMatchInFormula(scopeKeys, match, formula, (index) => {
@@ -76,7 +77,7 @@ const makeFormatCellForExcelOutput = (
             value = 0;
           }
 
-          formula = formula.replaceAll(key, value);
+          formula = replaceAll(formula, key, value);
         });
       });
     }

@@ -24,16 +24,16 @@ export const getExpressionWithoutEqualsSign = (expr) =>
   typeof expr === "string" && expr?.substring(1);
 
 export const getRowNumberFromCellKey = (cellKey) =>
-  parseInt(cellKey.replaceAll(/[A-Z]+/gi, ""), 10);
+  parseInt(cellKey.replace(/[A-Z]+/gi, ""), 10);
 
 export const getColumnLetterFromCellKey = (cellKey) =>
-  cellKey.replaceAll(/[0-9]/gi, "");
+  cellKey.replace(/[0-9]/gi, "");
 
 export const getCellsForRowsBetween = (
   columns,
   startColumn,
   endColumn,
-  rows
+  rows,
 ) => {
   const columnsSliced = getColumnsBetween(columns, startColumn, endColumn);
   const cells = getCellsForRows(columnsSliced, rows);
@@ -131,7 +131,7 @@ const assignDependents = (cellsTree, allDependents, rootKey) => {
         arrayMove(
           allDependents[rootKey],
           existingIndex,
-          allDependents[rootKey].length - 1
+          allDependents[rootKey].length - 1,
         );
       }
 
@@ -164,7 +164,7 @@ export const padCellKeys = (sortedCellKeys) => {
 
     const columnCharCode = getColumnLetterFromCellKey(cellKey).charCodeAt(0);
     const nextColumnCharCode = getColumnLetterFromCellKey(
-      sortedCellKeys[i + 1]
+      sortedCellKeys[i + 1],
     ).charCodeAt(0);
 
     const column = String.fromCharCode(columnCharCode);
@@ -192,7 +192,7 @@ export const getCellsBetween = (
   endColumnCharCode,
   startRowNumber,
   endRowNumber,
-  cells
+  cells,
 ) => {
   const cellsBetween = [];
 

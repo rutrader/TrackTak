@@ -1,10 +1,9 @@
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router";
 import selectQueryParams from "../selectors/routerSelectors/selectQueryParams";
 import convertParamsObjectToURLSearchParams from "../shared/convertParamsObjectToURLSearchParams";
+import { navigate } from "@reach/router";
 
 const useSetURLInput = () => {
-  const history = useHistory();
   const queryParams = useSelector(selectQueryParams);
 
   return (key, value = null) => {
@@ -22,9 +21,7 @@ const useSetURLInput = () => {
       urlSearchParams.delete(key);
     }
 
-    history.push({
-      search: urlSearchParams.toString(),
-    });
+    navigate(urlSearchParams.toString());
   };
 };
 

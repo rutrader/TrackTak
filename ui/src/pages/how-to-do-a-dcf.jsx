@@ -12,7 +12,7 @@ import { Box, ListItemText, useMediaQuery } from "@material-ui/core";
 import { useEffect } from "react";
 import { Fragment } from "react";
 import wikiContent from "../data/wikiContent";
-import { NavHashLink } from "react-router-hash-link";
+// import { NavHashLink } from "react-router-hash-link";
 import useScrollWithOffset from "../hooks/useScrollWithOffset";
 import replaceSpaceWithHyphen from "../shared/replaceSpaceWithHyphen";
 import { Helmet } from "react-helmet";
@@ -96,7 +96,7 @@ const Docs = () => {
             {wikiContent.map(({ title }) => (
               <ListItem
                 key={title}
-                component={NavHashLink}
+                // component={NavHashLink}
                 to={`/how-to-do-a-dcf#${replaceSpaceWithHyphen(title)}`}
                 scroll={getScrollWithOffset()}
                 button

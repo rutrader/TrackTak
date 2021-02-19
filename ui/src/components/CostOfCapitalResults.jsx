@@ -11,12 +11,13 @@ import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfC
 import { pretaxCostOfDebtLabel } from "./OptionalInputs";
 import selectPretaxCostOfDebt from "../selectors/fundamentalSelectors/selectPretaxCostOfDebt";
 import selectInputQueryParams from "../selectors/routerSelectors/selectInputQueryParams";
-import { Link, useParams } from "react-router-dom";
 import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
 import StatsContainer from "../shared/StatsContainer";
+import { Link } from "gatsby";
+import { useParams } from "@reach/router";
 
 const CostOfCapitalResults = () => {
   const theme = useTheme();

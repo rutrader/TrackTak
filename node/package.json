@@ -4,7 +4,7 @@
   "main": "./app.js",
   "private": true,
   "engines": {
-    "node": "12.18.3"
+    "node": "12.20.1"
   },
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./app.js",

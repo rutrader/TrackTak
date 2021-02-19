@@ -11,8 +11,8 @@ import {
   useTheme,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router";
-import { Link } from "react-router-dom";
+import { navigate } from "@reach/router";
+import { Link } from "gatsby";
 import { getDCFTemplateEntries } from "../redux/actions/contentfulActions";
 import { inputQueries } from "../selectors/routerSelectors/selectInputQueryParams";
 import selectEntries from "../selectors/contentfulSelectors/selectEntries";
@@ -27,7 +27,6 @@ const Valuations = () => {
   const dispatch = useDispatch();
   const entries = useSelector(selectEntries);
   const theme = useTheme();
-  const history = useHistory();
 
   useEffect(() => {
     dispatch(getDCFTemplateEntries());
@@ -55,7 +54,7 @@ const Valuations = () => {
             }
           });
 
-          const valuationUrl = `/stock-valuations/${
+          const valuationUrl = `/stock-valuation/${
             fields.ticker
           }?${searchParams.toString()}`;
 
@@ -65,7 +64,7 @@ const Valuations = () => {
                 <CardActionArea
                   style={{ padding: theme.spacing(2) }}
                   onClick={() => {
-                    history.push(valuationUrl);
+                    navigate(valuationUrl);
                   }}
                 >
                   <img

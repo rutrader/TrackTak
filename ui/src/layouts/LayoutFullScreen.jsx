@@ -1,7 +1,7 @@
 import { Container } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useParams } from "@reach/router";
 import { fundamentalsFilter } from "../api/api";
 import Header from "../components/Header";
 import TTTabs from "../components/TTTabs";
@@ -18,7 +18,7 @@ const LayoutFullScreen = ({ children }) => {
       getFundamentalsThunk({
         ticker: params.ticker,
         filter: fundamentalsFilter,
-      })
+      }),
     );
   }, [dispatch, params.ticker]);
 

@@ -8,10 +8,10 @@ import {
   withStyles,
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import { useHistory } from "react-router";
 import SearchIcon from "@material-ui/icons/Search";
 import { getAutocompleteQuery } from "../api/api";
 import useDebouncedCallback from "../hooks/useDebouncedCallback";
+import { navigate } from "@reach/router";
 
 const TickerTextField = withStyles({
   root: ({ $removeInputPadding }) => {
@@ -42,7 +42,6 @@ const SearchTicker = ({ removeInputPadding }) => {
   const theme = useTheme();
   const [ticker, setTicker] = useState("");
   const [autoComplete, setAutoComplete] = useState([]);
-  const history = useHistory();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [isLoadingAutocomplete, setIsLoadingAutocomplete] = useState(false);
   const [text, setText] = useState("");
@@ -85,7 +84,7 @@ const SearchTicker = ({ removeInputPadding }) => {
         e.preventDefault();
 
         if (ticker) {
-          history.push(`/discounted-cash-flow/${ticker}`);
+          navigate(`/discounted-cash-flow/${ticker}`);
         }
       }}
     >

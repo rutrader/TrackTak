@@ -12,7 +12,7 @@ import React, { useState } from "react";
 import TracktakLogo from "../shared/TracktakLogo";
 import TracktakSmallLogo from "../assets/tracktakSmallLogo.svg";
 import SearchTicker from "./SearchTicker";
-import { Link } from "react-router-dom";
+import { Link } from "gatsby";
 import MenuIcon from "@material-ui/icons/Menu";
 
 const leftLinks = [

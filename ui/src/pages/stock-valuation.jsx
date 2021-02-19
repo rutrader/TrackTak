@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router";
+import { useParams, useLocation } from "@reach/router";
 import { useDispatch, useSelector } from "react-redux";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { BLOCKS, INLINES } from "@contentful/rich-text-types";
 import ContainerDimensions from "react-container-dimensions";
 import YouTube from "react-youtube";
-import { Link as RouterLink } from "react-router-dom";
-
+import { Link as RouterLink } from "gatsby";
 import {
   setFundamentalsDataThunk,
   setLastPriceClose,
