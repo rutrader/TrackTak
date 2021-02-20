@@ -27,7 +27,7 @@ const useTableClasses = makeStyles((theme) => ({
   root: ({ currentCompanyInterestIndex }) => ({
     [`& .table_row_${currentCompanyInterestIndex}`]: {
       backgroundColor: getTableRowBackgroundOpacity(
-        theme.palette.primary.light
+        theme.palette.primary.light,
       ),
     },
   }),
@@ -35,7 +35,7 @@ const useTableClasses = makeStyles((theme) => ({
 
 const SyntheticRating = () => {
   const currentEquityRiskPremiumCountry = useSelector(
-    selectCurrentEquityRiskPremium
+    selectCurrentEquityRiskPremium,
   );
   const general = useSelector(selectGeneral);
   const thresholdMarketCap = useSelector(selectThresholdMarketCap);
@@ -44,7 +44,7 @@ const SyntheticRating = () => {
   const interestSpread = useSelector(selectInterestSpread);
   const estimatedCostOfDebt = useSelector(selectEstimatedCostOfDebt);
   const currentCompanyInterestIndex = companiesInterestSpreads.indexOf(
-    interestSpread
+    interestSpread,
   );
   const tableClasses = useTableClasses({ currentCompanyInterestIndex });
   const exchange = useVirtualExchange();

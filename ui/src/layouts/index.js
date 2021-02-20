@@ -4,8 +4,6 @@ import LayoutHome from "./LayoutHome";
 import React from "react";
 
 export default ({ children, pageContext }) => {
-  console.log(pageContext);
-
   if (pageContext.layout === "home") {
     return <LayoutHome>{children}</LayoutHome>;
   }

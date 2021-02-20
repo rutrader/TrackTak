@@ -4,25 +4,31 @@ import { configureStore } from "@reduxjs/toolkit";
 import { pageReducer } from "./reducers/pageReducer";
 import { contentfulReducer } from "./reducers/contentfulReducer";
 import { dcfReducer } from "./reducers/dcfReducer";
-import { createReduxHistoryContext } from "redux-first-history";
+import { createReduxHistoryContext, reachify } from "redux-first-history";
 import { createBrowserHistory, createMemoryHistory } from "history";
 import isSSR from "../shared/isSSR";
 
-const { routerMiddleware, routerReducer } = createReduxHistoryContext({
+const {
+  createReduxHistory,
+  routerMiddleware,
+  routerReducer,
+} = createReduxHistoryContext({
   history: isSSR ? createMemoryHistory() : createBrowserHistory(),
 });
 
-export default (preloadedState) => {
-  return configureStore({
-    reducer: combineReducers({
-      router: routerReducer,
-      fundamentals: fundamentalsReducer,
-      page: pageReducer,
-      contentful: contentfulReducer,
-      dcf: dcfReducer,
-    }),
-    preloadedState,
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(routerMiddleware),
-  });
-};
+const store = configureStore({
+  reducer: combineReducers({
+    router: routerReducer,
+    fundamentals: fundamentalsReducer,
+    page: pageReducer,
+    contentful: contentfulReducer,
+    dcf: dcfReducer,
+  }),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(routerMiddleware),
+});
+
+export const history = createReduxHistory(store);
+export const reachHistory = reachify(history);
+
+export default () => store;

@@ -6,10 +6,20 @@ module.exports = {
     title: "tracktak",
   },
   plugins: [
+    {
+      resolve: "gatsby-plugin-create-client-paths",
+      options: {
+        prefixes: [
+          "/discounted-cash-flow",
+          "/synthetic-rating",
+          "/industry-averages",
+        ],
+      },
+    },
     "gatsby-plugin-react-helmet",
     "gatsby-plugin-layout",
     {
-      resolve: `gatsby-plugin-react-redux`,
+      resolve: "gatsby-plugin-react-redux",
       options: {
         pathToCreateStoreModule: "./src/redux/createStore",
       },

@@ -16,6 +16,7 @@ import BackgroundPurple from "../assets/backgroundPurple.svg";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
+import { Router } from "@reach/router";
 
 const textColor = "#292929";
 
@@ -52,6 +53,13 @@ const Index = () => {
 
   return (
     <>
+      <LayoutFullScreen>
+        <Router>
+          <DiscountedCashFlow path="/discounted-cash-flow/:ticker" />
+          <DiscountedCashFlow path="/synthetic-credit-rating/:ticker" />
+          <DiscountedCashFlow path="/industry-averages/:ticker" />
+        </Router>
+      </LayoutFullScreen>
       <Helmet>
         <title>{getTitle("Discounted Cash Flow (DCF) Calculator")}</title>
         <link rel="canonical" href={`${resourceName}`} />

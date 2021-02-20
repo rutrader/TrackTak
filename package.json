@@ -34,6 +34,7 @@
     "rimraf": "^3.0.2"
   },
   "dependencies": {
-    "@tracktak/dcf-react": "file:packages\\dcf"
+    "@tracktak/dcf-react": "file:packages\\dcf",
+    "gatsby-plugin-create-client-paths": "^2.10.0"
   }
 }
