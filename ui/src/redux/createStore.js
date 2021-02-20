@@ -31,7 +31,6 @@ const store = configureStore({
 export const history = createReduxHistory(store);
 export const reachHistory = reachify(history);
 
-export default (p) => {
-  console.log(p);
+export default () => {
   return store;
 };

@@ -52,7 +52,7 @@ const mapFromStatementsToDateObject = (
   return dateObject;
 };
 
-const DiscountedCashFlow = (props) => {
+const DiscountedCashFlow = () => {
   const isInUS = useSelector(selectIsInUS);
   const yearlyIncomeStatements = useSelector(selectYearlyIncomeStatements);
   const incomeStatement = useSelector(selectRecentIncomeStatement);
@@ -65,7 +65,6 @@ const DiscountedCashFlow = (props) => {
   const exchange = useVirtualExchange();
   const params = useParams();
   const dispatch = useDispatch();
-  const e = props;
 
   useEffect(() => {
     dispatch(

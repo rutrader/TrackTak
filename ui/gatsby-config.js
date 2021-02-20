@@ -18,7 +18,6 @@ module.exports = {
         pathToCreateStoreModule: "./src/redux/createStore",
       },
     },
-    "gatsby-theme-material-ui",
     {
       resolve: "gatsby-plugin-react-svg",
       options: {
@@ -41,7 +40,6 @@ module.exports = {
         host: "preview.contentful.com",
       },
     },
-    "gatsby-plugin-styled-components",
     {
       resolve: "gatsby-plugin-google-analytics",
       options: {

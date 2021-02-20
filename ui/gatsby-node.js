@@ -5,4 +5,11 @@ exports.onCreatePage = ({ page, actions }) => {
     page.context.layout = "home";
     createPage(page);
   }
+
+  console.log(page.path);
+  if (page.path.match(/stock\//)) {
+    page.context.layout = "fullscreen";
+
+    createPage(page);
+  }
 };

@@ -1,5 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import {
+  getFundamentalsThunk,
   setExchangeRate,
   setFundamentalsDataThunk,
   setLastPriceClose,
@@ -44,11 +45,11 @@ const setExchangeRateReducer = (state, { payload = {} }) => {
 
 export const fundamentalsReducer = createReducer(initialState, (builder) => {
   builder.addCase(setLastPriceClose, setLastPriceCloseReducer);
-  builder.addCase(setFundamentalsDataThunk.pending, (state) => {
+  builder.addCase(setFundamentalsDataThunk.fulfilled, setFundamentalsReducer);
+  builder.addCase(getFundamentalsThunk.pending, (state) => {
     state.isLoaded = false;
   });
-  builder.addCase(setFundamentalsDataThunk.fulfilled, setFundamentalsReducer);
-  builder.addCase(setFundamentalsDataThunk.rejected, (state) => {
+  builder.addCase(getFundamentalsThunk.rejected, (state) => {
     state.isLoaded = false;
   });
   builder.addCase(

@@ -12670,7 +12670,7 @@
         }
       }
     },
-    "isLoaded": true,
+    "isLoaded": false,
     "exchangeRates": null
   },
   "page": {
