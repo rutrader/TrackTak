@@ -24,7 +24,7 @@ const TickerTextField = withStyles({
         height: "40px",
       };
 
-      styles["& .PrivateNotchedOutline-root-7"] = {
+      styles["& .PrivateNotchedOutline-root-17"] = {
         top: 0,
       };
       styles["& .MuiOutlinedInput-inputAdornedStart"] = {
@@ -92,7 +92,7 @@ const SearchTicker = ({ isSmallSearch }) => {
   return (
     <Box
       component="form"
-      sx={{ display: "flex", position: "relative" }}
+      style={{ display: "flex", position: "relative" }}
       onSubmit={async (e) => {
         e.preventDefault();
         if (hasTickerNotOnlyWhiteSpace()) {

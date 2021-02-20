@@ -106,7 +106,7 @@ const TypographySearchText = withStyles({
 })(Typography);
 
 const Container = styled(Box)`
-  padding-top: 175px;
+  padding-top: 90px;
   margin-bottom: 240px;
   width: 100%;
   height: 100%;
@@ -183,7 +183,7 @@ const LandingPageHome = () => {
       <Box
         style={{
           justifyContent: "center",
-          mt: "126px",
+          marginTop: "120px",
         }}
       >
         <TypographySearchText variant="h4" align="center" gutterBottom>
