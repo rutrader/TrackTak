@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "15px",
     height: "69px",
     padding: "0 30px",
+    background: "#fff",
   },
 }));
 
@@ -101,7 +102,7 @@ const SearchTicker = ({ isSmallSearch }) => {
       }}
     >
       <Autocomplete
-        style={{ flex: 1 }}
+        style={{ flex: 1, marginLeft: "10px" }}
         onChange={handleOnChangeAutoComplete}
         freeSolo
         disableClearable

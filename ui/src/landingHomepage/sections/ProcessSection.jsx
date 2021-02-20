@@ -126,7 +126,6 @@ const AccordionCustom = withStyles({
     borderRadius: "4px",
     padding: "13px",
     alignItems: "center",
-    boxShadow: "none",
     "&.MuiAccordion-root:before": {
       backgroundColor: "white",
     },
