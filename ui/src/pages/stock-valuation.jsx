@@ -30,7 +30,7 @@ import dayjs from "dayjs";
 import { getContentfulEntries, getPrices } from "../api/api";
 import { pretaxCostOfDebtLabel } from "../components/OptionalInputs";
 import DiscountedCashFlowSheet from "../discountedCashFlow/DiscountedCashFlowSheet";
-import IndustryAverages from "../components/IndustryAverages";
+import IndustryAveragesResults from "../components/IndustryAveragesResults";
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
 import selectCells from "../selectors/dcfSelectors/selectCells";
@@ -274,7 +274,7 @@ const Valuation = () => {
         )}
       </Section>
       <Section>
-        <IndustryAverages />
+        <IndustryAveragesResults />
       </Section>
       <Section>
         <CostOfCapitalResults />

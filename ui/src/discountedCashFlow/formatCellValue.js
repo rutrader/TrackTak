@@ -2,6 +2,7 @@ import FormatRawNumber from "../components/FormatRawNumber";
 import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
 import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
+import React from "react";
 
 const formatCellValue = (cell) => {
   if (!cell) return cell;

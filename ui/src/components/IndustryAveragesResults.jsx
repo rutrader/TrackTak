@@ -7,7 +7,7 @@ import StatsContainer from "../shared/StatsContainer";
 import BoldValueLabel from "./BoldValueLabel";
 import FormatRawNumberToPercent from "./FormatRawNumberToPercent";
 
-const IndustryAverages = () => {
+const IndustryAveragesResults = () => {
   const theme = useTheme();
   const isInUS = useSelector(selectIsInUS);
   const currentIndustry = useSelector(selectCurrentIndustry);
@@ -79,4 +79,4 @@ const IndustryAverages = () => {
   );
 };
 
-export default IndustryAverages;
+export default IndustryAveragesResults;

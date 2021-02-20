@@ -1,4 +1,4 @@
-import React, { cloneElement } from "react";
+import React, { cloneElement, useEffect } from "react";
 import { Box, Typography, useTheme } from "@material-ui/core";
 import TTTable from "../components/TTTable";
 import dayjs from "dayjs";
@@ -11,11 +11,11 @@ import OptionalInputs from "../components/OptionalInputs";
 import CostOfCapitalResults from "../components/CostOfCapitalResults";
 import { InfoOutlinedIconWrapper } from "../components/InfoOutlinedIconWrapper";
 import BlackScholesResults from "../components/BlackScholesResults";
-import { useSelector } from "react-redux";
-import DiscountedCashFlowSheet from "../discountedCashFlow/DiscountedCashFlowSheet";
+import { useDispatch, useSelector } from "react-redux";
+import DiscountedCashFlowSheet from "./DiscountedCashFlowSheet";
 import FormatRawNumber from "../components/FormatRawNumber";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
-import IndustryAverages from "../components/IndustryAverages";
+import IndustryAveragesResults from "../components/IndustryAveragesResults";
 import TableMillionFormatter from "../components/TableMillionFormatter";
 import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
 import selectIsInUS from "../selectors/fundamentalSelectors/selectIsInUS";
@@ -29,6 +29,10 @@ import getTitle from "../shared/getTitle";
 import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
 import resourceName from "../shared/resourceName";
 import useVirtualExchange from "../hooks/useVirtualExchange";
+import { useParams } from "@reach/router";
+import { fundamentalsFilter } from "../api/api";
+import { getFundamentalsThunk } from "../redux/actions/fundamentalsActions";
+import selectFundamentalsIsLoaded from "../selectors/fundamentalSelectors/selectFundamentalsIsLoaded";
 
 const mapFromStatementsToDateObject = (
   objectToLoop,
@@ -48,7 +52,7 @@ const mapFromStatementsToDateObject = (
   return dateObject;
 };
 
-const DiscountedCashFlow = () => {
+const DiscountedCashFlow = (props) => {
   const isInUS = useSelector(selectIsInUS);
   const yearlyIncomeStatements = useSelector(selectYearlyIncomeStatements);
   const incomeStatement = useSelector(selectRecentIncomeStatement);
@@ -59,6 +63,22 @@ const DiscountedCashFlow = () => {
   const theme = useTheme();
   const general = useSelector(selectGeneral);
   const exchange = useVirtualExchange();
+  const params = useParams();
+  const dispatch = useDispatch();
+  const e = props;
+
+  useEffect(() => {
+    dispatch(
+      getFundamentalsThunk({
+        ticker: params.ticker,
+        filter: fundamentalsFilter,
+      }),
+    );
+  }, [dispatch, params.ticker]);
+
+  const isLoaded = useSelector(selectFundamentalsIsLoaded);
+
+  if (!isLoaded) return null;
 
   const columns = [
     {
@@ -276,7 +296,7 @@ const DiscountedCashFlow = () => {
         </Box>
         <Box sx={{ flex: 1 }}>
           <SubSection>
-            <IndustryAverages />
+            <IndustryAveragesResults />
           </SubSection>
           <SubSection>
             <CostOfCapitalResults />

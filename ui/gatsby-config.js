@@ -7,14 +7,8 @@ module.exports = {
   },
   plugins: [
     {
-      resolve: "gatsby-plugin-create-client-paths",
-      options: {
-        prefixes: [
-          "/discounted-cash-flow",
-          "/synthetic-rating",
-          "/industry-averages",
-        ],
-      },
+      resolve: `gatsby-plugin-create-client-paths`,
+      options: { prefixes: [`/stock/*`] },
     },
     "gatsby-plugin-react-helmet",
     "gatsby-plugin-layout",

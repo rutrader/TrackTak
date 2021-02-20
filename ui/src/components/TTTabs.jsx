@@ -2,7 +2,6 @@ import { Box, Paper, Tab, Tabs, useTheme } from "@material-ui/core";
 import React from "react";
 import { useLocation, useParams } from "@reach/router";
 import { Link } from "gatsby";
-import { layoutFullScreenPaths } from "../App";
 
 const TTTabs = () => {
   const location = useLocation();
@@ -33,7 +32,8 @@ const TTTabs = () => {
           scrollButtons
           allowScrollButtonsMobile
         >
-          {layoutFullScreenPaths.map(({ url }) => {
+          <Tab />
+          {/* {layoutFullScreenPaths.map(({ url }) => {
             //    const generatedPath = generatePath(url, { ...params });
             const label = url.split("/")[1].replace(/-/g, " ");
 
@@ -52,7 +52,7 @@ const TTTabs = () => {
             //     label={label}
             //   />
             // );
-          })}
+          })} */}
         </Tabs>
       </Paper>
     </Box>

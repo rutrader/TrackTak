@@ -5,9 +5,4 @@ exports.onCreatePage = ({ page, actions }) => {
     page.context.layout = "home";
     createPage(page);
   }
-
-  if (page.path.match(/discounted-cash-flow/)) {
-    page.context.layout === "fullScreen";
-    createPage(page);
-  }
 };

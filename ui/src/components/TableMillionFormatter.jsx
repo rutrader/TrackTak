@@ -1,7 +1,8 @@
 import FormatRawNumberToMillion from "./FormatRawNumberToMillion";
+import React from "react";
 
-const TableValueMillionFormatter = (props) => (
+const TableMillionFormatter = (props) => (
   <FormatRawNumberToMillion decimalScale={2} {...props} />
 );
 
-export default TableValueMillionFormatter;
+export default TableMillionFormatter;

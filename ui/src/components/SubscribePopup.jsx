@@ -7,9 +7,9 @@ import {
   DialogContentText,
   DialogTitle,
   useMediaQuery,
+  useTheme,
 } from "@material-ui/core";
 import SubscribeMailingList from "./SubscribeMailingList";
-import { useTheme } from "@emotion/react";
 import { useSelector } from "react-redux";
 import selectHasAllRequiredInputsFilledIn from "../selectors/routerSelectors/selectHasAllRequiredInputsFilledIn";
 

@@ -17,7 +17,7 @@ import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurre
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
 import StatsContainer from "../shared/StatsContainer";
 import { Link } from "gatsby";
-import { useParams } from "@reach/router";
+import { useParams, useLocation } from "@reach/router";
 
 const CostOfCapitalResults = () => {
   const theme = useTheme();
@@ -32,6 +32,7 @@ const CostOfCapitalResults = () => {
   const pretaxCostOfDebt = useSelector(selectPretaxCostOfDebt);
   const useQueryPretaxCostOfDebt = queryParams.pretaxCostOfDebt !== undefined;
   const params = useParams();
+  const location = useLocation();
 
   return (
     <>
@@ -75,12 +76,7 @@ const CostOfCapitalResults = () => {
                 <Box>
                   {pretaxCostOfDebtLabel}&nbsp;
                   <Link
-                    to={({ search }) => {
-                      return {
-                        pathname: `/synthetic-credit-rating/${params.ticker}`,
-                        search,
-                      };
-                    }}
+                    to={`/synthetic-credit-rating/${params.ticker}${location.search}`}
                   >
                     (Synthetic Credit Rating)
                   </Link>
