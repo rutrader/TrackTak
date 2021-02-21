@@ -1,11 +1,12 @@
 import { Box, Paper, Tab, Tabs, useTheme } from "@material-ui/core";
 import React from "react";
-import { useLocation, useParams } from "@reach/router";
+import { useLocation } from "@reach/router";
 import { Link } from "gatsby";
+import { stockPaths } from "../pages/stock";
+import { sentenceCase } from "change-case";
 
-const TTTabs = () => {
+const TTTabs = ({ ticker }) => {
   const location = useLocation();
-  const params = useParams();
   const theme = useTheme();
   const mt = `${theme.mixins.toolbar.minHeight}px`;
 
@@ -32,27 +33,20 @@ const TTTabs = () => {
           scrollButtons
           allowScrollButtonsMobile
         >
-          <Tab />
-          {/* {layoutFullScreenPaths.map(({ url }) => {
-            //    const generatedPath = generatePath(url, { ...params });
-            const label = url.split("/")[1].replace(/-/g, " ");
+          {stockPaths.map((path) => {
+            const label = sentenceCase(path.split("/")[1].replace(/-/g, " "));
+            const value = `/stock/${ticker}${path}`;
 
-            return <Tab />;
-            // return (
-            //   <Tab
-            //     key={url}
-            //     component={Link}
-            //     to={({ search }) => {
-            //       return {
-            //         pathname: generatedPath,
-            //         search,
-            //       };
-            //     }}
-            //     value={generatedPath}
-            //     label={label}
-            //   />
-            // );
-          })} */}
+            return (
+              <Tab
+                key={path}
+                component={Link}
+                to={`${value}${location.search}`}
+                value={value}
+                label={label}
+              />
+            );
+          })}
         </Tabs>
       </Paper>
     </Box>

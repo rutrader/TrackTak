@@ -1,5 +1,6 @@
 import { Box, Button, TextField, withStyles } from "@material-ui/core";
 import React from "react";
+import { setItem } from "../shared/guardedLocalStorage";
 
 const StyledTextField = withStyles({
   root: {
@@ -18,7 +19,7 @@ const SubscribeMailingList = ({ subscribeText = "Join", locationSignup }) => {
         action="https://tracktak.us18.list-manage.com/subscribe/post"
         method="POST"
         onSubmit={() => {
-          localStorage.setItem("subscribePopupShown", "true");
+          setItem("subscribePopupShown", "true");
         }}
       >
         <input type="hidden" name="u" value="77ebb5b550a15c12b38bd913e" />

@@ -3,12 +3,12 @@ import React from "react";
 import Header from "../components/Header";
 import TTTabs from "../components/TTTabs";
 
-const LayoutFullScreen = ({ children }) => {
+const LayoutFullScreen = ({ children, ticker }) => {
   return (
     <Container maxWidth={false}>
       <Header />
       {children}
-      <TTTabs />
+      <TTTabs ticker={ticker} />
     </Container>
   );
 };

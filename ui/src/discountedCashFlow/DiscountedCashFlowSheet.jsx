@@ -2,13 +2,11 @@ import React, { useState } from "react";
 import {
   Box,
   Typography,
-  Link,
   CircularProgress,
   useTheme,
   withStyles,
 } from "@material-ui/core";
 import "../shared/blueprintTheme.scss";
-import { Link as RouterLink } from "gatsby";
 import LazyLoad from "react-lazyload";
 import ExportToExcel from "./ExportToExcel";
 import DiscountedCashFlowTable from "./DiscountedCashFlowTable";
@@ -73,14 +71,9 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
           </Typography>
           <Typography gutterBottom>
             Need help? Check out the DCF docs&nbsp;
-            <Link
-              component={RouterLink}
-              to="/how-to-do-a-dcf"
-              rel="noreferrer"
-              target="_blank"
-            >
+            <a href="/how-to-do-a-dcf" rel="noreferrer" target="_blank">
               here.
-            </Link>
+            </a>
           </Typography>
         </Box>
         <Box

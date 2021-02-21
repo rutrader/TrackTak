@@ -1,10 +1,11 @@
 import { useSelector } from "react-redux";
 import selectQueryParams from "../selectors/routerSelectors/selectQueryParams";
 import convertParamsObjectToURLSearchParams from "../shared/convertParamsObjectToURLSearchParams";
-import { navigate } from "@reach/router";
+import { navigate, useLocation } from "@reach/router";
 
 const useSetURLInput = () => {
   const queryParams = useSelector(selectQueryParams);
+  const location = useLocation();
 
   return (key, value = null) => {
     const urlSearchParams = convertParamsObjectToURLSearchParams(queryParams);
@@ -21,7 +22,9 @@ const useSetURLInput = () => {
       urlSearchParams.delete(key);
     }
 
-    navigate(urlSearchParams.toString());
+    const path = `${location.pathname}?${urlSearchParams.toString()}`;
+
+    navigate(path);
   };
 };
 

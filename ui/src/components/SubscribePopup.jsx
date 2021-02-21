@@ -12,11 +12,12 @@ import {
 import SubscribeMailingList from "./SubscribeMailingList";
 import { useSelector } from "react-redux";
 import selectHasAllRequiredInputsFilledIn from "../selectors/routerSelectors/selectHasAllRequiredInputsFilledIn";
+import { setItem, getItem } from "../shared/guardedLocalStorage";
 
 const SubscribePopup = () => {
   const [open, setOpen] = useState(true);
   const theme = useTheme();
-  const subscribePopupShown = localStorage.getItem("subscribePopupShown");
+  const subscribePopupShown = getItem("subscribePopupShown");
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const hasAllRequiredInputsFilledIn = useSelector(
     selectHasAllRequiredInputsFilledIn,
@@ -24,7 +25,7 @@ const SubscribePopup = () => {
 
   const handleClose = (_, reason) => {
     if (reason !== "backdropClick") {
-      localStorage.setItem("subscribePopupShown", "true");
+      setItem("subscribePopupShown", "true");
       setOpen(false);
     }
   };

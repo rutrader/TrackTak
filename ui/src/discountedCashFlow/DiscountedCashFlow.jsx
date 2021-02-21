@@ -1,4 +1,4 @@
-import React, { cloneElement, useEffect } from "react";
+import React, { cloneElement } from "react";
 import { Box, Typography, useTheme } from "@material-ui/core";
 import TTTable from "../components/TTTable";
 import dayjs from "dayjs";
@@ -11,7 +11,7 @@ import OptionalInputs from "../components/OptionalInputs";
 import CostOfCapitalResults from "../components/CostOfCapitalResults";
 import { InfoOutlinedIconWrapper } from "../components/InfoOutlinedIconWrapper";
 import BlackScholesResults from "../components/BlackScholesResults";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import DiscountedCashFlowSheet from "./DiscountedCashFlowSheet";
 import FormatRawNumber from "../components/FormatRawNumber";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";

@@ -7,6 +7,7 @@ import { fundamentalsFilter } from "../api/api";
 import { getFundamentalsThunk } from "../redux/actions/fundamentalsActions";
 import selectFundamentalsIsLoaded from "../selectors/fundamentalSelectors/selectFundamentalsIsLoaded";
 import { useDispatch, useSelector } from "react-redux";
+import LayoutFullScreen from "../layouts/LayoutFullScreen";
 
 const StockBase = ({ children, ticker }) => {
   const dispatch = useDispatch();
@@ -22,18 +23,26 @@ const StockBase = ({ children, ticker }) => {
 
   const isLoaded = useSelector(selectFundamentalsIsLoaded);
 
-  if (!isLoaded) return null;
-
-  return children;
+  return (
+    <LayoutFullScreen ticker={ticker}>
+      {isLoaded ? children : null}
+    </LayoutFullScreen>
+  );
 };
+
+export const stockPaths = [
+  "/discounted-cash-flow",
+  "/synthetic-credit-rating",
+  "/industry-averages",
+];
 
 const Stock = () => {
   return (
     <Router basepath="/stock">
       <StockBase path="/:ticker">
-        <DiscountedCashFlow path="/discounted-cash-flow" />
-        <SyntheticRating path="/synthetic-credit-rating" />
-        <IndustryAverages path="/industry-averages" />
+        <DiscountedCashFlow path={stockPaths[0]} />
+        <SyntheticRating path={stockPaths[1]} />
+        <IndustryAverages path={stockPaths[2]} />
       </StockBase>
     </Router>
   );
