@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
@@ -9,15 +9,13 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import { Box, ListItemText, useMediaQuery } from "@material-ui/core";
-import { useEffect } from "react";
-import { Fragment } from "react";
 import wikiContent from "../data/wikiContent";
-// import { NavHashLink } from "react-router-hash-link";
-import useScrollWithOffset from "../hooks/useScrollWithOffset";
 import replaceSpaceWithHyphen from "../shared/replaceSpaceWithHyphen";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
+import { AnchorLink } from "gatsby-plugin-anchor-links";
+import { navigate } from "@reach/router";
 
 const drawerWidth = 240;
 
@@ -47,9 +45,14 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
+const removeNonHashableChars = (str) => {
+  const newStr = replaceSpaceWithHyphen(str);
+
+  return newStr.replace(/\?|\(|\)|,|&/g, "");
+};
+
 const Docs = () => {
   const theme = useTheme();
-  const getScrollWithOffset = useScrollWithOffset();
   const [open, setOpen] = useState(false);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const classes = useStyles({ open });
@@ -93,17 +96,23 @@ const Docs = () => {
             </>
           )}
           <List>
-            {wikiContent.map(({ title }) => (
-              <ListItem
-                key={title}
-                // component={NavHashLink}
-                to={`/how-to-do-a-dcf#${replaceSpaceWithHyphen(title)}`}
-                scroll={getScrollWithOffset()}
-                button
-              >
-                <ListItemText primary={title} />
-              </ListItem>
-            ))}
+            {wikiContent.map(({ title }) => {
+              const to = `/how-to-do-a-dcf#${removeNonHashableChars(title)}`;
+
+              return (
+                <ListItem
+                  key={title}
+                  component={AnchorLink}
+                  onAnchorLinkClick={() => {
+                    navigate(to);
+                  }}
+                  to={to}
+                  button
+                >
+                  <ListItemText primary={title} />
+                </ListItem>
+              );
+            })}
           </List>
         </Drawer>
         {isOnMobile && (
@@ -122,7 +131,7 @@ const Docs = () => {
                 <Typography
                   variant="h6"
                   gutterBottom
-                  id={replaceSpaceWithHyphen(title)}
+                  id={removeNonHashableChars(title)}
                 >
                   {cellsText ? title.concat(` - Cells: ${cellsText}`) : title}
                 </Typography>
