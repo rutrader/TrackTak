@@ -33,7 +33,7 @@ const useTableClasses = makeStyles((theme) => ({
   }),
 }));
 
-const SyntheticRating = () => {
+const SyntheticCreditRating = () => {
   const currentEquityRiskPremiumCountry = useSelector(
     selectCurrentEquityRiskPremium,
   );
@@ -181,4 +181,4 @@ const SyntheticRating = () => {
   );
 };
 
-export default SyntheticRating;
+export default SyntheticCreditRating;

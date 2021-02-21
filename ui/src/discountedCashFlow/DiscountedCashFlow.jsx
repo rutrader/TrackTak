@@ -29,10 +29,6 @@ import getTitle from "../shared/getTitle";
 import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
 import resourceName from "../shared/resourceName";
 import useVirtualExchange from "../hooks/useVirtualExchange";
-import { useParams } from "@reach/router";
-import { fundamentalsFilter } from "../api/api";
-import { getFundamentalsThunk } from "../redux/actions/fundamentalsActions";
-import selectFundamentalsIsLoaded from "../selectors/fundamentalSelectors/selectFundamentalsIsLoaded";
 
 const mapFromStatementsToDateObject = (
   objectToLoop,
@@ -63,21 +59,6 @@ const DiscountedCashFlow = () => {
   const theme = useTheme();
   const general = useSelector(selectGeneral);
   const exchange = useVirtualExchange();
-  const params = useParams();
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(
-      getFundamentalsThunk({
-        ticker: params.ticker,
-        filter: fundamentalsFilter,
-      }),
-    );
-  }, [dispatch, params.ticker]);
-
-  const isLoaded = useSelector(selectFundamentalsIsLoaded);
-
-  if (!isLoaded) return null;
 
   const columns = [
     {

@@ -14,8 +14,8 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-plugin-create-client-paths`,
-      options: { prefixes: [`/stock/*`] },
+      resolve: "gatsby-plugin-create-client-paths",
+      options: { prefixes: ["/stock/*"] },
     },
     "gatsby-plugin-react-helmet",
     "gatsby-plugin-layout",

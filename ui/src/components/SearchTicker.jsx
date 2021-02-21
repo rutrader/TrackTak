@@ -82,7 +82,8 @@ const SearchTicker = ({ removeInputPadding }) => {
         e.preventDefault();
 
         if (ticker) {
-          navigate(`/stock/discounted-cash-flow/${ticker}`);
+          // TODO: Fix to navigate() later
+          window.location.href = `/stock/${ticker}/discounted-cash-flow`;
         }
       }}
     >

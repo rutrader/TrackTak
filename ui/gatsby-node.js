@@ -6,7 +6,6 @@ exports.onCreatePage = ({ page, actions }) => {
     createPage(page);
   }
 
-  console.log(page.path);
   if (page.path.match(/stock\//)) {
     page.context.layout = "fullscreen";
 

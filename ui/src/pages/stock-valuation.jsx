@@ -321,7 +321,7 @@ const Valuation = () => {
         <Typography>
           <Link
             component={RouterLink}
-            to={`/discounted-cash-flow/${general.Code}.${exchange}${location.search}`}
+            to={`/stock/${general.Code}.${exchange}${location.search}/discounted-cash-flow`}
           >
             <b>Click here&nbsp;</b>
           </Link>
