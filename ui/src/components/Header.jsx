@@ -36,7 +36,14 @@ const useStyles = makeStyles((theme) => ({
 
 const HeaderLink = ({ to, text, style }) => {
   return (
-    <Box style={{ mx: 1, whiteSpace: "nowrap", ...style }}>
+    <Box
+      style={{
+        mx: 1,
+        whiteSpace: "nowrap",
+        marginRight: 18,
+        ...style,
+      }}
+    >
       <Button
         style={{
           textTransform: "none",
@@ -80,7 +87,11 @@ const Header = ({ hideSearch }) => {
             }}
           >
             <Box
-              style={{ marginRight: 2, display: "flex", alignItems: "center" }}
+              style={{
+                marginRight: 2,
+                display: "flex",
+                alignItems: "center",
+              }}
             >
               <Hidden mdDown>
                 <TracktakLogo />

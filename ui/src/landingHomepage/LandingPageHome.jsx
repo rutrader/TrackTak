@@ -6,8 +6,7 @@ import {
   Button,
   IconButton,
   makeStyles,
-  useMediaQuery,
-  useTheme,
+  Hidden,
 } from "@material-ui/core";
 import { ReactComponent as GridDots } from "../icons/grid-dots.svg";
 import laptopImage from "../icons/laptop-img.png";
@@ -127,11 +126,9 @@ const Background = styled.div`
 `;
 
 const LandingPageHome = () => {
-  const theme = useTheme();
   const classes = useStyles();
 
   const [showScroll, setShowScroll] = useState(false);
-  const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const getScrollWithOffset = useScrollWithOffset();
 
   const checkScrollTop = () => {
@@ -151,9 +148,18 @@ const LandingPageHome = () => {
   return (
     <Container>
       <Background />
-      <Box style={{ display: "flex", alignItems: "center" }}>
-        <Box>
-          <TypographyHeader isOnMobile={isOnMobile} variant="h1">
+      <Box
+        style={{
+          display: "flex",
+          alignItems: "center",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          columnGap: "20px",
+          rowGap: "31px",
+        }}
+      >
+        <Box style={{ flex: 1 }}>
+          <TypographyHeader variant="h1">
             Hello, automated Discounted Cash Flows.
           </TypographyHeader>
           <TypographyText variant="h6">
@@ -169,14 +175,17 @@ const LandingPageHome = () => {
             Explore Features
           </CustomButton>
         </Box>
-        <Box style={{ flex: "0 0 auto", width: "41.666667%" }}>
-          <Box style={{ position: "relative", zIndex: 1 }}>
+        <Box>
+          <Box style={{ display: "flex", position: "relative", zIndex: 1 }}>
             <img
               className={classes.laptopImage}
+              style={{ width: "100%" }}
               alt="laptopImage"
               src={laptopImage}
             />
-            <GridDots className={classes.gridDot} />
+            <Hidden mdDown>
+              <GridDots className={classes.gridDot} />
+            </Hidden>
           </Box>
         </Box>
       </Box>

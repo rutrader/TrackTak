@@ -25,6 +25,7 @@ const BoxRowWrapper = ({ style, ...props }) => {
         display: "flex",
         flex: "1 0 100%",
         flexWrap: "wrap",
+        gap: "50px",
         ...style,
       }}
       {...props}
@@ -36,8 +37,11 @@ const BoxColumnWrapper = ({ style, ...props }) => {
   return (
     <Box
       style={{
-        flex: "0 0 auto",
-        width: "25%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-evenly",
+        flex: 1,
+        minWidth: "234px",
         ...style,
       }}
       {...props}
@@ -200,6 +204,18 @@ const TypographyHeader = withStyles({
   },
 })(Typography);
 
+const TypographyHeaderFeature = withStyles({
+  root: {
+    visibility: "visible",
+    animationDelay: "0.4s",
+    animationName: "fadeInUp",
+    color: "#313450",
+    fontSize: "25px",
+    fontWeight: 700,
+    marginBottom: "15px",
+  },
+})(Typography);
+
 const TypographySubHeader = withStyles({
   root: {
     fontSize: "25px",
@@ -252,9 +268,9 @@ const FeaturesSection = () => {
               <BoxGradientIconTransparent>
                 <BiBookOpen fontSize="30px" />
               </BoxGradientIconTransparent>
-              <TypographyHeader variant="h4" class="mb-15">
+              <TypographyHeaderFeature variant="h4">
                 Fully Transparent
-              </TypographyHeader>
+              </TypographyHeaderFeature>
               <TypographyText>
                 Based on Aswath Damoradan's models showing you each formula.
               </TypographyText>
@@ -262,12 +278,12 @@ const FeaturesSection = () => {
           </BoxColumnWrapper>
           <BoxColumnWrapper>
             <BoxIcon>
-              <BoxGradientIconAuto className="test">
+              <BoxGradientIconAuto>
                 <ImCogs fontSize="30px" />
               </BoxGradientIconAuto>
-              <TypographyHeader variant="h4" class="mb-15">
+              <TypographyHeaderFeature variant="h4">
                 Automated Inputs
-              </TypographyHeader>
+              </TypographyHeaderFeature>
               <TypographyText>
                 Automates your model inputs based on historical and current
                 data.
@@ -279,9 +295,9 @@ const FeaturesSection = () => {
               <BoxGradientIconTime>
                 <RiTimerLine fontSize="30px" />
               </BoxGradientIconTime>
-              <TypographyHeader variant="h4" class="mb-15">
+              <TypographyHeaderFeature variant="h4">
                 Saves Time
-              </TypographyHeader>
+              </TypographyHeaderFeature>
               <TypographyText>
                 Finds companies based on true intrinsic value within seconds.
               </TypographyText>
@@ -292,9 +308,9 @@ const FeaturesSection = () => {
               <BoxGradientIconGlobal>
                 <AiOutlineGlobal fontSize="30px" />
               </BoxGradientIconGlobal>
-              <TypographyHeader variant="h4" class="mb-15">
+              <TypographyHeaderFeature variant="h4">
                 Global
-              </TypographyHeader>
+              </TypographyHeaderFeature>
               <TypographyText>
                 Over 60+ stock exchanges and more than 120,000 tickers all over
                 the world.

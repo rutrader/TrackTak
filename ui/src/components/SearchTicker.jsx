@@ -13,15 +13,19 @@ import { useHistory } from "react-router";
 import SearchIcon from "@material-ui/icons/Search";
 import { getAutocompleteQuery } from "../api/api";
 
-const TickerTextField = withStyles({
+const TickerTextField = withStyles((theme) => ({
   root: ({ $isSmallSearch }) => {
     const styles = {};
 
     if ($isSmallSearch) {
       styles["& .MuiInputBase-root"] = {
-        padding: 0,
-        width: "487px",
         height: "40px",
+        padding: theme.spacing(1, 1, 1, 0),
+        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+        transition: theme.transitions.create("width"),
+        [theme.breakpoints.up("md")]: {
+          width: "40ch",
+        },
       };
 
       styles["& .PrivateNotchedOutline-root-17"] = {
@@ -34,17 +38,29 @@ const TickerTextField = withStyles({
 
     return styles;
   },
-})(TextField);
+}))(TextField);
 
 const useStyles = makeStyles((theme) => ({
   input: {
-    width: "900px",
-    borderRadius: "33px",
-    fontSize: "16px",
-    marginRight: "15px",
-    height: "69px",
-    padding: "0 30px",
     background: "#fff",
+    borderRadius: "33px",
+    fontSize: "18px",
+    padding: theme.spacing(1, 1, 1, 2),
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create("width"),
+    [theme.breakpoints.up("md")]: {
+      width: "90ch",
+    },
+  },
+  search: {
+    position: "relative",
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      marginLeft: theme.spacing(3),
+      width: "auto",
+    },
   },
 }));
 
@@ -119,6 +135,7 @@ const SearchTicker = ({ isSmallSearch }) => {
           return (
             <>
               <TickerTextField
+                className={classes.search}
                 {...params}
                 style={{ display: "flex", alignItems: "center" }}
                 $isSmallSearch={isSmallSearch}
