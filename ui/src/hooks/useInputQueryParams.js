@@ -1,5 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
-import selectQueryParams from "./selectQueryParams";
+import useQueryParams from "./useQueryParams";
 
 export const cagrYearOneToFiveQueryName = "cagrYearOneToFive";
 export const ebitTargetMarginInYearTenQueryName = "ebitTargetMarginInYearTen";
@@ -43,9 +43,10 @@ const getInputQueryParams = (query) => {
   return inputQueryParams;
 };
 
-const selectInputQueryParams = createSelector(
-  selectQueryParams,
-  getInputQueryParams,
-);
+const useInputQueryParams = () => {
+  const queryParams = useQueryParams();
 
-export default selectInputQueryParams;
+  return getInputQueryParams(queryParams);
+};
+
+export default useInputQueryParams;

@@ -1,9 +1,9 @@
 import { Box, IconButton } from "@material-ui/core";
 import React from "react";
 import { getNumberOfColumns, padCellKeys } from "./utils";
-import selectInputQueryParams, {
+import useInputQueryParams, {
   inputQueries,
-} from "../selectors/routerSelectors/selectInputQueryParams";
+} from "../hooks/useInputQueryParams";
 import { utils, writeFile } from "xlsx";
 import { sentenceCase } from "change-case";
 import makeFormatCellForExcelOutput from "./makeFormatCellForExcelOutput";
@@ -33,11 +33,11 @@ import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurre
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
 import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
-import selectHasAllRequiredInputsFilledIn from "../selectors/routerSelectors/selectHasAllRequiredInputsFilledIn";
 import getRequiredInputsNotFilledInTitle from "../shared/getRequiredInputsNotFilledInTitle";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import { DCFControlTypography } from "./DiscountedCashFlowSheet";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
+import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 
 export const inputsWorksheetName = "Inputs";
 export const costOfCapitalWorksheetName = "Cost of Capital";
@@ -51,16 +51,14 @@ const ExportToExcel = () => {
   const currentEquityRiskPremium = useSelector(selectCurrentEquityRiskPremium);
   const scope = useSelector(selectScope);
   const valuationCurrencySymbol = useSelector(selectValuationCurrencySymbol);
-  const queryParams = useSelector(selectInputQueryParams);
+  const inputQueryParams = useInputQueryParams();
   const interestSpread = useSelector(selectInterestSpread);
   const currentIndustry = useSelector(selectCurrentIndustry);
   const incomeStatement = useSelector(selectRecentIncomeStatement);
   const balanceSheet = useSelector(selectRecentBalanceSheet);
   const price = useSelector(selectPrice);
   const sharesOutstanding = useSelector(selectSharesOutstanding);
-  const hasAllRequiredInputsFilledIn = useSelector(
-    selectHasAllRequiredInputsFilledIn,
-  );
+  const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
 
   const exportToCSVOnClick = () => {
     const cellKeysSorted = padCellKeys(
@@ -134,8 +132,9 @@ const ExportToExcel = () => {
       },
     };
 
-    if (queryParams.pretaxCostOfDebt !== undefined) {
-      costOfCapitalData.pretaxCostOfDebt.value = queryParams.pretaxCostOfDebt;
+    if (inputQueryParams.pretaxCostOfDebt !== undefined) {
+      costOfCapitalData.pretaxCostOfDebt.value =
+        inputQueryParams.pretaxCostOfDebt;
     } else {
       costOfCapitalData.pretaxCostOfDebt.expr = estimatedCostOfDebtCalculation;
     }
@@ -180,7 +179,7 @@ const ExportToExcel = () => {
     const transformedInputsData = [];
 
     inputQueries.forEach(({ name, type }) => {
-      const value = queryParams[name];
+      const value = inputQueryParams[name];
 
       transformedInputsData.push(getNameFromKey(name, type));
       transformedInputsData.push(formatValueForExcelOutput(value, type));

@@ -10,18 +10,15 @@ import {
   useTheme,
 } from "@material-ui/core";
 import SubscribeMailingList from "./SubscribeMailingList";
-import { useSelector } from "react-redux";
-import selectHasAllRequiredInputsFilledIn from "../selectors/routerSelectors/selectHasAllRequiredInputsFilledIn";
 import { setItem, getItem } from "../shared/guardedLocalStorage";
+import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 
 const SubscribePopup = () => {
   const [open, setOpen] = useState(true);
   const theme = useTheme();
   const subscribePopupShown = getItem("subscribePopupShown");
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const hasAllRequiredInputsFilledIn = useSelector(
-    selectHasAllRequiredInputsFilledIn,
-  );
+  const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
 
   const handleClose = (_, reason) => {
     if (reason !== "backdropClick") {

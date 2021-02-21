@@ -1,6 +1,5 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
-import { useSelector } from "react-redux";
 import FormatRawNumberToCurrency from "./FormatRawNumberToCurrency";
 import FormatRawNumberToMillion from "./FormatRawNumberToMillion";
 import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
@@ -8,11 +7,12 @@ import { InfoTextBlackScholes } from "./InfoText";
 import BoldValueLabel from "./BoldValueLabel";
 import selectValueOption from "../selectors/fundamentalSelectors/selectValueOption";
 import selectValueOfAllOptionsOutstanding from "../selectors/fundamentalSelectors/selectValueOfAllOptionsOutstanding";
+import useInjectQueryParams from "../hooks/useInjectQueryParams";
 
 const BlackScholesResults = () => {
-  const valuePerOption = useSelector(selectValueOption);
-  const valueOfAllOptionsOutstanding = useSelector(
-    selectValueOfAllOptionsOutstanding
+  const valuePerOption = useInjectQueryParams(selectValueOption);
+  const valueOfAllOptionsOutstanding = useInjectQueryParams(
+    selectValueOfAllOptionsOutstanding,
   );
 
   return (

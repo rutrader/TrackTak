@@ -10,7 +10,7 @@ import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFree
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
 import { pretaxCostOfDebtLabel } from "./OptionalInputs";
 import selectPretaxCostOfDebt from "../selectors/fundamentalSelectors/selectPretaxCostOfDebt";
-import selectInputQueryParams from "../selectors/routerSelectors/selectInputQueryParams";
+import useInputQueryParams from "../hooks/useInputQueryParams";
 import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
@@ -18,6 +18,7 @@ import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/se
 import StatsContainer from "../shared/StatsContainer";
 import { Link } from "gatsby";
 import { useParams, useLocation } from "@reach/router";
+import useInjectQueryParams from "../hooks/useInjectQueryParams";
 
 const CostOfCapitalResults = () => {
   const theme = useTheme();
@@ -26,11 +27,12 @@ const CostOfCapitalResults = () => {
   const currentEquityRiskPremiumCountry = useSelector(
     selectCurrentEquityRiskPremium,
   );
-  const costOfCapital = useSelector(selectCostOfCapital);
+  const inputQueryParams = useInputQueryParams();
+  const costOfCapital = useInjectQueryParams(selectCostOfCapital);
   const riskFreeRate = useSelector(selectRiskFreeRate);
-  const queryParams = useSelector(selectInputQueryParams);
-  const pretaxCostOfDebt = useSelector(selectPretaxCostOfDebt);
-  const useQueryPretaxCostOfDebt = queryParams.pretaxCostOfDebt !== undefined;
+  const pretaxCostOfDebt = useInjectQueryParams(selectPretaxCostOfDebt);
+  const useQueryPretaxCostOfDebt =
+    inputQueryParams.pretaxCostOfDebt !== undefined;
   const params = useParams();
   const location = useLocation();
 

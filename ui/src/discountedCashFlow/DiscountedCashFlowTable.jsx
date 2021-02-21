@@ -7,7 +7,7 @@ import { getColumnsBetween, startColumn } from "./utils";
 import { Cell, Column, Table } from "@blueprintjs/table";
 import { useMediaQuery, useTheme } from "@material-ui/core";
 import "../shared/blueprintTheme.scss";
-import selectInputQueryParams from "../selectors/routerSelectors/selectInputQueryParams";
+import useInputQueryParams from "../hooks/useInputQueryParams";
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
 import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
 import selectValueOfAllOptionsOutstanding from "../selectors/fundamentalSelectors/selectValueOfAllOptionsOutstanding";
@@ -21,30 +21,29 @@ import formatCellValue from "./formatCellValue";
 import selectIsYoyGrowthToggled from "../selectors/dcfSelectors/selectIsYoyGrowthToggled";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import getRequiredInputsNotFilledInTitle from "../shared/getRequiredInputsNotFilledInTitle";
-import selectHasAllRequiredInputsFilledIn from "../selectors/routerSelectors/selectHasAllRequiredInputsFilledIn";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 import SubscribePopup from "../components/SubscribePopup";
+import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
+import useInjectQueryParams from "../hooks/useInjectQueryParams";
 
 const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
   const theme = useTheme();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const cells = useSelector(selectCells);
   const dispatch = useDispatch();
-  const queryParams = useSelector(selectInputQueryParams);
+  const inputQueryParams = useInputQueryParams();
   const incomeStatement = useSelector(selectRecentIncomeStatement);
   const balanceSheet = useSelector(selectRecentBalanceSheet);
   const currentEquityRiskPremium = useSelector(selectCurrentEquityRiskPremium);
   const price = useSelector(selectPrice);
-  const costOfCapital = useSelector(selectCostOfCapital);
+  const costOfCapital = useInjectQueryParams(selectCostOfCapital);
   const riskFreeRate = useSelector(selectRiskFreeRate);
   const sharesOutstanding = useSelector(selectSharesOutstanding);
-  const valueOfAllOptionsOutstanding = useSelector(
+  const valueOfAllOptionsOutstanding = useInjectQueryParams(
     selectValueOfAllOptionsOutstanding,
   );
   const isYoyGrowthToggled = useSelector(selectIsYoyGrowthToggled);
-  const hasAllRequiredInputsFilledIn = useSelector(
-    selectHasAllRequiredInputsFilledIn,
-  );
+  const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
 
   const cellColumnWidths = useMemo(() => {
     return columns.map((column) => {
@@ -171,11 +170,11 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
 
     dispatch(
       updateCells(cagrCellsToUpdate, {
-        cagrYearOneToFive: queryParams.cagrYearOneToFive,
+        cagrYearOneToFive: inputQueryParams.cagrYearOneToFive,
         riskFreeRate,
       }),
     );
-  }, [dispatch, queryParams.cagrYearOneToFive, riskFreeRate]);
+  }, [dispatch, inputQueryParams.cagrYearOneToFive, riskFreeRate]);
 
   useEffect(() => {
     const ebitMarginCellsToUpdate = getColumnsBetween(columns, "C", "L").map(
@@ -184,13 +183,13 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
 
     dispatch(
       updateCells(ebitMarginCellsToUpdate, {
-        yearOfConvergence: queryParams.yearOfConvergence,
-        ebitTargetMarginInYearTen: queryParams.ebitTargetMarginInYearTen,
+        yearOfConvergence: inputQueryParams.yearOfConvergence,
+        ebitTargetMarginInYearTen: inputQueryParams.ebitTargetMarginInYearTen,
       }),
     );
   }, [
-    queryParams.yearOfConvergence,
-    queryParams.ebitTargetMarginInYearTen,
+    inputQueryParams.yearOfConvergence,
+    inputQueryParams.ebitTargetMarginInYearTen,
     dispatch,
   ]);
 
@@ -205,39 +204,39 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
   useEffect(() => {
     dispatch(
       updateCells(["C15"], {
-        salesToCapitalRatio: queryParams.salesToCapitalRatio,
+        salesToCapitalRatio: inputQueryParams.salesToCapitalRatio,
       }),
     );
-  }, [dispatch, queryParams.salesToCapitalRatio]);
+  }, [dispatch, inputQueryParams.salesToCapitalRatio]);
 
   useEffect(() => {
     dispatch(
       updateCells(["B9"], {
-        netOperatingLoss: queryParams.netOperatingLoss,
+        netOperatingLoss: inputQueryParams.netOperatingLoss,
       }),
     );
-  }, [dispatch, queryParams.netOperatingLoss]);
+  }, [dispatch, inputQueryParams.netOperatingLoss]);
 
   useEffect(() => {
     dispatch(
       updateCells(["B25"], {
-        probabilityOfFailure: queryParams.probabilityOfFailure,
+        probabilityOfFailure: inputQueryParams.probabilityOfFailure,
       }),
     );
-  }, [dispatch, queryParams.probabilityOfFailure]);
+  }, [dispatch, inputQueryParams.probabilityOfFailure]);
 
   useEffect(() => {
     dispatch(
       updateCells(["B26"], {
         proceedsAsAPercentageOfBookValue:
-          queryParams.proceedsAsAPercentageOfBookValue,
+          inputQueryParams.proceedsAsAPercentageOfBookValue,
         bookValueOfDebt: balanceSheet.bookValueOfDebt,
         bookValueOfEquity: balanceSheet.bookValueOfEquity,
       }),
     );
   }, [
     dispatch,
-    queryParams.proceedsAsAPercentageOfBookValue,
+    inputQueryParams.proceedsAsAPercentageOfBookValue,
     balanceSheet.bookValueOfDebt,
     balanceSheet.bookValueOfEquity,
   ]);

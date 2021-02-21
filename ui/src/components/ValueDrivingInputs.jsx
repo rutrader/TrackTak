@@ -12,9 +12,8 @@ import FormatInputToNumber from "./FormatInputToNumber";
 import { textFieldRootStyles } from "../shared/utils";
 import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 import { InfoTextValueDrivingInputs } from "./InfoText";
-import { useSelector } from "react-redux";
 import useSetURLInput from "../hooks/useSetURLInput";
-import selectInputQueryParams from "../selectors/routerSelectors/selectInputQueryParams";
+import useInputQueryParams from "../hooks/useInputQueryParams";
 
 const ValueDrivingTextField = withStyles({
   root: {
@@ -34,7 +33,7 @@ export const valueDrivingInputsHeader = "Value Driving Inputs";
 
 const ValueDrivingInputs = () => {
   const theme = useTheme();
-  const queryParams = useSelector(selectInputQueryParams);
+  const inputQueryParams = useInputQueryParams();
   const setURLInput = useSetURLInput();
 
   return (
@@ -47,7 +46,7 @@ const ValueDrivingInputs = () => {
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: theme.spacing(2) }}>
         <ValueDrivingTextField
           label={cagrInYearsOneToFiveLabel}
-          defaultValue={queryParams.cagrYearOneToFive}
+          defaultValue={inputQueryParams.cagrYearOneToFive}
           onBlur={(value) => {
             setURLInput("cagrYearOneToFive", value);
           }}
@@ -57,7 +56,7 @@ const ValueDrivingInputs = () => {
         />
         <ValueDrivingTextField
           label={ebitTargetMarginInYearTenLabel}
-          defaultValue={queryParams.ebitTargetMarginInYearTen}
+          defaultValue={inputQueryParams.ebitTargetMarginInYearTen}
           onBlur={(value) => {
             setURLInput("ebitTargetMarginInYearTen", value);
           }}
@@ -67,7 +66,7 @@ const ValueDrivingInputs = () => {
         />
         <ValueDrivingTextField
           label={yearOfConvergenceLabel}
-          defaultValue={queryParams.yearOfConvergence}
+          defaultValue={inputQueryParams.yearOfConvergence}
           onBlur={(value) => {
             setURLInput("yearOfConvergence", value);
           }}
@@ -77,7 +76,7 @@ const ValueDrivingInputs = () => {
         />
         <ValueDrivingTextField
           label={salesToCapitalRatioLabel}
-          defaultValue={queryParams.salesToCapitalRatio}
+          defaultValue={inputQueryParams.salesToCapitalRatio}
           onBlur={(value) => {
             setURLInput("salesToCapitalRatio", value);
           }}

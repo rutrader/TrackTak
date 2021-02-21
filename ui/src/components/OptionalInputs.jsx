@@ -18,12 +18,11 @@ import {
   InfoTextPreferredStock,
   InfoTextOther,
 } from "./InfoText";
-import { useSelector } from "react-redux";
 import useSetURLInput from "../hooks/useSetURLInput";
-import selectInputQueryParams from "../selectors/routerSelectors/selectInputQueryParams";
 import FormatInputToPercent from "./FormatInputToPercent";
 import { textFieldRootStyles } from "../shared/utils";
 import OptionalInput from "./OptionalInput";
+import useInputQueryParams from "../hooks/useInputQueryParams";
 
 export const pretaxCostOfDebtLabel = "Pre-tax Cost of Debt";
 
@@ -34,7 +33,7 @@ const OptionalTextField = withStyles({
 })(TextField);
 
 const OptionalInputs = () => {
-  const queryParams = useSelector(selectInputQueryParams);
+  const inputQueryParams = useInputQueryParams();
   const setURLInput = useSetURLInput();
   const theme = useTheme();
 
@@ -46,7 +45,7 @@ const OptionalInputs = () => {
         <>
           <OptionalTextField
             label={pretaxCostOfDebtLabel}
-            defaultValue={queryParams.pretaxCostOfDebt}
+            defaultValue={inputQueryParams.pretaxCostOfDebt}
             onBlur={(value) => {
               setURLInput("pretaxCostOfDebt", value);
             }}
@@ -56,7 +55,7 @@ const OptionalInputs = () => {
           />
           <OptionalTextField
             label="Average Maturity of Debt"
-            defaultValue={queryParams.averageMaturityOfDebt}
+            defaultValue={inputQueryParams.averageMaturityOfDebt}
             onBlur={(value) => {
               setURLInput("averageMaturityOfDebt", value);
             }}
@@ -74,7 +73,7 @@ const OptionalInputs = () => {
         <>
           <OptionalTextField
             label="Book Value of Convertible Debt"
-            defaultValue={queryParams.bookValueOfConvertibleDebt}
+            defaultValue={inputQueryParams.bookValueOfConvertibleDebt}
             onBlur={(value) => {
               setURLInput("bookValueOfConvertibleDebt", value);
             }}
@@ -84,7 +83,7 @@ const OptionalInputs = () => {
           />
           <OptionalTextField
             label="Interest Expense on Convertible Debt"
-            defaultValue={queryParams.interestExpenseOnConvertibleDebt}
+            defaultValue={inputQueryParams.interestExpenseOnConvertibleDebt}
             onBlur={(value) => {
               setURLInput("interestExpenseOnConvertibleDebt", value);
             }}
@@ -94,7 +93,7 @@ const OptionalInputs = () => {
           />
           <OptionalTextField
             label="Maturity of Convertible Debt"
-            defaultValue={queryParams.maturityOfConvertibleDebt}
+            defaultValue={inputQueryParams.maturityOfConvertibleDebt}
             onBlur={(value) => {
               setURLInput("maturityOfConvertibleDebt", value);
             }}
@@ -112,7 +111,7 @@ const OptionalInputs = () => {
         <>
           <OptionalTextField
             label="Number of Preferred Shares"
-            defaultValue={queryParams.numberOfPreferredShares}
+            defaultValue={inputQueryParams.numberOfPreferredShares}
             onBlur={(value) => {
               setURLInput("numberOfPreferredShares", value);
             }}
@@ -122,7 +121,7 @@ const OptionalInputs = () => {
           />
           <OptionalTextField
             label="Market Price Per Share"
-            defaultValue={queryParams.marketPricePerShare}
+            defaultValue={inputQueryParams.marketPricePerShare}
             onBlur={(value) => {
               setURLInput("marketPricePerShare", value);
             }}
@@ -132,7 +131,7 @@ const OptionalInputs = () => {
           />
           <OptionalTextField
             label="Annual Dividend Per Share"
-            defaultValue={queryParams.annualDividendPerShare}
+            defaultValue={inputQueryParams.annualDividendPerShare}
             onBlur={(value) => {
               setURLInput("annualDividendPerShare", value);
             }}
@@ -150,7 +149,7 @@ const OptionalInputs = () => {
         <>
           <OptionalTextField
             label="Employee Options Oustanding"
-            defaultValue={queryParams.numberOfEmployeeOptionsOutstanding}
+            defaultValue={inputQueryParams.numberOfEmployeeOptionsOutstanding}
             onBlur={(value) => {
               setURLInput("numberOfEmployeeOptionsOutstanding", value);
             }}
@@ -160,7 +159,7 @@ const OptionalInputs = () => {
           />
           <OptionalTextField
             label="Average Strike Price"
-            defaultValue={queryParams.averageStrikePrice}
+            defaultValue={inputQueryParams.averageStrikePrice}
             onBlur={(value) => {
               setURLInput("averageStrikePrice", value);
             }}
@@ -170,7 +169,7 @@ const OptionalInputs = () => {
           />
           <OptionalTextField
             label="Average Maturity"
-            defaultValue={queryParams.averageMaturityOfOptions}
+            defaultValue={inputQueryParams.averageMaturityOfOptions}
             onBlur={(value) => {
               setURLInput("averageMaturityOfOptions", value);
             }}
@@ -190,7 +189,7 @@ const OptionalInputs = () => {
         <>
           <OptionalTextField
             label="Net Operating Loss"
-            defaultValue={queryParams.netOperatingLoss}
+            defaultValue={inputQueryParams.netOperatingLoss}
             onBlur={(value) => {
               setURLInput("netOperatingLoss", value);
             }}
@@ -201,7 +200,7 @@ const OptionalInputs = () => {
           {/* TODO: Attempt to automate this by default but allow this override anyway */}
           <OptionalTextField
             label="Probability of Failure"
-            defaultValue={queryParams.probabilityOfFailure}
+            defaultValue={inputQueryParams.probabilityOfFailure}
             onBlur={(value) => {
               setURLInput("probabilityOfFailure", value);
             }}
@@ -212,7 +211,7 @@ const OptionalInputs = () => {
           {/* TODO: Add fair value option as well later */}
           <OptionalTextField
             label="Proceeds as a Percentage of Book value"
-            defaultValue={queryParams.proceedsAsAPercentageOfBookValue}
+            defaultValue={inputQueryParams.proceedsAsAPercentageOfBookValue}
             onBlur={(value) => {
               setURLInput("proceedsAsAPercentageOfBookValue", value);
             }}

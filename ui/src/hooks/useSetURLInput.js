@@ -1,10 +1,9 @@
-import { useSelector } from "react-redux";
-import selectQueryParams from "../selectors/routerSelectors/selectQueryParams";
+import useQueryParams from "./useQueryParams";
 import convertParamsObjectToURLSearchParams from "../shared/convertParamsObjectToURLSearchParams";
 import { navigate, useLocation } from "@reach/router";
 
 const useSetURLInput = () => {
-  const queryParams = useSelector(selectQueryParams);
+  const queryParams = useQueryParams();
   const location = useLocation();
 
   return (key, value = null) => {

@@ -13,5 +13,5 @@ export const getItem = (key) => {
     return null;
   }
 
-  localStorage.getItem(key);
+  return localStorage.getItem(key);
 };

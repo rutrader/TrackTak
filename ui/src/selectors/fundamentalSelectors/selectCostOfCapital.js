@@ -1,6 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
 import selectRiskFreeRate from "./selectRiskFreeRate";
-import selectInputQueryParams from "../routerSelectors/selectInputQueryParams";
 import selectPretaxCostOfDebt from "./selectPretaxCostOfDebt";
 import selectRecentIncomeStatement from "./selectRecentIncomeStatement";
 import selectRecentBalanceSheet from "./selectRecentBalanceSheet";
@@ -19,26 +18,25 @@ import {
 } from "../../discountedCashFlow/expressionCalculations";
 import selectSharesOutstanding from "./selectSharesOutstanding";
 
-const calculateCostOfCapital = (
+const calculateCostOfCapital = (queryParams) => (
   currentEquityRiskPremiumCountry,
   currentIndustry,
   incomeStatement,
   balanceSheet,
   price,
   sharesOutstanding,
-  query,
   pretaxCostOfDebt,
   riskFreeRate,
 ) => {
   // TODO: Maybe calculate averageMaturityOfDebt automatically based on the average
-  const averageMaturityOfDebt = query.averageMaturityOfDebt;
-  const maturityOfConvertibleDebt = query.maturityOfConvertibleDebt;
+  const averageMaturityOfDebt = queryParams.averageMaturityOfDebt;
+  const maturityOfConvertibleDebt = queryParams.maturityOfConvertibleDebt;
   const interestExpenseOnConvertibleDebt =
-    query.interestExpenseOnConvertibleDebt;
-  const bookValueOfConvertibleDebt = query.bookValueOfConvertibleDebt;
-  const numberOfPreferredShares = query.numberOfPreferredShares;
-  const marketPricePerShare = query.marketPricePerShare;
-  const annualDividendPerShare = query.annualDividendPerShare;
+    queryParams.interestExpenseOnConvertibleDebt;
+  const bookValueOfConvertibleDebt = queryParams.bookValueOfConvertibleDebt;
+  const numberOfPreferredShares = queryParams.numberOfPreferredShares;
+  const marketPricePerShare = queryParams.marketPricePerShare;
+  const annualDividendPerShare = queryParams.annualDividendPerShare;
   const marginalTaxRate = currentEquityRiskPremiumCountry.marginalTaxRate;
   const estimatedMarketValueOfStraightDebt = evaluate(
     estimatedMarketValueOfStraightDebtCalculation,
@@ -139,17 +137,17 @@ const calculateCostOfCapital = (
   };
 };
 
-const selectCostOfCapital = createSelector(
-  selectCurrentEquityRiskPremium,
-  selectCurrentIndustry,
-  selectRecentIncomeStatement,
-  selectRecentBalanceSheet,
-  selectPrice,
-  selectSharesOutstanding,
-  selectInputQueryParams,
-  selectPretaxCostOfDebt,
-  selectRiskFreeRate,
-  calculateCostOfCapital,
-);
+const selectCostOfCapital = (inputQueryParams) =>
+  createSelector(
+    selectCurrentEquityRiskPremium,
+    selectCurrentIndustry,
+    selectRecentIncomeStatement,
+    selectRecentBalanceSheet,
+    selectPrice,
+    selectSharesOutstanding,
+    selectPretaxCostOfDebt(inputQueryParams),
+    selectRiskFreeRate,
+    calculateCostOfCapital(inputQueryParams),
+  );
 
 export default selectCostOfCapital;

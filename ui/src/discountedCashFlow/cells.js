@@ -25,7 +25,7 @@ import {
   getSixToTenYrCostOfCapitalCalculation,
   getSixToTenYrTaxCalculation,
 } from "./expressionCalculations";
-import { salesToCapitalRatioQueryName } from "../selectors/routerSelectors/selectInputQueryParams";
+import { salesToCapitalRatioQueryName } from "../hooks/useInputQueryParams";
 
 const getExpressionProperties = (expr) => {
   return { className: "equation", expr };

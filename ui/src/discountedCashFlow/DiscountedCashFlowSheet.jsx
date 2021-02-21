@@ -16,7 +16,7 @@ import selectIsYoyGrowthToggled from "../selectors/dcfSelectors/selectIsYoyGrowt
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import getRequiredInputsNotFilledInTitle from "../shared/getRequiredInputsNotFilledInTitle";
-import selectHasAllRequiredInputsFilledIn from "../selectors/routerSelectors/selectHasAllRequiredInputsFilledIn";
+import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 
 const Placeholder = () => {
   const theme = useTheme();
@@ -39,15 +39,11 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
   const dispatch = useDispatch();
   const [showFormulas, setShowFormulas] = useState(false);
   const isYoyGrowthToggled = useSelector(selectIsYoyGrowthToggled);
-  const hasAllRequiredInputsFilledIn = useSelector(
-    selectHasAllRequiredInputsFilledIn,
-  );
-
+  const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
   const showFormulasToggledOnChange = (event) => {
     setShowFormulas((state) => !state);
     dispatch(setIsYoyGrowthToggled(false));
   };
-
   const isYoyGrowthToggledOnChange = (event) => {
     dispatch(setIsYoyGrowthToggled(!isYoyGrowthToggled));
     setShowFormulas(false);
@@ -127,9 +123,7 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
 };
 
 export const DCFControlTypography = (props) => {
-  const hasAllRequiredInputsFilledIn = useSelector(
-    selectHasAllRequiredInputsFilledIn,
-  );
+  const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
 
   return (
     <Typography

@@ -14,12 +14,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { navigate } from "@reach/router";
 import { Link } from "gatsby";
 import { getDCFTemplateEntries } from "../redux/actions/contentfulActions";
-import { inputQueries } from "../selectors/routerSelectors/selectInputQueryParams";
 import selectEntries from "../selectors/contentfulSelectors/selectEntries";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
 import LinesEllipsis from "react-lines-ellipsis";
+import { inputQueries } from "../hooks/useInputQueryParams";
 
 const EOD_URL = "https://eodhistoricaldata.com";
 

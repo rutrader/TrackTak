@@ -18,3 +18,10 @@ export const onClientEntry = () => {
 export const wrapRootElement = ({ element }) => {
   return <ThemeProvider theme={theme}>{element}</ThemeProvider>;
 };
+
+export const shouldUpdateScroll = ({ prevRouterProps, routerProps }) => {
+  if (prevRouterProps?.location.pathname !== routerProps.location.pathname) {
+    return true;
+  }
+  return false;
+};
