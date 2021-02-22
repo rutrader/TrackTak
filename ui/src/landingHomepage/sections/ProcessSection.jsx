@@ -32,12 +32,6 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(4),
     backgroundColor: theme.palette.background.default,
   },
-  img: {
-    maxWidth: 688,
-    position: "absolute",
-    top: "50%",
-    transform: "translateY(-50%)",
-  },
 }));
 
 const CustomBox = ({ style, ...props }) => {
@@ -109,6 +103,7 @@ const TypographyStepHeader = withStyles({
     color: "#313450",
     display: "block",
     paddingTop: "10px",
+    flex: 1,
   },
 })(Typography);
 
@@ -253,8 +248,10 @@ const ProcessSection = () => {
       <BoxRowWrapper>
         <Box
           style={{
-            flex: "0 0 auto",
-            width: "50%",
+            display: "flex",
+            flexDirection: "column",
+            flex: 1,
+            minWidth: "300px",
             paddingLeft: "10px",
             paddingRight: "10px",
           }}
@@ -339,6 +336,13 @@ const ProcessSection = () => {
         </Box>
         <Box className={classes.root}>
           <img
+            style={{
+              height: 255,
+              display: "block",
+              maxWidth: 340,
+              overflow: "hidden",
+              width: "100%",
+            }}
             className={classes.img}
             src={images[imageIndex].imgPath}
             alt={images[imageIndex].label}

@@ -48,7 +48,6 @@ const TypographySubHeader = withStyles({
   root: {
     fontSize: "25px",
     fontWeight: 600,
-    display: "block",
     marginBottom: "12px",
     color: "#fff",
     visibility: "visible",
@@ -116,6 +115,8 @@ const useStyles = makeStyles((theme) => {
       zIndex: 1,
       paddingTop: "70px",
       paddingBottom: "70px",
+      paddingLeft: "20px",
+      paddingRight: "20px",
     },
     shapeOne: shape,
     shapeTwo: {
@@ -126,6 +127,7 @@ const useStyles = makeStyles((theme) => {
       right: "-220px",
     },
     subscribeForm: {
+      flexWrap: "wrap",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -133,14 +135,18 @@ const useStyles = makeStyles((theme) => {
       visibility: "visible",
       animationDelay: "0.8s",
       animationName: "fadeInUp",
+      width: "100%",
+      rowGap: "20px",
     },
     row: {
       alignItems: "center",
+      textAlign: "center",
       flexDirection: "column",
       display: "flex",
     },
     input: {
-      width: "487px",
+      maxWidth: "487px",
+      minWidth: "300px",
       borderRadius: "33px",
       color: "#fff",
       fontSize: "16px",
@@ -155,6 +161,7 @@ const useStyles = makeStyles((theme) => {
 
 const SubscribeSection = () => {
   const classes = useStyles();
+
   return (
     <Box style={{ paddingTop: "100px" }}>
       <Box className={classes.subscribeWrapper}>
@@ -173,6 +180,7 @@ const SubscribeSection = () => {
               display: "flex",
               flexDirection: "row",
               marginTop: "30px",
+              width: "100%",
             }}
           >
             <form className={classes.subscribeForm}>
@@ -184,11 +192,7 @@ const SubscribeSection = () => {
                   disableUnderline: true,
                 }}
               />
-              <CustomButton
-                variant="contained"
-                type="submit"
-                className={classes.button}
-              >
+              <CustomButton variant="contained" type="submit">
                 SUBSCRIBE
               </CustomButton>
             </form>
