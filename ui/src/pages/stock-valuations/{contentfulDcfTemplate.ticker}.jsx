@@ -1,65 +1,141 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useLocation } from "@reach/router";
+import React, { useEffect } from "react";
+import { useLocation } from "@reach/router";
 import { useDispatch, useSelector } from "react-redux";
-import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
+import { renderRichText } from "gatsby-source-contentful/rich-text";
 import { BLOCKS, INLINES } from "@contentful/rich-text-types";
 import ContainerDimensions from "react-container-dimensions";
 import YouTube from "react-youtube";
-import { Link as RouterLink } from "gatsby";
+import { graphql, Link as RouterLink } from "gatsby";
 import {
   setFundamentalsDataThunk,
   setLastPriceClose,
-} from "../redux/actions/fundamentalsActions";
-import CompanyOverviewStats from "../components/CompanyOverviewStats";
+} from "../../redux/actions/fundamentalsActions";
+import CompanyOverviewStats from "../../components/CompanyOverviewStats";
 import { Box, Link, Typography } from "@material-ui/core";
 import ValueDrivingInputs, {
   cagrInYearsOneToFiveLabel,
   ebitTargetMarginInYearTenLabel,
   salesToCapitalRatioLabel,
   yearOfConvergenceLabel,
-} from "../components/ValueDrivingInputs";
-import Section from "../components/Section";
-import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
-import FormatRawNumberToYear from "../components/FormatRawNumberToYear";
-import FormatRawNumber from "../components/FormatRawNumber";
-import SubscribeMailingList from "../components/SubscribeMailingList";
-import FormatRawNumberToCurrency from "../components/FormatRawNumberToCurrency";
-import * as styles from "../shared/valuation.module.scss";
-import CostOfCapitalResults from "../components/CostOfCapitalResults";
+} from "../../components/ValueDrivingInputs";
+import Section from "../../components/Section";
+import FormatRawNumberToPercent from "../../components/FormatRawNumberToPercent";
+import FormatRawNumberToYear from "../../components/FormatRawNumberToYear";
+import FormatRawNumber from "../../components/FormatRawNumber";
+import SubscribeMailingList from "../../components/SubscribeMailingList";
+import FormatRawNumberToCurrency from "../../components/FormatRawNumberToCurrency";
+import * as styles from "../../shared/valuation.module.scss";
+import CostOfCapitalResults from "../../components/CostOfCapitalResults";
 import dayjs from "dayjs";
-import { getContentfulEntries, getPrices } from "../api/api";
-import { pretaxCostOfDebtLabel } from "../components/OptionalInputs";
-import DiscountedCashFlowSheet from "../discountedCashFlow/DiscountedCashFlowSheet";
-import IndustryAveragesResults from "../components/IndustryAveragesResults";
-import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
-import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
-import selectCells from "../selectors/dcfSelectors/selectCells";
+import { getPrices } from "../../api/api";
+import DiscountedCashFlowSheet from "../../discountedCashFlow/DiscountedCashFlowSheet";
+import IndustryAveragesResults from "../../components/IndustryAveragesResults";
+import selectPrice from "../../selectors/fundamentalSelectors/selectPrice";
+import selectFundamentalsIsLoaded from "../../selectors/fundamentalSelectors/selectFundamentalsIsLoaded";
+import selectCells from "../../selectors/dcfSelectors/selectCells";
 import { Helmet } from "react-helmet";
-import getTitle from "../shared/getTitle";
-import resourceName from "../shared/resourceName";
-import useVirtualExchange from "../hooks/useVirtualExchange";
+import getTitle from "../../shared/getTitle";
+import resourceName from "../../shared/resourceName";
+import useVirtualExchange from "../../hooks/useVirtualExchange";
+
+export const query = graphql`
+  fragment ValuationInformation on ContentfulDcfTemplate {
+    ticker
+    salesToCapitalRatio
+    ebitTargetMarginInYearTen
+    cagrYearOneToFive
+    dateOfValuation
+    yearOfConvergence
+    data {
+      General {
+        Name
+        Description
+        LogoURL
+        Code
+      }
+    }
+  }
+
+  query ValuationQuery($ticker: String) {
+    contentfulDcfTemplate(ticker: { eq: $ticker }) {
+      ...ValuationInformation
+      data {
+        internal {
+          content
+        }
+      }
+      dateOfValuation
+      extraBusinessDescription {
+        raw
+      }
+      competitors {
+        raw
+        references {
+          ... on ContentfulAsset {
+            contentful_id
+            __typename
+            fixed(width: 1600) {
+              width
+              height
+              src
+              srcSet
+            }
+          }
+        }
+      }
+      lookingForward {
+        raw
+      }
+      relativeNumbers {
+        raw
+      }
+      cagrYearOneToFiveDescription {
+        childMdx {
+          excerpt
+        }
+      }
+      ebitTargetMarginInYearTenDescription {
+        childMdx {
+          excerpt
+        }
+      }
+      salesToCapitalRatioDescription {
+        childMdx {
+          excerpt
+        }
+      }
+      yearOfConvergenceDescription {
+        childMdx {
+          excerpt
+        }
+      }
+    }
+  }
+`;
 
 const options = {
   renderNode: {
     [BLOCKS.EMBEDDED_ASSET]: (node) => {
+      debugger;
       const { fields } = node.data.target;
-      const { file } = fields;
+      return null;
+      // const { file } = fields;
 
-      return (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            my: 2,
-          }}
-        >
-          <ContainerDimensions>
-            {({ width }) => (
-              <img src={`${file.url}?w=${width}`} alt={fields.title} />
-            )}
-          </ContainerDimensions>
-        </Box>
-      );
+      // return (
+      //   <Box
+      //     sx={{
+      //       display: "flex",
+      //       justifyContent: "center",
+      //       my: 2,
+      //     }}
+      //   >
+      //     <ContainerDimensions>
+      //       {({ width }) => (
+      //         <img src={`${file.url}?w=${width}`} alt={fields.title} />
+      //       )}
+      //     </ContainerDimensions>
+      //   </Box>
+      // );
     },
     [INLINES.HYPERLINK]: (node) => {
       if (node.data.uri.includes("youtube.com")) {
@@ -94,56 +170,61 @@ const NumberSpan = ({ children, ...props }) => {
   );
 };
 
-const renderField = (field) => documentToReactComponents(field, options);
+const renderField = (field) => renderRichText(field, options);
 
-const Valuation = () => {
-  const params = useParams();
+const Valuation = ({ data }) => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const [fields, setContentfulFields] = useState();
   const price = useSelector(selectPrice);
-  const general = useSelector(selectGeneral);
+  const isLoaded = useSelector(selectFundamentalsIsLoaded);
   const estimatedValuePerShare = useSelector(
     (state) => selectCells(state).B36.value,
   );
   const exchange = useVirtualExchange();
+  const {
+    ticker,
+    dateOfValuation,
+    data: financialData,
+    yearOfConvergence,
+    salesToCapitalRatio,
+    cagrYearOneToFive,
+    ebitTargetMarginInYearTen,
+    extraBusinessDescription,
+    competitors,
+    lookingForward,
+    relativeNumbers,
+    cagrYearOneToFiveDescription,
+    ebitTargetMarginInYearTenDescription,
+    salesToCapitalRatioDescription,
+    yearOfConvergenceDescription,
+  } = data.contentfulDcfTemplate;
+
+  const parsedFinancialData = JSON.parse(financialData.internal.content);
+  const { General: general } = parsedFinancialData;
 
   useEffect(() => {
     const fetchStockData = async () => {
-      const contentfulRes = await getContentfulEntries({
-        "fields.ticker": params.ticker,
-        content_type: "dcfTemplate",
-      });
-      const fields = contentfulRes.data.items.find(
-        ({ fields }) => fields.ticker === params.ticker,
-      ).fields;
-      const data = fields.data;
-      const ticker = params.ticker;
-
       dispatch(
         setFundamentalsDataThunk({
-          data,
+          data: parsedFinancialData,
           ticker,
-          tenYearGovernmentBondLastCloseTo: fields.dateOfValuation,
+          tenYearGovernmentBondLastCloseTo: dateOfValuation,
         }),
       );
       const res = await getPrices(ticker, {
-        to: fields.dateOfValuation,
+        to: dateOfValuation,
         filter: "last_close",
       });
-
       dispatch(setLastPriceClose(res.data.value));
-
-      setContentfulFields(fields);
     };
     fetchStockData();
-  }, [dispatch, params.ticker]);
+  }, [financialData, dateOfValuation, dispatch, ticker, parsedFinancialData]);
 
-  if (!general || !fields) return null;
+  if (!isLoaded) return null;
 
   const marginOfSafety =
     (estimatedValuePerShare - price) / estimatedValuePerShare;
-  const formattedDateOfValuation = dayjs(fields.dateOfValuation).format(
+  const formattedDateOfValuation = dayjs(dateOfValuation).format(
     "Do MMM. YYYY",
   );
 
@@ -153,7 +234,9 @@ const Valuation = () => {
         <title>{getTitle(`${general.Name} Valuation`)}</title>
         <link
           rel="canonical"
-          href={`${resourceName}/stock-valuations/${general.Code}.${exchange}${location.search}`}
+          href={`${resourceName}/stock-valuations/${`${general.Code}-${exchange}`.toLowerCase()}${
+            location.search
+          }`}
         />
       </Helmet>
       <CompanyOverviewStats dateOfValuation={formattedDateOfValuation} />
@@ -162,9 +245,9 @@ const Valuation = () => {
           Business Description
         </Typography>
         <Typography paragraph>{general.Description}</Typography>
-        {fields.extraBusinessDescription && (
+        {extraBusinessDescription && (
           <Typography paragraph>
-            {renderField(fields.extraBusinessDescription)}
+            {renderField(extraBusinessDescription)}
           </Typography>
         )}
       </Section>
@@ -172,7 +255,7 @@ const Valuation = () => {
         <Typography variant="h5" gutterBottom>
           Competitors
         </Typography>
-        <Typography paragraph>{renderField(fields.competitors)}</Typography>
+        <Typography paragraph>{renderField(competitors)}</Typography>
       </Section>
       <Section sx={{ display: "flex" }}>
         <Box
@@ -194,24 +277,20 @@ const Valuation = () => {
           />
         </Box>
       </Section>
-      {fields.lookingForward && (
+      {lookingForward && (
         <Section>
           <Typography variant="h5" gutterBottom>
             Looking Forward
           </Typography>
-          <Typography paragraph>
-            {renderField(fields.lookingForward)}
-          </Typography>
+          <Typography paragraph>{renderField(lookingForward)}</Typography>
         </Section>
       )}
-      {fields.relativeNumbers && (
+      {relativeNumbers && (
         <Section>
           <Typography variant="h5" gutterBottom>
             Relative Numbers
           </Typography>
-          <Typography paragraph>
-            {renderField(fields.relativeNumbers)}
-          </Typography>
+          <Typography paragraph>{renderField(relativeNumbers)}</Typography>
         </Section>
       )}
       <Section>
@@ -223,55 +302,37 @@ const Valuation = () => {
         </Typography>
         <Typography paragraph>
           <NumberSpan>
-            <FormatRawNumberToPercent value={fields.cagrYearOneToFive} />
+            <FormatRawNumberToPercent value={cagrYearOneToFive} />
           </NumberSpan>
-          {fields.cagrYearOneToFiveDescription}
+          {cagrYearOneToFiveDescription.childMdx.excerpt}
         </Typography>
         <Typography variant="h6" gutterBottom>
           {ebitTargetMarginInYearTenLabel}
         </Typography>
         <Typography paragraph>
           <NumberSpan>
-            <FormatRawNumberToPercent
-              value={fields.ebitTargetMarginInYearTen}
-            />
+            <FormatRawNumberToPercent value={ebitTargetMarginInYearTen} />
           </NumberSpan>
-          {fields.ebitTargetMarginInYearTenDescription}
+          {ebitTargetMarginInYearTenDescription.childMdx.excerpt}
         </Typography>
         <Typography variant="h6" gutterBottom>
           {yearOfConvergenceLabel}
         </Typography>
         <Typography paragraph>
           <NumberSpan>
-            <FormatRawNumberToYear value={fields.yearOfConvergence} />
+            <FormatRawNumberToYear value={yearOfConvergence} />
           </NumberSpan>
-          {fields.yearOfConvergenceDescription}
+          {yearOfConvergenceDescription.childMdx.excerpt}
         </Typography>
         <Typography variant="h6" gutterBottom>
           {salesToCapitalRatioLabel}
         </Typography>
         <Typography paragraph>
           <NumberSpan>
-            <FormatRawNumber
-              decimalScale={2}
-              value={fields.salesToCapitalRatio}
-            />
+            <FormatRawNumber decimalScale={2} value={salesToCapitalRatio} />
           </NumberSpan>
-          {fields.salesToCapitalRatioDescription}
+          {salesToCapitalRatioDescription.childMdx.excerpt}
         </Typography>
-        {fields.pretaxCostOfDebt && (
-          <>
-            <Typography variant="h6" gutterBottom>
-              {pretaxCostOfDebtLabel}
-            </Typography>
-            <Typography paragraph>
-              <NumberSpan>
-                <FormatRawNumberToPercent value={fields.pretaxCostOfDebt} />
-              </NumberSpan>
-              {fields.pretaxCostOfDebtDescription}
-            </Typography>
-          </>
-        )}
       </Section>
       <Section>
         <IndustryAveragesResults />

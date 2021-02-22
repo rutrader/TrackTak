@@ -30,11 +30,3 @@ export const getAutocompleteQuery = async (query, params) => {
     params,
   });
 };
-
-export const getContentfulEntries = async (params) => {
-  return axios.get(`/api/v1/contentful/getEntries`, params);
-};
-
-export const getContentfulEntry = async (id, params) => {
-  return axios.get(`/api/v1/contentful/getEntry/${id}`, params);
-};

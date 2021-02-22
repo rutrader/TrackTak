@@ -1,4 +1,3 @@
-import { createSelector } from "@reduxjs/toolkit";
 import useQueryParams from "./useQueryParams";
 
 export const cagrYearOneToFiveQueryName = "cagrYearOneToFive";
@@ -13,8 +12,7 @@ export const requiredInputQueries = [
   { name: salesToCapitalRatioQueryName, type: "number" },
 ];
 
-export const inputQueries = [
-  ...requiredInputQueries,
+export const optionalInputQueries = [
   { name: "numberOfEmployeeOptionsOutstanding", type: "million" },
   { name: "averageStrikePrice", type: "currency" },
   { name: "averageMaturityOfOptions", type: "year" },
@@ -30,6 +28,8 @@ export const inputQueries = [
   { name: "probabilityOfFailure", type: "percent" },
   { name: "proceedsAsAPercentageOfBookValue", type: "percent" },
 ];
+
+export const inputQueries = [...requiredInputQueries, ...optionalInputQueries];
 
 const getInputQueryParams = (query) => {
   const inputQueryParams = {};

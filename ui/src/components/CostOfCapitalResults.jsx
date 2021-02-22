@@ -17,8 +17,10 @@ import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurre
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
 import StatsContainer from "../shared/StatsContainer";
 import { Link } from "gatsby";
-import { useParams, useLocation } from "@reach/router";
+import { useLocation } from "@reach/router";
 import useInjectQueryParams from "../hooks/useInjectQueryParams";
+import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
+import useVirtualExchange from "../hooks/useVirtualExchange";
 
 const CostOfCapitalResults = () => {
   const theme = useTheme();
@@ -27,13 +29,14 @@ const CostOfCapitalResults = () => {
   const currentEquityRiskPremiumCountry = useSelector(
     selectCurrentEquityRiskPremium,
   );
+  const general = useSelector(selectGeneral);
+  const exchange = useVirtualExchange();
   const inputQueryParams = useInputQueryParams();
   const costOfCapital = useInjectQueryParams(selectCostOfCapital);
   const riskFreeRate = useSelector(selectRiskFreeRate);
   const pretaxCostOfDebt = useInjectQueryParams(selectPretaxCostOfDebt);
   const useQueryPretaxCostOfDebt =
     inputQueryParams.pretaxCostOfDebt !== undefined;
-  const params = useParams();
   const location = useLocation();
 
   return (
@@ -78,7 +81,7 @@ const CostOfCapitalResults = () => {
                 <Box>
                   {pretaxCostOfDebtLabel}&nbsp;
                   <Link
-                    to={`/stock/${params.ticker}${location.search}/synthetic-credit-rating`}
+                    to={`/stock/${general.Code}.${exchange}${location.search}/synthetic-credit-rating`}
                   >
                     (Synthetic Credit Rating)
                   </Link>

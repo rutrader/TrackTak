@@ -1,6 +1,5 @@
 const axios = require("axios");
 const cache = require("memory-cache");
-const contentful = require("./contentful");
 const replaceDoubleColonWithObject = require("./replaceDoubleColonWithObject");
 
 const baseUrl = "https://eodhistoricaldata.com/api";
@@ -179,31 +178,6 @@ const api = {
       "autocompleteQuery",
       { queryString, query },
     );
-    return data;
-  },
-  getContentfulEntries: async (query) => {
-    const data = await sendReqOrGetCachedData(
-      async () => {
-        const res = await contentful.getEntries(query);
-
-        return res;
-      },
-      "contentfulEntries",
-      { query },
-    );
-    return data;
-  },
-  getContentfulEntry: async (id, query) => {
-    const data = await sendReqOrGetCachedData(
-      async () => {
-        const res = await contentful.getEntry(id, query);
-
-        return res;
-      },
-      "contentfulEntry",
-      { id, query },
-    );
-
     return data;
   },
 };

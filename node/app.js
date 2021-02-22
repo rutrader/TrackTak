@@ -69,18 +69,6 @@ app.get("/api/v1/autocomplete-query/:queryString", async (req, res) => {
   res.send({ value });
 });
 
-app.get("/api/v1/contentful/getEntries", async (req, res) => {
-  const value = await api.getContentfulEntries(req.query);
-
-  res.send(value);
-});
-
-app.get("/api/v1/contentful/getEntry/:id", async (req, res) => {
-  const value = await api.getContentfulEntry(req.params.id, req.query);
-
-  res.send(value);
-});
-
 app.get("/", (_, res) => {
   res.sendStatus(200);
 });
