@@ -10,12 +10,12 @@ const getChunksOfArray = (array, size) =>
 
 const generateSitemap = async () => {
   try {
-    const jsonNames = fs.readdirSync("./data").filter((jsonName) => {
+    const jsonNames = fs.readdirSync("./eodData").filter((jsonName) => {
       return !/CC|COMM|FOREX|IL|MONEY|ETLX|GBOND|EUFUND|BOND|INDX/g.test(
-        jsonName
+        jsonName,
       );
     });
-    const jsons = jsonNames.flatMap((name) => require(`../data/${name}`));
+    const jsons = jsonNames.flatMap((name) => require(`../eodData/${name}`));
 
     // Sitemap must be 50k urls max
     const chunks = getChunksOfArray(jsons, 49000);
@@ -41,7 +41,7 @@ const generateSitemap = async () => {
 
       fs.writeFileSync(
         `./ui/public/sitemap${sitemapNumber}.xml`,
-        xml.join("\n")
+        xml.join("\n"),
       );
 
       return sitemapNumber;
