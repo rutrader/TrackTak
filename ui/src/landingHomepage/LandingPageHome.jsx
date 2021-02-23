@@ -7,6 +7,8 @@ import {
   IconButton,
   makeStyles,
   Hidden,
+  useMediaQuery,
+  useTheme,
 } from "@material-ui/core";
 import { ReactComponent as GridDots } from "../icons/grid-dots.svg";
 import laptopImage from "../icons/laptop-img.png";
@@ -127,9 +129,11 @@ const Background = styled.div`
 
 const LandingPageHome = () => {
   const classes = useStyles();
+  const theme = useTheme();
 
   const [showScroll, setShowScroll] = useState(false);
   const getScrollWithOffset = useScrollWithOffset();
+  const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const checkScrollTop = () => {
     if (window.pageYOffset > 400) {
@@ -167,6 +171,9 @@ const LandingPageHome = () => {
             nonumy eirmod tempor invidunt ut labore et dolore.
           </TypographyText>
           <CustomButton
+            //grow gap
+            //center button
+            isOnMobile={isOnMobile}
             component={NavHashLink}
             scroll={getScrollWithOffset()}
             to="#features"

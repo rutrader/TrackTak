@@ -25,6 +25,8 @@ const CustomIconButton = withStyles({
 const useStyles = makeStyles((theme) => ({
   footer: {
     paddingTop: "150px",
+    display: "flex",
+    justifyContent: "center",
   },
   row: {
     alignItems: "center",
@@ -37,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     left: 0,
     zIndex: -1,
+    width: "100%",
   },
 
   footerMenu: {

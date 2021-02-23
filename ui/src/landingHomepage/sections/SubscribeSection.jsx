@@ -146,7 +146,7 @@ const useStyles = makeStyles((theme) => {
     },
     input: {
       maxWidth: "487px",
-      minWidth: "300px",
+      minWidth: "400px",
       borderRadius: "33px",
       color: "#fff",
       fontSize: "16px",
