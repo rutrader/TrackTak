@@ -16,7 +16,7 @@ import getTitle from "../../shared/getTitle";
 import resourceName from "../../shared/resourceName";
 import LinesEllipsis from "react-lines-ellipsis";
 import { inputQueries } from "../../hooks/useInputQueryParams";
-import conertTickerToBeURLFriendly from "../../shared/conertTickerToBeURLFriendly";
+import convertTickerToBeURLFriendly from "../../shared/convertTickerToBeURLFriendly";
 
 const EOD_URL = "https://eodhistoricaldata.com";
 
@@ -62,7 +62,7 @@ const Valuations = ({ data }) => {
               }
             });
 
-            const valuationUrl = `/stock-valuations/${conertTickerToBeURLFriendly(
+            const valuationUrl = `/stock-valuations/${convertTickerToBeURLFriendly(
               ticker,
             )}?${searchParams.toString()}`;
 
