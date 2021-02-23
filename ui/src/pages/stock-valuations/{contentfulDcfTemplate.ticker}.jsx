@@ -3,7 +3,6 @@ import { useLocation } from "@reach/router";
 import { useDispatch, useSelector } from "react-redux";
 import { renderRichText } from "gatsby-source-contentful/rich-text";
 import { BLOCKS, INLINES } from "@contentful/rich-text-types";
-import ContainerDimensions from "react-container-dimensions";
 import YouTube from "react-youtube";
 import { graphql, Link as RouterLink } from "gatsby";
 import {
@@ -37,6 +36,8 @@ import { Helmet } from "react-helmet";
 import getTitle from "../../shared/getTitle";
 import resourceName from "../../shared/resourceName";
 import useVirtualExchange from "../../hooks/useVirtualExchange";
+import Img from "gatsby-image";
+import ReactMarkdown from "react-markdown";
 
 export const query = graphql`
   fragment ValuationInformation on ContentfulDcfTemplate {
@@ -74,11 +75,8 @@ export const query = graphql`
           ... on ContentfulAsset {
             contentful_id
             __typename
-            fixed(width: 1600) {
-              width
-              height
-              src
-              srcSet
+            fluid(maxWidth: 3080, quality: 90) {
+              ...GatsbyContentfulFluid_withWebp
             }
           }
         }
@@ -88,25 +86,34 @@ export const query = graphql`
       }
       relativeNumbers {
         raw
+        references {
+          ... on ContentfulAsset {
+            contentful_id
+            __typename
+            fluid(maxWidth: 3080, quality: 90) {
+              ...GatsbyContentfulFluid_withWebp
+            }
+          }
+        }
       }
       cagrYearOneToFiveDescription {
-        childMdx {
-          excerpt
+        childMarkdownRemark {
+          html
         }
       }
       ebitTargetMarginInYearTenDescription {
-        childMdx {
-          excerpt
+        childMarkdownRemark {
+          html
         }
       }
       salesToCapitalRatioDescription {
-        childMdx {
-          excerpt
+        childMarkdownRemark {
+          html
         }
       }
       yearOfConvergenceDescription {
-        childMdx {
-          excerpt
+        childMarkdownRemark {
+          html
         }
       }
     }
@@ -116,26 +123,7 @@ export const query = graphql`
 const options = {
   renderNode: {
     [BLOCKS.EMBEDDED_ASSET]: (node) => {
-      debugger;
-      const { fields } = node.data.target;
-      return null;
-      // const { file } = fields;
-
-      // return (
-      //   <Box
-      //     sx={{
-      //       display: "flex",
-      //       justifyContent: "center",
-      //       my: 2,
-      //     }}
-      //   >
-      //     <ContainerDimensions>
-      //       {({ width }) => (
-      //         <img src={`${file.url}?w=${width}`} alt={fields.title} />
-      //       )}
-      //     </ContainerDimensions>
-      //   </Box>
-      // );
+      return <Img {...node.data.target} />;
     },
     [INLINES.HYPERLINK]: (node) => {
       if (node.data.uri.includes("youtube.com")) {
@@ -169,6 +157,14 @@ const NumberSpan = ({ children, ...props }) => {
     </>
   );
 };
+
+const renderHtml = (html) => {
+  return <ReactMarkdown allowDangerousHtml>{html}</ReactMarkdown>;
+};
+
+const Container = ({ sx, ...props }) => (
+  <Typography paragraph sx={{ display: "flex" }} {...props} />
+);
 
 const renderField = (field) => renderRichText(field, options);
 
@@ -300,39 +296,41 @@ const Valuation = ({ data }) => {
         <Typography variant="h6" gutterBottom>
           {cagrInYearsOneToFiveLabel}
         </Typography>
-        <Typography paragraph>
+        <Container>
           <NumberSpan>
             <FormatRawNumberToPercent value={cagrYearOneToFive} />
           </NumberSpan>
-          {cagrYearOneToFiveDescription.childMdx.excerpt}
-        </Typography>
+          {renderHtml(cagrYearOneToFiveDescription.childMarkdownRemark.html)}
+        </Container>
         <Typography variant="h6" gutterBottom>
           {ebitTargetMarginInYearTenLabel}
         </Typography>
-        <Typography paragraph>
+        <Container>
           <NumberSpan>
             <FormatRawNumberToPercent value={ebitTargetMarginInYearTen} />
           </NumberSpan>
-          {ebitTargetMarginInYearTenDescription.childMdx.excerpt}
-        </Typography>
+          {renderHtml(
+            ebitTargetMarginInYearTenDescription.childMarkdownRemark.html,
+          )}
+        </Container>
         <Typography variant="h6" gutterBottom>
           {yearOfConvergenceLabel}
         </Typography>
-        <Typography paragraph>
+        <Container>
           <NumberSpan>
             <FormatRawNumberToYear value={yearOfConvergence} />
           </NumberSpan>
-          {yearOfConvergenceDescription.childMdx.excerpt}
-        </Typography>
+          {renderHtml(yearOfConvergenceDescription.childMarkdownRemark.html)}
+        </Container>
         <Typography variant="h6" gutterBottom>
           {salesToCapitalRatioLabel}
         </Typography>
-        <Typography paragraph>
+        <Container>
           <NumberSpan>
             <FormatRawNumber decimalScale={2} value={salesToCapitalRatio} />
           </NumberSpan>
-          {salesToCapitalRatioDescription.childMdx.excerpt}
-        </Typography>
+          {renderHtml(salesToCapitalRatioDescription.childMarkdownRemark.html)}
+        </Container>
       </Section>
       <Section>
         <IndustryAveragesResults />
@@ -382,7 +380,7 @@ const Valuation = ({ data }) => {
         <Typography>
           <Link
             component={RouterLink}
-            to={`/stock/${general.Code}.${exchange}${location.search}/discounted-cash-flow`}
+            to={`/stock/${general.Code}.${exchange}/discounted-cash-flow${location.search}`}
           >
             <b>Click here&nbsp;</b>
           </Link>

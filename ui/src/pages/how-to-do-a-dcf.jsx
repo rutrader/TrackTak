@@ -15,7 +15,7 @@ import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
 import { AnchorLink } from "gatsby-plugin-anchor-links";
-import { navigate } from "@reach/router";
+import { navigate } from "gatsby";
 
 const drawerWidth = 240;
 

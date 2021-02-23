@@ -81,7 +81,7 @@ const CostOfCapitalResults = () => {
                 <Box>
                   {pretaxCostOfDebtLabel}&nbsp;
                   <Link
-                    to={`/stock/${general.Code}.${exchange}${location.search}/synthetic-credit-rating`}
+                    to={`/stock/${general.Code}.${exchange}/synthetic-credit-rating${location.search}`}
                   >
                     (Synthetic Credit Rating)
                   </Link>
