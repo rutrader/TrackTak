@@ -6,12 +6,11 @@ import {
   TextField,
   useMediaQuery,
   useTheme,
+  Autocomplete,
 } from "@material-ui/core";
-import { Autocomplete } from "@material-ui/lab";
 import SearchIcon from "@material-ui/icons/Search";
 import { getAutocompleteQuery } from "../api/api";
 import useDebouncedCallback from "../hooks/useDebouncedCallback";
-import { navigate } from "@reach/router";
 
 const useStyles = makeStyles({
   submitButton: {
