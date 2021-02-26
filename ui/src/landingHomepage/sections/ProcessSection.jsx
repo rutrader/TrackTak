@@ -6,6 +6,8 @@ import {
   Box,
   makeStyles,
   Typography,
+  useMediaQuery,
+  useTheme,
   withStyles,
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -41,7 +43,7 @@ const CustomBox = ({ style, ...props }) => {
         position: "relative",
         zIndex: 1,
         paddingBottom: "150px",
-        paddingTop: "150px",
+        // paddingTop: "150px",
         ...style,
       }}
       {...props}
@@ -236,7 +238,10 @@ const images = [
 
 const ProcessSection = () => {
   const classes = useStyles();
+  const theme = useTheme();
+
   const [expandedIndex, setExpandedIndex] = React.useState(0);
+  const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const imageIndex = expandedIndex ?? 0;
 
   const handleChange = (panel) => (_, isExpanded) => {
@@ -244,7 +249,7 @@ const ProcessSection = () => {
   };
 
   return (
-    <CustomBox>
+    <CustomBox style={{ paddingTop: isOnMobile ? "50px" : "150px" }}>
       <BoxRowWrapper>
         <Box
           style={{

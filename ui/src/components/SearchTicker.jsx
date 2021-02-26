@@ -43,7 +43,7 @@ const TickerTextField = withStyles((theme) => ({
 const useStyles = makeStyles((theme) => ({
   input: {
     background: "#fff",
-    borderRadius: "33px",
+    borderRadius: "50px",
     fontSize: "18px",
     padding: theme.spacing(1, 1, 1, 2),
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,

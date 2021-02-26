@@ -35,18 +35,31 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CustomButton = withStyles({
-  root: {
-    textTransform: "none",
-    fontWeight: 600,
-    padding: "17px 44px",
-    fontSize: "20px",
-    borderRadius: "50px",
-    transition: "all .4s ease-in-out",
-    background: "#43cea2",
-    visibility: "visible",
-    animationDuration: "1.3s",
-    animationDelay: "0.8s",
-    animationName: "fadeInUp",
+  root: ({ isOnMobile }) => {
+    const values = {
+      textTransform: "none",
+      fontWeight: 600,
+      padding: "17px 44px",
+      fontSize: "20px",
+      borderRadius: "50px",
+      transition: "all .4s ease-in-out",
+      background: "#43cea2",
+      visibility: "visible",
+      animationDuration: "1.3s",
+      animationDelay: "0.8s",
+      animationName: "fadeInUp",
+    };
+
+    if (isOnMobile) {
+      return {
+        ...values,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      };
+    }
+
+    return values;
   },
 })(Button);
 
@@ -107,8 +120,7 @@ const TypographySearchText = withStyles({
 })(Typography);
 
 const Container = styled(Box)`
-  padding-top: 90px;
-  margin-bottom: 240px;
+  margin-top: 90px;
   width: 100%;
   height: 100%;
 `;
@@ -134,7 +146,6 @@ const LandingPageHome = () => {
   const [showScroll, setShowScroll] = useState(false);
   const getScrollWithOffset = useScrollWithOffset();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
   const checkScrollTop = () => {
     if (window.pageYOffset > 400) {
       setShowScroll(true);
@@ -146,11 +157,10 @@ const LandingPageHome = () => {
   const scrollTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-
   window.addEventListener("scroll", checkScrollTop);
 
   return (
-    <Container>
+    <Container style={{ marginBottom: isOnMobile ? "90px" : "240px" }}>
       <Background />
       <Box
         style={{
@@ -171,8 +181,6 @@ const LandingPageHome = () => {
             nonumy eirmod tempor invidunt ut labore et dolore.
           </TypographyText>
           <CustomButton
-            //grow gap
-            //center button
             isOnMobile={isOnMobile}
             component={NavHashLink}
             scroll={getScrollWithOffset()}
@@ -197,12 +205,20 @@ const LandingPageHome = () => {
         </Box>
       </Box>
       <Box
-        style={{
+        sx={{
           justifyContent: "center",
           marginTop: "120px",
         }}
       >
-        <TypographySearchText variant="h4" align="center" gutterBottom>
+        <TypographySearchText
+          style={{
+            color: isOnMobile ? "#313450" : "#fff",
+            fontSize: isOnMobile ? "20px" : "34px",
+          }}
+          variant="h4"
+          align="center"
+          gutterBottom
+        >
           Search for a company to begin.
         </TypographySearchText>
         <SearchTicker />
