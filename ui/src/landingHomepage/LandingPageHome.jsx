@@ -213,7 +213,6 @@ const LandingPageHome = () => {
         <TypographySearchText
           style={{
             color: isOnMobile ? "#313450" : "#fff",
-            fontSize: isOnMobile ? "20px" : "34px",
           }}
           variant="h4"
           align="center"
