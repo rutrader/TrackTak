@@ -1,13 +1,6 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Typography,
-  CircularProgress,
-  useTheme,
-  withStyles,
-} from "@material-ui/core";
+import { Box, Typography, withStyles } from "@material-ui/core";
 import "../shared/blueprintTheme.scss";
-import LazyLoad from "react-lazyload";
 import ExportToExcel from "./ExportToExcel";
 import DiscountedCashFlowTable from "./DiscountedCashFlowTable";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,23 +10,6 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import getRequiredInputsNotFilledInTitle from "../shared/getRequiredInputsNotFilledInTitle";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
-
-const Placeholder = () => {
-  const theme = useTheme();
-
-  return (
-    <Box
-      sx={{
-        paddingTop: theme.spacing(10),
-        height: 807,
-        display: "flex",
-        justifyContent: "center",
-      }}
-    >
-      <CircularProgress />
-    </Box>
-  );
-};
 
 const DiscountedCashFlowSheet = ({ columnWidths }) => {
   const dispatch = useDispatch();
@@ -112,12 +88,10 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
           <ExportToExcel />
         </Box>
       </Box>
-      <LazyLoad offset={300} placeholder={<Placeholder />}>
-        <DiscountedCashFlowTable
-          columnWidths={columnWidths}
-          showFormulas={showFormulas}
-        />
-      </LazyLoad>
+      <DiscountedCashFlowTable
+        columnWidths={columnWidths}
+        showFormulas={showFormulas}
+      />
     </Box>
   );
 };

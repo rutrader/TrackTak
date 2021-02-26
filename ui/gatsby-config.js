@@ -54,6 +54,7 @@ module.exports = {
       options: {
         accessToken: process.env.CONTENTFUL_API_KEY,
         spaceId: process.env.CONTENTFUL_SPACE_ID,
+        host: process.env.CONTENTFUL_HOST,
       },
     },
     {
