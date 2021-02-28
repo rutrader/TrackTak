@@ -6,8 +6,9 @@ import { BLOCKS, INLINES } from "@contentful/rich-text-types";
 import YouTube from "react-youtube";
 import { graphql, Link as RouterLink } from "gatsby";
 import {
-  setFundamentalsDataThunk,
-  setLastPriceClose,
+  getLastPriceCloseThunk,
+  getTenYearGovernmentBondLastCloseThunk,
+  setFundamentals,
 } from "../../redux/actions/fundamentalsActions";
 import CompanyOverviewStats from "../../components/CompanyOverviewStats";
 import { Box, Link, Typography } from "@material-ui/core";
@@ -26,11 +27,9 @@ import FormatRawNumberToCurrency from "../../components/FormatRawNumberToCurrenc
 import * as styles from "../../shared/valuation.module.scss";
 import CostOfCapitalResults from "../../components/CostOfCapitalResults";
 import dayjs from "dayjs";
-import { getPrices } from "../../api/api";
 import DiscountedCashFlowSheet from "../../discountedCashFlow/DiscountedCashFlowSheet";
 import IndustryAveragesResults from "../../components/IndustryAveragesResults";
 import selectPrice from "../../selectors/fundamentalSelectors/selectPrice";
-import selectFundamentalsIsLoaded from "../../selectors/fundamentalSelectors/selectFundamentalsIsLoaded";
 import selectCells from "../../selectors/dcfSelectors/selectCells";
 import { Helmet } from "react-helmet";
 import getTitle from "../../shared/getTitle";
@@ -172,7 +171,6 @@ const Valuation = ({ data }) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const price = useSelector(selectPrice);
-  const isLoaded = useSelector(selectFundamentalsIsLoaded);
   const estimatedValuePerShare = useSelector(
     (state) => selectCells(state).B36.value,
   );
@@ -196,27 +194,40 @@ const Valuation = ({ data }) => {
   } = data.contentfulDcfTemplate;
 
   const parsedFinancialData = JSON.parse(financialData.internal.content);
-  const { General: general } = parsedFinancialData;
+  const { General } = parsedFinancialData;
 
   useEffect(() => {
-    const fetchStockData = async () => {
-      dispatch(
-        setFundamentalsDataThunk({
-          data: parsedFinancialData,
-          ticker,
-          tenYearGovernmentBondLastCloseTo: dateOfValuation,
-        }),
-      );
-      const res = await getPrices(ticker, {
-        to: dateOfValuation,
-        filter: "last_close",
-      });
-      dispatch(setLastPriceClose(res.data.value));
-    };
-    fetchStockData();
-  }, [financialData, dateOfValuation, dispatch, ticker, parsedFinancialData]);
+    dispatch(
+      setFundamentals({
+        data: parsedFinancialData,
+      }),
+    );
 
-  if (!isLoaded) return null;
+    dispatch(
+      getTenYearGovernmentBondLastCloseThunk({
+        countryISO: General.CountryISO,
+        params: {
+          to: dateOfValuation,
+        },
+      }),
+    );
+
+    dispatch(
+      getLastPriceCloseThunk({
+        ticker,
+        params: {
+          to: dateOfValuation,
+        },
+      }),
+    );
+  }, [
+    financialData,
+    dateOfValuation,
+    dispatch,
+    ticker,
+    parsedFinancialData,
+    General.CountryISO,
+  ]);
 
   const marginOfSafety =
     (estimatedValuePerShare - price) / estimatedValuePerShare;
@@ -227,10 +238,10 @@ const Valuation = ({ data }) => {
   return (
     <>
       <Helmet>
-        <title>{getTitle(`${general.Name} Valuation`)}</title>
+        <title>{getTitle(`${General.Name} Valuation`)}</title>
         <link
           rel="canonical"
-          href={`${resourceName}/stock-valuations/${`${general.Code}-${exchange}`.toLowerCase()}${
+          href={`${resourceName}/stock-valuations/${`${General.Code}-${exchange}`.toLowerCase()}${
             location.search
           }`}
         />
@@ -240,7 +251,7 @@ const Valuation = ({ data }) => {
         <Typography variant="h5" gutterBottom>
           Business Description
         </Typography>
-        <Typography paragraph>{general.Description}</Typography>
+        <Typography paragraph>{General.Description}</Typography>
         {extraBusinessDescription && (
           <Typography paragraph>
             {renderField(extraBusinessDescription)}
@@ -380,7 +391,7 @@ const Valuation = ({ data }) => {
         <Typography>
           <Link
             component={RouterLink}
-            to={`/stock/${general.Code}.${exchange}/discounted-cash-flow${location.search}`}
+            to={`/stock/${General.Code}.${exchange}/discounted-cash-flow${location.search}`}
           >
             <b>Click here&nbsp;</b>
           </Link>

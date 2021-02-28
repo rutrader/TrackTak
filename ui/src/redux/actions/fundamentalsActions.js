@@ -9,68 +9,88 @@ import {
 } from "../../api/api";
 import dayjs from "dayjs";
 import { yearMonthDateFormat } from "../../shared/utils";
+import convertHyphenTickerToDot from "../../shared/convertHyphenTickerToDot";
 import getMinimumHistoricalDateFromFinancialStatements from "../../shared/getMinimumHistoricalDateFromFinancialStatements";
 
+export const setFundamentals = createAction("fundamentals/setFundamentals");
+export const setExchangeRates = createAction("fundamentals/setExchangeRates");
 export const setTenYearGovernmentBondLastClose = createAction(
   "fundamentals/setTenYearGovernmentBondLastClose",
 );
 
-export const setExchangeRate = createAction("fundamentals/setExchangeRate");
-
-export const setLastPriceClose = createAction("fundamentals/setLastPriceClose");
-
-export const setFundamentalsDataThunk = createAsyncThunk(
-  "fundamentals/setFundamentalsData",
-  async ({ data, tenYearGovernmentBondLastCloseTo }, { dispatch }) => {
-    const baseCurrency = data.Financials.Balance_Sheet.currency_symbol;
-    const quoteCurrency = data.General.CurrencyCode;
+export const getExchangeRatesThunk = createAsyncThunk(
+  "fundamentals/getExchangeRates",
+  async ({ currencyCode, incomeStatement, balanceSheet }) => {
+    const baseCurrency = balanceSheet.currency_symbol;
+    const quoteCurrency = currencyCode;
     // UK stocks are quoted in pence so we convert it to GBP for ease of use
     const convertedBaseCurrency = convertGBXToGBP(baseCurrency);
     const convertedQuoteCurrency = convertGBXToGBP(quoteCurrency);
     const from = dayjs(
-      getMinimumHistoricalDateFromFinancialStatements(data),
+      getMinimumHistoricalDateFromFinancialStatements(
+        incomeStatement,
+        balanceSheet,
+      ),
     ).format(yearMonthDateFormat);
 
-    const promises = [
-      getGovernmentBond(data.General.CountryISO, 10, {
-        to: tenYearGovernmentBondLastCloseTo,
-        filter: "last_close",
-      }),
-    ];
-
     if (convertedBaseCurrency !== convertedQuoteCurrency) {
-      promises.push(
-        getExchangeRate(convertedBaseCurrency, convertedQuoteCurrency, {
+      const { data } = await getExchangeRate(
+        convertedBaseCurrency,
+        convertedQuoteCurrency,
+        {
           period: "m",
           from,
-        }),
+        },
       );
+
+      return data.value;
     }
+  },
+);
 
-    const res = await Promise.all(promises);
+export const getTenYearGovernmentBondLastCloseThunk = createAsyncThunk(
+  "fundamentals/getTenYearGovernmentBondLastCloseThunk",
+  async ({ countryISO, params }, { dispatch }) => {
+    const { data } = await getGovernmentBond(`${countryISO}10Y`, {
+      ...params,
+      filter: "last_close",
+    });
 
-    dispatch(setTenYearGovernmentBondLastClose(res[0].data.value));
-    dispatch(setExchangeRate(res[1]?.data.value));
+    dispatch(setTenYearGovernmentBondLastClose(data.value));
+  },
+);
 
-    return {
-      data,
-    };
+export const getLastPriceCloseThunk = createAsyncThunk(
+  "fundamentals/getLastPriceClose",
+  async ({ ticker, params }) => {
+    const convertedTicker = convertHyphenTickerToDot(ticker);
+
+    const { data } = await getPrices(convertedTicker, {
+      ...params,
+      filter: "last_close",
+    });
+
+    return data.value;
   },
 );
 
 export const getFundamentalsThunk = createAsyncThunk(
   "fundamentals/getFundamentals",
   async ({ ticker, filter }, { dispatch }) => {
-    const pricesPromise = getPrices(ticker, {
-      filter: "last_close",
-    });
-    const fundamentalsPromise = getFundamentals(ticker, {
+    const convertedTicker = convertHyphenTickerToDot(ticker);
+    const { data } = await getFundamentals(convertedTicker, {
       filter,
     });
+    const fundamentalsData = data.value;
+    const exchangeRates = await dispatch(
+      getExchangeRatesThunk({
+        currencyCode: fundamentalsData.General.CurrencyCode,
+        incomeStatement: fundamentalsData.Financials.Income_Statement,
+        balanceSheet: fundamentalsData.Financials.Balance_Sheet,
+      }),
+    );
 
-    const res = await Promise.all([pricesPromise, fundamentalsPromise]);
-
-    dispatch(setLastPriceClose(res[0].data.value));
-    dispatch(setFundamentalsDataThunk({ data: res[1].data.value, ticker }));
+    dispatch(setExchangeRates(exchangeRates.payload));
+    dispatch(setFundamentals(fundamentalsData));
   },
 );

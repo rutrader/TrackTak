@@ -78,7 +78,7 @@ const Header = ({ hideSearch }) => {
             </Box>
             <Hidden mdDown>
               {leftLinks.map((link) => (
-                <HeaderLink {...link} />
+                <HeaderLink key={link.to} {...link} />
               ))}
             </Hidden>
             <Box
@@ -88,7 +88,11 @@ const Header = ({ hideSearch }) => {
             </Box>
             <Hidden mdDown>
               {rightLinks.map((link, i) => (
-                <HeaderLink sx={{ ml: i === 0 ? 2 : 0 }} {...link} />
+                <HeaderLink
+                  key={link.to}
+                  sx={{ ml: i === 0 ? 2 : 0 }}
+                  {...link}
+                />
               ))}
             </Hidden>
             <Hidden mdUp>
@@ -109,6 +113,7 @@ const Header = ({ hideSearch }) => {
                 >
                   {allLinks.map((link) => (
                     <MenuItem
+                      key={link.to}
                       to={link.to}
                       component={Link}
                       onClick={handleClose}

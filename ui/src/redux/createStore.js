@@ -11,7 +11,7 @@ const { routerMiddleware } = createReduxHistoryContext({
   history: isSSR ? createMemoryHistory() : createBrowserHistory(),
 });
 
-const store = configureStore({
+export const store = configureStore({
   reducer: combineReducers({
     fundamentals: fundamentalsReducer,
     page: pageReducer,

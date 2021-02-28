@@ -1,7 +1,6 @@
 import {
   Box,
   Typography,
-  withStyles,
   Hidden,
   useMediaQuery,
   useTheme,
@@ -19,23 +18,17 @@ import resourceName from "../shared/resourceName";
 
 const textColor = "#292929";
 
-const useIconStyles = makeStyles({
-  root: {
+const useStyles = makeStyles({
+  icon: {
     minWidth: 50,
     minHeight: 50,
   },
-});
-
-const TypographyHeader = withStyles({
-  root: {
+  typographyHeader: {
     fontWeight: "bold",
     fontSize: ({ isOnMobile }) => (isOnMobile ? 30 : 30),
     color: textColor,
   },
-})(Typography);
-
-const TypographyText = withStyles({
-  root: {
+  typographyText: {
     fontSize: 20,
     textAlign: "center",
     color: textColor,
@@ -43,12 +36,12 @@ const TypographyText = withStyles({
     flexShrink: 0,
     flexBasis: ({ isOnMobile }) => (isOnMobile ? "100%" : "30%"),
   },
-})(Typography);
+});
 
 const Home = () => {
-  const iconClasses = useIconStyles();
   const theme = useTheme();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const classes = useStyles({ isOnMobile });
 
   return (
     <>
@@ -61,10 +54,10 @@ const Home = () => {
           mt: 12,
         }}
       >
-        <TypographyHeader isOnMobile={isOnMobile} align="center">
+        <Typography classes={{ root: classes.typographyHeader }} align="center">
           Goodbye, Excel.
           <Box>Hello, automated Discounted Cash Flows.</Box>
-        </TypographyHeader>
+        </Typography>
       </Box>
       <Box
         sx={{
@@ -75,33 +68,27 @@ const Home = () => {
           my: 5,
         }}
       >
-        <TypographyText isOnMobile={isOnMobile}>
+        <Typography classes={{ root: classes.typographyText }}>
           <Box>
-            <SettingsIcon
-              classes={{ root: iconClasses.root }}
-              color="primary"
-            />
+            <SettingsIcon classes={{ root: classes.icon }} color="primary" />
           </Box>
           Use our DCF calculator to find a companies true intrinsic value for
           free within minutes.
-        </TypographyText>
-        <TypographyText isOnMobile={isOnMobile}>
+        </Typography>
+        <Typography classes={{ root: classes.typographyText }}>
           <Box>
-            <TrendingUpIcon
-              classes={{ root: iconClasses.root }}
-              color="primary"
-            />
+            <TrendingUpIcon classes={{ root: classes.icon }} color="primary" />
           </Box>
           Fully transparent and based on Aswath Damoradan's models showing you
           each formula.
-        </TypographyText>
-        <TypographyText isOnMobile={isOnMobile}>
+        </Typography>
+        <Typography classes={{ root: classes.typographyText }}>
           <Box>
-            <PublicIcon classes={{ root: iconClasses.root }} color="primary" />
+            <PublicIcon classes={{ root: classes.icon }} color="primary" />
           </Box>
           Support for over 60+ stock exchanges and more than 120,000 tickers all
           over the world.
-        </TypographyText>
+        </Typography>
       </Box>
       <Box
         sx={{

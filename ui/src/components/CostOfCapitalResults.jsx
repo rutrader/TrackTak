@@ -38,6 +38,7 @@ const CostOfCapitalResults = () => {
   const useQueryPretaxCostOfDebt =
     inputQueryParams.pretaxCostOfDebt !== undefined;
   const location = useLocation();
+  const ticker = `${general.Code}-${exchange}`.toLowerCase();
 
   return (
     <>
@@ -81,7 +82,7 @@ const CostOfCapitalResults = () => {
                 <Box>
                   {pretaxCostOfDebtLabel}&nbsp;
                   <Link
-                    to={`/stock/${general.Code}.${exchange}/synthetic-credit-rating${location.search}`}
+                    to={`/stock/${ticker}/synthetic-credit-rating${location.search}`}
                   >
                     (Synthetic Credit Rating)
                   </Link>

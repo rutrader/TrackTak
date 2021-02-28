@@ -1,9 +1,8 @@
 import { createReducer } from "@reduxjs/toolkit";
 import {
-  getFundamentalsThunk,
-  setExchangeRate,
-  setFundamentalsDataThunk,
-  setLastPriceClose,
+  getLastPriceCloseThunk,
+  setFundamentals,
+  setExchangeRates,
   setTenYearGovernmentBondLastClose,
 } from "../actions/fundamentalsActions";
 
@@ -11,13 +10,11 @@ const initialState = {
   governmentBondTenYearYield: null,
   priceLastClose: null,
   data: null,
-  isLoaded: false,
   exchangeRates: null,
 };
 
 const setFundamentalsReducer = (state, action) => {
-  state.data = action.payload.data;
-  state.isLoaded = true;
+  state.data = action.payload;
 };
 
 const setLastPriceCloseReducer = (state, action) => {
@@ -44,17 +41,11 @@ const setExchangeRateReducer = (state, { payload = {} }) => {
 };
 
 export const fundamentalsReducer = createReducer(initialState, (builder) => {
-  builder.addCase(setLastPriceClose, setLastPriceCloseReducer);
-  builder.addCase(setFundamentalsDataThunk.fulfilled, setFundamentalsReducer);
-  builder.addCase(getFundamentalsThunk.pending, (state) => {
-    state.isLoaded = false;
-  });
-  builder.addCase(getFundamentalsThunk.rejected, (state) => {
-    state.isLoaded = false;
-  });
+  builder.addCase(getLastPriceCloseThunk.fulfilled, setLastPriceCloseReducer);
+  builder.addCase(setFundamentals, setFundamentalsReducer);
   builder.addCase(
     setTenYearGovernmentBondLastClose,
     setGovernmentBondTenYearLastCloseReducer,
   );
-  builder.addCase(setExchangeRate, setExchangeRateReducer);
+  builder.addCase(setExchangeRates, setExchangeRateReducer);
 });

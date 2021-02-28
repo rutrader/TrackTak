@@ -1,9 +1,12 @@
 require("dotenv-flow").config();
 
 module.exports = {
-  flags: { PRESERVE_WEBPACK_CACHE: true },
+  flags: {
+    PRESERVE_WEBPACK_CACHE: true,
+  },
   siteMetadata: {
     title: "tracktak",
+    siteUrl: "https://tracktak.com",
   },
   plugins: [
     {
@@ -22,10 +25,6 @@ module.exports = {
         offset: -60,
         duration: 0,
       },
-    },
-    {
-      resolve: "gatsby-plugin-create-client-paths",
-      options: { prefixes: ["/stock/*"] },
     },
     "gatsby-plugin-react-helmet",
     "gatsby-plugin-layout",

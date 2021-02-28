@@ -1,10 +1,17 @@
+require("dotenv-flow").config();
+
 const fs = require("fs");
 const path = require("path");
 
-const fundamentalsDataDir = `${__dirname}/fundamentalsData`;
-const fundamentalsData = fs
+const fundamentalsDataDir = `${__dirname}/data/fundamentalsData`;
+
+const fundamentals = fs
   .readdirSync(fundamentalsDataDir)
-  .map((name) => require(path.join(fundamentalsDataDir, name)))[0];
+  .flatMap((name) => require(path.join(fundamentalsDataDir, name)))
+  .filter(
+    ({ General, Highlights }) =>
+      Highlights.MostRecentQuarter !== "0000-00-00" && General.Industry,
+  )[0];
 
 exports.onCreatePage = ({ page, actions }) => {
   const { createPage } = actions;
@@ -21,83 +28,34 @@ exports.onCreatePage = ({ page, actions }) => {
   }
 };
 
-exports.sourceNodes = ({
+exports.sourceNodes = async ({
   actions: { createNode },
   createNodeId,
   createContentDigest,
 }) => {
-  return [fundamentalsData].flatMap((arr) => {
-    return arr.map((datum) => {
-      const {
-        General,
-        Financials: { Balance_Sheet, Income_Statement },
-        Highlights: { MarketCapitalization, MostRecentQuarter },
-      } = datum;
+  [fundamentals].forEach((datum) => {
+    const {
+      General,
+      Highlights: { MostRecentQuarter, MarketCapitalization },
+    } = datum;
 
-      if (MostRecentQuarter === "0000-00-00") {
-        return undefined;
-      }
+    const isInUS = General.CountryISO === "US";
+    const ticker = isInUS
+      ? `${General.Code}-${General.CountryISO}`
+      : `${General.Code}-${General.Exchange}`;
 
-      const balanceSheet = {
-        quarterly: {},
-        yearly: {},
-      };
-
-      const incomeStatement = {
-        quarterly: {},
-        yearly: {},
-      };
-
-      Object.keys(Balance_Sheet).forEach((key) => {
-        if (key.includes("quarterly")) {
-          const current = Balance_Sheet[key];
-
-          balanceSheet.quarterly[current.date] = current;
-        }
-
-        if (key.includes("yearly")) {
-          const current = Balance_Sheet[key];
-
-          balanceSheet.yearly[current.date] = current;
-        }
-      });
-
-      Object.keys(Income_Statement).forEach((key) => {
-        if (key.includes("quarterly")) {
-          const current = Income_Statement[key];
-
-          incomeStatement.quarterly[current.date] = current;
-        }
-
-        if (key.includes("yearly")) {
-          const current = Income_Statement[key];
-
-          incomeStatement.yearly[current.date] = current;
-        }
-      });
-
-      return createNode({
-        id: createNodeId(`${General.Code}-${General.Exchange}`),
-        internal: {
-          type: `StockFundamentals`,
-          contentDigest: createContentDigest(datum),
-        },
-        Financials: {
-          Balance_Sheet: {
-            currency_symbol: Balance_Sheet.currency_symbol,
-            ...balanceSheet,
-          },
-          Income_Statement: {
-            currency_symbol: Income_Statement.currency_symbol,
-            ...incomeStatement,
-          },
-        },
-        Highlights: {
-          MarketCapitalization,
-          MostRecentQuarter,
-        },
-        General,
-      });
+    createNode({
+      id: createNodeId(ticker),
+      internal: {
+        type: `StockFundamentals`,
+        contentDigest: createContentDigest(datum),
+      },
+      ticker,
+      General,
+      Highlights: {
+        MostRecentQuarter,
+        MarketCapitalization,
+      },
     });
   });
 };

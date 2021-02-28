@@ -2,8 +2,13 @@ import { Box, Paper, Tab, Tabs, useTheme } from "@material-ui/core";
 import React from "react";
 import { useLocation } from "@reach/router";
 import { Link } from "gatsby";
-import { stockPaths } from "../pages/stock";
 import { sentenceCase } from "change-case";
+
+const stockPaths = [
+  "/discounted-cash-flow",
+  "/synthetic-credit-rating",
+  "/industry-averages",
+];
 
 const TTTabs = ({ ticker }) => {
   const location = useLocation();
@@ -35,7 +40,7 @@ const TTTabs = ({ ticker }) => {
         >
           {stockPaths.map((path) => {
             const label = sentenceCase(path.split("/")[1].replace(/-/g, " "));
-            const value = `/stock/${ticker}${path}`;
+            const value = `/stock/${ticker.toLowerCase()}${path}`;
 
             return (
               <Tab

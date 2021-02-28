@@ -10,12 +10,14 @@ const selectCurrentIndustry = createSelector(
   (general, isInUS) => {
     const currentIndustryMutated = general.Industry.replace(
       spaceRegex,
-      ""
+      "",
     ).toUpperCase();
+
     const mappedCurrentIndustry = industryMapping[currentIndustryMutated];
     const industryAverages = isInUS
       ? industryAverage.US
       : industryAverage.global;
+
     const currentIndustry = industryAverages.find((datum) => {
       return datum.industryName === mappedCurrentIndustry;
     });
@@ -25,7 +27,7 @@ const selectCurrentIndustry = createSelector(
       standardDeviationInStockPrices:
         currentIndustry.standardDeviationInStockPrices,
     };
-  }
+  },
 );
 
 export default selectCurrentIndustry;

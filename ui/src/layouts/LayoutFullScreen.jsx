@@ -1,9 +1,42 @@
 import { Container } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { fundamentalsFilter } from "../api/api";
 import Header from "../components/Header";
 import TTTabs from "../components/TTTabs";
+import {
+  getFundamentalsThunk,
+  getLastPriceCloseThunk,
+  getTenYearGovernmentBondLastCloseThunk,
+} from "../redux/actions/fundamentalsActions";
 
-const LayoutFullScreen = ({ children, ticker }) => {
+const LayoutFullScreen = ({
+  children,
+  stockFundamentals: { General, ticker },
+}) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(
+      getFundamentalsThunk({
+        ticker,
+        filter: fundamentalsFilter,
+      }),
+    );
+
+    dispatch(
+      getTenYearGovernmentBondLastCloseThunk({
+        countryISO: General.CountryISO,
+      }),
+    );
+
+    dispatch(
+      getLastPriceCloseThunk({
+        ticker,
+      }),
+    );
+  }, [General.CountryISO, dispatch, ticker]);
+
   return (
     <Container maxWidth={false}>
       <Header />

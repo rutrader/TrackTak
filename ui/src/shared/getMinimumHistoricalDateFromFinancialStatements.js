@@ -1,10 +1,13 @@
 import dayjs from "dayjs";
 import { monthDateFormat } from "./utils";
 
-const getMinimumHistoricalDateFromFinancialStatements = (data) => {
+const getMinimumHistoricalDateFromFinancialStatements = (
+  incomeStatement,
+  balanceSheet,
+) => {
   const mergedStatements = {
-    ...data.Financials.Income_Statement.yearly,
-    ...data.Financials.Balance_Sheet.yearly,
+    ...incomeStatement.yearly,
+    ...balanceSheet.yearly,
   };
 
   let minDate;

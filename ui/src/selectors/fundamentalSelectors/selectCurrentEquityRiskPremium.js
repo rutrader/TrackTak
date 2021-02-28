@@ -2,6 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import selectGeneral from "./selectGeneral";
 import equityRiskPremiumCountriesJson from "../../data/equityRiskPremiumCountries.json";
 import selectPriceLastClose from "./selectPriceLastClose";
+import getCountryFromCountryISO from "../../shared/getCountryFromCountryISO";
 
 const convertToPercent = (value) => parseFloat(value) / 100;
 
@@ -17,7 +18,9 @@ const selectCurrentEquityRiskPremium = createSelector(
     } = equityRiskPremiumCountriesJson.find((datum) => {
       const country = datum.country.toUpperCase();
 
-      return country === general.AddressData.Country.toUpperCase();
+      return (
+        country === getCountryFromCountryISO(general.CountryISO).toUpperCase()
+      );
     });
 
     const currentEquityRiskPremium = {
@@ -29,12 +32,12 @@ const selectCurrentEquityRiskPremium = createSelector(
 
     Object.keys(currentEquityRiskPremium).forEach((key) => {
       currentEquityRiskPremium[key] = convertToPercent(
-        currentEquityRiskPremium[key]
+        currentEquityRiskPremium[key],
       );
     });
 
     return currentEquityRiskPremium;
-  }
+  },
 );
 
 export default selectCurrentEquityRiskPremium;

@@ -8,6 +8,7 @@ import {
   useTheme,
   Autocomplete,
 } from "@material-ui/core";
+import { navigate } from "gatsby";
 import SearchIcon from "@material-ui/icons/Search";
 import { getAutocompleteQuery } from "../api/api";
 import useDebouncedCallback from "../hooks/useDebouncedCallback";
@@ -51,7 +52,7 @@ const SearchTicker = ({ removeInputPadding }) => {
 
   const handleOnChangeAutoComplete = (_, value) => {
     if (value?.code && value?.exchange) {
-      setTicker(`${value.code}.${value.exchange}`);
+      setTicker(`${value.code}-${value.exchange}`.toLowerCase());
       setText("");
     }
   };
@@ -81,8 +82,7 @@ const SearchTicker = ({ removeInputPadding }) => {
         e.preventDefault();
 
         if (ticker) {
-          // TODO: Fix to navigate() later
-          window.location.href = `/stock/${ticker}/discounted-cash-flow`;
+          navigate(`/stock/${ticker}/discounted-cash-flow`);
         }
       }}
     >
@@ -113,9 +113,6 @@ const SearchTicker = ({ removeInputPadding }) => {
           setText("");
         }}
         clearIcon={null}
-        popoverProps={{
-          canAutoPosition: true,
-        }}
         renderInput={(params) => {
           return (
             <>

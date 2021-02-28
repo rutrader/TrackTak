@@ -19,8 +19,8 @@ export const getPrices = async (ticker, params) => {
   });
 };
 
-export const getGovernmentBond = async (countryISO, year, params) => {
-  return axios.get(`/api/v1/government-bond/${countryISO}/${year}`, {
+export const getGovernmentBond = async (code, params) => {
+  return axios.get(`/api/v1/government-bond/${code}`, {
     params,
   });
 };

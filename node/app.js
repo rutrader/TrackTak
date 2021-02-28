@@ -30,11 +30,8 @@ app.get("/api/v1/prices/:ticker", async (req, res) => {
   res.send({ value });
 });
 
-app.get("/api/v1/eur-base-exchange-rate/:quoteCurrency", async (req, res) => {
-  const value = await api.getEURBaseExchangeRate(
-    req.params.quoteCurrency,
-    req.query,
-  );
+app.get("/api/v1/eur-base-exchange-rate/:code", async (req, res) => {
+  const value = await api.getEURBaseExchangeRate(req.params.code, req.query);
 
   res.send({ value });
 });
@@ -52,12 +49,13 @@ app.get(
   },
 );
 
-app.get("/api/v1/government-bond/:countryCode/:year", async (req, res) => {
-  const value = await api.getGovernmentBond(
-    req.params.countryCode,
-    req.params.year,
-    req.query,
-  );
+app.get("/api/v1/exchange-symbol-list/:code", async (req, res) => {
+  const value = await api.getExchangeSymbolList(req.params.code, req.query);
+  res.send({ value });
+});
+
+app.get("/api/v1/government-bond/:code", async (req, res) => {
+  const value = await api.getGovernmentBond(req.params.code, req.query);
   res.send({ value });
 });
 
