@@ -11,7 +11,7 @@ const fundamentals = fs
   .filter(
     ({ General, Highlights }) =>
       Highlights.MostRecentQuarter !== "0000-00-00" && General.Industry,
-  )[0];
+  );
 
 exports.onCreatePage = ({ page, actions }) => {
   const { createPage } = actions;
@@ -33,7 +33,7 @@ exports.sourceNodes = async ({
   createNodeId,
   createContentDigest,
 }) => {
-  [fundamentals].forEach((datum) => {
+  fundamentals.forEach((datum) => {
     const {
       General,
       Highlights: { MostRecentQuarter, MarketCapitalization },

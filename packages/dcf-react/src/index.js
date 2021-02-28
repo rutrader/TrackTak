@@ -1,12 +1,12 @@
 export { default as TracktakProvider } from "./Provider";
-export { default as DiscountedCashFlowSheet } from "./discountedCashFlow/DiscountedCashFlowSheet";
-export { default as DiscountedCashFlow } from "./discountedCashFlow/DiscountedCashFlow";
+export { default as DiscountedCashFlowSheet } from "./components/DiscountedCashFlowSheet";
+export { default as DiscountedCashFlow } from "./components/DiscountedCashFlow";
 export { default as ValueDrivingInputs } from "./components/ValueDrivingInputs";
 export { default as OptionalInputs } from "./components/OptionalInputs";
 export { default as IndustryAveragesResults } from "./components/IndustryAveragesResults";
 export { default as CostOfCapitalResults } from "./components/CostOfCapitalResults";
 export { default as BlackScholesResults } from "./components/BlackScholesResults";
 export { default as PastFundamentals } from "./components/PastFundamentals";
-export { default as SyntheticRating } from "./syntheticRating/SyntheticRating";
-export { default as IndustryAverages } from "./industryAverages/IndustryAverages";
+export { default as SyntheticRating } from "./components/SyntheticRating";
+export { default as IndustryAverages } from "./components/IndustryAverages";
 export { default as TTTabs } from "./components/TTTabs";

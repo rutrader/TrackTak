@@ -87,7 +87,7 @@
   "scripts": {
     "generate-exh-pairs": "SET NODE_ENVIRONMENT=development && node ./scripts/writeECBExchangePairsToJSON.js",
     "generate-fundamentals": "SET NODE_ENVIRONMENT=development && node ./scripts/writeBulkFundamentalsDataToJSON.js",
-    "start": "gatsby develop",
+    "start": "SET NODE_OPTIONS=--max_old_space_size=8192 &&  gatsby develop",
     "build": "gatsby build",
     "serve": "gatsby serve",
     "clean": "gatsby clean"

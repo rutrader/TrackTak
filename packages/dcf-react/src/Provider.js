@@ -2,16 +2,18 @@ import { ThemeProvider } from "@material-ui/core";
 import React from "react";
 import { Provider as ReactReduxProvider } from "react-redux";
 import theme from "./theme";
-import { ConnectedRouter } from "connected-react-router";
-import { history } from "./redux/store";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import dayjs from "dayjs";
+import minMax from "dayjs/plugin/minMax";
+
+dayjs.extend(minMax);
+dayjs.extend(advancedFormat);
 
 const Provider = ({ children, store }) => {
   return (
     <React.StrictMode>
       <ThemeProvider theme={theme}>
-        <ReactReduxProvider store={store}>
-          <ConnectedRouter history={history}>{children}</ConnectedRouter>
-        </ReactReduxProvider>
+        <ReactReduxProvider store={store}>{children}</ReactReduxProvider>
       </ThemeProvider>
     </React.StrictMode>
   );
