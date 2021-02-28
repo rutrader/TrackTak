@@ -8,7 +8,6 @@ import { graphql, Link as RouterLink } from "gatsby";
 import {
   getLastPriceCloseThunk,
   getTenYearGovernmentBondLastCloseThunk,
-  setFundamentals,
 } from "../../redux/actions/fundamentalsActions";
 import CompanyOverviewStats from "../../components/CompanyOverviewStats";
 import { Box, Link, Typography } from "@material-ui/core";
@@ -34,9 +33,9 @@ import selectCells from "../../selectors/dcfSelectors/selectCells";
 import { Helmet } from "react-helmet";
 import getTitle from "../../shared/getTitle";
 import resourceName from "../../shared/resourceName";
-import useVirtualExchange from "../../hooks/useVirtualExchange";
 import Img from "gatsby-image";
 import ReactMarkdown from "react-markdown";
+import selectGeneral from "../../selectors/fundamentalSelectors/selectGeneral";
 
 export const query = graphql`
   fragment ValuationInformation on ContentfulDcfTemplate {
@@ -174,11 +173,10 @@ const Valuation = ({ data }) => {
   const estimatedValuePerShare = useSelector(
     (state) => selectCells(state).B36.value,
   );
-  const exchange = useVirtualExchange();
+  const general = useSelector(selectGeneral);
   const {
     ticker,
     dateOfValuation,
-    data: financialData,
     yearOfConvergence,
     salesToCapitalRatio,
     cagrYearOneToFive,
@@ -193,19 +191,10 @@ const Valuation = ({ data }) => {
     yearOfConvergenceDescription,
   } = data.contentfulDcfTemplate;
 
-  const parsedFinancialData = JSON.parse(financialData.internal.content);
-  const { General } = parsedFinancialData;
-
   useEffect(() => {
     dispatch(
-      setFundamentals({
-        data: parsedFinancialData,
-      }),
-    );
-
-    dispatch(
       getTenYearGovernmentBondLastCloseThunk({
-        countryISO: General.CountryISO,
+        countryISO: general.CountryISO,
         params: {
           to: dateOfValuation,
         },
@@ -220,14 +209,7 @@ const Valuation = ({ data }) => {
         },
       }),
     );
-  }, [
-    financialData,
-    dateOfValuation,
-    dispatch,
-    ticker,
-    parsedFinancialData,
-    General.CountryISO,
-  ]);
+  }, [general.CountryISO, dateOfValuation, dispatch, ticker]);
 
   const marginOfSafety =
     (estimatedValuePerShare - price) / estimatedValuePerShare;
@@ -238,12 +220,10 @@ const Valuation = ({ data }) => {
   return (
     <>
       <Helmet>
-        <title>{getTitle(`${General.Name} Valuation`)}</title>
+        <title>{getTitle(`${general.Name} Valuation`)}</title>
         <link
           rel="canonical"
-          href={`${resourceName}/stock-valuations/${`${General.Code}-${exchange}`.toLowerCase()}${
-            location.search
-          }`}
+          href={`${resourceName}/stock-valuations/${ticker}${location.search}`}
         />
       </Helmet>
       <CompanyOverviewStats dateOfValuation={formattedDateOfValuation} />
@@ -251,7 +231,7 @@ const Valuation = ({ data }) => {
         <Typography variant="h5" gutterBottom>
           Business Description
         </Typography>
-        <Typography paragraph>{General.Description}</Typography>
+        <Typography paragraph>{general.Description}</Typography>
         {extraBusinessDescription && (
           <Typography paragraph>
             {renderField(extraBusinessDescription)}
@@ -391,7 +371,7 @@ const Valuation = ({ data }) => {
         <Typography>
           <Link
             component={RouterLink}
-            to={`/stock/${General.Code}.${exchange}/discounted-cash-flow${location.search}`}
+            to={`/stock/${ticker}/discounted-cash-flow${location.search}`}
           >
             <b>Click here&nbsp;</b>
           </Link>

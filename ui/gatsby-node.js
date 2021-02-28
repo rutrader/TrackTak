@@ -50,7 +50,7 @@ exports.sourceNodes = async ({
         type: `StockFundamentals`,
         contentDigest: createContentDigest(datum),
       },
-      ticker,
+      ticker: ticker.toLowerCase(),
       General,
       Highlights: {
         MostRecentQuarter,

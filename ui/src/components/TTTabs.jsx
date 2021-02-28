@@ -40,7 +40,7 @@ const TTTabs = ({ ticker }) => {
         >
           {stockPaths.map((path) => {
             const label = sentenceCase(path.split("/")[1].replace(/-/g, " "));
-            const value = `/stock/${ticker.toLowerCase()}${path}`;
+            const value = `/stock/${ticker}${path}`;
 
             return (
               <Tab

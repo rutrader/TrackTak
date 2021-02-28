@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Box, Typography, withStyles } from "@material-ui/core";
+import {
+  Box,
+  Typography,
+  withStyles,
+  CircularProgress,
+  useTheme,
+} from "@material-ui/core";
 import "../shared/blueprintTheme.scss";
 import ExportToExcel from "./ExportToExcel";
 import DiscountedCashFlowTable from "./DiscountedCashFlowTable";
@@ -10,6 +16,35 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import getRequiredInputsNotFilledInTitle from "../shared/getRequiredInputsNotFilledInTitle";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
+import LazyLoad from "react-lazyload";
+import isSSR from "../shared/isSSR";
+
+const Placeholder = () => {
+  const theme = useTheme();
+
+  return (
+    <Box
+      sx={{
+        paddingTop: theme.spacing(10),
+        height: 807,
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      <CircularProgress />
+    </Box>
+  );
+};
+
+// TODO: Remove once we fix performance
+// and render income/balance sheet first render
+const LazyRenderTable = (props) => {
+  return isSSR ? (
+    props.children
+  ) : (
+    <LazyLoad offset={300} placeholder={<Placeholder />} {...props} />
+  );
+};
 
 const DiscountedCashFlowSheet = ({ columnWidths }) => {
   const dispatch = useDispatch();
@@ -88,10 +123,12 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
           <ExportToExcel />
         </Box>
       </Box>
-      <DiscountedCashFlowTable
-        columnWidths={columnWidths}
-        showFormulas={showFormulas}
-      />
+      <LazyRenderTable>
+        <DiscountedCashFlowTable
+          columnWidths={columnWidths}
+          showFormulas={showFormulas}
+        />
+      </LazyRenderTable>
     </Box>
   );
 };
