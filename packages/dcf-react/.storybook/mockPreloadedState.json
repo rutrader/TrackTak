@@ -1,14 +1,4 @@
 {
-  "router": {
-    "location": {
-      "pathname": "/discounted-cash-flow/IRBT.US",
-      "search": "",
-      "hash": "",
-      "key": "svjq6j",
-      "query": {}
-    },
-    "action": "PUSH"
-  },
   "fundamentals": {
     "governmentBondTenYearYield": 0.0121,
     "priceLastClose": 133.4,
@@ -12670,14 +12660,10 @@
         }
       }
     },
-    "isLoaded": false,
     "exchangeRates": null
   },
   "page": {
     "isLoading": false
-  },
-  "contentful": {
-    "entries": null
   },
   "dcf": {
     "cells": {

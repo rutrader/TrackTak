@@ -1,6 +1,6 @@
 import { TracktakProvider } from "../src";
 import mockPreloadedStateJSON from "./mockPreloadedState.json";
-import createStore from "../src/redux/store";
+import createStore from "../src/redux/createStore";
 
 const withTracktakProvier = (story) => {
   return (
