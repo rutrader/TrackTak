@@ -1,7 +1,7 @@
 import { Box, Paper, Tab, Tabs, useTheme } from "@material-ui/core";
 import React from "react";
 import { useLocation } from "@reach/router";
-import { Link } from "gatsby";
+import { Link } from "../shared/gatsby";
 import { sentenceCase } from "change-case";
 
 const stockPaths = [

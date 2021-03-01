@@ -7,7 +7,7 @@ import {
   useTheme,
 } from "@material-ui/core";
 import "../shared/blueprintTheme.scss";
-import ExportToExcel from "./ExportToExcel";
+import ExportToExcel, { DCFControlTypography } from "./ExportToExcel";
 import DiscountedCashFlowTable from "./DiscountedCashFlowTable";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsYoyGrowthToggled } from "../redux/actions/dcfActions";
@@ -130,23 +130,6 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
         />
       </LazyRenderTable>
     </Box>
-  );
-};
-
-export const DCFControlTypography = (props) => {
-  const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
-
-  return (
-    <Typography
-      variant="body2"
-      color={hasAllRequiredInputsFilledIn ? "textPrimary" : "textSecondary"}
-      whiteSpace="nowrap"
-      style={{
-        ...props.style,
-        cursor: "default",
-      }}
-      {...props}
-    />
   );
 };
 

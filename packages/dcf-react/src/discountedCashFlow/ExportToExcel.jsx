@@ -1,4 +1,4 @@
-import { Box, IconButton } from "@material-ui/core";
+import { Box, IconButton, Typography } from "@material-ui/core";
 import React from "react";
 import { getNumberOfColumns, padCellKeys } from "./utils";
 import useInputQueryParams, {
@@ -6,7 +6,11 @@ import useInputQueryParams, {
 } from "../hooks/useInputQueryParams";
 import { utils, writeFile } from "xlsx";
 import { sentenceCase } from "change-case";
-import makeFormatCellForExcelOutput from "./makeFormatCellForExcelOutput";
+import makeFormatCellForExcelOutput, {
+  costOfCapitalWorksheetName,
+  inputsWorksheetName,
+  valuationWorksheetName,
+} from "./makeFormatCellForExcelOutput";
 import makeFormatValueForExcelOutput from "./makeFormatValueForExcelOutput";
 import sortAlphaNumeric from "./sortAlphaNumeric";
 import getChunksOfArray from "../shared/getChunksOfArray";
@@ -35,13 +39,25 @@ import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRe
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import getRequiredInputsNotFilledInTitle from "../shared/getRequiredInputsNotFilledInTitle";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
-import { DCFControlTypography } from "./DiscountedCashFlowSheet";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 
-export const inputsWorksheetName = "Inputs";
-export const costOfCapitalWorksheetName = "Cost of Capital";
-export const valuationWorksheetName = "Valuation";
+export const DCFControlTypography = (props) => {
+  const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
+
+  return (
+    <Typography
+      variant="body2"
+      color={hasAllRequiredInputsFilledIn ? "textPrimary" : "textSecondary"}
+      whiteSpace="nowrap"
+      style={{
+        ...props.style,
+        cursor: "default",
+      }}
+      {...props}
+    />
+  );
+};
 
 const ExportToExcel = () => {
   const general = useSelector(selectGeneral);

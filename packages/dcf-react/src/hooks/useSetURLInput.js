@@ -1,6 +1,6 @@
 import useQueryParams from "./useQueryParams";
 import convertParamsObjectToURLSearchParams from "../shared/convertParamsObjectToURLSearchParams";
-import { navigate } from "gatsby";
+import { navigate } from "../shared/gatsby";
 import { useLocation } from "@reach/router";
 
 const useSetURLInput = () => {

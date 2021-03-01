@@ -5,13 +5,18 @@ const path = require("path");
 
 const fundamentalsDataDir = `${__dirname}/data/fundamentalsData`;
 
-const fundamentals = fs
+let fundamentals = fs
   .readdirSync(fundamentalsDataDir)
   .flatMap((name) => require(path.join(fundamentalsDataDir, name)))
   .filter(
     ({ General, Highlights }) =>
       Highlights.MostRecentQuarter !== "0000-00-00" && General.Industry,
   );
+
+if (process.env.NODE_ENV === "development") {
+  // To speed up development time
+  fundamentals = [fundamentals[0]];
+}
 
 exports.onCreatePage = ({ page, actions }) => {
   const { createPage } = actions;

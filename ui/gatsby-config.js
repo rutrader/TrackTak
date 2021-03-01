@@ -27,13 +27,13 @@ module.exports = {
       },
     },
     "gatsby-plugin-react-helmet",
-    "gatsby-plugin-layout",
-    {
-      resolve: "gatsby-plugin-react-redux",
-      options: {
-        pathToCreateStoreModule: "./src/redux/createStore",
-      },
-    },
+    // "gatsby-plugin-layout",
+    // {
+    //   resolve: "gatsby-plugin-react-redux",
+    //   options: {
+    //     pathToCreateStoreModule: "./src/redux/createStore",
+    //   },
+    // },
     {
       resolve: "gatsby-plugin-react-svg",
       options: {

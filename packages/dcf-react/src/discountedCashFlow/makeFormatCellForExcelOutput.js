@@ -1,10 +1,10 @@
-import {
-  costOfCapitalWorksheetName,
-  inputsWorksheetName,
-} from "./ExportToExcel";
 import makeFormatValueForExcelOutput from "./makeFormatValueForExcelOutput";
 import { isExpressionDependency } from "./utils";
 import replaceAll from "../shared/replaceAll";
+
+export const inputsWorksheetName = "Inputs";
+export const costOfCapitalWorksheetName = "Cost of Capital";
+export const valuationWorksheetName = "Valuation";
 
 const getMatchInFormula = (dataKeys, match, formula, callback) => {
   let index = dataKeys.indexOf(match);

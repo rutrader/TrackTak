@@ -1,18 +1,15 @@
-import theme from "./theme";
 import React from "react";
-import { ThemeProvider } from "@material-ui/core";
-import minMax from "dayjs/plugin/minMax";
-import advancedFormat from "dayjs/plugin/advancedFormat";
-import dayjs from "dayjs";
-import { store } from "./src/redux/createStore";
-import { setFundamentals } from "./src/redux/actions/fundamentalsActions";
 import getInitialFundamentalsData from "./src/shared/getInitialFundamentalsData";
+import {
+  TracktakProvider,
+  createStore,
+  setFundamentals,
+} from "@tracktak/dcf-react";
+
+const store = createStore();
 
 export const wrapRootElement = ({ element }) => {
-  dayjs.extend(minMax);
-  dayjs.extend(advancedFormat);
-
-  return <ThemeProvider theme={theme}>{element}</ThemeProvider>;
+  return <TracktakProvider store={store}>{element}</TracktakProvider>;
 };
 
 export const wrapPageElement = ({ element, props }) => {

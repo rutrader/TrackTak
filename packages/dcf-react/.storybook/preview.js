@@ -1,11 +1,19 @@
 import { TracktakProvider } from "../src";
 import mockPreloadedStateJSON from "./mockPreloadedState.json";
 import createStore from "../src/redux/createStore";
+import {
+  LocationProvider,
+  createMemorySource,
+  createHistory,
+} from "@reach/router";
+
+const source = createMemorySource("/");
+const history = createHistory(source);
 
 const withTracktakProvier = (story) => {
   return (
     <TracktakProvider store={createStore(mockPreloadedStateJSON)}>
-      {story()}
+      <LocationProvider history={history}>{story()}</LocationProvider>
     </TracktakProvider>
   );
 };

@@ -8,7 +8,7 @@ import {
   useTheme,
   Autocomplete,
 } from "@material-ui/core";
-import { navigate } from "gatsby";
+import { navigate } from "../shared/gatsby";
 import SearchIcon from "@material-ui/icons/Search";
 import { getAutocompleteQuery } from "../api/api";
 import useDebouncedCallback from "../hooks/useDebouncedCallback";

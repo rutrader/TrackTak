@@ -16,7 +16,7 @@ import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selec
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
 import StatsContainer from "../shared/StatsContainer";
-import { Link } from "gatsby";
+import { Link } from "../shared/gatsby";
 import { useLocation } from "@reach/router";
 import useInjectQueryParams from "../hooks/useInjectQueryParams";
 import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";

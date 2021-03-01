@@ -18,7 +18,7 @@ const CompanyOverviewStats = ({ dateOfValuation }) => {
   const theme = useTheme();
 
   return (
-    <Box sx={{ mb: 4 }}>
+    <Box>
       <Box
         sx={{
           display: "flex",

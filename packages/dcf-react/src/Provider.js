@@ -11,11 +11,9 @@ dayjs.extend(advancedFormat);
 
 const Provider = ({ children, store }) => {
   return (
-    <React.StrictMode>
-      <ThemeProvider theme={theme}>
-        <ReactReduxProvider store={store}>{children}</ReactReduxProvider>
-      </ThemeProvider>
-    </React.StrictMode>
+    <ThemeProvider theme={theme}>
+      <ReactReduxProvider store={store}>{children}</ReactReduxProvider>
+    </ThemeProvider>
   );
 };
 
