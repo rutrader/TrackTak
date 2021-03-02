@@ -7,7 +7,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import React from "react";
-// import SearchTicker from "../components/SearchTicker";
+import SearchTicker from "../components/SearchTicker";
 import SettingsIcon from "@material-ui/icons/Settings";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import PublicIcon from "@material-ui/icons/Public";
@@ -104,7 +104,7 @@ const Home = () => {
         >
           Search for a company to begin.
         </Typography>
-        {/* <SearchTicker /> */}
+        <SearchTicker />
       </Box>
       <Hidden mdDown>
         <Box

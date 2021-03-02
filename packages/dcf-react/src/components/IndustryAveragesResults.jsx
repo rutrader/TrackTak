@@ -3,7 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 import selectIsInUS from "../selectors/fundamentalSelectors/selectIsInUS";
-import StatsContainer from "../shared/StatsContainer";
+import StatsContainer from "./StatsContainer";
 import BoldValueLabel from "./BoldValueLabel";
 import FormatRawNumberToPercent from "./FormatRawNumberToPercent";
 

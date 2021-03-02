@@ -1,14 +1,12 @@
 import React from "react";
 import { Box, Typography, useTheme } from "@material-ui/core";
-import Section from "../../../components/Section";
 import SubscribeMailingList from "../../../components/SubscribeMailingList";
-import { useSelector } from "react-redux";
 import { Helmet } from "react-helmet";
 import getTitle from "../../../shared/getTitle";
-import selectGeneral from "../../../selectors/fundamentalSelectors/selectGeneral";
 import resourceName from "../../../shared/resourceName";
-import useVirtualExchange from "../../../hooks/useVirtualExchange";
 import { graphql } from "gatsby";
+import { Section } from "@tracktak/dcf-react";
+import { DiscountedCashFlow } from "@tracktak/dcf-react";
 
 export const query = graphql`
   fragment Fundamentals on StockFundamentals {
@@ -38,18 +36,18 @@ export const query = graphql`
   }
 `;
 
-const DiscountedCashFlow = () => {
+const DiscountedCashFlowPage = ({ data }) => {
   const theme = useTheme();
-  const general = useSelector(selectGeneral);
-  const exchange = useVirtualExchange();
 
   return (
     <>
       <Helmet>
-        <title>{getTitle(`${general.Name} Discounted Cash Flow (DCF)`)}</title>
+        <title>
+          {getTitle(`${data.General.Name} Discounted Cash Flow (DCF)`)}
+        </title>
         <link
           rel="canonical"
-          href={`${resourceName}/discounted-cash-flow/${general.Code}.${exchange}`}
+          href={`${resourceName}/discounted-cash-flow/${data.ticker}`}
         />
       </Helmet>
       <DiscountedCashFlow />
@@ -78,4 +76,4 @@ const DiscountedCashFlow = () => {
   );
 };
 
-export default DiscountedCashFlow;
+export default DiscountedCashFlowPage;

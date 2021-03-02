@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import SubscribeMailingList from "./SubscribeMailingList";
 import { setItem, getItem } from "../shared/guardedLocalStorage";
-import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
+import { useHasAllRequiredInputsFilledIn } from "@tracktak/dcf-react";
 
 const SubscribePopup = () => {
   const [open, setOpen] = useState(true);

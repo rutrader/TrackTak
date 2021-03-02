@@ -22,7 +22,6 @@ import selectIsYoyGrowthToggled from "../selectors/dcfSelectors/selectIsYoyGrowt
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import getRequiredInputsNotFilledInTitle from "../shared/getRequiredInputsNotFilledInTitle";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
-import SubscribePopup from "../components/SubscribePopup";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import useInjectQueryParams from "../hooks/useInjectQueryParams";
 
@@ -266,7 +265,6 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
 
   return (
     <>
-      <SubscribePopup />
       <Table
         key={key}
         enableGhostCells

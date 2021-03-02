@@ -5,10 +5,13 @@
   "author": "tracktak",
   "license": "MIT",
   "repository": "tracktak/@tracktak/dcf-react",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "source": "src/index.js",
   "engines": {
-    "node": ">=10"
+    "node": ">=12.20.1"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production microbundle-crl",

@@ -1,12 +1,11 @@
 import { createSelector } from "@reduxjs/toolkit";
 import dayjs from "dayjs";
 import getValueFromString from "../../shared/getValueFromString";
-import { monthDateFormat } from "../../shared/utils";
 import selectExchangeRates from "./selectExchangeRates";
 
 const convertCurrency = (exchangeRates) => (
   datePeriodsToConvertAt,
-  valueToConvert
+  valueToConvert,
 ) => {
   const valueAsANumber = getValueFromString(valueToConvert);
 
@@ -17,12 +16,12 @@ const convertCurrency = (exchangeRates) => (
   const sumOfExchangeRateCloses = datePeriodsToConvertAt.reduce(
     (prev, date) => {
       // Get exchange rate for that month
-      const datePeriodAsMonthDate = dayjs(date).format(monthDateFormat);
+      const datePeriodAsMonthDate = dayjs(date).format("YYYY-MM");
       const close = exchangeRates[datePeriodAsMonthDate]?.close ?? 0;
 
       return prev + close;
     },
-    0
+    0,
   );
 
   const averageOfExchangeRateCloses =
@@ -33,7 +32,7 @@ const convertCurrency = (exchangeRates) => (
 
 const selectConvertCurrency = createSelector(
   selectExchangeRates,
-  convertCurrency
+  convertCurrency,
 );
 
 export default selectConvertCurrency;

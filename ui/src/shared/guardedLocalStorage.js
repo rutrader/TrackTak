@@ -1,4 +1,4 @@
-import isSSR from "./isSSR";
+import { isSSR } from "@tracktak/dcf-react";
 
 export const setItem = (key, value) => {
   if (isSSR) {

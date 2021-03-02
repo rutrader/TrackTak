@@ -9,11 +9,10 @@ import {
   useTheme,
 } from "@material-ui/core";
 import React, { useState } from "react";
-import TracktakLogo from "../shared/TracktakLogo";
-import TracktakSmallLogo from "../assets/tracktakSmallLogo.svg";
-import SearchTicker from "./SearchTicker";
-import { Link } from "../shared/gatsby";
+import { Link } from "gatsby";
 import MenuIcon from "@material-ui/icons/Menu";
+import { TracktakLogo, TracktakSmallLogo } from "@tracktak/dcf-react";
+import SearchTicker from "./SearchTicker";
 
 const leftLinks = [
   { to: "/stock-valuations", text: "Valuations" },

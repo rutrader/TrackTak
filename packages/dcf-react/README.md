@@ -9,7 +9,3 @@
 ```bash
 npm install --save @tracktak/dcf-react
 ```
-
-## License
-
-MIT © [tracktak](https://github.com/tracktak)

@@ -15,7 +15,7 @@ import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremi
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
-import StatsContainer from "../shared/StatsContainer";
+import StatsContainer from "./StatsContainer";
 import { Link } from "../shared/gatsby";
 import { useLocation } from "@reach/router";
 import useInjectQueryParams from "../hooks/useInjectQueryParams";

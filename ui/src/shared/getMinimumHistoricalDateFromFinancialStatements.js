@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
-import { monthDateFormat } from "./utils";
+
+const monthDateFormat = "YYYY-MM";
 
 const getMinimumHistoricalDateFromFinancialStatements = (
   incomeStatement,
