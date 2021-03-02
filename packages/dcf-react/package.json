@@ -14,8 +14,7 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production microbundle-crl",
-    "start": "cross-env NODE_ENV=development microbundle-crl watch",
+    "build": "cross-env NODE_ENV=production microbundle-crl --no-sourcemap -f modern",
     "storybook": "cross-env NODE_ENV=development start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "clean": "rimraf ./node_modules"
