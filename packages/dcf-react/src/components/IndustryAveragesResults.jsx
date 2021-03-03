@@ -13,7 +13,7 @@ const IndustryAveragesResults = () => {
   const currentIndustry = useSelector(selectCurrentIndustry);
 
   return (
-    <>
+    <React.Fragment>
       <Typography variant="h5">
         Industry Averages ({isInUS ? "US" : "Global"})
       </Typography>
@@ -75,7 +75,7 @@ const IndustryAveragesResults = () => {
           />
         </StatsContainer>
       </Box>
-    </>
+    </React.Fragment>
   );
 };
 

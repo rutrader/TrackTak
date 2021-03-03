@@ -6,7 +6,6 @@ import {
   CircularProgress,
   useTheme,
 } from "@material-ui/core";
-import "../shared/blueprintTheme.scss";
 import ExportToExcel, { DCFControlTypography } from "./ExportToExcel";
 import DiscountedCashFlowTable from "./DiscountedCashFlowTable";
 import { useDispatch, useSelector } from "react-redux";

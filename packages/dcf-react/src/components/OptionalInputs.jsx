@@ -42,7 +42,7 @@ const OptionalInputs = () => {
       title: "Normal Debt",
       tooltipTextNode: <InfoTextNormalDebt />,
       children: (
-        <>
+        <React.Fragment>
           <OptionalTextField
             label={pretaxCostOfDebtLabel}
             defaultValue={inputQueryParams.pretaxCostOfDebt}
@@ -63,14 +63,14 @@ const OptionalInputs = () => {
               inputComponent: FormatInputToYear,
             }}
           />
-        </>
+        </React.Fragment>
       ),
     },
     {
       title: "Convertible Debt",
       tooltipTextNode: <InfoTextConvertibleDebt />,
       children: (
-        <>
+        <React.Fragment>
           <OptionalTextField
             label="Book Value of Convertible Debt"
             defaultValue={inputQueryParams.bookValueOfConvertibleDebt}
@@ -101,14 +101,14 @@ const OptionalInputs = () => {
               inputComponent: FormatInputToYear,
             }}
           />
-        </>
+        </React.Fragment>
       ),
     },
     {
       title: "Preferred Stock",
       tooltipTextNode: <InfoTextPreferredStock />,
       children: (
-        <>
+        <React.Fragment>
           <OptionalTextField
             label="Number of Preferred Shares"
             defaultValue={inputQueryParams.numberOfPreferredShares}
@@ -139,14 +139,14 @@ const OptionalInputs = () => {
               inputComponent: FormatInputToCurrency,
             }}
           />
-        </>
+        </React.Fragment>
       ),
     },
     {
       title: "Employee Options",
       tooltipTextNode: <InfoTextEmployeeOptions />,
       children: (
-        <>
+        <React.Fragment>
           <OptionalTextField
             label="Employee Options Oustanding"
             defaultValue={inputQueryParams.numberOfEmployeeOptionsOutstanding}
@@ -177,7 +177,7 @@ const OptionalInputs = () => {
               inputComponent: FormatInputToYear,
             }}
           />
-        </>
+        </React.Fragment>
       ),
     },
     {
@@ -186,7 +186,7 @@ const OptionalInputs = () => {
       children: (
         // TODO: Automate this by default but still keep this input
         // to allow overriding
-        <>
+        <React.Fragment>
           <OptionalTextField
             label="Net Operating Loss"
             defaultValue={inputQueryParams.netOperatingLoss}
@@ -219,13 +219,13 @@ const OptionalInputs = () => {
               inputComponent: FormatInputToPercent,
             }}
           />
-        </>
+        </React.Fragment>
       ),
     },
   ];
 
   return (
-    <>
+    <React.Fragment>
       <Typography variant="h5" gutterBottom>
         Optional Inputs
       </Typography>
@@ -241,7 +241,7 @@ const OptionalInputs = () => {
           <OptionalInput {...optionalInput} />
         ))}
       </Box>
-    </>
+    </React.Fragment>
   );
 };
 export default OptionalInputs;

@@ -104,7 +104,7 @@ const SyntheticCreditRating = () => {
   // - Past Volatile Earnings
   // - Risky industry
   return (
-    <>
+    <React.Fragment>
       <SubSection>
         <Typography variant="h6" gutterBottom>
           <InfoOutlinedIconWrapper text={<InfoSyntheticRating />}>
@@ -163,7 +163,7 @@ const SyntheticCreditRating = () => {
           })}
         />
       </SubSection>
-    </>
+    </React.Fragment>
   );
 };
 

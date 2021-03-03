@@ -14,15 +14,17 @@ export const query = graphql`
 `;
 
 const IndustryAveragesPage = ({ data }) => {
+  const { General, ticker } = data.stockFundamentals;
+
   return (
     <>
       <Helmet>
         <title>
-          {getTitle(`${data.General.Name} Industry Average Financial Ratios`)}
+          {getTitle(`${General.Name} Industry Average Financial Ratios`)}
         </title>
         <link
           rel="canonical"
-          href={`${resourceName}/industry-averages/${data.ticker}`}
+          href={`${resourceName}/industry-averages/${ticker}`}
         />
       </Helmet>
       <IndustryAverages />

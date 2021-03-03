@@ -3,7 +3,7 @@ import { Box } from "@material-ui/core";
 
 export const InfoTextCostOfCapital = () => {
   return (
-    <>
+    <React.Fragment>
       <Box>
         <b>Unlevered beta</b> - Is a measure of the market risk of the company
         relative to it's peers in the same industry without the impact of debt.
@@ -49,13 +49,13 @@ export const InfoTextCostOfCapital = () => {
         <b>Effective Tax Rate</b> - The percent of income that a corporation
         pays in taxes. We use the past three years average.
       </Box>
-    </>
+    </React.Fragment>
   );
 };
 
 export const InfoTextValueDrivingInputs = () => {
   return (
-    <>
+    <React.Fragment>
       <Box>
         <b>Compound annual growth rate (CAGR)</b> - look at a. Revenue growth in
         your company in recent years b. Your company's revenues, relative to the
@@ -78,13 +78,13 @@ export const InfoTextValueDrivingInputs = () => {
         sales to capital ratio's in the above table and the industry average for
         an idea of this value.
       </Box>
-    </>
+    </React.Fragment>
   );
 };
 
 export const InfoTextNormalDebt = () => {
   return (
-    <>
+    <React.Fragment>
       <Box>
         <b>Pre-tax Cost of Debt</b> - If you don't enter an input we will use a
         synthetic pre-tax cost of debt. You can override this by entering your
@@ -95,13 +95,13 @@ export const InfoTextNormalDebt = () => {
         outstanding debt matures on average. Generally found in the footnotes to
         the financial statements.
       </Box>
-    </>
+    </React.Fragment>
   );
 };
 
 export const InfoSyntheticRating = () => {
   return (
-    <>
+    <React.Fragment>
       <Box>
         <b>Large/Small Company</b> - Large companies usually have stable
         earnings and less chance of defaulting on their debt. Smaller companies
@@ -133,13 +133,13 @@ export const InfoSyntheticRating = () => {
         pre-tax cost of debt that we have automatically calculated for you. This
         is used to work out the cost of capital.
       </Box>
-    </>
+    </React.Fragment>
   );
 };
 
 export const InfoTextConvertibleDebt = () => {
   return (
-    <>
+    <React.Fragment>
       <Box>
         <b>Book Value of Convertible Debt</b> - Debt which is convertible to
         equity at some point in time. This is found in the financial statements.
@@ -154,13 +154,13 @@ export const InfoTextConvertibleDebt = () => {
         debt but for Convertible Debt. This is found in the financial
         statements.
       </Box>
-    </>
+    </React.Fragment>
   );
 };
 
 export const InfoTextPreferredStock = () => {
   return (
-    <>
+    <React.Fragment>
       <Box>
         <b>Number of Preferred Shares</b> - Shares of a company’s stock with
         dividends that are paid out to shareholders before common stock
@@ -175,13 +175,13 @@ export const InfoTextPreferredStock = () => {
         <b>Annual Dividend Per Share</b> - How much dividends are payed out on
         average per share each year. This is found in the financial statements.
       </Box>
-    </>
+    </React.Fragment>
   );
 };
 
 export const InfoTextEmployeeOptions = () => {
   return (
-    <>
+    <React.Fragment>
       <Box>
         <b>Employee Options Outstanding</b> - The same as shares outstanding but
         specifically for the employees options outstanding instead. If the
@@ -198,13 +198,13 @@ export const InfoTextEmployeeOptions = () => {
         <b>Average Maturity</b> - The weighted average maturity of the employee
         options outstanding. This is found in the financial statements.
       </Box>
-    </>
+    </React.Fragment>
   );
 };
 
 export const InfoTextOther = () => {
   return (
-    <>
+    <React.Fragment>
       <Box>
         <b>Net Operating Loss (NOL)</b> - Any losses from the previous years
         that the company is carrying over to this year. It allows the company to
@@ -229,7 +229,7 @@ export const InfoTextOther = () => {
         continue giving the executives a job and therefore will never have
         proceeds to distribute to shareholders.
       </Box>
-    </>
+    </React.Fragment>
   );
 };
 

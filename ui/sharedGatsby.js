@@ -16,10 +16,16 @@ export const wrapPageElement = ({ element, props }) => {
   if (props.data) {
     if (props.data.stockFundamentals) {
       const { General, Highlights } = props.data.stockFundamentals;
+      const state = store.getState();
 
-      store.dispatch(
-        setFundamentals(getInitialFundamentalsData(General, Highlights)),
-      );
+      if (
+        General.Code !==
+        (state.fundamentals.data && state.fundamentals.data.General.Code)
+      ) {
+        store.dispatch(
+          setFundamentals(getInitialFundamentalsData(General, Highlights)),
+        );
+      }
     }
 
     if (props.data.contentfulDcfTemplate) {

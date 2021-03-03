@@ -38,16 +38,15 @@ export const query = graphql`
 
 const DiscountedCashFlowPage = ({ data }) => {
   const theme = useTheme();
+  const { General, ticker } = data.stockFundamentals;
 
   return (
     <>
       <Helmet>
-        <title>
-          {getTitle(`${data.General.Name} Discounted Cash Flow (DCF)`)}
-        </title>
+        <title>{getTitle(`${General.Name} Discounted Cash Flow (DCF)`)}</title>
         <link
           rel="canonical"
-          href={`${resourceName}/discounted-cash-flow/${data.ticker}`}
+          href={`${resourceName}/discounted-cash-flow/${ticker}`}
         />
       </Helmet>
       <DiscountedCashFlow />

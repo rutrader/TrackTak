@@ -15,7 +15,7 @@ const DiscountedCashFlow = () => {
   const theme = useTheme();
 
   return (
-    <>
+    <React.Fragment>
       <Box sx={{ display: "flex", gap: theme.spacing(10) }}>
         <CompanyOverviewStats />
       </Box>
@@ -46,7 +46,7 @@ const DiscountedCashFlow = () => {
       <Section>
         <DiscountedCashFlowSheet />
       </Section>
-    </>
+    </React.Fragment>
   );
 };
 

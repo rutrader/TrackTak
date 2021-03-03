@@ -14,13 +14,15 @@ export const query = graphql`
 `;
 
 const SyntheticCreditRatingPage = ({ data }) => {
+  const { General, ticker } = data.stockFundamentals;
+
   return (
     <>
       <Helmet>
-        <title>{getTitle(`${data.General.Name} Credit Rating`)}</title>
+        <title>{getTitle(`${General.Name} Credit Rating`)}</title>
         <link
           rel="canonical"
-          href={`${resourceName}/synthetic-credit-rating/${data.ticker}`}
+          href={`${resourceName}/synthetic-credit-rating/${ticker}`}
         />
       </Helmet>
       <SyntheticCreditRating />

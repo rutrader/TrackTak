@@ -16,7 +16,7 @@ const BlackScholesResults = () => {
   );
 
   return (
-    <>
+    <React.Fragment>
       <Typography variant="h5" gutterBottom>
         <InfoOutlinedIconWrapper text={<InfoTextBlackScholes />}>
           Black Scholes Employee Options Results
@@ -45,7 +45,7 @@ const BlackScholesResults = () => {
           label="Total Value of All Employee Options"
         />
       </Typography>
-    </>
+    </React.Fragment>
   );
 };
 

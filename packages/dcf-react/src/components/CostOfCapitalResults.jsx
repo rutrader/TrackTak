@@ -41,7 +41,7 @@ const CostOfCapitalResults = () => {
   const ticker = `${general.Code}-${exchange}`.toLowerCase();
 
   return (
-    <>
+    <React.Fragment>
       <Typography variant="h5" gutterBottom>
         <InfoOutlinedIconWrapper text={<InfoTextCostOfCapital />}>
           Cost of Capital Results
@@ -138,7 +138,7 @@ const CostOfCapitalResults = () => {
           />
         </StatsContainer>
       </Box>
-    </>
+    </React.Fragment>
   );
 };
 

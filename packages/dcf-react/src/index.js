@@ -22,7 +22,6 @@ export { default as IndustryAveragesResults } from "./components/IndustryAverage
 export { default as CostOfCapitalResults } from "./components/CostOfCapitalResults";
 export { default as BlackScholesResults } from "./components/BlackScholesResults";
 export { default as PastFundamentals } from "./components/PastFundamentals";
-export { default as TTTabs } from "./components/TTTabs";
 export { default as CompanyOverviewStats } from "./components/CompanyOverviewStats";
 
 export { default as FormatInputToPercent } from "./components/FormatInputToPercent";
@@ -45,7 +44,6 @@ export { default as replaceSpaceWithHyphen } from "./shared/replaceSpaceWithHyph
 export { default as convertGBXToGBP } from "./shared/convertGBXToGBP";
 
 export { default as TracktakLogo } from "./assets/tracktak.svg";
-export { default as TracktakSmallLogo } from "./assets/tracktakSmallLogo.svg";
 
 export { default as useDebouncedCallback } from "./hooks/useDebouncedCallback";
 export { default as useHasAllRequiredInputsFilledIn } from "./hooks/useHasAllRequiredInputsFilledIn";

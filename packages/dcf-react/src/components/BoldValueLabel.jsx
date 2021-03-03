@@ -16,15 +16,15 @@ const BoldValueLabel = ({ value, label, reverse }) => {
     <Typography>
       <Box sx={{ display: "flex" }}>
         {reverse ? (
-          <>
+          <React.Fragment>
             {label}&nbsp;
             <BoldSpan value={value} />
-          </>
+          </React.Fragment>
         ) : (
-          <>
+          <React.Fragment>
             <BoldSpan value={value} />
             &nbsp;{label}
-          </>
+          </React.Fragment>
         )}
       </Box>
     </Typography>

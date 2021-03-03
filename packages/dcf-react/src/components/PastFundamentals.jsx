@@ -223,7 +223,7 @@ const PastFundamentals = () => {
   });
 
   return (
-    <>
+    <React.Fragment>
       <Typography variant="h5" gutterBottom>
         Past Fundamentals
       </Typography>
@@ -238,7 +238,7 @@ const PastFundamentals = () => {
       <Box style={{ overflowX: "auto" }}>
         <TTTable columns={columns} data={data} />
       </Box>
-    </>
+    </React.Fragment>
   );
 };
 

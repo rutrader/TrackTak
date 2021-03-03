@@ -7,7 +7,7 @@ Object.keys(cells).forEach((key) => {
 
   if (expr) {
     const matches = expr.match(/([A-Z]+\d+)/g);
-    const uniqueMatches = [...new Set(matches)];
+    const uniqueMatches = Array.from(new Set(matches));
 
     uniqueMatches.forEach((uniqueMatchKey) => {
       cellsTree[uniqueMatchKey] = cellsTree[uniqueMatchKey]

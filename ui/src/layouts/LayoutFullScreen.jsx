@@ -3,12 +3,12 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { fundamentalsFilter } from "../api/api";
 import Header from "../components/Header";
+import TTTabs from "../components/TTTabs";
 import {
   getFundamentalsThunk,
   getLastPriceCloseThunk,
   getTenYearGovernmentBondLastCloseThunk,
 } from "../redux/thunks/fundamentalsThunks";
-import { TTTabs } from "@tracktak/dcf-react";
 
 const LayoutFullScreen = ({
   children,

@@ -6,7 +6,6 @@ import { columns, numberOfRows } from "./cells";
 import { getColumnsBetween, startColumn } from "./utils";
 import { Cell, Column, Table } from "@blueprintjs/table";
 import { useMediaQuery, useTheme } from "@material-ui/core";
-import "../shared/blueprintTheme.scss";
 import useInputQueryParams from "../hooks/useInputQueryParams";
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
 import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
@@ -24,6 +23,8 @@ import getRequiredInputsNotFilledInTitle from "../shared/getRequiredInputsNotFil
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import useInjectQueryParams from "../hooks/useInjectQueryParams";
+import "@blueprintjs/core/lib/css/blueprint.css";
+import "@blueprintjs/table/lib/css/table.css";
 
 const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
   const theme = useTheme();
@@ -264,7 +265,7 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
   }
 
   return (
-    <>
+    <React.Fragment>
       <Table
         key={key}
         enableGhostCells
@@ -283,7 +284,7 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
           );
         })}
       </Table>
-    </>
+    </React.Fragment>
   );
 };
 

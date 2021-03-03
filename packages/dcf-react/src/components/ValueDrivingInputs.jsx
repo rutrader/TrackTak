@@ -37,7 +37,7 @@ const ValueDrivingInputs = () => {
   const setURLInput = useSetURLInput();
 
   return (
-    <>
+    <React.Fragment>
       <Typography variant="h5" gutterBottom>
         <InfoOutlinedIconWrapper text={<InfoTextValueDrivingInputs />}>
           {valueDrivingInputsHeader}
@@ -85,7 +85,7 @@ const ValueDrivingInputs = () => {
           }}
         />
       </Box>
-    </>
+    </React.Fragment>
   );
 };
 export default ValueDrivingInputs;

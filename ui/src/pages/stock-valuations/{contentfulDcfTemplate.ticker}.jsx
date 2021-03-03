@@ -219,7 +219,7 @@ const Valuation = ({ data }) => {
   );
 
   return (
-    <>
+    <React.Fragment>
       <Helmet>
         <title>{getTitle(`${financialData.General.Name} Valuation`)}</title>
         <link
@@ -379,7 +379,7 @@ const Valuation = ({ data }) => {
           to do your own Automated DCF for any company you want.
         </Typography>
       </Section>
-    </>
+    </React.Fragment>
   );
 };
 

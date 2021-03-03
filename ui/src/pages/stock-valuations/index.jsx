@@ -44,76 +44,87 @@ const Valuations = ({ data }) => {
         Stock Valuations
       </Typography>
       <List>
-        {data.allContentfulDcfTemplate.edges.map(
-          ({
-            node: {
-              ticker,
-              dateOfValuation,
-              data: { General: general },
-              ...fields
-            },
-          }) => {
-            const searchParams = new URLSearchParams();
+        {data.allContentfulDcfTemplate.edges
+          .sort((a, b) => {
+            const dateA = new Date(a.node.dateOfValuation);
+            const dateB = new Date(b.node.dateOfValuation);
 
-            inputQueries.forEach(({ name }) => {
-              if (fields[name]) {
-                searchParams.set(name, fields[name]);
-              }
-            });
+            return dateB - dateA;
+          })
+          .map(
+            ({
+              node: {
+                ticker,
+                dateOfValuation,
+                data: { General: general },
+                ...fields
+              },
+            }) => {
+              const searchParams = new URLSearchParams();
 
-            const valuationUrl = `/stock-valuations/${ticker}?${searchParams.toString()}`;
+              inputQueries.forEach(({ name }) => {
+                if (fields[name]) {
+                  searchParams.set(name, fields[name]);
+                }
+              });
 
-            return (
-              <ListItem key={ticker}>
-                <Card>
-                  <CardActionArea
-                    style={{ padding: theme.spacing(2) }}
-                    onClick={() => {
-                      navigate(valuationUrl);
-                    }}
-                  >
-                    <img
-                      alt={general.Name}
-                      width={120}
-                      src={EOD_URL + general.LogoURL}
-                      title={general.Name}
-                      style={{
-                        float: "left",
-                        marginRight: theme.spacing(2.5),
-                      }}
-                    />
-                    <Typography gutterBottom variant="h5">
-                      {general.Name} Valuation
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" paragraph>
-                      <LinesEllipsis text={general.Description} maxLine="3" />
-                    </Typography>
-                  </CardActionArea>
-                  <CardActions>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        flex: 1,
+              const valuationUrl = `/stock-valuations/${ticker}?${searchParams.toString()}`;
+
+              return (
+                <ListItem key={ticker}>
+                  <Card>
+                    <CardActionArea
+                      style={{ padding: theme.spacing(2) }}
+                      onClick={() => {
+                        navigate(valuationUrl);
                       }}
                     >
-                      <Button
-                        to={valuationUrl}
-                        size="small"
-                        color="primary"
-                        component={Link}
+                      <img
+                        alt={general.Name}
+                        width={120}
+                        src={EOD_URL + general.LogoURL}
+                        title={general.Name}
+                        style={{
+                          float: "left",
+                          marginRight: theme.spacing(2.5),
+                        }}
+                      />
+                      <Typography gutterBottom variant="h5">
+                        {general.Name} Valuation
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        paragraph
                       >
-                        Learn More
-                      </Button>
-                      <Typography>{dateOfValuation}</Typography>
-                    </Box>
-                  </CardActions>
-                </Card>
-              </ListItem>
-            );
-          },
-        )}
+                        <LinesEllipsis text={general.Description} maxLine="3" />
+                      </Typography>
+                    </CardActionArea>
+                    <CardActions>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          flex: 1,
+                        }}
+                      >
+                        <Button
+                          to={valuationUrl}
+                          size="small"
+                          color="primary"
+                          component={Link}
+                        >
+                          Learn More
+                        </Button>
+                        <Typography>{dateOfValuation}</Typography>
+                      </Box>
+                    </CardActions>
+                  </Card>
+                </ListItem>
+              );
+            },
+          )}
       </List>
     </>
   );

@@ -11,8 +11,9 @@ import {
 import React, { useState } from "react";
 import { Link } from "gatsby";
 import MenuIcon from "@material-ui/icons/Menu";
-import { TracktakLogo, TracktakSmallLogo } from "@tracktak/dcf-react";
 import SearchTicker from "./SearchTicker";
+import TracktakSmallLogo from "../assets/tracktakSmallLogo.svg";
+import TracktakLogo from "../assets/tracktakLogo.svg";
 
 const leftLinks = [
   { to: "/stock-valuations", text: "Valuations" },
@@ -66,14 +67,14 @@ const Header = ({ hideSearch }) => {
             }}
           >
             <Box sx={{ mr: 2 }}>
-              <Hidden mdDown>
-                <TracktakLogo />
-              </Hidden>
-              <Hidden mdUp>
-                <Link to="/">
+              <Link to="/">
+                <Hidden mdDown>
+                  <TracktakLogo />
+                </Hidden>
+                <Hidden mdUp>
                   <TracktakSmallLogo width={52} height={38} />
-                </Link>
-              </Hidden>
+                </Hidden>
+              </Link>
             </Box>
             <Hidden mdDown>
               {leftLinks.map((link) => (

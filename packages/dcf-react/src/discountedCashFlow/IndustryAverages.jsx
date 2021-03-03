@@ -98,7 +98,7 @@ const IndustryAverages = () => {
 
   // TODO: Implement sticky first column
   return (
-    <>
+    <React.Fragment>
       <SubSection>
         <Typography variant="h6" gutterBottom>
           Industry Averages
@@ -147,7 +147,7 @@ const IndustryAverages = () => {
           </Box>
         </Box>
       </SubSection>
-    </>
+    </React.Fragment>
   );
 };
 
