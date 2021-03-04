@@ -23,8 +23,6 @@ import getRequiredInputsNotFilledInTitle from "../shared/getRequiredInputsNotFil
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import useInjectQueryParams from "../hooks/useInjectQueryParams";
-import "@blueprintjs/core/lib/css/blueprint.css";
-import "@blueprintjs/table/lib/css/table.css";
 
 const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
   const theme = useTheme();

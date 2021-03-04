@@ -14,6 +14,7 @@ const TTTabs = ({ ticker }) => {
   const location = useLocation();
   const theme = useTheme();
   const mt = `${theme.mixins.toolbar.minHeight}px`;
+  const value = location.pathname.replace(/\/$/g, "");
 
   return (
     <Box sx={{ mt }}>
@@ -32,7 +33,7 @@ const TTTabs = ({ ticker }) => {
       >
         <Tabs
           variant="scrollable"
-          value={location.pathname}
+          value={value}
           indicatorColor="primary"
           textColor="primary"
           scrollButtons
@@ -40,7 +41,7 @@ const TTTabs = ({ ticker }) => {
         >
           {stockPaths.map((path) => {
             const label = sentenceCase(path.split("/")[1].replace(/-/g, " "));
-            const value = `/stock/${ticker}${path}/`;
+            const value = `/stock/${ticker}${path}`;
 
             return (
               <Tab

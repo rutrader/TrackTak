@@ -5,6 +5,7 @@ import {
   createStore,
   setFundamentals,
 } from "@tracktak/dcf-react";
+import "./sass/blueprintTheme.scss";
 
 const store = createStore();
 

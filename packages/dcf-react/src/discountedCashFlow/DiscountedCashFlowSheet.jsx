@@ -77,7 +77,11 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
           </Typography>
           <Typography gutterBottom>
             Need help? Check out the DCF docs&nbsp;
-            <a href="/how-to-do-a-dcf" rel="noreferrer" target="_blank">
+            <a
+              href="https://tracktak.com/how-to-do-a-dcf"
+              rel="noreferrer"
+              target="_blank"
+            >
               here.
             </a>
           </Typography>
