@@ -5,4 +5,4 @@ export const setExchangeRates = createAction("fundamentals/setExchangeRates");
 export const setTenYearGovernmentBondLastClose = createAction(
   "fundamentals/setTenYearGovernmentBondLastClose",
 );
-export const setLastPriceClose = createAction("fundamentals/setLastPriceClost");
+export const setLastPriceClose = createAction("fundamentals/setLastPriceClose");

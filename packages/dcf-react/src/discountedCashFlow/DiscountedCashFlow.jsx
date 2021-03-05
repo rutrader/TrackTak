@@ -10,6 +10,7 @@ import BlackScholesResults from "../components/BlackScholesResults";
 import DiscountedCashFlowSheet from "./DiscountedCashFlowSheet";
 import IndustryAveragesResults from "../components/IndustryAveragesResults";
 import PastFundamentals from "../components/PastFundamentals";
+import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 
 const DiscountedCashFlow = () => {
   const theme = useTheme();
@@ -50,4 +51,4 @@ const DiscountedCashFlow = () => {
   );
 };
 
-export default DiscountedCashFlow;
+export default withFundamentalsLoaded(DiscountedCashFlow);

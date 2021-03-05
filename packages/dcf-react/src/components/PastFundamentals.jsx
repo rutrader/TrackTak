@@ -14,6 +14,7 @@ import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 import TableMillionFormatter from "./TableMillionFormatter";
 import FormatRawNumberToPercent from "./FormatRawNumberToPercent";
 import FormatRawNumber from "./FormatRawNumber";
+import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 
 const mapFromStatementsToDateObject = (
   objectToLoop,
@@ -242,4 +243,4 @@ const PastFundamentals = () => {
   );
 };
 
-export default PastFundamentals;
+export default withFundamentalsLoaded(PastFundamentals);

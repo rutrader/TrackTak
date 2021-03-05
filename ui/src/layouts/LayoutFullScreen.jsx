@@ -1,14 +1,13 @@
 import { Container } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { fundamentalsFilter } from "../api/api";
 import Header from "../components/Header";
 import TTTabs from "../components/TTTabs";
 import {
   getFundamentalsThunk,
   getLastPriceCloseThunk,
   getTenYearGovernmentBondLastCloseThunk,
-} from "../redux/thunks/fundamentalsThunks";
+} from "@tracktak/dcf-react";
 
 const LayoutFullScreen = ({
   children,
@@ -20,7 +19,6 @@ const LayoutFullScreen = ({
     dispatch(
       getFundamentalsThunk({
         ticker,
-        filter: fundamentalsFilter,
       }),
     );
 

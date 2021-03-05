@@ -1,8 +1,5 @@
 import axios from "./axios";
 
-export const fundamentalsFilter =
-  "General,Highlights,SharesStats,Financials::Balance_Sheet,Financials::Income_Statement";
-
 export const getFundamentals = async (ticker, params) => {
   return axios.get(`/api/v1/fundamentals/${ticker}`, params);
 };

@@ -23,6 +23,7 @@ import FormatInputToPercent from "./FormatInputToPercent";
 import { textFieldRootStyles } from "../shared/utils";
 import OptionalInput from "./OptionalInput";
 import useInputQueryParams from "../hooks/useInputQueryParams";
+import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 
 export const pretaxCostOfDebtLabel = "Pre-tax Cost of Debt";
 
@@ -244,4 +245,4 @@ const OptionalInputs = () => {
     </React.Fragment>
   );
 };
-export default OptionalInputs;
+export default withFundamentalsLoaded(OptionalInputs);

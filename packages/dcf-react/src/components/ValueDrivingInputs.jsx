@@ -14,6 +14,7 @@ import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 import { InfoTextValueDrivingInputs } from "./InfoText";
 import useSetURLInput from "../hooks/useSetURLInput";
 import useInputQueryParams from "../hooks/useInputQueryParams";
+import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 
 const ValueDrivingTextField = withStyles({
   root: {
@@ -88,4 +89,4 @@ const ValueDrivingInputs = () => {
     </React.Fragment>
   );
 };
-export default ValueDrivingInputs;
+export default withFundamentalsLoaded(ValueDrivingInputs);

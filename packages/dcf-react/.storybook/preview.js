@@ -11,10 +11,11 @@ import "@blueprintjs/table/lib/css/table.css";
 
 const source = createMemorySource("/");
 const history = createHistory(source);
+const store = createStore(mockPreloadedStateJSON);
 
 const withTracktakProvier = (story) => {
   return (
-    <TracktakProvider store={createStore(mockPreloadedStateJSON)}>
+    <TracktakProvider store={store}>
       <LocationProvider history={history}>{story()}</LocationProvider>
     </TracktakProvider>
   );

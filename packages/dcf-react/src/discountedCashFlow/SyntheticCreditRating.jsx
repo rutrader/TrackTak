@@ -17,6 +17,7 @@ import companiesInterestSpreads from "../shared/companiesInterestSpreads";
 import SubSection from "../components/SubSection";
 import getTableRowBackgroundOpacity from "../shared/getTableRowBackgroundOpacity";
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
+import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 
 const useTableClasses = makeStyles((theme) => ({
   root: ({ currentCompanyInterestIndex }) => ({
@@ -167,4 +168,4 @@ const SyntheticCreditRating = () => {
   );
 };
 
-export default SyntheticCreditRating;
+export default withFundamentalsLoaded(SyntheticCreditRating);

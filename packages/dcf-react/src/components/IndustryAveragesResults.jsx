@@ -6,6 +6,7 @@ import selectIsInUS from "../selectors/fundamentalSelectors/selectIsInUS";
 import StatsContainer from "./StatsContainer";
 import BoldValueLabel from "./BoldValueLabel";
 import FormatRawNumberToPercent from "./FormatRawNumberToPercent";
+import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 
 const IndustryAveragesResults = () => {
   const theme = useTheme();
@@ -79,4 +80,4 @@ const IndustryAveragesResults = () => {
   );
 };
 
-export default IndustryAveragesResults;
+export default withFundamentalsLoaded(IndustryAveragesResults);

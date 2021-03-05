@@ -16,13 +16,20 @@ import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selec
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
 import StatsContainer from "./StatsContainer";
-import { Link } from "../shared/gatsby";
 import { useLocation } from "@reach/router";
 import useInjectQueryParams from "../hooks/useInjectQueryParams";
 import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
 import useVirtualExchange from "../hooks/useVirtualExchange";
+import { Link } from "../shared/gatsby";
+import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 
-const CostOfCapitalResults = () => {
+const DefaultSyntheticCreditRatingLink = ({ ticker, searchParams }) => (
+  <Link to={`/stock/${ticker}/synthetic-credit-rating${searchParams}`} />
+);
+
+const CostOfCapitalResults = ({
+  SyntheticCreditRatingLink = DefaultSyntheticCreditRatingLink,
+}) => {
   const theme = useTheme();
   const currentIndustry = useSelector(selectCurrentIndustry);
   const incomeStatement = useSelector(selectRecentIncomeStatement);
@@ -81,11 +88,12 @@ const CostOfCapitalResults = () => {
               ) : (
                 <Box>
                   {pretaxCostOfDebtLabel}&nbsp;
-                  <Link
-                    to={`/stock/${ticker}/synthetic-credit-rating${location.search}`}
+                  <SyntheticCreditRatingLink
+                    ticker={ticker}
+                    searchParams={location.search}
                   >
                     (Synthetic Credit Rating)
-                  </Link>
+                  </SyntheticCreditRatingLink>
                 </Box>
               )
             }
@@ -142,4 +150,4 @@ const CostOfCapitalResults = () => {
   );
 };
 
-export default CostOfCapitalResults;
+export default withFundamentalsLoaded(CostOfCapitalResults);

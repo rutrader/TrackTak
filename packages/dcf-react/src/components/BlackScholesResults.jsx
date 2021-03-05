@@ -8,6 +8,7 @@ import BoldValueLabel from "./BoldValueLabel";
 import selectValueOption from "../selectors/fundamentalSelectors/selectValueOption";
 import selectValueOfAllOptionsOutstanding from "../selectors/fundamentalSelectors/selectValueOfAllOptionsOutstanding";
 import useInjectQueryParams from "../hooks/useInjectQueryParams";
+import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 
 const BlackScholesResults = () => {
   const valuePerOption = useInjectQueryParams(selectValueOption);
@@ -49,4 +50,4 @@ const BlackScholesResults = () => {
   );
 };
 
-export default BlackScholesResults;
+export default withFundamentalsLoaded(BlackScholesResults);

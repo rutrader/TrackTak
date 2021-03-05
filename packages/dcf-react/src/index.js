@@ -1,6 +1,9 @@
 export * from "./redux/actions/dcfActions";
 export * from "./redux/actions/fundamentalsActions";
 
+export * from "./api/api";
+export * from "./redux/thunks/fundamentalsThunks";
+
 export { default as TracktakProvider } from "./Provider";
 export { default as createStore } from "./redux/createStore";
 

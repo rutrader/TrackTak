@@ -18,7 +18,7 @@
     "react-dom": "^17.0.1"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production microbundle-crl",
+    "build": "cross-env NODE_ENV=production microbundle-crl --no-compress --sourcemap",
     "storybook": "cross-env NODE_ENV=development start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "clean": "rimraf ./node_modules"

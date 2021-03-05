@@ -17,6 +17,7 @@ import getRequiredInputsNotFilledInTitle from "../shared/getRequiredInputsNotFil
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import LazyLoad from "react-lazyload";
 import isSSR from "../shared/isSSR";
+import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 
 const Placeholder = () => {
   const theme = useTheme();
@@ -143,4 +144,4 @@ const DCFControlLabel = withStyles({
   },
 })(FormControlLabel);
 
-export default DiscountedCashFlowSheet;
+export default withFundamentalsLoaded(DiscountedCashFlowSheet);

@@ -1,6 +1,7 @@
 import { Box, Typography, useTheme } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
+import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
@@ -72,4 +73,4 @@ const CompanyOverviewStats = ({ dateOfValuation }) => {
   );
 };
 
-export default CompanyOverviewStats;
+export default withFundamentalsLoaded(CompanyOverviewStats);

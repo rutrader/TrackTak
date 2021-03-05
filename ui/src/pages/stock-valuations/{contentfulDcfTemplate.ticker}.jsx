@@ -5,10 +5,6 @@ import { renderRichText } from "gatsby-source-contentful/rich-text";
 import { BLOCKS, INLINES } from "@contentful/rich-text-types";
 import YouTube from "react-youtube";
 import { graphql, Link as RouterLink } from "gatsby";
-import {
-  getLastPriceCloseThunk,
-  getTenYearGovernmentBondLastCloseThunk,
-} from "../../redux/thunks/fundamentalsThunks";
 import { Box, Link, Typography } from "@material-ui/core";
 import {
   CompanyOverviewStats,
@@ -27,6 +23,8 @@ import {
   IndustryAveragesResults,
   selectPrice,
   selectCells,
+  getLastPriceCloseThunk,
+  getTenYearGovernmentBondLastCloseThunk,
 } from "@tracktak/dcf-react";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
 import * as styles from "./valuation.module.scss";

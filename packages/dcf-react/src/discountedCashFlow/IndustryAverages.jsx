@@ -10,6 +10,7 @@ import BoldValueLabel from "../components/BoldValueLabel";
 import getTableRowBackgroundOpacity from "../shared/getTableRowBackgroundOpacity";
 import selectIsInUS from "../selectors/fundamentalSelectors/selectIsInUS";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
+import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 
 const commonTableRootClasses = {
   "& th": {
@@ -151,4 +152,4 @@ const IndustryAverages = () => {
   );
 };
 
-export default IndustryAverages;
+export default withFundamentalsLoaded(IndustryAverages);

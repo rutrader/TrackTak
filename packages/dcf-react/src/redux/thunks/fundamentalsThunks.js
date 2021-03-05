@@ -1,23 +1,25 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import {
-  convertGBXToGBP,
-  setTenYearGovernmentBondLastClose,
-  setLastPriceClose,
-  setExchangeRates,
-  setFundamentals,
-} from "@tracktak/dcf-react";
-import {
   getExchangeRate,
   getFundamentals,
   getGovernmentBond,
   getPrices,
 } from "../../api/api";
+import convertGBXToGBP from "../../shared/convertGBXToGBP";
 import dayjs from "dayjs";
 import convertHyphenTickerToDot from "../../shared/convertHyphenTickerToDot";
 import getMinimumHistoricalDateFromFinancialStatements from "../../shared/getMinimumHistoricalDateFromFinancialStatements";
+import {
+  setExchangeRates,
+  setFundamentals,
+  setLastPriceClose,
+  setTenYearGovernmentBondLastClose,
+} from "../actions/fundamentalsActions";
 
 const yearMonthDateFormat = "YYYY-MM";
+const fundamentalsFilter =
+  "General,Highlights,SharesStats,Financials::Balance_Sheet,Financials::Income_Statement";
 
 export const getExchangeRatesThunk = createAsyncThunk(
   "fundamentals/getExchangeRates",
@@ -58,6 +60,8 @@ export const getTenYearGovernmentBondLastCloseThunk = createAsyncThunk(
     });
 
     dispatch(setTenYearGovernmentBondLastClose(data.value));
+
+    return data.value;
   },
 );
 
@@ -72,15 +76,17 @@ export const getLastPriceCloseThunk = createAsyncThunk(
     });
 
     dispatch(setLastPriceClose(data.value));
+
+    return data.value;
   },
 );
 
 export const getFundamentalsThunk = createAsyncThunk(
   "fundamentals/getFundamentals",
-  async ({ ticker, filter }, { dispatch }) => {
+  async ({ ticker }, { dispatch }) => {
     const convertedTicker = convertHyphenTickerToDot(ticker);
     const { data } = await getFundamentals(convertedTicker, {
-      filter,
+      filter: fundamentalsFilter,
     });
     const fundamentalsData = data.value;
     const exchangeRates = await dispatch(
@@ -93,5 +99,7 @@ export const getFundamentalsThunk = createAsyncThunk(
 
     dispatch(setExchangeRates(exchangeRates.payload));
     dispatch(setFundamentals(fundamentalsData));
+
+    return data.value;
   },
 );

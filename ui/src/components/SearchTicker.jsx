@@ -10,8 +10,10 @@ import {
 } from "@material-ui/core";
 import { navigate } from "gatsby";
 import SearchIcon from "@material-ui/icons/Search";
-import { useDebouncedCallback } from "@tracktak/dcf-react";
-import { getAutocompleteQuery } from "../api/api";
+import {
+  useDebouncedCallback,
+  getAutocompleteQuery,
+} from "@tracktak/dcf-react";
 
 const useStyles = makeStyles({
   submitButton: {
