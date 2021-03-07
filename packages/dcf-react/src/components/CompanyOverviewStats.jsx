@@ -31,7 +31,7 @@ const CompanyOverviewStats = ({ dateOfValuation }) => {
         }}
       >
         <Typography variant="h4" style={{ flex: 1 }}>
-          {general.Name}
+          {general.name}
         </Typography>
         {dateOfValuation && (
           <Typography>
@@ -44,7 +44,7 @@ const CompanyOverviewStats = ({ dateOfValuation }) => {
         color="textSecondary"
         style={{ textTransform: "uppercase" }}
       >
-        {general.Code}.{general.Exchange}
+        {general.code}.{general.exchange}
       </Typography>
 
       <Box sx={{ display: "flex", gap: theme.spacing(2) }}>

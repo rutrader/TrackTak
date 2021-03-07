@@ -21,7 +21,7 @@ export const wrapPageElement = ({ element, props }) => {
 
       if (
         General.Code !==
-        (state.fundamentals.data && state.fundamentals.data.General.Code)
+        (state.fundamentals.general && state.fundamentals.general.code)
       ) {
         store.dispatch(
           setFundamentals(getInitialFundamentalsData(General, Highlights)),

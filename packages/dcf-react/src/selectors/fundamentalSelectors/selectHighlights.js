@@ -1,3 +1,3 @@
-const selectHighlights = (state) => state.fundamentals.data?.Highlights;
+const selectHighlights = (state) => state.fundamentals.highlights;
 
 export default selectHighlights;

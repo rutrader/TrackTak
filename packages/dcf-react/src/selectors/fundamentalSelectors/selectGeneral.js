@@ -1,3 +1,3 @@
-const selectGeneral = (state) => state.fundamentals.data?.General;
+const selectGeneral = (state) => state.fundamentals.general;
 
 export default selectGeneral;

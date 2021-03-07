@@ -1,0 +1,135 @@
+{
+  "General": {
+    "Code": "IRBT",
+    "Type": "Common Stock",
+    "Name": "iRobot Corporation",
+    "Exchange": "NASDAQ",
+    "CurrencyCode": "USD",
+    "CurrencyName": "US Dollar",
+    "CurrencySymbol": "$",
+    "CountryISO": "US",
+    "GicSubIndustry": "Household Appliances"
+  },
+  "Highlights": {
+    "MarketCapitalization": 3175500544,
+    "MostRecentQuarter": "2020-12-31"
+  },
+  "SharesStats": {
+    "SharesOutstanding": 28199100
+  },
+  "Financials": {
+    "Balance_Sheet": {
+      "currency_symbol": "USD",
+      "quarterly": {
+        "2020-12-31": {
+          "date": "2020-12-31",
+          "totalStockholderEquity": "804434000.00",
+          "cash": "432635000.00",
+          "shortLongTermDebt": null,
+          "longTermDebt": null,
+          "capitalLeaseObligations": "58240000.00",
+          "shortTermInvestments": "60130000.00",
+          "cashAndShortTermInvestments": "492765000.00",
+          "noncontrollingInterestInConsolidatedEntity": null
+        },
+        "2020-09-30": {
+          "date": "2020-09-30",
+          "totalStockholderEquity": "804434000.00",
+          "cash": "432635000.00",
+          "shortLongTermDebt": null,
+          "longTermDebt": null,
+          "capitalLeaseObligations": "58240000.00",
+          "shortTermInvestments": "60130000.00",
+          "cashAndShortTermInvestments": "492765000.00",
+          "noncontrollingInterestInConsolidatedEntity": null
+        },
+        "2020-06-30": {
+          "date": "2020-06-30",
+          "totalStockholderEquity": "804434000.00",
+          "cash": "432635000.00",
+          "shortLongTermDebt": null,
+          "longTermDebt": null,
+          "capitalLeaseObligations": "58240000.00",
+          "shortTermInvestments": "60130000.00",
+          "cashAndShortTermInvestments": "492765000.00",
+          "noncontrollingInterestInConsolidatedEntity": null
+        },
+        "2020-03-31": {
+          "date": "2020-03-31",
+          "totalStockholderEquity": "804434000.00",
+          "cash": "432635000.00",
+          "shortLongTermDebt": null,
+          "longTermDebt": null,
+          "capitalLeaseObligations": "58240000.00",
+          "shortTermInvestments": "60130000.00",
+          "cashAndShortTermInvestments": "492765000.00",
+          "noncontrollingInterestInConsolidatedEntity": null
+        }
+      },
+      "yearly": {
+        "2020-12-31": {
+          "date": "2020-12-31",
+          "totalStockholderEquity": "804434000.00",
+          "cash": "432635000.00",
+          "shortLongTermDebt": null,
+          "longTermDebt": null,
+          "noncontrollingInterestInConsolidatedEntity": null,
+          "capitalLeaseObligations": "50485000.00",
+          "cashAndShortTermInvestments": "483716000.00"
+        }
+      }
+    },
+    "Income_Statement": {
+      "currency_symbol": "USD",
+      "quarterly": {
+        "2020-12-31": {
+          "date": "2020-12-31",
+          "minorityInterest": null,
+          "incomeBeforeTax": "15026000.00",
+          "incomeTaxExpense": "1691000.00",
+          "operatingIncome": "15270000.00",
+          "interestExpense": null,
+          "totalRevenue": "544827000.00"
+        },
+        "2020-09-30": {
+          "date": "2020-09-30",
+          "minorityInterest": null,
+          "incomeBeforeTax": "15026000.00",
+          "incomeTaxExpense": "1691000.00",
+          "operatingIncome": "15270000.00",
+          "interestExpense": null,
+          "totalRevenue": "544827000.00"
+        },
+        "2020-06-30": {
+          "date": "2020-06-30",
+          "minorityInterest": null,
+          "incomeBeforeTax": "15026000.00",
+          "incomeTaxExpense": "1691000.00",
+          "operatingIncome": "15270000.00",
+          "interestExpense": null,
+          "totalRevenue": "544827000.00"
+        },
+        "2020-03-31": {
+          "date": "2020-03-31",
+          "minorityInterest": null,
+          "incomeBeforeTax": "15026000.00",
+          "incomeTaxExpense": "1691000.00",
+          "operatingIncome": "15270000.00",
+          "interestExpense": null,
+          "totalRevenue": "544827000.00"
+        }
+      },
+      "yearly": {
+        "2020-12-31": {
+          "date": "2020-12-31",
+          "minorityInterest": null,
+          "incomeBeforeTax": "187915000.00",
+          "incomeTaxExpense": "40847000.00",
+          "operatingIncome": "146322000.00",
+          "interestExpense": null,
+          "totalRevenue": "1430390000.00"
+        }
+      }
+    }
+  }
+}

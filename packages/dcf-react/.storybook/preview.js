@@ -1,5 +1,6 @@
-import { TracktakProvider } from "../src";
+import { setFundamentals, TracktakProvider } from "../src";
 import mockPreloadedStateJSON from "./mockPreloadedState.json";
+import mockIRobotDataJSON from "./mockIRobotData.json";
 import createStore from "../src/redux/createStore";
 import {
   LocationProvider,
@@ -12,6 +13,8 @@ import "@blueprintjs/table/lib/css/table.css";
 const source = createMemorySource("/");
 const history = createHistory(source);
 const store = createStore(mockPreloadedStateJSON);
+
+store.dispatch(setFundamentals(mockIRobotDataJSON));
 
 const withTracktakProvier = (story) => {
   return (

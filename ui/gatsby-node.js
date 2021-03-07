@@ -16,7 +16,7 @@ let fundamentals = fs
 if (process.env.NODE_ENV === "development") {
   // To speed up development time
   fundamentals = [fundamentals[0]];
-}s
+}
 
 exports.onCreatePage = ({ page, actions }) => {
   const { createPage } = actions;

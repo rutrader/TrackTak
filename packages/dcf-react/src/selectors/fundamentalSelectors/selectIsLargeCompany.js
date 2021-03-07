@@ -8,8 +8,8 @@ const selectIsLargeCompany = createSelector(
   (highlights, thresholdMarketCap) => {
     if (!highlights) return null;
 
-    return highlights.MarketCapitalization >= thresholdMarketCap;
-  }
+    return highlights.marketCapitalization >= thresholdMarketCap;
+  },
 );
 
 export default selectIsLargeCompany;

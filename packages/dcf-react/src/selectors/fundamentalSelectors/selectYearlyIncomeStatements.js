@@ -4,14 +4,13 @@ import selectConvertCurrency from "./selectConvertCurrency";
 import dateSortComparer from "../../shared/dateSortComparer";
 
 export const selectSortedYearlyIncomeStatements = createSelector(
-  (state) => state.fundamentals.data?.Financials.Income_Statement.yearly ?? {},
+  (state) => state.fundamentals.incomeStatement?.yearly ?? {},
   (yearlyIncomeStatements) =>
     Object.values(yearlyIncomeStatements).sort(dateSortComparer),
 );
 
 export const selectSortedQuarterlyIncomeStatements = createSelector(
-  (state) =>
-    state.fundamentals.data?.Financials.Income_Statement.quarterly ?? {},
+  (state) => state.fundamentals.incomeStatement?.quarterly ?? {},
   (quarterlyIncomeStatements) =>
     Object.values(quarterlyIncomeStatements).sort(dateSortComparer),
 );

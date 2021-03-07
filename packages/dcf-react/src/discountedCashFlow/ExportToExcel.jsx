@@ -265,7 +265,7 @@ const ExportToExcel = () => {
       valuationWorksheetName,
     );
 
-    writeFile(workBook, `${general.Code}.${general.Exchange}_DCF.xlsx`);
+    writeFile(workBook, `${general.code}.${general.exchange}_DCF.xlsx`);
   };
 
   return (

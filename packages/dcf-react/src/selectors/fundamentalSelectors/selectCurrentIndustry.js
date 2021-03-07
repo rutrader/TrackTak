@@ -9,16 +9,15 @@ const selectCurrentIndustry = createSelector(
   selectGeneral,
   selectIsInUS,
   (general, isInUS) => {
-    // Some stocks do not have a GicSubIndustry so fallback to industry for them
+    // Some stocks do not have a gicSubIndustry so fallback to industry for them
     let mappedCurrentIndustry;
 
-    if (general.GicSubIndustry) {
-      mappedCurrentIndustry = gicSubIndustryMappingJson[general.GicSubIndustry];
+    if (general.gicSubIndustry) {
+      mappedCurrentIndustry = gicSubIndustryMappingJson[general.gicSubIndustry];
     } else {
-      const currentIndustry = general.Industry.replace(
-        spaceRegex,
-        "",
-      ).toUpperCase();
+      const currentIndustry = general.industry
+        .replace(spaceRegex, "")
+        .toUpperCase();
 
       mappedCurrentIndustry = industryMapping[currentIndustry];
     }

@@ -1,16 +1,13 @@
 import { createSelector } from "@reduxjs/toolkit";
 import dayjs from "dayjs";
-import getValueFromString from "../../shared/getValueFromString";
 import selectExchangeRates from "./selectExchangeRates";
 
 const convertCurrency = (exchangeRates) => (
   datePeriodsToConvertAt,
   valueToConvert,
 ) => {
-  const valueAsANumber = getValueFromString(valueToConvert);
-
-  if (isNaN(parseFloat(valueAsANumber)) || !exchangeRates)
-    return valueAsANumber;
+  if (isNaN(parseFloat(valueToConvert)) || !exchangeRates)
+    return valueToConvert;
 
   // TODO: Make this exact day later
   const sumOfExchangeRateCloses = datePeriodsToConvertAt.reduce(
@@ -27,7 +24,7 @@ const convertCurrency = (exchangeRates) => (
   const averageOfExchangeRateCloses =
     sumOfExchangeRateCloses / datePeriodsToConvertAt.length;
 
-  return valueAsANumber * averageOfExchangeRateCloses;
+  return valueToConvert * averageOfExchangeRateCloses;
 };
 
 const selectConvertCurrency = createSelector(

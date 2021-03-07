@@ -3,7 +3,6 @@ const getInitialFundamentalsData = (General, Highlights) => {
     General,
     Highlights,
     SharesStats: {},
-    Valuation: {},
     Financials: {
       Balance_Sheet: {
         currency_symbol: General.CurrencyCode,

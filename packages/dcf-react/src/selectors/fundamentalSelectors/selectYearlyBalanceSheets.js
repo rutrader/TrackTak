@@ -5,13 +5,13 @@ import dateSortComparer from "../../shared/dateSortComparer";
 import selectYearlyIncomeStatements from "./selectYearlyIncomeStatements";
 
 export const selectSortedYearlyBalanceSheets = createSelector(
-  (state) => state.fundamentals.data?.Financials.Balance_Sheet.yearly ?? {},
+  (state) => state.fundamentals.balanceSheet?.yearly ?? {},
   (yearlyBalanceSheets) =>
     Object.values(yearlyBalanceSheets).sort(dateSortComparer),
 );
 
 export const selectSortedQuarterlyBalanceSheets = createSelector(
-  (state) => state.fundamentals.data?.Financials.Balance_Sheet.quarterly ?? {},
+  (state) => state.fundamentals.balanceSheet?.quarterly ?? {},
   (quarterlyBalanceSheets) =>
     Object.values(quarterlyBalanceSheets).sort(dateSortComparer),
 );

@@ -10,11 +10,11 @@ const selectSharesOutstanding = createSelector(
   (sharesStats, highlights, price) => {
     if (!sharesStats) return null;
 
-    if (sharesStats.SharesOutstanding === 0) {
-      return highlights.MarketCapitalization / price;
+    if (sharesStats.sharesOutstanding === 0) {
+      return highlights.marketCapitalization / price;
     }
 
-    return sharesStats.SharesOutstanding;
+    return sharesStats.sharesOutstanding;
   },
 );
 

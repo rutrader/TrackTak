@@ -1,3 +1,3 @@
-const selectSharesStats = (state) => state.fundamentals.data?.SharesStats;
+const selectSharesStats = (state) => state.fundamentals.sharesStats;
 
 export default selectSharesStats;

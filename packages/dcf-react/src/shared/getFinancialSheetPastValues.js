@@ -1,14 +1,12 @@
-import getValueFromString from "./getValueFromString";
-
 const getFinancialSheetPastValues = (
   financialSheetValues,
   valueKey,
-  periodsToGet
+  periodsToGet,
 ) => {
   const sumOfFirstFourValues = financialSheetValues
     .slice(0, periodsToGet)
     .reduce((acc, curr) => {
-      return (acc += getValueFromString(curr[valueKey]));
+      return (acc += curr[valueKey]);
     }, 0);
 
   return sumOfFirstFourValues;

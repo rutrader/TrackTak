@@ -1,29 +1,25 @@
-import getValueFromString from "./getValueFromString";
-
 const getBookValueOfDebt = (balanceSheet) => {
   let bookValueOfDebt = 0;
 
-  bookValueOfDebt += getValueFromString(balanceSheet.shortLongTermDebt);
+  bookValueOfDebt += balanceSheet.shortLongTermDebt;
 
-  bookValueOfDebt += getValueFromString(balanceSheet.longTermDebt);
+  bookValueOfDebt += balanceSheet.longTermDebt;
 
-  bookValueOfDebt += getValueFromString(balanceSheet.capitalLeaseObligations);
+  bookValueOfDebt += balanceSheet.capitalLeaseObligations;
 
   return bookValueOfDebt;
 };
 
 const getCashAndShortTermInvestments = (balanceSheet) => {
-  // Non U.S Stocks report cash + shortTermInvestments seperately
+  // Non U.S Stocks report cash + shortTermInvestments separately
   if (balanceSheet.cashAndShortTermInvestments !== null) {
     return balanceSheet.cashAndShortTermInvestments;
   } else if (
     balanceSheet.cash !== null ||
     balanceSheet.shortTermInvestments !== null
   ) {
-    const cash = getValueFromString(balanceSheet.cash);
-    const shortTermInvestments = getValueFromString(
-      balanceSheet.shortTermInvestments
-    );
+    const cash = balanceSheet.cash;
+    const shortTermInvestments = balanceSheet.shortTermInvestments;
 
     return cash + shortTermInvestments;
   } else {
@@ -35,7 +31,7 @@ const getBalanceSheet = (
   balanceSheet,
   convertCurrency,
   totalRevenue,
-  dateToConvertCurrencyAt
+  dateToConvertCurrencyAt,
 ) => {
   const newBalanceSheet = {
     bookValueOfDebt: getBookValueOfDebt(balanceSheet),
@@ -48,7 +44,7 @@ const getBalanceSheet = (
   Object.keys(newBalanceSheet).forEach((property) => {
     newBalanceSheet[property] = convertCurrency(
       [dateToConvertCurrencyAt],
-      newBalanceSheet[property]
+      newBalanceSheet[property],
     );
   });
 
