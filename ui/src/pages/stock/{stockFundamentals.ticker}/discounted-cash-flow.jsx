@@ -17,7 +17,6 @@ export const query = graphql`
       CurrencyCode
       CurrencyName
       CurrencySymbol
-      CountryName
       CountryISO
       Industry
       Description
