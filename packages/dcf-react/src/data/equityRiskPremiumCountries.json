@@ -1,13 +1,5 @@
 [
   {
-    "country": "Abu Dhabi",
-    "moodysRating": "Aa2",
-    "adjDefaultSpread": "0.58%",
-    "equityRiskPremium": "5.96%",
-    "countryRiskPremium": "0.73%",
-    "corporateTaxRate": "55.00%"
-  },
-  {
     "country": "Albania",
     "moodysRating": "B1",
     "adjDefaultSpread": "5.28%",
@@ -160,7 +152,7 @@
     "corporateTaxRate": "0.00%"
   },
   {
-    "country": "Bolivia",
+    "country": "Bolivia, Plurinational State of",
     "moodysRating": "B1",
     "adjDefaultSpread": "5.28%",
     "equityRiskPremium": "11.84%",
@@ -192,7 +184,7 @@
     "corporateTaxRate": "34.00%"
   },
   {
-    "country": "Brunei",
+    "country": "Brunei Darussalam",
     "moodysRating": "NA",
     "adjDefaultSpread": "1.00%",
     "equityRiskPremium": "6.48%",
@@ -304,7 +296,7 @@
     "corporateTaxRate": "30.00%"
   },
   {
-    "country": "Ivory Coast",
+    "country": "Côte d'Ivoire",
     "moodysRating": "Ba3",
     "adjDefaultSpread": "4.22%",
     "equityRiskPremium": "10.52%",
@@ -328,7 +320,7 @@
     "corporateTaxRate": "27.24%"
   },
   {
-    "country": "Curacao",
+    "country": "Curaçao",
     "moodysRating": "Baa2",
     "adjDefaultSpread": "2.23%",
     "equityRiskPremium": "8.03%",
@@ -576,7 +568,7 @@
     "corporateTaxRate": "25.00%"
   },
   {
-    "country": "Iran",
+    "country": "Iran, Islamic Republic of",
     "moodysRating": "NA",
     "adjDefaultSpread": "10.57%",
     "equityRiskPremium": "18.46%",
@@ -672,7 +664,15 @@
     "corporateTaxRate": "30.00%"
   },
   {
-    "country": "North Korea",
+    "country": "Korea, Republic of",
+    "moodysRating": "AA2",
+    "adjDefaultSpread": "0.58%",
+    "equityRiskPremium": "5.96%",
+    "countryRiskPremium": "0.73%",
+    "corporateTaxRate": "25%"
+  },
+  {
+    "country": "Korea, Democratic People's Republic of",
     "moodysRating": "NA",
     "adjDefaultSpread": "14.08%",
     "equityRiskPremium": "22.86%",
@@ -696,7 +696,7 @@
     "corporateTaxRate": "10.00%"
   },
   {
-    "country": "Laos",
+    "country": "Lao People's Democratic Republic",
     "moodysRating": "B3",
     "adjDefaultSpread": "1.41%",
     "equityRiskPremium": "6.99%",
@@ -768,7 +768,7 @@
     "corporateTaxRate": "12.00%"
   },
   {
-    "country": "Macedonia",
+    "country": "Macedonia, the Former Yugoslav Republic of",
     "moodysRating": "Ba3",
     "adjDefaultSpread": "4.22%",
     "equityRiskPremium": "10.52%",
@@ -840,7 +840,7 @@
     "corporateTaxRate": "30.00%"
   },
   {
-    "country": "Moldova",
+    "country": "Moldova, Republic of",
     "moodysRating": "B3",
     "adjDefaultSpread": "7.63%",
     "equityRiskPremium": "14.79%",
@@ -1032,14 +1032,6 @@
     "corporateTaxRate": "10.00%"
   },
   {
-    "country": "Ras Al Khaimah",
-    "moodysRating": "A2",
-    "adjDefaultSpread": "1.00%",
-    "equityRiskPremium": "6.48%",
-    "countryRiskPremium": "1.25%",
-    "corporateTaxRate": "0.00%"
-  },
-  {
     "country": "Romania",
     "moodysRating": "Baa3",
     "adjDefaultSpread": "2.58%",
@@ -1048,7 +1040,7 @@
     "corporateTaxRate": "16.00%"
   },
   {
-    "country": "Russia",
+    "country": "Russian Federation",
     "moodysRating": "Baa3",
     "adjDefaultSpread": "2.58%",
     "equityRiskPremium": "8.46%",
@@ -1086,14 +1078,6 @@
     "equityRiskPremium": "10.52%",
     "countryRiskPremium": "5.29%",
     "corporateTaxRate": "15.00%"
-  },
-  {
-    "country": "Sharjah",
-    "moodysRating": "Baa2",
-    "adjDefaultSpread": "2.23%",
-    "equityRiskPremium": "8.03%",
-    "countryRiskPremium": "2.80%",
-    "corporateTaxRate": "0.00%"
   },
   {
     "country": "Sierra Leone",
@@ -1168,7 +1152,7 @@
     "corporateTaxRate": "28.00%"
   },
   {
-    "country": "St. Maarten",
+    "country": "Sint Maarten (Dutch part)",
     "moodysRating": "Baa3",
     "adjDefaultSpread": "2.58%",
     "equityRiskPremium": "8.46%",
@@ -1224,7 +1208,7 @@
     "corporateTaxRate": "18.00%"
   },
   {
-    "country": "Syria",
+    "country": "Syrian Arab Republic",
     "moodysRating": "NA",
     "adjDefaultSpread": "14.08%",
     "equityRiskPremium": "22.86%",
@@ -1232,7 +1216,7 @@
     "corporateTaxRate": "28.00%"
   },
   {
-    "country": "Taiwan",
+    "country": "Taiwan, Province of China",
     "moodysRating": "Aa3",
     "adjDefaultSpread": "0.71%",
     "equityRiskPremium": "6.12%",
@@ -1248,7 +1232,7 @@
     "corporateTaxRate": "30.19%"
   },
   {
-    "country": "Tanzania",
+    "country": "Tanzania, United Republic of",
     "moodysRating": "B1",
     "adjDefaultSpread": "5.28%",
     "equityRiskPremium": "11.84%",
@@ -1360,7 +1344,7 @@
     "corporateTaxRate": "7.50%"
   },
   {
-    "country": "Venezuela",
+    "country": "Venezuela, Bolivarian Republic of",
     "moodysRating": "C",
     "adjDefaultSpread": "17.50%",
     "equityRiskPremium": "27.14%",
@@ -1368,7 +1352,7 @@
     "corporateTaxRate": "34.00%"
   },
   {
-    "country": "Vietnam",
+    "country": "Viet Nam",
     "moodysRating": "Ba3",
     "adjDefaultSpread": "4.22%",
     "equityRiskPremium": "10.52%",

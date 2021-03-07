@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import industryAverage from "../../shared/industryAverage";
-import industryMapping, { spaceRegex } from "../../shared/industryMappings";
+import industryMapingJSON from "../../data/industryMapping.json";
 import selectGeneral from "./selectGeneral";
 import selectIsInUS from "./selectIsInUS";
 
@@ -8,12 +8,7 @@ const selectCurrentIndustry = createSelector(
   selectGeneral,
   selectIsInUS,
   (general, isInUS) => {
-    const currentIndustryMutated = general.Industry.replace(
-      spaceRegex,
-      "",
-    ).toUpperCase();
-
-    const mappedCurrentIndustry = industryMapping[currentIndustryMutated];
+    const mappedCurrentIndustry = industryMapingJSON[general.GicSubIndustry];
     const industryAverages = isInUS
       ? industryAverage.US
       : industryAverage.global;

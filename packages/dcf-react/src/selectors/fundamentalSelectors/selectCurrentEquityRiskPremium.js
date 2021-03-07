@@ -19,7 +19,8 @@ const selectCurrentEquityRiskPremium = createSelector(
       const country = datum.country.toUpperCase();
 
       return (
-        country === getCountryFromCountryISO(general.CountryISO).toUpperCase()
+        country ===
+        getCountryFromCountryISO(general.CountryISO.toUpperCase()).toUpperCase()
       );
     });
 
