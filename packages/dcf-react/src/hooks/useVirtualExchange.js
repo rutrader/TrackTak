@@ -6,7 +6,7 @@ const useVirtualExchange = () => {
   const isInUS = useSelector(selectIsInUS);
   const general = useSelector(selectGeneral);
 
-  return isInUS ? general?.CountryISO : general?.Exchange;
+  return isInUS ? general?.countryISO : general?.exchange;
 };
 
 export default useVirtualExchange;

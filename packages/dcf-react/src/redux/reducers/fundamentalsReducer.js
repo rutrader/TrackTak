@@ -69,7 +69,6 @@ const setFundamentalsReducer = (state, action) => {
 
   const general = {
     code: General.Code,
-    type: General.Type,
     name: General.Name,
     exchange: General.Exchange,
     currencyCode: General.CurrencyCode,
@@ -90,13 +89,11 @@ const setFundamentalsReducer = (state, action) => {
   };
 
   const balanceSheet = {
-    currencySymbol: Balance_Sheet.currency_symbol,
     quarterly: {},
     yearly: {},
   };
 
   const incomeStatement = {
-    currencySymbol: Income_Statement.currency_symbol,
     quarterly: {},
     yearly: {},
   };

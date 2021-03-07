@@ -6,10 +6,10 @@ const selectPrice = createSelector(
   selectGeneral,
   selectPriceLastClose,
   (general, priceLastClose) => {
-    return general?.CurrencyCode === "GBX"
+    return general?.currencyCode === "GBX"
       ? priceLastClose / 100
       : priceLastClose;
-  }
+  },
 );
 
 export default selectPrice;

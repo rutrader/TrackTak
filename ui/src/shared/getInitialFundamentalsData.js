@@ -5,7 +5,6 @@ const getInitialFundamentalsData = (General, Highlights) => {
     SharesStats: {},
     Financials: {
       Balance_Sheet: {
-        currency_symbol: General.CurrencyCode,
         yearly: {
           "2020-12-31": {},
         },
@@ -14,7 +13,6 @@ const getInitialFundamentalsData = (General, Highlights) => {
         },
       },
       Cash_Flow: {
-        currency_symbol: General.CurrencyCode,
         yearly: {
           "2020-12-31": {},
         },
@@ -23,7 +21,6 @@ const getInitialFundamentalsData = (General, Highlights) => {
         },
       },
       Income_Statement: {
-        currency_symbol: General.CurrencyCode,
         yearly: {
           "2020-12-31": {},
         },
