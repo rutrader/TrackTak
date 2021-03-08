@@ -15,7 +15,12 @@ let fundamentals = fs
 
 if (process.env.NODE_ENV === "development") {
   // To speed up development time
-  fundamentals = [fundamentals[0]];
+  fundamentals = fundamentals.filter(
+    (x) =>
+      x.General.Code === "IRBT" ||
+      x.General.Code === "FNX" ||
+      x.General.Code === "PTL",
+  );
 }
 
 exports.onCreatePage = ({ page, actions }) => {

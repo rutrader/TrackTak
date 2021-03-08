@@ -18,10 +18,9 @@ npm install --save @tracktak/dcf-react
 
 ## Components
 
-Each component has jsdoc comments on it which describes the props and what it does. See that for more information.
 You don't need all of these components if you don't want.
 
-For example PastFundamentals can be removed if you have your own fundamentals page.
+For example PastFundamentals can be removed if you have your own fundamentals page. See the example link at the top of this readme for more info.
 
 - <CompanyOverviewStats />
 - <PastFundamentals />
@@ -38,7 +37,7 @@ Provider can be added at the root of your app with your other providers. This co
 Here's the provider's code:
 
 ```js
-const Provider = ({ children, store, theme = muiTheme }) => {
+const Provider = ({ children, store, theme = {} }) => {
   return (
     <ThemeProvider theme={theme}>
       <ReactReduxProvider store={store}>{children}</ReactReduxProvider>
@@ -47,65 +46,191 @@ const Provider = ({ children, store, theme = muiTheme }) => {
 };
 ```
 
-You can see that you can provide your own theme to the provider which will overwrite our default one.
-
-Here's our default theme:
-
-```js
-import { createMuiTheme } from "@material-ui/core";
-
-const theme = createMuiTheme({
-  typography: {
-    fontFamily: "Montserrat, sans-serif",
-  },
-  palette: {
-    primary: {
-      light: "#2fdbab",
-      main: "#43cea2",
-      dark: "#38ab87",
-      contrastText: "#fff",
-    },
-    secondary: {
-      light: "#7849BF",
-      main: "#51509C",
-      dark: "#41407d",
-      contrastText: "#fff",
-    },
-  },
-  components: {
-    MuiButton: {
-      defaultProps: {
-        disableElevation: true,
-      },
-    },
-    MuiAccordion: {
-      styleOverrides: {
-        rounded: {
-          borderRadius: "4px",
-        },
-      },
-    },
-  },
-});
-```
+You can see that you can provide your own material ui theme to the provider.
+See here for the default theme: https://material-ui.com/customization/default-theme/
 
 ## State and props
 
-We use redux to handle the state between the components in tracktak. This means that the components above don't have many props that have to be passed in them. We get our data from EODHistoricalData.com so our state structure mostly matches the return value from their fundamentals endpoint: `eodhistoricaldata.com/api/fundamentals`.
+We use redux to handle the state between the components in tracktak. This means that the components above don't have many props that have to be passed in them.
 
-Here's the structure of our redux state that you need to comply to:
+Here's the structure of our redux state that you need to pass into the store in the Provider above.
+The below is an example from IRobot, but the principle/structure is the same for all stocks.
 
 ```js
-
+{
+  fundamentals: {
+    governmentBondTenYearYield: 0.01577,
+    priceLastClose: 120.5,
+    general: {
+      code: 'IRBT',
+      name: 'iRobot Corporation',
+      exchange: 'NASDAQ',
+      currencyCode: 'USD',
+      currencyName: 'US Dollar',
+      currencySymbol: '$',
+      countryISO: 'US',
+      gicSubIndustry: 'Household Appliances'
+    },
+    highlights: {
+      marketCapitalization: 3287169024,
+      mostRecentQuarter: '2020-12-31'
+    },
+    sharesStats: {
+      sharesOutstanding: 28199100
+    },
+    balanceSheet: {
+      quarterly: {
+        '2020-12-31': {
+          totalStockholderEquity: 804434000,
+          cash: 432635000,
+          shortLongTermDebt: 0,
+          longTermDebt: 0,
+          capitalLeaseObligations: 50485000,
+          shortTermInvestments: 51081000,
+          noncontrollingInterestInConsolidatedEntity: 0,
+          date: '2020-12-31'
+        },
+        '2020-09-30': {
+          totalStockholderEquity: 781914000,
+          cash: 297206000,
+          shortLongTermDebt: 0,
+          longTermDebt: 0,
+          capitalLeaseObligations: 58240000,
+          shortTermInvestments: 60130000,
+          noncontrollingInterestInConsolidatedEntity: 0,
+          date: '2020-09-30'
+        },
+        '2020-06-30': {
+          totalStockholderEquity: 682062000,
+          cash: 230734000,
+          shortLongTermDebt: 0,
+          longTermDebt: 0,
+          capitalLeaseObligations: 59493000,
+          shortTermInvestments: 11560000,
+          noncontrollingInterestInConsolidatedEntity: 0,
+          date: '2020-06-30'
+        },
+        '2020-03-31': {
+          totalStockholderEquity: 616539000,
+          cash: 248768000,
+          shortLongTermDebt: 0,
+          longTermDebt: 0,
+          capitalLeaseObligations: 59994000,
+          shortTermInvestments: 14759000,
+          noncontrollingInterestInConsolidatedEntity: 0,
+          date: '2020-03-31'
+        },
+      },
+      yearly: {
+        '2020-12-31': {
+          totalStockholderEquity: 804434000,
+          cash: 432635000,
+          shortLongTermDebt: 0,
+          longTermDebt: 0,
+          capitalLeaseObligations: 50485000,
+          shortTermInvestments: 51081000,
+          noncontrollingInterestInConsolidatedEntity: 0,
+          date: '2020-12-31'
+        },
+      }
+    },
+    incomeStatement: {
+      quarterly: {
+        '2020-12-31': {
+          minorityInterest: 0,
+          operatingIncome: 15270000,
+          interestExpense: 0,
+          incomeBeforeTax: 15026000,
+          incomeTaxExpense: 1691000,
+          totalRevenue: 544827000,
+          date: '2020-12-31'
+        },
+        '2020-09-30': {
+          minorityInterest: 0,
+          operatingIncome: 80994000,
+          interestExpense: 0,
+          incomeBeforeTax: 123234000,
+          incomeTaxExpense: 29982000,
+          totalRevenue: 413145000,
+          date: '2020-09-30'
+        },
+        '2020-06-30': {
+          minorityInterest: 0,
+          operatingIncome: 70283000,
+          interestExpense: 0,
+          incomeBeforeTax: 69899000,
+          incomeTaxExpense: 11283000,
+          totalRevenue: 279883000,
+          date: '2020-06-30'
+        },
+        '2020-03-31': {
+          minorityInterest: 0,
+          operatingIncome: -20225000,
+          interestExpense: 0,
+          incomeBeforeTax: -20244000,
+          incomeTaxExpense: -2109000,
+          totalRevenue: 192535000,
+          date: '2020-03-31'
+        },
+      },
+      yearly: {
+        '2020-12-31': {
+          minorityInterest: 0,
+          operatingIncome: 146322000,
+          interestExpense: 0,
+          incomeBeforeTax: 187915000,
+          incomeTaxExpense: 40847000,
+          totalRevenue: 1430390000,
+          date: '2020-12-31'
+        },
+      }
+    }
+  }
+}
 ```
+
+None obvious fields explained:
+
+`governmentBondTenYearYield` - The countries 10 year government bond yield. For example, if the stock is bases in the U.S then this will be the US 10 year treasury yield.
+
+`priceLastClose` - The stock price.
+
+`countryISO` - This must be a ISO 3166-1 alpha-2 country iso code: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+
+We use this npm package internally: iso-3166-1-alpha-2.
+
+`gicSubIndustry` - This must be a Global Industry Classification Standard Sub-Industry as seen in the column here: https://en.wikipedia.org/wiki/Global_Industry_Classification_Standard
+
+The reason it must match one of these Sub-Industries specifically is because we map to our code internally to get the industry averages.
+
+`mostRecentQuarter` - The most recent quarter financial sheet date that was released (balanceSheet/incomeStatement). For non-US stocks we currently don't support quarterly data on the balanceSheet or incomeStatement as our API provider does not. So for non-US stocks this field will just be the most recent yearly financial sheet date.
 
 For now, the best way to use this package is to just dispatch our async thunks that we provide. These will make an API call to our API provider: EODHistoricalData.com and these thunks then populate the state.
 
-The thunks we provide are:
+`balanceSheet.shortLongTermDebt` - Interest bearing debt that is due within 12 months.
 
-- getLastPriceCloseThunk -> Gets the last closing price for the stock from the API
-- getFundamentalsThunk -> Gets the full fundamentals such as General, Highlights, Financials. It also sets the exchangeRates if it's an international stock.
-- getTenYearGovernmentBondLastCloseThunk -> Gets the stocks address countries ten year government bond closing price.
+`balanceSheet.longTermDebt` - Interest bearing debt that is due after 12 months.
 
-In the future we will make our data more efficient so you can provide your own data instead of relying on our API calls to fill the components.
-The issue with this currently is that we have data such as the companies industry, country ISO and exchange rates which must be of a specific format due to how we calculate stuff like equityRiskPremiums.
+`balanceSheet.capitalLeaseObligations` - Leases on property or equipment that the company pays.
+
+`balanceSheet.shortTermInvestments` - Investments that are highly liquid.
+
+`balanceSheet.noncontrollingInterestInConsolidatedEntity` - Minor holdings in other companies that are not consolidated.
+
+`incomeStatement.minorityInterest` - If a company owns > 50% of another company they must consolidate the entire company on their financial statements. This field is the part of that that is not owned by the company.
+
+This is the easiest way to use the library and still provide your own data, this is useful for SSR and also less API calls. If you want an even faster solution where you don't have to provide the above data then we can add our API thunks to to the package for you to call them or we can provide an iframe for you.
+
+Any questions, please contact me: martin@tracktak.com
+
+## Final notes
+
+Some stocks report financials in a different currency than their quote stock price. We are working on an currency exchange rate but this is not ready yet for this package just yet. It will be coming soon.
+
+## License
+
+You can use this for commercial purposes. Please do not distribute this package to anyone outside of your company or modify any of the internals of the package. Please do not hide any logo's of tracktak or links to tracktak.com with css or javascript without our prior permission.
+
+If you need changes, we can provide them for you.
+
+Thank you!

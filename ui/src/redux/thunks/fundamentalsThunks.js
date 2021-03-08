@@ -6,16 +6,17 @@ import {
   getGovernmentBond,
   getPrices,
 } from "../../api/api";
-import convertGBXToGBP from "../../shared/convertGBXToGBP";
+import {
+  convertGBXToGBP,
+  setExchangeRates,
+  setLastPriceClose,
+  setTenYearGovernmentBondLastClose,
+  setFundamentals,
+} from "@tracktak/dcf-react";
 import dayjs from "dayjs";
 import convertHyphenTickerToDot from "../../shared/convertHyphenTickerToDot";
 import getMinimumHistoricalDateFromFinancialStatements from "../../shared/getMinimumHistoricalDateFromFinancialStatements";
-import {
-  setExchangeRates,
-  setFundamentals,
-  setLastPriceClose,
-  setTenYearGovernmentBondLastClose,
-} from "../actions/fundamentalsActions";
+import convertFundamentals from "../../shared/convertFundamentals";
 
 const yearMonthDateFormat = "YYYY-MM";
 const fundamentalsFilter =
@@ -98,7 +99,7 @@ export const getFundamentalsThunk = createAsyncThunk(
     );
 
     dispatch(setExchangeRates(exchangeRates.payload));
-    dispatch(setFundamentals(fundamentalsData));
+    dispatch(setFundamentals(convertFundamentals(fundamentalsData)));
 
     return data.value;
   },

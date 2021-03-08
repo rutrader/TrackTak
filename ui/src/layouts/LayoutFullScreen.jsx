@@ -7,7 +7,7 @@ import {
   getFundamentalsThunk,
   getLastPriceCloseThunk,
   getTenYearGovernmentBondLastCloseThunk,
-} from "@tracktak/dcf-react";
+} from "../redux/thunks/fundamentalsThunks";
 
 const LayoutFullScreen = ({
   children,

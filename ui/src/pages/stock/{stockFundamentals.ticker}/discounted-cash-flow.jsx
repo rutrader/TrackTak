@@ -6,7 +6,7 @@ import getTitle from "../../../shared/getTitle";
 import resourceName from "../../../shared/resourceName";
 import { graphql } from "gatsby";
 import { Section } from "@tracktak/dcf-react";
-import { DiscountedCashFlow } from "@tracktak/dcf-react";
+import DiscountedCashFlow from "../../../components/DiscountedCashFlow";
 
 export const query = graphql`
   fragment Fundamentals on StockFundamentals {

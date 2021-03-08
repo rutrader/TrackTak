@@ -6,11 +6,16 @@ import {
   setFundamentals,
 } from "@tracktak/dcf-react";
 import "./sass/blueprintTheme.scss";
+import theme from "./src/theme";
 
 const store = createStore();
 
 export const wrapRootElement = ({ element }) => {
-  return <TracktakProvider store={store}>{element}</TracktakProvider>;
+  return (
+    <TracktakProvider store={store} theme={theme}>
+      {element}
+    </TracktakProvider>
+  );
 };
 
 export const wrapPageElement = ({ element, props }) => {

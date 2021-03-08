@@ -1,14 +1,10 @@
 export * from "./redux/actions/dcfActions";
 export * from "./redux/actions/fundamentalsActions";
 
-export * from "./api/api";
-export * from "./redux/thunks/fundamentalsThunks";
-
 export { default as TracktakProvider } from "./Provider";
 export { default as createStore } from "./redux/createStore";
 
 export { default as DiscountedCashFlowSheet } from "./discountedCashFlow/DiscountedCashFlowSheet";
-export { default as DiscountedCashFlow } from "./discountedCashFlow/DiscountedCashFlow";
 export { default as SyntheticCreditRating } from "./discountedCashFlow/SyntheticCreditRating";
 export { default as IndustryAverages } from "./discountedCashFlow/IndustryAverages";
 
@@ -57,3 +53,5 @@ export {
 
 export { default as selectPrice } from "./selectors/fundamentalSelectors/selectPrice";
 export { default as selectCells } from "./selectors/dcfSelectors/selectCells";
+
+export { default as withFundamentalsLoaded } from "./hoc/withFundamentalsLoaded";

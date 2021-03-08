@@ -1,16 +1,18 @@
 import React from "react";
 import { Box, useTheme } from "@material-ui/core";
-import Section from "../components/Section";
-import SubSection from "../components/SubSection";
-import CompanyOverviewStats from "../components/CompanyOverviewStats";
-import ValueDrivingInputs from "../components/ValueDrivingInputs";
-import OptionalInputs from "../components/OptionalInputs";
-import CostOfCapitalResults from "../components/CostOfCapitalResults";
-import BlackScholesResults from "../components/BlackScholesResults";
-import DiscountedCashFlowSheet from "./DiscountedCashFlowSheet";
-import IndustryAveragesResults from "../components/IndustryAveragesResults";
-import PastFundamentals from "../components/PastFundamentals";
-import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
+import {
+  BlackScholesResults,
+  CompanyOverviewStats,
+  CostOfCapitalResults,
+  DiscountedCashFlowSheet,
+  IndustryAveragesResults,
+  OptionalInputs,
+  PastFundamentals,
+  Section,
+  SubSection,
+  withFundamentalsLoaded,
+  ValueDrivingInputs,
+} from "@tracktak/dcf-react";
 
 const DiscountedCashFlow = () => {
   const theme = useTheme();

@@ -23,8 +23,6 @@ import {
   IndustryAveragesResults,
   selectPrice,
   selectCells,
-  getLastPriceCloseThunk,
-  getTenYearGovernmentBondLastCloseThunk,
 } from "@tracktak/dcf-react";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
 import * as styles from "./valuation.module.scss";
@@ -34,6 +32,10 @@ import getTitle from "../../shared/getTitle";
 import resourceName from "../../shared/resourceName";
 import Img from "gatsby-image";
 import ReactMarkdown from "react-markdown";
+import {
+  getLastPriceCloseThunk,
+  getTenYearGovernmentBondLastCloseThunk,
+} from "../../redux/thunks/fundamentalsThunks";
 
 export const query = graphql`
   fragment ValuationInformation on ContentfulDcfTemplate {
