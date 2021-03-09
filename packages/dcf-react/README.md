@@ -6,16 +6,23 @@ For an example on how to use, please click here: https://github.com/TrackTak/tra
 
 [![NPM](https://img.shields.io/npm/v/@tracktak/dcf-react.svg)](https://www.npmjs.com/package/@tracktak/dcf-react) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
+## Prerequisites
+
+- node >= v12.20.1
+- To install the @tracktak/dcf-react package you must have created a personal access token on GitHub settings, see here: https://docs.github.com/en/packages/guides/configuring-npm-for-use-with-github-packages#authenticating-to-github-packages
+
+Once you have the token, edit your .npmrc file and add these two lines:
+
+```
+//npm.pkg.github.com/:_authToken={yourToken}
+@tracktak:registry=https://npm.pkg.github.com/
+```
+
 ## Install
 
 ```bash
 npm install --save @tracktak/dcf-react
 ```
-
-## Prerequisites
-
-- node >= v12.20.1
-- To install the @tracktak/dcf-react package you must have been granted read permission by me through a GitHub token otherwise it will not install.
 
 ## Components
 

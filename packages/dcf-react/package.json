@@ -4,7 +4,7 @@
   "description": "A react package that allows external websites to use our discounted cash flow calculator for https://tracktak.com",
   "author": "tracktak",
   "license": "MIT",
-  "repository": "git://github.com/tracktak/tracktak.git",
+  "repository": "git://github.com/trackTak/tracktak-example.git",
   "main": "dist/index.js",
   "source": "src/index.js",
   "engines": {
