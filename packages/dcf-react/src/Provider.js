@@ -4,6 +4,7 @@ import { Provider as ReactReduxProvider } from "react-redux";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import dayjs from "dayjs";
 import minMax from "dayjs/plugin/minMax";
+import "./reset.css";
 
 dayjs.extend(minMax);
 dayjs.extend(advancedFormat);

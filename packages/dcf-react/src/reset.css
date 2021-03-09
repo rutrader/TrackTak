@@ -1,0 +1,42 @@
+/* Reset blueprints css */
+
+html {
+  box-sizing: initial;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  font-size: initial;
+  font-weight: initial;
+  letter-spacing: initial;
+  line-height: initial;
+  text-transform: initial;
+  color: initial;
+  font-family: initial;
+}
+
+p {
+  margin-bottom: initial;
+  margin-top: initial;
+}
+
+small {
+  font-size: initial;
+}
+
+strong {
+  font-weight: initial;
+}
+
+::-moz-selection {
+  background: initial;
+}
+
+::selection {
+  background: initial;
+}
