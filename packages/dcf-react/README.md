@@ -23,15 +23,15 @@ You don't need all of these components if you don't want.
 
 For example PastFundamentals can be removed if you have your own fundamentals page. See the example link at the top of this readme for more info.
 
-- <CompanyOverviewStats />
-- <PastFundamentals />
-- <ValueDrivingInputs />
-- <OptionalInputs />
-- <IndustryAveragesResults />
-- <CostOfCapitalResults SyntheticCreditRatingLink={fn: ReactNode} />
-- <BlackScholesResults />
-- <DiscountedCashFlowSheet />
-- <Provider store={reduxStore} theme?={materialUITheme} />
+- `<CompanyOverviewStats />`
+- `<PastFundamentals />`
+- `<ValueDrivingInputs />`
+- `<OptionalInputs />`
+- `<IndustryAveragesResults />`
+- `<CostOfCapitalResults SyntheticCreditRatingLink={fn: ReactNode} />`
+- `<BlackScholesResults />`
+- `<DiscountedCashFlowSheet />`
+- `<Provider store={reduxStore} theme?={materialUITheme} />`
 
 Provider can be added at the root of your app with your other providers. This component injects the redux store and material ui theme for the components. If you provide your own theme then it needs to come from material ui's createMuiTheme.
 
