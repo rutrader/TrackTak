@@ -23,6 +23,7 @@ import {
   IndustryAveragesResults,
   selectPrice,
   selectCells,
+  setFundamentals,
 } from "@tracktak/dcf-react";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
 import * as styles from "./valuation.module.scss";
@@ -36,6 +37,7 @@ import {
   getLastPriceCloseThunk,
   getTenYearGovernmentBondLastCloseThunk,
 } from "../../redux/thunks/fundamentalsThunks";
+import convertFundamentals from "../../shared/convertFundamentals";
 
 export const query = graphql`
   fragment ValuationInformation on ContentfulDcfTemplate {
@@ -193,6 +195,10 @@ const Valuation = ({ data }) => {
   } = data.contentfulDcfTemplate;
 
   useEffect(() => {
+    const data = JSON.parse(financialData.internal.content);
+
+    dispatch(setFundamentals(convertFundamentals(data)));
+
     dispatch(
       getTenYearGovernmentBondLastCloseThunk({
         countryISO: financialData.General.CountryISO,
@@ -210,7 +216,13 @@ const Valuation = ({ data }) => {
         },
       }),
     );
-  }, [dateOfValuation, dispatch, ticker, financialData.General.CountryISO]);
+  }, [
+    dateOfValuation,
+    dispatch,
+    ticker,
+    financialData.General.CountryISO,
+    financialData,
+  ]);
 
   const marginOfSafety =
     (estimatedValuePerShare - price) / estimatedValuePerShare;

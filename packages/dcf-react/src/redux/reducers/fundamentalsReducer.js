@@ -18,11 +18,19 @@ const initialState = {
 };
 
 const setFundamentalsReducer = (state, action) => {
-  state.general = action.general;
-  state.highlights = action.highlights;
-  state.sharesStats = action.sharesStats;
-  state.incomeStatement = action.incomeStatement;
-  state.balanceSheet = action.balanceSheet;
+  const {
+    general,
+    highlights,
+    sharesStats,
+    incomeStatement,
+    balanceSheet,
+  } = action.payload;
+
+  state.general = general;
+  state.highlights = highlights;
+  state.sharesStats = sharesStats;
+  state.incomeStatement = incomeStatement;
+  state.balanceSheet = balanceSheet;
 };
 
 const setLastPriceCloseReducer = (state, action) => {
