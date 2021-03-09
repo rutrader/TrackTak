@@ -2,7 +2,7 @@
 
 > A react package that allows external websites to use our discounted cash flow calculator for https://tracktak.com
 
-For an example on how to use, please click here:
+For an example on how to use, please click here: https://github.com/TrackTak/tracktak-example
 
 [![NPM](https://img.shields.io/npm/v/@tracktak/dcf-react.svg)](https://www.npmjs.com/package/@tracktak/dcf-react) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
@@ -15,6 +15,7 @@ npm install --save @tracktak/dcf-react
 ## Prerequisites
 
 - node >= v12.20.1
+- To install the @tracktak/dcf-react package you must have been granted read permission by me through a GitHub token otherwise it will not install.
 
 ## Components
 
@@ -48,6 +49,16 @@ const Provider = ({ children, store, theme = {} }) => {
 
 You can see that you can provide your own material ui theme to the provider.
 See here for the default theme: https://material-ui.com/customization/default-theme/
+
+## Actions
+
+You can use the following actions to set the tracktak state with your financial data:
+
+- setFundamentals
+- setTenYearGovernmentBondLastClose
+- setLastPriceClose
+
+See the example for a clearer picture on how to use these with the state below: https://github.com/TrackTak/tracktak-example
 
 ## State and props
 
@@ -229,8 +240,11 @@ Some stocks report financials in a different currency than their quote stock pri
 
 ## License
 
-You can use this for commercial purposes. Please do not distribute this package to anyone outside of your company or modify any of the internals of the package. Please do not hide any logo's of tracktak or links to tracktak.com with css or javascript without our prior permission.
+CC BY-ND 4.0
+https://creativecommons.org/licenses/by-nd/4.0/
 
-If you need changes, we can provide them for you.
+You can use this for commercial purposes. Please do not distribute this package to anyone outside of your company or modify any of the internals of the package. Please do not hide any logo's of tracktak or links to tracktak.com with css or javascript without asking us first.
+
+If you need changes, we can provide them for you in the package itself.
 
 Thank you!
