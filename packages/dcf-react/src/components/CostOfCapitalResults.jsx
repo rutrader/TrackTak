@@ -45,7 +45,7 @@ const CostOfCapitalResults = ({
   const useQueryPretaxCostOfDebt =
     inputQueryParams.pretaxCostOfDebt !== undefined;
   const location = useLocation();
-  const ticker = `${general.Code}-${exchange}`.toLowerCase();
+  const ticker = `${general.code}-${exchange}`.toLowerCase();
 
   return (
     <React.Fragment>

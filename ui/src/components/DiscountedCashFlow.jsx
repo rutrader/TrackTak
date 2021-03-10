@@ -13,6 +13,7 @@ import {
   withFundamentalsLoaded,
   ValueDrivingInputs,
 } from "@tracktak/dcf-react";
+import { Link } from "gatsby";
 
 const DiscountedCashFlow = () => {
   const theme = useTheme();
@@ -39,7 +40,20 @@ const DiscountedCashFlow = () => {
             <IndustryAveragesResults />
           </SubSection>
           <SubSection>
-            <CostOfCapitalResults />
+            <CostOfCapitalResults
+              SyntheticCreditRatingLink={({
+                ticker,
+                searchParams,
+                ...props
+              }) => {
+                return (
+                  <Link
+                    to={`/stock/${ticker}/synthetic-credit-rating${searchParams}`}
+                    {...props}
+                  />
+                );
+              }}
+            />
           </SubSection>
           <SubSection>
             <BlackScholesResults />

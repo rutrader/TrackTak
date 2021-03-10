@@ -90,5 +90,6 @@ module.exports = {
       },
       __key: "pages",
     },
+    "gatsby-plugin-client-side-redirect",
   ],
 };

@@ -6,7 +6,9 @@ import {
   setFundamentals,
 } from "@tracktak/dcf-react";
 import "./sass/blueprintTheme.scss";
+import "@tracktak/dcf-react/dist/index.css";
 import theme from "./src/theme";
+import convertFundamentals from "./src/shared/convertFundamentals";
 
 const store = createStore();
 
@@ -29,7 +31,11 @@ export const wrapPageElement = ({ element, props }) => {
         (state.fundamentals.general && state.fundamentals.general.code)
       ) {
         store.dispatch(
-          setFundamentals(getInitialFundamentalsData(General, Highlights)),
+          setFundamentals(
+            convertFundamentals(
+              getInitialFundamentalsData(General, Highlights),
+            ),
+          ),
         );
       }
     }
