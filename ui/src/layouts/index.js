@@ -3,6 +3,8 @@ import LayoutHome from "./LayoutHome";
 import React, { useEffect } from "react";
 import LayoutFullScreen from "./LayoutFullScreen";
 import convertDotTickerToHyphen from "../shared/convertDotTickerToHyphen";
+import "@fontsource/montserrat/400.css";
+import "@fontsource/montserrat/600.css";
 
 const oldStockPathRegex = /\/(discounted-cash-flow|synthetic-credit-rating|industry-averages)\/[A-Za-z0-9]+\.\w+/g;
 const olsStockValuationpathRegex = /\/(stock-valuations)\/[A-Z0-9]+\.?[A-Z]+/g;
@@ -16,7 +18,7 @@ const stockRedirect = (path) => {
   window.location.href = `/stock/${newTicker}/${page}`;
 };
 
-const valuationRedirect = (path) => {
+const valuationRedirect = () => {
   window.location.href = "/stock-valuations";
 };
 

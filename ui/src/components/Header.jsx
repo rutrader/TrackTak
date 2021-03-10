@@ -13,7 +13,7 @@ import { Link } from "gatsby";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchTicker from "./SearchTicker";
 import TracktakSmallLogo from "../assets/tracktakSmallLogo.svg";
-import TracktakLogo from "../assets/tracktakLogo.svg";
+import TracktakLogo from "./TracktakLogo";
 
 const leftLinks = [
   { to: "/stock-valuations", text: "Valuations" },
