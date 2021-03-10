@@ -16,6 +16,7 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
+app.use(express.static("public"));
 app.use(cors(corsOptions));
 
 app.get("/api/v1/fundamentals/:ticker", async (req, res) => {
