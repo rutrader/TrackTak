@@ -20,7 +20,7 @@
     "@blueprintjs/table": "^3.8.18"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production microbundle-crl --no-sourcemap",
+    "build": "cross-env NODE_ENV=production microbundle-crl --sourcemap false",
     "storybook": "cross-env NODE_ENV=development start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "clean": "rimraf ./node_modules"
