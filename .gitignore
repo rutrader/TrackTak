@@ -2,7 +2,6 @@
 
 # dependencies
 **/node_modules
-ui/public
 /node_modules
 /.pnp
 .pnp.js
@@ -28,3 +27,4 @@ yarn-error.log*
 
 .cache/
 /ui/data
+/ui/public
