@@ -16,6 +16,7 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
+app.use(express.static("public"));
 app.use(cors(corsOptions));
 
 app.get("/api/v1/fundamentals/:ticker", async (req, res) => {
@@ -30,11 +31,8 @@ app.get("/api/v1/prices/:ticker", async (req, res) => {
   res.send({ value });
 });
 
-app.get("/api/v1/eur-base-exchange-rate/:quoteCurrency", async (req, res) => {
-  const value = await api.getEURBaseExchangeRate(
-    req.params.quoteCurrency,
-    req.query,
-  );
+app.get("/api/v1/eur-base-exchange-rate/:code", async (req, res) => {
+  const value = await api.getEURBaseExchangeRate(req.params.code, req.query);
 
   res.send({ value });
 });
@@ -52,12 +50,13 @@ app.get(
   },
 );
 
-app.get("/api/v1/government-bond/:countryCode/:year", async (req, res) => {
-  const value = await api.getGovernmentBond(
-    req.params.countryCode,
-    req.params.year,
-    req.query,
-  );
+app.get("/api/v1/exchange-symbol-list/:code", async (req, res) => {
+  const value = await api.getExchangeSymbolList(req.params.code, req.query);
+  res.send({ value });
+});
+
+app.get("/api/v1/government-bond/:code", async (req, res) => {
+  const value = await api.getGovernmentBond(req.params.code, req.query);
   res.send({ value });
 });
 
@@ -67,18 +66,6 @@ app.get("/api/v1/autocomplete-query/:queryString", async (req, res) => {
     req.query,
   );
   res.send({ value });
-});
-
-app.get("/api/v1/contentful/getEntries", async (req, res) => {
-  const value = await api.getContentfulEntries(req.query);
-
-  res.send(value);
-});
-
-app.get("/api/v1/contentful/getEntry/:id", async (req, res) => {
-  const value = await api.getContentfulEntry(req.params.id, req.query);
-
-  res.send(value);
 });
 
 app.get("/", (_, res) => {

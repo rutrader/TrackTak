@@ -4,10 +4,10 @@ import {
   cagrInYearsOneToFiveLabel,
   ebitTargetMarginInYearTenLabel,
   yearOfConvergenceLabel,
-} from "../components/ValueDrivingInputs";
-import FormatInputToPercent from "../components/FormatInputToPercent";
-import FormatInputToYear from "../components/FormatInputToYear";
-import Formula from "../components/Formula";
+  FormatInputToPercent,
+  FormatInputToYear,
+  Formula,
+} from "@tracktak/dcf-react";
 
 const InputExampleBox = ({ sx, ...props }) => (
   <Box sx={{ my: 2, ...sx }} {...props} />

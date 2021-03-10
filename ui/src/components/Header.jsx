@@ -9,13 +9,11 @@ import {
   useTheme,
 } from "@material-ui/core";
 import React, { useState } from "react";
-import TracktakLogo from "../shared/TracktakLogo";
-import { ReactComponent as TracktakSmallLogo } from "../icons/tracktakSmallLogo.svg";
-import SearchTicker from "./SearchTicker";
-import { Link } from "react-router-dom";
+import { Link } from "gatsby";
 import MenuIcon from "@material-ui/icons/Menu";
-import { useSelector } from "react-redux";
-import selectIsIframe from "../selectors/routerSelectors/selectIsIframe";
+import SearchTicker from "./SearchTicker";
+import TracktakSmallLogo from "../assets/tracktakSmallLogo.svg";
+import TracktakLogo from "./TracktakLogo";
 
 const leftLinks = [
   { to: "/stock-valuations", text: "Valuations" },
@@ -44,7 +42,6 @@ const HeaderLink = ({ to, text, sx }) => {
 
 const Header = ({ hideSearch }) => {
   const theme = useTheme();
-  const isIframe = useSelector(selectIsIframe);
   const extraMargin = 20;
   const mb = `${theme.mixins.toolbar.minHeight + extraMargin}px`;
   const [anchorEl, setAnchorEl] = useState(null);
@@ -57,7 +54,7 @@ const Header = ({ hideSearch }) => {
     setAnchorEl(null);
   };
 
-  return isIframe ? null : (
+  return (
     <Box sx={{ mb }}>
       <AppBar color="inherit">
         <Container maxWidth={false}>
@@ -70,18 +67,18 @@ const Header = ({ hideSearch }) => {
             }}
           >
             <Box sx={{ mr: 2 }}>
-              <Hidden mdDown>
-                <TracktakLogo />
-              </Hidden>
-              <Hidden mdUp>
-                <Link to="/">
+              <Link to="/">
+                <Hidden mdDown>
+                  <TracktakLogo />
+                </Hidden>
+                <Hidden mdUp>
                   <TracktakSmallLogo width={52} height={38} />
-                </Link>
-              </Hidden>
+                </Hidden>
+              </Link>
             </Box>
             <Hidden mdDown>
               {leftLinks.map((link) => (
-                <HeaderLink {...link} />
+                <HeaderLink key={link.to} {...link} />
               ))}
             </Hidden>
             <Box
@@ -91,7 +88,11 @@ const Header = ({ hideSearch }) => {
             </Box>
             <Hidden mdDown>
               {rightLinks.map((link, i) => (
-                <HeaderLink sx={{ ml: i === 0 ? 2 : 0 }} {...link} />
+                <HeaderLink
+                  key={link.to}
+                  sx={{ ml: i === 0 ? 2 : 0 }}
+                  {...link}
+                />
               ))}
             </Hidden>
             <Hidden mdUp>
@@ -112,6 +113,7 @@ const Header = ({ hideSearch }) => {
                 >
                   {allLinks.map((link) => (
                     <MenuItem
+                      key={link.to}
                       to={link.to}
                       component={Link}
                       onClick={handleClose}

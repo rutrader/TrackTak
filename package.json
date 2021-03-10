@@ -7,7 +7,7 @@
     "ui": "npm run start --prefix ./ui",
     "start": "run-p node ui",
     "clean": "rimraf ./node_modules",
-    "lint": "eslint ./packages/dcf",
+    "lint": "eslint ./ui/src",
     "install:ui": "cd ./ui && npm install",
     "install:node": "cd ./node && npm install",
     "install": "run-p install:ui install:node",

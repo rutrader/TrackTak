@@ -2,22 +2,28 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   IconButton,
+  makeStyles,
   TextField,
   useMediaQuery,
   useTheme,
-  withStyles,
+  Autocomplete,
 } from "@material-ui/core";
-import { Autocomplete } from "@material-ui/core";
-import { useHistory } from "react-router";
+import { navigate } from "gatsby";
 import SearchIcon from "@material-ui/icons/Search";
+import { useDebouncedCallback } from "@tracktak/dcf-react";
 import { getAutocompleteQuery } from "../api/api";
-import useDebouncedCallback from "../hooks/useDebouncedCallback";
 
-const TickerTextField = withStyles({
-  root: ({ $removeInputPadding }) => {
+const useStyles = makeStyles({
+  submitButton: {
+    borderRadius: 0,
+    position: "absolute",
+    right: 0,
+    height: "100%",
+  },
+  tickerTextField: ({ removeInputPadding }) => {
     const values = {};
 
-    if ($removeInputPadding) {
+    if (removeInputPadding) {
       values.padding = 0;
     }
 
@@ -27,25 +33,16 @@ const TickerTextField = withStyles({
       },
     };
   },
-})(TextField);
-
-const SubmitButton = withStyles({
-  root: {
-    borderRadius: 0,
-    position: "absolute",
-    right: 0,
-    height: "100%",
-  },
-})(IconButton);
+});
 
 const SearchTicker = ({ removeInputPadding }) => {
   const theme = useTheme();
   const [ticker, setTicker] = useState("");
   const [autoComplete, setAutoComplete] = useState([]);
-  const history = useHistory();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [isLoadingAutocomplete, setIsLoadingAutocomplete] = useState(false);
   const [text, setText] = useState("");
+  const classes = useStyles({ removeInputPadding });
   const getAutoCompleteDebounced = useDebouncedCallback(async (value) => {
     const { data } = await getAutocompleteQuery(`${value}?limit=9&type=stock`);
 
@@ -55,7 +52,7 @@ const SearchTicker = ({ removeInputPadding }) => {
 
   const handleOnChangeAutoComplete = (_, value) => {
     if (value?.code && value?.exchange) {
-      setTicker(`${value.code}.${value.exchange}`);
+      setTicker(`${value.code}-${value.exchange}`.toLowerCase());
       setText("");
     }
   };
@@ -85,7 +82,7 @@ const SearchTicker = ({ removeInputPadding }) => {
         e.preventDefault();
 
         if (ticker) {
-          history.push(`/discounted-cash-flow/${ticker}`);
+          navigate(`/stock/${ticker}/discounted-cash-flow`);
         }
       }}
     >
@@ -116,15 +113,14 @@ const SearchTicker = ({ removeInputPadding }) => {
           setText("");
         }}
         clearIcon={null}
-        popoverProps={{
-          canAutoPosition: true,
-        }}
         renderInput={(params) => {
           return (
             <>
-              <TickerTextField
+              <TextField
                 {...params}
-                $removeInputPadding={removeInputPadding}
+                classes={{
+                  root: classes.tickerTextField,
+                }}
                 variant="outlined"
                 fullWidth
                 onChange={handleOnChangeSearch}
@@ -134,9 +130,9 @@ const SearchTicker = ({ removeInputPadding }) => {
           );
         }}
       />
-      <SubmitButton type="submit">
+      <IconButton type="submit" className={classes.submitButton}>
         <SearchIcon color="primary" />
-      </SubmitButton>
+      </IconButton>
     </Box>
   );
 };
