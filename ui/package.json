@@ -80,11 +80,10 @@
     "webpack-bundle-analyzer": "^4.3.0"
   },
   "scripts": {
-    "generate-exh-pairs": "SET NODE_ENVIRONMENT=development && node ./scripts/writeECBExchangePairsToJSON.js",
-    "generate-fundamentals": "SET NODE_ENVIRONMENT=development && node ./scripts/writeBulkFundamentalsDataToJSON.js",
-    "start": "SET NODE_OPTIONS=--max_old_space_size=8192 && gatsby develop",
-    "build": "SET NODE_OPTIONS=--max_old_space_size=8192 && gatsby build",
-    "build:staging": "SET NODE_ENV=staging && npm run build",
+    "generate-exh-pairs": "SET NODE_ENV=development && node ./scripts/writeECBExchangePairsToJSON.js",
+    "generate-fundamentals": "SET NODE_ENV=development && node ./scripts/writeBulkFundamentalsDataToJSON.js",
+    "start": "SET NODE_OPTIONS=--max_old_space_size=8192 && SET GATSBY_ENV=development && gatsby develop",
+    "build": "SET NODE_OPTIONS=--max_old_space_size=8192 && SET GATSBY_ENV=production && gatsby build",
     "serve": "gatsby serve",
     "clean": "gatsby clean"
   },
