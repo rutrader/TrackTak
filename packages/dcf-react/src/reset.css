@@ -1,15 +1,5 @@
 /* Reset blueprints css */
 
-html {
-  box-sizing: initial;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: inherit;
-}
-
 body {
   font-size: initial;
   font-weight: initial;
