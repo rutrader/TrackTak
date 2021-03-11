@@ -29,3 +29,4 @@ yarn-error.log*
 .cache/
 /ui/data
 /ui/public
+/ui/public-staging

@@ -1,5 +1,6 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: process.env.GATSBY_API_BASE_URL ?? "https://api.tracktak.com/",
+  baseURL:
+    process.env.GATSBY_API_BASE_URL ?? "https://api.staging.tracktak.com/",
 });

@@ -10,6 +10,12 @@ module.exports = {
   },
   plugins: [
     {
+      resolve: "gatsby-plugin-s3",
+      options: {
+        bucketName: "staging.tracktak.com",
+      },
+    },
+    {
       resolve: "gatsby-transformer-remark",
       options: {
         commonmark: true,
@@ -90,5 +96,6 @@ module.exports = {
       },
       __key: "pages",
     },
+    "gatsby-plugin-no-sourcemaps",
   ],
 };
