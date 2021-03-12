@@ -1,9 +1,12 @@
 let navigate;
 let Link;
+let AnchorLink;
 
 try {
   // eslint-disable-next-line import/no-unresolved
   const gatsby = require("gatsby");
+
+  AnchorLink = require("gatsby-plugin-anchor-links").AnchorLink;
 
   navigate = gatsby.navigate;
   Link = gatsby.Link;
@@ -13,6 +16,7 @@ try {
 
   navigate = reach.navigate;
   Link = reach.Link;
+  AnchorLink = ({ children }) => <span>{children}</span>;
 }
 
-export { navigate, Link };
+export { navigate, Link, AnchorLink };
