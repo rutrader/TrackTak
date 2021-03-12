@@ -13,15 +13,15 @@ let fundamentals = fs
       Highlights.MostRecentQuarter !== "0000-00-00" && General.Industry,
   );
 
-if (process.env.NODE_ENV === "development") {
-  // To speed up development time
-  fundamentals = fundamentals.filter(
-    (x) =>
-      x.General.Code === "IRBT" ||
-      x.General.Code === "FNX" ||
-      x.General.Code === "PTL",
-  );
-}
+// if (process.env.NODE_ENV === "development") {
+// To speed up development time
+fundamentals = fundamentals.filter(
+  (x) =>
+    x.General.Code === "IRBT" ||
+    x.General.Code === "FNX" ||
+    x.General.Code === "PTL",
+);
+// }
 
 exports.onCreatePage = ({ page, actions }) => {
   const { createPage } = actions;

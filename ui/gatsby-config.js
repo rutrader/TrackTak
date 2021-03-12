@@ -3,18 +3,14 @@ require("dotenv-flow").config();
 module.exports = {
   flags: {
     PRESERVE_WEBPACK_CACHE: true,
+    DEV_SSR: true,
   },
   siteMetadata: {
     title: "tracktak",
     siteUrl: "https://tracktak.com",
   },
   plugins: [
-    {
-      resolve: "gatsby-plugin-s3",
-      options: {
-        bucketName: "staging.tracktak.com",
-      },
-    },
+    "gatsby-plugin-no-sourcemaps",
     {
       resolve: "gatsby-transformer-remark",
       options: {
@@ -34,6 +30,17 @@ module.exports = {
     },
     "gatsby-plugin-react-helmet",
     "gatsby-plugin-layout",
+    {
+      resolve: "gatsby-plugin-material-ui",
+      options: {},
+    },
+    "gatsby-plugin-emotion",
+    {
+      resolve: "gatsby-plugin-s3",
+      options: {
+        bucketName: "staging.tracktak.com",
+      },
+    },
     {
       resolve: "gatsby-plugin-react-svg",
       options: {
@@ -96,6 +103,5 @@ module.exports = {
       },
       __key: "pages",
     },
-    "gatsby-plugin-no-sourcemaps",
   ],
 };
