@@ -15,6 +15,7 @@ import { InfoTextValueDrivingInputs } from "./InfoText";
 import useSetURLInput from "../hooks/useSetURLInput";
 import useInputQueryParams from "../hooks/useInputQueryParams";
 import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
+import { useLocation } from "@reach/router";
 
 const ValueDrivingTextField = withStyles({
   root: {
@@ -31,15 +32,32 @@ export const ebitTargetMarginInYearTenLabel =
 export const yearOfConvergenceLabel = "Year of Convergence";
 export const salesToCapitalRatioLabel = "Sales to Capital Ratio";
 export const valueDrivingInputsHeader = "Value Driving Inputs";
+export const valueDrivingInputsId = "value-driving-inputs";
 
 const ValueDrivingInputs = () => {
   const theme = useTheme();
   const inputQueryParams = useInputQueryParams();
   const setURLInput = useSetURLInput();
+  const location = useLocation();
+  const isFocusedOnValueDrivingInputs = location.hash.includes(
+    valueDrivingInputsId,
+  );
 
   return (
-    <React.Fragment>
-      <Typography variant="h5" gutterBottom>
+    <Box
+      sx={
+        isFocusedOnValueDrivingInputs
+          ? {
+              boxShadow: `0 0 5px ${theme.palette.primary.main}`,
+              border: `1px solid ${theme.palette.primary.main}`,
+              padding: "5px",
+              borderRadius: "2px",
+              margin: "0 -5px",
+            }
+          : null
+      }
+    >
+      <Typography variant="h5" gutterBottom id={valueDrivingInputsId}>
         <InfoOutlinedIconWrapper text={<InfoTextValueDrivingInputs />}>
           {valueDrivingInputsHeader}
         </InfoOutlinedIconWrapper>
@@ -86,7 +104,7 @@ const ValueDrivingInputs = () => {
           }}
         />
       </Box>
-    </React.Fragment>
+    </Box>
   );
 };
 export default withFundamentalsLoaded(ValueDrivingInputs);

@@ -37,7 +37,6 @@ import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurre
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
 import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
-import getRequiredInputsNotFilledInTitle from "../shared/getRequiredInputsNotFilledInTitle";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
@@ -269,10 +268,7 @@ const ExportToExcel = () => {
   };
 
   return (
-    <Box
-      sx={{ display: "flex", alignItems: "center" }}
-      title={getRequiredInputsNotFilledInTitle(hasAllRequiredInputsFilledIn)}
-    >
+    <Box sx={{ display: "flex", alignItems: "center" }}>
       <IconButton
         variant="outlined"
         onClick={exportToCSVOnClick}

@@ -13,7 +13,6 @@ import { setIsYoyGrowthToggled } from "../redux/actions/dcfActions";
 import selectIsYoyGrowthToggled from "../selectors/dcfSelectors/selectIsYoyGrowthToggled";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import getRequiredInputsNotFilledInTitle from "../shared/getRequiredInputsNotFilledInTitle";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import LazyLoad from "react-lazyload";
 import isSSR from "../shared/isSSR";
@@ -98,9 +97,6 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
         >
           <DCFControlLabel
             disabled={!hasAllRequiredInputsFilledIn}
-            title={getRequiredInputsNotFilledInTitle(
-              hasAllRequiredInputsFilledIn,
-            )}
             control={
               <Switch
                 checked={showFormulas}
@@ -112,9 +108,6 @@ const DiscountedCashFlowSheet = ({ columnWidths }) => {
           />
           <DCFControlLabel
             disabled={!hasAllRequiredInputsFilledIn}
-            title={getRequiredInputsNotFilledInTitle(
-              hasAllRequiredInputsFilledIn,
-            )}
             control={
               <Switch
                 checked={isYoyGrowthToggled}

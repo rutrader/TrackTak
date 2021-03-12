@@ -5,7 +5,13 @@ import { useCallback } from "react";
 import { columns, numberOfRows } from "./cells";
 import { getColumnsBetween, startColumn } from "./utils";
 import { Cell, Column, Table } from "@blueprintjs/table";
-import { useMediaQuery, useTheme } from "@material-ui/core";
+import {
+  Alert,
+  Box,
+  useMediaQuery,
+  useTheme,
+  makeStyles,
+} from "@material-ui/core";
 import useInputQueryParams from "../hooks/useInputQueryParams";
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
 import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
@@ -19,14 +25,30 @@ import selectCells from "../selectors/dcfSelectors/selectCells";
 import formatCellValue from "./formatCellValue";
 import selectIsYoyGrowthToggled from "../selectors/dcfSelectors/selectIsYoyGrowthToggled";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
-import getRequiredInputsNotFilledInTitle from "../shared/getRequiredInputsNotFilledInTitle";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import useInjectQueryParams from "../hooks/useInjectQueryParams";
+import { AnchorLink, navigate } from "../shared/gatsby";
+import {
+  valueDrivingInputsHeader,
+  valueDrivingInputsId,
+} from "../components/ValueDrivingInputs";
+import { useLocation } from "@reach/router";
+
+const useStyles = makeStyles({
+  alertIcon: {
+    alignItems: "center",
+  },
+  alertMessage: {
+    fontSize: 18,
+  },
+});
 
 const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
   const theme = useTheme();
+  const location = useLocation();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const classes = useStyles();
   const cells = useSelector(selectCells);
   const dispatch = useDispatch();
   const inputQueryParams = useInputQueryParams();
@@ -63,11 +85,8 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
       const cell = cells[key];
       const loading =
         !hasAllRequiredInputsFilledIn && row !== 1 && column !== "A";
-      const tooltip = getRequiredInputsNotFilledInTitle(
-        hasAllRequiredInputsFilledIn,
-      );
 
-      if (!cell?.value) return <Cell loading={loading} tooltip={tooltip} />;
+      if (!cell?.value) return <Cell loading={loading} />;
 
       let node = formatCellValue(cell);
 
@@ -97,7 +116,6 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
           }}
           intent={intent}
           loading={loading}
-          tooltip={tooltip}
         >
           {node}
         </Cell>
@@ -262,26 +280,57 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
     key = 2;
   }
 
+  const to = `${location.pathname}#${valueDrivingInputsId}`;
+
   return (
     <React.Fragment>
-      <Table
-        key={key}
-        enableGhostCells
-        numFrozenColumns={isOnMobile ? 0 : 1}
-        numRows={numberOfRows}
-        columnWidths={cellColumnWidths}
-      >
-        {columns.map((column) => {
-          return (
-            <Column
-              key={column}
-              id={column}
-              name={column}
-              cellRenderer={cellRenderer}
-            />
-          );
-        })}
-      </Table>
+      <Box sx={{ position: "relative" }}>
+        <Table
+          key={key}
+          enableGhostCells
+          numFrozenColumns={isOnMobile ? 0 : 1}
+          numRows={numberOfRows}
+          columnWidths={cellColumnWidths}
+        >
+          {columns.map((column) => {
+            return (
+              <Column
+                key={column}
+                id={column}
+                name={column}
+                cellRenderer={cellRenderer}
+              />
+            );
+          })}
+        </Table>
+        {!hasAllRequiredInputsFilledIn && (
+          <Alert
+            severity="warning"
+            classes={{
+              icon: classes.alertIcon,
+              message: classes.alertMessage,
+            }}
+            sx={{
+              position: "absolute",
+              left: "50%",
+              top: "50%",
+              transform: "translate(-50%, -50%)",
+            }}
+          >
+            The&nbsp;
+            <AnchorLink
+              to={to}
+              onAnchorLinkClick={() => {
+                navigate(to);
+              }}
+            >
+              {valueDrivingInputsHeader}
+            </AnchorLink>
+            &nbsp;section above needs to be filled out first to generate the
+            DCF.
+          </Alert>
+        )}
+      </Box>
     </React.Fragment>
   );
 };

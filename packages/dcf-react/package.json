@@ -21,6 +21,7 @@
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production microbundle-crl --sourcemap false",
+    "build:dev": "cross-env NODE_ENV=production microbundle-crl --compress false",
     "storybook": "cross-env NODE_ENV=development start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "clean": "rimraf ./node_modules"
@@ -72,7 +73,8 @@
     "sass-loader": "^11.0.1"
   },
   "optionalPeerDependencies": {
-    "gatsby": "^2.32.8"
+    "gatsby": "^2.32.8",
+    "gatsby-plugin-anchor-links": "^1.2.1"
   },
   "files": [
     "dist"
