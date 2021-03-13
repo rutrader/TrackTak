@@ -12,6 +12,9 @@ import "@blueprintjs/table/lib/css/table.css";
 import "../src/reset.css";
 
 const source = createMemorySource("/");
+
+source.location.hash = "";
+
 const history = createHistory(source);
 const store = createStore(mockPreloadedStateJSON);
 

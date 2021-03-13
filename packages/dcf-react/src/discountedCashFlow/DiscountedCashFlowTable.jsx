@@ -44,7 +44,11 @@ const useStyles = makeStyles({
   },
 });
 
-const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
+const DiscountedCashFlowTable = ({
+  columnWidths,
+  showFormulas,
+  SubscribePopup,
+}) => {
   const theme = useTheme();
   const location = useLocation();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -284,6 +288,7 @@ const DiscountedCashFlowTable = ({ columnWidths, showFormulas }) => {
 
   return (
     <React.Fragment>
+      {SubscribePopup}
       <Box sx={{ position: "relative" }}>
         <Table
           key={key}

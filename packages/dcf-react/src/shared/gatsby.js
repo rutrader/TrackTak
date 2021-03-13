@@ -1,9 +1,11 @@
+import reach from "@reach/router";
+import React from "react";
+
 let navigate;
 let Link;
 let AnchorLink;
 
 try {
-  // eslint-disable-next-line import/no-unresolved
   const gatsby = require("gatsby");
 
   AnchorLink = require("gatsby-plugin-anchor-links").AnchorLink;
@@ -11,9 +13,6 @@ try {
   navigate = gatsby.navigate;
   Link = gatsby.Link;
 } catch (error) {
-  // eslint-disable-next-line import/no-unresolved
-  const reach = require("@reach/router");
-
   navigate = reach.navigate;
   Link = reach.Link;
   AnchorLink = ({ children }) => <span>{children}</span>;
