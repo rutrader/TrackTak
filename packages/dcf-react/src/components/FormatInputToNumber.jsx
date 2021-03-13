@@ -23,6 +23,7 @@ const FormatInputToNumber = forwardRef(({ defaultValue, ...props }, ref) => {
         });
       }}
       thousandSeparator
+      inputMode="numeric"
     />
   );
 });

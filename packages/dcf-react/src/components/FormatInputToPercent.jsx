@@ -28,6 +28,7 @@ const FormatInputToPercent = forwardRef(({ defaultValue, ...props }, ref) => {
       }}
       thousandSeparator
       suffix="%"
+      inputMode="numeric"
     />
   );
 });

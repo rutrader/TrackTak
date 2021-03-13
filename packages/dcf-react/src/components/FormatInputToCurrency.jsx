@@ -27,6 +27,7 @@ const FormatInputToCurrency = forwardRef(({ defaultValue, ...props }, ref) => {
       }}
       thousandSeparator
       prefix={currencySymbol}
+      inputMode="numeric"
     />
   );
 });
