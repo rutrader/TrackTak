@@ -11,8 +11,14 @@ const hostname = "127.0.0.1";
 const port = process.env.PORT;
 const app = express();
 
+const origin = [process.env.ORIGIN_URL];
+
+if (process.env.NODE_ENV === "development") {
+  origin.push("http://bs-local.com:8000");
+}
+
 const corsOptions = {
-  origin: process.env.ORIGIN_URL,
+  origin,
   optionsSuccessStatus: 200,
 };
 
