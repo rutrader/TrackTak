@@ -3,17 +3,26 @@ require("dotenv-flow").config();
 const express = require("express");
 const cors = require("cors");
 
+require("express-async-errors");
+
 const api = require("./src/api");
 
 const hostname = "127.0.0.1";
 const port = process.env.PORT;
 const app = express();
 
+const origin = [process.env.ORIGIN_URL];
+
+if (process.env.NODE_ENV === "development") {
+  origin.push("http://bs-local.com:8000");
+}
+
 const corsOptions = {
-  origin: process.env.ORIGIN_URL,
+  origin,
   optionsSuccessStatus: 200,
 };
 
+app.use(express.static("public"));
 app.use(cors(corsOptions));
 
 app.get("/api/v1/fundamentals/:ticker", async (req, res) => {
@@ -28,11 +37,8 @@ app.get("/api/v1/prices/:ticker", async (req, res) => {
   res.send({ value });
 });
 
-app.get("/api/v1/eur-base-exchange-rate/:quoteCurrency", async (req, res) => {
-  const value = await api.getEURBaseExchangeRate(
-    req.params.quoteCurrency,
-    req.query
-  );
+app.get("/api/v1/eur-base-exchange-rate/:code", async (req, res) => {
+  const value = await api.getEURBaseExchangeRate(req.params.code, req.query);
 
   res.send({ value });
 });
@@ -43,40 +49,29 @@ app.get(
     const value = await api.getExchangeRate(
       req.params.baseCurrency,
       req.params.quoteCurrency,
-      req.query
+      req.query,
     );
 
     res.send({ value });
-  }
+  },
 );
 
-app.get("/api/v1/government-bond/:countryCode/:year", async (req, res) => {
-  const value = await api.getGovernmentBond(
-    req.params.countryCode,
-    req.params.year,
-    req.query
-  );
+app.get("/api/v1/exchange-symbol-list/:code", async (req, res) => {
+  const value = await api.getExchangeSymbolList(req.params.code, req.query);
+  res.send({ value });
+});
+
+app.get("/api/v1/government-bond/:code", async (req, res) => {
+  const value = await api.getGovernmentBond(req.params.code, req.query);
   res.send({ value });
 });
 
 app.get("/api/v1/autocomplete-query/:queryString", async (req, res) => {
   const value = await api.getAutocompleteQuery(
     req.params.queryString,
-    req.query
+    req.query,
   );
   res.send({ value });
-});
-
-app.get("/api/v1/contentful/getEntries", async (req, res) => {
-  const value = await api.getContentfulEntries(req.query);
-
-  res.send(value);
-});
-
-app.get("/api/v1/contentful/getEntry/:id", async (req, res) => {
-  const value = await api.getContentfulEntry(req.params.id, req.query);
-
-  res.send(value);
 });
 
 app.get("/", (_, res) => {

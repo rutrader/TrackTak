@@ -12,14 +12,21 @@
 # production
 /**/build
 /**/build.zip
+/**/dist
 
 # misc
 .DS_Store
 **/.env.local
 **/.env.development.local
+**/.env.staging.local
 **/.env.test.local
 **/.env.production.local
 
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+.cache/
+/ui/data
+/ui/public
+/ui/public-staging

@@ -1,13 +1,15 @@
 const axios = require("axios");
 const cache = require("memory-cache");
-const contentful = require("./contentful");
 const replaceDoubleColonWithObject = require("./replaceDoubleColonWithObject");
 
 const baseUrl = "https://eodhistoricaldata.com/api";
 const fundamentalsUrl = `${baseUrl}/fundamentals`;
-const exchangesUrl = `${baseUrl}/exchanges-list`;
+const exchangesListUrl = `${baseUrl}/exchanges-list`;
 const eodUrl = `${baseUrl}/eod`;
 const searchUrl = `${baseUrl}/search`;
+const exchangeSymbolListUrl = `${baseUrl}/exchange-symbol-list`;
+const bulkFundamentalsUrl = `${baseUrl}/bulk-fundamentals`;
+
 const globalParams = {
   api_token: process.env.EOD_HISTORICAL_DATA_API_KEY,
 };
@@ -17,25 +19,41 @@ const sendReqOrGetCachedData = async (
   request,
   keyPrefix,
   cacheParams = {},
-  time = 2.16e7
+  time = 2.16e7,
 ) => {
   const cacheKey = `${keyPrefix}_${JSON.stringify(cacheParams)}`;
   const cachedData = cache.get(cacheKey);
 
   if (cachedData) return cachedData;
-  try {
-    const data = await request();
-    if (data) {
-      return cache.put(cacheKey, data, time);
-    }
-    return data;
-  } catch (error) {
-    console.error(error);
-    throw error;
+
+  const data = await request();
+
+  if (data) {
+    return cache.put(cacheKey, data, time);
   }
+  return data;
 };
 
 const api = {
+  getBulkFundamentals: async (exchange, query) => {
+    const data = await sendReqOrGetCachedData(
+      async () => {
+        const { data } = await axios.get(`${bulkFundamentalsUrl}/${exchange}`, {
+          params: {
+            ...globalParams,
+            ...query,
+            fmt: "json",
+          },
+        });
+
+        return data;
+      },
+      "bulkFundamentals",
+      { exchange, query },
+    );
+
+    return data;
+  },
   getFundamentals: async (ticker, query) => {
     const data = await sendReqOrGetCachedData(
       async () => {
@@ -48,8 +66,8 @@ const api = {
 
         return replaceDoubleColonWithObject(data);
       },
-      "fund",
-      { ticker, query }
+      "fundamnetals",
+      { ticker, query },
     );
 
     return data;
@@ -66,24 +84,40 @@ const api = {
 
     return data;
   },
-  getGovernmentBond: async (countryCode, year, query) => {
+  getExchangeSymbolList: async (code, query) => {
     const data = await sendReqOrGetCachedData(
       async () => {
-        const { data } = await axios.get(
-          `${eodUrl}/${countryCode}${year}Y.GBOND`,
-          {
-            params: {
-              ...globalParams,
-              ...query,
-              fmt: "json",
-            },
-          }
-        );
+        const { data } = await axios.get(`${exchangeSymbolListUrl}/${code}`, {
+          params: {
+            ...globalParams,
+            ...query,
+            fmt: "json",
+          },
+        });
+
+        return data;
+      },
+      "exchangeSymbolList",
+      { code, query },
+    );
+
+    return data;
+  },
+  getGovernmentBond: async (code, query) => {
+    const data = await sendReqOrGetCachedData(
+      async () => {
+        const { data } = await axios.get(`${eodUrl}/${code}.GBOND`, {
+          params: {
+            ...globalParams,
+            ...query,
+            fmt: "json",
+          },
+        });
 
         return data;
       },
       "governmentBond",
-      { countryCode, year, query }
+      { code, query },
     );
 
     return data;
@@ -100,7 +134,7 @@ const api = {
               order: "d",
               fmt: "json",
             },
-          }
+          },
         );
 
         if (Array.isArray(data)) {
@@ -119,31 +153,28 @@ const api = {
         return data;
       },
       "exchangeRate",
-      { baseCurrency, quoteCurrency, query }
+      { baseCurrency, quoteCurrency, query },
     );
 
     return data;
   },
   // Base currency is always EUR
-  getEURBaseExchangeRate: async (quoteCurrency, query) => {
+  getEURBaseExchangeRate: async (code, query) => {
     const data = await sendReqOrGetCachedData(
       async () => {
-        const { data } = await axios.get(
-          `${eodUrl}/ECBEUR${quoteCurrency}.MONEY`,
-          {
-            params: {
-              ...globalParams,
-              ...query,
-              order: "d",
-              fmt: "json",
-            },
-          }
-        );
+        const { data } = await axios.get(`${eodUrl}/${code}.MONEY`, {
+          params: {
+            ...globalParams,
+            ...query,
+            order: "d",
+            fmt: "json",
+          },
+        });
 
         return data;
       },
       "eurBaseExchangeRate",
-      { quoteCurrency, query }
+      { code, query },
     );
 
     return data;
@@ -151,7 +182,7 @@ const api = {
   getListOfExchanges: async (query) => {
     const data = await sendReqOrGetCachedData(
       async () => {
-        const { data } = await axios.get(`${exchangesUrl}`, {
+        const { data } = await axios.get(`${exchangesListUrl}`, {
           params: {
             ...globalParams,
             ...query,
@@ -161,7 +192,7 @@ const api = {
         return { data };
       },
       "listOfExchanges",
-      { query }
+      { query },
     );
 
     return data;
@@ -180,33 +211,8 @@ const api = {
         return data;
       },
       "autocompleteQuery",
-      { queryString, query }
+      { queryString, query },
     );
-    return data;
-  },
-  getContentfulEntries: async (query) => {
-    const data = await sendReqOrGetCachedData(
-      async () => {
-        const res = await contentful.getEntries(query);
-
-        return res;
-      },
-      "contentfulEntries",
-      { query }
-    );
-    return data;
-  },
-  getContentfulEntry: async (id, query) => {
-    const data = await sendReqOrGetCachedData(
-      async () => {
-        const res = await contentful.getEntry(id, query);
-
-        return res;
-      },
-      "contentfulEntry",
-      { id, query }
-    );
-
     return data;
   },
 };

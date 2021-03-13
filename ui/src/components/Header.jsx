@@ -3,17 +3,22 @@ import {
   Box,
   Button,
   Hidden,
+  makeStyles,
   Menu,
   MenuItem,
   useTheme,
 } from "@material-ui/core";
 import React, { useState } from "react";
-import SearchTicker from "./SearchTicker";
-import { Link } from "react-router-dom";
+import { Link } from "gatsby";
 import MenuIcon from "@material-ui/icons/Menu";
-import { makeStyles } from "@material-ui/core";
-import { ReactComponent as TracktakPurpleSmall } from "../icons/tracktak-logo-small.svg";
-import TracktakLogo from "../shared/TracktakLogo";
+import SearchTicker from "./SearchTicker";
+import TracktakPurpleSmall from "../assets/tracktak-purple.svg";
+import TracktakLogo from "./TracktakLogo";
+
+const leftLinks = [
+  { to: "/stock-valuations", text: "Valuations" },
+  { to: "/how-to-do-a-dcf", text: "Documentation" },
+];
 
 const rightLinks = [
   { to: "/how-to-do-a-dcf", text: "Documentation" },
@@ -86,22 +91,21 @@ const Header = ({ hideSearch }) => {
               justifyContent: "left",
             }}
           >
-            <Box
-              style={{
-                marginRight: 2,
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <Hidden mdDown>
-                <TracktakLogo />
-              </Hidden>
-              <Hidden mdUp>
-                <Link to="/">
+            <Box sx={{ mr: 2, display: "flex", alignItems: "center" }}>
+              <Link to="/">
+                <Hidden mdDown>
+                  <TracktakLogo />
+                </Hidden>
+                <Hidden mdUp>
                   <TracktakPurpleSmall width={52} height={38} />
-                </Link>
-              </Hidden>
+                </Hidden>
+              </Link>
             </Box>
+            <Hidden mdDown>
+              {leftLinks.map((link) => (
+                <HeaderLink key={link.to} {...link} />
+              ))}
+            </Hidden>
             <Box
               style={{
                 flex: "0 1 450px",
@@ -114,7 +118,11 @@ const Header = ({ hideSearch }) => {
             </Box>
             <Hidden mdDown>
               {rightLinks.map((link, i) => (
-                <HeaderLink style={{ marginLeft: i === 0 ? 2 : 0 }} {...link} />
+                <HeaderLink
+                  key={link.to}
+                  sx={{ ml: i === 0 ? 2 : 0 }}
+                  {...link}
+                />
               ))}
             </Hidden>
             <Hidden mdUp>
@@ -137,6 +145,7 @@ const Header = ({ hideSearch }) => {
                 >
                   {allLinks.map((link) => (
                     <MenuItem
+                      key={link.to}
                       to={link.to}
                       component={Link}
                       onClick={handleClose}

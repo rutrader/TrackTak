@@ -1,14 +1,20 @@
 import { Box, Paper, Tab, Tabs, useTheme } from "@material-ui/core";
 import React from "react";
-import { generatePath, useLocation, useParams } from "react-router";
-import { Link } from "react-router-dom";
-import { layoutFullScreenPaths } from "../App";
+import { useLocation } from "@reach/router";
+import { Link } from "gatsby";
+import { sentenceCase } from "change-case";
 
-const TTTabs = () => {
+const stockPaths = [
+  "/discounted-cash-flow",
+  "/synthetic-credit-rating",
+  "/industry-averages",
+];
+
+const TTTabs = ({ ticker }) => {
   const location = useLocation();
-  const params = useParams();
   const theme = useTheme();
   const mt = `${theme.mixins.toolbar.minHeight}px`;
+  const value = location.pathname.replace(/\/$/g, "");
 
   return (
     <Box sx={{ mt }}>
@@ -27,26 +33,22 @@ const TTTabs = () => {
       >
         <Tabs
           variant="scrollable"
-          value={location.pathname}
+          value={value}
           indicatorColor="primary"
           textColor="primary"
-          scrollButtons="auto"
+          scrollButtons
+          allowScrollButtonsMobile
         >
-          {layoutFullScreenPaths.map(({ url }) => {
-            const generatedPath = generatePath(url, { ...params });
-            const label = url.split("/")[1].replace(/-/g, " ");
+          {stockPaths.map((path) => {
+            const label = sentenceCase(path.split("/")[1].replace(/-/g, " "));
+            const value = `/stock/${ticker}${path}`;
 
             return (
               <Tab
-                key={url}
+                key={path}
                 component={Link}
-                to={({ search }) => {
-                  return {
-                    pathname: generatedPath,
-                    search,
-                  };
-                }}
-                value={generatedPath}
+                to={`${value}${location.search}`}
+                value={value}
                 label={label}
               />
             );

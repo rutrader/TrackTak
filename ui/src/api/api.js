@@ -1,8 +1,5 @@
 import axios from "./axios";
 
-export const fundamentalsFilter =
-  "General,Highlights,SharesStats,Financials::Balance_Sheet,Financials::Income_Statement";
-
 export const getFundamentals = async (ticker, params) => {
   return axios.get(`/api/v1/fundamentals/${ticker}`, params);
 };
@@ -19,8 +16,8 @@ export const getPrices = async (ticker, params) => {
   });
 };
 
-export const getGovernmentBond = async (countryISO, year, params) => {
-  return axios.get(`/api/v1/government-bond/${countryISO}/${year}`, {
+export const getGovernmentBond = async (code, params) => {
+  return axios.get(`/api/v1/government-bond/${code}`, {
     params,
   });
 };
@@ -29,12 +26,4 @@ export const getAutocompleteQuery = async (query, params) => {
   return axios.get(`/api/v1/autocomplete-query/${query}`, {
     params,
   });
-};
-
-export const getContentfulEntries = async (params) => {
-  return axios.get(`/api/v1/contentful/getEntries`, params);
-};
-
-export const getContentfulEntry = async (id, params) => {
-  return axios.get(`/api/v1/contentful/getEntry/${id}`, params);
 };

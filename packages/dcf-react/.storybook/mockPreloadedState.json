@@ -1,0 +1,1293 @@
+{
+  "fundamentals": {
+    "governmentBondTenYearYield": 0.0121,
+    "priceLastClose": 133.4,
+    "exchangeRates": null
+  },
+  "page": {
+    "isLoading": false
+  },
+  "dcf": {
+    "cells": {
+      "A1": {
+        "value": ""
+      },
+      "A2": {
+        "value": "Revenues"
+      },
+      "A3": {
+        "value": "Operating Margin"
+      },
+      "A4": {
+        "value": "Operating Income"
+      },
+      "A5": {
+        "value": "Tax Rate"
+      },
+      "A6": {
+        "value": "NOPAT"
+      },
+      "A7": {
+        "value": "- Reinvestment"
+      },
+      "A8": {
+        "value": "FCFF"
+      },
+      "A9": {
+        "value": "NOL"
+      },
+      "A10": {
+        "value": ""
+      },
+      "A11": {
+        "value": "Cost of Capital"
+      },
+      "A12": {
+        "value": "Cumulated Discount Factor"
+      },
+      "A13": {
+        "value": "PV (FCFF)"
+      },
+      "A14": {
+        "value": ""
+      },
+      "A15": {
+        "value": "Sales to Capital Ratio"
+      },
+      "A16": {
+        "value": "Invested Capital"
+      },
+      "A17": {
+        "value": "ROIC"
+      },
+      "A18": {
+        "value": ""
+      },
+      "A19": {
+        "value": "Terminal Cash Flow"
+      },
+      "A20": {
+        "value": "Terminal Cost of Capital"
+      },
+      "A21": {
+        "value": "Terminal Value"
+      },
+      "A22": {
+        "value": "PV (Terminal Value)"
+      },
+      "A23": {
+        "value": "PV (CF Over Next 10 Years"
+      },
+      "A24": {
+        "value": "Sum of PV"
+      },
+      "A25": {
+        "value": "Probability of Failure"
+      },
+      "A26": {
+        "value": "Proceeds if the Firm Fails"
+      },
+      "A27": {
+        "value": "Operating Assets"
+      },
+      "A28": {
+        "value": "- Debt"
+      },
+      "A29": {
+        "value": "- Minority Interests"
+      },
+      "A30": {
+        "value": "+ Cash"
+      },
+      "A31": {
+        "value": "+ Non-Operating Assets"
+      },
+      "A32": {
+        "value": "Equity"
+      },
+      "A33": {
+        "value": "- Options"
+      },
+      "A34": {
+        "value": "Common Stock Equity"
+      },
+      "A35": {
+        "value": "Current Price"
+      },
+      "A36": {
+        "value": "Estimated Value Per Share",
+        "className": "estimated-value-per-share-label"
+      },
+      "A37": {
+        "value": "Margin of Safety"
+      },
+      "B1": {
+        "value": "Base Year"
+      },
+      "B2": {
+        "className": "equation",
+        "expr": "=totalRevenue",
+        "type": "million-currency",
+        "value": 1430390000
+      },
+      "B3": {
+        "className": "equation",
+        "expr": "=B4/B2",
+        "type": "percent",
+        "value": 0.1022951782381029
+      },
+      "B4": {
+        "className": "equation",
+        "expr": "=operatingIncome",
+        "type": "million-currency",
+        "value": 146322000
+      },
+      "B5": {
+        "className": "equation",
+        "expr": "=pastThreeYearsAverageEffectiveTaxRate",
+        "type": "percent",
+        "value": 0.22979993423881429
+      },
+      "B6": {
+        "className": "equation",
+        "expr": "=IF(B4 > 0, B4 * (1-B5), B4)",
+        "type": "million-currency",
+        "value": 112697214.02230822
+      },
+      "B9": {
+        "className": "equation",
+        "expr": "=netOperatingLoss",
+        "type": "million-currency",
+        "value": 0
+      },
+      "B16": {
+        "className": "equation",
+        "expr": "=investedCapital",
+        "type": "million-currency",
+        "value": 371203000
+      },
+      "B19": {
+        "className": "equation",
+        "expr": "=M8",
+        "type": "million-currency",
+        "value": 0
+      },
+      "B20": {
+        "className": "equation",
+        "expr": "=M11",
+        "type": "percent",
+        "value": 0.06440000000000001
+      },
+      "B21": {
+        "className": "equation",
+        "expr": "=B19/(B20-riskFreeRate)",
+        "type": "million-currency",
+        "value": 0
+      },
+      "B22": {
+        "className": "equation",
+        "expr": "=B21*L12",
+        "type": "million-currency",
+        "value": 0
+      },
+      "B23": {
+        "className": "equation",
+        "expr": "=SUM(C13, D13, E13, F13, G13, H13, I13, J13, K13, L13)",
+        "type": "million-currency",
+        "value": null
+      },
+      "B24": {
+        "className": "equation",
+        "expr": "=B22+B23",
+        "type": "million-currency",
+        "value": null
+      },
+      "B25": {
+        "className": "equation",
+        "expr": "=probabilityOfFailure",
+        "type": "percent",
+        "value": 0
+      },
+      "B26": {
+        "className": "equation",
+        "expr": "=(bookValueOfEquity+bookValueOfDebt)*proceedsAsAPercentageOfBookValue",
+        "type": "million-currency",
+        "value": 0
+      },
+      "B27": {
+        "className": "equation",
+        "expr": "=B24*(1-B25)+B26*B25",
+        "type": "million-currency",
+        "value": null
+      },
+      "B28": {
+        "className": "equation",
+        "expr": "=bookValueOfDebt",
+        "type": "million-currency",
+        "value": 50485000
+      },
+      "B29": {
+        "className": "equation",
+        "expr": "=minorityInterest",
+        "type": "million-currency",
+        "value": 0
+      },
+      "B30": {
+        "className": "equation",
+        "expr": "=cashAndShortTermInvestments",
+        "type": "million-currency",
+        "value": 483716000
+      },
+      "B31": {
+        "className": "equation",
+        "expr": "=noncontrollingInterestInConsolidatedEntity",
+        "type": "million-currency",
+        "value": 0
+      },
+      "B32": {
+        "className": "equation",
+        "expr": "=B27-B28-B29+B30+B31",
+        "type": "million-currency",
+        "value": null
+      },
+      "B33": {
+        "className": "equation",
+        "expr": "=valueOfAllOptionsOutstanding",
+        "type": "million-currency",
+        "value": 0
+      },
+      "B34": {
+        "className": "equation",
+        "expr": "=B32-B33",
+        "type": "million-currency",
+        "value": null
+      },
+      "B35": {
+        "className": "equation",
+        "expr": "=price",
+        "type": "currency",
+        "value": 133.4
+      },
+      "B36": {
+        "className": "equation",
+        "expr": "=B34/sharesOutstanding",
+        "type": "currency",
+        "value": null
+      },
+      "B37": {
+        "className": "error",
+        "expr": "=(B36-B35)/B36",
+        "type": "percent",
+        "value": "error"
+      },
+      "C7": {
+        "className": "equation",
+        "expr": "=IF(C2 > B2, (C2-B2) / C15, 0)",
+        "type": "million-currency",
+        "value": 0
+      },
+      "C11": {
+        "className": "equation",
+        "expr": "=totalCostOfCapital",
+        "type": "percent",
+        "value": 0.07716276015623953
+      },
+      "C12": {
+        "className": "equation",
+        "expr": "=1/(1+C11)",
+        "type": "number",
+        "value": 0.9283648089123995
+      },
+      "C15": {
+        "className": "equation",
+        "expr": "=salesToCapitalRatio",
+        "type": "number",
+        "value": 0
+      },
+      "M1": {
+        "value": "Terminal Year"
+      },
+      "M2": {
+        "className": "equation",
+        "expr": "=L2*(1+riskFreeRate)",
+        "type": "million-currency",
+        "value": 1500974431.4898543
+      },
+      "M3": {
+        "className": "equation",
+        "expr": "=L3",
+        "type": "percent",
+        "value": 0
+      },
+      "M5": {
+        "className": "equation",
+        "expr": "=marginalTaxRate",
+        "type": "percent",
+        "value": 0.25
+      },
+      "M6": {
+        "className": "equation",
+        "expr": "=M4*(1-M5)",
+        "type": "million-currency",
+        "value": 0
+      },
+      "M7": {
+        "className": "equation",
+        "expr": "=IF(riskFreeRate > 0, (riskFreeRate / M17) * M6, 0)",
+        "type": "million-currency",
+        "value": 0
+      },
+      "M11": {
+        "className": "equation",
+        "expr": "=matureMarketEquityRiskPremium + riskFreeRate",
+        "type": "percent",
+        "value": 0.06440000000000001
+      },
+      "M17": {
+        "className": "equation",
+        "expr": "=L11",
+        "type": "percent",
+        "value": 0.0644
+      },
+      "C1": {
+        "readOnly": true,
+        "value": 1,
+        "type": "number"
+      },
+      "D1": {
+        "readOnly": true,
+        "value": 2,
+        "type": "number"
+      },
+      "E1": {
+        "readOnly": true,
+        "value": 3,
+        "type": "number"
+      },
+      "F1": {
+        "readOnly": true,
+        "value": 4,
+        "type": "number"
+      },
+      "G1": {
+        "readOnly": true,
+        "value": 5,
+        "type": "number"
+      },
+      "H1": {
+        "readOnly": true,
+        "value": 6,
+        "type": "number"
+      },
+      "I1": {
+        "readOnly": true,
+        "value": 7,
+        "type": "number"
+      },
+      "J1": {
+        "readOnly": true,
+        "value": 8,
+        "type": "number"
+      },
+      "K1": {
+        "readOnly": true,
+        "value": 9,
+        "type": "number"
+      },
+      "L1": {
+        "readOnly": true,
+        "value": 10,
+        "type": "number"
+      },
+      "B12": {
+        "type": "number"
+      },
+      "D12": {
+        "type": "number",
+        "expr": "=C12*(1/(1+D11))",
+        "className": "equation",
+        "value": 0.861861218426956
+      },
+      "E12": {
+        "type": "number",
+        "expr": "=D12*(1/(1+E11))",
+        "className": "equation",
+        "value": 0.8001216253539487
+      },
+      "F12": {
+        "type": "number",
+        "expr": "=E12*(1/(1+F11))",
+        "className": "equation",
+        "value": 0.7428047598283971
+      },
+      "G12": {
+        "type": "number",
+        "expr": "=F12*(1/(1+G11))",
+        "className": "equation",
+        "value": 0.6895937989173107
+      },
+      "H12": {
+        "type": "number",
+        "expr": "=G12*(1/(1+H11))",
+        "className": "equation",
+        "value": 0.6417152877418988
+      },
+      "I12": {
+        "type": "number",
+        "expr": "=H12*(1/(1+I11))",
+        "className": "equation",
+        "value": 0.5985828132417025
+      },
+      "J12": {
+        "type": "number",
+        "expr": "=I12*(1/(1+J11))",
+        "className": "equation",
+        "value": 0.5596820538471452
+      },
+      "K12": {
+        "type": "number",
+        "expr": "=J12*(1/(1+K11))",
+        "className": "equation",
+        "value": 0.5245613338490367
+      },
+      "L12": {
+        "type": "number",
+        "expr": "=K12*(1/(1+L11))",
+        "className": "equation",
+        "value": 0.49282350042186834
+      },
+      "M12": {
+        "type": "number"
+      },
+      "B15": {
+        "type": "number"
+      },
+      "D15": {
+        "type": "number",
+        "expr": "=C15",
+        "className": "equation",
+        "value": 0
+      },
+      "E15": {
+        "type": "number",
+        "expr": "=D15",
+        "className": "equation",
+        "value": 0
+      },
+      "F15": {
+        "type": "number",
+        "expr": "=E15",
+        "className": "equation",
+        "value": 0
+      },
+      "G15": {
+        "type": "number",
+        "expr": "=F15",
+        "className": "equation",
+        "value": 0
+      },
+      "H15": {
+        "type": "number",
+        "expr": "=G15",
+        "className": "equation",
+        "value": 0
+      },
+      "I15": {
+        "type": "number",
+        "expr": "=H15",
+        "className": "equation",
+        "value": 0
+      },
+      "J15": {
+        "type": "number",
+        "expr": "=I15",
+        "className": "equation",
+        "value": 0
+      },
+      "K15": {
+        "type": "number",
+        "expr": "=J15",
+        "className": "equation",
+        "value": 0
+      },
+      "L15": {
+        "type": "number",
+        "expr": "=K15",
+        "className": "equation",
+        "value": 0
+      },
+      "M15": {
+        "type": "number"
+      },
+      "C3": {
+        "type": "percent",
+        "expr": "=IF(C1 > yearOfConvergence, ebitTargetMarginInYearTen, ebitTargetMarginInYearTen - ((ebitTargetMarginInYearTen - B3) / yearOfConvergence) * (yearOfConvergence - C1))",
+        "className": "equation",
+        "value": 0
+      },
+      "D3": {
+        "type": "percent",
+        "expr": "=IF(D1 > yearOfConvergence, ebitTargetMarginInYearTen, ebitTargetMarginInYearTen - ((ebitTargetMarginInYearTen - B3) / yearOfConvergence) * (yearOfConvergence - D1))",
+        "className": "equation",
+        "value": 0
+      },
+      "E3": {
+        "type": "percent",
+        "expr": "=IF(E1 > yearOfConvergence, ebitTargetMarginInYearTen, ebitTargetMarginInYearTen - ((ebitTargetMarginInYearTen - B3) / yearOfConvergence) * (yearOfConvergence - E1))",
+        "className": "equation",
+        "value": 0
+      },
+      "F3": {
+        "type": "percent",
+        "expr": "=IF(F1 > yearOfConvergence, ebitTargetMarginInYearTen, ebitTargetMarginInYearTen - ((ebitTargetMarginInYearTen - B3) / yearOfConvergence) * (yearOfConvergence - F1))",
+        "className": "equation",
+        "value": 0
+      },
+      "G3": {
+        "type": "percent",
+        "expr": "=IF(G1 > yearOfConvergence, ebitTargetMarginInYearTen, ebitTargetMarginInYearTen - ((ebitTargetMarginInYearTen - B3) / yearOfConvergence) * (yearOfConvergence - G1))",
+        "className": "equation",
+        "value": 0
+      },
+      "H3": {
+        "type": "percent",
+        "expr": "=IF(H1 > yearOfConvergence, ebitTargetMarginInYearTen, ebitTargetMarginInYearTen - ((ebitTargetMarginInYearTen - B3) / yearOfConvergence) * (yearOfConvergence - H1))",
+        "className": "equation",
+        "value": 0
+      },
+      "I3": {
+        "type": "percent",
+        "expr": "=IF(I1 > yearOfConvergence, ebitTargetMarginInYearTen, ebitTargetMarginInYearTen - ((ebitTargetMarginInYearTen - B3) / yearOfConvergence) * (yearOfConvergence - I1))",
+        "className": "equation",
+        "value": 0
+      },
+      "J3": {
+        "type": "percent",
+        "expr": "=IF(J1 > yearOfConvergence, ebitTargetMarginInYearTen, ebitTargetMarginInYearTen - ((ebitTargetMarginInYearTen - B3) / yearOfConvergence) * (yearOfConvergence - J1))",
+        "className": "equation",
+        "value": 0
+      },
+      "K3": {
+        "type": "percent",
+        "expr": "=IF(K1 > yearOfConvergence, ebitTargetMarginInYearTen, ebitTargetMarginInYearTen - ((ebitTargetMarginInYearTen - B3) / yearOfConvergence) * (yearOfConvergence - K1))",
+        "className": "equation",
+        "value": 0
+      },
+      "L3": {
+        "type": "percent",
+        "expr": "=IF(L1 > yearOfConvergence, ebitTargetMarginInYearTen, ebitTargetMarginInYearTen - ((ebitTargetMarginInYearTen - B3) / yearOfConvergence) * (yearOfConvergence - L1))",
+        "className": "equation",
+        "value": 0
+      },
+      "C5": {
+        "type": "percent",
+        "expr": "=B5",
+        "className": "equation",
+        "value": 0.22979993423881429
+      },
+      "D5": {
+        "type": "percent",
+        "expr": "=C5",
+        "className": "equation",
+        "value": 0.22979993423881429
+      },
+      "E5": {
+        "type": "percent",
+        "expr": "=D5",
+        "className": "equation",
+        "value": 0.22979993423881429
+      },
+      "F5": {
+        "type": "percent",
+        "expr": "=E5",
+        "className": "equation",
+        "value": 0.22979993423881429
+      },
+      "G5": {
+        "type": "percent",
+        "expr": "=F5",
+        "className": "equation",
+        "value": 0.22979993423881429
+      },
+      "H5": {
+        "type": "percent",
+        "expr": "=G5+(M5-G5)/5",
+        "className": "equation",
+        "value": 0.23383994739105143
+      },
+      "I5": {
+        "type": "percent",
+        "expr": "=H5+(M5-G5)/5",
+        "className": "equation",
+        "value": 0.23787996054328858
+      },
+      "J5": {
+        "type": "percent",
+        "expr": "=I5+(M5-G5)/5",
+        "className": "equation",
+        "value": 0.24191997369552573
+      },
+      "K5": {
+        "type": "percent",
+        "expr": "=J5+(M5-G5)/5",
+        "className": "equation",
+        "value": 0.24595998684776288
+      },
+      "L5": {
+        "type": "percent",
+        "expr": "=K5+(M5-G5)/5",
+        "className": "equation",
+        "value": 0.25
+      },
+      "B11": {
+        "type": "percent"
+      },
+      "D11": {
+        "type": "percent",
+        "expr": "=C11",
+        "className": "equation",
+        "value": 0.07716276015623953
+      },
+      "E11": {
+        "type": "percent",
+        "expr": "=D11",
+        "className": "equation",
+        "value": 0.07716276015623953
+      },
+      "F11": {
+        "type": "percent",
+        "expr": "=E11",
+        "className": "equation",
+        "value": 0.07716276015623953
+      },
+      "G11": {
+        "type": "percent",
+        "expr": "=F11",
+        "className": "equation",
+        "value": 0.07716276015623953
+      },
+      "H11": {
+        "type": "percent",
+        "expr": "=G11-(G11-M11)/5",
+        "className": "equation",
+        "value": 0.07461020812499163
+      },
+      "I11": {
+        "type": "percent",
+        "expr": "=H11-(G11-M11)/5",
+        "className": "equation",
+        "value": 0.07205765609374372
+      },
+      "J11": {
+        "type": "percent",
+        "expr": "=I11-(G11-M11)/5",
+        "className": "equation",
+        "value": 0.06950510406249581
+      },
+      "K11": {
+        "type": "percent",
+        "expr": "=J11-(G11-M11)/5",
+        "className": "equation",
+        "value": 0.0669525520312479
+      },
+      "L11": {
+        "type": "percent",
+        "expr": "=K11-(G11-M11)/5",
+        "className": "equation",
+        "value": 0.0644
+      },
+      "B17": {
+        "type": "percent",
+        "expr": "=B6/B16",
+        "className": "equation",
+        "value": 0.30359995480184215
+      },
+      "C17": {
+        "type": "percent",
+        "expr": "=C6/C16",
+        "className": "equation",
+        "value": 0
+      },
+      "D17": {
+        "type": "percent",
+        "expr": "=D6/D16",
+        "className": "equation",
+        "value": 0
+      },
+      "E17": {
+        "type": "percent",
+        "expr": "=E6/E16",
+        "className": "equation",
+        "value": 0
+      },
+      "F17": {
+        "type": "percent",
+        "expr": "=F6/F16",
+        "className": "equation",
+        "value": 0
+      },
+      "G17": {
+        "type": "percent",
+        "expr": "=G6/G16",
+        "className": "equation",
+        "value": 0
+      },
+      "H17": {
+        "type": "percent",
+        "expr": "=H6/H16",
+        "className": "equation",
+        "value": 0
+      },
+      "I17": {
+        "type": "percent",
+        "expr": "=I6/I16",
+        "className": "equation",
+        "value": 0
+      },
+      "J17": {
+        "type": "percent",
+        "expr": "=J6/J16",
+        "className": "equation",
+        "value": 0
+      },
+      "K17": {
+        "type": "percent",
+        "expr": "=K6/K16",
+        "className": "equation",
+        "value": 0
+      },
+      "L17": {
+        "type": "percent",
+        "expr": "=L6/L16",
+        "className": "equation",
+        "value": 0
+      },
+      "C2": {
+        "type": "million-currency",
+        "expr": "=B2*(1+cagrYearOneToFive)",
+        "className": "equation",
+        "value": 1430390000
+      },
+      "D2": {
+        "type": "million-currency",
+        "expr": "=C2*(1+cagrYearOneToFive)",
+        "className": "equation",
+        "value": 1430390000
+      },
+      "E2": {
+        "type": "million-currency",
+        "expr": "=D2*(1+cagrYearOneToFive)",
+        "className": "equation",
+        "value": 1430390000
+      },
+      "F2": {
+        "type": "million-currency",
+        "expr": "=E2*(1+cagrYearOneToFive)",
+        "className": "equation",
+        "value": 1430390000
+      },
+      "G2": {
+        "type": "million-currency",
+        "expr": "=F2*(1+cagrYearOneToFive)",
+        "className": "equation",
+        "value": 1430390000
+      },
+      "H2": {
+        "type": "million-currency",
+        "expr": "=G2*(1+cagrYearOneToFive - ((cagrYearOneToFive-riskFreeRate) / 5))",
+        "className": "equation",
+        "value": 1433851543.8000002
+      },
+      "I2": {
+        "type": "million-currency",
+        "expr": "=H2*(1+cagrYearOneToFive - ((cagrYearOneToFive-riskFreeRate) / 5) * 2)",
+        "className": "equation",
+        "value": 1440791385.2719922
+      },
+      "J2": {
+        "type": "million-currency",
+        "expr": "=I2*(1+cagrYearOneToFive - ((cagrYearOneToFive-riskFreeRate) / 5) * 3)",
+        "className": "equation",
+        "value": 1451251530.7290668
+      },
+      "K2": {
+        "type": "million-currency",
+        "expr": "=J2*(1+cagrYearOneToFive - ((cagrYearOneToFive-riskFreeRate) / 5) * 4)",
+        "className": "equation",
+        "value": 1465299645.546524
+      },
+      "L2": {
+        "type": "million-currency",
+        "expr": "=K2*(1+cagrYearOneToFive - ((cagrYearOneToFive-riskFreeRate) / 5) * 5)",
+        "className": "equation",
+        "value": 1483029771.257637
+      },
+      "C4": {
+        "type": "million-currency",
+        "expr": "=C3*C2",
+        "className": "equation",
+        "value": 0
+      },
+      "D4": {
+        "type": "million-currency",
+        "expr": "=D3*D2",
+        "className": "equation",
+        "value": 0
+      },
+      "E4": {
+        "type": "million-currency",
+        "expr": "=E3*E2",
+        "className": "equation",
+        "value": 0
+      },
+      "F4": {
+        "type": "million-currency",
+        "expr": "=F3*F2",
+        "className": "equation",
+        "value": 0
+      },
+      "G4": {
+        "type": "million-currency",
+        "expr": "=G3*G2",
+        "className": "equation",
+        "value": 0
+      },
+      "H4": {
+        "type": "million-currency",
+        "expr": "=H3*H2",
+        "className": "equation",
+        "value": 0
+      },
+      "I4": {
+        "type": "million-currency",
+        "expr": "=I3*I2",
+        "className": "equation",
+        "value": 0
+      },
+      "J4": {
+        "type": "million-currency",
+        "expr": "=J3*J2",
+        "className": "equation",
+        "value": 0
+      },
+      "K4": {
+        "type": "million-currency",
+        "expr": "=K3*K2",
+        "className": "equation",
+        "value": 0
+      },
+      "L4": {
+        "type": "million-currency",
+        "expr": "=L3*L2",
+        "className": "equation",
+        "value": 0
+      },
+      "M4": {
+        "type": "million-currency",
+        "expr": "=M3*M2",
+        "className": "equation",
+        "value": 0
+      },
+      "C6": {
+        "type": "million-currency",
+        "expr": "=IF(C4 > 0, IF(C4 < B9, C4, C4 - (C4 - B9) * C5), C4)",
+        "className": "equation",
+        "value": 0
+      },
+      "D6": {
+        "type": "million-currency",
+        "expr": "=IF(D4 > 0, IF(D4 < C9, D4, D4 - (D4 - C9) * D5), D4)",
+        "className": "equation",
+        "value": 0
+      },
+      "E6": {
+        "type": "million-currency",
+        "expr": "=IF(E4 > 0, IF(E4 < D9, E4, E4 - (E4 - D9) * E5), E4)",
+        "className": "equation",
+        "value": 0
+      },
+      "F6": {
+        "type": "million-currency",
+        "expr": "=IF(F4 > 0, IF(F4 < E9, F4, F4 - (F4 - E9) * F5), F4)",
+        "className": "equation",
+        "value": 0
+      },
+      "G6": {
+        "type": "million-currency",
+        "expr": "=IF(G4 > 0, IF(G4 < F9, G4, G4 - (G4 - F9) * G5), G4)",
+        "className": "equation",
+        "value": 0
+      },
+      "H6": {
+        "type": "million-currency",
+        "expr": "=IF(H4 > 0, IF(H4 < G9, H4, H4 - (H4 - G9) * H5), H4)",
+        "className": "equation",
+        "value": 0
+      },
+      "I6": {
+        "type": "million-currency",
+        "expr": "=IF(I4 > 0, IF(I4 < H9, I4, I4 - (I4 - H9) * I5), I4)",
+        "className": "equation",
+        "value": 0
+      },
+      "J6": {
+        "type": "million-currency",
+        "expr": "=IF(J4 > 0, IF(J4 < I9, J4, J4 - (J4 - I9) * J5), J4)",
+        "className": "equation",
+        "value": 0
+      },
+      "K6": {
+        "type": "million-currency",
+        "expr": "=IF(K4 > 0, IF(K4 < J9, K4, K4 - (K4 - J9) * K5), K4)",
+        "className": "equation",
+        "value": 0
+      },
+      "L6": {
+        "type": "million-currency",
+        "expr": "=IF(L4 > 0, IF(L4 < K9, L4, L4 - (L4 - K9) * L5), L4)",
+        "className": "equation",
+        "value": 0
+      },
+      "B7": {
+        "type": "million-currency"
+      },
+      "D7": {
+        "type": "million-currency",
+        "expr": "=(D2-C2)/D15",
+        "className": "error",
+        "value": "error"
+      },
+      "E7": {
+        "type": "million-currency",
+        "expr": "=(E2-D2)/E15",
+        "className": "error",
+        "value": "error"
+      },
+      "F7": {
+        "type": "million-currency",
+        "expr": "=(F2-E2)/F15",
+        "className": "error",
+        "value": "error"
+      },
+      "G7": {
+        "type": "million-currency",
+        "expr": "=(G2-F2)/G15",
+        "className": "error",
+        "value": "error"
+      },
+      "H7": {
+        "type": "million-currency",
+        "expr": "=(H2-G2)/H15",
+        "className": "equation",
+        "value": null
+      },
+      "I7": {
+        "type": "million-currency",
+        "expr": "=(I2-H2)/I15",
+        "className": "equation",
+        "value": null
+      },
+      "J7": {
+        "type": "million-currency",
+        "expr": "=(J2-I2)/J15",
+        "className": "equation",
+        "value": null
+      },
+      "K7": {
+        "type": "million-currency",
+        "expr": "=(K2-J2)/K15",
+        "className": "equation",
+        "value": null
+      },
+      "L7": {
+        "type": "million-currency",
+        "expr": "=(L2-K2)/L15",
+        "className": "equation",
+        "value": null
+      },
+      "B8": {
+        "type": "million-currency"
+      },
+      "C8": {
+        "type": "million-currency",
+        "expr": "=C6 - C7",
+        "className": "equation",
+        "value": 0
+      },
+      "D8": {
+        "type": "million-currency",
+        "expr": "=D6 - D7",
+        "className": "equation",
+        "value": 0
+      },
+      "E8": {
+        "type": "million-currency",
+        "expr": "=E6 - E7",
+        "className": "equation",
+        "value": 0
+      },
+      "F8": {
+        "type": "million-currency",
+        "expr": "=F6 - F7",
+        "className": "equation",
+        "value": 0
+      },
+      "G8": {
+        "type": "million-currency",
+        "expr": "=G6 - G7",
+        "className": "equation",
+        "value": 0
+      },
+      "H8": {
+        "type": "million-currency",
+        "expr": "=H6 - H7",
+        "className": "equation",
+        "value": null
+      },
+      "I8": {
+        "type": "million-currency",
+        "expr": "=I6 - I7",
+        "className": "equation",
+        "value": null
+      },
+      "J8": {
+        "type": "million-currency",
+        "expr": "=J6 - J7",
+        "className": "equation",
+        "value": null
+      },
+      "K8": {
+        "type": "million-currency",
+        "expr": "=K6 - K7",
+        "className": "equation",
+        "value": null
+      },
+      "L8": {
+        "type": "million-currency",
+        "expr": "=L6 - L7",
+        "className": "equation",
+        "value": null
+      },
+      "M8": {
+        "type": "million-currency",
+        "expr": "=M6 - M7",
+        "className": "equation",
+        "value": 0
+      },
+      "C9": {
+        "type": "million-currency",
+        "expr": "=IF(C4 < 0, B9 - C4, IF(B9 > C4, B9 - C4, 0))",
+        "className": "equation",
+        "value": 0
+      },
+      "D9": {
+        "type": "million-currency",
+        "expr": "=IF(D4 < 0, C9 - D4, IF(C9 > D4, C9 - D4, 0))",
+        "className": "equation",
+        "value": 0
+      },
+      "E9": {
+        "type": "million-currency",
+        "expr": "=IF(E4 < 0, D9 - E4, IF(D9 > E4, D9 - E4, 0))",
+        "className": "equation",
+        "value": 0
+      },
+      "F9": {
+        "type": "million-currency",
+        "expr": "=IF(F4 < 0, E9 - F4, IF(E9 > F4, E9 - F4, 0))",
+        "className": "equation",
+        "value": 0
+      },
+      "G9": {
+        "type": "million-currency",
+        "expr": "=IF(G4 < 0, F9 - G4, IF(F9 > G4, F9 - G4, 0))",
+        "className": "equation",
+        "value": 0
+      },
+      "H9": {
+        "type": "million-currency",
+        "expr": "=IF(H4 < 0, G9 - H4, IF(G9 > H4, G9 - H4, 0))",
+        "className": "equation",
+        "value": 0
+      },
+      "I9": {
+        "type": "million-currency",
+        "expr": "=IF(I4 < 0, H9 - I4, IF(H9 > I4, H9 - I4, 0))",
+        "className": "equation",
+        "value": 0
+      },
+      "J9": {
+        "type": "million-currency",
+        "expr": "=IF(J4 < 0, I9 - J4, IF(I9 > J4, I9 - J4, 0))",
+        "className": "equation",
+        "value": 0
+      },
+      "K9": {
+        "type": "million-currency",
+        "expr": "=IF(K4 < 0, J9 - K4, IF(J9 > K4, J9 - K4, 0))",
+        "className": "equation",
+        "value": 0
+      },
+      "L9": {
+        "type": "million-currency",
+        "expr": "=IF(L4 < 0, K9 - L4, IF(K9 > L4, K9 - L4, 0))",
+        "className": "equation",
+        "value": 0
+      },
+      "M9": {
+        "type": "million-currency",
+        "expr": "=IF(M4 < 0, L9 - M4, IF(L9 > M4, L9 - M4, 0))",
+        "className": "equation",
+        "value": 0
+      },
+      "B13": {
+        "type": "million-currency"
+      },
+      "C13": {
+        "type": "million-currency",
+        "expr": "=C8*C12",
+        "className": "equation",
+        "value": 0
+      },
+      "D13": {
+        "type": "million-currency",
+        "expr": "=D8*D12",
+        "className": "equation",
+        "value": 0
+      },
+      "E13": {
+        "type": "million-currency",
+        "expr": "=E8*E12",
+        "className": "equation",
+        "value": 0
+      },
+      "F13": {
+        "type": "million-currency",
+        "expr": "=F8*F12",
+        "className": "equation",
+        "value": 0
+      },
+      "G13": {
+        "type": "million-currency",
+        "expr": "=G8*G12",
+        "className": "equation",
+        "value": 0
+      },
+      "H13": {
+        "type": "million-currency",
+        "expr": "=H8*H12",
+        "className": "equation",
+        "value": null
+      },
+      "I13": {
+        "type": "million-currency",
+        "expr": "=I8*I12",
+        "className": "equation",
+        "value": null
+      },
+      "J13": {
+        "type": "million-currency",
+        "expr": "=J8*J12",
+        "className": "equation",
+        "value": null
+      },
+      "K13": {
+        "type": "million-currency",
+        "expr": "=K8*K12",
+        "className": "equation",
+        "value": null
+      },
+      "L13": {
+        "type": "million-currency",
+        "expr": "=L8*L12",
+        "className": "equation",
+        "value": null
+      },
+      "M13": {
+        "type": "million-currency"
+      },
+      "C16": {
+        "type": "million-currency",
+        "expr": "=B16+C7",
+        "className": "equation",
+        "value": 371203000
+      },
+      "D16": {
+        "type": "million-currency",
+        "expr": "=C16+D7",
+        "className": "equation",
+        "value": 371203000
+      },
+      "E16": {
+        "type": "million-currency",
+        "expr": "=D16+E7",
+        "className": "equation",
+        "value": 371203000
+      },
+      "F16": {
+        "type": "million-currency",
+        "expr": "=E16+F7",
+        "className": "equation",
+        "value": 371203000
+      },
+      "G16": {
+        "type": "million-currency",
+        "expr": "=F16+G7",
+        "className": "equation",
+        "value": 371203000
+      },
+      "H16": {
+        "type": "million-currency",
+        "expr": "=G16+H7",
+        "className": "equation",
+        "value": null
+      },
+      "I16": {
+        "type": "million-currency",
+        "expr": "=H16+I7",
+        "className": "equation",
+        "value": null
+      },
+      "J16": {
+        "type": "million-currency",
+        "expr": "=I16+J7",
+        "className": "equation",
+        "value": null
+      },
+      "K16": {
+        "type": "million-currency",
+        "expr": "=J16+K7",
+        "className": "equation",
+        "value": null
+      },
+      "L16": {
+        "type": "million-currency",
+        "expr": "=K16+L7",
+        "className": "equation",
+        "value": null
+      },
+      "M16": {
+        "type": "million-currency"
+      }
+    },
+    "isYoyGrowthToggled": false,
+    "scope": {
+      "matureMarketEquityRiskPremium": 0.052300000000000006,
+      "totalRevenue": 1430390000,
+      "operatingIncome": 146322000,
+      "minorityInterest": 0,
+      "pastThreeYearsAverageEffectiveTaxRate": 0.22979993423881429,
+      "investedCapital": 371203000,
+      "bookValueOfDebt": 50485000,
+      "cashAndShortTermInvestments": 483716000,
+      "noncontrollingInterestInConsolidatedEntity": 0,
+      "marginalTaxRate": 0.25,
+      "sharesOutstanding": 28127300,
+      "price": 133.4,
+      "riskFreeRate": 0.0121,
+      "totalCostOfCapital": 0.07716276015623953,
+      "bookValueOfEquity": 804434000,
+      "valueOfAllOptionsOutstanding": null
+    }
+  }
+}
