@@ -225,17 +225,17 @@ const PastFundamentals = () => {
 
   return (
     <React.Fragment>
-      <Typography variant="h5" gutterBottom>
-        Past Fundamentals
-      </Typography>
-      <Typography
-        style={{
-          marginLeft: theme.spacing(1),
-          fontWeight: theme.typography.fontWeightBold,
-        }}
-      >
-        ({valuationCurrencySymbol}:{valuationCurrencyCode})
-      </Typography>
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Typography variant="h5">Past Fundamentals</Typography>
+        <Typography
+          style={{
+            marginLeft: theme.spacing(1),
+            fontWeight: theme.typography.fontWeightBold,
+          }}
+        >
+          ({valuationCurrencySymbol}:{valuationCurrencyCode})
+        </Typography>
+      </Box>
       <Box style={{ overflowX: "auto" }}>
         <TTTable columns={columns} data={data} />
       </Box>

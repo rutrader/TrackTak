@@ -14,6 +14,7 @@ import {
   ValueDrivingInputs,
 } from "@tracktak/dcf-react";
 import { Link } from "gatsby";
+import SubscribePopup from "./SubscribePopup";
 
 const DiscountedCashFlow = () => {
   const theme = useTheme();
@@ -61,7 +62,7 @@ const DiscountedCashFlow = () => {
         </Box>
       </Section>
       <Section>
-        <DiscountedCashFlowSheet />
+        <DiscountedCashFlowSheet SubscribePopup={<SubscribePopup />} />
       </Section>
     </React.Fragment>
   );
