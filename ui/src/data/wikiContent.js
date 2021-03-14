@@ -129,8 +129,8 @@ const wikiContent = [
           This is to safe guard you against putting in an unreasonably large
           revenue growth rate. It's also more realistic in most cases due to
           companies growth slowing as their revenue becomes bigger and the
-          company matures. The terminal growth (M2) is then set to be equal to
-          year 10's growth rate.
+          company matures. The revenues (M2) is then set to be equal to year
+          10's growth rate.
         </Typography>
       </>
     ),
@@ -188,7 +188,7 @@ const wikiContent = [
         </InputExampleBox>
         <Typography paragraph>
           The Operating Margin will slowly converge from the base years margin
-          (B4) to your Operating margin in year 10 (L3). The speed at which this
+          (B3) to your Operating margin in year 10 (L3). The speed at which this
           happens depends on the Year of Convergence that you type in to this
           input.
         </Typography>
