@@ -10,13 +10,12 @@ import {
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
-import { ReactComponent as GridDots } from "../icons/grid-dots.svg";
-import laptopImage from "../icons/laptop-img.png";
+import GridDots from "../assets/grid-dots.svg";
+import laptopImage from "../images/laptop-img.png";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import SearchTicker from "../components/SearchTicker";
-import { NavHashLink } from "react-router-hash-link";
-import useScrollWithOffset from "../hooks/useScrollWithOffset";
-import purpleBackground from "../icons/purple-background.svg";
+import { AnchorLink } from "gatsby-plugin-anchor-links";
+import purpleBackground from "../assets/purple-background.svg";
 import styled from "styled-components";
 
 const useStyles = makeStyles((theme) => ({
@@ -144,7 +143,6 @@ const LandingPageHome = () => {
   const theme = useTheme();
 
   const [showScroll, setShowScroll] = useState(false);
-  const getScrollWithOffset = useScrollWithOffset();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const checkScrollTop = () => {
     if (window.pageYOffset > 400) {
@@ -182,8 +180,7 @@ const LandingPageHome = () => {
           </TypographyText>
           <CustomButton
             isOnMobile={isOnMobile}
-            component={NavHashLink}
-            scroll={getScrollWithOffset()}
+            component={AnchorLink}
             to="#features"
             variant="contained"
           >

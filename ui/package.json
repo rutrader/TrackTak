@@ -63,6 +63,7 @@
     "react-datasheet": "^1.4.8",
     "react-dom": "^17.0.1",
     "react-helmet": "^6.1.0",
+    "react-icons": "^4.2.0",
     "react-lazyload": "^3.2.0",
     "react-lines-ellipsis": "^0.14.1",
     "react-markdown": "^5.0.3",
@@ -87,7 +88,7 @@
   "scripts": {
     "generate-exh-pairs": "SET NODE_ENV=development && node ./scripts/writeECBExchangePairsToJSON.js",
     "generate-fundamentals": "SET NODE_ENV=development && node ./scripts/writeBulkFundamentalsDataToJSON.js",
-    "start": "SET NODE_OPTIONS=--max_old_space_size=8192 && SET GATSBY_ENV=development && gatsby develop",
+    "start": "SET NODE_OPTIONS=--max_old_space_size=8192 && SET GATSBY_ENV=development && gatsby develop --verbose",
     "build": "SET NODE_OPTIONS=--max_old_space_size=8192 && SET GATSBY_ENV=production && gatsby build",
     "deploy": "gatsby-plugin-s3 deploy",
     "serve": "gatsby serve",

@@ -6,8 +6,8 @@ import {
   IconButton,
 } from "@material-ui/core";
 import React from "react";
-import { ReactComponent as TracktakPurple } from "../icons/tracktak-purple.svg";
-import { ReactComponent as FooterImage } from "../icons/footer-bg.svg";
+import TracktakPurple from "../assets/tracktak-purple.svg";
+import FooterImage from "../assets/footer-bg.svg";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 
 const CustomIconButton = withStyles({
