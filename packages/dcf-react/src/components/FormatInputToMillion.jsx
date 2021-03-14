@@ -37,6 +37,7 @@ const FormatInputToMillion = forwardRef(({ defaultValue, ...props }, ref) => {
       }}
       thousandSeparator
       suffix="&nbsp;mln"
+      inputMode="numeric"
     />
   );
 });
