@@ -129,8 +129,8 @@ const wikiContent = [
           This is to safe guard you against putting in an unreasonably large
           revenue growth rate. It's also more realistic in most cases due to
           companies growth slowing as their revenue becomes bigger and the
-          company matures. The revenues (M2) is then set to be equal to year
-          10's growth rate.
+          company matures. The terminal growth (M2) is then set to be equal to
+          year 10's growth rate.
         </Typography>
       </>
     ),
