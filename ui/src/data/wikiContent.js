@@ -188,7 +188,7 @@ const wikiContent = [
         </InputExampleBox>
         <Typography paragraph>
           The Operating Margin will slowly converge from the base years margin
-          (B4) to your Operating margin in year 10 (L3). The speed at which this
+          (B3) to your Operating margin in year 10 (L3). The speed at which this
           happens depends on the Year of Convergence that you type in to this
           input.
         </Typography>
