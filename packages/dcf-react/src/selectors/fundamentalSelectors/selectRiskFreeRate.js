@@ -3,15 +3,15 @@ import { riskFreeRateCalculation } from "../../discountedCashFlow/expressionCalc
 import selectCurrentEquityRiskPremium from "./selectCurrentEquityRiskPremium";
 import selectGovernmentBondTenYearYield from "./selectGovernmentBondTenYearYield";
 import { evaluate } from "../../shared/math";
+import { isNil } from "lodash";
 
 const calculateRiskFreeRate = (
   governmentBondTenYearYield,
-  currentEquityRiskPremium
+  currentEquityRiskPremium,
 ) => {
   if (
-    governmentBondTenYearYield === null ||
-    currentEquityRiskPremium?.adjDefaultSpread === null ||
-    currentEquityRiskPremium?.adjDefaultSpread === undefined
+    isNil(governmentBondTenYearYield) ||
+    isNil(currentEquityRiskPremium?.adjDefaultSpread)
   ) {
     return null;
   }
@@ -27,7 +27,7 @@ const calculateRiskFreeRate = (
 const selectRiskFreeRate = createSelector(
   selectGovernmentBondTenYearYield,
   selectCurrentEquityRiskPremium,
-  calculateRiskFreeRate
+  calculateRiskFreeRate,
 );
 
 export default selectRiskFreeRate;

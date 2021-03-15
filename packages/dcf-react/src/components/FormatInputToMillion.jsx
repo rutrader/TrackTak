@@ -1,3 +1,4 @@
+import { isNil } from "lodash";
 import React, { forwardRef } from "react";
 import { useState } from "react";
 import NumberFormat from "react-number-format";
@@ -19,15 +20,16 @@ const FormatInputToMillion = forwardRef(({ defaultValue, ...props }, ref) => {
     <NumberFormat
       {...other}
       getInputRef={ref}
-      defaultValue={defaultValue ? defaultValue / millionModifier : undefined}
+      defaultValue={
+        isNil(defaultValue) ? undefined : defaultValue / millionModifier
+      }
       onBlur={(e) => {
         props.onBlur(valueAsMillion, e);
       }}
       onValueChange={(values) => {
-        const valueAsMillion =
-          values.floatValue !== undefined
-            ? values.floatValue * millionModifier
-            : null;
+        const valueAsMillion = isNil(values.floatValue)
+          ? null
+          : values.floatValue * millionModifier;
         setValue(valueAsMillion);
         onChange({
           target: {

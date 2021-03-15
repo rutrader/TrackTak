@@ -40,6 +40,7 @@ import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
+import { isNil } from "lodash";
 
 export const DCFControlTypography = (props) => {
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
@@ -147,11 +148,11 @@ const ExportToExcel = () => {
       },
     };
 
-    if (inputQueryParams.pretaxCostOfDebt !== undefined) {
+    if (isNil(inputQueryParams.pretaxCostOfDebt)) {
+      costOfCapitalData.pretaxCostOfDebt.expr = estimatedCostOfDebtCalculation;
+    } else {
       costOfCapitalData.pretaxCostOfDebt.value =
         inputQueryParams.pretaxCostOfDebt;
-    } else {
-      costOfCapitalData.pretaxCostOfDebt.expr = estimatedCostOfDebtCalculation;
     }
 
     Object.keys(marketValueCalculation).forEach((key) => {

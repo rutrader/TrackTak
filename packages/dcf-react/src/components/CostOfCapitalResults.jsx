@@ -21,6 +21,7 @@ import useInjectQueryParams from "../hooks/useInjectQueryParams";
 import { Link } from "../shared/gatsby";
 import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 import useTicker from "../hooks/useTicker";
+import { isNil } from "lodash";
 
 const DefaultSyntheticCreditRatingLink = ({ ticker, searchParams }) => (
   <Link to={`/stock/${ticker}/synthetic-credit-rating${searchParams}`} />
@@ -40,8 +41,7 @@ const CostOfCapitalResults = ({
   const costOfCapital = useInjectQueryParams(selectCostOfCapital);
   const riskFreeRate = useSelector(selectRiskFreeRate);
   const pretaxCostOfDebt = useInjectQueryParams(selectPretaxCostOfDebt);
-  const useQueryPretaxCostOfDebt =
-    inputQueryParams.pretaxCostOfDebt !== undefined;
+  const useQueryPretaxCostOfDebt = !isNil(inputQueryParams.pretaxCostOfDebt);
   const location = useLocation();
 
   return (

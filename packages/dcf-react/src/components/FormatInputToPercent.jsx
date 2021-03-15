@@ -1,3 +1,4 @@
+import { isNil } from "lodash";
 import React from "react";
 import { forwardRef } from "react";
 import { useState } from "react";
@@ -12,13 +13,16 @@ const FormatInputToPercent = forwardRef(({ defaultValue, ...props }, ref) => {
     <NumberFormat
       {...other}
       getInputRef={ref}
-      defaultValue={defaultValue ? roundDecimal(defaultValue, 4) : undefined}
+      defaultValue={
+        isNil(defaultValue) ? undefined : roundDecimal(defaultValue, 4)
+      }
       onBlur={(e) => {
         props.onBlur(valueAsDecimal, e);
       }}
       onValueChange={(values) => {
-        const valueAsDecimal =
-          values.floatValue !== undefined ? values.floatValue / 100 : null;
+        const valueAsDecimal = isNil(values.floatValue)
+          ? null
+          : values.floatValue / 100;
         setValue(valueAsDecimal);
         onChange({
           target: {

@@ -1,6 +1,7 @@
 import makeFormatValueForExcelOutput from "./makeFormatValueForExcelOutput";
 import { isExpressionDependency } from "./utils";
 import replaceAll from "../shared/replaceAll";
+import { isNil } from "lodash";
 
 export const inputsWorksheetName = "Inputs";
 export const costOfCapitalWorksheetName = "Cost of Capital";
@@ -73,7 +74,7 @@ const makeFormatCellForExcelOutput = (
           const key = scopeKeys[index];
           let value = scope[key];
 
-          if (value === undefined || value === null) {
+          if (isNil(value)) {
             value = 0;
           }
 
