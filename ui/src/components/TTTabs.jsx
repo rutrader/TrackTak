@@ -3,6 +3,7 @@ import React from "react";
 import { useLocation } from "@reach/router";
 import { Link } from "gatsby";
 import { sentenceCase } from "change-case";
+import { useTicker } from "@tracktak/dcf-react";
 
 const stockPaths = [
   "/discounted-cash-flow",
@@ -10,8 +11,9 @@ const stockPaths = [
   "/industry-averages",
 ];
 
-const TTTabs = ({ ticker }) => {
+const TTTabs = () => {
   const location = useLocation();
+  const ticker = useTicker();
   const theme = useTheme();
   const mt = `${theme.mixins.toolbar.minHeight}px`;
   const value = location.pathname.replace(/\/$/g, "");

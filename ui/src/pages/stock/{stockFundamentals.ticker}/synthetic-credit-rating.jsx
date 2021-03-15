@@ -3,7 +3,12 @@ import { Helmet } from "react-helmet";
 import getTitle from "../../../shared/getTitle";
 import resourceName from "../../../shared/resourceName";
 import { graphql } from "gatsby";
-import { SyntheticCreditRating } from "@tracktak/dcf-react";
+import {
+  SyntheticCreditRating,
+  selectGeneral,
+  useTicker,
+} from "@tracktak/dcf-react";
+import { useSelector } from "react-redux";
 
 export const query = graphql`
   query SyntheticCreditRatingQuery($ticker: String) {
@@ -13,13 +18,14 @@ export const query = graphql`
   }
 `;
 
-const SyntheticCreditRatingPage = ({ data }) => {
-  const { General, ticker } = data.stockFundamentals;
+const SyntheticCreditRatingPage = () => {
+  const general = useSelector(selectGeneral);
+  const ticker = useTicker();
 
   return (
     <>
       <Helmet>
-        <title>{getTitle(`${General.Name} Credit Rating`)}</title>
+        <title>{getTitle(`${general.name} Credit Rating`)}</title>
         <link
           rel="canonical"
           href={`${resourceName}/synthetic-credit-rating/${ticker}`}
