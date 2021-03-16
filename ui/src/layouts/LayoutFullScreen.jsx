@@ -12,7 +12,7 @@ import selectFundamentalsIsLoaded from "../selectors/selectIsFundamentalsLoaded"
 
 const LayoutFullScreen = ({ children, ticker }) => {
   const dispatch = useDispatch();
-  const general = useSelector(selectFundamentalsIsLoaded);
+  const isLoaded = useSelector(selectFundamentalsIsLoaded);
 
   useEffect(() => {
     dispatch(
@@ -41,7 +41,7 @@ const LayoutFullScreen = ({ children, ticker }) => {
   return (
     <Container maxWidth={false}>
       <Header />
-      {general ? children : null}
+      {isLoaded ? children : null}
       <TTTabs />
     </Container>
   );

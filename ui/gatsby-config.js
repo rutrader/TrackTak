@@ -49,8 +49,8 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-plugin-create-client-paths`,
-      options: { prefixes: [`/stock/*`] },
+      resolve: "gatsby-plugin-create-client-paths",
+      options: { prefixes: ["/stock/*"] },
     },
     {
       resolve: "gatsby-plugin-sass",

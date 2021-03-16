@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import convertDotTickerToHyphen from "../shared/convertDotTickerToHyphen";
 import "@fontsource/montserrat/400.css";
 import "@fontsource/montserrat/600.css";
+import LayoutFullScreen from "./LayoutFullScreen";
 
 const oldStockPathRegex = /\/(discounted-cash-flow|synthetic-credit-rating|industry-averages)\/[A-Za-z0-9]+\.\w+/g;
 const oldStockValuationpathRegex = /\/(stock-valuations)\/[A-Z0-9]+\.?[A-Z]+/g;
@@ -21,7 +22,7 @@ const valuationRedirect = () => {
   window.location.href = "/stock-valuations";
 };
 
-export default ({ children, pageContext, path }) => {
+export default ({ children, pageContext, path, params }) => {
   const isStockRedirecting = path.match(oldStockPathRegex);
   const isValuationRedirecting = path.match(oldStockValuationpathRegex);
 
@@ -41,7 +42,9 @@ export default ({ children, pageContext, path }) => {
     return <LayoutHome>{children}</LayoutHome>;
   }
   if (pageContext.layout === "fullscreen") {
-    return children;
+    return (
+      <LayoutFullScreen ticker={params.ticker}>{children}</LayoutFullScreen>
+    );
   }
 
   return <Layout>{children}</Layout>;
