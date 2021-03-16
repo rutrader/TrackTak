@@ -5,6 +5,7 @@ import LayoutFullScreen from "./LayoutFullScreen";
 import convertDotTickerToHyphen from "../shared/convertDotTickerToHyphen";
 import "@fontsource/montserrat/400.css";
 import "@fontsource/montserrat/600.css";
+import convertHyphenTickerToDot from "../shared/convertHyphenTickerToDot";
 
 const oldStockPathRegex = /\/(discounted-cash-flow|synthetic-credit-rating|industry-averages)\/[A-Za-z0-9]+\.\w+/g;
 const olsStockValuationpathRegex = /\/(stock-valuations)\/[A-Z0-9]+\.?[A-Z]+/g;
@@ -22,7 +23,7 @@ const valuationRedirect = () => {
   window.location.href = "/stock-valuations";
 };
 
-export default ({ children, pageContext, data, path }) => {
+export default ({ children, pageContext, data, path, params }) => {
   const isStockRedirecting = path.match(oldStockPathRegex);
   const isValuationRedirecting = path.match(olsStockValuationpathRegex);
 
@@ -42,8 +43,20 @@ export default ({ children, pageContext, data, path }) => {
     return <LayoutHome>{children}</LayoutHome>;
   }
   if (pageContext.layout === "fullscreen") {
+    let ticker;
+    let countryISO;
+
+    if (data?.stockFundamentals) {
+      const fundamentals = data?.stockFundamentals;
+
+      ticker = fundamentals.ticker;
+      countryISO = fundamentals.General.CountryISO;
+    } else {
+      ticker = convertHyphenTickerToDot(params.ticker);
+    }
+
     return (
-      <LayoutFullScreen stockFundamentals={data.stockFundamentals}>
+      <LayoutFullScreen ticker={ticker} countryISO={countryISO}>
         {children}
       </LayoutFullScreen>
     );

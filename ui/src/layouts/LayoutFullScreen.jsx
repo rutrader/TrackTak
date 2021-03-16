@@ -1,7 +1,9 @@
 import { Container } from "@material-ui/core";
+import { selectGeneral } from "@tracktak/dcf-react";
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Header from "../components/Header";
+import PageSpinner from "../components/PageSpinner";
 import TTTabs from "../components/TTTabs";
 import {
   getFundamentalsThunk,
@@ -9,37 +11,50 @@ import {
   getTenYearGovernmentBondLastCloseThunk,
 } from "../redux/thunks/fundamentalsThunks";
 
-const LayoutFullScreen = ({
-  children,
-  stockFundamentals: { General, ticker },
-}) => {
+const LayoutFullScreen = ({ children, countryISO, ticker }) => {
   const dispatch = useDispatch();
+  const general = useSelector(selectGeneral);
 
   useEffect(() => {
-    dispatch(
-      getFundamentalsThunk({
-        ticker,
-      }),
-    );
-
-    dispatch(
-      getTenYearGovernmentBondLastCloseThunk({
-        countryISO: General.CountryISO,
-      }),
-    );
-
     dispatch(
       getLastPriceCloseThunk({
         ticker,
       }),
     );
-  }, [General.CountryISO, dispatch, ticker]);
+
+    // For the fallback if the stock has not been SSR
+    const fetchGovernmentBond = async (fundamentalsPromise) => {
+      if (countryISO) {
+        dispatch(
+          getTenYearGovernmentBondLastCloseThunk({
+            countryISO,
+          }),
+        );
+      } else {
+        const { payload } = await fundamentalsPromise;
+
+        dispatch(
+          getTenYearGovernmentBondLastCloseThunk({
+            countryISO: payload.general.countryISO,
+          }),
+        );
+      }
+    };
+
+    const fundamentalsPromise = dispatch(
+      getFundamentalsThunk({
+        ticker,
+      }),
+    );
+
+    fetchGovernmentBond(fundamentalsPromise);
+  }, [countryISO, dispatch, ticker]);
 
   return (
     <Container maxWidth={false}>
       <Header />
-      {children}
-      <TTTabs ticker={ticker} />
+      {general ? children : null}
+      <TTTabs />
     </Container>
   );
 };

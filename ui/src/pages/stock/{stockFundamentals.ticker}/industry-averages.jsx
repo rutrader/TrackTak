@@ -2,8 +2,13 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import getTitle from "../../../shared/getTitle";
 import resourceName from "../../../shared/resourceName";
-import { IndustryAverages } from "@tracktak/dcf-react";
+import {
+  IndustryAverages,
+  selectGeneral,
+  useTicker,
+} from "@tracktak/dcf-react";
 import { graphql } from "gatsby";
+import { useSelector } from "react-redux";
 
 export const query = graphql`
   query IndustryAveragesQuery($ticker: String) {
@@ -13,14 +18,15 @@ export const query = graphql`
   }
 `;
 
-const IndustryAveragesPage = ({ data }) => {
-  const { General, ticker } = data.stockFundamentals;
+const IndustryAveragesPage = () => {
+  const general = useSelector(selectGeneral);
+  const ticker = useTicker();
 
   return (
     <>
       <Helmet>
         <title>
-          {getTitle(`${General.Name} Industry Average Financial Ratios`)}
+          {getTitle(`${general.name} Industry Average Financial Ratios`)}
         </title>
         <link
           rel="canonical"

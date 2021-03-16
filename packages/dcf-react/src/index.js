@@ -1,5 +1,6 @@
 export * from "./redux/actions/dcfActions";
 export * from "./redux/actions/fundamentalsActions";
+export * from "./redux/reducers/fundamentalsReducer";
 
 export { default as TracktakProvider } from "./Provider";
 export { default as createStore } from "./redux/createStore";
@@ -46,6 +47,7 @@ export { default as TracktakLogo } from "./assets/tracktak.svg";
 
 export { default as useDebouncedCallback } from "./hooks/useDebouncedCallback";
 export { default as useHasAllRequiredInputsFilledIn } from "./hooks/useHasAllRequiredInputsFilledIn";
+export { default as useTicker } from "./hooks/useTicker";
 export {
   default as useInputQueryParams,
   inputQueries,
@@ -53,5 +55,6 @@ export {
 
 export { default as selectPrice } from "./selectors/fundamentalSelectors/selectPrice";
 export { default as selectCells } from "./selectors/dcfSelectors/selectCells";
+export { default as selectGeneral } from "./selectors/fundamentalSelectors/selectGeneral";
 
 export { default as withFundamentalsLoaded } from "./hoc/withFundamentalsLoaded";

@@ -2,6 +2,7 @@ import useQueryParams from "./useQueryParams";
 import convertParamsObjectToURLSearchParams from "../shared/convertParamsObjectToURLSearchParams";
 import { navigate } from "../shared/gatsby";
 import { useLocation } from "@reach/router";
+import { isNil } from "lodash";
 
 const useSetURLInput = () => {
   const queryParams = useQueryParams();
@@ -11,8 +12,9 @@ const useSetURLInput = () => {
     const urlSearchParams = convertParamsObjectToURLSearchParams(queryParams);
 
     const existingValue = urlSearchParams.get(key);
-    const parsedExistingValue =
-      existingValue !== null ? parseFloat(existingValue) : null;
+    const parsedExistingValue = isNil(existingValue)
+      ? null
+      : parseFloat(existingValue);
 
     if (parsedExistingValue === value) return;
 

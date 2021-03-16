@@ -70,11 +70,13 @@ const convertFundamentals = (fundamentalsData) => {
   };
 
   const balanceSheet = {
+    currencyCode: Balance_Sheet.currency_symbol,
     quarterly: {},
     yearly: {},
   };
 
   const incomeStatement = {
+    currencyCode: Income_Statement.currency_symbol,
     quarterly: {},
     yearly: {},
   };

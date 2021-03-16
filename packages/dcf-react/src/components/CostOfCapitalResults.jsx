@@ -18,10 +18,10 @@ import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/se
 import StatsContainer from "./StatsContainer";
 import { useLocation } from "@reach/router";
 import useInjectQueryParams from "../hooks/useInjectQueryParams";
-import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
-import useVirtualExchange from "../hooks/useVirtualExchange";
 import { Link } from "../shared/gatsby";
 import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
+import useTicker from "../hooks/useTicker";
+import { isNil } from "lodash";
 
 const DefaultSyntheticCreditRatingLink = ({ ticker, searchParams }) => (
   <Link to={`/stock/${ticker}/synthetic-credit-rating${searchParams}`} />
@@ -36,16 +36,13 @@ const CostOfCapitalResults = ({
   const currentEquityRiskPremiumCountry = useSelector(
     selectCurrentEquityRiskPremium,
   );
-  const general = useSelector(selectGeneral);
-  const exchange = useVirtualExchange();
+  const ticker = useTicker();
   const inputQueryParams = useInputQueryParams();
   const costOfCapital = useInjectQueryParams(selectCostOfCapital);
   const riskFreeRate = useSelector(selectRiskFreeRate);
   const pretaxCostOfDebt = useInjectQueryParams(selectPretaxCostOfDebt);
-  const useQueryPretaxCostOfDebt =
-    inputQueryParams.pretaxCostOfDebt !== undefined;
+  const useQueryPretaxCostOfDebt = !isNil(inputQueryParams.pretaxCostOfDebt);
   const location = useLocation();
-  const ticker = `${general.code}-${exchange}`.toLowerCase();
 
   return (
     <React.Fragment>

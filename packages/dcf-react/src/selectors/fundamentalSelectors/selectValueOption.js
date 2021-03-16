@@ -3,6 +3,7 @@ import selectRiskFreeRate from "./selectRiskFreeRate";
 import calculateBlackScholesModel from "../../shared/calculateBlackScholesModel";
 import selectPrice from "./selectPrice";
 import selectCurrentIndustry from "./selectCurrentIndustry";
+import { isNil } from "lodash";
 
 const selectValueOption = (inputQueryParams) =>
   createSelector(
@@ -10,8 +11,8 @@ const selectValueOption = (inputQueryParams) =>
     selectRiskFreeRate,
     selectCurrentIndustry,
     (price, riskFreeRate, currentIndustry) => {
-      if (inputQueryParams.averageStrikePrice === undefined) return null;
-      if (inputQueryParams.averageMaturityOfOptions === undefined) return null;
+      if (isNil(inputQueryParams.averageStrikePrice)) return null;
+      if (isNil(inputQueryParams.averageMaturityOfOptions)) return null;
 
       return calculateBlackScholesModel(
         "call",

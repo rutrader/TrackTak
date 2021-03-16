@@ -4,17 +4,24 @@ import {
   TracktakProvider,
   createStore,
   setFundamentals,
+  fundamentalsReducer,
 } from "@tracktak/dcf-react";
+import { extendedFundamentalsReducer } from "./src/redux/reducers/extendedFundamentalsReducer";
 import "./sass/blueprintTheme.scss";
 import "@tracktak/dcf-react/dist/index.css";
 import theme from "./src/theme";
 import convertFundamentals from "./src/shared/convertFundamentals";
+import PageSpinner from "./src/components/PageSpinner";
 
-const store = createStore();
+const store = createStore(undefined, {
+  fundamentals: (state, action) =>
+    extendedFundamentalsReducer(fundamentalsReducer(state, action), action),
+});
 
 export const wrapRootElement = ({ element }) => {
   return (
     <TracktakProvider store={store} theme={theme}>
+      <PageSpinner />
       {element}
     </TracktakProvider>
   );
