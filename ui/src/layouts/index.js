@@ -8,7 +8,7 @@ import "@fontsource/montserrat/600.css";
 import convertHyphenTickerToDot from "../shared/convertHyphenTickerToDot";
 
 const oldStockPathRegex = /\/(discounted-cash-flow|synthetic-credit-rating|industry-averages)\/[A-Za-z0-9]+\.\w+/g;
-const olsStockValuationpathRegex = /\/(stock-valuations)\/[A-Z0-9]+\.?[A-Z]+/g;
+const oldStockValuationpathRegex = /\/(stock-valuations)\/[A-Z0-9]+\.?[A-Z]+/g;
 
 const stockRedirect = (path) => {
   const splitPath = path.split("/");
@@ -25,7 +25,7 @@ const valuationRedirect = () => {
 
 export default ({ children, pageContext, data, path, params }) => {
   const isStockRedirecting = path.match(oldStockPathRegex);
-  const isValuationRedirecting = path.match(olsStockValuationpathRegex);
+  const isValuationRedirecting = path.match(oldStockValuationpathRegex);
 
   useEffect(() => {
     if (isStockRedirecting) {
@@ -52,7 +52,7 @@ export default ({ children, pageContext, data, path, params }) => {
       ticker = fundamentals.ticker;
       countryISO = fundamentals.General.CountryISO;
     } else {
-      ticker = convertHyphenTickerToDot(params.ticker);
+      ticker = params.ticker ? convertHyphenTickerToDot(params.ticker) : ticker;
     }
 
     return (
