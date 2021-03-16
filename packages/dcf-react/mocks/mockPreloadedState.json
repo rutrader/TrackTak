@@ -1,0 +1,2950 @@
+{
+  "fundamentals": {
+    "governmentBondTenYearYield": 0.01607,
+    "priceLastClose": 126,
+    "general": {
+      "code": "IRBT",
+      "name": "iRobot Corporation",
+      "exchange": "NASDAQ",
+      "currencyCode": "USD",
+      "currencyName": "US Dollar",
+      "currencySymbol": "$",
+      "countryISO": "US",
+      "industry": "Consumer Electronics",
+      "gicSubIndustry": "Household Appliances"
+    },
+    "highlights": {
+      "marketCapitalization": 3553086720,
+      "mostRecentQuarter": "2020-12-31"
+    },
+    "sharesStats": {
+      "sharesOutstanding": 28199100
+    },
+    "balanceSheet": {
+      "currencyCode": "USD",
+      "quarterly": {
+        "2020-12-31": {
+          "cash": 432635000,
+          "shortTermInvestments": 51081000,
+          "totalStockholderEquity": 804434000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 50485000,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2020-12-31"
+        },
+        "2020-09-30": {
+          "cash": 297206000,
+          "shortTermInvestments": 60130000,
+          "totalStockholderEquity": 781914000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 58240000,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2020-09-30"
+        },
+        "2020-06-30": {
+          "cash": 230734000,
+          "shortTermInvestments": 11560000,
+          "totalStockholderEquity": 682062000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 59493000,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2020-06-30"
+        },
+        "2020-03-31": {
+          "cash": 248768000,
+          "shortTermInvestments": 14759000,
+          "totalStockholderEquity": 616539000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 59994000,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2020-03-31"
+        },
+        "2019-12-31": {
+          "cash": 239392000,
+          "shortTermInvestments": 17032000,
+          "totalStockholderEquity": 652069000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 61771000,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2019-12-31"
+        },
+        "2019-09-30": {
+          "cash": 70542000,
+          "shortTermInvestments": 20530000,
+          "totalStockholderEquity": 622885000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 62648000,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2019-09-30"
+        },
+        "2019-06-30": {
+          "cash": 132795000,
+          "shortTermInvestments": 23984000,
+          "totalStockholderEquity": 579576000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 58068000,
+          "capitalLeaseObligations": 63590000,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2019-06-30"
+        },
+        "2019-03-31": {
+          "cash": 173094000,
+          "shortTermInvestments": 27363000,
+          "totalStockholderEquity": 562623000,
+          "shortLongTermDebt": 5521000,
+          "longTermDebt": 59805000,
+          "capitalLeaseObligations": 65326000,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2019-03-31"
+        },
+        "2018-12-31": {
+          "cash": 130373000,
+          "shortTermInvestments": 31605000,
+          "totalStockholderEquity": 535322000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2018-12-31"
+        },
+        "2018-09-30": {
+          "cash": 100122000,
+          "shortTermInvestments": 34994000,
+          "totalStockholderEquity": 503578000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2018-09-30"
+        },
+        "2018-06-30": {
+          "cash": 88783000,
+          "shortTermInvestments": 38551000,
+          "totalStockholderEquity": 458041000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2018-06-30"
+        },
+        "2018-03-31": {
+          "cash": 144501000,
+          "shortTermInvestments": 39960000,
+          "totalStockholderEquity": 496628000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2018-03-31"
+        },
+        "2017-12-31": {
+          "cash": 128635000,
+          "shortTermInvestments": 37225000,
+          "totalStockholderEquity": 470327000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2017-12-31"
+        },
+        "2017-09-30": {
+          "cash": 241786000,
+          "shortTermInvestments": 36442000,
+          "totalStockholderEquity": 456492000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2017-09-30"
+        },
+        "2017-06-30": {
+          "cash": 220173000,
+          "shortTermInvestments": 39939000,
+          "totalStockholderEquity": 425797000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2017-06-30"
+        },
+        "2017-03-31": {
+          "cash": 235728000,
+          "shortTermInvestments": 39942000,
+          "totalStockholderEquity": 408447000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2017-03-31"
+        },
+        "2016-12-31": {
+          "cash": 214523000,
+          "shortTermInvestments": 39930000,
+          "totalStockholderEquity": 388956000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2016-12-31"
+        },
+        "2016-09-30": {
+          "cash": 164552000,
+          "shortTermInvestments": 38179000,
+          "totalStockholderEquity": 364517000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2016-09-30"
+        },
+        "2016-06-30": {
+          "cash": 138466000,
+          "shortTermInvestments": 34827000,
+          "totalStockholderEquity": 339541000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2016-06-30"
+        },
+        "2016-03-31": {
+          "cash": 215990000,
+          "shortTermInvestments": 30746000,
+          "totalStockholderEquity": 413184000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2016-03-31"
+        },
+        "2015-12-31": {
+          "cash": 214523000,
+          "shortTermInvestments": 39930000,
+          "totalStockholderEquity": 417411000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2015-12-31"
+        },
+        "2015-09-30": {
+          "cash": 176430000,
+          "shortTermInvestments": 35791000,
+          "totalStockholderEquity": 403106000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2015-09-30"
+        },
+        "2015-06-30": {
+          "cash": 186616000,
+          "shortTermInvestments": 37227000,
+          "totalStockholderEquity": 405456000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2015-06-30"
+        },
+        "2015-03-31": {
+          "cash": 183661000,
+          "shortTermInvestments": 37256000,
+          "totalStockholderEquity": 394287000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2015-03-31"
+        },
+        "2014-12-31": {
+          "cash": 185957000,
+          "shortTermInvestments": 36166000,
+          "totalStockholderEquity": 390436000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2014-12-31"
+        },
+        "2014-09-30": {
+          "cash": 148424000,
+          "shortTermInvestments": 38336000,
+          "totalStockholderEquity": 377770000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2014-09-30"
+        },
+        "2014-06-30": {
+          "cash": 147718000,
+          "shortTermInvestments": 34986000,
+          "totalStockholderEquity": 359283000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2014-06-30"
+        },
+        "2014-03-31": {
+          "cash": 154824000,
+          "shortTermInvestments": 30540000,
+          "totalStockholderEquity": 346817000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2014-03-31"
+        },
+        "2013-12-31": {
+          "cash": 165404000,
+          "shortTermInvestments": 21954000,
+          "totalStockholderEquity": 330689000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2013-12-31"
+        },
+        "2013-09-30": {
+          "cash": 139731000,
+          "shortTermInvestments": 16948000,
+          "totalStockholderEquity": 322602000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2013-09-30"
+        },
+        "2013-06-30": {
+          "cash": 133857000,
+          "shortTermInvestments": 19014000,
+          "totalStockholderEquity": 308210000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2013-06-30"
+        },
+        "2013-03-31": {
+          "cash": 123576000,
+          "shortTermInvestments": 13869000,
+          "totalStockholderEquity": 287811000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2013-03-31"
+        },
+        "2012-12-31": {
+          "cash": 126770000,
+          "shortTermInvestments": 12430000,
+          "totalStockholderEquity": 275817000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2012-12-31"
+        },
+        "2012-09-30": {
+          "cash": 169658000,
+          "shortTermInvestments": 20061000,
+          "totalStockholderEquity": 278609000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2012-09-30"
+        },
+        "2012-06-30": {
+          "cash": 156543000,
+          "shortTermInvestments": 20181000,
+          "totalStockholderEquity": 258624000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2012-06-30"
+        },
+        "2012-03-31": {
+          "cash": 166798000,
+          "shortTermInvestments": 15277000,
+          "totalStockholderEquity": 248085000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2012-03-31"
+        },
+        "2011-12-31": {
+          "cash": 166308000,
+          "shortTermInvestments": 17811000,
+          "totalStockholderEquity": 242958000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2011-12-31"
+        },
+        "2011-09-30": {
+          "cash": 131662000,
+          "shortTermInvestments": 13662000,
+          "totalStockholderEquity": 225037000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2011-09-30"
+        },
+        "2011-06-30": {
+          "cash": 108725000,
+          "shortTermInvestments": 13816000,
+          "totalStockholderEquity": 207752000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2011-06-30"
+        },
+        "2011-03-31": {
+          "cash": 107999000,
+          "shortTermInvestments": 16306000,
+          "totalStockholderEquity": 190509000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2011-03-31"
+        },
+        "2010-12-31": {
+          "cash": 108383000,
+          "shortTermInvestments": 13928000,
+          "totalStockholderEquity": 174907000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2010-12-31"
+        },
+        "2010-09-30": {
+          "cash": 90603000,
+          "shortTermInvestments": 16576000,
+          "totalStockholderEquity": 160351000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2010-09-30"
+        },
+        "2010-06-30": {
+          "cash": 75810000,
+          "shortTermInvestments": 22957000,
+          "totalStockholderEquity": 150809000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2010-06-30"
+        },
+        "2010-03-31": {
+          "cash": 62857000,
+          "shortTermInvestments": 22492000,
+          "totalStockholderEquity": 141225000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2010-03-31"
+        },
+        "2009-12-31": {
+          "cash": 71856000,
+          "shortTermInvestments": 4959000,
+          "totalStockholderEquity": 133194000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2009-12-31"
+        },
+        "2009-09-30": {
+          "cash": 62747000,
+          "shortTermInvestments": 0,
+          "totalStockholderEquity": 123711000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2009-09-30"
+        },
+        "2009-06-30": {
+          "cash": 50989000,
+          "shortTermInvestments": 0,
+          "totalStockholderEquity": 119316000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2009-06-30"
+        },
+        "2009-03-31": {
+          "cash": 54737000,
+          "shortTermInvestments": 0,
+          "totalStockholderEquity": 119808000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2009-03-31"
+        },
+        "2008-12-31": {
+          "cash": 40852000,
+          "shortTermInvestments": 0,
+          "totalStockholderEquity": 119676000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2008-12-31"
+        },
+        "2008-09-30": {
+          "cash": 10515000,
+          "shortTermInvestments": 16197000,
+          "totalStockholderEquity": 111528000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 5500000,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2008-09-30"
+        },
+        "2008-06-30": {
+          "cash": 14760000,
+          "shortTermInvestments": 1200000,
+          "totalStockholderEquity": 102659000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2008-06-30"
+        },
+        "2008-03-31": {
+          "cash": 22861000,
+          "shortTermInvestments": 0,
+          "totalStockholderEquity": 105919000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2008-03-31"
+        },
+        "2007-12-31": {
+          "cash": 26735000,
+          "shortTermInvestments": 16550000,
+          "totalStockholderEquity": 110227000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2007-12-31"
+        },
+        "2007-09-30": {
+          "cash": 23200000,
+          "shortTermInvestments": 26300000,
+          "totalStockholderEquity": 86507000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2007-09-30"
+        },
+        "2007-06-30": {
+          "cash": 10261000,
+          "shortTermInvestments": 60000000,
+          "totalStockholderEquity": 86013000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2007-06-30"
+        },
+        "2007-03-31": {
+          "cash": 9397000,
+          "shortTermInvestments": 60400000,
+          "totalStockholderEquity": 88868000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2007-03-31"
+        },
+        "2006-12-31": {
+          "cash": 5583000,
+          "shortTermInvestments": 64800000,
+          "totalStockholderEquity": 94919000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2006-12-31"
+        },
+        "2006-09-30": {
+          "cash": 0,
+          "shortTermInvestments": 0,
+          "totalStockholderEquity": 95459000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2006-09-30"
+        },
+        "2006-06-30": {
+          "cash": 0,
+          "shortTermInvestments": 0,
+          "totalStockholderEquity": 84162000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2006-06-30"
+        },
+        "2006-03-31": {
+          "cash": 0,
+          "shortTermInvestments": 0,
+          "totalStockholderEquity": 85229000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2006-03-31"
+        },
+        "2005-12-31": {
+          "cash": 76064000,
+          "shortTermInvestments": 0,
+          "totalStockholderEquity": 87556000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2005-12-31"
+        },
+        "2005-09-30": {
+          "cash": 0,
+          "shortTermInvestments": 0,
+          "totalStockholderEquity": 16677000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2005-09-30"
+        },
+        "2005-06-30": {
+          "cash": 0,
+          "shortTermInvestments": 0,
+          "totalStockholderEquity": 0,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2005-06-30"
+        },
+        "2005-03-31": {
+          "cash": 0,
+          "shortTermInvestments": 0,
+          "totalStockholderEquity": 0,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2005-03-31"
+        },
+        "2004-12-31": {
+          "cash": 19441000,
+          "shortTermInvestments": 0,
+          "totalStockholderEquity": 13216000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 67000,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2004-12-31"
+        },
+        "2003-12-31": {
+          "cash": 4620000,
+          "shortTermInvestments": 0,
+          "totalStockholderEquity": 2204000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 133000,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2003-12-31"
+        }
+      },
+      "yearly": {
+        "2020-12-31": {
+          "cash": 432635000,
+          "shortTermInvestments": 51081000,
+          "totalStockholderEquity": 804434000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 50485000,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2020-12-31"
+        },
+        "2019-12-31": {
+          "cash": 239392000,
+          "shortTermInvestments": 17032000,
+          "totalStockholderEquity": 652069000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 61771000,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2019-12-31"
+        },
+        "2018-12-31": {
+          "cash": 130373000,
+          "shortTermInvestments": 31605000,
+          "totalStockholderEquity": 535322000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2018-12-31"
+        },
+        "2017-12-31": {
+          "cash": 128635000,
+          "shortTermInvestments": 37225000,
+          "totalStockholderEquity": 470327000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2017-12-31"
+        },
+        "2016-12-31": {
+          "cash": 214523000,
+          "shortTermInvestments": 39930000,
+          "totalStockholderEquity": 388956000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2016-12-31"
+        },
+        "2015-12-31": {
+          "cash": 179915000,
+          "shortTermInvestments": 33124000,
+          "totalStockholderEquity": 417411000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2015-12-31"
+        },
+        "2014-12-31": {
+          "cash": 185957000,
+          "shortTermInvestments": 36166000,
+          "totalStockholderEquity": 390436000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2014-12-31"
+        },
+        "2013-12-31": {
+          "cash": 165404000,
+          "shortTermInvestments": 21954000,
+          "totalStockholderEquity": 330689000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2013-12-31"
+        },
+        "2012-12-31": {
+          "cash": 126770000,
+          "shortTermInvestments": 12430000,
+          "totalStockholderEquity": 275817000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2012-12-31"
+        },
+        "2011-12-31": {
+          "cash": 166308000,
+          "shortTermInvestments": 17811000,
+          "totalStockholderEquity": 242958000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2011-12-31"
+        },
+        "2010-12-31": {
+          "cash": 108383000,
+          "shortTermInvestments": 13928000,
+          "totalStockholderEquity": 174907000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2010-12-31"
+        },
+        "2009-12-31": {
+          "cash": 71856000,
+          "shortTermInvestments": 4959000,
+          "totalStockholderEquity": 133194000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2009-12-31"
+        },
+        "2008-12-31": {
+          "cash": 40852000,
+          "shortTermInvestments": 0,
+          "totalStockholderEquity": 119676000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2008-12-31"
+        },
+        "2007-12-31": {
+          "cash": 26735000,
+          "shortTermInvestments": 16550000,
+          "totalStockholderEquity": 110227000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2007-12-31"
+        },
+        "2006-12-31": {
+          "cash": 5583000,
+          "shortTermInvestments": 64800000,
+          "totalStockholderEquity": 94919000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2006-12-31"
+        },
+        "2005-12-31": {
+          "cash": 76064000,
+          "shortTermInvestments": 0,
+          "totalStockholderEquity": 87556000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 0,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2005-12-31"
+        },
+        "2004-12-31": {
+          "cash": 19441000,
+          "shortTermInvestments": 0,
+          "totalStockholderEquity": 13216000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 67000,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2004-12-31"
+        },
+        "2003-12-31": {
+          "cash": 4620000,
+          "shortTermInvestments": 0,
+          "totalStockholderEquity": 2204000,
+          "shortLongTermDebt": 0,
+          "longTermDebt": 133000,
+          "capitalLeaseObligations": 0,
+          "noncontrollingInterestInConsolidatedEntity": 0,
+          "date": "2003-12-31"
+        }
+      }
+    },
+    "incomeStatement": {
+      "currencyCode": "USD",
+      "quarterly": {
+        "2020-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 15270000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 15026000,
+          "incomeTaxExpense": 1691000,
+          "totalRevenue": 544827000,
+          "date": "2020-12-31"
+        },
+        "2020-09-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 80994000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 123234000,
+          "incomeTaxExpense": 29982000,
+          "totalRevenue": 413145000,
+          "date": "2020-09-30"
+        },
+        "2020-06-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 70283000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 69899000,
+          "incomeTaxExpense": 11283000,
+          "totalRevenue": 279883000,
+          "date": "2020-06-30"
+        },
+        "2020-03-31": {
+          "minorityInterest": 0,
+          "operatingIncome": -20225000,
+          "interestExpense": 0,
+          "incomeBeforeTax": -20244000,
+          "incomeTaxExpense": -2109000,
+          "totalRevenue": 192535000,
+          "date": "2020-03-31"
+        },
+        "2019-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 16550000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 25052000,
+          "incomeTaxExpense": 22055000,
+          "totalRevenue": 426778000,
+          "date": "2019-12-31"
+        },
+        "2019-09-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 42555000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 43455000,
+          "incomeTaxExpense": 7923000,
+          "totalRevenue": 289399000,
+          "date": "2019-09-30"
+        },
+        "2019-06-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 5250000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 6783000,
+          "incomeTaxExpense": 424000,
+          "totalRevenue": 260172000,
+          "date": "2019-06-30"
+        },
+        "2019-03-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 22263000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 23543000,
+          "incomeTaxExpense": -1023000,
+          "totalRevenue": 237661000,
+          "date": "2019-03-31"
+        },
+        "2018-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 29787000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 30224000,
+          "incomeTaxExpense": 5033000,
+          "totalRevenue": 384665000,
+          "date": "2018-12-31"
+        },
+        "2018-09-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 37275000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 37612000,
+          "incomeTaxExpense": 5683000,
+          "totalRevenue": 264500000,
+          "date": "2018-09-30"
+        },
+        "2018-06-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 13355000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 14862000,
+          "incomeTaxExpense": 4391000,
+          "totalRevenue": 226317000,
+          "date": "2018-06-30"
+        },
+        "2018-03-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 25405000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 25924000,
+          "incomeTaxExpense": 5523000,
+          "totalRevenue": 217068000,
+          "date": "2018-03-31"
+        },
+        "2017-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 23072000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 22458000,
+          "incomeTaxExpense": 17838000,
+          "totalRevenue": 326900000,
+          "date": "2017-12-31"
+        },
+        "2017-09-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 23892000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 26493000,
+          "incomeTaxExpense": 4411000,
+          "totalRevenue": 205399000,
+          "date": "2017-09-30"
+        },
+        "2017-06-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 4088000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 5774000,
+          "incomeTaxExpense": -2129000,
+          "totalRevenue": 183100000,
+          "date": "2017-06-30"
+        },
+        "2017-03-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 21638000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 21641000,
+          "incomeTaxExpense": 5282000,
+          "totalRevenue": 168500000,
+          "date": "2017-03-31"
+        },
+        "2016-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 18719000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 20381000,
+          "incomeTaxExpense": 6700000,
+          "totalRevenue": 212494000,
+          "date": "2016-12-31"
+        },
+        "2016-09-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 27451000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 27974000,
+          "incomeTaxExpense": 8462000,
+          "totalRevenue": 168610000,
+          "date": "2016-09-30"
+        },
+        "2016-06-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 5858000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 7277000,
+          "incomeTaxExpense": 2463000,
+          "totalRevenue": 148696000,
+          "date": "2016-06-30"
+        },
+        "2016-03-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 5529000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 5729000,
+          "incomeTaxExpense": 1797000,
+          "totalRevenue": 130804000,
+          "date": "2016-03-31"
+        },
+        "2015-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 18719000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 20381000,
+          "incomeTaxExpense": 6966000,
+          "totalRevenue": 206420000,
+          "date": "2015-12-31"
+        },
+        "2015-09-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 18656000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 18563000,
+          "incomeTaxExpense": 5770000,
+          "totalRevenue": 143609000,
+          "date": "2015-09-30"
+        },
+        "2015-06-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 11067000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 11006000,
+          "incomeTaxExpense": 3754000,
+          "totalRevenue": 148788000,
+          "date": "2015-06-30"
+        },
+        "2015-03-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 7899000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 7105000,
+          "incomeTaxExpense": 2351000,
+          "totalRevenue": 117961000,
+          "date": "2015-03-31"
+        },
+        "2014-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 12768000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 12529000,
+          "incomeTaxExpense": 3143000,
+          "totalRevenue": 299145000,
+          "date": "2014-12-31"
+        },
+        "2014-09-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 22694000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 22320000,
+          "incomeTaxExpense": 7713000,
+          "totalRevenue": 143497000,
+          "date": "2014-09-30"
+        },
+        "2014-06-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 9675000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 9767000,
+          "incomeTaxExpense": 1237000,
+          "totalRevenue": 139803000,
+          "date": "2014-06-30"
+        },
+        "2014-03-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 7980000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 7793000,
+          "incomeTaxExpense": 2513000,
+          "totalRevenue": 114204000,
+          "date": "2014-03-31"
+        },
+        "2013-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 4713000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 4559000,
+          "incomeTaxExpense": 1371000,
+          "totalRevenue": 126343000,
+          "date": "2013-12-31"
+        },
+        "2013-09-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 11037000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 11189000,
+          "incomeTaxExpense": 3385000,
+          "totalRevenue": 124501000,
+          "date": "2013-09-30"
+        },
+        "2013-06-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 7904000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 7799000,
+          "incomeTaxExpense": -500000,
+          "totalRevenue": 130362000,
+          "date": "2013-06-30"
+        },
+        "2013-03-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 8964000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 8868000,
+          "incomeTaxExpense": 513000,
+          "totalRevenue": 106195000,
+          "date": "2013-03-31"
+        },
+        "2012-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": -8875000,
+          "interestExpense": 0,
+          "incomeBeforeTax": -8917000,
+          "incomeTaxExpense": -2979000,
+          "totalRevenue": 100694000,
+          "date": "2012-12-31"
+        },
+        "2012-09-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 22734000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 22931000,
+          "incomeTaxExpense": 7724000,
+          "totalRevenue": 126298000,
+          "date": "2012-09-30"
+        },
+        "2012-06-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 10636000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 10696000,
+          "incomeTaxExpense": 3321000,
+          "totalRevenue": 111445000,
+          "date": "2012-06-30"
+        },
+        "2012-03-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 677000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 897000,
+          "incomeTaxExpense": 244000,
+          "totalRevenue": 97807000,
+          "date": "2012-03-31"
+        },
+        "2011-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 15998000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 15033000,
+          "incomeTaxExpense": 4395000,
+          "totalRevenue": 130768000,
+          "date": "2011-12-31"
+        },
+        "2011-09-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 15580000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 15488000,
+          "incomeTaxExpense": 1436000,
+          "totalRevenue": 120373000,
+          "date": "2011-09-30"
+        },
+        "2011-06-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 11526000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 11638000,
+          "incomeTaxExpense": 3614000,
+          "totalRevenue": 108082000,
+          "date": "2011-06-30"
+        },
+        "2011-03-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 11144000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 11382000,
+          "incomeTaxExpense": 3905000,
+          "totalRevenue": 106277000,
+          "date": "2011-03-31"
+        },
+        "2010-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 7553000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 7689000,
+          "incomeTaxExpense": 689000,
+          "totalRevenue": 113995000,
+          "date": "2010-12-31"
+        },
+        "2010-09-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 7434000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 7733000,
+          "incomeTaxExpense": 701000,
+          "totalRevenue": 94223000,
+          "date": "2010-09-30"
+        },
+        "2010-06-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 8385000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 8425000,
+          "incomeTaxExpense": 3111000,
+          "totalRevenue": 97804000,
+          "date": "2010-06-30"
+        },
+        "2010-03-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 10098000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 10127000,
+          "incomeTaxExpense": 3959000,
+          "totalRevenue": 94930000,
+          "date": "2010-03-31"
+        },
+        "2009-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 8595000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 8610000,
+          "incomeTaxExpense": 3478000,
+          "totalRevenue": 101722000,
+          "date": "2009-12-31"
+        },
+        "2009-09-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 4102000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 4214000,
+          "incomeTaxExpense": 1620000,
+          "totalRevenue": 78619000,
+          "date": "2009-09-30"
+        },
+        "2009-06-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 0,
+          "interestExpense": 0,
+          "incomeBeforeTax": 0,
+          "incomeTaxExpense": 0,
+          "totalRevenue": 61340000,
+          "date": "2009-06-30"
+        },
+        "2009-03-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 0,
+          "interestExpense": 0,
+          "incomeBeforeTax": 0,
+          "incomeTaxExpense": 0,
+          "totalRevenue": 56936000,
+          "date": "2009-03-31"
+        },
+        "2008-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 10219000,
+          "interestExpense": 100000,
+          "incomeBeforeTax": 10228000,
+          "incomeTaxExpense": 4806000,
+          "totalRevenue": 90702000,
+          "date": "2008-12-31"
+        },
+        "2008-09-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 6090000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 6070000,
+          "incomeTaxExpense": 2218000,
+          "totalRevenue": 92415000,
+          "date": "2008-09-30"
+        },
+        "2008-06-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 0,
+          "interestExpense": 0,
+          "incomeBeforeTax": 0,
+          "incomeTaxExpense": 0,
+          "totalRevenue": 67202000,
+          "date": "2008-06-30"
+        },
+        "2008-03-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 0,
+          "interestExpense": 0,
+          "incomeBeforeTax": 0,
+          "incomeTaxExpense": 0,
+          "totalRevenue": 57302000,
+          "date": "2008-03-31"
+        },
+        "2007-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 13959000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 12106000,
+          "incomeTaxExpense": -22000,
+          "totalRevenue": 98740000,
+          "date": "2007-12-31"
+        },
+        "2007-09-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 0,
+          "interestExpense": 0,
+          "incomeBeforeTax": 0,
+          "incomeTaxExpense": 22000,
+          "totalRevenue": 63840000,
+          "date": "2007-09-30"
+        },
+        "2007-06-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 0,
+          "interestExpense": 0,
+          "incomeBeforeTax": 0,
+          "incomeTaxExpense": 12000,
+          "totalRevenue": 47014000,
+          "date": "2007-06-30"
+        },
+        "2007-03-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 0,
+          "interestExpense": 0,
+          "incomeBeforeTax": 0,
+          "incomeTaxExpense": 17000,
+          "totalRevenue": 39487000,
+          "date": "2007-03-31"
+        },
+        "2006-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": -9225000,
+          "interestExpense": 0,
+          "incomeBeforeTax": -6372000,
+          "incomeTaxExpense": 69000,
+          "totalRevenue": 61138000,
+          "date": "2006-12-31"
+        },
+        "2006-09-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 9263000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 10241000,
+          "incomeTaxExpense": 199000,
+          "totalRevenue": 55047000,
+          "date": "2006-09-30"
+        },
+        "2006-06-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 0,
+          "interestExpense": 0,
+          "incomeBeforeTax": 0,
+          "incomeTaxExpense": 22000,
+          "totalRevenue": 34561000,
+          "date": "2006-06-30"
+        },
+        "2006-03-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 0,
+          "interestExpense": 0,
+          "incomeBeforeTax": 0,
+          "incomeTaxExpense": 14000,
+          "totalRevenue": 38209000,
+          "date": "2006-03-31"
+        },
+        "2005-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": -7672000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 99000,
+          "incomeTaxExpense": 84000,
+          "totalRevenue": 46492000,
+          "date": "2005-12-31"
+        },
+        "2005-09-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 9782000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 9842000,
+          "incomeTaxExpense": 90000,
+          "totalRevenue": 52458000,
+          "date": "2005-09-30"
+        },
+        "2005-06-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 0,
+          "interestExpense": 0,
+          "incomeBeforeTax": 0,
+          "incomeTaxExpense": -2000,
+          "totalRevenue": 25886000,
+          "date": "2005-06-30"
+        },
+        "2005-03-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 0,
+          "interestExpense": 0,
+          "incomeBeforeTax": 0,
+          "incomeTaxExpense": 2000,
+          "totalRevenue": 17132000,
+          "date": "2005-03-31"
+        },
+        "2004-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 460000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 427000,
+          "incomeTaxExpense": 19000,
+          "totalRevenue": 37486000,
+          "date": "2004-12-31"
+        },
+        "2004-09-30": {
+          "minorityInterest": 0,
+          "operatingIncome": 2942000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 2935000,
+          "incomeTaxExpense": 124000,
+          "totalRevenue": 28948000,
+          "date": "2004-09-30"
+        },
+        "2004-06-30": {
+          "minorityInterest": 0,
+          "operatingIncome": -517000,
+          "interestExpense": 0,
+          "incomeBeforeTax": -482000,
+          "incomeTaxExpense": -1000,
+          "totalRevenue": 10111000,
+          "date": "2004-06-30"
+        },
+        "2004-03-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 517000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 482000,
+          "incomeTaxExpense": 1000,
+          "totalRevenue": 18498000,
+          "date": "2004-03-31"
+        },
+        "2003-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 0,
+          "interestExpense": 0,
+          "incomeBeforeTax": 0,
+          "incomeTaxExpense": 36000,
+          "totalRevenue": 54316000,
+          "date": "2003-12-31"
+        }
+      },
+      "yearly": {
+        "2020-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 146322000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 187915000,
+          "incomeTaxExpense": 40847000,
+          "totalRevenue": 1430390000,
+          "date": "2020-12-31"
+        },
+        "2019-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 86618000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 98833000,
+          "incomeTaxExpense": 13533000,
+          "totalRevenue": 1214010000,
+          "date": "2019-12-31"
+        },
+        "2018-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 105822000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 108622000,
+          "incomeTaxExpense": 20630000,
+          "totalRevenue": 1092584000,
+          "date": "2018-12-31"
+        },
+        "2017-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 72690000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 76366000,
+          "incomeTaxExpense": 25402000,
+          "totalRevenue": 883911000,
+          "date": "2017-12-31"
+        },
+        "2016-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 57557000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 61361000,
+          "incomeTaxExpense": 19422000,
+          "totalRevenue": 660604000,
+          "date": "2016-12-31"
+        },
+        "2015-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 60618000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 62971000,
+          "incomeTaxExpense": 18841000,
+          "totalRevenue": 616778000,
+          "date": "2015-12-31"
+        },
+        "2014-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 53117000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 52409000,
+          "incomeTaxExpense": 14606000,
+          "totalRevenue": 556846000,
+          "date": "2014-12-31"
+        },
+        "2013-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 32618000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 32415000,
+          "incomeTaxExpense": 4774000,
+          "totalRevenue": 487401000,
+          "date": "2013-12-31"
+        },
+        "2012-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 25172000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 25607000,
+          "incomeTaxExpense": 8310000,
+          "totalRevenue": 436244000,
+          "date": "2012-12-31"
+        },
+        "2011-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 53323000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 53541000,
+          "incomeTaxExpense": 13350000,
+          "totalRevenue": 465500000,
+          "date": "2011-12-31"
+        },
+        "2010-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 33470000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 33974000,
+          "incomeTaxExpense": 8460000,
+          "totalRevenue": 400952000,
+          "date": "2010-12-31"
+        },
+        "2009-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 5437000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 5356000,
+          "incomeTaxExpense": 2026000,
+          "totalRevenue": 298617000,
+          "date": "2009-12-31"
+        },
+        "2008-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 399000,
+          "interestExpense": 100000,
+          "incomeBeforeTax": 1125000,
+          "incomeTaxExpense": 369000,
+          "totalRevenue": 307621000,
+          "date": "2008-12-31"
+        },
+        "2007-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 0,
+          "interestExpense": 0,
+          "incomeBeforeTax": 502000,
+          "incomeTaxExpense": 0,
+          "totalRevenue": 249081000,
+          "date": "2007-12-31"
+        },
+        "2006-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 38000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 3869000,
+          "incomeTaxExpense": 304000,
+          "totalRevenue": 188955000,
+          "date": "2006-12-31"
+        },
+        "2005-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 2110000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 2786000,
+          "incomeTaxExpense": 176000,
+          "totalRevenue": 141968000,
+          "date": "2005-12-31"
+        },
+        "2004-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 443000,
+          "interestExpense": 0,
+          "incomeBeforeTax": 363000,
+          "incomeTaxExpense": 144000,
+          "totalRevenue": 95043000,
+          "date": "2004-12-31"
+        },
+        "2003-12-31": {
+          "minorityInterest": 0,
+          "operatingIncome": 0,
+          "interestExpense": 0,
+          "incomeBeforeTax": 0,
+          "incomeTaxExpense": 36000,
+          "totalRevenue": 54316000,
+          "date": "2003-12-31"
+        }
+      }
+    },
+    "exchangeRates": null,
+    "isLoaded": true
+  },
+  "dcf": {
+    "cells": {
+      "A1": {
+        "value": ""
+      },
+      "A2": {
+        "value": "Revenues"
+      },
+      "A3": {
+        "value": "Operating Margin"
+      },
+      "A4": {
+        "value": "Operating Income"
+      },
+      "A5": {
+        "value": "Tax Rate"
+      },
+      "A6": {
+        "value": "NOPAT"
+      },
+      "A7": {
+        "value": "- Reinvestment"
+      },
+      "A8": {
+        "value": "FCFF"
+      },
+      "A9": {
+        "value": "NOL"
+      },
+      "A10": {
+        "value": ""
+      },
+      "A11": {
+        "value": "Cost of Capital"
+      },
+      "A12": {
+        "value": "Cumulated Discount Factor"
+      },
+      "A13": {
+        "value": "PV (FCFF)"
+      },
+      "A14": {
+        "value": ""
+      },
+      "A15": {
+        "value": "Sales to Capital Ratio"
+      },
+      "A16": {
+        "value": "Invested Capital"
+      },
+      "A17": {
+        "value": "ROIC"
+      },
+      "A18": {
+        "value": ""
+      },
+      "A19": {
+        "value": "Terminal Cash Flow"
+      },
+      "A20": {
+        "value": "Terminal Cost of Capital"
+      },
+      "A21": {
+        "value": "Terminal Value"
+      },
+      "A22": {
+        "value": "PV (Terminal Value)"
+      },
+      "A23": {
+        "value": "PV (CF Over Next 10 Years"
+      },
+      "A24": {
+        "value": "Sum of PV"
+      },
+      "A25": {
+        "value": "Probability of Failure"
+      },
+      "A26": {
+        "value": "Proceeds if the Firm Fails"
+      },
+      "A27": {
+        "value": "Operating Assets"
+      },
+      "A28": {
+        "value": "- Debt"
+      },
+      "A29": {
+        "value": "- Minority Interests"
+      },
+      "A30": {
+        "value": "+ Cash"
+      },
+      "A31": {
+        "value": "+ Non-Operating Assets"
+      },
+      "A32": {
+        "value": "Equity"
+      },
+      "A33": {
+        "value": "- Options"
+      },
+      "A34": {
+        "value": "Common Stock Equity"
+      },
+      "A35": {
+        "value": "Current Price"
+      },
+      "A36": {
+        "value": "Estimated Value Per Share",
+        "className": "estimated-value-per-share-label"
+      },
+      "A37": {
+        "value": "Margin of Safety"
+      },
+      "B1": {
+        "value": "Base Year"
+      },
+      "B2": {
+        "className": "equation",
+        "expr": "=totalRevenue",
+        "type": "million-currency",
+        "value": 1430390000
+      },
+      "B3": {
+        "className": "equation",
+        "expr": "=B4/B2",
+        "type": "percent",
+        "value": 0.1022951782381029
+      },
+      "B4": {
+        "className": "equation",
+        "expr": "=operatingIncome",
+        "type": "million-currency",
+        "value": 146322000
+      },
+      "B5": {
+        "className": "equation",
+        "expr": "=pastThreeYearsAverageEffectiveTaxRate",
+        "type": "percent",
+        "value": 0.22979993423881429
+      },
+      "B6": {
+        "className": "equation",
+        "expr": "=IF(B4 > 0, B4 * (1-B5), B4)",
+        "type": "million-currency",
+        "value": 112697214.02230822
+      },
+      "B9": {
+        "className": "equation",
+        "expr": "=netOperatingLoss",
+        "type": "million-currency",
+        "value": 0
+      },
+      "B16": {
+        "className": "equation",
+        "expr": "=investedCapital",
+        "type": "million-currency",
+        "value": 371203000
+      },
+      "B19": {
+        "className": "equation",
+        "expr": "=M8",
+        "type": "million-currency",
+        "value": 281128577.2018979
+      },
+      "B20": {
+        "className": "equation",
+        "expr": "=M11",
+        "type": "percent",
+        "value": 0.06837000000000001
+      },
+      "B21": {
+        "className": "equation",
+        "expr": "=B19/(B20-riskFreeRate)",
+        "type": "million-currency",
+        "value": 5375307403.47797
+      },
+      "B22": {
+        "className": "equation",
+        "expr": "=B21*L12",
+        "type": "million-currency",
+        "value": 2838078844.394144
+      },
+      "B23": {
+        "className": "equation",
+        "expr": "=SUM(C13, D13, E13, F13, G13, H13, I13, J13, K13, L13)",
+        "type": "million-currency",
+        "value": 770962507.7583609
+      },
+      "B24": {
+        "className": "equation",
+        "expr": "=B22+B23",
+        "type": "million-currency",
+        "value": 3609041352.152505
+      },
+      "B25": {
+        "className": "equation",
+        "expr": "=probabilityOfFailure",
+        "type": "percent",
+        "value": 0
+      },
+      "B26": {
+        "className": "equation",
+        "expr": "=(bookValueOfEquity+bookValueOfDebt)*proceedsAsAPercentageOfBookValue",
+        "type": "million-currency",
+        "value": 0
+      },
+      "B27": {
+        "className": "equation",
+        "expr": "=B24*(1-B25)+B26*B25",
+        "type": "million-currency",
+        "value": 3609041352.152505
+      },
+      "B28": {
+        "className": "equation",
+        "expr": "=bookValueOfDebt",
+        "type": "million-currency",
+        "value": 50485000
+      },
+      "B29": {
+        "className": "equation",
+        "expr": "=minorityInterest",
+        "type": "million-currency",
+        "value": 0
+      },
+      "B30": {
+        "className": "equation",
+        "expr": "=cashAndShortTermInvestments",
+        "type": "million-currency",
+        "value": 483716000
+      },
+      "B31": {
+        "className": "equation",
+        "expr": "=noncontrollingInterestInConsolidatedEntity",
+        "type": "million-currency",
+        "value": 0
+      },
+      "B32": {
+        "className": "equation",
+        "expr": "=B27-B28-B29+B30+B31",
+        "type": "million-currency",
+        "value": 4042272352.152505
+      },
+      "B33": {
+        "className": "equation",
+        "expr": "=valueOfAllOptionsOutstanding",
+        "type": "million-currency",
+        "value": 0
+      },
+      "B34": {
+        "className": "equation",
+        "expr": "=B32-B33",
+        "type": "million-currency",
+        "value": 4042272352.152505
+      },
+      "B35": {
+        "className": "equation",
+        "expr": "=price",
+        "type": "currency",
+        "value": 126
+      },
+      "B36": {
+        "className": "equation",
+        "expr": "=B34/sharesOutstanding",
+        "type": "currency",
+        "value": 143.34756613340514
+      },
+      "B37": {
+        "className": "equation",
+        "expr": "=(B36-B35)/B36",
+        "type": "percent",
+        "value": 0.1210175142929234
+      },
+      "C7": {
+        "className": "equation",
+        "expr": "=IF(C2 > B2, (C2-B2) / C15, 0)",
+        "type": "million-currency",
+        "value": 102988080
+      },
+      "C11": {
+        "className": "equation",
+        "expr": "=totalCostOfCapital",
+        "type": "percent",
+        "value": 0.0649175800353738
+      },
+      "C12": {
+        "className": "equation",
+        "expr": "=1/(1+C11)",
+        "type": "number",
+        "value": 0.9390398081011889
+      },
+      "C15": {
+        "className": "equation",
+        "expr": "=salesToCapitalRatio",
+        "type": "number",
+        "value": 2.5
+      },
+      "M1": {
+        "value": "Terminal Year"
+      },
+      "M2": {
+        "className": "equation",
+        "expr": "=L2*(1+riskFreeRate)",
+        "type": "million-currency",
+        "value": 4900130229.010518
+      },
+      "M3": {
+        "className": "equation",
+        "expr": "=L3",
+        "type": "percent",
+        "value": 0.1
+      },
+      "M5": {
+        "className": "equation",
+        "expr": "=marginalTaxRate",
+        "type": "percent",
+        "value": 0.25
+      },
+      "M6": {
+        "className": "equation",
+        "expr": "=M4*(1-M5)",
+        "type": "million-currency",
+        "value": 367509767.1757889
+      },
+      "M7": {
+        "className": "equation",
+        "expr": "=IF(riskFreeRate > 0, (riskFreeRate / M17) * M6, 0)",
+        "type": "million-currency",
+        "value": 86381189.97389095
+      },
+      "M11": {
+        "className": "equation",
+        "expr": "=matureMarketEquityRiskPremium + riskFreeRate",
+        "type": "percent",
+        "value": 0.06837000000000001
+      },
+      "M17": {
+        "className": "equation",
+        "expr": "=L11",
+        "type": "percent",
+        "value": 0.06837000000000004
+      },
+      "C1": {
+        "readOnly": true,
+        "value": 1,
+        "type": "number"
+      },
+      "D1": {
+        "readOnly": true,
+        "value": 2,
+        "type": "number"
+      },
+      "E1": {
+        "readOnly": true,
+        "value": 3,
+        "type": "number"
+      },
+      "F1": {
+        "readOnly": true,
+        "value": 4,
+        "type": "number"
+      },
+      "G1": {
+        "readOnly": true,
+        "value": 5,
+        "type": "number"
+      },
+      "H1": {
+        "readOnly": true,
+        "value": 6,
+        "type": "number"
+      },
+      "I1": {
+        "readOnly": true,
+        "value": 7,
+        "type": "number"
+      },
+      "J1": {
+        "readOnly": true,
+        "value": 8,
+        "type": "number"
+      },
+      "K1": {
+        "readOnly": true,
+        "value": 9,
+        "type": "number"
+      },
+      "L1": {
+        "readOnly": true,
+        "value": 10,
+        "type": "number"
+      },
+      "B12": {
+        "type": "number"
+      },
+      "D12": {
+        "type": "number",
+        "expr": "=C12*(1/(1+D11))",
+        "className": "equation",
+        "value": 0.8817957611987177
+      },
+      "E12": {
+        "type": "number",
+        "expr": "=D12*(1/(1+E11))",
+        "className": "equation",
+        "value": 0.8280413223804857
+      },
+      "F12": {
+        "type": "number",
+        "expr": "=E12*(1/(1+F11))",
+        "className": "equation",
+        "value": 0.777563764468026
+      },
+      "G12": {
+        "type": "number",
+        "expr": "=F12*(1/(1+G11))",
+        "className": "equation",
+        "value": 0.7301633281724932
+      },
+      "H12": {
+        "type": "number",
+        "expr": "=G12*(1/(1+H11))",
+        "className": "equation",
+        "value": 0.6852081481180519
+      },
+      "I12": {
+        "type": "number",
+        "expr": "=H12*(1/(1+I11))",
+        "className": "equation",
+        "value": 0.642604408858684
+      },
+      "J12": {
+        "type": "number",
+        "expr": "=I12*(1/(1+J11))",
+        "className": "equation",
+        "value": 0.6022596199003499
+      },
+      "K12": {
+        "type": "number",
+        "expr": "=J12*(1/(1+K11))",
+        "className": "equation",
+        "value": 0.5640827709729697
+      },
+      "L12": {
+        "type": "number",
+        "expr": "=K12*(1/(1+L11))",
+        "className": "equation",
+        "value": 0.5279844725825038
+      },
+      "M12": {
+        "type": "number"
+      },
+      "B15": {
+        "type": "number"
+      },
+      "D15": {
+        "type": "number",
+        "expr": "=C15",
+        "className": "equation",
+        "value": 2.5
+      },
+      "E15": {
+        "type": "number",
+        "expr": "=D15",
+        "className": "equation",
+        "value": 2.5
+      },
+      "F15": {
+        "type": "number",
+        "expr": "=E15",
+        "className": "equation",
+        "value": 2.5
+      },
+      "G15": {
+        "type": "number",
+        "expr": "=F15",
+        "className": "equation",
+        "value": 2.5
+      },
+      "H15": {
+        "type": "number",
+        "expr": "=G15",
+        "className": "equation",
+        "value": 2.5
+      },
+      "I15": {
+        "type": "number",
+        "expr": "=H15",
+        "className": "equation",
+        "value": 2.5
+      },
+      "J15": {
+        "type": "number",
+        "expr": "=I15",
+        "className": "equation",
+        "value": 2.5
+      },
+      "K15": {
+        "type": "number",
+        "expr": "=J15",
+        "className": "equation",
+        "value": 2.5
+      },
+      "L15": {
+        "type": "number",
+        "expr": "=K15",
+        "className": "equation",
+        "value": 2.5
+      },
+      "M15": {
+        "type": "number"
+      },
+      "C3": {
+        "type": "percent",
+        "expr": "=IF(C1 > yearOfConvergence, ebitTargetMarginInYearTen, ebitTargetMarginInYearTen - ((ebitTargetMarginInYearTen - B3) / yearOfConvergence) * (yearOfConvergence - C1))",
+        "className": "equation",
+        "value": 0.10153011882540193
+      },
+      "D3": {
+        "type": "percent",
+        "expr": "=IF(D1 > yearOfConvergence, ebitTargetMarginInYearTen, ebitTargetMarginInYearTen - ((ebitTargetMarginInYearTen - B3) / yearOfConvergence) * (yearOfConvergence - D1))",
+        "className": "equation",
+        "value": 0.10076505941270097
+      },
+      "E3": {
+        "type": "percent",
+        "expr": "=IF(E1 > yearOfConvergence, ebitTargetMarginInYearTen, ebitTargetMarginInYearTen - ((ebitTargetMarginInYearTen - B3) / yearOfConvergence) * (yearOfConvergence - E1))",
+        "className": "equation",
+        "value": 0.1
+      },
+      "F3": {
+        "type": "percent",
+        "expr": "=IF(F1 > yearOfConvergence, ebitTargetMarginInYearTen, ebitTargetMarginInYearTen - ((ebitTargetMarginInYearTen - B3) / yearOfConvergence) * (yearOfConvergence - F1))",
+        "className": "equation",
+        "value": 0.1
+      },
+      "G3": {
+        "type": "percent",
+        "expr": "=IF(G1 > yearOfConvergence, ebitTargetMarginInYearTen, ebitTargetMarginInYearTen - ((ebitTargetMarginInYearTen - B3) / yearOfConvergence) * (yearOfConvergence - G1))",
+        "className": "equation",
+        "value": 0.1
+      },
+      "H3": {
+        "type": "percent",
+        "expr": "=IF(H1 > yearOfConvergence, ebitTargetMarginInYearTen, ebitTargetMarginInYearTen - ((ebitTargetMarginInYearTen - B3) / yearOfConvergence) * (yearOfConvergence - H1))",
+        "className": "equation",
+        "value": 0.1
+      },
+      "I3": {
+        "type": "percent",
+        "expr": "=IF(I1 > yearOfConvergence, ebitTargetMarginInYearTen, ebitTargetMarginInYearTen - ((ebitTargetMarginInYearTen - B3) / yearOfConvergence) * (yearOfConvergence - I1))",
+        "className": "equation",
+        "value": 0.1
+      },
+      "J3": {
+        "type": "percent",
+        "expr": "=IF(J1 > yearOfConvergence, ebitTargetMarginInYearTen, ebitTargetMarginInYearTen - ((ebitTargetMarginInYearTen - B3) / yearOfConvergence) * (yearOfConvergence - J1))",
+        "className": "equation",
+        "value": 0.1
+      },
+      "K3": {
+        "type": "percent",
+        "expr": "=IF(K1 > yearOfConvergence, ebitTargetMarginInYearTen, ebitTargetMarginInYearTen - ((ebitTargetMarginInYearTen - B3) / yearOfConvergence) * (yearOfConvergence - K1))",
+        "className": "equation",
+        "value": 0.1
+      },
+      "L3": {
+        "type": "percent",
+        "expr": "=IF(L1 > yearOfConvergence, ebitTargetMarginInYearTen, ebitTargetMarginInYearTen - ((ebitTargetMarginInYearTen - B3) / yearOfConvergence) * (yearOfConvergence - L1))",
+        "className": "equation",
+        "value": 0.1
+      },
+      "C5": {
+        "type": "percent",
+        "expr": "=B5",
+        "className": "equation",
+        "value": 0.22979993423881429
+      },
+      "D5": {
+        "type": "percent",
+        "expr": "=C5",
+        "className": "equation",
+        "value": 0.22979993423881429
+      },
+      "E5": {
+        "type": "percent",
+        "expr": "=D5",
+        "className": "equation",
+        "value": 0.22979993423881429
+      },
+      "F5": {
+        "type": "percent",
+        "expr": "=E5",
+        "className": "equation",
+        "value": 0.22979993423881429
+      },
+      "G5": {
+        "type": "percent",
+        "expr": "=F5",
+        "className": "equation",
+        "value": 0.22979993423881429
+      },
+      "H5": {
+        "type": "percent",
+        "expr": "=G5+(M5-G5)/5",
+        "className": "equation",
+        "value": 0.23383994739105143
+      },
+      "I5": {
+        "type": "percent",
+        "expr": "=H5+(M5-G5)/5",
+        "className": "equation",
+        "value": 0.23787996054328858
+      },
+      "J5": {
+        "type": "percent",
+        "expr": "=I5+(M5-G5)/5",
+        "className": "equation",
+        "value": 0.24191997369552573
+      },
+      "K5": {
+        "type": "percent",
+        "expr": "=J5+(M5-G5)/5",
+        "className": "equation",
+        "value": 0.24595998684776288
+      },
+      "L5": {
+        "type": "percent",
+        "expr": "=K5+(M5-G5)/5",
+        "className": "equation",
+        "value": 0.25
+      },
+      "B11": {
+        "type": "percent"
+      },
+      "D11": {
+        "type": "percent",
+        "expr": "=C11",
+        "className": "equation",
+        "value": 0.0649175800353738
+      },
+      "E11": {
+        "type": "percent",
+        "expr": "=D11",
+        "className": "equation",
+        "value": 0.0649175800353738
+      },
+      "F11": {
+        "type": "percent",
+        "expr": "=E11",
+        "className": "equation",
+        "value": 0.0649175800353738
+      },
+      "G11": {
+        "type": "percent",
+        "expr": "=F11",
+        "className": "equation",
+        "value": 0.0649175800353738
+      },
+      "H11": {
+        "type": "percent",
+        "expr": "=G11-(G11-M11)/5",
+        "className": "equation",
+        "value": 0.06560806402829905
+      },
+      "I11": {
+        "type": "percent",
+        "expr": "=H11-(G11-M11)/5",
+        "className": "equation",
+        "value": 0.0662985480212243
+      },
+      "J11": {
+        "type": "percent",
+        "expr": "=I11-(G11-M11)/5",
+        "className": "equation",
+        "value": 0.06698903201414955
+      },
+      "K11": {
+        "type": "percent",
+        "expr": "=J11-(G11-M11)/5",
+        "className": "equation",
+        "value": 0.0676795160070748
+      },
+      "L11": {
+        "type": "percent",
+        "expr": "=K11-(G11-M11)/5",
+        "className": "equation",
+        "value": 0.06837000000000004
+      },
+      "B17": {
+        "type": "percent",
+        "expr": "=B6/B16",
+        "className": "equation",
+        "value": 0.30359995480184215
+      },
+      "C17": {
+        "type": "percent",
+        "expr": "=C6/C16",
+        "className": "equation",
+        "value": 0.27834379114021307
+      },
+      "D17": {
+        "type": "percent",
+        "expr": "=D6/D16",
+        "className": "equation",
+        "value": 0.25947289195812523
+      },
+      "E17": {
+        "type": "percent",
+        "expr": "=E6/E16",
+        "className": "equation",
+        "value": 0.2449009583799549
+      },
+      "F17": {
+        "type": "percent",
+        "expr": "=F6/F16",
+        "className": "equation",
+        "value": 0.2351485098064379
+      },
+      "G17": {
+        "type": "percent",
+        "expr": "=G6/G16",
+        "className": "equation",
+        "value": 0.22747190913785506
+      },
+      "H17": {
+        "type": "percent",
+        "expr": "=H6/H16",
+        "className": "equation",
+        "value": 0.22113223845769792
+      },
+      "I17": {
+        "type": "percent",
+        "expr": "=I6/I16",
+        "className": "equation",
+        "value": 0.21653125464562675
+      },
+      "J17": {
+        "type": "percent",
+        "expr": "=J6/J16",
+        "className": "equation",
+        "value": 0.2131874679165401
+      },
+      "K17": {
+        "type": "percent",
+        "expr": "=K6/K16",
+        "className": "equation",
+        "value": 0.2108249666635336
+      },
+      "L17": {
+        "type": "percent",
+        "expr": "=L6/L16",
+        "className": "equation",
+        "value": 0.20930354403949153
+      },
+      "C2": {
+        "type": "million-currency",
+        "expr": "=B2*(1+cagrYearOneToFive)",
+        "className": "equation",
+        "value": 1687860200
+      },
+      "D2": {
+        "type": "million-currency",
+        "expr": "=C2*(1+cagrYearOneToFive)",
+        "className": "equation",
+        "value": 1991675036
+      },
+      "E2": {
+        "type": "million-currency",
+        "expr": "=D2*(1+cagrYearOneToFive)",
+        "className": "equation",
+        "value": 2350176542.48
+      },
+      "F2": {
+        "type": "million-currency",
+        "expr": "=E2*(1+cagrYearOneToFive)",
+        "className": "equation",
+        "value": 2773208320.1264
+      },
+      "G2": {
+        "type": "million-currency",
+        "expr": "=F2*(1+cagrYearOneToFive)",
+        "className": "equation",
+        "value": 3272385817.7491517
+      },
+      "H2": {
+        "type": "million-currency",
+        "expr": "=G2*(1+cagrYearOneToFive - ((cagrYearOneToFive-riskFreeRate) / 5))",
+        "className": "equation",
+        "value": 3754126823.5232754
+      },
+      "I2": {
+        "type": "million-currency",
+        "expr": "=H2*(1+cagrYearOneToFive - ((cagrYearOneToFive-riskFreeRate) / 5) * 2)",
+        "className": "equation",
+        "value": 4183704047.6853967
+      },
+      "J2": {
+        "type": "million-currency",
+        "expr": "=I2*(1+cagrYearOneToFive - ((cagrYearOneToFive-riskFreeRate) / 5) * 3)",
+        "className": "equation",
+        "value": 4525270013.546528
+      },
+      "K2": {
+        "type": "million-currency",
+        "expr": "=J2*(1+cagrYearOneToFive - ((cagrYearOneToFive-riskFreeRate) / 5) * 4)",
+        "className": "equation",
+        "value": 4746356605.328357
+      },
+      "L2": {
+        "type": "million-currency",
+        "expr": "=K2*(1+cagrYearOneToFive - ((cagrYearOneToFive-riskFreeRate) / 5) * 5)",
+        "className": "equation",
+        "value": 4822630555.975984
+      },
+      "C4": {
+        "type": "million-currency",
+        "expr": "=C3*C2",
+        "className": "equation",
+        "value": 171368646.66666666
+      },
+      "D4": {
+        "type": "million-currency",
+        "expr": "=D3*D2",
+        "className": "equation",
+        "value": 200691253.33333334
+      },
+      "E4": {
+        "type": "million-currency",
+        "expr": "=E3*E2",
+        "className": "equation",
+        "value": 235017654.24800003
+      },
+      "F4": {
+        "type": "million-currency",
+        "expr": "=F3*F2",
+        "className": "equation",
+        "value": 277320832.01264
+      },
+      "G4": {
+        "type": "million-currency",
+        "expr": "=G3*G2",
+        "className": "equation",
+        "value": 327238581.7749152
+      },
+      "H4": {
+        "type": "million-currency",
+        "expr": "=H3*H2",
+        "className": "equation",
+        "value": 375412682.3523276
+      },
+      "I4": {
+        "type": "million-currency",
+        "expr": "=I3*I2",
+        "className": "equation",
+        "value": 418370404.76853967
+      },
+      "J4": {
+        "type": "million-currency",
+        "expr": "=J3*J2",
+        "className": "equation",
+        "value": 452527001.3546528
+      },
+      "K4": {
+        "type": "million-currency",
+        "expr": "=K3*K2",
+        "className": "equation",
+        "value": 474635660.5328357
+      },
+      "L4": {
+        "type": "million-currency",
+        "expr": "=L3*L2",
+        "className": "equation",
+        "value": 482263055.5975984
+      },
+      "M4": {
+        "type": "million-currency",
+        "expr": "=M3*M2",
+        "className": "equation",
+        "value": 490013022.9010518
+      },
+      "C6": {
+        "type": "million-currency",
+        "expr": "=IF(C4 > 0, IF(C4 < B9, C4, C4 - (C4 - B9) * C5), C4)",
+        "className": "equation",
+        "value": 131988142.93207206
+      },
+      "D6": {
+        "type": "million-currency",
+        "expr": "=IF(D4 > 0, IF(D4 < C9, D4, D4 - (D4 - C9) * D5), D4)",
+        "className": "equation",
+        "value": 154572416.51502812
+      },
+      "E6": {
+        "type": "million-currency",
+        "expr": "=IF(E4 > 0, IF(E4 < D9, E4, E4 - (E4 - D9) * E5), E4)",
+        "className": "equation",
+        "value": 181010612.75684923
+      },
+      "F6": {
+        "type": "million-currency",
+        "expr": "=IF(F4 > 0, IF(F4 < E9, F4, F4 - (F4 - E9) * F5), F4)",
+        "className": "equation",
+        "value": 213592523.05308205
+      },
+      "G6": {
+        "type": "million-currency",
+        "expr": "=IF(G4 > 0, IF(G4 < F9, G4, G4 - (G4 - F9) * G5), G4)",
+        "className": "equation",
+        "value": 252039177.20263684
+      },
+      "H6": {
+        "type": "million-currency",
+        "expr": "=IF(H4 > 0, IF(H4 < G9, H4, H4 - (H4 - G9) * H5), H4)",
+        "className": "equation",
+        "value": 287626200.4611258
+      },
+      "I6": {
+        "type": "million-currency",
+        "expr": "=IF(I4 > 0, IF(I4 < H9, I4, I4 - (I4 - H9) * I5), I4)",
+        "className": "equation",
+        "value": 318848469.3897198
+      },
+      "J6": {
+        "type": "million-currency",
+        "expr": "=IF(J4 > 0, IF(J4 < I9, J4, J4 - (J4 - I9) * J5), J4)",
+        "className": "equation",
+        "value": 343051681.09042007
+      },
+      "K6": {
+        "type": "million-currency",
+        "expr": "=IF(K4 > 0, IF(K4 < J9, K4, K4 - (K4 - J9) * K5), K4)",
+        "className": "equation",
+        "value": 357894279.7107002
+      },
+      "L6": {
+        "type": "million-currency",
+        "expr": "=IF(L4 > 0, IF(L4 < K9, L4, L4 - (L4 - K9) * L5), L4)",
+        "className": "equation",
+        "value": 361697291.6981988
+      },
+      "B7": {
+        "type": "million-currency"
+      },
+      "D7": {
+        "type": "million-currency",
+        "expr": "=(D2-C2)/D15",
+        "className": "equation",
+        "value": 121525934.4
+      },
+      "E7": {
+        "type": "million-currency",
+        "expr": "=(E2-D2)/E15",
+        "className": "equation",
+        "value": 143400602.592
+      },
+      "F7": {
+        "type": "million-currency",
+        "expr": "=(F2-E2)/F15",
+        "className": "equation",
+        "value": 169212711.05855998
+      },
+      "G7": {
+        "type": "million-currency",
+        "expr": "=(G2-F2)/G15",
+        "className": "equation",
+        "value": 199670999.0491007
+      },
+      "H7": {
+        "type": "million-currency",
+        "expr": "=(H2-G2)/H15",
+        "className": "equation",
+        "value": 192696402.30964947
+      },
+      "I7": {
+        "type": "million-currency",
+        "expr": "=(I2-H2)/I15",
+        "className": "equation",
+        "value": 171830889.6648485
+      },
+      "J7": {
+        "type": "million-currency",
+        "expr": "=(J2-I2)/J15",
+        "className": "equation",
+        "value": 136626386.34445247
+      },
+      "K7": {
+        "type": "million-currency",
+        "expr": "=(K2-J2)/K15",
+        "className": "equation",
+        "value": 88434636.71273156
+      },
+      "L7": {
+        "type": "million-currency",
+        "expr": "=(L2-K2)/L15",
+        "className": "equation",
+        "value": 30509580.25905075
+      },
+      "B8": {
+        "type": "million-currency"
+      },
+      "C8": {
+        "type": "million-currency",
+        "expr": "=C6 - C7",
+        "className": "equation",
+        "value": 29000062.93207206
+      },
+      "D8": {
+        "type": "million-currency",
+        "expr": "=D6 - D7",
+        "className": "equation",
+        "value": 33046482.115028113
+      },
+      "E8": {
+        "type": "million-currency",
+        "expr": "=E6 - E7",
+        "className": "equation",
+        "value": 37610010.16484922
+      },
+      "F8": {
+        "type": "million-currency",
+        "expr": "=F6 - F7",
+        "className": "equation",
+        "value": 44379811.994522065
+      },
+      "G8": {
+        "type": "million-currency",
+        "expr": "=G6 - G7",
+        "className": "equation",
+        "value": 52368178.15353614
+      },
+      "H8": {
+        "type": "million-currency",
+        "expr": "=H6 - H7",
+        "className": "equation",
+        "value": 94929798.15147632
+      },
+      "I8": {
+        "type": "million-currency",
+        "expr": "=I6 - I7",
+        "className": "equation",
+        "value": 147017579.72487128
+      },
+      "J8": {
+        "type": "million-currency",
+        "expr": "=J6 - J7",
+        "className": "equation",
+        "value": 206425294.7459676
+      },
+      "K8": {
+        "type": "million-currency",
+        "expr": "=K6 - K7",
+        "className": "equation",
+        "value": 269459642.9979687
+      },
+      "L8": {
+        "type": "million-currency",
+        "expr": "=L6 - L7",
+        "className": "equation",
+        "value": 331187711.43914807
+      },
+      "M8": {
+        "type": "million-currency",
+        "expr": "=M6 - M7",
+        "className": "equation",
+        "value": 281128577.2018979
+      },
+      "C9": {
+        "type": "million-currency",
+        "expr": "=IF(C4 < 0, B9 - C4, IF(B9 > C4, B9 - C4, 0))",
+        "className": "equation",
+        "value": 0
+      },
+      "D9": {
+        "type": "million-currency",
+        "expr": "=IF(D4 < 0, C9 - D4, IF(C9 > D4, C9 - D4, 0))",
+        "className": "equation",
+        "value": 0
+      },
+      "E9": {
+        "type": "million-currency",
+        "expr": "=IF(E4 < 0, D9 - E4, IF(D9 > E4, D9 - E4, 0))",
+        "className": "equation",
+        "value": 0
+      },
+      "F9": {
+        "type": "million-currency",
+        "expr": "=IF(F4 < 0, E9 - F4, IF(E9 > F4, E9 - F4, 0))",
+        "className": "equation",
+        "value": 0
+      },
+      "G9": {
+        "type": "million-currency",
+        "expr": "=IF(G4 < 0, F9 - G4, IF(F9 > G4, F9 - G4, 0))",
+        "className": "equation",
+        "value": 0
+      },
+      "H9": {
+        "type": "million-currency",
+        "expr": "=IF(H4 < 0, G9 - H4, IF(G9 > H4, G9 - H4, 0))",
+        "className": "equation",
+        "value": 0
+      },
+      "I9": {
+        "type": "million-currency",
+        "expr": "=IF(I4 < 0, H9 - I4, IF(H9 > I4, H9 - I4, 0))",
+        "className": "equation",
+        "value": 0
+      },
+      "J9": {
+        "type": "million-currency",
+        "expr": "=IF(J4 < 0, I9 - J4, IF(I9 > J4, I9 - J4, 0))",
+        "className": "equation",
+        "value": 0
+      },
+      "K9": {
+        "type": "million-currency",
+        "expr": "=IF(K4 < 0, J9 - K4, IF(J9 > K4, J9 - K4, 0))",
+        "className": "equation",
+        "value": 0
+      },
+      "L9": {
+        "type": "million-currency",
+        "expr": "=IF(L4 < 0, K9 - L4, IF(K9 > L4, K9 - L4, 0))",
+        "className": "equation",
+        "value": 0
+      },
+      "M9": {
+        "type": "million-currency",
+        "expr": "=IF(M4 < 0, L9 - M4, IF(L9 > M4, L9 - M4, 0))",
+        "className": "equation",
+        "value": 0
+      },
+      "B13": {
+        "type": "million-currency"
+      },
+      "C13": {
+        "type": "million-currency",
+        "expr": "=C8*C12",
+        "className": "equation",
+        "value": 27232213.530655347
+      },
+      "D13": {
+        "type": "million-currency",
+        "expr": "=D8*D12",
+        "className": "equation",
+        "value": 29140247.851561025
+      },
+      "E13": {
+        "type": "million-currency",
+        "expr": "=E8*E12",
+        "className": "equation",
+        "value": 31142642.551645257
+      },
+      "F13": {
+        "type": "million-currency",
+        "expr": "=F8*F12",
+        "className": "equation",
+        "value": 34508133.68084383
+      },
+      "G13": {
+        "type": "million-currency",
+        "expr": "=G8*G12",
+        "className": "equation",
+        "value": 38237323.250916
+      },
+      "H13": {
+        "type": "million-currency",
+        "expr": "=H8*H12",
+        "className": "equation",
+        "value": 65046671.19259355
+      },
+      "I13": {
+        "type": "million-currency",
+        "expr": "=I8*I12",
+        "className": "equation",
+        "value": 94474144.91093536
+      },
+      "J13": {
+        "type": "million-currency",
+        "expr": "=J8*J12",
+        "className": "equation",
+        "value": 124321619.55152415
+      },
+      "K13": {
+        "type": "million-currency",
+        "expr": "=K8*K12",
+        "className": "equation",
+        "value": 151997542.08768132
+      },
+      "L13": {
+        "type": "million-currency",
+        "expr": "=L8*L12",
+        "className": "equation",
+        "value": 174861969.15000504
+      },
+      "M13": {
+        "type": "million-currency"
+      },
+      "C16": {
+        "type": "million-currency",
+        "expr": "=B16+C7",
+        "className": "equation",
+        "value": 474191080
+      },
+      "D16": {
+        "type": "million-currency",
+        "expr": "=C16+D7",
+        "className": "equation",
+        "value": 595717014.4
+      },
+      "E16": {
+        "type": "million-currency",
+        "expr": "=D16+E7",
+        "className": "equation",
+        "value": 739117616.992
+      },
+      "F16": {
+        "type": "million-currency",
+        "expr": "=E16+F7",
+        "className": "equation",
+        "value": 908330328.05056
+      },
+      "G16": {
+        "type": "million-currency",
+        "expr": "=F16+G7",
+        "className": "equation",
+        "value": 1108001327.0996606
+      },
+      "H16": {
+        "type": "million-currency",
+        "expr": "=G16+H7",
+        "className": "equation",
+        "value": 1300697729.40931
+      },
+      "I16": {
+        "type": "million-currency",
+        "expr": "=H16+I7",
+        "className": "equation",
+        "value": 1472528619.0741587
+      },
+      "J16": {
+        "type": "million-currency",
+        "expr": "=I16+J7",
+        "className": "equation",
+        "value": 1609155005.418611
+      },
+      "K16": {
+        "type": "million-currency",
+        "expr": "=J16+K7",
+        "className": "equation",
+        "value": 1697589642.1313426
+      },
+      "L16": {
+        "type": "million-currency",
+        "expr": "=K16+L7",
+        "className": "equation",
+        "value": 1728099222.3903935
+      },
+      "M16": {
+        "type": "million-currency"
+      }
+    },
+    "isYoyGrowthToggled": false,
+    "scope": {
+      "matureMarketEquityRiskPremium": 0.052300000000000006,
+      "totalRevenue": 1430390000,
+      "operatingIncome": 146322000,
+      "minorityInterest": 0,
+      "pastThreeYearsAverageEffectiveTaxRate": 0.22979993423881429,
+      "investedCapital": 371203000,
+      "bookValueOfDebt": 50485000,
+      "cashAndShortTermInvestments": 483716000,
+      "noncontrollingInterestInConsolidatedEntity": 0,
+      "marginalTaxRate": 0.25,
+      "sharesOutstanding": 28199100,
+      "price": 126,
+      "cagrYearOneToFive": 0.18,
+      "riskFreeRate": 0.01607,
+      "yearOfConvergence": 3,
+      "ebitTargetMarginInYearTen": 0.1,
+      "totalCostOfCapital": 0.0649175800353738,
+      "salesToCapitalRatio": 2.5,
+      "bookValueOfEquity": 804434000,
+      "valueOfAllOptionsOutstanding": null
+    }
+  }
+}

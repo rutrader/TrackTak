@@ -7,16 +7,7 @@ import {
   selectGeneral,
   useTicker,
 } from "@tracktak/dcf-react";
-import { graphql } from "gatsby";
 import { useSelector } from "react-redux";
-
-export const query = graphql`
-  query IndustryAveragesQuery($ticker: String) {
-    stockFundamentals(ticker: { eq: $ticker }) {
-      ...Fundamentals
-    }
-  }
-`;
 
 const IndustryAveragesPage = () => {
   const general = useSelector(selectGeneral);

@@ -4,37 +4,9 @@ import SubscribeMailingList from "../../../components/SubscribeMailingList";
 import { Helmet } from "react-helmet";
 import getTitle from "../../../shared/getTitle";
 import resourceName from "../../../shared/resourceName";
-import { graphql } from "gatsby";
 import { Section, selectGeneral, useTicker } from "@tracktak/dcf-react";
 import DiscountedCashFlow from "../../../components/DiscountedCashFlow";
 import { useSelector } from "react-redux";
-
-export const query = graphql`
-  fragment Fundamentals on StockFundamentals {
-    General {
-      Code
-      Name
-      Exchange
-      CurrencyCode
-      CurrencyName
-      CurrencySymbol
-      CountryISO
-      Industry
-      Description
-    }
-    Highlights {
-      MostRecentQuarter
-      MarketCapitalization
-    }
-    ticker
-  }
-
-  query DiscountedCashFlowQuery($ticker: String) {
-    stockFundamentals(ticker: { eq: $ticker }) {
-      ...Fundamentals
-    }
-  }
-`;
 
 const DiscountedCashFlowPage = () => {
   const theme = useTheme();

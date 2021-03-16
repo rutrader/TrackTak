@@ -1,5 +1,4 @@
 import { Container } from "@material-ui/core";
-import { selectGeneral } from "@tracktak/dcf-react";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../components/Header";
@@ -9,10 +8,11 @@ import {
   getLastPriceCloseThunk,
   getTenYearGovernmentBondLastCloseThunk,
 } from "../redux/thunks/fundamentalsThunks";
+import selectFundamentalsIsLoaded from "../selectors/selectIsFundamentalsLoaded";
 
-const LayoutFullScreen = ({ children, countryISO, ticker }) => {
+const LayoutFullScreen = ({ children, ticker }) => {
   const dispatch = useDispatch();
-  const general = useSelector(selectGeneral);
+  const general = useSelector(selectFundamentalsIsLoaded);
 
   useEffect(() => {
     dispatch(
@@ -21,33 +21,22 @@ const LayoutFullScreen = ({ children, countryISO, ticker }) => {
       }),
     );
 
-    // For the fallback if the stock has not been SSR
-    const fetchGovernmentBond = async (fundamentalsPromise) => {
-      if (countryISO) {
-        dispatch(
-          getTenYearGovernmentBondLastCloseThunk({
-            countryISO,
-          }),
-        );
-      } else {
-        const { payload } = await fundamentalsPromise;
+    const fetchGovernmentBond = async () => {
+      const { payload } = await dispatch(
+        getFundamentalsThunk({
+          ticker,
+        }),
+      );
 
-        dispatch(
-          getTenYearGovernmentBondLastCloseThunk({
-            countryISO: payload.general.countryISO,
-          }),
-        );
-      }
+      dispatch(
+        getTenYearGovernmentBondLastCloseThunk({
+          countryISO: payload.general.countryISO,
+        }),
+      );
     };
 
-    const fundamentalsPromise = dispatch(
-      getFundamentalsThunk({
-        ticker,
-      }),
-    );
-
-    fetchGovernmentBond(fundamentalsPromise);
-  }, [countryISO, dispatch, ticker]);
+    fetchGovernmentBond();
+  }, [dispatch, ticker]);
 
   return (
     <Container maxWidth={false}>
