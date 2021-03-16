@@ -1,18 +1,21 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useEffect } from "react";
 import { useState } from "react";
 import NumberFormat from "react-number-format";
 
-const FormatInputToYear = forwardRef(({ defaultValue, ...props }, ref) => {
-  const { onChange, ...other } = props;
-  const [valueAsYear, setValue] = useState(defaultValue);
+const FormatInputToYear = forwardRef(({ onChange, onBlur, ...props }, ref) => {
+  const [value, setValue] = useState(props.value);
+
+  useEffect(() => {
+    setValue(props.value);
+  }, [props.value]);
 
   return (
     <NumberFormat
-      {...other}
+      {...props}
       getInputRef={ref}
-      defaultValue={defaultValue}
+      value={value ?? ""}
       onBlur={(e) => {
-        props.onBlur(valueAsYear, e);
+        onBlur(value, e);
       }}
       onValueChange={(values) => {
         setValue(values.floatValue);

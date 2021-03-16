@@ -65,7 +65,7 @@ const ValueDrivingInputs = () => {
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: theme.spacing(2) }}>
         <ValueDrivingTextField
           label={cagrInYearsOneToFiveLabel}
-          defaultValue={inputQueryParams.cagrYearOneToFive}
+          value={inputQueryParams.cagrYearOneToFive}
           onBlur={(value) => {
             setURLInput("cagrYearOneToFive", value);
           }}
@@ -75,7 +75,7 @@ const ValueDrivingInputs = () => {
         />
         <ValueDrivingTextField
           label={ebitTargetMarginInYearTenLabel}
-          defaultValue={inputQueryParams.ebitTargetMarginInYearTen}
+          value={inputQueryParams.ebitTargetMarginInYearTen}
           onBlur={(value) => {
             setURLInput("ebitTargetMarginInYearTen", value);
           }}
@@ -85,7 +85,7 @@ const ValueDrivingInputs = () => {
         />
         <ValueDrivingTextField
           label={yearOfConvergenceLabel}
-          defaultValue={inputQueryParams.yearOfConvergence}
+          value={inputQueryParams.yearOfConvergence}
           onBlur={(value) => {
             setURLInput("yearOfConvergence", value);
           }}
@@ -95,7 +95,7 @@ const ValueDrivingInputs = () => {
         />
         <ValueDrivingTextField
           label={salesToCapitalRatioLabel}
-          defaultValue={inputQueryParams.salesToCapitalRatio}
+          value={inputQueryParams.salesToCapitalRatio}
           onBlur={(value) => {
             setURLInput("salesToCapitalRatio", value);
           }}

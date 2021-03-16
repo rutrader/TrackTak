@@ -1,40 +1,51 @@
 import { isNil } from "lodash";
-import React from "react";
+import React, { useEffect } from "react";
 import { forwardRef } from "react";
 import { useState } from "react";
 import NumberFormat from "react-number-format";
 import roundDecimal from "../shared/roundDecimal";
 
-const FormatInputToPercent = forwardRef(({ defaultValue, ...props }, ref) => {
-  const { onChange, ...other } = props;
-  const [valueAsDecimal, setValue] = useState(defaultValue);
+const getValueAsDecimal = (value) => {
+  const valueAsDecimal = isNil(value) ? null : value / 100;
 
-  return (
-    <NumberFormat
-      {...other}
-      getInputRef={ref}
-      defaultValue={
-        isNil(defaultValue) ? undefined : roundDecimal(defaultValue, 4)
-      }
-      onBlur={(e) => {
-        props.onBlur(valueAsDecimal, e);
-      }}
-      onValueChange={(values) => {
-        const valueAsDecimal = isNil(values.floatValue)
-          ? null
-          : values.floatValue / 100;
-        setValue(valueAsDecimal);
-        onChange({
-          target: {
-            value: valueAsDecimal,
-          },
-        });
-      }}
-      thousandSeparator
-      suffix="%"
-      inputMode="numeric"
-    />
-  );
-});
+  return valueAsDecimal;
+};
+
+const formatValue = (value) => (isNil(value) ? null : roundDecimal(value, 4));
+
+const FormatInputToPercent = forwardRef(
+  ({ onChange, onBlur, ...props }, ref) => {
+    const formattedValue = formatValue(props.value);
+    const [value, setValue] = useState(formattedValue);
+
+    useEffect(() => {
+      setValue(formattedValue);
+    }, [formattedValue]);
+
+    return (
+      <NumberFormat
+        {...props}
+        getInputRef={ref}
+        value={value ?? ""}
+        onBlur={(e) => {
+          onBlur(getValueAsDecimal(value), e);
+        }}
+        onValueChange={(values) => {
+          const valueAsDecimal = getValueAsDecimal(values.floatValue);
+
+          setValue(values.floatValue);
+          onChange({
+            target: {
+              value: valueAsDecimal,
+            },
+          });
+        }}
+        thousandSeparator
+        suffix="%"
+        inputMode="numeric"
+      />
+    );
+  },
+);
 
 export default FormatInputToPercent;

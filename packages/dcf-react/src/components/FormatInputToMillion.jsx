@@ -1,5 +1,5 @@
 import { isNil } from "lodash";
-import React, { forwardRef } from "react";
+import React, { forwardRef, useEffect } from "react";
 import { useState } from "react";
 import NumberFormat from "react-number-format";
 import { useSelector } from "react-redux";
@@ -12,36 +12,47 @@ export const FormatInputToMillionCurrency = forwardRef((props, ref) => {
   return <FormatInputToMillion ref={ref} prefix={currencySymbol} {...props} />;
 });
 
-const FormatInputToMillion = forwardRef(({ defaultValue, ...props }, ref) => {
-  const { onChange, ...other } = props;
-  const [valueAsMillion, setValue] = useState(defaultValue);
+const getValueAsMillion = (value) => {
+  const valueAsMillion = isNil(value) ? null : value * millionModifier;
 
-  return (
-    <NumberFormat
-      {...other}
-      getInputRef={ref}
-      defaultValue={
-        isNil(defaultValue) ? undefined : defaultValue / millionModifier
-      }
-      onBlur={(e) => {
-        props.onBlur(valueAsMillion, e);
-      }}
-      onValueChange={(values) => {
-        const valueAsMillion = isNil(values.floatValue)
-          ? null
-          : values.floatValue * millionModifier;
-        setValue(valueAsMillion);
-        onChange({
-          target: {
-            value: valueAsMillion,
-          },
-        });
-      }}
-      thousandSeparator
-      suffix="&nbsp;mln"
-      inputMode="numeric"
-    />
-  );
-});
+  return valueAsMillion;
+};
+
+const formatValue = (value) => (isNil(value) ? null : value / millionModifier);
+
+const FormatInputToMillion = forwardRef(
+  ({ onChange, onBlur, ...props }, ref) => {
+    const formattedValue = formatValue(props.value);
+    const [value, setValue] = useState(formattedValue);
+
+    useEffect(() => {
+      setValue(formattedValue);
+    }, [formattedValue]);
+
+    return (
+      <NumberFormat
+        {...props}
+        getInputRef={ref}
+        value={value ?? ""}
+        onBlur={(e) => {
+          onBlur(getValueAsMillion(value), e);
+        }}
+        onValueChange={(values) => {
+          const valueAsMillion = getValueAsMillion(values.floatValue);
+
+          setValue(values.floatValue);
+          onChange({
+            target: {
+              value: valueAsMillion,
+            },
+          });
+        }}
+        thousandSeparator
+        suffix="&nbsp;mln"
+        inputMode="numeric"
+      />
+    );
+  },
+);
 
 export default FormatInputToMillion;
