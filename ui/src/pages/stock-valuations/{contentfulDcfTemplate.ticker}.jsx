@@ -24,6 +24,7 @@ import {
   selectPrice,
   selectCells,
   setFundamentals,
+  convertFundamentals,
 } from "@tracktak/dcf-react";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
 import * as styles from "./valuation.module.scss";
@@ -37,7 +38,6 @@ import {
   getLastPriceCloseThunk,
   getTenYearGovernmentBondLastCloseThunk,
 } from "../../redux/thunks/fundamentalsThunks";
-import convertFundamentals from "../../shared/convertFundamentals";
 
 export const query = graphql`
   fragment ValuationInformation on ContentfulDcfTemplate {

@@ -12,11 +12,11 @@ import {
   setLastPriceClose,
   setTenYearGovernmentBondLastClose,
   setFundamentals,
+  convertFundamentals,
 } from "@tracktak/dcf-react";
 import dayjs from "dayjs";
 import convertHyphenTickerToDot from "../../shared/convertHyphenTickerToDot";
 import getMinimumHistoricalDateFromFinancialStatements from "../../shared/getMinimumHistoricalDateFromFinancialStatements";
-import convertFundamentals from "../../shared/convertFundamentals";
 
 const yearMonthDateFormat = "YYYY-MM";
 const fundamentalsFilter =
