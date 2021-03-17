@@ -1,6 +1,6 @@
 import { setFundamentals, TracktakProvider } from "../src";
 import mockPreloadedStateJSON from "../mocks/mockPreloadedState.json";
-import mockIRobotDataJSON from "../mocks/mockIRobotData.json";
+import mockStockDataJSON from "../mocks/mockStockData.json";
 import createStore from "../src/redux/createStore";
 import {
   LocationProvider,
@@ -11,12 +11,13 @@ import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/table/lib/css/table.css";
 import "../src/reset.css";
 import { useEffect } from "react";
+import convertFundamentals from "../src/shared/convertFundamentals";
 
 const source = createMemorySource("/");
 const history = createHistory(source);
 const store = createStore(mockPreloadedStateJSON);
 
-store.dispatch(setFundamentals(mockIRobotDataJSON));
+store.dispatch(setFundamentals(convertFundamentals(mockStockDataJSON)));
 
 const withTracktakProvier = (story) => {
   useEffect(() => {

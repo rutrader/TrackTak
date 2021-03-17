@@ -42,6 +42,7 @@ export { default as SubSection } from "./components/SubSection";
 export { default as isSSR } from "./shared/isSSR";
 export { default as replaceSpaceWithHyphen } from "./shared/replaceSpaceWithHyphen";
 export { default as convertGBXToGBP } from "./shared/convertGBXToGBP";
+export { default as convertFundamentals } from "./shared/convertFundamentals";
 
 export { default as TracktakLogo } from "./assets/tracktak.svg";
 
