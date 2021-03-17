@@ -22,6 +22,7 @@
   "scripts": {
     "build": "rimraf ./dist && cross-env NODE_ENV=production microbundle-crl --sourcemap false",
     "build:dev": "rimraf ./dist && cross-env NODE_ENV=production microbundle-crl --compress false",
+    "prepublish": "npm run build",
     "storybook": "cross-env NODE_ENV=development start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "clean": "rimraf ./node_modules"
