@@ -38,13 +38,13 @@ const LayoutFullScreen = ({ children, ticker }) => {
     fetchGovernmentBond();
   }, [dispatch, ticker]);
 
-  return (
+  return isLoaded ? (
     <Container maxWidth={false}>
       <Header />
-      {isLoaded ? children : null}
+      {children}
       <TTTabs />
     </Container>
-  );
+  ) : null;
 };
 
 export default LayoutFullScreen;

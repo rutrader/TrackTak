@@ -74,13 +74,13 @@ module.exports = {
     },
     "gatsby-plugin-react-helmet",
     "gatsby-plugin-sitemap",
-    // "gatsby-plugin-offline",
     {
       resolve: "gatsby-plugin-manifest",
       options: {
         icon: "src/assets/tracktakSmallLogo.svg",
       },
     },
+    // "gatsby-plugin-offline",
     "gatsby-plugin-mdx",
     "gatsby-plugin-image",
     {
