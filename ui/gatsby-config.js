@@ -67,9 +67,9 @@ module.exports = {
       },
     },
     {
-      resolve: "gatsby-plugin-google-analytics",
+      resolve: `gatsby-plugin-google-gtag`,
       options: {
-        trackingId: "G-WFB538909G",
+        trackingIds: ["G-WFB538909G"],
       },
     },
     "gatsby-plugin-react-helmet",
