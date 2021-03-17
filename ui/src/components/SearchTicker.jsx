@@ -50,9 +50,11 @@ const SearchTicker = ({ removeInputPadding }) => {
   }, 300);
 
   const handleOnChangeAutoComplete = (_, value) => {
-    const ticker = `${value.code}-${value.exchange}`.toLowerCase();
+    if (value?.code && value?.exchange) {
+      const ticker = `${value.code}-${value.exchange}`.toLowerCase();
 
-    navigate(`/stock/${ticker}/discounted-cash-flow`);
+      navigate(`/stock/${ticker}/discounted-cash-flow`);
+    }
   };
 
   const handleOnChangeSearch = async (e) => {
