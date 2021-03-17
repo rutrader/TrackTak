@@ -37,7 +37,6 @@ const useStyles = makeStyles({
 
 const SearchTicker = ({ removeInputPadding }) => {
   const theme = useTheme();
-  const [ticker, setTicker] = useState("");
   const [autoComplete, setAutoComplete] = useState([]);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [isLoadingAutocomplete, setIsLoadingAutocomplete] = useState(false);
@@ -51,10 +50,9 @@ const SearchTicker = ({ removeInputPadding }) => {
   }, 300);
 
   const handleOnChangeAutoComplete = (_, value) => {
-    if (value?.code && value?.exchange) {
-      setTicker(`${value.code}-${value.exchange}`.toLowerCase());
-      setText("");
-    }
+    const ticker = `${value.code}-${value.exchange}`.toLowerCase();
+
+    navigate(`/stock/${ticker}/discounted-cash-flow`);
   };
 
   const handleOnChangeSearch = async (e) => {
@@ -75,17 +73,7 @@ const SearchTicker = ({ removeInputPadding }) => {
   }, [text]);
 
   return (
-    <Box
-      component="form"
-      sx={{ display: "flex", position: "relative" }}
-      onSubmit={async (e) => {
-        e.preventDefault();
-
-        if (ticker) {
-          navigate(`/stock/${ticker}/discounted-cash-flow`);
-        }
-      }}
-    >
+    <Box sx={{ display: "flex", position: "relative" }}>
       <Autocomplete
         style={{ flex: 1 }}
         open={text.length > 0}
