@@ -1,6 +1,6 @@
-import { createMuiTheme } from "@material-ui/core";
+import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
 
-const theme = createMuiTheme({
+let theme = createMuiTheme({
   typography: {
     fontFamily: "Nunito",
   },
@@ -36,5 +36,7 @@ const theme = createMuiTheme({
     scrollTopButton: 900,
   },
 });
+
+theme = responsiveFontSizes(theme);
 
 export default theme;

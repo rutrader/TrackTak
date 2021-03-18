@@ -2,10 +2,10 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
-import SubscribeSection from "../landingHomepage/sections/SubscribeSection";
-import LandingPageHome from "../landingHomepage/LandingPageHome";
-import FeaturesSection from "../landingHomepage/sections/FeaturesSection";
-import ProcessSection from "../landingHomepage/sections/ProcessSection";
+import SubscribeSection from "../landingPage/SubscribeSection";
+import SearchSection from "../landingPage/SearchSection";
+import FeaturesSection from "../landingPage/FeaturesSection";
+import ProcessSection from "../landingPage/ProcessSection";
 
 const Home = () => {
   return (
@@ -14,7 +14,7 @@ const Home = () => {
         <title>{getTitle("Discounted Cash Flow (DCF) Calculator")}</title>
         <link rel="canonical" href={`${resourceName}`} />
       </Helmet>
-      <LandingPageHome />
+      <SearchSection />
       <FeaturesSection />
       <ProcessSection />
       <SubscribeSection />

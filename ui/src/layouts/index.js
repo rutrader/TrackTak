@@ -2,9 +2,6 @@ import Layout from "./Layout";
 import LayoutHome from "./LayoutHome";
 import React, { useEffect } from "react";
 import convertDotTickerToHyphen from "../shared/convertDotTickerToHyphen";
-import "@fontsource/montserrat/400.css";
-import "@fontsource/montserrat/600.css";
-import "./index.css";
 import LayoutFullScreen from "./LayoutFullScreen";
 
 const oldStockPathRegex = /\/(discounted-cash-flow|synthetic-credit-rating|industry-averages)\/[A-Za-z0-9]+\.\w+/g;

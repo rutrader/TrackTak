@@ -8,6 +8,8 @@ import {
 import { extendedFundamentalsReducer } from "./src/redux/reducers/extendedFundamentalsReducer";
 import "./sass/blueprintTheme.scss";
 import "@tracktak/dcf-react/dist/index.css";
+import "@fontsource/nunito/400.css";
+import "@fontsource/nunito/600.css";
 import theme from "./src/theme";
 import PageSpinner from "./src/components/PageSpinner";
 

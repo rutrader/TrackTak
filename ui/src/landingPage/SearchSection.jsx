@@ -11,11 +11,11 @@ import {
   useTheme,
 } from "@material-ui/core";
 import GridDots from "../assets/grid-dots.svg";
-import laptopImage from "../images/laptop-img.png";
+import laptopImage from "../images/laptop.png";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import SearchTicker from "../components/SearchTicker";
 import { AnchorLink } from "gatsby-plugin-anchor-links";
-import purpleBackground from "../assets/purple-background.svg";
+import PurpleBackground from "../assets/purple-background.svg";
 import styled from "styled-components";
 
 const useStyles = makeStyles((theme) => ({
@@ -24,12 +24,16 @@ const useStyles = makeStyles((theme) => ({
     animationDuration: "1.3s",
     animationDelay: "0.4s",
     animationName: "fadeInRight",
+    position: "absolute",
+    top: -178,
+    left: -142,
+    zIndex: 0,
   },
   gridDot: {
-    position: "absolute",
-    bottom: "-60px",
-    left: "-30px",
+    top: 147,
     zIndex: -1,
+    position: "absolute",
+    left: -139,
   },
 }));
 
@@ -83,10 +87,10 @@ const ButtonChevron = withStyles((theme) => ({
 
 const TypographyHeader = withStyles({
   root: {
-    fontSize: ({ isOnMobile }) => (isOnMobile ? 30 : 55),
-    lineHeight: "65px",
-    fontWeight: 800,
+    // fontSize: ({ isOnMobile }) => (isOnMobile ? 30 : 55),
+    // lineHeight: "65px",
     marginBottom: "20px",
+    fontWeight: 800,
     color: "#fff",
     visibility: "visible",
     animationDuration: "1.3s",
@@ -119,26 +123,19 @@ const TypographySearchText = withStyles({
 })(Typography);
 
 const Container = styled(Box)`
-  margin-top: 90px;
+  margin-top: 30px;
   width: 100%;
   height: 100%;
 `;
 
-const Background = styled.div`
-  &:before {
-    content: "";
-    background-image: url(${purpleBackground});
-    background-repeat: no-repeat;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-  }
+const Background = styled(PurpleBackground)`
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
 `;
 
-const LandingPageHome = () => {
+const SearchSection = () => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -166,17 +163,17 @@ const LandingPageHome = () => {
           alignItems: "center",
           flexWrap: "wrap",
           justifyContent: "center",
-          columnGap: "20px",
-          rowGap: "31px",
+          columnGap: "2px",
+          rowGap: "30px",
         }}
       >
-        <Box style={{ flex: 1 }}>
-          <TypographyHeader variant="h1">
-            Hello, automated Discounted Cash Flows.
+        <Box style={{ flex: 2 }}>
+          <TypographyHeader variant="h2">
+            Goodbye Excel, Hello automated Discounted Cash Flows.
           </TypographyHeader>
           <TypographyText variant="h6">
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore et dolore.
+            Find a companies true intrinsic value within minutes using our free
+            DCF calculator.
           </TypographyText>
           <CustomButton
             isOnMobile={isOnMobile}
@@ -187,24 +184,21 @@ const LandingPageHome = () => {
             Explore Features
           </CustomButton>
         </Box>
-        <Box>
-          <Box style={{ display: "flex", position: "relative", zIndex: 1 }}>
-            <img
-              className={classes.laptopImage}
-              style={{ width: "100%" }}
-              alt="laptopImage"
-              src={laptopImage}
-            />
-            <Hidden mdDown>
-              <GridDots className={classes.gridDot} />
-            </Hidden>
-          </Box>
+        <Box style={{ flex: 1.3, position: "relative" }}>
+          <img
+            className={classes.laptopImage}
+            alt="laptopImage"
+            src={laptopImage}
+          />
+          <Hidden mdDown>
+            <GridDots className={classes.gridDot} />
+          </Hidden>
         </Box>
       </Box>
       <Box
         sx={{
           justifyContent: "center",
-          marginTop: "120px",
+          marginTop: "140px",
         }}
       >
         <TypographySearchText
@@ -228,4 +222,4 @@ const LandingPageHome = () => {
   );
 };
 
-export default LandingPageHome;
+export default SearchSection;
