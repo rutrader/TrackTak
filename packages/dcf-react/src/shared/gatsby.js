@@ -1,9 +1,9 @@
-import reach from "@reach/router";
+import { navigate as reachNavigate, Link as ReachLink } from "@reach/router";
 import React from "react";
 
-let navigate;
-let Link;
-let AnchorLink;
+let navigate = reachNavigate;
+let Link = ReachLink;
+let AnchorLink = ({ children }) => <span>{children}</span>;
 
 try {
   const gatsby = require("gatsby");
@@ -13,9 +13,8 @@ try {
   navigate = gatsby.navigate;
   Link = gatsby.Link;
 } catch (error) {
-  navigate = reach.navigate;
-  Link = reach.Link;
-  AnchorLink = ({ children }) => <span>{children}</span>;
+  // Swallow the error as gatsby is optional
+  console.log('Gatsby not detected. Falling back to reach/router')
 }
 
 export { navigate, Link, AnchorLink };

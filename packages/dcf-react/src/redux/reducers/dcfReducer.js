@@ -11,6 +11,7 @@ import {
 } from "../../discountedCashFlow/utils";
 import matureMarketEquityRiskPremium from "../../shared/matureMarketEquityRiskPremium";
 import { evaluate } from "../../shared/math";
+import { isNil } from "lodash";
 
 const computeExpr = (key, expr, scope) => {
   let value = null;
@@ -95,7 +96,7 @@ export const dcfReducer = createReducer(initialState, (builder) => {
       const previousCellKey = getPreviousRowCellKey(key);
       const previousCell = state.cells[previousCellKey];
 
-      if (previousCell.value !== undefined) {
+      if (!isNil(previousCell.value)) {
         state.cells[key].yoyGrowthValue =
           (currentCell.value - previousCell.value) / currentCell.value;
       }

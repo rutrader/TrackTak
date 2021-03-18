@@ -49,6 +49,10 @@ module.exports = {
       },
     },
     {
+      resolve: "gatsby-plugin-create-client-paths",
+      options: { prefixes: ["/stock/*"] },
+    },
+    {
       resolve: "gatsby-plugin-sass",
       options: {
         implementation: require("node-sass"),
@@ -63,20 +67,20 @@ module.exports = {
       },
     },
     {
-      resolve: "gatsby-plugin-google-analytics",
+      resolve: `gatsby-plugin-google-gtag`,
       options: {
-        trackingId: "G-WFB538909G",
+        trackingIds: ["G-WFB538909G"],
       },
     },
     "gatsby-plugin-react-helmet",
     "gatsby-plugin-sitemap",
-    "gatsby-plugin-offline",
     {
       resolve: "gatsby-plugin-manifest",
       options: {
         icon: "src/assets/tracktakSmallLogo.svg",
       },
     },
+    // "gatsby-plugin-offline",
     "gatsby-plugin-mdx",
     "gatsby-plugin-image",
     {

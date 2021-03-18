@@ -46,7 +46,7 @@ const OptionalInputs = () => {
         <React.Fragment>
           <OptionalTextField
             label={pretaxCostOfDebtLabel}
-            defaultValue={inputQueryParams.pretaxCostOfDebt}
+            value={inputQueryParams.pretaxCostOfDebt}
             onBlur={(value) => {
               setURLInput("pretaxCostOfDebt", value);
             }}
@@ -56,7 +56,7 @@ const OptionalInputs = () => {
           />
           <OptionalTextField
             label="Average Maturity of Debt"
-            defaultValue={inputQueryParams.averageMaturityOfDebt}
+            value={inputQueryParams.averageMaturityOfDebt}
             onBlur={(value) => {
               setURLInput("averageMaturityOfDebt", value);
             }}
@@ -74,7 +74,7 @@ const OptionalInputs = () => {
         <React.Fragment>
           <OptionalTextField
             label="Book Value of Convertible Debt"
-            defaultValue={inputQueryParams.bookValueOfConvertibleDebt}
+            value={inputQueryParams.bookValueOfConvertibleDebt}
             onBlur={(value) => {
               setURLInput("bookValueOfConvertibleDebt", value);
             }}
@@ -84,7 +84,7 @@ const OptionalInputs = () => {
           />
           <OptionalTextField
             label="Interest Expense on Convertible Debt"
-            defaultValue={inputQueryParams.interestExpenseOnConvertibleDebt}
+            value={inputQueryParams.interestExpenseOnConvertibleDebt}
             onBlur={(value) => {
               setURLInput("interestExpenseOnConvertibleDebt", value);
             }}
@@ -94,7 +94,7 @@ const OptionalInputs = () => {
           />
           <OptionalTextField
             label="Maturity of Convertible Debt"
-            defaultValue={inputQueryParams.maturityOfConvertibleDebt}
+            value={inputQueryParams.maturityOfConvertibleDebt}
             onBlur={(value) => {
               setURLInput("maturityOfConvertibleDebt", value);
             }}
@@ -112,7 +112,7 @@ const OptionalInputs = () => {
         <React.Fragment>
           <OptionalTextField
             label="Number of Preferred Shares"
-            defaultValue={inputQueryParams.numberOfPreferredShares}
+            value={inputQueryParams.numberOfPreferredShares}
             onBlur={(value) => {
               setURLInput("numberOfPreferredShares", value);
             }}
@@ -122,7 +122,7 @@ const OptionalInputs = () => {
           />
           <OptionalTextField
             label="Market Price Per Share"
-            defaultValue={inputQueryParams.marketPricePerShare}
+            value={inputQueryParams.marketPricePerShare}
             onBlur={(value) => {
               setURLInput("marketPricePerShare", value);
             }}
@@ -132,7 +132,7 @@ const OptionalInputs = () => {
           />
           <OptionalTextField
             label="Annual Dividend Per Share"
-            defaultValue={inputQueryParams.annualDividendPerShare}
+            value={inputQueryParams.annualDividendPerShare}
             onBlur={(value) => {
               setURLInput("annualDividendPerShare", value);
             }}
@@ -150,7 +150,7 @@ const OptionalInputs = () => {
         <React.Fragment>
           <OptionalTextField
             label="Employee Options Oustanding"
-            defaultValue={inputQueryParams.numberOfEmployeeOptionsOutstanding}
+            value={inputQueryParams.numberOfEmployeeOptionsOutstanding}
             onBlur={(value) => {
               setURLInput("numberOfEmployeeOptionsOutstanding", value);
             }}
@@ -160,7 +160,7 @@ const OptionalInputs = () => {
           />
           <OptionalTextField
             label="Average Strike Price"
-            defaultValue={inputQueryParams.averageStrikePrice}
+            value={inputQueryParams.averageStrikePrice}
             onBlur={(value) => {
               setURLInput("averageStrikePrice", value);
             }}
@@ -170,7 +170,7 @@ const OptionalInputs = () => {
           />
           <OptionalTextField
             label="Average Maturity"
-            defaultValue={inputQueryParams.averageMaturityOfOptions}
+            value={inputQueryParams.averageMaturityOfOptions}
             onBlur={(value) => {
               setURLInput("averageMaturityOfOptions", value);
             }}
@@ -190,7 +190,7 @@ const OptionalInputs = () => {
         <React.Fragment>
           <OptionalTextField
             label="Net Operating Loss"
-            defaultValue={inputQueryParams.netOperatingLoss}
+            value={inputQueryParams.netOperatingLoss}
             onBlur={(value) => {
               setURLInput("netOperatingLoss", value);
             }}
@@ -201,7 +201,7 @@ const OptionalInputs = () => {
           {/* TODO: Attempt to automate this by default but allow this override anyway */}
           <OptionalTextField
             label="Probability of Failure"
-            defaultValue={inputQueryParams.probabilityOfFailure}
+            value={inputQueryParams.probabilityOfFailure}
             onBlur={(value) => {
               setURLInput("probabilityOfFailure", value);
             }}
@@ -212,7 +212,7 @@ const OptionalInputs = () => {
           {/* TODO: Add fair value option as well later */}
           <OptionalTextField
             label="Proceeds as a Percentage of Book value"
-            defaultValue={inputQueryParams.proceedsAsAPercentageOfBookValue}
+            value={inputQueryParams.proceedsAsAPercentageOfBookValue}
             onBlur={(value) => {
               setURLInput("proceedsAsAPercentageOfBookValue", value);
             }}

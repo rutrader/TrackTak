@@ -4,45 +4,19 @@ import SubscribeMailingList from "../../../components/SubscribeMailingList";
 import { Helmet } from "react-helmet";
 import getTitle from "../../../shared/getTitle";
 import resourceName from "../../../shared/resourceName";
-import { graphql } from "gatsby";
-import { Section } from "@tracktak/dcf-react";
+import { Section, selectGeneral, useTicker } from "@tracktak/dcf-react";
 import DiscountedCashFlow from "../../../components/DiscountedCashFlow";
+import { useSelector } from "react-redux";
 
-export const query = graphql`
-  fragment Fundamentals on StockFundamentals {
-    General {
-      Code
-      Name
-      Exchange
-      CurrencyCode
-      CurrencyName
-      CurrencySymbol
-      CountryISO
-      Industry
-      Description
-    }
-    Highlights {
-      MostRecentQuarter
-      MarketCapitalization
-    }
-    ticker
-  }
-
-  query DiscountedCashFlowQuery($ticker: String) {
-    stockFundamentals(ticker: { eq: $ticker }) {
-      ...Fundamentals
-    }
-  }
-`;
-
-const DiscountedCashFlowPage = ({ data }) => {
+const DiscountedCashFlowPage = () => {
   const theme = useTheme();
-  const { General, ticker } = data.stockFundamentals;
+  const general = useSelector(selectGeneral);
+  const ticker = useTicker();
 
   return (
     <>
       <Helmet>
-        <title>{getTitle(`${General.Name} Discounted Cash Flow (DCF)`)}</title>
+        <title>{getTitle(`${general.name} Discounted Cash Flow (DCF)`)}</title>
         <link
           rel="canonical"
           href={`${resourceName}/discounted-cash-flow/${ticker}`}

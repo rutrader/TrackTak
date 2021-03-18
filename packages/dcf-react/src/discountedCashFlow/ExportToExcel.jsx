@@ -40,6 +40,7 @@ import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
+import { isNil } from "lodash";
 
 export const DCFControlTypography = (props) => {
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
@@ -147,11 +148,11 @@ const ExportToExcel = () => {
       },
     };
 
-    if (inputQueryParams.pretaxCostOfDebt !== undefined) {
+    if (isNil(inputQueryParams.pretaxCostOfDebt)) {
+      costOfCapitalData.pretaxCostOfDebt.expr = estimatedCostOfDebtCalculation;
+    } else {
       costOfCapitalData.pretaxCostOfDebt.value =
         inputQueryParams.pretaxCostOfDebt;
-    } else {
-      costOfCapitalData.pretaxCostOfDebt.expr = estimatedCostOfDebtCalculation;
     }
 
     Object.keys(marketValueCalculation).forEach((key) => {
@@ -235,15 +236,16 @@ const ExportToExcel = () => {
       transformedValuationData,
       numberOfValuationColumns,
     );
+
     const inputsWorksheet = utils.aoa_to_sheet(chunkedInputsData);
     const costOfCapitalWorksheet = utils.aoa_to_sheet(chunkedCostOfCapitalData);
     const valuationOutputWorksheet = utils.aoa_to_sheet(chunkedValuationData);
 
     inputsWorksheet["!cols"] = [{ width: 39 }, { width: 15 }];
     costOfCapitalWorksheet["!cols"] = [{ width: 47 }, { width: 20 }];
-    valuationOutputWorksheet["!cols"] = [
-      ...new Array(numberOfValuationColumns),
-    ].map((_, i) => {
+    valuationOutputWorksheet["!cols"] = Array.from(
+      new Array(numberOfValuationColumns),
+    ).map((_, i) => {
       if (i === 0) {
         return { width: 23 };
       }

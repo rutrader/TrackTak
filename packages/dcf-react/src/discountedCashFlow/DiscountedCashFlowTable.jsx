@@ -34,6 +34,7 @@ import {
   valueDrivingInputsId,
 } from "../components/ValueDrivingInputs";
 import { useLocation } from "@reach/router";
+import { isNil } from "lodash";
 
 const useStyles = makeStyles({
   alertIcon: {
@@ -102,7 +103,7 @@ const DiscountedCashFlowTable = ({
         intent = "primary";
       } else if (showFormulas) {
         node = cell.expr;
-      } else if (isYoyGrowthToggled && cell.yoyGrowthValue !== undefined) {
+      } else if (isYoyGrowthToggled && !isNil(cell.yoyGrowthValue)) {
         node = <FormatRawNumberToPercent value={cell.yoyGrowthValue} />;
       }
 

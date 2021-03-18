@@ -1,6 +1,6 @@
 import { setFundamentals, TracktakProvider } from "../src";
-import mockPreloadedStateJSON from "./mockPreloadedState.json";
-import mockIRobotDataJSON from "./mockIRobotData.json";
+import mockPreloadedStateJSON from "../mocks/mockPreloadedState.json";
+import mockStockDataJSON from "../mocks/mockStockData.json";
 import createStore from "../src/redux/createStore";
 import {
   LocationProvider,
@@ -10,20 +10,27 @@ import {
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/table/lib/css/table.css";
 import "../src/reset.css";
+import { useEffect } from "react";
+import convertFundamentals from "../src/shared/convertFundamentals";
 
 const source = createMemorySource("/");
-
-source.location.hash = "";
-
 const history = createHistory(source);
 const store = createStore(mockPreloadedStateJSON);
 
-store.dispatch(setFundamentals(mockIRobotDataJSON));
+store.dispatch(setFundamentals(convertFundamentals(mockStockDataJSON)));
 
 const withTracktakProvier = (story) => {
+  useEffect(() => {
+    history.location.hash = "";
+    history.location.search =
+      "?cagrYearOneToFive=0.18&ebitTargetMarginInYearTen=0.1&yearOfConvergence=3&salesToCapitalRatio=2.5";
+  }, []);
+
   return (
     <TracktakProvider store={store}>
-      <LocationProvider history={history}>{story()}</LocationProvider>
+      <LocationProvider history={history}>
+        {story({ store, history })}
+      </LocationProvider>
     </TracktakProvider>
   );
 };

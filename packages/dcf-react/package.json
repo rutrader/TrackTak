@@ -1,6 +1,6 @@
 {
   "name": "@tracktak/dcf-react",
-  "version": "1.1.0",
+  "version": "1.1.8",
   "description": "A react package that allows external websites to use our discounted cash flow calculator for https://tracktak.com",
   "author": "tracktak",
   "license": "MIT",
@@ -20,8 +20,9 @@
     "@blueprintjs/table": "^3.8.18"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production microbundle-crl --sourcemap false",
-    "build:dev": "cross-env NODE_ENV=production microbundle-crl --compress false",
+    "build": "rimraf ./dist && cross-env NODE_ENV=production microbundle-crl --sourcemap false",
+    "build:dev": "rimraf ./dist && cross-env NODE_ENV=production microbundle-crl --compress false",
+    "prepublish": "npm run build",
     "storybook": "cross-env NODE_ENV=development start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "clean": "rimraf ./node_modules"
@@ -45,7 +46,7 @@
     "mathjs": "^8.0.1",
     "react-dom": "^17.0.1",
     "react-lazyload": "^3.1.0",
-    "react-number-format": "^4.4.1",
+    "react-number-format": "^4.5.0",
     "react-redux": "^7.2.2",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",

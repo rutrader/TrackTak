@@ -35,9 +35,7 @@ const getInputQueryParams = (query) => {
   const inputQueryParams = {};
 
   inputQueries.forEach(({ name }) => {
-    if (query[name]) {
-      inputQueryParams[name] = parseFloat(query[name]);
-    }
+    inputQueryParams[name] = query[name] ? parseFloat(query[name]) : undefined;
   });
 
   return inputQueryParams;

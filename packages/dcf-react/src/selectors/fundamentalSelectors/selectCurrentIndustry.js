@@ -8,16 +8,15 @@ import selectIsInUS from "./selectIsInUS";
 const selectCurrentIndustry = createSelector(
   selectGeneral,
   selectIsInUS,
-  (general, isInUS) => {
+  ({ gicSubIndustry = "", industry }, isInUS) => {
     // Some stocks do not have a gicSubIndustry so fallback to industry for them
     let mappedCurrentIndustry;
 
-    if (general.gicSubIndustry) {
-      mappedCurrentIndustry = gicSubIndustryMappingJson[general.gicSubIndustry];
-    } else {
-      const currentIndustry = general.industry
-        .replace(spaceRegex, "")
-        .toUpperCase();
+    mappedCurrentIndustry = gicSubIndustryMappingJson[gicSubIndustry.trim()];
+
+    // TODO: Add sentry warning later
+    if (!mappedCurrentIndustry) {
+      const currentIndustry = industry.replace(spaceRegex, "").toUpperCase();
 
       mappedCurrentIndustry = industryMapping[currentIndustry];
     }
