@@ -4,17 +4,20 @@ import industryMapping, { spaceRegex } from "../../shared/industryMappings";
 import gicSubIndustryMappingJson from "../../data/gicSubIndustryMapping.json";
 import selectGeneral from "./selectGeneral";
 import selectIsInUS from "./selectIsInUS";
+import { isNil } from "lodash";
 
 const selectCurrentIndustry = createSelector(
   selectGeneral,
   selectIsInUS,
-  ({ gicSubIndustry = "", industry }, isInUS) => {
-    // Some stocks do not have a gicSubIndustry so fallback to industry for them
+  ({ gicSubIndustry, industry }, isInUS) => {
     let mappedCurrentIndustry;
 
-    mappedCurrentIndustry = gicSubIndustryMappingJson[gicSubIndustry.trim()];
+    if (!isNil(gicSubIndustry)) {
+      mappedCurrentIndustry = gicSubIndustryMappingJson[gicSubIndustry.trim()];
+    }
 
     // TODO: Add sentry warning later
+    // Some stocks do not have a gicSubIndustry so fallback to industry for them
     if (!mappedCurrentIndustry) {
       const currentIndustry = industry.replace(spaceRegex, "").toUpperCase();
 

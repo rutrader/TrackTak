@@ -1,3 +1,4 @@
+import { isNil } from "lodash";
 import getValueFromString from "./getValueFromString";
 
 const getBalanceSheet = (datum) => {
@@ -81,20 +82,30 @@ const convertFundamentals = (fundamentalsData) => {
     yearly: {},
   };
 
-  Object.values(Balance_Sheet.quarterly).forEach((datum) => {
-    balanceSheet.quarterly[datum.date] = getBalanceSheet(datum);
-  });
-
-  Object.values(Balance_Sheet.yearly).forEach((datum) => {
-    balanceSheet.yearly[datum.date] = getBalanceSheet(datum);
-  });
+  let firstIncomeSheetRemoved;
 
   Object.values(Income_Statement.quarterly).forEach((datum) => {
     incomeStatement.quarterly[datum.date] = getIncomeStatement(datum);
   });
 
-  Object.values(Income_Statement.yearly).forEach((datum) => {
-    incomeStatement.yearly[datum.date] = getIncomeStatement(datum);
+  Object.values(Income_Statement.yearly).forEach((datum, i) => {
+    // Fix EOD bug from some stocks not having recent data
+    if (i !== 0 || !isNil(datum.totalRevenue)) {
+      incomeStatement.yearly[datum.date] = getIncomeStatement(datum);
+    } else {
+      firstIncomeSheetRemoved = true;
+    }
+  });
+
+  Object.values(Balance_Sheet.quarterly).forEach((datum) => {
+    balanceSheet.quarterly[datum.date] = getBalanceSheet(datum);
+  });
+
+  Object.values(Balance_Sheet.yearly).forEach((datum, i) => {
+    // Fix EOD bug from some stocks not having recent data
+    if (i !== 0 || !firstIncomeSheetRemoved) {
+      balanceSheet.yearly[datum.date] = getBalanceSheet(datum);
+    }
   });
 
   return {
