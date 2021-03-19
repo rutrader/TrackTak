@@ -195,10 +195,6 @@ const Valuation = ({ data }) => {
   } = data.contentfulDcfTemplate;
 
   useEffect(() => {
-    const data = JSON.parse(financialData.internal.content);
-
-    dispatch(setFundamentals(convertFundamentals(data)));
-
     dispatch(
       getTenYearGovernmentBondLastCloseThunk({
         countryISO: financialData.General.CountryISO,
@@ -216,13 +212,7 @@ const Valuation = ({ data }) => {
         },
       }),
     );
-  }, [
-    dateOfValuation,
-    dispatch,
-    ticker,
-    financialData.General.CountryISO,
-    financialData,
-  ]);
+  }, [dateOfValuation, dispatch, ticker, financialData.General.CountryISO]);
 
   const marginOfSafety =
     (estimatedValuePerShare - price) / estimatedValuePerShare;
