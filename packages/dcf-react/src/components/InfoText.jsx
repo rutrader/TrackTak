@@ -30,9 +30,9 @@ export const InfoTextCostOfCapital = () => {
         investment with zero risk.
       </Box>
       <Box>
-        <b>Country Equity Risk Premium</b> - Defined as the additional returns
-        expected by the investor in order to assume the risk of investing in
-        foreign markets as compared to the domestic country. This is set to the
+        <b>Equity Risk Premium</b> - Defined as the additional returns expected
+        by the investor in order to assume the risk of investing in foreign
+        markets as compared to the domestic country. This is set to the
         companies operating country.
       </Box>
       <Box>
