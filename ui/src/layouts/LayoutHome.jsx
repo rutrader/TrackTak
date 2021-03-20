@@ -1,14 +1,12 @@
 import { Container } from "@material-ui/core";
 import React from "react";
 import Header from "../components/Header";
-import Footer from "../landingPage/Footer";
 
 const LayoutHome = ({ children }) => {
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="xl">
       <Header hideSearch />
       {children}
-      {/* <Footer /> */}
     </Container>
   );
 };

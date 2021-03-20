@@ -17,28 +17,20 @@ import SearchTicker from "../components/SearchTicker";
 import { AnchorLink } from "gatsby-plugin-anchor-links";
 import PurpleBackground from "../assets/purple-background.svg";
 import styled from "styled-components";
+import { graphql, useStaticQuery } from "gatsby";
+import Img from "gatsby-image";
 
-const useStyles = makeStyles((theme) => ({
-  laptopImage: {
-    visibility: "visible",
-    animationDuration: "1.3s",
-    animationDelay: "0.4s",
-    animationName: "fadeInRight",
-    position: "absolute",
-    top: -178,
-    left: -142,
-    zIndex: 0,
-  },
+const useStyles = makeStyles({
   gridDot: {
-    top: 147,
     zIndex: -1,
     position: "absolute",
-    left: -139,
+    left: 0,
+    bottom: 0,
   },
-}));
+});
 
 const CustomButton = withStyles({
-  root: ({ isOnMobile }) => {
+  root: ({ smDown }) => {
     const values = {
       textTransform: "none",
       fontWeight: 600,
@@ -53,7 +45,7 @@ const CustomButton = withStyles({
       animationName: "fadeInUp",
     };
 
-    if (isOnMobile) {
+    if (smDown) {
       return {
         ...values,
         display: "flex",
@@ -87,7 +79,7 @@ const ButtonChevron = withStyles((theme) => ({
 
 const TypographyHeader = withStyles({
   root: {
-    // fontSize: ({ isOnMobile }) => (isOnMobile ? 30 : 55),
+    // fontSize: ({ smDown }) => (smDown ? 30 : 55),
     // lineHeight: "65px",
     marginBottom: "20px",
     fontWeight: 800,
@@ -110,7 +102,7 @@ const TypographyText = withStyles({
     animationName: "fadeInLeft",
     flexGrow: 0,
     flexShrink: 0,
-    flexBasis: ({ isOnMobile }) => (isOnMobile ? "100%" : "30%"),
+    flexBasis: ({ smDown }) => (smDown ? "100%" : "30%"),
   },
 })(Typography);
 
@@ -136,11 +128,25 @@ const Background = styled(PurpleBackground)`
 `;
 
 const SearchSection = () => {
+  const data = useStaticQuery(graphql`
+    query {
+      file(relativePath: { eq: "laptop.png" }) {
+        childImageSharp {
+          fluid(maxWidth: 820) {
+            ...GatsbyImageSharpFluid
+          }
+        }
+      }
+    }
+  `);
   const classes = useStyles();
   const theme = useTheme();
 
   const [showScroll, setShowScroll] = useState(false);
-  const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
+  const sixteen50Down = useMediaQuery(theme.breakpoints.down(1650));
+  const twelve50Down = useMediaQuery(theme.breakpoints.down(1250));
+
   const checkScrollTop = () => {
     if (window.pageYOffset > 400) {
       setShowScroll(true);
@@ -155,40 +161,64 @@ const SearchSection = () => {
   window.addEventListener("scroll", checkScrollTop);
 
   return (
-    <Container style={{ marginBottom: isOnMobile ? "90px" : "240px" }}>
+    <Box style={{ marginBottom: smDown ? "90px" : "240px" }}>
       <Background />
       <Box
         style={{
+          marginTop: 30,
           display: "flex",
           alignItems: "center",
           flexWrap: "wrap",
           justifyContent: "center",
-          columnGap: "2px",
           rowGap: "30px",
+          ...(!sixteen50Down
+            ? { marginLeft: 200, marginRight: 70 }
+            : undefined),
         }}
       >
-        <Box style={{ flex: 2 }}>
-          <TypographyHeader variant="h2">
-            Goodbye Excel, Hello automated Discounted Cash Flows.
+        <Box style={{ flex: "1 1 350px" }}>
+          <TypographyHeader variant="h3">
+            Goodbye Excel.
+            <Box>Hello automated Discounted Cash Flows.</Box>
           </TypographyHeader>
           <TypographyText variant="h6">
             Find a companies true intrinsic value within minutes using our free
             DCF calculator.
           </TypographyText>
-          <CustomButton
-            isOnMobile={isOnMobile}
-            component={AnchorLink}
-            to="#features"
-            variant="contained"
-          >
-            Explore Features
-          </CustomButton>
+          {twelve50Down ? (
+            <Box
+              sx={{
+                justifyContent: "center",
+                marginTop: 5,
+              }}
+            >
+              <TypographySearchText
+                style={{
+                  color: smDown ? "#313450" : "#fff",
+                }}
+                variant="h4"
+                align="center"
+                gutterBottom
+              >
+                Search for a company to begin.
+              </TypographySearchText>
+              <SearchTicker />
+            </Box>
+          ) : (
+            <CustomButton
+              smDown={smDown}
+              component={AnchorLink}
+              to="#features"
+              variant="contained"
+            >
+              Explore Features
+            </CustomButton>
+          )}
         </Box>
-        <Box style={{ flex: 1.3, position: "relative" }}>
-          <img
-            className={classes.laptopImage}
-            alt="laptopImage"
-            src={laptopImage}
+        <Box style={{ flex: "1 1 820px", maxWidth: 820, position: "relative" }}>
+          <Img
+            fluid={data.file.childImageSharp.fluid}
+            alt="Tracktak DCF Example"
           />
           <Hidden mdDown>
             <GridDots className={classes.gridDot} />
@@ -198,12 +228,12 @@ const SearchSection = () => {
       <Box
         sx={{
           justifyContent: "center",
-          marginTop: "140px",
+          marginTop: 7,
         }}
       >
         <TypographySearchText
           style={{
-            color: isOnMobile ? "#313450" : "#fff",
+            color: smDown ? "#313450" : "#fff",
           }}
           variant="h4"
           align="center"
@@ -218,7 +248,7 @@ const SearchSection = () => {
           <KeyboardArrowUpIcon fontSize="large" />
         </ButtonChevron>
       )}
-    </Container>
+    </Box>
   );
 };
 

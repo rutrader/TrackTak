@@ -6,6 +6,7 @@ import SubscribeSection from "../landingPage/SubscribeSection";
 import SearchSection from "../landingPage/SearchSection";
 import FeaturesSection from "../landingPage/FeaturesSection";
 import ProcessSection from "../landingPage/ProcessSection";
+import { Container } from "@material-ui/core";
 
 const Home = () => {
   return (
@@ -15,9 +16,12 @@ const Home = () => {
         <link rel="canonical" href={`${resourceName}`} />
       </Helmet>
       <SearchSection />
-      <FeaturesSection />
-      <ProcessSection />
-      <SubscribeSection />
+      <Container maxWidth="lg">
+        <FeaturesSection />
+        <ProcessSection />
+        <SubscribeSection />
+        {/* <Footer /> */}
+      </Container>
     </>
   );
 };
