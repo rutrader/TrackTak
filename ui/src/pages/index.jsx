@@ -1,7 +1,6 @@
 import {
   Box,
   Typography,
-  Hidden,
   useMediaQuery,
   useTheme,
   makeStyles,
@@ -11,7 +10,6 @@ import SearchTicker from "../components/SearchTicker";
 import SettingsIcon from "@material-ui/icons/Settings";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import PublicIcon from "@material-ui/icons/Public";
-import BackgroundPurple from "../assets/backgroundPurple.svg";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
@@ -106,24 +104,6 @@ const Home = () => {
         </Typography>
         <SearchTicker />
       </Box>
-      <Hidden mdDown>
-        <Box
-          style={{
-            width: "100%",
-            height: 240,
-            bottom: 0,
-            left: 0,
-            position: "absolute",
-          }}
-          zIndex={-1}
-        >
-          <BackgroundPurple
-            height="100%"
-            width="100%"
-            style={{ transform: "rotateX(180deg)" }}
-          />
-        </Box>
-      </Hidden>
     </>
   );
 };
