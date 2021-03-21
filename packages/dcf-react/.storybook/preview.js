@@ -12,6 +12,9 @@ import "@blueprintjs/table/lib/css/table.css";
 import "../src/reset.css";
 import { useEffect } from "react";
 import convertFundamentals from "../src/shared/convertFundamentals";
+import theme from "../../../ui/src/theme";
+import "@fontsource/nunito/400.css";
+import "@fontsource/nunito/600.css";
 
 const source = createMemorySource("/");
 const history = createHistory(source);
@@ -27,7 +30,7 @@ const withTracktakProvier = (story) => {
   }, []);
 
   return (
-    <TracktakProvider store={store}>
+    <TracktakProvider store={store} theme={theme}>
       <LocationProvider history={history}>
         {story({ store, history })}
       </LocationProvider>

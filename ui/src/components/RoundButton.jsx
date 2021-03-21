@@ -1,13 +1,16 @@
-import { Button } from "@material-ui/core";
+import { Button, useTheme } from "@material-ui/core";
 import React from "react";
 
-const RoundButton = ({ ...props }) => {
+const RoundButton = ({ sx, ...props }) => {
+  const theme = useTheme();
+
   return (
     <Button
       sx={{
         borderRadius: 50,
-        padding: "17px 44px",
+        padding: `${theme.spacing(2)} ${theme.spacing(5)}`,
         transition: "all .4s ease-in-out",
+        ...sx,
       }}
       {...props}
     />

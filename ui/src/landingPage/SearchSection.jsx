@@ -54,12 +54,12 @@ const Search = () => {
     <>
       <Typography
         fontWeight={700}
-        variant="h5"
+        variant="h4"
         align="center"
         gutterBottom
         color="white"
       >
-        Search for a company to begin.
+        Value a company.
       </Typography>
       <SearchTicker />
     </>
@@ -147,11 +147,7 @@ const SearchSection = (props) => {
             fontWeight={800}
             color="inherit"
           >
-            Goodbye&nbsp;
-            <Box component="del" style={{ textDecoration: "line-through" }}>
-              Excel
-            </Box>
-            .<Box>Hello automated Discounted Cash Flows.</Box>
+            Goodbye Excel.<Box>Hello automated Discounted Cash Flows.</Box>
           </Typography>
           <Typography variant="h6" color="inherit" gutterBottom>
             <Box>
@@ -178,7 +174,7 @@ const SearchSection = (props) => {
                   color="primary"
                 >
                   <Typography
-                    variant="h6"
+                    fontSize={20}
                     fontWeight={600}
                     style={{ textTransform: "none", color: "white" }}
                   >
