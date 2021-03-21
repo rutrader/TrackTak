@@ -26,6 +26,10 @@ import useInputQueryParams from "../hooks/useInputQueryParams";
 import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 
 export const pretaxCostOfDebtLabel = "Pre-tax Cost of Debt";
+export const probabilityOfFailureLabel = "Probability of Failure";
+export const proceedsAsPercentageOfBookValueLabel =
+  "Proceeds as a Percentage of Book value";
+export const weightedAverageCostOfCapitalLabel = "WACC";
 
 const OptionalTextField = withStyles({
   root: {
@@ -200,7 +204,7 @@ const OptionalInputs = () => {
           />
           {/* TODO: Attempt to automate this by default but allow this override anyway */}
           <OptionalTextField
-            label="Probability of Failure"
+            label={probabilityOfFailureLabel}
             value={inputQueryParams.probabilityOfFailure}
             onBlur={(value) => {
               setURLInput("probabilityOfFailure", value);
@@ -211,7 +215,7 @@ const OptionalInputs = () => {
           />
           {/* TODO: Add fair value option as well later */}
           <OptionalTextField
-            label="Proceeds as a Percentage of Book value"
+            label={probabilityOfFailureLabel}
             value={inputQueryParams.proceedsAsAPercentageOfBookValue}
             onBlur={(value) => {
               setURLInput("proceedsAsAPercentageOfBookValue", value);

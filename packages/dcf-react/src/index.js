@@ -23,6 +23,7 @@ export { default as CostOfCapitalResults } from "./components/CostOfCapitalResul
 export { default as BlackScholesResults } from "./components/BlackScholesResults";
 export { default as PastFundamentals } from "./components/PastFundamentals";
 export { default as CompanyOverviewStats } from "./components/CompanyOverviewStats";
+export { default as SensitivityAnalysis } from "./components/SensitivityAnalysis";
 
 export { default as FormatInputToPercent } from "./components/FormatInputToPercent";
 export { default as FormatInputToYear } from "./components/FormatInputToYear";

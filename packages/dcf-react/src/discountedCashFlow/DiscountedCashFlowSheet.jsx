@@ -17,6 +17,7 @@ import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFil
 import LazyLoad from "react-lazyload";
 import isSSR from "../shared/isSSR";
 import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
+import SensitivityAnalysis from "../components/SensitivityAnalysis";
 
 const Placeholder = () => {
   const theme = useTheme();
@@ -85,6 +86,9 @@ const DiscountedCashFlowSheet = ({ columnWidths, SubscribePopup }) => {
               here.
             </a>
           </Typography>
+        </Box>
+        <Box>
+          <SensitivityAnalysis />
         </Box>
         <Box
           sx={{
