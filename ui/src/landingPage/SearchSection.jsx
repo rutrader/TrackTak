@@ -3,7 +3,6 @@ import {
   Box,
   withStyles,
   Typography,
-  Button,
   IconButton,
   makeStyles,
   Hidden,
@@ -11,14 +10,13 @@ import {
   useTheme,
 } from "@material-ui/core";
 import GridDots from "../assets/grid-dots.svg";
-import laptopImage from "../images/laptop.png";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import SearchTicker from "../components/SearchTicker";
 import { AnchorLink } from "gatsby-plugin-anchor-links";
-import PurpleBackground from "../assets/purple-background.svg";
-import styled from "styled-components";
 import { graphql, useStaticQuery } from "gatsby";
 import Img from "gatsby-image";
+import RoundButton from "../components/RoundButton";
+import BackgroundImage from "gatsby-background-image";
 
 const useStyles = makeStyles({
   gridDot: {
@@ -29,45 +27,19 @@ const useStyles = makeStyles({
   },
 });
 
-const CustomButton = withStyles({
-  root: ({ smDown }) => {
-    const values = {
-      textTransform: "none",
-      fontWeight: 600,
-      padding: "17px 44px",
-      fontSize: "20px",
-      borderRadius: "50px",
-      transition: "all .4s ease-in-out",
-      background: "#43cea2",
-      visibility: "visible",
-      animationDuration: "1.3s",
-      animationDelay: "0.8s",
-      animationName: "fadeInUp",
-    };
-
-    if (smDown) {
-      return {
-        ...values,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      };
-    }
-
-    return values;
-  },
-})(Button);
-
 const ButtonChevron = withStyles((theme) => ({
   root: {
+    "&:hover": {
+      background: theme.palette.primary.dark,
+    },
     width: "45px",
     height: "45px",
-    background: "#43cea2",
+    background: theme.palette.primary.main,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     fontSize: "18px",
-    color: "#fff",
+    color: "white",
     borderRadius: "5px",
     position: "fixed",
     bottom: "30px",
@@ -77,63 +49,37 @@ const ButtonChevron = withStyles((theme) => ({
   },
 }))(IconButton);
 
-const TypographyHeader = withStyles({
-  root: {
-    // fontSize: ({ smDown }) => (smDown ? 30 : 55),
-    // lineHeight: "65px",
-    marginBottom: "20px",
-    fontWeight: 800,
-    color: "#fff",
-    visibility: "visible",
-    animationDuration: "1.3s",
-    animationDelay: "0.4s",
-    animationName: "fadeInDown",
-  },
-})(Typography);
-
-const TypographyText = withStyles({
-  root: {
-    marginBottom: "25px",
-    color: "#fff",
-    paddingRight: "30px",
-    visibility: "visible",
-    animationDuration: "1.3s",
-    animationDelay: "0.6s",
-    animationName: "fadeInLeft",
-    flexGrow: 0,
-    flexShrink: 0,
-    flexBasis: ({ smDown }) => (smDown ? "100%" : "30%"),
-  },
-})(Typography);
-
-const TypographySearchText = withStyles({
-  root: {
-    fontWeight: 700,
-    lineHeight: "28px",
-    color: "#fff",
-  },
-})(Typography);
-
-const Container = styled(Box)`
-  margin-top: 30px;
-  width: 100%;
-  height: 100%;
-`;
-
-const Background = styled(PurpleBackground)`
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: -1;
-`;
+const Search = () => {
+  return (
+    <>
+      <Typography
+        fontWeight={700}
+        variant="h4"
+        align="center"
+        gutterBottom
+        color="white"
+      >
+        Search for a company to begin.
+      </Typography>
+      <SearchTicker />
+    </>
+  );
+};
 
 const SearchSection = () => {
   const data = useStaticQuery(graphql`
     query {
-      file(relativePath: { eq: "laptop.png" }) {
+      laptop: file(relativePath: { eq: "laptop.png" }) {
         childImageSharp {
           fluid(maxWidth: 820) {
-            ...GatsbyImageSharpFluid
+            ...GatsbyImageSharpFluid_withWebp
+          }
+        }
+      }
+      background: file(relativePath: { eq: "purple-background.png" }) {
+        childImageSharp {
+          fluid(quality: 90, maxWidth: 1920) {
+            ...GatsbyImageSharpFluid_withWebp
           }
         }
       }
@@ -143,7 +89,6 @@ const SearchSection = () => {
   const theme = useTheme();
 
   const [showScroll, setShowScroll] = useState(false);
-  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
   const sixteen50Down = useMediaQuery(theme.breakpoints.down(1650));
   const twelve50Down = useMediaQuery(theme.breakpoints.down(1250));
 
@@ -161,63 +106,86 @@ const SearchSection = () => {
   window.addEventListener("scroll", checkScrollTop);
 
   return (
-    <Box style={{ marginBottom: smDown ? "90px" : "240px" }}>
-      <Background />
-      <Box
+    <Box
+      sx={{
+        height: "853px",
+        mb: 2,
+        ...(sixteen50Down ? undefined : { ml: 25, mr: 25 }),
+      }}
+    >
+      <BackgroundImage
+        fluid={data.background.childImageSharp.fluid}
         style={{
-          marginTop: 30,
+          width: "100%",
+          height: "100%",
+          backgroundPosition: "center center",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          zIndex: -1,
+          top: 0,
+          left: 0,
+          position: "absolute",
+        }}
+      />
+      <Box
+        sx={{
           display: "flex",
           alignItems: "center",
           flexWrap: "wrap",
           justifyContent: "center",
           rowGap: "30px",
-          ...(!sixteen50Down
-            ? { marginLeft: 200, marginRight: 70 }
-            : undefined),
+          mb: 4,
         }}
       >
-        <Box style={{ flex: "1 1 350px" }}>
-          <TypographyHeader variant="h3">
+        <Box sx={{ flex: "1 1 350px", color: "white" }}>
+          <Typography
+            variant="h3"
+            gutterBottom
+            fontWeight={800}
+            color="inherit"
+          >
             Goodbye Excel.
             <Box>Hello automated Discounted Cash Flows.</Box>
-          </TypographyHeader>
-          <TypographyText variant="h6">
+          </Typography>
+          <Typography variant="h6" color="inherit" gutterBottom>
             Find a companies true intrinsic value within minutes using our free
             DCF calculator.
-          </TypographyText>
-          {twelve50Down ? (
-            <Box
-              sx={{
-                justifyContent: "center",
-                marginTop: 5,
-              }}
-            >
-              <TypographySearchText
-                style={{
-                  color: smDown ? "#313450" : "#fff",
-                }}
-                variant="h4"
-                align="center"
-                gutterBottom
+          </Typography>
+          <Box
+            sx={{
+              mt: 4,
+            }}
+          >
+            {twelve50Down ? (
+              <Search />
+            ) : (
+              <RoundButton
+                component={AnchorLink}
+                to="#features"
+                variant="contained"
+                color="primary"
               >
-                Search for a company to begin.
-              </TypographySearchText>
-              <SearchTicker />
-            </Box>
-          ) : (
-            <CustomButton
-              smDown={smDown}
-              component={AnchorLink}
-              to="#features"
-              variant="contained"
-            >
-              Explore Features
-            </CustomButton>
-          )}
+                <Typography
+                  variant="h6"
+                  fontWeight={600}
+                  style={{ textTransform: "none", color: "white" }}
+                >
+                  Explore Features
+                </Typography>
+              </RoundButton>
+            )}
+          </Box>
         </Box>
-        <Box style={{ flex: "1 1 820px", maxWidth: 820, position: "relative" }}>
+        <Box
+          sx={{
+            flex: "1 1 820px",
+            maxWidth: 820,
+            position: "relative",
+            mr: sixteen50Down ? undefined : -16.25,
+          }}
+        >
           <Img
-            fluid={data.file.childImageSharp.fluid}
+            fluid={data.laptop.childImageSharp.fluid}
             alt="Tracktak DCF Example"
           />
           <Hidden mdDown>
@@ -225,24 +193,7 @@ const SearchSection = () => {
           </Hidden>
         </Box>
       </Box>
-      <Box
-        sx={{
-          justifyContent: "center",
-          marginTop: 7,
-        }}
-      >
-        <TypographySearchText
-          style={{
-            color: smDown ? "#313450" : "#fff",
-          }}
-          variant="h4"
-          align="center"
-          gutterBottom
-        >
-          Search for a company to begin.
-        </TypographySearchText>
-        <SearchTicker />
-      </Box>
+      {!twelve50Down && <Search />}
       {showScroll && (
         <ButtonChevron onClick={scrollTop}>
           <KeyboardArrowUpIcon fontSize="large" />

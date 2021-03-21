@@ -1,15 +1,28 @@
-import { Box, Typography } from "@material-ui/core";
+import { Box, Hidden, Typography } from "@material-ui/core";
 import { Link } from "gatsby";
 import React from "react";
 import TracktakLogoSvg from "../assets/tracktak-purple.svg";
+import TracktakLogoSmallSvg from "../assets/tracktak-logo-small.svg";
 
 const TracktakLogo = ({ width, height, logoProps, ...props }) => {
   return (
-    <Box {...props} sx={{ ...props.sx, display: "flex", alignItems: "center" }}>
-      <Link to="/">
-        <TracktakLogoSvg {...logoProps} />
+    <Box {...props}>
+      <Link
+        to="/"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          height: 40,
+        }}
+      >
+        <Hidden mdDown>
+          <TracktakLogoSvg {...logoProps} />
+        </Hidden>
+        <Hidden mdUp>
+          <TracktakLogoSmallSvg />
+        </Hidden>
+        <Typography color="textSecondary">beta</Typography>
       </Link>
-      <Typography color="textSecondary">beta</Typography>
     </Box>
   );
 };

@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Hidden,
+  IconButton,
   makeStyles,
   Menu,
   MenuItem,
@@ -12,13 +13,7 @@ import React, { useState } from "react";
 import { Link } from "gatsby";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchTicker from "./SearchTicker";
-import TracktakPurpleSmall from "../assets/tracktak-purple.svg";
 import TracktakLogo from "./TracktakLogo";
-
-const leftLinks = [
-  { to: "/stock-valuations", text: "Valuations" },
-  { to: "/how-to-do-a-dcf", text: "Documentation" },
-];
 
 const rightLinks = [
   { to: "/how-to-do-a-dcf", text: "Documentation" },
@@ -32,25 +27,25 @@ const rightLinks = [
 
 const allLinks = [...rightLinks];
 
-const useStyles = makeStyles((theme) => ({
-  app: {
+const useStyles = makeStyles({
+  appBar: {
     padding: "7px 25px",
     background: "#fff",
   },
-}));
+});
 
 const HeaderLink = ({ to, text, style }) => {
   return (
     <Box
-      style={{
+      sx={{
         mx: 1,
         whiteSpace: "nowrap",
-        marginRight: 18,
+        marginRight: 2.25,
         ...style,
       }}
     >
       <Button
-        style={{
+        sx={{
           textTransform: "none",
           fontSize: "16px",
           fontWeight: 600,
@@ -82,35 +77,23 @@ const Header = ({ hideSearch }) => {
 
   return (
     <>
-      <Box style={{ paddingBottom }}>
-        <AppBar className={classes.app}>
+      <Box sx={{ paddingBottom }}>
+        <AppBar className={classes.appBar}>
           <Box
-            style={{
+            sx={{
               display: "flex",
               alignItems: "left",
               justifyContent: "left",
             }}
           >
             <Box sx={{ mr: 2, display: "flex", alignItems: "center" }}>
-              <Link to="/">
-                <Hidden mdDown>
-                  <TracktakLogo />
-                </Hidden>
-                <Hidden mdUp>
-                  <TracktakPurpleSmall width={52} height={38} />
-                </Hidden>
-              </Link>
+              <TracktakLogo />
             </Box>
-            <Hidden mdDown>
-              {leftLinks.map((link) => (
-                <HeaderLink key={link.to} {...link} />
-              ))}
-            </Hidden>
             <Box
-              style={{
-                flex: "0 1 450px",
-                minWidth: "120px",
-                marginLeft: 1,
+              sx={{
+                maxWidth: "800px",
+                minWidth: "130px",
+                width: "100%",
                 marginRight: "auto",
               }}
             >
@@ -126,16 +109,17 @@ const Header = ({ hideSearch }) => {
               ))}
             </Hidden>
             <Hidden mdUp>
-              <Box
-                style={{ display: "flex", alignItems: "center", marginLeft: 2 }}
-              >
-                <Button
+              <Box sx={{ display: "flex", alignItems: "center", ml: 2.5 }}>
+                <IconButton
+                  sx={{
+                    padding: 0,
+                  }}
                   aria-controls="simple-menu"
                   aria-haspopup="true"
                   onClick={handleClick}
                 >
                   <MenuIcon color="primary" />
-                </Button>
+                </IconButton>
                 <Menu
                   id="simple-menu"
                   anchorEl={anchorEl}

@@ -4,9 +4,9 @@ import {
   IconButton,
   makeStyles,
   TextField,
+  Autocomplete,
   useMediaQuery,
   useTheme,
-  Autocomplete,
 } from "@material-ui/core";
 import { navigate } from "gatsby";
 import SearchIcon from "@material-ui/icons/Search";
@@ -21,19 +21,7 @@ const TickerTextField = withStyles((theme) => ({
     if ($isSmallSearch) {
       styles["& .MuiInputBase-root"] = {
         height: "40px",
-        padding: theme.spacing(1, 1, 1, 0),
-        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
         transition: theme.transitions.create("width"),
-        [theme.breakpoints.up("md")]: {
-          width: "40ch",
-        },
-      };
-
-      styles["& .PrivateNotchedOutline-root-17"] = {
-        top: 0,
-      };
-      styles["& .MuiOutlinedInput-inputAdornedStart"] = {
-        marginLeft: "15px",
       };
     }
 
@@ -47,27 +35,14 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "50px",
     fontSize: "18px",
     padding: theme.spacing(1, 1, 1, 2),
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create("width"),
-    [theme.breakpoints.up("md")]: {
-      width: "90ch",
-    },
-  },
-  search: {
-    position: "relative",
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(3),
-      width: "auto",
-    },
   },
 }));
 
 const SubmitButton = withStyles({
   root: {
-    borderRadius: 0,
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
     position: "absolute",
     right: 0,
     height: "100%",
@@ -76,11 +51,11 @@ const SubmitButton = withStyles({
 
 const SearchTicker = ({ isSmallSearch }) => {
   const classes = useStyles();
-  const theme = useTheme();
   const [ticker, setTicker] = useState("");
+  const theme = useTheme();
   const [autoComplete, setAutoComplete] = useState([]);
-  const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [isLoadingAutocomplete, setIsLoadingAutocomplete] = useState(false);
+  const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [text, setText] = useState("");
   const getAutoCompleteDebounced = useDebouncedCallback(async (value) => {
     const { data } = await getAutocompleteQuery(`${value}?limit=9&type=stock`);
@@ -126,7 +101,7 @@ const SearchTicker = ({ isSmallSearch }) => {
       }}
     >
       <Autocomplete
-        style={{ flex: 1, marginLeft: "10px" }}
+        style={{ flex: 1 }}
         open={text.length > 0}
         onChange={handleOnChangeAutoComplete}
         getOptionLabel={({ name, code, exchange }) => {
@@ -156,9 +131,7 @@ const SearchTicker = ({ isSmallSearch }) => {
           return (
             <>
               <TickerTextField
-                className={classes.search}
                 {...params}
-                style={{ display: "flex", alignItems: "center" }}
                 $isSmallSearch={isSmallSearch}
                 variant="outlined"
                 fullWidth
