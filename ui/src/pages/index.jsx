@@ -5,8 +5,20 @@ import resourceName from "../shared/resourceName";
 import SubscribeSection from "../landingPage/SubscribeSection";
 import SearchSection from "../landingPage/SearchSection";
 import FeaturesSection from "../landingPage/FeaturesSection";
-import ProcessSection from "../landingPage/ProcessSection";
-import { Container } from "@material-ui/core";
+// import ProcessSection from "../landingPage/ProcessSection";
+import { Box, Container } from "@material-ui/core";
+
+const Section = ({ sx, ...props }) => {
+  return (
+    <Box
+      sx={{
+        paddingBottom: 8.75,
+        ...sx,
+      }}
+      {...props}
+    />
+  );
+};
 
 const Home = () => {
   return (
@@ -15,10 +27,12 @@ const Home = () => {
         <title>{getTitle("Discounted Cash Flow (DCF) Calculator")}</title>
         <link rel="canonical" href={`${resourceName}`} />
       </Helmet>
-      <SearchSection />
+      <SearchSection sx={{ mb: 2 }} />
       <Container maxWidth="lg">
-        <FeaturesSection />
-        <ProcessSection />
+        <Section>
+          <FeaturesSection />
+        </Section>
+        {/* <ProcessSection /> */}
         <SubscribeSection />
         {/* <Footer /> */}
       </Container>

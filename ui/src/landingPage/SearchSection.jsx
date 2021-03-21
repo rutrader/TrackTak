@@ -54,7 +54,7 @@ const Search = () => {
     <>
       <Typography
         fontWeight={700}
-        variant="h4"
+        variant="h5"
         align="center"
         gutterBottom
         color="white"
@@ -66,7 +66,7 @@ const Search = () => {
   );
 };
 
-const SearchSection = () => {
+const SearchSection = (props) => {
   const data = useStaticQuery(graphql`
     query {
       laptop: file(relativePath: { eq: "laptop.png" }) {
@@ -89,6 +89,7 @@ const SearchSection = () => {
   const theme = useTheme();
 
   const [showScroll, setShowScroll] = useState(false);
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const sixteen50Down = useMediaQuery(theme.breakpoints.down(1650));
   const twelve50Down = useMediaQuery(theme.breakpoints.down(1250));
 
@@ -107,9 +108,10 @@ const SearchSection = () => {
 
   return (
     <Box
+      {...props}
       sx={{
+        ...props.sx,
         height: "853px",
-        mb: 2,
         ...(sixteen50Down ? undefined : { ml: 25, mr: 25 }),
       }}
     >
@@ -118,6 +120,7 @@ const SearchSection = () => {
         style={{
           width: "100%",
           height: "100%",
+          minHeight: "937px",
           backgroundPosition: "center center",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
@@ -133,8 +136,8 @@ const SearchSection = () => {
           alignItems: "center",
           flexWrap: "wrap",
           justifyContent: "center",
-          rowGap: "30px",
-          mb: 4,
+          rowGap: "16px",
+          mb: 8,
         }}
       >
         <Box sx={{ flex: "1 1 350px", color: "white" }}>
@@ -144,35 +147,45 @@ const SearchSection = () => {
             fontWeight={800}
             color="inherit"
           >
-            Goodbye Excel.
-            <Box>Hello automated Discounted Cash Flows.</Box>
+            Goodbye&nbsp;
+            <Box component="del" style={{ textDecoration: "line-through" }}>
+              Excel
+            </Box>
+            .<Box>Hello automated Discounted Cash Flows.</Box>
           </Typography>
           <Typography variant="h6" color="inherit" gutterBottom>
-            Find a companies true intrinsic value within minutes using our free
-            DCF calculator.
+            <Box>
+              Excel is no longer suitable to provide detailed intrinsic
+              valuation models.
+            </Box>
+            <Box>
+              It's difficult to integrate third party financial API's and tools
+              such as Monte Carlo simulations.
+            </Box>
           </Typography>
-          <Box
-            sx={{
-              mt: 4,
-            }}
-          >
+          <Typography variant="h6" fontWeight={800} gutterBottom>
+            <Box sx={{ mt: 1.5 }}>We've solved that problem.</Box>
+          </Typography>
+          <Box sx={{ my: isMobile ? 4 : 0 }}>
             {twelve50Down ? (
               <Search />
             ) : (
-              <RoundButton
-                component={AnchorLink}
-                to="#features"
-                variant="contained"
-                color="primary"
-              >
-                <Typography
-                  variant="h6"
-                  fontWeight={600}
-                  style={{ textTransform: "none", color: "white" }}
+              <Box sx={{ mt: 2 }}>
+                <RoundButton
+                  component={AnchorLink}
+                  to="#features"
+                  variant="contained"
+                  color="primary"
                 >
-                  Explore Features
-                </Typography>
-              </RoundButton>
+                  <Typography
+                    variant="h6"
+                    fontWeight={600}
+                    style={{ textTransform: "none", color: "white" }}
+                  >
+                    Explore Features
+                  </Typography>
+                </RoundButton>
+              </Box>
             )}
           </Box>
         </Box>
