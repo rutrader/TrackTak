@@ -149,7 +149,7 @@ const OptionalInputs = () => {
       children: (
         <React.Fragment>
           <OptionalTextField
-            label="Employee Options Oustanding"
+            label="Employee Options Outstanding"
             value={inputQueryParams.numberOfEmployeeOptionsOutstanding}
             onBlur={(value) => {
               setURLInput("numberOfEmployeeOptionsOutstanding", value);
