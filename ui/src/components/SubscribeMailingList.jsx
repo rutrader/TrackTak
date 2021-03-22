@@ -48,7 +48,7 @@ const SubscribeMailingList = ({
         }}
       />
       <RoundButton variant="contained" type="submit">
-        <Typography fontSize={20} fontWeight={600}>
+        <Typography fontSize={20} sx={{ textTransform: "none" }}>
           {subscribeText}
         </Typography>
       </RoundButton>

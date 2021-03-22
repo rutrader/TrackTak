@@ -4,7 +4,7 @@ import SubscribeMailingList from "../components/SubscribeMailingList";
 
 const Header = withStyles({
   root: {
-    fontWeight: 700,
+    fontWeight: "bold",
     color: "#fff",
     animationDuration: "1.3s",
     animationDelay: "0.4s",
@@ -85,7 +85,7 @@ const SubscribeSection = () => {
   const classes = useStyles();
 
   return (
-    <Box className={classes.subscribeWrapper}>
+    <Box sx={{ mt: 15 }} className={classes.subscribeWrapper}>
       <Box className={classes.shapeOne} />
       <Box className={classes.shapeTwo} />
       <Box className={classes.row}>

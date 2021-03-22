@@ -28,7 +28,9 @@ const Home = () => {
         <title>{getTitle("Discounted Cash Flow (DCF) Calculator")}</title>
         <link rel="canonical" href={`${resourceName}`} />
       </Helmet>
-      <SearchSection sx={{ mb: 2 }} />
+      <Section>
+        <SearchSection />
+      </Section>
       <Container maxWidth="lg">
         <Section>
           <FeaturesSection />

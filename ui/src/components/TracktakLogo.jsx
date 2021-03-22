@@ -21,7 +21,9 @@ const TracktakLogo = ({ width, height, logoProps, ...props }) => {
         <Hidden mdUp>
           <TracktakLogoSmallSvg />
         </Hidden>
-        <Typography color="textSecondary">beta</Typography>
+        <Box sx={{ ml: 0.35 }}>
+          <Typography color="textSecondary">beta</Typography>
+        </Box>
       </Link>
     </Box>
   );

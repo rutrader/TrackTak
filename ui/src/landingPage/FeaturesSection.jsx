@@ -72,7 +72,7 @@ const Header = withStyles((theme) => ({
     visibility: "visible",
     animationDelay: "0.4s",
     animationName: "fadeInUp",
-    fontWeight: 700,
+    fontWeight: "bold",
     color: "#313450",
     marginBottom: theme.spacing(2),
   },
@@ -92,7 +92,8 @@ const FeatureHeader = withStyles((theme) => ({
     animationDelay: "0.4s",
     animationName: "fadeInUp",
     fontSize: "25px",
-    fontWeight: 700,
+    color: "#313450",
+    fontWeight: "bold",
     marginBottom: theme.spacing(2),
   },
 }))(Typography);
@@ -117,7 +118,7 @@ const FeaturesSection = () => {
           textAlign: "center",
         }}
       >
-        <SubHeader color="primary" fontSize={25} fontWeight={600} gutterBottom>
+        <SubHeader color="primary" fontSize={25} fontWeight="bold" gutterBottom>
           Our Core
         </SubHeader>
         <Header variant="h3">Features</Header>

@@ -70,7 +70,7 @@ const TypographyHeader = withStyles({
     visibility: "visible",
     animationDelay: "0.4s",
     animationName: "fadeInUp",
-    fontWeight: 700,
+    fontWeight: "bold",
     color: "#313450",
     marginBottom: "15px",
   },
@@ -79,7 +79,7 @@ const TypographyHeader = withStyles({
 const TypographySubHeader = withStyles({
   root: {
     fontSize: "25px",
-    fontWeight: 600,
+    fontWeight: "bold",
     display: "block",
     color: "#43cea2",
     marginBottom: "12px",
@@ -101,7 +101,7 @@ const TypographyText = withStyles({
 const TypographyStepHeader = withStyles({
   root: {
     fontSize: "25px",
-    fontWeight: 700,
+    fontWeight: "bold",
     color: "#313450",
     display: "block",
     paddingTop: "10px",
@@ -112,7 +112,7 @@ const TypographyStepHeader = withStyles({
 const TypographyNumber = withStyles({
   root: {
     fontSize: "25px",
-    fontWeight: 700,
+    fontWeight: "bold",
     color: "#fff",
   },
 })(Typography);

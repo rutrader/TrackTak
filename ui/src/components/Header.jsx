@@ -48,7 +48,7 @@ const HeaderLink = ({ to, text, style }) => {
         sx={{
           textTransform: "none",
           fontSize: "16px",
-          fontWeight: 600,
+          fontWeight: "bold",
           color: "#313450",
         }}
         to={to}

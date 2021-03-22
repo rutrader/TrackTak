@@ -52,13 +52,7 @@ const ButtonChevron = withStyles((theme) => ({
 const Search = () => {
   return (
     <>
-      <Typography
-        fontWeight={700}
-        variant="h4"
-        align="center"
-        gutterBottom
-        color="white"
-      >
+      <Typography variant="h4" align="center" gutterBottom color="white">
         Search for a company to begin.
       </Typography>
       <SearchTicker />
@@ -159,8 +153,14 @@ const SearchSection = (props) => {
               such as Monte Carlo simulations.
             </Box>
           </Typography>
-          <Typography variant="h6" fontWeight={800} gutterBottom>
-            <Box sx={{ mt: 1.5 }}>We've solved that problem.</Box>
+          <Typography variant="h6" gutterBottom>
+            <Box sx={{ mt: 1.5 }}>
+              We've{" "}
+              <Box component="span" color={theme.palette.primary.main}>
+                solved
+              </Box>{" "}
+              that problem.
+            </Box>
           </Typography>
           <Box sx={{ my: isMobile ? 4 : 0 }}>
             {twelve50Down ? (
@@ -175,8 +175,7 @@ const SearchSection = (props) => {
                 >
                   <Typography
                     fontSize={20}
-                    fontWeight={600}
-                    style={{ textTransform: "none", color: "white" }}
+                    sx={{ textTransform: "none", color: "white" }}
                   >
                     Explore Features
                   </Typography>
