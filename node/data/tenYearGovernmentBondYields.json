@@ -1,0 +1,130 @@
+[
+  {
+    "country": "Argentina",
+    "yield": 46.088
+  },
+  {
+    "country": "Austria",
+    "yield": -0.085
+  },
+  {
+    "country": "Belgium",
+    "yield": 0.02
+  },
+  {
+    "country": "Chile",
+    "yield": 3.41
+  },
+  {
+    "country": "Croatia",
+    "yield": 0.702
+  },
+  {
+    "country": "Denmark",
+    "yield": 0.02
+  },
+  {
+    "country": "Estonia",
+    "yield": null
+  },
+  {
+    "country": "Finland",
+    "yield": -0.09
+  },
+  {
+    "country": "Hong Kong",
+    "yield": 1.35
+  },
+  {
+    "country": "Hungary",
+    "yield": 2.755
+  },
+  {
+    "country": "Iceland",
+    "yield": 3.572
+  },
+  {
+    "country": "Indonesia",
+    "yield": 6.887
+  },
+  {
+    "country": "Ireland",
+    "yield": 0.055
+  },
+  {
+    "country": "Israel",
+    "yield": 1.095
+  },
+  {
+    "country": "Korea",
+    "yield": 2.098
+  },
+  {
+    "country": "Latvia",
+    "yield": 0.55
+  },
+  {
+    "country": "Lithuania",
+    "yield": 0.09
+  },
+  {
+    "country": "Luxembourg",
+    "yield": 0
+  },
+  {
+    "country": "Malaysia",
+    "yield": 3.47
+  },
+  {
+    "country": "Norway",
+    "yield": 1.424
+  },
+  {
+    "country": "Pakistan",
+    "yield": 10.541
+  },
+  {
+    "country": "Peru",
+    "yield": 4.619
+  },
+  {
+    "country": "Philippines",
+    "yield": 4.676
+  },
+  {
+    "country": "Poland",
+    "yield": 1.503
+  },
+  {
+    "country": "Saudi Arabia",
+    "yield": 2.55
+  },
+  {
+    "country": "Singapore",
+    "yield": 1.588
+  },
+  {
+    "country": "South Africa",
+    "yield": 9.335
+  },
+  {
+    "country": "Sweden",
+    "yield": 0.44
+  },
+  {
+    "country": "Taiwan",
+    "yield": 0.425
+  },
+  {
+    "country": "Thailand",
+    "yield": 1.773
+  },
+  {
+    "country": "Turkey",
+    "yield": 14.105
+  },
+  {
+    "country": "Vietnam",
+    "yield": 2.382
+  }
+]

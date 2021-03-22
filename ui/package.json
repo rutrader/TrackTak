@@ -82,9 +82,10 @@
   "scripts": {
     "generate-exh-pairs": "SET NODE_ENV=development && node ./scripts/writeECBExchangePairsToJSON.js",
     "generate-fundamentals": "SET NODE_ENV=development && node ./scripts/writeBulkFundamentalsDataToJSON.js",
+    "find-missing-gbonds": "SET NODE_ENV=development && node ./scripts/findMissingGBonds.js",
     "start": "SET NODE_OPTIONS=--max_old_space_size=8192 && SET GATSBY_ENV=development && gatsby develop",
     "build": "npm run clean && SET NODE_OPTIONS=--max_old_space_size=8192 && SET GATSBY_ENV=production && gatsby build",
-    "deploy": "gatsby-plugin-s3 deploy",
+    "deploy": "npm run build && gatsby-plugin-s3 deploy",
     "serve": "gatsby serve",
     "clean": "gatsby clean"
   },

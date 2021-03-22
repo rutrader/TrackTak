@@ -29,7 +29,9 @@ const getUSFinancialData = (quarterlyIncomeStatements, convertCurrency) => {
     "incomeTaxExpense",
     pastThreeYearPeriods,
   );
-  const incomeSheetDates = [...quarterlyIncomeStatements].slice(0, 4);
+  const incomeSheetDates = [...quarterlyIncomeStatements]
+    .slice(0, 4)
+    .map(({ date }) => date);
   const incomeStatement = {
     totalRevenue: getFinancialSheetPastValues(
       quarterlyIncomeStatements,

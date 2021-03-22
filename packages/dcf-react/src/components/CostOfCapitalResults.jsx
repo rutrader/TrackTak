@@ -117,7 +117,7 @@ const CostOfCapitalResults = ({
                 value={currentEquityRiskPremiumCountry.equityRiskPremium}
               />
             }
-            label="Country Equity Risk Premium"
+            label="Equity Risk Premium"
           />
           <BoldValueLabel
             value={

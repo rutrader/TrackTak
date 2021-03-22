@@ -24,7 +24,6 @@ const SubmitButton = withStyles({
 })(IconButton);
 
 const SearchTicker = ({ isSmallSearch }) => {
-  const [ticker, setTicker] = useState("");
   const theme = useTheme();
   const [autoComplete, setAutoComplete] = useState([]);
   const [isLoadingAutocomplete, setIsLoadingAutocomplete] = useState(false);
@@ -39,8 +38,9 @@ const SearchTicker = ({ isSmallSearch }) => {
 
   const handleOnChangeAutoComplete = (_, value) => {
     if (value?.code && value?.exchange) {
-      setTicker(`${value.code}-${value.exchange}`.toLowerCase());
-      setText("");
+      const ticker = `${value.code}-${value.exchange}`.toLowerCase();
+
+      navigate(`/stock/${ticker}/discounted-cash-flow`);
     }
   };
 
@@ -62,17 +62,7 @@ const SearchTicker = ({ isSmallSearch }) => {
   }, [text]);
 
   return (
-    <Box
-      component="form"
-      sx={{ display: "flex", position: "relative" }}
-      onSubmit={async (e) => {
-        e.preventDefault();
-
-        if (ticker) {
-          navigate(`/stock/${ticker}/discounted-cash-flow`);
-        }
-      }}
-    >
+    <Box sx={{ display: "flex", position: "relative" }}>
       <Autocomplete
         style={{ flex: 1 }}
         open={text.length > 0}

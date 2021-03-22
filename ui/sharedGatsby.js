@@ -4,6 +4,7 @@ import {
   createStore,
   setFundamentals,
   fundamentalsReducer,
+  convertFundamentals,
 } from "@tracktak/dcf-react";
 import { extendedFundamentalsReducer } from "./src/redux/reducers/extendedFundamentalsReducer";
 import "./sass/blueprintTheme.scss";
@@ -27,16 +28,20 @@ export const wrapRootElement = ({ element }) => {
   );
 };
 
-export const wrapPageElement = ({ element, props }) => {
-  if (props.data) {
-    if (props.data.contentfulDcfTemplate) {
-      const parsedFinancialData = JSON.parse(
-        props.data.contentfulDcfTemplate.data.internal.content,
-      );
+let prevPath;
 
-      store.dispatch(setFundamentals(parsedFinancialData));
+export const wrapPageElement = ({ element, props: { data, path } }) => {
+  if (data && data.contentfulDcfTemplate) {
+    const parsedFinancialData = JSON.parse(
+      data.contentfulDcfTemplate.data.internal.content,
+    );
+
+    if (prevPath !== path) {
+      store.dispatch(setFundamentals(convertFundamentals(parsedFinancialData)));
     }
   }
+
+  prevPath = path;
 
   return element;
 };
