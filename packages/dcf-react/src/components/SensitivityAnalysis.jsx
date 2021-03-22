@@ -17,7 +17,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   slider: {
-    maxWidth: 800,
+    maxWidth: 400,
   },
   margin: {
     height: theme.spacing(3),
@@ -30,40 +30,8 @@ const marks = [
     label: "-50%",
   },
   {
-    value: -40,
-    label: "-40%",
-  },
-  {
-    value: -30,
-    label: "-30%",
-  },
-  {
-    value: -20,
-    label: "-20%",
-  },
-  {
-    value: -10,
-    label: "-10%",
-  },
-  {
     value: 0,
     label: "0%",
-  },
-  {
-    value: 10,
-    label: "10%",
-  },
-  {
-    value: 20,
-    label: "20%",
-  },
-  {
-    value: 30,
-    label: "30%",
-  },
-  {
-    value: 40,
-    label: "40%",
   },
   {
     value: 50,
@@ -107,39 +75,40 @@ columns.push(
   }),
 );
 
-const dataLabels = [
-  {
-    label: cagrInYearsOneToFiveLabel,
-    value: "cagrInYearsOneToFive",
-  },
-  {
-    label: ebitTargetMarginInYearTenLabel,
-    value: "ebitTargetMarginInYearTen",
-  },
-  {
-    label: yearOfConvergenceLabel,
-    value: "yearOfConvergence",
-  },
-  {
-    label: salesToCapitalRatioLabel,
-    value: "salesToCapitalRatio",
-  },
-  {
-    label: probabilityOfFailureLabel,
-    value: "probabilityOfFailure",
-  },
-  {
-    label: proceedsAsPercentageOfBookValueLabel,
-    value: "proceedsAsPercentageOfBookValue",
-  },
-  {
-    label: weightedAverageCostOfCapitalLabel,
-    value: "weightedAverageCostOfCapital",
-  },
-];
-
 const SensitivityAnalysis = () => {
   const classes = useStyles();
+
+  const dataLabels = [
+    {
+      label: cagrInYearsOneToFiveLabel,
+      value: "cagrInYearsOneToFive",
+    },
+    {
+      label: ebitTargetMarginInYearTenLabel,
+      value: "ebitTargetMarginInYearTen",
+    },
+    {
+      label: yearOfConvergenceLabel,
+      value: "yearOfConvergence",
+    },
+    {
+      label: salesToCapitalRatioLabel,
+      value: "salesToCapitalRatio",
+    },
+    {
+      label: weightedAverageCostOfCapitalLabel,
+      value: "weightedAverageCostOfCapital",
+    },
+    {
+      label: probabilityOfFailureLabel,
+      value: "probabilityOfFailure",
+    },
+    {
+      label: proceedsAsPercentageOfBookValueLabel,
+      value: "proceedsAsPercentageOfBookValue",
+    },
+  ];
+
   return (
     <Box sx={{ overflow: "auto" }}>
       <Typography variant="h5" gutterBottom>

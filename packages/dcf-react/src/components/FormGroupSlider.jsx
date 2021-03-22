@@ -1,6 +1,20 @@
 import React from "react";
-import { Checkbox, Slider, FormControlLabel } from "@material-ui/core";
+import {
+  Checkbox,
+  Slider,
+  FormControlLabel,
+  InputLabel,
+} from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
+import { textFieldRootStyles } from "../shared/utils";
+import { isNil } from "lodash";
+import useInputQueryParams from "../hooks/useInputQueryParams";
+
+const TextFieldLabel = withStyles({
+  root: {
+    ...textFieldRootStyles,
+  },
+})(InputLabel);
 
 const PrettoSlider = withStyles({
   root: {
@@ -33,29 +47,49 @@ const PrettoSlider = withStyles({
 
 const FormGroupSlider = ({ dataLabel, marks, valueText }) => {
   const [value, setValue] = React.useState([10, 40]);
+  const [checked, setChecked] = React.useState(false);
+  const [isDisabled, setIsDisabled] = React.useState(false);
+  const inputQueryParams = useInputQueryParams();
 
   const handleValueChange = (_, newValue) => {
     setValue(newValue);
   };
 
+  const handleCheckedChange = (e) => {
+    setChecked(e.target.checked);
+    setIsDisabled(e.target.checked);
+  };
+
   return (
     <React.Fragment>
       <FormControlLabel
-        control={<Checkbox key={dataLabel.value} color="primary" />}
-        label={dataLabel.label}
+        control={
+          <Checkbox
+            checked={checked}
+            onChange={handleCheckedChange}
+            color="primary"
+          />
+        }
+        label={
+          <TextFieldLabel disabled={isNil(inputQueryParams[dataLabel.value])}>
+            {dataLabel.label}
+          </TextFieldLabel>
+        }
       />
-      <PrettoSlider
-        value={value}
-        onChange={handleValueChange}
-        defaultValue={0}
-        getAriaValueText={valueText}
-        aria-labelledby="discrete-slider-custom"
-        valueLabelDisplay="auto"
-        marks={marks}
-        step={5}
-        min={-50}
-        max={50}
-      />
+      {isDisabled && (
+        <PrettoSlider
+          value={value}
+          onChange={handleValueChange}
+          defaultValue={0}
+          getAriaValueText={valueText}
+          aria-labelledby="discrete-slider-custom"
+          valueLabelDisplay="auto"
+          marks={marks}
+          step={5}
+          min={-50}
+          max={50}
+        />
+      )}
     </React.Fragment>
   );
 };
