@@ -262,7 +262,7 @@ const Valuation = ({ data }) => {
             </Box>
           </Typography>
           <SubscribeMailingList
-            subscribeText="Sign Up"
+            subscribeText="Join"
             locationSignup="Valuation"
           />
         </Box>

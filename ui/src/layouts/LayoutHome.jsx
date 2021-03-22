@@ -4,7 +4,7 @@ import Header from "../components/Header";
 
 const LayoutHome = ({ children }) => {
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="xl">
       <Header hideSearch />
       {children}
     </Container>

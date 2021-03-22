@@ -77,7 +77,7 @@ module.exports = {
     {
       resolve: "gatsby-plugin-manifest",
       options: {
-        icon: "src/assets/tracktakSmallLogo.svg",
+        icon: "src/assets/tracktak-logo-small.svg",
       },
     },
     // "gatsby-plugin-offline",

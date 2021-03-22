@@ -2,46 +2,33 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   IconButton,
-  makeStyles,
-  TextField,
+  Autocomplete,
   useMediaQuery,
   useTheme,
-  Autocomplete,
 } from "@material-ui/core";
 import { navigate } from "gatsby";
 import SearchIcon from "@material-ui/icons/Search";
 import { useDebouncedCallback } from "@tracktak/dcf-react";
 import { getAutocompleteQuery } from "../api/api";
+import { withStyles } from "@material-ui/styles";
+import TTRoundInput from "./TTRoundInput";
 
-const useStyles = makeStyles({
-  submitButton: {
-    borderRadius: 0,
+const SubmitButton = withStyles({
+  root: {
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
     position: "absolute",
     right: 0,
     height: "100%",
   },
-  tickerTextField: ({ removeInputPadding }) => {
-    const values = {};
+})(IconButton);
 
-    if (removeInputPadding) {
-      values.padding = 0;
-    }
-
-    return {
-      "& .MuiInputBase-root": {
-        ...values,
-      },
-    };
-  },
-});
-
-const SearchTicker = ({ removeInputPadding }) => {
+const SearchTicker = ({ isSmallSearch }) => {
   const theme = useTheme();
   const [autoComplete, setAutoComplete] = useState([]);
-  const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [isLoadingAutocomplete, setIsLoadingAutocomplete] = useState(false);
+  const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [text, setText] = useState("");
-  const classes = useStyles({ removeInputPadding });
   const getAutoCompleteDebounced = useDebouncedCallback(async (value) => {
     const { data } = await getAutocompleteQuery(`${value}?limit=9&type=stock`);
 
@@ -105,24 +92,32 @@ const SearchTicker = ({ removeInputPadding }) => {
         clearIcon={null}
         renderInput={(params) => {
           return (
-            <>
-              <TextField
+            <Box
+              sx={{
+                maxWidth: "850px",
+                margin: "0 auto",
+              }}
+            >
+              <TTRoundInput
                 {...params}
-                classes={{
-                  root: classes.tickerTextField,
-                }}
+                isSmallInput={isSmallSearch}
                 variant="outlined"
-                fullWidth
                 onChange={handleOnChangeSearch}
                 placeholder={isOnMobile ? "Search" : "Search, e.g. AAPL"}
+                InputProps={{
+                  ...params.InputProps,
+                  color: "secondary",
+                  startAdornment: (
+                    <SubmitButton type="submit">
+                      <SearchIcon color="primary" />
+                    </SubmitButton>
+                  ),
+                }}
               />
-            </>
+            </Box>
           );
         }}
       />
-      <IconButton type="submit" className={classes.submitButton}>
-        <SearchIcon color="primary" />
-      </IconButton>
     </Box>
   );
 };
