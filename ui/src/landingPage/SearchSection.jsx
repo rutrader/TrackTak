@@ -59,7 +59,7 @@ const Search = () => {
         gutterBottom
         color="white"
       >
-        Value a company.
+        Search for a company to begin.
       </Typography>
       <SearchTicker />
     </>

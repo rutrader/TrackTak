@@ -7,6 +7,7 @@ import SearchSection from "../landingPage/SearchSection";
 import FeaturesSection from "../landingPage/FeaturesSection";
 // import ProcessSection from "../landingPage/ProcessSection";
 import { Box, Container } from "@material-ui/core";
+import Footer from "../landingPage/Footer";
 
 const Section = ({ sx, ...props }) => {
   return (
@@ -33,8 +34,10 @@ const Home = () => {
           <FeaturesSection />
         </Section>
         {/* <ProcessSection /> */}
-        <SubscribeSection />
-        {/* <Footer /> */}
+        <Section>
+          <SubscribeSection />
+        </Section>
+        <Footer />
       </Container>
     </>
   );

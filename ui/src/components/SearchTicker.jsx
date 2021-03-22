@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   IconButton,
-  makeStyles,
-  TextField,
   Autocomplete,
   useMediaQuery,
   useTheme,
@@ -13,31 +11,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import { useDebouncedCallback } from "@tracktak/dcf-react";
 import { getAutocompleteQuery } from "../api/api";
 import { withStyles } from "@material-ui/styles";
-
-const TickerTextField = withStyles((theme) => ({
-  root: ({ $isSmallSearch }) => {
-    const styles = {};
-
-    if ($isSmallSearch) {
-      styles["& .MuiInputBase-root"] = {
-        height: "40px",
-        transition: theme.transitions.create("width"),
-      };
-    }
-
-    return styles;
-  },
-}))(TextField);
-
-const useStyles = makeStyles((theme) => ({
-  input: {
-    background: "#fff",
-    borderRadius: "50px",
-    fontSize: "18px",
-    padding: theme.spacing(1, 1, 1, 2),
-    transition: theme.transitions.create("width"),
-  },
-}));
+import TTRoundInput from "./TTRoundInput";
 
 const SubmitButton = withStyles({
   root: {
@@ -50,7 +24,6 @@ const SubmitButton = withStyles({
 })(IconButton);
 
 const SearchTicker = ({ isSmallSearch }) => {
-  const classes = useStyles();
   const [ticker, setTicker] = useState("");
   const theme = useTheme();
   const [autoComplete, setAutoComplete] = useState([]);
@@ -91,7 +64,7 @@ const SearchTicker = ({ isSmallSearch }) => {
   return (
     <Box
       component="form"
-      style={{ display: "flex", position: "relative" }}
+      sx={{ display: "flex", position: "relative" }}
       onSubmit={async (e) => {
         e.preventDefault();
 
@@ -129,18 +102,21 @@ const SearchTicker = ({ isSmallSearch }) => {
         clearIcon={null}
         renderInput={(params) => {
           return (
-            <>
-              <TickerTextField
+            <Box
+              sx={{
+                maxWidth: "850px",
+                margin: "0 auto",
+              }}
+            >
+              <TTRoundInput
                 {...params}
-                $isSmallSearch={isSmallSearch}
+                isSmallInput={isSmallSearch}
                 variant="outlined"
-                fullWidth
                 onChange={handleOnChangeSearch}
                 placeholder={isOnMobile ? "Search" : "Search, e.g. AAPL"}
                 InputProps={{
                   ...params.InputProps,
-                  className: classes.input,
-                  disableUnderline: true,
+                  color: "secondary",
                   startAdornment: (
                     <SubmitButton type="submit">
                       <SearchIcon color="primary" />
@@ -148,7 +124,7 @@ const SearchTicker = ({ isSmallSearch }) => {
                   ),
                 }}
               />
-            </>
+            </Box>
           );
         }}
       />

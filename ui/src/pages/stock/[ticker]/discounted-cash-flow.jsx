@@ -39,7 +39,7 @@ const DiscountedCashFlowPage = () => {
             Want us to implement features you need?
           </Typography>
           <SubscribeMailingList
-            subscribeText="Sign Up"
+            subscribeText="Join"
             locationSignup="Discounted Cash Flow"
           />
         </Box>
