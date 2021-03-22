@@ -93,8 +93,8 @@ const SubscribeSection = () => {
           Keep up to date
         </Header>
         <Text variant="h6" gutterBottom>
-          Join our mailing list and be notified immediately when new
-          features/valuations are released.
+          Join our mailing list and be notified immediately when new features
+          &amp; valuations are released.
         </Text>
         <SubscribeMailingList inputColor="secondary" />
       </Box>
