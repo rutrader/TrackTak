@@ -17,6 +17,7 @@ import { graphql, useStaticQuery } from "gatsby";
 import Img from "gatsby-image";
 import RoundButton from "../components/RoundButton";
 import BackgroundImage from "gatsby-background-image";
+import { useEffect } from "react";
 
 const useStyles = makeStyles({
   gridDot: {
@@ -98,7 +99,14 @@ const SearchSection = (props) => {
   const scrollTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-  window.addEventListener("scroll", checkScrollTop);
+
+  useEffect(() => {
+    window.addEventListener("scroll", checkScrollTop);
+
+    return () => {
+      window.removeEventListener("scroll", checkScrollTop);
+    };
+  }, []);
 
   return (
     <Box
