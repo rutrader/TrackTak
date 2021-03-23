@@ -13,17 +13,27 @@ import "@fontsource/nunito/400.css";
 import "@fontsource/nunito/700.css";
 import theme from "./src/theme";
 import PageSpinner from "./src/components/PageSpinner";
+import TTSnackbar from "./src/components/TTSnackbar";
+import { snackbarReducer } from "./src/redux/reducers/snackbarReducer";
+import getInitialFundamentalsData from "./src/shared/getInitialFundamentalsData";
 
-const store = createStore(undefined, {
-  fundamentals: (state, action) =>
-    extendedFundamentalsReducer(fundamentalsReducer(state, action), action),
-});
+const store = createStore(
+  {
+    fundamentals: getInitialFundamentalsData(),
+  },
+  {
+    snackbar: snackbarReducer,
+    fundamentals: (state, action) =>
+      extendedFundamentalsReducer(fundamentalsReducer(state, action), action),
+  },
+);
 
 export const wrapRootElement = ({ element }) => {
   return (
     <TracktakProvider store={store} theme={theme}>
       <PageSpinner />
       {element}
+      <TTSnackbar />
     </TracktakProvider>
   );
 };

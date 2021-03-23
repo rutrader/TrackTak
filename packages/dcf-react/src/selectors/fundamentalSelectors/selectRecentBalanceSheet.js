@@ -24,7 +24,7 @@ const selectRecentBalanceSheet = createSelector(
     recentIncomeStatement,
     isInUS,
   ) => {
-    if (!yearlyBalanceSheets.length) return null;
+    if (!yearlyBalanceSheets.length) return {};
 
     const balanceSheet = isInUS
       ? quarterlyBalanceSheets[0]

@@ -1,31 +1,36 @@
-const getInitialFundamentalsData = (General, Highlights) => {
+const getInitialFundamentalsData = () => {
+  const mostRecentQuarter = "2020-12-31";
+
   return {
-    General,
-    Highlights,
-    SharesStats: {},
-    Financials: {
-      Balance_Sheet: {
-        yearly: {
-          "2020-12-31": {},
-        },
-        quarterly: {
-          [Highlights.MostRecentQuarter]: {},
-        },
-      },
-      Cash_Flow: {
-        yearly: {
-          "2020-12-31": {},
-        },
-        quarterly: {
-          [Highlights.MostRecentQuarter]: {},
+    general: {
+      countryISO: "US",
+      gicSubIndustry: "Application Software",
+    },
+    highlights: {
+      mostRecentQuarter,
+    },
+    sharesStats: {},
+    balanceSheet: {
+      yearly: {
+        [mostRecentQuarter]: {
+          date: mostRecentQuarter,
         },
       },
-      Income_Statement: {
-        yearly: {
-          "2020-12-31": {},
+      quarterly: {
+        [mostRecentQuarter]: {
+          date: mostRecentQuarter,
         },
-        quarterly: {
-          [Highlights.MostRecentQuarter]: {},
+      },
+    },
+    incomeStatment: {
+      yearly: {
+        [mostRecentQuarter]: {
+          date: mostRecentQuarter,
+        },
+      },
+      quarterly: {
+        [mostRecentQuarter]: {
+          date: mostRecentQuarter,
         },
       },
     },

@@ -1,5 +1,5 @@
-import React from "react";
-import { Box, useTheme } from "@material-ui/core";
+import React, { useEffect } from "react";
+import { Box, useMediaQuery, useTheme } from "@material-ui/core";
 import {
   BlackScholesResults,
   CompanyOverviewStats,
@@ -15,9 +15,27 @@ import {
 } from "@tracktak/dcf-react";
 import { Link } from "gatsby";
 import SubscribePopup from "./SubscribePopup";
+import { setItem, getItem } from "../shared/guardedLocalStorage";
+import { useDispatch } from "react-redux";
+import { setMessage } from "../redux/actions/snackbarActions";
 
 const DiscountedCashFlow = () => {
   const theme = useTheme();
+  const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const snackbarShown = getItem("rotateSnackbarShown");
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!snackbarShown && isOnMobile) {
+      setItem("rotateSnackbarShown", true);
+
+      dispatch(
+        setMessage({
+          message: "Rotate your device for best viewing",
+        }),
+      );
+    }
+  }, [dispatch, isOnMobile, snackbarShown]);
 
   return (
     <React.Fragment>

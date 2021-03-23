@@ -113,7 +113,7 @@ const selectRecentIncomeStatement = createSelector(
     quarterlyIncomeStatements,
     yearlyIncomeStatements,
   ) => {
-    if (!yearlyIncomeStatements.length) return null;
+    if (!yearlyIncomeStatements.length) return {};
 
     const incomeStatement = isInUS
       ? getUSFinancialData(quarterlyIncomeStatements, convertCurrency)

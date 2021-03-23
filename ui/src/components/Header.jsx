@@ -27,13 +27,6 @@ const rightLinks = [
 
 const allLinks = [...rightLinks];
 
-const useStyles = makeStyles({
-  appBar: {
-    padding: "7px 25px",
-    background: "#fff",
-  },
-});
-
 const HeaderLink = ({ to, text, style }) => {
   return (
     <Box
@@ -61,7 +54,6 @@ const HeaderLink = ({ to, text, style }) => {
 };
 
 const Header = ({ hideSearch }) => {
-  const classes = useStyles();
   const theme = useTheme();
   const extraPadding = 20;
   const paddingBottom = `${theme.mixins.toolbar.minHeight + extraPadding}px`;
@@ -78,7 +70,13 @@ const Header = ({ hideSearch }) => {
   return (
     <>
       <Box sx={{ paddingBottom }}>
-        <AppBar className={classes.appBar}>
+        <AppBar
+          sx={{
+            py: 1,
+            px: 3,
+            background: "#fff",
+          }}
+        >
           <Box
             sx={{
               display: "flex",

@@ -19,7 +19,7 @@ const selectYearlyIncomeStatements = createSelector(
   selectConvertCurrency,
   selectSortedYearlyIncomeStatements,
   (convertCurrency, yearlyIncomeStatements) => {
-    if (!yearlyIncomeStatements.length) return null;
+    if (!yearlyIncomeStatements.length) return {};
 
     const newYearlyIncomeStatements = {};
 
