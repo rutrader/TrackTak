@@ -22,12 +22,12 @@ const SubscribePopup = () => {
 
   const handleClose = (_, reason) => {
     if (reason !== "backdropClick") {
-      setItem("subscribePopupShown", "true");
+      setItem("subscribePopupShown", true);
       setOpen(false);
     }
   };
 
-  return subscribePopupShown !== "true" && hasAllRequiredInputsFilledIn ? (
+  return !subscribePopupShown && hasAllRequiredInputsFilledIn ? (
     <Dialog
       open={open}
       fullScreen={isOnMobile}
@@ -39,7 +39,15 @@ const SubscribePopup = () => {
         <DialogContentText color="textPrimary">
           Want new features and <b>free</b> valuations immediately?
         </DialogContentText>
-        <SubscribeMailingList subscribeText="Sign Up" locationSignup="Popup" />
+        <SubscribeMailingList
+          subscribeText="Sign Up"
+          locationSignup="Popup"
+          onSubmit={(isSuccess) => {
+            if (isSuccess) {
+              setOpen(false);
+            }
+          }}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">

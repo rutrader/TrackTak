@@ -22,11 +22,3 @@ small {
 strong {
   font-weight: initial;
 }
-
-::-moz-selection {
-  background: initial;
-}
-
-::selection {
-  background: initial;
-}
