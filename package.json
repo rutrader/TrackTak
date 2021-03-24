@@ -10,8 +10,7 @@
     "lint": "eslint ./ui/src",
     "install:ui": "cd ./ui && npm install",
     "install:node": "cd ./node && npm install",
-    "postinstall": "run-p install:ui install:node",
-    "sitemap": "node ./scripts/generateSitemap.js"
+    "postinstall": "run-p install:ui install:node"
   },
   "devDependencies": {
     "@octokit/core": "^3.2.5",
