@@ -85,7 +85,7 @@ const SubscribeMailingList = ({
           InputProps={{
             color: "secondary",
           }}
-          style={{
+          sx={{
             flex: 1,
             minWidth: "170px",
           }}

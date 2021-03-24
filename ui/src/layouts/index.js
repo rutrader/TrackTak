@@ -3,6 +3,8 @@ import LayoutHome from "./LayoutHome";
 import React, { useEffect } from "react";
 import convertDotTickerToHyphen from "../shared/convertDotTickerToHyphen";
 import LayoutFullScreen from "./LayoutFullScreen";
+import TTSnackbar from "../components/TTSnackbar";
+import PageSpinner from "../components/PageSpinner";
 
 const oldStockPathRegex = /\/(discounted-cash-flow|synthetic-credit-rating|industry-averages)\/[A-Za-z0-9]+\.\w+/g;
 const oldStockValuationpathRegex = /\/(stock-valuations)\/[A-Z0-9]+\.?[A-Z]+/g;
@@ -18,6 +20,19 @@ const stockRedirect = (path) => {
 
 const valuationRedirect = () => {
   window.location.href = "/stock-valuations";
+};
+
+const Root = ({ children, pageContext, params }) => {
+  if (pageContext.layout === "home") {
+    return <LayoutHome>{children}</LayoutHome>;
+  }
+  if (pageContext.layout === "fullscreen") {
+    return (
+      <LayoutFullScreen ticker={params.ticker}>{children}</LayoutFullScreen>
+    );
+  }
+
+  return <Layout>{children}</Layout>;
 };
 
 export default ({ children, pageContext, path, params }) => {
@@ -36,14 +51,11 @@ export default ({ children, pageContext, path, params }) => {
 
   if (isStockRedirecting || isValuationRedirecting) return null;
 
-  if (pageContext.layout === "home") {
-    return <LayoutHome>{children}</LayoutHome>;
-  }
-  if (pageContext.layout === "fullscreen") {
-    return (
-      <LayoutFullScreen ticker={params.ticker}>{children}</LayoutFullScreen>
-    );
-  }
-
-  return <Layout>{children}</Layout>;
+  return (
+    <Root pageContext={pageContext} params={params}>
+      <PageSpinner />
+      {children}
+      <TTSnackbar />
+    </Root>
+  );
 };

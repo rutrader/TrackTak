@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import {
   Box,
-  withStyles,
   Typography,
   IconButton,
-  makeStyles,
   Hidden,
   useMediaQuery,
   useTheme,
@@ -18,37 +16,6 @@ import Img from "gatsby-image";
 import RoundButton from "../components/RoundButton";
 import BackgroundImage from "gatsby-background-image";
 import { useEffect } from "react";
-
-const useStyles = makeStyles({
-  gridDot: {
-    zIndex: -1,
-    position: "absolute",
-    left: 0,
-    bottom: 0,
-  },
-});
-
-const ButtonChevron = withStyles((theme) => ({
-  root: {
-    "&:hover": {
-      background: theme.palette.primary.dark,
-    },
-    width: "45px",
-    height: "45px",
-    background: theme.palette.primary.main,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    fontSize: "18px",
-    color: "white",
-    borderRadius: "5px",
-    position: "fixed",
-    bottom: "30px",
-    right: "30px",
-    transition: "all 0.3s ease-out 0s",
-    zIndex: theme.zIndex.scrollTopButton,
-  },
-}))(IconButton);
 
 const Search = () => {
   return (
@@ -80,7 +47,6 @@ const SearchSection = (props) => {
       }
     }
   `);
-  const classes = useStyles();
   const theme = useTheme();
 
   const [showScroll, setShowScroll] = useState(false);
@@ -205,15 +171,43 @@ const SearchSection = (props) => {
             alt="Tracktak DCF Example"
           />
           <Hidden mdDown>
-            <GridDots className={classes.gridDot} />
+            <GridDots
+              style={{
+                zIndex: -1,
+                position: "absolute",
+                left: 0,
+                bottom: 0,
+              }}
+            />
           </Hidden>
         </Box>
       </Box>
       {!twelve50Down && <Search />}
       {showScroll && (
-        <ButtonChevron onClick={scrollTop}>
+        <IconButton
+          sx={{
+            "&:hover": {
+              background: (theme) => theme.palette.primary.dark,
+            },
+            width: "45px",
+            height: "45px",
+            background: (theme) => theme.palette.primary.main,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            fontSize: "18px",
+            color: "white",
+            borderRadius: "5px",
+            position: "fixed",
+            bottom: "30px",
+            right: "30px",
+            transition: "all 0.3s ease-out 0s",
+            zIndex: (theme) => theme.zIndex.scrollTopButton,
+          }}
+          onClick={scrollTop}
+        >
           <KeyboardArrowUpIcon fontSize="large" />
-        </ButtonChevron>
+        </IconButton>
       )}
     </Box>
   );

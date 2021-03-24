@@ -12,28 +12,20 @@ import "@tracktak/dcf-react/dist/index.css";
 import "@fontsource/nunito/400.css";
 import "@fontsource/nunito/700.css";
 import theme from "./src/theme";
-import PageSpinner from "./src/components/PageSpinner";
-import TTSnackbar from "./src/components/TTSnackbar";
 import { snackbarReducer } from "./src/redux/reducers/snackbarReducer";
-import getInitialFundamentalsData from "./src/shared/getInitialFundamentalsData";
 
-const store = createStore(
-  {
-    fundamentals: getInitialFundamentalsData(),
-  },
-  {
-    snackbar: snackbarReducer,
-    fundamentals: (state, action) =>
-      extendedFundamentalsReducer(fundamentalsReducer(state, action), action),
-  },
-);
+const store = createStore(undefined, {
+  snackbar: snackbarReducer,
+  fundamentals: (state, action) =>
+    extendedFundamentalsReducer(fundamentalsReducer(state, action), action),
+});
 
 export const wrapRootElement = ({ element }) => {
+  // Do not put components in this function, instead put them in layout/index.js
+  // due to a gatsby/mui bug
   return (
     <TracktakProvider store={store} theme={theme}>
-      <PageSpinner />
       {element}
-      <TTSnackbar />
     </TracktakProvider>
   );
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import TTTable from "../components/TTTable";
-import { Box, makeStyles, Typography, useTheme } from "@material-ui/core";
+import { Box, Typography, useTheme } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import industryAveragesUSJson from "../data/industryAveragesUS.json";
 import industryAveragesGlobalJson from "../data/industryAveragesGlobal.json";
@@ -12,35 +12,11 @@ import selectIsInUS from "../selectors/fundamentalSelectors/selectIsInUS";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 
-const commonTableRootClasses = {
+const commonTableRootStyles = {
   "& th": {
     marginTop: "auto",
   },
 };
-
-const useUSTableClasses = makeStyles((theme) => ({
-  root: {
-    ...commonTableRootClasses,
-    "& .table_row_0": {
-      backgroundColor: ({ isInUS }) =>
-        isInUS
-          ? getTableRowBackgroundOpacity(theme.palette.primary.light)
-          : "initial",
-    },
-  },
-}));
-
-const useGlobalTableClasses = makeStyles((theme) => ({
-  root: {
-    ...commonTableRootClasses,
-    "& .table_row_0": {
-      backgroundColor: ({ isInUS }) =>
-        isInUS
-          ? "initial"
-          : getTableRowBackgroundOpacity(theme.palette.primary.light),
-    },
-  },
-}));
 
 const tableOptions = {
   defaultColumn: {
@@ -81,10 +57,6 @@ const IndustryAverages = () => {
   const theme = useTheme();
   const isInUS = useSelector(selectIsInUS);
   const currentIndustry = useSelector(selectCurrentIndustry);
-  const usTableClasses = useUSTableClasses({ isInUS });
-  const globalTableClasses = useGlobalTableClasses({
-    isInUS,
-  });
 
   const industryAveragesSortComparer = getIndustryAveragesSortComparer(
     currentIndustry.industryName,
@@ -124,9 +96,19 @@ const IndustryAverages = () => {
             <Typography variant="h6">United States</Typography>
             <SubSection>
               <TTTable
+                sx={{
+                  ...commonTableRootStyles,
+                  "& .table_row_0": {
+                    backgroundColor: (theme) =>
+                      isInUS
+                        ? getTableRowBackgroundOpacity(
+                            theme.palette.primary.light,
+                          )
+                        : "initial",
+                  },
+                }}
                 columns={industryAveragesColumns}
                 data={industryAveragesUS}
-                classes={usTableClasses}
                 tableOptions={tableOptions}
                 useVirtualization
                 fixedSizeListProps={fixedSizeListProps}
@@ -137,9 +119,19 @@ const IndustryAverages = () => {
             <Typography variant="h6">Global</Typography>
             <SubSection>
               <TTTable
+                sx={{
+                  ...commonTableRootStyles,
+                  "& .table_row_0": {
+                    backgroundColor: (theme) =>
+                      isInUS
+                        ? getTableRowBackgroundOpacity(
+                            theme.palette.primary.light,
+                          )
+                        : "initial",
+                  },
+                }}
                 columns={industryAveragesColumns}
                 data={industryAveragesGlobal}
-                classes={globalTableClasses}
                 tableOptions={tableOptions}
                 useVirtualization
                 fixedSizeListProps={fixedSizeListProps}

@@ -50,8 +50,7 @@ export const DCFControlTypography = (props) => {
       variant="body2"
       color={hasAllRequiredInputsFilledIn ? "textPrimary" : "textSecondary"}
       whiteSpace="nowrap"
-      style={{
-        ...props.style,
+      sx={{
         cursor: "default",
       }}
       {...props}

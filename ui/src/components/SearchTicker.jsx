@@ -10,18 +10,7 @@ import { navigate } from "gatsby";
 import SearchIcon from "@material-ui/icons/Search";
 import { useDebouncedCallback } from "@tracktak/dcf-react";
 import { getAutocompleteQuery } from "../api/api";
-import { withStyles } from "@material-ui/styles";
 import TTRoundInput from "./TTRoundInput";
-
-const SubmitButton = withStyles({
-  root: {
-    borderTopLeftRadius: 0,
-    borderBottomLeftRadius: 0,
-    position: "absolute",
-    right: 0,
-    height: "100%",
-  },
-})(IconButton);
 
 const SearchTicker = ({ isSmallSearch }) => {
   const theme = useTheme();
@@ -108,9 +97,18 @@ const SearchTicker = ({ isSmallSearch }) => {
                   ...params.InputProps,
                   color: "secondary",
                   startAdornment: (
-                    <SubmitButton type="submit">
+                    <IconButton
+                      sx={{
+                        borderTopLeftRadius: 0,
+                        borderBottomLeftRadius: 0,
+                        position: "absolute",
+                        right: 0,
+                        height: "100%",
+                      }}
+                      type="submit"
+                    >
                       <SearchIcon color="primary" />
-                    </SubmitButton>
+                    </IconButton>
                   ),
                 }}
               />

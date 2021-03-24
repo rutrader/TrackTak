@@ -6,30 +6,28 @@ import {
   Box,
   Typography,
   useTheme,
-  withStyles,
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
-
-const OptionalInputAccordion = withStyles({
-  root: {
-    "&.Mui-expanded": {
-      margin: 0,
-    },
-    "& .MuiAccordionSummary-root": {
-      padding: 0,
-    },
-    "& .MuiAccordionDetails-root": {
-      padding: 0,
-    },
-  },
-})((props) => <Accordion elevation={0} {...props} />);
 
 const OptionalInput = ({ title, tooltipTextNode, children }) => {
   const theme = useTheme();
 
   return (
-    <OptionalInputAccordion>
+    <Accordion
+      sx={{
+        "&.Mui-expanded": {
+          margin: 0,
+        },
+        "& .MuiAccordionSummary-root": {
+          padding: 0,
+        },
+        "& .MuiAccordionDetails-root": {
+          padding: 0,
+        },
+      }}
+      elevation={0}
+    >
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h6">
           <InfoOutlinedIconWrapper text={tooltipTextNode}>
@@ -48,7 +46,7 @@ const OptionalInput = ({ title, tooltipTextNode, children }) => {
           {children}
         </Box>
       </AccordionDetails>
-    </OptionalInputAccordion>
+    </Accordion>
   );
 };
 

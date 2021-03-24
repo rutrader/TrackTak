@@ -5,13 +5,7 @@ import { useCallback } from "react";
 import { columns, numberOfRows } from "./cells";
 import { getColumnsBetween, startColumn } from "./utils";
 import { Cell, Column, Table } from "@blueprintjs/table";
-import {
-  Alert,
-  Box,
-  useMediaQuery,
-  useTheme,
-  makeStyles,
-} from "@material-ui/core";
+import { Alert, Box, useMediaQuery, useTheme } from "@material-ui/core";
 import useInputQueryParams from "../hooks/useInputQueryParams";
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
 import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
@@ -36,15 +30,6 @@ import {
 import { useLocation } from "@reach/router";
 import { isNil } from "lodash";
 
-const useStyles = makeStyles({
-  alertIcon: {
-    alignItems: "center",
-  },
-  alertMessage: {
-    fontSize: 18,
-  },
-});
-
 const DiscountedCashFlowTable = ({
   columnWidths,
   showFormulas,
@@ -53,7 +38,6 @@ const DiscountedCashFlowTable = ({
   const theme = useTheme();
   const location = useLocation();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const classes = useStyles();
   const cells = useSelector(selectCells);
   const dispatch = useDispatch();
   const inputQueryParams = useInputQueryParams();
@@ -312,15 +296,17 @@ const DiscountedCashFlowTable = ({
         {!hasAllRequiredInputsFilledIn && (
           <Alert
             severity="warning"
-            classes={{
-              icon: classes.alertIcon,
-              message: classes.alertMessage,
-            }}
             sx={{
               position: "absolute",
               left: "50%",
               top: "50%",
               transform: "translate(-50%, -50%)",
+              "& .MuiAlert-icon": {
+                alignItems: "center",
+              },
+              "& .MuiAlert-message": {
+                fontSize: 18,
+              },
             }}
           >
             The&nbsp;

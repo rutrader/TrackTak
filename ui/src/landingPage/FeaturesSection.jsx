@@ -1,10 +1,9 @@
-import { Box, Typography, withStyles } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import { ImCogs } from "react-icons/im";
 import { RiTimerLine } from "react-icons/ri";
 import { AiOutlineGlobal } from "react-icons/ai";
 import { BiBookOpen } from "react-icons/bi";
-import styled from "styled-components";
 
 const BoxColumnWrapper = ({ sx, ...props }) => {
   return (
@@ -20,36 +19,37 @@ const BoxColumnWrapper = ({ sx, ...props }) => {
   );
 };
 
-const IconGradient = styled(Box)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  width: 69px;
-  height: 69px;
-  border-radius: 50%;
-  color: #fff;
-  margin-left: auto;
-  margin-right: auto;
-  font-size: 28xp;
-  background-image: linear-gradient(
-    ${({ $lightColor }) => $lightColor} 0%,
-    ${({ $darkColor }) => $darkColor} 100%
-  );
-  margin-bottom: 30px;
-  &::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background-image: inherit;
-    opacity: 0.15;
-    z-index: -1;
-    transform: scale(1.3);
-    transition: all 0.3s ease-out 0s;
-  }
-`;
+const IconGradient = ({ lightColor, darkColor, ...props }) => (
+  <Box
+    {...props}
+    sx={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      position: "relative",
+      width: "69px",
+      height: "69px",
+      borderRadius: "50%",
+      color: "#fff",
+      mx: "auto",
+      fontSize: "28px",
+      backgroundImage: `linear-gradient(${lightColor} 0%, ${darkColor} 100%)`,
+      mb: "30px",
+      "&:after": {
+        content: "''",
+        position: "absolute",
+        width: "100%",
+        height: "100%",
+        borderRadius: "50%",
+        backgroundImage: "inherit",
+        opacity: 0.15,
+        zIndex: -1,
+        transform: "scale(1.3)",
+        transition: "all 0.3s ease-out 0s",
+      },
+    }}
+  />
+);
 
 const BoxIcon = ({ sx, ...props }) => {
   return (
@@ -67,45 +67,33 @@ const BoxIcon = ({ sx, ...props }) => {
   );
 };
 
-const Header = withStyles((theme) => ({
-  root: {
-    visibility: "visible",
-    animationDelay: "0.4s",
-    animationName: "fadeInUp",
-    fontWeight: "bold",
-    color: "#313450",
-    marginBottom: theme.spacing(2),
-  },
-}))(Typography);
+const FeatureHeader = (props) => (
+  <Typography
+    {...props}
+    sx={{
+      visibility: "visible",
+      animationDelay: "0.4s",
+      animationName: "fadeInUp",
+      fontSize: "25px",
+      color: "#313450",
+      fontWeight: "bold",
+      marginBottom: (theme) => theme.spacing(2),
+    }}
+  />
+);
 
-const SubHeader = withStyles({
-  root: {
-    visibility: "visible",
-    animationDelay: "0.2s",
-    animationName: "fadeInDown",
-  },
-})(Typography);
-
-const FeatureHeader = withStyles((theme) => ({
-  root: {
-    visibility: "visible",
-    animationDelay: "0.4s",
-    animationName: "fadeInUp",
-    fontSize: "25px",
-    color: "#313450",
-    fontWeight: "bold",
-    marginBottom: theme.spacing(2),
-  },
-}))(Typography);
-
-const FeatureText = withStyles({
-  root: {
-    fontSize: "18px",
-    visibility: "visible",
-    animationDelay: "0.6s",
-    animationName: "fadeInUp",
-  },
-})((props) => <Typography {...props} color="textSecondary" />);
+const FeatureText = (props) => (
+  <Typography
+    {...props}
+    sx={{
+      fontSize: "18px",
+      visibility: "visible",
+      animationDelay: "0.6s",
+      animationName: "fadeInUp",
+    }}
+    color="textSecondary"
+  />
+);
 
 const FeaturesSection = () => {
   return (
@@ -118,10 +106,32 @@ const FeaturesSection = () => {
           textAlign: "center",
         }}
       >
-        <SubHeader color="primary" fontSize={25} fontWeight="bold" gutterBottom>
+        <Typography
+          sx={{
+            visibility: "visible",
+            animationDelay: "0.2s",
+            animationName: "fadeInDown",
+          }}
+          color="primary"
+          fontSize={25}
+          fontWeight="bold"
+          gutterBottom
+        >
           Our Core
-        </SubHeader>
-        <Header variant="h3">Features</Header>
+        </Typography>
+        <Typography
+          sx={{
+            visibility: "visible",
+            animationDelay: "0.4s",
+            animationName: "fadeInUp",
+            fontWeight: "bold",
+            color: "#313450",
+            marginBottom: (theme) => theme.spacing(2),
+          }}
+          variant="h3"
+        >
+          Features
+        </Typography>
         <Typography variant="h6" color="textSecondary">
           Finding a companies intrinsic value just got a whole lot easier with
           our free DCF calculator.
@@ -136,7 +146,7 @@ const FeaturesSection = () => {
       >
         <BoxColumnWrapper>
           <BoxIcon>
-            <IconGradient $lightColor="#6240c8" $darkColor="#a145fe">
+            <IconGradient lightColor="#6240c8" darkColor="#a145fe">
               <BiBookOpen fontSize="30px" />
             </IconGradient>
             <FeatureHeader variant="h4">Fully Transparent</FeatureHeader>
@@ -147,7 +157,7 @@ const FeaturesSection = () => {
         </BoxColumnWrapper>
         <BoxColumnWrapper>
           <BoxIcon>
-            <IconGradient $lightColor="#b548f2" $darkColor="#d283fd">
+            <IconGradient lightColor="#b548f2" darkColor="#d283fd">
               <ImCogs fontSize="30px" />
             </IconGradient>
             <FeatureHeader variant="h4">Automated Inputs</FeatureHeader>
@@ -158,7 +168,7 @@ const FeaturesSection = () => {
         </BoxColumnWrapper>
         <BoxColumnWrapper>
           <BoxIcon>
-            <IconGradient $lightColor="#e44e83" $darkColor="#ffb8d1">
+            <IconGradient lightColor="#e44e83" darkColor="#ffb8d1">
               <RiTimerLine fontSize="30px" />
             </IconGradient>
             <FeatureHeader variant="h4">Saves You Time</FeatureHeader>
@@ -169,7 +179,7 @@ const FeaturesSection = () => {
         </BoxColumnWrapper>
         <BoxColumnWrapper>
           <BoxIcon>
-            <IconGradient $lightColor="#40b4f6" $darkColor="#79cefd">
+            <IconGradient lightColor="#40b4f6" darkColor="#79cefd">
               <AiOutlineGlobal fontSize="30px" />
             </IconGradient>
             <FeatureHeader variant="h4">Global</FeatureHeader>

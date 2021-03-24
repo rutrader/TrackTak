@@ -1,10 +1,4 @@
-import {
-  Box,
-  TextField,
-  Typography,
-  useTheme,
-  withStyles,
-} from "@material-ui/core";
+import { Box, TextField, Typography, useTheme } from "@material-ui/core";
 import React from "react";
 import FormatInputToPercent from "./FormatInputToPercent";
 import FormatInputToYear from "./FormatInputToYear";
@@ -17,14 +11,18 @@ import useInputQueryParams from "../hooks/useInputQueryParams";
 import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 import { useLocation } from "@reach/router";
 
-const ValueDrivingTextField = withStyles({
-  root: {
-    ...textFieldRootStyles,
-    "& .MuiFormHelperText-root": {
-      marginLeft: 0,
-    },
-  },
-})((props) => <TextField helperText="Required" {...props} />);
+const ValueDrivingTextField = (props) => (
+  <TextField
+    {...props}
+    sx={{
+      ...textFieldRootStyles,
+      "& .MuiFormHelperText-root": {
+        marginLeft: 0,
+      },
+    }}
+    helperText="Required"
+  />
+);
 
 export const cagrInYearsOneToFiveLabel = "CAGR in Years 1-5";
 export const ebitTargetMarginInYearTenLabel =

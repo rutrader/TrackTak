@@ -1,6 +1,6 @@
 import React from "react";
 import TTTable from "../components/TTTable";
-import { Box, makeStyles, Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import FormatRawNumberToMillion from "../components/FormatRawNumberToMillion";
 import BoldValueLabel from "../components/BoldValueLabel";
@@ -19,16 +19,6 @@ import getTableRowBackgroundOpacity from "../shared/getTableRowBackgroundOpacity
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
 import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 
-const useTableClasses = makeStyles((theme) => ({
-  root: ({ currentCompanyInterestIndex }) => ({
-    [`& .table_row_${currentCompanyInterestIndex}`]: {
-      backgroundColor: getTableRowBackgroundOpacity(
-        theme.palette.primary.light,
-      ),
-    },
-  }),
-}));
-
 const SyntheticCreditRating = () => {
   const currentEquityRiskPremiumCountry = useSelector(
     selectCurrentEquityRiskPremium,
@@ -41,7 +31,6 @@ const SyntheticCreditRating = () => {
   const currentCompanyInterestIndex = companiesInterestSpreads.indexOf(
     interestSpread,
   );
-  const tableClasses = useTableClasses({ currentCompanyInterestIndex });
   const syntheticRatingColumns = [
     {
       Header: (
@@ -150,7 +139,12 @@ const SyntheticCreditRating = () => {
           />
         </Box>
         <TTTable
-          classes={tableClasses}
+          sx={{
+            [`& .table_row_${currentCompanyInterestIndex}`]: {
+              backgroundColor: (theme) =>
+                getTableRowBackgroundOpacity(theme.palette.primary.light),
+            },
+          }}
           columns={syntheticRatingColumns}
           data={companiesInterestSpreads.map((companiesInterestSpread) => {
             return {

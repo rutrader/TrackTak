@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
@@ -19,32 +19,6 @@ import { navigate } from "gatsby";
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles((theme) => {
-  const top = theme.mixins.toolbar.minHeight - 2;
-
-  return {
-    root: {
-      display: "flex",
-    },
-    drawer: {
-      [theme.breakpoints.down(1550)]: {
-        width: ({ open }) => (open ? drawerWidth : "initial"),
-      },
-    },
-    drawerPaper: {
-      top,
-      width: drawerWidth,
-      height: `calc(100% - ${top}px)`,
-    },
-    menuButton: {
-      position: "fixed",
-      padding: 0,
-      left: 0,
-      top: theme.mixins.toolbar.minHeight + 10,
-    },
-  };
-});
-
 const removeNonHashableChars = (str) => {
   const newStr = replaceSpaceWithHyphen(str);
 
@@ -55,7 +29,7 @@ const Docs = () => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const classes = useStyles({ open });
+  const top = theme.mixins.toolbar.minHeight - 2;
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -69,25 +43,39 @@ const Docs = () => {
     setOpen(true);
   }, []);
 
+  console.log(theme.breakpoints.down(1550));
+
   return (
     <>
       <Helmet>
         <title>{getTitle("How to do a Discounted Cash Flow (DCF)")}</title>
         <link rel="canonical" href={`${resourceName}/how-to-do-a-dcf`} />
       </Helmet>
-      <Box className={classes.root}>
+      <Box
+        sx={{
+          display: "flex",
+          "& .MuiDrawer-root": {
+            [theme.breakpoints.down(1550)]: {
+              width: open ? drawerWidth : "initial",
+            },
+          },
+        }}
+      >
         <Drawer
-          className={classes.drawer}
           variant={isOnMobile ? "persistent" : "permanent"}
           anchor="left"
           open={open}
-          classes={{
-            paper: classes.drawerPaper,
+          PaperProps={{
+            style: {
+              top,
+              width: drawerWidth,
+              height: `calc(100% - ${top}px)`,
+            },
           }}
         >
           {isOnMobile && (
             <>
-              <Box className={classes.drawerHeader}>
+              <Box>
                 <IconButton onClick={handleDrawerClose}>
                   <ChevronLeftIcon />
                 </IconButton>
@@ -119,7 +107,12 @@ const Docs = () => {
           <IconButton
             aria-label="open drawer"
             onClick={handleDrawerOpen}
-            className={classes.menuButton}
+            sx={{
+              position: "fixed",
+              padding: 0,
+              left: 0,
+              top: (theme) => theme.mixins.toolbar.minHeight + 10,
+            }}
           >
             <ChevronRightIcon />
           </IconButton>

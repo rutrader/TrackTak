@@ -1,10 +1,4 @@
-import {
-  Box,
-  TextField,
-  Typography,
-  useTheme,
-  withStyles,
-} from "@material-ui/core";
+import { Box, TextField, Typography, useTheme } from "@material-ui/core";
 import React from "react";
 import FormatInputToYear from "./FormatInputToYear";
 import FormatInputToCurrency from "./FormatInputToCurrency";
@@ -27,11 +21,9 @@ import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 
 export const pretaxCostOfDebtLabel = "Pre-tax Cost of Debt";
 
-const OptionalTextField = withStyles({
-  root: {
-    ...textFieldRootStyles,
-  },
-})(TextField);
+const OptionalTextField = (props) => (
+  <TextField {...props} sx={textFieldRootStyles} />
+);
 
 const OptionalInputs = () => {
   const inputQueryParams = useInputQueryParams();

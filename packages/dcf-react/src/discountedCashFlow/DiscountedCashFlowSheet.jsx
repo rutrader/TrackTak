@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Typography,
-  withStyles,
-  CircularProgress,
-  useTheme,
-} from "@material-ui/core";
+import { Box, Typography, CircularProgress, useTheme } from "@material-ui/core";
 import ExportToExcel, { DCFControlTypography } from "./ExportToExcel";
 import DiscountedCashFlowTable from "./DiscountedCashFlowTable";
 import { useDispatch, useSelector } from "react-redux";
@@ -131,11 +125,14 @@ const DiscountedCashFlowSheet = ({ columnWidths, SubscribePopup }) => {
   );
 };
 
-const DCFControlLabel = withStyles({
-  root: {
-    marginLeft: 0,
-    marginRight: 0,
-  },
-})(FormControlLabel);
+const DCFControlLabel = (props) => (
+  <FormControlLabel
+    {...props}
+    sx={{
+      marginLeft: 0,
+      marginRight: 0,
+    }}
+  />
+);
 
 export default withFundamentalsLoaded(DiscountedCashFlowSheet);
