@@ -28,7 +28,7 @@ import {
   valueDrivingInputsId,
 } from "../components/ValueDrivingInputs";
 import { useLocation } from "@reach/router";
-import { isNil } from "lodash";
+import isNil from "lodash/isNil";
 
 const DiscountedCashFlowTable = ({
   columnWidths,

@@ -3,7 +3,7 @@ import selectRiskFreeRate from "./selectRiskFreeRate";
 import calculateBlackScholesModel from "../../shared/calculateBlackScholesModel";
 import selectPrice from "./selectPrice";
 import selectCurrentIndustry from "./selectCurrentIndustry";
-import { isNil } from "lodash";
+import isNil from "lodash/isNil";
 
 const selectValueOption = (inputQueryParams) =>
   createSelector(

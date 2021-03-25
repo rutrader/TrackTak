@@ -1,11 +1,12 @@
 {
   "name": "@tracktak/dcf-react",
-  "version": "1.1.17",
+  "version": "1.1.18",
   "description": "A react package that allows external websites to use our discounted cash flow calculator for https://tracktak.com",
   "author": "tracktak",
   "license": "CC BY-ND 4.0",
   "repository": "git://github.com/trackTak/tracktak-example.git",
   "main": "dist/index.js",
+  "module": "dist/index.modern.module.js",
   "source": "src/index.js",
   "engines": {
     "node": ">=12.20.1"
@@ -25,7 +26,8 @@
     "prepublish": "npm run build",
     "storybook": "cross-env NODE_ENV=development start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "clean": "rimraf ./node_modules"
+    "clean": "rimraf ./node_modules",
+    "analyze-size": "rimraf ./dist && cross-env NODE_ENV=production microbundle-crl && source-map-explorer ./dist/index.modern.module.js"
   },
   "dependencies": {
     "@blueprintjs/core": "^3.36.0",
@@ -57,12 +59,12 @@
     "xlsx": "^0.16.9"
   },
   "devDependencies": {
+    "@fontsource/nunito": "^4.2.2",
     "@storybook/addon-actions": "^6.1.17",
     "@storybook/addon-essentials": "^6.1.17",
     "@storybook/addon-links": "^6.1.17",
     "@storybook/preset-scss": "^1.0.3",
     "@storybook/react": "^6.1.17",
-    "@fontsource/nunito": "^4.2.2",
     "cross-env": "^7.0.2",
     "dotenv-flow": "^3.2.0",
     "microbundle-crl": "^0.13.10",
@@ -72,7 +74,8 @@
     "react": "^17.0.1",
     "react-dom": "17.0.1",
     "rimraf": "^3.0.2",
-    "sass-loader": "^11.0.1"
+    "sass-loader": "^11.0.1",
+    "source-map-explorer": "^2.5.2"
   },
   "optionalPeerDependencies": {
     "gatsby": "^2.32.8",

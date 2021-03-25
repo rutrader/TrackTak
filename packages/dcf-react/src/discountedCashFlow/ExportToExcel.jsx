@@ -4,7 +4,6 @@ import { getNumberOfColumns, padCellKeys } from "./utils";
 import useInputQueryParams, {
   inputQueries,
 } from "../hooks/useInputQueryParams";
-import { utils, writeFile } from "xlsx";
 import { sentenceCase } from "change-case";
 import makeFormatCellForExcelOutput, {
   costOfCapitalWorksheetName,
@@ -40,7 +39,7 @@ import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
-import { isNil } from "lodash";
+import isNil from "lodash/isNil";
 
 export const DCFControlTypography = (props) => {
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
@@ -75,7 +74,9 @@ const ExportToExcel = () => {
   const sharesOutstanding = useSelector(selectSharesOutstanding);
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
 
-  const exportToCSVOnClick = () => {
+  const exportToCSVOnClick = async () => {
+    const { utils, writeFile } = await import("xlsx/xlsx.mini");
+
     const cellKeysSorted = padCellKeys(
       Object.keys(cells).sort(sortAlphaNumeric),
     );

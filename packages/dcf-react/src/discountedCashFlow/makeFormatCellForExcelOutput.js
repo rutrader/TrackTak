@@ -1,7 +1,7 @@
 import makeFormatValueForExcelOutput from "./makeFormatValueForExcelOutput";
 import { isExpressionDependency } from "./utils";
 import replaceAll from "../shared/replaceAll";
-import { isNil } from "lodash";
+import isNil from "lodash/isNil";
 
 export const inputsWorksheetName = "Inputs";
 export const costOfCapitalWorksheetName = "Cost of Capital";

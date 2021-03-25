@@ -3,7 +3,7 @@ import { riskFreeRateCalculation } from "../../discountedCashFlow/expressionCalc
 import selectCurrentEquityRiskPremium from "./selectCurrentEquityRiskPremium";
 import selectGovernmentBondTenYearYield from "./selectGovernmentBondTenYearYield";
 import { evaluate } from "../../shared/math";
-import { isNil } from "lodash";
+import isNil from "lodash/isNil";
 
 const calculateRiskFreeRate = (
   governmentBondTenYearYield,

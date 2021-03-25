@@ -11,7 +11,7 @@ import {
 } from "../../discountedCashFlow/utils";
 import matureMarketEquityRiskPremium from "../../shared/matureMarketEquityRiskPremium";
 import { evaluate } from "../../shared/math";
-import { isNil } from "lodash";
+import isNil from "lodash/isNil";
 
 const computeExpr = (key, expr, scope) => {
   let value = null;

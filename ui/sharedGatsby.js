@@ -13,6 +13,7 @@ import "@fontsource/nunito/400.css";
 import "@fontsource/nunito/700.css";
 import theme from "./src/theme";
 import { snackbarReducer } from "./src/redux/reducers/snackbarReducer";
+import PageSpinner from "./src/components/PageSpinner";
 
 const store = createStore(undefined, {
   snackbar: snackbarReducer,
@@ -25,6 +26,7 @@ export const wrapRootElement = ({ element }) => {
   // due to a gatsby/mui bug
   return (
     <TracktakProvider store={store} theme={theme}>
+      <PageSpinner />
       {element}
     </TracktakProvider>
   );

@@ -1,5 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { isNil } from "lodash";
+import isNil from "lodash/isNil";
 import selectEstimatedCostOfDebt from "./selectEstimatedCostOfDebt";
 
 const selectPretaxCostOfDebt = (inputQueryParams) =>

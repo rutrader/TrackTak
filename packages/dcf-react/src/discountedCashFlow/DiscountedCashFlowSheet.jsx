@@ -1,12 +1,17 @@
 import React, { useState } from "react";
-import { Box, Typography, CircularProgress, useTheme } from "@material-ui/core";
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  useTheme,
+  FormControlLabel,
+  Switch,
+} from "@material-ui/core";
 import ExportToExcel, { DCFControlTypography } from "./ExportToExcel";
 import DiscountedCashFlowTable from "./DiscountedCashFlowTable";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsYoyGrowthToggled } from "../redux/actions/dcfActions";
 import selectIsYoyGrowthToggled from "../selectors/dcfSelectors/selectIsYoyGrowthToggled";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import LazyLoad from "react-lazyload";
 import isSSR from "../shared/isSSR";

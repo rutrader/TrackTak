@@ -4,7 +4,6 @@ import React, { useEffect } from "react";
 import convertDotTickerToHyphen from "../shared/convertDotTickerToHyphen";
 import LayoutFullScreen from "./LayoutFullScreen";
 import TTSnackbar from "../components/TTSnackbar";
-import PageSpinner from "../components/PageSpinner";
 
 const oldStockPathRegex = /\/(discounted-cash-flow|synthetic-credit-rating|industry-averages)\/[A-Za-z0-9]+\.\w+/g;
 const oldStockValuationpathRegex = /\/(stock-valuations)\/[A-Z0-9]+\.?[A-Z]+/g;
@@ -53,7 +52,6 @@ export default ({ children, pageContext, path, params }) => {
 
   return (
     <Root pageContext={pageContext} params={params}>
-      <PageSpinner />
       {children}
       <TTSnackbar />
     </Root>
