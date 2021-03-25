@@ -84,6 +84,7 @@ const SearchSection = (props) => {
       }}
     >
       <BackgroundImage
+        backgroundColor={theme.palette.secondary.main}
         fluid={data.background.childImageSharp.fluid}
         style={{
           width: "100%",
