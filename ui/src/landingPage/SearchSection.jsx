@@ -135,7 +135,7 @@ const SearchSection = () => {
           <Typography variant="h6" gutterBottom>
             <Box sx={{ mt: 1.5 }}>
               We've{" "}
-              <Box component="span" color={theme.palette.primary.main}>
+              <Box component="span" color={theme.palette.primary.light}>
                 solved
               </Box>{" "}
               that problem.
@@ -190,7 +190,7 @@ const SearchSection = () => {
             maxWidth: 820,
             position: "relative",
             [theme.breakpoints.up(sixteen50)]: {
-              mx: -16.25,
+              mr: -16.25,
             },
           }}
         >

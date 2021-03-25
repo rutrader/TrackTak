@@ -86,6 +86,7 @@ module.exports = {
         exclude: [`/stock/**`],
       },
     },
+    "gatsby-plugin-robots-txt",
     {
       resolve: "gatsby-plugin-manifest",
       options: {

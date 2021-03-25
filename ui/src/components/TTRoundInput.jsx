@@ -1,7 +1,7 @@
 import React from "react";
 import { TextField } from "@material-ui/core";
 
-const TTRoundInput = ({ isSmallInput, InputProps, color, sx, ...props }) => {
+const TTRoundInput = ({ isSmallInput, color, sx, ...props }) => {
   const isSecondary = color === "secondary";
   const opacity = 0.23;
 
@@ -31,10 +31,6 @@ const TTRoundInput = ({ isSmallInput, InputProps, color, sx, ...props }) => {
           paddingTop: 0,
           paddingBottom: 0,
         },
-      }}
-      InputProps={{
-        disableUnderline: true,
-        ...InputProps,
       }}
       {...props}
     />

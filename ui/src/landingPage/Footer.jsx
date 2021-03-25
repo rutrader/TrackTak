@@ -19,6 +19,7 @@ const Footer = () => {
         </Box>
         <Box>
           <IconButton
+            name="LinkedIn"
             onClick={() => {
               window.location.href = "https://linkedin.com/company/tracktak";
             }}

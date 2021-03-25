@@ -98,6 +98,7 @@ const SearchTicker = ({ isSmallSearch }) => {
                   color: "secondary",
                   startAdornment: (
                     <IconButton
+                      name="Submit Company Search"
                       sx={{
                         borderTopLeftRadius: 0,
                         borderBottomLeftRadius: 0,
