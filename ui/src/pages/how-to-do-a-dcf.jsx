@@ -8,7 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
-import { Box, ListItemText, useMediaQuery } from "@material-ui/core";
+import { Box, Hidden, ListItemText, useMediaQuery } from "@material-ui/core";
 import wikiContent from "../data/wikiContent";
 import { replaceSpaceWithHyphen } from "@tracktak/dcf-react";
 import { Helmet } from "react-helmet";
@@ -43,8 +43,6 @@ const Docs = () => {
     setOpen(true);
   }, []);
 
-  console.log(theme.breakpoints.down(1550));
-
   return (
     <>
       <Helmet>
@@ -73,37 +71,37 @@ const Docs = () => {
             },
           }}
         >
-          {isOnMobile && (
-            <>
+          <>
+            <Hidden smUp implementation="css">
               <Box>
                 <IconButton onClick={handleDrawerClose}>
                   <ChevronLeftIcon />
                 </IconButton>
               </Box>
               <Divider />
-            </>
-          )}
-          <List>
-            {wikiContent.map(({ title }) => {
-              const to = `/how-to-do-a-dcf#${removeNonHashableChars(title)}`;
+            </Hidden>
+            <List>
+              {wikiContent.map(({ title }) => {
+                const to = `/how-to-do-a-dcf#${removeNonHashableChars(title)}`;
 
-              return (
-                <ListItem
-                  key={title}
-                  component={AnchorLink}
-                  onAnchorLinkClick={() => {
-                    navigate(to);
-                  }}
-                  to={to}
-                  button
-                >
-                  <ListItemText primary={title} />
-                </ListItem>
-              );
-            })}
-          </List>
+                return (
+                  <ListItem
+                    key={title}
+                    component={AnchorLink}
+                    onAnchorLinkClick={() => {
+                      navigate(to);
+                    }}
+                    to={to}
+                    button
+                  >
+                    <ListItemText primary={title} />
+                  </ListItem>
+                );
+              })}
+            </List>
+          </>
         </Drawer>
-        {isOnMobile && (
+        <Hidden smUp implementation="css">
           <IconButton
             aria-label="open drawer"
             onClick={handleDrawerOpen}
@@ -116,7 +114,7 @@ const Docs = () => {
           >
             <ChevronRightIcon />
           </IconButton>
-        )}
+        </Hidden>
         <Box component="main">
           {wikiContent.map(({ title, text, cellsText = "" }) => {
             return (

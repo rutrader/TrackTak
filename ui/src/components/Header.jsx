@@ -96,17 +96,26 @@ const Header = ({ hideSearch }) => {
             >
               {!hideSearch && <SearchTicker isSmallSearch />}
             </Box>
-            <Hidden mdDown>
-              {rightLinks.map((link, i) => (
-                <HeaderLink
-                  key={link.to}
-                  sx={{ ml: i === 0 ? 2 : 0 }}
-                  {...link}
-                />
-              ))}
+            <Hidden mdDown implementation="css">
+              <Box sx={{ display: "flex" }}>
+                {rightLinks.map((link, i) => (
+                  <HeaderLink
+                    key={link.to}
+                    sx={{ ml: i === 0 ? 2 : 0 }}
+                    {...link}
+                  />
+                ))}
+              </Box>
             </Hidden>
-            <Hidden mdUp>
-              <Box sx={{ display: "flex", alignItems: "center", ml: 2.5 }}>
+            <Hidden mdUp implementation="css">
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  ml: 2.5,
+                  height: "100%",
+                }}
+              >
                 <IconButton
                   sx={{
                     padding: 0,

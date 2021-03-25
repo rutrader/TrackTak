@@ -15,10 +15,10 @@ const TracktakLogo = ({ width, height, logoProps, ...props }) => {
           height: 40,
         }}
       >
-        <Hidden mdDown>
+        <Hidden mdDown implementation="css">
           <TracktakLogoSvg {...logoProps} />
         </Hidden>
-        <Hidden mdUp>
+        <Hidden mdUp implementation="css">
           <TracktakLogoSmallSvg />
         </Hidden>
         <Box sx={{ ml: 0.35 }}>

@@ -4,7 +4,6 @@ import {
   Typography,
   IconButton,
   Hidden,
-  useMediaQuery,
   useTheme,
 } from "@material-ui/core";
 import GridDots from "../assets/grid-dots.svg";
@@ -28,7 +27,10 @@ const Search = () => {
   );
 };
 
-const SearchSection = (props) => {
+const sixteen50 = 1650;
+const twelve50 = 1250;
+
+const SearchSection = () => {
   const data = useStaticQuery(graphql`
     query {
       laptop: file(relativePath: { eq: "laptop.png" }) {
@@ -47,12 +49,10 @@ const SearchSection = (props) => {
       }
     }
   `);
-  const theme = useTheme();
 
+  const theme = useTheme();
   const [showScroll, setShowScroll] = useState(false);
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const sixteen50Down = useMediaQuery(theme.breakpoints.down(1650));
-  const twelve50Down = useMediaQuery(theme.breakpoints.down(1250));
+  const [showBackgroundColor, setShowBackgroundColor] = useState(true);
 
   const checkScrollTop = () => {
     if (window.pageYOffset > 400) {
@@ -68,6 +68,8 @@ const SearchSection = (props) => {
 
   useEffect(() => {
     window.addEventListener("scroll", checkScrollTop);
+    // Turn off the bg when not in SSR
+    setShowBackgroundColor(false);
 
     return () => {
       window.removeEventListener("scroll", checkScrollTop);
@@ -76,15 +78,17 @@ const SearchSection = (props) => {
 
   return (
     <Box
-      {...props}
       sx={{
-        ...props.sx,
         height: "853px",
-        ...(sixteen50Down ? undefined : { ml: 25, mr: 25 }),
+        [theme.breakpoints.up(sixteen50)]: {
+          mx: 25,
+        },
       }}
     >
       <BackgroundImage
-        backgroundColor={theme.palette.secondary.main}
+        backgroundColor={
+          showBackgroundColor ? theme.palette.secondary.light : undefined
+        }
         fluid={data.background.childImageSharp.fluid}
         style={{
           width: "100%",
@@ -137,26 +141,47 @@ const SearchSection = (props) => {
               that problem.
             </Box>
           </Typography>
-          <Box sx={{ my: isMobile ? 4 : 0 }}>
-            {twelve50Down ? (
+          <Box
+            sx={{
+              [theme.breakpoints.down("sm")]: {
+                my: 4,
+              },
+              [theme.breakpoints.up("sm")]: {
+                my: 0,
+              },
+            }}
+          >
+            <Box
+              sx={{
+                [theme.breakpoints.up(twelve50)]: {
+                  display: "none",
+                },
+              }}
+            >
               <Search />
-            ) : (
-              <Box sx={{ mt: 2 }}>
-                <RoundButton
-                  component={AnchorLink}
-                  to="#features"
-                  variant="contained"
-                  color="primary"
+            </Box>
+            <Box
+              sx={{
+                mt: 2,
+                [theme.breakpoints.down(twelve50)]: {
+                  display: "none",
+                },
+              }}
+            >
+              <RoundButton
+                component={AnchorLink}
+                to="#features"
+                variant="contained"
+                color="primary"
+              >
+                <Typography
+                  fontSize={20}
+                  sx={{ textTransform: "none", color: "white" }}
                 >
-                  <Typography
-                    fontSize={20}
-                    sx={{ textTransform: "none", color: "white" }}
-                  >
-                    Explore Features
-                  </Typography>
-                </RoundButton>
-              </Box>
-            )}
+                  Explore Features
+                </Typography>
+              </RoundButton>
+            </Box>
           </Box>
         </Box>
         <Box
@@ -164,14 +189,16 @@ const SearchSection = (props) => {
             flex: "1 1 820px",
             maxWidth: 820,
             position: "relative",
-            mr: sixteen50Down ? undefined : -16.25,
+            [theme.breakpoints.up(sixteen50)]: {
+              mx: -16.25,
+            },
           }}
         >
           <Img
             fluid={data.laptop.childImageSharp.fluid}
             alt="Tracktak DCF Example"
           />
-          <Hidden mdDown>
+          <Hidden mdDown implementation="css">
             <GridDots
               style={{
                 zIndex: -1,
@@ -183,7 +210,15 @@ const SearchSection = (props) => {
           </Hidden>
         </Box>
       </Box>
-      {!twelve50Down && <Search />}
+      <Box
+        sx={{
+          [theme.breakpoints.down(twelve50)]: {
+            display: "none",
+          },
+        }}
+      >
+        <Search />
+      </Box>
       {showScroll && (
         <IconButton
           sx={{
