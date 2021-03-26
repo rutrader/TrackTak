@@ -27,6 +27,10 @@ const Home = () => {
       <Helmet>
         <title>{getTitle("Discounted Cash Flow (DCF) Calculator")}</title>
         <link rel="canonical" href={`${resourceName}`} />
+        <meta
+          name="description"
+          content="Value a company within minutes using our DCF calculator based on Aswath Damodaran's spreadsheets."
+        />
       </Helmet>
       <Section>
         <SearchSection />

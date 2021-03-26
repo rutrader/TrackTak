@@ -20,6 +20,10 @@ const DiscountedCashFlowPage = () => {
           rel="canonical"
           href={`${resourceName}/discounted-cash-flow/${ticker}`}
         />
+        <meta
+          name="description"
+          content={`Do your own Automated DCF for ${general.name} based on Aswath Damodaran's spreadsheets.`}
+        />
       </Helmet>
       <DiscountedCashFlow />
       <Section sx={{ display: "flex", mt: 2 }}>

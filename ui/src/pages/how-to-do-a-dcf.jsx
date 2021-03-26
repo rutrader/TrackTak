@@ -48,6 +48,10 @@ const Docs = () => {
       <Helmet>
         <title>{getTitle("How to do a Discounted Cash Flow (DCF)")}</title>
         <link rel="canonical" href={`${resourceName}/how-to-do-a-dcf`} />
+        <meta
+          name="description"
+          content="Learn how to do a full DCF with projections of cash flows, terminal value and WACC."
+        />
       </Helmet>
       <Box
         sx={{

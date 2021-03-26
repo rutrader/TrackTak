@@ -23,6 +23,10 @@ const IndustryAveragesPage = () => {
           rel="canonical"
           href={`${resourceName}/industry-averages/${ticker}`}
         />
+        <meta
+          name="description"
+          content={`Industry average financial ratios compared to ${general.name}.`}
+        />
       </Helmet>
       <IndustryAverages />
     </>
