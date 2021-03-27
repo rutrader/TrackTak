@@ -10,8 +10,14 @@ import BoldValueLabel from "./BoldValueLabel";
 import FormatRawNumber from "./FormatRawNumber";
 import FormatRawNumberToMillion from "./FormatRawNumberToMillion";
 import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
+import SubSection from "../components/SubSection";
+import ShowMore from "react-show-more";
 
-const CompanyOverviewStats = ({ dateOfValuation }) => {
+const CompanyOverviewStats = ({
+  dateOfValuation,
+  extraDescription,
+  useDescriptionShowMore,
+}) => {
   const general = useSelector(selectGeneral);
   const price = useSelector(selectPrice);
   const sharesOutstanding = useSelector(selectSharesOutstanding);
@@ -19,7 +25,7 @@ const CompanyOverviewStats = ({ dateOfValuation }) => {
   const theme = useTheme();
 
   return (
-    <Box>
+    <React.Fragment>
       <Box
         sx={{
           display: "flex",
@@ -27,7 +33,6 @@ const CompanyOverviewStats = ({ dateOfValuation }) => {
           alignItems: "center",
           gridGap: theme.spacing(1.5),
           flexWrap: "wrap",
-          marginBottom: theme.spacing(1.5),
         }}
       >
         <Typography variant="h4" style={{ flex: 1 }}>
@@ -46,30 +51,42 @@ const CompanyOverviewStats = ({ dateOfValuation }) => {
       >
         {general.code}.{general.exchange}
       </Typography>
-
-      <Box sx={{ display: "flex", gap: theme.spacing(2) }}>
-        <Box>
-          <BoldValueLabel
-            value={<FormatRawNumber value={price} decimalScale={2} />}
-            label={valuationCurrencyCode}
-          />
-          <BoldValueLabel
-            value={
-              <FormatRawNumberToMillion
-                value={sharesOutstanding}
-                suffix="m"
-                decimalScale={2}
-              />
-            }
-            label={
-              <InfoOutlinedIconWrapper text="Refers to a company's total stock currently held by public investors, including share blocks held by institutional investors and restricted shares owned by the company’s officers and insiders.">
-                Shares Outstanding
-              </InfoOutlinedIconWrapper>
-            }
-          />
-        </Box>
+      <SubSection>
+        <BoldValueLabel
+          value={<FormatRawNumber value={price} decimalScale={2} />}
+          label={valuationCurrencyCode}
+        />
+        <BoldValueLabel
+          value={
+            <FormatRawNumberToMillion
+              value={sharesOutstanding}
+              suffix="m"
+              decimalScale={2}
+            />
+          }
+          label={
+            <InfoOutlinedIconWrapper text="Refers to a company's total stock currently held by public investors, including share blocks held by institutional investors and restricted shares owned by the company’s officers and insiders.">
+              Shares Outstanding
+            </InfoOutlinedIconWrapper>
+          }
+        />
+      </SubSection>
+      <Box>
+        <Typography variant="h5" gutterBottom>
+          Business Description
+        </Typography>
+        <Typography paragraph>
+          {useDescriptionShowMore ? (
+            <ShowMore lines={8} more="Show more" less="Show less">
+              {general.description}
+            </ShowMore>
+          ) : (
+            general.description
+          )}
+        </Typography>
+        {extraDescription}
       </Box>
-    </Box>
+    </React.Fragment>
   );
 };
 

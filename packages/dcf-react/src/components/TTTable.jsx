@@ -45,7 +45,7 @@ const TTTable = ({
       data,
       ...tableOptions,
     },
-    useVirtualization ? useBlockLayout : undefined
+    useVirtualization ? useBlockLayout : undefined,
   );
 
   const renderRow = useCallback(
@@ -60,7 +60,7 @@ const TTTable = ({
         />
       );
     },
-    [prepareRow, rows]
+    [prepareRow, rows],
   );
 
   return (
@@ -92,7 +92,12 @@ const TTTable = ({
             </FixedSizeList>
           ) : (
             rows.map((row, i) => (
-              <RenderTableRow index={i} row={row} prepareRow={prepareRow} />
+              <RenderTableRow
+                key={i}
+                index={i}
+                row={row}
+                prepareRow={prepareRow}
+              />
             ))
           )}
         </TableBody>

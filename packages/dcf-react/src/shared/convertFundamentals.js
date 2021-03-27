@@ -52,6 +52,7 @@ const convertFundamentals = (fundamentalsData) => {
   const general = {
     code: General.Code,
     name: General.Name,
+    description: General.Description,
     exchange: General.Exchange,
     currencyCode: General.CurrencyCode,
     currencyName: General.CurrencyName,
