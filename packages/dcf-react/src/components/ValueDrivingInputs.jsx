@@ -1,5 +1,5 @@
 import { Box, TextField, Typography, useTheme } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import FormatInputToPercent from "./FormatInputToPercent";
 import FormatInputToYear from "./FormatInputToYear";
 import FormatInputToNumber from "./FormatInputToNumber";
@@ -10,6 +10,9 @@ import useSetURLInput from "../hooks/useSetURLInput";
 import useInputQueryParams from "../hooks/useInputQueryParams";
 import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 import { useLocation } from "@reach/router";
+import { useSelector } from "react-redux";
+import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
+import isNil from "lodash/isNil";
 
 const ValueDrivingTextField = (props) => (
   <TextField
@@ -37,9 +40,17 @@ const ValueDrivingInputs = () => {
   const inputQueryParams = useInputQueryParams();
   const setURLInput = useSetURLInput();
   const location = useLocation();
-  const isFocusedOnValueDrivingInputs = location.hash.includes(
+  const currentIndustry = useSelector(selectCurrentIndustry);
+  const isFocusedOnValueDrivingInputs = location.hash?.includes(
     valueDrivingInputsId,
   );
+
+  useEffect(() => {
+    if (isNil(inputQueryParams.salesToCapitalRatio)) {
+      setURLInput("salesToCapitalRatio", currentIndustry["sales/Capital"]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Box

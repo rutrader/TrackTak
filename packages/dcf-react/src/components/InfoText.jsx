@@ -71,12 +71,13 @@ export const InfoTextValueDrivingInputs = () => {
         current Operating margin will converge on the target Operating margin.
       </Box>
       <Box>
-        <b>Sales to Capital Ratio</b> - We compute how much the company is going
-        to reinvest to keep the business growing in future years. The higher you
-        set this number, the more efficiently the business is growing and the
-        higher the value of your growth. You should look at the previous years
-        sales to capital ratio's in the above table and the industry average for
-        an idea of this value.
+        <b>Sales to Capital Ratio</b> - The default value is set to the industry
+        average as this is usually a good starting point. You should also look
+        at the previous years sales to capital ratio's in the above table to
+        fine tune this value. In the DCF output we compute how much the company
+        is going to reinvest to keep the business growing in future years. The
+        higher you set this number, the more efficiently the business is growing
+        and the higher the value of your growth.
       </Box>
     </React.Fragment>
   );

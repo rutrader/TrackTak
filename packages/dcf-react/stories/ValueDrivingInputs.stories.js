@@ -1,5 +1,5 @@
 import { ValueDrivingInputs } from "../src";
-import React from "react";
+import React, { useEffect } from "react";
 
 const config = {
   title: "ValueDrivingInputs",
@@ -9,6 +9,16 @@ const config = {
 const Template = () => {
   return <ValueDrivingInputs />;
 };
+
+const NoDataTemplate = (args, { history }) => {
+  useEffect(() => {
+    history.navigate("/");
+  }, [history]);
+
+  return <ValueDrivingInputs {...args} />;
+};
+
+export const NoData = NoDataTemplate.bind({});
 
 export const Default = Template.bind({});
 

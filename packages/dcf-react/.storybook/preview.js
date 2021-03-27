@@ -23,11 +23,8 @@ const store = createStore(mockPreloadedStateJSON);
 store.dispatch(setFundamentals(convertFundamentals(mockStockDataJSON)));
 
 const withTracktakProvier = (story) => {
-  useEffect(() => {
-    history.location.hash = "";
-    history.location.search =
-      "?cagrYearOneToFive=0.18&ebitTargetMarginInYearTen=0.1&yearOfConvergence=3&salesToCapitalRatio=2.5";
-  }, []);
+  history.location.search =
+    "?cagrYearOneToFive=0.18&ebitTargetMarginInYearTen=0.1&yearOfConvergence=3&salesToCapitalRatio=2.5";
 
   return (
     <TracktakProvider store={store} theme={theme}>
