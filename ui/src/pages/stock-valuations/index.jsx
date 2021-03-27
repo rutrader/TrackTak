@@ -39,6 +39,10 @@ const Valuations = ({ data }) => {
       <Helmet>
         <title>{getTitle("Stock Valuations")}</title>
         <link rel="canonical" href={`${resourceName}/stock-valuations`} />
+        <meta
+          name="description"
+          content="Stock valuations and research on public companies."
+        />
       </Helmet>
       <Typography variant="h5" gutterBottom>
         Stock Valuations

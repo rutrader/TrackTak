@@ -1,4 +1,6 @@
 require("dotenv-flow").config();
+const webpack = require("webpack");
+const path = require("path");
 
 // https://github.com/gatsbyjs/gatsby/issues/19618
 
@@ -19,6 +21,23 @@ require("dotenv-flow").config();
 // To speed up development time
 // fundamentals = fundamentals.filter((x) => x.General.Code === "IRBT");
 // }
+
+exports.onCreateWebpackConfig = ({
+  stage,
+  rules,
+  loaders,
+  plugins,
+  actions,
+}) => {
+  actions.setWebpackConfig({
+    plugins: [
+      new webpack.NormalModuleReplacementPlugin(
+        /.*\/generated\/iconSvgPaths.*/,
+        path.resolve(__dirname, "src/icons.js"),
+      ),
+    ],
+  });
+};
 
 exports.onCreatePage = ({ page, actions }) => {
   const { createPage } = actions;

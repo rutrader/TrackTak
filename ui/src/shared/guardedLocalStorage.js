@@ -13,5 +13,10 @@ export const getItem = (key) => {
     return null;
   }
 
-  return localStorage.getItem(key);
+  const item = localStorage.getItem(key);
+
+  if (item === "true") return true;
+  if (item === "false") return false;
+
+  return item;
 };

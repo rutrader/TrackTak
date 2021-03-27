@@ -63,6 +63,7 @@ const FormGroupSlider = ({ dataLabel, marks, valueText }) => {
   return (
     <React.Fragment>
       <FormControlLabel
+        disabled={isNil(inputQueryParams[dataLabel.value])}
         control={
           <Checkbox
             checked={checked}
@@ -70,11 +71,7 @@ const FormGroupSlider = ({ dataLabel, marks, valueText }) => {
             color="primary"
           />
         }
-        label={
-          <TextFieldLabel disabled={isNil(inputQueryParams[dataLabel.value])}>
-            {dataLabel.label}
-          </TextFieldLabel>
-        }
+        label={<TextFieldLabel>{dataLabel.label}</TextFieldLabel>}
       />
       {isDisabled && (
         <PrettoSlider

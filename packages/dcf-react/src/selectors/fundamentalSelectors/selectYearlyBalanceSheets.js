@@ -21,7 +21,7 @@ const selectYearlyBalanceSheets = createSelector(
   selectSortedYearlyBalanceSheets,
   selectYearlyIncomeStatements,
   (convertCurrency, yearlyBalanceSheets, yearlyIncomeStatements) => {
-    if (!yearlyBalanceSheets.length) return null;
+    if (!yearlyBalanceSheets.length) return {};
 
     const newYearlyBalanceSheets = {};
 

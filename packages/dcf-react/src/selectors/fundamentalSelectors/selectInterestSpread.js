@@ -21,7 +21,7 @@ const calculateInterestSpread = (isLargeCompany, interestCoverage) => {
 const selectInterestSpread = createSelector(
   selectIsLargeCompany,
   selectInterestCoverage,
-  calculateInterestSpread
+  calculateInterestSpread,
 );
 
 export default selectInterestSpread;

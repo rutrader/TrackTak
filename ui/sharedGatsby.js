@@ -9,15 +9,21 @@ import {
 import { extendedFundamentalsReducer } from "./src/redux/reducers/extendedFundamentalsReducer";
 import "./sass/blueprintTheme.scss";
 import "@tracktak/dcf-react/dist/index.css";
+import "@fontsource/nunito/400.css";
+import "@fontsource/nunito/700.css";
 import theme from "./src/theme";
+import { snackbarReducer } from "./src/redux/reducers/snackbarReducer";
 import PageSpinner from "./src/components/PageSpinner";
 
 const store = createStore(undefined, {
+  snackbar: snackbarReducer,
   fundamentals: (state, action) =>
     extendedFundamentalsReducer(fundamentalsReducer(state, action), action),
 });
 
 export const wrapRootElement = ({ element }) => {
+  // Do not put components in this function, instead put them in layout/index.js
+  // due to a gatsby/mui bug
   return (
     <TracktakProvider store={store} theme={theme}>
       <PageSpinner />

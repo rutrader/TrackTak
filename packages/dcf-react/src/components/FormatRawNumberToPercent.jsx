@@ -1,4 +1,4 @@
-import { isNil } from "lodash";
+import isNil from "lodash/isNil";
 import React from "react";
 import roundDecimal from "../shared/roundDecimal";
 import FormatRawNumber from "./FormatRawNumber";

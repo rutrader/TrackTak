@@ -2,8 +2,8 @@ import {
   AppBar,
   Box,
   Button,
-  Container,
   Hidden,
+  IconButton,
   Menu,
   MenuItem,
   useTheme,
@@ -12,28 +12,40 @@ import React, { useState } from "react";
 import { Link } from "gatsby";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchTicker from "./SearchTicker";
-import TracktakSmallLogo from "../assets/tracktakSmallLogo.svg";
 import TracktakLogo from "./TracktakLogo";
 
-const leftLinks = [
-  { to: "/stock-valuations", text: "Valuations" },
-  { to: "/how-to-do-a-dcf", text: "Documentation" },
-];
-
 const rightLinks = [
-  { to: "/contact-us", text: "Contact Us" },
+  { to: "/how-to-do-a-dcf", text: "Documentation" },
+  { to: "/stock-valuations", text: "Valuations" },
+  { to: "/contact-us", text: "Contact" },
   {
     to: "/about-us",
     text: "About us",
   },
 ];
 
-const allLinks = [...leftLinks, ...rightLinks];
+const allLinks = [...rightLinks];
 
-const HeaderLink = ({ to, text, sx }) => {
+const HeaderLink = ({ to, text, style }) => {
   return (
-    <Box sx={{ mx: 1, whiteSpace: "nowrap", ...sx }}>
-      <Button variant="outlined" to={to} component={Link}>
+    <Box
+      sx={{
+        mx: 1,
+        whiteSpace: "nowrap",
+        marginRight: 2.25,
+        ...style,
+      }}
+    >
+      <Button
+        sx={{
+          textTransform: "none",
+          fontSize: "16px",
+          fontWeight: "bold",
+          color: "#313450",
+        }}
+        to={to}
+        component={Link}
+      >
         {text}
       </Button>
     </Box>
@@ -42,8 +54,8 @@ const HeaderLink = ({ to, text, sx }) => {
 
 const Header = ({ hideSearch }) => {
   const theme = useTheme();
-  const extraMargin = 20;
-  const mb = `${theme.mixins.toolbar.minHeight + extraMargin}px`;
+  const extraPadding = 20;
+  const paddingBottom = `${theme.mixins.toolbar.minHeight + extraPadding}px`;
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -55,55 +67,65 @@ const Header = ({ hideSearch }) => {
   };
 
   return (
-    <Box sx={{ mb }}>
-      <AppBar color="inherit">
-        <Container maxWidth={false}>
+    <>
+      <Box sx={{ paddingBottom }}>
+        <AppBar
+          sx={{
+            py: 1,
+            px: 3,
+            background: "#fff",
+          }}
+        >
           <Box
             sx={{
               display: "flex",
               alignItems: "left",
               justifyContent: "left",
-              py: 1,
             }}
           >
-            <Box sx={{ mr: 2 }}>
-              <Link to="/">
-                <Hidden mdDown>
-                  <TracktakLogo />
-                </Hidden>
-                <Hidden mdUp>
-                  <TracktakSmallLogo width={52} height={38} />
-                </Hidden>
-              </Link>
+            <Box sx={{ mr: 2, display: "flex", alignItems: "center" }}>
+              <TracktakLogo />
             </Box>
-            <Hidden mdDown>
-              {leftLinks.map((link) => (
-                <HeaderLink key={link.to} {...link} />
-              ))}
-            </Hidden>
             <Box
-              sx={{ flex: "0 1 450px", minWidth: "120px", ml: 1, mr: "auto" }}
+              sx={{
+                maxWidth: "800px",
+                minWidth: "130px",
+                width: "100%",
+                marginRight: "auto",
+              }}
             >
-              {!hideSearch && <SearchTicker removeInputPadding />}
+              {!hideSearch && <SearchTicker isSmallSearch />}
             </Box>
-            <Hidden mdDown>
-              {rightLinks.map((link, i) => (
-                <HeaderLink
-                  key={link.to}
-                  sx={{ ml: i === 0 ? 2 : 0 }}
-                  {...link}
-                />
-              ))}
+            <Hidden mdDown implementation="css">
+              <Box sx={{ display: "flex" }}>
+                {rightLinks.map((link, i) => (
+                  <HeaderLink
+                    key={link.to}
+                    sx={{ ml: i === 0 ? 2 : 0 }}
+                    {...link}
+                  />
+                ))}
+              </Box>
             </Hidden>
-            <Hidden mdUp>
-              <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
-                <Button
+            <Hidden mdUp implementation="css">
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  ml: 2.5,
+                  height: "100%",
+                }}
+              >
+                <IconButton
+                  sx={{
+                    padding: 0,
+                  }}
                   aria-controls="simple-menu"
                   aria-haspopup="true"
                   onClick={handleClick}
                 >
                   <MenuIcon color="primary" />
-                </Button>
+                </IconButton>
                 <Menu
                   id="simple-menu"
                   anchorEl={anchorEl}
@@ -125,9 +147,9 @@ const Header = ({ hideSearch }) => {
               </Box>
             </Hidden>
           </Box>
-        </Container>
-      </AppBar>
-    </Box>
+        </AppBar>
+      </Box>
+    </>
   );
 };
 

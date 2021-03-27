@@ -1,6 +1,8 @@
 const axios = require("axios");
 const cache = require("memory-cache");
+const iso3311a2 = require("iso-3166-1-alpha-2");
 const replaceDoubleColonWithObject = require("./replaceDoubleColonWithObject");
+const tenYearGovernmentBondYields = require("../data/tenYearGovernmentBondYields.json");
 
 const baseUrl = "https://eodhistoricaldata.com/api";
 const fundamentalsUrl = `${baseUrl}/fundamentals`;
@@ -106,15 +108,34 @@ const api = {
   getGovernmentBond: async (code, query) => {
     const data = await sendReqOrGetCachedData(
       async () => {
-        const { data } = await axios.get(`${eodUrl}/${code}.GBOND`, {
-          params: {
-            ...globalParams,
-            ...query,
-            fmt: "json",
-          },
-        });
+        try {
+          const { data } = await axios.get(`${eodUrl}/${code}.GBOND`, {
+            params: {
+              ...globalParams,
+              ...query,
+              fmt: "json",
+            },
+          });
 
-        return data;
+          return data;
+        } catch (error) {
+          // API doesn't yet provide a lot of country government bonds
+          if (error.response.status === 404) {
+            const splits = code.split("10Y");
+
+            if (splits[0]) {
+              const country = iso3311a2
+                .getCountry(splits[0].toUpperCase())
+                .toUpperCase();
+              const tenYearGovernmentBondYield = tenYearGovernmentBondYields.find(
+                (x) => x.country.toUpperCase() === country,
+              ).yield;
+
+              return tenYearGovernmentBondYield;
+            }
+          }
+          throw error;
+        }
       },
       "governmentBond",
       { code, query },
@@ -189,7 +210,7 @@ const api = {
           },
         });
 
-        return { data };
+        return data;
       },
       "listOfExchanges",
       { query },

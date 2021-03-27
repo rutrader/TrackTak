@@ -1,52 +1,102 @@
-import { Box, Button, TextField, withStyles } from "@material-ui/core";
-import React from "react";
+import { Box, Typography } from "@material-ui/core";
+import axios from "axios";
+import jsonAdapter from "axios-jsonp";
+import React, { useState } from "react";
 import { setItem } from "../shared/guardedLocalStorage";
+import RoundButton from "./RoundButton";
+import TTRoundInput from "./TTRoundInput";
+import queryString from "query-string";
+import { useDispatch } from "react-redux";
+import { setMessage } from "../redux/actions/snackbarActions";
 
-const StyledTextField = withStyles({
-  root: {
-    "& .MuiInputBase-root": {
-      borderTopRightRadius: "0px",
-      borderBottomRightRadius: "0px",
-    },
-  },
-})(TextField);
+const SubscribeMailingList = ({
+  subscribeText = "Subscribe",
+  locationSignup,
+  inputColor,
+  onSubmit = () => {},
+}) => {
+  const [email, setEmail] = useState();
+  const dispatch = useDispatch();
 
-const SubscribeMailingList = ({ subscribeText = "Join", locationSignup }) => {
   return (
-    <Box>
-      <form
-        target="_blank"
-        action="https://tracktak.us18.list-manage.com/subscribe/post"
-        method="POST"
-        onSubmit={() => {
-          setItem("subscribePopupShown", "true");
+    <>
+      <Box
+        component="form"
+        onSubmit={async (e) => {
+          e.preventDefault();
+
+          const serializedData = queryString.stringify({
+            id: "81167d9c5b",
+            LOCATION: locationSignup,
+            MERGE0: email,
+          });
+
+          const {
+            data: { result, msg: message },
+          } = await axios({
+            url: `https://tracktak.us18.list-manage.com/subscribe/post-json?u=77ebb5b550a15c12b38bd913e&${serializedData}`,
+            adapter: jsonAdapter,
+            callbackParamName: "c",
+          });
+
+          const isSuccess = result === "success";
+
+          if (isSuccess) {
+            setItem("subscribePopupShown", "true");
+            setEmail("");
+
+            dispatch(
+              setMessage({
+                severity: "success",
+                message,
+              }),
+            );
+          } else {
+            dispatch(
+              setMessage({
+                severity: "error",
+                message,
+              }),
+            );
+          }
+
+          onSubmit(isSuccess);
+        }}
+        sx={{
+          flexWrap: "wrap",
+          display: "flex",
+          justifyContent: "center",
+          visibility: "visible",
+          animationDelay: "0.8s",
+          animationName: "fadeInUp",
+          maxWidth: "600px",
+          width: "100%",
+          gap: 1.5,
+          mt: 3,
         }}
       >
-        <input type="hidden" name="u" value="77ebb5b550a15c12b38bd913e" />
-        <input type="hidden" name="id" value="81167d9c5b" />
-        <input type="hidden" name="LOCATION" value={locationSignup} />
-        <Box sx={{ display: "flex", justifyContent: "center " }}>
-          <StyledTextField
-            className="landing-page-email-input"
-            name="MERGE0"
-            placeholder="Enter your email"
-            type="email"
-            fullWidth
-          />
-          <Button
-            style={{
-              marginLeft: "-1px",
-              borderTopLeftRadius: 0,
-              borderBottomLeftRadius: 0,
-              whiteSpace: "nowrap",
-            }}
-            variant="contained"
-          >
+        <TTRoundInput
+          type="email"
+          name="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter your email"
+          color={inputColor}
+          InputProps={{
+            color: "secondary",
+          }}
+          sx={{
+            flex: 1,
+            minWidth: "170px",
+          }}
+        />
+        <RoundButton variant="contained" type="submit">
+          <Typography fontSize={20} sx={{ textTransform: "none" }}>
             {subscribeText}
-          </Button>
-        </Box>
-      </form>
-    </Box>
+          </Typography>
+        </RoundButton>
+      </Box>
+    </>
   );
 };
 export default SubscribeMailingList;

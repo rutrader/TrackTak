@@ -21,7 +21,7 @@ import useInjectQueryParams from "../hooks/useInjectQueryParams";
 import { Link } from "../shared/gatsby";
 import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 import useTicker from "../hooks/useTicker";
-import { isNil } from "lodash";
+import isNil from "lodash/isNil";
 
 const DefaultSyntheticCreditRatingLink = ({ ticker, searchParams }) => (
   <Link to={`/stock/${ticker}/synthetic-credit-rating${searchParams}`} />
@@ -117,7 +117,7 @@ const CostOfCapitalResults = ({
                 value={currentEquityRiskPremiumCountry.equityRiskPremium}
               />
             }
-            label="Country Equity Risk Premium"
+            label="Equity Risk Premium"
           />
           <BoldValueLabel
             value={

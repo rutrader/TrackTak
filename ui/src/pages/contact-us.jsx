@@ -10,6 +10,10 @@ const ContactUs = () => {
       <Helmet>
         <title>{getTitle("Contact Us")}</title>
         <link rel="canonical" href={`${resourceName}/contact-us`} />
+        <meta
+          name="description"
+          content="Need help with your DCF? Send us an email at support@tracktak.com."
+        />
       </Helmet>
       <Typography variant="h5" gutterBottom>
         Contact Us

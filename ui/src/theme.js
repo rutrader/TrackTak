@@ -1,8 +1,8 @@
-import { createMuiTheme } from "@material-ui/core";
+import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
 
-const theme = createMuiTheme({
+let theme = createMuiTheme({
   typography: {
-    fontFamily: "Montserrat, sans-serif",
+    fontFamily: "Nunito",
   },
   palette: {
     primary: {
@@ -27,11 +27,16 @@ const theme = createMuiTheme({
     MuiAccordion: {
       styleOverrides: {
         rounded: {
-          borderRadius: "4px",
+          borderRadius: "50px",
         },
       },
     },
   },
+  zIndex: {
+    scrollTopButton: 900,
+  },
 });
+
+theme = responsiveFontSizes(theme);
 
 export default theme;

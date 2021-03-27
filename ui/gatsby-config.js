@@ -2,6 +2,7 @@ require("dotenv-flow").config();
 
 module.exports = {
   flags: {
+    DEV_SSR: true,
     PRESERVE_WEBPACK_CACHE: true,
   },
   siteMetadata: {
@@ -25,6 +26,12 @@ module.exports = {
       options: {
         offset: -60,
         duration: 0,
+      },
+    },
+    {
+      resolve: `gatsby-plugin-webpack-bundle-analyser-v2`,
+      options: {
+        devMode: true,
       },
     },
     "gatsby-plugin-react-helmet",
@@ -73,13 +80,19 @@ module.exports = {
       },
     },
     "gatsby-plugin-react-helmet",
-    "gatsby-plugin-sitemap",
-    // {
-    //   resolve: "gatsby-plugin-manifest",
-    //   options: {
-    //     icon: "src/assets/tracktakSmallLogo.svg",
-    //   },
-    // },
+    {
+      resolve: "gatsby-plugin-sitemap",
+      options: {
+        exclude: [`/stock/**`],
+      },
+    },
+    "gatsby-plugin-robots-txt",
+    {
+      resolve: "gatsby-plugin-manifest",
+      options: {
+        icon: "src/assets/tracktak-logo-small.svg",
+      },
+    },
     // "gatsby-plugin-offline",
     "gatsby-plugin-mdx",
     "gatsby-plugin-image",

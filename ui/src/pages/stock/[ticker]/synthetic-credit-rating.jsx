@@ -21,6 +21,10 @@ const SyntheticCreditRatingPage = () => {
           rel="canonical"
           href={`${resourceName}/synthetic-credit-rating/${ticker}`}
         />
+        <meta
+          name="description"
+          content={`The synthetic credit rating and interest coverage for ${general.name}.`}
+        />
       </Helmet>
       <SyntheticCreditRating />
     </>

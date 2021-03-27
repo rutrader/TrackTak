@@ -13,6 +13,8 @@ import "../src/reset.css";
 import { useEffect } from "react";
 import convertFundamentals from "../src/shared/convertFundamentals";
 import theme from "../../../ui/src/theme";
+import "@fontsource/nunito/400.css";
+import "@fontsource/nunito/700.css";
 
 const source = createMemorySource("/");
 const history = createHistory(source);

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, useTheme } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import SubscribeMailingList from "../../../components/SubscribeMailingList";
 import { Helmet } from "react-helmet";
 import getTitle from "../../../shared/getTitle";
@@ -9,7 +9,6 @@ import DiscountedCashFlow from "../../../components/DiscountedCashFlow";
 import { useSelector } from "react-redux";
 
 const DiscountedCashFlowPage = () => {
-  const theme = useTheme();
   const general = useSelector(selectGeneral);
   const ticker = useTicker();
 
@@ -21,6 +20,10 @@ const DiscountedCashFlowPage = () => {
           rel="canonical"
           href={`${resourceName}/discounted-cash-flow/${ticker}`}
         />
+        <meta
+          name="description"
+          content={`Do your own Automated DCF for ${general.name} based on Aswath Damodaran's spreadsheets.`}
+        />
       </Helmet>
       <DiscountedCashFlow />
       <Section sx={{ display: "flex", mt: 2 }}>
@@ -31,15 +34,11 @@ const DiscountedCashFlowPage = () => {
             margin: "0 auto",
           }}
         >
-          <Typography
-            variant="h6"
-            gutterBottom
-            style={{ fontWeight: theme.typography.fontWeightBold }}
-          >
+          <Typography variant="h6" gutterBottom style={{ fontWeight: "bold" }}>
             Want us to implement features you need?
           </Typography>
           <SubscribeMailingList
-            subscribeText="Sign Up"
+            subscribeText="Join"
             locationSignup="Discounted Cash Flow"
           />
         </Box>

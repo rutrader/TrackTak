@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
@@ -8,7 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
-import { Box, ListItemText, useMediaQuery } from "@material-ui/core";
+import { Box, Hidden, ListItemText, useMediaQuery } from "@material-ui/core";
 import wikiContent from "../data/wikiContent";
 import { replaceSpaceWithHyphen } from "@tracktak/dcf-react";
 import { Helmet } from "react-helmet";
@@ -18,32 +18,6 @@ import { AnchorLink } from "gatsby-plugin-anchor-links";
 import { navigate } from "gatsby";
 
 const drawerWidth = 240;
-
-const useStyles = makeStyles((theme) => {
-  const top = theme.mixins.toolbar.minHeight - 2;
-
-  return {
-    root: {
-      display: "flex",
-    },
-    drawer: {
-      [theme.breakpoints.down(1550)]: {
-        width: ({ open }) => (open ? drawerWidth : "initial"),
-      },
-    },
-    drawerPaper: {
-      top,
-      width: drawerWidth,
-      height: `calc(100% - ${top}px)`,
-    },
-    menuButton: {
-      position: "fixed",
-      padding: 0,
-      left: 0,
-      top: theme.mixins.toolbar.minHeight + 10,
-    },
-  };
-});
 
 const removeNonHashableChars = (str) => {
   const newStr = replaceSpaceWithHyphen(str);
@@ -55,7 +29,7 @@ const Docs = () => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const classes = useStyles({ open });
+  const top = theme.mixins.toolbar.minHeight - 2;
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -74,56 +48,77 @@ const Docs = () => {
       <Helmet>
         <title>{getTitle("How to do a Discounted Cash Flow (DCF)")}</title>
         <link rel="canonical" href={`${resourceName}/how-to-do-a-dcf`} />
+        <meta
+          name="description"
+          content="Learn how to do a full DCF with projections of cash flows, terminal value and WACC."
+        />
       </Helmet>
-      <Box className={classes.root}>
+      <Box
+        sx={{
+          display: "flex",
+          "& .MuiDrawer-root": {
+            [theme.breakpoints.down(1550)]: {
+              width: open ? drawerWidth : "initial",
+            },
+          },
+        }}
+      >
         <Drawer
-          className={classes.drawer}
           variant={isOnMobile ? "persistent" : "permanent"}
           anchor="left"
           open={open}
-          classes={{
-            paper: classes.drawerPaper,
+          PaperProps={{
+            style: {
+              top,
+              width: drawerWidth,
+              height: `calc(100% - ${top}px)`,
+            },
           }}
         >
-          {isOnMobile && (
-            <>
-              <Box className={classes.drawerHeader}>
+          <>
+            <Hidden smUp implementation="css">
+              <Box>
                 <IconButton onClick={handleDrawerClose}>
                   <ChevronLeftIcon />
                 </IconButton>
               </Box>
               <Divider />
-            </>
-          )}
-          <List>
-            {wikiContent.map(({ title }) => {
-              const to = `/how-to-do-a-dcf#${removeNonHashableChars(title)}`;
+            </Hidden>
+            <List>
+              {wikiContent.map(({ title }) => {
+                const to = `/how-to-do-a-dcf#${removeNonHashableChars(title)}`;
 
-              return (
-                <ListItem
-                  key={title}
-                  component={AnchorLink}
-                  onAnchorLinkClick={() => {
-                    navigate(to);
-                  }}
-                  to={to}
-                  button
-                >
-                  <ListItemText primary={title} />
-                </ListItem>
-              );
-            })}
-          </List>
+                return (
+                  <ListItem
+                    key={title}
+                    component={AnchorLink}
+                    onAnchorLinkClick={() => {
+                      navigate(to);
+                    }}
+                    to={to}
+                    button
+                  >
+                    <ListItemText primary={title} />
+                  </ListItem>
+                );
+              })}
+            </List>
+          </>
         </Drawer>
-        {isOnMobile && (
+        <Hidden smUp implementation="css">
           <IconButton
             aria-label="open drawer"
             onClick={handleDrawerOpen}
-            className={classes.menuButton}
+            sx={{
+              position: "fixed",
+              padding: 0,
+              left: 0,
+              top: (theme) => theme.mixins.toolbar.minHeight + 10,
+            }}
           >
             <ChevronRightIcon />
           </IconButton>
-        )}
+        </Hidden>
         <Box component="main">
           {wikiContent.map(({ title, text, cellsText = "" }) => {
             return (

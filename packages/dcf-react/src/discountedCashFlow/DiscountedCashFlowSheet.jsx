@@ -2,17 +2,16 @@ import React, { useState } from "react";
 import {
   Box,
   Typography,
-  withStyles,
   CircularProgress,
   useTheme,
+  FormControlLabel,
+  Switch,
 } from "@material-ui/core";
 import ExportToExcel, { DCFControlTypography } from "./ExportToExcel";
 import DiscountedCashFlowTable from "./DiscountedCashFlowTable";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsYoyGrowthToggled } from "../redux/actions/dcfActions";
 import selectIsYoyGrowthToggled from "../selectors/dcfSelectors/selectIsYoyGrowthToggled";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import LazyLoad from "react-lazyload";
 import isSSR from "../shared/isSSR";
@@ -135,11 +134,14 @@ const DiscountedCashFlowSheet = ({ columnWidths, SubscribePopup }) => {
   );
 };
 
-const DCFControlLabel = withStyles({
-  root: {
-    marginLeft: 0,
-    marginRight: 0,
-  },
-})(FormControlLabel);
+const DCFControlLabel = (props) => (
+  <FormControlLabel
+    {...props}
+    sx={{
+      marginLeft: 0,
+      marginRight: 0,
+    }}
+  />
+);
 
 export default withFundamentalsLoaded(DiscountedCashFlowSheet);

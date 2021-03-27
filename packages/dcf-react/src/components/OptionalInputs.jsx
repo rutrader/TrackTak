@@ -1,10 +1,4 @@
-import {
-  Box,
-  TextField,
-  Typography,
-  useTheme,
-  withStyles,
-} from "@material-ui/core";
+import { Box, TextField, Typography, useTheme } from "@material-ui/core";
 import React from "react";
 import FormatInputToYear from "./FormatInputToYear";
 import FormatInputToCurrency from "./FormatInputToCurrency";
@@ -31,11 +25,9 @@ export const proceedsAsPercentageOfBookValueLabel =
   "Proceeds as a Percentage of Book value";
 export const weightedAverageCostOfCapitalLabel = "WACC";
 
-const OptionalTextField = withStyles({
-  root: {
-    ...textFieldRootStyles,
-  },
-})(TextField);
+const OptionalTextField = (props) => (
+  <TextField {...props} sx={textFieldRootStyles} />
+);
 
 const OptionalInputs = () => {
   const inputQueryParams = useInputQueryParams();
@@ -153,7 +145,7 @@ const OptionalInputs = () => {
       children: (
         <React.Fragment>
           <OptionalTextField
-            label="Employee Options Oustanding"
+            label="Employee Options Outstanding"
             value={inputQueryParams.numberOfEmployeeOptionsOutstanding}
             onBlur={(value) => {
               setURLInput("numberOfEmployeeOptionsOutstanding", value);

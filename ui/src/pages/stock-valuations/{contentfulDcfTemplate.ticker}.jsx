@@ -23,8 +23,6 @@ import {
   IndustryAveragesResults,
   selectPrice,
   selectCells,
-  setFundamentals,
-  convertFundamentals,
 } from "@tracktak/dcf-react";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
 import * as styles from "./valuation.module.scss";
@@ -228,6 +226,10 @@ const Valuation = ({ data }) => {
           rel="canonical"
           href={`${resourceName}/stock-valuations/${ticker}${location.search}`}
         />
+        <meta
+          name="description"
+          content={`Is ${financialData.General.Name} undervalued? See the full intrinsic valuation here.`}
+        />
       </Helmet>
       <CompanyOverviewStats dateOfValuation={formattedDateOfValuation} />
       <Section>
@@ -262,7 +264,7 @@ const Valuation = ({ data }) => {
             </Box>
           </Typography>
           <SubscribeMailingList
-            subscribeText="Sign Up"
+            subscribeText="Join"
             locationSignup="Valuation"
           />
         </Box>

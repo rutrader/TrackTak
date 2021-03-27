@@ -10,6 +10,10 @@ const AboutUs = () => {
       <Helmet>
         <title>{getTitle("About Us")}</title>
         <link rel="canonical" href={`${resourceName}/about-us`} />
+        <meta
+          name="description"
+          content="Information about tracktak.com and the co-founders."
+        />
       </Helmet>
       <Typography variant="h5" gutterBottom>
         About Us
