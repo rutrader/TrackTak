@@ -1,7 +1,6 @@
-import { DiscountedCashFlowSheet, setFundamentals } from "../src";
+import { DiscountedCashFlowSheet } from "../src";
 import React, { useEffect } from "react";
 import { action } from "@storybook/addon-actions";
-import { useDispatch } from "react-redux";
 
 const config = {
   title: "DiscountedCashFlowSheet",
