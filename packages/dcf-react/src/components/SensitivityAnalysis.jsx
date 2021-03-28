@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, FormGroup, Typography } from "@material-ui/core";
 import {
   cagrInYearsOneToFiveLabel,
@@ -47,7 +47,7 @@ const valueText = (value) => {
 const SensitivityAnalysis = () => {
   const classes = useStyles();
   const inputQueryParams = useInputQueryParams();
-  const [dataTable, setDataTable] = React.useState([
+  const [dataTable, setDataTable] = useState([
     {
       label: cagrInYearsOneToFiveLabel,
       value: "cagrYearOneToFive",
@@ -119,32 +119,19 @@ const SensitivityAnalysis = () => {
   ]);
 
   const setChecked = (value, checked) => {
-    const newDataLabels = dataTable.map((dataLabel) => {
-      if (value === dataLabel.value) {
+    const newDataTable = dataTable.map((datum) => {
+      if (value === datum.value) {
         return {
-          ...dataLabel,
+          ...datum,
           checked,
         };
       }
 
-      return dataLabel;
+      return datum;
     });
 
-    setDataTable(newDataLabels);
+    setDataTable(newDataTable);
   };
-
-  const newDataLabels = [...dataTable];
-  const indexToRemove = newDataLabels.findIndex((x) => x.checked);
-  const removedElement =
-    indexToRemove !== -1
-      ? newDataLabels.splice(indexToRemove, 1)[0]
-      : undefined;
-
-  const elementOne = removedElement;
-  const elementTwo = newDataLabels.find((x) => x.checked);
-
-  const labelOne = elementOne?.label;
-  const labelTwo = elementTwo?.label;
 
   const columns = [
     {
@@ -153,9 +140,14 @@ const SensitivityAnalysis = () => {
     },
   ];
 
-  if (elementTwo) {
+  const newDataTable = [...dataTable];
+  const checkedValues = newDataTable.filter((x) => x.checked);
+  const xElement = checkedValues.length === 2 ? checkedValues[0] : null;
+  const yElement = checkedValues.length === 2 ? checkedValues[1] : null;
+
+  if (yElement) {
     columns.push(
-      ...elementTwo.data.map((statement) => {
+      ...yElement.data.map((statement) => {
         return {
           Header: statement.dataFieldTwo,
           //accessor: statement.value,
@@ -169,8 +161,8 @@ const SensitivityAnalysis = () => {
       <Typography variant="h5" gutterBottom>
         Sensitivity Analysis
       </Typography>
-      <Box>
-        {labelOne && (
+      {xElement && yElement && (
+        <Box>
           <Typography
             style={{
               display: "flex",
@@ -179,18 +171,16 @@ const SensitivityAnalysis = () => {
             variant="h6"
             component="div"
           >
-            {labelOne}
+            {yElement.label}
           </Typography>
-        )}
-        <Box style={{ display: "flex", alignItems: "center" }}>
-          {labelTwo && (
+          <Box style={{ display: "flex", alignItems: "center" }}>
             <Typography variant="h6" component="div">
-              {labelTwo}
+              {xElement.label}
             </Typography>
-          )}
-          <TTTable columns={columns} data={elementOne.data} />
+            <TTTable columns={columns} data={yElement.data} />
+          </Box>
         </Box>
-      </Box>
+      )}
       <FormGroup aria-label="position" column className={classes.slider}>
         {dataTable.map((dataLabel) => (
           <FormGroupSlider
