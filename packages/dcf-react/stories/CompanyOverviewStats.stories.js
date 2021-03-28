@@ -1,7 +1,6 @@
 import { CompanyOverviewStats } from "../src";
 import React from "react";
 import { Typography } from "@material-ui/core";
-import dayjs from "dayjs";
 
 const config = {
   title: "CompanyOverviewStats",
@@ -21,7 +20,6 @@ Default.args = {
       text here, lorem ipsum something something.
     </Typography>
   ),
-  dateOfValuation: dayjs("2021-02-14").format("Do MMM. YYYY"),
   useDescriptionShowMore: false,
 };
 
