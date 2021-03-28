@@ -231,16 +231,22 @@ const Valuation = ({ data }) => {
           content={`Is ${financialData.General.Name} undervalued? See the full intrinsic valuation here.`}
         />
       </Helmet>
-      <CompanyOverviewStats
-        dateOfValuation={formattedDateOfValuation}
-        extraDescription={
-          extraBusinessDescription && (
-            <Typography paragraph>
-              {renderField(extraBusinessDescription)}
-            </Typography>
-          )
-        }
-      />
+      <Box>
+        {dateOfValuation && (
+          <Typography textAlign="right" gutterBottom>
+            This valuation was done on the {dateOfValuation}
+          </Typography>
+        )}
+        <CompanyOverviewStats
+          extraDescription={
+            extraBusinessDescription && (
+              <Typography paragraph>
+                {renderField(extraBusinessDescription)}
+              </Typography>
+            )
+          }
+        />
+      </Box>
       <Section>
         <Typography variant="h5" gutterBottom>
           Competitors

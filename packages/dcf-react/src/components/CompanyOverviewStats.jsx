@@ -13,11 +13,7 @@ import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 import SubSection from "../components/SubSection";
 import ShowMore from "react-show-more";
 
-const CompanyOverviewStats = ({
-  dateOfValuation,
-  extraDescription,
-  useDescriptionShowMore,
-}) => {
+const CompanyOverviewStats = ({ extraDescription, useDescriptionShowMore }) => {
   const general = useSelector(selectGeneral);
   const price = useSelector(selectPrice);
   const sharesOutstanding = useSelector(selectSharesOutstanding);
@@ -38,11 +34,6 @@ const CompanyOverviewStats = ({
         <Typography variant="h4" style={{ flex: 1 }}>
           {general.name}
         </Typography>
-        {dateOfValuation && (
-          <Typography>
-            <b>This valuation was done on the {dateOfValuation}</b>
-          </Typography>
-        )}
       </Box>
       <Typography
         gutterBottom
