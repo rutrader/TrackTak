@@ -9,7 +9,6 @@ import {
 import {
   probabilityOfFailureLabel,
   proceedsAsPercentageOfBookValueLabel,
-  weightedAverageCostOfCapitalLabel,
 } from "../components/OptionalInputs";
 import TTTable from "./TTTable";
 import FormGroupSlider from "./FormGroupSlider";
@@ -45,72 +44,82 @@ const valueText = (value) => {
   return `${value}%`;
 };
 
-const data = [
-  { dataField: "20%", value: 1 },
-  { dataField: "25%", value: 2 },
-  { dataField: "30%", value: 3 },
-  { dataField: "35%", value: 4 },
-  { dataField: "40%", value: 5 },
-];
-
-const datumHeaders = [
-  { name: "5%", accessor: 0 },
-  { name: "10%", accessor: 1 },
-  { name: "15%", accessor: 2 },
-  { name: "20%", accessor: 3 },
-  { name: "25%", accessor: 4 },
-];
-
-const columns = [
-  {
-    Header: "",
-    accessor: "dataField",
-  },
-];
-
-columns.push(
-  ...datumHeaders.map((statement) => {
-    return {
-      Header: statement.name,
-      accessor: statement.id,
-    };
-  }),
-);
-
 const SensitivityAnalysis = () => {
   const classes = useStyles();
   const inputQueryParams = useInputQueryParams();
-  const [dataLabels, setDataLabels] = React.useState([
+  const [dataTable, setDataTable] = React.useState([
     {
       label: cagrInYearsOneToFiveLabel,
       value: "cagrYearOneToFive",
       checked: !isNil(inputQueryParams.cagrYearOneToFive),
+      data: [
+        { dataFieldTwo: "20%", value: 1 },
+        { dataFieldTwo: "25%", value: 2 },
+        { dataFieldTwo: "30%", value: 3 },
+        { dataFieldTwo: "35%", value: 4 },
+        { dataFieldTwo: "40%", value: 5 },
+      ],
     },
     {
       label: ebitTargetMarginInYearTenLabel,
       value: "ebitTargetMarginInYearTen",
       checked: !isNil(inputQueryParams.ebitTargetMarginInYearTen),
+      data: [
+        { dataFieldTwo: "20%", value: 1 },
+        { dataFieldTwo: "25%", value: 2 },
+        { dataFieldTwo: "30%", value: 3 },
+        { dataFieldTwo: "35%", value: 4 },
+        { dataFieldTwo: "40%", value: 5 },
+      ],
     },
     {
       label: yearOfConvergenceLabel,
       value: "yearOfConvergence",
+      data: [
+        { dataFieldTwo: "0", value: 1 },
+        { dataFieldTwo: "1", value: 2 },
+        { dataFieldTwo: "2", value: 3 },
+        { dataFieldTwo: "3", value: 4 },
+        { dataFieldTwo: "4", value: 5 },
+      ],
     },
     {
       label: salesToCapitalRatioLabel,
       value: "salesToCapitalRatio",
+      data: [
+        { dataFieldTwo: "0", value: 1 },
+        { dataFieldTwo: "1", value: 2 },
+        { dataFieldTwo: "2", value: 3 },
+        { dataFieldTwo: "3", value: 4 },
+        { dataFieldTwo: "4", value: 5 },
+      ],
     },
     {
       label: probabilityOfFailureLabel,
       value: "probabilityOfFailure",
+      data: [
+        { dataFieldTwo: "20%", value: 1 },
+        { dataFieldTwo: "25%", value: 2 },
+        { dataFieldTwo: "30%", value: 3 },
+        { dataFieldTwo: "35%", value: 4 },
+        { dataFieldTwo: "40%", value: 5 },
+      ],
     },
     {
       label: proceedsAsPercentageOfBookValueLabel,
       value: "proceedsAsAPercentageOfBookValue",
+      data: [
+        { dataFieldTwo: "20%", value: 1 },
+        { dataFieldTwo: "25%", value: 2 },
+        { dataFieldTwo: "30%", value: 3 },
+        { dataFieldTwo: "35%", value: 4 },
+        { dataFieldTwo: "40%", value: 5 },
+      ],
     },
   ]);
 
   const setChecked = (value, checked) => {
-    const newDataLabels = dataLabels.map((dataLabel) => {
+    const newDataLabels = dataTable.map((dataLabel) => {
       if (value === dataLabel.value) {
         return {
           ...dataLabel,
@@ -121,18 +130,39 @@ const SensitivityAnalysis = () => {
       return dataLabel;
     });
 
-    setDataLabels(newDataLabels);
+    setDataTable(newDataLabels);
   };
 
-  const newDataLabels = [...dataLabels];
+  const newDataLabels = [...dataTable];
   const indexToRemove = newDataLabels.findIndex((x) => x.checked);
   const removedElement =
     indexToRemove !== -1
       ? newDataLabels.splice(indexToRemove, 1)[0]
       : undefined;
 
-  const labelOne = removedElement?.label;
-  const labelTwo = newDataLabels.find((x) => x.checked)?.label;
+  const elementOne = removedElement;
+  const elementTwo = newDataLabels.find((x) => x.checked);
+
+  const labelOne = elementOne?.label;
+  const labelTwo = elementTwo?.label;
+
+  const columns = [
+    {
+      Header: "",
+      accessor: "dataFieldTwo",
+    },
+  ];
+
+  if (elementTwo) {
+    columns.push(
+      ...elementTwo.data.map((statement) => {
+        return {
+          Header: statement.dataFieldTwo,
+          //accessor: statement.value,
+        };
+      }),
+    );
+  }
 
   return (
     <Box sx={{ overflow: "auto" }}>
@@ -158,11 +188,11 @@ const SensitivityAnalysis = () => {
               {labelTwo}
             </Typography>
           )}
-          <TTTable columns={columns} data={data} />
+          <TTTable columns={columns} data={elementOne.data} />
         </Box>
       </Box>
       <FormGroup aria-label="position" column className={classes.slider}>
-        {dataLabels.map((dataLabel) => (
+        {dataTable.map((dataLabel) => (
           <FormGroupSlider
             marks={marks}
             setChecked={setChecked}
