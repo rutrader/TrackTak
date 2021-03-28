@@ -149,7 +149,7 @@ const FeaturesSection = () => {
             <IconGradient lightColor="#6240c8" darkColor="#a145fe">
               <BiBookOpen fontSize="30px" />
             </IconGradient>
-            <FeatureHeader variant="h4">Fully Transparent</FeatureHeader>
+            <FeatureHeader variant="h4">Transparent</FeatureHeader>
             <FeatureText>
               Based on Aswath Damodaran's models showing you each formula.
             </FeatureText>
@@ -160,7 +160,7 @@ const FeaturesSection = () => {
             <IconGradient lightColor="#b548f2" darkColor="#d283fd">
               <ImCogs fontSize="30px" />
             </IconGradient>
-            <FeatureHeader variant="h4">Automated Inputs</FeatureHeader>
+            <FeatureHeader variant="h4">Automated</FeatureHeader>
             <FeatureText>
               Automates your DCF inputs based on historical and current data.
             </FeatureText>
@@ -171,7 +171,7 @@ const FeaturesSection = () => {
             <IconGradient lightColor="#e44e83" darkColor="#ffb8d1">
               <RiTimerLine fontSize="30px" />
             </IconGradient>
-            <FeatureHeader variant="h4">Saves You Time</FeatureHeader>
+            <FeatureHeader variant="h4">Time-saving</FeatureHeader>
             <FeatureText>
               Finds a companies true intrinsic value within minutes.
             </FeatureText>

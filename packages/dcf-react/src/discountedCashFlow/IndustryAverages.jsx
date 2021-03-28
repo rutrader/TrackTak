@@ -123,7 +123,7 @@ const IndustryAverages = () => {
                   ...commonTableRootStyles,
                   "& .table_row_0": {
                     backgroundColor: (theme) =>
-                      isInUS
+                      !isInUS
                         ? getTableRowBackgroundOpacity(
                             theme.palette.primary.light,
                           )
