@@ -39,9 +39,7 @@ const DiscountedCashFlow = () => {
 
   return (
     <React.Fragment>
-      <Box sx={{ display: "flex", gap: theme.spacing(10) }}>
-        <CompanyOverviewStats />
-      </Box>
+      <CompanyOverviewStats useDescriptionShowMore />
       <Section>
         <PastFundamentals />
       </Section>

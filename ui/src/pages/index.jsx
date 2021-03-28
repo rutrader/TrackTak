@@ -29,7 +29,7 @@ const Home = () => {
         <link rel="canonical" href={`${resourceName}`} />
         <meta
           name="description"
-          content="Value a company within minutes using our DCF calculator based on Aswath Damodaran's spreadsheets."
+          content="Value a company within minutes using our DCF calculator based on Aswath Damodaran's excel spreadsheets."
         />
       </Helmet>
       <Section>
