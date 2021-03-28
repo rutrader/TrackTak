@@ -133,8 +133,8 @@ const FeaturesSection = () => {
           Features
         </Typography>
         <Typography variant="h6" color="textSecondary">
-          Finding a companies intrinsic value just got a whole lot easier with
-          our free DCF calculator.
+          Finding a companies true value just got a whole lot easier with our
+          free intrinsic value calculator.
         </Typography>
       </Box>
       <Box

@@ -1,44 +1,34 @@
 import isNil from "lodash/isNil";
 import getValueFromString from "./getValueFromString";
 
-const getBalanceSheet = (datum) => {
-  const balanceSheet = {
-    cash: datum.cash,
-    shortTermInvestments: datum.shortTermInvestments,
-    totalStockholderEquity: datum.totalStockholderEquity,
-    shortLongTermDebt: datum.shortLongTermDebt,
-    longTermDebt: datum.longTermDebt,
-    capitalLeaseObligations: datum.capitalLeaseObligations,
-    noncontrollingInterestInConsolidatedEntity:
-      datum.noncontrollingInterestInConsolidatedEntity,
-  };
+const getBalanceSheet = (balanceSheet) => {
+  const newBalanceSheet = {};
 
   Object.keys(balanceSheet).forEach((key) => {
-    balanceSheet[key] = getValueFromString(balanceSheet[key]);
+    newBalanceSheet[key] = getValueFromString(balanceSheet[key]);
   });
 
-  balanceSheet.date = datum.date;
-
-  return balanceSheet;
+  return newBalanceSheet;
 };
 
-const getIncomeStatement = (datum) => {
-  const incomeStatement = {
-    minorityInterest: datum.minorityInterest,
-    operatingIncome: datum.operatingIncome,
-    interestExpense: datum.interestExpense,
-    incomeBeforeTax: datum.incomeBeforeTax,
-    incomeTaxExpense: datum.incomeTaxExpense,
-    totalRevenue: datum.totalRevenue,
-  };
+const getIncomeStatement = (incomeStatement) => {
+  const newIncomeStatement = {};
 
   Object.keys(incomeStatement).forEach((key) => {
-    incomeStatement[key] = getValueFromString(incomeStatement[key]);
+    newIncomeStatement[key] = getValueFromString(incomeStatement[key]);
   });
 
-  incomeStatement.date = datum.date;
+  return newIncomeStatement;
+};
 
-  return incomeStatement;
+const getCashFlowStatement = (cashflowStatement) => {
+  const newCashFlowStatement = {};
+
+  Object.keys(cashflowStatement).forEach((key) => {
+    newCashFlowStatement[key] = getValueFromString(cashflowStatement[key]);
+  });
+
+  return newCashFlowStatement;
 };
 
 const convertFundamentals = (fundamentalsData) => {
@@ -46,7 +36,7 @@ const convertFundamentals = (fundamentalsData) => {
     General,
     Highlights,
     SharesStats,
-    Financials: { Balance_Sheet, Income_Statement },
+    Financials: { Balance_Sheet, Income_Statement, Cash_Flow },
   } = fundamentalsData;
 
   const general = {
@@ -83,6 +73,12 @@ const convertFundamentals = (fundamentalsData) => {
     yearly: {},
   };
 
+  const cashFlowStatement = {
+    currencyCode: Cash_Flow.currency_symbol,
+    quarterly: {},
+    yearly: {},
+  };
+
   let firstIncomeSheetRemoved;
 
   Object.values(Income_Statement.quarterly).forEach((datum) => {
@@ -109,12 +105,24 @@ const convertFundamentals = (fundamentalsData) => {
     }
   });
 
+  Object.values(Cash_Flow.quarterly).forEach((datum) => {
+    cashFlowStatement.quarterly[datum.date] = getCashFlowStatement(datum);
+  });
+
+  Object.values(Cash_Flow.yearly).forEach((datum, i) => {
+    // Fix EOD bug from some stocks not having recent data
+    if (i !== 0 || !firstIncomeSheetRemoved) {
+      cashFlowStatement.yearly[datum.date] = getCashFlowStatement(datum);
+    }
+  });
+
   return {
     general,
     highlights,
     sharesStats,
     balanceSheet,
     incomeStatement,
+    cashFlowStatement,
   };
 };
 
