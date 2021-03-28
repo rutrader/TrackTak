@@ -45,7 +45,7 @@ const TTTable = ({
       data,
       ...tableOptions,
     },
-    useVirtualization ? useBlockLayout : undefined
+    useVirtualization ? useBlockLayout : undefined,
   );
 
   const renderRow = useCallback(
@@ -60,11 +60,11 @@ const TTTable = ({
         />
       );
     },
-    [prepareRow, rows]
+    [prepareRow, rows],
   );
 
   return (
-    <Box sx={{ overflow: "auto" }}>
+    <Box sx={{ overflow: "auto", flex: 1 }}>
       <Table {...getTableProps()} {...props}>
         <TableHead {...tableHeadProps}>
           {headerGroups.map((headerGroup) => {

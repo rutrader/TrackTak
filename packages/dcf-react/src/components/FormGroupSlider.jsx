@@ -16,6 +16,14 @@ const TextFieldLabel = withStyles({
   },
 })(InputLabel);
 
+const StyledFormControlLabel = withStyles({
+  root: {
+    "&:not(.Mui-disabled) .MuiFormLabel-root": {
+      color: "#000",
+    },
+  },
+})(FormControlLabel);
+
 const PrettoSlider = withStyles({
   root: {
     height: 8,
@@ -45,25 +53,29 @@ const PrettoSlider = withStyles({
   },
 })(Slider);
 
-const FormGroupSlider = ({ dataLabel, marks, valueText }) => {
-  const [value, setValue] = React.useState([10, 40]);
-  const [checked, setChecked] = React.useState(false);
-  const [isDisabled, setIsDisabled] = React.useState(false);
+const FormGroupSlider = ({
+  dataLabel: { label, value, checked },
+  marks,
+  valueText,
+  setChecked,
+}) => {
+  const [sliderValue, setSliderValue] = React.useState([10, 40]);
   const inputQueryParams = useInputQueryParams();
 
   const handleValueChange = (_, newValue) => {
-    setValue(newValue);
+    setSliderValue(newValue);
   };
 
   const handleCheckedChange = (e) => {
-    setChecked(e.target.checked);
-    setIsDisabled(e.target.checked);
+    setChecked(value, e.target.checked);
   };
+
+  const disabled = isNil(inputQueryParams[value]);
 
   return (
     <React.Fragment>
-      <FormControlLabel
-        disabled={isNil(inputQueryParams[dataLabel.value])}
+      <StyledFormControlLabel
+        disabled={disabled}
         control={
           <Checkbox
             checked={checked}
@@ -71,11 +83,11 @@ const FormGroupSlider = ({ dataLabel, marks, valueText }) => {
             color="primary"
           />
         }
-        label={<TextFieldLabel>{dataLabel.label}</TextFieldLabel>}
+        label={<TextFieldLabel>{label}</TextFieldLabel>}
       />
-      {isDisabled && (
+      {checked && (
         <PrettoSlider
-          value={value}
+          value={sliderValue}
           onChange={handleValueChange}
           defaultValue={0}
           getAriaValueText={valueText}

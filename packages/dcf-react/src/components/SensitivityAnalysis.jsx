@@ -14,6 +14,8 @@ import {
 import TTTable from "./TTTable";
 import FormGroupSlider from "./FormGroupSlider";
 import { makeStyles } from "@material-ui/core/styles";
+import { isNil } from "lodash";
+import useInputQueryParams from "../hooks/useInputQueryParams";
 
 const useStyles = makeStyles((theme) => ({
   slider: {
@@ -77,15 +79,17 @@ columns.push(
 
 const SensitivityAnalysis = () => {
   const classes = useStyles();
-
-  const dataLabels = [
+  const inputQueryParams = useInputQueryParams();
+  const [dataLabels, setDataLabels] = React.useState([
     {
       label: cagrInYearsOneToFiveLabel,
-      value: "cagrInYearsOneToFive",
+      value: "cagrYearOneToFive",
+      checked: !isNil(inputQueryParams.cagrYearOneToFive),
     },
     {
       label: ebitTargetMarginInYearTenLabel,
       value: "ebitTargetMarginInYearTen",
+      checked: !isNil(inputQueryParams.ebitTargetMarginInYearTen),
     },
     {
       label: yearOfConvergenceLabel,
@@ -96,29 +100,72 @@ const SensitivityAnalysis = () => {
       value: "salesToCapitalRatio",
     },
     {
-      label: weightedAverageCostOfCapitalLabel,
-      value: "weightedAverageCostOfCapital",
-    },
-    {
       label: probabilityOfFailureLabel,
       value: "probabilityOfFailure",
     },
     {
       label: proceedsAsPercentageOfBookValueLabel,
-      value: "proceedsAsPercentageOfBookValue",
+      value: "proceedsAsAPercentageOfBookValue",
     },
-  ];
+  ]);
+
+  const setChecked = (value, checked) => {
+    const newDataLabels = dataLabels.map((dataLabel) => {
+      if (value === dataLabel.value) {
+        return {
+          ...dataLabel,
+          checked,
+        };
+      }
+
+      return dataLabel;
+    });
+
+    setDataLabels(newDataLabels);
+  };
+
+  const newDataLabels = [...dataLabels];
+  const indexToRemove = newDataLabels.findIndex((x) => x.checked);
+  const removedElement =
+    indexToRemove !== -1
+      ? newDataLabels.splice(indexToRemove, 1)[0]
+      : undefined;
+
+  const labelOne = removedElement?.label;
+  const labelTwo = newDataLabels.find((x) => x.checked)?.label;
 
   return (
     <Box sx={{ overflow: "auto" }}>
       <Typography variant="h5" gutterBottom>
         Sensitivity Analysis
       </Typography>
-      <TTTable columns={columns} data={data} />
+      <Box>
+        {labelOne && (
+          <Typography
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+            variant="h6"
+            component="div"
+          >
+            {labelOne}
+          </Typography>
+        )}
+        <Box style={{ display: "flex", alignItems: "center" }}>
+          {labelTwo && (
+            <Typography variant="h6" component="div">
+              {labelTwo}
+            </Typography>
+          )}
+          <TTTable columns={columns} data={data} />
+        </Box>
+      </Box>
       <FormGroup aria-label="position" column className={classes.slider}>
         {dataLabels.map((dataLabel) => (
           <FormGroupSlider
             marks={marks}
+            setChecked={setChecked}
             dataLabel={dataLabel}
             valueText={valueText}
           />
