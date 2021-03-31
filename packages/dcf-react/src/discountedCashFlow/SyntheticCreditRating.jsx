@@ -96,7 +96,7 @@ const SyntheticCreditRating = () => {
   return (
     <React.Fragment>
       <SubSection>
-        <Typography variant="h6" gutterBottom>
+        <Typography variant="h5" gutterBottom>
           <InfoOutlinedIconWrapper text={<InfoSyntheticRating />}>
             Synthetic Credit Rating Results
           </InfoOutlinedIconWrapper>
@@ -140,7 +140,7 @@ const SyntheticCreditRating = () => {
         </Box>
         <TTTable
           sx={{
-            [`& .table_row_${currentCompanyInterestIndex}`]: {
+            [`& tbody tr.table_row_${currentCompanyInterestIndex}`]: {
               backgroundColor: (theme) =>
                 getTableRowBackgroundOpacity(theme.palette.primary.light),
             },

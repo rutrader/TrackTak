@@ -1,27 +1,34 @@
 const getIncomeStatement = (
   incomeStatement,
   convertCurrency,
-  dateToConvertCurrencyAt
+  datesToConvertCurrencyAt,
 ) => {
-  const newIncomeStatement = {
-    totalRevenue: incomeStatement.totalRevenue,
-    operatingIncome: incomeStatement.operatingIncome,
-    interestExpense: incomeStatement.interestExpense,
-    minorityInterest: incomeStatement.minorityInterest,
-  };
+  const convertedIncomeStatement = {};
 
-  Object.keys(newIncomeStatement).forEach((property) => {
-    newIncomeStatement[property] = convertCurrency(
-      [dateToConvertCurrencyAt],
-      newIncomeStatement[property]
+  Object.keys(incomeStatement).forEach((property) => {
+    convertedIncomeStatement[property] = convertCurrency(
+      datesToConvertCurrencyAt,
+      incomeStatement[property],
     );
   });
 
-  newIncomeStatement.operatingMargin =
-    newIncomeStatement.operatingIncome / newIncomeStatement.totalRevenue;
-  newIncomeStatement.date = incomeStatement.date;
+  convertedIncomeStatement.grossMargin =
+    convertedIncomeStatement.grossProfit /
+    convertedIncomeStatement.totalRevenue;
 
-  return newIncomeStatement;
+  convertedIncomeStatement.operatingMargin =
+    convertedIncomeStatement.operatingIncome /
+    convertedIncomeStatement.totalRevenue;
+
+  convertedIncomeStatement.effectiveTaxRate =
+    convertedIncomeStatement.incomeTaxExpense /
+    convertedIncomeStatement.incomeBeforeTax;
+
+  convertedIncomeStatement.netMargin =
+    convertedIncomeStatement.netIncomeFromContinuingOps /
+    convertedIncomeStatement.totalRevenue;
+
+  return convertedIncomeStatement;
 };
 
 export default getIncomeStatement;

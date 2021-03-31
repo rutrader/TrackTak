@@ -1,46 +1,42 @@
-const getBookValueOfDebt = (balanceSheet) => {
-  let bookValueOfDebt = 0;
-
-  bookValueOfDebt += balanceSheet.shortLongTermDebt;
-
-  bookValueOfDebt += balanceSheet.longTermDebt;
-
-  bookValueOfDebt += balanceSheet.capitalLeaseObligations;
-
-  return bookValueOfDebt;
-};
-
 const getBalanceSheet = (
   balanceSheet,
   convertCurrency,
   totalRevenue,
   dateToConvertCurrencyAt,
 ) => {
-  const newBalanceSheet = {
-    bookValueOfDebt: getBookValueOfDebt(balanceSheet),
-    bookValueOfEquity: balanceSheet.totalStockholderEquity,
-    noncontrollingInterestInConsolidatedEntity:
-      balanceSheet.noncontrollingInterestInConsolidatedEntity,
-    cashAndShortTermInvestments:
-      balanceSheet.cash + balanceSheet.shortTermInvestments,
-  };
+  const convertedBalanceSheet = {};
 
-  Object.keys(newBalanceSheet).forEach((property) => {
-    newBalanceSheet[property] = convertCurrency(
+  Object.keys(balanceSheet).forEach((property) => {
+    convertedBalanceSheet[property] = convertCurrency(
       [dateToConvertCurrencyAt],
-      newBalanceSheet[property],
+      balanceSheet[property],
     );
   });
 
-  newBalanceSheet.investedCapital =
-    newBalanceSheet.bookValueOfEquity +
-    newBalanceSheet.bookValueOfDebt -
-    newBalanceSheet.cashAndShortTermInvestments;
-  newBalanceSheet.salesToCapitalRatio =
-    totalRevenue / newBalanceSheet.investedCapital;
-  newBalanceSheet.date = balanceSheet.date;
+  convertedBalanceSheet.longTermDebtAndCapitalLeases =
+    convertedBalanceSheet.longTermDebtTotal +
+    convertedBalanceSheet.capitalLeaseObligations;
 
-  return newBalanceSheet;
+  convertedBalanceSheet.bookValueOfDebt =
+    convertedBalanceSheet.longTermDebtAndCapitalLeases;
+
+  convertedBalanceSheet.bookValueOfEquity =
+    convertedBalanceSheet.totalStockholderEquity;
+
+  convertedBalanceSheet.investedCapital =
+    convertedBalanceSheet.bookValueOfEquity +
+    convertedBalanceSheet.bookValueOfDebt -
+    convertedBalanceSheet.cashAndShortTermInvestments;
+
+  convertedBalanceSheet.salesToCapitalRatio =
+    totalRevenue / convertedBalanceSheet.investedCapital;
+
+  // Take it out here because we show it as a seperate line
+  // on the balance statement
+  convertedBalanceSheet.nonCurrentLiabilitiesOther -=
+    convertedBalanceSheet.capitalLeaseObligations;
+
+  return convertedBalanceSheet;
 };
 
 export default getBalanceSheet;

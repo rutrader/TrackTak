@@ -28,10 +28,10 @@ npm install --save @tracktak/dcf-react
 
 You don't need all of these components if you don't want.
 
-For example PastFundamentals can be removed if you have your own fundamentals page. See the example link at the top of this readme for more info.
+For example FinancialsSummary can be removed if you have your own fundamentals page. See the example link at the top of this readme for more info.
 
 - `<CompanyOverviewStats />`
-- `<PastFundamentals />`
+- `<FinancialsSummary />`
 - `<ValueDrivingInputs />`
 - `<OptionalInputs />`
 - `<IndustryAveragesResults />`

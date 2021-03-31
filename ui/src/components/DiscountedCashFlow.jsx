@@ -1,5 +1,11 @@
 import React, { useEffect } from "react";
-import { Box, useMediaQuery, useTheme } from "@material-ui/core";
+import {
+  Box,
+  Link,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@material-ui/core";
 import {
   BlackScholesResults,
   CompanyOverviewStats,
@@ -7,23 +13,27 @@ import {
   DiscountedCashFlowSheet,
   IndustryAveragesResults,
   OptionalInputs,
-  PastFundamentals,
+  FinancialsSummary,
   Section,
   SubSection,
   withFundamentalsLoaded,
   ValueDrivingInputs,
+  useTicker,
 } from "@tracktak/dcf-react";
-import { Link } from "gatsby";
+import { Link as RouterLink } from "gatsby";
 import SubscribePopup from "./SubscribePopup";
 import { setItem, getItem } from "../shared/guardedLocalStorage";
 import { useDispatch } from "react-redux";
 import { setMessage } from "../redux/actions/snackbarActions";
+import { useLocation } from "@reach/router";
 
 const DiscountedCashFlow = () => {
   const theme = useTheme();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const snackbarShown = getItem("rotateSnackbarShown");
   const dispatch = useDispatch();
+  const ticker = useTicker();
+  const location = useLocation();
 
   useEffect(() => {
     if (!snackbarShown && isOnMobile) {
@@ -41,7 +51,19 @@ const DiscountedCashFlow = () => {
     <React.Fragment>
       <CompanyOverviewStats useDescriptionShowMore />
       <Section>
-        <PastFundamentals />
+        <FinancialsSummary />
+        <Box sx={{ mt: 1 }}>
+          <Typography>
+            See the&nbsp;
+            <Link
+              component={RouterLink}
+              to={`/stock/${ticker}/financial-statements${location.search}`}
+            >
+              Financial Statements
+            </Link>
+            &nbsp;tab for the full financials.
+          </Typography>
+        </Box>
       </Section>
       <Section sx={{ display: "flex", gridColumnGap: 20, flexWrap: "wrap" }}>
         <Box sx={{ flex: 1 }}>
@@ -65,6 +87,7 @@ const DiscountedCashFlow = () => {
               }) => {
                 return (
                   <Link
+                    component={RouterLink}
                     to={`/stock/${ticker}/synthetic-credit-rating${searchParams}`}
                     {...props}
                   />

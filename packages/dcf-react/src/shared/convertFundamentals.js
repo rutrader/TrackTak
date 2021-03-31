@@ -1,8 +1,18 @@
 import isNil from "lodash/isNil";
 import getValueFromString from "./getValueFromString";
 
-const getBalanceSheet = (balanceSheet) => {
-  const newBalanceSheet = {};
+const convertBalanceSheet = ({
+  date,
+  filing_date,
+  currency_symbol,
+  ...balanceSheet
+}) => {
+  const newBalanceSheet = {
+    date,
+    filingDate: filing_date,
+    currencyCode: currency_symbol,
+    ...balanceSheet,
+  };
 
   Object.keys(balanceSheet).forEach((key) => {
     newBalanceSheet[key] = getValueFromString(balanceSheet[key]);
@@ -11,8 +21,18 @@ const getBalanceSheet = (balanceSheet) => {
   return newBalanceSheet;
 };
 
-const getIncomeStatement = (incomeStatement) => {
-  const newIncomeStatement = {};
+const convertIncomeStatement = ({
+  date,
+  filing_date,
+  currency_symbol,
+  ...incomeStatement
+}) => {
+  const newIncomeStatement = {
+    date,
+    filingDate: filing_date,
+    currencyCode: currency_symbol,
+    ...incomeStatement,
+  };
 
   Object.keys(incomeStatement).forEach((key) => {
     newIncomeStatement[key] = getValueFromString(incomeStatement[key]);
@@ -21,11 +41,21 @@ const getIncomeStatement = (incomeStatement) => {
   return newIncomeStatement;
 };
 
-const getCashFlowStatement = (cashflowStatement) => {
-  const newCashFlowStatement = {};
+const convertCashFlowStatement = ({
+  date,
+  filing_date,
+  currency_symbol,
+  ...cashFlowStatement
+}) => {
+  const newCashFlowStatement = {
+    date,
+    filingDate: filing_date,
+    currencyCode: currency_symbol,
+    ...cashFlowStatement,
+  };
 
-  Object.keys(cashflowStatement).forEach((key) => {
-    newCashFlowStatement[key] = getValueFromString(cashflowStatement[key]);
+  Object.keys(cashFlowStatement).forEach((key) => {
+    newCashFlowStatement[key] = getValueFromString(cashFlowStatement[key]);
   });
 
   return newCashFlowStatement;
@@ -82,37 +112,37 @@ const convertFundamentals = (fundamentalsData) => {
   let firstIncomeSheetRemoved;
 
   Object.values(Income_Statement.quarterly).forEach((datum) => {
-    incomeStatement.quarterly[datum.date] = getIncomeStatement(datum);
+    incomeStatement.quarterly[datum.date] = convertIncomeStatement(datum);
   });
 
   Object.values(Income_Statement.yearly).forEach((datum, i) => {
     // Fix EOD bug from some stocks not having recent data
     if (i !== 0 || !isNil(datum.totalRevenue)) {
-      incomeStatement.yearly[datum.date] = getIncomeStatement(datum);
+      incomeStatement.yearly[datum.date] = convertIncomeStatement(datum);
     } else {
       firstIncomeSheetRemoved = true;
     }
   });
 
   Object.values(Balance_Sheet.quarterly).forEach((datum) => {
-    balanceSheet.quarterly[datum.date] = getBalanceSheet(datum);
+    balanceSheet.quarterly[datum.date] = convertBalanceSheet(datum);
   });
 
   Object.values(Balance_Sheet.yearly).forEach((datum, i) => {
     // Fix EOD bug from some stocks not having recent data
     if (i !== 0 || !firstIncomeSheetRemoved) {
-      balanceSheet.yearly[datum.date] = getBalanceSheet(datum);
+      balanceSheet.yearly[datum.date] = convertBalanceSheet(datum);
     }
   });
 
   Object.values(Cash_Flow.quarterly).forEach((datum) => {
-    cashFlowStatement.quarterly[datum.date] = getCashFlowStatement(datum);
+    cashFlowStatement.quarterly[datum.date] = convertCashFlowStatement(datum);
   });
 
   Object.values(Cash_Flow.yearly).forEach((datum, i) => {
     // Fix EOD bug from some stocks not having recent data
     if (i !== 0 || !firstIncomeSheetRemoved) {
-      cashFlowStatement.yearly[datum.date] = getCashFlowStatement(datum);
+      cashFlowStatement.yearly[datum.date] = convertCashFlowStatement(datum);
     }
   });
 

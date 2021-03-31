@@ -30,6 +30,7 @@ const TTTable = ({
   tableHeadProps,
   useVirtualization,
   fixedSizeListProps,
+  sx,
   ...props
 }) => {
   const {
@@ -64,7 +65,24 @@ const TTTable = ({
   );
 
   return (
-    <Box sx={{ overflow: "auto" }}>
+    <Box
+      sx={{
+        overflow: "auto",
+        "& td:first-of-type": {
+          whiteSpace: "nowrap",
+        },
+        "& .indented-cell": {
+          paddingLeft: (theme) => theme.spacing(2),
+        },
+        "& .bold-cell": {
+          fontWeight: "bold",
+        },
+        "& tbody tr:nth-of-type(odd)": {
+          backgroundColor: (theme) => theme.palette.grey["100"],
+        },
+        ...sx,
+      }}
+    >
       <Table {...getTableProps()} {...props}>
         <TableHead {...tableHeadProps}>
           {headerGroups.map((headerGroup) => {

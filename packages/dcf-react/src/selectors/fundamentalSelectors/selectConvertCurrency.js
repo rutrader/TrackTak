@@ -6,8 +6,7 @@ const convertCurrency = (exchangeRates) => (
   datePeriodsToConvertAt,
   valueToConvert,
 ) => {
-  if (isNaN(parseFloat(valueToConvert)) || !exchangeRates)
-    return valueToConvert;
+  if (!isFinite(valueToConvert) || !exchangeRates) return valueToConvert;
 
   // TODO: Make this exact day later
   const sumOfExchangeRateCloses = datePeriodsToConvertAt.reduce(
