@@ -9,7 +9,7 @@ let theme = createMuiTheme({
     fontFamily: "Nunito",
   },
   palette: {
-    tableBackground: alpha("#51509c", 0.1),
+    tableBackground: alpha("#51509c", 0.04),
     primary: {
       light: "#2fdbab",
       main: "#43cea2",
