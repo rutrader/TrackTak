@@ -1,15 +1,13 @@
 import getFinancialSheetPastValues from "./getFinancialSheetPastValues";
 import isFinite from "lodash/isFinite";
 
-const quarters = 4;
-
 // TODO: Fix when the API fixes the TTM for non-US stocks
 const getUSFinancialData = (
   getStatementFunc,
   quarterlyStatements,
   convertCurrency,
 ) => {
-  const pastFourQuarters = quarterlyStatements.slice(0, quarters);
+  const pastFourQuarters = quarterlyStatements.slice(0, 4);
   const statementDates = pastFourQuarters.map(({ date }) => date);
   const statement = {};
 

@@ -29,6 +29,7 @@ import {
 } from "../components/ValueDrivingInputs";
 import { useLocation } from "@reach/router";
 import isNil from "lodash/isNil";
+import selectThreeAverageYearsEffectiveTaxRate from "../selectors/fundamentalSelectors/selectThreeAverageYearsEffectiveTaxRate";
 
 const DiscountedCashFlowTable = ({
   columnWidths,
@@ -53,6 +54,9 @@ const DiscountedCashFlowTable = ({
   );
   const isYoyGrowthToggled = useSelector(selectIsYoyGrowthToggled);
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
+  const pastThreeYearsAverageEffectiveTaxRate = useSelector(
+    selectThreeAverageYearsEffectiveTaxRate,
+  );
 
   const cellColumnWidths = useMemo(() => {
     return columns.map((column) => {
@@ -137,11 +141,10 @@ const DiscountedCashFlowTable = ({
           "M5",
         ],
         {
+          pastThreeYearsAverageEffectiveTaxRate,
           totalRevenue: incomeStatement.totalRevenue,
           operatingIncome: incomeStatement.operatingIncome,
           minorityInterest: incomeStatement.minorityInterest,
-          pastThreeYearsAverageEffectiveTaxRate:
-            incomeStatement.pastThreeYearsAverageEffectiveTaxRate,
           investedCapital: balanceSheet.investedCapital,
           bookValueOfDebt: balanceSheet.bookValueOfDebt,
           cashAndShortTermInvestments: balanceSheet.cashAndShortTermInvestments,
@@ -159,13 +162,13 @@ const DiscountedCashFlowTable = ({
     balanceSheet.investedCapital,
     balanceSheet.noncontrollingInterestInConsolidatedEntity,
     currentEquityRiskPremium.marginalTaxRate,
-    dispatch,
     incomeStatement.minorityInterest,
     incomeStatement.operatingIncome,
-    incomeStatement.pastThreeYearsAverageEffectiveTaxRate,
     incomeStatement.totalRevenue,
+    pastThreeYearsAverageEffectiveTaxRate,
     price,
     sharesOutstanding,
+    dispatch,
   ]);
 
   useEffect(() => {

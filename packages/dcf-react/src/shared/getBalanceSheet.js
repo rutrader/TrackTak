@@ -13,8 +13,14 @@ const getBalanceSheet = (
     );
   });
 
+  // API returns wrong value for this property for non-us stocks
+  // so we overwrite it
+  convertedBalanceSheet.cashAndShortTermInvestments =
+    convertedBalanceSheet.cash + convertedBalanceSheet.shortTermInvestments;
+
   convertedBalanceSheet.longTermDebtAndCapitalLeases =
-    convertedBalanceSheet.longTermDebtTotal +
+    convertedBalanceSheet.shortLongTermDebt +
+    convertedBalanceSheet.longTermDebt +
     convertedBalanceSheet.capitalLeaseObligations;
 
   convertedBalanceSheet.bookValueOfDebt =
