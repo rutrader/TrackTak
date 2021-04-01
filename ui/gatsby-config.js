@@ -75,7 +75,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-google-gtag`,
       options: {
-        trackingIds: ["G-WFB538909G"],
+        trackingIds: ["G-WFB538909G", "UA-185279234-1"],
       },
     },
     "gatsby-plugin-react-helmet",
