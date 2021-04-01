@@ -10,7 +10,6 @@ import {
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/table/lib/css/table.css";
 import "../src/reset.css";
-import { useEffect } from "react";
 import convertFundamentals from "../src/shared/convertFundamentals";
 import theme from "../../../ui/src/theme";
 import "@fontsource/nunito/400.css";

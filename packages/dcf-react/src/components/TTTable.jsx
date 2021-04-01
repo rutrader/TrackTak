@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import { useBlockLayout, useTable } from "react-table";
 import { FixedSizeList } from "react-window";
+import { useTheme } from "@material-ui/styles";
 
 const RenderTableRow = ({ prepareRow, row, index, ...props }) => {
   prepareRow(row);
@@ -48,6 +49,7 @@ const TTTable = ({
     },
     useVirtualization ? useBlockLayout : undefined,
   );
+  const theme = useTheme();
 
   const renderRow = useCallback(
     ({ index, style }) => {
@@ -78,7 +80,7 @@ const TTTable = ({
           fontWeight: "bold",
         },
         "& tbody tr:nth-of-type(odd)": {
-          backgroundColor: (theme) => theme.palette.grey["100"],
+          backgroundColor: theme.palette.tableBackground,
         },
         ...sx,
       }}
