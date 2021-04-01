@@ -1,3 +1,5 @@
+import convertCalculationToZeroIfNaN from "./convertCalculationToZeroIfNaN";
+
 const getIncomeStatement = (
   incomeStatement,
   convertCurrency,
@@ -12,23 +14,28 @@ const getIncomeStatement = (
     );
   });
 
-  convertedIncomeStatement.grossMargin =
+  const calculations = {};
+
+  calculations.grossMargin =
     convertedIncomeStatement.grossProfit /
     convertedIncomeStatement.totalRevenue;
 
-  convertedIncomeStatement.operatingMargin =
+  calculations.operatingMargin =
     convertedIncomeStatement.operatingIncome /
     convertedIncomeStatement.totalRevenue;
 
-  convertedIncomeStatement.effectiveTaxRate =
+  calculations.effectiveTaxRate =
     convertedIncomeStatement.incomeTaxExpense /
     convertedIncomeStatement.incomeBeforeTax;
 
-  convertedIncomeStatement.netMargin =
+  calculations.netMargin =
     convertedIncomeStatement.netIncomeFromContinuingOps /
     convertedIncomeStatement.totalRevenue;
 
-  return convertedIncomeStatement;
+  return {
+    ...convertedIncomeStatement,
+    ...convertCalculationToZeroIfNaN(calculations),
+  };
 };
 
 export default getIncomeStatement;

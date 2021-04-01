@@ -13,36 +13,39 @@ const getBalanceSheet = (
     );
   });
 
+  const calculations = {};
+
   // API returns wrong value for this property for non-us stocks
   // so we overwrite it
-  convertedBalanceSheet.cashAndShortTermInvestments =
+  calculations.cashAndShortTermInvestments =
     convertedBalanceSheet.cash + convertedBalanceSheet.shortTermInvestments;
 
-  convertedBalanceSheet.longTermDebtAndCapitalLeases =
+  calculations.longTermDebtAndCapitalLeases =
     convertedBalanceSheet.shortLongTermDebt +
     convertedBalanceSheet.longTermDebt +
     convertedBalanceSheet.capitalLeaseObligations;
 
-  convertedBalanceSheet.bookValueOfDebt =
-    convertedBalanceSheet.longTermDebtAndCapitalLeases;
+  calculations.bookValueOfDebt = calculations.longTermDebtAndCapitalLeases;
 
-  convertedBalanceSheet.bookValueOfEquity =
-    convertedBalanceSheet.totalStockholderEquity;
+  calculations.bookValueOfEquity = convertedBalanceSheet.totalStockholderEquity;
 
-  convertedBalanceSheet.investedCapital =
-    convertedBalanceSheet.bookValueOfEquity +
-    convertedBalanceSheet.bookValueOfDebt -
-    convertedBalanceSheet.cashAndShortTermInvestments;
+  calculations.investedCapital =
+    calculations.bookValueOfEquity +
+    calculations.bookValueOfDebt -
+    calculations.cashAndShortTermInvestments;
 
-  convertedBalanceSheet.salesToCapitalRatio =
-    totalRevenue / convertedBalanceSheet.investedCapital;
+  calculations.salesToCapitalRatio =
+    totalRevenue / calculations.investedCapital;
 
-  // Take it out here because we show it as a seperate line
+  // Take it out here because we show it as a separate line
   // on the balance statement
-  convertedBalanceSheet.nonCurrentLiabilitiesOther -=
+  calculations.nonCurrentLiabilitiesOther -=
     convertedBalanceSheet.capitalLeaseObligations;
 
-  return convertedBalanceSheet;
+  return {
+    ...convertedBalanceSheet,
+    ...convertedBalanceSheet(calculations),
+  };
 };
 
 export default getBalanceSheet;
