@@ -1,3 +1,5 @@
+import convertCalculationToZeroIfNaN from "./convertCalculationToZeroIfNaN";
+
 const getBalanceSheet = (
   balanceSheet,
   convertCurrency,
@@ -44,7 +46,7 @@ const getBalanceSheet = (
 
   return {
     ...convertedBalanceSheet,
-    ...convertedBalanceSheet(calculations),
+    ...convertCalculationToZeroIfNaN(calculations),
   };
 };
 
