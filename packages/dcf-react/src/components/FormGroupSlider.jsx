@@ -54,16 +54,17 @@ const PrettoSlider = withStyles({
 })(Slider);
 
 const FormGroupSlider = ({
-  dataLabel: { label, value, checked },
+  dataLabel: { label, value, checked, step, min, max },
   marks,
   valueText,
   setChecked,
+  sliderValue,
+  onChange,
 }) => {
-  const [sliderValue, setSliderValue] = React.useState([10, 40]);
   const inputQueryParams = useInputQueryParams();
 
   const handleValueChange = (_, newValue) => {
-    setSliderValue(newValue);
+    onChange(value, newValue);
   };
 
   const handleCheckedChange = (e) => {
@@ -94,9 +95,9 @@ const FormGroupSlider = ({
           aria-labelledby="discrete-slider-custom"
           valueLabelDisplay="auto"
           marks={marks}
-          step={5}
-          min={-50}
-          max={50}
+          step={step}
+          min={min}
+          max={max}
         />
       )}
     </React.Fragment>

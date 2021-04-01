@@ -28,95 +28,130 @@ const useStyles = makeStyles((theme) => ({
 const marks = [
   {
     value: -50,
-    label: "-50%",
+    label: "-50",
   },
   {
     value: 0,
-    label: "0%",
+    label: "0",
   },
   {
     value: 50,
-    label: "50%",
+    label: "50",
   },
 ];
 
 const valueText = (value) => {
-  return `${value}%`;
+  return `${value}`;
 };
 
+//onChnage for sldier
 const SensitivityAnalysis = () => {
   const classes = useStyles();
   const inputQueryParams = useInputQueryParams();
+  const [sliderValue, setSliderValue] = React.useState([10, 40]);
   const [dataTable, setDataTable] = useState([
     {
       label: cagrInYearsOneToFiveLabel,
       value: "cagrYearOneToFive",
       checked: !isNil(inputQueryParams.cagrYearOneToFive),
+      step: 1,
+      min: -50,
+      max: 50,
       data: [
-        { dataFieldTwo: "20%", value: 1 },
-        { dataFieldTwo: "25%", value: 2 },
-        { dataFieldTwo: "30%", value: 3 },
-        { dataFieldTwo: "35%", value: 4 },
-        { dataFieldTwo: "40%", value: 5 },
+        { dataField: "20%" },
+        { dataField: "25%" },
+        { dataField: "30%" },
+        { dataField: "35%" },
+        { dataField: "40%" },
       ],
     },
     {
       label: ebitTargetMarginInYearTenLabel,
       value: "ebitTargetMarginInYearTen",
       checked: !isNil(inputQueryParams.ebitTargetMarginInYearTen),
+      step: 1,
+      min: -50,
+      max: 50,
       data: [
-        { dataFieldTwo: "20%", value: 1 },
-        { dataFieldTwo: "25%", value: 2 },
-        { dataFieldTwo: "30%", value: 3 },
-        { dataFieldTwo: "35%", value: 4 },
-        { dataFieldTwo: "40%", value: 5 },
+        { dataField: "20%" },
+        { dataField: "25%" },
+        { dataField: "30%" },
+        { dataField: "35%" },
+        { dataField: "40%" },
       ],
     },
     {
       label: yearOfConvergenceLabel,
       value: "yearOfConvergence",
+      step: 1,
+      min: -50,
+      max: 50,
       data: [
-        { dataFieldTwo: "0", value: 1 },
-        { dataFieldTwo: "1", value: 2 },
-        { dataFieldTwo: "2", value: 3 },
-        { dataFieldTwo: "3", value: 4 },
-        { dataFieldTwo: "4", value: 5 },
+        { dataField: "0" },
+        { dataField: "1" },
+        { dataField: "2" },
+        { dataField: "3" },
+        { dataField: "4" },
       ],
     },
     {
       label: salesToCapitalRatioLabel,
       value: "salesToCapitalRatio",
+      step: 1,
+      min: -50,
+      max: 50,
       data: [
-        { dataFieldTwo: "0", value: 1 },
-        { dataFieldTwo: "1", value: 2 },
-        { dataFieldTwo: "2", value: 3 },
-        { dataFieldTwo: "3", value: 4 },
-        { dataFieldTwo: "4", value: 5 },
+        { dataField: "0" },
+        { dataField: "1" },
+        { dataField: "2" },
+        { dataField: "3" },
+        { dataField: "4" },
       ],
     },
     {
       label: probabilityOfFailureLabel,
       value: "probabilityOfFailure",
+      step: 1,
+      min: -50,
+      max: 50,
       data: [
-        { dataFieldTwo: "20%", value: 1 },
-        { dataFieldTwo: "25%", value: 2 },
-        { dataFieldTwo: "30%", value: 3 },
-        { dataFieldTwo: "35%", value: 4 },
-        { dataFieldTwo: "40%", value: 5 },
+        { dataField: "20%" },
+        { dataField: "25%" },
+        { dataField: "30%" },
+        { dataField: "35%" },
+        { dataField: "40%" },
       ],
     },
     {
       label: proceedsAsPercentageOfBookValueLabel,
       value: "proceedsAsAPercentageOfBookValue",
+      step: 1,
+      min: -50,
+      max: 50,
       data: [
-        { dataFieldTwo: "20%", value: 1 },
-        { dataFieldTwo: "25%", value: 2 },
-        { dataFieldTwo: "30%", value: 3 },
-        { dataFieldTwo: "35%", value: 4 },
-        { dataFieldTwo: "40%", value: 5 },
+        { dataField: "20%" },
+        { dataField: "25%" },
+        { dataField: "30%" },
+        { dataField: "35%" },
+        { dataField: "40%" },
       ],
     },
   ]);
+
+  const onSliderChange = (value, sliderValue) => {
+    const newSliderValue = dataTable.map((datum) => {
+      if (value === datum.value) {
+        const data = [sliderValue[0], sliderValue[1]];
+        //number between
+        return {
+          ...datum,
+          data,
+        };
+      }
+      return datum;
+    });
+    setSliderValue(newSliderValue);
+  };
 
   const setChecked = (value, checked) => {
     const newDataTable = dataTable.map((datum) => {
@@ -136,7 +171,7 @@ const SensitivityAnalysis = () => {
   const columns = [
     {
       Header: "",
-      accessor: "dataFieldTwo",
+      accessor: "dataField",
     },
   ];
 
@@ -149,7 +184,7 @@ const SensitivityAnalysis = () => {
     columns.push(
       ...yElement.data.map((statement) => {
         return {
-          Header: statement.dataFieldTwo,
+          Header: statement.dataField,
           //accessor: statement.value,
         };
       }),
@@ -177,7 +212,7 @@ const SensitivityAnalysis = () => {
             <Typography variant="h6" component="div">
               {xElement.label}
             </Typography>
-            <TTTable columns={columns} data={yElement.data} />
+            <TTTable columns={columns} data={xElement.data} />
           </Box>
         </Box>
       )}
@@ -186,7 +221,9 @@ const SensitivityAnalysis = () => {
           <FormGroupSlider
             marks={marks}
             setChecked={setChecked}
+            onSliderChange={onSliderChange}
             dataLabel={dataLabel}
+            sliderValue={sliderValue}
             valueText={valueText}
           />
         ))}
