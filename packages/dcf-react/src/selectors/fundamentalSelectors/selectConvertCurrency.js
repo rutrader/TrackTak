@@ -1,13 +1,13 @@
 import { createSelector } from "@reduxjs/toolkit";
 import dayjs from "dayjs";
 import selectExchangeRates from "./selectExchangeRates";
+import isFinite from "lodash/isFinite";
 
 const convertCurrency = (exchangeRates) => (
   datePeriodsToConvertAt,
   valueToConvert,
 ) => {
-  if (isNaN(parseFloat(valueToConvert)) || !exchangeRates)
-    return valueToConvert;
+  if (!isFinite(valueToConvert) || !exchangeRates) return valueToConvert;
 
   // TODO: Make this exact day later
   const sumOfExchangeRateCloses = datePeriodsToConvertAt.reduce(

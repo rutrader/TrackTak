@@ -12,9 +12,10 @@ const initialState = {
   general: null,
   highlights: null,
   sharesStats: null,
+  exchangeRates: null,
   balanceSheet: null,
   incomeStatement: null,
-  exchangeRates: null,
+  cashFlowStatement: null,
 };
 
 const setFundamentalsReducer = (state, action) => {
@@ -24,6 +25,7 @@ const setFundamentalsReducer = (state, action) => {
     sharesStats,
     incomeStatement,
     balanceSheet,
+    cashFlowStatement,
   } = action.payload;
 
   state.general = general;
@@ -31,6 +33,7 @@ const setFundamentalsReducer = (state, action) => {
   state.sharesStats = sharesStats;
   state.incomeStatement = incomeStatement;
   state.balanceSheet = balanceSheet;
+  state.cashFlowStatement = cashFlowStatement;
 };
 
 const setLastPriceCloseReducer = (state, action) => {

@@ -1,13 +1,13 @@
-import { PastFundamentals } from "../src";
+import { FinancialsSummary } from "../src";
 import React from "react";
 
 const config = {
-  title: "PastFundamentals",
-  component: PastFundamentals,
+  title: "FinancialsSummary",
+  component: FinancialsSummary,
 };
 
 const Template = () => {
-  return <PastFundamentals />;
+  return <FinancialsSummary />;
 };
 
 export const Default = Template.bind({});

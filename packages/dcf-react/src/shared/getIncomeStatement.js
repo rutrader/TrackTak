@@ -1,27 +1,41 @@
+import convertCalculationToZeroIfNaN from "./convertCalculationToZeroIfNaN";
+
 const getIncomeStatement = (
   incomeStatement,
   convertCurrency,
-  dateToConvertCurrencyAt
+  datesToConvertCurrencyAt,
 ) => {
-  const newIncomeStatement = {
-    totalRevenue: incomeStatement.totalRevenue,
-    operatingIncome: incomeStatement.operatingIncome,
-    interestExpense: incomeStatement.interestExpense,
-    minorityInterest: incomeStatement.minorityInterest,
-  };
+  const convertedIncomeStatement = {};
 
-  Object.keys(newIncomeStatement).forEach((property) => {
-    newIncomeStatement[property] = convertCurrency(
-      [dateToConvertCurrencyAt],
-      newIncomeStatement[property]
+  Object.keys(incomeStatement).forEach((property) => {
+    convertedIncomeStatement[property] = convertCurrency(
+      datesToConvertCurrencyAt,
+      incomeStatement[property],
     );
   });
 
-  newIncomeStatement.operatingMargin =
-    newIncomeStatement.operatingIncome / newIncomeStatement.totalRevenue;
-  newIncomeStatement.date = incomeStatement.date;
+  const calculations = {};
 
-  return newIncomeStatement;
+  calculations.grossMargin =
+    convertedIncomeStatement.grossProfit /
+    convertedIncomeStatement.totalRevenue;
+
+  calculations.operatingMargin =
+    convertedIncomeStatement.operatingIncome /
+    convertedIncomeStatement.totalRevenue;
+
+  calculations.effectiveTaxRate =
+    convertedIncomeStatement.incomeTaxExpense /
+    convertedIncomeStatement.incomeBeforeTax;
+
+  calculations.netMargin =
+    convertedIncomeStatement.netIncomeFromContinuingOps /
+    convertedIncomeStatement.totalRevenue;
+
+  return {
+    ...convertedIncomeStatement,
+    ...convertCalculationToZeroIfNaN(calculations),
+  };
 };
 
 export default getIncomeStatement;

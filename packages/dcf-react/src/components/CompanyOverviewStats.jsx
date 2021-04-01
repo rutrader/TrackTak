@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
 import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
@@ -18,23 +18,10 @@ const CompanyOverviewStats = ({ extraDescription, useDescriptionShowMore }) => {
   const price = useSelector(selectPrice);
   const sharesOutstanding = useSelector(selectSharesOutstanding);
   const valuationCurrencyCode = useSelector(selectValuationCurrencyCode);
-  const theme = useTheme();
 
   return (
     <React.Fragment>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          gridGap: theme.spacing(1.5),
-          flexWrap: "wrap",
-        }}
-      >
-        <Typography variant="h4" style={{ flex: 1 }}>
-          {general.name}
-        </Typography>
-      </Box>
+      <Typography variant="h4">{general.name}</Typography>
       <Typography
         gutterBottom
         color="textSecondary"
