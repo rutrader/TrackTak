@@ -7,7 +7,10 @@ const calculateInterestCoverage = ({ operatingIncome, interestExpense }) => {
   if (interestExpense === 0) return Infinity;
   if (operatingIncome < 0) return -Infinity;
 
-  return operatingIncome / interestExpense;
+  // Cap it to 0 otherwise the coverage will be wrong.
+  const cappedInterestExpense = interestExpense < 0 ? 0 : interestExpense;
+
+  return operatingIncome / cappedInterestExpense;
 };
 
 const selectInterestCoverage = createSelector(
