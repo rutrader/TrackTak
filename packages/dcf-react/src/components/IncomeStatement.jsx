@@ -1,20 +1,21 @@
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
 import { useSelector } from "react-redux";
-import selectValuationCurrencyCode from "../selectors/fundamentalSelectors/selectValuationCurrencyCode";
-import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
 import FinancialsTable from "./FinancialsTable";
 import selectYearlyIncomeStatements from "../selectors/fundamentalSelectors/selectYearlyIncomeStatements";
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import useMapFinancialStatementRowData from "../hooks/useMapFinancialStatementRowData";
 import useFinancialStatementColumns from "../hooks/useFinancialStatementColumns";
+import getSymbolFromCurrency from "currency-symbol-map";
 
 const IncomeStatement = () => {
-  const valuationCurrencyCode = useSelector(selectValuationCurrencyCode);
-  const valuationCurrencySymbol = useSelector(selectValuationCurrencySymbol);
   const yearlyIncomeStatements = useSelector(selectYearlyIncomeStatements);
   const incomeStatement = useSelector(selectRecentIncomeStatement);
+  const currencyCode = useSelector(
+    (state) => state.fundamentals.incomeStatement.currencyCode,
+  );
+  const currencySymbol = getSymbolFromCurrency(currencyCode);
   const mapIncomeStatementRowData = useMapFinancialStatementRowData(
     incomeStatement,
     yearlyIncomeStatements,
@@ -107,10 +108,6 @@ const IncomeStatement = () => {
       className: "bold-cell",
     },
     {
-      valueKey: "minorityInterest",
-      className: "indented-cell",
-    },
-    {
       valueKey: "preferredStockAndOtherAdjustments",
       className: "indented-cell",
     },
@@ -144,7 +141,7 @@ const IncomeStatement = () => {
       <Box>
         <Typography variant="h6">Income Statement</Typography>
         <Typography>
-          Annuals in mln ({valuationCurrencyCode}:{valuationCurrencySymbol})
+          In mln ({currencyCode}:{currencySymbol})
         </Typography>
       </Box>
       <FinancialsTable columns={columns} data={data} />

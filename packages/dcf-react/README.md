@@ -155,7 +155,6 @@ The below is an example from IRobot, but the principle/structure is the same for
     incomeStatement: {
       quarterly: {
         '2020-12-31': {
-          minorityInterest: 0,
           operatingIncome: 15270000,
           interestExpense: 0,
           incomeBeforeTax: 15026000,
@@ -164,7 +163,6 @@ The below is an example from IRobot, but the principle/structure is the same for
           date: '2020-12-31'
         },
         '2020-09-30': {
-          minorityInterest: 0,
           operatingIncome: 80994000,
           interestExpense: 0,
           incomeBeforeTax: 123234000,
@@ -173,7 +171,6 @@ The below is an example from IRobot, but the principle/structure is the same for
           date: '2020-09-30'
         },
         '2020-06-30': {
-          minorityInterest: 0,
           operatingIncome: 70283000,
           interestExpense: 0,
           incomeBeforeTax: 69899000,
@@ -182,7 +179,6 @@ The below is an example from IRobot, but the principle/structure is the same for
           date: '2020-06-30'
         },
         '2020-03-31': {
-          minorityInterest: 0,
           operatingIncome: -20225000,
           interestExpense: 0,
           incomeBeforeTax: -20244000,
@@ -193,7 +189,6 @@ The below is an example from IRobot, but the principle/structure is the same for
       },
       yearly: {
         '2020-12-31': {
-          minorityInterest: 0,
           operatingIncome: 146322000,
           interestExpense: 0,
           incomeBeforeTax: 187915000,
@@ -233,9 +228,7 @@ For now, the best way to use this package is to just dispatch our async thunks t
 
 `balanceSheet.shortTermInvestments` - Investments that are highly liquid.
 
-`balanceSheet.noncontrollingInterestInConsolidatedEntity` - Minor holdings in other companies that are not consolidated.
-
-`incomeStatement.minorityInterest` - If a company owns > 50% of another company they must consolidate the entire company on their financial statements. This field is the part of that that is not owned by the company.
+`balanceSheet.noncontrollingInterestInConsolidatedEntity` - If a company owns > 50% of another company they must consolidate the entire company on their financial statements. This field is the part of that that is not owned by the company.
 
 This is the easiest way to use the library and still provide your own data, this is useful for SSR and also less API calls. If you want an even faster solution where you don't have to provide the above data then we can add our API thunks to to the package for you to call them or we can provide an iframe for you.
 

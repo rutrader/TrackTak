@@ -101,7 +101,7 @@ const CashFlowStatement = () => {
   ]);
 
   return (
-    <>
+    <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <Typography variant="h5">Cash Flow Statement</Typography>
         <Typography
@@ -116,7 +116,7 @@ const CashFlowStatement = () => {
       <Box>
         <TTTable columns={columns} data={data} />
       </Box>
-    </>
+    </React.Fragment>
   );
 };
 

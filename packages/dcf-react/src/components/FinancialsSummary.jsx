@@ -60,26 +60,18 @@ const FinancialsSummary = () => {
         </InfoOutlinedIconWrapper>
       ),
     },
+  ]);
+
+  const balanceSheetData = mapBalanceSheetRowData([
     {
       valueKey: "minorityInterest",
       dataField: (
         <InfoOutlinedIconWrapper
           text="Reflects the requirement that if you own more than 50% of another company or have effective control of it, you have to consolidate that company's statements with yours.
-    Thus, you count 100% of that subsidiaries assets, revenues and operating income with your company, even if you own only 60%.
-    Minority interest reflects the book value of the 40% of the equity in the subsidiary that does not belong to you."
+            Thus, you count 100% of that subsidiaries assets, revenues and operating income with your company, even if you own only 60%.
+            Minority interest reflects the book value of the 40% of the equity in the subsidiary that does not belong to you."
         >
           Minority interests
-        </InfoOutlinedIconWrapper>
-      ),
-    },
-  ]);
-
-  const balanceSheetData = mapBalanceSheetRowData([
-    {
-      valueKey: "noncontrollingInterestInConsolidatedEntity",
-      dataField: (
-        <InfoOutlinedIconWrapper text="Assets that are not considered to be part of a company's core operations for eg. unused land, spare equipment.">
-          Non-controlling interest in consolidated entity
         </InfoOutlinedIconWrapper>
       ),
     },

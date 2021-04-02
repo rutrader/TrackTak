@@ -23,13 +23,23 @@ const getBalanceSheet = (
     convertedBalanceSheet.cash + convertedBalanceSheet.shortTermInvestments;
 
   calculations.longTermDebtAndCapitalLeases =
-    convertedBalanceSheet.shortLongTermDebt +
     convertedBalanceSheet.longTermDebt +
     convertedBalanceSheet.capitalLeaseObligations;
 
-  calculations.bookValueOfDebt = calculations.longTermDebtAndCapitalLeases;
+  calculations.bookValueOfDebt =
+    convertedBalanceSheet.shortLongTermDebt +
+    calculations.longTermDebtAndCapitalLeases;
 
-  calculations.bookValueOfEquity = convertedBalanceSheet.totalStockholderEquity;
+  // Minority interest is called noncontrollingInterestInConsolidatedEntity
+  // on the API
+  calculations.minorityInterest =
+    convertedBalanceSheet.noncontrollingInterestInConsolidatedEntity;
+
+  calculations.totalEquity =
+    convertedBalanceSheet.totalStockholderEquity +
+    calculations.minorityInterest;
+
+  calculations.bookValueOfEquity = convertedBalanceSheet.totalEquity;
 
   calculations.investedCapital =
     calculations.bookValueOfEquity +
@@ -39,9 +49,10 @@ const getBalanceSheet = (
   calculations.salesToCapitalRatio =
     totalRevenue / calculations.investedCapital;
 
-  // Take it out here because we show it as a separate line
+  // Take it out here because we show capital leases as a separate line
   // on the balance statement
-  calculations.nonCurrentLiabilitiesOther -=
+  calculations.nonCurrentLiabilitiesOther =
+    convertedBalanceSheet.nonCurrentLiabilitiesOther -
     convertedBalanceSheet.capitalLeaseObligations;
 
   return {
