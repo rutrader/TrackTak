@@ -39,7 +39,7 @@ const getBalanceSheet = (
     convertedBalanceSheet.totalStockholderEquity +
     calculations.minorityInterest;
 
-  calculations.bookValueOfEquity = convertedBalanceSheet.totalEquity;
+  calculations.bookValueOfEquity = calculations.totalEquity;
 
   calculations.investedCapital =
     calculations.bookValueOfEquity +
