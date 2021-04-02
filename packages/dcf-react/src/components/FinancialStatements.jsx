@@ -15,15 +15,13 @@ const FinancialStatements = () => {
       <SubSection>
         <IncomeStatement />
       </SubSection>
-      <Box sx={{ mt: 2 }}>
-        <Typography paragrah>
-          Balance Sheet &amp; Cash Flow Statement coming this week.
-        </Typography>
-      </Box>
-      {/* <SubSection>
+      <SubSection>
         <BalanceSheet />
       </SubSection>
-      <SubSection>
+      <Box sx={{ mt: 2 }}>
+        <Typography paragrah>Cash Flow Statement coming this week.</Typography>
+      </Box>
+      {/* <SubSection>
         <CashFlowStatement />
       </SubSection> */}
     </React.Fragment>
