@@ -72,7 +72,7 @@ const Valuations = ({ data }) => {
                 }
               });
 
-              const valuationUrl = `/stock-valuations/${ticker}?${searchParams.toString()}`;
+              const valuationUrl = `/stock-valuations/${ticker}/?${searchParams.toString()}`;
 
               return (
                 <ListItem key={ticker}>
