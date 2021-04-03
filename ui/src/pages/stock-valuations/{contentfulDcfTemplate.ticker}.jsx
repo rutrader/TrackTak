@@ -36,6 +36,8 @@ import {
   getLastPriceCloseThunk,
   getTenYearGovernmentBondLastCloseThunk,
 } from "../../redux/thunks/fundamentalsThunks";
+import SubscribeCover from "../../components/SubscribeCover";
+import subscribePopupShownHook from "../../hooks/subscribePopupShownHook";
 
 export const query = graphql`
   fragment ValuationInformation on ContentfulDcfTemplate {
@@ -168,6 +170,7 @@ const Container = ({ sx, ...props }) => (
 const renderField = (field) => renderRichText(field, options);
 
 const Valuation = ({ data }) => {
+  const [subscribePopupShown] = subscribePopupShownHook();
   const location = useLocation();
   const dispatch = useDispatch();
   const price = useSelector(selectPrice);
@@ -352,6 +355,8 @@ const Valuation = ({ data }) => {
           columnWidths={{
             B: 90,
           }}
+          SubscribeCover={SubscribeCover}
+          loadingCells={!subscribePopupShown}
         />
       </Section>
       <Section>

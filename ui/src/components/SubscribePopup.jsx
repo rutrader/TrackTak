@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Button,
   Dialog,
@@ -6,33 +6,15 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  useMediaQuery,
-  useTheme,
 } from "@material-ui/core";
 import SubscribeMailingList from "./SubscribeMailingList";
-import { setItem, getItem } from "../shared/guardedLocalStorage";
-import { useHasAllRequiredInputsFilledIn } from "@tracktak/dcf-react";
 
-const SubscribePopup = () => {
-  const [open, setOpen] = useState(true);
-  const theme = useTheme();
-  const subscribePopupShown = getItem("subscribePopupShown");
-  const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
-
-  const handleClose = (_, reason) => {
-    if (reason !== "backdropClick") {
-      setItem("subscribePopupShown", true);
-      setOpen(false);
-    }
-  };
-
-  return !subscribePopupShown && hasAllRequiredInputsFilledIn ? (
+const SubscribePopup = ({ onClose, setOpen, ...props }) => {
+  return (
     <Dialog
-      open={open}
-      fullScreen={isOnMobile}
-      onClose={handleClose}
+      onClose={onClose}
       aria-labelledby="subscribe-popup-title"
+      {...props}
     >
       <DialogTitle id="subscribe-popup-title">Subscribe</DialogTitle>
       <DialogContent>
@@ -50,12 +32,12 @@ const SubscribePopup = () => {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={onClose} color="primary">
           Cancel
         </Button>
       </DialogActions>
     </Dialog>
-  ) : null;
+  );
 };
 
 export default SubscribePopup;

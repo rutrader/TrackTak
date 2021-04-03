@@ -21,23 +21,27 @@ import {
   useTicker,
 } from "@tracktak/dcf-react";
 import { Link as RouterLink } from "gatsby";
-import SubscribePopup from "./SubscribePopup";
-import { setItem, getItem } from "../shared/guardedLocalStorage";
 import { useDispatch } from "react-redux";
 import { setMessage } from "../redux/actions/snackbarActions";
 import { useLocation } from "@reach/router";
+import SubscribeCover from "./SubscribeCover";
+import useLocalStorageState from "use-local-storage-state";
+import subscribePopupShownHook from "../hooks/subscribePopupShownHook";
 
 const DiscountedCashFlow = () => {
+  const [subscribePopupShown] = subscribePopupShownHook();
+  const [rotateSnackbarShown, setRotateSnackbarShown] = useLocalStorageState(
+    "rotateSnackbarShown",
+  );
   const theme = useTheme();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const snackbarShown = getItem("rotateSnackbarShown");
   const dispatch = useDispatch();
   const ticker = useTicker();
   const location = useLocation();
 
   useEffect(() => {
-    if (!snackbarShown && isOnMobile) {
-      setItem("rotateSnackbarShown", true);
+    if (!rotateSnackbarShown && isOnMobile) {
+      setRotateSnackbarShown(true);
 
       dispatch(
         setMessage({
@@ -45,7 +49,7 @@ const DiscountedCashFlow = () => {
         }),
       );
     }
-  }, [dispatch, isOnMobile, snackbarShown]);
+  }, [dispatch, isOnMobile, rotateSnackbarShown, setRotateSnackbarShown]);
 
   return (
     <React.Fragment>
@@ -101,7 +105,10 @@ const DiscountedCashFlow = () => {
         </Box>
       </Section>
       <Section>
-        <DiscountedCashFlowSheet SubscribePopup={<SubscribePopup />} />
+        <DiscountedCashFlowSheet
+          SubscribeCover={SubscribeCover}
+          loadingCells={!subscribePopupShown}
+        />
       </Section>
     </React.Fragment>
   );
