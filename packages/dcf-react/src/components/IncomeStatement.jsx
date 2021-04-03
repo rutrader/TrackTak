@@ -77,7 +77,7 @@ const IncomeStatement = () => {
     {
       valueKey: "totalOtherIncomeExpenseNet",
       className: "indented-cell",
-      dataField: "Total other income/expense",
+      dataField: "Total other income (expense)",
     },
     { valueKey: "incomeBeforeTax", className: "bold-cell" },
     { valueKey: "" },

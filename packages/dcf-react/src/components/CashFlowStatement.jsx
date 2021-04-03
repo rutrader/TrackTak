@@ -1,20 +1,18 @@
 import React from "react";
-import { Box, Typography, useTheme } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import { useSelector } from "react-redux";
-import selectValuationCurrencyCode from "../selectors/fundamentalSelectors/selectValuationCurrencyCode";
-import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
-import TTTable from "./TTTable";
-import dayjs from "dayjs";
-import selectIsInUS from "../selectors/fundamentalSelectors/selectIsInUS";
 import selectRecentCashFlowStatement from "../selectors/fundamentalSelectors/selectRecentCashFlowStatement";
 import selectYearlyCashFlowStatements from "../selectors/fundamentalSelectors/selectYearlyCashFlowStatements";
 import useMapFinancialStatementRowData from "../hooks/useMapFinancialStatementRowData";
+import useFinancialStatementColumns from "../hooks/useFinancialStatementColumns";
+import getSymbolFromCurrency from "currency-symbol-map";
+import FinancialsTable from "./FinancialsTable";
 
 const CashFlowStatement = () => {
-  const theme = useTheme();
-  const valuationCurrencyCode = useSelector(selectValuationCurrencyCode);
-  const valuationCurrencySymbol = useSelector(selectValuationCurrencySymbol);
-  const isInUS = useSelector(selectIsInUS);
+  const currencyCode = useSelector(
+    (state) => state.fundamentals.balanceSheet.currencyCode,
+  );
+  const currencySymbol = getSymbolFromCurrency(currencyCode);
   const yearlyCashFlowStatements = useSelector(selectYearlyCashFlowStatements);
   const cashFlowStatement = useSelector(selectRecentCashFlowStatement);
   const mapCashFlowStatementRowData = useMapFinancialStatementRowData(
@@ -22,31 +20,18 @@ const CashFlowStatement = () => {
     yearlyCashFlowStatements,
     true,
   );
-
-  const columns = [
-    {
-      Header: "",
-      accessor: "dataField",
-    },
-    isInUS
-      ? {
-          Header: "TTM",
-          accessor: "ttm",
-        }
-      : {},
-    ...Object.values(yearlyCashFlowStatements).map((statement) => {
-      return {
-        Header: dayjs(statement.date).format("MMM YY"),
-        accessor: statement.date,
-      };
-    }),
-  ];
+  const columns = useFinancialStatementColumns(yearlyCashFlowStatements, true);
 
   const data = mapCashFlowStatementRowData([
     { valueKey: "netIncome" },
     {
       valueKey: "depreciation",
       dataField: "Depreciation, depletion and amortization",
+    },
+    {
+      valueKey: "changeToAccountReceivables",
+      dataField: "Change in receivables",
+      className: "indented-cell",
     },
     {
       valueKey: "changeReceivables",
@@ -64,15 +49,6 @@ const CashFlowStatement = () => {
       className: "indented-cell",
     },
     {
-      valueKey: "changeToOperatingActivities",
-      dataField: "Change in operating activities",
-      className: "indented-cell",
-    },
-    {
-      valueKey: "cashFlowsOtherOperating",
-      dataField: "Cash flows from other operations",
-    },
-    {
       valueKey: "totalCashFromOperatingActivities",
       className: "bold-cell",
     },
@@ -84,7 +60,7 @@ const CashFlowStatement = () => {
       valueKey: "totalCashflowsFromInvestingActivities",
       className: "bold-cell",
     },
-    { valueKey: "salePurchaseOfStock" },
+    { valueKey: "salePurchaseOfStock", dataField: "Sale (purchase) of stock" },
     { valueKey: "netBorrowings" },
     { valueKey: "dividendsPaid" },
     {
@@ -102,19 +78,14 @@ const CashFlowStatement = () => {
 
   return (
     <React.Fragment>
-      <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Typography variant="h5">Cash Flow Statement</Typography>
-        <Typography
-          style={{
-            marginLeft: theme.spacing(1),
-            fontWeight: theme.typography.fontWeightBold,
-          }}
-        >
-          ({valuationCurrencySymbol}:{valuationCurrencyCode})
+      <Box>
+        <Typography variant="h6">Cash Flow Statement</Typography>
+        <Typography>
+          In mln ({currencyCode}:{currencySymbol})
         </Typography>
       </Box>
       <Box>
-        <TTTable columns={columns} data={data} />
+        <FinancialsTable columns={columns} data={data} />
       </Box>
     </React.Fragment>
   );
