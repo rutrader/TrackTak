@@ -1,4 +1,4 @@
-import { Box, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import React from "react";
 import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 import SubSection from "./SubSection";
@@ -18,12 +18,9 @@ const FinancialStatements = () => {
       <SubSection>
         <BalanceSheet />
       </SubSection>
-      <Box sx={{ mt: 2 }}>
-        <Typography paragrah>Cash Flow Statement coming this week.</Typography>
-      </Box>
-      {/* <SubSection>
+      <SubSection>
         <CashFlowStatement />
-      </SubSection> */}
+      </SubSection>
     </React.Fragment>
   );
 };
