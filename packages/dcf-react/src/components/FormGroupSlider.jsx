@@ -54,7 +54,7 @@ const PrettoSlider = withStyles({
 })(Slider);
 
 const FormGroupSlider = ({
-  dataLabel: { label, value, checked, step, min, max },
+  datum: { label, value, checked, step, min, max, formatter },
   marks,
   valueText,
   setChecked,
@@ -64,7 +64,7 @@ const FormGroupSlider = ({
   const inputQueryParams = useInputQueryParams();
 
   const handleValueChange = (_, newValue) => {
-    onChange(value, newValue);
+    onChange(value, newValue, formatter);
   };
 
   const handleCheckedChange = (e) => {

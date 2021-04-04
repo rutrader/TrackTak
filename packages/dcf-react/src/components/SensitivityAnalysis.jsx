@@ -15,6 +15,8 @@ import FormGroupSlider from "./FormGroupSlider";
 import { makeStyles } from "@material-ui/core/styles";
 import { isNil } from "lodash";
 import useInputQueryParams from "../hooks/useInputQueryParams";
+import FormatRawNumberToPercent from "./FormatRawNumberToPercent";
+import FormatRawNumber from "./FormatRawNumber";
 
 const useStyles = makeStyles((theme) => ({
   slider: {
@@ -44,11 +46,10 @@ const valueText = (value) => {
   return `${value}`;
 };
 
-//onChnage for sldier
 const SensitivityAnalysis = () => {
   const classes = useStyles();
   const inputQueryParams = useInputQueryParams();
-  const [sliderValue, setSliderValue] = React.useState([10, 40]);
+  const [sliderValue, setSliderValue] = useState([10, 40]);
   const [dataTable, setDataTable] = useState([
     {
       label: cagrInYearsOneToFiveLabel,
@@ -57,13 +58,7 @@ const SensitivityAnalysis = () => {
       step: 1,
       min: -50,
       max: 50,
-      data: [
-        { dataField: "20%" },
-        { dataField: "25%" },
-        { dataField: "30%" },
-        { dataField: "35%" },
-        { dataField: "40%" },
-      ],
+      formatter: FormatRawNumberToPercent,
     },
     {
       label: ebitTargetMarginInYearTenLabel,
@@ -72,13 +67,7 @@ const SensitivityAnalysis = () => {
       step: 1,
       min: -50,
       max: 50,
-      data: [
-        { dataField: "20%" },
-        { dataField: "25%" },
-        { dataField: "30%" },
-        { dataField: "35%" },
-        { dataField: "40%" },
-      ],
+      formatter: FormatRawNumberToPercent,
     },
     {
       label: yearOfConvergenceLabel,
@@ -86,13 +75,7 @@ const SensitivityAnalysis = () => {
       step: 1,
       min: -50,
       max: 50,
-      data: [
-        { dataField: "0" },
-        { dataField: "1" },
-        { dataField: "2" },
-        { dataField: "3" },
-        { dataField: "4" },
-      ],
+      formatter: FormatRawNumber,
     },
     {
       label: salesToCapitalRatioLabel,
@@ -100,13 +83,7 @@ const SensitivityAnalysis = () => {
       step: 1,
       min: -50,
       max: 50,
-      data: [
-        { dataField: "0" },
-        { dataField: "1" },
-        { dataField: "2" },
-        { dataField: "3" },
-        { dataField: "4" },
-      ],
+      formatter: FormatRawNumber,
     },
     {
       label: probabilityOfFailureLabel,
@@ -114,13 +91,7 @@ const SensitivityAnalysis = () => {
       step: 1,
       min: -50,
       max: 50,
-      data: [
-        { dataField: "20%" },
-        { dataField: "25%" },
-        { dataField: "30%" },
-        { dataField: "35%" },
-        { dataField: "40%" },
-      ],
+      formatter: FormatRawNumberToPercent,
     },
     {
       label: proceedsAsPercentageOfBookValueLabel,
@@ -128,21 +99,28 @@ const SensitivityAnalysis = () => {
       step: 1,
       min: -50,
       max: 50,
-      data: [
-        { dataField: "20%" },
-        { dataField: "25%" },
-        { dataField: "30%" },
-        { dataField: "35%" },
-        { dataField: "40%" },
-      ],
+      formatter: FormatRawNumberToPercent,
     },
   ]);
 
-  const onSliderChange = (value, sliderValue) => {
+  const onSliderChange = (value, sliderValue, Formatter) => {
     const newSliderValue = dataTable.map((datum) => {
       if (value === datum.value) {
-        const data = [sliderValue[0], sliderValue[1]];
-        //number between
+        const minPoint = sliderValue[0];
+        const maxPoint = sliderValue[1];
+        const length = maxPoint - minPoint;
+        const midPoint = length / 2 + minPoint;
+        const lowerHalfPoint = (midPoint - minPoint) / 2 + minPoint;
+        const upperHalfPoint = midPoint - lowerHalfPoint + midPoint;
+
+        const data = [
+          minPoint,
+          lowerHalfPoint,
+          midPoint,
+          upperHalfPoint,
+          maxPoint,
+        ];
+
         return {
           ...datum,
           data,
@@ -217,12 +195,12 @@ const SensitivityAnalysis = () => {
         </Box>
       )}
       <FormGroup aria-label="position" column className={classes.slider}>
-        {dataTable.map((dataLabel) => (
+        {dataTable.map((datum) => (
           <FormGroupSlider
             marks={marks}
             setChecked={setChecked}
-            onSliderChange={onSliderChange}
-            dataLabel={dataLabel}
+            onChange={onSliderChange}
+            datum={datum}
             sliderValue={sliderValue}
             valueText={valueText}
           />
