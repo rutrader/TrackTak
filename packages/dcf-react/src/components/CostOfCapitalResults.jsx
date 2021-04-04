@@ -12,7 +12,7 @@ import { pretaxCostOfDebtLabel } from "./OptionalInputs";
 import selectPretaxCostOfDebt from "../selectors/fundamentalSelectors/selectPretaxCostOfDebt";
 import useInputQueryParams from "../hooks/useInputQueryParams";
 import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
-import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
+import selectThreeAverageYearsEffectiveTaxRate from "../selectors/fundamentalSelectors/selectThreeAverageYearsEffectiveTaxRate";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
 import StatsContainer from "./StatsContainer";
@@ -32,9 +32,11 @@ const CostOfCapitalResults = ({
 }) => {
   const theme = useTheme();
   const currentIndustry = useSelector(selectCurrentIndustry);
-  const incomeStatement = useSelector(selectRecentIncomeStatement);
   const currentEquityRiskPremiumCountry = useSelector(
     selectCurrentEquityRiskPremium,
+  );
+  const pastThreeYearsAverageEffectiveTaxRate = useSelector(
+    selectThreeAverageYearsEffectiveTaxRate,
   );
   const ticker = useTicker();
   const inputQueryParams = useInputQueryParams();
@@ -136,7 +138,7 @@ const CostOfCapitalResults = ({
           <BoldValueLabel
             value={
               <FormatRawNumberToPercent
-                value={incomeStatement.pastThreeYearsAverageEffectiveTaxRate}
+                value={pastThreeYearsAverageEffectiveTaxRate}
               />
             }
             label="Effective Tax Rate (Avg. past 3 yr)"

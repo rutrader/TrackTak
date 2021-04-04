@@ -22,7 +22,7 @@ const DiscountedCashFlowPage = () => {
         />
         <meta
           name="description"
-          content={`Do your own Automated DCF for ${general.name} based on Aswath Damodaran's spreadsheets.`}
+          content={`Do your own Automated DCF for ${general.name}. Based on Aswath Damodaran's excel spreadsheets.`}
         />
       </Helmet>
       <DiscountedCashFlow />

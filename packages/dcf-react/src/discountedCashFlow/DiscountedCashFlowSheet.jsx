@@ -45,7 +45,11 @@ const LazyRenderTable = (props) => {
   );
 };
 
-const DiscountedCashFlowSheet = ({ columnWidths, SubscribePopup }) => {
+const DiscountedCashFlowSheet = ({
+  columnWidths,
+  SubscribeCover,
+  loadingCells,
+}) => {
   const dispatch = useDispatch();
   const [showFormulas, setShowFormulas] = useState(false);
   const isYoyGrowthToggled = useSelector(selectIsYoyGrowthToggled);
@@ -127,7 +131,8 @@ const DiscountedCashFlowSheet = ({ columnWidths, SubscribePopup }) => {
         <DiscountedCashFlowTable
           columnWidths={columnWidths}
           showFormulas={showFormulas}
-          SubscribePopup={SubscribePopup}
+          SubscribeCover={SubscribeCover}
+          loadingCells={loadingCells}
         />
       </LazyRenderTable>
     </Box>

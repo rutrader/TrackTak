@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import { useBlockLayout, useTable } from "react-table";
 import { FixedSizeList } from "react-window";
+import { useTheme } from "@material-ui/styles";
 
 const RenderTableRow = ({ prepareRow, row, index, ...props }) => {
   prepareRow(row);
@@ -30,6 +31,7 @@ const TTTable = ({
   tableHeadProps,
   useVirtualization,
   fixedSizeListProps,
+  sx,
   ...props
 }) => {
   const {
@@ -47,6 +49,7 @@ const TTTable = ({
     },
     useVirtualization ? useBlockLayout : undefined,
   );
+  const theme = useTheme();
 
   const renderRow = useCallback(
     ({ index, style }) => {
@@ -64,7 +67,24 @@ const TTTable = ({
   );
 
   return (
-    <Box sx={{ overflow: "auto", flex: 1 }}>
+    <Box
+      sx={{
+        overflow: "auto",
+        "& td:first-of-type": {
+          whiteSpace: "nowrap",
+        },
+        "& .indented-cell": {
+          paddingLeft: (theme) => theme.spacing(2),
+        },
+        "& .bold-cell": {
+          fontWeight: "bold",
+        },
+        "& tbody tr:nth-of-type(odd)": {
+          backgroundColor: theme.palette.tableBackground,
+        },
+        ...sx,
+      }}
+    >
       <Table {...getTableProps()} {...props}>
         <TableHead {...tableHeadProps}>
           {headerGroups.map((headerGroup) => {
@@ -92,7 +112,12 @@ const TTTable = ({
             </FixedSizeList>
           ) : (
             rows.map((row, i) => (
-              <RenderTableRow index={i} row={row} prepareRow={prepareRow} />
+              <RenderTableRow
+                key={i}
+                index={i}
+                row={row}
+                prepareRow={prepareRow}
+              />
             ))
           )}
         </TableBody>

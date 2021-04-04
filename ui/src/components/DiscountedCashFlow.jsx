@@ -1,5 +1,11 @@
 import React, { useEffect } from "react";
-import { Box, useMediaQuery, useTheme } from "@material-ui/core";
+import {
+  Box,
+  Link,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@material-ui/core";
 import {
   BlackScholesResults,
   CompanyOverviewStats,
@@ -7,27 +13,35 @@ import {
   DiscountedCashFlowSheet,
   IndustryAveragesResults,
   OptionalInputs,
-  PastFundamentals,
+  FinancialsSummary,
   Section,
   SubSection,
   withFundamentalsLoaded,
   ValueDrivingInputs,
+  useTicker,
 } from "@tracktak/dcf-react";
-import { Link } from "gatsby";
-import SubscribePopup from "./SubscribePopup";
-import { setItem, getItem } from "../shared/guardedLocalStorage";
+import { Link as RouterLink } from "gatsby";
 import { useDispatch } from "react-redux";
 import { setMessage } from "../redux/actions/snackbarActions";
+import { useLocation } from "@reach/router";
+import SubscribeCover from "./SubscribeCover";
+import useLocalStorageState from "use-local-storage-state";
+import subscribePopupShownHook from "../hooks/subscribePopupShownHook";
 
 const DiscountedCashFlow = () => {
+  const [subscribePopupShown] = subscribePopupShownHook();
+  const [rotateSnackbarShown, setRotateSnackbarShown] = useLocalStorageState(
+    "rotateSnackbarShown",
+  );
   const theme = useTheme();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const snackbarShown = getItem("rotateSnackbarShown");
   const dispatch = useDispatch();
+  const ticker = useTicker();
+  const location = useLocation();
 
   useEffect(() => {
-    if (!snackbarShown && isOnMobile) {
-      setItem("rotateSnackbarShown", true);
+    if (!rotateSnackbarShown && isOnMobile) {
+      setRotateSnackbarShown(true);
 
       dispatch(
         setMessage({
@@ -35,15 +49,25 @@ const DiscountedCashFlow = () => {
         }),
       );
     }
-  }, [dispatch, isOnMobile, snackbarShown]);
+  }, [dispatch, isOnMobile, rotateSnackbarShown, setRotateSnackbarShown]);
 
   return (
     <React.Fragment>
-      <Box sx={{ display: "flex", gap: theme.spacing(10) }}>
-        <CompanyOverviewStats />
-      </Box>
+      <CompanyOverviewStats useDescriptionShowMore />
       <Section>
-        <PastFundamentals />
+        <FinancialsSummary />
+        <Box sx={{ mt: 1 }}>
+          <Typography>
+            See the&nbsp;
+            <Link
+              component={RouterLink}
+              to={`/stock/${ticker}/financial-statements${location.search}`}
+            >
+              Financial Statements
+            </Link>
+            &nbsp;tab for the full financials.
+          </Typography>
+        </Box>
       </Section>
       <Section sx={{ display: "flex", gridColumnGap: 20, flexWrap: "wrap" }}>
         <Box sx={{ flex: 1 }}>
@@ -67,6 +91,7 @@ const DiscountedCashFlow = () => {
               }) => {
                 return (
                   <Link
+                    component={RouterLink}
                     to={`/stock/${ticker}/synthetic-credit-rating${searchParams}`}
                     {...props}
                   />
@@ -80,7 +105,10 @@ const DiscountedCashFlow = () => {
         </Box>
       </Section>
       <Section>
-        <DiscountedCashFlowSheet SubscribePopup={<SubscribePopup />} />
+        <DiscountedCashFlowSheet
+          SubscribeCover={SubscribeCover}
+          loadingCells={!subscribePopupShown}
+        />
       </Section>
     </React.Fragment>
   );

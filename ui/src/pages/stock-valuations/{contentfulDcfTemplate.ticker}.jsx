@@ -36,6 +36,8 @@ import {
   getLastPriceCloseThunk,
   getTenYearGovernmentBondLastCloseThunk,
 } from "../../redux/thunks/fundamentalsThunks";
+import SubscribeCover from "../../components/SubscribeCover";
+import subscribePopupShownHook from "../../hooks/subscribePopupShownHook";
 
 export const query = graphql`
   fragment ValuationInformation on ContentfulDcfTemplate {
@@ -168,6 +170,7 @@ const Container = ({ sx, ...props }) => (
 const renderField = (field) => renderRichText(field, options);
 
 const Valuation = ({ data }) => {
+  const [subscribePopupShown] = subscribePopupShownHook();
   const location = useLocation();
   const dispatch = useDispatch();
   const price = useSelector(selectPrice);
@@ -231,18 +234,22 @@ const Valuation = ({ data }) => {
           content={`Is ${financialData.General.Name} undervalued? See the full intrinsic valuation here.`}
         />
       </Helmet>
-      <CompanyOverviewStats dateOfValuation={formattedDateOfValuation} />
-      <Section>
-        <Typography variant="h5" gutterBottom>
-          Business Description
-        </Typography>
-        <Typography paragraph>{financialData.General.Description}</Typography>
-        {extraBusinessDescription && (
-          <Typography paragraph>
-            {renderField(extraBusinessDescription)}
+      <Box>
+        {dateOfValuation && (
+          <Typography textAlign="right" gutterBottom>
+            This valuation was done on the {dateOfValuation}
           </Typography>
         )}
-      </Section>
+        <CompanyOverviewStats
+          extraDescription={
+            extraBusinessDescription && (
+              <Typography paragraph>
+                {renderField(extraBusinessDescription)}
+              </Typography>
+            )
+          }
+        />
+      </Box>
       <Section>
         <Typography variant="h5" gutterBottom>
           Competitors
@@ -348,6 +355,8 @@ const Valuation = ({ data }) => {
           columnWidths={{
             B: 90,
           }}
+          SubscribeCover={SubscribeCover}
+          loadingCells={!subscribePopupShown}
         />
       </Section>
       <Section>

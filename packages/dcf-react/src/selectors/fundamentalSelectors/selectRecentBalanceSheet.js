@@ -12,17 +12,17 @@ import selectIsInUS from "./selectIsInUS";
 const selectRecentBalanceSheet = createSelector(
   selectMostRecentQuarter,
   selectConvertCurrency,
+  selectIsInUS,
   selectSortedQuarterlyBalanceSheets,
   selectSortedYearlyBalanceSheets,
   selectRecentIncomeStatement,
-  selectIsInUS,
   (
     mostRecentQuarter,
     convertCurrency,
+    isInUS,
     quarterlyBalanceSheets,
     yearlyBalanceSheets,
     recentIncomeStatement,
-    isInUS,
   ) => {
     if (!yearlyBalanceSheets.length) return {};
 

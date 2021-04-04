@@ -32,20 +32,14 @@ export const wrapRootElement = ({ element }) => {
   );
 };
 
-let prevPath;
-
-export const wrapPageElement = ({ element, props: { data, path } }) => {
+export const wrapPageElement = ({ element, props: { data } }) => {
   if (data && data.contentfulDcfTemplate) {
     const parsedFinancialData = JSON.parse(
       data.contentfulDcfTemplate.data.internal.content,
     );
 
-    if (prevPath !== path) {
-      store.dispatch(setFundamentals(convertFundamentals(parsedFinancialData)));
-    }
+    store.dispatch(setFundamentals(convertFundamentals(parsedFinancialData)));
   }
-
-  prevPath = path;
 
   return element;
 };

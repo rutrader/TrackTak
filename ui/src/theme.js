@@ -1,10 +1,15 @@
-import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
+import {
+  alpha,
+  createMuiTheme,
+  responsiveFontSizes,
+} from "@material-ui/core/styles";
 
 let theme = createMuiTheme({
   typography: {
     fontFamily: "Nunito",
   },
   palette: {
+    tableBackground: alpha("#51509c", 0.04),
     primary: {
       light: "#2fdbab",
       main: "#43cea2",

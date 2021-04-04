@@ -7,6 +7,7 @@ import { useTicker } from "@tracktak/dcf-react";
 
 const stockPaths = [
   "/discounted-cash-flow",
+  "/financial-statements",
   "/synthetic-credit-rating",
   "/industry-averages",
 ];

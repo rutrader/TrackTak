@@ -73,7 +73,7 @@ const IndustryAverages = () => {
   return (
     <React.Fragment>
       <SubSection>
-        <Typography variant="h6" gutterBottom>
+        <Typography variant="h5" gutterBottom>
           Industry Averages
         </Typography>
         <Box>
@@ -98,7 +98,7 @@ const IndustryAverages = () => {
               <TTTable
                 sx={{
                   ...commonTableRootStyles,
-                  "& .table_row_0": {
+                  "& tbody tr.table_row_0": {
                     backgroundColor: (theme) =>
                       isInUS
                         ? getTableRowBackgroundOpacity(
@@ -121,9 +121,9 @@ const IndustryAverages = () => {
               <TTTable
                 sx={{
                   ...commonTableRootStyles,
-                  "& .table_row_0": {
+                  "& tbody tr.table_row_0": {
                     backgroundColor: (theme) =>
-                      isInUS
+                      !isInUS
                         ? getTableRowBackgroundOpacity(
                             theme.palette.primary.light,
                           )

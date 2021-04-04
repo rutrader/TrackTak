@@ -91,7 +91,10 @@ const SubscribeSection = () => {
           Join our mailing list and be notified immediately when new features
           &amp; valuations are released.
         </Typography>
-        <SubscribeMailingList inputColor="secondary" />
+        <SubscribeMailingList
+          inputColor="secondary"
+          locationSignup="Landing Page"
+        />
       </Box>
     </Box>
   );

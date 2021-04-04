@@ -36,6 +36,18 @@ const Footer = () => {
           py: 3.8,
         }}
       >
+        <Typography align="center" paragraph gutterBottom>
+          Data is provided by{" "}
+          <a
+            rel="noreferrer"
+            target="_blank"
+            href="https://eodhistoricaldata.com/"
+          >
+            EODHistoricalData.com
+          </a>{" "}
+          and may not be correct in all cases. We do not take any responsibility
+          for incorrect data.
+        </Typography>
         <Typography align="center">
           © 2020 - {dayjs().format("YYYY")} tracktak ltd. All rights reserved.
         </Typography>

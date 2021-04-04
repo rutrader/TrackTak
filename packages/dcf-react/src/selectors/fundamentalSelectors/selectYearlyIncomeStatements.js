@@ -24,11 +24,11 @@ const selectYearlyIncomeStatements = createSelector(
     const newYearlyIncomeStatements = {};
 
     yearlyIncomeStatements.forEach((incomeStatement) => {
-      newYearlyIncomeStatements[incomeStatement.date] = getIncomeStatement(
-        incomeStatement,
-        convertCurrency,
+      newYearlyIncomeStatements[
+        incomeStatement.date
+      ] = getIncomeStatement(incomeStatement, convertCurrency, [
         incomeStatement.date,
-      );
+      ]);
     });
 
     return newYearlyIncomeStatements;

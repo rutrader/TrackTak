@@ -21,7 +21,8 @@ export { default as OptionalInputs } from "./components/OptionalInputs";
 export { default as IndustryAveragesResults } from "./components/IndustryAveragesResults";
 export { default as CostOfCapitalResults } from "./components/CostOfCapitalResults";
 export { default as BlackScholesResults } from "./components/BlackScholesResults";
-export { default as PastFundamentals } from "./components/PastFundamentals";
+export { default as FinancialStatements } from "./components/FinancialStatements";
+export { default as FinancialsSummary } from "./components/FinancialsSummary";
 export { default as CompanyOverviewStats } from "./components/CompanyOverviewStats";
 export { default as SensitivityAnalysis } from "./components/SensitivityAnalysis";
 

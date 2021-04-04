@@ -2,7 +2,6 @@ require("dotenv-flow").config();
 
 module.exports = {
   flags: {
-    DEV_SSR: true,
     PRESERVE_WEBPACK_CACHE: true,
   },
   siteMetadata: {
@@ -48,6 +47,13 @@ module.exports = {
       },
     },
     {
+      resolve: `gatsby-plugin-hotjar`,
+      options: {
+        id: "2331095",
+        sv: 6,
+      },
+    },
+    {
       resolve: "gatsby-plugin-react-svg",
       options: {
         rule: {
@@ -76,7 +82,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-google-gtag`,
       options: {
-        trackingIds: ["G-WFB538909G"],
+        trackingIds: ["G-WFB538909G", "UA-185279234-1"],
       },
     },
     "gatsby-plugin-react-helmet",

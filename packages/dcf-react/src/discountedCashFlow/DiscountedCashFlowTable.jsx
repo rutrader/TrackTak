@@ -29,11 +29,13 @@ import {
 } from "../components/ValueDrivingInputs";
 import { useLocation } from "@reach/router";
 import isNil from "lodash/isNil";
+import selectThreeAverageYearsEffectiveTaxRate from "../selectors/fundamentalSelectors/selectThreeAverageYearsEffectiveTaxRate";
 
 const DiscountedCashFlowTable = ({
   columnWidths,
   showFormulas,
-  SubscribePopup,
+  SubscribeCover,
+  loadingCells,
 }) => {
   const theme = useTheme();
   const location = useLocation();
@@ -53,6 +55,9 @@ const DiscountedCashFlowTable = ({
   );
   const isYoyGrowthToggled = useSelector(selectIsYoyGrowthToggled);
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
+  const pastThreeYearsAverageEffectiveTaxRate = useSelector(
+    selectThreeAverageYearsEffectiveTaxRate,
+  );
 
   const cellColumnWidths = useMemo(() => {
     return columns.map((column) => {
@@ -73,7 +78,9 @@ const DiscountedCashFlowTable = ({
       const key = column + row;
       const cell = cells[key];
       const loading =
-        !hasAllRequiredInputsFilledIn && row !== 1 && column !== "A";
+        (!hasAllRequiredInputsFilledIn || loadingCells) &&
+        row !== 1 &&
+        column !== "A";
 
       if (!cell?.value) return <Cell loading={loading} />;
 
@@ -114,6 +121,7 @@ const DiscountedCashFlowTable = ({
       cells,
       hasAllRequiredInputsFilledIn,
       isYoyGrowthToggled,
+      loadingCells,
       showFormulas,
       theme.typography.fontFamily,
       theme.typography.fontSize,
@@ -137,16 +145,13 @@ const DiscountedCashFlowTable = ({
           "M5",
         ],
         {
+          pastThreeYearsAverageEffectiveTaxRate,
           totalRevenue: incomeStatement.totalRevenue,
           operatingIncome: incomeStatement.operatingIncome,
-          minorityInterest: incomeStatement.minorityInterest,
-          pastThreeYearsAverageEffectiveTaxRate:
-            incomeStatement.pastThreeYearsAverageEffectiveTaxRate,
           investedCapital: balanceSheet.investedCapital,
           bookValueOfDebt: balanceSheet.bookValueOfDebt,
           cashAndShortTermInvestments: balanceSheet.cashAndShortTermInvestments,
-          noncontrollingInterestInConsolidatedEntity:
-            balanceSheet.noncontrollingInterestInConsolidatedEntity,
+          minorityInterest: balanceSheet.minorityInterest,
           marginalTaxRate: currentEquityRiskPremium.marginalTaxRate,
           sharesOutstanding,
           price,
@@ -157,15 +162,14 @@ const DiscountedCashFlowTable = ({
     balanceSheet.bookValueOfDebt,
     balanceSheet.cashAndShortTermInvestments,
     balanceSheet.investedCapital,
-    balanceSheet.noncontrollingInterestInConsolidatedEntity,
+    balanceSheet.minorityInterest,
     currentEquityRiskPremium.marginalTaxRate,
-    dispatch,
-    incomeStatement.minorityInterest,
     incomeStatement.operatingIncome,
-    incomeStatement.pastThreeYearsAverageEffectiveTaxRate,
     incomeStatement.totalRevenue,
+    pastThreeYearsAverageEffectiveTaxRate,
     price,
     sharesOutstanding,
+    dispatch,
   ]);
 
   useEffect(() => {
@@ -272,58 +276,55 @@ const DiscountedCashFlowTable = ({
   const to = `${location.pathname}#${valueDrivingInputsId}`;
 
   return (
-    <React.Fragment>
-      {SubscribePopup}
-      <Box sx={{ position: "relative" }}>
-        <Table
-          key={key}
-          enableGhostCells
-          numFrozenColumns={isOnMobile ? 0 : 1}
-          numRows={numberOfRows}
-          columnWidths={cellColumnWidths}
+    <Box sx={{ position: "relative" }}>
+      <Table
+        key={key}
+        enableGhostCells
+        numFrozenColumns={isOnMobile ? 0 : 1}
+        numRows={numberOfRows}
+        columnWidths={cellColumnWidths}
+      >
+        {columns.map((column) => {
+          return (
+            <Column
+              key={column}
+              id={column}
+              name={column}
+              cellRenderer={cellRenderer}
+            />
+          );
+        })}
+      </Table>
+      {SubscribeCover ? <SubscribeCover /> : null}
+      {!hasAllRequiredInputsFilledIn && (
+        <Alert
+          severity="warning"
+          sx={{
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            transform: "translate(-50%, -50%)",
+            "& .MuiAlert-icon": {
+              alignItems: "center",
+            },
+            "& .MuiAlert-message": {
+              fontSize: 18,
+            },
+          }}
         >
-          {columns.map((column) => {
-            return (
-              <Column
-                key={column}
-                id={column}
-                name={column}
-                cellRenderer={cellRenderer}
-              />
-            );
-          })}
-        </Table>
-        {!hasAllRequiredInputsFilledIn && (
-          <Alert
-            severity="warning"
-            sx={{
-              position: "absolute",
-              left: "50%",
-              top: "50%",
-              transform: "translate(-50%, -50%)",
-              "& .MuiAlert-icon": {
-                alignItems: "center",
-              },
-              "& .MuiAlert-message": {
-                fontSize: 18,
-              },
+          The&nbsp;
+          <AnchorLink
+            to={to}
+            onAnchorLinkClick={() => {
+              navigate(to);
             }}
           >
-            The&nbsp;
-            <AnchorLink
-              to={to}
-              onAnchorLinkClick={() => {
-                navigate(to);
-              }}
-            >
-              {valueDrivingInputsHeader}
-            </AnchorLink>
-            &nbsp;section above needs to be filled out first to generate the
-            DCF.
-          </Alert>
-        )}
-      </Box>
-    </React.Fragment>
+            {valueDrivingInputsHeader}
+          </AnchorLink>
+          &nbsp;section above needs to be filled out first to generate the DCF.
+        </Alert>
+      )}
+    </Box>
   );
 };
 
