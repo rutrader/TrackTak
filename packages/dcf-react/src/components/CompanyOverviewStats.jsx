@@ -12,6 +12,7 @@ import FormatRawNumberToMillion from "./FormatRawNumberToMillion";
 import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
 import SubSection from "../components/SubSection";
 import ShowMore from "react-show-more";
+import CompanyHeading from "./CompanyHeading";
 
 const CompanyOverviewStats = ({ extraDescription, useDescriptionShowMore }) => {
   const general = useSelector(selectGeneral);
@@ -21,14 +22,7 @@ const CompanyOverviewStats = ({ extraDescription, useDescriptionShowMore }) => {
 
   return (
     <React.Fragment>
-      <Typography variant="h4">{general.name}</Typography>
-      <Typography
-        gutterBottom
-        color="textSecondary"
-        style={{ textTransform: "uppercase" }}
-      >
-        {general.code}.{general.exchange}
-      </Typography>
+      <CompanyHeading />
       <SubSection>
         <BoldValueLabel
           value={<FormatRawNumber value={price} decimalScale={2} />}
