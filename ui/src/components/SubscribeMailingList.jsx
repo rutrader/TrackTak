@@ -14,9 +14,11 @@ const SubscribeMailingList = ({
   locationSignup,
   inputColor,
   onSubmit = () => {},
+  cancelButton,
+  formSx,
 }) => {
   const [, setSubscribePopupShown] = subscribePopupShownHook();
-  const [email, setEmail] = useState();
+  const [email, setEmail] = useState("");
   const dispatch = useDispatch();
 
   return (
@@ -74,6 +76,7 @@ const SubscribeMailingList = ({
           width: "100%",
           gap: 1.5,
           mt: 3,
+          ...formSx,
         }}
       >
         <TTRoundInput
@@ -91,11 +94,14 @@ const SubscribeMailingList = ({
             minWidth: "170px",
           }}
         />
-        <RoundButton variant="contained" type="submit">
-          <Typography fontSize={20} sx={{ textTransform: "none" }}>
-            {subscribeText}
-          </Typography>
-        </RoundButton>
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <RoundButton variant="contained" type="submit" sx={{ mb: 2.5 }}>
+            <Typography fontSize={20} sx={{ textTransform: "none" }}>
+              {subscribeText}
+            </Typography>
+          </RoundButton>
+          {cancelButton}
+        </Box>
       </Box>
     </>
   );
