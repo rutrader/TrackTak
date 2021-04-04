@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import { useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
@@ -120,9 +120,9 @@ const Docs = () => {
           </IconButton>
         </Hidden>
         <Box component="main">
-          {wikiContent.map(({ title, text, cellsText = "" }) => {
+          {wikiContent.map(({ title, text, cellsText = "" }, i) => {
             return (
-              <Fragment key={title}>
+              <Box key={i}>
                 <Typography
                   variant="h6"
                   gutterBottom
@@ -131,7 +131,7 @@ const Docs = () => {
                   {cellsText ? title.concat(` - Cells: ${cellsText}`) : title}
                 </Typography>
                 <Typography paragraph>{text}</Typography>
-              </Fragment>
+              </Box>
             );
           })}
         </Box>
