@@ -14,9 +14,11 @@ import TTTable from "./TTTable";
 import FormGroupSlider from "./FormGroupSlider";
 import { makeStyles } from "@material-ui/core/styles";
 import { isNil } from "lodash";
-import useInputQueryParams from "../hooks/useInputQueryParams";
 import FormatRawNumberToPercent from "./FormatRawNumberToPercent";
-import FormatRawNumber from "./FormatRawNumber";
+import { TableNumberFormatter } from "./TableFormatters";
+import useInputQueryParams, {
+  inputQueries,
+} from "../hooks/useInputQueryParams";
 
 const useStyles = makeStyles((theme) => ({
   slider: {
@@ -46,89 +48,136 @@ const valueText = (value) => {
   return `${value}`;
 };
 
+const getLowerUpperSliderHalves = (minPoint, midPoint) => {
+  const lowerHalfPoint = (midPoint - minPoint) / 2 + minPoint;
+  const upperHalfPoint = midPoint - lowerHalfPoint + midPoint;
+
+  return { lowerHalfPoint, upperHalfPoint };
+};
+
+const getSliderValuesFromMinMax = (minPoint, maxPoint) => {
+  const length = maxPoint - minPoint;
+  const midPoint = length / 2 + minPoint;
+  const { lowerHalfPoint, upperHalfPoint } = getLowerUpperSliderHalves(
+    minPoint,
+    midPoint,
+  );
+
+  const data = [minPoint, lowerHalfPoint, midPoint, upperHalfPoint, maxPoint];
+
+  return data;
+};
+
+const getSliderValuesFromMidPoint = (midPoint) => {
+  const half = midPoint / 2;
+  const minPoint = midPoint - half;
+  const maxPoint = midPoint + half;
+  const { lowerHalfPoint, upperHalfPoint } = getLowerUpperSliderHalves(
+    minPoint,
+    midPoint,
+  );
+
+  const data = [minPoint, lowerHalfPoint, midPoint, upperHalfPoint, maxPoint];
+
+  return data;
+};
+
+const findType = (inputQueries, name) =>
+  inputQueries.find((x) => x.name === name).type;
+
 const SensitivityAnalysis = () => {
   const classes = useStyles();
   const inputQueryParams = useInputQueryParams();
-  const [sliderValue, setSliderValue] = useState([10, 40]);
-  const [dataTable, setDataTable] = useState([
-    {
-      label: cagrInYearsOneToFiveLabel,
-      value: "cagrYearOneToFive",
-      checked: !isNil(inputQueryParams.cagrYearOneToFive),
-      step: 1,
-      min: -50,
-      max: 50,
-      formatter: FormatRawNumberToPercent,
-    },
-    {
-      label: ebitTargetMarginInYearTenLabel,
-      value: "ebitTargetMarginInYearTen",
-      checked: !isNil(inputQueryParams.ebitTargetMarginInYearTen),
-      step: 1,
-      min: -50,
-      max: 50,
-      formatter: FormatRawNumberToPercent,
-    },
-    {
-      label: yearOfConvergenceLabel,
-      value: "yearOfConvergence",
-      step: 1,
-      min: -50,
-      max: 50,
-      formatter: FormatRawNumber,
-    },
-    {
-      label: salesToCapitalRatioLabel,
-      value: "salesToCapitalRatio",
-      step: 1,
-      min: -50,
-      max: 50,
-      formatter: FormatRawNumber,
-    },
-    {
-      label: probabilityOfFailureLabel,
-      value: "probabilityOfFailure",
-      step: 1,
-      min: -50,
-      max: 50,
-      formatter: FormatRawNumberToPercent,
-    },
-    {
-      label: proceedsAsPercentageOfBookValueLabel,
-      value: "proceedsAsAPercentageOfBookValue",
-      step: 1,
-      min: -50,
-      max: 50,
-      formatter: FormatRawNumberToPercent,
-    },
-  ]);
+  const [dataTable, setDataTable] = useState(
+    [
+      {
+        label: cagrInYearsOneToFiveLabel,
+        value: "cagrYearOneToFive",
+        checked: !isNil(inputQueryParams.cagrYearOneToFive),
+        step: 1,
+        min: -50,
+        max: 50,
+      },
+      {
+        label: ebitTargetMarginInYearTenLabel,
+        value: "ebitTargetMarginInYearTen",
+        checked: !isNil(inputQueryParams.ebitTargetMarginInYearTen),
+        step: 1,
+        min: -50,
+        max: 50,
+      },
+      {
+        label: yearOfConvergenceLabel,
+        value: "yearOfConvergence",
+        step: 1,
+        min: -50,
+        max: 50,
+      },
+      {
+        label: salesToCapitalRatioLabel,
+        value: "salesToCapitalRatio",
+        step: 1,
+        min: -50,
+        max: 50,
+      },
+      {
+        label: probabilityOfFailureLabel,
+        value: "probabilityOfFailure",
+        step: 1,
+        min: -50,
+        max: 50,
+      },
+      {
+        label: proceedsAsPercentageOfBookValueLabel,
+        value: "proceedsAsAPercentageOfBookValue",
+        step: 1,
+        min: -50,
+        max: 50,
+      },
+    ].map((datum) => {
+      const type = findType(inputQueries, datum.value);
+      const value = inputQueryParams[datum.value];
+      const extraData = {};
 
-  const onSliderChange = (value, sliderValue, Formatter) => {
-    const newSliderValue = dataTable.map((datum) => {
+      if (type === "percent") {
+        extraData.formatter = FormatRawNumberToPercent;
+        extraData.modifier = (value) => value * 100;
+      }
+
+      if (type === "year" || type === "number") {
+        extraData.formatter = TableNumberFormatter;
+      }
+
+      return {
+        ...datum,
+        ...extraData,
+        data: getSliderValuesFromMidPoint(value),
+      };
+    }),
+  );
+
+  const onSliderChange = (value, sliderValue) => {
+    const type = findType(inputQueries, value);
+
+    let minPoint = sliderValue[0];
+    let maxPoint = sliderValue[1];
+
+    if (type === "percent") {
+      minPoint /= 100;
+      maxPoint /= 100;
+    }
+
+    const newDataTable = dataTable.map((datum) => {
       if (value === datum.value) {
-        const minPoint = sliderValue[0];
-        const maxPoint = sliderValue[1];
-        const length = maxPoint - minPoint;
-        const midPoint = length / 2 + minPoint;
-        const lowerHalfPoint = (midPoint - minPoint) / 2 + minPoint;
-        const upperHalfPoint = midPoint - lowerHalfPoint + midPoint;
-
-        const data = [
-          minPoint,
-          lowerHalfPoint,
-          midPoint,
-          upperHalfPoint,
-          maxPoint,
-        ];
-
         return {
           ...datum,
-          data,
+          data: getSliderValuesFromMinMax(minPoint, maxPoint),
         };
       }
       return datum;
     });
-    setSliderValue(newSliderValue);
+
+    setDataTable(newDataTable);
   };
 
   const setChecked = (value, checked) => {
@@ -160,10 +209,12 @@ const SensitivityAnalysis = () => {
 
   if (yElement) {
     columns.push(
-      ...yElement.data.map((statement) => {
+      ...yElement.data.map((value) => {
+        const Formatter = yElement.formatter;
+
         return {
-          Header: statement.dataField,
-          //accessor: statement.value,
+          Header: <Formatter value={value} />,
+          accessor: value.toString(),
         };
       }),
     );
@@ -190,18 +241,45 @@ const SensitivityAnalysis = () => {
             <Typography variant="h6" component="div">
               {xElement.label}
             </Typography>
-            <TTTable columns={columns} data={xElement.data} />
+            <Box sx={{ display: "flex" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  mt: "56px",
+                }}
+              >
+                {xElement.data.map((value) => {
+                  const Formatter = xElement.formatter;
+
+                  return (
+                    <Typography
+                      sx={{
+                        padding: "16px",
+                        fontSize: "0.875rem",
+                        textAlign: "left",
+                        color: "rgba(0, 0, 0, 0.87)",
+                        fontWeight: 500,
+                        lineHeight: "1.5rem",
+                      }}
+                    >
+                      <Formatter key={value} value={value} />
+                    </Typography>
+                  );
+                })}
+              </Box>
+              <TTTable columns={columns} data={[]} />
+            </Box>
           </Box>
         </Box>
       )}
-      <FormGroup aria-label="position" column className={classes.slider}>
+      <FormGroup column className={classes.slider}>
         {dataTable.map((datum) => (
           <FormGroupSlider
+            {...datum}
             marks={marks}
             setChecked={setChecked}
             onChange={onSliderChange}
-            datum={datum}
-            sliderValue={sliderValue}
             valueText={valueText}
           />
         ))}

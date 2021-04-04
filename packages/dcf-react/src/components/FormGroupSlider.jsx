@@ -24,7 +24,7 @@ const StyledFormControlLabel = withStyles({
   },
 })(FormControlLabel);
 
-const PrettoSlider = withStyles({
+const PrettySlider = withStyles({
   root: {
     height: 8,
   },
@@ -54,17 +54,23 @@ const PrettoSlider = withStyles({
 })(Slider);
 
 const FormGroupSlider = ({
-  datum: { label, value, checked, step, min, max, formatter },
+  label,
+  value,
+  checked,
+  data,
+  step,
+  min,
+  max,
   marks,
   valueText,
   setChecked,
-  sliderValue,
   onChange,
+  modifier = (value) => value,
 }) => {
   const inputQueryParams = useInputQueryParams();
 
   const handleValueChange = (_, newValue) => {
-    onChange(value, newValue, formatter);
+    onChange(value, newValue);
   };
 
   const handleCheckedChange = (e) => {
@@ -87,12 +93,11 @@ const FormGroupSlider = ({
         label={<TextFieldLabel>{label}</TextFieldLabel>}
       />
       {checked && (
-        <PrettoSlider
-          value={sliderValue}
+        <PrettySlider
+          value={[modifier(data[0]), modifier(data[data.length - 1])]}
           onChange={handleValueChange}
           defaultValue={0}
           getAriaValueText={valueText}
-          aria-labelledby="discrete-slider-custom"
           valueLabelDisplay="auto"
           marks={marks}
           step={step}
