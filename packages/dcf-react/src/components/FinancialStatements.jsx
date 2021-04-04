@@ -5,10 +5,12 @@ import SubSection from "./SubSection";
 import IncomeStatement from "./IncomeStatement";
 import BalanceSheet from "./BalanceSheet";
 import CashFlowStatement from "./CashFlowStatement";
+import CompanyHeading from "./CompanyHeading";
 
 const FinancialStatements = () => {
   return (
     <React.Fragment>
+      <CompanyHeading />
       <Typography variant="h5" gutterBottom>
         Financial Statements
       </Typography>

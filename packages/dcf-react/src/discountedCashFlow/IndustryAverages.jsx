@@ -11,6 +11,7 @@ import getTableRowBackgroundOpacity from "../shared/getTableRowBackgroundOpacity
 import selectIsInUS from "../selectors/fundamentalSelectors/selectIsInUS";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
+import CompanyHeading from "../components/CompanyHeading";
 
 const commonTableRootStyles = {
   "& th": {
@@ -72,6 +73,7 @@ const IndustryAverages = () => {
   // TODO: Implement sticky first column
   return (
     <React.Fragment>
+      <CompanyHeading />
       <SubSection>
         <Typography variant="h5" gutterBottom>
           Industry Averages

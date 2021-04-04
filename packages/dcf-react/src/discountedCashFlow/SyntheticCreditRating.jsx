@@ -18,6 +18,7 @@ import SubSection from "../components/SubSection";
 import getTableRowBackgroundOpacity from "../shared/getTableRowBackgroundOpacity";
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
 import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
+import CompanyHeading from "../components/CompanyHeading";
 
 const SyntheticCreditRating = () => {
   const currentEquityRiskPremiumCountry = useSelector(
@@ -95,6 +96,7 @@ const SyntheticCreditRating = () => {
   // - Risky industry
   return (
     <React.Fragment>
+      <CompanyHeading />
       <SubSection>
         <Typography variant="h5" gutterBottom>
           <InfoOutlinedIconWrapper text={<InfoSyntheticRating />}>
