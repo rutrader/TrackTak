@@ -7,7 +7,7 @@ const CompanyHeading = () => {
   const general = useSelector(selectGeneral);
   return (
     <React.Fragment>
-  <Typography variant="h4">{general.name}</Typography>
+      <Typography variant="h4">{general.name}</Typography>
       <Typography
         gutterBottom
         color="textSecondary"
