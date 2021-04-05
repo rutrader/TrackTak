@@ -99,7 +99,7 @@ const SensitivityAnalysis = () => {
     [
       {
         label: cagrInYearsOneToFiveLabel,
-        value: "cagrYearOneToFive",
+        name: "cagrYearOneToFive",
         checked: !isNil(inputQueryParams.cagrYearOneToFive),
         step: 1,
         min: -50,
@@ -107,7 +107,7 @@ const SensitivityAnalysis = () => {
       },
       {
         label: ebitTargetMarginInYearTenLabel,
-        value: "ebitTargetMarginInYearTen",
+        name: "ebitTargetMarginInYearTen",
         checked: !isNil(inputQueryParams.ebitTargetMarginInYearTen),
         step: 1,
         min: -50,
@@ -115,36 +115,38 @@ const SensitivityAnalysis = () => {
       },
       {
         label: yearOfConvergenceLabel,
-        value: "yearOfConvergence",
+        name: "yearOfConvergence",
         step: 1,
         min: -50,
         max: 50,
       },
       {
         label: salesToCapitalRatioLabel,
-        value: "salesToCapitalRatio",
+        name: "salesToCapitalRatio",
         step: 1,
         min: -50,
         max: 50,
       },
       {
         label: probabilityOfFailureLabel,
-        value: "probabilityOfFailure",
+        name: "probabilityOfFailure",
         step: 1,
         min: -50,
         max: 50,
       },
       {
         label: proceedsAsPercentageOfBookValueLabel,
-        value: "proceedsAsAPercentageOfBookValue",
+        name: "proceedsAsAPercentageOfBookValue",
         step: 1,
         min: -50,
         max: 50,
       },
     ].map((datum) => {
-      const type = findType(inputQueries, datum.value);
-      const value = inputQueryParams[datum.value];
-      const extraData = {};
+      const type = findType(inputQueries, datum.name);
+      const name = inputQueryParams[datum.name];
+      const extraData = {
+        modifier: (value) => value,
+      };
 
       if (type === "percent") {
         extraData.formatter = FormatRawNumberToPercent;
@@ -158,13 +160,13 @@ const SensitivityAnalysis = () => {
       return {
         ...datum,
         ...extraData,
-        data: getSliderValuesFromMidPoint(value),
+        data: getSliderValuesFromMidPoint(name),
       };
     }),
   );
 
-  const onSliderChange = (value, sliderValue) => {
-    const type = findType(inputQueries, value);
+  const onSliderChangeCommitted = (name, sliderValue) => {
+    const type = findType(inputQueries, name);
 
     let minPoint = sliderValue[0];
     let maxPoint = sliderValue[1];
@@ -175,7 +177,7 @@ const SensitivityAnalysis = () => {
     }
 
     const newDataTable = dataTable.map((datum) => {
-      if (value === datum.value) {
+      if (name === datum.name) {
         return {
           ...datum,
           data: getSliderValuesFromMinMax(minPoint, maxPoint),
@@ -187,9 +189,9 @@ const SensitivityAnalysis = () => {
     setDataTable(newDataTable);
   };
 
-  const setChecked = (value, checked) => {
+  const setChecked = (name, checked) => {
     const newDataTable = dataTable.map((datum) => {
-      if (value === datum.value) {
+      if (name === datum.name) {
         return {
           ...datum,
           checked,
@@ -229,7 +231,7 @@ const SensitivityAnalysis = () => {
 
   const getData = () => {
     const doesScopeExist =
-      !isNil(scope[xElement.value]) && !isNil(scope[yElement.value]);
+      !isNil(scope[xElement.name]) && !isNil(scope[yElement.name]);
 
     if (!doesScopeExist) return [];
 
@@ -242,8 +244,8 @@ const SensitivityAnalysis = () => {
 
       yElement.data.forEach((yElementValue, i) => {
         const currentScope = {
-          [xElement.value]: xElementValue,
-          [yElement.value]: yElementValue,
+          [xElement.name]: xElementValue,
+          [yElement.name]: yElementValue,
         };
         const model = calculateDCFModel(cells, currentScope, scope);
 
@@ -266,31 +268,23 @@ const SensitivityAnalysis = () => {
       </Typography>
       {xElement && yElement && (
         <Box>
-          <Typography
-            style={{
-              display: "flex",
-              justifyContent: "center",
-            }}
-            variant="h6"
-            component="div"
-          >
+          <Typography align="center" variant="h6">
             {yElement.label}
           </Typography>
           <Box style={{ display: "flex", alignItems: "center" }}>
-            <Typography variant="h6" component="div">
-              {xElement.label}
-            </Typography>
+            <Typography variant="h6">{xElement.label}</Typography>
             <TTTable sx={{ flex: 1 }} columns={columns} data={getData()} />
           </Box>
         </Box>
       )}
       <FormGroup column className={classes.slider}>
-        {dataTable.map((datum) => (
+        {dataTable.map(({ modifier, data, ...datum }) => (
           <FormGroupSlider
             {...datum}
+            value={[modifier(data[0]), modifier(data[data.length - 1])]}
             marks={marks}
             setChecked={setChecked}
-            onChange={onSliderChange}
+            onChangeCommitted={onSliderChangeCommitted}
             valueText={valueText}
           />
         ))}

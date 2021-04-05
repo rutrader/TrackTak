@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Checkbox,
   Slider,
@@ -55,29 +55,37 @@ const PrettySlider = withStyles({
 
 const FormGroupSlider = ({
   label,
+  name,
   value,
   checked,
-  data,
   step,
   min,
   max,
   marks,
   valueText,
   setChecked,
-  onChange,
-  modifier = (value) => value,
+  onChangeCommitted,
 }) => {
+  const [sliderValue, setSliderValue] = useState(value);
   const inputQueryParams = useInputQueryParams();
 
-  const handleValueChange = (_, newValue) => {
-    onChange(value, newValue);
+  const handleOnChange = (_, newValue) => {
+    setSliderValue(newValue);
+  };
+
+  const handleValueChangeCommitted = (_, newValue) => {
+    onChangeCommitted(name, newValue);
   };
 
   const handleCheckedChange = (e) => {
-    setChecked(value, e.target.checked);
+    setChecked(name, e.target.checked);
   };
 
-  const disabled = isNil(inputQueryParams[value]);
+  useEffect(() => {
+    setSliderValue(value);
+  }, [value]);
+
+  const disabled = isNil(inputQueryParams[name]);
 
   return (
     <React.Fragment>
@@ -94,8 +102,9 @@ const FormGroupSlider = ({
       />
       {checked && (
         <PrettySlider
-          value={[modifier(data[0]), modifier(data[data.length - 1])]}
-          onChange={handleValueChange}
+          value={sliderValue}
+          onChange={handleOnChange}
+          onChangeCommitted={handleValueChangeCommitted}
           defaultValue={0}
           getAriaValueText={valueText}
           valueLabelDisplay="auto"
