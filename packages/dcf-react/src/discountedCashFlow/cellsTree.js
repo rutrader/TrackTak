@@ -1,4 +1,5 @@
 import cells from "./cells";
+import filterDuplicates from "../shared/filterDuplicates";
 
 const cellsTree = {};
 
@@ -7,7 +8,7 @@ Object.keys(cells).forEach((key) => {
 
   if (expr) {
     const matches = expr.match(/([A-Z]+\d+)/g);
-    const uniqueMatches = Array.from(new Set(matches));
+    const uniqueMatches = filterDuplicates(matches);
 
     uniqueMatches.forEach((uniqueMatchKey) => {
       cellsTree[uniqueMatchKey] = cellsTree[uniqueMatchKey]

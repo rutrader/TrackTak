@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useCallback } from "react";
 import { columns, numberOfRows } from "./cells";
-import { getColumnsBetween, startColumn } from "./utils";
+import { startColumn } from "./utils";
 import { Cell, Column, Table } from "@blueprintjs/table";
 import { Alert, Box, useMediaQuery, useTheme } from "@material-ui/core";
 import useInputQueryParams from "../hooks/useInputQueryParams";
@@ -130,33 +130,18 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     dispatch(
-      updateCells(
-        [
-          "B2",
-          "B4",
-          "B5",
-          "B16",
-          "B28",
-          "B29",
-          "B30",
-          "B31",
-          "B35",
-          "B36",
-          "M5",
-        ],
-        {
-          pastThreeYearsAverageEffectiveTaxRate,
-          totalRevenue: incomeStatement.totalRevenue,
-          operatingIncome: incomeStatement.operatingIncome,
-          investedCapital: balanceSheet.investedCapital,
-          bookValueOfDebt: balanceSheet.bookValueOfDebt,
-          cashAndShortTermInvestments: balanceSheet.cashAndShortTermInvestments,
-          minorityInterest: balanceSheet.minorityInterest,
-          marginalTaxRate: currentEquityRiskPremium.marginalTaxRate,
-          sharesOutstanding,
-          price,
-        },
-      ),
+      updateCells({
+        pastThreeYearsAverageEffectiveTaxRate,
+        totalRevenue: incomeStatement.totalRevenue,
+        operatingIncome: incomeStatement.operatingIncome,
+        investedCapital: balanceSheet.investedCapital,
+        bookValueOfDebt: balanceSheet.bookValueOfDebt,
+        cashAndShortTermInvestments: balanceSheet.cashAndShortTermInvestments,
+        minorityInterest: balanceSheet.minorityInterest,
+        marginalTaxRate: currentEquityRiskPremium.marginalTaxRate,
+        sharesOutstanding,
+        price,
+      }),
     );
   }, [
     balanceSheet.bookValueOfDebt,
@@ -173,12 +158,8 @@ const DiscountedCashFlowTable = ({
   ]);
 
   useEffect(() => {
-    const cagrCellsToUpdate = getColumnsBetween(columns, "C", "L").map(
-      (column) => `${column}2`,
-    );
-
     dispatch(
-      updateCells(cagrCellsToUpdate, {
+      updateCells({
         cagrYearOneToFive: inputQueryParams.cagrYearOneToFive,
         riskFreeRate,
       }),
@@ -186,12 +167,8 @@ const DiscountedCashFlowTable = ({
   }, [dispatch, inputQueryParams.cagrYearOneToFive, riskFreeRate]);
 
   useEffect(() => {
-    const ebitMarginCellsToUpdate = getColumnsBetween(columns, "C", "L").map(
-      (column) => `${column}3`,
-    );
-
     dispatch(
-      updateCells(ebitMarginCellsToUpdate, {
+      updateCells({
         yearOfConvergence: inputQueryParams.yearOfConvergence,
         ebitTargetMarginInYearTen: inputQueryParams.ebitTargetMarginInYearTen,
       }),
@@ -204,7 +181,7 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     dispatch(
-      updateCells(["C11"], {
+      updateCells({
         totalCostOfCapital: costOfCapital.totalCostOfCapital,
       }),
     );
@@ -212,7 +189,7 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     dispatch(
-      updateCells(["C15"], {
+      updateCells({
         salesToCapitalRatio: inputQueryParams.salesToCapitalRatio,
       }),
     );
@@ -220,7 +197,7 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     dispatch(
-      updateCells(["B9"], {
+      updateCells({
         netOperatingLoss: inputQueryParams.netOperatingLoss,
       }),
     );
@@ -228,7 +205,7 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     dispatch(
-      updateCells(["B25"], {
+      updateCells({
         probabilityOfFailure: inputQueryParams.probabilityOfFailure,
       }),
     );
@@ -236,7 +213,7 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     dispatch(
-      updateCells(["B26"], {
+      updateCells({
         proceedsAsAPercentageOfBookValue:
           inputQueryParams.proceedsAsAPercentageOfBookValue,
         bookValueOfDebt: balanceSheet.bookValueOfDebt,
@@ -252,14 +229,14 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     dispatch(
-      updateCells(["M2", "M11", "M7", "B21"], {
+      updateCells({
         riskFreeRate,
       }),
     );
   }, [dispatch, riskFreeRate]);
 
   useEffect(() => {
-    dispatch(updateCells(["B33"], { valueOfAllOptionsOutstanding }));
+    dispatch(updateCells({ valueOfAllOptionsOutstanding }));
   }, [dispatch, valueOfAllOptionsOutstanding]);
 
   // Key: Hack to force re-render the table when formula state changes

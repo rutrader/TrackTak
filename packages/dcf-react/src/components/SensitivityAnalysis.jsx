@@ -19,6 +19,11 @@ import { TableNumberFormatter } from "./TableFormatters";
 import useInputQueryParams, {
   inputQueries,
 } from "../hooks/useInputQueryParams";
+import calculateDCFModel from "../shared/calculateDCFModel";
+import { useSelector } from "react-redux";
+import selectCells from "../selectors/dcfSelectors/selectCells";
+import selectScope from "../selectors/dcfSelectors/selectScope";
+import FormatRawNumberToCurrency from "./FormatRawNumberToCurrency";
 
 const useStyles = makeStyles((theme) => ({
   slider: {
@@ -88,6 +93,8 @@ const findType = (inputQueries, name) =>
 const SensitivityAnalysis = () => {
   const classes = useStyles();
   const inputQueryParams = useInputQueryParams();
+  const cells = useSelector(selectCells);
+  const scope = useSelector(selectScope);
   const [dataTable, setDataTable] = useState(
     [
       {
@@ -209,16 +216,48 @@ const SensitivityAnalysis = () => {
 
   if (yElement) {
     columns.push(
-      ...yElement.data.map((value) => {
+      ...yElement.data.map((value, i) => {
         const Formatter = yElement.formatter;
 
         return {
           Header: <Formatter value={value} />,
-          accessor: value.toString(),
+          accessor: i.toString(),
         };
       }),
     );
   }
+
+  const getData = () => {
+    const doesScopeExist =
+      !isNil(scope[xElement.value]) && !isNil(scope[yElement.value]);
+
+    if (!doesScopeExist) return [];
+
+    const XFormatter = xElement.formatter;
+
+    const data = xElement.data.map((xElementValue) => {
+      const row = {
+        dataField: <XFormatter value={xElementValue} />,
+      };
+
+      yElement.data.forEach((yElementValue, i) => {
+        const currentScope = {
+          [xElement.value]: xElementValue,
+          [yElement.value]: yElementValue,
+        };
+        const model = calculateDCFModel(cells, currentScope, scope);
+
+        // B36 => Estimated Value Per Share
+        row[i.toString()] = (
+          <FormatRawNumberToCurrency value={model.B36.value} />
+        );
+      });
+
+      return row;
+    });
+
+    return data;
+  };
 
   return (
     <Box sx={{ overflow: "auto" }}>
@@ -241,35 +280,7 @@ const SensitivityAnalysis = () => {
             <Typography variant="h6" component="div">
               {xElement.label}
             </Typography>
-            <Box sx={{ display: "flex" }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  mt: "56px",
-                }}
-              >
-                {xElement.data.map((value) => {
-                  const Formatter = xElement.formatter;
-
-                  return (
-                    <Typography
-                      sx={{
-                        padding: "16px",
-                        fontSize: "0.875rem",
-                        textAlign: "left",
-                        color: "rgba(0, 0, 0, 0.87)",
-                        fontWeight: 500,
-                        lineHeight: "1.5rem",
-                      }}
-                    >
-                      <Formatter key={value} value={value} />
-                    </Typography>
-                  );
-                })}
-              </Box>
-              <TTTable columns={columns} data={[]} />
-            </Box>
+            <TTTable sx={{ flex: 1 }} columns={columns} data={getData()} />
           </Box>
         </Box>
       )}
