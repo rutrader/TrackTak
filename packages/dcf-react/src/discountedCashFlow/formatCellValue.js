@@ -10,20 +10,25 @@ const formatCellValue = (cell) => {
   const { value, type } = cell;
   let node = value;
 
+  // key here is to force a re-render based on the value
+  // likely a blueprintjs table bug. It's probably fixed
+  // in the later versions once we upgrade
   if (type === "percent") {
-    node = <FormatRawNumberToPercent value={value} />;
+    node = <FormatRawNumberToPercent key={value} value={value} />;
   }
   if (type === "million-currency") {
-    node = <FormatRawNumberToMillion value={value} useCurrencySymbol />;
+    node = (
+      <FormatRawNumberToMillion key={value} value={value} useCurrencySymbol />
+    );
   }
   if (type === "million") {
-    node = <FormatRawNumberToMillion value={value} />;
+    node = <FormatRawNumberToMillion key={value} value={value} />;
   }
   if (type === "currency") {
-    node = <FormatRawNumberToCurrency value={value} />;
+    node = <FormatRawNumberToCurrency key={value} value={value} />;
   }
   if (type === "number") {
-    node = <FormatRawNumber value={value} decimalScale={2} />;
+    node = <FormatRawNumber key={value} value={value} decimalScale={2} />;
   }
 
   return node;
