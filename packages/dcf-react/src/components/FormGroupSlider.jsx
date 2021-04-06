@@ -106,7 +106,6 @@ const FormGroupSlider = ({
           onChange={handleOnChange}
           onChangeCommitted={handleValueChangeCommitted}
           defaultValue={0}
-          getAriaValueText={valueText}
           valueLabelDisplay="auto"
           marks={marks}
           step={step}

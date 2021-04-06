@@ -1,3 +1,4 @@
+import React from "react";
 import { setFundamentals, TracktakProvider } from "../src";
 import mockPreloadedStateJSON from "../mocks/mockPreloadedState.json";
 import mockStockDataJSON from "../mocks/mockStockData.json";

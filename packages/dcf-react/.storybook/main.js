@@ -9,4 +9,18 @@ module.exports = {
     "@storybook/addon-essentials",
     "@storybook/preset-scss",
   ],
+  webpackFinal: async (config) => {
+    config.module.rules.push(
+      {
+        test: /\.jsx?$/,
+        loader: require.resolve("@open-wc/webpack-import-meta-loader"),
+      },
+      {
+        test: /worker\.js$/,
+        use: { loader: "worker-loader" },
+      },
+    );
+
+    return config;
+  },
 };

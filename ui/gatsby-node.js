@@ -30,6 +30,14 @@ exports.onCreateWebpackConfig = ({
   actions,
 }) => {
   actions.setWebpackConfig({
+    module: {
+      rules: [
+        {
+          test: /\.jsx?$/,
+          loader: require.resolve("@open-wc/webpack-import-meta-loader"),
+        },
+      ],
+    },
     plugins: [
       new webpack.NormalModuleReplacementPlugin(
         /.*\/generated\/iconSvgPaths.*/,
