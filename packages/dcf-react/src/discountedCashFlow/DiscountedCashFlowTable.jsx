@@ -98,17 +98,12 @@ const DiscountedCashFlowTable = ({
         node = <FormatRawNumberToPercent value={cell.yoyGrowthValue} />;
       }
 
-      if (isOutputCell) {
-        intent = "success";
-      }
-
       return (
         <Cell
           style={{
             fontSize: theme.typography.fontSize,
             fontFamily: theme.typography.fontFamily,
-            fontWeight: isOutputCell ? "bold" : "initial",
-            color: "initial",
+            color: isOutputCell ? theme.palette.primary.main : "initial",
           }}
           intent={intent}
           loading={loading}
@@ -123,6 +118,7 @@ const DiscountedCashFlowTable = ({
       isYoyGrowthToggled,
       loadingCells,
       showFormulas,
+      theme.palette.primary.main,
       theme.typography.fontFamily,
       theme.typography.fontSize,
     ],

@@ -90,9 +90,6 @@ const DiscountedCashFlowSheet = ({
             </a>
           </Typography>
         </Box>
-        <Box>
-          <SensitivityAnalysis />
-        </Box>
         <Box
           sx={{
             display: "flex",
@@ -135,6 +132,7 @@ const DiscountedCashFlowSheet = ({
           loadingCells={loadingCells}
         />
       </LazyRenderTable>
+      <SensitivityAnalysis />
     </Box>
   );
 };

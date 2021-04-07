@@ -1,4 +1,3 @@
-import isNil from "lodash/isNil";
 import { useState } from "react";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import {
@@ -51,53 +50,106 @@ export const getSliderValuesFromMidPoint = (midPoint) => {
 export const findType = (inputQueries, name) =>
   inputQueries.find((x) => x.name === name).type;
 
+const getMinMaxRange = (name, inputQueryParams) => {
+  const value = inputQueryParams[name];
+
+  return {
+    min: value - 40,
+    max: value + 40,
+  };
+};
+
 const useSensitivityAnalysisDataTable = () => {
   const inputQueryParams = useInputQueryParams();
+  const cagrMinMax = getMinMaxRange("cagrYearOneToFive", inputQueryParams);
+  const ebitMarginMinMax = getMinMaxRange(
+    "ebitTargetMarginInYearTen",
+    inputQueryParams,
+  );
+
   const [dataTable, setDataTable] = useState(
     [
       {
         label: cagrInYearsOneToFiveLabel,
         name: "cagrYearOneToFive",
-        checked: !isNil(inputQueryParams.cagrYearOneToFive),
         step: 1,
-        min: -50,
-        max: 50,
+        marks: [
+          { value: cagrMinMax.min, label: cagrMinMax.min.toString() },
+          {
+            value: inputQueryParams.cagrYearOneToFive,
+            label: inputQueryParams.cagrYearOneToFive.toString(),
+          },
+          { value: cagrMinMax.max, label: cagrMinMax.max.toString() },
+        ],
+        ...cagrMinMax,
       },
       {
         label: ebitTargetMarginInYearTenLabel,
         name: "ebitTargetMarginInYearTen",
-        checked: !isNil(inputQueryParams.ebitTargetMarginInYearTen),
         step: 1,
-        min: -50,
-        max: 50,
+        marks: [
+          {
+            value: ebitMarginMinMax.min,
+            label: ebitMarginMinMax.min.toString(),
+          },
+          {
+            value: inputQueryParams.ebitTargetMarginInYearTen,
+            label: inputQueryParams.ebitTargetMarginInYearTen.toString(),
+          },
+          {
+            value: ebitMarginMinMax.max,
+            label: ebitMarginMinMax.max.toString(),
+          },
+        ],
+        ...getMinMaxRange("ebitTargetMarginInYearTen", inputQueryParams),
       },
       {
         label: yearOfConvergenceLabel,
         name: "yearOfConvergence",
+        marks: [
+          { value: 0, label: "0" },
+          { value: 5, label: "5" },
+          { value: 10, label: "10" },
+        ],
         step: 1,
-        min: -50,
-        max: 50,
+        min: 0,
+        max: 10,
       },
       {
         label: salesToCapitalRatioLabel,
         name: "salesToCapitalRatio",
-        step: 1,
-        min: -50,
-        max: 50,
+        step: 0.1,
+        min: -5,
+        max: 7,
+        marks: [
+          { value: -5, label: "-5" },
+          { value: 1, label: "1" },
+          { value: 7, label: "7" },
+        ],
       },
       {
         label: probabilityOfFailureLabel,
         name: "probabilityOfFailure",
         step: 1,
-        min: -50,
-        max: 50,
+        min: 0,
+        max: 100,
+        marks: [
+          { value: 0, label: "0" },
+          { value: 50, label: "50" },
+          { value: 100, label: "100" },
+        ],
       },
       {
         label: proceedsAsPercentageOfBookValueLabel,
         name: "proceedsAsAPercentageOfBookValue",
         step: 1,
-        min: -50,
-        max: 50,
+        min: 0,
+        max: 100,
+        marks: [
+          { value: 0, label: "0" },
+          { value: 50, label: "50" },
+          { value: 100, label: "100" },
+        ],
       },
     ].map((datum) => {
       const type = findType(inputQueries, datum.name);

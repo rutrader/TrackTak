@@ -6,19 +6,14 @@ const initializeSubWorker = () => {
   });
 };
 
-let subWorker = initializeSubWorker();
+let subWorker = null;
 
-self.onmessage = ({
-  data: { cells, existingScope, currentScopes, cancelMessage },
-}) => {
-  if (cancelMessage && subWorker) {
-    console.log("terminate");
+self.onmessage = ({ data: { cells, existingScope, currentScopes } }) => {
+  if (subWorker) {
     subWorker.terminate();
-    subWorker = initializeSubWorker();
-    return;
   }
 
-  console.log("new post");
+  subWorker = initializeSubWorker();
 
   subWorker.postMessage({
     cells,
@@ -27,8 +22,6 @@ self.onmessage = ({
   });
 
   subWorker.onmessage = ({ data }) => {
-    console.log("returned");
-
     self.postMessage(data);
   };
 };

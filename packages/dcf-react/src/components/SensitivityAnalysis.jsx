@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Box, FormGroup, Typography } from "@material-ui/core";
+import {
+  Box,
+  CircularProgress,
+  FormGroup,
+  Typography,
+  useMediaQuery,
+} from "@material-ui/core";
 import TTTable from "./TTTable";
-import FormGroupSlider from "./FormGroupSlider";
-import { makeStyles } from "@material-ui/core/styles";
+import CheckboxSlider from "./CheckboxSlider";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { isNil } from "lodash";
 import { useSelector } from "react-redux";
 import selectCells from "../selectors/dcfSelectors/selectCells";
@@ -12,9 +18,13 @@ import useSensitivityAnalysisDataTable, {
   findType,
   getSliderValuesFromMinMax,
 } from "../hooks/useSensitivityAnalysisDataTable";
-import { inputQueries } from "../hooks/useInputQueryParams";
+import useInputQueryParams, {
+  inputQueries,
+} from "../hooks/useInputQueryParams";
 import dcfModelWorker from "../workers";
 import getChunksOfArray from "../shared/getChunksOfArray";
+import { Fragment } from "react";
+import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 
 const useStyles = makeStyles((theme) => ({
   slider: {
@@ -25,28 +35,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const marks = [
-  {
-    value: -50,
-    label: "-50",
-  },
-  {
-    value: 0,
-    label: "0",
-  },
-  {
-    value: 50,
-    label: "50",
-  },
-];
-
 const getColumns = (yElement) => {
   if (yElement) {
     return yElement.data.map((value, i) => {
       const Formatter = yElement.formatter;
 
       return {
-        Header: <Formatter value={value} />,
+        Header: (
+          <b>
+            <Formatter value={value} />
+          </b>
+        ),
         accessor: i.toString(),
       };
     });
@@ -75,19 +74,32 @@ const getModelScopes = (scope, xElement, yElement) => {
 
 const SensitivityAnalysis = () => {
   const classes = useStyles();
+  const theme = useTheme();
   const cells = useSelector(selectCells);
   const scope = useSelector(selectScope);
   const [data, setData] = useState([]);
-  const [xElement, setXElement] = useState();
-  const [yElement, setYElement] = useState();
   const [dataTable, setDataTable] = useSensitivityAnalysisDataTable();
+  const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
+  const inputQueryParams = useInputQueryParams();
+  const [isLoading, setIsLoading] = useState();
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
+  const [checkedItems, setCheckedItems] = useState([
+    {
+      name: "cagrYearOneToFive",
+      value: true,
+    },
+    {
+      name: "ebitTargetMarginInYearTen",
+      value: true,
+    },
+  ]);
+  const dataTableValues = dataTable.filter((x) =>
+    checkedItems.some((z) => z.name === x.name),
+  );
+  const xElement = dataTableValues[0];
+  const yElement = dataTableValues[1];
 
   const onSliderChangeCommitted = (name, sliderValue) => {
-    dcfModelWorker.postMessage({
-      cancelMessage: true,
-    });
-    console.log("cancelled");
-
     const type = findType(inputQueries, name);
 
     let minPoint = sliderValue[0];
@@ -112,18 +124,22 @@ const SensitivityAnalysis = () => {
   };
 
   const setChecked = (name, checked) => {
-    const newDataTable = dataTable.map((datum) => {
-      if (name === datum.name) {
-        return {
-          ...datum,
-          checked,
-        };
+    let newCheckedItems = [...checkedItems];
+    const existingItem = checkedItems.find((x) => x.name === name);
+
+    if (existingItem) {
+      newCheckedItems = checkedItems.filter((x) => x.name !== name);
+    } else {
+      if (checkedItems.length === 2) {
+        newCheckedItems.shift();
       }
+      newCheckedItems.push({
+        name,
+        value: checked,
+      });
+    }
 
-      return datum;
-    });
-
-    setDataTable(newDataTable);
+    setCheckedItems(newCheckedItems);
   };
 
   const columns = [
@@ -135,19 +151,11 @@ const SensitivityAnalysis = () => {
   ];
 
   useEffect(() => {
-    const checkedValues = dataTable.filter((x) => x.checked);
-    const xElement = checkedValues.length === 2 ? checkedValues[0] : null;
-    const yElement = checkedValues.length === 2 ? checkedValues[1] : null;
-
-    setXElement({ ...xElement });
-    setYElement({ ...yElement });
-  }, [dataTable]);
-
-  useEffect(() => {
     const currentScopes = getModelScopes(scope, xElement, yElement);
 
     if (currentScopes) {
-      console.log("extra post");
+      setIsLoading(true);
+
       dcfModelWorker.postMessage({
         cells,
         existingScope: scope,
@@ -160,51 +168,113 @@ const SensitivityAnalysis = () => {
 
         const rowData = chunkedData.map((chunk, i) => {
           const row = {
-            dataField: <XFormatter value={xElement.data[i]} />,
+            dataField: (
+              <b>
+                <XFormatter value={xElement.data[i]} />
+              </b>
+            ),
           };
 
           chunk.forEach((model, z) => {
+            let sx;
+
+            if (cells.B36.value === model.B36.value) {
+              sx = {
+                color: theme.palette.primary.main,
+              };
+            }
+
             row[z.toString()] = (
-              <FormatRawNumberToCurrency value={model.B36.value} />
+              <Box sx={sx}>
+                <FormatRawNumberToCurrency value={model.B36.value} />
+              </Box>
             );
           });
 
           return row;
         });
 
+        setIsLoading(false);
         setData(rowData);
       };
     }
-  }, [cells, scope, xElement, yElement]);
+  }, [cells, scope, theme.palette.primary.main, xElement, yElement]);
 
   return (
-    <Box sx={{ overflow: "auto" }}>
+    <Fragment>
       <Typography variant="h5" gutterBottom>
         Sensitivity Analysis
       </Typography>
-      {xElement && yElement && (
-        <Box>
-          <Typography align="center" variant="h6">
-            {yElement.label}
-          </Typography>
-          <Box style={{ display: "flex", alignItems: "center" }}>
-            <Typography variant="h6">{xElement.label}</Typography>
-            <TTTable sx={{ flex: 1 }} columns={columns} data={data} />
+      <Box
+        sx={{
+          display: "flex",
+          gridColumnGap: theme.spacing(8.75),
+          gridRowGap: theme.spacing(2),
+          flexWrap: "wrap",
+        }}
+      >
+        <FormGroup column className={classes.slider}>
+          {dataTable.map(({ modifier, data, name, ...datum }) => {
+            const disabled = isNil(inputQueryParams[name]);
+
+            return (
+              <CheckboxSlider
+                {...datum}
+                disabled={disabled || !hasAllRequiredInputsFilledIn}
+                checked={
+                  checkedItems.find((x) => x.name === name)?.value ?? false
+                }
+                name={name}
+                value={[modifier(data[0]), modifier(data[data.length - 1])]}
+                setChecked={setChecked}
+                onChangeCommitted={onSliderChangeCommitted}
+              />
+            );
+          })}
+        </FormGroup>
+        {xElement && yElement && (
+          <Box sx={{ flex: 1 }}>
+            {smDown && (
+              <Box sx={{ mb: 2 }}>
+                <Box mb={1}>X = {xElement.label}</Box>
+                <Box>Y = {yElement.label}</Box>
+              </Box>
+            )}
+            <Typography align="center" variant="h6">
+              {smDown ? "Y" : yElement.label}
+            </Typography>
+            <Box
+              style={{ display: "flex", alignItems: "center", gridGap: "10px" }}
+            >
+              <Typography
+                variant="h6"
+                style={{
+                  flex: "0 1 auto",
+                  textAlign: "center",
+                }}
+              >
+                {smDown ? "X" : xElement.label}
+              </Typography>
+              {isLoading ? (
+                <Box
+                  sx={{
+                    width: "100%",
+                    height: 322,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <CircularProgress />
+                </Box>
+              ) : (
+                <TTTable sx={{ flex: 1 }} columns={columns} data={data} />
+              )}
+            </Box>
           </Box>
-        </Box>
-      )}
-      <FormGroup column className={classes.slider}>
-        {dataTable.map(({ modifier, data, ...datum }) => (
-          <FormGroupSlider
-            {...datum}
-            value={[modifier(data[0]), modifier(data[data.length - 1])]}
-            marks={marks}
-            setChecked={setChecked}
-            onChangeCommitted={onSliderChangeCommitted}
-          />
-        ))}
-      </FormGroup>
-    </Box>
+        )}
+      </Box>
+    </Fragment>
   );
 };
 
