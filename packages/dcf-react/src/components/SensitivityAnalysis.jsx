@@ -13,7 +13,7 @@ import useSensitivityAnalysisDataTable, {
   getSliderValuesFromMinMax,
 } from "../hooks/useSensitivityAnalysisDataTable";
 import { inputQueries } from "../hooks/useInputQueryParams";
-import sensitivityAnalysisWorker from "../workers/sensitivityAnalysisWorker";
+import dcfModelWorker from "../workers";
 import getChunksOfArray from "../shared/getChunksOfArray";
 
 const useStyles = makeStyles((theme) => ({
@@ -83,6 +83,11 @@ const SensitivityAnalysis = () => {
   const [dataTable, setDataTable] = useSensitivityAnalysisDataTable();
 
   const onSliderChangeCommitted = (name, sliderValue) => {
+    dcfModelWorker.postMessage({
+      cancelMessage: true,
+    });
+    console.log("cancelled");
+
     const type = findType(inputQueries, name);
 
     let minPoint = sliderValue[0];
@@ -142,13 +147,14 @@ const SensitivityAnalysis = () => {
     const currentScopes = getModelScopes(scope, xElement, yElement);
 
     if (currentScopes) {
-      sensitivityAnalysisWorker.postMessage({
+      console.log("extra post");
+      dcfModelWorker.postMessage({
         cells,
         existingScope: scope,
         currentScopes,
       });
 
-      sensitivityAnalysisWorker.onmessage = ({ data }) => {
+      dcfModelWorker.onmessage = ({ data }) => {
         const chunkedData = getChunksOfArray(data, xElement.data.length);
         const XFormatter = xElement.formatter;
 

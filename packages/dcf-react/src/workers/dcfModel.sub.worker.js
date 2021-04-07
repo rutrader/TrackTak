@@ -1,4 +1,4 @@
-import calculateDCFModel from "../../shared/calculateDCFModel";
+import calculateDCFModel from "../shared/calculateDCFModel";
 
 self.onmessage = ({ data: { cells, existingScope, currentScopes } }) => {
   const models = currentScopes.map((currentScope) => {

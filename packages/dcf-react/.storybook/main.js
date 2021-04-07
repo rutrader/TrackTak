@@ -16,7 +16,7 @@ module.exports = {
         loader: require.resolve("@open-wc/webpack-import-meta-loader"),
       },
       {
-        test: /worker\.js$/,
+        test: /\.worker\.js$/,
         use: { loader: "worker-loader" },
       },
     );
