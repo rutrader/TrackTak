@@ -74,12 +74,12 @@ const useSensitivityAnalysisDataTable = () => {
         name: "cagrYearOneToFive",
         step: 1,
         marks: [
-          { value: cagrMinMax.min, label: cagrMinMax.min.toString() },
+          { value: cagrMinMax.min, label: cagrMinMax.min },
           {
             value: inputQueryParams.cagrYearOneToFive,
-            label: inputQueryParams.cagrYearOneToFive.toString(),
+            label: inputQueryParams.cagrYearOneToFive,
           },
-          { value: cagrMinMax.max, label: cagrMinMax.max.toString() },
+          { value: cagrMinMax.max, label: cagrMinMax.max },
         ],
         ...cagrMinMax,
       },
@@ -90,15 +90,15 @@ const useSensitivityAnalysisDataTable = () => {
         marks: [
           {
             value: ebitMarginMinMax.min,
-            label: ebitMarginMinMax.min.toString(),
+            label: ebitMarginMinMax.min,
           },
           {
             value: inputQueryParams.ebitTargetMarginInYearTen,
-            label: inputQueryParams.ebitTargetMarginInYearTen.toString(),
+            label: inputQueryParams.ebitTargetMarginInYearTen,
           },
           {
             value: ebitMarginMinMax.max,
-            label: ebitMarginMinMax.max.toString(),
+            label: ebitMarginMinMax.max,
           },
         ],
         ...getMinMaxRange("ebitTargetMarginInYearTen", inputQueryParams),

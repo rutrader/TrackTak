@@ -13,10 +13,6 @@ const app = express();
 
 const origin = [process.env.ORIGIN_URL];
 
-if (process.env.NODE_ENV === "development") {
-  origin.push("http://bs-local.com:8000");
-}
-
 const corsOptions = {
   origin,
   optionsSuccessStatus: 200,

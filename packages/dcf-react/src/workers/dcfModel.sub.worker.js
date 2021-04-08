@@ -1,11 +1,13 @@
 import calculateDCFModel from "../shared/calculateDCFModel";
 
-self.onmessage = ({ data: { cells, existingScope, currentScopes } }) => {
-  const models = currentScopes.map((currentScope) => {
-    const model = calculateDCFModel(cells, currentScope, existingScope);
+if (typeof self !== "undefined") {
+  self.onmessage = ({ data: { cells, existingScope, currentScopes } }) => {
+    const models = currentScopes.map((currentScope) => {
+      const model = calculateDCFModel(cells, currentScope, existingScope);
 
-    return model;
-  });
+      return model;
+    });
 
-  self.postMessage(models);
-};
+    self.postMessage(models);
+  };
+}
