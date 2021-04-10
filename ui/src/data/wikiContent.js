@@ -275,17 +275,17 @@ const wikiContent = [
                 Risk Free Rate&nbsp;
               </Box>
               - The return you could get in the same currency with 0 risk. We
-              use the last closing daily price for the gb in the same currency
+              use the last closing daily yield for the gb in the same currency
               that the valuation is being done in. The ads is the default chance
               in % for the country where the government bond is being used. The
               reason for this is that a lot of countries do not have Aaa ratings
               so they have default risk and therefore are not risk free so we
               have to adjust for that.
               <Formula
-                formula="rfr = gb / 100 - ads"
+                formula="rfr = gb - ads"
                 explanations={[
                   "rfr = Risk Free Rate",
-                  "gb = Government Bonds Last Close price",
+                  "gb = Government Bonds 10 Year Yield",
                   "ads = Adjusted Default Spread",
                 ]}
               />
@@ -318,7 +318,7 @@ const wikiContent = [
           <ListItem>
             <Box>
               <Box component="span" style={{ fontWeight: "bold" }}>
-                Pre-tax Cost of Debt&nbsp;
+                Estimated Pre-tax Cost of Debt&nbsp;
               </Box>
               - Each company has a cost of raising debt. The more debt a company
               raises the higher the chance of default but the tax benefits of
@@ -326,7 +326,7 @@ const wikiContent = [
               <Formula
                 formula="pt = rfr + is + ads"
                 explanations={[
-                  "pt = Pretax Cost of Debt",
+                  "pt = Estimated Pretax Cost of Debt",
                   "rfr = Risk Free Rate",
                   "is = Interest Spread",
                   "ads = Adjusted Default Spread",
@@ -346,7 +346,7 @@ const wikiContent = [
                   "cd = Estimated Market Value of Straight Debt in Convertible",
                   "ie = Interest Expense",
                   "pt = Pre-tax Cost of Debt",
-                  "m = Maturity of Debt",
+                  "m =  Average Maturity of Debt",
                   "bd = Book Value of Debt",
                 ]}
               />
@@ -373,13 +373,13 @@ const wikiContent = [
           <ListItem>
             <Box>
               <Box component="span" style={{ fontWeight: "bold" }}>
-                Debt&nbsp;
+                Debt Market Value&nbsp;
               </Box>
               - The market value of debt.
               <Formula
                 formula="d = sd + cd"
                 explanations={[
-                  "d = Debt",
+                  "d = Debt Market Value",
                   "sd = Estimated Market Value of Straight Debt",
                   "cd = Estimated Market Value of Straight Debt in Convertible",
                 ]}
@@ -389,15 +389,15 @@ const wikiContent = [
           <ListItem>
             <Box>
               <Box component="span" style={{ fontWeight: "bold" }}>
-                Equity&nbsp;
+                Equity Market Value&nbsp;
               </Box>
               - The market value of equity. We use the market value and not book
               value because it's the theoretical price you would have to pay to
               acquire the company.
               <Formula
-                formula="e = p * so"
+                formula="em = p * so"
                 explanations={[
-                  "e = Equity",
+                  "em = Equity Market Value",
                   "p = Current Stock Price",
                   "so = Shares Outstanding",
                 ]}
@@ -407,15 +407,32 @@ const wikiContent = [
           <ListItem>
             <Box>
               <Box component="span" style={{ fontWeight: "bold" }}>
-                Preferred Stock&nbsp;
+                Preferred Stock Market Value&nbsp;
               </Box>
               - The market value of Preferred Stock outstanding.
               <Formula
                 formula="ps = n * mp"
                 explanations={[
-                  "ps = Preferred Stock",
+                  "ps = Preferred Stock Market Value",
                   "n = Number of Preferred Shares Outstanding",
                   "mp = Market Price Per Share",
+                ]}
+              />
+            </Box>
+          </ListItem>
+          <ListItem>
+            <Box>
+              <Box component="span" style={{ fontWeight: "bold" }}>
+                Total Market Value&nbsp;
+              </Box>
+              - The sum of Total Market Value.
+              <Formula
+                formula="tm = em + d + ps"
+                explanations={[
+                  "tm = Total Market Value",
+                  "em = Total Equity Market Value",
+                  "d = Total Debt Market Value",
+                  "ps = Total Preferred Stock Market Value",
                 ]}
               />
             </Box>
@@ -457,11 +474,157 @@ const wikiContent = [
               <Formula
                 formula="lb = ub * (1 + (1 - t) * (d / e))"
                 explanations={[
-                  "lb = Unlevered Beta",
+                  "lb = Levered Beta",
                   "ub = Unlevered Beta",
                   "t = Marginal Tax Rate",
-                  "d = Debt",
-                  "e = Equity",
+                  "d = Debt Market Value",
+                  "e = Equity Market Value",
+                ]}
+              />
+            </Box>
+          </ListItem>
+          <ListItem>
+            <Box>
+              <Box component="span" style={{ fontWeight: "bold" }}>
+                Cost of Preferred Stock&nbsp;
+              </Box>
+              <Formula
+                formula="cps = anp / mp "
+                explanations={[
+                  "cps = Cost of Preferred Stock",
+                  "anp = Annual Dividend PerShare",
+                  "mp = Market Price Per Share",
+                ]}
+              />
+            </Box>
+          </ListItem>
+          <ListItem>
+            <Box>
+              <Box
+                component="span"
+                style={{ fontWeight: "bold", paddingBottom: 0 }}
+              >
+                Equity Weight&nbsp;
+              </Box>
+              - Weighted % of equity.
+              <Formula
+                formula="we = em / tm"
+                explanations={[
+                  "we = Weighted % of equity",
+                  "em = Equity Market Value",
+                  "tm = Total Market Value",
+                ]}
+              />
+            </Box>
+          </ListItem>
+          <ListItem>
+            <Box>
+              <Box
+                component="span"
+                style={{ fontWeight: "bold", paddingBottom: 0 }}
+              >
+                Debt Weight&nbsp;
+              </Box>
+              - Weighted % of debt.
+              <Formula
+                formula="wd = d / tm"
+                explanations={[
+                  "wd = Weighted % of Debt",
+                  "d = Debt Market Value",
+                  "tm = Total Market Value",
+                ]}
+              />
+            </Box>
+          </ListItem>
+          <ListItem>
+            <Box>
+              <Box
+                component="span"
+                style={{ fontWeight: "bold", paddingBottom: 0 }}
+              >
+                Preferred Stock Weight&nbsp;
+              </Box>
+              - Weighted % of preferred stock.
+              <Formula
+                formula="wps = ps / tm"
+                explanations={[
+                  "wps = Weighted % of Preferred Stock",
+                  "ps = Preferred Stock Market Value",
+                  "tm = Total Market Value",
+                ]}
+              />
+            </Box>
+          </ListItem>
+          <ListItem>
+            <Box>
+              <Box
+                component="span"
+                style={{ fontWeight: "bold", paddingBottom: 0 }}
+              >
+                Total Weight&nbsp;
+              </Box>
+              - Total weight in cost of capital.
+              <Formula
+                formula="twc = we + wd + wps"
+                explanations={[
+                  "twc = Total Weight Cost of Capital",
+                  "we = Weighted % of equity",
+                  "wd = Weighted % of Debt",
+                  "wps = Weighted % of Preferred Stock",
+                ]}
+              />
+            </Box>
+          </ListItem>
+          <ListItem>
+            <Box>
+              <Box
+                component="span"
+                style={{ fontWeight: "bold", paddingBottom: 0 }}
+              >
+                Equity Cost of Capital&nbsp;
+              </Box>
+              <Formula
+                formula="ecc = rfr + lb + erp"
+                explanations={[
+                  "ecc =  Equity Cost of Capital",
+                  "rfr = Risk Free Rate",
+                  "lb = Levered Beta",
+                  "erp = Equity Risk Premium",
+                ]}
+              />
+            </Box>
+          </ListItem>
+          <ListItem>
+            <Box>
+              <Box
+                component="span"
+                style={{ fontWeight: "bold", paddingBottom: 0 }}
+              >
+                Debt Cost of Capital&nbsp;
+              </Box>
+              <Formula
+                formula="dcc = pt * t"
+                explanations={[
+                  "dcc =  Debt Cost of Capital",
+                  "pt = Estimated Pretax Cost of Debt",
+                  "t = Marginal Tax Rate",
+                ]}
+              />
+            </Box>
+          </ListItem>
+          <ListItem>
+            <Box>
+              <Box
+                component="span"
+                style={{ fontWeight: "bold", paddingBottom: 0 }}
+              >
+                Preferred Stock Cost of Capital&nbsp;
+              </Box>
+              <Formula
+                formula="ps = cps"
+                explanations={[
+                  "ps = Preferred Stock Cost of Capital",
+                  "cps = Cost of Preferred Stock",
                 ]}
               />
             </Box>
@@ -484,11 +647,11 @@ const wikiContent = [
                 explanations={[
                   "wacc = Weighted Average Cost of Capital",
                   "we = Weighted % of equity",
-                  "e = Equity",
+                  "e = Equity Cost of Capital",
                   "wd = Weighted % of Debt",
-                  "d = Debt",
+                  "d = Debt Cost of Capital",
                   "wps = Weighted % of Preferred Stock",
-                  "ps = Preferred Stock",
+                  "ps = Preferred Stock Cost of Capital",
                 ]}
               />
             </Box>
