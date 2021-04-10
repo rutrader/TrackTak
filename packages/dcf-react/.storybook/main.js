@@ -12,6 +12,8 @@ module.exports = {
     "@storybook/preset-scss",
   ],
   webpackFinal: async (config) => {
+    config.optimization.minimize = false;
+
     config.module.rules.push({
       test: /\.jsx?$/,
       loader: require.resolve("@open-wc/webpack-import-meta-loader"),

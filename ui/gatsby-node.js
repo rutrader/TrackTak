@@ -1,6 +1,7 @@
 require("dotenv-flow").config();
 const webpack = require("webpack");
 const path = require("path");
+const WorkerPlugin = require("worker-plugin");
 
 // https://github.com/gatsbyjs/gatsby/issues/19618
 
@@ -30,6 +31,9 @@ exports.onCreateWebpackConfig = ({
   actions,
 }) => {
   actions.setWebpackConfig({
+    output: {
+      globalObject: "self",
+    },
     module: {
       rules: [
         {
@@ -43,6 +47,7 @@ exports.onCreateWebpackConfig = ({
         /.*\/generated\/iconSvgPaths.*/,
         path.resolve(__dirname, "src/icons.js"),
       ),
+      new WorkerPlugin(),
     ],
   });
 };

@@ -57,6 +57,7 @@
     "react-window": "^1.8.6",
     "redux": "^4.0.5",
     "redux-in-worker": "^0.7.0",
+    "redux-thunk": "^2.3.0",
     "styled-components": "^5.2.1",
     "worker-plugin": "^5.0.0",
     "xlsx": "^0.16.9"
