@@ -343,7 +343,7 @@ const wikiContent = [
               <Formula
                 formula="cd = ie * (1 - (1 + pt) ** - m)) / pt + bd / (1 + pt) ** m"
                 explanations={[
-                  "cd = Estimated Market Value of Straight Debt",
+                  "cd = Estimated Market Value of Straight Debt in Convertible",
                   "ie = Interest Expense",
                   "pt = Pre-tax Cost of Debt",
                   "m =  Average Maturity of Debt",
@@ -504,33 +504,6 @@ const wikiContent = [
                 component="span"
                 style={{ fontWeight: "bold", paddingBottom: 0 }}
               >
-                Cost of Capital (WACC)&nbsp;
-              </Box>
-              - The total cost of raising capital for the company weighted by
-              the type of capital it raises, i.e equity, debt or preferred
-              stock. For example, if a company raises 80% of it's capital in
-              equity then the weight for equity will be set to 80% as equity
-              would have more of an affect on the cost of the capital.
-              <Formula
-                formula="wacc = we * e + wd * d + wps * ps"
-                explanations={[
-                  "wacc = Weighted Average Cost of Capital",
-                  "we = Weighted % of equity",
-                  "e = Equity Cost of Capital",
-                  "wd = Weighted % of Debt",
-                  "d = Debt Cost of Capital",
-                  "wps = Weighted % of Preferred Stock",
-                  "ps = Preferred Stock Cost of Capital",
-                ]}
-              />
-            </Box>
-          </ListItem>
-          <ListItem>
-            <Box>
-              <Box
-                component="span"
-                style={{ fontWeight: "bold", paddingBottom: 0 }}
-              >
                 Equity Weight&nbsp;
               </Box>
               - Weighted % of equity.
@@ -645,13 +618,40 @@ const wikiContent = [
                 component="span"
                 style={{ fontWeight: "bold", paddingBottom: 0 }}
               >
-                Preferred Stock of Capital&nbsp;
+                Preferred Stock Cost of Capital&nbsp;
               </Box>
               <Formula
                 formula="ps = cps"
                 explanations={[
                   "ps = Preferred Stock Cost of Capital",
                   "cps = Cost of Preferred Stock",
+                ]}
+              />
+            </Box>
+          </ListItem>
+          <ListItem>
+            <Box>
+              <Box
+                component="span"
+                style={{ fontWeight: "bold", paddingBottom: 0 }}
+              >
+                Cost of Capital (WACC)&nbsp;
+              </Box>
+              - The total cost of raising capital for the company weighted by
+              the type of capital it raises, i.e equity, debt or preferred
+              stock. For example, if a company raises 80% of it's capital in
+              equity then the weight for equity will be set to 80% as equity
+              would have more of an affect on the cost of the capital.
+              <Formula
+                formula="wacc = we * e + wd * d + wps * ps"
+                explanations={[
+                  "wacc = Weighted Average Cost of Capital",
+                  "we = Weighted % of equity",
+                  "e = Equity Cost of Capital",
+                  "wd = Weighted % of Debt",
+                  "d = Debt Cost of Capital",
+                  "wps = Weighted % of Preferred Stock",
+                  "ps = Preferred Stock Cost of Capital",
                 ]}
               />
             </Box>
