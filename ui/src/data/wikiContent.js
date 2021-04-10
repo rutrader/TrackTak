@@ -275,17 +275,17 @@ const wikiContent = [
                 Risk Free Rate&nbsp;
               </Box>
               - The return you could get in the same currency with 0 risk. We
-              use the last closing daily price for the gb in the same currency
+              use the last closing daily yield for the gb in the same currency
               that the valuation is being done in. The ads is the default chance
               in % for the country where the government bond is being used. The
               reason for this is that a lot of countries do not have Aaa ratings
               so they have default risk and therefore are not risk free so we
               have to adjust for that.
               <Formula
-                formula="rfr = gb / 100 - ads"
+                formula="rfr = gb - ads"
                 explanations={[
                   "rfr = Risk Free Rate",
-                  "gb = Government Bonds Last Close price",
+                  "gb = Government Bonds 10 Year Yield",
                   "ads = Adjusted Default Spread",
                 ]}
               />
@@ -343,11 +343,11 @@ const wikiContent = [
               <Formula
                 formula="cd = ie * (1 - (1 + pt) ** - m)) / pt + bd / (1 + pt) ** m"
                 explanations={[
-                  "cd = Estimated Market Value of Straight Debt in Convertible",
-                  "ie = Interest Expense",
+                  "cd = Estimated Market Value of Straight Debt",
+                  "ie = Interest Expense on Convertible Debt",
                   "pt = Pre-tax Cost of Debt",
-                  "m = Maturity of Debt",
-                  "bd = Book Value of Debt",
+                  "m =  Average Maturity of Convertible Debt",
+                  "bd = Book Value of Convertible Debt",
                 ]}
               />
             </Box>
@@ -460,8 +460,8 @@ const wikiContent = [
                   "lb = Unlevered Beta",
                   "ub = Unlevered Beta",
                   "t = Marginal Tax Rate",
-                  "d = Debt",
-                  "e = Equity",
+                  "d = Debt Market Value",
+                  "e = Equity Market Value",
                 ]}
               />
             </Box>
@@ -484,11 +484,11 @@ const wikiContent = [
                 explanations={[
                   "wacc = Weighted Average Cost of Capital",
                   "we = Weighted % of equity",
-                  "e = Equity",
+                  "e = Equity Cost of Capital",
                   "wd = Weighted % of Debt",
-                  "d = Debt",
+                  "d = Debt Cost of Capital",
                   "wps = Weighted % of Preferred Stock",
-                  "ps = Preferred Stock",
+                  "ps = Preferred Stock COst of Capital",
                 ]}
               />
             </Box>
