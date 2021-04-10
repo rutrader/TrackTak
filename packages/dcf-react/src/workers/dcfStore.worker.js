@@ -1,13 +1,18 @@
-import { createReducer } from "@reduxjs/toolkit";
-import { setIsYoyGrowthToggled, updateCells } from "../actions/dcfActions";
-import cells from "../../discountedCashFlow/cells";
+import {
+  setIsYoyGrowthToggled,
+  updateModelCells,
+} from "../redux/actions/dcfActions";
+import cells from "../discountedCashFlow/cells";
 import {
   getCellsBetween,
   getPreviousRowCellKey,
-} from "../../discountedCashFlow/utils";
-import matureMarketEquityRiskPremium from "../../shared/matureMarketEquityRiskPremium";
+} from "../discountedCashFlow/utils";
+import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
 import isNil from "lodash/isNil";
-import calculateDCFModel from "../../shared/calculateDCFModel";
+import calculateDCFModel from "../shared/calculateDCFModel";
+import { createStore } from "redux";
+import { exposeStore } from "redux-in-worker";
+import { createReducer } from "@reduxjs/toolkit";
 
 const initialState = {
   cells,
@@ -17,8 +22,8 @@ const initialState = {
   },
 };
 
-export const dcfReducer = createReducer(initialState, (builder) => {
-  builder.addCase(updateCells, (state, action) => {
+export const reducer = createReducer(initialState, (builder) => {
+  builder.addCase(updateModelCells, (state, action) => {
     const currentScope = action.payload;
     const newCells = calculateDCFModel(state.cells, currentScope, state.scope);
 
@@ -44,3 +49,7 @@ export const dcfReducer = createReducer(initialState, (builder) => {
     });
   });
 });
+
+const store = createStore(reducer);
+
+exposeStore(store);

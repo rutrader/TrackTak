@@ -21,10 +21,10 @@ import useSensitivityAnalysisDataTable, {
 import useInputQueryParams, {
   inputQueries,
 } from "../hooks/useInputQueryParams";
-import dcfModelWorker from "../workers";
 import getChunksOfArray from "../shared/getChunksOfArray";
 import { Fragment } from "react";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
+import useUpdateDCFModels from "../hooks/useUpdateDCFModels";
 
 const useStyles = makeStyles((theme) => ({
   slider: {
@@ -77,11 +77,12 @@ const SensitivityAnalysis = () => {
   const theme = useTheme();
   const cells = useSelector(selectCells);
   const scope = useSelector(selectScope);
+  const [dcfModels, updateDCFModels] = useUpdateDCFModels([]);
   const [data, setData] = useState([]);
   const [dataTable, setDataTable] = useSensitivityAnalysisDataTable();
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
   const inputQueryParams = useInputQueryParams();
-  const [isLoading, setIsLoading] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
   const [checkedItems, setCheckedItems] = useState([
     {
@@ -151,54 +152,56 @@ const SensitivityAnalysis = () => {
   ];
 
   useEffect(() => {
+    const chunkedData = getChunksOfArray(dcfModels, xElement.data.length);
+    const XFormatter = xElement.formatter;
+
+    const rowData = chunkedData.map((chunk, i) => {
+      const row = {
+        dataField: (
+          <b>
+            <XFormatter value={xElement.data[i]} />
+          </b>
+        ),
+      };
+
+      chunk.forEach((model, z) => {
+        let sx;
+
+        if (cells.B36.value === model.B36.value) {
+          sx = {
+            color: theme.palette.primary.main,
+          };
+        }
+
+        row[z.toString()] = (
+          <Box sx={sx}>
+            <FormatRawNumberToCurrency value={model.B36.value} />
+          </Box>
+        );
+      });
+
+      return row;
+    });
+
+    setIsLoading(false);
+    setData(rowData);
+  }, [
+    cells.B36.value,
+    dcfModels,
+    theme.palette.primary.main,
+    xElement.data,
+    xElement.formatter,
+  ]);
+
+  useEffect(() => {
     const currentScopes = getModelScopes(scope, xElement, yElement);
 
     if (currentScopes) {
       setIsLoading(true);
 
-      dcfModelWorker.postMessage({
-        cells,
-        existingScope: scope,
-        currentScopes,
-      });
-
-      dcfModelWorker.onmessage = ({ data }) => {
-        const chunkedData = getChunksOfArray(data, xElement.data.length);
-        const XFormatter = xElement.formatter;
-
-        const rowData = chunkedData.map((chunk, i) => {
-          const row = {
-            dataField: (
-              <b>
-                <XFormatter value={xElement.data[i]} />
-              </b>
-            ),
-          };
-
-          chunk.forEach((model, z) => {
-            let sx;
-
-            if (cells.B36.value === model.B36.value) {
-              sx = {
-                color: theme.palette.primary.main,
-              };
-            }
-
-            row[z.toString()] = (
-              <Box sx={sx}>
-                <FormatRawNumberToCurrency value={model.B36.value} />
-              </Box>
-            );
-          });
-
-          return row;
-        });
-
-        setIsLoading(false);
-        setData(rowData);
-      };
+      updateDCFModels(currentScopes);
     }
-  }, [cells, scope, theme.palette.primary.main, xElement, yElement]);
+  }, [scope, updateDCFModels, xElement, yElement]);
 
   return (
     <Fragment>

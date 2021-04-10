@@ -10,7 +10,7 @@ import useInputQueryParams from "../hooks/useInputQueryParams";
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
 import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
 import selectValueOfAllOptionsOutstanding from "../selectors/fundamentalSelectors/selectValueOfAllOptionsOutstanding";
-import { updateCells } from "../redux/actions/dcfActions";
+import { updateModelCells } from "../redux/actions/dcfActions";
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
 import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
@@ -126,7 +126,7 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     dispatch(
-      updateCells({
+      updateModelCells({
         pastThreeYearsAverageEffectiveTaxRate,
         totalRevenue: incomeStatement.totalRevenue,
         operatingIncome: incomeStatement.operatingIncome,
@@ -155,7 +155,7 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     dispatch(
-      updateCells({
+      updateModelCells({
         cagrYearOneToFive: inputQueryParams.cagrYearOneToFive,
         riskFreeRate,
       }),
@@ -164,7 +164,7 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     dispatch(
-      updateCells({
+      updateModelCells({
         yearOfConvergence: inputQueryParams.yearOfConvergence,
         ebitTargetMarginInYearTen: inputQueryParams.ebitTargetMarginInYearTen,
       }),
@@ -177,7 +177,7 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     dispatch(
-      updateCells({
+      updateModelCells({
         totalCostOfCapital: costOfCapital.totalCostOfCapital,
       }),
     );
@@ -185,7 +185,7 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     dispatch(
-      updateCells({
+      updateModelCells({
         salesToCapitalRatio: inputQueryParams.salesToCapitalRatio,
       }),
     );
@@ -193,7 +193,7 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     dispatch(
-      updateCells({
+      updateModelCells({
         netOperatingLoss: inputQueryParams.netOperatingLoss,
       }),
     );
@@ -201,7 +201,7 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     dispatch(
-      updateCells({
+      updateModelCells({
         probabilityOfFailure: inputQueryParams.probabilityOfFailure,
       }),
     );
@@ -209,7 +209,7 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     dispatch(
-      updateCells({
+      updateModelCells({
         proceedsAsAPercentageOfBookValue:
           inputQueryParams.proceedsAsAPercentageOfBookValue,
         bookValueOfDebt: balanceSheet.bookValueOfDebt,
@@ -225,14 +225,14 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     dispatch(
-      updateCells({
+      updateModelCells({
         riskFreeRate,
       }),
     );
   }, [dispatch, riskFreeRate]);
 
   useEffect(() => {
-    dispatch(updateCells({ valueOfAllOptionsOutstanding }));
+    dispatch(updateModelCells({ valueOfAllOptionsOutstanding }));
   }, [dispatch, valueOfAllOptionsOutstanding]);
 
   // Key: Hack to force re-render the table when formula state changes

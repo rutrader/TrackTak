@@ -1,13 +1,5 @@
-let WorkerC = Worker;
-
-if (process.env.NODE_ENV === "development") {
-  const DCFModelSubWorker = require("./dcfModel.sub.worker");
-
-  WorkerC = DCFModelSubWorker.default;
-}
-
 const initializeSubWorker = () => {
-  return new WorkerC("./dcfModel.sub.worker.js", {
+  return new Worker("./dcfModels.sub.worker.js", {
     type: "module",
   });
 };

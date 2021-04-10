@@ -1,5 +1,5 @@
 import { createAction } from "@reduxjs/toolkit";
 
-export const updateCells = createAction("dcf/updateCells");
+export const updateModelCells = createAction("dcf/updateModelCells");
 
 export const setIsYoyGrowthToggled = createAction("dcf/setIsYoyGrowthToggled");

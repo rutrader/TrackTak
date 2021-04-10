@@ -109,6 +109,7 @@ const getCellsToUpdate = (property) => {
   return Array.isArray(value) ? value : [value];
 };
 
+// Check if current scope same as this one and don't update if it is
 const calculateDCFModel = (cells, currentScope, existingScope) => {
   const scope = {
     ...existingScope,

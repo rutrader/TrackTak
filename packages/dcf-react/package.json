@@ -48,7 +48,6 @@
     "mathjs": "^8.0.1",
     "microbundle": "github:timdaub/microbundle#feat/syntax-worker-detection",
     "react-dom": "^17.0.1",
-    "react-lazyload": "^3.1.0",
     "react-number-format": "^4.5.0",
     "react-redux": "^7.2.2",
     "react-router": "^5.2.0",
@@ -57,7 +56,9 @@
     "react-table": "^7.6.2",
     "react-window": "^1.8.6",
     "redux": "^4.0.5",
+    "redux-in-worker": "^0.7.0",
     "styled-components": "^5.2.1",
+    "worker-plugin": "^5.0.0",
     "xlsx": "^0.16.9"
   },
   "devDependencies": {
@@ -82,8 +83,7 @@
     "react-dom": "17.0.1",
     "rimraf": "^3.0.2",
     "sass-loader": "^11.0.1",
-    "source-map-explorer": "^2.5.2",
-    "worker-loader": "^3.0.8"
+    "source-map-explorer": "^2.5.2"
   },
   "optionalPeerDependencies": {
     "gatsby": "^2.32.8",
