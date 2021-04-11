@@ -100,8 +100,10 @@ const cells = {
   B33: getExpressionProperties("=valueOfAllOptionsOutstanding"),
   B34: getExpressionProperties("=B32-B33"),
   B35: getExpressionProperties("=price"),
-  B36: getExpressionProperties("=B34/sharesOutstanding"),
-  B37: getExpressionProperties("=(B36-B35)/B36"),
+  B36: getExpressionProperties(
+    "=IF(B34/sharesOutstanding < 0, 0, B34/sharesOutstanding)",
+  ),
+  B37: getExpressionProperties("=IFERROR((B36-B35)/B36, 0)"),
   C7: getExpressionProperties("=IF(C2 > B2, (C2-B2) / C15, 0)"),
   C11: getExpressionProperties("=totalCostOfCapital"),
   C12: getExpressionProperties("=1/(1+C11)"),

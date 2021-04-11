@@ -132,15 +132,6 @@ const SearchSection = () => {
               such as Monte Carlo simulations.
             </Box>
           </Typography>
-          <Typography variant="h6" gutterBottom>
-            <Box sx={{ mt: 1.5 }}>
-              We've{" "}
-              <Box component="span" color={theme.palette.primary.light}>
-                solved
-              </Box>{" "}
-              that problem.
-            </Box>
-          </Typography>
           <Box
             sx={{
               [theme.breakpoints.down("sm")]: {

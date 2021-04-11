@@ -1,7 +1,5 @@
 import React from "react";
 import {
-  FormatRawNumberToCurrency,
-  selectCells,
   selectGeneral,
   useHasAllRequiredInputsFilledIn,
 } from "@tracktak/dcf-react";
@@ -17,7 +15,6 @@ const SubscribeCover = () => {
   ] = subscribePopupShownHook();
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
   const general = useSelector(selectGeneral);
-  const cells = useSelector(selectCells);
 
   const handleClose = () => {
     setSubscribePopupShown(true);
@@ -35,32 +32,30 @@ const SubscribeCover = () => {
     >
       <Paper elevation={3} sx={{ p: 3 }}>
         <Typography variant="h6" align="center" gutterBottom>
-          Unlock the Free {general.code} DCF
+          Unlock Free {general.code} DCF
         </Typography>
         <Typography color="textPrimary">
-          Subscribe to see why {general.name} has an estimated value of{" "}
-          <FormatRawNumberToCurrency value={cells.B36.value} />.
+          Get notified immediately when we release the{" "}
+          <b>Sensitivity Analysis</b> for {general.name}.
         </Typography>
         <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
           <SubscribeMailingList
-            subscribeText="View DCF"
+            subscribeText="Subscribe"
             locationSignup="Cover"
+            formSx={{
+              maxWidth: "100%",
+            }}
             onSubmit={(isSuccess) => {
               if (isSuccess) {
                 setSubscribePopupShown(true);
               }
             }}
+            cancelButton={
+              <Button onClick={handleClose} color="primary" variant="outlined">
+                <Typography sx={{ textTransform: "none" }}>View DCF</Typography>
+              </Button>
+            }
           />
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
-        >
-          <Button onClick={handleClose} color="primary">
-            <Typography sx={{ textTransform: "none" }}>No thanks</Typography>
-          </Button>
         </Box>
       </Paper>
     </Box>

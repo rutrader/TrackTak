@@ -82,7 +82,7 @@ const DiscountedCashFlowTable = ({
         row !== 1 &&
         column !== "A";
 
-      if (!cell?.value) return <Cell loading={loading} />;
+      if (isNil(cell?.value)) return <Cell loading={loading} />;
 
       let node = formatCellValue(cell);
 
