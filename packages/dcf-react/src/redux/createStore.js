@@ -54,7 +54,7 @@ const createStore = (preloadedState, reducers, middlewares = []) => {
     }
   } else {
     worker = {
-      postmessage: () => {},
+      postMessage: () => {},
       onerror: () => {},
       onmessageerror: () => {},
     };

@@ -1,6 +1,6 @@
 {
   "name": "@tracktak/dcf-react",
-  "version": "3.0.0-beta.0",
+  "version": "3.0.0-beta.2",
   "description": "A react package that allows external websites to use our discounted cash flow calculator for https://tracktak.com",
   "author": "tracktak",
   "license": "CC BY-ND 4.0",

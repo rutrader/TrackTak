@@ -207,7 +207,7 @@ const OptionalInputs = () => {
           />
           {/* TODO: Add fair value option as well later */}
           <OptionalTextField
-            label={probabilityOfFailureLabel}
+            label={proceedsAsPercentageOfBookValueLabel}
             value={inputQueryParams.proceedsAsAPercentageOfBookValue}
             onBlur={(value) => {
               setURLInput("proceedsAsAPercentageOfBookValue", value);
