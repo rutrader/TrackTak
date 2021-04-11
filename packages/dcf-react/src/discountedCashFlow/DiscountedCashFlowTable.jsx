@@ -137,103 +137,44 @@ const DiscountedCashFlowTable = ({
         marginalTaxRate: currentEquityRiskPremium.marginalTaxRate,
         sharesOutstanding,
         price,
+        cagrYearOneToFive: inputQueryParams.cagrYearOneToFive,
+        riskFreeRate,
+        yearOfConvergence: inputQueryParams.yearOfConvergence,
+        ebitTargetMarginInYearTen: inputQueryParams.ebitTargetMarginInYearTen,
+        totalCostOfCapital: costOfCapital.totalCostOfCapital,
+        salesToCapitalRatio: inputQueryParams.salesToCapitalRatio,
+        netOperatingLoss: inputQueryParams.netOperatingLoss,
+        probabilityOfFailure: inputQueryParams.probabilityOfFailure,
+        proceedsAsAPercentageOfBookValue:
+          inputQueryParams.proceedsAsAPercentageOfBookValue,
+        bookValueOfEquity: balanceSheet.bookValueOfEquity,
+        valueOfAllOptionsOutstanding,
       }),
     );
   }, [
     balanceSheet.bookValueOfDebt,
+    balanceSheet.bookValueOfEquity,
     balanceSheet.cashAndShortTermInvestments,
     balanceSheet.investedCapital,
     balanceSheet.minorityInterest,
+    costOfCapital.totalCostOfCapital,
     currentEquityRiskPremium.marginalTaxRate,
+    dispatch,
     incomeStatement.operatingIncome,
     incomeStatement.totalRevenue,
+    inputQueryParams.cagrYearOneToFive,
+    inputQueryParams.ebitTargetMarginInYearTen,
+    inputQueryParams.netOperatingLoss,
+    inputQueryParams.probabilityOfFailure,
+    inputQueryParams.proceedsAsAPercentageOfBookValue,
+    inputQueryParams.salesToCapitalRatio,
+    inputQueryParams.yearOfConvergence,
     pastThreeYearsAverageEffectiveTaxRate,
     price,
+    riskFreeRate,
     sharesOutstanding,
-    dispatch,
+    valueOfAllOptionsOutstanding,
   ]);
-
-  useEffect(() => {
-    dispatch(
-      updateModelCells({
-        cagrYearOneToFive: inputQueryParams.cagrYearOneToFive,
-        riskFreeRate,
-      }),
-    );
-  }, [dispatch, inputQueryParams.cagrYearOneToFive, riskFreeRate]);
-
-  useEffect(() => {
-    dispatch(
-      updateModelCells({
-        yearOfConvergence: inputQueryParams.yearOfConvergence,
-        ebitTargetMarginInYearTen: inputQueryParams.ebitTargetMarginInYearTen,
-      }),
-    );
-  }, [
-    inputQueryParams.yearOfConvergence,
-    inputQueryParams.ebitTargetMarginInYearTen,
-    dispatch,
-  ]);
-
-  useEffect(() => {
-    dispatch(
-      updateModelCells({
-        totalCostOfCapital: costOfCapital.totalCostOfCapital,
-      }),
-    );
-  }, [costOfCapital.totalCostOfCapital, dispatch]);
-
-  useEffect(() => {
-    dispatch(
-      updateModelCells({
-        salesToCapitalRatio: inputQueryParams.salesToCapitalRatio,
-      }),
-    );
-  }, [dispatch, inputQueryParams.salesToCapitalRatio]);
-
-  useEffect(() => {
-    dispatch(
-      updateModelCells({
-        netOperatingLoss: inputQueryParams.netOperatingLoss,
-      }),
-    );
-  }, [dispatch, inputQueryParams.netOperatingLoss]);
-
-  useEffect(() => {
-    dispatch(
-      updateModelCells({
-        probabilityOfFailure: inputQueryParams.probabilityOfFailure,
-      }),
-    );
-  }, [dispatch, inputQueryParams.probabilityOfFailure]);
-
-  useEffect(() => {
-    dispatch(
-      updateModelCells({
-        proceedsAsAPercentageOfBookValue:
-          inputQueryParams.proceedsAsAPercentageOfBookValue,
-        bookValueOfDebt: balanceSheet.bookValueOfDebt,
-        bookValueOfEquity: balanceSheet.bookValueOfEquity,
-      }),
-    );
-  }, [
-    dispatch,
-    inputQueryParams.proceedsAsAPercentageOfBookValue,
-    balanceSheet.bookValueOfDebt,
-    balanceSheet.bookValueOfEquity,
-  ]);
-
-  useEffect(() => {
-    dispatch(
-      updateModelCells({
-        riskFreeRate,
-      }),
-    );
-  }, [dispatch, riskFreeRate]);
-
-  useEffect(() => {
-    dispatch(updateModelCells({ valueOfAllOptionsOutstanding }));
-  }, [dispatch, valueOfAllOptionsOutstanding]);
 
   // Key: Hack to force re-render the table when formula state changes
   let key = 0;
