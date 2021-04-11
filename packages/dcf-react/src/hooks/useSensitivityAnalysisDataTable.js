@@ -1,4 +1,5 @@
-import { useState } from "react";
+import isNil from "lodash/isNil";
+import { useEffect, useState } from "react";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import {
   probabilityOfFailureLabel,
@@ -58,126 +59,130 @@ const getMinMaxRange = (name, inputQueryParams) => {
   const value = inputQueryParams[name];
 
   return {
-    min: value - 40,
-    max: value + 40,
+    min: isNil(value) ? 0 : value - 40,
+    max: isNil(value) ? 0 : value + 40,
   };
 };
 
 const useSensitivityAnalysisDataTable = () => {
   const inputQueryParams = useInputQueryParams();
-  const cagrMinMax = getMinMaxRange("cagrYearOneToFive", inputQueryParams);
-  const ebitMarginMinMax = getMinMaxRange(
-    "ebitTargetMarginInYearTen",
-    inputQueryParams,
-  );
+  const [dataTable, setDataTable] = useState([]);
 
-  const [dataTable, setDataTable] = useState(
-    [
-      {
-        label: cagrInYearsOneToFiveLabel,
-        name: "cagrYearOneToFive",
-        step: 1,
-        marks: [
-          { value: cagrMinMax.min, label: cagrMinMax.min },
-          {
-            value: inputQueryParams.cagrYearOneToFive,
-            label: inputQueryParams.cagrYearOneToFive,
-          },
-          { value: cagrMinMax.max, label: cagrMinMax.max },
-        ],
-        ...cagrMinMax,
-      },
-      {
-        label: ebitTargetMarginInYearTenLabel,
-        name: "ebitTargetMarginInYearTen",
-        step: 1,
-        marks: [
-          {
-            value: ebitMarginMinMax.min,
-            label: ebitMarginMinMax.min,
-          },
-          {
-            value: inputQueryParams.ebitTargetMarginInYearTen,
-            label: inputQueryParams.ebitTargetMarginInYearTen,
-          },
-          {
-            value: ebitMarginMinMax.max,
-            label: ebitMarginMinMax.max,
-          },
-        ],
-        ...getMinMaxRange("ebitTargetMarginInYearTen", inputQueryParams),
-      },
-      {
-        label: yearOfConvergenceLabel,
-        name: "yearOfConvergence",
-        marks: [
-          { value: 0, label: "0" },
-          { value: 5, label: "5" },
-          { value: 10, label: "10" },
-        ],
-        step: 1,
-        min: 0,
-        max: 10,
-      },
-      {
-        label: salesToCapitalRatioLabel,
-        name: "salesToCapitalRatio",
-        step: 0.1,
-        min: -5,
-        max: 7,
-        marks: [
-          { value: -5, label: "-5" },
-          { value: 1, label: "1" },
-          { value: 7, label: "7" },
-        ],
-      },
-      {
-        label: probabilityOfFailureLabel,
-        name: "probabilityOfFailure",
-        step: 1,
-        min: 0,
-        max: 100,
-        marks: [
-          { value: 0, label: "0" },
-          { value: 50, label: "50" },
-          { value: 100, label: "100" },
-        ],
-      },
-      {
-        label: proceedsAsPercentageOfBookValueLabel,
-        name: "proceedsAsAPercentageOfBookValue",
-        step: 1,
-        min: 0,
-        max: 100,
-        marks: [
-          { value: 0, label: "0" },
-          { value: 50, label: "50" },
-          { value: 100, label: "100" },
-        ],
-      },
-    ].map((datum) => {
-      const type = findType(inputQueries, datum.name);
-      const name = inputQueryParams[datum.name];
-      const extraData = {
-        modifier: (value) => value,
-      };
+  useEffect(() => {
+    const cagrMinMax = getMinMaxRange("cagrYearOneToFive", inputQueryParams);
+    const ebitMarginMinMax = getMinMaxRange(
+      "ebitTargetMarginInYearTen",
+      inputQueryParams,
+    );
 
-      if (type === "percent") {
-        extraData.formatter = FormatRawNumberToPercent;
-        extraData.modifier = (value) => value * 100;
-      }
+    setDataTable(
+      [
+        {
+          label: cagrInYearsOneToFiveLabel,
+          name: "cagrYearOneToFive",
+          step: 1,
+          marks: [
+            { value: cagrMinMax.min, label: cagrMinMax.min },
+            {
+              value: inputQueryParams.cagrYearOneToFive,
+              label: inputQueryParams.cagrYearOneToFive,
+            },
+            { value: cagrMinMax.max, label: cagrMinMax.max },
+          ],
+          ...cagrMinMax,
+        },
+        {
+          label: ebitTargetMarginInYearTenLabel,
+          name: "ebitTargetMarginInYearTen",
+          step: 1,
+          marks: [
+            {
+              value: ebitMarginMinMax.min,
+              label: ebitMarginMinMax.min,
+            },
+            {
+              value: inputQueryParams.ebitTargetMarginInYearTen,
+              label: inputQueryParams.ebitTargetMarginInYearTen,
+            },
+            {
+              value: ebitMarginMinMax.max,
+              label: ebitMarginMinMax.max,
+            },
+          ],
+          ...getMinMaxRange("ebitTargetMarginInYearTen", inputQueryParams),
+        },
+        {
+          label: yearOfConvergenceLabel,
+          name: "yearOfConvergence",
+          marks: [
+            { value: 0, label: "0" },
+            { value: 5, label: "5" },
+            { value: 10, label: "10" },
+          ],
+          step: 1,
+          min: 0,
+          max: 10,
+        },
+        {
+          label: salesToCapitalRatioLabel,
+          name: "salesToCapitalRatio",
+          step: 0.1,
+          min: -5,
+          max: 7,
+          marks: [
+            { value: -5, label: "-5" },
+            { value: 1, label: "1" },
+            { value: 7, label: "7" },
+          ],
+        },
+        {
+          label: probabilityOfFailureLabel,
+          name: "probabilityOfFailure",
+          step: 1,
+          min: 0,
+          max: 100,
+          marks: [
+            { value: 0, label: "0" },
+            { value: 50, label: "50" },
+            { value: 100, label: "100" },
+          ],
+        },
+        {
+          label: proceedsAsPercentageOfBookValueLabel,
+          name: "proceedsAsAPercentageOfBookValue",
+          step: 1,
+          min: 0,
+          max: 100,
+          marks: [
+            { value: 0, label: "0" },
+            { value: 50, label: "50" },
+            { value: 100, label: "100" },
+          ],
+        },
+      ].map((datum) => {
+        const type = findType(inputQueries, datum.name);
+        const midPoint = inputQueryParams[datum.name];
+        const extraData = {
+          modifier: (value) => value,
+        };
 
-      if (type === "year" || type === "number") {
-        extraData.formatter = TableNumberFormatter;
-      }
+        if (type === "percent") {
+          extraData.formatter = FormatRawNumberToPercent;
+          extraData.modifier = (value) => value * 100;
+        }
 
-      return {
-        ...datum,
-        ...extraData,
-        data: getSliderValuesFromMidPoint(name),
-      };
-    }),
-  );
+        if (type === "year" || type === "number") {
+          extraData.formatter = TableNumberFormatter;
+        }
+
+        return {
+          ...datum,
+          ...extraData,
+          data: isNil(midPoint) ? [] : getSliderValuesFromMidPoint(midPoint),
+        };
+      }),
+    );
+  }, [inputQueryParams]);
 
   return [dataTable, setDataTable];
 };
