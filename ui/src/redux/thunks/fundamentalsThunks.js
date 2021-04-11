@@ -24,7 +24,7 @@ const fundamentalsFilter =
 
 export const getExchangeRatesThunk = createAsyncThunk(
   "fundamentals/getExchangeRates",
-  async ({ currencyCode, incomeStatement, balanceSheet }) => {
+  async ({ currencyCode, incomeStatement, balanceSheet }, { dispatch }) => {
     const baseCurrency = balanceSheet.currencyCode;
     const quoteCurrency = currencyCode;
     // UK stocks are quoted in pence so we convert it to GBP for ease of use
@@ -46,6 +46,8 @@ export const getExchangeRatesThunk = createAsyncThunk(
           from,
         },
       );
+
+      dispatch(setExchangeRates(data.value));
 
       return data.value;
     }
@@ -90,7 +92,8 @@ export const getFundamentalsThunk = createAsyncThunk(
       filter: fundamentalsFilter,
     });
     const fundamentals = convertFundamentals(data.value);
-    const exchangeRates = await dispatch(
+
+    dispatch(
       getExchangeRatesThunk({
         currencyCode: fundamentals.general.currencyCode,
         incomeStatement: fundamentals.incomeStatement,
@@ -98,7 +101,12 @@ export const getFundamentalsThunk = createAsyncThunk(
       }),
     );
 
-    dispatch(setExchangeRates(exchangeRates.payload));
+    dispatch(
+      getTenYearGovernmentBondLastCloseThunk({
+        countryISO: fundamentals.general.countryISO,
+      }),
+    );
+
     dispatch(setFundamentals(fundamentals));
 
     return fundamentals;

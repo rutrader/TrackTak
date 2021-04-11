@@ -203,12 +203,19 @@ const SensitivityAnalysis = () => {
           flexWrap: "wrap",
         }}
       >
-        <FormGroup column>
+        <FormGroup
+          sx={{
+            flex: "0.5",
+            minWidth: "300px",
+          }}
+          column
+        >
           {dataTable.map(({ modifier, data, name, ...datum }) => {
             const disabled = isNil(inputQueryParams[name]);
 
             return (
               <CheckboxSlider
+                key={name}
                 {...datum}
                 disabled={disabled || !hasAllRequiredInputsFilledIn}
                 checked={
@@ -258,7 +265,11 @@ const SensitivityAnalysis = () => {
                   <CircularProgress />
                 </Box>
               ) : (
-                <TTTable sx={{ flex: 1 }} columns={columns} data={data} />
+                <TTTable
+                  sx={{ flex: 1, overflow: "auto", minWidth: "300px" }}
+                  columns={columns}
+                  data={data}
+                />
               )}
             </Box>
           </Box>

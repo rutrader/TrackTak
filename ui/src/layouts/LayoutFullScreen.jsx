@@ -6,7 +6,6 @@ import TTTabs from "../components/TTTabs";
 import {
   getFundamentalsThunk,
   getLastPriceCloseThunk,
-  getTenYearGovernmentBondLastCloseThunk,
 } from "../redux/thunks/fundamentalsThunks";
 import selectFundamentalsIsLoaded from "../selectors/selectIsFundamentalsLoaded";
 
@@ -16,26 +15,16 @@ const LayoutFullScreen = ({ children, ticker }) => {
 
   useEffect(() => {
     dispatch(
-      getLastPriceCloseThunk({
+      getFundamentalsThunk({
         ticker,
       }),
     );
 
-    const fetchGovernmentBond = async () => {
-      const { payload } = await dispatch(
-        getFundamentalsThunk({
-          ticker,
-        }),
-      );
-
-      dispatch(
-        getTenYearGovernmentBondLastCloseThunk({
-          countryISO: payload.general.countryISO,
-        }),
-      );
-    };
-
-    fetchGovernmentBond();
+    dispatch(
+      getLastPriceCloseThunk({
+        ticker,
+      }),
+    );
   }, [dispatch, ticker]);
 
   return isLoaded ? (
