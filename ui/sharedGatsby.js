@@ -14,12 +14,17 @@ import "@fontsource/nunito/700.css";
 import theme from "./src/theme";
 import { snackbarReducer } from "./src/redux/reducers/snackbarReducer";
 import PageSpinner from "./src/components/PageSpinner";
+import thunk from "redux-thunk";
 
-const store = createStore(undefined, {
-  snackbar: snackbarReducer,
-  fundamentals: (state, action) =>
-    extendedFundamentalsReducer(fundamentalsReducer(state, action), action),
-});
+const store = createStore(
+  undefined,
+  {
+    snackbar: snackbarReducer,
+    fundamentals: (state, action) =>
+      extendedFundamentalsReducer(fundamentalsReducer(state, action), action),
+  },
+  [thunk],
+);
 
 export const wrapRootElement = ({ element }) => {
   // Do not put components in this function, instead put them in layout/index.js
