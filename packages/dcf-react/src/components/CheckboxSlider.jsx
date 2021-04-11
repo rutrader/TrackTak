@@ -70,7 +70,6 @@ const CheckboxSlider = ({
           value={sliderValue}
           onChange={handleOnChange}
           onChangeCommitted={handleValueChangeCommitted}
-          defaultValue={0}
           valueLabelDisplay="auto"
           marks={marks}
           step={step}

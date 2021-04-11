@@ -20,6 +20,10 @@ export const getLowerUpperSliderHalves = (minPoint, midPoint) => {
   return { lowerHalfPoint, upperHalfPoint };
 };
 
+const fixData = (data) => {
+  return data.map((datum) => Number.parseFloat(datum.toFixed(2)));
+};
+
 export const getSliderValuesFromMinMax = (minPoint, maxPoint) => {
   const length = maxPoint - minPoint;
   const midPoint = length / 2 + minPoint;
@@ -30,7 +34,7 @@ export const getSliderValuesFromMinMax = (minPoint, maxPoint) => {
 
   const data = [minPoint, lowerHalfPoint, midPoint, upperHalfPoint, maxPoint];
 
-  return data;
+  return fixData(data);
 };
 
 export const getSliderValuesFromMidPoint = (midPoint) => {
@@ -44,7 +48,7 @@ export const getSliderValuesFromMidPoint = (midPoint) => {
 
   const data = [minPoint, lowerHalfPoint, midPoint, upperHalfPoint, maxPoint];
 
-  return data;
+  return fixData(data);
 };
 
 export const findType = (inputQueries, name) =>

@@ -8,6 +8,8 @@ import selectIsYoyGrowthToggled from "../selectors/dcfSelectors/selectIsYoyGrowt
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 import SensitivityAnalysis from "../components/SensitivityAnalysis";
+import Section from "../components/Section";
+import { Fragment } from "react";
 
 const DiscountedCashFlowSheet = ({
   columnWidths,
@@ -29,7 +31,7 @@ const DiscountedCashFlowSheet = ({
 
   // TODO: Add an expand button to see it full screen
   return (
-    <Box>
+    <Fragment>
       <Box
         sx={{
           display: "flex",
@@ -94,8 +96,10 @@ const DiscountedCashFlowSheet = ({
         SubscribeCover={SubscribeCover}
         loadingCells={loadingCells}
       />
-      <SensitivityAnalysis />
-    </Box>
+      <Section>
+        <SensitivityAnalysis />
+      </Section>
+    </Fragment>
   );
 };
 

@@ -1,11 +1,9 @@
 import { combineReducers, compose, applyMiddleware } from "redux";
 import { fundamentalsReducer } from "./reducers/fundamentalsReducer";
 import { wrapStore } from "redux-in-worker";
-import thunk from "redux-thunk";
-import cells from "../discountedCashFlow/cells";
-import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
+import dcfInitialState from "../shared/dcfInitialState";
 
-const createStore = (preloadedState, reducers) => {
+const createStore = (preloadedState, reducers, middlewares = []) => {
   let innerStore;
 
   const enhancer = (createStore) => {
@@ -36,43 +34,38 @@ const createStore = (preloadedState, reducers) => {
         enhancer,
       );
 
-      innerStore.dispatch = thunk(innerStore)(innerStore.dispatch);
+      innerStore.dispatch = compose(applyMiddleware(...middlewares))(
+        innerStore.dispatch,
+      );
 
       return innerStore;
     };
   };
 
   let worker;
-  let devTool;
+  let devTool = (x) => x;
 
   if (typeof window !== "undefined") {
     worker = new Worker("../workers/dcfStore.worker.js", {
       type: "module",
     });
-    devTool = window.__REDUX_DEVTOOLS_EXTENSION__
-      ? window.__REDUX_DEVTOOLS_EXTENSION__()
-      : (x) => x;
+    if (window.__REDUX_DEVTOOLS_EXTENSION__) {
+      devTool = window.__REDUX_DEVTOOLS_EXTENSION__();
+    }
   } else {
     worker = {
       postmessage: () => {},
       onerror: () => {},
       onmessageerror: () => {},
     };
-    devTool = (x) => x;
   }
 
   const outerStore = wrapStore(
     worker,
     {
-      dcf: {
-        cells,
-        isYoyGrowthToggled: false,
-        scope: {
-          matureMarketEquityRiskPremium,
-        },
-      },
+      dcf: dcfInitialState,
     },
-    compose(enhancer, applyMiddleware(thunk), devTool),
+    compose(enhancer, applyMiddleware(...middlewares), devTool),
   );
 
   const dispatch = (action) => {

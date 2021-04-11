@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import TTTable from "./TTTable";
 import CheckboxSlider from "./CheckboxSlider";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/core/styles";
 import { isNil } from "lodash";
 import { useSelector } from "react-redux";
 import selectCells from "../selectors/dcfSelectors/selectCells";
@@ -25,34 +25,6 @@ import getChunksOfArray from "../shared/getChunksOfArray";
 import { Fragment } from "react";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import useUpdateDCFModels from "../hooks/useUpdateDCFModels";
-
-const useStyles = makeStyles((theme) => ({
-  slider: {
-    maxWidth: 400,
-  },
-  margin: {
-    height: theme.spacing(3),
-  },
-}));
-
-const getColumns = (yElement) => {
-  if (yElement) {
-    return yElement.data.map((value, i) => {
-      const Formatter = yElement.formatter;
-
-      return {
-        Header: (
-          <b>
-            <Formatter value={value} />
-          </b>
-        ),
-        accessor: i.toString(),
-      };
-    });
-  }
-
-  return [];
-};
 
 const getModelScopes = (scope, xElement, yElement) => {
   const doesScopeExist =
@@ -72,8 +44,61 @@ const getModelScopes = (scope, xElement, yElement) => {
   return scopes;
 };
 
+const getColumns = (yElement) => {
+  if (!yElement) return [];
+
+  return yElement.data.map((value, i) => {
+    const Formatter = yElement.formatter;
+
+    return {
+      Header: (
+        <b>
+          <Formatter value={value} />
+        </b>
+      ),
+      accessor: i.toString(),
+    };
+  });
+};
+
+const getRowData = (dcfModels, xElement, cells, theme) => {
+  if (!xElement) return [];
+
+  const chunkedData = getChunksOfArray(dcfModels, xElement.data.length);
+  const XFormatter = xElement.formatter;
+
+  const rowData = chunkedData.map((chunk, i) => {
+    const row = {
+      dataField: (
+        <b>
+          <XFormatter value={xElement.data[i]} />
+        </b>
+      ),
+    };
+
+    chunk.forEach((model, z) => {
+      let sx;
+
+      if (cells.B36.value === model.B36.value) {
+        sx = {
+          color: theme.palette.primary.main,
+        };
+      }
+
+      row[z.toString()] = (
+        <Box sx={sx}>
+          <FormatRawNumberToCurrency value={model.B36.value} />
+        </Box>
+      );
+    });
+
+    return row;
+  });
+
+  return rowData;
+};
+
 const SensitivityAnalysis = () => {
-  const classes = useStyles();
   const theme = useTheme();
   const cells = useSelector(selectCells);
   const scope = useSelector(selectScope);
@@ -152,46 +177,9 @@ const SensitivityAnalysis = () => {
   ];
 
   useEffect(() => {
-    const chunkedData = getChunksOfArray(dcfModels, xElement.data.length);
-    const XFormatter = xElement.formatter;
-
-    const rowData = chunkedData.map((chunk, i) => {
-      const row = {
-        dataField: (
-          <b>
-            <XFormatter value={xElement.data[i]} />
-          </b>
-        ),
-      };
-
-      chunk.forEach((model, z) => {
-        let sx;
-
-        if (cells.B36.value === model.B36.value) {
-          sx = {
-            color: theme.palette.primary.main,
-          };
-        }
-
-        row[z.toString()] = (
-          <Box sx={sx}>
-            <FormatRawNumberToCurrency value={model.B36.value} />
-          </Box>
-        );
-      });
-
-      return row;
-    });
-
     setIsLoading(false);
-    setData(rowData);
-  }, [
-    cells.B36.value,
-    dcfModels,
-    theme.palette.primary.main,
-    xElement.data,
-    xElement.formatter,
-  ]);
+    setData(getRowData(dcfModels, xElement, cells, theme));
+  }, [cells, dcfModels, theme, xElement]);
 
   useEffect(() => {
     const currentScopes = getModelScopes(scope, xElement, yElement);
@@ -205,9 +193,8 @@ const SensitivityAnalysis = () => {
 
   return (
     <Fragment>
-      <Typography variant="h5" gutterBottom>
-        Sensitivity Analysis
-      </Typography>
+      <Typography variant="h5">Sensitivity Analysis</Typography>
+      <Typography gutterBottom>Estimated Value Per Share</Typography>
       <Box
         sx={{
           display: "flex",
@@ -216,7 +203,7 @@ const SensitivityAnalysis = () => {
           flexWrap: "wrap",
         }}
       >
-        <FormGroup column className={classes.slider}>
+        <FormGroup column>
           {dataTable.map(({ modifier, data, name, ...datum }) => {
             const disabled = isNil(inputQueryParams[name]);
 
