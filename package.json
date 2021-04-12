@@ -33,6 +33,7 @@
     "rimraf": "^3.0.2"
   },
   "dependencies": {
+    "@open-wc/webpack-import-meta-loader": "^0.4.7",
     "@tracktak/dcf-react": "file:packages\\dcf"
   }
 }

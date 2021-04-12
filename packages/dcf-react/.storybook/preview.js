@@ -1,3 +1,4 @@
+import React from "react";
 import { setFundamentals, TracktakProvider } from "../src";
 import mockPreloadedStateJSON from "../mocks/mockPreloadedState.json";
 import mockStockDataJSON from "../mocks/mockStockData.json";
@@ -23,7 +24,7 @@ store.dispatch(setFundamentals(convertFundamentals(mockStockDataJSON)));
 
 const withTracktakProvier = (story) => {
   history.location.search =
-    "?cagrYearOneToFive=0.18&ebitTargetMarginInYearTen=0.1&yearOfConvergence=3&salesToCapitalRatio=2.5";
+    "?cagrYearOneToFive=0.182&ebitTargetMarginInYearTen=0.70&yearOfConvergence=3&salesToCapitalRatio=2.5&probabilityOfFailure=0.3&proceedsAsAPercentageOfBookValue=0.2";
 
   return (
     <TracktakProvider store={store} theme={theme}>

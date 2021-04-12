@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import useQueryParams from "./useQueryParams";
 
 export const cagrYearOneToFiveQueryName = "cagrYearOneToFive";
@@ -43,8 +44,11 @@ const getInputQueryParams = (query) => {
 
 const useInputQueryParams = () => {
   const queryParams = useQueryParams();
+  const inputQueryParams = useMemo(() => getInputQueryParams(queryParams), [
+    queryParams,
+  ]);
 
-  return getInputQueryParams(queryParams);
+  return inputQueryParams;
 };
 
 export default useInputQueryParams;

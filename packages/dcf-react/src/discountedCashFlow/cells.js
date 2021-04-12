@@ -25,7 +25,6 @@ import {
   getSixToTenYrCostOfCapitalCalculation,
   getSixToTenYrTaxCalculation,
 } from "./expressionCalculations";
-import { salesToCapitalRatioQueryName } from "../hooks/useInputQueryParams";
 
 const getExpressionProperties = (expr) => {
   return { className: "equation", expr };
@@ -107,15 +106,15 @@ const cells = {
   B37: getExpressionProperties("=IFERROR((B36-B35)/B36, 0)"),
   C7: getExpressionProperties("=IF(C2 > B2, (C2-B2) / C15, 0)"),
   C11: getExpressionProperties("=totalCostOfCapital"),
-  C12: getExpressionProperties(`=1/(1+C11)`),
-  C15: getExpressionProperties(`=${salesToCapitalRatioQueryName}`),
+  C12: getExpressionProperties("=1/(1+C11)"),
+  C15: getExpressionProperties("=salesToCapitalRatio"),
   M1: { value: "Terminal Year" },
   M2: getExpressionProperties(getRevenueCalculation("M2", "riskFreeRate")),
   M3: getExpressionProperties("=L3"),
   M5: getExpressionProperties("=marginalTaxRate"),
   M6: getExpressionProperties("=M4*(1-M5)"),
   M7: getExpressionProperties(
-    `=IF(riskFreeRate > 0, (riskFreeRate / M17) * M6, 0)`,
+    "=IF(riskFreeRate > 0, (riskFreeRate / M17) * M6, 0)",
   ),
   M11: getExpressionProperties("=matureMarketEquityRiskPremium + riskFreeRate"),
   M17: getExpressionProperties("=L11"),

@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useCallback } from "react";
 import { columns, numberOfRows } from "./cells";
-import { getColumnsBetween, startColumn } from "./utils";
+import { startColumn } from "./utils";
 import { Cell, Column, Table } from "@blueprintjs/table";
 import { Alert, Box, useMediaQuery, useTheme } from "@material-ui/core";
 import useInputQueryParams from "../hooks/useInputQueryParams";
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
 import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
 import selectValueOfAllOptionsOutstanding from "../selectors/fundamentalSelectors/selectValueOfAllOptionsOutstanding";
-import { updateCells } from "../redux/actions/dcfActions";
+import { updateModelCells } from "../redux/actions/dcfActions";
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
 import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
@@ -98,17 +98,12 @@ const DiscountedCashFlowTable = ({
         node = <FormatRawNumberToPercent value={cell.yoyGrowthValue} />;
       }
 
-      if (isOutputCell) {
-        intent = "success";
-      }
-
       return (
         <Cell
           style={{
             fontSize: theme.typography.fontSize,
             fontFamily: theme.typography.fontFamily,
-            fontWeight: isOutputCell ? "bold" : "initial",
-            color: "initial",
+            color: isOutputCell ? theme.palette.primary.main : "initial",
           }}
           intent={intent}
           loading={loading}
@@ -123,6 +118,7 @@ const DiscountedCashFlowTable = ({
       isYoyGrowthToggled,
       loadingCells,
       showFormulas,
+      theme.palette.primary.main,
       theme.typography.fontFamily,
       theme.typography.fontSize,
     ],
@@ -130,137 +126,55 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     dispatch(
-      updateCells(
-        [
-          "B2",
-          "B4",
-          "B5",
-          "B16",
-          "B28",
-          "B29",
-          "B30",
-          "B31",
-          "B35",
-          "B36",
-          "M5",
-        ],
-        {
-          pastThreeYearsAverageEffectiveTaxRate,
-          totalRevenue: incomeStatement.totalRevenue,
-          operatingIncome: incomeStatement.operatingIncome,
-          investedCapital: balanceSheet.investedCapital,
-          bookValueOfDebt: balanceSheet.bookValueOfDebt,
-          cashAndShortTermInvestments: balanceSheet.cashAndShortTermInvestments,
-          minorityInterest: balanceSheet.minorityInterest,
-          marginalTaxRate: currentEquityRiskPremium.marginalTaxRate,
-          sharesOutstanding,
-          price,
-        },
-      ),
+      updateModelCells({
+        pastThreeYearsAverageEffectiveTaxRate,
+        totalRevenue: incomeStatement.totalRevenue,
+        operatingIncome: incomeStatement.operatingIncome,
+        investedCapital: balanceSheet.investedCapital,
+        bookValueOfDebt: balanceSheet.bookValueOfDebt,
+        cashAndShortTermInvestments: balanceSheet.cashAndShortTermInvestments,
+        minorityInterest: balanceSheet.minorityInterest,
+        marginalTaxRate: currentEquityRiskPremium.marginalTaxRate,
+        sharesOutstanding,
+        price,
+        cagrYearOneToFive: inputQueryParams.cagrYearOneToFive,
+        riskFreeRate,
+        yearOfConvergence: inputQueryParams.yearOfConvergence,
+        ebitTargetMarginInYearTen: inputQueryParams.ebitTargetMarginInYearTen,
+        totalCostOfCapital: costOfCapital.totalCostOfCapital,
+        salesToCapitalRatio: inputQueryParams.salesToCapitalRatio,
+        netOperatingLoss: inputQueryParams.netOperatingLoss,
+        probabilityOfFailure: inputQueryParams.probabilityOfFailure,
+        proceedsAsAPercentageOfBookValue:
+          inputQueryParams.proceedsAsAPercentageOfBookValue,
+        bookValueOfEquity: balanceSheet.bookValueOfEquity,
+        valueOfAllOptionsOutstanding,
+      }),
     );
   }, [
     balanceSheet.bookValueOfDebt,
+    balanceSheet.bookValueOfEquity,
     balanceSheet.cashAndShortTermInvestments,
     balanceSheet.investedCapital,
     balanceSheet.minorityInterest,
+    costOfCapital.totalCostOfCapital,
     currentEquityRiskPremium.marginalTaxRate,
+    dispatch,
     incomeStatement.operatingIncome,
     incomeStatement.totalRevenue,
+    inputQueryParams.cagrYearOneToFive,
+    inputQueryParams.ebitTargetMarginInYearTen,
+    inputQueryParams.netOperatingLoss,
+    inputQueryParams.probabilityOfFailure,
+    inputQueryParams.proceedsAsAPercentageOfBookValue,
+    inputQueryParams.salesToCapitalRatio,
+    inputQueryParams.yearOfConvergence,
     pastThreeYearsAverageEffectiveTaxRate,
     price,
+    riskFreeRate,
     sharesOutstanding,
-    dispatch,
+    valueOfAllOptionsOutstanding,
   ]);
-
-  useEffect(() => {
-    const cagrCellsToUpdate = getColumnsBetween(columns, "C", "L").map(
-      (column) => `${column}2`,
-    );
-
-    dispatch(
-      updateCells(cagrCellsToUpdate, {
-        cagrYearOneToFive: inputQueryParams.cagrYearOneToFive,
-        riskFreeRate,
-      }),
-    );
-  }, [dispatch, inputQueryParams.cagrYearOneToFive, riskFreeRate]);
-
-  useEffect(() => {
-    const ebitMarginCellsToUpdate = getColumnsBetween(columns, "C", "L").map(
-      (column) => `${column}3`,
-    );
-
-    dispatch(
-      updateCells(ebitMarginCellsToUpdate, {
-        yearOfConvergence: inputQueryParams.yearOfConvergence,
-        ebitTargetMarginInYearTen: inputQueryParams.ebitTargetMarginInYearTen,
-      }),
-    );
-  }, [
-    inputQueryParams.yearOfConvergence,
-    inputQueryParams.ebitTargetMarginInYearTen,
-    dispatch,
-  ]);
-
-  useEffect(() => {
-    dispatch(
-      updateCells(["C11"], {
-        totalCostOfCapital: costOfCapital.totalCostOfCapital,
-      }),
-    );
-  }, [costOfCapital.totalCostOfCapital, dispatch]);
-
-  useEffect(() => {
-    dispatch(
-      updateCells(["C15"], {
-        salesToCapitalRatio: inputQueryParams.salesToCapitalRatio,
-      }),
-    );
-  }, [dispatch, inputQueryParams.salesToCapitalRatio]);
-
-  useEffect(() => {
-    dispatch(
-      updateCells(["B9"], {
-        netOperatingLoss: inputQueryParams.netOperatingLoss,
-      }),
-    );
-  }, [dispatch, inputQueryParams.netOperatingLoss]);
-
-  useEffect(() => {
-    dispatch(
-      updateCells(["B25"], {
-        probabilityOfFailure: inputQueryParams.probabilityOfFailure,
-      }),
-    );
-  }, [dispatch, inputQueryParams.probabilityOfFailure]);
-
-  useEffect(() => {
-    dispatch(
-      updateCells(["B26"], {
-        proceedsAsAPercentageOfBookValue:
-          inputQueryParams.proceedsAsAPercentageOfBookValue,
-        bookValueOfDebt: balanceSheet.bookValueOfDebt,
-        bookValueOfEquity: balanceSheet.bookValueOfEquity,
-      }),
-    );
-  }, [
-    dispatch,
-    inputQueryParams.proceedsAsAPercentageOfBookValue,
-    balanceSheet.bookValueOfDebt,
-    balanceSheet.bookValueOfEquity,
-  ]);
-
-  useEffect(() => {
-    dispatch(
-      updateCells(["M2", "M11", "M7", "B21"], {
-        riskFreeRate,
-      }),
-    );
-  }, [dispatch, riskFreeRate]);
-
-  useEffect(() => {
-    dispatch(updateCells(["B33"], { valueOfAllOptionsOutstanding }));
-  }, [dispatch, valueOfAllOptionsOutstanding]);
 
   // Key: Hack to force re-render the table when formula state changes
   let key = 0;

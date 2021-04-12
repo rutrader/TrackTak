@@ -1,48 +1,15 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Typography,
-  CircularProgress,
-  useTheme,
-  FormControlLabel,
-  Switch,
-} from "@material-ui/core";
+import { Box, Typography, FormControlLabel, Switch } from "@material-ui/core";
 import ExportToExcel, { DCFControlTypography } from "./ExportToExcel";
 import DiscountedCashFlowTable from "./DiscountedCashFlowTable";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsYoyGrowthToggled } from "../redux/actions/dcfActions";
 import selectIsYoyGrowthToggled from "../selectors/dcfSelectors/selectIsYoyGrowthToggled";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
-import LazyLoad from "react-lazyload";
-import isSSR from "../shared/isSSR";
 import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
-
-const Placeholder = () => {
-  const theme = useTheme();
-
-  return (
-    <Box
-      sx={{
-        paddingTop: theme.spacing(10),
-        height: 807,
-        display: "flex",
-        justifyContent: "center",
-      }}
-    >
-      <CircularProgress />
-    </Box>
-  );
-};
-
-// TODO: Remove once we fix performance
-// and render income/balance sheet first render
-const LazyRenderTable = (props) => {
-  return isSSR ? (
-    props.children
-  ) : (
-    <LazyLoad offset={300} placeholder={<Placeholder />} {...props} />
-  );
-};
+import SensitivityAnalysis from "../components/SensitivityAnalysis";
+import Section from "../components/Section";
+import { Fragment } from "react";
 
 const DiscountedCashFlowSheet = ({
   columnWidths,
@@ -64,7 +31,7 @@ const DiscountedCashFlowSheet = ({
 
   // TODO: Add an expand button to see it full screen
   return (
-    <Box>
+    <Fragment>
       <Box
         sx={{
           display: "flex",
@@ -123,15 +90,16 @@ const DiscountedCashFlowSheet = ({
           <ExportToExcel />
         </Box>
       </Box>
-      <LazyRenderTable>
-        <DiscountedCashFlowTable
-          columnWidths={columnWidths}
-          showFormulas={showFormulas}
-          SubscribeCover={SubscribeCover}
-          loadingCells={loadingCells}
-        />
-      </LazyRenderTable>
-    </Box>
+      <DiscountedCashFlowTable
+        columnWidths={columnWidths}
+        showFormulas={showFormulas}
+        SubscribeCover={SubscribeCover}
+        loadingCells={loadingCells}
+      />
+      <Section>
+        <SensitivityAnalysis />
+      </Section>
+    </Fragment>
   );
 };
 

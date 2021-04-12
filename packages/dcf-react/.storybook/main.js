@@ -1,3 +1,5 @@
+const WorkerPlugin = require("worker-plugin");
+
 module.exports = {
   stories: [
     "../stories/**/*.stories.mdx",
@@ -9,4 +11,16 @@ module.exports = {
     "@storybook/addon-essentials",
     "@storybook/preset-scss",
   ],
+  webpackFinal: async (config) => {
+    config.optimization.minimize = false;
+
+    config.module.rules.push({
+      test: /\.jsx?$/,
+      loader: require.resolve("@open-wc/webpack-import-meta-loader"),
+    });
+
+    config.plugins = [...config.plugins, new WorkerPlugin()];
+
+    return config;
+  },
 };

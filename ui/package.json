@@ -75,6 +75,7 @@
     "react-window": "^1.8.6",
     "react-youtube": "^7.13.0",
     "redux": "^4.0.5",
+    "redux-in-worker": "^0.7.0",
     "redux-thunk": "^2.3.0",
     "sharp": "^0.27.1",
     "styled-components": "^5.2.1",
@@ -82,8 +83,10 @@
     "web-vitals": "^0.2.4"
   },
   "devDependencies": {
+    "@open-wc/webpack-import-meta-loader": "^0.4.7",
     "gatsby-plugin-webpack-bundle-analyser-v2": "^1.1.21",
-    "redux-devtools": "^3.7.0"
+    "redux-devtools": "^3.7.0",
+    "worker-plugin": "^5.0.0"
   },
   "scripts": {
     "generate-exh-pairs": "SET NODE_ENV=development && node ./scripts/writeECBExchangePairsToJSON.js",

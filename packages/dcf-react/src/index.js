@@ -24,6 +24,7 @@ export { default as BlackScholesResults } from "./components/BlackScholesResults
 export { default as FinancialStatements } from "./components/FinancialStatements";
 export { default as FinancialsSummary } from "./components/FinancialsSummary";
 export { default as CompanyOverviewStats } from "./components/CompanyOverviewStats";
+export { default as SensitivityAnalysis } from "./components/SensitivityAnalysis";
 
 export { default as FormatInputToPercent } from "./components/FormatInputToPercent";
 export { default as FormatInputToYear } from "./components/FormatInputToYear";

@@ -35,8 +35,8 @@ const SubscribeCover = () => {
           Unlock Free {general.code} DCF
         </Typography>
         <Typography color="textPrimary">
-          Get notified immediately when we release the{" "}
-          <b>Sensitivity Analysis</b> for {general.name}.
+          Get notified immediately when we release new features for{" "}
+          {general.name}.
         </Typography>
         <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
           <SubscribeMailingList
