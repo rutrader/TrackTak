@@ -1,3 +1,4 @@
+import 'nested-worker/worker.js';
 import {
   setIsYoyGrowthToggled,
   updateModelCells,

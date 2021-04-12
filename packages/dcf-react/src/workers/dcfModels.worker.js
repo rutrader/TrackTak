@@ -1,3 +1,5 @@
+import 'nested-worker/worker.js';
+
 const initializeSubWorker = () => {
   return new Worker("./dcfModels.sub.worker.js", {
     type: "module",
