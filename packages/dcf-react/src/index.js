@@ -1,3 +1,5 @@
+import 'nested-worker/window.js';
+
 export * from "./redux/actions/dcfActions";
 export * from "./redux/actions/fundamentalsActions";
 export * from "./redux/reducers/fundamentalsReducer";

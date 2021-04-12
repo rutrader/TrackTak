@@ -1,6 +1,6 @@
 {
   "name": "@tracktak/dcf-react",
-  "version": "3.0.0-beta.2",
+  "version": "3.0.0-beta.6",
   "description": "A react package that allows external websites to use our discounted cash flow calculator for https://tracktak.com",
   "author": "tracktak",
   "license": "CC BY-ND 4.0",
@@ -47,6 +47,7 @@
     "lodash": "^4.17.20",
     "mathjs": "^8.0.1",
     "microbundle": "github:timdaub/microbundle#feat/syntax-worker-detection",
+    "nested-worker": "github:TrackTak/nested-worker",
     "react-dom": "^17.0.1",
     "react-number-format": "^4.5.0",
     "react-redux": "^7.2.2",

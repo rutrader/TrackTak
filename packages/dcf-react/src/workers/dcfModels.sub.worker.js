@@ -1,3 +1,5 @@
+import 'nested-worker/worker.js';
+
 import calculateDCFModel from "../shared/calculateDCFModel";
 
 if (typeof self !== "undefined") {
