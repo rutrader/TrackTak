@@ -47,7 +47,7 @@ const CompanyOverviewStats = ({ extraDescription, useDescriptionShowMore }) => {
         <Typography variant="h5" gutterBottom>
           Business Description
         </Typography>
-        <Typography paragraph>
+        <Typography component="div" paragraph>
           {useDescriptionShowMore ? (
             <ShowMore lines={8} more="Show more" less="Show less">
               {general.description}

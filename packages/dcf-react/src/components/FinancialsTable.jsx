@@ -5,7 +5,7 @@ const FinancialsTable = ({ sx, ...props }) => {
   return (
     <TTTable
       sx={{
-        "& th": {
+        "& .MuiTableCell-head": {
           whiteSpace: "nowrap",
         },
         ...sx,

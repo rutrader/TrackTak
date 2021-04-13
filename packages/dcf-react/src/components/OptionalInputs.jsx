@@ -235,7 +235,7 @@ const OptionalInputs = () => {
         }}
       >
         {optionalInputs.map((optionalInput) => (
-          <OptionalInput {...optionalInput} />
+          <OptionalInput key={optionalInput.title} {...optionalInput} />
         ))}
       </Box>
     </React.Fragment>

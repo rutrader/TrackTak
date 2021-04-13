@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, forwardRef } from "react";
 import { useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
@@ -91,7 +91,9 @@ const Docs = () => {
                 return (
                   <ListItem
                     key={title}
-                    component={AnchorLink}
+                    component={forwardRef((props, ref) => (
+                      <AnchorLink {...props} gatsbyLinkProps={{ ref }} />
+                    ))}
                     onAnchorLinkClick={() => {
                       navigate(to);
                     }}
@@ -130,7 +132,9 @@ const Docs = () => {
                 >
                   {cellsText ? title.concat(` - Cells: ${cellsText}`) : title}
                 </Typography>
-                <Typography paragraph>{text}</Typography>
+                <Typography component="div" paragraph>
+                  {text}
+                </Typography>
               </Box>
             );
           })}

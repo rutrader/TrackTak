@@ -70,16 +70,16 @@ const TTTable = ({
     <Box
       sx={{
         overflow: "auto",
-        "& td:first-of-type": {
-          whiteSpace: "nowrap",
-        },
         "& .indented-cell": {
           paddingLeft: (theme) => theme.spacing(2),
         },
         "& .bold-cell": {
           fontWeight: "bold",
         },
-        "& tbody tr:nth-of-type(odd)": {
+        "& .MuiTableCell-body:first-of-type": {
+          whiteSpace: "nowrap",
+        },
+        "& .MuiTableBody-root .MuiTableRow-root:nth-of-type(odd)": {
           backgroundColor: theme.palette.tableBackground,
         },
         ...sx,

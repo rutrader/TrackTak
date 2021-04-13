@@ -100,6 +100,7 @@ const Valuations = ({ data }) => {
                         variant="body2"
                         color="textSecondary"
                         paragraph
+                        component="div"
                       >
                         <LinesEllipsis text={general.Description} maxLine="3" />
                       </Typography>

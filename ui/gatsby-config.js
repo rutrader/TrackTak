@@ -40,6 +40,7 @@ module.exports = {
       resolve: "gatsby-plugin-material-ui",
       options: {},
     },
+    "gatsby-plugin-styled-components",
     "gatsby-plugin-emotion",
     {
       resolve: "gatsby-plugin-s3",

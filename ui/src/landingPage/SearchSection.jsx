@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { forwardRef, useState } from "react";
 import {
   Box,
   Typography,
@@ -160,7 +160,9 @@ const SearchSection = () => {
               }}
             >
               <RoundButton
-                component={AnchorLink}
+                component={forwardRef((props, ref) => (
+                  <AnchorLink {...props} gatsbyLinkProps={{ ref }} />
+                ))}
                 to="#features"
                 variant="contained"
                 color="primary"

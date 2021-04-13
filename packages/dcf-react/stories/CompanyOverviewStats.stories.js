@@ -15,7 +15,7 @@ export const Default = Template.bind({});
 
 Default.args = {
   extraDescription: (
-    <Typography paragraph>
+    <Typography>
       This company is a great company. Amazing. One of the best. Extra random
       text here, lorem ipsum something something.
     </Typography>

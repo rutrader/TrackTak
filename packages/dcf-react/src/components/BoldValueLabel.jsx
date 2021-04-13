@@ -1,5 +1,5 @@
 import { Box, Typography, useTheme } from "@material-ui/core";
-import React from "react";
+import React, { Fragment } from "react";
 
 const BoldSpan = ({ value }) => {
   const theme = useTheme();
@@ -13,20 +13,18 @@ const BoldSpan = ({ value }) => {
 
 const BoldValueLabel = ({ value, label, reverse }) => {
   return (
-    <Typography>
-      <Box sx={{ display: "flex" }}>
-        {reverse ? (
-          <React.Fragment>
-            {label}&nbsp;
-            <BoldSpan value={value} />
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            <BoldSpan value={value} />
-            &nbsp;{label}
-          </React.Fragment>
-        )}
-      </Box>
+    <Typography component="div">
+      {reverse ? (
+        <Fragment>
+          {label}&nbsp;
+          <BoldSpan value={value} />
+        </Fragment>
+      ) : (
+        <Fragment>
+          <BoldSpan value={value} />
+          &nbsp;{label}
+        </Fragment>
+      )}
     </Typography>
   );
 };

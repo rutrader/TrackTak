@@ -208,7 +208,6 @@ const SensitivityAnalysis = () => {
             flex: "0.5",
             minWidth: "300px",
           }}
-          column
         >
           {dataTable.map(({ modifier, data, name, ...datum }) => {
             const disabled = isNil(inputQueryParams[name]);
