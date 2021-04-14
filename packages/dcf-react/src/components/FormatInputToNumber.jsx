@@ -27,7 +27,7 @@ const FormatInputToNumber = forwardRef(
           });
         }}
         thousandSeparator
-        inputMode="none"
+        inputMode="text"
       />
     );
   },
