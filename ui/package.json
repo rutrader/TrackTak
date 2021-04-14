@@ -28,6 +28,7 @@
     "change-case": "^4.1.2",
     "dayjs": "^1.9.7",
     "dotenv-flow": "^3.2.0",
+    "esm": "^3.2.25",
     "gatsby": "^2.32.3",
     "gatsby-background-image": "^1.5.0",
     "gatsby-image": "^2.11.0",

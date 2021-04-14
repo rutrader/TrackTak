@@ -2,6 +2,7 @@ import React from "react";
 import {
   selectGeneral,
   useHasAllRequiredInputsFilledIn,
+  useIsClient,
 } from "@tracktak/dcf-react";
 import { Box, Button, Paper, Typography } from "@material-ui/core";
 import SubscribeMailingList from "./SubscribeMailingList";
@@ -15,10 +16,13 @@ const SubscribeCover = () => {
   ] = subscribePopupShownHook();
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
   const general = useSelector(selectGeneral);
+  const isOnClient = useIsClient();
 
   const handleClose = () => {
     setSubscribePopupShown(true);
   };
+
+  if (!isOnClient) return null;
 
   return !subscribePopupShown && hasAllRequiredInputsFilledIn ? (
     <Box

@@ -6,6 +6,11 @@ import {
   fundamentalsReducer,
   convertFundamentals,
 } from "@tracktak/dcf-react";
+import {
+  LocationProvider,
+  createMemorySource,
+  createHistory,
+} from "@reach/router";
 import { extendedFundamentalsReducer } from "./src/redux/reducers/extendedFundamentalsReducer";
 import "./sass/blueprintTheme.scss";
 import "@tracktak/dcf-react/dist/index.css";
@@ -15,6 +20,7 @@ import theme from "./src/theme";
 import { snackbarReducer } from "./src/redux/reducers/snackbarReducer";
 import PageSpinner from "./src/components/PageSpinner";
 import thunk from "redux-thunk";
+import setURLSearchQuery from "./src/shared/setURLSearchQuery";
 
 const store = createStore(
   undefined,
@@ -37,13 +43,34 @@ export const wrapRootElement = ({ element }) => {
   );
 };
 
-export const wrapPageElement = ({ element, props: { data } }) => {
+export const wrapPageElement = ({ element, props: { data, ...rest } }) => {
   if (data && data.contentfulDcfTemplate) {
     const parsedFinancialData = JSON.parse(
       data.contentfulDcfTemplate.data.internal.content,
     );
+    const {
+      salesToCapitalRatio,
+      ebitTargetMarginInYearTen,
+      cagrYearOneToFive,
+      yearOfConvergence,
+    } = data.contentfulDcfTemplate;
+
+    const searchParams = setURLSearchQuery({
+      salesToCapitalRatio,
+      ebitTargetMarginInYearTen,
+      cagrYearOneToFive,
+      yearOfConvergence,
+    });
+    const search = `?${searchParams.toString()}`;
 
     store.dispatch(setFundamentals(convertFundamentals(parsedFinancialData)));
+
+    const source = createMemorySource(element.props.location.pathname);
+    const history = createHistory(source);
+
+    history.location.search = search;
+
+    return <LocationProvider history={history}>{element}</LocationProvider>;
   }
 
   return element;

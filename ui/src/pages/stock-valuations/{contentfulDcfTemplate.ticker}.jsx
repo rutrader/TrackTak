@@ -265,7 +265,7 @@ const Valuation = ({ data }) => {
         <CompanyOverviewStats
           extraDescription={
             extraBusinessDescription && (
-              <Typography paragraph>
+              <Typography component="div" paragraph>
                 {renderField(extraBusinessDescription)}
               </Typography>
             )
