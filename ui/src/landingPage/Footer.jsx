@@ -5,6 +5,8 @@ import RedditIcon from '@material-ui/icons/Reddit';
 import dayjs from "dayjs";
 import TracktakLogoSvg from "../assets/tracktak-purple.svg";
 
+const iconStyles = { width: "45px", height: "45px" };
+
 const Footer = () => {
   return (
     <Box>
@@ -27,7 +29,7 @@ const Footer = () => {
           >
             <LinkedInIcon
               color="primary"
-              sx={{ width: "45px", height: "45px" }}
+              sx={iconStyles}
             />
           </IconButton>
           <IconButton
@@ -38,7 +40,7 @@ const Footer = () => {
           >
             <RedditIcon
               color="primary"
-              sx={{ width: "45px", height: "45px" }}
+              sx={iconStyles}
             />
           </IconButton>
         </Box>
