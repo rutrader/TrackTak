@@ -11,7 +11,7 @@ const Formula = ({ formula, explanations }) => {
       <List>
         where
         {explanations.map((explanation) => (
-          <ListItem>{explanation}</ListItem>
+          <ListItem key={explanation}>{explanation}</ListItem>
         ))}
       </List>
     </Box>

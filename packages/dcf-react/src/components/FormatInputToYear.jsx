@@ -27,7 +27,7 @@ const FormatInputToYear = forwardRef(({ onChange, onBlur, ...props }, ref) => {
       }}
       thousandSeparator
       suffix="yr"
-      inputMode={false}
+      inputMode="text"
     />
   );
 });

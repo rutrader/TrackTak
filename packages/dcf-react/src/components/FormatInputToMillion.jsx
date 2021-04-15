@@ -49,7 +49,7 @@ const FormatInputToMillion = forwardRef(
         }}
         thousandSeparator
         suffix="&nbsp;mln"
-        inputMode={false}
+        inputMode="text"
       />
     );
   },

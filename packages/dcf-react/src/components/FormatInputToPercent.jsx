@@ -42,7 +42,7 @@ const FormatInputToPercent = forwardRef(
         }}
         thousandSeparator
         suffix="%"
-        inputMode={false}
+        inputMode="text"
       />
     );
   },

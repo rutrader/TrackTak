@@ -15,7 +15,7 @@ import { Helmet } from "react-helmet";
 import getTitle from "../../shared/getTitle";
 import resourceName from "../../shared/resourceName";
 import LinesEllipsis from "react-lines-ellipsis";
-import { inputQueries } from "@tracktak/dcf-react";
+import setURLSearchQuery from "../../shared/setURLSearchQuery";
 
 const EOD_URL = "https://eodhistoricaldata.com";
 
@@ -64,14 +64,7 @@ const Valuations = ({ data }) => {
                 ...fields
               },
             }) => {
-              const searchParams = new URLSearchParams();
-
-              inputQueries.forEach(({ name }) => {
-                if (fields[name]) {
-                  searchParams.set(name, fields[name]);
-                }
-              });
-
+              const searchParams = setURLSearchQuery(fields);
               const valuationUrl = `/stock-valuations/${ticker}/?${searchParams.toString()}`;
 
               return (
@@ -100,6 +93,7 @@ const Valuations = ({ data }) => {
                         variant="body2"
                         color="textSecondary"
                         paragraph
+                        component="div"
                       >
                         <LinesEllipsis text={general.Description} maxLine="3" />
                       </Typography>

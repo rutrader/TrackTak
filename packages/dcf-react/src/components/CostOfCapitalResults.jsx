@@ -23,8 +23,15 @@ import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 import useTicker from "../hooks/useTicker";
 import isNil from "lodash/isNil";
 
-const DefaultSyntheticCreditRatingLink = ({ ticker, searchParams }) => (
-  <Link to={`/stock/${ticker}/synthetic-credit-rating${searchParams}`} />
+const DefaultSyntheticCreditRatingLink = ({
+  ticker,
+  searchParams,
+  ...props
+}) => (
+  <Link
+    to={`/stock/${ticker}/synthetic-credit-rating${searchParams}`}
+    {...props}
+  />
 );
 
 const CostOfCapitalResults = ({
@@ -85,7 +92,7 @@ const CostOfCapitalResults = ({
               useQueryPretaxCostOfDebt ? (
                 `${pretaxCostOfDebtLabel} (Direct Input)`
               ) : (
-                <Box>
+                <Box component="span">
                   {pretaxCostOfDebtLabel}&nbsp;
                   <SyntheticCreditRatingLink
                     ticker={ticker}

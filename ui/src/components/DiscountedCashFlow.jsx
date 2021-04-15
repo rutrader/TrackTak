@@ -83,21 +83,7 @@ const DiscountedCashFlow = () => {
             <IndustryAveragesResults />
           </SubSection>
           <SubSection>
-            <CostOfCapitalResults
-              SyntheticCreditRatingLink={({
-                ticker,
-                searchParams,
-                ...props
-              }) => {
-                return (
-                  <Link
-                    component={RouterLink}
-                    to={`/stock/${ticker}/synthetic-credit-rating${searchParams}`}
-                    {...props}
-                  />
-                );
-              }}
-            />
+            <CostOfCapitalResults />
           </SubSection>
           <SubSection>
             <BlackScholesResults />

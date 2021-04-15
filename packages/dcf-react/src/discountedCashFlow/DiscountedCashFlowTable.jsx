@@ -30,6 +30,7 @@ import {
 import { useLocation } from "@reach/router";
 import isNil from "lodash/isNil";
 import selectThreeAverageYearsEffectiveTaxRate from "../selectors/fundamentalSelectors/selectThreeAverageYearsEffectiveTaxRate";
+import { Fragment } from "react";
 
 const DiscountedCashFlowTable = ({
   columnWidths,
@@ -108,7 +109,8 @@ const DiscountedCashFlowTable = ({
           intent={intent}
           loading={loading}
         >
-          {node}
+          {/* Fragment here fixes this issue: https://github.com/palantir/blueprint/issues/2446 */}
+          <Fragment>{node}</Fragment>
         </Cell>
       );
     },

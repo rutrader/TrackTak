@@ -1,5 +1,5 @@
 import { Typography } from "@material-ui/core";
-import React from "react";
+import React, { Fragment } from "react";
 import FormatRawNumberToCurrency from "./FormatRawNumberToCurrency";
 import FormatRawNumberToMillion from "./FormatRawNumberToMillion";
 import { InfoOutlinedIconWrapper } from "./InfoOutlinedIconWrapper";
@@ -17,13 +17,13 @@ const BlackScholesResults = () => {
   );
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Typography variant="h5" gutterBottom>
         <InfoOutlinedIconWrapper text={<InfoTextBlackScholes />}>
           Black Scholes Employee Options Results
         </InfoOutlinedIconWrapper>
       </Typography>
-      <Typography gutterBottom>
+      <Typography component="div" gutterBottom>
         <BoldValueLabel
           value={
             <FormatRawNumberToCurrency
@@ -34,7 +34,7 @@ const BlackScholesResults = () => {
           label="Value Per Employee Option"
         />
       </Typography>
-      <Typography gutterBottom>
+      <Typography component="div" gutterBottom>
         <BoldValueLabel
           value={
             <FormatRawNumberToMillion
@@ -46,7 +46,7 @@ const BlackScholesResults = () => {
           label="Total Value of All Employee Options"
         />
       </Typography>
-    </React.Fragment>
+    </Fragment>
   );
 };
 

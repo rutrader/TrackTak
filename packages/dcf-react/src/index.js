@@ -1,4 +1,4 @@
-import 'nested-worker/window.js';
+import "nested-worker/window.js";
 
 export * from "./redux/actions/dcfActions";
 export * from "./redux/actions/fundamentalsActions";
@@ -43,7 +43,6 @@ export { default as Formula } from "./components/Formula";
 export { default as Section } from "./components/Section";
 export { default as SubSection } from "./components/SubSection";
 
-export { default as isSSR } from "./shared/isSSR";
 export { default as replaceSpaceWithHyphen } from "./shared/replaceSpaceWithHyphen";
 export { default as convertGBXToGBP } from "./shared/convertGBXToGBP";
 export { default as convertFundamentals } from "./shared/convertFundamentals";
@@ -53,6 +52,7 @@ export { default as TracktakLogo } from "./assets/tracktak.svg";
 export { default as useDebouncedCallback } from "./hooks/useDebouncedCallback";
 export { default as useHasAllRequiredInputsFilledIn } from "./hooks/useHasAllRequiredInputsFilledIn";
 export { default as useTicker } from "./hooks/useTicker";
+export { default as useIsClient } from "./hooks/useIsClient";
 export {
   default as useInputQueryParams,
   inputQueries,

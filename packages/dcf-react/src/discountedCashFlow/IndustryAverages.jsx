@@ -14,7 +14,7 @@ import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 import CompanyHeading from "../components/CompanyHeading";
 
 const commonTableRootStyles = {
-  "& th": {
+  "& .MuiTableCell-head": {
     marginTop: "auto",
   },
 };
@@ -100,7 +100,7 @@ const IndustryAverages = () => {
               <TTTable
                 sx={{
                   ...commonTableRootStyles,
-                  "& tbody tr.table_row_0": {
+                  "& .MuiTableBody-root .MuiTableRow-root.table_row_0": {
                     backgroundColor: (theme) =>
                       isInUS
                         ? getTableRowBackgroundOpacity(
@@ -123,7 +123,7 @@ const IndustryAverages = () => {
               <TTTable
                 sx={{
                   ...commonTableRootStyles,
-                  "& tbody tr.table_row_0": {
+                  "& .MuiTableBody-root .MuiTableRow-root.table_row_0": {
                     backgroundColor: (theme) =>
                       !isInUS
                         ? getTableRowBackgroundOpacity(

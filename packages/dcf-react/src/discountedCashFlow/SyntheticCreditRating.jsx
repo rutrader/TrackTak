@@ -142,7 +142,7 @@ const SyntheticCreditRating = () => {
         </Box>
         <TTTable
           sx={{
-            [`& tbody tr.table_row_${currentCompanyInterestIndex}`]: {
+            [`& .MuiTableBody-root .MuiTableRow-root.table_row_${currentCompanyInterestIndex}`]: {
               backgroundColor: (theme) =>
                 getTableRowBackgroundOpacity(theme.palette.primary.light),
             },

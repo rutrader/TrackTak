@@ -31,7 +31,7 @@ const FormatInputToCurrency = forwardRef(
         }}
         thousandSeparator
         prefix={currencySymbol}
-        inputMode={false}
+        inputMode="text"
       />
     );
   },

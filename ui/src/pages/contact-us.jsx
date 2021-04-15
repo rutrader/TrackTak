@@ -28,7 +28,7 @@ const ContactUs = () => {
           &nbsp;support@tracktak.com
         </Link>
       </Typography>
-      <Typography>
+      <Typography component="div">
         <Box>Address:</Box>
         <address>
           <Box>

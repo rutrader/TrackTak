@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useLocation } from "@reach/router";
 import { useDispatch, useSelector } from "react-redux";
 import { renderRichText } from "gatsby-source-contentful/rich-text";
-import { BLOCKS, INLINES } from "@contentful/rich-text-types";
+import { BLOCKS } from "@contentful/rich-text-types";
 import YouTube from "react-youtube";
 import { graphql, Link as RouterLink } from "gatsby";
 import { Box, Link, Typography } from "@material-ui/core";
@@ -121,29 +121,49 @@ export const query = graphql`
   }
 `;
 
+const isYoutubeURI = (data) => data.uri?.includes("youtube.com");
+
 const options = {
   renderNode: {
     [BLOCKS.EMBEDDED_ASSET]: (node) => {
       return <Img {...node.data.target} />;
     },
-    [INLINES.HYPERLINK]: (node) => {
-      if (node.data.uri.includes("youtube.com")) {
-        const videoId = node.data.uri.split("v=")[1];
+    [BLOCKS.PARAGRAPH]: (node, children) => {
+      const containsYoutubeLink = node.content.some(({ data }) =>
+        isYoutubeURI(data),
+      );
 
+      if (containsYoutubeLink) {
+        // Need to return a div instead of a p because we cannot
+        // modify the youtube components div tags and therefore
+        // it would not be semantically correct html
         return (
-          <Box sx={{ mt: 2 }}>
-            <YouTube
-              containerClassName={styles.videoWrapper}
-              videoId={videoId}
-              opts={{
-                width: 1500,
-                height: 600,
-              }}
-            />
+          <Box>
+            {node.content.map(({ value, data }, i) => {
+              if (data.uri?.includes("youtube.com")) {
+                const videoId = data.uri.split("v=")[1];
+
+                return (
+                  <Box key={i} sx={{ mt: 2 }}>
+                    <YouTube
+                      containerClassName={styles.videoWrapper}
+                      videoId={videoId}
+                      opts={{
+                        width: 1500,
+                        height: 600,
+                      }}
+                    />
+                  </Box>
+                );
+              }
+
+              return value;
+            })}
           </Box>
         );
       }
-      return node;
+
+      return <Box component="p">{children}</Box>;
     },
   },
 };
@@ -164,10 +184,12 @@ const renderHtml = (html) => {
 };
 
 const Container = ({ sx, ...props }) => (
-  <Typography paragraph sx={{ display: "flex" }} {...props} />
+  <Typography component="div" paragraph sx={{ display: "flex" }} {...props} />
 );
 
-const renderField = (field) => renderRichText(field, options);
+const renderField = (field) => {
+  return renderRichText(field, options);
+};
 
 const Valuation = ({ data }) => {
   const [subscribePopupShown] = subscribePopupShownHook();
@@ -243,7 +265,7 @@ const Valuation = ({ data }) => {
         <CompanyOverviewStats
           extraDescription={
             extraBusinessDescription && (
-              <Typography paragraph>
+              <Typography component="div" paragraph>
                 {renderField(extraBusinessDescription)}
               </Typography>
             )
@@ -254,7 +276,9 @@ const Valuation = ({ data }) => {
         <Typography variant="h5" gutterBottom>
           Competitors
         </Typography>
-        <Typography paragraph>{renderField(competitors)}</Typography>
+        <Typography component="div" paragraph>
+          {renderField(competitors)}
+        </Typography>
       </Section>
       <Section sx={{ display: "flex" }}>
         <Box
@@ -281,7 +305,9 @@ const Valuation = ({ data }) => {
           <Typography variant="h5" gutterBottom>
             Looking Forward
           </Typography>
-          <Typography paragraph>{renderField(lookingForward)}</Typography>
+          <Typography component="div" paragraph>
+            {renderField(lookingForward)}
+          </Typography>
         </Section>
       )}
       {relativeNumbers && (
@@ -289,7 +315,9 @@ const Valuation = ({ data }) => {
           <Typography variant="h5" gutterBottom>
             Relative Numbers
           </Typography>
-          <Typography paragraph>{renderField(relativeNumbers)}</Typography>
+          <Typography component="div" paragraph>
+            {renderField(relativeNumbers)}
+          </Typography>
         </Section>
       )}
       <Section>
