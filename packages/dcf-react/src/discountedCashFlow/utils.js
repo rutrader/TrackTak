@@ -18,10 +18,10 @@ export const doesReferenceAnotherCell = (expr) =>
   isExpressionDependency(expr) && /([A-Z]+\d+)/.test(expr);
 
 export const isExpressionDependency = (expr) =>
-  typeof expr === "string" && expr?.charAt(0) === "=";
+  typeof expr === "string" && expr && expr.charAt(0) === "=";
 
 export const getExpressionWithoutEqualsSign = (expr) =>
-  typeof expr === "string" && expr?.substring(1);
+  typeof expr === "string" && expr && expr.substring(1);
 
 export const getRowNumberFromCellKey = (cellKey) =>
   parseInt(cellKey.replace(/[A-Z]+/gi, ""), 10);
@@ -43,7 +43,7 @@ export const getCellsForRowsBetween = (
 
 export const validateExp = (trailKeys, expr) => {
   let valid = true;
-  const matches = expr?.match(/[A-Z][1-9]+/g) || [];
+  const matches = (expr && expr.match(/[A-Z][1-9]+/g)) || [];
   matches.forEach((match) => {
     if (trailKeys.indexOf(match) > -1) {
       valid = false;

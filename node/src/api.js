@@ -1,8 +1,12 @@
-const axios = require("axios");
-const cache = require("memory-cache");
-const iso3311a2 = require("iso-3166-1-alpha-2");
-const replaceDoubleColonWithObject = require("./replaceDoubleColonWithObject");
-const tenYearGovernmentBondYields = require("../data/tenYearGovernmentBondYields.json");
+import axios from "axios";
+import cache from "memory-cache";
+import replaceDoubleColonWithObject from "./replaceDoubleColonWithObject";
+import tenYearGovernmentBondYields from "../data/tenYearGovernmentBondYields.json";
+import iso3311a2 from "iso-3166-1-alpha-2";
+import { wrap } from "comlink";
+import nodeEndpoint from "comlink/dist/esm/node-adapter";
+import { Worker } from "worker_threads";
+import { URL } from "url";
 
 const baseUrl = "https://eodhistoricaldata.com/api";
 const fundamentalsUrl = `${baseUrl}/fundamentals`;
@@ -17,6 +21,21 @@ const globalParams = {
 };
 
 // 6 hour
+const setCachedData = (data, cacheKey, time = 2.16e7) => {
+  if (data) {
+    return cache.put(cacheKey, data, time);
+  }
+  return data;
+};
+
+const getCachedData = (cacheKey) => {
+  const cachedData = cache.get(cacheKey);
+
+  if (cachedData) return cachedData;
+
+  return null;
+};
+
 const sendReqOrGetCachedData = async (
   request,
   keyPrefix,
@@ -24,16 +43,13 @@ const sendReqOrGetCachedData = async (
   time = 2.16e7,
 ) => {
   const cacheKey = `${keyPrefix}_${JSON.stringify(cacheParams)}`;
-  const cachedData = cache.get(cacheKey);
+  const cachedData = getCachedData(keyPrefix, cacheParams);
 
   if (cachedData) return cachedData;
 
   const data = await request();
 
-  if (data) {
-    return cache.put(cacheKey, data, time);
-  }
-  return data;
+  return setCachedData(data, cacheKey, time);
 };
 
 const api = {
@@ -236,6 +252,33 @@ const api = {
     );
     return data;
   },
+
+  async calculateDCFModel(cells, existingScope, currentScope) {
+    const models = await this.calculateDCFModels(cells, existingScope, [
+      currentScope,
+    ]);
+
+    return models[0];
+  },
+
+  calculateDCFModels: async (cells, existingScope, currentScopes) => {
+    const worker = new Worker(
+      new URL("./workers/dcfModels.worker.js", import.meta.url),
+      {
+        type: "module",
+      },
+    );
+
+    const api = wrap(nodeEndpoint(worker));
+
+    const models = await api.calculateDCFModels(
+      cells,
+      existingScope,
+      currentScopes,
+    );
+
+    return models;
+  },
 };
 
-module.exports = api;
+export default api;

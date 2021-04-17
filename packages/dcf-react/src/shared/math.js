@@ -4,6 +4,7 @@ import {
   addDependencies,
   divideDependencies,
 } from "mathjs";
+import isNil from "lodash/isNil";
 import { IF, IFERROR } from "@formulajs/formulajs/lib/logical";
 import { SUM, TRUNC } from "@formulajs/formulajs/lib/math-trig";
 import { getExpressionWithoutEqualsSign } from "../discountedCashFlow/utils";
@@ -25,7 +26,7 @@ export const evaluate = (expr, scope) => {
   const newScope = {};
 
   Object.keys(scope).forEach((key) => {
-    newScope[key] = scope[key] ?? 0;
+    newScope[key] = isNil(scope[key]) ? 0 : scope[key];
   });
 
   const result = math.evaluate(getExpressionWithoutEqualsSign(expr), newScope);

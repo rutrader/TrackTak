@@ -1,17 +1,25 @@
-require("dotenv-flow").config();
+/* eslint-disable import/first */
+import dotenvFlow from "dotenv-flow";
 
-const express = require("express");
-const cors = require("cors");
+dotenvFlow.config();
 
-require("express-async-errors");
-
-const api = require("./src/api");
+import express from "express";
+import cors from "cors";
+import "express-async-errors";
+import api from "./src/api";
 
 const hostname = "127.0.0.1";
 const port = process.env.PORT;
 const app = express();
 
-const origin = [process.env.ORIGIN_URL];
+const origin =
+  process.env.NODE_ENV === "development"
+    ? [
+        "http://localhost:8000",
+        "http://localhost:9000",
+        "http://localhost:6006",
+      ]
+    : [process.env.ORIGIN_URL];
 
 const corsOptions = {
   origin,
@@ -19,6 +27,7 @@ const corsOptions = {
 };
 
 app.use(express.static("public"));
+app.use(express.json());
 app.use(cors(corsOptions));
 
 app.get("/api/v1/fundamentals/:ticker", async (req, res) => {
@@ -68,6 +77,25 @@ app.get("/api/v1/autocomplete-query/:queryString", async (req, res) => {
     req.query,
   );
   res.send({ value });
+});
+
+app.post("/api/v1/calculate-dcf-model", async (req, res) => {
+  const { cells, existingScope, currentScope } = req.body;
+
+  const model = await api.calculateDCFModel(cells, existingScope, currentScope);
+
+  res.send(model);
+});
+
+app.post("/api/v1/calculate-dcf-models", async (req, res) => {
+  const { cells, existingScope, currentScopes } = req.body;
+  const models = await api.calculateDCFModels(
+    cells,
+    existingScope,
+    currentScopes,
+  );
+
+  res.send(models);
 });
 
 app.get("/", (_, res) => {

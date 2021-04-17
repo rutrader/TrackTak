@@ -24,7 +24,7 @@ import useInputQueryParams, {
 import getChunksOfArray from "../shared/getChunksOfArray";
 import { Fragment } from "react";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
-import useUpdateDCFModels from "../hooks/useUpdateDCFModels";
+import { calculateDCFModels } from "../api/api";
 
 const getModelScopes = (scope, xElement, yElement) => {
   const doesScopeExist =
@@ -102,7 +102,7 @@ const SensitivityAnalysis = () => {
   const theme = useTheme();
   const cells = useSelector(selectCells);
   const scope = useSelector(selectScope);
-  const [dcfModels, updateDCFModels] = useUpdateDCFModels([]);
+  const [dcfModels, setDCFModels] = useState([]);
   const [data, setData] = useState([]);
   const [dataTable, setDataTable] = useSensitivityAnalysisDataTable();
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
@@ -182,14 +182,20 @@ const SensitivityAnalysis = () => {
   }, [cells, dcfModels, theme, xElement]);
 
   useEffect(() => {
-    const currentScopes = getModelScopes(scope, xElement, yElement);
+    const fetchCalculateDCFModels = async () => {
+      const currentScopes = getModelScopes(scope, xElement, yElement);
 
-    if (currentScopes) {
-      setIsLoading(true);
+      if (currentScopes) {
+        setIsLoading(true);
 
-      updateDCFModels(currentScopes);
-    }
-  }, [scope, updateDCFModels, xElement, yElement]);
+        const { data } = await calculateDCFModels(cells, scope, currentScopes);
+
+        setDCFModels(data);
+      }
+    };
+
+    fetchCalculateDCFModels();
+  }, [cells, scope, xElement, yElement]);
 
   return (
     <Fragment>

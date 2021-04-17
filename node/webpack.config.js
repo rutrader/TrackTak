@@ -2,6 +2,7 @@
 const path = require("path");
 const nodeExternals = require("webpack-node-externals");
 const CopyPlugin = require("copy-webpack-plugin");
+const WorkerPlugin = require("worker-plugin");
 
 module.exports = {
   mode: "production",
@@ -11,7 +12,7 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, "build"),
-    filename: "app.js",
+    filename: "[name].bundle.js",
   },
   target: "node",
   node: {
@@ -30,5 +31,6 @@ module.exports = {
     new CopyPlugin({
       patterns: [{ from: "package.json", to: "./" }],
     }),
+    new WorkerPlugin(),
   ],
 };

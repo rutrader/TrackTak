@@ -10910,14 +10910,12 @@
       "B36": {
         "className": "equation",
         "expr": "=IF(B34/sharesOutstanding < 0, 0, B34/sharesOutstanding)",
-        "type": "currency",
-        "value": 143.34756613340514
+        "type": "currency"
       },
       "B37": {
         "className": "equation",
         "expr": "=IFERROR((B36-B35)/B36, 0)",
-        "type": "percent",
-        "value": 0.1210175142929234
+        "type": "percent"
       },
       "C7": {
         "className": "equation",

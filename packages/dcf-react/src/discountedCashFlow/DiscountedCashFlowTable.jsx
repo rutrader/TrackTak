@@ -10,7 +10,6 @@ import useInputQueryParams from "../hooks/useInputQueryParams";
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
 import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
 import selectValueOfAllOptionsOutstanding from "../selectors/fundamentalSelectors/selectValueOfAllOptionsOutstanding";
-import { updateModelCells } from "../redux/actions/dcfActions";
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
 import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
@@ -31,6 +30,7 @@ import { useLocation } from "@reach/router";
 import isNil from "lodash/isNil";
 import selectThreeAverageYearsEffectiveTaxRate from "../selectors/fundamentalSelectors/selectThreeAverageYearsEffectiveTaxRate";
 import { Fragment } from "react";
+import { calculateDCFModelThunk } from "../redux/thunks/dcfThunks";
 
 const DiscountedCashFlowTable = ({
   columnWidths,
@@ -128,7 +128,7 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     dispatch(
-      updateModelCells({
+      calculateDCFModelThunk({
         pastThreeYearsAverageEffectiveTaxRate,
         totalRevenue: incomeStatement.totalRevenue,
         operatingIncome: incomeStatement.operatingIncome,

@@ -1,8 +1,7 @@
-import "nested-worker/window.js";
-
 export * from "./redux/actions/dcfActions";
 export * from "./redux/actions/fundamentalsActions";
 export * from "./redux/reducers/fundamentalsReducer";
+export * from "./api/api";
 
 export { default as TracktakProvider } from "./Provider";
 export { default as createStore } from "./redux/createStore";

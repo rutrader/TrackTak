@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "main": "",
+  "type": "module",
   "engines": {
     "node": "12.20.1"
   },
@@ -84,10 +85,8 @@
     "web-vitals": "^0.2.4"
   },
   "devDependencies": {
-    "@open-wc/webpack-import-meta-loader": "^0.4.7",
     "gatsby-plugin-webpack-bundle-analyser-v2": "^1.1.21",
-    "redux-devtools": "^3.7.0",
-    "worker-plugin": "^5.0.0"
+    "redux-devtools": "^3.7.0"
   },
   "scripts": {
     "generate-exh-pairs": "SET NODE_ENV=development && node ./scripts/writeECBExchangePairsToJSON.js",

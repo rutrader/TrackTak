@@ -2,10 +2,13 @@
   "name": "@tracktak/monorepo",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "node": "npm run start:dev --prefix ./node",
     "ui": "npm run start --prefix ./ui",
+    "dcf-react": "npm run storybook --prefix ./packages/dcf-react",
     "start": "run-p node ui",
+    "storybook": "run-p node dcf-react",
     "clean": "rimraf ./node_modules",
     "lint": "eslint ./ui/src",
     "install:ui": "cd ./ui && npm install",
@@ -33,7 +36,6 @@
     "rimraf": "^3.0.2"
   },
   "dependencies": {
-    "@open-wc/webpack-import-meta-loader": "^0.4.7",
     "@tracktak/dcf-react": "file:packages\\dcf"
   }
 }

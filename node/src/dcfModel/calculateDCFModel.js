@@ -1,13 +1,13 @@
-import { columns } from "../discountedCashFlow/cells";
-import cellsTree from "../discountedCashFlow/cellsTree";
+import { evaluate } from "../../../packages/dcf-react/src/shared/math";
+import { columns } from "../../../packages/dcf-react/src/discountedCashFlow/cells";
+import cellsTree from "../../../packages/dcf-react/src/discountedCashFlow/cellsTree";
 import {
   getAllDependents,
   getColumnsBetween,
   isExpressionDependency,
   validateExp,
-} from "../discountedCashFlow/utils";
-import filterDuplicates from "./filterDuplicates";
-import { evaluate } from "./math";
+} from "../../../packages/dcf-react/src/discountedCashFlow/utils";
+import filterDuplicates from "../../../packages/dcf-react/src/shared/filterDuplicates";
 
 const computeExpr = (key, expr, scope) => {
   let value = null;
@@ -110,7 +110,7 @@ const getCellsToUpdate = (property) => {
 };
 
 // Check if current scope same as this one and don't update if it is
-const calculateDCFModel = (cells, currentScope, existingScope) => {
+const calculateDCFModel = (cells, existingScope, currentScope) => {
   const scope = {
     ...existingScope,
     ...currentScope,
@@ -120,16 +120,13 @@ const calculateDCFModel = (cells, currentScope, existingScope) => {
   const cellsToUpdate = filterDuplicates(
     Object.keys(currentScope).flatMap(getCellsToUpdate),
   );
-
   cellsToUpdate.forEach((key) => {
     const allDependents = getAllDependents(cellsTree, key);
     const currentDependents = allDependents[key] || [];
-
     [key, ...currentDependents].forEach((key) => {
       newCells[key] = cellsUpdate(key, newCells[key].expr);
     });
   });
-
   return newCells;
 };
 
