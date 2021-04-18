@@ -115,11 +115,14 @@ const calculateDCFModel = (cells, existingScope, currentScope) => {
     ...existingScope,
     ...currentScope,
   };
+  console.time("a");
+
   const newCells = { ...cells };
   const cellsUpdate = makeCellUpdate(newCells, scope);
   const cellsToUpdate = filterDuplicates(
     Object.keys(currentScope).flatMap(getCellsToUpdate),
   );
+
   cellsToUpdate.forEach((key) => {
     const allDependents = getAllDependents(cellsTree, key);
     const currentDependents = allDependents[key] || [];
@@ -127,6 +130,8 @@ const calculateDCFModel = (cells, existingScope, currentScope) => {
       newCells[key] = cellsUpdate(key, newCells[key].expr);
     });
   });
+  console.timeEnd("a");
+
   return newCells;
 };
 

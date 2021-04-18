@@ -1,15 +1,11 @@
-/* eslint-disable import/first */
-import dotenvFlow from "dotenv-flow";
-
-dotenvFlow.config();
-
+import "dotenv-flow/config";
 import express from "express";
 import cors from "cors";
 import "express-async-errors";
 import api from "./src/api";
 
 const hostname = "127.0.0.1";
-const port = process.env.PORT;
+const port = process.env.NODE_ENV === "development" ? 3001 : process.env.PORT;
 const app = express();
 
 const origin =
@@ -89,13 +85,13 @@ app.post("/api/v1/calculate-dcf-model", async (req, res) => {
 
 app.post("/api/v1/calculate-dcf-models", async (req, res) => {
   const { cells, existingScope, currentScopes } = req.body;
-  const models = await api.calculateDCFModels(
-    cells,
-    existingScope,
-    currentScopes,
-  );
+  // const models = await api.calculateDCFModels(
+  //   cells,
+  //   existingScope,
+  //   currentScopes,
+  // );
 
-  res.send(models);
+  // res.send(models);
 });
 
 app.get("/", (_, res) => {

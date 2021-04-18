@@ -236,6 +236,8 @@ const api = {
   },
 
   getAutocompleteQuery: async (queryString, query) => {
+    console.log(globalParams);
+
     const data = await sendReqOrGetCachedData(
       async () => {
         const { data } = await axios.get(`${searchUrl}/${queryString}`, {
@@ -244,7 +246,6 @@ const api = {
             ...query,
           },
         });
-
         return data;
       },
       "autocompleteQuery",
@@ -276,6 +277,8 @@ const api = {
       existingScope,
       currentScopes,
     );
+
+    worker.terminate();
 
     return models;
   },

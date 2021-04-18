@@ -6,10 +6,7 @@ import {
   fundamentalsReducer,
   convertFundamentals,
 } from "@tracktak/dcf-react";
-import {
-  LocationProvider,
-  globalHistory
-} from "@reach/router";
+import { LocationProvider, globalHistory } from "@reach/router";
 import { extendedFundamentalsReducer } from "./src/redux/reducers/extendedFundamentalsReducer";
 import "./sass/blueprintTheme.scss";
 import "@tracktak/dcf-react/dist/index.css";
@@ -18,18 +15,13 @@ import "@fontsource/nunito/700.css";
 import theme from "./src/theme";
 import { snackbarReducer } from "./src/redux/reducers/snackbarReducer";
 import PageSpinner from "./src/components/PageSpinner";
-import thunk from "redux-thunk";
 import setURLSearchQuery from "./src/shared/setURLSearchQuery";
 
-const store = createStore(
-  undefined,
-  {
-    snackbar: snackbarReducer,
-    fundamentals: (state, action) =>
-      extendedFundamentalsReducer(fundamentalsReducer(state, action), action),
-  },
-  [thunk],
-);
+const store = createStore(undefined, {
+  snackbar: snackbarReducer,
+  fundamentals: (state, action) =>
+    extendedFundamentalsReducer(fundamentalsReducer(state, action), action),
+});
 
 export const wrapRootElement = ({ element }) => {
   // Do not put components in this function, instead put them in layout/index.js
@@ -70,7 +62,9 @@ export const wrapPageElement = ({ element, props: { data, location } }) => {
       globalHistory.location.search = search;
     }
 
-    return <LocationProvider history={globalHistory}>{element}</LocationProvider>;
+    return (
+      <LocationProvider history={globalHistory}>{element}</LocationProvider>
+    );
   }
 
   return element;
