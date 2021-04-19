@@ -19,7 +19,7 @@ const origin =
 
 const corsOptions = {
   origin,
-  optionsSuccessStatus: 200,
+  optionsSuccessStatus: 204,
 };
 
 app.use(express.static("public"));
@@ -75,7 +75,8 @@ app.get("/api/v1/autocomplete-query/:queryString", async (req, res) => {
   res.send({ value });
 });
 
-app.post("/api/v1/calculate-dcf-model", async (req, res) => {
+// These routes are public so they have cors turned off
+app.post("/api/v1/calculate-dcf-model", cors(), async (req, res) => {
   const { cells, existingScope, currentScope } = req.body;
 
   const model = await api.calculateDCFModel(cells, existingScope, currentScope);
@@ -83,7 +84,7 @@ app.post("/api/v1/calculate-dcf-model", async (req, res) => {
   res.send(model);
 });
 
-app.post("/api/v1/compute-sensitivity-analysis", async (req, res) => {
+app.post("/api/v1/compute-sensitivity-analysis", cors(), async (req, res) => {
   const { cells, existingScope, currentScopes } = req.body;
   const values = await api.computeSensitivityAnalysis(
     cells,

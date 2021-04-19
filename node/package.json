@@ -24,8 +24,7 @@
     "object-sizeof": "^1.6.1",
     "webpack": "^5.33.2",
     "webpack-cli": "^4.2.0",
-    "webpack-node-externals": "^2.5.2",
-    "worker-plugin": "^5.0.0"
+    "webpack-node-externals": "^2.5.2"
   },
   "dependencies": {
     "aws-sdk": "^2.814.0",
