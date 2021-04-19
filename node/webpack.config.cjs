@@ -1,4 +1,3 @@
-/* eslint-disable node/no-unpublished-require */
 const path = require("path");
 const nodeExternals = require("webpack-node-externals");
 const CopyPlugin = require("copy-webpack-plugin");
@@ -11,7 +10,7 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, "build"),
-    filename: "app.js",
+    filename: "app.bundle.js",
   },
   target: "node",
   node: {
@@ -23,6 +22,12 @@ module.exports = {
     rules: [
       {
         exclude: /node_modules/,
+      },
+      {
+        test: /\.js$/,
+        resolve: {
+          fullySpecified: false,
+        },
       },
     ],
   },

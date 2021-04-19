@@ -4,7 +4,6 @@
 import dotEnvFlow from "dotenv-flow";
 import webpack from "webpack";
 import path from "path";
-import WorkerPlugin from "worker-plugin";
 
 dotEnvFlow.config();
 
@@ -36,23 +35,11 @@ export const onCreateWebpackConfig = ({
   actions,
 }) => {
   actions.setWebpackConfig({
-    output: {
-      globalObject: "self",
-    },
-    module: {
-      rules: [
-        {
-          test: /\.jsx?$/,
-          loader: require.resolve("@open-wc/webpack-import-meta-loader"),
-        },
-      ],
-    },
     plugins: [
       new webpack.NormalModuleReplacementPlugin(
         /.*\/generated\/iconSvgPaths.*/,
         path.resolve(__dirname, "src/icons.js"),
       ),
-      new WorkerPlugin(),
     ],
   });
 };

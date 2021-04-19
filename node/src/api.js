@@ -1,8 +1,12 @@
-const axios = require("axios");
-const cache = require("memory-cache");
-const iso3311a2 = require("iso-3166-1-alpha-2");
-const replaceDoubleColonWithObject = require("./replaceDoubleColonWithObject");
-const tenYearGovernmentBondYields = require("../data/tenYearGovernmentBondYields.json");
+import axios from "axios";
+import cache from "memory-cache";
+import replaceDoubleColonWithObject from "./replaceDoubleColonWithObject";
+import tenYearGovernmentBondYields from "../data/tenYearGovernmentBondYields.json";
+import iso3311a2 from "iso-3166-1-alpha-2";
+import { wrap } from "comlink";
+import nodeEndpoint from "comlink/dist/esm/node-adapter";
+import { Worker } from "worker_threads";
+import { URL } from "url";
 
 const baseUrl = "https://eodhistoricaldata.com/api";
 const fundamentalsUrl = `${baseUrl}/fundamentals`;
@@ -16,25 +20,46 @@ const globalParams = {
   api_token: process.env.EOD_HISTORICAL_DATA_API_KEY,
 };
 
-// 6 hour
-const sendReqOrGetCachedData = async (
-  request,
-  keyPrefix,
-  cacheParams = {},
-  time = 2.16e7,
-) => {
-  const cacheKey = `${keyPrefix}_${JSON.stringify(cacheParams)}`;
-  const cachedData = cache.get(cacheKey);
-
-  if (cachedData) return cachedData;
-
-  const data = await request();
-
+const setCachedData = (data, cacheKey, time) => {
   if (data) {
     return cache.put(cacheKey, data, time);
   }
   return data;
 };
+
+const getCachedData = (cacheKey) => {
+  const cachedData = cache.get(cacheKey);
+
+  if (cachedData) return cachedData;
+
+  return null;
+};
+
+const sendReqOrGetCachedData = async (
+  request,
+  keyPrefix,
+  cacheParams = {},
+  // 6 hour
+  time = 2.16e7,
+) => {
+  const cacheKey = `${keyPrefix}_${JSON.stringify(cacheParams)}`;
+  const cachedData = getCachedData(cacheKey);
+
+  if (cachedData) return cachedData;
+
+  const data = await request();
+
+  return setCachedData(data, cacheKey, time);
+};
+
+// TODO, make this a worker pool later
+const dcfModelWorker = new Worker(
+  new URL("./workers/dcfModel.worker.js", import.meta.url),
+  {
+    type: "module",
+  },
+);
+const dcfModelWorkerAPI = wrap(nodeEndpoint(dcfModelWorker));
 
 const api = {
   getBulkFundamentals: async (exchange, query) => {
@@ -228,7 +253,6 @@ const api = {
             ...query,
           },
         });
-
         return data;
       },
       "autocompleteQuery",
@@ -236,6 +260,52 @@ const api = {
     );
     return data;
   },
+
+  calculateDCFModel: async (cells, existingScope, currentScope) => {
+    const data = await sendReqOrGetCachedData(
+      async () => {
+        const model = await dcfModelWorkerAPI.calculateDCFModel(
+          cells,
+          existingScope,
+          currentScope,
+        );
+
+        return model;
+      },
+      "calculateDCFModel",
+      { existingScope, currentScope },
+    );
+
+    return data;
+  },
+
+  computeSensitivityAnalysis: async (cells, existingScope, currentScopes) => {
+    const data = await sendReqOrGetCachedData(
+      async () => {
+        const sensitivityAnalysisWorker = new Worker(
+          new URL("./workers/sensitivityAnalysis.worker.js", import.meta.url),
+          {
+            type: "module",
+          },
+        );
+        const api = wrap(nodeEndpoint(sensitivityAnalysisWorker));
+
+        const values = await api.computeSensitivityAnalysis(
+          cells,
+          existingScope,
+          currentScopes,
+        );
+
+        sensitivityAnalysisWorker.terminate();
+
+        return values;
+      },
+      "computeSensitivityAnalysis",
+      { existingScope, currentScopes },
+    );
+
+    return data;
+  },
 };
 
-module.exports = api;
+export default api;

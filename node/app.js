@@ -1,24 +1,29 @@
-require("dotenv-flow").config();
-
-const express = require("express");
-const cors = require("cors");
-
-require("express-async-errors");
-
-const api = require("./src/api");
+import "dotenv-flow/config";
+import express from "express";
+import cors from "cors";
+import "express-async-errors";
+import api from "./src/api";
 
 const hostname = "127.0.0.1";
-const port = process.env.PORT;
+const port = process.env.NODE_ENV === "development" ? 3001 : process.env.PORT;
 const app = express();
 
-const origin = [process.env.ORIGIN_URL];
+const origin =
+  process.env.NODE_ENV === "development"
+    ? [
+        "http://localhost:8000",
+        "http://localhost:9000",
+        "http://localhost:6006",
+      ]
+    : [process.env.ORIGIN_URL];
 
 const corsOptions = {
   origin,
-  optionsSuccessStatus: 200,
+  optionsSuccessStatus: 204,
 };
 
 app.use(express.static("public"));
+app.use(express.json());
 app.use(cors(corsOptions));
 
 app.get("/api/v1/fundamentals/:ticker", async (req, res) => {
@@ -68,6 +73,26 @@ app.get("/api/v1/autocomplete-query/:queryString", async (req, res) => {
     req.query,
   );
   res.send({ value });
+});
+
+// These routes are public so they have cors turned off
+app.post("/api/v1/calculate-dcf-model", cors(), async (req, res) => {
+  const { cells, existingScope, currentScope } = req.body;
+
+  const model = await api.calculateDCFModel(cells, existingScope, currentScope);
+
+  res.send(model);
+});
+
+app.post("/api/v1/compute-sensitivity-analysis", cors(), async (req, res) => {
+  const { cells, existingScope, currentScopes } = req.body;
+  const values = await api.computeSensitivityAnalysis(
+    cells,
+    existingScope,
+    currentScopes,
+  );
+
+  res.send(values);
 });
 
 app.get("/", (_, res) => {

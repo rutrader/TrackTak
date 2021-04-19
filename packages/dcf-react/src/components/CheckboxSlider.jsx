@@ -9,6 +9,7 @@ const CheckboxSlider = ({
   label,
   name,
   disabled,
+  disabledSlider,
   value,
   checked,
   step,
@@ -49,7 +50,7 @@ const CheckboxSlider = ({
         }
         label={label}
       />
-      {checked && !disabled && (
+      {checked && (
         <Slider
           sx={{
             "& .MuiSlider-thumb": {
@@ -67,6 +68,7 @@ const CheckboxSlider = ({
             "& .MuiSlider-track": trackStyle,
             "& .MuiSlider-rail": trackStyle,
           }}
+          disabled={disabledSlider}
           value={sliderValue}
           onChange={handleOnChange}
           onChangeCommitted={handleValueChangeCommitted}

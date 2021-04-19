@@ -30,7 +30,9 @@ You don't need all of these components if you don't want.
 
 For example FinancialsSummary can be removed if you have your own fundamentals page. See the example link at the top of this readme for more info.
 
+- `<Provider store={reduxStore} theme?={materialUITheme} />`
 - `<CompanyOverviewStats />`
+- `<SensitivtyAnalysis />`
 - `<FinancialsSummary />`
 - `<ValueDrivingInputs />`
 - `<OptionalInputs />`
@@ -38,23 +40,9 @@ For example FinancialsSummary can be removed if you have your own fundamentals p
 - `<CostOfCapitalResults SyntheticCreditRatingLink={fn: ReactNode} />`
 - `<BlackScholesResults />`
 - `<DiscountedCashFlowSheet />`
-- `<Provider store={reduxStore} theme?={materialUITheme} />`
 
-Provider can be added at the root of your app with your other providers. This component injects the redux store and material ui theme for the components. If you provide your own theme then it needs to come from material ui's createMuiTheme.
+Provider is the only required component and can be added at the root of your app with your other providers. This component injects the redux store and material ui theme for the components. If you provide your own theme then it needs to come from material ui's createMuiTheme.
 
-Here's the provider's code:
-
-```js
-const Provider = ({ children, store, theme = {} }) => {
-  return (
-    <ThemeProvider theme={theme}>
-      <ReactReduxProvider store={store}>{children}</ReactReduxProvider>
-    </ThemeProvider>
-  );
-};
-```
-
-You can see that you can provide your own material ui theme to the provider.
 See here for the default theme: https://material-ui.com/customization/default-theme/
 
 ## Actions
@@ -232,18 +220,22 @@ For now, the best way to use this package is to just dispatch our async thunks t
 
 This is the easiest way to use the library and still provide your own data, this is useful for SSR and also less API calls. If you want an even faster solution where you don't have to provide the above data then we can add our API thunks to to the package for you to call them or we can provide an iframe for you.
 
-Any questions, please contact me: martin@tracktak.com
+Any questions, please contact me at: martin@tracktak.com
+
+## API calls
+
+The package has a couple of API calls to our backend, this is for calculating the Discounted Cash Flow model in the spreadsheet due to it being a CPU intensive process.
 
 ## Final notes
 
-Some stocks report financials in a different currency than their quote stock price. We are working on an currency exchange rate but this is not ready yet for this package just yet. It will be coming soon.
+Some stocks report financials in a different currency than their quote stock price. We are working on an currency exchange rate to make this easier for users of this package but this is not ready yet for this package just yet. It will be coming soon. For now if you need to do this you can convert the financials on your side and pass the converted data into the actions.
 
 ## License
 
-CC BY-ND 4.0
-https://creativecommons.org/licenses/by-nd/4.0/
+Pending license.
 
-You can use this for commercial purposes. Please do not distribute this package to anyone outside of your company or modify any of the internals of the package. Please do not hide any logo's of tracktak or links to tracktak.com with css or javascript without asking us first.
+You can only use this package if you have signed a contract with us allowing your to use it. If you have not done this you must contact me first before using it.
+Please do not hide any logo's of tracktak or links to tracktak.com with css or javascript without asking us first.
 
 If you need changes, we can provide them for you in the package itself.
 

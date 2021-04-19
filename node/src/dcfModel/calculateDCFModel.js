@@ -1,13 +1,11 @@
-import { columns } from "../discountedCashFlow/cells";
-import cellsTree from "../discountedCashFlow/cellsTree";
+import { evaluate } from "../../../packages/dcf-react/src/shared/math";
+import cellsTree, { cellsTreeDependencies } from "./cellsTree";
 import {
-  getAllDependents,
-  getColumnsBetween,
+  assignDependents,
   isExpressionDependency,
   validateExp,
-} from "../discountedCashFlow/utils";
-import filterDuplicates from "./filterDuplicates";
-import { evaluate } from "./math";
+} from "../../../packages/dcf-react/src/discountedCashFlow/utils";
+import filterDuplicates from "../../../packages/dcf-react/src/shared/filterDuplicates";
 
 const computeExpr = (key, expr, scope) => {
   let value = null;
@@ -29,25 +27,7 @@ const computeExpr = (key, expr, scope) => {
   }
 };
 
-const makeCellUpdate = (cells, scope) => (key, expr) => {
-  const newScope = {
-    ...scope,
-  };
-  const cellToUpdate = cells[key];
-
-  Object.keys(cells).forEach((key) => {
-    const { value } = cells[key];
-
-    newScope[key] = value === "" || isNaN(value) ? 0 : parseFloat(value);
-  });
-
-  return {
-    ...cellToUpdate,
-    ...computeExpr(key, expr, newScope),
-  };
-};
-
-const getCellsToUpdate = (property) => {
+const getRootCellsToUpdate = (property) => {
   const mapCellKeys = () => {
     switch (property) {
       case "totalRevenue":
@@ -71,19 +51,12 @@ const getCellsToUpdate = (property) => {
       case "marginalTaxRate":
         return "M5";
       case "cagrYearOneToFive":
+        return ["C2"];
       case "riskFreeRate":
-        return [
-          ...getColumnsBetween(columns, "C", "L").map((column) => `${column}2`),
-          "M2",
-          "M11",
-          "M7",
-          "B21",
-        ];
+        return ["H2", "M11", "M7", "B21"];
       case "yearOfConvergence":
       case "ebitTargetMarginInYearTen":
-        return getColumnsBetween(columns, "C", "L").map(
-          (column) => `${column}3`,
-        );
+        return "C3";
       case "totalCostOfCapital":
         return "C11";
       case "salesToCapitalRatio":
@@ -109,25 +82,53 @@ const getCellsToUpdate = (property) => {
   return Array.isArray(value) ? value : [value];
 };
 
-// Check if current scope same as this one and don't update if it is
-const calculateDCFModel = (cells, currentScope, existingScope) => {
-  const scope = {
+// TODO: Ignore duplicates in inner and convert to dependency-graph
+// 1. traverse the children of the changed root node to the leaf node, mark the nodes to the dependencies
+// 2. go back to the root
+// 3. BFS calculate each node and mark as read until we get to a node which depends on multiple parents
+// 4. Go back to step 2 for the other root node
+// 5. Continue down to the leaf end
+
+const calculateDCFModel = (cells, existingScope, currentScope) => {
+  const newCells = { ...cells };
+  const newScope = {
     ...existingScope,
     ...currentScope,
   };
-  const newCells = { ...cells };
-  const cellsUpdate = makeCellUpdate(newCells, scope);
+
+  Object.keys(cells).forEach((key) => {
+    const value = cells[key].value;
+
+    newScope[key] = value === "" || isNaN(value) ? 0 : parseFloat(value);
+  });
+
   const cellsToUpdate = filterDuplicates(
-    Object.keys(currentScope).flatMap(getCellsToUpdate),
+    Object.keys(currentScope).flatMap(getRootCellsToUpdate),
   );
 
-  cellsToUpdate.forEach((key) => {
-    const allDependents = getAllDependents(cellsTree, key);
-    const currentDependents = allDependents[key] || [];
+  const nodes = {
+    allDependents: {},
+    readCells: {},
+  };
 
-    [key, ...currentDependents].forEach((key) => {
-      newCells[key] = cellsUpdate(key, newCells[key].expr);
-    });
+  cellsToUpdate.forEach((key) => {
+    // Ignore fully read cells
+    if (!nodes.readCells[key]) {
+      nodes.allDependents[key] = [];
+
+      assignDependents(cellsTree, cellsTreeDependencies, nodes, key);
+
+      const currentDependents = nodes.allDependents[key];
+
+      [key, ...currentDependents].forEach((key) => {
+        const computedCell = computeExpr(key, newCells[key].expr, newScope);
+        newCells[key] = {
+          ...cells[key],
+          ...computedCell,
+        };
+        newScope[key] = computedCell.value;
+      });
+    }
   });
 
   return newCells;

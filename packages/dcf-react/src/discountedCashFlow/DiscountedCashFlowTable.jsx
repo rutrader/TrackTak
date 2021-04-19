@@ -10,7 +10,6 @@ import useInputQueryParams from "../hooks/useInputQueryParams";
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
 import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
 import selectValueOfAllOptionsOutstanding from "../selectors/fundamentalSelectors/selectValueOfAllOptionsOutstanding";
-import { updateModelCells } from "../redux/actions/dcfActions";
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
 import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
@@ -31,6 +30,8 @@ import { useLocation } from "@reach/router";
 import isNil from "lodash/isNil";
 import selectThreeAverageYearsEffectiveTaxRate from "../selectors/fundamentalSelectors/selectThreeAverageYearsEffectiveTaxRate";
 import { Fragment } from "react";
+import { calculateDCFModelThunk } from "../redux/thunks/dcfThunks";
+import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
 
 const DiscountedCashFlowTable = ({
   columnWidths,
@@ -127,32 +128,35 @@ const DiscountedCashFlowTable = ({
   );
 
   useEffect(() => {
-    dispatch(
-      updateModelCells({
-        pastThreeYearsAverageEffectiveTaxRate,
-        totalRevenue: incomeStatement.totalRevenue,
-        operatingIncome: incomeStatement.operatingIncome,
-        investedCapital: balanceSheet.investedCapital,
-        bookValueOfDebt: balanceSheet.bookValueOfDebt,
-        cashAndShortTermInvestments: balanceSheet.cashAndShortTermInvestments,
-        minorityInterest: balanceSheet.minorityInterest,
-        marginalTaxRate: currentEquityRiskPremium.marginalTaxRate,
-        sharesOutstanding,
-        price,
-        cagrYearOneToFive: inputQueryParams.cagrYearOneToFive,
-        riskFreeRate,
-        yearOfConvergence: inputQueryParams.yearOfConvergence,
-        ebitTargetMarginInYearTen: inputQueryParams.ebitTargetMarginInYearTen,
-        totalCostOfCapital: costOfCapital.totalCostOfCapital,
-        salesToCapitalRatio: inputQueryParams.salesToCapitalRatio,
-        netOperatingLoss: inputQueryParams.netOperatingLoss,
-        probabilityOfFailure: inputQueryParams.probabilityOfFailure,
-        proceedsAsAPercentageOfBookValue:
-          inputQueryParams.proceedsAsAPercentageOfBookValue,
-        bookValueOfEquity: balanceSheet.bookValueOfEquity,
-        valueOfAllOptionsOutstanding,
-      }),
-    );
+    if (hasAllRequiredInputsFilledIn) {
+      dispatch(
+        calculateDCFModelThunk({
+          matureMarketEquityRiskPremium,
+          pastThreeYearsAverageEffectiveTaxRate,
+          totalRevenue: incomeStatement.totalRevenue,
+          operatingIncome: incomeStatement.operatingIncome,
+          investedCapital: balanceSheet.investedCapital,
+          bookValueOfDebt: balanceSheet.bookValueOfDebt,
+          cashAndShortTermInvestments: balanceSheet.cashAndShortTermInvestments,
+          minorityInterest: balanceSheet.minorityInterest,
+          marginalTaxRate: currentEquityRiskPremium.marginalTaxRate,
+          sharesOutstanding,
+          price,
+          cagrYearOneToFive: inputQueryParams.cagrYearOneToFive,
+          riskFreeRate,
+          yearOfConvergence: inputQueryParams.yearOfConvergence,
+          ebitTargetMarginInYearTen: inputQueryParams.ebitTargetMarginInYearTen,
+          totalCostOfCapital: costOfCapital.totalCostOfCapital,
+          salesToCapitalRatio: inputQueryParams.salesToCapitalRatio,
+          netOperatingLoss: inputQueryParams.netOperatingLoss,
+          probabilityOfFailure: inputQueryParams.probabilityOfFailure,
+          proceedsAsAPercentageOfBookValue:
+            inputQueryParams.proceedsAsAPercentageOfBookValue,
+          bookValueOfEquity: balanceSheet.bookValueOfEquity,
+          valueOfAllOptionsOutstanding,
+        }),
+      );
+    }
   }, [
     balanceSheet.bookValueOfDebt,
     balanceSheet.bookValueOfEquity,
@@ -176,6 +180,7 @@ const DiscountedCashFlowTable = ({
     riskFreeRate,
     sharesOutstanding,
     valueOfAllOptionsOutstanding,
+    hasAllRequiredInputsFilledIn,
   ]);
 
   // Key: Hack to force re-render the table when formula state changes

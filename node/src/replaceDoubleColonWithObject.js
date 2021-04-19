@@ -25,4 +25,4 @@ const replaceDoubleColonWithObject = (data) => {
   return newData;
 };
 
-module.exports = replaceDoubleColonWithObject;
+export default replaceDoubleColonWithObject;

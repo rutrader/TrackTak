@@ -18,10 +18,10 @@ export const doesReferenceAnotherCell = (expr) =>
   isExpressionDependency(expr) && /([A-Z]+\d+)/.test(expr);
 
 export const isExpressionDependency = (expr) =>
-  typeof expr === "string" && expr?.charAt(0) === "=";
+  typeof expr === "string" && expr && expr.charAt(0) === "=";
 
 export const getExpressionWithoutEqualsSign = (expr) =>
-  typeof expr === "string" && expr?.substring(1);
+  typeof expr === "string" && expr && expr.substring(1);
 
 export const getRowNumberFromCellKey = (cellKey) =>
   parseInt(cellKey.replace(/[A-Z]+/gi, ""), 10);
@@ -43,7 +43,7 @@ export const getCellsForRowsBetween = (
 
 export const validateExp = (trailKeys, expr) => {
   let valid = true;
-  const matches = expr?.match(/[A-Z][1-9]+/g) || [];
+  const matches = (expr && expr.match(/[A-Z][1-9]+/g)) || [];
   matches.forEach((match) => {
     if (trailKeys.indexOf(match) > -1) {
       valid = false;
@@ -112,8 +112,15 @@ const arrayMove = (arr, fromIndex, toIndex) => {
   arr.splice(toIndex, 0, element);
 };
 
-const assignDependents = (cellsTree, allDependents, rootKey) => {
+export const assignDependents = (
+  cellsTree,
+  cellsTreeDependencies,
+  nodes,
+  rootKey,
+) => {
   let currentKeyArray = cellsTree[rootKey];
+
+  nodes.readCells[rootKey] = true;
 
   // BFS as we must update the most recent
   // children before moving to grandchildren
@@ -123,16 +130,27 @@ const assignDependents = (cellsTree, allDependents, rootKey) => {
     currentKeyArray.forEach((key) => {
       // If we find the element again it means another is dependent
       // on it, so let's move it to the back of the array
-      const existingIndex = allDependents[rootKey].findIndex((x) => x === key);
+      const existingIndex = nodes.allDependents[rootKey].findIndex(
+        (x) => x === key,
+      );
 
       if (existingIndex === -1) {
-        allDependents[rootKey].push(key);
+        nodes.allDependents[rootKey].push(key);
       } else {
         arrayMove(
-          allDependents[rootKey],
+          nodes.allDependents[rootKey],
           existingIndex,
-          allDependents[rootKey].length - 1,
+          nodes.allDependents[rootKey].length - 1,
         );
+      }
+
+      // Cell is not read if all of the dependent cell keys are not read
+      const cellNotRead = cellsTreeDependencies[key].some((key) => {
+        return !nodes.readCells[key];
+      });
+
+      if (!cellNotRead) {
+        nodes.readCells[key] = true;
       }
 
       if (cellsTree[key]) {
@@ -142,16 +160,6 @@ const assignDependents = (cellsTree, allDependents, rootKey) => {
 
     currentKeyArray = next;
   }
-};
-
-export const getAllDependents = (cellsTree, rootKey) => {
-  const allDependents = {
-    [rootKey]: [],
-  };
-
-  assignDependents(cellsTree, allDependents, rootKey);
-
-  return allDependents;
 };
 
 export const padCellKeys = (sortedCellKeys) => {
