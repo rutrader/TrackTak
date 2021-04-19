@@ -8,7 +8,7 @@
     "node": "12.20.1"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=production node ./app.js --es-module-specifier-resolution=node",
+    "start": "cross-env NODE_ENV=production node --es-module-specifier-resolution=node ./app.js",
     "start:dev": "cross-env NODE_ENV=development nodemon --es-module-specifier-resolution=node",
     "zip": "cd ./build && bestzip ../build.zip *",
     "build": "webpack && npm run zip",
