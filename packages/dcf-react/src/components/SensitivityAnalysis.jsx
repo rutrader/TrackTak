@@ -24,7 +24,7 @@ import useInputQueryParams, {
 import getChunksOfArray from "../shared/getChunksOfArray";
 import { Fragment } from "react";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
-import { calculateDCFModels } from "../api/api";
+import { computeSensitivityAnalysis } from "../api/api";
 
 const getModelScopes = (scope, xElement, yElement) => {
   const doesScopeExist =
@@ -61,10 +61,10 @@ const getColumns = (yElement) => {
   });
 };
 
-const getRowData = (dcfModels, xElement, cells, theme) => {
+const getRowData = (estimatedValues, xElement, cells, theme) => {
   if (!xElement) return [];
 
-  const chunkedData = getChunksOfArray(dcfModels, xElement.data.length);
+  const chunkedData = getChunksOfArray(estimatedValues, xElement.data.length);
   const XFormatter = xElement.formatter;
 
   const rowData = chunkedData.map((chunk, i) => {
@@ -76,10 +76,10 @@ const getRowData = (dcfModels, xElement, cells, theme) => {
       ),
     };
 
-    chunk.forEach((model, z) => {
+    chunk.forEach((estimatedValue, z) => {
       let sx;
 
-      if (cells.B36.value === model.B36.value) {
+      if (cells.B36.value === estimatedValue) {
         sx = {
           color: theme.palette.primary.main,
         };
@@ -87,7 +87,7 @@ const getRowData = (dcfModels, xElement, cells, theme) => {
 
       row[z.toString()] = (
         <Box sx={sx}>
-          <FormatRawNumberToCurrency value={model.B36.value} />
+          <FormatRawNumberToCurrency value={estimatedValue} />
         </Box>
       );
     });
@@ -102,7 +102,7 @@ const SensitivityAnalysis = () => {
   const theme = useTheme();
   const cells = useSelector(selectCells);
   const scope = useSelector(selectScope);
-  const [dcfModels, setDCFModels] = useState([]);
+  const [estimatedValues, setEstimatedValues] = useState([]);
   const [data, setData] = useState([]);
   const [dataTable, setDataTable] = useSensitivityAnalysisDataTable();
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
@@ -178,23 +178,27 @@ const SensitivityAnalysis = () => {
 
   useEffect(() => {
     setIsLoading(false);
-    setData(getRowData(dcfModels, xElement, cells, theme));
-  }, [cells, dcfModels, theme, xElement]);
+    setData(getRowData(estimatedValues, xElement, cells, theme));
+  }, [cells, estimatedValues, theme, xElement]);
 
   useEffect(() => {
-    const fetchCalculateDCFModels = async () => {
+    const fetchComputeSensitivityAnalysis = async () => {
       const currentScopes = getModelScopes(scope, xElement, yElement);
 
       if (currentScopes) {
         setIsLoading(true);
 
-        const { data } = await calculateDCFModels(cells, scope, currentScopes);
+        const { data } = await computeSensitivityAnalysis(
+          cells,
+          scope,
+          currentScopes,
+        );
 
-        setDCFModels(data);
+        setEstimatedValues(data);
       }
     };
 
-    fetchCalculateDCFModels();
+    fetchComputeSensitivityAnalysis();
   }, [cells, scope, xElement, yElement]);
 
   return (
@@ -220,8 +224,9 @@ const SensitivityAnalysis = () => {
 
             return (
               <CheckboxSlider
-                key={name}
                 {...datum}
+                key={name}
+                disabledSlider={isLoading}
                 disabled={disabled || !hasAllRequiredInputsFilledIn}
                 checked={
                   checkedItems.find((x) => x.name === name)?.value ?? false

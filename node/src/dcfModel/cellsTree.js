@@ -1,7 +1,9 @@
-import cells from "./cells";
-import filterDuplicates from "../shared/filterDuplicates";
+import cells from "../../../packages/dcf-react/src/discountedCashFlow/cells";
+import filterDuplicates from "../../../packages/dcf-react/src/shared/filterDuplicates";
 
 const cellsTree = {};
+// Parents
+export const cellsTreeDependencies = {};
 
 Object.keys(cells).forEach((key) => {
   const { expr } = cells[key];
@@ -14,6 +16,9 @@ Object.keys(cells).forEach((key) => {
       cellsTree[uniqueMatchKey] = cellsTree[uniqueMatchKey]
         ? [...cellsTree[uniqueMatchKey], key]
         : [key];
+      cellsTreeDependencies[key] = cellsTreeDependencies[key]
+        ? [...cellsTreeDependencies[key], uniqueMatchKey]
+        : [uniqueMatchKey];
     });
   }
 });

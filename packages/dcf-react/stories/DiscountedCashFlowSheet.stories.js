@@ -13,8 +13,21 @@ const MockSubscribePopup = () => {
   return null;
 };
 
-const Template = (args) => {
-  return <DiscountedCashFlowSheet {...args} />;
+const Template = (args, { history }) => {
+  return (
+    <div>
+      <button
+        onClick={() => {
+          history.navigate(
+            "/?cagrYearOneToFive=0.5&ebitTargetMarginInYearTen=0.70&yearOfConvergence=3&salesToCapitalRatio=2.5&probabilityOfFailure=0.3&proceedsAsAPercentageOfBookValue=0.2",
+          );
+        }}
+      >
+        Update cagrYearOneToFive
+      </button>
+      <DiscountedCashFlowSheet {...args} />;
+    </div>
+  );
 };
 
 export const WithPopup = Template.bind({});

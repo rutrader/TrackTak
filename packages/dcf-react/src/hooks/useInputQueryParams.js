@@ -36,7 +36,8 @@ const getInputQueryParams = (query) => {
   const inputQueryParams = {};
 
   inputQueries.forEach(({ name }) => {
-    inputQueryParams[name] = query[name] ? parseFloat(query[name]) : undefined;
+    // Set it to null and not undefined so that they still get sent through the axios requests
+    inputQueryParams[name] = query[name] ? parseFloat(query[name]) : null;
   });
 
   return inputQueryParams;

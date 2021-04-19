@@ -11617,8 +11617,6 @@
       }
     },
     "isYoyGrowthToggled": false,
-    "scope": {
-      "matureMarketEquityRiskPremium": 0.052300000000000006
-    }
+    "scope": {}
   }
 }

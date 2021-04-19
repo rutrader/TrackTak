@@ -20,8 +20,7 @@ const globalParams = {
   api_token: process.env.EOD_HISTORICAL_DATA_API_KEY,
 };
 
-// 6 hour
-const setCachedData = (data, cacheKey, time = 2.16e7) => {
+const setCachedData = (data, cacheKey, time) => {
   if (data) {
     return cache.put(cacheKey, data, time);
   }
@@ -40,10 +39,11 @@ const sendReqOrGetCachedData = async (
   request,
   keyPrefix,
   cacheParams = {},
+  // 6 hour
   time = 2.16e7,
 ) => {
   const cacheKey = `${keyPrefix}_${JSON.stringify(cacheParams)}`;
-  const cachedData = getCachedData(keyPrefix, cacheParams);
+  const cachedData = getCachedData(cacheKey);
 
   if (cachedData) return cachedData;
 
@@ -51,6 +51,15 @@ const sendReqOrGetCachedData = async (
 
   return setCachedData(data, cacheKey, time);
 };
+
+// TODO, make this a worker pool later
+const dcfModelWorker = new Worker(
+  new URL("./workers/dcfModel.worker.js", import.meta.url),
+  {
+    type: "module",
+  },
+);
+const dcfModelWorkerAPI = wrap(nodeEndpoint(dcfModelWorker));
 
 const api = {
   getBulkFundamentals: async (exchange, query) => {
@@ -236,8 +245,6 @@ const api = {
   },
 
   getAutocompleteQuery: async (queryString, query) => {
-    console.log(globalParams);
-
     const data = await sendReqOrGetCachedData(
       async () => {
         const { data } = await axios.get(`${searchUrl}/${queryString}`, {
@@ -254,33 +261,50 @@ const api = {
     return data;
   },
 
-  async calculateDCFModel(cells, existingScope, currentScope) {
-    const models = await this.calculateDCFModels(cells, existingScope, [
-      currentScope,
-    ]);
+  calculateDCFModel: async (cells, existingScope, currentScope) => {
+    const data = await sendReqOrGetCachedData(
+      async () => {
+        const model = await dcfModelWorkerAPI.calculateDCFModel(
+          cells,
+          existingScope,
+          currentScope,
+        );
 
-    return models[0];
+        return model;
+      },
+      "calculateDCFModel",
+      { existingScope, currentScope },
+    );
+
+    return data;
   },
 
-  calculateDCFModels: async (cells, existingScope, currentScopes) => {
-    const worker = new Worker(
-      new URL("./workers/dcfModels.worker.js", import.meta.url),
-      {
-        type: "module",
+  computeSensitivityAnalysis: async (cells, existingScope, currentScopes) => {
+    const data = await sendReqOrGetCachedData(
+      async () => {
+        const sensitivityAnalysisWorker = new Worker(
+          new URL("./workers/sensitivityAnalysis.worker.js", import.meta.url),
+          {
+            type: "module",
+          },
+        );
+        const api = wrap(nodeEndpoint(sensitivityAnalysisWorker));
+
+        const values = await api.computeSensitivityAnalysis(
+          cells,
+          existingScope,
+          currentScopes,
+        );
+
+        sensitivityAnalysisWorker.terminate();
+
+        return values;
       },
+      "computeSensitivityAnalysis",
+      { existingScope, currentScopes },
     );
 
-    const api = wrap(nodeEndpoint(worker));
-
-    const models = await api.calculateDCFModels(
-      cells,
-      existingScope,
-      currentScopes,
-    );
-
-    worker.terminate();
-
-    return models;
+    return data;
   },
 };
 

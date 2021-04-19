@@ -8,6 +8,8 @@ export const calculateDCFModel = async (cells, existingScope, currentScope) => {
     dcfModelSource.cancel("New request sent.");
   }
 
+  dcfModelSource = baseAxios.CancelToken.source();
+
   const res = await axios.post(
     `/api/v1/calculate-dcf-model`,
     {
@@ -16,7 +18,7 @@ export const calculateDCFModel = async (cells, existingScope, currentScope) => {
       currentScope,
     },
     {
-      cancelToken: dcfModelsSource && dcfModelSource.token,
+      cancelToken: dcfModelSource && dcfModelSource.token,
     },
   );
 
@@ -25,32 +27,14 @@ export const calculateDCFModel = async (cells, existingScope, currentScope) => {
   return res;
 };
 
-let dcfModelsSource;
-
-export const calculateDCFModels = async (
+export const computeSensitivityAnalysis = async (
   cells,
   existingScope,
   currentScopes,
 ) => {
-  if (dcfModelsSource) {
-    dcfModelsSource.cancel("New request sent.");
-  }
-
-  dcfModelsSource = baseAxios.CancelToken.source();
-
-  const res = await axios.post(
-    `/api/v1/calculate-dcf-models`,
-    {
-      cells,
-      existingScope,
-      currentScopes,
-    },
-    {
-      cancelToken: dcfModelsSource && dcfModelsSource.token,
-    },
-  );
-
-  dcfModelsSource = null;
-
-  return res;
+  return axios.post(`/api/v1/compute-sensitivity-analysis`, {
+    cells,
+    existingScope,
+    currentScopes,
+  });
 };

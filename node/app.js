@@ -83,15 +83,15 @@ app.post("/api/v1/calculate-dcf-model", async (req, res) => {
   res.send(model);
 });
 
-app.post("/api/v1/calculate-dcf-models", async (req, res) => {
+app.post("/api/v1/compute-sensitivity-analysis", async (req, res) => {
   const { cells, existingScope, currentScopes } = req.body;
-  // const models = await api.calculateDCFModels(
-  //   cells,
-  //   existingScope,
-  //   currentScopes,
-  // );
+  const values = await api.computeSensitivityAnalysis(
+    cells,
+    existingScope,
+    currentScopes,
+  );
 
-  // res.send(models);
+  res.send(values);
 });
 
 app.get("/", (_, res) => {

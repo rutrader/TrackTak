@@ -6,15 +6,12 @@ import {
 import isNil from "lodash/isNil";
 import { createReducer } from "@reduxjs/toolkit";
 import cells from "../../discountedCashFlow/cells";
-import matureMarketEquityRiskPremium from "../../shared/matureMarketEquityRiskPremium";
 import { calculateDCFModelThunk } from "../thunks/dcfThunks";
 
 const initialState = {
   cells,
   isYoyGrowthToggled: false,
-  scope: {
-    matureMarketEquityRiskPremium,
-  },
+  scope: {},
 };
 
 export const dcfReducer = createReducer(initialState, (builder) => {
