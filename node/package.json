@@ -3,22 +3,21 @@
   "version": "0.1.0",
   "main": "./app.js",
   "private": true,
-  "type": "module",
   "engines": {
     "node": "12.20.1"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=production node --es-module-specifier-resolution=node ./app.js",
-    "start:dev": "cross-env NODE_ENV=development nodemon --es-module-specifier-resolution=node",
+    "start": "cross-env NODE_ENV=production node ./app.js",
+    "start:dev": "cross-env NODE_ENV=development nodemon --input-type=module --es-module-specifier-resolution=node",
     "zip": "cd ./build && bestzip ../build.zip *",
-    "build": "webpack && npm run zip",
+    "clean:build": "rimraf ./build",
+    "build": "npm run clean:build && webpack && npm run zip",
     "clean": "rimraf ./node_modules",
     "deploy": "npm run build && eb deploy"
   },
   "devDependencies": {
     "bestzip": "^2.1.7",
     "copy-webpack-plugin": "^6.3.1",
-    "dotenv-flow": "^3.2.0",
     "nodemon": "^2.0.6",
     "npm-run-all": "^4.1.5",
     "object-sizeof": "^1.6.1",
@@ -27,6 +26,7 @@
     "webpack-node-externals": "^2.5.2"
   },
   "dependencies": {
+    "@formulajs/formulajs": "^2.6.8",
     "aws-sdk": "^2.814.0",
     "axios": "^0.21.0",
     "comlink": "^4.3.0",
@@ -34,9 +34,13 @@
     "cron": "^1.8.2",
     "cross-env": "^7.0.2",
     "dependency-graph": "^0.11.0",
+    "dotenv-flow": "^3.2.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "iso-3166-1-alpha-2": "^1.0.0",
-    "memory-cache": "^0.2.0"
+    "lodash": "^4.17.21",
+    "mathjs": "^9.3.2",
+    "memory-cache": "^0.2.0",
+    "piscina": "^2.2.0"
   }
 }

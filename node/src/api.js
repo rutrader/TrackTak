@@ -4,9 +4,8 @@ import replaceDoubleColonWithObject from "./replaceDoubleColonWithObject";
 import tenYearGovernmentBondYields from "../data/tenYearGovernmentBondYields.json";
 import iso3311a2 from "iso-3166-1-alpha-2";
 import { wrap } from "comlink";
-import nodeEndpoint from "comlink/dist/esm/node-adapter";
-import { Worker } from "worker_threads";
-import { URL } from "url";
+import nodeEndpoint from "comlink/dist/umd/node-adapter";
+import { getDcfModelWorker, getSensitivityAnalysisWorker } from "./workers";
 
 const baseUrl = "https://eodhistoricaldata.com/api";
 const fundamentalsUrl = `${baseUrl}/fundamentals`;
@@ -52,14 +51,7 @@ const sendReqOrGetCachedData = async (
   return setCachedData(data, cacheKey, time);
 };
 
-// TODO, make this a worker pool later
-const dcfModelWorker = new Worker(
-  new URL("./workers/dcfModel.worker.js", import.meta.url),
-  {
-    type: "module",
-  },
-);
-const dcfModelWorkerAPI = wrap(nodeEndpoint(dcfModelWorker));
+const dcfModelWorkerAPI = wrap(nodeEndpoint(getDcfModelWorker()));
 
 const api = {
   getBulkFundamentals: async (exchange, query) => {
@@ -282,12 +274,7 @@ const api = {
   computeSensitivityAnalysis: async (cells, existingScope, currentScopes) => {
     const data = await sendReqOrGetCachedData(
       async () => {
-        const sensitivityAnalysisWorker = new Worker(
-          new URL("./workers/sensitivityAnalysis.worker.js", import.meta.url),
-          {
-            type: "module",
-          },
-        );
+        const sensitivityAnalysisWorker = getSensitivityAnalysisWorker();
         const api = wrap(nodeEndpoint(sensitivityAnalysisWorker));
 
         const values = await api.computeSensitivityAnalysis(

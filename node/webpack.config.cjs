@@ -4,15 +4,13 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   mode: "production",
-  devtool: "source-map",
-  entry: {
-    server: "./app.js",
-  },
+  entry: ["./app.js", "./src/workers/index.js"],
   output: {
     path: path.join(__dirname, "build"),
     filename: "app.js",
   },
   target: "node",
+  externalsPresets: { node: true },
   node: {
     __dirname: false,
     __filename: false,

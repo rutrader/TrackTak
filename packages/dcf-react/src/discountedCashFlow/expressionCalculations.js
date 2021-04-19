@@ -2,7 +2,7 @@ import {
   cagrYearOneToFiveQueryName,
   ebitTargetMarginInYearTenQueryName,
   yearOfConvergenceQueryName,
-} from "../hooks/useInputQueryParams";
+} from "../shared/inputQueryNames";
 
 export const getPreviousColumn = (cellKey) => {
   const column = cellKey.charAt(0);

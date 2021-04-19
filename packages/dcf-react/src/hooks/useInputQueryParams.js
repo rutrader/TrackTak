@@ -1,10 +1,11 @@
 import { useMemo } from "react";
 import useQueryParams from "./useQueryParams";
-
-export const cagrYearOneToFiveQueryName = "cagrYearOneToFive";
-export const ebitTargetMarginInYearTenQueryName = "ebitTargetMarginInYearTen";
-export const yearOfConvergenceQueryName = "yearOfConvergence";
-export const salesToCapitalRatioQueryName = "salesToCapitalRatio";
+import {
+  cagrYearOneToFiveQueryName,
+  ebitTargetMarginInYearTenQueryName,
+  yearOfConvergenceQueryName,
+  salesToCapitalRatioQueryName,
+} from "../shared/inputQueryNames";
 
 export const requiredInputQueries = [
   { name: cagrYearOneToFiveQueryName, type: "percent" },
