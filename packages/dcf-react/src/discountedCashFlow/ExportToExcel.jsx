@@ -198,7 +198,10 @@ const ExportToExcel = () => {
       const value = inputQueryParams[name];
 
       transformedInputsData.push(getNameFromKey(name, type));
-      transformedInputsData.push(formatValueForExcelOutput(value, type));
+      // Undefined is treated as blank cell in excel
+      transformedInputsData.push(
+        formatValueForExcelOutput(value === null ? undefined : value, type),
+      );
     });
 
     const transformedCostOfCapitalData = [];
