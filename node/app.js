@@ -8,23 +8,50 @@ const hostname = "127.0.0.1";
 const port = process.env.NODE_ENV === "development" ? 3001 : process.env.PORT;
 const app = express();
 
-const origin =
-  process.env.NODE_ENV === "development"
-    ? [
-        "http://localhost:8000",
-        "http://localhost:9000",
-        "http://localhost:6006",
-      ]
-    : [process.env.ORIGIN_URL];
-
-const corsOptions = {
-  origin,
-  optionsSuccessStatus: 204,
-};
-
 app.use(express.static("public"));
 app.use(express.json());
-app.use(cors(corsOptions));
+
+const publicRoutes = [
+  "/api/v1/calculate-dcf-model",
+  "/api/v1/compute-sensitivity-analysis",
+];
+
+app.options(publicRoutes[0], cors());
+app.options(publicRoutes[1], cors());
+
+// These routes are public so they have cors turned off
+app.post("/api/v1/calculate-dcf-model", cors(), async (req, res) => {
+  const { cells, existingScope, currentScope } = req.body;
+
+  const model = await api.calculateDCFModel(cells, existingScope, currentScope);
+
+  res.send(model);
+});
+
+app.post("/api/v1/compute-sensitivity-analysis", cors(), async (req, res) => {
+  const { cells, existingScope, currentScopes } = req.body;
+  const values = await api.computeSensitivityAnalysis(
+    cells,
+    existingScope,
+    currentScopes,
+  );
+
+  res.send(values);
+});
+
+app.use(
+  cors({
+    origin:
+      process.env.NODE_ENV === "development"
+        ? [
+            "http://localhost:8000",
+            "http://localhost:9000",
+            "http://localhost:6006",
+          ]
+        : [process.env.ORIGIN_URL],
+    optionsSuccessStatus: 204,
+  }),
+);
 
 app.get("/api/v1/fundamentals/:ticker", async (req, res) => {
   const value = await api.getFundamentals(req.params.ticker, req.query);
@@ -73,26 +100,6 @@ app.get("/api/v1/autocomplete-query/:queryString", async (req, res) => {
     req.query,
   );
   res.send({ value });
-});
-
-// These routes are public so they have cors turned off
-app.post("/api/v1/calculate-dcf-model", cors(), async (req, res) => {
-  const { cells, existingScope, currentScope } = req.body;
-
-  const model = await api.calculateDCFModel(cells, existingScope, currentScope);
-
-  res.send(model);
-});
-
-app.post("/api/v1/compute-sensitivity-analysis", cors(), async (req, res) => {
-  const { cells, existingScope, currentScopes } = req.body;
-  const values = await api.computeSensitivityAnalysis(
-    cells,
-    existingScope,
-    currentScopes,
-  );
-
-  res.send(values);
 });
 
 app.get("/", (_, res) => {
