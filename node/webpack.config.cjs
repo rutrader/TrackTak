@@ -4,7 +4,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   mode: "production",
-  entry: ["./app.js", "./src/workers/index.js"],
+  entry: ["./src/app.js", "./src/workers/index.js"],
   output: {
     path: path.join(__dirname, "build"),
     filename: "app.js",
