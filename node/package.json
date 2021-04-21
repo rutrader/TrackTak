@@ -1,7 +1,7 @@
 {
   "name": "tracktak-node",
   "version": "0.1.0",
-  "main": "./app.js",
+  "main": "./src/app.js",
   "private": true,
   "engines": {
     "node": "12.20.1"

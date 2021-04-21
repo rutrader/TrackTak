@@ -2,7 +2,7 @@ import "dotenv-flow/config";
 import express from "express";
 import cors from "cors";
 import "express-async-errors";
-import api from "./src/api";
+import api from "./api";
 
 const hostname = "127.0.0.1";
 const port = process.env.NODE_ENV === "development" ? 3001 : process.env.PORT;

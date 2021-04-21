@@ -1,6 +1,6 @@
 import axios from "axios";
 import cache from "memory-cache";
-import replaceDoubleColonWithObject from "./replaceDoubleColonWithObject";
+import replaceDoubleColonWithObject from "./shared/replaceDoubleColonWithObject";
 import tenYearGovernmentBondYields from "../data/tenYearGovernmentBondYields.json";
 import iso3311a2 from "iso-3166-1-alpha-2";
 import { wrap } from "comlink";
