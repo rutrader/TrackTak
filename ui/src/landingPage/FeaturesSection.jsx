@@ -175,7 +175,7 @@ const FeaturesSection = () => {
             </IconGradient>
             <FeatureHeader variant="h4">Sensitivity Analysis</FeatureHeader>
             <FeatureText>
-              Automatically shows you the different estimated price of varies
+              Automatically shows you the different estimated price of various
               inputs.
             </FeatureText>
           </BoxIcon>
