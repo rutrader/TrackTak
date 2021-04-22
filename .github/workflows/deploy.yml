@@ -31,18 +31,17 @@ jobs:
   deploy-production-ui:
     notify:
       needs: deploy-staging-ui
-      runs-on: ubuntu-latest
-      defaults:
-        run:
-          working-directory: ./ui
-      env:
-        CONTENTFUL_API_KEY: ${{ secrets.PREVIEW_CONTENTFUL_API_KEY }}
-        EOD_HISTORICAL_DATA_API_KEY: ${{ secrets.EOD_HISTORICAL_DATA_API_KEY }}
-        NODE_AUTH_TOKEN: ${{ secrets.DCF_REACT_ACCESS_TOKEN }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        GATSBY_API_BASE_URL: ${{ secrets.GATSBY_API_BASE_URL }}
-
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ui
+    env:
+      CONTENTFUL_API_KEY: ${{ secrets.PREVIEW_CONTENTFUL_API_KEY }}
+      EOD_HISTORICAL_DATA_API_KEY: ${{ secrets.EOD_HISTORICAL_DATA_API_KEY }}
+      NODE_AUTH_TOKEN: ${{ secrets.DCF_REACT_ACCESS_TOKEN }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      GATSBY_API_BASE_URL: ${{ secrets.GATSBY_API_BASE_URL }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
