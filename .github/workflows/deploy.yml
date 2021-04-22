@@ -1,7 +1,7 @@
 name: deploy staging ui
 on:
   pull_request:
-    types: [push]
+    types: [closed]
     paths:
       - "ui/**"
 jobs:
@@ -18,22 +18,21 @@ jobs:
           node-version: "12.20.1"
       - run: npm install --only=prod
       - run: npm run deploy
-
-name: deploy staging node
-on:
-  pull_request:
-    types: [push]
-    paths:
-      - "node/**"
-jobs:
-  merge-PR:
-    if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: "12.20.1"
-      - run: npm install --only=prod
-      - run: npm run deploy
+# name: deploy staging node
+# on:
+#   pull_request:
+#     types: [push]
+#     paths:
+#       - "node/**"
+# jobs:
+#   merge-PR:
+#     if: github.event.pull_request.merged == true
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
+#       - uses: actions/setup-node@v1
+#         with:
+#           node-version: "12.20.1"
+#       - run: npm install --only=prod
+#       - run: npm run deploy
 
