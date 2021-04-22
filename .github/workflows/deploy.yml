@@ -1,0 +1,38 @@
+name: deploy staging ui
+on:
+  pull_request:
+    types: [closed]
+    paths:
+      - "ui/**"
+jobs:
+  merge-PR:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    env:
+      CONTENTFUL_API_KEY: ${{ secrets.PREVIEW_CONTENTFUL_API_KEY }}
+      EOD_HISTORICAL_DATA_API_KEY: ${{ secrets.EOD_HISTORICAL_DATA_API_KEY }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "12.20.1"
+      - run: npm install --only=prod
+      - run: npm run deploy
+# name: deploy staging node
+# on:
+#   pull_request:
+#     types: [push]
+#     paths:
+#       - "node/**"
+# jobs:
+#   merge-PR:
+#     if: github.event.pull_request.merged == true
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
+#       - uses: actions/setup-node@v1
+#         with:
+#           node-version: "12.20.1"
+#       - run: npm install --only=prod
+#       - run: npm run deploy
+
