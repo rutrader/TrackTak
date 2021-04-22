@@ -1,7 +1,7 @@
 name: deploy staging ui
 on:
   pull_request:
-    types: [closed]
+    types: [push]
     paths:
       - "ui/**"
 jobs:
@@ -22,7 +22,7 @@ jobs:
 name: deploy staging node
 on:
   pull_request:
-    types: [closed]
+    types: [push]
     paths:
       - "node/**"
 jobs:
