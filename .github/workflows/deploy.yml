@@ -23,7 +23,7 @@ jobs:
           registry-url: "https://npm.pkg.github.com/"
           scope: "@tracktak"
       - run: npm install --only=prod
-      - run: npm run deploy
+      - run: npm run deploy:staging
 # name: deploy staging node
 # on:
 #   pull_request:
