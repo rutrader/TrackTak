@@ -20,7 +20,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "12.20.1"
-          registry-url: https://npm.pkg.github.com/
+          registry-url: "https://npm.pkg.github.com/""
           scope: "@tracktak"
       - run: npm install --only=prod
       - run: npm run deploy
