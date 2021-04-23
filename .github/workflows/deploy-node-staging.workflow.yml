@@ -1,17 +1,16 @@
 name: deploy staging node
 on:
-  push
-  #  types: [push]
-  # paths:
-  #   - "node/**"
+  pull_request
+    types: [closed]
+    paths:
+      - "node/**"
 jobs:
   deploy-staging-node:
-    #  if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./node
-
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
