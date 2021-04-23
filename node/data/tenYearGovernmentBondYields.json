@@ -1,27 +1,27 @@
 [
   {
     "country": "Argentina",
-    "yield": 46.088
+    "yield": 50.552
   },
   {
     "country": "Austria",
-    "yield": -0.085
+    "yield": -0.049
   },
   {
     "country": "Belgium",
-    "yield": 0.02
+    "yield": 0.045
   },
   {
     "country": "Chile",
-    "yield": 3.41
+    "yield": 3.59
   },
   {
     "country": "Croatia",
-    "yield": 0.702
+    "yield": 0.672
   },
   {
     "country": "Denmark",
-    "yield": 0.02
+    "yield": 0.039
   },
   {
     "country": "Estonia",
@@ -29,71 +29,71 @@
   },
   {
     "country": "Finland",
-    "yield": -0.09
+    "yield": -0.0072
   },
   {
     "country": "Hong Kong",
-    "yield": 1.35
+    "yield": 1.163
   },
   {
     "country": "Hungary",
-    "yield": 2.755
+    "yield": 2.685
   },
   {
     "country": "Iceland",
-    "yield": 3.572
+    "yield": 3.524
   },
   {
     "country": "Indonesia",
-    "yield": 6.887
+    "yield": 6.526
   },
   {
     "country": "Ireland",
-    "yield": 0.055
+    "yield": 0.089
   },
   {
     "country": "Israel",
-    "yield": 1.095
+    "yield": 1.014
   },
   {
     "country": "Korea",
-    "yield": 2.098
+    "yield": 2.005
   },
   {
     "country": "Latvia",
-    "yield": 0.55
+    "yield": 0.549
   },
   {
     "country": "Lithuania",
-    "yield": 0.09
+    "yield": 0.072
   },
   {
     "country": "Luxembourg",
-    "yield": 0
+    "yield": null
   },
   {
     "country": "Malaysia",
-    "yield": 3.47
+    "yield": 3.103
   },
   {
     "country": "Norway",
-    "yield": 1.424
+    "yield": 1.352
   },
   {
     "country": "Pakistan",
-    "yield": 10.541
+    "yield": 10.158
   },
   {
     "country": "Peru",
-    "yield": 4.619
+    "yield": 5.029
   },
   {
     "country": "Philippines",
-    "yield": 4.676
+    "yield": 4.094
   },
   {
     "country": "Poland",
-    "yield": 1.503
+    "yield": 1.559
   },
   {
     "country": "Saudi Arabia",
@@ -101,30 +101,30 @@
   },
   {
     "country": "Singapore",
-    "yield": 1.588
+    "yield": 1.599
   },
   {
     "country": "South Africa",
-    "yield": 9.335
+    "yield": 9.135
   },
   {
     "country": "Sweden",
-    "yield": 0.44
+    "yield": 0.375
   },
   {
     "country": "Taiwan",
-    "yield": 0.425
+    "yield": 0.385
   },
   {
     "country": "Thailand",
-    "yield": 1.773
+    "yield": 1.682
   },
   {
     "country": "Turkey",
-    "yield": 14.105
+    "yield": 18.425
   },
   {
     "country": "Vietnam",
-    "yield": 2.382
+    "yield": 2.269
   }
 ]

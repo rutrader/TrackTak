@@ -1,4 +1,7 @@
-require("dotenv-flow").config();
+require("dotenv/config");
+
+const activeEnv = process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV;
+const isInProduction = activeEnv === "production";
 
 module.exports = {
   flags: {
@@ -46,7 +49,7 @@ module.exports = {
     {
       resolve: "gatsby-plugin-s3",
       options: {
-        bucketName: "staging.tracktak.com",
+        bucketName: isInProduction ? "tracktak.com" : "staging.tracktak.com",
       },
     },
     {
@@ -78,8 +81,8 @@ module.exports = {
       resolve: "gatsby-source-contentful",
       options: {
         accessToken: process.env.CONTENTFUL_API_KEY,
-        spaceId: process.env.CONTENTFUL_SPACE_ID,
-        host: process.env.CONTENTFUL_HOST,
+        spaceId: "kq8pz2yvb2zk",
+        host: isInProduction ? undefined : "preview.contentful.com",
       },
     },
     {

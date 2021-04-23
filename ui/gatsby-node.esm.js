@@ -1,11 +1,9 @@
 // https://github.com/gatsbyjs/gatsby/issues/7810
 // CLI with esm npx has a bug in it for windows: https://github.com/npm/npx/issues/5
 
-import dotEnvFlow from "dotenv-flow";
+import "dotenv/config";
 import webpack from "webpack";
 import path from "path";
-
-dotEnvFlow.config();
 
 // https://github.com/gatsbyjs/gatsby/issues/19618
 
