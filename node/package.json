@@ -15,7 +15,7 @@
     "build:staging": "cross-env NODE_ENV=staging webpack && npm run zip",
     "clean": "rimraf ./node_modules",
     "deploy": "npm run build && eb deploy",
-    "deploy:staging": "eb init node-express-env-staging && npm run build:staging && eb deploy NodeExpressEnvStaging-env"
+    "deploy:staging": "npm run build:staging && eb deploy NodeExpressEnvStaging-env"
   },
   "devDependencies": {
     "nodemon": "^2.0.6",
