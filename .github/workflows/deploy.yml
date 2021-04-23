@@ -1,38 +1,56 @@
-name: deploy staging ui
+name: deploy ui
 on:
   pull_request:
     types: [closed]
     paths:
       - "ui/**"
 jobs:
-  merge-PR:
+  deploy-staging-ui:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./ui
     env:
       CONTENTFUL_API_KEY: ${{ secrets.PREVIEW_CONTENTFUL_API_KEY }}
       EOD_HISTORICAL_DATA_API_KEY: ${{ secrets.EOD_HISTORICAL_DATA_API_KEY }}
+      NODE_AUTH_TOKEN: ${{ secrets.DCF_REACT_ACCESS_TOKEN }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      GATSBY_API_BASE_URL: ${{ secrets.GATSBY_API_BASE_URL }}
+
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "12.20.1"
+          registry-url: "https://npm.pkg.github.com/"
+          scope: "@tracktak"
+      - run: npm install --only=prod
+      - run: npm run deploy:staging
+
+name: deploy node
+on:
+  push:
+    types: [push]
+    # paths:
+    #   - "node/**"
+jobs:
+  deploy-staging-node:
+ #  if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./node
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
           node-version: "12.20.1"
       - run: npm install --only=prod
       - run: npm run deploy
-# name: deploy staging node
-# on:
-#   pull_request:
-#     types: [push]
-#     paths:
-#       - "node/**"
-# jobs:
-#   merge-PR:
-#     if: github.event.pull_request.merged == true
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v2
-#       - uses: actions/setup-node@v1
-#         with:
-#           node-version: "12.20.1"
-#       - run: npm install --only=prod
-#       - run: npm run deploy
 

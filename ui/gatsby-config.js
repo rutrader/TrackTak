@@ -1,7 +1,7 @@
 require("dotenv/config");
 
-const isInProduction = process.env.NODE_ENV === "production";
-const isInDevelopment = process.env.NODE_ENV === "development";
+const activeEnv = process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV;
+const isInProduction = activeEnv === "production";
 
 module.exports = {
   flags: {
@@ -82,7 +82,7 @@ module.exports = {
       options: {
         accessToken: process.env.CONTENTFUL_API_KEY,
         spaceId: "kq8pz2yvb2zk",
-        host: isInDevelopment ? "preview.contentful.com" : undefined,
+        host: isInProduction ? undefined : "preview.contentful.com",
       },
     },
     {
