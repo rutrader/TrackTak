@@ -2,6 +2,8 @@ const path = require("path");
 const nodeExternals = require("webpack-node-externals");
 const CopyPlugin = require("copy-webpack-plugin");
 
+console.log("test");
+
 module.exports = {
   mode: "production",
   entry: ["./src/app.js", "./src/workers/index.js"],
