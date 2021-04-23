@@ -23,6 +23,6 @@ jobs:
           node-version: "12.20.1"
       - uses: hmanzur/actions-aws-eb@v1.0.0
         with:
-          command: "init --region ${{ secrets.AWS_DEFAULT_REGION }} --platform Node.js node-express-env-staging"
+          command: "init --region eu-west-2 --platform Node.js node-express-env-staging"
       - run: npm install --only=prod
       - run: npm run deploy:staging
