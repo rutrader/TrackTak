@@ -30,9 +30,8 @@ jobs:
       - run: npm run deploy:staging
 
 name: deploy staging node
-on:
-  push:
-    types: [push]
+on: push
+  #  types: [push]
     # paths:
     #   - "node/**"
 jobs:
