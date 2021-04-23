@@ -20,4 +20,4 @@ jobs:
           node-version: "12.20.1"
       - run: npm install --only=prod
       - run: npm run build
-      - run: npm run publish
+      - run: npm publish
