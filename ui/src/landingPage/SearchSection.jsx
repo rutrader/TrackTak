@@ -124,12 +124,9 @@ const SearchSection = () => {
           </Typography>
           <Typography variant="h6" color="inherit" gutterBottom>
             <Box>
-              Excel is no longer suitable to provide detailed intrinsic
-              valuation models.
-            </Box>
-            <Box>
-              It's difficult to integrate third party financial API's and tools
-              such as Monte Carlo simulations.
+              tracktak enables you to do quick DCF models based on Aswath
+              Damodaran's techniques directly in the cloud. No third party API
+              or excel configuration needed.
             </Box>
           </Typography>
           <Box

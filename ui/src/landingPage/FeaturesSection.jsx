@@ -71,6 +71,7 @@ const FeatureHeader = (props) => (
   <Typography
     {...props}
     sx={{
+      whiteSpace: "nowrap",
       visibility: "visible",
       animationDelay: "0.4s",
       animationName: "fadeInUp",
@@ -157,9 +158,10 @@ const FeaturesSection = () => {
         </BoxColumnWrapper>
         <BoxColumnWrapper>
           <BoxIcon>
-            <IconGradient lightColor="#b548f2" darkColor="#d283fd">
-              <ImCogs fontSize="30px" />
+            <IconGradient lightColor="#e44e83" darkColor="#ffb8d1">
+              <RiTimerLine fontSize="30px" />
             </IconGradient>
+
             <FeatureHeader variant="h4">Automated</FeatureHeader>
             <FeatureText>
               Automates your DCF inputs based on historical and current data.
@@ -168,12 +170,13 @@ const FeaturesSection = () => {
         </BoxColumnWrapper>
         <BoxColumnWrapper>
           <BoxIcon>
-            <IconGradient lightColor="#e44e83" darkColor="#ffb8d1">
-              <RiTimerLine fontSize="30px" />
+            <IconGradient lightColor="#b548f2" darkColor="#d283fd">
+              <ImCogs fontSize="30px" />
             </IconGradient>
-            <FeatureHeader variant="h4">Time-saving</FeatureHeader>
+            <FeatureHeader variant="h4">Sensitivity Analysis</FeatureHeader>
             <FeatureText>
-              Finds a companies true intrinsic value within minutes.
+              Automatically shows you the different estimated price of various
+              inputs.
             </FeatureText>
           </BoxIcon>
         </BoxColumnWrapper>
