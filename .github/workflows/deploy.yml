@@ -1,4 +1,4 @@
-name: deploy ui
+name: deploy staging ui
 on:
   pull_request:
     types: [closed]
@@ -29,7 +29,7 @@ jobs:
       - run: npm install --only=prod
       - run: npm run deploy:staging
 
-name: deploy node
+name: deploy staging node
 on:
   push:
     types: [push]
@@ -52,5 +52,5 @@ jobs:
         with:
           node-version: "12.20.1"
       - run: npm install --only=prod
-      - run: npm run deploy
+      - run: npm run deploy:staging
 
