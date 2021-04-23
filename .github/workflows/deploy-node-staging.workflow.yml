@@ -1,6 +1,6 @@
 name: deploy staging node
 on:
-  pull_request
+  pull_request:
     types: [closed]
     paths:
       - "node/**"
