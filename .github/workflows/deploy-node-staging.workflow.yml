@@ -21,5 +21,7 @@ jobs:
         with:
           node-version: "12.20.1"
       - uses: hmanzur/actions-aws-eb@v1.0.0
+        with:
+          command: "init node-express-env-staging"
       - run: npm install --only=prod
       - run: npm run deploy:staging
