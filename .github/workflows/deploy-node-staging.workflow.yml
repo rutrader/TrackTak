@@ -11,21 +11,19 @@ jobs:
     defaults:
       run:
         working-directory: ./node
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_DEFAULT_REGION: "eu-west-2"
 
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: "12.20.1"
-      - uses: hmanzur/actions-aws-eb@v1.0.0
-        with:
-          command: "init --region eu-west-2 --platform Node.js node-express-env-staging"
       - run: npm install --only=prod
       - run: npm run build:staging
-      - uses: hmanzur/actions-aws-eb@v1.0.0
+      - uses: einaregilsson/beanstalk-deploy@v16
         with:
-          command: "deploy NodeExpressEnvStaging-env"
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: node-express-env-staging
+          environment_name: NodeExpressEnvStaging-env
+          region: eu-west-2
+          deployment_package: build.zip
