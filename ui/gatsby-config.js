@@ -5,6 +5,34 @@ const activeEnv =
   process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV || "development";
 const isInProduction = activeEnv === "production";
 
+const duplicatePackageModules = [
+  "react",
+  "react-dom",
+  "redux",
+  "react-redux",
+  "@emotion/react",
+  "@emotion/styled",
+  "@material-ui/core",
+  "@material-ui/icons",
+  "@material-ui/styles",
+  "styled-components",
+  "@reduxjs/toolkit",
+  "change-case",
+  "cross-env",
+  "dayjs",
+  "query-string",
+  "@blueprintjs/core",
+  "@blueprintjs/table",
+];
+
+const alias = {
+  "@tracktak/dcf-react": path.resolve("../packages/dcf-react/src"),
+};
+
+duplicatePackageModules.forEach((packageModule) => {
+  alias[packageModule] = path.resolve(`./node_modules/${packageModule}`);
+});
+
 module.exports = {
   flags: {
     PRESERVE_WEBPACK_CACHE: true,
@@ -17,10 +45,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-alias-imports`,
       options: {
-        alias: {
-          react: path.resolve("./node_modules/react"),
-          "@tracktak-dcf-react": path.resolve("../packages/dcf-react/src"),
-        },
+        alias,
       },
     },
     "gatsby-plugin-no-sourcemaps",
