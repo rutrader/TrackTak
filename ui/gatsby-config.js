@@ -1,18 +1,28 @@
 require("dotenv/config");
+const path = require("path");
 
-const activeEnv = process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV;
+const activeEnv =
+  process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV || "development";
 const isInProduction = activeEnv === "production";
 
 module.exports = {
   flags: {
     PRESERVE_WEBPACK_CACHE: true,
-    DEV_SSR: true,
   },
   siteMetadata: {
     title: "tracktak",
     siteUrl: "https://tracktak.com",
   },
   plugins: [
+    {
+      resolve: `gatsby-plugin-alias-imports`,
+      options: {
+        alias: {
+          react: path.resolve("./node_modules/react"),
+          "@tracktak-dcf-react": path.resolve("../packages/dcf-react/src"),
+        },
+      },
+    },
     "gatsby-plugin-no-sourcemaps",
     {
       resolve: "gatsby-transformer-remark",
