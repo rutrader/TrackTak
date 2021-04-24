@@ -25,5 +25,7 @@ jobs:
           node-version: "12.20.1"
           registry-url: "https://npm.pkg.github.com/"
           scope: "@tracktak"
+      - working-directory: ./packages/dcf-react
+        run: npm install --only=prod
       - run: npm install --only=prod
       - run: npm run deploy:staging
