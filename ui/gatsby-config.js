@@ -23,6 +23,7 @@ const duplicatePackageModules = [
   "query-string",
   "@blueprintjs/core",
   "@blueprintjs/table",
+  "axios",
 ];
 
 const alias = {
