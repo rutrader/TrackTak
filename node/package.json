@@ -7,22 +7,21 @@
     "node": "12.20.1"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=production node ./app.js",
+    "start": "node ./app.js",
     "start:dev": "cross-env NODE_ENV=development nodemon --es-module-specifier-resolution=node",
     "zip": "cd ./build && bestzip ../build.zip *",
     "clean:build": "rimraf ./build",
-    "build": "webpack && npm run zip",
+    "build": "cross-env NODE_ENV=production webpack && npm run zip",
     "build:staging": "cross-env NODE_ENV=staging webpack && npm run zip",
     "clean": "rimraf ./node_modules",
-    "deploy": "npm run build && eb deploy",
-    "deploy:staging": "npm run build:staging && eb init --region eu-west-2 --platform Node.js node-express-env-staging && eb deploy NodeExpressEnvStaging-env"
+    "deploy": "npm run build && eb deploy"
   },
   "devDependencies": {
     "nodemon": "^2.0.6",
-    "object-sizeof": "^1.6.1",
-    "webpack-cli": "^4.2.0"
+    "object-sizeof": "^1.6.1"
   },
   "dependencies": {
+    "webpack-cli": "^4.2.0",
     "@formulajs/formulajs": "^2.6.8",
     "aws-sdk": "^2.814.0",
     "axios": "^0.21.0",

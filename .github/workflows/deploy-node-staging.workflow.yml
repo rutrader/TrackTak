@@ -1,0 +1,29 @@
+name: deploy staging node
+on:
+  pull_request:
+    types: [closed]
+    paths:
+      - "node/**"
+jobs:
+  deploy-staging-node:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./node
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "12.20.1"
+      - run: npm install --only=prod
+      - run: npm run build:staging
+      - uses: einaregilsson/beanstalk-deploy@v16
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: node-express-env-staging
+          environment_name: NodeExpressEnvStaging-env
+          version_label: $GITHUB_RUN_NUMBER
+          region: eu-west-2
+          deployment_package: ./node/build.zip

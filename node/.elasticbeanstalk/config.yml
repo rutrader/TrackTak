@@ -1,11 +1,11 @@
 branch-defaults:
   main:
-    environment: NodeExpressEnvStaging-env
+    environment: node-express-env
     group_suffix: null
 deploy:
   artifact: ./build.zip
 global:
-  application_name: node-express-env-staging
+  application_name: tracktak
   branch: null
   default_ec2_keyname: null
   default_platform: Node.js
