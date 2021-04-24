@@ -1,7 +1,5 @@
 name: deploy staging ui
 on:
-  repository_dispatch:
-    types: [dcf-react-published]
   pull_request:
     types: [closed]
     paths:

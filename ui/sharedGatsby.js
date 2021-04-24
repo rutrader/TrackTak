@@ -9,7 +9,7 @@ import {
 import { LocationProvider, globalHistory } from "@reach/router";
 import { extendedFundamentalsReducer } from "./src/redux/reducers/extendedFundamentalsReducer";
 import "./sass/blueprintTheme.scss";
-import "@tracktak/dcf-react/dist/index.css";
+import "@tracktak/dcf-react/reset.css";
 import "@fontsource/nunito/400.css";
 import "@fontsource/nunito/700.css";
 import theme from "./src/theme";
