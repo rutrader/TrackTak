@@ -1,8 +1,12 @@
-require("dotenv/config");
-const path = require("path");
-
 const activeEnv =
   process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV || "development";
+
+require("dotenv").config({
+  path: `.env.${activeEnv}`,
+});
+
+const path = require("path");
+
 const isInProduction = activeEnv === "production";
 
 const duplicatePackageModules = [
