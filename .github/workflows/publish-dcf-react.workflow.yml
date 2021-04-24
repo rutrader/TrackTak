@@ -13,7 +13,6 @@ jobs:
         working-directory: ./packages/dcf-react
     env:
       NODE_AUTH_TOKEN: ${{ secrets.DCF_REACT_ACCESS_TOKEN }}
-      NPM_AUTH_TOKEN: ${{ secrets.DCF_REACT_ACCESS_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
