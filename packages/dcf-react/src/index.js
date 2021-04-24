@@ -48,7 +48,6 @@ export { default as convertGBXToGBP } from "./shared/convertGBXToGBP";
 export { default as convertFundamentals } from "./shared/convertFundamentals";
 
 export { default as TracktakLogo } from "./assets/tracktak.svg";
-
 export { default as useDebouncedCallback } from "./hooks/useDebouncedCallback";
 export { default as useHasAllRequiredInputsFilledIn } from "./hooks/useHasAllRequiredInputsFilledIn";
 export { default as useTicker } from "./hooks/useTicker";

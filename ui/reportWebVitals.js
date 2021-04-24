@@ -11,5 +11,4 @@ const reportWebVitals = (onPerfEntry) => {
     );
   }
 };
-
 module.exports = reportWebVitals;
