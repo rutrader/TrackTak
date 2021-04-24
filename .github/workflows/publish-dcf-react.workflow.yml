@@ -1,12 +1,12 @@
 name: publish dcf react
 on:
-  push
-  #  types: [push]
-  # paths:
-  #   - "node/**"
+  pull_request:
+    types: [closed]
+    paths:
+      - "packages/dcf-react/**"
 jobs:
   publish-dcf-react:
-    #  if: github.event.pull_request.merged == true
+      if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     defaults:
       run:
