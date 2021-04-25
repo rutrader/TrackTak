@@ -18,6 +18,11 @@ const convertBalanceSheet = ({
     newBalanceSheet[key] = getValueFromString(balanceSheet[key]);
   });
 
+  // EOD fix for some stocks who have different longTermDebt versus longTermDebtTotal
+  newBalanceSheet.longTermDebt = newBalanceSheet.longTermDebtTotal
+    ? newBalanceSheet.longTermDebtTotal
+    : newBalanceSheet.longTermDebt;
+
   return newBalanceSheet;
 };
 
