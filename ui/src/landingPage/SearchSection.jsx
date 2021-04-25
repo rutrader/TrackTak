@@ -225,8 +225,8 @@ const SearchSection = () => {
             color: "white",
             borderRadius: "5px",
             position: "fixed",
-            bottom: "30px",
-            right: "30px",
+            bottom: "5px",
+            right: "29px",
             transition: "all 0.3s ease-out 0s",
             zIndex: (theme) => theme.zIndex.scrollTopButton,
           }}

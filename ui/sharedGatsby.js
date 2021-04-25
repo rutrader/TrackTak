@@ -12,6 +12,7 @@ import "./sass/blueprintTheme.scss";
 import "@tracktak/dcf-react/reset.css";
 import "@fontsource/nunito/400.css";
 import "@fontsource/nunito/700.css";
+import "./global.css";
 import theme from "./src/theme";
 import { snackbarReducer } from "./src/redux/reducers/snackbarReducer";
 import PageSpinner from "./src/components/PageSpinner";
