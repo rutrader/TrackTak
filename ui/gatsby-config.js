@@ -28,6 +28,8 @@ const duplicatePackageModules = [
   "@blueprintjs/core",
   "@blueprintjs/table",
   "axios",
+  "gatsby",
+  "gatsby-plugin-anchor-links",
 ];
 
 const alias = {
