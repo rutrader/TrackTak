@@ -148,6 +148,7 @@ const DiscountedCashFlowTable = ({
           ebitTargetMarginInYearTen: inputQueryParams.ebitTargetMarginInYearTen,
           totalCostOfCapital: costOfCapital.totalCostOfCapital,
           salesToCapitalRatio: inputQueryParams.salesToCapitalRatio,
+          nonOperatingAssets: inputQueryParams.nonOperatingAssets,
           netOperatingLoss: inputQueryParams.netOperatingLoss,
           probabilityOfFailure: inputQueryParams.probabilityOfFailure,
           proceedsAsAPercentageOfBookValue:
@@ -181,6 +182,7 @@ const DiscountedCashFlowTable = ({
     sharesOutstanding,
     valueOfAllOptionsOutstanding,
     hasAllRequiredInputsFilledIn,
+    inputQueryParams.nonOperatingAssets,
   ]);
 
   // Key: Hack to force re-render the table when formula state changes

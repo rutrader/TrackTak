@@ -95,7 +95,7 @@ const cells = {
   B28: getExpressionProperties("=bookValueOfDebt"),
   B29: getExpressionProperties("=minorityInterest"),
   B30: getExpressionProperties("=cashAndShortTermInvestments"),
-  B31: getExpressionProperties(""),
+  B31: getExpressionProperties("=nonOperatingAssets"),
   B32: getExpressionProperties("=B27-B28-B29+B30+B31"),
   B33: getExpressionProperties("=valueOfAllOptionsOutstanding"),
   B34: getExpressionProperties("=B32-B33"),
