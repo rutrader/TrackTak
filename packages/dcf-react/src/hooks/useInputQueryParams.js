@@ -27,6 +27,7 @@ export const optionalInputQueries = [
   { name: "marketPricePerShare", type: "currency" },
   { name: "annualDividendPerShare", type: "currency" },
   { name: "netOperatingLoss", type: "million-currency" },
+  { name: "nonOperatingAssets", type: "million-currency" },
   { name: "probabilityOfFailure", type: "percent" },
   { name: "proceedsAsAPercentageOfBookValue", type: "percent" },
 ];

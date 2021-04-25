@@ -194,6 +194,16 @@ const OptionalInputs = () => {
               inputComponent: FormatInputToMillionCurrency,
             }}
           />
+          <OptionalTextField
+            label="Non-operating assets"
+            value={inputQueryParams.nonOperatingAssets}
+            onBlur={(value) => {
+              setURLInput("nonOperatingAssets", value);
+            }}
+            InputProps={{
+              inputComponent: FormatInputToMillionCurrency,
+            }}
+          />
           {/* TODO: Attempt to automate this by default but allow this override anyway */}
           <OptionalTextField
             label={probabilityOfFailureLabel}
