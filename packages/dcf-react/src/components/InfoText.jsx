@@ -213,6 +213,16 @@ export const InfoTextOther = () => {
         financial statements.
       </Box>
       <Box>
+        <b>Non-operating Assets</b> - Also known as 'cross holdings in other
+        companies'. This is the earnings that don't (and will never) show up as
+        part of the operating income. The most common non-operating assets are
+        minority cross-holdings in other companies (which are not consolidated).
+        You can find the book value of these holdings on the balance sheet, but
+        best practice is to convert it to the market value. (Apply a price to
+        book ratio, based on the sector that the company is in to the book
+        value).
+      </Box>
+      <Box>
         <b>Probability of Failure</b> - Many young, growth companies fail,
         especially if they have trouble raising cash. Many distressed companies
         fail because they have trouble making debt payments. This is a tough

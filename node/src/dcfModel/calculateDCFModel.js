@@ -68,6 +68,8 @@ const getRootCellsToUpdate = (property) => {
       case "proceedsAsAPercentageOfBookValue":
       case "bookValueOfEquity":
         return "B26";
+      case "nonOperatingAssets":
+        return "B31";
       case "valueOfAllOptionsOutstanding":
         return "B33";
       case "matureMarketEquityRiskPremium":
