@@ -120,13 +120,17 @@ const SearchSection = () => {
             fontWeight={800}
             color="inherit"
           >
-            Goodbye Excel.<Box>Hello automated Discounted Cash Flows.</Box>
+            Goodbye Excel.
+            <br />
+            Hello automated Discounted Cash Flows.
           </Typography>
           <Typography variant="h6" color="inherit" gutterBottom>
             <Box>
               tracktak enables you to do quick DCF models based on Aswath
-              Damodaran's techniques directly in the cloud. No third party API
-              or excel configuration needed.
+              Damodaran's techniques directly in the cloud.
+              <br />
+              <br />
+              Free while in beta.
             </Box>
           </Typography>
           <Box
