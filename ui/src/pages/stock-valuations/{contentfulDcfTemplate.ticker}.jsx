@@ -415,19 +415,19 @@ const Valuation = ({ data }) => {
       </Section>
       <Section>
         <ValueDrivingInputs />
-        <Box
-          sx={{
-            mt: 2,
-            display: "flex",
-            gap: theme.spacing(2),
-            flexWrap: "wrap",
-            flexDirection: "column",
-          }}
-        >
-          {probabilityOfFailure && proceedsAsAPercentageOfBookValue && (
+        {probabilityOfFailure && proceedsAsAPercentageOfBookValue && (
+          <Box
+            sx={{
+              mt: 2,
+              display: "flex",
+              gap: theme.spacing(2),
+              flexWrap: "wrap",
+              flexDirection: "column",
+            }}
+          >
             <ProbabilityOfFailureInputs />
-          )}
-        </Box>
+          </Box>
+        )}
         <Box sx={{ mt: 1 }}>
           <Typography paragraph>
             <b>Hint:</b> Have a play with the above inputs yourself and see how
