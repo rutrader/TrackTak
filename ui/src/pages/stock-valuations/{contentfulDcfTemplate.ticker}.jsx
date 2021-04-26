@@ -384,28 +384,38 @@ const Valuation = ({ data }) => {
           </NumberSpan>
           {renderHtml(salesToCapitalRatioDescription.childMarkdownRemark.html)}
         </Container>
-        <Typography variant="h6" gutterBottom>
-          {probabilityOfFailureLabel}
-        </Typography>
-        <Container>
-          <NumberSpan>
-            <FormatRawNumberToPercent value={probabilityOfFailure} />
-          </NumberSpan>
-          {renderHtml(probabilityOfFailureDescription.childMarkdownRemark.html)}
-        </Container>
-        <Typography variant="h6" gutterBottom>
-          {proceedsAsPercentageOfBookValueLabel}
-        </Typography>
-        <Container>
-          <NumberSpan>
-            <FormatRawNumberToPercent
-              value={proceedsAsAPercentageOfBookValue}
-            />
-          </NumberSpan>
-          {renderHtml(
-            percentageOfBookValueDescription.childMarkdownRemark.html,
-          )}
-        </Container>
+        {probabilityOfFailureLabel && (
+          <Typography variant="h6" gutterBottom>
+            {probabilityOfFailureLabel}
+          </Typography>
+        )}
+        {probabilityOfFailure && probabilityOfFailureDescription && (
+          <Container>
+            <NumberSpan>
+              <FormatRawNumberToPercent value={probabilityOfFailure} />
+            </NumberSpan>
+            {renderHtml(
+              probabilityOfFailureDescription.childMarkdownRemark.html,
+            )}
+          </Container>
+        )}
+        {proceedsAsPercentageOfBookValueLabel && (
+          <Typography variant="h6" gutterBottom>
+            {proceedsAsPercentageOfBookValueLabel}
+          </Typography>
+        )}
+        {proceedsAsAPercentageOfBookValue && percentageOfBookValueDescription && (
+          <Container>
+            <NumberSpan>
+              <FormatRawNumberToPercent
+                value={proceedsAsAPercentageOfBookValue}
+              />
+            </NumberSpan>
+            {renderHtml(
+              percentageOfBookValueDescription.childMarkdownRemark.html,
+            )}
+          </Container>
+        )}
       </Section>
       <Section>
         <IndustryAveragesResults />
