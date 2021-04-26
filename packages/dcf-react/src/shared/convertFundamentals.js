@@ -114,39 +114,54 @@ const convertFundamentals = (fundamentalsData) => {
     yearly: {},
   };
 
-  let firstIncomeSheetRemoved;
+  // Fix EOD issue by removing stocks with incomplete data
+  const quarterlyDatesRemoved = {};
 
   Object.values(Income_Statement.quarterly).forEach((datum) => {
-    incomeStatement.quarterly[datum.date] = convertIncomeStatement(datum);
-  });
-
-  Object.values(Income_Statement.yearly).forEach((datum, i) => {
-    // Fix EOD bug from some stocks not having recent data
-    if (i !== 0 || !isNil(datum.totalRevenue)) {
-      incomeStatement.yearly[datum.date] = convertIncomeStatement(datum);
+    if (isNil(datum.totalRevenue)) {
+      quarterlyDatesRemoved[datum.date] = datum.date;
     } else {
-      firstIncomeSheetRemoved = true;
+      incomeStatement.quarterly[datum.date] = convertIncomeStatement(datum);
     }
   });
 
   Object.values(Balance_Sheet.quarterly).forEach((datum) => {
-    balanceSheet.quarterly[datum.date] = convertBalanceSheet(datum);
-  });
-
-  Object.values(Balance_Sheet.yearly).forEach((datum, i) => {
-    // Fix EOD bug from some stocks not having recent data
-    if (i !== 0 || !firstIncomeSheetRemoved) {
-      balanceSheet.yearly[datum.date] = convertBalanceSheet(datum);
+    if (
+      isNil(datum.totalStockholderEquity) ||
+      quarterlyDatesRemoved[datum.date]
+    ) {
+      quarterlyDatesRemoved[datum.date] = datum.date;
+    } else {
+      balanceSheet.quarterly[datum.date] = convertBalanceSheet(datum);
     }
   });
 
   Object.values(Cash_Flow.quarterly).forEach((datum) => {
-    cashFlowStatement.quarterly[datum.date] = convertCashFlowStatement(datum);
+    if (!quarterlyDatesRemoved[datum.date]) {
+      cashFlowStatement.quarterly[datum.date] = convertCashFlowStatement(datum);
+    }
   });
 
-  Object.values(Cash_Flow.yearly).forEach((datum, i) => {
-    // Fix EOD bug from some stocks not having recent data
-    if (i !== 0 || !firstIncomeSheetRemoved) {
+  const yearlyDatesRemoved = {};
+
+  Object.values(Income_Statement.yearly).forEach((datum) => {
+    if (isNil(datum.totalRevenue)) {
+      yearlyDatesRemoved[datum.date] = datum.date;
+    } else {
+      incomeStatement.yearly[datum.date] = convertIncomeStatement(datum);
+    }
+  });
+
+  Object.values(Balance_Sheet.yearly).forEach((datum) => {
+    if (isNil(datum.totalStockholderEquity) || yearlyDatesRemoved[datum.date]) {
+      yearlyDatesRemoved[datum.date] = datum.date;
+    } else {
+      balanceSheet.yearly[datum.date] = convertBalanceSheet(datum);
+    }
+  });
+
+  Object.values(Cash_Flow.yearly).forEach((datum) => {
+    if (!yearlyDatesRemoved[datum.date]) {
       cashFlowStatement.yearly[datum.date] = convertCashFlowStatement(datum);
     }
   });
