@@ -40,19 +40,8 @@ export const wrapPageElement = ({ element, props: { data, location } }) => {
     const parsedFinancialData = JSON.parse(
       data.contentfulDcfTemplate.data.internal.content,
     );
-    const {
-      salesToCapitalRatio,
-      ebitTargetMarginInYearTen,
-      cagrYearOneToFive,
-      yearOfConvergence,
-    } = data.contentfulDcfTemplate;
 
-    const searchParams = setURLSearchQuery({
-      salesToCapitalRatio,
-      ebitTargetMarginInYearTen,
-      cagrYearOneToFive,
-      yearOfConvergence,
-    });
+    const searchParams = setURLSearchQuery(data.contentfulDcfTemplate);
     const search = `?${searchParams.toString()}`;
 
     store.dispatch(setFundamentals(convertFundamentals(parsedFinancialData)));
