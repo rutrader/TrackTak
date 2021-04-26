@@ -18,6 +18,7 @@ import { textFieldRootStyles } from "../shared/utils";
 import OptionalInput from "./OptionalInput";
 import useInputQueryParams from "../hooks/useInputQueryParams";
 import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
+import ProbabilityOfFailureInputs from "./ProbabilityOfFailureInputs";
 
 export const pretaxCostOfDebtLabel = "Pre-tax Cost of Debt";
 export const probabilityOfFailureLabel = "Probability of Failure";
@@ -204,28 +205,7 @@ const OptionalInputs = () => {
               inputComponent: FormatInputToMillionCurrency,
             }}
           />
-          {/* TODO: Attempt to automate this by default but allow this override anyway */}
-          <OptionalTextField
-            label={probabilityOfFailureLabel}
-            value={inputQueryParams.probabilityOfFailure}
-            onBlur={(value) => {
-              setURLInput("probabilityOfFailure", value);
-            }}
-            InputProps={{
-              inputComponent: FormatInputToPercent,
-            }}
-          />
-          {/* TODO: Add fair value option as well later */}
-          <OptionalTextField
-            label={proceedsAsPercentageOfBookValueLabel}
-            value={inputQueryParams.proceedsAsAPercentageOfBookValue}
-            onBlur={(value) => {
-              setURLInput("proceedsAsAPercentageOfBookValue", value);
-            }}
-            InputProps={{
-              inputComponent: FormatInputToPercent,
-            }}
-          />
+          <ProbabilityOfFailureInputs />
         </React.Fragment>
       ),
     },

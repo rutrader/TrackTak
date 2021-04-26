@@ -5,7 +5,7 @@ import { renderRichText } from "gatsby-source-contentful/rich-text";
 import { BLOCKS } from "@contentful/rich-text-types";
 import YouTube from "react-youtube";
 import { graphql, Link as RouterLink } from "gatsby";
-import { Box, Link, Typography } from "@material-ui/core";
+import { Box, Link, Typography, useTheme } from "@material-ui/core";
 import {
   CompanyOverviewStats,
   ValueDrivingInputs,
@@ -38,6 +38,11 @@ import {
 } from "../../redux/thunks/fundamentalsThunks";
 import SubscribeCover from "../../components/SubscribeCover";
 import subscribePopupShownHook from "../../hooks/subscribePopupShownHook";
+import ProbabilityOfFailureInputs from "../../../../packages/dcf-react/src/components/ProbabilityOfFailureInputs";
+import {
+  probabilityOfFailureLabel,
+  proceedsAsPercentageOfBookValueLabel,
+} from "../../../../packages/dcf-react/src/components/OptionalInputs";
 
 export const query = graphql`
   fragment ValuationInformation on ContentfulDcfTemplate {
@@ -47,6 +52,8 @@ export const query = graphql`
     cagrYearOneToFive
     dateOfValuation
     yearOfConvergence
+    probabilityOfFailure
+    proceedsAsAPercentageOfBookValue
     data {
       General {
         Name
@@ -113,6 +120,16 @@ export const query = graphql`
         }
       }
       yearOfConvergenceDescription {
+        childMarkdownRemark {
+          html
+        }
+      }
+      probabilityOfFailureDescription {
+        childMarkdownRemark {
+          html
+        }
+      }
+      percentageOfBookValueDescription {
         childMarkdownRemark {
           html
         }
@@ -192,6 +209,7 @@ const renderField = (field) => {
 };
 
 const Valuation = ({ data }) => {
+  const theme = useTheme();
   const [subscribePopupShown] = subscribePopupShownHook();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -208,6 +226,8 @@ const Valuation = ({ data }) => {
     data: financialData,
     ebitTargetMarginInYearTen,
     extraBusinessDescription,
+    probabilityOfFailure,
+    proceedsAsAPercentageOfBookValue,
     competitors,
     lookingForward,
     relativeNumbers,
@@ -215,6 +235,8 @@ const Valuation = ({ data }) => {
     ebitTargetMarginInYearTenDescription,
     salesToCapitalRatioDescription,
     yearOfConvergenceDescription,
+    probabilityOfFailureDescription,
+    percentageOfBookValueDescription,
   } = data.contentfulDcfTemplate;
 
   useEffect(() => {
@@ -362,6 +384,28 @@ const Valuation = ({ data }) => {
           </NumberSpan>
           {renderHtml(salesToCapitalRatioDescription.childMarkdownRemark.html)}
         </Container>
+        <Typography variant="h6" gutterBottom>
+          {probabilityOfFailureLabel}
+        </Typography>
+        <Container>
+          <NumberSpan>
+            <FormatRawNumberToPercent value={probabilityOfFailure} />
+          </NumberSpan>
+          {renderHtml(probabilityOfFailureDescription.childMarkdownRemark.html)}
+        </Container>
+        <Typography variant="h6" gutterBottom>
+          {proceedsAsPercentageOfBookValueLabel}
+        </Typography>
+        <Container>
+          <NumberSpan>
+            <FormatRawNumberToPercent
+              value={proceedsAsAPercentageOfBookValue}
+            />
+          </NumberSpan>
+          {renderHtml(
+            percentageOfBookValueDescription.childMarkdownRemark.html,
+          )}
+        </Container>
       </Section>
       <Section>
         <IndustryAveragesResults />
@@ -371,6 +415,19 @@ const Valuation = ({ data }) => {
       </Section>
       <Section>
         <ValueDrivingInputs />
+        <Box
+          sx={{
+            mt: 2,
+            display: "flex",
+            gap: theme.spacing(2),
+            flexWrap: "wrap",
+            flexDirection: "column",
+          }}
+        >
+          {probabilityOfFailure && proceedsAsAPercentageOfBookValue && (
+            <ProbabilityOfFailureInputs />
+          )}
+        </Box>
         <Box sx={{ mt: 1 }}>
           <Typography paragraph>
             <b>Hint:</b> Have a play with the above inputs yourself and see how
