@@ -71,8 +71,8 @@ export const findType = (inputQueries, name) =>
 const getDynamicMinMaxRange = (name, inputQueryParams) => {
   if (isNil(inputQueryParams[name])) {
     return {
-      min: 0,
-      max: 0,
+      min: -1,
+      max: 1,
     };
   }
 

@@ -51,6 +51,8 @@ export const getExchangeRatesThunk = createAsyncThunk(
 
       return data.value;
     }
+
+    dispatch(setExchangeRates());
   },
 );
 
