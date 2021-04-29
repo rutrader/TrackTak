@@ -11,11 +11,7 @@ import SensitivityAnalysis from "../components/SensitivityAnalysis";
 import Section from "../components/Section";
 import { Fragment } from "react";
 
-const DiscountedCashFlowSheet = ({
-  columnWidths,
-  SubscribeCover,
-  loadingCells,
-}) => {
+const DiscountedCashFlowSheet = ({ SubscribeCover, loadingCells }) => {
   const dispatch = useDispatch();
   const [showFormulas, setShowFormulas] = useState(false);
   const isYoyGrowthToggled = useSelector(selectIsYoyGrowthToggled);
@@ -91,7 +87,6 @@ const DiscountedCashFlowSheet = ({
         </Box>
       </Box>
       <DiscountedCashFlowTable
-        columnWidths={columnWidths}
         showFormulas={showFormulas}
         SubscribeCover={SubscribeCover}
         loadingCells={loadingCells}

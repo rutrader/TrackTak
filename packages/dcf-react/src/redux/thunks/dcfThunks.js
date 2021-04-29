@@ -6,14 +6,14 @@ export const calculateDCFModelThunk = createAsyncThunk(
   async (currentScope, { getState }) => {
     const state = getState();
 
-    const { data } = await calculateDCFModel(
-      state.dcf.cells,
-      state.dcf.scope,
-      currentScope,
-    );
+    // const { data } = await calculateDCFModel(
+    //   state.dcf.cells,
+    //   state.dcf.scope,
+    //   currentScope,
+    // );
 
     return {
-      data,
+      data: state.dcf.cells,
       currentScope,
     };
   },

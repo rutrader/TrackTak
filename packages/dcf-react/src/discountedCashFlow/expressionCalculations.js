@@ -4,6 +4,10 @@ import {
   yearOfConvergenceQueryName,
 } from "../shared/inputQueryNames";
 
+const cagrYearOneToFiveQueryNameTT = `TT('${cagrYearOneToFiveQueryName}')`;
+const ebitTargetMarginInYearTenQueryNameTT = `TT('${ebitTargetMarginInYearTenQueryName}')`;
+const yearOfConvergenceQueryNameTT = `TT('${yearOfConvergenceQueryName}')`;
+
 export const getPreviousColumn = (cellKey) => {
   const column = cellKey.charAt(0);
   const previousColumn = String.fromCharCode(column.charCodeAt(0) - 1);
@@ -14,9 +18,9 @@ export const getPreviousColumn = (cellKey) => {
 export const getEBITMarginCalculation = (cellKey) => {
   const column = cellKey.charAt(0);
 
-  const falsyCondition = `${ebitTargetMarginInYearTenQueryName} - ((${ebitTargetMarginInYearTenQueryName} - B3) / ${yearOfConvergenceQueryName}) * (${yearOfConvergenceQueryName} - ${column}1)`;
+  const falsyCondition = `${ebitTargetMarginInYearTenQueryNameTT} - ((${ebitTargetMarginInYearTenQueryNameTT} - B3) / ${yearOfConvergenceQueryNameTT}) * (${yearOfConvergenceQueryNameTT} - ${column}1)`;
 
-  return `=IF(${column}1 > ${yearOfConvergenceQueryName}, ${ebitTargetMarginInYearTenQueryName}, ${falsyCondition})`;
+  return `=IF(${column}1 > ${yearOfConvergenceQueryNameTT}, ${ebitTargetMarginInYearTenQueryNameTT}, ${falsyCondition})`;
 };
 
 export const getReinvestmentCalculation = (cellKey) => {
@@ -33,10 +37,10 @@ export const getRevenueCalculation = (cellKey, growthRate) => {
 };
 
 export const getRevenueOneToFiveYrCalculation = (cellKey) =>
-  getRevenueCalculation(cellKey, cagrYearOneToFiveQueryName);
+  getRevenueCalculation(cellKey, cagrYearOneToFiveQueryNameTT);
 
 export const getRevenueSixToTenYrCalculation = (index, cellKey) => {
-  const formula = `${cagrYearOneToFiveQueryName} - ((${cagrYearOneToFiveQueryName}-riskFreeRate) / 5)`;
+  const formula = `${cagrYearOneToFiveQueryNameTT} - ((${cagrYearOneToFiveQueryNameTT}-TT('riskFreeRate')) / 5)`;
   const number = index + 1;
   const growthRevenueFormula = index === 0 ? formula : `${formula} * ${number}`;
 

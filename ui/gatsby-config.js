@@ -30,6 +30,8 @@ const duplicatePackageModules = [
   "axios",
   "gatsby",
   "gatsby-plugin-anchor-links",
+  "jspreadsheet-pro",
+  "jsuites"
 ];
 
 const alias = {
@@ -43,7 +45,7 @@ duplicatePackageModules.forEach((packageModule) => {
 module.exports = {
   flags: {
     PRESERVE_WEBPACK_CACHE: true,
-    DEV_SSR: true,
+    // DEV_SSR: true,
   },
   siteMetadata: {
     title: "tracktak",

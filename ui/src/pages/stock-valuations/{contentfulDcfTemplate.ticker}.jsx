@@ -447,9 +447,6 @@ const Valuation = ({ data }) => {
       </Section>
       <Section>
         <DiscountedCashFlowSheet
-          columnWidths={{
-            B: 90,
-          }}
           SubscribeCover={SubscribeCover}
           loadingCells={!subscribePopupShown}
         />

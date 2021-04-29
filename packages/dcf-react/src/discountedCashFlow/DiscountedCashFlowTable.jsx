@@ -1,9 +1,9 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useCallback } from "react";
 import { columns, numberOfRows } from "./cells";
-import { startColumn } from "./utils";
+import { padCellKeys, startColumn } from "./utils";
 import { Cell, Column, Table } from "@blueprintjs/table";
 import { Alert, Box, useMediaQuery, useTheme } from "@material-ui/core";
 import useInputQueryParams from "../hooks/useInputQueryParams";
@@ -32,17 +32,48 @@ import selectThreeAverageYearsEffectiveTaxRate from "../selectors/fundamentalSel
 import { Fragment } from "react";
 import { calculateDCFModelThunk } from "../redux/thunks/dcfThunks";
 import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
+import sortAlphaNumeric from "./sortAlphaNumeric";
+import getChunksOfArray from "../shared/getChunksOfArray";
+import formatTypeToMask from "./formatTypeToMask";
+import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
+import selectScope from "../selectors/dcfSelectors/selectScope";
+import "jspreadsheet-pro/dist/jspreadsheet.css";
+import "jsuites/dist/jsuites.css";
+
+const license =
+  "ZmZkMmE0ZDNlYTBlOWExZWU5ZDAwMGIyMmI0ZWE2MmUzYzg2YzIwM2QwMjQyNzU2MmJiYzJhYzgzNTUwOTc5NTZiZGExYjMxOWVkNWMyNWJhM2E5NjhmNjVhYzlhZGUxMDZjZjJjNTRhYjc5NTIyNDNlMDliZTE4OGJlODhjNGYsZXlKdVlXMWxJam9pVFdGeWRHbHVJRVJoZDNOdmJpSXNJbVJoZEdVaU9qRTJNakl4TlRZME1EQXNJbVJ2YldGcGJpSTZXeUpzYjJOaGJHaHZjM1FpTENKc2IyTmhiR2h2YzNRaVhTd2ljR3hoYmlJNk1IMD0";
 
 const DiscountedCashFlowTable = ({
-  columnWidths,
   showFormulas,
   SubscribeCover,
   loadingCells,
 }) => {
+  const jRef = useRef(null);
   const theme = useTheme();
   const location = useLocation();
+  const currencySymbol = useSelector(selectValuationCurrencySymbol);
+  const scope = useSelector(selectScope);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const cells = useSelector(selectCells);
+  const cellKeysSorted = padCellKeys(Object.keys(cells).sort(sortAlphaNumeric));
+  const data = cellKeysSorted.map((cellKey) => {
+    const cell = cells[cellKey];
+
+    return cell?.expr ?? cell?.value;
+  });
+
+  let cellsFormatted = {};
+
+  cellKeysSorted.forEach((cellKey) => {
+    const cell = cells[cellKey];
+
+    cellsFormatted[cellKey] = formatTypeToMask(currencySymbol, cell?.type);
+  });
+
+  console.log(cellsFormatted);
+
+  const chunkedData = getChunksOfArray(data, 13);
+
   const dispatch = useDispatch();
   const inputQueryParams = useInputQueryParams();
   const incomeStatement = useSelector(selectRecentIncomeStatement);
@@ -68,9 +99,9 @@ const DiscountedCashFlowTable = ({
       } else if (showFormulas) {
         return 200;
       }
-      return columnWidths?.[column] ?? 120;
+      return 120;
     });
-  }, [columnWidths, showFormulas]);
+  }, [showFormulas]);
   const cellRenderer = useCallback(
     (rowIndex, columnIndex) => {
       const column = String.fromCharCode(
@@ -126,6 +157,56 @@ const DiscountedCashFlowTable = ({
       theme.typography.fontSize,
     ],
   );
+
+  useEffect(() => {
+    // For the spreadsheet custom TT function to parse our fields
+    window.TT = (property) => {
+      return scope[property] ?? 0;
+    };
+
+    return () => {
+      delete window.TT;
+    };
+  }, [scope]);
+
+  useEffect(() => {
+    let jspreadsheetEl = null;
+    let instance = null;
+
+    const fetchJSpreadsheet = async () => {
+      const { default: jspreadsheet } = await import("jspreadsheet-pro");
+
+      if (!jRef.current.jspreadsheet) {
+        instance = jRef.current;
+        jspreadsheetEl = jspreadsheet;
+
+        jspreadsheet(jRef.current, {
+          data: chunkedData,
+          cells: cellsFormatted,
+          columns: [
+            {
+              width: 220,
+            },
+          ],
+          minDimensions: [13, 37],
+          license,
+          defaultColWidth: 120,
+          tableWidth: "100%",
+          tableHeight: "100%",
+          tableOverflow: true,
+          tableOverflowResizable: true,
+          colWidth: [220],
+          secureFormulas: false, // Sanitize on the server instead
+        });
+      }
+    };
+
+    fetchJSpreadsheet();
+
+    return () => {
+      jspreadsheetEl?.destroy(instance);
+    };
+  }, []);
 
   useEffect(() => {
     if (hasAllRequiredInputsFilledIn) {
@@ -200,6 +281,9 @@ const DiscountedCashFlowTable = ({
 
   return (
     <Box sx={{ position: "relative" }}>
+      <Box>
+        <div ref={jRef} />
+      </Box>
       <Table
         key={key}
         enableGhostCells
