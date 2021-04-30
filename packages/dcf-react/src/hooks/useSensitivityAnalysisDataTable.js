@@ -12,8 +12,9 @@ import {
   salesToCapitalRatioLabel,
   yearOfConvergenceLabel,
 } from "../components/ValueDrivingInputs";
+import { allInputNameTypeMappings } from "../discountedCashFlow/scopeNameTypeMapping";
 import roundDecimal from "../shared/roundDecimal";
-import useInputQueryParams, { inputQueries } from "./useInputQueryParams";
+import useInputQueryParams from "./useInputQueryParams";
 
 export const getLowerUpperSliderHalves = (minPoint, midPoint) => {
   const lowerHalfPoint = (midPoint - minPoint) / 2 + minPoint;
@@ -64,9 +65,6 @@ export const getSliderValuesFromMidPoint = (midPoint) => {
 
   return data;
 };
-
-export const findType = (inputQueries, name) =>
-  inputQueries.find((x) => x.name === name).type;
 
 const getDynamicMinMaxRange = (name, inputQueryParams) => {
   if (isNil(inputQueryParams[name])) {
@@ -203,7 +201,7 @@ const useSensitivityAnalysisDataTable = () => {
           ],
         },
       ].map((datum) => {
-        const type = findType(inputQueries, datum.name);
+        const type = allInputNameTypeMappings[datum.name];
         const midPoint = inputQueryParams[datum.name];
         const extraData = {
           modifier: (value) => value,

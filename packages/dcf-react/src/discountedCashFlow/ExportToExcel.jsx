@@ -1,9 +1,7 @@
 import { Box, IconButton, Typography } from "@material-ui/core";
 import React from "react";
 import { getNumberOfColumns, padCellKeys } from "./utils";
-import useInputQueryParams, {
-  inputQueries,
-} from "../hooks/useInputQueryParams";
+import useInputQueryParams from "../hooks/useInputQueryParams";
 import { sentenceCase } from "change-case";
 import makeFormatCellForExcelOutput, {
   costOfCapitalWorksheetName,
@@ -40,6 +38,7 @@ import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import isNil from "lodash/isNil";
+import { allInputNameTypeMappings } from "./scopeNameTypeMapping";
 
 export const DCFControlTypography = (props) => {
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
@@ -184,7 +183,7 @@ const ExportToExcel = () => {
     const costOfCapitalDataKeys = Object.keys(costOfCapitalData);
     const formatCellForExcelOutput = makeFormatCellForExcelOutput(
       valuationCurrencySymbol,
-      inputQueries.map(({ name }) => name),
+      Object.keys(allInputNameTypeMappings),
       costOfCapitalDataKeys,
       scope,
     );
@@ -194,7 +193,8 @@ const ExportToExcel = () => {
 
     const transformedInputsData = [];
 
-    inputQueries.forEach(({ name, type }) => {
+    Object.keys(allInputNameTypeMappings).forEach((name) => {
+      const type = allInputNameTypeMappings[name];
       const value = inputQueryParams[name];
 
       transformedInputsData.push(getNameFromKey(name, type));

@@ -1,9 +1,15 @@
 import React, { useMemo, useRef } from "react";
+import { renderToString } from "react-dom/server";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useCallback } from "react";
-import { columns, numberOfRows } from "./cells";
-import { padCellKeys, startColumn } from "./utils";
+import { columns, numberOfRows, yoyGrowthCells } from "./cells";
+import {
+  getCellsBetween,
+  getPreviousRowCellKey,
+  padCellKeys,
+  startColumn,
+} from "./utils";
 import { Cell, Column, Table } from "@blueprintjs/table";
 import { Alert, Box, useMediaQuery, useTheme } from "@material-ui/core";
 import useInputQueryParams from "../hooks/useInputQueryParams";
@@ -39,16 +45,37 @@ import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/sel
 import selectScope from "../selectors/dcfSelectors/selectScope";
 import "jspreadsheet-pro/dist/jspreadsheet.css";
 import "jsuites/dist/jsuites.css";
+import "./jspreadsheet.scss";
+import FormatInputToPercent from "../components/FormatInputToPercent";
+import scopeNameTypeMapping from "./scopeNameTypeMapping";
 
 const license =
   "ZmZkMmE0ZDNlYTBlOWExZWU5ZDAwMGIyMmI0ZWE2MmUzYzg2YzIwM2QwMjQyNzU2MmJiYzJhYzgzNTUwOTc5NTZiZGExYjMxOWVkNWMyNWJhM2E5NjhmNjVhYzlhZGUxMDZjZjJjNTRhYjc5NTIyNDNlMDliZTE4OGJlODhjNGYsZXlKdVlXMWxJam9pVFdGeWRHbHVJRVJoZDNOdmJpSXNJbVJoZEdVaU9qRTJNakl4TlRZME1EQXNJbVJ2YldGcGJpSTZXeUpzYjJOaGJHaHZjM1FpTENKc2IyTmhiR2h2YzNRaVhTd2ljR3hoYmlJNk1IMD0";
+
+const columnsLength = 13;
+const options = {
+  columns: [
+    {
+      width: 220,
+    },
+  ],
+  minDimensions: [13, 37],
+  license,
+  defaultColWidth: 120,
+  tableWidth: "100%",
+  tableHeight: "100%",
+  tableOverflow: true,
+  tableOverflowResizable: true,
+  secureFormulas: false, // Sanitize on the server instead
+};
 
 const DiscountedCashFlowTable = ({
   showFormulas,
   SubscribeCover,
   loadingCells,
 }) => {
-  const jRef = useRef(null);
+  const spreadsheet = useRef(null);
+  const spreadsheetRef = useRef(null);
   const theme = useTheme();
   const location = useLocation();
   const currencySymbol = useSelector(selectValuationCurrencySymbol);
@@ -70,9 +97,7 @@ const DiscountedCashFlowTable = ({
     cellsFormatted[cellKey] = formatTypeToMask(currencySymbol, cell?.type);
   });
 
-  console.log(cellsFormatted);
-
-  const chunkedData = getChunksOfArray(data, 13);
+  const chunkedData = getChunksOfArray(data, columnsLength);
 
   const dispatch = useDispatch();
   const inputQueryParams = useInputQueryParams();
@@ -161,7 +186,16 @@ const DiscountedCashFlowTable = ({
   useEffect(() => {
     // For the spreadsheet custom TT function to parse our fields
     window.TT = (property) => {
-      return scope[property] ?? 0;
+      let value = scope[property] ?? 0;
+
+      if (
+        scopeNameTypeMapping[property] === "million" ||
+        scopeNameTypeMapping[property] === "million-currency"
+      ) {
+        return value ? value / 1000000 : 0;
+      }
+
+      return value;
     };
 
     return () => {
@@ -170,43 +204,91 @@ const DiscountedCashFlowTable = ({
   }, [scope]);
 
   useEffect(() => {
-    let jspreadsheetEl = null;
-    let instance = null;
+    let jspreadsheetModule;
 
     const fetchJSpreadsheet = async () => {
       const { default: jspreadsheet } = await import("jspreadsheet-pro");
 
-      if (!jRef.current.jspreadsheet) {
-        instance = jRef.current;
-        jspreadsheetEl = jspreadsheet;
+      jspreadsheetModule = jspreadsheet;
 
-        jspreadsheet(jRef.current, {
+      if (!spreadsheetRef.current.jspreadsheet) {
+        const instance = jspreadsheet(spreadsheetRef.current, {
           data: chunkedData,
           cells: cellsFormatted,
-          columns: [
-            {
-              width: 220,
-            },
-          ],
-          minDimensions: [13, 37],
-          license,
-          defaultColWidth: 120,
-          tableWidth: "100%",
-          tableHeight: "100%",
-          tableOverflow: true,
-          tableOverflowResizable: true,
-          colWidth: [220],
-          secureFormulas: false, // Sanitize on the server instead
+          onload: (el, instance) => {
+            console.log(instance);
+          },
+          onchange: (el, cell) => {
+            console.log(cell);
+          },
+          ...options,
         });
+
+        spreadsheet.current = instance;
       }
     };
 
     fetchJSpreadsheet();
 
     return () => {
-      jspreadsheetEl?.destroy(instance);
+      jspreadsheetModule.destroy(spreadsheet);
     };
   }, []);
+
+  useEffect(() => {
+    if (spreadsheet.current) {
+      for (let index = 0; index < columnsLength; index++) {
+        spreadsheet.current.setWidth(index, options.defaultColWidth);
+      }
+
+      spreadsheet.current.refresh();
+
+      if (showFormulas) {
+        const cells = spreadsheet.current.getCells();
+
+        Object.keys(cells).forEach((cellKey) => {
+          const cell = spreadsheet.current.getCell(cellKey);
+          const cellValue = spreadsheet.current.getValue(cellKey);
+
+          if (typeof cellValue === "string" && cellValue.charAt(0) === "=") {
+            cell.innerHTML = cellValue;
+          }
+        });
+
+        for (let index = 0; index < columnsLength; index++) {
+          spreadsheet.current.setWidth(index, 220);
+        }
+      }
+
+      if (isYoyGrowthToggled) {
+        const cells = spreadsheet.current.getCells();
+
+        Object.keys(cells).forEach((key) => {
+          const currentCellValue = spreadsheet.current[key];
+          const previousCellKey = getPreviousRowCellKey(key);
+          const previousCellValue = spreadsheet.current[previousCellKey];
+          const cell = spreadsheet.current.getCell(key);
+
+          if (
+            typeof previousCellValue === "number" &&
+            cell &&
+            currentCellValue
+          ) {
+            const content = renderToString(
+              <FormatInputToPercent
+                value={
+                  (currentCellValue - previousCellValue) / currentCellValue
+                }
+              />,
+            );
+
+            // cell.classList.add("readonly");
+            cell.innerHTML = content;
+          }
+        });
+      }
+    }
+  }, [showFormulas, isYoyGrowthToggled]);
 
   useEffect(() => {
     if (hasAllRequiredInputsFilledIn) {
@@ -282,7 +364,7 @@ const DiscountedCashFlowTable = ({
   return (
     <Box sx={{ position: "relative" }}>
       <Box>
-        <div ref={jRef} />
+        <div ref={spreadsheetRef} />
       </Box>
       <Table
         key={key}

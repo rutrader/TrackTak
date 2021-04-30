@@ -15,16 +15,14 @@ import selectCells from "../selectors/dcfSelectors/selectCells";
 import selectScope from "../selectors/dcfSelectors/selectScope";
 import FormatRawNumberToCurrency from "./FormatRawNumberToCurrency";
 import useSensitivityAnalysisDataTable, {
-  findType,
   getSliderValuesFromMinMax,
 } from "../hooks/useSensitivityAnalysisDataTable";
-import useInputQueryParams, {
-  inputQueries,
-} from "../hooks/useInputQueryParams";
+import useInputQueryParams from "../hooks/useInputQueryParams";
 import getChunksOfArray from "../shared/getChunksOfArray";
 import { Fragment } from "react";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import { computeSensitivityAnalysis } from "../api/api";
+import { allInputNameTypeMappings } from "../discountedCashFlow/scopeNameTypeMapping";
 
 const getModelScopes = (scope, xElement, yElement) => {
   const doesScopeExist =
@@ -126,7 +124,7 @@ const SensitivityAnalysis = () => {
   const yElement = dataTableValues[1];
 
   const onSliderChangeCommitted = (name, sliderValue) => {
-    const type = findType(inputQueries, name);
+    const type = allInputNameTypeMappings[name];
 
     let minPoint = sliderValue[0];
     let maxPoint = sliderValue[1];

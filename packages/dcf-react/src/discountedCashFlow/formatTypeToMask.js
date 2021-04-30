@@ -1,22 +1,24 @@
 const formatTypeToMask = (currencySymbol, type) => {
   if (type === "percent") {
     return {
-      mask: "0.00%",
-      type: "number",
+      type: "percent",
+      disabledMaskOnEdition: true,
     };
   }
 
   if (type === "million") {
     return {
-      mask: "#,##0,,.00",
+      mask: "0,000,.00",
       type: "number",
+      disabledMaskOnEdition: true,
     };
   }
 
   if (type === "million-currency") {
     return {
-      mask: `${currencySymbol}#,##0,,.00`,
+      mask: `${currencySymbol}#,##.00`,
       type: "number",
+      disabledMaskOnEdition: true,
     };
   }
 
@@ -24,6 +26,7 @@ const formatTypeToMask = (currencySymbol, type) => {
     return {
       mask: `${currencySymbol}#,##0.00`,
       type: "number",
+      disabledMaskOnEdition: true,
     };
   }
 
@@ -31,12 +34,12 @@ const formatTypeToMask = (currencySymbol, type) => {
     return {
       mask: "0.00",
       type: "number",
+      disabledMaskOnEdition: true,
     };
   }
 
   return {
-    type: 'text',
-    mask: ''
+    type: "text",
   };
 };
 

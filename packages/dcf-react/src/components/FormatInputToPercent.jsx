@@ -7,7 +7,7 @@ import roundDecimal from "../shared/roundDecimal";
 
 const getValueAsDecimal = (value) => {
   const valueAsDecimal = isNil(value) ? null : value / 100;
-
+  console.log(valueAsDecimal);
   return valueAsDecimal;
 };
 

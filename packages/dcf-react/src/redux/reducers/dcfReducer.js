@@ -7,6 +7,7 @@ import isNil from "lodash/isNil";
 import { createReducer } from "@reduxjs/toolkit";
 import cells from "../../discountedCashFlow/cells";
 import { calculateDCFModelThunk } from "../thunks/dcfThunks";
+import scopeNameTypeMapping from "../../discountedCashFlow/scopeNameTypeMapping";
 
 const initialState = {
   cells,
@@ -19,6 +20,23 @@ export const dcfReducer = createReducer(initialState, (builder) => {
     calculateDCFModelThunk.fulfilled,
     (state, { payload: { currentScope, data } }) => {
       state.cells = data;
+
+      // Convert millions to thousands
+      const newScope = {
+        ...currentScope,
+      };
+
+      Object.keys(currentScope).forEach((key) => {
+        if (
+          scopeNameTypeMapping[key] === "million-currency" ||
+          scopeNameTypeMapping[key] === "million"
+        ) {
+          newScope[key] = isNil(currentScope[key])
+            ? currentScope[key]
+            : currentScope[key] / 1000;
+        }
+      });
+
       state.scope = {
         ...state.scope,
         ...currentScope,

@@ -1,4 +1,5 @@
 import {
+  getCellsBetween,
   getCellsForRows,
   getColumnsBetween,
   getColumnsTo,
@@ -109,14 +110,18 @@ const cells = {
   C12: getExpressionProperties("=1/(1+C11)"),
   C15: getExpressionProperties("=TT('salesToCapitalRatio')"),
   M1: { value: "Terminal Year" },
-  M2: getExpressionProperties(getRevenueCalculation("M2", "TT('riskFreeRate')")),
+  M2: getExpressionProperties(
+    getRevenueCalculation("M2", "TT('riskFreeRate')"),
+  ),
   M3: getExpressionProperties("=L3"),
   M5: getExpressionProperties("=TT('marginalTaxRate')"),
   M6: getExpressionProperties("=M4*(1-M5)"),
   M7: getExpressionProperties(
     "=IF(TT('riskFreeRate') > 0, (TT('riskFreeRate') / M17) * M6, 0)",
   ),
-  M11: getExpressionProperties("=TT('matureMarketEquityRiskPremium') + TT('riskFreeRate')"),
+  M11: getExpressionProperties(
+    "=TT('matureMarketEquityRiskPremium') + TT('riskFreeRate')",
+  ),
   M17: getExpressionProperties("=L11"),
 };
 
@@ -128,7 +133,7 @@ getColumnsBetween(columns, "C", "L").forEach((column, index) => {
 
   cells[key] = {
     readOnly: true,
-    value: index + 1,
+    value: (index + 1).toString(),
     type: "number",
   };
 });
@@ -258,5 +263,7 @@ getColumnsBetween(columns, "B", "L").forEach((column) => {
 
   cells[roicKey].expr = getROICCalculation(roicKey);
 });
+
+export const yoyGrowthCells = getCellsBetween("C", "M", 2, 17, cells);
 
 export default cells;
