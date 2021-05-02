@@ -1,16 +1,8 @@
-import React, { useMemo, useRef } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { renderToString } from "react-dom/server";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { useCallback } from "react";
-import { columns, numberOfRows, yoyGrowthCells } from "./cells";
-import {
-  getCellsBetween,
-  getPreviousRowCellKey,
-  padCellKeys,
-  startColumn,
-} from "./utils";
-import { Cell, Column, Table } from "@blueprintjs/table";
+import { getPreviousRowCellKey, padCellKeys } from "./utils";
 import { Alert, Box, useMediaQuery, useTheme } from "@material-ui/core";
 import useInputQueryParams from "../hooks/useInputQueryParams";
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
@@ -20,10 +12,8 @@ import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selec
 import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
-import selectCells from "../selectors/dcfSelectors/selectCells";
-import formatCellValue from "./formatCellValue";
 import selectIsYoyGrowthToggled from "../selectors/dcfSelectors/selectIsYoyGrowthToggled";
-import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
+import selectCells from "../selectors/dcfSelectors/selectCells";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import useInjectQueryParams from "../hooks/useInjectQueryParams";
@@ -33,10 +23,7 @@ import {
   valueDrivingInputsId,
 } from "../components/ValueDrivingInputs";
 import { useLocation } from "@reach/router";
-import isNil from "lodash/isNil";
 import selectThreeAverageYearsEffectiveTaxRate from "../selectors/fundamentalSelectors/selectThreeAverageYearsEffectiveTaxRate";
-import { Fragment } from "react";
-import { calculateDCFModelThunk } from "../redux/thunks/dcfThunks";
 import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
 import sortAlphaNumeric from "./sortAlphaNumeric";
 import getChunksOfArray from "../shared/getChunksOfArray";
@@ -46,27 +33,39 @@ import selectScope from "../selectors/dcfSelectors/selectScope";
 import "jspreadsheet-pro/dist/jspreadsheet.css";
 import "jsuites/dist/jsuites.css";
 import "./jspreadsheet.scss";
-import FormatInputToPercent from "../components/FormatInputToPercent";
-import scopeNameTypeMapping from "./scopeNameTypeMapping";
+import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
+import TTFormula from "./ttFormula";
+import cells from "./cells";
+import { setCells, setScope } from "../redux/actions/dcfActions";
 
-const license =
-  "ZmZkMmE0ZDNlYTBlOWExZWU5ZDAwMGIyMmI0ZWE2MmUzYzg2YzIwM2QwMjQyNzU2MmJiYzJhYzgzNTUwOTc5NTZiZGExYjMxOWVkNWMyNWJhM2E5NjhmNjVhYzlhZGUxMDZjZjJjNTRhYjc5NTIyNDNlMDliZTE4OGJlODhjNGYsZXlKdVlXMWxJam9pVFdGeWRHbHVJRVJoZDNOdmJpSXNJbVJoZEdVaU9qRTJNakl4TlRZME1EQXNJbVJ2YldGcGJpSTZXeUpzYjJOaGJHaHZjM1FpTENKc2IyTmhiR2h2YzNRaVhTd2ljR3hoYmlJNk1IMD0";
+const defaultColWidth = 120;
 
-const columnsLength = 13;
-const options = {
-  columns: [
-    {
-      width: 220,
-    },
-  ],
-  minDimensions: [13, 37],
-  license,
-  defaultColWidth: 120,
-  tableWidth: "100%",
-  tableHeight: "100%",
-  tableOverflow: true,
-  tableOverflowResizable: true,
-  secureFormulas: false, // Sanitize on the server instead
+const columns = [];
+
+for (let index = 0; index < 13; index++) {
+  columns.push({ width: index === 0 ? 220 : defaultColWidth });
+}
+const cellKeysSorted = padCellKeys(Object.keys(cells).sort(sortAlphaNumeric));
+const data = cellKeysSorted.map((key) => {
+  const cell = cells[key];
+
+  return cell?.expr ?? cell?.value;
+});
+const chunkedData = getChunksOfArray(data, columns.length);
+
+// https://github.com/jspreadsheet/pro/issues/35
+const formatIfCellIsPercent = (spreadsheet, key) => {
+  const type = cells[key].type;
+
+  if (type === "percent") {
+    const cell = spreadsheet.getCell(key);
+    const existingValue = spreadsheet[key];
+    const content = renderToString(
+      <FormatRawNumberToPercent value={existingValue} />,
+    );
+
+    cell.innerHTML = content;
+  }
 };
 
 const DiscountedCashFlowTable = ({
@@ -74,31 +73,14 @@ const DiscountedCashFlowTable = ({
   SubscribeCover,
   loadingCells,
 }) => {
-  const spreadsheet = useRef(null);
-  const spreadsheetRef = useRef(null);
+  const [cellsData, setCellsData] = useState(cells);
+  const [spreadsheet, setSpreadsheet] = useState();
+  const initSpreadsheetRef = useRef(null);
   const theme = useTheme();
   const location = useLocation();
   const currencySymbol = useSelector(selectValuationCurrencySymbol);
   const scope = useSelector(selectScope);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const cells = useSelector(selectCells);
-  const cellKeysSorted = padCellKeys(Object.keys(cells).sort(sortAlphaNumeric));
-  const data = cellKeysSorted.map((cellKey) => {
-    const cell = cells[cellKey];
-
-    return cell?.expr ?? cell?.value;
-  });
-
-  let cellsFormatted = {};
-
-  cellKeysSorted.forEach((cellKey) => {
-    const cell = cells[cellKey];
-
-    cellsFormatted[cellKey] = formatTypeToMask(currencySymbol, cell?.type);
-  });
-
-  const chunkedData = getChunksOfArray(data, columnsLength);
-
   const dispatch = useDispatch();
   const inputQueryParams = useInputQueryParams();
   const incomeStatement = useSelector(selectRecentIncomeStatement);
@@ -117,86 +99,9 @@ const DiscountedCashFlowTable = ({
     selectThreeAverageYearsEffectiveTaxRate,
   );
 
-  const cellColumnWidths = useMemo(() => {
-    return columns.map((column) => {
-      if (column === "A") {
-        return 220;
-      } else if (showFormulas) {
-        return 200;
-      }
-      return 120;
-    });
-  }, [showFormulas]);
-  const cellRenderer = useCallback(
-    (rowIndex, columnIndex) => {
-      const column = String.fromCharCode(
-        startColumn.charCodeAt(0) + columnIndex,
-      );
-      const row = (rowIndex += 1);
-      const key = column + row;
-      const cell = cells[key];
-      const loading =
-        (!hasAllRequiredInputsFilledIn || loadingCells) &&
-        row !== 1 &&
-        column !== "A";
-
-      if (isNil(cell?.value)) return <Cell loading={loading} />;
-
-      let node = formatCellValue(cell);
-
-      const isOutputCell = key === "B36";
-
-      let intent = "none";
-
-      if (column === startColumn || rowIndex === 1) {
-        intent = "primary";
-      } else if (showFormulas) {
-        node = cell.expr;
-      } else if (isYoyGrowthToggled && !isNil(cell.yoyGrowthValue)) {
-        node = <FormatRawNumberToPercent value={cell.yoyGrowthValue} />;
-      }
-
-      return (
-        <Cell
-          style={{
-            fontSize: theme.typography.fontSize,
-            fontFamily: theme.typography.fontFamily,
-            color: isOutputCell ? theme.palette.primary.main : "initial",
-          }}
-          intent={intent}
-          loading={loading}
-        >
-          {/* Fragment here fixes this issue: https://github.com/palantir/blueprint/issues/2446 */}
-          <Fragment>{node}</Fragment>
-        </Cell>
-      );
-    },
-    [
-      cells,
-      hasAllRequiredInputsFilledIn,
-      isYoyGrowthToggled,
-      loadingCells,
-      showFormulas,
-      theme.palette.primary.main,
-      theme.typography.fontFamily,
-      theme.typography.fontSize,
-    ],
-  );
-
   useEffect(() => {
     // For the spreadsheet custom TT function to parse our fields
-    window.TT = (property) => {
-      let value = scope[property] ?? 0;
-
-      if (
-        scopeNameTypeMapping[property] === "million" ||
-        scopeNameTypeMapping[property] === "million-currency"
-      ) {
-        return value ? value / 1000000 : 0;
-      }
-
-      return value;
-    };
+    window.TT = TTFormula(scope);
 
     return () => {
       delete window.TT;
@@ -204,96 +109,150 @@ const DiscountedCashFlowTable = ({
   }, [scope]);
 
   useEffect(() => {
+    let instance;
     let jspreadsheetModule;
 
     const fetchJSpreadsheet = async () => {
       const { default: jspreadsheet } = await import("jspreadsheet-pro");
 
+      const helpers = jspreadsheet.helpers;
+
       jspreadsheetModule = jspreadsheet;
 
-      if (!spreadsheetRef.current.jspreadsheet) {
-        const instance = jspreadsheet(spreadsheetRef.current, {
+      if (
+        initSpreadsheetRef.current !== null &&
+        !initSpreadsheetRef.current.jexcel
+      ) {
+        const cellsFormatted = {};
+
+        Object.keys(cells).forEach((key) => {
+          const cell = cells[key];
+
+          cellsFormatted[key] = formatTypeToMask(currencySymbol, cell?.type);
+        });
+
+        instance = jspreadsheet(initSpreadsheetRef.current, {
           data: chunkedData,
           cells: cellsFormatted,
           onload: (el, instance) => {
             console.log(instance);
           },
-          onchange: (el, cell) => {
-            console.log(cell);
+          onchange: (_, __, x, y) => {
+            const key = helpers.getColumnNameFromCoords(x, y);
+
+            formatIfCellIsPercent(instance, key);
           },
-          ...options,
+          columns: columns.map((column) => {
+            return {
+              ...column,
+            };
+          }),
+          defaultColWidth,
+          minDimensions: [13, 37],
+          tableWidth: "100%",
+          tableHeight: "100%",
+          tableOverflow: true,
+          tableOverflowResizable: true,
+          secureFormulas: false, // Sanitize on the server instead
+          license:
+            "ZmZkMmE0ZDNlYTBlOWExZWU5ZDAwMGIyMmI0ZWE2MmUzYzg2YzIwM2QwMjQyNzU2MmJiYzJhYzgzNTUwOTc5NTZiZGExYjMxOWVkNWMyNWJhM2E5NjhmNjVhYzlhZGUxMDZjZjJjNTRhYjc5NTIyNDNlMDliZTE4OGJlODhjNGYsZXlKdVlXMWxJam9pVFdGeWRHbHVJRVJoZDNOdmJpSXNJbVJoZEdVaU9qRTJNakl4TlRZME1EQXNJbVJ2YldGcGJpSTZXeUpzYjJOaGJHaHZjM1FpTENKc2IyTmhiR2h2YzNRaVhTd2ljR3hoYmlJNk1IMD0",
         });
 
-        spreadsheet.current = instance;
+        setSpreadsheet(instance);
       }
     };
 
     fetchJSpreadsheet();
 
     return () => {
-      jspreadsheetModule.destroy(spreadsheet);
+      jspreadsheetModule?.destroy(instance);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (spreadsheet.current) {
-      for (let index = 0; index < columnsLength; index++) {
-        spreadsheet.current.setWidth(index, options.defaultColWidth);
-      }
+    if (spreadsheet) {
+      spreadsheet.options.freezeColumns = isOnMobile ? 0 : 1;
+    }
+  }, [isOnMobile, spreadsheet]);
 
-      spreadsheet.current.refresh();
+  useEffect(() => {
+    if (spreadsheet) {
+      spreadsheet.setData(chunkedData);
+
+      const cellsData = {};
+      const allCells = spreadsheet.getCells();
+
+      Object.keys(allCells).forEach((key) => {
+        formatIfCellIsPercent(spreadsheet, key);
+
+        cellsData[key] = {
+          ...cells[key],
+          value: spreadsheet[key],
+        };
+      });
+
+      setCellsData(cellsData);
+    }
+  }, [currencySymbol, spreadsheet]);
+
+  useEffect(() => {
+    if (spreadsheet) {
+      columns.forEach(({ width }, i) => {
+        spreadsheet.setWidth(i, width);
+      });
+      const cells = spreadsheet.getCells();
 
       if (showFormulas) {
-        const cells = spreadsheet.current.getCells();
-
-        Object.keys(cells).forEach((cellKey) => {
-          const cell = spreadsheet.current.getCell(cellKey);
-          const cellValue = spreadsheet.current.getValue(cellKey);
-
+        Object.keys(cells).forEach((key) => {
+          const cell = spreadsheet.getCell(key);
+          const cellValue = spreadsheet.getValue(key);
           if (typeof cellValue === "string" && cellValue.charAt(0) === "=") {
             cell.innerHTML = cellValue;
           }
         });
-
-        for (let index = 0; index < columnsLength; index++) {
-          spreadsheet.current.setWidth(index, 220);
-        }
-      }
-
-      if (isYoyGrowthToggled) {
-        const cells = spreadsheet.current.getCells();
-
+        columns.forEach((_, i) => {
+          spreadsheet.setWidth(i, 220);
+        });
+      } else if (isYoyGrowthToggled) {
         Object.keys(cells).forEach((key) => {
-          const currentCellValue = spreadsheet.current[key];
+          const currentCellValue = spreadsheet[key];
           const previousCellKey = getPreviousRowCellKey(key);
-          const previousCellValue = spreadsheet.current[previousCellKey];
-          const cell = spreadsheet.current.getCell(key);
-
+          const previousCellValue = spreadsheet[previousCellKey];
+          const cell = spreadsheet.getCell(key);
           if (
             typeof previousCellValue === "number" &&
             cell &&
             currentCellValue
           ) {
             const content = renderToString(
-              <FormatInputToPercent
+              <FormatRawNumberToPercent
                 value={
                   (currentCellValue - previousCellValue) / currentCellValue
                 }
               />,
             );
-
-            // cell.classList.add("readonly");
             cell.innerHTML = content;
           }
         });
+      } else {
+        spreadsheet.refresh();
+
+        Object.keys(cells).forEach((key) => {
+          formatIfCellIsPercent(spreadsheet, key);
+        });
       }
     }
-  }, [showFormulas, isYoyGrowthToggled]);
+  }, [showFormulas, isYoyGrowthToggled, spreadsheet]);
+
+  useEffect(() => {
+    dispatch(setCells(cellsData));
+  }, [cellsData, dispatch]);
 
   useEffect(() => {
     if (hasAllRequiredInputsFilledIn) {
       dispatch(
-        calculateDCFModelThunk({
+        setScope({
           matureMarketEquityRiskPremium,
           pastThreeYearsAverageEffectiveTaxRate,
           totalRevenue: incomeStatement.totalRevenue,
@@ -348,42 +307,11 @@ const DiscountedCashFlowTable = ({
     inputQueryParams.nonOperatingAssets,
   ]);
 
-  // Key: Hack to force re-render the table when formula state changes
-  let key = 0;
-
-  if (showFormulas) {
-    key = 1;
-  }
-
-  if (isYoyGrowthToggled) {
-    key = 2;
-  }
-
   const to = `${location.pathname}#${valueDrivingInputsId}`;
 
   return (
     <Box sx={{ position: "relative" }}>
-      <Box>
-        <div ref={spreadsheetRef} />
-      </Box>
-      <Table
-        key={key}
-        enableGhostCells
-        numFrozenColumns={isOnMobile ? 0 : 1}
-        numRows={numberOfRows}
-        columnWidths={cellColumnWidths}
-      >
-        {columns.map((column) => {
-          return (
-            <Column
-              key={column}
-              id={column}
-              name={column}
-              cellRenderer={cellRenderer}
-            />
-          );
-        })}
-      </Table>
+      <div ref={initSpreadsheetRef} style={{ maxWidth: "100%" }} />
       {SubscribeCover ? <SubscribeCover /> : null}
       {!hasAllRequiredInputsFilledIn && (
         <Alert

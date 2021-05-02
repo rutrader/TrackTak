@@ -1,4 +1,8 @@
-import { setIsYoyGrowthToggled } from "../actions/dcfActions";
+import {
+  setCells,
+  setIsYoyGrowthToggled,
+  setScope,
+} from "../actions/dcfActions";
 import {
   getCellsBetween,
   getPreviousRowCellKey,
@@ -6,8 +10,6 @@ import {
 import isNil from "lodash/isNil";
 import { createReducer } from "@reduxjs/toolkit";
 import cells from "../../discountedCashFlow/cells";
-import { calculateDCFModelThunk } from "../thunks/dcfThunks";
-import scopeNameTypeMapping from "../../discountedCashFlow/scopeNameTypeMapping";
 
 const initialState = {
   cells,
@@ -16,33 +18,15 @@ const initialState = {
 };
 
 export const dcfReducer = createReducer(initialState, (builder) => {
-  builder.addCase(
-    calculateDCFModelThunk.fulfilled,
-    (state, { payload: { currentScope, data } }) => {
-      state.cells = data;
-
-      // Convert millions to thousands
-      const newScope = {
-        ...currentScope,
-      };
-
-      Object.keys(currentScope).forEach((key) => {
-        if (
-          scopeNameTypeMapping[key] === "million-currency" ||
-          scopeNameTypeMapping[key] === "million"
-        ) {
-          newScope[key] = isNil(currentScope[key])
-            ? currentScope[key]
-            : currentScope[key] / 1000;
-        }
-      });
-
-      state.scope = {
-        ...state.scope,
-        ...currentScope,
-      };
-    },
-  );
+  builder.addCase(setCells, (state, { payload }) => {
+    state.cells = payload;
+  });
+  builder.addCase(setScope, (state, { payload }) => {
+    state.scope = {
+      ...state.scope,
+      ...payload,
+    };
+  });
   builder.addCase(setIsYoyGrowthToggled, (state, { payload }) => {
     state.isYoyGrowthToggled = payload;
 

@@ -1,5 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { riskFreeRateCalculation } from "../../discountedCashFlow/expressionCalculations";
+import { debtCalculation } from "../../discountedCashFlow/expressionCalculations";
 import selectCurrentEquityRiskPremium from "./selectCurrentEquityRiskPremium";
 import selectGovernmentBondTenYearYield from "./selectGovernmentBondTenYearYield";
 import { evaluate } from "../../shared/math";
@@ -16,7 +16,7 @@ const calculateRiskFreeRate = (
     return null;
   }
 
-  const riskFreeRate = evaluate(riskFreeRateCalculation, {
+  const riskFreeRate = evaluate(debtCalculation.riskFreeRate, {
     governmentBondTenYearYield,
     adjDefaultSpread: currentEquityRiskPremium.adjDefaultSpread,
   });

@@ -82,12 +82,33 @@ export const miscTypeMappings = {
   valueOfAllOptionsOutstanding: "million-currency",
 };
 
+export const marketValueNameTypeMapping = {};
+
+Object.keys(marketValueCalculation).forEach((key) => {
+  marketValueNameTypeMapping[key] = "million-currency";
+});
+
+export const weightInCostOfCapitalValueNameTypeMapping = {};
+
+Object.keys(weightInCostOfCapitalCalculation).forEach((key) => {
+  weightInCostOfCapitalValueNameTypeMapping[key] = "percent";
+});
+
+export const costOfComponentValueNameTypeMapping = {};
+
+Object.keys(costOfComponentCalculation).forEach((key) => {
+  costOfComponentValueNameTypeMapping[key] = "percent";
+});
+
 const scopeNameTypeMapping = {
   ...costOfCapitalNameTypeMapping,
   ...allInputNameTypeMappings,
   ...incomeStatementTypeMappings,
   ...balanceSheetTypeMappings,
   ...miscTypeMappings,
+  ...marketValueNameTypeMapping,
+  ...weightInCostOfCapitalValueNameTypeMapping,
+  ...costOfComponentValueNameTypeMapping,
 };
 
 Object.keys(marketValueCalculation).forEach((key) => {

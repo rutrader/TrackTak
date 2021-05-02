@@ -129,23 +129,18 @@ export const getROICCalculation = (cellKey) => {
   return `=${column}6/${column}16`;
 };
 
-export const riskFreeRateCalculation =
-  "=governmentBondTenYearYield - adjDefaultSpread";
-
-export const estimatedCostOfDebtCalculation =
-  "=riskFreeRate + interestSpread + adjDefaultSpread";
-
-export const estimatedMarketValueOfStraightDebtCalculation =
-  "=(interestExpense * (1 - (1 + pretaxCostOfDebt) ^ -averageMaturityOfDebt)) / pretaxCostOfDebt + bookValueOfDebt / (1 + pretaxCostOfDebt) ^ averageMaturityOfDebt";
-
-export const estimatedValueOfStraightDebtInConvertibleDebtCalculation =
-  "=(interestExpenseOnConvertibleDebt * (1 - (1 + pretaxCostOfDebt) ^ -maturityOfConvertibleDebt)) / pretaxCostOfDebt + bookValueOfConvertibleDebt / (1 + pretaxCostOfDebt) ^ maturityOfConvertibleDebt";
-
-export const leveredBetaCalculation =
-  "=unleveredBeta * (1 + (1 - marginalTaxRate) * (debtMarketValue / equityMarketValue))";
-
-export const costOfPreferredStockCalculation =
-  "=IFERROR(annualDividendPerShare / marketPricePerShare, 0)";
+export const debtCalculation = {
+  riskFreeRate: "=governmentBondTenYearYield - adjDefaultSpread",
+  estimatedCostOfDebt: "=riskFreeRate + interestSpread + adjDefaultSpread",
+  estimatedMarketValueOfStraightDebt:
+    "=(interestExpense * (1 - (1 + pretaxCostOfDebt) ^ -averageMaturityOfDebt)) / pretaxCostOfDebt + bookValueOfDebt / (1 + pretaxCostOfDebt) ^ averageMaturityOfDebt",
+  estimatedValueOfStraightDebtInConvertibleDebt:
+    "=(interestExpenseOnConvertibleDebt * (1 - (1 + pretaxCostOfDebt) ^ -maturityOfConvertibleDebt)) / pretaxCostOfDebt + bookValueOfConvertibleDebt / (1 + pretaxCostOfDebt) ^ maturityOfConvertibleDebt",
+  leveredBeta:
+    "=unleveredBeta * (1 + (1 - marginalTaxRate) * (debtMarketValue / equityMarketValue))",
+  costOfPreferredStock:
+    "=IFERROR(annualDividendPerShare / marketPricePerShare, 0)",
+};
 
 export const marketValueCalculation = {
   equityMarketValue: "=price * sharesOutstanding",

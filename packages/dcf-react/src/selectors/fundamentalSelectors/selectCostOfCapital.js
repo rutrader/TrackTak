@@ -9,12 +9,9 @@ import selectCurrentEquityRiskPremium from "./selectCurrentEquityRiskPremium";
 import { evaluate } from "../../shared/math";
 import {
   costOfComponentCalculation,
-  estimatedMarketValueOfStraightDebtCalculation,
-  estimatedValueOfStraightDebtInConvertibleDebtCalculation,
-  leveredBetaCalculation,
+  debtCalculation,
   marketValueCalculation,
   weightInCostOfCapitalCalculation,
-  costOfPreferredStockCalculation,
 } from "../../discountedCashFlow/expressionCalculations";
 import selectSharesOutstanding from "./selectSharesOutstanding";
 
@@ -39,7 +36,7 @@ const calculateCostOfCapital = (queryParams) => (
   const annualDividendPerShare = queryParams.annualDividendPerShare;
   const marginalTaxRate = currentEquityRiskPremiumCountry.marginalTaxRate;
   const estimatedMarketValueOfStraightDebt = evaluate(
-    estimatedMarketValueOfStraightDebtCalculation,
+    debtCalculation.estimatedMarketValueOfStraightDebt,
     {
       interestExpense: incomeStatement.interestExpense,
       pretaxCostOfDebt,
@@ -49,7 +46,7 @@ const calculateCostOfCapital = (queryParams) => (
   );
 
   let estimatedValueOfStraightDebtInConvertibleDebt = evaluate(
-    estimatedValueOfStraightDebtInConvertibleDebtCalculation,
+    debtCalculation.estimatedValueOfStraightDebtInConvertibleDebt,
     {
       interestExpenseOnConvertibleDebt,
       pretaxCostOfDebt,
@@ -99,7 +96,7 @@ const calculateCostOfCapital = (queryParams) => (
     });
   });
 
-  const leveredBeta = evaluate(leveredBetaCalculation, {
+  const leveredBeta = evaluate(debtCalculation.leveredBeta, {
     unleveredBeta: currentIndustry.unleveredBeta,
     marginalTaxRate,
     debtMarketValue: marketValue.debtMarketValue,
@@ -107,7 +104,7 @@ const calculateCostOfCapital = (queryParams) => (
   });
 
   let costOfPreferredStock =
-    evaluate(costOfPreferredStockCalculation, {
+    evaluate(debtCalculation.costOfPreferredStock, {
       annualDividendPerShare,
       marketPricePerShare,
     }) ?? 0;

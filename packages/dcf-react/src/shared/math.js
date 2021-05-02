@@ -8,6 +8,7 @@ import isNil from "lodash/isNil";
 import { IF, IFERROR } from "@formulajs/formulajs/lib/logical";
 import { SUM, TRUNC } from "@formulajs/formulajs/lib/math-trig";
 import { getExpressionWithoutEqualsSign } from "../discountedCashFlow/utils";
+import TTFormula from "../discountedCashFlow/ttFormula";
 
 const math = create({
   evaluateDependencies,
@@ -23,6 +24,15 @@ math.import({
 });
 
 export const evaluate = (expr, scope) => {
+  math.import(
+    {
+      TT: TTFormula(scope),
+    },
+    {
+      override: true,
+    },
+  );
+
   const newScope = {};
 
   Object.keys(scope).forEach((key) => {

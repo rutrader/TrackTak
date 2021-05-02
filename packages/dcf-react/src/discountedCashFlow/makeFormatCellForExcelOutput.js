@@ -34,8 +34,8 @@ const makeGetDependency = (currentSheetName) => (
 
 const makeFormatCellForExcelOutput = (
   currencySymbol,
-  // inputDataKeys,
-  // costOfCapitalDataKeys,
+  inputDataKeys,
+  costOfCapitalDataKeys,
   scope,
 ) => {
   const formatValueForExcelOutput = makeFormatValueForExcelOutput(
@@ -46,29 +46,29 @@ const makeFormatCellForExcelOutput = (
   return (cell, currentSheetName) => {
     if (!cell) return cell;
 
-    const { value, type, expr = '' } = cell;
+    const { value, type, expr } = cell;
 
     let formula = expr;
 
-    // const getDependency = makeGetDependency(currentSheetName);
+    const getDependency = makeGetDependency(currentSheetName);
 
     if (isExpressionDependency(formula)) {
       const matches = formula.match(/[a-z]+[A-Za-z]*/g) ?? [];
 
       matches.forEach((match) => {
-        // formula = getDependency(
-        //   costOfCapitalWorksheetName,
-        //   costOfCapitalDataKeys,
-        //   match,
-        //   formula,
-        // );
+        formula = getDependency(
+          costOfCapitalWorksheetName,
+          costOfCapitalDataKeys,
+          match,
+          formula,
+        );
 
-        // formula = getDependency(
-        //   inputsWorksheetName,
-        //   inputDataKeys,
-        //   match,
-        //   formula,
-        // );
+        formula = getDependency(
+          inputsWorksheetName,
+          inputDataKeys,
+          match,
+          formula,
+        );
 
         getMatchInFormula(scopeKeys, match, formula, (index) => {
           const key = scopeKeys[index];

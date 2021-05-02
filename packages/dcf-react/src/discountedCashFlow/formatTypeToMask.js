@@ -1,14 +1,14 @@
 const formatTypeToMask = (currencySymbol, type) => {
   if (type === "percent") {
     return {
-      type: "percent",
+      type: "text",
       disabledMaskOnEdition: true,
     };
   }
 
   if (type === "million") {
     return {
-      mask: "0,000,.00",
+      mask: "#,##.00",
       type: "number",
       disabledMaskOnEdition: true,
     };
