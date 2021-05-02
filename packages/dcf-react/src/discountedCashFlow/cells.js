@@ -90,7 +90,7 @@ const cells = {
   B24: getExpressionProperties("=B22+B23"),
   B25: getExpressionProperties("=TT('probabilityOfFailure')"),
   B26: getExpressionProperties(
-    "=(TT('bookValueOfEquity'+'bookValueOfDebt'))*TT('proceedsAsAPercentageOfBookValue')",
+    "=(TT('bookValueOfEquity')+TT('bookValueOfDebt'))*TT('proceedsAsAPercentageOfBookValue')",
   ),
   B27: getExpressionProperties("=B24*(1-B25)+B26*B25"),
   B28: getExpressionProperties("=TT('bookValueOfDebt')"),

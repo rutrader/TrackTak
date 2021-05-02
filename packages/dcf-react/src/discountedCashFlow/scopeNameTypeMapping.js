@@ -111,16 +111,4 @@ const scopeNameTypeMapping = {
   ...costOfComponentValueNameTypeMapping,
 };
 
-Object.keys(marketValueCalculation).forEach((key) => {
-  scopeNameTypeMapping[key] = "million-currency";
-});
-
-Object.keys(weightInCostOfCapitalCalculation).forEach((key) => {
-  scopeNameTypeMapping[key] = "percent";
-});
-
-Object.keys(costOfComponentCalculation).forEach((key) => {
-  scopeNameTypeMapping[key] = "percent";
-});
-
 export default scopeNameTypeMapping;

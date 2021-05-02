@@ -53,6 +53,9 @@ const makeFormatCellForExcelOutput = (
     const getDependency = makeGetDependency(currentSheetName);
 
     if (isExpressionDependency(formula)) {
+      // Remove TT() func for now, add back later when we have API integration
+      formula = replaceAll(formula, /TT\('(\w+)'\)/, "$1");
+
       const matches = formula.match(/[a-z]+[A-Za-z]*/g) ?? [];
 
       matches.forEach((match) => {

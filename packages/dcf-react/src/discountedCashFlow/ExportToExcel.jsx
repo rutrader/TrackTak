@@ -27,11 +27,15 @@ import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import isNil from "lodash/isNil";
-import {
+import scopeNameTypeMapping, {
   allInputNameTypeMappings,
-  costOfCapitalNameTypeMapping,
 } from "./scopeNameTypeMapping";
-import { debtCalculation } from "./expressionCalculations";
+import {
+  costOfComponentCalculation,
+  debtCalculation,
+  marketValueCalculation,
+  weightInCostOfCapitalCalculation,
+} from "./expressionCalculations";
 
 export const DCFControlTypography = (props) => {
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
@@ -87,7 +91,6 @@ const ExportToExcel = () => {
     };
 
     const costOfCapitalData = {
-      ...debtCalculation,
       marginalTaxRate: currentEquityRiskPremium.marginalTaxRate,
       equityRiskPremium: currentEquityRiskPremium.equityRiskPremium,
       governmentBondTenYearYield,
@@ -97,15 +100,17 @@ const ExportToExcel = () => {
       interestExpense: incomeStatement.interestExpense,
       price,
       sharesOutstanding,
+      pretaxCostOfDebt: isNil(inputQueryParams.pretaxCostOfDebt)
+        ? debtCalculation.estimatedCostOfDebt
+        : inputQueryParams.pretaxCostOfDebt,
       unleveredBeta: currentIndustry.unleveredBeta,
+      ...debtCalculation,
+      ...marketValueCalculation,
+      ...weightInCostOfCapitalCalculation,
+      ...costOfComponentCalculation,
     };
 
-    if (isNil(inputQueryParams.pretaxCostOfDebt)) {
-      costOfCapitalData.pretaxCostOfDebt = debtCalculation.estimatedCostOfDebt;
-    } else {
-      costOfCapitalData.pretaxCostOfDebt = inputQueryParams.pretaxCostOfDebt;
-    }
-
+    // Used in pretaxCostOfDebt so delete it
     delete costOfCapitalData.estimatedCostOfDebt;
 
     const costOfCapitalDataKeys = Object.keys(costOfCapitalData);
@@ -136,11 +141,14 @@ const ExportToExcel = () => {
     const transformedCostOfCapitalData = [];
 
     costOfCapitalDataKeys.forEach((key) => {
-      const type = costOfCapitalNameTypeMapping[key];
+      const type = scopeNameTypeMapping[key];
       let expr;
       let value;
 
-      if (typeof value === "string" && value.charAt(0) === "=") {
+      if (
+        typeof costOfCapitalData[key] === "string" &&
+        costOfCapitalData[key].charAt(0) === "="
+      ) {
         expr = costOfCapitalData[key];
       } else {
         value = costOfCapitalData[key];
@@ -150,7 +158,7 @@ const ExportToExcel = () => {
       transformedCostOfCapitalData.push(
         formatCellForExcelOutput(
           {
-            ...costOfCapitalData[key],
+            type,
             expr,
             value,
           },
