@@ -36,6 +36,7 @@
     "rimraf": "^3.0.2"
   },
   "dependencies": {
-    "@tracktak/dcf-react": "file:packages\\dcf"
+    "@tracktak/dcf-react": "file:packages\\dcf-react",
+    "@tracktak/auth": "file:packages\\auth"
   }
 }

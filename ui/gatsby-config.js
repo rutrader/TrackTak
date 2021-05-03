@@ -34,6 +34,7 @@ const duplicatePackageModules = [
 
 const alias = {
   "@tracktak/dcf-react": path.resolve("../packages/dcf-react/src"),
+  "@tracktak/auth": path.resolve("../packages/auth/src"),
 };
 
 duplicatePackageModules.forEach((packageModule) => {
