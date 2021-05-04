@@ -19,7 +19,7 @@ const publicRoutes = [
 app.options(publicRoutes[0], cors());
 app.options(publicRoutes[1], cors());
 
-// These routes are public so they have cors turned off
+//These routes are public so they have cors turned off
 app.post("/api/v1/calculate-dcf-model", cors(), async (req, res) => {
   const { cells, existingScope, currentScope } = req.body;
 
