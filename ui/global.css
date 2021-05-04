@@ -2,3 +2,36 @@
   bottom: 58px !important;
   right: 20px !important;
 }
+
+
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: opacity 500ms ease-out;
+  display: flex;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close {
+  opacity: 0;
+}
+ 
+.ReactModal__Content {
+  display: flex;
+  justify-content: center;
+  top: 20% !important;
+  left: 25% !important;
+  height: 60%;
+  width: 50%;
+  transition: transform 500ms ease-out;
+}
+
+.ReactModal__Content--after-open {
+  transform: translateY(0);
+}
+
+.ReactModal__Content--before-close {
+  transform: translateY(50px);
+}

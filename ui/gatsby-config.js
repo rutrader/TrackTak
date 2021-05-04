@@ -33,8 +33,7 @@ const duplicatePackageModules = [
 ];
 
 const alias = {
-  "@tracktak/dcf-react": path.resolve("../packages/dcf-react/src"),
-  "@tracktak/auth": path.resolve("../packages/auth/src"),
+  "@tracktak/dcf-react": path.resolve("../packages/dcf-react/src")
 };
 
 duplicatePackageModules.forEach((packageModule) => {
@@ -175,5 +174,16 @@ module.exports = {
       },
       __key: "pages",
     },
+    {
+      resolve: `gatsby-plugin-modal-routing`,
+      options: {
+        appElement: '#___gatsby',
+        modalProps: {
+          closeTimeoutMS: 500,
+          preventScroll: true,
+          shouldCloseOnOverlayClick: false,
+        },
+      }
+    }
   ],
 };

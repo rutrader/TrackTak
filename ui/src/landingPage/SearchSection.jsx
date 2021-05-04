@@ -10,7 +10,7 @@ import GridDots from "../assets/grid-dots.svg";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import SearchTicker from "../components/SearchTicker";
 import { AnchorLink } from "gatsby-plugin-anchor-links";
-import { graphql, useStaticQuery } from "gatsby";
+import { graphql, Link, useStaticQuery } from "gatsby";
 import Img from "gatsby-image";
 import RoundButton from "../components/RoundButton";
 import BackgroundImage from "gatsby-background-image";
@@ -175,6 +175,17 @@ const SearchSection = () => {
                   Explore Features
                 </Typography>
               </RoundButton>
+            </Box>
+            <Box mt={5}>
+              <Link
+                to="/sign-up/"
+                state={{
+                  modal: true,
+                  noScroll: true
+                }}
+              >
+                Test Modal Link
+              </Link>
             </Box>
           </Box>
         </Box>
