@@ -1,8 +1,12 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { renderToString } from "react-dom/server";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getPreviousRowCellKey, padCellKeys } from "./utils";
+import {
+  getPreviousRowCellKey,
+  isExpressionDependency,
+  padCellKeys,
+} from "./utils";
 import { Alert, Box, useMediaQuery, useTheme } from "@material-ui/core";
 import useInputQueryParams from "../hooks/useInputQueryParams";
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
@@ -68,8 +72,8 @@ const formatIfCellIsPercent = (spreadsheet, key) => {
   }
 };
 
-const refreshSpreadsheet = (spreadsheet) => {
-  if (spreadsheet) {
+const refreshSpreadsheet = (spreadsheet, hasAllRequiredInputsFilledIn) => {
+  if (spreadsheet && hasAllRequiredInputsFilledIn) {
     spreadsheet.refresh();
 
     const allCells = spreadsheet.getCells();
@@ -114,12 +118,12 @@ const DiscountedCashFlowTable = ({
     // For the spreadsheet custom TT function to parse our fields
     window.TT = TTFormula(scope);
 
-    refreshSpreadsheet(spreadsheet);
+    // refreshSpreadsheet(spreadsheet, hasAllRequiredInputsFilledIn);
 
     return () => {
       delete window.TT;
     };
-  }, [scope, spreadsheet]);
+  }, [hasAllRequiredInputsFilledIn, scope, spreadsheet]);
 
   useEffect(() => {
     let instance;
@@ -141,13 +145,43 @@ const DiscountedCashFlowTable = ({
           cellsFormatted[key] = formatTypeToMask(currencySymbol, cell?.type);
         });
 
+        let changedCells = {};
+
         instance = jspreadsheet(initSpreadsheetRef.current, {
-          cells: cellsFormatted,
-          onchange: (_, __, x, y) => {
+          onload: (_, spreadsheet) => {
+            const cellsData = {};
+            const allCells = spreadsheet.getCells();
+            Object.keys(allCells).forEach((key) => {
+              formatIfCellIsPercent(spreadsheet, key);
+              cellsData[key] = {
+                ...cells[key],
+                value: spreadsheet[key],
+              };
+            });
+            dispatch(setCells(cellsData));
+          },
+          onchange: (_, __, x, y, newValue) => {
             const key = helpers.getColumnNameFromCoords(x, y);
 
+            // To make the calculations faster for sensitivity analysis we
+            // use the values from the spreadsheet to not have to calculate them again.
+            const { type } = cells[key];
+            const changedCell = {
+              type,
+              value: parseFloat(instance[key]),
+            };
+            if (isExpressionDependency(newValue)) {
+              changedCell.expr = newValue;
+            }
+            changedCells[key] = changedCell;
             formatIfCellIsPercent(instance, key);
           },
+          onafterchanges: () => {
+            dispatch(setCells(changedCells));
+            changedCells = {};
+          },
+          data: chunkedData,
+          cells: cellsFormatted,
           columns: columns.map((column) => {
             return {
               ...column,
@@ -179,21 +213,6 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     if (spreadsheet) {
-      spreadsheet.setData(chunkedData);
-
-      const allCells = spreadsheet.getCells();
-
-      Object.keys(allCells).forEach((key) => {
-        formatIfCellIsPercent(spreadsheet, key);
-      });
-    }
-  }, [spreadsheet]);
-
-  console.log(data);
-  console.log(chunkedData);
-
-  useEffect(() => {
-    if (spreadsheet) {
       spreadsheet.options.freezeColumns = isOnMobile ? 0 : 1;
     }
   }, [isOnMobile, spreadsheet]);
@@ -215,24 +234,6 @@ const DiscountedCashFlowTable = ({
       }
     }
   }, [hasAllRequiredInputsFilledIn, spreadsheet]);
-
-  useEffect(() => {
-    if (spreadsheet) {
-      const cellsData = {};
-      const allCells = spreadsheet.getCells();
-
-      Object.keys(allCells).forEach((key) => {
-        formatIfCellIsPercent(spreadsheet, key);
-
-        cellsData[key] = {
-          ...cells[key],
-          value: spreadsheet[key],
-        };
-      });
-
-      dispatch(setCells(cellsData));
-    }
-  }, [dispatch, spreadsheet]);
 
   useEffect(() => {
     if (spreadsheet) {
@@ -274,14 +275,13 @@ const DiscountedCashFlowTable = ({
           }
         });
       } else {
-        refreshSpreadsheet(spreadsheet);
+        refreshSpreadsheet(spreadsheet, hasAllRequiredInputsFilledIn);
       }
     }
-  }, [showFormulas, showYOYGrowth, spreadsheet]);
+  }, [hasAllRequiredInputsFilledIn, showFormulas, showYOYGrowth, spreadsheet]);
 
   useEffect(() => {
-    // Dispatch only when we have all the data from the API#
-
+    // Dispatch only when we have all the data from the API
     if (
       hasAllRequiredInputsFilledIn &&
       !isNil(price) &&

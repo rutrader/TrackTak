@@ -224,7 +224,7 @@ const SensitivityAnalysis = () => {
               <CheckboxSlider
                 {...datum}
                 key={name}
-                disabledSlider={isLoading}
+                disabledSlider={isLoading || !hasAllRequiredInputsFilledIn}
                 disabled={disabled || !hasAllRequiredInputsFilledIn}
                 checked={
                   checkedItems.find((x) => x.name === name)?.value ?? false
@@ -237,7 +237,7 @@ const SensitivityAnalysis = () => {
             );
           })}
         </FormGroup>
-        {xElement && yElement && (
+        {xElement && yElement && hasAllRequiredInputsFilledIn && (
           <Box sx={{ flex: 1 }}>
             {smDown && (
               <Box sx={{ mb: 2 }}>

@@ -9,7 +9,10 @@ const initialState = {
 
 export const dcfReducer = createReducer(initialState, (builder) => {
   builder.addCase(setCells, (state, { payload }) => {
-    state.cells = payload;
+    state.cells = {
+      ...state.cells,
+      ...payload,
+    };
   });
   builder.addCase(setScope, (state, { payload }) => {
     state.scope = {
