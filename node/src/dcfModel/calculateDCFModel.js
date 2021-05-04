@@ -2,10 +2,12 @@ import { evaluate } from "../../../packages/dcf-react/src/shared/math";
 import cellsTree, { cellsTreeDependencies } from "./cellsTree";
 import {
   assignDependents,
+  getColumnsBetween,
   isExpressionDependency,
   validateExp,
 } from "../../../packages/dcf-react/src/discountedCashFlow/utils";
 import filterDuplicates from "../../../packages/dcf-react/src/shared/filterDuplicates";
+import { columns } from "../../../packages/dcf-react/src/discountedCashFlow/cells";
 
 const computeExpr = (key, expr, scope) => {
   let value = null;
@@ -51,12 +53,12 @@ const getRootCellsToUpdate = (property) => {
       case "marginalTaxRate":
         return "M5";
       case "cagrYearOneToFive":
-        return ["C2"];
+        return "C2";
       case "riskFreeRate":
         return ["H2", "M11", "M7", "B21"];
-      case "yearOfConvergence":
       case "ebitTargetMarginInYearTen":
-        return "C3";
+      case "yearOfConvergence":
+        return "B3";
       case "totalCostOfCapital":
         return "C11";
       case "salesToCapitalRatio":
