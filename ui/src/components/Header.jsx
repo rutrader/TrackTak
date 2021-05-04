@@ -22,6 +22,13 @@ const rightLinks = [
     to: "/about-us",
     text: "About us",
   },
+  {
+    to: "/sign-up",
+    text: "Sign up",
+    state: {
+      modal: true,
+    },
+  },
 ];
 
 const allLinks = [...rightLinks];
