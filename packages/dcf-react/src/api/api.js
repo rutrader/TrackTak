@@ -27,14 +27,34 @@ export const calculateDCFModel = async (cells, existingScope, currentScope) => {
   return res;
 };
 
+let dcfSensitivityAnalysisModelSource;
+
 export const computeSensitivityAnalysis = async (
   cells,
   existingScope,
   currentScopes,
 ) => {
-  return axios.post(`/api/v1/compute-sensitivity-analysis`, {
-    cells,
-    existingScope,
-    currentScopes,
-  });
+  if (dcfSensitivityAnalysisModelSource) {
+    dcfSensitivityAnalysisModelSource.cancel("New request sent.");
+  }
+
+  dcfSensitivityAnalysisModelSource = baseAxios.CancelToken.source();
+
+  const res = await axios.post(
+    `/api/v1/compute-sensitivity-analysis`,
+    {
+      cells,
+      existingScope,
+      currentScopes,
+    },
+    {
+      cancelToken:
+        dcfSensitivityAnalysisModelSource &&
+        dcfSensitivityAnalysisModelSource.token,
+    },
+  );
+
+  dcfSensitivityAnalysisModelSource = null;
+
+  return res;
 };

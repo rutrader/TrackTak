@@ -53,16 +53,12 @@ const getRootCellsToUpdate = (property) => {
       case "marginalTaxRate":
         return "M5";
       case "cagrYearOneToFive":
-        return getColumnsBetween(columns, "C", "L").map(
-          (column) => `${column}2`,
-        );
+        return "C2";
       case "riskFreeRate":
         return ["H2", "M11", "M7", "B21"];
       case "ebitTargetMarginInYearTen":
       case "yearOfConvergence":
-        return getColumnsBetween(columns, "C", "L").map(
-          (column) => `${column}3`,
-        );
+        return "B3";
       case "totalCostOfCapital":
         return "C11";
       case "salesToCapitalRatio":
