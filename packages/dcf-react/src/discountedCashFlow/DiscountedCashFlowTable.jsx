@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { renderToString } from "react-dom/server";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -12,8 +12,6 @@ import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selec
 import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
-import selectIsYoyGrowthToggled from "../selectors/dcfSelectors/selectIsYoyGrowthToggled";
-import selectCells from "../selectors/dcfSelectors/selectCells";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import useInjectQueryParams from "../hooks/useInjectQueryParams";
@@ -32,11 +30,11 @@ import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/sel
 import selectScope from "../selectors/dcfSelectors/selectScope";
 import "jspreadsheet-pro/dist/jspreadsheet.css";
 import "jsuites/dist/jsuites.css";
-import "./jspreadsheet.scss";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import TTFormula from "./ttFormula";
 import cells from "./cells";
 import { setCells, setScope } from "../redux/actions/dcfActions";
+import { isNil } from "lodash";
 
 const defaultColWidth = 120;
 
@@ -55,7 +53,7 @@ const chunkedData = getChunksOfArray(data, columns.length);
 
 // https://github.com/jspreadsheet/pro/issues/35
 const formatIfCellIsPercent = (spreadsheet, key) => {
-  const type = cells[key].type;
+  const type = cells[key]?.type;
 
   if (type === "percent") {
     const cell = spreadsheet.getCell(key);
@@ -64,16 +62,30 @@ const formatIfCellIsPercent = (spreadsheet, key) => {
       <FormatRawNumberToPercent value={existingValue} />,
     );
 
-    cell.innerHTML = content;
+    if (cell) {
+      cell.innerHTML = content;
+    }
+  }
+};
+
+const refreshSpreadsheet = (spreadsheet) => {
+  if (spreadsheet) {
+    spreadsheet.refresh();
+
+    const allCells = spreadsheet.getCells();
+
+    Object.keys(allCells).forEach((key) => {
+      formatIfCellIsPercent(spreadsheet, key);
+    });
   }
 };
 
 const DiscountedCashFlowTable = ({
   showFormulas,
+  showYOYGrowth,
   SubscribeCover,
   loadingCells,
 }) => {
-  const [cellsData, setCellsData] = useState(cells);
   const [spreadsheet, setSpreadsheet] = useState();
   const initSpreadsheetRef = useRef(null);
   const theme = useTheme();
@@ -93,7 +105,6 @@ const DiscountedCashFlowTable = ({
   const valueOfAllOptionsOutstanding = useInjectQueryParams(
     selectValueOfAllOptionsOutstanding,
   );
-  const isYoyGrowthToggled = useSelector(selectIsYoyGrowthToggled);
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
   const pastThreeYearsAverageEffectiveTaxRate = useSelector(
     selectThreeAverageYearsEffectiveTaxRate,
@@ -103,10 +114,12 @@ const DiscountedCashFlowTable = ({
     // For the spreadsheet custom TT function to parse our fields
     window.TT = TTFormula(scope);
 
+    refreshSpreadsheet(spreadsheet);
+
     return () => {
       delete window.TT;
     };
-  }, [scope]);
+  }, [scope, spreadsheet]);
 
   useEffect(() => {
     let instance;
@@ -119,10 +132,7 @@ const DiscountedCashFlowTable = ({
 
       jspreadsheetModule = jspreadsheet;
 
-      if (
-        initSpreadsheetRef.current !== null &&
-        !initSpreadsheetRef.current.jexcel
-      ) {
+      if (initSpreadsheetRef.current && !initSpreadsheetRef.current.jexcel) {
         const cellsFormatted = {};
 
         Object.keys(cells).forEach((key) => {
@@ -132,11 +142,7 @@ const DiscountedCashFlowTable = ({
         });
 
         instance = jspreadsheet(initSpreadsheetRef.current, {
-          data: chunkedData,
           cells: cellsFormatted,
-          onload: (el, instance) => {
-            console.log(instance);
-          },
           onchange: (_, __, x, y) => {
             const key = helpers.getColumnNameFromCoords(x, y);
 
@@ -148,11 +154,10 @@ const DiscountedCashFlowTable = ({
             };
           }),
           defaultColWidth,
-          minDimensions: [13, 37],
           tableWidth: "100%",
           tableHeight: "100%",
           tableOverflow: true,
-          tableOverflowResizable: true,
+          allowExport: false, // We manually export it to include inputs & other data
           secureFormulas: false, // Sanitize on the server instead
           license:
             "ZmZkMmE0ZDNlYTBlOWExZWU5ZDAwMGIyMmI0ZWE2MmUzYzg2YzIwM2QwMjQyNzU2MmJiYzJhYzgzNTUwOTc5NTZiZGExYjMxOWVkNWMyNWJhM2E5NjhmNjVhYzlhZGUxMDZjZjJjNTRhYjc5NTIyNDNlMDliZTE4OGJlODhjNGYsZXlKdVlXMWxJam9pVFdGeWRHbHVJRVJoZDNOdmJpSXNJbVJoZEdVaU9qRTJNakl4TlRZME1EQXNJbVJ2YldGcGJpSTZXeUpzYjJOaGJHaHZjM1FpTENKc2IyTmhiR2h2YzNRaVhTd2ljR3hoYmlJNk1IMD0",
@@ -165,10 +170,27 @@ const DiscountedCashFlowTable = ({
     fetchJSpreadsheet();
 
     return () => {
-      jspreadsheetModule?.destroy(instance);
+      if (instance) {
+        jspreadsheetModule?.destroy(instance);
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (spreadsheet) {
+      spreadsheet.setData(chunkedData);
+
+      const allCells = spreadsheet.getCells();
+
+      Object.keys(allCells).forEach((key) => {
+        formatIfCellIsPercent(spreadsheet, key);
+      });
+    }
+  }, [spreadsheet]);
+
+  console.log(data);
+  console.log(chunkedData);
 
   useEffect(() => {
     if (spreadsheet) {
@@ -178,8 +200,24 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     if (spreadsheet) {
-      spreadsheet.setData(chunkedData);
+      spreadsheet.options.editable = hasAllRequiredInputsFilledIn;
 
+      if (hasAllRequiredInputsFilledIn) {
+        spreadsheet.setData(chunkedData);
+      } else {
+        const labelsData = chunkedData.map((arr, i) => {
+          if (i === 0) return arr;
+
+          return [arr[0]];
+        });
+
+        spreadsheet.setData(labelsData);
+      }
+    }
+  }, [hasAllRequiredInputsFilledIn, spreadsheet]);
+
+  useEffect(() => {
+    if (spreadsheet) {
       const cellsData = {};
       const allCells = spreadsheet.getCells();
 
@@ -192,9 +230,9 @@ const DiscountedCashFlowTable = ({
         };
       });
 
-      setCellsData(cellsData);
+      dispatch(setCells(cellsData));
     }
-  }, [currencySymbol, spreadsheet]);
+  }, [dispatch, spreadsheet]);
 
   useEffect(() => {
     if (spreadsheet) {
@@ -214,7 +252,7 @@ const DiscountedCashFlowTable = ({
         columns.forEach((_, i) => {
           spreadsheet.setWidth(i, 220);
         });
-      } else if (isYoyGrowthToggled) {
+      } else if (showYOYGrowth) {
         Object.keys(cells).forEach((key) => {
           const currentCellValue = spreadsheet[key];
           const previousCellKey = getPreviousRowCellKey(key);
@@ -236,21 +274,19 @@ const DiscountedCashFlowTable = ({
           }
         });
       } else {
-        spreadsheet.refresh();
-
-        Object.keys(cells).forEach((key) => {
-          formatIfCellIsPercent(spreadsheet, key);
-        });
+        refreshSpreadsheet(spreadsheet);
       }
     }
-  }, [showFormulas, isYoyGrowthToggled, spreadsheet]);
+  }, [showFormulas, showYOYGrowth, spreadsheet]);
 
   useEffect(() => {
-    dispatch(setCells(cellsData));
-  }, [cellsData, dispatch]);
+    // Dispatch only when we have all the data from the API#
 
-  useEffect(() => {
-    if (hasAllRequiredInputsFilledIn) {
+    if (
+      hasAllRequiredInputsFilledIn &&
+      !isNil(price) &&
+      !isNil(costOfCapital.totalCostOfCapital)
+    ) {
       dispatch(
         setScope({
           matureMarketEquityRiskPremium,
@@ -311,7 +347,20 @@ const DiscountedCashFlowTable = ({
 
   return (
     <Box sx={{ position: "relative" }}>
-      <div ref={initSpreadsheetRef} style={{ maxWidth: "100%" }} />
+      <Box
+        sx={{
+          "& tbody": {
+            "tr[data-y='0'] td:not(.jexcel_row)": {
+              backgroundColor: (theme) => theme.palette.spreadsheetBackground,
+            },
+            "td[data-x='0']": {
+              backgroundColor: (theme) => theme.palette.spreadsheetBackground,
+            },
+          },
+        }}
+        style={{ maxWidth: "100%" }}
+        ref={initSpreadsheetRef}
+      />
       {SubscribeCover ? <SubscribeCover /> : null}
       {!hasAllRequiredInputsFilledIn && (
         <Alert
