@@ -32,7 +32,7 @@ const formatTypeToMask = (currencySymbol, type) => {
 
   if (type === "number" || type === "year") {
     return {
-      mask: "0.00",
+      mask: "#.00",
       type: "number",
       disabledMaskOnEdition: true,
     };

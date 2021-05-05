@@ -246,7 +246,7 @@ const DiscountedCashFlowTable = ({
         Object.keys(cells).forEach((key) => {
           const cell = spreadsheet.getCell(key);
           const cellValue = spreadsheet.getValue(key);
-          if (typeof cellValue === "string" && cellValue.charAt(0) === "=") {
+          if (isExpressionDependency(cellValue)) {
             cell.innerHTML = cellValue;
           }
         });
