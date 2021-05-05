@@ -39,6 +39,7 @@ import TTFormula from "./ttFormula";
 import cells from "./cells";
 import { setCells, setScope } from "../redux/actions/dcfActions";
 import { isNil } from "lodash";
+import parseNum from "parse-num";
 
 const defaultColWidth = 120;
 
@@ -61,7 +62,7 @@ const formatIfCellIsPercent = (spreadsheet, key) => {
 
   if (type === "percent") {
     const cell = spreadsheet.getCell(key);
-    const existingValue = spreadsheet[key];
+    const existingValue = getRawValue(spreadsheet, key);
     const content = renderToString(
       <FormatRawNumberToPercent value={existingValue} />,
     );
@@ -82,6 +83,13 @@ const refreshSpreadsheet = (spreadsheet, hasAllRequiredInputsFilledIn) => {
       formatIfCellIsPercent(spreadsheet, key);
     });
   }
+};
+
+// https://github.com/jspreadsheet/pro/issues/38
+const getRawValue = (spreadsheet, key) => {
+  const processedValue = spreadsheet.getValue(key, true);
+
+  return parseNum(processedValue);
 };
 
 const DiscountedCashFlowTable = ({
@@ -118,7 +126,7 @@ const DiscountedCashFlowTable = ({
     // For the spreadsheet custom TT function to parse our fields
     window.TT = TTFormula(scope);
 
-    // refreshSpreadsheet(spreadsheet, hasAllRequiredInputsFilledIn);
+    refreshSpreadsheet(spreadsheet, hasAllRequiredInputsFilledIn);
 
     return () => {
       delete window.TT;
@@ -126,7 +134,7 @@ const DiscountedCashFlowTable = ({
   }, [hasAllRequiredInputsFilledIn, scope, spreadsheet]);
 
   useEffect(() => {
-    let instance;
+    let spreadsheet;
     let jspreadsheetModule;
 
     const fetchJSpreadsheet = async () => {
@@ -147,15 +155,23 @@ const DiscountedCashFlowTable = ({
 
         let changedCells = {};
 
-        instance = jspreadsheet(initSpreadsheetRef.current, {
+        spreadsheet = jspreadsheet(initSpreadsheetRef.current, {
+          // https://github.com/jspreadsheet/pro/issues/38
+          cache: false,
           onload: (_, spreadsheet) => {
             const cellsData = {};
             const allCells = spreadsheet.getCells();
             Object.keys(allCells).forEach((key) => {
               formatIfCellIsPercent(spreadsheet, key);
+              let value = getRawValue(spreadsheet, key);
+
+              if (cells[key]?.type === "percent") {
+                value /= 100;
+              }
+
               cellsData[key] = {
                 ...cells[key],
-                value: spreadsheet[key],
+                value: isFinite(value) ? value : cells[key]?.value,
               };
             });
             dispatch(setCells(cellsData));
@@ -165,16 +181,22 @@ const DiscountedCashFlowTable = ({
 
             // To make the calculations faster for sensitivity analysis we
             // use the values from the spreadsheet to not have to calculate them again.
-            const { type } = cells[key];
-            const changedCell = {
-              type,
-              value: parseFloat(instance[key]),
-            };
-            if (isExpressionDependency(newValue)) {
-              changedCell.expr = newValue;
+            const cell = cells[key];
+            if (cell) {
+              const { type } = cell;
+
+              const value = getRawValue(spreadsheet, key);
+
+              const changedCell = {
+                type,
+                value: isFinite(value) ? value : cell.value,
+              };
+              if (isExpressionDependency(newValue)) {
+                changedCell.expr = newValue;
+              }
+              changedCells[key] = changedCell;
+              formatIfCellIsPercent(spreadsheet, key);
             }
-            changedCells[key] = changedCell;
-            formatIfCellIsPercent(instance, key);
           },
           onafterchanges: () => {
             dispatch(setCells(changedCells));
@@ -197,15 +219,15 @@ const DiscountedCashFlowTable = ({
             "ZmZkMmE0ZDNlYTBlOWExZWU5ZDAwMGIyMmI0ZWE2MmUzYzg2YzIwM2QwMjQyNzU2MmJiYzJhYzgzNTUwOTc5NTZiZGExYjMxOWVkNWMyNWJhM2E5NjhmNjVhYzlhZGUxMDZjZjJjNTRhYjc5NTIyNDNlMDliZTE4OGJlODhjNGYsZXlKdVlXMWxJam9pVFdGeWRHbHVJRVJoZDNOdmJpSXNJbVJoZEdVaU9qRTJNakl4TlRZME1EQXNJbVJ2YldGcGJpSTZXeUpzYjJOaGJHaHZjM1FpTENKc2IyTmhiR2h2YzNRaVhTd2ljR3hoYmlJNk1IMD0",
         });
 
-        setSpreadsheet(instance);
+        setSpreadsheet(spreadsheet);
       }
     };
 
     fetchJSpreadsheet();
 
     return () => {
-      if (instance) {
-        jspreadsheetModule?.destroy(instance);
+      if (spreadsheet) {
+        jspreadsheetModule?.destroy(spreadsheet);
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -254,16 +276,13 @@ const DiscountedCashFlowTable = ({
           spreadsheet.setWidth(i, 220);
         });
       } else if (showYOYGrowth) {
+        const cellHTMLValues = {};
+
         Object.keys(cells).forEach((key) => {
-          const currentCellValue = spreadsheet[key];
+          const currentCellValue = getRawValue(spreadsheet, key);
           const previousCellKey = getPreviousRowCellKey(key);
-          const previousCellValue = spreadsheet[previousCellKey];
-          const cell = spreadsheet.getCell(key);
-          if (
-            typeof previousCellValue === "number" &&
-            cell &&
-            currentCellValue
-          ) {
+          const previousCellValue = getRawValue(spreadsheet, previousCellKey);
+          if (isFinite(previousCellValue) && isFinite(currentCellValue)) {
             const content = renderToString(
               <FormatRawNumberToPercent
                 value={
@@ -271,7 +290,16 @@ const DiscountedCashFlowTable = ({
                 }
               />,
             );
-            cell.innerHTML = content;
+            cellHTMLValues[key] = content;
+          }
+        });
+
+        Object.keys(cellHTMLValues).forEach((key) => {
+          const value = cellHTMLValues[key];
+          const cell = spreadsheet.getCell(key);
+
+          if (cell) {
+            cell.innerHTML = value;
           }
         });
       } else {

@@ -192,7 +192,7 @@ const SensitivityAnalysis = () => {
           currentScopes,
         );
 
-        setEstimatedValues(data);
+        setEstimatedValues(data.map((x) => x.B36.value));
       }
     };
 

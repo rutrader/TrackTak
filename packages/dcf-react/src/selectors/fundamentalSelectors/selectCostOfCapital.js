@@ -6,13 +6,6 @@ import selectRecentBalanceSheet from "./selectRecentBalanceSheet";
 import selectPrice from "./selectPrice";
 import selectCurrentIndustry from "./selectCurrentIndustry";
 import selectCurrentEquityRiskPremium from "./selectCurrentEquityRiskPremium";
-import { evaluate } from "../../shared/math";
-import {
-  costOfComponentCalculation,
-  debtCalculation,
-  marketValueCalculation,
-  weightInCostOfCapitalCalculation,
-} from "../../discountedCashFlow/expressionCalculations";
 import selectSharesOutstanding from "./selectSharesOutstanding";
 
 const calculateCostOfCapital = (queryParams) => (
@@ -35,98 +28,79 @@ const calculateCostOfCapital = (queryParams) => (
   const marketPricePerShare = queryParams.marketPricePerShare;
   const annualDividendPerShare = queryParams.annualDividendPerShare;
   const marginalTaxRate = currentEquityRiskPremiumCountry.marginalTaxRate;
-  const estimatedMarketValueOfStraightDebt = evaluate(
-    debtCalculation.estimatedMarketValueOfStraightDebt,
-    {
-      interestExpense: incomeStatement.interestExpense,
-      pretaxCostOfDebt,
-      averageMaturityOfDebt,
-      bookValueOfDebt: balanceSheet.bookValueOfDebt,
-    },
-  );
 
-  let estimatedValueOfStraightDebtInConvertibleDebt = evaluate(
-    debtCalculation.estimatedValueOfStraightDebtInConvertibleDebt,
-    {
-      interestExpenseOnConvertibleDebt,
-      pretaxCostOfDebt,
-      maturityOfConvertibleDebt,
-      bookValueOfConvertibleDebt,
-    },
-  );
+  const estimatedMarketValueOfStraightDebt =
+    ((incomeStatement.interestExpense *
+      ((1 - (1 + pretaxCostOfDebt)) ^ -averageMaturityOfDebt)) /
+      pretaxCostOfDebt +
+      balanceSheet.bookValueOfDebt / (1 + pretaxCostOfDebt)) ^
+    averageMaturityOfDebt;
 
-  estimatedValueOfStraightDebtInConvertibleDebt = isNaN(
+  let estimatedValueOfStraightDebtInConvertibleDebt =
+    ((interestExpenseOnConvertibleDebt *
+      ((1 - (1 + pretaxCostOfDebt)) ^ -maturityOfConvertibleDebt)) /
+      pretaxCostOfDebt +
+      bookValueOfConvertibleDebt / (1 + pretaxCostOfDebt)) ^
+    maturityOfConvertibleDebt;
+
+  estimatedValueOfStraightDebtInConvertibleDebt = isFinite(
     estimatedValueOfStraightDebtInConvertibleDebt,
   )
-    ? 0
-    : estimatedValueOfStraightDebtInConvertibleDebt;
+    ? estimatedValueOfStraightDebtInConvertibleDebt
+    : 0;
 
-  const marketValue = {};
-
-  Object.keys(marketValueCalculation).forEach((key) => {
-    const value = marketValueCalculation[key];
-    const { totalMarketValue, ...restMarket } = marketValue;
-
-    marketValue[key] = evaluate(value, {
-      price,
-      sharesOutstanding,
-      estimatedMarketValueOfStraightDebt,
+  const marketValue = {
+    equityMarketValue: price * sharesOutstanding,
+    debtMarketValue:
+      estimatedMarketValueOfStraightDebt +
       estimatedValueOfStraightDebtInConvertibleDebt,
-      numberOfPreferredShares,
-      marketPricePerShare,
-      equityMarketValue: marketValue.equityMarketValue,
-      debtMarketValue: marketValue.debtMarketValue,
-      preferredStockMarketValue: marketValue.preferredStockMarketValue,
-      ...restMarket,
-    });
-  });
+    preferredStockMarketValue: numberOfPreferredShares * marketPricePerShare,
+    get totalMarketValue() {
+      return (
+        this.equityMarketValue +
+        this.debtMarketValue +
+        this.preferredStockMarketValue
+      );
+    },
+  };
 
-  const weightInCostOfCapital = {};
+  const weightInCostOfCapital = {
+    equityWeight: marketValue.equityMarketValue / marketValue.totalMarketValue,
+    debtWeight: marketValue.debtMarketValue / marketValue.totalMarketValue,
+    preferredStockWeight:
+      marketValue.preferredStockMarketValue / marketValue.totalMarketValue,
+    get totalWeight() {
+      return this.equityWeight + this.debtWeight + this.preferredStockWeight;
+    },
+  };
 
-  Object.keys(weightInCostOfCapitalCalculation).forEach((key) => {
-    const value = weightInCostOfCapitalCalculation[key];
-    const { totalWeight, ...restWeight } = weightInCostOfCapital;
+  const leveredBeta =
+    currentIndustry.unleveredBeta *
+    (1 +
+      (1 - marginalTaxRate) *
+        (marketValue.debtMarketValue / marketValue.equityMarketValue));
 
-    weightInCostOfCapital[key] = evaluate(value, {
-      equityMarketValue: marketValue.equityMarketValue,
-      debtMarketValue: marketValue.debtMarketValue,
-      preferredStockMarketValue: marketValue.preferredStockMarketValue,
-      totalMarketValue: marketValue.totalMarketValue,
-      ...restWeight,
-    });
-  });
+  let costOfPreferredStock = annualDividendPerShare / marketPricePerShare;
 
-  const leveredBeta = evaluate(debtCalculation.leveredBeta, {
-    unleveredBeta: currentIndustry.unleveredBeta,
-    marginalTaxRate,
-    debtMarketValue: marketValue.debtMarketValue,
-    equityMarketValue: marketValue.equityMarketValue,
-  });
+  costOfPreferredStock = isFinite(costOfPreferredStock)
+    ? costOfPreferredStock
+    : 0;
 
-  let costOfPreferredStock =
-    evaluate(debtCalculation.costOfPreferredStock, {
-      annualDividendPerShare,
-      marketPricePerShare,
-    }) ?? 0;
-
-  const costOfComponent = {};
-
-  Object.keys(costOfComponentCalculation).forEach((key) => {
-    const value = costOfComponentCalculation[key];
-    const { totalWeight, ...restWeight } = weightInCostOfCapital;
-    const { totalCostOfCapital, ...restCost } = costOfComponent;
-
-    costOfComponent[key] = evaluate(value, {
-      riskFreeRate,
-      leveredBeta,
-      equityRiskPremium: currentEquityRiskPremiumCountry.equityRiskPremium,
-      pretaxCostOfDebt,
-      marginalTaxRate,
-      costOfPreferredStock,
-      ...restWeight,
-      ...restCost,
-    });
-  });
+  const costOfComponent = {
+    equityCostOfCapital:
+      riskFreeRate +
+      leveredBeta * currentEquityRiskPremiumCountry.equityRiskPremium,
+    debtCostOfCapital: pretaxCostOfDebt * marginalTaxRate,
+    preferredStockCostOfCapital: costOfPreferredStock,
+    get totalCostOfCapital() {
+      return (
+        weightInCostOfCapital.equityWeight * this.equityCostOfCapital +
+        weightInCostOfCapital.debtWeight * this.debtCostOfCapital +
+        weightInCostOfCapital.preferredStockWeight *
+          this.preferredStockCostOfCapital
+      );
+    },
+  };
 
   return {
     leveredBeta,

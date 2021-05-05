@@ -1,13 +1,11 @@
-import { evaluate } from "../../../packages/dcf-react/src/shared/math";
 import cellsTree, { cellsTreeDependencies } from "./cellsTree";
 import {
   assignDependents,
-  getColumnsBetween,
   isExpressionDependency,
   validateExp,
 } from "../../../packages/dcf-react/src/discountedCashFlow/utils";
 import filterDuplicates from "../../../packages/dcf-react/src/shared/filterDuplicates";
-import { columns } from "../../../packages/dcf-react/src/discountedCashFlow/cells";
+import { evaluate } from "../shared/math";
 
 const computeExpr = (key, expr, scope) => {
   let value = null;

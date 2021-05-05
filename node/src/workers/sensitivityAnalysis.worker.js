@@ -10,7 +10,7 @@ const sensitivityAnalysisWorker = {
         cells,
         existingScope,
         currentScope,
-      ).B36.value;
+      );
 
       return estimatedPricePerShare;
     });
