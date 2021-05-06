@@ -6,9 +6,7 @@
   "scripts": {
     "node": "npm run start:dev --prefix ./node",
     "ui": "npm run start --prefix ./ui",
-    "dcf-react": "npm run storybook --prefix ./packages/dcf-react",
     "start": "run-p node ui",
-    "storybook": "run-p node dcf-react",
     "clean": "rimraf ./node_modules",
     "lint": "eslint ./ui/src",
     "install:ui": "cd ./ui && npm install",
