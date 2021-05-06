@@ -4,9 +4,9 @@ import {
   yearOfConvergenceQueryName,
 } from "../shared/inputQueryNames";
 
-const cagrYearOneToFiveQueryNameTT = `TT('${cagrYearOneToFiveQueryName}')`;
-const ebitTargetMarginInYearTenQueryNameTT = `TT('${ebitTargetMarginInYearTenQueryName}')`;
-const yearOfConvergenceQueryNameTT = `TT('${yearOfConvergenceQueryName}')`;
+const cagrYearOneToFiveQueryNameTT = `${cagrYearOneToFiveQueryName}`;
+const ebitTargetMarginInYearTenQueryNameTT = `${ebitTargetMarginInYearTenQueryName}`;
+const yearOfConvergenceQueryNameTT = `${yearOfConvergenceQueryName}`;
 
 export const getPreviousColumn = (cellKey) => {
   const column = cellKey.charAt(0);
@@ -40,7 +40,7 @@ export const getRevenueOneToFiveYrCalculation = (cellKey) =>
   getRevenueCalculation(cellKey, cagrYearOneToFiveQueryNameTT);
 
 export const getRevenueSixToTenYrCalculation = (index, cellKey) => {
-  const formula = `${cagrYearOneToFiveQueryNameTT} - ((${cagrYearOneToFiveQueryNameTT}-TT('riskFreeRate')) / 5)`;
+  const formula = `${cagrYearOneToFiveQueryNameTT} - ((${cagrYearOneToFiveQueryNameTT}-riskFreeRate) / 5)`;
   const number = index + 1;
   const growthRevenueFormula = index === 0 ? formula : `${formula} * ${number}`;
 

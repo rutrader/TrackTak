@@ -38,9 +38,9 @@ import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import TTFormula from "./ttFormula";
 import cells from "./cells";
 import { setCells, setScope } from "../redux/actions/dcfActions";
-import { isNil } from "lodash";
+import { isNil, spread } from "lodash";
 import parseNum from "parse-num";
-import Spreadsheet from "x-data-spreadsheet";
+import Spreadsheet from "@tracktak/web-spreadsheet";
 
 const defaultColWidth = 120;
 
@@ -60,18 +60,16 @@ const rowCells = cellKeysSorted.map((key) => {
   const cell = cells[key];
 
   return {
-    text: cell?.expr ?? cell?.value,
+    text: cell?.expr ?? cell?.value ?? "",
   };
 });
 
 const rows = {};
 
 getChunksOfArray(rowCells, columns.length).forEach((data, i) => {
-  if (i <= 1) {
-    rows[i] = {
-      cells: data,
-    };
-  }
+  rows[i] = {
+    cells: data,
+  };
 });
 
 // https://github.com/jspreadsheet/pro/issues/35
@@ -119,6 +117,8 @@ const DiscountedCashFlowTable = ({
   loadingCells,
 }) => {
   const [spreadsheet, setSpreadsheet] = useState();
+  const sheet = spreadsheet?.sheet;
+  const table = sheet?.table;
   const initSpreadsheetRef = useRef(null);
   const theme = useTheme();
   const location = useLocation();
@@ -155,256 +155,209 @@ const DiscountedCashFlowTable = ({
           // cols: {
           //   0: 220,
           // },
-          rows: {
-            0: {
-              cells: [
-                {
-                  text: "",
-                },
-                {
-                  text: "Base Year",
-                },
-                {
-                  text: "1",
-                },
-                {
-                  text: "2",
-                },
-                {
-                  text: "3",
-                },
-                {
-                  text: "4",
-                },
-                {
-                  text: "5",
-                },
-                {
-                  text: "6",
-                },
-                {
-                  text: "7",
-                },
-                {
-                  text: "8",
-                },
-                {
-                  text: "9",
-                },
-                {
-                  text: "10",
-                },
-                {
-                  text: "Terminal Year",
-                },
-              ],
-            },
-            1: {
-              cells: [
-                {
-                  text: "Revenues",
-                },
-                {
-                  text: "=TT('totalRevenue')",
-                },
-                {
-                  text: "=B2*1",
-                },
-              ],
-            },
-          },
+          rows,
         },
       ]);
+
+      setSpreadsheet(spreadsheet);
 
       console.log(spreadsheet);
     }
   }, []);
 
   useEffect(() => {
-    // For the spreadsheet custom TT function to parse our fields
-    window.TT = TTFormula(scope);
-
-    refreshSpreadsheet(spreadsheet, hasAllRequiredInputsFilledIn);
-
-    return () => {
-      delete window.TT;
-    };
-  }, [hasAllRequiredInputsFilledIn, scope, spreadsheet]);
-
-  useEffect(() => {
-    let spreadsheet;
-    let jspreadsheetModule;
-
-    const fetchJSpreadsheet = async () => {
-      const { default: jspreadsheet } = await import("jspreadsheet-pro");
-
-      const helpers = jspreadsheet.helpers;
-
-      jspreadsheetModule = jspreadsheet;
-
-      if (initSpreadsheetRef.current && !initSpreadsheetRef.current.jexcel) {
-        const cellsFormatted = {};
-
-        Object.keys(cells).forEach((key) => {
-          const cell = cells[key];
-
-          cellsFormatted[key] = formatTypeToMask(currencySymbol, cell?.type);
-        });
-
-        let changedCells = {};
-
-        spreadsheet = jspreadsheet(initSpreadsheetRef.current, {
-          // https://github.com/jspreadsheet/pro/issues/38
-          cache: false,
-          onload: (_, spreadsheet) => {
-            const cellsData = {};
-            const allCells = spreadsheet.getCells();
-            Object.keys(allCells).forEach((key) => {
-              formatIfCellIsPercent(spreadsheet, key);
-              let value = getRawValue(spreadsheet, key);
-
-              if (cells[key]?.type === "percent") {
-                value /= 100;
-              }
-
-              cellsData[key] = {
-                ...cells[key],
-                value: isFinite(value) ? value : cells[key]?.value,
-              };
-            });
-            dispatch(setCells(cellsData));
-          },
-          onchange: (_, __, x, y, newValue) => {
-            const key = helpers.getColumnNameFromCoords(x, y);
-
-            // To make the calculations faster for sensitivity analysis we
-            // use the values from the spreadsheet to not have to calculate them again.
-            const cell = cells[key];
-            if (cell) {
-              const { type } = cell;
-
-              const value = getRawValue(spreadsheet, key);
-
-              const changedCell = {
-                type,
-                value: isFinite(value) ? value : cell.value,
-              };
-              if (isExpressionDependency(newValue)) {
-                changedCell.expr = newValue;
-              }
-              changedCells[key] = changedCell;
-              formatIfCellIsPercent(spreadsheet, key);
-            }
-          },
-          onafterchanges: () => {
-            dispatch(setCells(changedCells));
-            changedCells = {};
-          },
-          data: chunkedData,
-          cells: cellsFormatted,
-          columns: columns.map((column) => {
-            return {
-              ...column,
-            };
-          }),
-          defaultColWidth,
-          tableWidth: "100%",
-          tableHeight: "100%",
-          tableOverflow: true,
-          allowExport: false, // We manually export it to include inputs & other data
-          secureFormulas: false, // Sanitize on the server instead
-          license:
-            "ZmZkMmE0ZDNlYTBlOWExZWU5ZDAwMGIyMmI0ZWE2MmUzYzg2YzIwM2QwMjQyNzU2MmJiYzJhYzgzNTUwOTc5NTZiZGExYjMxOWVkNWMyNWJhM2E5NjhmNjVhYzlhZGUxMDZjZjJjNTRhYjc5NTIyNDNlMDliZTE4OGJlODhjNGYsZXlKdVlXMWxJam9pVFdGeWRHbHVJRVJoZDNOdmJpSXNJbVJoZEdVaU9qRTJNakl4TlRZME1EQXNJbVJ2YldGcGJpSTZXeUpzYjJOaGJHaHZjM1FpTENKc2IyTmhiR2h2YzNRaVhTd2ljR3hoYmlJNk1IMD0",
-        });
-
-        setSpreadsheet(spreadsheet);
-      }
-    };
-
-    fetchJSpreadsheet();
-
-    return () => {
-      if (spreadsheet) {
-        jspreadsheetModule?.destroy(spreadsheet);
-      }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (spreadsheet) {
-      spreadsheet.options.freezeColumns = isOnMobile ? 0 : 1;
-    }
-  }, [isOnMobile, spreadsheet]);
-
-  useEffect(() => {
-    if (spreadsheet) {
-      spreadsheet.options.editable = hasAllRequiredInputsFilledIn;
-
-      if (hasAllRequiredInputsFilledIn) {
-        spreadsheet.setData(chunkedData);
-      } else {
-        const labelsData = chunkedData.map((arr, i) => {
-          if (i === 0) return arr;
-
-          return [arr[0]];
-        });
-
-        spreadsheet.setData(labelsData);
-      }
-    }
-  }, [hasAllRequiredInputsFilledIn, spreadsheet]);
-
-  useEffect(() => {
-    if (spreadsheet) {
-      columns.forEach(({ width }, i) => {
-        spreadsheet.setWidth(i, width);
+    if (table) {
+      table.setParser({
+        variables: scope,
       });
-      const cells = spreadsheet.getCells();
-
-      if (showFormulas) {
-        Object.keys(cells).forEach((key) => {
-          const cell = spreadsheet.getCell(key);
-          const cellValue = spreadsheet.getValue(key);
-          if (isExpressionDependency(cellValue)) {
-            cell.innerHTML = cellValue;
-          }
-        });
-        columns.forEach((_, i) => {
-          spreadsheet.setWidth(i, 220);
-        });
-      } else if (showYOYGrowth) {
-        const cellHTMLValues = {};
-
-        Object.keys(cells).forEach((key) => {
-          const currentCellValue = getRawValue(spreadsheet, key);
-          const previousCellKey = getPreviousRowCellKey(key);
-          const previousCellValue = getRawValue(spreadsheet, previousCellKey);
-          if (isFinite(previousCellValue) && isFinite(currentCellValue)) {
-            const content = renderToString(
-              <FormatRawNumberToPercent
-                value={
-                  (currentCellValue - previousCellValue) / currentCellValue
-                }
-              />,
-            );
-            cellHTMLValues[key] = content;
-          }
-        });
-
-        Object.keys(cellHTMLValues).forEach((key) => {
-          const value = cellHTMLValues[key];
-          const cell = spreadsheet.getCell(key);
-
-          if (cell) {
-            cell.innerHTML = value;
-          }
-        });
-      } else {
-        refreshSpreadsheet(spreadsheet, hasAllRequiredInputsFilledIn);
-      }
     }
-  }, [hasAllRequiredInputsFilledIn, showFormulas, showYOYGrowth, spreadsheet]);
+  }, [scope, table]);
+
+  // useEffect(() => {
+  //   // For the spreadsheet custom TT function to parse our fields
+  //   window.TT = TTFormula(scope);
+
+  //   refreshSpreadsheet(spreadsheet, hasAllRequiredInputsFilledIn);
+
+  //   return () => {
+  //     delete window.TT;
+  //   };
+  // }, [hasAllRequiredInputsFilledIn, scope, spreadsheet]);
+
+  // useEffect(() => {
+  //   let spreadsheet;
+  //   let jspreadsheetModule;
+
+  //   const fetchJSpreadsheet = async () => {
+  //     const { default: jspreadsheet } = await import("jspreadsheet-pro");
+
+  //     const helpers = jspreadsheet.helpers;
+
+  //     jspreadsheetModule = jspreadsheet;
+
+  //     if (initSpreadsheetRef.current && !initSpreadsheetRef.current.jexcel) {
+  //       const cellsFormatted = {};
+
+  //       Object.keys(cells).forEach((key) => {
+  //         const cell = cells[key];
+
+  //         cellsFormatted[key] = formatTypeToMask(currencySymbol, cell?.type);
+  //       });
+
+  //       let changedCells = {};
+
+  //       spreadsheet = jspreadsheet(initSpreadsheetRef.current, {
+  //         // https://github.com/jspreadsheet/pro/issues/38
+  //         cache: false,
+  //         onload: (_, spreadsheet) => {
+  //           const cellsData = {};
+  //           const allCells = spreadsheet.getCells();
+  //           Object.keys(allCells).forEach((key) => {
+  //             formatIfCellIsPercent(spreadsheet, key);
+  //             let value = getRawValue(spreadsheet, key);
+
+  //             if (cells[key]?.type === "percent") {
+  //               value /= 100;
+  //             }
+
+  //             cellsData[key] = {
+  //               ...cells[key],
+  //               value: isFinite(value) ? value : cells[key]?.value,
+  //             };
+  //           });
+  //           dispatch(setCells(cellsData));
+  //         },
+  //         onchange: (_, __, x, y, newValue) => {
+  //           const key = helpers.getColumnNameFromCoords(x, y);
+
+  //           // To make the calculations faster for sensitivity analysis we
+  //           // use the values from the spreadsheet to not have to calculate them again.
+  //           const cell = cells[key];
+  //           if (cell) {
+  //             const { type } = cell;
+
+  //             const value = getRawValue(spreadsheet, key);
+
+  //             const changedCell = {
+  //               type,
+  //               value: isFinite(value) ? value : cell.value,
+  //             };
+  //             if (isExpressionDependency(newValue)) {
+  //               changedCell.expr = newValue;
+  //             }
+  //             changedCells[key] = changedCell;
+  //             formatIfCellIsPercent(spreadsheet, key);
+  //           }
+  //         },
+  //         onafterchanges: () => {
+  //           dispatch(setCells(changedCells));
+  //           changedCells = {};
+  //         },
+  //         data: chunkedData,
+  //         cells: cellsFormatted,
+  //         columns: columns.map((column) => {
+  //           return {
+  //             ...column,
+  //           };
+  //         }),
+  //         defaultColWidth,
+  //         tableWidth: "100%",
+  //         tableHeight: "100%",
+  //         tableOverflow: true,
+  //         allowExport: false, // We manually export it to include inputs & other data
+  //         secureFormulas: false, // Sanitize on the server instead
+  //         license:
+  //           "ZmZkMmE0ZDNlYTBlOWExZWU5ZDAwMGIyMmI0ZWE2MmUzYzg2YzIwM2QwMjQyNzU2MmJiYzJhYzgzNTUwOTc5NTZiZGExYjMxOWVkNWMyNWJhM2E5NjhmNjVhYzlhZGUxMDZjZjJjNTRhYjc5NTIyNDNlMDliZTE4OGJlODhjNGYsZXlKdVlXMWxJam9pVFdGeWRHbHVJRVJoZDNOdmJpSXNJbVJoZEdVaU9qRTJNakl4TlRZME1EQXNJbVJ2YldGcGJpSTZXeUpzYjJOaGJHaHZjM1FpTENKc2IyTmhiR2h2YzNRaVhTd2ljR3hoYmlJNk1IMD0",
+  //       });
+
+  //       setSpreadsheet(spreadsheet);
+  //     }
+  //   };
+
+  //   fetchJSpreadsheet();
+
+  //   return () => {
+  //     if (spreadsheet) {
+  //       jspreadsheetModule?.destroy(spreadsheet);
+  //     }
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
+  // useEffect(() => {
+  //   if (spreadsheet) {
+  //     spreadsheet.options.freezeColumns = isOnMobile ? 0 : 1;
+  //   }
+  // }, [isOnMobile, spreadsheet]);
+
+  // useEffect(() => {
+  //   if (spreadsheet) {
+  //     spreadsheet.options.editable = hasAllRequiredInputsFilledIn;
+
+  //     if (hasAllRequiredInputsFilledIn) {
+  //       spreadsheet.setData(chunkedData);
+  //     } else {
+  //       const labelsData = chunkedData.map((arr, i) => {
+  //         if (i === 0) return arr;
+
+  //         return [arr[0]];
+  //       });
+
+  //       spreadsheet.setData(labelsData);
+  //     }
+  //   }
+  // }, [hasAllRequiredInputsFilledIn, spreadsheet]);
+
+  // useEffect(() => {
+  //   if (spreadsheet) {
+  //     columns.forEach(({ width }, i) => {
+  //       spreadsheet.setWidth(i, width);
+  //     });
+  //     const cells = spreadsheet.getCells();
+
+  //     if (showFormulas) {
+  //       Object.keys(cells).forEach((key) => {
+  //         const cell = spreadsheet.getCell(key);
+  //         const cellValue = spreadsheet.getValue(key);
+  //         if (isExpressionDependency(cellValue)) {
+  //           cell.innerHTML = cellValue;
+  //         }
+  //       });
+  //       columns.forEach((_, i) => {
+  //         spreadsheet.setWidth(i, 220);
+  //       });
+  //     } else if (showYOYGrowth) {
+  //       const cellHTMLValues = {};
+
+  //       Object.keys(cells).forEach((key) => {
+  //         const currentCellValue = getRawValue(spreadsheet, key);
+  //         const previousCellKey = getPreviousRowCellKey(key);
+  //         const previousCellValue = getRawValue(spreadsheet, previousCellKey);
+  //         if (isFinite(previousCellValue) && isFinite(currentCellValue)) {
+  //           const content = renderToString(
+  //             <FormatRawNumberToPercent
+  //               value={
+  //                 (currentCellValue - previousCellValue) / currentCellValue
+  //               }
+  //             />,
+  //           );
+  //           cellHTMLValues[key] = content;
+  //         }
+  //       });
+
+  //       Object.keys(cellHTMLValues).forEach((key) => {
+  //         const value = cellHTMLValues[key];
+  //         const cell = spreadsheet.getCell(key);
+
+  //         if (cell) {
+  //           cell.innerHTML = value;
+  //         }
+  //       });
+  //     } else {
+  //       refreshSpreadsheet(spreadsheet, hasAllRequiredInputsFilledIn);
+  //     }
+  //   }
+  // }, [hasAllRequiredInputsFilledIn, showFormulas, showYOYGrowth, spreadsheet]);
 
   useEffect(() => {
     // Dispatch only when we have all the data from the API
