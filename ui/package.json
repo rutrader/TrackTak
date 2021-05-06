@@ -41,6 +41,7 @@
     "gatsby-plugin-hotjar": "^1.1.1",
     "gatsby-plugin-image": "^0.7.1",
     "gatsby-plugin-layout": "^1.10.0",
+    "gatsby-plugin-less": "^5.4.0",
     "gatsby-plugin-manifest": "^2.12.0",
     "gatsby-plugin-material-ui": "^2.1.10",
     "gatsby-plugin-mdx": "^1.10.0",
@@ -63,6 +64,8 @@
     "jsonp": "^0.2.1",
     "jspreadsheet-pro": "^7.9.9",
     "jsuites": "^4.5.5",
+    "less": "3.9.0",
+    "less-loader": "4.1.0",
     "node-sass": "^5.0.0",
     "query-string": "^7.0.0",
     "react": "^17.0.1",
@@ -80,7 +83,8 @@
     "sharp": "^0.27.1",
     "styled-components": "^5.2.1",
     "use-local-storage-state": "^9.0.2",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^0.2.4",
+    "@tracktak/web-spreadsheet": "git://github.com/TrackTak/web-spreadsheet.git"
   },
   "scripts": {
     "generate-exh-pairs": "node ./scripts/writeECBExchangePairsToJSON.js",

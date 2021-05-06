@@ -6,7 +6,7 @@ import {
   Hidden,
   useTheme,
 } from "@material-ui/core";
-import GridDots from "../assets/grid-dots.svg";
+import GridDots from "../icons/grid-dots.svg";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import SearchTicker from "../components/SearchTicker";
 import { AnchorLink } from "gatsby-plugin-anchor-links";

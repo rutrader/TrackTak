@@ -1,9 +1,9 @@
 import { Box, Typography, IconButton } from "@material-ui/core";
 import React from "react";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
-import RedditIcon from '@material-ui/icons/Reddit';
+import RedditIcon from "@material-ui/icons/Reddit";
 import dayjs from "dayjs";
-import TracktakLogoSvg from "../assets/tracktak-purple.svg";
+import TracktakLogoSvg from "../icons/tracktak-purple.svg";
 
 const iconStyles = { width: "45px", height: "45px" };
 
@@ -27,10 +27,7 @@ const Footer = () => {
               window.location.href = "https://linkedin.com/company/tracktak";
             }}
           >
-            <LinkedInIcon
-              color="primary"
-              sx={iconStyles}
-            />
+            <LinkedInIcon color="primary" sx={iconStyles} />
           </IconButton>
           <IconButton
             name="RedditIcon"
@@ -38,10 +35,7 @@ const Footer = () => {
               window.location.href = "https://www.reddit.com/r/tracktak/";
             }}
           >
-            <RedditIcon
-              color="primary"
-              sx={iconStyles}
-            />
+            <RedditIcon color="primary" sx={iconStyles} />
           </IconButton>
         </Box>
       </Box>

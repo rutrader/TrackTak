@@ -40,6 +40,7 @@ import cells from "./cells";
 import { setCells, setScope } from "../redux/actions/dcfActions";
 import { isNil } from "lodash";
 import parseNum from "parse-num";
+import Spreadsheet from "x-data-spreadsheet";
 
 const defaultColWidth = 120;
 
@@ -55,6 +56,23 @@ const data = cellKeysSorted.map((key) => {
   return cell?.expr ?? cell?.value;
 });
 const chunkedData = getChunksOfArray(data, columns.length);
+const rowCells = cellKeysSorted.map((key) => {
+  const cell = cells[key];
+
+  return {
+    text: cell?.expr ?? cell?.value,
+  };
+});
+
+const rows = {};
+
+getChunksOfArray(rowCells, columns.length).forEach((data, i) => {
+  if (i <= 1) {
+    rows[i] = {
+      cells: data,
+    };
+  }
+});
 
 // https://github.com/jspreadsheet/pro/issues/35
 const formatIfCellIsPercent = (spreadsheet, key) => {
@@ -92,6 +110,8 @@ const getRawValue = (spreadsheet, key) => {
   return parseNum(processedValue);
 };
 
+const dcfValuationId = "dcf-valuation";
+
 const DiscountedCashFlowTable = ({
   showFormulas,
   showYOYGrowth,
@@ -121,6 +141,84 @@ const DiscountedCashFlowTable = ({
   const pastThreeYearsAverageEffectiveTaxRate = useSelector(
     selectThreeAverageYearsEffectiveTaxRate,
   );
+
+  useEffect(() => {
+    const dcfValuationElement = document.querySelector(
+      `#${dcfValuationId} .x-spreadsheet`,
+    );
+
+    if (!dcfValuationElement) {
+      const spreadsheet = new Spreadsheet(`#${dcfValuationId}`).loadData([
+        {
+          //          freeze: ["A1:A37"],
+          name: "DCF Valuation",
+          // cols: {
+          //   0: 220,
+          // },
+          rows: {
+            0: {
+              cells: [
+                {
+                  text: "",
+                },
+                {
+                  text: "Base Year",
+                },
+                {
+                  text: "1",
+                },
+                {
+                  text: "2",
+                },
+                {
+                  text: "3",
+                },
+                {
+                  text: "4",
+                },
+                {
+                  text: "5",
+                },
+                {
+                  text: "6",
+                },
+                {
+                  text: "7",
+                },
+                {
+                  text: "8",
+                },
+                {
+                  text: "9",
+                },
+                {
+                  text: "10",
+                },
+                {
+                  text: "Terminal Year",
+                },
+              ],
+            },
+            1: {
+              cells: [
+                {
+                  text: "Revenues",
+                },
+                {
+                  text: "=TT('totalRevenue')",
+                },
+                {
+                  text: "=B2*1",
+                },
+              ],
+            },
+          },
+        },
+      ]);
+
+      console.log(spreadsheet);
+    }
+  }, []);
 
   useEffect(() => {
     // For the spreadsheet custom TT function to parse our fields
@@ -374,8 +472,9 @@ const DiscountedCashFlowTable = ({
   const to = `${location.pathname}#${valueDrivingInputsId}`;
 
   return (
-    <Box sx={{ position: "relative" }}>
-      <Box
+    <Box sx={{ position: "relative", width: "2000px" }}>
+      <Box id={dcfValuationId} />
+      {/* <Box
         sx={{
           "& tbody": {
             "tr[data-y='0'] td:not(.jexcel_row)": {
@@ -417,7 +516,7 @@ const DiscountedCashFlowTable = ({
           </AnchorLink>
           &nbsp;section above needs to be filled out first to generate the DCF.
         </Alert>
-      )}
+      )} */}
     </Box>
   );
 };
