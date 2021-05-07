@@ -163,6 +163,27 @@ export const convertFromCellIndexToLabel = (columnIndex, rowIndex) => {
   return `${column}${rowIndex}`;
 };
 
+export const getRowNumberFromCellLabel = (label) =>
+  parseInt(label.replace(/[A-Z]+/gi, ""), 10);
+
+export const getColumnLetterFromCellLabel = (label) => label.charCodeAt(0);
+
+export const convertFromCellLabelToIndex = (label) => {
+  let startIndex = "A".charCodeAt(0);
+
+  const columnIndex = label.charCodeAt(0) - startIndex;
+  const rowIndex = getRowNumberFromCellLabel(label) - 1;
+
+  if (columnIndex < 0) {
+    throw new Error("A-Z columns are only supported");
+  }
+
+  return {
+    columnIndex,
+    rowIndex,
+  };
+};
+
 export default {
   cloneDeep,
   merge: (...sources) => mergeDeep({}, ...sources),
