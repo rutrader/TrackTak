@@ -1,8 +1,8 @@
 /* global window */
-import en from './en';
+import en from "./en";
 
 // Defines the fallback language as English
-let $languages = ['en'];
+let $languages = ["en"];
 const $messages = {
   en,
 };
@@ -42,7 +42,7 @@ function t(key) {
   if (!v && window && window.x_spreadsheet && window.x_spreadsheet.$messages) {
     v = translate(key, window.x_spreadsheet.$messages);
   }
-  return v || '';
+  return v || "";
 }
 
 function tf(key) {
@@ -54,7 +54,7 @@ function tf(key) {
 // to find a translation. This allows the use of other languages as a fallback
 // if lang is missing some keys. The language array is preloaded with English.
 // To set the languages array to only include lang, set clearLangList to true.
-function locale(lang, message, clearLangList=false) {
+function locale(lang, message, clearLangList = false) {
   if (clearLangList) {
     $languages = [lang];
   } else {
@@ -73,8 +73,4 @@ export default {
   t,
 };
 
-export {
-  locale,
-  t,
-  tf,
-};
+export { locale, t, tf };

@@ -1,6 +1,6 @@
 {
   "name": "x-data-spreadsheet",
-  "version": "1.1.8",
+  "version": "1.1.7",
   "description": "a javascript xpreadsheet",
   "types": "src/index.d.ts",
   "main": "src/index.js",
@@ -65,6 +65,7 @@
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {
+    "hot-formula-parser": "^3.0.2",
     "opencollective": "^1.0.3",
     "opencollective-postinstall": "^2.0.2"
   },
