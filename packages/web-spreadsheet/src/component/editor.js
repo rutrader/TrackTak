@@ -4,17 +4,45 @@ import Suggest from './suggest';
 import Datepicker from './datepicker';
 import { cssPrefix } from '../config';
 // import { mouseMoveUp } from '../event';
-import Formula from './formula';
-import { setCaretPosition, saveCaretPosition } from '../core/caret';
+
+function resetTextareaSize() {
+  const { inputText } = this;
+  if (!/^\s*$/.test(inputText)) {
+    const {
+      textlineEl, textEl, areaOffset,
+    } = this;
+    const txts = inputText.split('\n');
+    const maxTxtSize = Math.max(...txts.map(it => it.length));
+    const tlOffset = textlineEl.offset();
+    const fontWidth = tlOffset.width / inputText.length;
+    const tlineWidth = (maxTxtSize + 1) * fontWidth + 5;
+    const maxWidth = this.viewFn().width - areaOffset.left - fontWidth;
+    let h1 = txts.length;
+    if (tlineWidth > areaOffset.width) {
+      let twidth = tlineWidth;
+      if (tlineWidth > maxWidth) {
+        twidth = maxWidth;
+        h1 += parseInt(tlineWidth / maxWidth, 10);
+        h1 += (tlineWidth % maxWidth) > 0 ? 1 : 0;
+      }
+      textEl.css('width', `${twidth}px`);
+    }
+    h1 *= this.rowHeight;
+    if (h1 > areaOffset.height) {
+      textEl.css('height', `${h1}px`);
+    }
+  }
+}
 
 function insertText({ target }, itxt) {
   const { value, selectionEnd } = target;
   const ntxt = `${value.slice(0, selectionEnd)}${itxt}${value.slice(selectionEnd)}`;
   target.value = ntxt;
-  this.inputText = ntxt;
-  this.render();
+  target.setSelectionRange(selectionEnd + 1, selectionEnd + 1);
 
-  setCaretPosition(target, selectionEnd + 1);
+  this.inputText = ntxt;
+  this.textlineEl.html(ntxt);
+  resetTextareaSize.call(this);
 }
 
 function keydownEventHandler(evt) {
@@ -27,36 +55,72 @@ function keydownEventHandler(evt) {
   if (keyCode === 13 && !altKey) evt.preventDefault();
 }
 
-function inputEventHandler() {
-  // save caret position
-  const restore = saveCaretPosition(this.textEl.el);
-
-  const text = this.textEl.el.textContent;
-  this.inputText = text;
+function inputEventHandler(evt) {
+  const v = evt.target.value;
   // console.log(evt, 'v:', v);
-
-  const { suggest, validator } = this;
-
-  if (validator) {
-    if (validator.type === 'list') {
-      suggest.search(text);
+  const { suggest, textlineEl, validator } = this;
+  const { cell } = this;
+  if (cell !== null) {
+    if (('editable' in cell && cell.editable === true) || (cell.editable === undefined)) {
+      this.inputText = v;
+      if (validator) {
+        if (validator.type === 'list') {
+          suggest.search(v);
+        } else {
+          suggest.hide();
+        }
+      } else {
+        const start = v.lastIndexOf('=');
+        if (start !== -1) {
+          suggest.search(v.substring(start + 1));
+        } else {
+          suggest.hide();
+        }
+      }
+      textlineEl.html(v);
+      resetTextareaSize.call(this);
+      this.change('input', v);
     } else {
-      suggest.hide();
+      evt.target.value = cell.text;
     }
   } else {
-    const start = text.lastIndexOf('=');
-    if (start !== -1) {
-      suggest.search(text.substring(start + 1));
+    this.inputText = v;
+    if (validator) {
+      if (validator.type === 'list') {
+        suggest.search(v);
+      } else {
+        suggest.hide();
+      }
     } else {
-      suggest.hide();
+      const start = v.lastIndexOf('=');
+      if (start !== -1) {
+        suggest.search(v.substring(start + 1));
+      } else {
+        suggest.hide();
+      }
     }
+    textlineEl.html(v);
+    resetTextareaSize.call(this);
+    this.change('input', v);
   }
-  this.render();
-  this.change('input', text);
+}
 
-  // restore caret postion
-  // to avoid caret postion missing when this.el.innerHTML changed
-  restore();
+function setTextareaRange(position) {
+  const { el } = this.textEl;
+  setTimeout(() => {
+    el.focus();
+    el.setSelectionRange(position, position);
+  }, 0);
+}
+
+function setText(text, position) {
+  const { textEl, textlineEl } = this;
+  // firefox bug
+  textEl.el.blur();
+
+  textEl.val(text);
+  textlineEl.html(text);
+  setTextareaRange.call(this, position);
 }
 
 function suggestItemClick(it) {
@@ -74,13 +138,12 @@ function suggestItemClick(it) {
     } else {
       eit = '';
     }
-    this.inputText = `${sit + it}(`;
+    this.inputText = `${sit + it.key}(`;
     // console.log('inputText:', this.inputText);
     position = this.inputText.length;
     this.inputText += `)${eit}`;
   }
-  this.render();
-  setCaretPosition(this.textEl.el, position);
+  setText.call(this, this.inputText, position);
 }
 
 function resetSuggestItems() {
@@ -96,50 +159,40 @@ function dateFormat(d) {
 }
 
 export default class Editor {
-  constructor(formulas, viewFn, data) {
-    this.data = data;
+  constructor(formulas, viewFn, rowHeight) {
     this.viewFn = viewFn;
-    this.rowHeight = data.rows.height;
+    this.rowHeight = rowHeight;
     this.formulas = formulas;
-    this.suggest = new Suggest(this.formulas, (it) => {
-      const unescapedKey = it.key.replace('\\.', '.');
-      suggestItemClick.call(this, unescapedKey);
+    this.suggest = new Suggest(formulas, (it) => {
+      suggestItemClick.call(this, it);
     });
-
     this.datepicker = new Datepicker();
     this.datepicker.change((d) => {
       // console.log('d:', d);
       this.setText(dateFormat(d));
       this.clear();
     });
-    this.composing = false;
     this.areaEl = h('div', `${cssPrefix}-editor-area`)
       .children(
-        this.textEl = h('div', 'textarea')
-          .attr('contenteditable', 'true')
+        this.textEl = h('textarea', '')
           .on('input', evt => inputEventHandler.call(this, evt))
-          .on('paste.stop', () => { })
-          .on('keydown', evt => keydownEventHandler.call(this, evt))
-          .on('compositionstart.stop', () => this.composing = true)
-          .on('compositionend.stop', () => this.composing = false),
+          .on('paste.stop', () => {})
+          .on('keydown', evt => keydownEventHandler.call(this, evt)),
         this.textlineEl = h('div', 'textline'),
         this.suggest.el,
         this.datepicker.el,
       )
-      .on('mousemove.stop', () => { })
-      .on('mousedown.stop', () => { });
+      .on('mousemove.stop', () => {})
+      .on('mousedown.stop', () => {});
     this.el = h('div', `${cssPrefix}-editor`)
-      .children(this.areaEl).hide();
-    this.cellEl = h('div', `${cssPrefix}-formula-cell`)
+      .child(this.areaEl).hide();
     this.suggest.bindInputEvents(this.textEl);
 
     this.areaOffset = null;
     this.freeze = { w: 0, h: 0 };
     this.cell = null;
     this.inputText = '';
-    this.change = () => { };
-
-    this.formula = new Formula(this);
+    this.change = () => {};
   }
 
   setFreezeLengths(width, height) {
@@ -159,19 +212,13 @@ export default class Editor {
     this.el.hide();
     this.textEl.val('');
     this.textlineEl.html('');
-    this.formula.clear();
     resetSuggestItems.call(this);
     this.datepicker.hide();
   }
 
-  resetData(data) {
-    this.data = data;
-    this.rowHeight = data.rows.height;
-  }
-
   setOffset(offset, suggestPosition = 'top') {
     const {
-      textEl, areaEl, suggest, freeze, el, formula
+      textEl, areaEl, suggest, freeze, el,
     } = this;
     if (offset) {
       this.areaOffset = offset;
@@ -193,19 +240,15 @@ export default class Editor {
       }
       el.offset(elOffset);
       areaEl.offset({ left: left - elOffset.left - 0.8, top: top - elOffset.top - 0.8 });
-      textEl.css('min-width', `${width - 9 + 0.8}px`);
-      textEl.css('min-height', `${height - 3 + 0.8}px`);
+      textEl.offset({ width: width - 9 + 0.8, height: height - 3 + 0.8 });
       const sOffset = { left: 0 };
       sOffset[suggestPosition] = height;
       suggest.setOffset(sOffset);
       suggest.hide();
-      formula.renderCells();
     }
   }
 
   setCell(cell, validator) {
-    if (cell && cell.editable === false) return;
-
     // console.log('::', validator);
     const { el, datepicker, suggest } = this;
     el.show();
@@ -232,39 +275,7 @@ export default class Editor {
   setText(text) {
     this.inputText = text;
     // console.log('text>>:', text);
-
-    // firefox bug
-    this.textEl.el.blur();
-
-    this.render();
-    setTimeout(() => {
-      setCaretPosition(this.textEl.el, text.length);
-    })
-  }
-
-  render() {
-    if (this.composing) return;
-
-    const text = this.inputText;
-
-    if (text[0] != '=') {
-      this.textEl.html(text);
-    } else {
-      this.formula.render();
-    }
-
-    this.textlineEl.html(text);
-  }
-
-  formulaCellSelecting() {
-    return Boolean(this.formula.cell);
-  }
-
-  formulaSelectCell(ri, ci) {
-    this.formula.selectCell(ri, ci);
-  }
-
-  formulaSelectCellRange(ri, ci) {
-    this.formula.selectCellRange(ri, ci);
+    setText.call(this, text, text.length);
+    resetTextareaSize.call(this);
   }
 }

@@ -48,11 +48,10 @@ export default {
     duration: 'Dauer',
   },
   formula: {
-    SUM: 'Summe',
-    AVERAGE: 'Durchschnittliche',
-    MAX: 'Max',
-    MIN: 'Min',
-    CONCATENATE: 'Concat',
-    ROUND: 'Round',
+    sum: 'Summe',
+    average: 'Durchschnittliche',
+    max: 'Max',
+    min: 'Min',
+    concat: 'Concat',
   },
 };

@@ -1,5 +1,5 @@
 import helper from './helper';
-import { expr2expr, REGEX_EXPR_GLOBAL } from './alphabet';
+import { expr2expr } from './alphabet';
 
 class Rows {
   constructor({ len, height }) {
@@ -106,12 +106,11 @@ class Rows {
 
   setCellText(ri, ci, text) {
     const cell = this.getCellOrNew(ri, ci);
-    if (cell.editable === false) return;
-    cell.text = text;
+    if (cell.editable !== false) cell.text = text;
   }
 
   // what: all | format | text
-  copyPaste(srcCellRange, dstCellRange, what, autofill = false, cb = () => { }) {
+  copyPaste(srcCellRange, dstCellRange, what, autofill = false, cb = () => {}) {
     const {
       sri, sci, eri, eci,
     } = srcCellRange;
@@ -146,7 +145,7 @@ class Rows {
                     n -= dn + 1;
                   }
                   if (text[0] === '=') {
-                    ncell.text = text.replace(REGEX_EXPR_GLOBAL, (word) => {
+                    ncell.text = text.replace(/[a-zA-Z]{1,3}\d+/g, (word) => {
                       let [xn, yn] = [0, 0];
                       if (sri === dsri) {
                         xn = n - 1;
@@ -155,10 +154,7 @@ class Rows {
                         yn = n - 1;
                       }
                       if (/^\d+$/.test(word)) return word;
-
-                      // Set expr2expr to not perform translation on axes with an
-                      // absolute reference
-                      return expr2expr(word, xn, yn, false);
+                      return expr2expr(word, xn, yn);
                     });
                   } else if ((rn <= 1 && cn > 1 && (dsri > eri || deri < sri))
                     || (cn <= 1 && rn > 1 && (dsci > eci || deci < sci))
@@ -219,7 +215,7 @@ class Rows {
         nri += n;
         this.eachCells(ri, (ci, cell) => {
           if (cell.text && cell.text[0] === '=') {
-            cell.text = cell.text.replace(REGEX_EXPR_GLOBAL, word => expr2expr(word, 0, n, true, (x, y) => y >= sri));
+            cell.text = cell.text.replace(/[a-zA-Z]{1,3}\d+/g, word => expr2expr(word, 0, n, (x, y) => y >= sri));
           }
         });
       }
@@ -240,7 +236,7 @@ class Rows {
         ndata[nri - n] = row;
         this.eachCells(ri, (ci, cell) => {
           if (cell.text && cell.text[0] === '=') {
-            cell.text = cell.text.replace(REGEX_EXPR_GLOBAL, word => expr2expr(word, 0, -n, true, (x, y) => y > eri));
+            cell.text = cell.text.replace(/[a-zA-Z]{1,3}\d+/g, word => expr2expr(word, 0, -n, (x, y) => y > eri));
           }
         });
       }
@@ -257,7 +253,7 @@ class Rows {
         if (nci >= sci) {
           nci += n;
           if (cell.text && cell.text[0] === '=') {
-            cell.text = cell.text.replace(REGEX_EXPR_GLOBAL, word => expr2expr(word, n, 0, true, x => x >= sci));
+            cell.text = cell.text.replace(/[a-zA-Z]{1,3}\d+/g, word => expr2expr(word, n, 0, x => x >= sci));
           }
         }
         rndata[nci] = cell;
@@ -277,7 +273,7 @@ class Rows {
         } else if (nci > eci) {
           rndata[nci - n] = cell;
           if (cell.text && cell.text[0] === '=') {
-            cell.text = cell.text.replace(REGEX_EXPR_GLOBAL, word => expr2expr(word, -n, 0, true, x => x > eci));
+            cell.text = cell.text.replace(/[a-zA-Z]{1,3}\d+/g, word => expr2expr(word, -n, 0, x => x > eci));
           }
         }
       });
@@ -297,7 +293,7 @@ class Rows {
     const row = this.get(ri);
     if (row !== null) {
       const cell = this.getCell(ri, ci);
-      if (cell !== null) {
+      if (cell !== null && cell.editable !== false) {
         if (what === 'all') {
           delete row.cells[ci];
         } else if (what === 'text') {
