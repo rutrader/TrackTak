@@ -8,9 +8,17 @@ const mergeDeep = (object = {}, ...sources) => {
     Object.keys(source).forEach((key) => {
       const v = source[key];
       // console.log('k:', key, ', v:', source[key], typeof v, v instanceof Object);
-      if (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean') {
+      if (
+        typeof v === "string" ||
+        typeof v === "number" ||
+        typeof v === "boolean"
+      ) {
         object[key] = v;
-      } else if (typeof v !== 'function' && !Array.isArray(v) && v instanceof Object) {
+      } else if (
+        typeof v !== "function" &&
+        !Array.isArray(v) &&
+        v instanceof Object
+      ) {
         object[key] = object[key] || {};
         mergeDeep(object[key], v);
       } else {
@@ -30,14 +38,22 @@ function equals(obj1, obj2) {
     const v1 = obj1[k];
     const v2 = obj2[k];
     if (v2 === undefined) return false;
-    if (typeof v1 === 'string' || typeof v1 === 'number' || typeof v1 === 'boolean') {
+    if (
+      typeof v1 === "string" ||
+      typeof v1 === "number" ||
+      typeof v1 === "boolean"
+    ) {
       if (v1 !== v2) return false;
     } else if (Array.isArray(v1)) {
       if (v1.length !== v2.length) return false;
       for (let ai = 0; ai < v1.length; ai += 1) {
         if (!equals(v1[ai], v2[ai])) return false;
       }
-    } else if (typeof v1 !== 'function' && !Array.isArray(v1) && v1 instanceof Object) {
+    } else if (
+      typeof v1 !== "function" &&
+      !Array.isArray(v1) &&
+      v1 instanceof Object
+    ) {
       if (!equals(v1, v2)) return false;
     }
   }
@@ -48,7 +64,7 @@ function equals(obj1, obj2) {
   objOrAry: obejct or Array
   cb: (value, index | key) => { return value }
 */
-const sum = (objOrAry, cb = value => value) => {
+const sum = (objOrAry, cb = (value) => value) => {
   let total = 0;
   let size = 0;
   Object.keys(objOrAry).forEach((key) => {
@@ -105,7 +121,7 @@ function digits(a) {
   let flag = false;
   for (let i = 0; i < v.length; i += 1) {
     if (flag === true) ret += 1;
-    if (v.charAt(i) === '.') flag = true;
+    if (v.charAt(i) === ".") flag = true;
   }
   return ret;
 }
@@ -119,19 +135,33 @@ export function numberCalc(type, a1, a2) {
   const num1 = Number(a1);
   const num2 = Number(a2);
   let ret = 0;
-  if (type === '-') {
+  if (type === "-") {
     ret = num1 - num2;
-  } else if (type === '+') {
+  } else if (type === "+") {
     ret = num1 + num2;
-  } else if (type === '*') {
+  } else if (type === "*") {
     ret = num1 * num2;
-  } else if (type === '/') {
+  } else if (type === "/") {
     ret = num1 / num2;
     if (digits(ret) > 5) return ret.toFixed(2);
     return ret;
   }
   return ret.toFixed(Math.max(al1, al2));
 }
+
+export const convertFromCellIndexToLabel = (columnIndex, rowIndex) => {
+  let startIndex = "A".charCodeAt(0);
+
+  const columnCharCode = startIndex + columnIndex;
+
+  if (columnCharCode > 90 || columnCharCode < 65) {
+    throw new Error("A-Z columns are only supported");
+  }
+
+  const column = String.fromCharCode(columnCharCode);
+
+  return `${column}${rowIndex}`;
+};
 
 export default {
   cloneDeep,

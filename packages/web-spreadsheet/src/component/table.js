@@ -313,6 +313,8 @@ class Table {
         cellCoord.column.index,
       );
 
+      // TODO: Mark cells as read to save on recursion
+
       // If cell contains a formula, return the result of the formula rather
       // than the formula text itself
       if (cellText && cellText.length > 0 && cellText[0] === "=") {
@@ -390,6 +392,7 @@ class Table {
   }
 
   render() {
+    console.log("render");
     // resize canvas
     const { data } = this;
     const { rows, cols } = data;

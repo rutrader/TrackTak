@@ -6,12 +6,15 @@ import Bottombar from "./component/bottombar";
 import { cssPrefix } from "./config";
 import { locale } from "./locale/locale";
 import "./index.less";
+import buildDependencyTree from "./algorithm/buildDependencyTree";
+import { convertFromCellIndexToLabel } from "./core/helper";
 
 class Spreadsheet {
   constructor(selectors, options = {}) {
     let targetEl = selectors;
     this.options = options;
     this.sheetIndex = 1;
+    this.dependencyTree = {};
     this.datas = [];
     if (typeof selectors === "string") {
       targetEl = document.querySelector(selectors);
@@ -65,6 +68,25 @@ class Spreadsheet {
 
   loadData(data) {
     const ds = Array.isArray(data) ? data : [data];
+
+    // TODO: Make formulas work for multiple worksheets later
+    const cellFormulas = {};
+
+    Object.keys(ds[0].rows).forEach((key) => {
+      const rowIndex = parseInt(key, 10) + 1;
+      const { cells } = ds[0].rows[key];
+
+      Object.keys(cells).forEach((key) => {
+        const columnIndex = parseInt(key, 10);
+        const cell = cells[columnIndex];
+        const cellLabel = convertFromCellIndexToLabel(columnIndex, rowIndex);
+
+        cellFormulas[cellLabel] = cell.text;
+      });
+    });
+
+    this.dependencyTree = buildDependencyTree(cellFormulas);
+
     this.bottombar.clear();
     this.datas = [];
     if (ds.length > 0) {

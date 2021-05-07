@@ -67,9 +67,11 @@ const rowCells = cellKeysSorted.map((key) => {
 const rows = {};
 
 getChunksOfArray(rowCells, columns.length).forEach((data, i) => {
+  //if (i <= 7) {
   rows[i] = {
     cells: data,
   };
+  // }
 });
 
 // https://github.com/jspreadsheet/pro/issues/35

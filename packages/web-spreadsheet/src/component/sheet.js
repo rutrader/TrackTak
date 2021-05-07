@@ -74,7 +74,6 @@ function selectorSet(multiple, ri, ci, indexesUpdated = true, moving = false) {
     this.trigger("cell-selected", cell, ri, ci);
   }
   toolbar.reset();
-  table.render();
 }
 
 // multiple: boolean
