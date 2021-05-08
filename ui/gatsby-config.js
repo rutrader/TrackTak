@@ -174,16 +174,5 @@ module.exports = {
       },
       __key: "pages",
     },
-    {
-      resolve: `gatsby-plugin-modal-routing`,
-      options: {
-        appElement: '#___gatsby',
-        modalProps: {
-          closeTimeoutMS: 500,
-          preventScroll: true,
-          shouldCloseOnOverlayClick: false,
-        },
-      }
-    }
   ],
 };

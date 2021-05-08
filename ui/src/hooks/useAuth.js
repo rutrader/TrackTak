@@ -12,10 +12,12 @@ const AuthContext = createContext();
  * @param children child components
  * @returns wrapped components provided with access to auth object
  */
-export const ProvideAuth = ({ children }) => {
+export const ProvideAuth = (props) => {
   const auth = useProvideAuth();
-  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
-}
+  return (
+    <AuthContext.Provider value={auth}>{props.children}</AuthContext.Provider>
+  );
+};
 
 /**
  *
@@ -24,33 +26,35 @@ export const ProvideAuth = ({ children }) => {
 const useProvideAuth = () => {
   const [session, setSession] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [error, setError] = useState(null);
 
   const signUp = (
     email,
     password,
+    userAttributes = [],
     onSuccess,
     onFailure,
-    userAttributes = [],
   ) => {
     cognitoSignUp(email, password, onSuccess, onFailure, userAttributes);
   };
 
-  const signIn = (username, password) => {
-    const onSuccess = (session) => {
+  const signIn = (username, password, onSuccess, onFailure) => {
+    const onCognitoSuccess = (session) => {
       setSession(session);
       setIsAuthenticated(true);
-      setError(null);
+      onSuccess();
     };
-    const onFailure = (err) => {
-      console.error(err);
-      setError(err);
-      setIsAuthenticated(false);
-    };
+
     const onNewPasswordRequired = () => {
       console.error("New password required"); // TODO
     };
-    cognitoSignIn(username, password, onSuccess, onFailure, onNewPasswordRequired);
+
+    cognitoSignIn(
+      username,
+      password,
+      onCognitoSuccess,
+      onFailure,
+      onNewPasswordRequired,
+    );
   };
 
   const signOut = () => {
@@ -61,15 +65,14 @@ const useProvideAuth = () => {
 
   const sendPasswordResetEmail = (email) => {};
 
-  return [
+  return {
     isAuthenticated,
     session,
     signUp,
     signIn,
     signOut,
     sendPasswordResetEmail,
-    error,
-  ];
+  };
 };
 
 export const useAuth = () => {

@@ -22,6 +22,9 @@ let theme = createMuiTheme({
       dark: "#41407d",
       contrastText: "#fff",
     },
+    icons: {
+      facebook: "#3B5998"
+    }
   },
   components: {
     MuiButton: {

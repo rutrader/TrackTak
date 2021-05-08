@@ -13,8 +13,9 @@ import { Link } from "gatsby";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchTicker from "./SearchTicker";
 import TracktakLogo from "./TracktakLogo";
+import { useAuth } from "../hooks/useAuth";
 
-const rightLinks = [
+const rightLinks = (isAuthenticated) => [
   { to: "/how-to-do-a-dcf", text: "Documentation" },
   { to: "/stock-valuations", text: "Valuations" },
   { to: "/contact-us", text: "Contact" },
@@ -22,16 +23,18 @@ const rightLinks = [
     to: "/about-us",
     text: "About us",
   },
-  {
-    to: "/sign-up",
-    text: "Sign up",
-    state: {
-      modal: true,
-    },
-  },
+  isAuthenticated
+    ? {
+        to: "/sign-out",
+        text: "Sign out",
+      }
+    : {
+        to: "/sign-in",
+        text: "Sign in",
+      },
 ];
 
-const allLinks = [...rightLinks];
+const allLinks = (isAuthenticated) => rightLinks(isAuthenticated);
 
 const HeaderLink = ({ to, text, style }) => {
   return (
@@ -64,6 +67,7 @@ const Header = ({ hideSearch }) => {
   const extraPadding = 20;
   const paddingBottom = `${theme.mixins.toolbar.minHeight + extraPadding}px`;
   const [anchorEl, setAnchorEl] = useState(null);
+  const { isAuthenticated } = useAuth();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -105,7 +109,7 @@ const Header = ({ hideSearch }) => {
             </Box>
             <Hidden mdDown implementation="css">
               <Box sx={{ display: "flex" }}>
-                {rightLinks.map((link, i) => (
+                {rightLinks(isAuthenticated).map((link, i) => (
                   <HeaderLink
                     key={link.to}
                     sx={{ ml: i === 0 ? 2 : 0 }}
@@ -140,7 +144,7 @@ const Header = ({ hideSearch }) => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  {allLinks.map((link) => (
+                  {allLinks(isAuthenticated).map((link) => (
                     <MenuItem
                       key={link.to}
                       to={link.to}

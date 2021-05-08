@@ -9,16 +9,14 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 import { useFormStyles } from "./Form.styles";
 import { useTheme } from "@material-ui/styles";
 
-const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
+const SignInForm = ({ onSubmit, onSwitchToSignUpClick }) => {
   const theme = useTheme()
   const classes = useFormStyles(theme);
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
     onSubmit(e, {
-      name,
       email,
       password,
     });
@@ -28,25 +26,13 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
     <div className={classes.paper}>
       <TracktakLogoSvg />
       <Typography component="h1" variant="h5">
-        Sign up
+        Sign in
       </Typography>
       <form
         className={classes.form}
         onSubmit={handleSubmit}
       >
         <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <TextField
-              onChange={(e) => setName(e.target.value)}
-              autoComplete="name"
-              name="name"
-              variant="outlined"
-              fullWidth
-              id="name"
-              label="Name"
-              autoFocus
-            />
-          </Grid>
           <Grid item xs={12}>
             <TextField
               onChange={(e) => setEmail(e.target.value)}
@@ -80,12 +66,12 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
           color="primary"
           className={classes.submit}
         >
-          Sign Up
+          Sign In
         </RoundButton>
         <Grid container justifyContent="center">
           <Grid item>
             <Typography component="div" display="block">
-              Or sign up with
+              Or sign in with
             </Typography>
           </Grid>
           <Grid container justifyContent="center">
@@ -100,10 +86,10 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
               color="primary"
               disableRipple
               className={classes.link}
-              onClick={onSwitchToSignInClick}
+              onClick={onSwitchToSignUpClick}
               type="button"
             >
-              Already have an account? Sign in
+              Don't have an account? Sign up
             </Button>
           </Grid>
         </Grid>
@@ -112,4 +98,4 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
   );
 };
 
-export default SignUpForm;
+export default SignInForm;
