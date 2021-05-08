@@ -129,7 +129,7 @@ getColumnsBetween(columns, "C", "L").forEach((column, index) => {
 
   cells[key] = {
     readOnly: true,
-    value: (index + 1).toString(),
+    value: index + 1,
     type: "number",
   };
 });

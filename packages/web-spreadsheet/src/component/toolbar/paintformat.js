@@ -1,8 +1,8 @@
-import ToggleItem from './toggle_item';
+import ToggleItem from "./toggle_item";
 
 export default class Paintformat extends ToggleItem {
-  constructor() {
-    super('paintformat');
+  constructor(formats) {
+    super(formats, "paintformat");
   }
 
   setState() {}

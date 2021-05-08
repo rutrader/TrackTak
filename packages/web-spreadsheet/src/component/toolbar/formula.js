@@ -1,9 +1,9 @@
 import DropdownItem from "./dropdown_item";
 import DropdownFormula from "../dropdown_formula";
 
-export default class Format extends DropdownItem {
-  constructor() {
-    super("formula");
+export default class Formula extends DropdownItem {
+  constructor(formats) {
+    super(formats, "formula");
   }
 
   getValue(it) {

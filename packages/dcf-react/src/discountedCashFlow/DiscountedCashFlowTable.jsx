@@ -40,7 +40,11 @@ import cells from "./cells";
 import { setCells, setScope } from "../redux/actions/dcfActions";
 import { isNil, spread } from "lodash";
 import parseNum from "parse-num";
-import Spreadsheet from "@tracktak/web-spreadsheet";
+import Spreadsheet, { formatNumberRender } from "@tracktak/web-spreadsheet";
+
+const options = {
+  licenseKey: "agpl-v3",
+};
 
 const defaultColWidth = 120;
 
@@ -53,7 +57,10 @@ const cellKeysSorted = padCellKeys(Object.keys(cells).sort(sortAlphaNumeric));
 const data = cellKeysSorted.map((key) => {
   const cell = cells[key];
 
-  return cell?.expr ?? cell?.value;
+  return {
+    text: cell?.expr ?? cell?.value,
+    type: cell?.type,
+  };
 });
 const chunkedData = getChunksOfArray(data, columns.length);
 const rowCells = cellKeysSorted.map((key) => {
@@ -61,17 +68,16 @@ const rowCells = cellKeysSorted.map((key) => {
 
   return {
     text: cell?.expr ?? cell?.value ?? "",
+    style: cell?.type,
   };
 });
 
 const rows = {};
 
 getChunksOfArray(rowCells, columns.length).forEach((data, i) => {
-  //if (i <= 7) {
   rows[i] = {
     cells: data,
   };
-  // }
 });
 
 // https://github.com/jspreadsheet/pro/issues/35
@@ -118,10 +124,8 @@ const DiscountedCashFlowTable = ({
   SubscribeCover,
   loadingCells,
 }) => {
+  const containerRef = useRef();
   const [spreadsheet, setSpreadsheet] = useState();
-  const sheet = spreadsheet?.sheet;
-  const table = sheet?.table;
-  const initSpreadsheetRef = useRef(null);
   const theme = useTheme();
   const location = useLocation();
   const currencySymbol = useSelector(selectValuationCurrencySymbol);
@@ -150,16 +154,52 @@ const DiscountedCashFlowTable = ({
     );
 
     if (!dcfValuationElement) {
-      const spreadsheet = new Spreadsheet(`#${dcfValuationId}`).loadData([
-        {
-          //          freeze: ["A1:A37"],
-          name: "DCF Valuation",
-          // cols: {
-          //   0: 220,
-          // },
-          rows,
+      const formats = {
+        currency: {
+          title: () => "Currency",
+          type: "number",
+          format: "currency",
+          label: `${currencySymbol}10.00`,
+          render: (v) => currencySymbol + formatNumberRender(v),
         },
-      ]);
+        million: {
+          title: () => "Million",
+          format: "million",
+          type: "number",
+          label: "(000)",
+          render: (v) => formatNumberRender(v) / 1000000,
+        },
+        "million-currency": {
+          title: () => "Million Currency",
+          format: "million-currency",
+          type: "number",
+          label: `${currencySymbol}(000)`,
+          render: (v) => {
+            const value = v / 1000000;
+
+            return formats.currency.render(value);
+          },
+        },
+      };
+      const spreadsheet = new Spreadsheet(`#${dcfValuationId}`, {
+        formats,
+        view: {
+          height: () => document.documentElement.clientHeight,
+          width: () => {
+            const containerStyle = getComputedStyle(containerRef.current);
+            const paddingX =
+              parseFloat(containerStyle.paddingLeft) +
+              parseFloat(containerStyle.paddingRight);
+            const borderX =
+              parseFloat(containerStyle.borderLeftWidth) +
+              parseFloat(containerStyle.borderRightWidth);
+            const elementWidth =
+              containerRef.current.offsetWidth - paddingX - borderX;
+
+            return elementWidth;
+          },
+        },
+      });
 
       setSpreadsheet(spreadsheet);
 
@@ -168,12 +208,64 @@ const DiscountedCashFlowTable = ({
   }, []);
 
   useEffect(() => {
-    if (table) {
-      table.setParser({
-        variables: scope,
+    if (spreadsheet) {
+      spreadsheet.setVariables({
+        matureMarketEquityRiskPremium: 0.0472,
+        pastThreeYearsAverageEffectiveTaxRate: 0.1761176548878685,
+        totalRevenue: 1541116000,
+        operatingIncome: 172936000,
+        investedCapital: 371968000,
+        bookValueOfDebt: 48738000,
+        cashAndShortTermInvestments: 500754000,
+        minorityInterest: 0,
+        marginalTaxRate: 0.27,
+        sharesOutstanding: 28395000.763437532,
+        price: 96.93,
+        cagrYearOneToFive: 0.22,
+        riskFreeRate: 0.01579,
+        yearOfConvergence: 2,
+        ebitTargetMarginInYearTen: 0.12,
+        totalCostOfCapital: 0.05978470347956857,
+        salesToCapitalRatio: 1.71,
+        nonOperatingAssets: null,
+        netOperatingLoss: null,
+        probabilityOfFailure: null,
+        proceedsAsAPercentageOfBookValue: null,
+        bookValueOfEquity: 823984000,
+        valueOfAllOptionsOutstanding: null,
       });
+      spreadsheet.loadData([
+        {
+          //          freeze: ["A1:A37"],
+          name: "DCF Valuation",
+          // cols: {
+          //   0: 220,
+          // },
+          rows,
+          styles: {
+            percent: {
+              format: "percent",
+            },
+            million: {
+              format: "million",
+            },
+            "million-currency": {
+              format: "million-currency",
+            },
+            currency: {
+              format: "currency",
+            },
+            number: {
+              format: "number",
+            },
+            year: {
+              format: "number",
+            },
+          },
+        },
+      ]);
     }
-  }, [scope, table]);
+  }, [spreadsheet]);
 
   // useEffect(() => {
   //   // For the spreadsheet custom TT function to parse our fields
@@ -427,7 +519,7 @@ const DiscountedCashFlowTable = ({
   const to = `${location.pathname}#${valueDrivingInputsId}`;
 
   return (
-    <Box sx={{ position: "relative", width: "2000px" }}>
+    <Box sx={{ position: "relative" }} ref={containerRef}>
       <Box id={dcfValuationId} />
       {/* <Box
         sx={{

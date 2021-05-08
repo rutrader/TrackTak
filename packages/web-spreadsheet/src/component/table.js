@@ -1,11 +1,11 @@
 import { stringAt } from "../core/alphabet";
 import { getFontSizePxByPt } from "../core/font";
-import _cell from "../core/cell";
-import { formatm } from "../core/format";
 
 import { Draw, DrawBox, thinLineWidth, npx } from "../canvas/draw";
 
-import { Parser } from "hot-formula-parser";
+import { convertFromCellLabelToIndex } from "../core/helper";
+import { isExpressionDependency } from "../../../dcf-react/src/discountedCashFlow/utils";
+import { isNil } from "lodash";
 
 // gobal var
 const cellPaddingWidth = 5;
@@ -70,12 +70,22 @@ export function renderCell(draw, data, rindex, cindex, yoffset = 0) {
     // bboxes.push({ ri: rindex, ci: cindex, box: dbox });
     draw.strokeBorders(dbox);
   }
+
+  const self = this;
+
   draw.rect(dbox, () => {
+    // TODO: Fix sheets later
+    const cellValue = self.hyperFormula.getCellValue({
+      col: cindex,
+      row: rindex,
+      sheet: 0,
+    });
+
     // render text
-    let cellText = _cell.render(cell.text || "", this.formulaParser);
+    let cellText = cellValue || "";
     if (style.format) {
       // console.log(data.formatm, '>>', cell.format);
-      cellText = formatm[style.format].render(cellText, this.formulaParser);
+      cellText = self.formats[style.format].render(cellText);
     }
     const font = Object.assign({}, style.font);
     font.size = getFontSizePxByPt(font.size);
@@ -293,98 +303,65 @@ function renderFreezeHighlightLine(fw, fh, ftw, fth) {
 
 /** end */
 class Table {
-  constructor(el, data) {
+  constructor(el, data, hyperFormula, formats) {
     this.el = el;
     this.draw = new Draw(el, data.viewWidth(), data.viewHeight());
     this.data = data;
-    this.formulaParser = new Parser();
-
-    const that = this;
-
-    // Whenever formulaParser.parser encounters a cell reference, it will
-    // execute this callback to query the true value of that cell reference.
-    // If the referenced cell contains a formula, we need to use formulaParser
-    // to determine its value---which will then trigger more callCellValue
-    // events to computer the values of its cell references. This recursion
-    // will continue until the original formula is fully resolved.
-    const getFormulaParserCellValue = function (cellCoord) {
-      let cellText = that.data.getCellTextOrDefault(
-        cellCoord.row.index,
-        cellCoord.column.index,
-      );
-
-      // TODO: Mark cells as read to save on recursion
-
-      // If cell contains a formula, return the result of the formula rather
-      // than the formula text itself
-      if (cellText && cellText.length > 0 && cellText[0] === "=") {
-        const parsedResult = that.formulaParser.parse(cellText.slice(1));
-
-        // If there's an error, return the error instead of the result
-        return parsedResult.error ? parsedResult.error : parsedResult.result;
-      }
-
-      // The cell doesn't contain a formula, so return its contents as a value.
-      // If the string is a number, return as a number;
-      // otherwise, return as a string.
-      return Number(cellText) || cellText;
-    };
-
-    this.formulaParser.on("callCellValue", function (cellCoord, done) {
-      const cellValue = getFormulaParserCellValue(cellCoord);
-      done(cellValue);
-    });
-
-    this.formulaParser.on(
-      "callRangeValue",
-      function (startCellCoord, endCellCoord, done) {
-        let fragment = [];
-
-        for (
-          let row = startCellCoord.row.index;
-          row <= endCellCoord.row.index;
-          row++
-        ) {
-          let colFragment = [];
-
-          for (
-            let col = startCellCoord.column.index;
-            col <= endCellCoord.column.index;
-            col++
-          ) {
-            // Copy the parts of the structure of a Parser cell coordinate used
-            // by getFormulaParserCellValue
-            const constructedCellCoord = {
-              row: { index: row },
-              column: { index: col },
-            };
-            const cellValue = getFormulaParserCellValue(constructedCellCoord);
-
-            colFragment.push(cellValue);
-          }
-          fragment.push(colFragment);
-        }
-
-        done(fragment);
-      },
-    );
+    this.hyperFormula = hyperFormula;
+    this.formats = formats;
   }
 
-  setParser({ variables = {}, functions = {} }) {
-    Object.keys(variables).forEach((key) => {
-      const value = variables[key];
+  // parseCellText = (text) => {
+  //   if (isExpressionDependency(text)) {
+  //     const parsedResult = this.formulaParser.parse(text.slice(1));
 
-      this.formulaParser.setVariable(key, value);
-    });
+  //     return parsedResult.error ? parsedResult.error : parsedResult.result;
+  //   }
 
-    Object.keys(functions).forEach((key) => {
-      const value = functions[key];
+  //   return text;
+  // };
 
-      this.formulaParser.setFunction(key, value);
-    });
+  // setCurrentCellFormula = (key) => {
+  //   const { rowIndex, columnIndex } = convertFromCellLabelToIndex(key);
+  //   const cell = this.data.getCell(rowIndex, columnIndex);
+  //   const result = this.parseCellText(cell.text);
 
-    this.render();
-  }
+  //   this.data.setCellText(rowIndex, columnIndex, result);
+
+  //   renderCell(this.draw, this.data, rowIndex, columnIndex);
+
+  //   // TODO: Put after all done
+  //   this.render();
+  // };
+
+  // calculateParentFormulas = (dependencyTree, readCells, rootKey) => {
+  //   let currentKeyArray = dependencyTree[rootKey];
+
+  //   // BFS as we must update the most recent
+  //   // children before moving to grandchildren
+  //   while (currentKeyArray.length > 0) {
+  //     let next = [];
+
+  //     currentKeyArray.forEach((key) => {
+  //       // Need to do post-order tree traversal
+  //       if (!readCells[key]) {
+  //         if (next.length === 0) {
+  //           this.setCurrentCellFormula(key);
+
+  //           readCells[key] = true;
+  //         }
+
+  //         if (dependencyTree[key]) {
+  //           next.push(...dependencyTree[key]);
+  //         }
+  //       }
+  //     });
+
+  //     currentKeyArray = next;
+  //   }
+  //   this.setCurrentCellFormula(rootKey);
+  //   readCells[rootKey] = true;
+  // };
 
   resetData(data) {
     this.data = data;

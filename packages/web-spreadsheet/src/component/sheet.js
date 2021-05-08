@@ -876,11 +876,11 @@ function sheetInitEvents() {
 }
 
 export default class Sheet {
-  constructor(targetEl, data) {
+  constructor(targetEl, data, hyperFormula, formats) {
     this.eventMap = new Map();
     const { view, showToolbar, showContextmenu } = data.settings;
     this.el = h("div", `${cssPrefix}-sheet`);
-    this.toolbar = new Toolbar(data, view.width, !showToolbar);
+    this.toolbar = new Toolbar(data, view.width, formats, !showToolbar);
     this.print = new Print(data);
     targetEl.children(this.toolbar.el, this.el, this.print.el);
     this.data = data;
@@ -907,6 +907,7 @@ export default class Sheet {
       () => this.getTableOffset(),
       data,
     );
+    this.hyperFormula = hyperFormula;
     // data validation
     this.modalValidation = new ModalValidation();
     // contextMenu
@@ -936,7 +937,7 @@ export default class Sheet {
       this.sortFilter.el,
     );
     // table
-    this.table = new Table(this.tableEl.el, data);
+    this.table = new Table(this.tableEl.el, data, hyperFormula, formats);
     sheetInitEvents.call(this);
     sheetReset.call(this);
     // init selector [0, 0]

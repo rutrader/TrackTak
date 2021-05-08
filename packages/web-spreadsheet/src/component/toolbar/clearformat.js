@@ -1,7 +1,7 @@
-import IconItem from './icon_item';
+import IconItem from "./icon_item";
 
 export default class Clearformat extends IconItem {
-  constructor() {
-    super('clearformat');
+  constructor(formats) {
+    super(formats, "clearformat");
   }
 }

@@ -1,8 +1,8 @@
-import ToggleItem from './toggle_item';
+import ToggleItem from "./toggle_item";
 
 export default class Autofilter extends ToggleItem {
-  constructor() {
-    super('autofilter');
+  constructor(formats) {
+    super(formats, "autofilter");
   }
 
   setState() {}

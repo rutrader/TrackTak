@@ -4,18 +4,85 @@ import DataProxy from "./core/data_proxy";
 import Sheet from "./component/sheet";
 import Bottombar from "./component/bottombar";
 import { cssPrefix } from "./config";
-import { locale } from "./locale/locale";
+import { locale, tf } from "./locale/locale";
 import "./index.less";
 import buildDependencyTree from "./algorithm/buildDependencyTree";
 import { convertFromCellIndexToLabel } from "./core/helper";
+import { HyperFormula } from "hyperformula";
+import { cloneDeep } from "lodash";
+
+const formatStringRender = (v) => v;
+
+const formatNumberRender = (v) => {
+  // match "-12.1" or "12" or "12.1"
+  if (/^(-?\d*.?\d*)$/.test(v)) {
+    const v1 = Number(v).toFixed(2).toString();
+    const [first, ...parts] = v1.split("\\.");
+    return [first.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"), ...parts];
+  }
+  return v;
+};
 
 class Spreadsheet {
   constructor(selectors, options = {}) {
     let targetEl = selectors;
     this.options = options;
     this.sheetIndex = 1;
-    this.dependencyTree = {};
     this.datas = [];
+    this.formats = {
+      normal: {
+        title: tf("format.normal"),
+        type: "string",
+        render: formatStringRender,
+      },
+      text: {
+        title: tf("format.text"),
+        type: "string",
+        render: formatStringRender,
+      },
+      number: {
+        title: tf("format.number"),
+        type: "number",
+        label: "1,000.12",
+        render: formatNumberRender,
+      },
+      percent: {
+        title: tf("format.percent"),
+        type: "number",
+        label: "10.12%",
+        render: (v) => `${formatNumberRender(v * 100)}%`,
+      },
+      date: {
+        title: tf("format.date"),
+        type: "date",
+        label: "26/09/2008",
+        render: formatStringRender,
+      },
+      time: {
+        title: tf("format.time"),
+        type: "date",
+        label: "15:59:00",
+        render: formatStringRender,
+      },
+      datetime: {
+        title: tf("format.datetime"),
+        type: "date",
+        label: "26/09/2008 15:59:00",
+        render: formatStringRender,
+      },
+      duration: {
+        title: tf("format.duration"),
+        type: "date",
+        label: "24:01:00",
+        render: formatStringRender,
+      },
+      ...(options.formats ?? {}),
+    };
+
+    this.hyperFormula = HyperFormula.buildEmpty({
+      licenseKey: "agpl-v3", // TODO: make commercial license later
+    });
+
     if (typeof selectors === "string") {
       targetEl = document.querySelector(selectors);
     }
@@ -41,9 +108,23 @@ class Spreadsheet {
     );
     // create canvas element
     targetEl.appendChild(rootEl.el);
-    this.sheet = new Sheet(rootEl, this.data);
+    this.sheet = new Sheet(rootEl, this.data, this.hyperFormula, this.formats);
     rootEl.child(this.bottombar.el);
   }
+
+  setVariables = (variables) => {
+    Object.keys(variables).forEach((key) => {
+      const value = variables[key];
+
+      if (this.hyperFormula.isItPossibleToChangeNamedExpression(key, value)) {
+        this.hyperFormula.changeNamedExpression(key, value);
+      }
+
+      if (this.hyperFormula.isItPossibleToAddNamedExpression(key, value)) {
+        this.hyperFormula.addNamedExpression(key, value);
+      }
+    });
+  };
 
   addSheet(name, active = true) {
     const n = name || `sheet${this.sheetIndex}`;
@@ -69,23 +150,14 @@ class Spreadsheet {
   loadData(data) {
     const ds = Array.isArray(data) ? data : [data];
 
-    // TODO: Make formulas work for multiple worksheets later
-    // const cellFormulas = {};
+    ds.forEach((sheet) => {
+      const sheetContent = Object.values(sheet.rows).map(({ cells }) => {
+        return cells.map((x) => x.text);
+      });
 
-    // Object.keys(ds[0].rows).forEach((key) => {
-    //   const rowIndex = parseInt(key, 10) + 1;
-    //   const { cells } = ds[0].rows[key];
-
-    //   Object.keys(cells).forEach((key) => {
-    //     const columnIndex = parseInt(key, 10);
-    //     const cell = cells[columnIndex];
-    //     const cellLabel = convertFromCellIndexToLabel(columnIndex, rowIndex);
-
-    //     cellFormulas[cellLabel] = cell.text;
-    //   });
-    // });
-
-    // this.dependencyTree = buildDependencyTree(cellFormulas);
+      this.hyperFormula.addSheet(sheet.name);
+      this.hyperFormula.setSheetContent(sheet.name, sheetContent);
+    });
 
     this.bottombar.clear();
     this.datas = [];
@@ -152,4 +224,4 @@ if (typeof window !== "undefined") {
 }
 
 export default Spreadsheet;
-export { spreadsheet };
+export { spreadsheet, formatNumberRender };

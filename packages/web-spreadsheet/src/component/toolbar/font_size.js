@@ -1,9 +1,9 @@
-import DropdownItem from './dropdown_item';
-import DropdownFontsize from '../dropdown_fontsize';
+import DropdownItem from "./dropdown_item";
+import DropdownFontsize from "../dropdown_fontsize";
 
-export default class Format extends DropdownItem {
-  constructor() {
-    super('font-size');
+export default class FontSize extends DropdownItem {
+  constructor(formats) {
+    super(formats, "font-size");
   }
 
   getValue(it) {
