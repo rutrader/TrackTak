@@ -74,18 +74,28 @@ export function renderCell(draw, data, rindex, cindex, yoffset = 0) {
   const self = this;
 
   draw.rect(dbox, () => {
-    // TODO: Fix sheets later
-    const cellValue = self.hyperFormula.getCellValue({
+    // render text
+    let cellText = cell.text || "";
+    let format = style.format;
+
+    const cellAddress = {
       col: cindex,
       row: rindex,
       sheet: 0,
-    });
+    };
 
-    // render text
-    let cellText = cellValue || "";
-    if (style.format) {
+    // TODO: Fix sheets later
+    if (self.calculateFormulas) {
+      cellText = self.hyperFormula.getCellValue(cellAddress);
+    } else {
+      if (this.hyperFormula.doesCellHaveFormula(cellAddress)) {
+        format = "text";
+      }
+    }
+
+    if (format) {
       // console.log(data.formatm, '>>', cell.format);
-      cellText = self.formats[style.format].render(cellText);
+      cellText = self.formats[format].render(cellText);
     }
     const font = Object.assign({}, style.font);
     font.size = getFontSizePxByPt(font.size);
@@ -309,59 +319,12 @@ class Table {
     this.data = data;
     this.hyperFormula = hyperFormula;
     this.formats = formats;
+    this.calculateFormulas = true;
   }
 
-  // parseCellText = (text) => {
-  //   if (isExpressionDependency(text)) {
-  //     const parsedResult = this.formulaParser.parse(text.slice(1));
-
-  //     return parsedResult.error ? parsedResult.error : parsedResult.result;
-  //   }
-
-  //   return text;
-  // };
-
-  // setCurrentCellFormula = (key) => {
-  //   const { rowIndex, columnIndex } = convertFromCellLabelToIndex(key);
-  //   const cell = this.data.getCell(rowIndex, columnIndex);
-  //   const result = this.parseCellText(cell.text);
-
-  //   this.data.setCellText(rowIndex, columnIndex, result);
-
-  //   renderCell(this.draw, this.data, rowIndex, columnIndex);
-
-  //   // TODO: Put after all done
-  //   this.render();
-  // };
-
-  // calculateParentFormulas = (dependencyTree, readCells, rootKey) => {
-  //   let currentKeyArray = dependencyTree[rootKey];
-
-  //   // BFS as we must update the most recent
-  //   // children before moving to grandchildren
-  //   while (currentKeyArray.length > 0) {
-  //     let next = [];
-
-  //     currentKeyArray.forEach((key) => {
-  //       // Need to do post-order tree traversal
-  //       if (!readCells[key]) {
-  //         if (next.length === 0) {
-  //           this.setCurrentCellFormula(key);
-
-  //           readCells[key] = true;
-  //         }
-
-  //         if (dependencyTree[key]) {
-  //           next.push(...dependencyTree[key]);
-  //         }
-  //       }
-  //     });
-
-  //     currentKeyArray = next;
-  //   }
-  //   this.setCurrentCellFormula(rootKey);
-  //   readCells[rootKey] = true;
-  // };
+  calculateFormulas = (calculateFormulas) => {
+    this.calculateFormulas = calculateFormulas;
+  };
 
   resetData(data) {
     this.data = data;
@@ -369,7 +332,6 @@ class Table {
   }
 
   render() {
-    console.log("render");
     // resize canvas
     const { data } = this;
     const { rows, cols } = data;

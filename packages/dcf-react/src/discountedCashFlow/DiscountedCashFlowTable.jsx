@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { renderToString } from "react-dom/server";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -46,7 +46,8 @@ const options = {
   licenseKey: "agpl-v3",
 };
 
-const defaultColWidth = 120;
+const defaultColWidth = 110;
+const columnAWidth = 170;
 
 const columns = [];
 
@@ -117,6 +118,119 @@ const getRawValue = (spreadsheet, key) => {
 };
 
 const dcfValuationId = "dcf-valuation";
+const getDataSheets = (isOnMobile) => {
+  const dataSheets = [
+    {
+      name: "DCF Valuation",
+      cols: {
+        0: {
+          width: columnAWidth,
+        },
+      },
+      rows,
+      styles: {
+        percent: {
+          format: "percent",
+        },
+        million: {
+          format: "million",
+        },
+        "million-currency": {
+          format: "million-currency",
+        },
+        currency: {
+          format: "currency",
+        },
+        number: {
+          format: "number",
+        },
+        year: {
+          format: "number",
+        },
+      },
+    },
+  ];
+
+  // Do not put this as a ternary with undefined on the data
+  // the moronic chinese coder is checking for existence of keys
+  // so it will crash... :(
+  if (!isOnMobile) {
+    dataSheets[0].freeze = "B38";
+  }
+
+  return dataSheets;
+};
+
+const getDatasheetsColWidths = (colWidth, isOnMobile) => {
+  const dataSheets = getDataSheets(isOnMobile);
+  const newDataSheets = dataSheets.map((dataSheet, datasheetIndex) => {
+    const newCols = {};
+
+    rows[0].cells.forEach((_, columnIndex) => {
+      newCols[columnIndex] = {
+        width:
+          datasheetIndex === 0 && columnIndex === 0 ? columnAWidth : colWidth,
+      };
+    });
+
+    return {
+      ...dataSheet,
+      cols: newCols,
+    };
+  });
+
+  return newDataSheets;
+};
+
+const getDatasheetsYOYGrowth = (spreadsheet, isOnMobile) => {
+  const dataSheets = getDataSheets(isOnMobile);
+  const dataSheetsValues = spreadsheet?.hyperFormula?.getAllSheetsValues();
+
+  const newDataSheets = dataSheets.map((dataSheet, dataSheetIndex) => {
+    const formulaSheet = dataSheetsValues[dataSheet.name];
+    const newRows = {};
+
+    Object.keys(dataSheet.rows).forEach((rowKey) => {
+      const cells = dataSheet.rows[rowKey].cells;
+      const formulaRow = formulaSheet[rowKey];
+
+      newRows[rowKey] = {
+        ...rows[rowKey],
+        cells: cells.map((cell, i) => {
+          const previousFormulaValue = formulaRow[i - 1]
+            ? formulaRow[i - 1]
+            : null;
+          let currentFormulaValue = formulaRow[i];
+
+          if (
+            typeof previousFormulaValue === "number" &&
+            typeof currentFormulaValue === "number" &&
+            (rowKey !== "0" || dataSheetIndex !== 0)
+          ) {
+            return {
+              ...cell,
+              text:
+                (currentFormulaValue - previousFormulaValue) /
+                currentFormulaValue,
+              style: "percent",
+            };
+          }
+
+          return {
+            ...cell,
+            text: currentFormulaValue,
+          };
+        }),
+      };
+    });
+    return {
+      ...dataSheet,
+      rows: newRows,
+    };
+  });
+
+  return newDataSheets;
+};
 
 const DiscountedCashFlowTable = ({
   showFormulas,
@@ -149,43 +263,47 @@ const DiscountedCashFlowTable = ({
   );
 
   useEffect(() => {
-    const dcfValuationElement = document.querySelector(
-      `#${dcfValuationId} .x-spreadsheet`,
-    );
+    let spreadsheet;
 
-    if (!dcfValuationElement) {
-      const formats = {
-        currency: {
-          title: () => "Currency",
-          type: "number",
-          format: "currency",
-          label: `${currencySymbol}10.00`,
-          render: (v) => currencySymbol + formatNumberRender(v),
-        },
-        million: {
-          title: () => "Million",
-          format: "million",
-          type: "number",
-          label: "(000)",
-          render: (v) => formatNumberRender(v) / 1000000,
-        },
-        "million-currency": {
-          title: () => "Million Currency",
-          format: "million-currency",
-          type: "number",
-          label: `${currencySymbol}(000)`,
-          render: (v) => {
-            const value = v / 1000000;
+    const dcfValuationElement = document.getElementById(`${dcfValuationId}`);
 
-            return formats.currency.render(value);
-          },
+    const formats = {
+      currency: {
+        title: () => "Currency",
+        type: "number",
+        format: "currency",
+        label: `${currencySymbol}10.00`,
+        render: (v) => currencySymbol + formatNumberRender(v),
+      },
+      million: {
+        title: () => "Million",
+        format: "million",
+        type: "number",
+        label: "(000)",
+        render: (v) => formatNumberRender(v) / 1000000,
+      },
+      "million-currency": {
+        title: () => "Million Currency",
+        format: "million-currency",
+        type: "number",
+        label: `${currencySymbol}(000)`,
+        render: (v) => {
+          const value = v / 1000000;
+
+          return formats.currency.render(value);
         },
-      };
-      const spreadsheet = new Spreadsheet(`#${dcfValuationId}`, {
-        formats,
-        view: {
-          height: () => document.documentElement.clientHeight,
-          width: () => {
+      },
+    };
+
+    spreadsheet = new Spreadsheet(dcfValuationElement, {
+      col: {
+        width: defaultColWidth,
+      },
+      formats,
+      view: {
+        height: () => 1050,
+        width: () => {
+          if (containerRef?.current) {
             const containerStyle = getComputedStyle(containerRef.current);
             const paddingX =
               parseFloat(containerStyle.paddingLeft) +
@@ -197,261 +315,51 @@ const DiscountedCashFlowTable = ({
               containerRef.current.offsetWidth - paddingX - borderX;
 
             return elementWidth;
-          },
+          }
         },
-      });
+      },
+    });
 
-      setSpreadsheet(spreadsheet);
+    console.log(spreadsheet);
 
-      console.log(spreadsheet);
-    }
-  }, []);
+    setSpreadsheet(spreadsheet);
+
+    return () => {
+      spreadsheet?.destroy();
+    };
+  }, [currencySymbol]);
 
   useEffect(() => {
     if (spreadsheet) {
-      spreadsheet.setVariables({
-        matureMarketEquityRiskPremium: 0.0472,
-        pastThreeYearsAverageEffectiveTaxRate: 0.1761176548878685,
-        totalRevenue: 1541116000,
-        operatingIncome: 172936000,
-        investedCapital: 371968000,
-        bookValueOfDebt: 48738000,
-        cashAndShortTermInvestments: 500754000,
-        minorityInterest: 0,
-        marginalTaxRate: 0.27,
-        sharesOutstanding: 28395000.763437532,
-        price: 96.93,
-        cagrYearOneToFive: 0.22,
-        riskFreeRate: 0.01579,
-        yearOfConvergence: 2,
-        ebitTargetMarginInYearTen: 0.12,
-        totalCostOfCapital: 0.05978470347956857,
-        salesToCapitalRatio: 1.71,
-        nonOperatingAssets: null,
-        netOperatingLoss: null,
-        probabilityOfFailure: null,
-        proceedsAsAPercentageOfBookValue: null,
-        bookValueOfEquity: 823984000,
-        valueOfAllOptionsOutstanding: null,
-      });
-      spreadsheet.loadData([
-        {
-          //          freeze: ["A1:A37"],
-          name: "DCF Valuation",
-          // cols: {
-          //   0: 220,
-          // },
-          rows,
-          styles: {
-            percent: {
-              format: "percent",
-            },
-            million: {
-              format: "million",
-            },
-            "million-currency": {
-              format: "million-currency",
-            },
-            currency: {
-              format: "currency",
-            },
-            number: {
-              format: "number",
-            },
-            year: {
-              format: "number",
-            },
-          },
-        },
-      ]);
+      spreadsheet.setVariables(scope);
+
+      const dataSheets = getDataSheets(isOnMobile);
+
+      spreadsheet.loadData(dataSheets);
     }
-  }, [spreadsheet]);
+  }, [isOnMobile, scope, spreadsheet]);
 
-  // useEffect(() => {
-  //   // For the spreadsheet custom TT function to parse our fields
-  //   window.TT = TTFormula(scope);
+  useEffect(() => {
+    if (spreadsheet) {
+      if (showFormulas) {
+        spreadsheet.showFormulas();
+        spreadsheet.loadData(getDatasheetsColWidths(200, isOnMobile));
+      } else {
+        spreadsheet.hideFormulas();
+        spreadsheet.loadData(getDataSheets(isOnMobile));
+      }
+    }
+  }, [showFormulas, spreadsheet, isOnMobile]);
 
-  //   refreshSpreadsheet(spreadsheet, hasAllRequiredInputsFilledIn);
-
-  //   return () => {
-  //     delete window.TT;
-  //   };
-  // }, [hasAllRequiredInputsFilledIn, scope, spreadsheet]);
-
-  // useEffect(() => {
-  //   let spreadsheet;
-  //   let jspreadsheetModule;
-
-  //   const fetchJSpreadsheet = async () => {
-  //     const { default: jspreadsheet } = await import("jspreadsheet-pro");
-
-  //     const helpers = jspreadsheet.helpers;
-
-  //     jspreadsheetModule = jspreadsheet;
-
-  //     if (initSpreadsheetRef.current && !initSpreadsheetRef.current.jexcel) {
-  //       const cellsFormatted = {};
-
-  //       Object.keys(cells).forEach((key) => {
-  //         const cell = cells[key];
-
-  //         cellsFormatted[key] = formatTypeToMask(currencySymbol, cell?.type);
-  //       });
-
-  //       let changedCells = {};
-
-  //       spreadsheet = jspreadsheet(initSpreadsheetRef.current, {
-  //         // https://github.com/jspreadsheet/pro/issues/38
-  //         cache: false,
-  //         onload: (_, spreadsheet) => {
-  //           const cellsData = {};
-  //           const allCells = spreadsheet.getCells();
-  //           Object.keys(allCells).forEach((key) => {
-  //             formatIfCellIsPercent(spreadsheet, key);
-  //             let value = getRawValue(spreadsheet, key);
-
-  //             if (cells[key]?.type === "percent") {
-  //               value /= 100;
-  //             }
-
-  //             cellsData[key] = {
-  //               ...cells[key],
-  //               value: isFinite(value) ? value : cells[key]?.value,
-  //             };
-  //           });
-  //           dispatch(setCells(cellsData));
-  //         },
-  //         onchange: (_, __, x, y, newValue) => {
-  //           const key = helpers.getColumnNameFromCoords(x, y);
-
-  //           // To make the calculations faster for sensitivity analysis we
-  //           // use the values from the spreadsheet to not have to calculate them again.
-  //           const cell = cells[key];
-  //           if (cell) {
-  //             const { type } = cell;
-
-  //             const value = getRawValue(spreadsheet, key);
-
-  //             const changedCell = {
-  //               type,
-  //               value: isFinite(value) ? value : cell.value,
-  //             };
-  //             if (isExpressionDependency(newValue)) {
-  //               changedCell.expr = newValue;
-  //             }
-  //             changedCells[key] = changedCell;
-  //             formatIfCellIsPercent(spreadsheet, key);
-  //           }
-  //         },
-  //         onafterchanges: () => {
-  //           dispatch(setCells(changedCells));
-  //           changedCells = {};
-  //         },
-  //         data: chunkedData,
-  //         cells: cellsFormatted,
-  //         columns: columns.map((column) => {
-  //           return {
-  //             ...column,
-  //           };
-  //         }),
-  //         defaultColWidth,
-  //         tableWidth: "100%",
-  //         tableHeight: "100%",
-  //         tableOverflow: true,
-  //         allowExport: false, // We manually export it to include inputs & other data
-  //         secureFormulas: false, // Sanitize on the server instead
-  //         license:
-  //           "ZmZkMmE0ZDNlYTBlOWExZWU5ZDAwMGIyMmI0ZWE2MmUzYzg2YzIwM2QwMjQyNzU2MmJiYzJhYzgzNTUwOTc5NTZiZGExYjMxOWVkNWMyNWJhM2E5NjhmNjVhYzlhZGUxMDZjZjJjNTRhYjc5NTIyNDNlMDliZTE4OGJlODhjNGYsZXlKdVlXMWxJam9pVFdGeWRHbHVJRVJoZDNOdmJpSXNJbVJoZEdVaU9qRTJNakl4TlRZME1EQXNJbVJ2YldGcGJpSTZXeUpzYjJOaGJHaHZjM1FpTENKc2IyTmhiR2h2YzNRaVhTd2ljR3hoYmlJNk1IMD0",
-  //       });
-
-  //       setSpreadsheet(spreadsheet);
-  //     }
-  //   };
-
-  //   fetchJSpreadsheet();
-
-  //   return () => {
-  //     if (spreadsheet) {
-  //       jspreadsheetModule?.destroy(spreadsheet);
-  //     }
-  //   };
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
-  // useEffect(() => {
-  //   if (spreadsheet) {
-  //     spreadsheet.options.freezeColumns = isOnMobile ? 0 : 1;
-  //   }
-  // }, [isOnMobile, spreadsheet]);
-
-  // useEffect(() => {
-  //   if (spreadsheet) {
-  //     spreadsheet.options.editable = hasAllRequiredInputsFilledIn;
-
-  //     if (hasAllRequiredInputsFilledIn) {
-  //       spreadsheet.setData(chunkedData);
-  //     } else {
-  //       const labelsData = chunkedData.map((arr, i) => {
-  //         if (i === 0) return arr;
-
-  //         return [arr[0]];
-  //       });
-
-  //       spreadsheet.setData(labelsData);
-  //     }
-  //   }
-  // }, [hasAllRequiredInputsFilledIn, spreadsheet]);
-
-  // useEffect(() => {
-  //   if (spreadsheet) {
-  //     columns.forEach(({ width }, i) => {
-  //       spreadsheet.setWidth(i, width);
-  //     });
-  //     const cells = spreadsheet.getCells();
-
-  //     if (showFormulas) {
-  //       Object.keys(cells).forEach((key) => {
-  //         const cell = spreadsheet.getCell(key);
-  //         const cellValue = spreadsheet.getValue(key);
-  //         if (isExpressionDependency(cellValue)) {
-  //           cell.innerHTML = cellValue;
-  //         }
-  //       });
-  //       columns.forEach((_, i) => {
-  //         spreadsheet.setWidth(i, 220);
-  //       });
-  //     } else if (showYOYGrowth) {
-  //       const cellHTMLValues = {};
-
-  //       Object.keys(cells).forEach((key) => {
-  //         const currentCellValue = getRawValue(spreadsheet, key);
-  //         const previousCellKey = getPreviousRowCellKey(key);
-  //         const previousCellValue = getRawValue(spreadsheet, previousCellKey);
-  //         if (isFinite(previousCellValue) && isFinite(currentCellValue)) {
-  //           const content = renderToString(
-  //             <FormatRawNumberToPercent
-  //               value={
-  //                 (currentCellValue - previousCellValue) / currentCellValue
-  //               }
-  //             />,
-  //           );
-  //           cellHTMLValues[key] = content;
-  //         }
-  //       });
-
-  //       Object.keys(cellHTMLValues).forEach((key) => {
-  //         const value = cellHTMLValues[key];
-  //         const cell = spreadsheet.getCell(key);
-
-  //         if (cell) {
-  //           cell.innerHTML = value;
-  //         }
-  //       });
-  //     } else {
-  //       refreshSpreadsheet(spreadsheet, hasAllRequiredInputsFilledIn);
-  //     }
-  //   }
-  // }, [hasAllRequiredInputsFilledIn, showFormulas, showYOYGrowth, spreadsheet]);
+  useEffect(() => {
+    if (spreadsheet) {
+      if (showYOYGrowth) {
+        spreadsheet.loadData(getDatasheetsYOYGrowth(spreadsheet, isOnMobile));
+      } else {
+        spreadsheet.loadData(getDataSheets(isOnMobile));
+      }
+    }
+  }, [showYOYGrowth, spreadsheet, isOnMobile]);
 
   useEffect(() => {
     // Dispatch only when we have all the data from the API

@@ -7,7 +7,7 @@ export default class Formula extends DropdownItem {
   }
 
   getValue(it) {
-    return it.key;
+    return it;
   }
 
   dropdown() {

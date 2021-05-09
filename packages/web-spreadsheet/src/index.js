@@ -25,7 +25,7 @@ const formatNumberRender = (v) => {
 
 class Spreadsheet {
   constructor(selectors, options = {}) {
-    let targetEl = selectors;
+    this.targetEl = selectors;
     this.options = options;
     this.sheetIndex = 1;
     this.datas = [];
@@ -83,9 +83,6 @@ class Spreadsheet {
       licenseKey: "agpl-v3", // TODO: make commercial license later
     });
 
-    if (typeof selectors === "string") {
-      targetEl = document.querySelector(selectors);
-    }
     this.bottombar = new Bottombar(
       () => {
         const d = this.addSheet();
@@ -106,9 +103,10 @@ class Spreadsheet {
     const rootEl = h("div", `${cssPrefix}`).on("contextmenu", (evt) =>
       evt.preventDefault(),
     );
-    // create canvas element
-    targetEl.appendChild(rootEl.el);
     this.sheet = new Sheet(rootEl, this.data, this.hyperFormula, this.formats);
+
+    // create canvas element
+    this.targetEl.appendChild(rootEl.el);
     rootEl.child(this.bottombar.el);
   }
 
@@ -147,23 +145,39 @@ class Spreadsheet {
     }
   }
 
-  loadData(data) {
-    const ds = Array.isArray(data) ? data : [data];
+  destroy = () => {
+    this.targetEl.querySelector(`.${cssPrefix}`).remove();
+  };
 
-    ds.forEach((sheet) => {
+  showFormulas = () => {
+    this.sheet.table.calculateFormulas = false;
+    this.reRender();
+  };
+
+  hideFormulas = () => {
+    this.sheet.table.calculateFormulas = true;
+    this.reRender();
+  };
+
+  loadData(dataSheets) {
+    dataSheets.forEach((sheet) => {
       const sheetContent = Object.values(sheet.rows).map(({ cells }) => {
         return cells.map((x) => x.text);
       });
 
-      this.hyperFormula.addSheet(sheet.name);
+      const sheetName = this.hyperFormula.getSheetId(sheet.name);
+
+      if (sheetName === undefined) {
+        this.hyperFormula.addSheet(sheet.name);
+      }
       this.hyperFormula.setSheetContent(sheet.name, sheetContent);
     });
 
     this.bottombar.clear();
     this.datas = [];
-    if (ds.length > 0) {
-      for (let i = 0; i < ds.length; i += 1) {
-        const it = ds[i];
+    if (dataSheets.length > 0) {
+      for (let i = 0; i < dataSheets.length; i += 1) {
+        const it = dataSheets[i];
         const nd = this.addSheet(it.name, i === 0);
         nd.setData(it);
         if (i === 0) {

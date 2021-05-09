@@ -156,11 +156,9 @@ function overlayerMousemove(evt) {
   }
 }
 
-let scrollThreshold = 15;
 function overlayerMousescroll(evt) {
-  scrollThreshold -= 1;
-  if (scrollThreshold > 0) return;
-  scrollThreshold = 15;
+  // TODO: Fix for upper/lower bounds scroll
+  // evt.preventDefault();
 
   const { verticalScrollbar, horizontalScrollbar, data } = this;
   const { top } = verticalScrollbar.scroll();
@@ -574,6 +572,7 @@ function sheetInitEvents() {
     modalValidation,
     sortFilter,
   } = this;
+
   // overlayer
   overlayerEl
     .on("mousemove", (evt) => {
@@ -637,7 +636,7 @@ function sheetInitEvents() {
       }
     })
     .on("mousewheel.stop", (evt) => {
-      overlayerMousescroll.call(this, evt);
+      // overlayerMousescroll.call(this, evt);
     })
     .on("mouseout", (evt) => {
       const { offsetX, offsetY } = evt;

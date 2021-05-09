@@ -7,7 +7,7 @@ export function unbind(target, name, fn) {
 }
 export function unbindClickoutside(el) {
   if (el.xclickoutside) {
-    unbind(window.document.body, 'click', el.xclickoutside);
+    unbind(window.document.body, "click", el.xclickoutside);
     delete el.xclickoutside;
   }
 }
@@ -26,30 +26,30 @@ export function bindClickoutside(el, cb) {
       unbindClickoutside(el);
     }
   };
-  bind(window.document.body, 'click', el.xclickoutside);
+  bind(window.document.body, "click", el.xclickoutside);
 }
 export function mouseMoveUp(target, movefunc, upfunc) {
-  bind(target, 'mousemove', movefunc);
+  bind(target, "mousemove", movefunc);
   const t = target;
   t.xEvtUp = (evt) => {
     // console.log('mouseup>>>');
-    unbind(target, 'mousemove', movefunc);
-    unbind(target, 'mouseup', target.xEvtUp);
+    unbind(target, "mousemove", movefunc);
+    unbind(target, "mouseup", target.xEvtUp);
     upfunc(evt);
   };
-  bind(target, 'mouseup', target.xEvtUp);
+  bind(target, "mouseup", target.xEvtUp);
 }
 
 function calTouchDirection(spanx, spany, evt, cb) {
-  let direction = '';
+  let direction = "";
   // console.log('spanx:', spanx, ', spany:', spany);
   if (Math.abs(spanx) > Math.abs(spany)) {
     // horizontal
-    direction = spanx > 0 ? 'right' : 'left';
+    direction = spanx > 0 ? "right" : "left";
     cb(direction, spanx, evt);
   } else {
     // vertical
-    direction = spany > 0 ? 'down' : 'up';
+    direction = spany > 0 ? "down" : "up";
     cb(direction, spany, evt);
   }
 }
@@ -57,12 +57,12 @@ function calTouchDirection(spanx, spany, evt, cb) {
 export function bindTouch(target, { move, end }) {
   let startx = 0;
   let starty = 0;
-  bind(target, 'touchstart', (evt) => {
+  bind(target, "touchstart", (evt) => {
     const { pageX, pageY } = evt.touches[0];
     startx = pageX;
     starty = pageY;
   });
-  bind(target, 'touchmove', (evt) => {
+  bind(target, "touchmove", (evt) => {
     if (!move) return;
     const { pageX, pageY } = evt.changedTouches[0];
     const spanx = pageX - startx;
@@ -73,9 +73,10 @@ export function bindTouch(target, { move, end }) {
       startx = pageX;
       starty = pageY;
     }
-    evt.preventDefault();
+    // TODO: Add back when vertical scrolling is fixed properly for freeze & mouse wheel
+    // evt.preventDefault();
   });
-  bind(target, 'touchend', (evt) => {
+  bind(target, "touchend", (evt) => {
     if (!end) return;
     const { pageX, pageY } = evt.changedTouches[0];
     const spanx = pageX - startx;
@@ -85,46 +86,46 @@ export function bindTouch(target, { move, end }) {
 }
 // eventemiter
 export function createEventEmitter() {
-  const listeners = new Map()
+  const listeners = new Map();
   function on(eventName, callback) {
     if (listeners.has(eventName)) {
-      const currentListener = listeners.get(eventName)
+      const currentListener = listeners.get(eventName);
       if (Array.isArray(currentListener)) {
-        currentListener.push(callback)
+        currentListener.push(callback);
       }
     } else {
-      listeners.set(eventName, [].concat(callback))
+      listeners.set(eventName, [].concat(callback));
     }
   }
   function fire(eventName, args) {
     if (listeners.has(eventName)) {
-      const currentListener = listeners.get(eventName)
+      const currentListener = listeners.get(eventName);
       for (const callback of currentListener) {
-        callback.call(null, ...args)
+        callback.call(null, ...args);
       }
     }
   }
   function removeListener(eventName, callback) {
     if (listeners.has(eventName)) {
-      const currentListener = listeners.get(eventName)
-      const idx = currentListener.indexOf(callback)
+      const currentListener = listeners.get(eventName);
+      const idx = currentListener.indexOf(callback);
       if (idx && idx >= 0) {
-        currentListener.splice(idx, 1)
+        currentListener.splice(idx, 1);
       }
     }
   }
   function once(eventName, callback) {
     const execCalllback = function (...args) {
-      callback.call(null, ...args)
-      removeListener(eventName, execCalllback)
-    }
-    on(eventName, execCalllback)
+      callback.call(null, ...args);
+      removeListener(eventName, execCalllback);
+    };
+    on(eventName, execCalllback);
   }
   function removeAllListeners() {
-    listeners.clear()
+    listeners.clear();
   }
   function getAllListeners() {
-    return listeners
+    return listeners;
   }
   return {
     getAllListeners,
@@ -132,6 +133,6 @@ export function createEventEmitter() {
     once,
     fire,
     removeListener,
-    removeAllListeners
-  }
+    removeAllListeners,
+  };
 }
