@@ -74,6 +74,8 @@ const Header = ({ hideSearch }) => {
             py: 1,
             px: 3,
             background: "#fff",
+            boxShadow:
+              "0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 6%)",
           }}
         >
           <Box

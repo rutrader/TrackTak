@@ -4,7 +4,6 @@ import cells from "../../discountedCashFlow/cells";
 
 const initialState = {
   cells,
-  scope: {},
 };
 
 export const dcfReducer = createReducer(initialState, (builder) => {

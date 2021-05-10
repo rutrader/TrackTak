@@ -26,7 +26,7 @@ import { allInputNameTypeMappings } from "../discountedCashFlow/scopeNameTypeMap
 
 const getModelScopes = (scope, xElement, yElement) => {
   const doesScopeExist =
-    !isNil(scope[xElement?.name]) && !isNil(scope[yElement?.name]);
+    scope && !isNil(scope[xElement?.name]) && !isNil(scope[yElement?.name]);
 
   if (!doesScopeExist) return null;
 
@@ -192,7 +192,7 @@ const SensitivityAnalysis = () => {
           currentScopes,
         );
 
-        setEstimatedValues(data.map((x) => x.B36.value));
+        setEstimatedValues(data);
       }
     };
 

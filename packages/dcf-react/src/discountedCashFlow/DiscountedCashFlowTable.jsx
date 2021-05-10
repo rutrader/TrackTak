@@ -1,12 +1,7 @@
-import React, { useCallback, useRef, useState } from "react";
-import { renderToString } from "react-dom/server";
+import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import {
-  getPreviousRowCellKey,
-  isExpressionDependency,
-  padCellKeys,
-} from "./utils";
+import { padCellKeys } from "./utils";
 import { Alert, Box, useMediaQuery, useTheme } from "@material-ui/core";
 import useInputQueryParams from "../hooks/useInputQueryParams";
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
@@ -29,22 +24,13 @@ import selectThreeAverageYearsEffectiveTaxRate from "../selectors/fundamentalSel
 import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
 import sortAlphaNumeric from "./sortAlphaNumeric";
 import getChunksOfArray from "../shared/getChunksOfArray";
-import formatTypeToMask from "./formatTypeToMask";
 import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
 import selectScope from "../selectors/dcfSelectors/selectScope";
-import "jspreadsheet-pro/dist/jspreadsheet.css";
-import "jsuites/dist/jsuites.css";
-import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
-import TTFormula from "./ttFormula";
 import cells from "./cells";
 import { setCells, setScope } from "../redux/actions/dcfActions";
-import { isNil, spread } from "lodash";
-import parseNum from "parse-num";
+import { isNil } from "lodash";
 import Spreadsheet, { formatNumberRender } from "@tracktak/web-spreadsheet";
-
-const options = {
-  licenseKey: "agpl-v3",
-};
+import { convertFromCellIndexToLabel } from "../../../web-spreadsheet/src/core/helper";
 
 const defaultColWidth = 110;
 const columnAWidth = 170;
@@ -55,15 +41,6 @@ for (let index = 0; index < 13; index++) {
   columns.push({ width: index === 0 ? 220 : defaultColWidth });
 }
 const cellKeysSorted = padCellKeys(Object.keys(cells).sort(sortAlphaNumeric));
-const data = cellKeysSorted.map((key) => {
-  const cell = cells[key];
-
-  return {
-    text: cell?.expr ?? cell?.value,
-    type: cell?.type,
-  };
-});
-const chunkedData = getChunksOfArray(data, columns.length);
 const rowCells = cellKeysSorted.map((key) => {
   const cell = cells[key];
 
@@ -80,42 +57,6 @@ getChunksOfArray(rowCells, columns.length).forEach((data, i) => {
     cells: data,
   };
 });
-
-// https://github.com/jspreadsheet/pro/issues/35
-const formatIfCellIsPercent = (spreadsheet, key) => {
-  const type = cells[key]?.type;
-
-  if (type === "percent") {
-    const cell = spreadsheet.getCell(key);
-    const existingValue = getRawValue(spreadsheet, key);
-    const content = renderToString(
-      <FormatRawNumberToPercent value={existingValue} />,
-    );
-
-    if (cell) {
-      cell.innerHTML = content;
-    }
-  }
-};
-
-const refreshSpreadsheet = (spreadsheet, hasAllRequiredInputsFilledIn) => {
-  if (spreadsheet && hasAllRequiredInputsFilledIn) {
-    spreadsheet.refresh();
-
-    const allCells = spreadsheet.getCells();
-
-    Object.keys(allCells).forEach((key) => {
-      formatIfCellIsPercent(spreadsheet, key);
-    });
-  }
-};
-
-// https://github.com/jspreadsheet/pro/issues/38
-const getRawValue = (spreadsheet, key) => {
-  const processedValue = spreadsheet.getValue(key, true);
-
-  return parseNum(processedValue);
-};
 
 const dcfValuationId = "dcf-valuation";
 const getDataSheets = (isOnMobile) => {
@@ -328,17 +269,38 @@ const DiscountedCashFlowTable = ({
   }, [currencySymbol]);
 
   useEffect(() => {
-    if (spreadsheet) {
+    if (spreadsheet && hasAllRequiredInputsFilledIn && scope) {
       spreadsheet.setVariables(scope);
 
       const dataSheets = getDataSheets(isOnMobile);
 
       spreadsheet.loadData(dataSheets);
+
+      const sheetName = "DCF Valuation";
+      const dataSheetFormulas = spreadsheet.hyperFormula.getAllSheetsFormulas();
+      const dataSheetValues = spreadsheet.hyperFormula.getAllSheetsValues();
+      const cells = {};
+
+      dataSheetValues[sheetName].forEach((columns, rowIndex) => {
+        columns.forEach((_, columnIndex) => {
+          const label = convertFromCellIndexToLabel(columnIndex, rowIndex + 1);
+          const expr = dataSheetFormulas[sheetName][rowIndex][columnIndex];
+          const value = dataSheetValues[sheetName][rowIndex][columnIndex];
+
+          cells[label] = {
+            ...cells[label],
+            value,
+            expr,
+          };
+        });
+      });
+
+      dispatch(setCells(cells));
     }
-  }, [isOnMobile, scope, spreadsheet]);
+  }, [hasAllRequiredInputsFilledIn, isOnMobile, scope, spreadsheet, dispatch]);
 
   useEffect(() => {
-    if (spreadsheet) {
+    if (spreadsheet && hasAllRequiredInputsFilledIn) {
       if (showFormulas) {
         spreadsheet.showFormulas();
         spreadsheet.loadData(getDatasheetsColWidths(200, isOnMobile));
@@ -347,17 +309,17 @@ const DiscountedCashFlowTable = ({
         spreadsheet.loadData(getDataSheets(isOnMobile));
       }
     }
-  }, [showFormulas, spreadsheet, isOnMobile]);
+  }, [showFormulas, spreadsheet, isOnMobile, hasAllRequiredInputsFilledIn]);
 
   useEffect(() => {
-    if (spreadsheet) {
+    if (spreadsheet && hasAllRequiredInputsFilledIn) {
       if (showYOYGrowth) {
         spreadsheet.loadData(getDatasheetsYOYGrowth(spreadsheet, isOnMobile));
       } else {
         spreadsheet.loadData(getDataSheets(isOnMobile));
       }
     }
-  }, [showYOYGrowth, spreadsheet, isOnMobile]);
+  }, [showYOYGrowth, spreadsheet, isOnMobile, hasAllRequiredInputsFilledIn]);
 
   useEffect(() => {
     // Dispatch only when we have all the data from the API
@@ -427,20 +389,6 @@ const DiscountedCashFlowTable = ({
   return (
     <Box sx={{ position: "relative" }} ref={containerRef}>
       <Box id={dcfValuationId} />
-      {/* <Box
-        sx={{
-          "& tbody": {
-            "tr[data-y='0'] td:not(.jexcel_row)": {
-              backgroundColor: (theme) => theme.palette.spreadsheetBackground,
-            },
-            "td[data-x='0']": {
-              backgroundColor: (theme) => theme.palette.spreadsheetBackground,
-            },
-          },
-        }}
-        style={{ maxWidth: "100%" }}
-        ref={initSpreadsheetRef}
-      />
       {SubscribeCover ? <SubscribeCover /> : null}
       {!hasAllRequiredInputsFilledIn && (
         <Alert
@@ -469,7 +417,7 @@ const DiscountedCashFlowTable = ({
           </AnchorLink>
           &nbsp;section above needs to be filled out first to generate the DCF.
         </Alert>
-      )} */}
+      )}
     </Box>
   );
 };

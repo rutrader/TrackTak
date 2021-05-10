@@ -107,8 +107,6 @@ class Spreadsheet {
 
     // TODO: Fix the sheetIndex
     this.sheet.on("cell-edited", (cellText, rowIndex, columnIndex) => {
-      console.log(this);
-
       this.hyperFormula.setCellContents(
         { col: columnIndex, row: rowIndex, sheet: 0 },
         [[cellText]],
