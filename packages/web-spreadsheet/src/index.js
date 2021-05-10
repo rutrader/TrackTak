@@ -105,6 +105,17 @@ class Spreadsheet {
     );
     this.sheet = new Sheet(rootEl, this.data, this.hyperFormula, this.formats);
 
+    // TODO: Fix the sheetIndex
+    this.sheet.on("cell-edited", (cellText, rowIndex, columnIndex) => {
+      console.log(this);
+
+      this.hyperFormula.setCellContents(
+        { col: columnIndex, row: rowIndex, sheet: 0 },
+        [[cellText]],
+      );
+      this.reRender();
+    });
+
     // create canvas element
     this.targetEl.appendChild(rootEl.el);
     rootEl.child(this.bottombar.el);

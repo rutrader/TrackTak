@@ -320,8 +320,6 @@ const DiscountedCashFlowTable = ({
       },
     });
 
-    console.log(spreadsheet);
-
     setSpreadsheet(spreadsheet);
 
     return () => {
