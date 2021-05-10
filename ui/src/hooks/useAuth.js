@@ -1,8 +1,9 @@
-import React, { useState, useContext, createContext } from "react";
+import React, { useState, useContext, createContext, useEffect } from "react";
 import {
-  signUp as cognitoSignUp,
-  signIn as cognitoSignIn,
-  signOut as cognitoSignOut,
+  signUp as userSignUp,
+  signIn as userSignIn,
+  signOut as userSignOut,
+  getCurrentUser,
 } from "../api/auth";
 
 const AuthContext = createContext();
@@ -27,6 +28,18 @@ const useProvideAuth = () => {
   const [session, setSession] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  useEffect(() => {
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+      currentUser.getSession((error, session) => {
+        if (!error && session) {
+          setSession(session);
+          setIsAuthenticated(true);
+        }
+      });
+    }
+  }, []);
+
   const signUp = (
     email,
     password,
@@ -34,21 +47,21 @@ const useProvideAuth = () => {
     onSuccess,
     onFailure,
   ) => {
-    cognitoSignUp(email, password, onSuccess, onFailure, userAttributes);
+    userSignUp(email, password, onSuccess, onFailure, userAttributes);
   };
 
   const signIn = (username, password, onSuccess, onFailure) => {
     const onCognitoSuccess = (session) => {
       setSession(session);
       setIsAuthenticated(true);
-      onSuccess();
+      onSuccess(session);
     };
 
     const onNewPasswordRequired = () => {
       console.error("New password required"); // TODO
     };
 
-    cognitoSignIn(
+    userSignIn(
       username,
       password,
       onCognitoSuccess,
@@ -58,7 +71,7 @@ const useProvideAuth = () => {
   };
 
   const signOut = () => {
-    cognitoSignOut();
+    userSignOut();
     setIsAuthenticated(false);
     setSession(null);
   };

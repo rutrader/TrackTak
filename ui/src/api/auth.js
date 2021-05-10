@@ -57,3 +57,5 @@ export const signUp = (
     onSuccess(result);
   });
 };
+
+export const getCurrentUser = () => userPool.getCurrentUser();
