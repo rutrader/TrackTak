@@ -9,7 +9,7 @@ import {
 import TTTable from "./TTTable";
 import CheckboxSlider from "./CheckboxSlider";
 import { useTheme } from "@material-ui/core/styles";
-import { isNil } from "lodash";
+import { isNil } from "lodash-es";
 import { useSelector } from "react-redux";
 import selectCells from "../selectors/dcfSelectors/selectCells";
 import selectScope from "../selectors/dcfSelectors/selectScope";
@@ -238,7 +238,7 @@ const SensitivityAnalysis = () => {
           })}
         </FormGroup>
         {xElement && yElement && hasAllRequiredInputsFilledIn && (
-          <Box sx={{ flex: 1 }}>
+          <Box sx={{ flex: 1, minWidth: "288px", overflow: "auto" }}>
             {smDown && (
               <Box sx={{ mb: 2 }}>
                 <Box mb={1}>X = {xElement.label}</Box>
@@ -273,11 +273,7 @@ const SensitivityAnalysis = () => {
                   <CircularProgress />
                 </Box>
               ) : (
-                <TTTable
-                  sx={{ flex: 1, overflow: "auto", minWidth: "300px" }}
-                  columns={columns}
-                  data={data}
-                />
+                <TTTable sx={{ flex: 1 }} columns={columns} data={data} />
               )}
             </Box>
           </Box>

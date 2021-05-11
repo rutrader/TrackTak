@@ -28,7 +28,7 @@ import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/sel
 import selectScope from "../selectors/dcfSelectors/selectScope";
 import cells from "./cells";
 import { setCells, setScope } from "../redux/actions/dcfActions";
-import { isNil } from "lodash";
+import { isNil } from "lodash-es";
 import Spreadsheet, { formatNumberRender } from "@tracktak/web-spreadsheet";
 import { convertFromCellIndexToLabel } from "../../../web-spreadsheet/src/core/helper";
 
@@ -160,7 +160,7 @@ const getDatasheetsYOYGrowth = (spreadsheet, isOnMobile) => {
               text:
                 (currentFormulaValue - previousFormulaValue) /
                 currentFormulaValue,
-              style: "percent",
+              style: styleMap.percent,
             };
           }
 

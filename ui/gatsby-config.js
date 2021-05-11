@@ -25,13 +25,9 @@ const duplicatePackageModules = [
   "cross-env",
   "dayjs",
   "query-string",
-  "@blueprintjs/core",
-  "@blueprintjs/table",
   "axios",
   "gatsby",
   "gatsby-plugin-anchor-links",
-  "jspreadsheet-pro",
-  "jsuites",
 ];
 
 const alias = {
@@ -116,12 +112,6 @@ module.exports = {
     {
       resolve: "gatsby-plugin-create-client-paths",
       options: { prefixes: ["/stock/*"] },
-    },
-    {
-      resolve: "gatsby-plugin-sass",
-      options: {
-        implementation: require("node-sass"),
-      },
     },
     "gatsby-plugin-less",
     {

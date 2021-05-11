@@ -2,7 +2,7 @@ import useQueryParams from "./useQueryParams";
 import convertParamsObjectToURLSearchParams from "../shared/convertParamsObjectToURLSearchParams";
 import { navigate } from "../shared/gatsby";
 import { useLocation } from "@reach/router";
-import isNil from "lodash/isNil";
+import { isNil } from "lodash-es";
 
 const useSetURLInput = () => {
   const queryParams = useQueryParams();

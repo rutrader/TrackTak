@@ -26,7 +26,7 @@ import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
-import isNil from "lodash/isNil";
+import { isNil } from "lodash-es";
 import scopeNameTypeMapping, {
   allInputNameTypeMappings,
 } from "./scopeNameTypeMapping";

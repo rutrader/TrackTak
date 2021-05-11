@@ -1,4 +1,4 @@
-import isNil from "lodash/isNil";
+import { isNil } from "lodash-es";
 import React, { useEffect } from "react";
 import { forwardRef } from "react";
 import { useState } from "react";

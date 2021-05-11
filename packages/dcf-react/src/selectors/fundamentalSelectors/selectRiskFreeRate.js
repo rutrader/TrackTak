@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import selectCurrentEquityRiskPremium from "./selectCurrentEquityRiskPremium";
 import selectGovernmentBondTenYearYield from "./selectGovernmentBondTenYearYield";
-import isNil from "lodash/isNil";
+import { isNil } from "lodash-es";
 
 const calculateRiskFreeRate = (
   governmentBondTenYearYield,
