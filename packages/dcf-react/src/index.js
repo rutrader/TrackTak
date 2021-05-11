@@ -10,6 +10,7 @@ export { default as createStore } from "./redux/createStore";
 export { default as DiscountedCashFlowSheet } from "./discountedCashFlow/DiscountedCashFlowSheet";
 export { default as SyntheticCreditRating } from "./discountedCashFlow/SyntheticCreditRating";
 export { default as IndustryAverages } from "./discountedCashFlow/IndustryAverages";
+export { allInputNameTypeMappings } from "./discountedCashFlow/scopeNameTypeMapping";
 
 export {
   default as ValueDrivingInputs,
@@ -47,15 +48,12 @@ export { default as replaceSpaceWithHyphen } from "./shared/replaceSpaceWithHyph
 export { default as convertGBXToGBP } from "./shared/convertGBXToGBP";
 export { default as convertFundamentals } from "./shared/convertFundamentals";
 
-export { default as TracktakLogo } from "./assets/tracktak.svg";
+export { default as TracktakLogo } from "./icons/tracktak.svg";
 export { default as useDebouncedCallback } from "./hooks/useDebouncedCallback";
 export { default as useHasAllRequiredInputsFilledIn } from "./hooks/useHasAllRequiredInputsFilledIn";
 export { default as useTicker } from "./hooks/useTicker";
 export { default as useIsClient } from "./hooks/useIsClient";
-export {
-  default as useInputQueryParams,
-  inputQueries,
-} from "./hooks/useInputQueryParams";
+export { default as useInputQueryParams } from "./hooks/useInputQueryParams";
 
 export { default as selectPrice } from "./selectors/fundamentalSelectors/selectPrice";
 export { default as selectCells } from "./selectors/dcfSelectors/selectCells";

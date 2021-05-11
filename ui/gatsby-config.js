@@ -30,10 +30,13 @@ const duplicatePackageModules = [
   "axios",
   "gatsby",
   "gatsby-plugin-anchor-links",
+  "jspreadsheet-pro",
+  "jsuites",
 ];
 
 const alias = {
   "@tracktak/dcf-react": path.resolve("../packages/dcf-react/src"),
+  "@tracktak/web-spreadsheet": path.resolve("../packages/web-spreadsheet"),
 };
 
 duplicatePackageModules.forEach((packageModule) => {
@@ -43,7 +46,7 @@ duplicatePackageModules.forEach((packageModule) => {
 module.exports = {
   flags: {
     PRESERVE_WEBPACK_CACHE: true,
-    DEV_SSR: true,
+    // DEV_SSR: true,
   },
   siteMetadata: {
     title: "tracktak",
@@ -106,7 +109,7 @@ module.exports = {
       resolve: "gatsby-plugin-react-svg",
       options: {
         rule: {
-          include: /assets/,
+          include: /icons/,
         },
       },
     },
@@ -120,6 +123,7 @@ module.exports = {
         implementation: require("node-sass"),
       },
     },
+    "gatsby-plugin-less",
     {
       resolve: "gatsby-source-contentful",
       options: {
@@ -145,10 +149,10 @@ module.exports = {
     {
       resolve: "gatsby-plugin-manifest",
       options: {
-        icon: "src/assets/tracktak-logo-small.svg",
+        icon: "src/icons/tracktak-logo-small.svg",
       },
     },
-    // "gatsby-plugin-offline",
+    //"gatsby-plugin-offline",
     "gatsby-plugin-mdx",
     "gatsby-plugin-image",
     {

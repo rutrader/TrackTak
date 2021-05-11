@@ -1,10 +1,7 @@
-import React, { useMemo } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { useCallback } from "react";
-import { columns, numberOfRows } from "./cells";
-import { startColumn } from "./utils";
-import { Cell, Column, Table } from "@blueprintjs/table";
+import { padCellKeys } from "./utils";
 import { Alert, Box, useMediaQuery, useTheme } from "@material-ui/core";
 import useInputQueryParams from "../hooks/useInputQueryParams";
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
@@ -14,10 +11,6 @@ import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selec
 import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
-import selectCells from "../selectors/dcfSelectors/selectCells";
-import formatCellValue from "./formatCellValue";
-import selectIsYoyGrowthToggled from "../selectors/dcfSelectors/selectIsYoyGrowthToggled";
-import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import useInjectQueryParams from "../hooks/useInjectQueryParams";
@@ -27,22 +20,179 @@ import {
   valueDrivingInputsId,
 } from "../components/ValueDrivingInputs";
 import { useLocation } from "@reach/router";
-import isNil from "lodash/isNil";
 import selectThreeAverageYearsEffectiveTaxRate from "../selectors/fundamentalSelectors/selectThreeAverageYearsEffectiveTaxRate";
-import { Fragment } from "react";
-import { calculateDCFModelThunk } from "../redux/thunks/dcfThunks";
 import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
+import sortAlphaNumeric from "./sortAlphaNumeric";
+import getChunksOfArray from "../shared/getChunksOfArray";
+import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
+import selectScope from "../selectors/dcfSelectors/selectScope";
+import cells from "./cells";
+import { setCells, setScope } from "../redux/actions/dcfActions";
+import { isNil } from "lodash";
+import Spreadsheet, { formatNumberRender } from "@tracktak/web-spreadsheet";
+import { convertFromCellIndexToLabel } from "../../../web-spreadsheet/src/core/helper";
+
+const defaultColWidth = 110;
+const columnAWidth = 170;
+
+const columns = [];
+
+for (let index = 0; index < 13; index++) {
+  columns.push({ width: index === 0 ? 220 : defaultColWidth });
+}
+
+const styleMap = {
+  percent: 0,
+  million: 1,
+  "million-currency": 2,
+  currency: 3,
+  number: 4,
+  year: 4,
+};
+
+const cellKeysSorted = padCellKeys(Object.keys(cells).sort(sortAlphaNumeric));
+const rowCells = cellKeysSorted.map((key) => {
+  const cell = cells[key];
+
+  return {
+    text: cell?.expr ?? cell?.value ?? "",
+    style: styleMap[cell?.type],
+  };
+});
+
+const rows = {};
+
+getChunksOfArray(rowCells, columns.length).forEach((data, i) => {
+  rows[i] = {
+    cells: data,
+  };
+});
+
+const dcfValuationId = "dcf-valuation";
+const getDataSheets = (isOnMobile) => {
+  const dataSheets = [
+    {
+      name: "DCF Valuation",
+      cols: {
+        0: {
+          width: columnAWidth,
+        },
+      },
+      rows,
+      styles: [
+        {
+          format: "percent",
+        },
+        {
+          format: "million",
+        },
+        {
+          format: "million-currency",
+        },
+        {
+          format: "currency",
+        },
+        {
+          format: "number",
+        },
+      ],
+    },
+  ];
+
+  // Do not put this as a ternary with undefined on the data
+  // the moronic chinese coder is checking for existence of keys
+  // so it will crash... :(
+  if (!isOnMobile) {
+    dataSheets[0].freeze = "B38";
+  }
+
+  return dataSheets;
+};
+
+const getDatasheetsColWidths = (colWidth, isOnMobile) => {
+  const dataSheets = getDataSheets(isOnMobile);
+  const newDataSheets = dataSheets.map((dataSheet, datasheetIndex) => {
+    const newCols = {};
+
+    rows[0].cells.forEach((_, columnIndex) => {
+      newCols[columnIndex] = {
+        width:
+          datasheetIndex === 0 && columnIndex === 0 ? columnAWidth : colWidth,
+      };
+    });
+
+    return {
+      ...dataSheet,
+      cols: newCols,
+    };
+  });
+
+  return newDataSheets;
+};
+
+const getDatasheetsYOYGrowth = (spreadsheet, isOnMobile) => {
+  const dataSheets = getDataSheets(isOnMobile);
+  const dataSheetsValues = spreadsheet?.hyperFormula?.getAllSheetsValues();
+
+  const newDataSheets = dataSheets.map((dataSheet, dataSheetIndex) => {
+    const formulaSheet = dataSheetsValues[dataSheet.name];
+    const newRows = {};
+
+    Object.keys(dataSheet.rows).forEach((rowKey) => {
+      const cells = dataSheet.rows[rowKey].cells;
+      const formulaRow = formulaSheet[rowKey];
+
+      newRows[rowKey] = {
+        ...rows[rowKey],
+        cells: cells.map((cell, i) => {
+          const previousFormulaValue = formulaRow[i - 1]
+            ? formulaRow[i - 1]
+            : null;
+          let currentFormulaValue = formulaRow[i];
+
+          if (
+            typeof previousFormulaValue === "number" &&
+            typeof currentFormulaValue === "number" &&
+            (rowKey !== "0" || dataSheetIndex !== 0)
+          ) {
+            return {
+              ...cell,
+              text:
+                (currentFormulaValue - previousFormulaValue) /
+                currentFormulaValue,
+              style: "percent",
+            };
+          }
+
+          return {
+            ...cell,
+            text: currentFormulaValue,
+          };
+        }),
+      };
+    });
+    return {
+      ...dataSheet,
+      rows: newRows,
+    };
+  });
+
+  return newDataSheets;
+};
 
 const DiscountedCashFlowTable = ({
-  columnWidths,
   showFormulas,
+  showYOYGrowth,
   SubscribeCover,
   loadingCells,
 }) => {
+  const containerRef = useRef();
+  const [spreadsheet, setSpreadsheet] = useState();
   const theme = useTheme();
   const location = useLocation();
+  const currencySymbol = useSelector(selectValuationCurrencySymbol);
+  const scope = useSelector(selectScope);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const cells = useSelector(selectCells);
   const dispatch = useDispatch();
   const inputQueryParams = useInputQueryParams();
   const incomeStatement = useSelector(selectRecentIncomeStatement);
@@ -55,82 +205,138 @@ const DiscountedCashFlowTable = ({
   const valueOfAllOptionsOutstanding = useInjectQueryParams(
     selectValueOfAllOptionsOutstanding,
   );
-  const isYoyGrowthToggled = useSelector(selectIsYoyGrowthToggled);
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
   const pastThreeYearsAverageEffectiveTaxRate = useSelector(
     selectThreeAverageYearsEffectiveTaxRate,
   );
 
-  const cellColumnWidths = useMemo(() => {
-    return columns.map((column) => {
-      if (column === "A") {
-        return 220;
-      } else if (showFormulas) {
-        return 200;
-      }
-      return columnWidths?.[column] ?? 120;
+  useEffect(() => {
+    let spreadsheet;
+
+    const dcfValuationElement = document.getElementById(`${dcfValuationId}`);
+
+    const formats = {
+      currency: {
+        title: () => "Currency",
+        type: "number",
+        format: "currency",
+        label: `${currencySymbol}10.00`,
+        render: (v) => currencySymbol + formatNumberRender(v),
+      },
+      million: {
+        title: () => "Million",
+        format: "million",
+        type: "number",
+        label: "(000)",
+        render: (v) => formatNumberRender(v) / 1000000,
+      },
+      "million-currency": {
+        title: () => "Million Currency",
+        format: "million-currency",
+        type: "number",
+        label: `${currencySymbol}(000)`,
+        render: (v) => {
+          const value = v / 1000000;
+
+          return formats.currency.render(value);
+        },
+      },
+    };
+
+    spreadsheet = new Spreadsheet(dcfValuationElement, {
+      col: {
+        width: defaultColWidth,
+      },
+      formats,
+      view: {
+        height: () => 1050,
+        width: () => {
+          if (containerRef?.current) {
+            const containerStyle = getComputedStyle(containerRef.current);
+            const paddingX =
+              parseFloat(containerStyle.paddingLeft) +
+              parseFloat(containerStyle.paddingRight);
+            const borderX =
+              parseFloat(containerStyle.borderLeftWidth) +
+              parseFloat(containerStyle.borderRightWidth);
+            const elementWidth =
+              containerRef.current.offsetWidth - paddingX - borderX;
+
+            return elementWidth;
+          }
+        },
+      },
     });
-  }, [columnWidths, showFormulas]);
-  const cellRenderer = useCallback(
-    (rowIndex, columnIndex) => {
-      const column = String.fromCharCode(
-        startColumn.charCodeAt(0) + columnIndex,
-      );
-      const row = (rowIndex += 1);
-      const key = column + row;
-      const cell = cells[key];
-      const loading =
-        (!hasAllRequiredInputsFilledIn || loadingCells) &&
-        row !== 1 &&
-        column !== "A";
 
-      if (isNil(cell?.value)) return <Cell loading={loading} />;
+    setSpreadsheet(spreadsheet);
 
-      let node = formatCellValue(cell);
-
-      const isOutputCell = key === "B36";
-
-      let intent = "none";
-
-      if (column === startColumn || rowIndex === 1) {
-        intent = "primary";
-      } else if (showFormulas) {
-        node = cell.expr;
-      } else if (isYoyGrowthToggled && !isNil(cell.yoyGrowthValue)) {
-        node = <FormatRawNumberToPercent value={cell.yoyGrowthValue} />;
-      }
-
-      return (
-        <Cell
-          style={{
-            fontSize: theme.typography.fontSize,
-            fontFamily: theme.typography.fontFamily,
-            color: isOutputCell ? theme.palette.primary.main : "initial",
-          }}
-          intent={intent}
-          loading={loading}
-        >
-          {/* Fragment here fixes this issue: https://github.com/palantir/blueprint/issues/2446 */}
-          <Fragment>{node}</Fragment>
-        </Cell>
-      );
-    },
-    [
-      cells,
-      hasAllRequiredInputsFilledIn,
-      isYoyGrowthToggled,
-      loadingCells,
-      showFormulas,
-      theme.palette.primary.main,
-      theme.typography.fontFamily,
-      theme.typography.fontSize,
-    ],
-  );
+    return () => {
+      spreadsheet?.destroy();
+    };
+  }, [currencySymbol]);
 
   useEffect(() => {
-    if (hasAllRequiredInputsFilledIn) {
+    if (spreadsheet && hasAllRequiredInputsFilledIn && scope) {
+      spreadsheet.setVariables(scope);
+
+      const dataSheets = getDataSheets(isOnMobile);
+
+      spreadsheet.loadData(dataSheets);
+
+      const sheetName = "DCF Valuation";
+      const dataSheetFormulas = spreadsheet.hyperFormula.getAllSheetsFormulas();
+      const dataSheetValues = spreadsheet.hyperFormula.getAllSheetsValues();
+      const cells = {};
+
+      dataSheetValues[sheetName].forEach((columns, rowIndex) => {
+        columns.forEach((_, columnIndex) => {
+          const label = convertFromCellIndexToLabel(columnIndex, rowIndex + 1);
+          const expr = dataSheetFormulas[sheetName][rowIndex][columnIndex];
+          const value = dataSheetValues[sheetName][rowIndex][columnIndex];
+
+          cells[label] = {
+            ...cells[label],
+            value,
+            expr,
+          };
+        });
+      });
+
+      dispatch(setCells(cells));
+    }
+  }, [hasAllRequiredInputsFilledIn, isOnMobile, scope, spreadsheet, dispatch]);
+
+  useEffect(() => {
+    if (spreadsheet && hasAllRequiredInputsFilledIn) {
+      if (showFormulas) {
+        spreadsheet.showFormulas();
+        spreadsheet.loadData(getDatasheetsColWidths(200, isOnMobile));
+      } else {
+        spreadsheet.hideFormulas();
+        spreadsheet.loadData(getDataSheets(isOnMobile));
+      }
+    }
+  }, [showFormulas, spreadsheet, isOnMobile, hasAllRequiredInputsFilledIn]);
+
+  useEffect(() => {
+    if (spreadsheet && hasAllRequiredInputsFilledIn) {
+      if (showYOYGrowth) {
+        spreadsheet.loadData(getDatasheetsYOYGrowth(spreadsheet, isOnMobile));
+      } else {
+        spreadsheet.loadData(getDataSheets(isOnMobile));
+      }
+    }
+  }, [showYOYGrowth, spreadsheet, isOnMobile, hasAllRequiredInputsFilledIn]);
+
+  useEffect(() => {
+    // Dispatch only when we have all the data from the API
+    if (
+      hasAllRequiredInputsFilledIn &&
+      !isNil(price) &&
+      !isNil(costOfCapital.totalCostOfCapital)
+    ) {
       dispatch(
-        calculateDCFModelThunk({
+        setScope({
           matureMarketEquityRiskPremium,
           pastThreeYearsAverageEffectiveTaxRate,
           totalRevenue: incomeStatement.totalRevenue,
@@ -185,39 +391,16 @@ const DiscountedCashFlowTable = ({
     inputQueryParams.nonOperatingAssets,
   ]);
 
-  // Key: Hack to force re-render the table when formula state changes
-  let key = 0;
-
-  if (showFormulas) {
-    key = 1;
-  }
-
-  if (isYoyGrowthToggled) {
-    key = 2;
-  }
-
   const to = `${location.pathname}#${valueDrivingInputsId}`;
 
   return (
-    <Box sx={{ position: "relative" }}>
-      <Table
-        key={key}
-        enableGhostCells
-        numFrozenColumns={isOnMobile ? 0 : 1}
-        numRows={numberOfRows}
-        columnWidths={cellColumnWidths}
-      >
-        {columns.map((column) => {
-          return (
-            <Column
-              key={column}
-              id={column}
-              name={column}
-              cellRenderer={cellRenderer}
-            />
-          );
-        })}
-      </Table>
+    <Box sx={{ position: "relative" }} ref={containerRef}>
+      <Box
+        id={dcfValuationId}
+        sx={{
+          pointerEvents: hasAllRequiredInputsFilledIn ? undefined : "none",
+        }}
+      />
       {SubscribeCover ? <SubscribeCover /> : null}
       {!hasAllRequiredInputsFilledIn && (
         <Alert

@@ -4,6 +4,10 @@ import {
   yearOfConvergenceQueryName,
 } from "../shared/inputQueryNames";
 
+const cagrYearOneToFiveQueryNameTT = `${cagrYearOneToFiveQueryName}`;
+const ebitTargetMarginInYearTenQueryNameTT = `${ebitTargetMarginInYearTenQueryName}`;
+const yearOfConvergenceQueryNameTT = `${yearOfConvergenceQueryName}`;
+
 export const getPreviousColumn = (cellKey) => {
   const column = cellKey.charAt(0);
   const previousColumn = String.fromCharCode(column.charCodeAt(0) - 1);
@@ -14,9 +18,9 @@ export const getPreviousColumn = (cellKey) => {
 export const getEBITMarginCalculation = (cellKey) => {
   const column = cellKey.charAt(0);
 
-  const falsyCondition = `${ebitTargetMarginInYearTenQueryName} - ((${ebitTargetMarginInYearTenQueryName} - B3) / ${yearOfConvergenceQueryName}) * (${yearOfConvergenceQueryName} - ${column}1)`;
+  const falsyCondition = `${ebitTargetMarginInYearTenQueryNameTT} - ((${ebitTargetMarginInYearTenQueryNameTT} - B3) / ${yearOfConvergenceQueryNameTT}) * (${yearOfConvergenceQueryNameTT} - ${column}1)`;
 
-  return `=IF(${column}1 > ${yearOfConvergenceQueryName}, ${ebitTargetMarginInYearTenQueryName}, ${falsyCondition})`;
+  return `=IF(${column}1 > ${yearOfConvergenceQueryNameTT}, ${ebitTargetMarginInYearTenQueryNameTT}, ${falsyCondition})`;
 };
 
 export const getReinvestmentCalculation = (cellKey) => {
@@ -33,10 +37,10 @@ export const getRevenueCalculation = (cellKey, growthRate) => {
 };
 
 export const getRevenueOneToFiveYrCalculation = (cellKey) =>
-  getRevenueCalculation(cellKey, cagrYearOneToFiveQueryName);
+  getRevenueCalculation(cellKey, cagrYearOneToFiveQueryNameTT);
 
 export const getRevenueSixToTenYrCalculation = (index, cellKey) => {
-  const formula = `${cagrYearOneToFiveQueryName} - ((${cagrYearOneToFiveQueryName}-riskFreeRate) / 5)`;
+  const formula = `${cagrYearOneToFiveQueryNameTT} - ((${cagrYearOneToFiveQueryNameTT}-riskFreeRate) / 5)`;
   const number = index + 1;
   const growthRevenueFormula = index === 0 ? formula : `${formula} * ${number}`;
 
@@ -125,23 +129,18 @@ export const getROICCalculation = (cellKey) => {
   return `=${column}6/${column}16`;
 };
 
-export const riskFreeRateCalculation =
-  "=governmentBondTenYearYield - adjDefaultSpread";
-
-export const estimatedCostOfDebtCalculation =
-  "=riskFreeRate + interestSpread + adjDefaultSpread";
-
-export const estimatedMarketValueOfStraightDebtCalculation =
-  "=(interestExpense * (1 - (1 + pretaxCostOfDebt) ^ -averageMaturityOfDebt)) / pretaxCostOfDebt + bookValueOfDebt / (1 + pretaxCostOfDebt) ^ averageMaturityOfDebt";
-
-export const estimatedValueOfStraightDebtInConvertibleDebtCalculation =
-  "=(interestExpenseOnConvertibleDebt * (1 - (1 + pretaxCostOfDebt) ^ -maturityOfConvertibleDebt)) / pretaxCostOfDebt + bookValueOfConvertibleDebt / (1 + pretaxCostOfDebt) ^ maturityOfConvertibleDebt";
-
-export const leveredBetaCalculation =
-  "=unleveredBeta * (1 + (1 - marginalTaxRate) * (debtMarketValue / equityMarketValue))";
-
-export const costOfPreferredStockCalculation =
-  "=IFERROR(annualDividendPerShare / marketPricePerShare, 0)";
+export const debtCalculation = {
+  riskFreeRate: "=governmentBondTenYearYield - adjDefaultSpread",
+  estimatedCostOfDebt: "=riskFreeRate + interestSpread + adjDefaultSpread",
+  estimatedMarketValueOfStraightDebt:
+    "=(interestExpense * (1 - (1 + pretaxCostOfDebt) ^ -averageMaturityOfDebt)) / pretaxCostOfDebt + bookValueOfDebt / (1 + pretaxCostOfDebt) ^ averageMaturityOfDebt",
+  estimatedValueOfStraightDebtInConvertibleDebt:
+    "=(interestExpenseOnConvertibleDebt * (1 - (1 + pretaxCostOfDebt) ^ -maturityOfConvertibleDebt)) / pretaxCostOfDebt + bookValueOfConvertibleDebt / (1 + pretaxCostOfDebt) ^ maturityOfConvertibleDebt",
+  leveredBeta:
+    "=unleveredBeta * (1 + (1 - marginalTaxRate) * (debtMarketValue / equityMarketValue))",
+  costOfPreferredStock:
+    "=IFERROR(annualDividendPerShare / marketPricePerShare, 0)",
+};
 
 export const marketValueCalculation = {
   equityMarketValue: "=price * sharesOutstanding",

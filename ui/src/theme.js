@@ -10,6 +10,7 @@ let theme = createMuiTheme({
   },
   palette: {
     tableBackground: alpha("#51509c", 0.04),
+    spreadsheetBackground: "#eeeef5",
     primary: {
       light: "#2fdbab",
       main: "#43cea2",

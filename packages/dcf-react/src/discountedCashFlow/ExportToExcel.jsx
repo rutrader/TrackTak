@@ -1,9 +1,7 @@
 import { Box, IconButton, Typography } from "@material-ui/core";
 import React from "react";
 import { getNumberOfColumns, padCellKeys } from "./utils";
-import useInputQueryParams, {
-  inputQueries,
-} from "../hooks/useInputQueryParams";
+import useInputQueryParams from "../hooks/useInputQueryParams";
 import { sentenceCase } from "change-case";
 import makeFormatCellForExcelOutput, {
   costOfCapitalWorksheetName,
@@ -20,17 +18,6 @@ import selectScope from "../selectors/dcfSelectors/selectScope";
 import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
 import cells from "./cells";
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
-import {
-  costOfComponentCalculation,
-  costOfPreferredStockCalculation,
-  estimatedCostOfDebtCalculation,
-  estimatedMarketValueOfStraightDebtCalculation,
-  estimatedValueOfStraightDebtInConvertibleDebtCalculation,
-  leveredBetaCalculation,
-  marketValueCalculation,
-  riskFreeRateCalculation,
-  weightInCostOfCapitalCalculation,
-} from "./expressionCalculations";
 import selectInterestSpread from "../selectors/fundamentalSelectors/selectInterestSpread";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
@@ -40,6 +27,15 @@ import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import isNil from "lodash/isNil";
+import scopeNameTypeMapping, {
+  allInputNameTypeMappings,
+} from "./scopeNameTypeMapping";
+import {
+  costOfComponentCalculation,
+  debtCalculation,
+  marketValueCalculation,
+  weightInCostOfCapitalCalculation,
+} from "./expressionCalculations";
 
 export const DCFControlTypography = (props) => {
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
@@ -95,96 +91,33 @@ const ExportToExcel = () => {
     };
 
     const costOfCapitalData = {
-      marginalTaxRate: {
-        type: "percent",
-        value: currentEquityRiskPremium.marginalTaxRate,
-      },
-      equityRiskPremium: {
-        type: "percent",
-        value: currentEquityRiskPremium.equityRiskPremium,
-      },
-      governmentBondTenYearYield: {
-        type: "percent",
-        value: governmentBondTenYearYield,
-      },
-      adjDefaultSpread: {
-        type: "percent",
-        value: currentEquityRiskPremium.adjDefaultSpread,
-      },
-      riskFreeRate: { type: "percent", expr: riskFreeRateCalculation },
-      interestSpread: { type: "percent", value: interestSpread.spread },
-      bookValueOfDebt: {
-        type: "million-currency",
-        value: balanceSheet.bookValueOfDebt,
-      },
-      interestExpense: {
-        type: "million-currency",
-        value: incomeStatement.interestExpense,
-      },
-      price: {
-        type: "currency",
-        value: price,
-      },
-      sharesOutstanding: {
-        type: "million",
-        value: sharesOutstanding,
-      },
-      costOfPreferredStock: {
-        type: "percent",
-        expr: costOfPreferredStockCalculation,
-      },
-      pretaxCostOfDebt: {
-        type: "percent",
-      },
-      unleveredBeta: { type: "number", value: currentIndustry.unleveredBeta },
-      leveredBeta: { type: "number", expr: leveredBetaCalculation },
-      estimatedMarketValueOfStraightDebt: {
-        type: "million-currency",
-        expr: estimatedMarketValueOfStraightDebtCalculation,
-      },
-      estimatedValueOfStraightDebtInConvertibleDebt: {
-        type: "million-currency",
-        expr: estimatedValueOfStraightDebtInConvertibleDebtCalculation,
-      },
+      marginalTaxRate: currentEquityRiskPremium.marginalTaxRate,
+      equityRiskPremium: currentEquityRiskPremium.equityRiskPremium,
+      governmentBondTenYearYield,
+      adjDefaultSpread: currentEquityRiskPremium.adjDefaultSpread,
+      interestSpread: interestSpread.spread,
+      bookValueOfDebt: balanceSheet.bookValueOfDebt,
+      interestExpense: incomeStatement.interestExpense,
+      price,
+      sharesOutstanding,
+      pretaxCostOfDebt: isNil(inputQueryParams.pretaxCostOfDebt)
+        ? debtCalculation.estimatedCostOfDebt
+        : inputQueryParams.pretaxCostOfDebt,
+      unleveredBeta: currentIndustry.unleveredBeta,
+      ...debtCalculation,
+      ...marketValueCalculation,
+      ...weightInCostOfCapitalCalculation,
+      ...costOfComponentCalculation,
     };
 
-    if (isNil(inputQueryParams.pretaxCostOfDebt)) {
-      costOfCapitalData.pretaxCostOfDebt.expr = estimatedCostOfDebtCalculation;
-    } else {
-      costOfCapitalData.pretaxCostOfDebt.value =
-        inputQueryParams.pretaxCostOfDebt;
-    }
+    // Used in pretaxCostOfDebt so delete it
+    delete costOfCapitalData.estimatedCostOfDebt;
 
-    Object.keys(marketValueCalculation).forEach((key) => {
-      const expr = marketValueCalculation[key];
-
-      costOfCapitalData[key] = {
-        type: "million-currency",
-        expr,
-      };
-    });
-
-    Object.keys(weightInCostOfCapitalCalculation).forEach((key) => {
-      const expr = weightInCostOfCapitalCalculation[key];
-
-      costOfCapitalData[key] = {
-        type: "percent",
-        expr,
-      };
-    });
-
-    Object.keys(costOfComponentCalculation).forEach((key) => {
-      const expr = costOfComponentCalculation[key];
-
-      costOfCapitalData[key] = {
-        type: "percent",
-        expr,
-      };
-    });
     const costOfCapitalDataKeys = Object.keys(costOfCapitalData);
+
     const formatCellForExcelOutput = makeFormatCellForExcelOutput(
       valuationCurrencySymbol,
-      inputQueries.map(({ name }) => name),
+      Object.keys(allInputNameTypeMappings),
       costOfCapitalDataKeys,
       scope,
     );
@@ -194,7 +127,8 @@ const ExportToExcel = () => {
 
     const transformedInputsData = [];
 
-    inputQueries.forEach(({ name, type }) => {
+    Object.keys(allInputNameTypeMappings).forEach((name) => {
+      const type = allInputNameTypeMappings[name];
       const value = inputQueryParams[name];
 
       transformedInputsData.push(getNameFromKey(name, type));
@@ -207,15 +141,25 @@ const ExportToExcel = () => {
     const transformedCostOfCapitalData = [];
 
     costOfCapitalDataKeys.forEach((key) => {
-      const { value, expr, type } = costOfCapitalData[key];
-      let formula = expr;
+      const type = scopeNameTypeMapping[key];
+      let expr;
+      let value;
+
+      if (
+        typeof costOfCapitalData[key] === "string" &&
+        costOfCapitalData[key].charAt(0) === "="
+      ) {
+        expr = costOfCapitalData[key];
+      } else {
+        value = costOfCapitalData[key];
+      }
 
       transformedCostOfCapitalData.push(getNameFromKey(key, type));
       transformedCostOfCapitalData.push(
         formatCellForExcelOutput(
           {
-            ...costOfCapitalData[key],
-            expr: formula,
+            type,
+            expr,
             value,
           },
           costOfCapitalWorksheetName,

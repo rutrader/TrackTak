@@ -6,11 +6,11 @@ import calculateDCFModel from "../dcfModel/calculateDCFModel";
 const sensitivityAnalysisWorker = {
   computeSensitivityAnalysis: (cells, existingScope, currentScopes) => {
     const values = currentScopes.map((currentScope) => {
-      const estimatedPricePerShare = calculateDCFModel(
-        cells,
-        existingScope,
-        currentScope,
-      ).B36.value;
+      const model = calculateDCFModel(cells, {
+        ...existingScope,
+        ...currentScope,
+      });
+      const estimatedPricePerShare = model[35][1];
 
       return estimatedPricePerShare;
     });

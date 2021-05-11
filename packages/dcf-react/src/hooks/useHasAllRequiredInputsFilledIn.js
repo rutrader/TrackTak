@@ -1,14 +1,13 @@
-import useInputQueryParams, {
-  requiredInputQueries,
-} from "./useInputQueryParams";
+import useInputQueryParams from "./useInputQueryParams";
+import { requiredInputNameTypeMapping } from "../discountedCashFlow/scopeNameTypeMapping";
 import isNil from "lodash/isNil";
 
 const useHasAllRequiredInputsFilledIn = () => {
   const inputQueryParams = useInputQueryParams();
 
-  const hasAllRequiredInputsFilledIn = requiredInputQueries.every(
-    ({ name }) => !isNil(inputQueryParams[name]),
-  );
+  const hasAllRequiredInputsFilledIn = Object.keys(
+    requiredInputNameTypeMapping,
+  ).every((name) => !isNil(inputQueryParams[name]));
 
   return hasAllRequiredInputsFilledIn;
 };

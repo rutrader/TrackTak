@@ -1,4 +1,5 @@
 import {
+  getCellsBetween,
   getCellsForRows,
   getColumnsBetween,
   getColumnsTo,
@@ -258,5 +259,7 @@ getColumnsBetween(columns, "B", "L").forEach((column) => {
 
   cells[roicKey].expr = getROICCalculation(roicKey);
 });
+
+export const yoyGrowthCells = getCellsBetween("C", "M", 2, 17, cells);
 
 export default cells;

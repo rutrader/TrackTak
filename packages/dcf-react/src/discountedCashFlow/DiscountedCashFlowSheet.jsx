@@ -2,30 +2,23 @@ import React, { useState } from "react";
 import { Box, Typography, FormControlLabel, Switch } from "@material-ui/core";
 import ExportToExcel, { DCFControlTypography } from "./ExportToExcel";
 import DiscountedCashFlowTable from "./DiscountedCashFlowTable";
-import { useDispatch, useSelector } from "react-redux";
-import { setIsYoyGrowthToggled } from "../redux/actions/dcfActions";
-import selectIsYoyGrowthToggled from "../selectors/dcfSelectors/selectIsYoyGrowthToggled";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 import SensitivityAnalysis from "../components/SensitivityAnalysis";
 import Section from "../components/Section";
 import { Fragment } from "react";
 
-const DiscountedCashFlowSheet = ({
-  columnWidths,
-  SubscribeCover,
-  loadingCells,
-}) => {
-  const dispatch = useDispatch();
+const DiscountedCashFlowSheet = ({ SubscribeCover, loadingCells }) => {
   const [showFormulas, setShowFormulas] = useState(false);
-  const isYoyGrowthToggled = useSelector(selectIsYoyGrowthToggled);
+  const [showYOYGrowth, setShowYOYGrowth] = useState(false);
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
-  const showFormulasToggledOnChange = (event) => {
-    setShowFormulas((state) => !state);
-    dispatch(setIsYoyGrowthToggled(false));
+
+  const showFormulasToggledOnChange = () => {
+    setShowFormulas(!showFormulas);
+    setShowYOYGrowth(false);
   };
-  const isYoyGrowthToggledOnChange = (event) => {
-    dispatch(setIsYoyGrowthToggled(!isYoyGrowthToggled));
+  const showYOYGrowthToggledOnChange = () => {
+    setShowYOYGrowth(!showYOYGrowth);
     setShowFormulas(false);
   };
 
@@ -55,6 +48,9 @@ const DiscountedCashFlowSheet = ({
               here.
             </a>
           </Typography>
+          <Typography paragraph>
+            <b>Note:</b> Editing cells is in alpha stage.
+          </Typography>
         </Box>
         <Box
           sx={{
@@ -80,8 +76,8 @@ const DiscountedCashFlowSheet = ({
             disabled={!hasAllRequiredInputsFilledIn}
             control={
               <Switch
-                checked={isYoyGrowthToggled}
-                onChange={isYoyGrowthToggledOnChange}
+                checked={showYOYGrowth}
+                onChange={showYOYGrowthToggledOnChange}
                 color="primary"
               />
             }
@@ -91,8 +87,8 @@ const DiscountedCashFlowSheet = ({
         </Box>
       </Box>
       <DiscountedCashFlowTable
-        columnWidths={columnWidths}
         showFormulas={showFormulas}
+        showYOYGrowth={showYOYGrowth}
         SubscribeCover={SubscribeCover}
         loadingCells={loadingCells}
       />
