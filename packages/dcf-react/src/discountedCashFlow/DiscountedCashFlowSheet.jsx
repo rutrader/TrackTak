@@ -49,7 +49,7 @@ const DiscountedCashFlowSheet = ({ SubscribeCover, loadingCells }) => {
             </a>
           </Typography>
           <Typography paragraph>
-            <b>Hint:</b> Double click a cell to edit it.
+            <b>Note:</b> Editing cells is in alpha stage.
           </Typography>
         </Box>
         <Box

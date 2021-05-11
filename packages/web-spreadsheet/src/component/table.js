@@ -74,23 +74,24 @@ export function renderCell(draw, data, rindex, cindex, yoffset = 0) {
   const self = this;
 
   draw.rect(dbox, () => {
-    // render text
-    let cellText = cell.text || "";
-    let format = style.format;
-
+    // TODO: Fix sheets later
     const cellAddress = {
       col: cindex,
       row: rindex,
       sheet: 0,
     };
 
-    // TODO: Fix sheets later
-    if (self.calculateFormulas) {
-      cellText = self.hyperFormula.getCellValue(cellAddress);
-    } else {
-      if (this.hyperFormula.doesCellHaveFormula(cellAddress)) {
-        format = "text";
-      }
+    // render text
+    let cellText = self.calculateFormulas
+      ? self.hyperFormula.getCellValue(cellAddress)
+      : cell.text || "";
+    let format = style.format;
+
+    if (
+      !self.calculateFormulas &&
+      self.hyperFormula.doesCellHaveFormula(cellAddress)
+    ) {
+      format = "text";
     }
 
     if (format) {

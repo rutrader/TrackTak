@@ -105,15 +105,6 @@ class Spreadsheet {
     );
     this.sheet = new Sheet(rootEl, this.data, this.hyperFormula, this.formats);
 
-    // TODO: Fix the sheetIndex
-    this.sheet.on("cell-edited", (cellText, rowIndex, columnIndex) => {
-      this.hyperFormula.setCellContents(
-        { col: columnIndex, row: rowIndex, sheet: 0 },
-        [[cellText]],
-      );
-      this.reRender();
-    });
-
     // create canvas element
     this.targetEl.appendChild(rootEl.el);
     rootEl.child(this.bottombar.el);
@@ -135,7 +126,7 @@ class Spreadsheet {
 
   addSheet(name, active = true) {
     const n = name || `sheet${this.sheetIndex}`;
-    const d = new DataProxy(n, this.options);
+    const d = new DataProxy(n, this.options, this.hyperFormula);
     d.change = (...args) => {
       this.sheet.trigger("change", ...args);
     };
@@ -169,25 +160,16 @@ class Spreadsheet {
   };
 
   loadData(dataSheets) {
-    dataSheets.forEach((sheet) => {
-      const sheetContent = Object.values(sheet.rows).map(({ cells }) => {
-        return cells.map((x) => x.text);
-      });
-
-      const sheetName = this.hyperFormula.getSheetId(sheet.name);
-
-      if (sheetName === undefined) {
-        this.hyperFormula.addSheet(sheet.name);
-      }
-      this.hyperFormula.setSheetContent(sheet.name, sheetContent);
-    });
-
     this.bottombar.clear();
     this.datas = [];
     if (dataSheets.length > 0) {
       for (let i = 0; i < dataSheets.length; i += 1) {
         const it = dataSheets[i];
         const nd = this.addSheet(it.name, i === 0);
+
+        if (this.hyperFormula.isItPossibleToAddSheet(it.name)) {
+          this.hyperFormula.addSheet(it.name);
+        }
         nd.setData(it);
         if (i === 0) {
           this.sheet.resetData(nd);

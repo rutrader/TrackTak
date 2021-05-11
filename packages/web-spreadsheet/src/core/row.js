@@ -1,12 +1,14 @@
 import helper from "./helper";
 import { expr2expr, REGEX_EXPR_GLOBAL } from "./alphabet";
+import { setFormulasOnDatasheets } from "..";
 
 class Rows {
-  constructor({ len, height }) {
+  constructor({ len, height }, hyperFormula) {
     this._ = {};
     this.len = len;
     // default row height
     this.height = height;
+    this.hyperFormula = hyperFormula;
   }
 
   getHeight(ri) {
@@ -100,7 +102,7 @@ class Rows {
       row.cells[ci] = cell;
     } else if (what === "text") {
       row.cells[ci] = row.cells[ci] || {};
-      row.cells[ci].text = cell.text;
+      this._setCellText(ri, ci, cell.text);
     } else if (what === "format") {
       row.cells[ci] = row.cells[ci] || {};
       row.cells[ci].style = cell.style;
@@ -108,10 +110,20 @@ class Rows {
     }
   }
 
+  _setCellText = (ri, ci, text) => {
+    const cell = this.getCellOrNew(ri, ci);
+
+    cell.text = text;
+
+    // TODO: Fix the sheetIndex
+    this.hyperFormula.setCellContents({ col: ci, row: ri, sheet: 0 }, [[text]]);
+  };
+
   setCellText(ri, ci, text) {
     const cell = this.getCellOrNew(ri, ci);
     if (cell.editable === false) return;
-    cell.text = text;
+
+    this._setCellText(ri, ci, text);
   }
 
   // what: all | format | text
@@ -148,7 +160,7 @@ class Rows {
                     n -= dn + 1;
                   }
                   if (text[0] === "=") {
-                    ncell.text = text.replace(REGEX_EXPR_GLOBAL, (word) => {
+                    const nText = text.replace(REGEX_EXPR_GLOBAL, (word) => {
                       let [xn, yn] = [0, 0];
                       if (sri === dsri) {
                         xn = n - 1;
@@ -162,6 +174,12 @@ class Rows {
                       // absolute reference
                       return expr2expr(word, xn, yn, false);
                     });
+
+                    ncell.text = nText;
+                    this.hyperFormula.setCellContents(
+                      { col: nci, row: nri, sheet: 0 },
+                      [[nText]],
+                    );
                   } else if (
                     (rn <= 1 && cn > 1 && (dsri > eri || deri < sri)) ||
                     (cn <= 1 && rn > 1 && (dsci > eci || deci < sci)) ||
@@ -171,7 +189,13 @@ class Rows {
                     // console.log('result:', result);
                     if (result !== null) {
                       const index = Number(result[0]) + n - 1;
-                      ncell.text = text.substring(0, result.index) + index;
+                      const nText = text.substring(0, result.index) + index;
+
+                      ncell.text = nText;
+                      this.hyperFormula.setCellContents(
+                        { col: nci, row: nri, sheet: 0 },
+                        [[nText]],
+                      );
                     }
                   }
                 }
@@ -223,8 +247,12 @@ class Rows {
         nri += n;
         this.eachCells(ri, (ci, cell) => {
           if (cell.text && cell.text[0] === "=") {
-            cell.text = cell.text.replace(REGEX_EXPR_GLOBAL, (word) =>
-              expr2expr(word, 0, n, true, (x, y) => y >= sri),
+            this._setCellText(
+              ri,
+              ci,
+              cell.text.replace(REGEX_EXPR_GLOBAL, (word) =>
+                expr2expr(word, 0, n, true, (x, y) => y >= sri),
+              ),
             );
           }
         });
@@ -246,8 +274,12 @@ class Rows {
         ndata[nri - n] = row;
         this.eachCells(ri, (ci, cell) => {
           if (cell.text && cell.text[0] === "=") {
-            cell.text = cell.text.replace(REGEX_EXPR_GLOBAL, (word) =>
-              expr2expr(word, 0, -n, true, (x, y) => y > eri),
+            this._setCellText(
+              ri,
+              ci,
+              cell.text.replace(REGEX_EXPR_GLOBAL, (word) =>
+                expr2expr(word, 0, -n, true, (x, y) => y > eri),
+              ),
             );
           }
         });
@@ -265,8 +297,12 @@ class Rows {
         if (nci >= sci) {
           nci += n;
           if (cell.text && cell.text[0] === "=") {
-            cell.text = cell.text.replace(REGEX_EXPR_GLOBAL, (word) =>
-              expr2expr(word, n, 0, true, (x) => x >= sci),
+            cell.text = this._setCellText(
+              ri,
+              ci,
+              cell.text.replace(REGEX_EXPR_GLOBAL, (word) =>
+                expr2expr(word, n, 0, true, (x) => x >= sci),
+              ),
             );
           }
         }
@@ -287,8 +323,12 @@ class Rows {
         } else if (nci > eci) {
           rndata[nci - n] = cell;
           if (cell.text && cell.text[0] === "=") {
-            cell.text = cell.text.replace(REGEX_EXPR_GLOBAL, (word) =>
-              expr2expr(word, -n, 0, true, (x) => x > eci),
+            cell.text = this._setCellText(
+              ri,
+              ci,
+              cell.text.replace(REGEX_EXPR_GLOBAL, (word) =>
+                expr2expr(word, -n, 0, true, (x) => x > eci),
+              ),
             );
           }
         }
@@ -313,7 +353,17 @@ class Rows {
         if (what === "all") {
           delete row.cells[ci];
         } else if (what === "text") {
-          if (cell.text) delete cell.text;
+          if (cell.text) {
+            delete cell.text;
+            this.hyperFormula.setCellContents(
+              {
+                col: ci,
+                row: ri,
+                sheet: 0,
+              },
+              "",
+            );
+          }
           if (cell.value) delete cell.value;
         } else if (what === "format") {
           if (cell.style !== undefined) delete cell.style;
@@ -358,6 +408,14 @@ class Rows {
       delete d.len;
     }
     this._ = d;
+
+    const sheetContent = Object.values(d).map(({ cells }) => {
+      return cells.map((x) => x.text);
+    });
+
+    const sheetName = this.hyperFormula.getSheetName(0);
+
+    this.hyperFormula.setSheetContent(sheetName, sheetContent);
   }
 
   getData() {

@@ -330,18 +330,19 @@ function getCellColByX(x, scrollOffsetx) {
 }
 
 export default class DataProxy {
-  constructor(name, settings) {
+  constructor(name, settings, hyperFormula) {
     this.settings = helper.merge(defaultSettings, settings || {});
     // save data begin
     this.name = name || "sheet";
     this.freeze = [0, 0];
     this.styles = []; // Array<Style>
     this.merges = new Merges(); // [CellRange, ...]
-    this.rows = new Rows(this.settings.row);
+    this.rows = new Rows(this.settings.row, hyperFormula);
     this.cols = new Cols(this.settings.col);
     this.validations = new Validations();
     this.hyperlinks = {};
     this.comments = {};
+    this.hyperFormula = hyperFormula;
     // save data end
 
     // don't save object
@@ -510,16 +511,21 @@ export default class DataProxy {
           const { sri, sci, eri, eci } = range;
           if (rn > 1) {
             for (let i = sci; i <= eci; i += 1) {
-              const cell = rows.getCellOrNew(eri + 1, i);
-              cell.text = `=${value}(${xy2expr(i, sri)}:${xy2expr(i, eri)})`;
+              rows._setCellText(
+                eri + 1,
+                i,
+                `=${value}(${xy2expr(i, sri)}:${xy2expr(i, eri)})`,
+              );
             }
           } else if (cn > 1) {
-            const cell = rows.getCellOrNew(ri, eci + 1);
-            cell.text = `=${value}(${xy2expr(sci, ri)}:${xy2expr(eci, ri)})`;
+            rows._setCellText(
+              ri,
+              eci + 1,
+              `=${value}(${xy2expr(sci, ri)}:${xy2expr(eci, ri)})`,
+            );
           }
         } else {
-          const cell = rows.getCellOrNew(ri, ci);
-          cell.text = `=${value}()`;
+          rows._setCellText(ri, ci, `=${value}()`);
         }
       } else {
         selector.range.each((ri, ci) => {
@@ -958,6 +964,7 @@ export default class DataProxy {
       rows.setCellText(ri, ci, text);
       this.change(this.getData());
     }
+
     // validator
     validations.validate(ri, ci, text);
   }

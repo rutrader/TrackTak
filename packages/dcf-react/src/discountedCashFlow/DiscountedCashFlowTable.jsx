@@ -40,13 +40,23 @@ const columns = [];
 for (let index = 0; index < 13; index++) {
   columns.push({ width: index === 0 ? 220 : defaultColWidth });
 }
+
+const styleMap = {
+  percent: 0,
+  million: 1,
+  "million-currency": 2,
+  currency: 3,
+  number: 4,
+  year: 4,
+};
+
 const cellKeysSorted = padCellKeys(Object.keys(cells).sort(sortAlphaNumeric));
 const rowCells = cellKeysSorted.map((key) => {
   const cell = cells[key];
 
   return {
     text: cell?.expr ?? cell?.value ?? "",
-    style: cell?.type,
+    style: styleMap[cell?.type],
   };
 });
 
@@ -69,26 +79,23 @@ const getDataSheets = (isOnMobile) => {
         },
       },
       rows,
-      styles: {
-        percent: {
+      styles: [
+        {
           format: "percent",
         },
-        million: {
+        {
           format: "million",
         },
-        "million-currency": {
+        {
           format: "million-currency",
         },
-        currency: {
+        {
           format: "currency",
         },
-        number: {
+        {
           format: "number",
         },
-        year: {
-          format: "number",
-        },
-      },
+      ],
     },
   ];
 
@@ -388,7 +395,12 @@ const DiscountedCashFlowTable = ({
 
   return (
     <Box sx={{ position: "relative" }} ref={containerRef}>
-      <Box id={dcfValuationId} />
+      <Box
+        id={dcfValuationId}
+        sx={{
+          pointerEvents: hasAllRequiredInputsFilledIn ? undefined : "none",
+        }}
+      />
       {SubscribeCover ? <SubscribeCover /> : null}
       {!hasAllRequiredInputsFilledIn && (
         <Alert
