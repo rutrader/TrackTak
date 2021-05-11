@@ -30,18 +30,18 @@ const calculateCostOfCapital = (queryParams) => (
   const marginalTaxRate = currentEquityRiskPremiumCountry.marginalTaxRate;
 
   const estimatedMarketValueOfStraightDebt =
-    ((incomeStatement.interestExpense *
-      ((1 - (1 + pretaxCostOfDebt)) ^ -averageMaturityOfDebt)) /
+    (incomeStatement.interestExpense *
+      (1 - (1 + pretaxCostOfDebt) ** -averageMaturityOfDebt)) /
       pretaxCostOfDebt +
-      balanceSheet.bookValueOfDebt / (1 + pretaxCostOfDebt)) ^
-    averageMaturityOfDebt;
+    balanceSheet.bookValueOfDebt /
+      (1 + pretaxCostOfDebt) ** averageMaturityOfDebt;
 
   let estimatedValueOfStraightDebtInConvertibleDebt =
-    ((interestExpenseOnConvertibleDebt *
-      ((1 - (1 + pretaxCostOfDebt)) ^ -maturityOfConvertibleDebt)) /
+    (interestExpenseOnConvertibleDebt *
+      (1 - (1 + pretaxCostOfDebt) ** -maturityOfConvertibleDebt)) /
       pretaxCostOfDebt +
-      bookValueOfConvertibleDebt / (1 + pretaxCostOfDebt)) ^
-    maturityOfConvertibleDebt;
+    bookValueOfConvertibleDebt /
+      (1 + pretaxCostOfDebt) ** maturityOfConvertibleDebt;
 
   estimatedValueOfStraightDebtInConvertibleDebt = isFinite(
     estimatedValueOfStraightDebtInConvertibleDebt,

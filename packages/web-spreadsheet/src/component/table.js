@@ -3,10 +3,6 @@ import { getFontSizePxByPt } from "../core/font";
 
 import { Draw, DrawBox, thinLineWidth, npx } from "../canvas/draw";
 
-import { convertFromCellLabelToIndex } from "../core/helper";
-import { isExpressionDependency } from "../../../dcf-react/src/discountedCashFlow/utils";
-import { isNil } from "lodash";
-
 // gobal var
 const cellPaddingWidth = 5;
 const tableFixedHeaderCleanStyle = { fillStyle: "#f4f5f8" };

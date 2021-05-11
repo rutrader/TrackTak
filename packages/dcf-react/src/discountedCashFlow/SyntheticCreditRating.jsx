@@ -142,6 +142,7 @@ const SyntheticCreditRating = () => {
         </Box>
         <TTTable
           sx={{
+            overflow: "auto",
             [`& .MuiTableBody-root .MuiTableRow-root.table_row_${currentCompanyInterestIndex}`]: {
               backgroundColor: (theme) =>
                 getTableRowBackgroundOpacity(theme.palette.primary.light),

@@ -12,7 +12,7 @@ import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 import { useLocation } from "@reach/router";
 import { useSelector } from "react-redux";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
-import isNil from "lodash/isNil";
+import { isNil } from "lodash-es";
 
 const ValueDrivingTextField = (props) => (
   <TextField

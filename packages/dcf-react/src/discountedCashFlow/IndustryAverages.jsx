@@ -14,6 +14,7 @@ import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 import CompanyHeading from "../components/CompanyHeading";
 
 const commonTableRootStyles = {
+  overflow: "auto",
   "& .MuiTableCell-head": {
     marginTop: "auto",
   },

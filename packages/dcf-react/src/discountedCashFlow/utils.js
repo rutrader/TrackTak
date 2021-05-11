@@ -6,22 +6,12 @@ export const getColumnsBetween = (columns, startColumn, endColumn) => {
   return columns.slice(start, end + 1);
 };
 
-export const getCellsForColumns = (columns, rows) => {
-  return columns.flatMap((column) => rows.map((row) => column + row));
-};
-
 export const getCellsForRows = (columns, rows) => {
   return rows.flatMap((row) => columns.map((column) => column + row));
 };
 
-export const doesReferenceAnotherCell = (expr) =>
-  isExpressionDependency(expr) && /([A-Z]+\d+)/.test(expr);
-
 export const isExpressionDependency = (expr) =>
   typeof expr === "string" && expr && expr.charAt(0) === "=";
-
-export const getExpressionWithoutEqualsSign = (expr) =>
-  typeof expr === "string" && expr && expr.substring(1);
 
 export const getRowNumberFromCellKey = (cellKey) =>
   parseInt(cellKey.replace(/[A-Z]+/gi, ""), 10);
@@ -39,19 +29,6 @@ export const getCellsForRowsBetween = (
   const cells = getCellsForRows(columnsSliced, rows);
 
   return cells;
-};
-
-export const validateExp = (trailKeys, expr) => {
-  let valid = true;
-  const matches = (expr && expr.match(/[A-Z][1-9]+/g)) || [];
-  matches.forEach((match) => {
-    if (trailKeys.indexOf(match) > -1) {
-      valid = false;
-    } else {
-      valid = true;
-    }
-  });
-  return valid;
 };
 
 export const getNumberOfRows = (cells) => {
@@ -103,63 +80,6 @@ export const getHighestColumn = (data) => {
   });
 
   return String.fromCharCode(highestColumnCharCode);
-};
-
-const arrayMove = (arr, fromIndex, toIndex) => {
-  const element = arr[fromIndex];
-
-  arr.splice(fromIndex, 1);
-  arr.splice(toIndex, 0, element);
-};
-
-export const assignDependents = (
-  cellsTree,
-  cellsTreeDependencies,
-  nodes,
-  rootKey,
-) => {
-  let currentKeyArray = cellsTree[rootKey];
-
-  nodes.readCells[rootKey] = true;
-
-  // BFS as we must update the most recent
-  // children before moving to grandchildren
-  while (currentKeyArray.length > 0) {
-    let next = [];
-
-    currentKeyArray.forEach((key) => {
-      // If we find the element again it means another is dependent
-      // on it, so let's move it to the back of the array
-      const existingIndex = nodes.allDependents[rootKey].findIndex(
-        (x) => x === key,
-      );
-
-      if (existingIndex === -1) {
-        nodes.allDependents[rootKey].push(key);
-      } else {
-        arrayMove(
-          nodes.allDependents[rootKey],
-          existingIndex,
-          nodes.allDependents[rootKey].length - 1,
-        );
-      }
-
-      // Cell is not read if all of the dependent cell keys are not read
-      const cellNotRead = cellsTreeDependencies[key].some((key) => {
-        return !nodes.readCells[key];
-      });
-
-      if (!cellNotRead) {
-        nodes.readCells[key] = true;
-      }
-
-      if (cellsTree[key]) {
-        next.push(...cellsTree[key]);
-      }
-    });
-
-    currentKeyArray = next;
-  }
 };
 
 export const padCellKeys = (sortedCellKeys) => {
@@ -221,15 +141,4 @@ export const getCellsBetween = (
     }
   });
   return cellsBetween;
-};
-
-export const getPreviousRowCellKey = (currentCellKey) => {
-  const currentColumn = getColumnLetterFromCellKey(currentCellKey);
-  const charCode = currentColumn.charCodeAt(0);
-  const currentRow = getRowNumberFromCellKey(currentCellKey);
-
-  const previousRowColumn = String.fromCharCode(charCode - 1);
-  const previousCellKey = `${previousRowColumn}${currentRow}`;
-
-  return previousCellKey;
 };

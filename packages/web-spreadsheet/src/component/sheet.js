@@ -14,8 +14,7 @@ import ModalValidation from "./modal_validation";
 import SortFilter from "./sort_filter";
 import { xtoast } from "./message";
 import { cssPrefix } from "../config";
-
-import { SUPPORTED_FORMULAS } from "hot-formula-parser";
+import { HyperFormula } from "hyperformula";
 
 /**
  * @desc throttle fn
@@ -893,7 +892,9 @@ export default class Sheet {
     this.verticalScrollbar = new Scrollbar(true);
     this.horizontalScrollbar = new Scrollbar(false);
     // editor
-    const formulaSuggestions = SUPPORTED_FORMULAS.map((formulaName) => {
+    const formulaSuggestions = HyperFormula.getRegisteredFunctionNames(
+      "enGB",
+    ).map((formulaName) => {
       const escapedFormulaName = formulaName.replace(".", "\\.");
       return {
         key: escapedFormulaName,

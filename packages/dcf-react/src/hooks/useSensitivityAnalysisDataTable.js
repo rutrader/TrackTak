@@ -1,4 +1,4 @@
-import isNil from "lodash/isNil";
+import { isNil } from "lodash-es";
 import { useEffect, useState } from "react";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import {

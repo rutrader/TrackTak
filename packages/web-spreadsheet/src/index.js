@@ -6,10 +6,7 @@ import Bottombar from "./component/bottombar";
 import { cssPrefix } from "./config";
 import { locale, tf } from "./locale/locale";
 import "./index.less";
-import buildDependencyTree from "./algorithm/buildDependencyTree";
-import { convertFromCellIndexToLabel } from "./core/helper";
 import { HyperFormula } from "hyperformula";
-import { cloneDeep } from "lodash";
 
 const formatStringRender = (v) => v;
 

@@ -4,7 +4,7 @@ import industryMapping, { spaceRegex } from "../../shared/industryMappings";
 import gicSubIndustryMappingJson from "../../data/gicSubIndustryMapping.json";
 import selectGeneral from "./selectGeneral";
 import selectIsInUS from "./selectIsInUS";
-import isNil from "lodash/isNil";
+import { isNil } from "lodash-es";
 
 const selectCurrentIndustry = createSelector(
   selectGeneral,

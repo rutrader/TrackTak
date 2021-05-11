@@ -1,6 +1,6 @@
 import useInputQueryParams from "./useInputQueryParams";
 import { requiredInputNameTypeMapping } from "../discountedCashFlow/scopeNameTypeMapping";
-import isNil from "lodash/isNil";
+import { isNil } from "lodash-es";
 
 const useHasAllRequiredInputsFilledIn = () => {
   const inputQueryParams = useInputQueryParams();

@@ -1,4 +1,4 @@
-import isNil from "lodash/isNil";
+import { isNil } from "lodash-es";
 import React, { forwardRef, useEffect } from "react";
 import { useState } from "react";
 import NumberFormat from "react-number-format";

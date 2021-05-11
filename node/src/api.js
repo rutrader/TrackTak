@@ -254,6 +254,7 @@ const api = {
   computeSensitivityAnalysis: async (cells, existingScope, currentScopes) => {
     const data = await sendReqOrGetCachedData(
       async () => {
+        // switch to piscina later
         const sensitivityAnalysisWorker = getSensitivityAnalysisWorker();
         const api = wrap(nodeEndpoint(sensitivityAnalysisWorker));
 

@@ -21,7 +21,7 @@ import useInjectQueryParams from "../hooks/useInjectQueryParams";
 import { Link } from "../shared/gatsby";
 import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 import useTicker from "../hooks/useTicker";
-import isNil from "lodash/isNil";
+import { isNil } from "lodash-es";
 
 const DefaultSyntheticCreditRatingLink = ({
   ticker,

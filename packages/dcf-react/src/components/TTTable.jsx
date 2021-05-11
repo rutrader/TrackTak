@@ -69,7 +69,6 @@ const TTTable = ({
   return (
     <Box
       sx={{
-        overflow: "auto",
         "& .indented-cell": {
           paddingLeft: (theme) => theme.spacing(2),
         },

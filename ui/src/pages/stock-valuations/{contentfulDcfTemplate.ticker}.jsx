@@ -25,7 +25,7 @@ import {
   selectCells,
 } from "@tracktak/dcf-react";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
-import * as styles from "./valuation.module.scss";
+import * as styles from "./valuation.module.css";
 import dayjs from "dayjs";
 import { Helmet } from "react-helmet";
 import getTitle from "../../shared/getTitle";
