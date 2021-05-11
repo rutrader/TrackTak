@@ -80,7 +80,7 @@ class Spreadsheet {
     };
 
     this.hyperFormula = HyperFormula.buildEmpty({
-      licenseKey: "agpl-v3", // TODO: make commercial license later
+      licenseKey: "05054-b528f-a10c4-53f2a-04b57",
     });
 
     this.bottombar = new Bottombar(

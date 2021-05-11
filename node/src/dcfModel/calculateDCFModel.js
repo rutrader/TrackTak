@@ -17,7 +17,7 @@ const calculateDCFModel = (cells, scope) => {
   );
 
   const hyperFormula = HyperFormula.buildFromArray(sheetData, {
-    licenseKey: "agpl-v3", // TODO: make commercial license later
+    licenseKey: "05054-b528f-a10c4-53f2a-04b57",
   });
 
   Object.keys(scope).forEach((key) => {
