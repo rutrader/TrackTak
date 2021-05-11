@@ -28,6 +28,7 @@ const duplicatePackageModules = [
   "axios",
   "gatsby",
   "gatsby-plugin-anchor-links",
+  "hyperformula",
 ];
 
 const alias = {
