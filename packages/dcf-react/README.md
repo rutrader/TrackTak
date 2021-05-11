@@ -239,4 +239,4 @@ Please do not hide any logo's of tracktak or links to tracktak.com with css or j
 
 If you need changes, we can provide them for you in the package itself.
 
-Thank you!
+Thank you.
