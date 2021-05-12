@@ -16,6 +16,7 @@ let theme = createMuiTheme({
       main: "#43cea2",
       dark: "#38ab87",
       contrastText: "#fff",
+      mainTextColor: "#313450",
     },
     secondary: {
       light: "#7849BF",
@@ -40,6 +41,7 @@ let theme = createMuiTheme({
   },
   zIndex: {
     scrollTopButton: 900,
+    cookieBanner: 99999,
   },
 });
 
