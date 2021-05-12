@@ -13,7 +13,7 @@
     "install:node": "cd ./node && npm install",
     "install:spreadsheet": "cd ./packages/web-spreadsheet && npm install",
     "install:dcf-react": "cd ./packages/dcf-react && npm install",
-    "postinstall": "run-p install:ui install:node install:spreadsheet install:dcf-react"
+    "postinstall": "run-s install:ui install:node install:spreadsheet install:dcf-react"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.0.0",

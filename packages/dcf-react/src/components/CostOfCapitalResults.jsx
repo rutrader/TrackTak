@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from "@material-ui/core";
+import { Box, Typography, useTheme, Link } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
 import FormatRawNumber from "./FormatRawNumber";
@@ -18,7 +18,7 @@ import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/se
 import StatsContainer from "./StatsContainer";
 import { useLocation } from "@reach/router";
 import useInjectQueryParams from "../hooks/useInjectQueryParams";
-import { Link } from "../shared/gatsby";
+import { Link as RouterLink } from "../shared/gatsby";
 import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 import useTicker from "../hooks/useTicker";
 import { isNil } from "lodash-es";
@@ -29,6 +29,7 @@ const DefaultSyntheticCreditRatingLink = ({
   ...props
 }) => (
   <Link
+    component={RouterLink}
     to={`/stock/${ticker}/synthetic-credit-rating${searchParams}`}
     {...props}
   />
