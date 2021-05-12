@@ -13,10 +13,9 @@ app.use(express.json());
 
 const publicRoutes = ["/api/v1/compute-sensitivity-analysis"];
 
-app.options(publicRoutes[0], cors());
+app.use(cors());
 
-// These routes are public so they have cors turned off
-app.post(publicRoutes[0], cors(), async (req, res) => {
+app.post(publicRoutes[0], async (req, res) => {
   const { cells, existingScope, currentScopes } = req.body;
   const values = await api.computeSensitivityAnalysis(
     cells,
@@ -27,19 +26,33 @@ app.post(publicRoutes[0], cors(), async (req, res) => {
   res.send(values);
 });
 
-app.use(
-  cors({
-    origin:
-      process.env.NODE_ENV === "development"
-        ? [
-            "http://localhost:8000",
-            "http://localhost:9000",
-            "http://localhost:6006",
-          ]
-        : [process.env.ORIGIN_URL],
-    optionsSuccessStatus: 204,
-  }),
-);
+// app.options(publicRoutes[0], cors());
+
+// These routes are public so they have cors turned off
+// app.post(publicRoutes[0], cors(), async (req, res) => {
+//   const { cells, existingScope, currentScopes } = req.body;
+//   const values = await api.computeSensitivityAnalysis(
+//     cells,
+//     existingScope,
+//     currentScopes,
+//   );
+
+//   res.send(values);
+// });
+
+// app.use(
+//   cors({
+//     origin:
+//       process.env.NODE_ENV === "development"
+//         ? [
+//             "http://localhost:8000",
+//             "http://localhost:9000",
+//             "http://localhost:6006",
+//           ]
+//         : [process.env.ORIGIN_URL],
+//     optionsSuccessStatus: 204,
+//   }),
+// );
 
 app.get("/api/v1/fundamentals/:ticker", async (req, res) => {
   const value = await api.getFundamentals(req.params.ticker, req.query);
