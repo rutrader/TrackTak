@@ -1,3 +1,5 @@
-const selectPriceLastClose = (state) => state.fundamentals.priceLastClose;
+const selectPriceLastClose = (state) => {
+  return state.fundamentals.priceLastClose;
+};
 
 export default selectPriceLastClose;
