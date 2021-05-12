@@ -14,6 +14,7 @@ import theme from "./src/theme";
 import { snackbarReducer } from "./src/redux/reducers/snackbarReducer";
 import PageSpinner from "./src/components/PageSpinner";
 import setURLSearchQuery from "./src/shared/setURLSearchQuery";
+import TTCookieBanner from "./src/components/TTCookieBanner";
 
 const store = createStore(undefined, {
   snackbar: snackbarReducer,
@@ -28,6 +29,7 @@ export const wrapRootElement = ({ element }) => {
     <TracktakProvider store={store} theme={theme}>
       <PageSpinner />
       {element}
+      <TTCookieBanner />
     </TracktakProvider>
   );
 };
