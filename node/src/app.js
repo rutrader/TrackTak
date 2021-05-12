@@ -13,6 +13,8 @@ app.use(express.json());
 
 const publicRoutes = ["/api/v1/compute-sensitivity-analysis"];
 
+app.use(cors());
+
 app.options(publicRoutes[0], cors());
 
 // These routes are public so they have cors turned off
