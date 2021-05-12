@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Box, Typography, FormControlLabel, Switch } from "@material-ui/core";
+import {
+  Box,
+  Typography,
+  FormControlLabel,
+  Switch,
+  Link,
+} from "@material-ui/core";
 import ExportToExcel, { DCFControlTypography } from "./ExportToExcel";
 import DiscountedCashFlowTable from "./DiscountedCashFlowTable";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
@@ -40,13 +46,13 @@ const DiscountedCashFlowSheet = ({ SubscribeCover, loadingCells }) => {
           </Typography>
           <Typography gutterBottom>
             Need help? Check out the DCF docs&nbsp;
-            <a
+            <Link
               href="https://tracktak.com/how-to-do-a-dcf"
               rel="noreferrer"
               target="_blank"
             >
               here.
-            </a>
+            </Link>
           </Typography>
           <Typography paragraph>
             <b>Note:</b> Editing cells is in alpha stage.

@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { padCellKeys } from "./utils";
-import { Alert, Box, useMediaQuery, useTheme } from "@material-ui/core";
+import { Alert, Box, useMediaQuery, useTheme, Link } from "@material-ui/core";
 import useInputQueryParams from "../hooks/useInputQueryParams";
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
 import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
@@ -60,16 +60,16 @@ const rowCells = cellKeysSorted.map((key) => {
   };
 });
 
-const rows = {};
-
-getChunksOfArray(rowCells, columns.length).forEach((data, i) => {
-  rows[i] = {
-    cells: data,
-  };
-});
-
 const dcfValuationId = "dcf-valuation";
 const getDataSheets = (isOnMobile) => {
+  const rows = {};
+
+  getChunksOfArray(rowCells, columns.length).forEach((data, i) => {
+    rows[i] = {
+      cells: data,
+    };
+  });
+
   const dataSheets = [
     {
       name: "DCF Valuation",
@@ -114,7 +114,7 @@ const getDatasheetsColWidths = (colWidth, isOnMobile) => {
   const newDataSheets = dataSheets.map((dataSheet, datasheetIndex) => {
     const newCols = {};
 
-    rows[0].cells.forEach((_, columnIndex) => {
+    dataSheet.rows[0].cells.forEach((_, columnIndex) => {
       newCols[columnIndex] = {
         width:
           datasheetIndex === 0 && columnIndex === 0 ? columnAWidth : colWidth,
@@ -143,7 +143,7 @@ const getDatasheetsYOYGrowth = (spreadsheet, isOnMobile) => {
       const formulaRow = formulaSheet[rowKey];
 
       newRows[rowKey] = {
-        ...rows[rowKey],
+        ...dataSheet.rows[rowKey],
         cells: cells.map((cell, i) => {
           const previousFormulaValue = formulaRow[i - 1]
             ? formulaRow[i - 1]
@@ -276,6 +276,12 @@ const DiscountedCashFlowTable = ({
   }, [currencySymbol]);
 
   useEffect(() => {
+    if (!hasAllRequiredInputsFilledIn && spreadsheet) {
+      spreadsheet.loadData([[]]);
+    }
+  }, [hasAllRequiredInputsFilledIn, spreadsheet, isOnMobile]);
+
+  useEffect(() => {
     if (spreadsheet && hasAllRequiredInputsFilledIn && scope) {
       spreadsheet.setVariables(scope);
 
@@ -398,7 +404,8 @@ const DiscountedCashFlowTable = ({
       <Box
         id={dcfValuationId}
         sx={{
-          pointerEvents: hasAllRequiredInputsFilledIn ? undefined : "none",
+          pointerEvents:
+            !hasAllRequiredInputsFilledIn || loadingCells ? "none" : undefined,
         }}
       />
       {SubscribeCover ? <SubscribeCover /> : null}
@@ -419,14 +426,15 @@ const DiscountedCashFlowTable = ({
           }}
         >
           The&nbsp;
-          <AnchorLink
+          <Link
+            component={AnchorLink}
             to={to}
             onAnchorLinkClick={() => {
               navigate(to);
             }}
           >
             {valueDrivingInputsHeader}
-          </AnchorLink>
+          </Link>
           &nbsp;section above needs to be filled out first to generate the DCF.
         </Alert>
       )}
