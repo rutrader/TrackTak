@@ -149,6 +149,18 @@ export function numberCalc(type, a1, a2) {
   return ret.toFixed(Math.max(al1, al2));
 }
 
+export const formatStringRender = (v) => v;
+
+export const formatNumberRender = (v) => {
+  // match "-12.1" or "12" or "12.1"
+  if (/^(-?\d*.?\d*)$/.test(v)) {
+    const v1 = Number(v).toFixed(2).toString();
+    const [first, ...parts] = v1.split("\\.");
+    return [first.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"), ...parts];
+  }
+  return v;
+};
+
 export const convertFromCellIndexToLabel = (columnIndex, rowIndex) => {
   let startIndex = "A".charCodeAt(0);
 

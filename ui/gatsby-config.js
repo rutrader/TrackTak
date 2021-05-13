@@ -35,7 +35,6 @@ const alias = {
   "@tracktak/intrinsic-valuations": path.resolve(
     "../packages/intrinsic-valuations/src",
   ),
-  "@tracktak/web-spreadsheet": path.resolve("../packages/web-spreadsheet"),
 };
 
 duplicatePackageModules.forEach((packageModule) => {

@@ -1,6 +1,6 @@
 {
   "name": "@tracktak/intrinsic-valuations",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0",
   "description": "A react package that allows external websites to use our intrinsic valuations for https://tracktak.com",
   "author": "tracktak",
   "license": "SEE LICENSE IN README.MD",
@@ -16,8 +16,9 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production microbundle --no-sourcemap",
-    "build:dev": "rimraf ./dist && cross-env NODE_ENV=production microbundle --compress false",
+    "copy-assets": "copyfiles -f \"../web-spreadsheet/src/assets/**.svg\" ./dist/assets",
+    "build": "cross-env NODE_ENV=production microbundle --no-sourcemap && npm run copy-assets",
+    "build:dev": "rimraf ./dist && cross-env NODE_ENV=production microbundle --compress false && npm run copy-assets",
     "prepublishOnly": "npm run build",
     "clean": "rimraf ./node_modules",
     "analyze-size": "rimraf ./dist && cross-env NODE_ENV=production microbundle -f modern && source-map-explorer ./dist/index.modern.module.js"
@@ -36,10 +37,12 @@
     "babel-plugin-file-loader": "^2.0.0",
     "babel-plugin-inline-react-svg": "^2.0.1",
     "change-case": "^4.1.2",
+    "copyfiles": "^2.4.1",
     "cross-env": "^7.0.2",
     "currency-symbol-map": "^4.0.4",
     "dayjs": "^1.9.7",
     "iso-3166-1-alpha-2": "^1.0.0",
+    "less": "^4.1.1",
     "lodash-es": "^4.17.20",
     "microbundle": "^0.13.0",
     "postcss": "^8.2.15",
