@@ -1,6 +1,6 @@
 # @tracktak/intrinsic-valuations
 
-> A react package that allows external websites to use our discounted cash flow calculator for https://tracktak.com
+> A react package that allows external websites to use our intrinsic valuations for https://tracktak.com
 
 For an example on how to use, please click here: https://github.com/TrackTak/tracktak-example
 
