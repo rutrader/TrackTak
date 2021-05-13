@@ -1,4 +1,4 @@
-import { Box, Typography, IconButton } from "@material-ui/core";
+import { Box, Typography, IconButton, Link } from "@material-ui/core";
 import React from "react";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import RedditIcon from "@material-ui/icons/Reddit";
@@ -23,17 +23,17 @@ const Footer = () => {
         <Box>
           <IconButton
             name="LinkedIn"
-            onClick={() => {
-              window.location.href = "https://linkedin.com/company/tracktak";
-            }}
+            component={Link}
+            target="_blank"
+            href="https://linkedin.com/company/tracktak"
           >
             <LinkedInIcon color="primary" sx={iconStyles} />
           </IconButton>
           <IconButton
             name="RedditIcon"
-            onClick={() => {
-              window.location.href = "https://www.reddit.com/r/tracktak/";
-            }}
+            component={Link}
+            target="_blank"
+            href="https://www.reddit.com/r/tracktak/"
           >
             <RedditIcon color="primary" sx={iconStyles} />
           </IconButton>
@@ -46,13 +46,13 @@ const Footer = () => {
       >
         <Typography align="center" paragraph gutterBottom>
           Data is provided by{" "}
-          <a
+          <Link
             rel="noreferrer"
             target="_blank"
             href="https://eodhistoricaldata.com/"
           >
             EODHistoricalData.com
-          </a>{" "}
+          </Link>{" "}
           and may not be correct in all cases. We do not take any responsibility
           for incorrect data.
         </Typography>
