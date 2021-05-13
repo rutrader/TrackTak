@@ -21,24 +21,22 @@ const Footer = () => {
           <TracktakLogoSvg src="icons/tracktak-black.svg" alt="Tracktak" />
         </Box>
         <Box>
-          <Link
-            rel="noreferrer"
+          <IconButton
+            name="LinkedIn"
+            component={Link}
             target="_blank"
             href="https://linkedin.com/company/tracktak"
           >
-            <IconButton rel="noreferrer" target="_blank" name="LinkedIn">
-              <LinkedInIcon color="primary" sx={iconStyles} />
-            </IconButton>
-          </Link>
-          <Link
-            rel="noreferrer"
+            <LinkedInIcon color="primary" sx={iconStyles} />
+          </IconButton>
+          <IconButton
+            name="RedditIcon"
+            component={Link}
             target="_blank"
             href="https://www.reddit.com/r/tracktak/"
           >
-            <IconButton name="RedditIcon">
-              <RedditIcon color="primary" sx={iconStyles} />
-            </IconButton>
-          </Link>
+            <RedditIcon color="primary" sx={iconStyles} />
+          </IconButton>
         </Box>
       </Box>
       <Box
