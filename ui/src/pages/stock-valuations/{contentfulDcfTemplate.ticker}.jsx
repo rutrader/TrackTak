@@ -23,7 +23,7 @@ import {
   IndustryAveragesResults,
   selectPrice,
   selectCells,
-} from "@tracktak/dcf-react";
+} from "@tracktak/intrinsic-valuations";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
 import * as styles from "./valuation.module.css";
 import dayjs from "dayjs";
@@ -39,13 +39,13 @@ import {
 } from "../../redux/thunks/fundamentalsThunks";
 import SubscribeCover from "../../components/SubscribeCover";
 import subscribePopupShownHook from "../../hooks/subscribePopupShownHook";
-import ProbabilityOfFailureInputs from "../../../../packages/dcf-react/src/components/ProbabilityOfFailureInputs";
+import ProbabilityOfFailureInputs from "../../../../packages/intrinsic-valuations/src/components/ProbabilityOfFailureInputs";
 import {
   probabilityOfFailureLabel,
   proceedsAsPercentageOfBookValueLabel,
-} from "../../../../packages/dcf-react/src/components/OptionalInputs";
-import selectValuationCurrencyCode from "../../../../packages/dcf-react/src/selectors/fundamentalSelectors/selectValuationCurrencyCode";
-import selectGeneral from "../../../../packages/dcf-react/src/selectors/fundamentalSelectors/selectGeneral";
+} from "../../../../packages/intrinsic-valuations/src/components/OptionalInputs";
+import selectValuationCurrencyCode from "../../../../packages/intrinsic-valuations/src/selectors/fundamentalSelectors/selectValuationCurrencyCode";
+import selectGeneral from "../../../../packages/intrinsic-valuations/src/selectors/fundamentalSelectors/selectGeneral";
 
 export const query = graphql`
   fragment ValuationInformation on ContentfulDcfTemplate {

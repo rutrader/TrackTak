@@ -1,15 +1,15 @@
-# @tracktak/dcf-react
+# @tracktak/intrinsic-valuations
 
 > A react package that allows external websites to use our discounted cash flow calculator for https://tracktak.com
 
 For an example on how to use, please click here: https://github.com/TrackTak/tracktak-example
 
-[![NPM](https://img.shields.io/npm/v/@tracktak/dcf-react.svg)](https://www.npmjs.com/package/@tracktak/dcf-react) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/@tracktak/intrinsic-valuations.svg)](https://www.npmjs.com/package/@tracktak/intrinsic-valuations) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Prerequisites
 
 - node >= v12.20.1
-- To install the @tracktak/dcf-react package you must have created a personal access token on GitHub settings, see here: https://docs.github.com/en/packages/guides/configuring-npm-for-use-with-github-packages#authenticating-to-github-packages
+- To install the @tracktak/intrinsic-valuations package you must have created a personal access token on GitHub settings, see here: https://docs.github.com/en/packages/guides/configuring-npm-for-use-with-github-packages#authenticating-to-github-packages
 
 Once you have the token, edit your .npmrc file and add these two lines:
 
@@ -21,7 +21,7 @@ Once you have the token, edit your .npmrc file and add these two lines:
 ## Install
 
 ```bash
-npm install --save @tracktak/dcf-react
+npm install --save @tracktak/intrinsic-valuations
 ```
 
 ## Components

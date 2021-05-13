@@ -1,4 +1,4 @@
-import { axios } from "@tracktak/dcf-react";
+import { axios } from "@tracktak/intrinsic-valuations";
 
 export const getFundamentals = async (ticker, params) => {
   return axios.get(`/api/v1/fundamentals/${ticker}`, params);

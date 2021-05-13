@@ -4,7 +4,7 @@ on:
     types: [closed]
     paths:
       - "ui/**"
-      - "packages/dcf-react/**"
+      - "packages/intrinsic-valuations/**"
 jobs:
   deploy-staging-ui:
     if: github.event.pull_request.merged == true

@@ -13,7 +13,7 @@ import {
   setTenYearGovernmentBondLastClose,
   setFundamentals,
   convertFundamentals,
-} from "@tracktak/dcf-react";
+} from "@tracktak/intrinsic-valuations";
 import dayjs from "dayjs";
 import convertHyphenTickerToDot from "../../shared/convertHyphenTickerToDot";
 import getMinimumHistoricalDateFromFinancialStatements from "../../shared/getMinimumHistoricalDateFromFinancialStatements";

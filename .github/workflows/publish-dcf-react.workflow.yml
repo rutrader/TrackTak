@@ -3,14 +3,14 @@ on:
   pull_request:
     types: [closed]
     paths:
-      - "packages/dcf-react/**"
+      - "packages/intrinsic-valuations/**"
 jobs:
-  publish-dcf-react:
+  publish-intrinsic-valuations:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./packages/dcf-react
+        working-directory: ./packages/intrinsic-valuations
     env:
       NODE_AUTH_TOKEN: ${{ secrets.DCF_REACT_ACCESS_TOKEN }}
     steps:
