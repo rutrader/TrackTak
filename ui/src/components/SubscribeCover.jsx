@@ -3,7 +3,7 @@ import {
   selectGeneral,
   useHasAllRequiredInputsFilledIn,
   useIsClient,
-} from "@tracktak/dcf-react";
+} from "@tracktak/intrinsic-valuations";
 import { Box, Button, Paper, Typography } from "@material-ui/core";
 import SubscribeMailingList from "./SubscribeMailingList";
 import subscribePopupShownHook from "../hooks/subscribePopupShownHook";

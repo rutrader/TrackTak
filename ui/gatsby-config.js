@@ -32,8 +32,9 @@ const duplicatePackageModules = [
 ];
 
 const alias = {
-  "@tracktak/dcf-react": path.resolve("../packages/dcf-react/src"),
-  "@tracktak/web-spreadsheet": path.resolve("../packages/web-spreadsheet"),
+  "@tracktak/intrinsic-valuations": path.resolve(
+    "../packages/intrinsic-valuations/src",
+  ),
 };
 
 duplicatePackageModules.forEach((packageModule) => {

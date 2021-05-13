@@ -6,7 +6,7 @@ import {
   selectGeneral,
   useTicker,
   FinancialStatements,
-} from "@tracktak/dcf-react";
+} from "@tracktak/intrinsic-valuations";
 import { useSelector } from "react-redux";
 
 const FinancialStatementsPage = () => {

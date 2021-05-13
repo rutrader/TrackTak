@@ -12,8 +12,8 @@
     "install:ui": "cd ./ui && npm install",
     "install:node": "cd ./node && npm install",
     "install:spreadsheet": "cd ./packages/web-spreadsheet && npm install",
-    "install:dcf-react": "cd ./packages/dcf-react && npm install",
-    "postinstall": "run-s install:ui install:node install:spreadsheet install:dcf-react"
+    "install:intrinsic-valuations": "cd ./packages/intrinsic-valuations && npm install",
+    "postinstall": "run-s install:ui install:node install:spreadsheet install:intrinsic-valuations"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.0.0",
@@ -34,6 +34,6 @@
     "rimraf": "^3.0.2"
   },
   "dependencies": {
-    "@tracktak/dcf-react": "file:packages\\dcf"
+    "@tracktak/intrinsic-valuations": "file:packages\\dcf"
   }
 }

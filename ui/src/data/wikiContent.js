@@ -7,7 +7,7 @@ import {
   FormatInputToPercent,
   FormatInputToYear,
   Formula,
-} from "@tracktak/dcf-react";
+} from "@tracktak/intrinsic-valuations";
 
 const InputExampleBox = ({ sx, ...props }) => (
   <Box sx={{ my: 2, ...sx }} {...props} />

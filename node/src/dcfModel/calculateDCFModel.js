@@ -1,7 +1,7 @@
 import { HyperFormula } from "hyperformula";
 import chunk from "lodash/chunk";
-import sortAlphaNumeric from "../../../packages/dcf-react/src/discountedCashFlow/sortAlphaNumeric";
-import { padCellKeys } from "../../../packages/dcf-react/src/discountedCashFlow/utils";
+import sortAlphaNumeric from "../../../packages/intrinsic-valuations/src/discountedCashFlow/sortAlphaNumeric";
+import { padCellKeys } from "../../../packages/intrinsic-valuations/src/discountedCashFlow/utils";
 
 // TODO: pass in the actual array of arrays instead of cells object
 // and converting it

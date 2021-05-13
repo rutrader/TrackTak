@@ -1,15 +1,15 @@
-# @tracktak/dcf-react
+# @tracktak/intrinsic-valuations
 
 > A react package that allows external websites to use our discounted cash flow calculator for https://tracktak.com
 
 For an example on how to use, please click here: https://github.com/TrackTak/tracktak-example
 
-[![NPM](https://img.shields.io/npm/v/@tracktak/dcf-react.svg)](https://www.npmjs.com/package/@tracktak/dcf-react) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/@tracktak/intrinsic-valuations.svg)](https://www.npmjs.com/package/@tracktak/intrinsic-valuations) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Prerequisites
 
 - node >= v12.20.1
-- To install the @tracktak/dcf-react package you must have created a personal access token on GitHub settings, see here: https://docs.github.com/en/packages/guides/configuring-npm-for-use-with-github-packages#authenticating-to-github-packages
+- To install the @tracktak/intrinsic-valuations package you must have created a personal access token on GitHub settings, see here: https://docs.github.com/en/packages/guides/configuring-npm-for-use-with-github-packages#authenticating-to-github-packages
 
 Once you have the token, edit your .npmrc file and add these two lines:
 
@@ -21,7 +21,7 @@ Once you have the token, edit your .npmrc file and add these two lines:
 ## Install
 
 ```bash
-npm install --save @tracktak/dcf-react
+npm install --save @tracktak/intrinsic-valuations
 ```
 
 ## Components
@@ -224,7 +224,7 @@ Any questions, please contact me at: martin@tracktak.com
 
 ## API calls
 
-The package has a couple of API calls to our backend, this is for calculating the Discounted Cash Flow model in the spreadsheet due to it being a CPU intensive process.
+The package has a couple of API calls to our backend, currently it's just for the sensitivity analysis because it's an CPU intensive process but later on we will have others such as Monte-Carlo API calls.
 
 ## Final notes
 
@@ -232,11 +232,4 @@ Some stocks report financials in a different currency than their quote stock pri
 
 ## License
 
-Pending license.
-
-You can only use this package if you have signed a contract with us allowing your to use it. If you have not done this you must contact me first before using it.
-Please do not hide any logo's of tracktak or links to tracktak.com with css or javascript without asking us first.
-
-If you need changes, we can provide them for you in the package itself.
-
-Thank you.
+You cannot use this package in any circumstance unless you have signed the 'SOFTWARE VAR AGREEMENT' contract we have provided you (or will provide).

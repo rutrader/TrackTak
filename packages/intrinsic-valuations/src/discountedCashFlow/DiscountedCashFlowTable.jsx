@@ -29,8 +29,11 @@ import selectScope from "../selectors/dcfSelectors/selectScope";
 import cells from "./cells";
 import { setCells, setScope } from "../redux/actions/dcfActions";
 import { isNil } from "lodash-es";
-import Spreadsheet, { formatNumberRender } from "@tracktak/web-spreadsheet";
-import { convertFromCellIndexToLabel } from "../../../web-spreadsheet/src/core/helper";
+import Spreadsheet from "../../../web-spreadsheet/src";
+import {
+  convertFromCellIndexToLabel,
+  formatNumberRender,
+} from "../../../web-spreadsheet/src/core/helper";
 
 const defaultColWidth = 110;
 const columnAWidth = 170;

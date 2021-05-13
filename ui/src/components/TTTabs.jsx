@@ -3,7 +3,7 @@ import React from "react";
 import { useLocation } from "@reach/router";
 import { Link } from "gatsby";
 import { sentenceCase } from "change-case";
-import { useTicker } from "@tracktak/dcf-react";
+import { useTicker } from "@tracktak/intrinsic-valuations";
 
 const stockPaths = [
   "/discounted-cash-flow",

@@ -1,5 +1,5 @@
 import { Box, Typography } from "@material-ui/core";
-import { axios } from "@tracktak/dcf-react";
+import { axios } from "@tracktak/intrinsic-valuations";
 import jsonAdapter from "axios-jsonp";
 import React, { useState } from "react";
 import RoundButton from "./RoundButton";

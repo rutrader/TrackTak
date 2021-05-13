@@ -6,7 +6,7 @@ import {
   IndustryAverages,
   selectGeneral,
   useTicker,
-} from "@tracktak/dcf-react";
+} from "@tracktak/intrinsic-valuations";
 import { useSelector } from "react-redux";
 
 const IndustryAveragesPage = () => {

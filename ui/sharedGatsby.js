@@ -5,7 +5,7 @@ import {
   setFundamentals,
   fundamentalsReducer,
   convertFundamentals,
-} from "@tracktak/dcf-react";
+} from "@tracktak/intrinsic-valuations";
 import { LocationProvider, globalHistory } from "@reach/router";
 import { extendedFundamentalsReducer } from "./src/redux/reducers/extendedFundamentalsReducer";
 import "@fontsource/nunito/400.css";
