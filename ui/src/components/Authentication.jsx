@@ -28,6 +28,10 @@ const Authentication = ({
 }) => {
   const dispatch = useDispatch();
   const [formState, setFormState] = useState(initialState);
+  const {
+    signUp,
+    signIn,
+  } = useAuth();
 
   const onError = (error) => {
     dispatch(
@@ -51,12 +55,6 @@ const Authentication = ({
     onSuccess();
   };
 
-  const {
-    signUp,
-    signIn,
-    sendPasswordResetEmail,
-  } = useAuth();
-
   const handleSwitchToSignInClick = () => {
     if (isModal) {
       setFormState(AUTHENTICATION_FORM_STATE.SIGN_IN);
@@ -74,6 +72,16 @@ const Authentication = ({
 
     navigate("/sign-up/");
   };
+
+  const handleSwitchToForgotPasswordClick = () => {
+    if (isModal) {
+      setFormState(AUTHENTICATION_FORM_STATE.FORGOTTEN_PASSWORD);
+      return;
+    }
+
+    navigate("/forgot-password/");
+  };
+
 
   const handleSignUpSubmit = (event, payload) => {
     event.preventDefault();
@@ -103,6 +111,7 @@ const Authentication = ({
         <SignInForm
           onSubmit={handleSignInSubmit}
           onSwitchToSignUpClick={handleSwitchToSignUpClick}
+          onSwitchToForgotPasswordClick={handleSwitchToForgotPasswordClick}
         />
       )}
       {formState === AUTHENTICATION_FORM_STATE.FORGOTTEN_PASSWORD && (

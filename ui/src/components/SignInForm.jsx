@@ -9,7 +9,7 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 import { useFormStyles } from "./Form.styles";
 import { useTheme } from "@material-ui/styles";
 
-const SignInForm = ({ onSubmit, onSwitchToSignUpClick }) => {
+const SignInForm = ({ onSubmit, onSwitchToSignUpClick, onSwitchToForgotPasswordClick }) => {
   const theme = useTheme()
   const classes = useFormStyles(theme);
   const [email, setEmail] = useState("");
@@ -80,7 +80,18 @@ const SignInForm = ({ onSubmit, onSwitchToSignUpClick }) => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid container justify="flex-end">
+        <Grid container justifyContent="space-between">
+          <Grid item>
+            <Button
+              color="primary"
+              disableRipple
+              className={classes.link}
+              onClick={onSwitchToForgotPasswordClick}
+              type="button"
+            >
+              Forgot Password
+            </Button>
+          </Grid>
           <Grid item>
             <Button
               color="primary"

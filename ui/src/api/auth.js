@@ -59,3 +59,60 @@ export const signUp = (
 };
 
 export const getCurrentUser = () => userPool.getCurrentUser();
+
+export const isEmailVerified = () => getCurrentUser()?.isEmailVerified;
+
+export const forgotPasswordFlow = () => {
+  let user = {};
+  return {
+    sendEmailVerification: (username, onChallenge, onSuccess, onFailure) => {
+      user = new CognitoUser({
+        Username: username,
+        Pool: userPool,
+      });
+      user.initiateAuth(
+        new AuthenticationDetails({
+          Username: user.getUsername(),
+        }),
+        {
+          onSuccess: (session) => {
+            onSuccess(session);
+          },
+          onFailure: (err) => {
+            onFailure(err);
+          },
+          customChallenge: (params) => {
+            onChallenge(params);
+          },
+        },
+      );
+    },
+    sendChallengeAnswer: (
+      challengeAnswer,
+      newPassword,
+      onSuccess,
+      onFailure,
+    ) => {
+      if (!user) {
+        throw Error("Send verification email to user first!");
+      }
+      user.sendCustomChallengeAnswer(
+        challengeAnswer,
+        {
+          onSuccess: (session, userConfirmationNecessary) => {
+            onSuccess(session, userConfirmationNecessary);
+          },
+          onFailure: (err) => {
+            onFailure(err);
+          },
+          customChallenge: (params) => {
+            console.log(params);
+          },
+        },
+        {
+          newPassword: newPassword,
+        },
+      );
+    },
+  };
+};

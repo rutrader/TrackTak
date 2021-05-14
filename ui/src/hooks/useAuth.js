@@ -4,6 +4,8 @@ import {
   signIn as userSignIn,
   signOut as userSignOut,
   getCurrentUser,
+  isEmailVerified as isUserEmailVerified,
+  forgotPasswordFlow,
 } from "../api/auth";
 
 const AuthContext = createContext();
@@ -27,6 +29,7 @@ export const ProvideAuth = (props) => {
 const useProvideAuth = () => {
   const [session, setSession] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
 
   useEffect(() => {
     const currentUser = getCurrentUser();
@@ -39,6 +42,10 @@ const useProvideAuth = () => {
       });
     }
   }, []);
+
+  useEffect(() => {
+    setIsEmailVerified(isUserEmailVerified());
+  }, [session]);
 
   const signUp = (
     email,
@@ -76,15 +83,14 @@ const useProvideAuth = () => {
     setSession(null);
   };
 
-  const sendPasswordResetEmail = (email) => {};
-
   return {
     isAuthenticated,
     session,
     signUp,
     signIn,
     signOut,
-    sendPasswordResetEmail,
+    isEmailVerified,
+    forgotPasswordFlow: forgotPasswordFlow(),
   };
 };
 
