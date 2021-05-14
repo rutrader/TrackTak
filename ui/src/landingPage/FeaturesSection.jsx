@@ -161,10 +161,9 @@ const FeaturesSection = () => {
             <IconGradient lightColor="#e44e83" darkColor="#ffb8d1">
               <RiTimerLine fontSize="30px" />
             </IconGradient>
-
             <FeatureHeader variant="h4">Automated</FeatureHeader>
             <FeatureText>
-              Automates your DCF inputs based on historical and current data.
+              Calculates your DCF inputs based on historical and current data.
             </FeatureText>
           </BoxIcon>
         </BoxColumnWrapper>
@@ -175,7 +174,7 @@ const FeaturesSection = () => {
             </IconGradient>
             <FeatureHeader variant="h4">Sensitivity Analysis</FeatureHeader>
             <FeatureText>
-              Automatically shows you the different estimated price of various
+              Immediately shows you the different estimated price of various
               inputs.
             </FeatureText>
           </BoxIcon>
