@@ -120,13 +120,11 @@ const SearchSection = () => {
             fontWeight={800}
             color="inherit"
           >
-            Goodbye Excel.
-            <br />
-            Hello automated Discounted Cash Flows.
+            Tired of complicated excel Discounted Cash Flow templates?
           </Typography>
           <Typography variant="h6" color="inherit" gutterBottom>
             <Box>
-              tracktak enables you to do quick DCF models based on Aswath
+              tracktak enables you to do quick DCF models based on prof. Aswath
               Damodaran's techniques directly in the cloud.
               <br />
               <br />
