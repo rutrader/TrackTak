@@ -1,6 +1,5 @@
 import helper from "./helper";
 import { expr2expr, REGEX_EXPR_GLOBAL } from "./alphabet";
-import { setFormulasOnDatasheets } from "..";
 
 class Rows {
   constructor({ len, height }, hyperFormula) {

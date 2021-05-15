@@ -7,9 +7,16 @@ import { locale, tf } from "./locale/locale";
 import "./index.less";
 import { HyperFormula } from "hyperformula";
 import { formatNumberRender, formatStringRender } from "./core/helper";
+import defaultOptions from "./core/defaultOptions";
+import { merge } from "lodash";
+import EventEmitter from "events";
+import spreadsheetEvents from "./core/spreadsheetEvents";
 
 const initializeSpreadSheet = (element, options) => {
   let datas = [];
+  let newOptions = merge(defaultOptions, options);
+  const eventEmitter = new EventEmitter();
+
   const formats = {
     normal: {
       title: tf("format.normal"),
@@ -66,24 +73,34 @@ const initializeSpreadSheet = (element, options) => {
   const rootEl = h("div", `${cssPrefix}`).on("contextmenu", (evt) =>
     evt.preventDefault(),
   );
-  const bottombar = new Bottombar(
-    () => {
-      const d = addSheet();
-      sheet.resetData(d);
-    },
-    (index) => {
-      const d = datas[index];
-      sheet.resetData(d);
-    },
-    () => {
-      deleteSheet();
-    },
-    (index, value) => {
-      datas[index].name = value;
-    },
-  );
 
-  const addSheet = (name = `sheet${datas.length + 1}`, active = true) => {
+  eventEmitter.on(spreadsheetEvents.bottombar.addSheet, () => {
+    const data = addSheet();
+
+    sheet.resetData(data);
+  });
+
+  eventEmitter.on(spreadsheetEvents.bottombar.selectSheet, (index) => {
+    const d = datas[index];
+
+    sheet.resetData(d);
+  });
+
+  eventEmitter.on(spreadsheetEvents.bottombar.deleteSheet, () => {
+    deleteSheet();
+  });
+
+  eventEmitter.on(spreadsheetEvents.bottombar.updateSheet, (index, value) => {
+    datas[index].name = value;
+  });
+
+  const bottombar = new Bottombar(eventEmitter);
+
+  const addSheet = (
+    name = `sheet${datas.length + 1}`,
+    active = true,
+    options = newOptions,
+  ) => {
     const data = new DataProxy(name, options, hyperFormula);
 
     data.change(sheet);
@@ -193,6 +210,8 @@ const initializeSpreadSheet = (element, options) => {
   const change = (cb) => {
     sheet.on("change", cb);
   };
+
+  on();
 
   return {
     addSheet,
