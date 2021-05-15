@@ -52,7 +52,7 @@ import Spreadsheet from "x-data-spreadsheet";
 // const options = {};
 // new Spreadsheet('#x-spreadsheet-demo', options);
 const s = new Spreadsheet("#x-spreadsheet-demo")
-  .loadData({}) // load data
+  .setData({}) // load data
   .change((data) => {
     // save data to db
   });

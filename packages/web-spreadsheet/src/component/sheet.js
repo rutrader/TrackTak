@@ -971,7 +971,7 @@ export default class Sheet {
     this.table.resetData(data);
   }
 
-  loadData(data) {
+  setData(data) {
     this.data.setData(data);
     sheetReset.call(this);
     return this;

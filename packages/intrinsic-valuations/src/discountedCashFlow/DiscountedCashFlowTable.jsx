@@ -280,7 +280,7 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     if (!hasAllRequiredInputsFilledIn && spreadsheet) {
-      spreadsheet.loadData([[]]);
+      spreadsheet.setData([[]]);
     }
   }, [hasAllRequiredInputsFilledIn, spreadsheet, isOnMobile]);
 
@@ -290,7 +290,7 @@ const DiscountedCashFlowTable = ({
 
       const dataSheets = getDataSheets(isOnMobile);
 
-      spreadsheet.loadData(dataSheets);
+      spreadsheet.setData(dataSheets);
 
       const sheetName = "DCF Valuation";
       const dataSheetFormulas = spreadsheet.hyperFormula.getAllSheetsFormulas();
@@ -319,10 +319,10 @@ const DiscountedCashFlowTable = ({
     if (spreadsheet && hasAllRequiredInputsFilledIn) {
       if (showFormulas) {
         spreadsheet.showFormulas();
-        spreadsheet.loadData(getDatasheetsColWidths(200, isOnMobile));
+        spreadsheet.setData(getDatasheetsColWidths(200, isOnMobile));
       } else {
         spreadsheet.hideFormulas();
-        spreadsheet.loadData(getDataSheets(isOnMobile));
+        spreadsheet.setData(getDataSheets(isOnMobile));
       }
     }
   }, [showFormulas, spreadsheet, isOnMobile, hasAllRequiredInputsFilledIn]);
@@ -330,9 +330,9 @@ const DiscountedCashFlowTable = ({
   useEffect(() => {
     if (spreadsheet && hasAllRequiredInputsFilledIn) {
       if (showYOYGrowth) {
-        spreadsheet.loadData(getDatasheetsYOYGrowth(spreadsheet, isOnMobile));
+        spreadsheet.setData(getDatasheetsYOYGrowth(spreadsheet, isOnMobile));
       } else {
-        spreadsheet.loadData(getDataSheets(isOnMobile));
+        spreadsheet.setData(getDataSheets(isOnMobile));
       }
     }
   }, [showYOYGrowth, spreadsheet, isOnMobile, hasAllRequiredInputsFilledIn]);

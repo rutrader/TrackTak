@@ -127,6 +127,10 @@ class Element {
   }
   */
 
+  destroy = () => {
+    this.el.remove();
+  };
+
   child(arg) {
     let ele = arg;
     if (typeof arg === "string") {

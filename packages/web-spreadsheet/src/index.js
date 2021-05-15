@@ -9,7 +9,6 @@ import { HyperFormula } from "hyperformula";
 import { formatNumberRender, formatStringRender } from "./core/helper";
 
 const initializeSpreadSheet = (element, options) => {
-  let sheetIndex = 1;
   let datas = [];
   const formats = {
     normal: {
@@ -84,17 +83,16 @@ const initializeSpreadSheet = (element, options) => {
     },
   );
 
-  const addSheet = (name, active = true) => {
-    const n = name || `sheet${sheetIndex}`;
-    const d = new DataProxy(n, options, hyperFormula);
-    d.change = (...args) => {
-      sheet.trigger("change", ...args);
-    };
-    datas.push(d);
-    // console.log('d:', n, d, datas);
-    bottombar.addItem(n, active);
-    sheetIndex += 1;
-    return d;
+  const addSheet = (name = `sheet${datas.length + 1}`, active = true) => {
+    const data = new DataProxy(name, options, hyperFormula);
+
+    data.change(sheet);
+
+    datas.push(data);
+
+    bottombar.addItem(name, active);
+
+    return data;
   };
 
   const data = addSheet();
@@ -124,12 +122,14 @@ const initializeSpreadSheet = (element, options) => {
     const [oldIndex, nindex] = bottombar.deleteItem();
     if (oldIndex >= 0) {
       datas.splice(oldIndex, 1);
-      if (nindex >= 0) sheet.resetData(datas[nindex]);
+      if (nindex >= 0) {
+        sheet.resetData(datas[nindex]);
+      }
     }
   };
 
   const destroy = () => {
-    element.querySelector(`.${cssPrefix}`).remove();
+    rootEl.destroy();
   };
 
   const showFormulas = () => {
@@ -142,7 +142,7 @@ const initializeSpreadSheet = (element, options) => {
     reRender();
   };
 
-  const loadData = (dataSheets) => {
+  const setData = (dataSheets) => {
     bottombar.clear();
     datas = [];
     if (dataSheets.length > 0) {
@@ -201,7 +201,7 @@ const initializeSpreadSheet = (element, options) => {
     destroy,
     showFormulas,
     hideFormulas,
-    loadData,
+    setData,
     getData,
     cellText,
     cell,

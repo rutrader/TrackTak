@@ -953,6 +953,10 @@ export default class DataProxy {
     return this.getCellStyleOrDefault(ri, ci);
   }
 
+  change = (sheet) => (...args) => {
+    sheet.trigger("change", ...args);
+  };
+
   // state: input | finished
   setCellText(ri, ci, text, state) {
     const { rows, history, validations } = this;
