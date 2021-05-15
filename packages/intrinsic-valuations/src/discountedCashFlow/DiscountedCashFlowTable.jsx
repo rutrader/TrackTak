@@ -29,11 +29,11 @@ import selectScope from "../selectors/dcfSelectors/selectScope";
 import cells from "./cells";
 import { setCells, setScope } from "../redux/actions/dcfActions";
 import { isNil } from "lodash-es";
-import Spreadsheet from "../../../web-spreadsheet/src";
 import {
   convertFromCellIndexToLabel,
   formatNumberRender,
 } from "../../../web-spreadsheet/src/core/helper";
+import initializeSpreadSheet from "../../../web-spreadsheet/src";
 
 const defaultColWidth = 110;
 const columnAWidth = 170;
@@ -246,7 +246,7 @@ const DiscountedCashFlowTable = ({
       },
     };
 
-    spreadsheet = new Spreadsheet(dcfValuationElement, {
+    spreadsheet = initializeSpreadSheet(dcfValuationElement, {
       col: {
         width: defaultColWidth,
       },
