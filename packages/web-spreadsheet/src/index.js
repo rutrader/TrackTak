@@ -12,7 +12,7 @@ import { merge } from "lodash";
 import EventEmitter from "events";
 import spreadsheetEvents from "./core/spreadsheetEvents";
 
-const initializeSpreadSheet = (element, options) => {
+const getSpreadsheet = (element, options) => {
   let datas = [];
   let newOptions = merge(defaultOptions, options);
   const eventEmitter = new EventEmitter();
@@ -211,8 +211,6 @@ const initializeSpreadSheet = (element, options) => {
     sheet.on("change", cb);
   };
 
-  on();
-
   return {
     addSheet,
     setVariables,
@@ -230,8 +228,9 @@ const initializeSpreadSheet = (element, options) => {
     validate,
     change,
     hyperFormula,
+    eventEmitter,
   };
 };
 
-export default initializeSpreadSheet;
+export default getSpreadsheet;
 export { locale };

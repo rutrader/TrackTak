@@ -33,7 +33,7 @@ import {
   convertFromCellIndexToLabel,
   formatNumberRender,
 } from "../../../web-spreadsheet/src/core/helper";
-import initializeSpreadSheet from "../../../web-spreadsheet/src";
+import getSpreadsheet from "../../../web-spreadsheet/src";
 
 const defaultColWidth = 110;
 const columnAWidth = 170;
@@ -246,7 +246,7 @@ const DiscountedCashFlowTable = ({
       },
     };
 
-    spreadsheet = initializeSpreadSheet(dcfValuationElement, {
+    spreadsheet = getSpreadsheet(dcfValuationElement, {
       col: {
         width: defaultColWidth,
       },
