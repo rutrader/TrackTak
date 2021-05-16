@@ -12,7 +12,7 @@ const ContactUs = () => {
         <link rel="canonical" href={`${resourceName}/contact-us`} />
         <meta
           name="description"
-          content="Need help with your DCF? Send us an email at support@tracktak.com."
+          content="Need help with your DCF? Send us an email at kristina@tracktak.com."
         />
       </Helmet>
       <Typography variant="h5" gutterBottom>
@@ -24,8 +24,8 @@ const ContactUs = () => {
       </Typography>
       <Typography gutterBottom>
         Email:
-        <Link href="mailto:support@tracktak.com">
-          &nbsp;support@tracktak.com
+        <Link href="mailto:kristina@tracktak.com">
+          &nbsp;kristina@tracktak.com
         </Link>
       </Typography>
       <Typography component="div">

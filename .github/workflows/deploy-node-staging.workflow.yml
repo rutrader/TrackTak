@@ -12,9 +12,6 @@ jobs:
       run:
         working-directory: ./node
     steps:
-      - uses: einaregilsson/build-number@v3
-        with:
-          token: ${{ secrets.github_token }}
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
@@ -27,6 +24,6 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: node-express-env-staging
           environment_name: NodeExpressEnvStaging-env
-          version_label: $BUILD_NUMBER
+          version_label: 2.0.9
           region: eu-west-2
           deployment_package: ./node/build.zip

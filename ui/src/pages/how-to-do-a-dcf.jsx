@@ -10,7 +10,7 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import { Box, Hidden, ListItemText, useMediaQuery } from "@material-ui/core";
 import wikiContent from "../data/wikiContent";
-import { replaceSpaceWithHyphen } from "@tracktak/dcf-react";
+import { replaceSpaceWithHyphen } from "@tracktak/intrinsic-valuations";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";

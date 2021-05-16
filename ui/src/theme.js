@@ -10,11 +10,13 @@ let theme = createMuiTheme({
   },
   palette: {
     tableBackground: alpha("#51509c", 0.04),
+    spreadsheetBackground: "#eeeef5",
     primary: {
       light: "#2fdbab",
       main: "#43cea2",
       dark: "#38ab87",
       contrastText: "#fff",
+      mainTextColor: "#313450",
     },
     secondary: {
       light: "#7849BF",
@@ -42,6 +44,7 @@ let theme = createMuiTheme({
   },
   zIndex: {
     scrollTopButton: 900,
+    cookieBanner: 99999,
   },
 });
 

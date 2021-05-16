@@ -5,19 +5,17 @@ import {
   setFundamentals,
   fundamentalsReducer,
   convertFundamentals,
-} from "@tracktak/dcf-react";
+} from "@tracktak/intrinsic-valuations";
 import { LocationProvider, globalHistory } from "@reach/router";
 import { extendedFundamentalsReducer } from "./src/redux/reducers/extendedFundamentalsReducer";
-import "./sass/blueprintTheme.scss";
-import "@tracktak/dcf-react/reset.css";
 import "@fontsource/nunito/400.css";
 import "@fontsource/nunito/700.css";
-import "./global.css";
 import theme from "./src/theme";
 import { snackbarReducer } from "./src/redux/reducers/snackbarReducer";
 import PageSpinner from "./src/components/PageSpinner";
 import setURLSearchQuery from "./src/shared/setURLSearchQuery";
 import { ProvideAuth } from "./src/hooks/useAuth";
+import TTCookieBanner from "./src/components/TTCookieBanner";
 
 const store = createStore(undefined, {
   snackbar: snackbarReducer,
@@ -33,6 +31,7 @@ export const wrapRootElement = ({ element }) => {
       <ProvideAuth>
         <PageSpinner />
         {element}
+        <TTCookieBanner />
       </ProvideAuth>
     </TracktakProvider>
   );

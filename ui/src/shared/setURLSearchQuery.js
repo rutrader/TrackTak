@@ -1,9 +1,9 @@
-import { inputQueries } from "@tracktak/dcf-react";
+import { allInputNameTypeMappings } from "@tracktak/intrinsic-valuations";
 
 const setURLSearchQuery = (inputFields) => {
   const searchParams = new URLSearchParams();
 
-  inputQueries.forEach(({ name }) => {
+  Object.keys(allInputNameTypeMappings).forEach((name) => {
     if (inputFields[name]) {
       searchParams.set(name, inputFields[name]);
     }

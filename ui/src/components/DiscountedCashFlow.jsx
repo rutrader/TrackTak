@@ -19,7 +19,7 @@ import {
   withFundamentalsLoaded,
   ValueDrivingInputs,
   useTicker,
-} from "@tracktak/dcf-react";
+} from "@tracktak/intrinsic-valuations";
 import { Link as RouterLink } from "gatsby";
 import { useDispatch } from "react-redux";
 import { setMessage } from "../redux/actions/snackbarActions";

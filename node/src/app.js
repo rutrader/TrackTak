@@ -11,24 +11,14 @@ const app = express();
 app.use(express.static("public"));
 app.use(express.json());
 
-const publicRoutes = [
-  "/api/v1/calculate-dcf-model",
-  "/api/v1/compute-sensitivity-analysis",
-];
+const publicRoutes = ["/api/v1/compute-sensitivity-analysis"];
+
+app.use(cors());
 
 app.options(publicRoutes[0], cors());
-app.options(publicRoutes[1], cors());
 
-// These routes are public so they have cors turned off
-app.post("/api/v1/calculate-dcf-model", cors(), async (req, res) => {
-  const { cells, existingScope, currentScope } = req.body;
-
-  const model = await api.calculateDCFModel(cells, existingScope, currentScope);
-
-  res.send(model);
-});
-
-app.post("/api/v1/compute-sensitivity-analysis", cors(), async (req, res) => {
+//These routes are public so they have cors turned off
+app.post(publicRoutes[0], cors(), async (req, res) => {
   const { cells, existingScope, currentScopes } = req.body;
   const values = await api.computeSensitivityAnalysis(
     cells,

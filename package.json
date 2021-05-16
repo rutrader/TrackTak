@@ -6,20 +6,18 @@
   "scripts": {
     "node": "npm run start:dev --prefix ./node",
     "ui": "npm run start --prefix ./ui",
-    "dcf-react": "npm run storybook --prefix ./packages/dcf-react",
     "start": "run-p node ui",
-    "storybook": "run-p node dcf-react",
     "clean": "rimraf ./node_modules",
     "lint": "eslint ./ui/src",
     "install:ui": "cd ./ui && npm install",
     "install:node": "cd ./node && npm install",
-    "postinstall": "run-p install:ui install:node"
+    "install:spreadsheet": "cd ./packages/web-spreadsheet && npm install",
+    "install:intrinsic-valuations": "cd ./packages/intrinsic-valuations && npm install",
+    "postinstall": "run-s install:ui install:node install:spreadsheet install:intrinsic-valuations"
   },
   "devDependencies": {
-    "@octokit/core": "^3.2.5",
     "@typescript-eslint/eslint-plugin": "^4.0.0",
     "@typescript-eslint/parser": "^4.0.0",
-    "axios": "^0.21.1",
     "babel-eslint": "^10.1.0",
     "editorconfig": "^0.15.3",
     "eslint": "^7.19.0",
@@ -36,6 +34,6 @@
     "rimraf": "^3.0.2"
   },
   "dependencies": {
-    "@tracktak/dcf-react": "file:packages\\dcf"
+    "@tracktak/intrinsic-valuations": "file:packages\\dcf"
   }
 }

@@ -6,7 +6,7 @@ import {
   Hidden,
   useTheme,
 } from "@material-ui/core";
-import GridDots from "../assets/grid-dots.svg";
+import GridDots from "../icons/grid-dots.svg";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import SearchTicker from "../components/SearchTicker";
 import { AnchorLink } from "gatsby-plugin-anchor-links";
@@ -120,13 +120,11 @@ const SearchSection = () => {
             fontWeight={800}
             color="inherit"
           >
-            Goodbye Excel.
-            <br />
-            Hello automated Discounted Cash Flows.
+            Tired of complicated excel Discounted Cash Flow templates?
           </Typography>
           <Typography variant="h6" color="inherit" gutterBottom>
             <Box>
-              tracktak enables you to do quick DCF models based on Aswath
+              tracktak enables you to do quick DCF models based on prof. Aswath
               Damodaran's techniques directly in the cloud.
               <br />
               <br />
@@ -229,8 +227,8 @@ const SearchSection = () => {
             color: "white",
             borderRadius: "5px",
             position: "fixed",
-            bottom: "5px",
-            right: "29px",
+            bottom: "30px",
+            right: "30px",
             transition: "all 0.3s ease-out 0s",
             zIndex: (theme) => theme.zIndex.scrollTopButton,
           }}

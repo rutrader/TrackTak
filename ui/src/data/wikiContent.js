@@ -7,7 +7,7 @@ import {
   FormatInputToPercent,
   FormatInputToYear,
   Formula,
-} from "@tracktak/dcf-react";
+} from "@tracktak/intrinsic-valuations";
 
 const InputExampleBox = ({ sx, ...props }) => (
   <Box sx={{ my: 2, ...sx }} {...props} />
@@ -79,7 +79,7 @@ const wikiContent = [
           1, 2, 3... 10 stands for the subsequent yearly data. For example if
           you are valuing a company on the 21st November 2020 and the most
           recent TTM data was last released on the 20th October 2020 then next
-          year (C1) will be from 21st November 2020 to 21st November 2021 and
+          year (B1) will be from 21st November 2020 to 21st November 2021 and
           the same for the next years after that. So the years represent the
           subsequent years <b>after</b> the most recent financial results were
           released and not when you are doing the DCF.

@@ -4,7 +4,11 @@ import SubscribeMailingList from "../../../components/SubscribeMailingList";
 import { Helmet } from "react-helmet";
 import getTitle from "../../../shared/getTitle";
 import resourceName from "../../../shared/resourceName";
-import { Section, selectGeneral, useTicker } from "@tracktak/dcf-react";
+import {
+  Section,
+  selectGeneral,
+  useTicker,
+} from "@tracktak/intrinsic-valuations";
 import DiscountedCashFlow from "../../../components/DiscountedCashFlow";
 import { useSelector } from "react-redux";
 

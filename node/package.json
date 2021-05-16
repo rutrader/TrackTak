@@ -11,7 +11,7 @@
     "start:dev": "cross-env NODE_ENV=development nodemon --es-module-specifier-resolution=node",
     "zip": "cd ./build && bestzip ../build.zip *",
     "clean:build": "rimraf ./build",
-    "build": "cross-env NODE_ENV=production webpack && npm run zip",
+    "build": "npm run clean:build && cross-env NODE_ENV=production webpack && npm run zip",
     "build:staging": "cross-env NODE_ENV=staging webpack && npm run zip",
     "clean": "rimraf ./node_modules",
     "deploy": "npm run build && eb deploy"
@@ -21,26 +21,22 @@
     "object-sizeof": "^1.6.1"
   },
   "dependencies": {
-    "webpack-cli": "^4.2.0",
-    "@formulajs/formulajs": "^2.6.8",
-    "aws-sdk": "^2.814.0",
     "axios": "^0.21.0",
     "bestzip": "^2.1.7",
     "comlink": "^4.3.0",
     "copy-webpack-plugin": "^6.3.1",
     "cors": "^2.8.5",
-    "cron": "^1.8.2",
     "cross-env": "^7.0.3",
-    "dependency-graph": "^0.11.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
+    "hyperformula": "^0.6.0",
     "iso-3166-1-alpha-2": "^1.0.0",
     "lodash": "^4.17.21",
-    "mathjs": "^9.3.2",
     "memory-cache": "^0.2.0",
     "piscina": "^2.2.0",
     "webpack": "^5.33.2",
+    "webpack-cli": "^4.2.0",
     "webpack-node-externals": "^2.5.2"
   }
 }

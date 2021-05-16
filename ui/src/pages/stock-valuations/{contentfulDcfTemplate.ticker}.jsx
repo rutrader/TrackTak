@@ -23,9 +23,9 @@ import {
   IndustryAveragesResults,
   selectPrice,
   selectCells,
-} from "@tracktak/dcf-react";
+} from "@tracktak/intrinsic-valuations";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
-import * as styles from "./valuation.module.scss";
+import * as styles from "./valuation.module.css";
 import dayjs from "dayjs";
 import { Helmet } from "react-helmet";
 import getTitle from "../../shared/getTitle";
@@ -33,16 +33,19 @@ import resourceName from "../../shared/resourceName";
 import Img from "gatsby-image";
 import ReactMarkdown from "react-markdown";
 import {
+  getExchangeRatesThunk,
   getLastPriceCloseThunk,
   getTenYearGovernmentBondLastCloseThunk,
 } from "../../redux/thunks/fundamentalsThunks";
 import SubscribeCover from "../../components/SubscribeCover";
 import subscribePopupShownHook from "../../hooks/subscribePopupShownHook";
-import ProbabilityOfFailureInputs from "../../../../packages/dcf-react/src/components/ProbabilityOfFailureInputs";
+import ProbabilityOfFailureInputs from "../../../../packages/intrinsic-valuations/src/components/ProbabilityOfFailureInputs";
 import {
   probabilityOfFailureLabel,
   proceedsAsPercentageOfBookValueLabel,
-} from "../../../../packages/dcf-react/src/components/OptionalInputs";
+} from "../../../../packages/intrinsic-valuations/src/components/OptionalInputs";
+import selectValuationCurrencyCode from "../../../../packages/intrinsic-valuations/src/selectors/fundamentalSelectors/selectValuationCurrencyCode";
+import selectGeneral from "../../../../packages/intrinsic-valuations/src/selectors/fundamentalSelectors/selectGeneral";
 
 export const query = graphql`
   fragment ValuationInformation on ContentfulDcfTemplate {
@@ -217,13 +220,19 @@ const Valuation = ({ data }) => {
   const estimatedValuePerShare = useSelector(
     (state) => selectCells(state).B36.value,
   );
+  const incomeStatement = useSelector(
+    (state) => state.fundamentals.incomeStatement,
+  );
+  const balanceSheet = useSelector((state) => state.fundamentals.balanceSheet);
+  const currencyCode = useSelector(selectValuationCurrencyCode);
+  const general = useSelector(selectGeneral);
+
   const {
     ticker,
     dateOfValuation,
     yearOfConvergence,
     salesToCapitalRatio,
     cagrYearOneToFive,
-    data: financialData,
     ebitTargetMarginInYearTen,
     extraBusinessDescription,
     probabilityOfFailure,
@@ -242,10 +251,18 @@ const Valuation = ({ data }) => {
   useEffect(() => {
     dispatch(
       getTenYearGovernmentBondLastCloseThunk({
-        countryISO: financialData.General.CountryISO,
+        countryISO: general.countryISO,
         params: {
           to: dateOfValuation,
         },
+      }),
+    );
+
+    dispatch(
+      getExchangeRatesThunk({
+        currencyCode,
+        incomeStatement,
+        balanceSheet,
       }),
     );
 
@@ -257,7 +274,15 @@ const Valuation = ({ data }) => {
         },
       }),
     );
-  }, [dateOfValuation, dispatch, ticker, financialData.General.CountryISO]);
+  }, [
+    dateOfValuation,
+    dispatch,
+    ticker,
+    incomeStatement,
+    balanceSheet,
+    currencyCode,
+    general.countryISO,
+  ]);
 
   const marginOfSafety =
     (estimatedValuePerShare - price) / estimatedValuePerShare;
@@ -268,14 +293,14 @@ const Valuation = ({ data }) => {
   return (
     <React.Fragment>
       <Helmet>
-        <title>{getTitle(`${financialData.General.Name} Valuation`)}</title>
+        <title>{getTitle(`${general.name} Valuation`)}</title>
         <link
           rel="canonical"
           href={`${resourceName}/stock-valuations/${ticker}${location.search}`}
         />
         <meta
           name="description"
-          content={`Is ${financialData.General.Name} undervalued? See the full intrinsic valuation here.`}
+          content={`Is ${general.name} undervalued? See the full intrinsic valuation here.`}
         />
       </Helmet>
       <Box>
@@ -447,9 +472,6 @@ const Valuation = ({ data }) => {
       </Section>
       <Section>
         <DiscountedCashFlowSheet
-          columnWidths={{
-            B: 90,
-          }}
           SubscribeCover={SubscribeCover}
           loadingCells={!subscribePopupShown}
         />

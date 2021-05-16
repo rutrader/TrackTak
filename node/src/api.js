@@ -5,7 +5,7 @@ import tenYearGovernmentBondYields from "../data/tenYearGovernmentBondYields.jso
 import iso3311a2 from "iso-3166-1-alpha-2";
 import { wrap } from "comlink";
 import nodeEndpoint from "comlink/dist/umd/node-adapter";
-import { getDcfModelWorker, getSensitivityAnalysisWorker } from "./workers";
+import { getSensitivityAnalysisWorker } from "./workers";
 
 const baseUrl = "https://eodhistoricaldata.com/api";
 const fundamentalsUrl = `${baseUrl}/fundamentals`;
@@ -50,8 +50,6 @@ const sendReqOrGetCachedData = async (
 
   return setCachedData(data, cacheKey, time);
 };
-
-const dcfModelWorkerAPI = wrap(nodeEndpoint(getDcfModelWorker()));
 
 const api = {
   getBulkFundamentals: async (exchange, query) => {
@@ -253,27 +251,10 @@ const api = {
     return data;
   },
 
-  calculateDCFModel: async (cells, existingScope, currentScope) => {
-    const data = await sendReqOrGetCachedData(
-      async () => {
-        const model = await dcfModelWorkerAPI.calculateDCFModel(
-          cells,
-          existingScope,
-          currentScope,
-        );
-
-        return model;
-      },
-      "calculateDCFModel",
-      { existingScope, currentScope },
-    );
-
-    return data;
-  },
-
   computeSensitivityAnalysis: async (cells, existingScope, currentScopes) => {
     const data = await sendReqOrGetCachedData(
       async () => {
+        // switch to piscina later
         const sensitivityAnalysisWorker = getSensitivityAnalysisWorker();
         const api = wrap(nodeEndpoint(sensitivityAnalysisWorker));
 
@@ -288,7 +269,7 @@ const api = {
         return values;
       },
       "computeSensitivityAnalysis",
-      { existingScope, currentScopes },
+      { cells, existingScope, currentScopes },
     );
 
     return data;

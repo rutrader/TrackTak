@@ -25,15 +25,16 @@ const duplicatePackageModules = [
   "cross-env",
   "dayjs",
   "query-string",
-  "@blueprintjs/core",
-  "@blueprintjs/table",
   "axios",
   "gatsby",
   "gatsby-plugin-anchor-links",
+  "hyperformula",
 ];
 
 const alias = {
-  "@tracktak/dcf-react": path.resolve("../packages/dcf-react/src")
+  "@tracktak/intrinsic-valuations": path.resolve(
+    "../packages/intrinsic-valuations/src",
+  ),
 };
 
 duplicatePackageModules.forEach((packageModule) => {
@@ -106,7 +107,7 @@ module.exports = {
       resolve: "gatsby-plugin-react-svg",
       options: {
         rule: {
-          include: /assets/,
+          include: /icons/,
         },
       },
     },
@@ -114,12 +115,7 @@ module.exports = {
       resolve: "gatsby-plugin-create-client-paths",
       options: { prefixes: ["/stock/*"] },
     },
-    {
-      resolve: "gatsby-plugin-sass",
-      options: {
-        implementation: require("node-sass"),
-      },
-    },
+    "gatsby-plugin-less",
     {
       resolve: "gatsby-source-contentful",
       options: {
@@ -145,10 +141,10 @@ module.exports = {
     {
       resolve: "gatsby-plugin-manifest",
       options: {
-        icon: "src/assets/tracktak-logo-small.svg",
+        icon: "src/icons/tracktak-logo-small.svg",
       },
     },
-    // "gatsby-plugin-offline",
+    //"gatsby-plugin-offline",
     "gatsby-plugin-mdx",
     "gatsby-plugin-image",
     {
