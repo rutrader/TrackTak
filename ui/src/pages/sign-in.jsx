@@ -15,7 +15,7 @@ const SignIn = () => {
     <>
       <Helmet>
         <title>{getTitle("Sign in")}</title>
-        <link rel="canonical" href={`${resourceName}/sign-up`} />
+        <link rel="canonical" href={`${resourceName}/sign-in`} />
         <meta name="description" content="Sign in to Tracktak." />
       </Helmet>
       <Grid container justifyContent="center">

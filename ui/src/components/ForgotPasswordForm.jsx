@@ -5,18 +5,16 @@ import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TracktakLogoSvg from "../assets/tracktak-purple.svg";
-import { useFormStyles } from "./Form.styles";
 import { useTheme } from "@material-ui/styles";
 import { useAuth } from "../hooks/useAuth";
 import Alert from "@material-ui/core/Alert";
 import { navigate } from "gatsby-link";
 import { setMessage } from "../redux/actions/snackbarActions";
+import { Box } from "@material-ui/core";
 
 const ForgotPasswordForm = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const classes = useFormStyles(theme);
-
   const { forgotPasswordFlow } = useAuth();
 
   const [verificationEmailSent, setVerificationEmailSent] = useState(false);
@@ -68,12 +66,24 @@ const ForgotPasswordForm = () => {
           Please check your email for the verification code
         </Alert>
       )}
-      <div className={classes.paper}>
+      <Box
+        sx={{
+          marginTop: theme.spacing(5),
+          marginBottom: theme.spacing(5),
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         <TracktakLogoSvg />
         <Typography component="h1" variant="h5">
           Forgot password
         </Typography>
-        <form className={classes.form} onSubmit={handleSubmit} validate>
+        <Box sx={{
+          width: "100%",
+          marginTop: theme.spacing(3),
+        }}>
+        <form onSubmit={handleSubmit} validate>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -121,9 +131,11 @@ const ForgotPasswordForm = () => {
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}
+            sx={{
+              margin: theme.spacing(3, 0, 2),
+            }}
           >
-            {verificationEmailSent ? 'Submit' : 'Send Verification Code'}
+            {verificationEmailSent ? "Submit" : "Send Verification Code"}
           </Button>
           <Button
             fullWidth
@@ -135,7 +147,8 @@ const ForgotPasswordForm = () => {
             Cancel
           </Button>
         </form>
-      </div>
+        </Box>
+      </Box>
     </>
   );
 };

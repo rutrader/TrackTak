@@ -6,17 +6,13 @@ import { setMessage } from "../redux/actions/snackbarActions";
 import ForgotPasswordForm from "./ForgotPasswordForm";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
-import { Box, styled } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 
 export const AUTHENTICATION_FORM_STATE = {
   SIGN_UP: "SIGN_UP",
   SIGN_IN: "SIGN_IN",
   FORGOTTEN_PASSWORD: "FORGOTTEN_PASSWORD",
 };
-
-const StyledBox = styled(Box)(() => ({
-  width: "500px",
-}));
 
 const noop = () => {};
 
@@ -100,7 +96,9 @@ const Authentication = ({
   };
 
   return (
-    <StyledBox>
+    <Box sx={{
+      width: "500px",
+    }}>
       {formState === AUTHENTICATION_FORM_STATE.SIGN_UP && (
         <SignUpForm
           onSubmit={handleSignUpSubmit}
@@ -117,7 +115,7 @@ const Authentication = ({
       {formState === AUTHENTICATION_FORM_STATE.FORGOTTEN_PASSWORD && (
         <ForgotPasswordForm />
       )}
-    </StyledBox>
+    </Box>
   );
 };
 

@@ -15,7 +15,7 @@ import SearchTicker from "./SearchTicker";
 import TracktakLogo from "./TracktakLogo";
 import { useAuth } from "../hooks/useAuth";
 
-const rightLinks = (isAuthenticated) => [
+const getRightLinks = (isAuthenticated) => [
   { to: "/how-to-do-a-dcf", text: "Documentation" },
   { to: "/stock-valuations", text: "Valuations" },
   { to: "/contact-us", text: "Contact" },
@@ -34,7 +34,7 @@ const rightLinks = (isAuthenticated) => [
       },
 ];
 
-const allLinks = (isAuthenticated) => rightLinks(isAuthenticated);
+const allLinks = (isAuthenticated) => getRightLinks(isAuthenticated);
 
 const HeaderLink = ({ to, text, style }) => {
   return (
@@ -109,7 +109,7 @@ const Header = ({ hideSearch }) => {
             </Box>
             <Hidden mdDown implementation="css">
               <Box sx={{ display: "flex" }}>
-                {rightLinks(isAuthenticated).map((link, i) => (
+                {getRightLinks(isAuthenticated).map((link, i) => (
                   <HeaderLink
                     key={link.to}
                     sx={{ ml: i === 0 ? 2 : 0 }}

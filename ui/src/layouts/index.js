@@ -4,7 +4,6 @@ import React, { useEffect } from "react";
 import convertDotTickerToHyphen from "../shared/convertDotTickerToHyphen";
 import LayoutFullScreen from "./LayoutFullScreen";
 import TTSnackbar from "../components/TTSnackbar";
-import { ProvideAuth } from "../hooks/useAuth";
 
 const oldStockPathRegex = /\/(discounted-cash-flow|synthetic-credit-rating|industry-averages)\/[A-Za-z0-9]+\.\w+/g;
 const oldStockValuationpathRegex = /\/(stock-valuations)\/[A-Z0-9]+\.?[A-Z]+/g;
@@ -52,11 +51,9 @@ export default ({ children, pageContext, path, params }) => {
   if (isStockRedirecting || isValuationRedirecting) return null;
 
   return (
-    <ProvideAuth>
-      <Root pageContext={pageContext} params={params}>
-        {children}
-        <TTSnackbar />
-      </Root>
-    </ProvideAuth>
+    <Root pageContext={pageContext} params={params}>
+      {children}
+      <TTSnackbar />
+    </Root>
   );
 };

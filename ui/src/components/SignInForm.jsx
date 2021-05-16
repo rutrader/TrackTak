@@ -6,12 +6,15 @@ import Typography from "@material-ui/core/Typography";
 import TracktakLogoSvg from "../assets/tracktak-purple.svg";
 import RoundButton from "./RoundButton";
 import FacebookIcon from "@material-ui/icons/Facebook";
-import { useFormStyles } from "./Form.styles";
 import { useTheme } from "@material-ui/styles";
+import { Box } from "@material-ui/core";
 
-const SignInForm = ({ onSubmit, onSwitchToSignUpClick, onSwitchToForgotPasswordClick }) => {
-  const theme = useTheme()
-  const classes = useFormStyles(theme);
+const SignInForm = ({
+  onSubmit,
+  onSwitchToSignUpClick,
+  onSwitchToForgotPasswordClick,
+}) => {
+  const theme = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -23,15 +26,24 @@ const SignInForm = ({ onSubmit, onSwitchToSignUpClick, onSwitchToForgotPasswordC
   };
 
   return (
-    <div className={classes.paper}>
+    <Box
+      sx={{
+        marginTop: theme.spacing(5),
+        marginBottom: theme.spacing(5),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
       <TracktakLogoSvg />
       <Typography component="h1" variant="h5">
         Sign in
       </Typography>
-      <form
-        className={classes.form}
-        onSubmit={handleSubmit}
-      >
+      <Box sx={{
+          width: "100%",
+          marginTop: theme.spacing(3),
+        }}>
+      <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
@@ -64,7 +76,9 @@ const SignInForm = ({ onSubmit, onSwitchToSignUpClick, onSwitchToForgotPasswordC
           fullWidth
           variant="contained"
           color="primary"
-          className={classes.submit}
+          sx={{
+            margin: theme.spacing(3, 0, 2),
+          }}
         >
           Sign In
         </RoundButton>
@@ -76,7 +90,10 @@ const SignInForm = ({ onSubmit, onSwitchToSignUpClick, onSwitchToForgotPasswordC
           </Grid>
           <Grid container justifyContent="center">
             <Grid item>
-              <FacebookIcon className={classes.facebookIcon} fontSize="large" />
+              <FacebookIcon
+                sx={{ color: theme.palette.icons.facebook }}
+                fontSize="large"
+              />
             </Grid>
           </Grid>
         </Grid>
@@ -85,7 +102,9 @@ const SignInForm = ({ onSubmit, onSwitchToSignUpClick, onSwitchToForgotPasswordC
             <Button
               color="primary"
               disableRipple
-              className={classes.link}
+              sx={{
+                textTransform: "none",
+              }}
               onClick={onSwitchToForgotPasswordClick}
               type="button"
             >
@@ -96,7 +115,9 @@ const SignInForm = ({ onSubmit, onSwitchToSignUpClick, onSwitchToForgotPasswordC
             <Button
               color="primary"
               disableRipple
-              className={classes.link}
+              sx={{
+                textTransform: "none",
+              }}
               onClick={onSwitchToSignUpClick}
               type="button"
             >
@@ -105,7 +126,8 @@ const SignInForm = ({ onSubmit, onSwitchToSignUpClick, onSwitchToForgotPasswordC
           </Grid>
         </Grid>
       </form>
-    </div>
+      </Box>
+    </Box>
   );
 };
 
