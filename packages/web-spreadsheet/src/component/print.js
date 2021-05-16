@@ -1,10 +1,9 @@
-/* global window document */
 import { h } from "./element";
 import { cssPrefix } from "../config";
-import Button from "./button";
 import getDraw from "../canvas/draw";
 import { renderCell } from "./table";
 import { t } from "../locale/locale";
+import getButton from "./button";
 
 // resolution: 72 => 595 x 842
 // 150 => 1240 x 1754
@@ -72,8 +71,8 @@ export default class Print {
           h("div", "-title").child("Print settings"),
           h("div", "-right").children(
             h("div", `${cssPrefix}-buttons`).children(
-              new Button("cancel").on("click", btnClick.bind(this, "cancel")),
-              new Button("next", "primary").on(
+              getButton("cancel").on("click", btnClick.bind(this, "cancel")),
+              getButton("next", "primary").on(
                 "click",
                 btnClick.bind(this, "next"),
               ),

@@ -1,11 +1,13 @@
-import { Element } from './element';
-import { cssPrefix } from '../config';
-import { t } from '../locale/locale';
+import { cssPrefix } from "../config";
+import { t } from "../locale/locale";
+import { Element } from "./element";
 
-export default class Button extends Element {
-  // type: primary
-  constructor(title, type = '') {
-    super('div', `${cssPrefix}-button ${type}`);
-    this.child(t(`button.${title}`));
-  }
-}
+const getButton = (title, type = "") => {
+  const element = new Element("div", `${cssPrefix}-button ${type}`);
+
+  element.child(t(`button.${title}`));
+
+  return element;
+};
+
+export default getButton;
