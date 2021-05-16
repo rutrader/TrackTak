@@ -1,4 +1,3 @@
-/* global window */
 import { h } from "./element";
 import { bind } from "./event";
 import tooltip from "./tooltip";
@@ -10,13 +9,9 @@ import DropdownColor from "./dropdown_color";
 import DropdownAlign from "./dropdown_align";
 import DropdownBorder from "./dropdown_border";
 import Dropdown from "./dropdown";
-import Icon from "./icon";
 import { cssPrefix } from "../config";
 import { t } from "../locale/locale";
-
-function buildIcon(name) {
-  return new Icon(name);
-}
+import getIcon from "./icon";
 
 function buildButton(tooltipdata) {
   return h("div", `${cssPrefix}-toolbar-btn`)
@@ -32,7 +27,7 @@ function buildDivider() {
 
 function buildButtonWithIcon(tooltipdata, iconName, change = () => {}) {
   return buildButton(tooltipdata)
-    .child(buildIcon(iconName))
+    .child(getIcon(iconName))
     .on("click", () => change());
 }
 
@@ -64,7 +59,7 @@ function toggleChange(type) {
 
 class DropdownMore extends Dropdown {
   constructor() {
-    const icon = new Icon("ellipsis");
+    const icon = getIcon("ellipsis");
     const moreBtns = h("div", `${cssPrefix}-toolbar-more`);
     super(icon, "auto", false, "bottom-right", moreBtns);
     this.moreBtns = moreBtns;

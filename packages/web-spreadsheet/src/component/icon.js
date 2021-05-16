@@ -1,14 +1,21 @@
-import { Element, h } from './element';
-import { cssPrefix } from '../config';
+import { Element, h } from "./element";
+import { cssPrefix } from "../config";
 
-export default class Icon extends Element {
-  constructor(name) {
-    super('div', `${cssPrefix}-icon`);
-    this.iconNameEl = h('div', `${cssPrefix}-icon-img ${name}`);
-    this.child(this.iconNameEl);
-  }
+const iconClassPrefix = `${cssPrefix}-icon-img`;
 
-  setName(name) {
-    this.iconNameEl.className(`${cssPrefix}-icon-img ${name}`);
-  }
-}
+const getIcon = (name) => {
+  const element = new Element("div", `${cssPrefix}-icon`);
+  const iconNameEl = h("div", `${iconClassPrefix} ${name}`);
+
+  element.child(iconNameEl);
+
+  const setName = (name) => {
+    iconNameEl.className(`${iconClassPrefix} ${name}`);
+  };
+
+  return {
+    element,
+    setName,
+  };
+};
+export default getIcon;

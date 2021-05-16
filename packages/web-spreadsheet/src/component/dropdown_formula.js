@@ -1,9 +1,9 @@
 import Dropdown from "./dropdown";
-import Icon from "./icon";
 import { h } from "./element";
 import { cssPrefix } from "../config";
 
 import { HyperFormula } from "hyperformula";
+import getIcon from "./icon";
 
 export default class DropdownFormula extends Dropdown {
   constructor() {
@@ -16,6 +16,6 @@ export default class DropdownFormula extends Dropdown {
           })
           .child(it),
     );
-    super(new Icon("formula"), "180px", true, "bottom-left", ...nformulas);
+    super(getIcon("formula"), "180px", true, "bottom-left", ...nformulas);
   }
 }

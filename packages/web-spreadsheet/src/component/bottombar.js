@@ -1,15 +1,15 @@
 import { h } from "./element";
 import { bindClickoutside, unbindClickoutside } from "./event";
 import { cssPrefix } from "../config";
-import Icon from "./icon";
 import FormInput from "./form_input";
 import Dropdown from "./dropdown";
 import { tf } from "../locale/locale";
 import spreadsheetEvents from "../core/spreadsheetEvents";
+import getIcon from "./icon";
 
 class DropdownMore extends Dropdown {
   constructor(click) {
-    const icon = new Icon("ellipsis");
+    const icon = getIcon("ellipsis");
     super(icon, "auto", false, "top-left");
     this.contentClick = click;
   }
@@ -86,7 +86,7 @@ export default class Bottombar {
       this.contextMenu.el,
       (this.menuEl = h("ul", `${cssPrefix}-menu`).child(
         h("li", "").children(
-          new Icon("add").on("click", () => {
+          getIcon("add").element.on("click", () => {
             eventEmitter.emit(spreadsheetEvents.bottombar.addSheet);
           }),
           h("span", "").child(this.moreEl),

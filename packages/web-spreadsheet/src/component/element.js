@@ -137,6 +137,8 @@ class Element {
       ele = document.createTextNode(arg);
     } else if (arg instanceof Element) {
       ele = arg.el;
+    } else if (arg.element) {
+      ele = arg.element.el;
     }
     this.el.appendChild(ele);
     return this;

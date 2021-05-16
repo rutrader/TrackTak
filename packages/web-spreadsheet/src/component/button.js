@@ -7,7 +7,9 @@ const getButton = (title, type = "") => {
 
   element.child(t(`button.${title}`));
 
-  return element;
+  return {
+    element,
+  };
 };
 
 export default getButton;

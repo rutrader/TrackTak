@@ -3,11 +3,11 @@ import DropdownItem from "./dropdown_item";
 
 import { cssPrefix } from "../../config";
 import { h } from "../element";
-import Icon from "../icon";
+import getIcon from "../icon";
 
 class DropdownMore extends Dropdown {
   constructor() {
-    const icon = new Icon("ellipsis");
+    const icon = getIcon("ellipsis");
     const moreBtns = h("div", `${cssPrefix}-toolbar-more`);
     super(icon, "auto", false, "bottom-right", moreBtns);
     this.moreBtns = moreBtns;
