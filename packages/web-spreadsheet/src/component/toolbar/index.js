@@ -27,6 +27,7 @@ import More from "./more";
 import { h } from "../element";
 import { cssPrefix } from "../../config";
 import { bind } from "../event";
+import getAlign from "./align";
 
 function buildDivider() {
   return h("div", `${cssPrefix}-toolbar-divider`);
@@ -85,7 +86,7 @@ function moreResize() {
 }
 
 export default class Toolbar {
-  constructor(data, widthFn, formats, isHide = false) {
+  constructor(data, widthFn, formats, eventEmitter, isHide = false) {
     this.data = data;
     this.change = () => {};
     this.widthFn = widthFn;
@@ -122,7 +123,7 @@ export default class Toolbar {
       ],
       buildDivider(),
       [
-        (this.alignEl = new Align(formats, style.align)),
+        (this.alignEl = getAlign(formats, style.align, eventEmitter)),
         (this.valignEl = new Valign(formats, style.valign)),
         (this.textwrapEl = new Textwrap(formats)),
       ],
@@ -141,10 +142,12 @@ export default class Toolbar {
     this.items.forEach((it) => {
       if (Array.isArray(it)) {
         it.forEach((i) => {
-          this.btns.child(i.el);
-          i.change = (...args) => {
-            this.change(...args);
-          };
+          if (i.el) {
+            this.btns.child(i.el);
+            i.change = (...args) => {
+              this.change(...args);
+            };
+          }
         });
       } else {
         this.btns.child(it.el);
@@ -204,7 +207,7 @@ export default class Toolbar {
     this.strikeEl.setState(style.strike);
     this.textColorEl.setState(style.color);
     this.fillColorEl.setState(style.bgcolor);
-    this.alignEl.setState(style.align);
+    this.alignEl.setValue(style.align);
     this.valignEl.setState(style.valign);
     this.textwrapEl.setState(style.textwrap);
     // console.log('freeze is Active:', data.freezeIsActive());

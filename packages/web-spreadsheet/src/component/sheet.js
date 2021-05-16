@@ -15,6 +15,7 @@ import SortFilter from "./sort_filter";
 import { xtoast } from "./message";
 import { cssPrefix } from "../config";
 import { HyperFormula } from "hyperformula";
+import spreadsheetEvents from "../core/spreadsheetEvents";
 
 /**
  * @desc throttle fn
@@ -875,11 +876,17 @@ function sheetInitEvents() {
 }
 
 export default class Sheet {
-  constructor(targetEl, data, hyperFormula, formats) {
+  constructor(targetEl, data, hyperFormula, formats, eventEmitter) {
     this.eventMap = new Map();
     const { view, showToolbar, showContextmenu } = data.settings;
     this.el = h("div", `${cssPrefix}-sheet`);
-    this.toolbar = new Toolbar(data, view.width, formats, !showToolbar);
+    this.toolbar = new Toolbar(
+      data,
+      view.width,
+      formats,
+      eventEmitter,
+      !showToolbar,
+    );
     this.print = new Print(data);
     targetEl.children(this.toolbar.el, this.el, this.print.el);
     this.data = data;
@@ -943,6 +950,12 @@ export default class Sheet {
     sheetReset.call(this);
     // init selector [0, 0]
     selectorSet.call(this, false, 0, 0);
+
+    Object.values(spreadsheetEvents.toolbar).forEach((key) => {
+      eventEmitter.on(key, (type, value) =>
+        toolbarChange.call(this, type, value),
+      );
+    });
   }
 
   on(eventName, func) {

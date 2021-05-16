@@ -114,7 +114,7 @@ const getSpreadsheet = (element, options) => {
 
   const data = addSheet();
 
-  const sheet = new Sheet(rootEl, data, hyperFormula, formats);
+  const sheet = new Sheet(rootEl, data, hyperFormula, formats, eventEmitter);
 
   // create canvas element
   element.appendChild(rootEl.el);

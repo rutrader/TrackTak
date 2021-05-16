@@ -8,12 +8,13 @@ function buildItemWithIcon(iconName) {
 }
 
 export default class DropdownAlign extends Dropdown {
-  constructor(aligns, align) {
+  constructor(aligns, align, eventEmitter) {
     const icon = getIcon(`align-${align}`);
     const naligns = aligns.map((it) =>
       buildItemWithIcon(`align-${it}`).on("click", () => {
         this.setTitle(it);
         this.change(it);
+        eventEmitter.emit(`align-${it}-click`, "align", it);
       }),
     );
     super(icon, "auto", true, "bottom-left", ...naligns);
