@@ -1,4 +1,4 @@
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography, useTheme } from "@material-ui/core";
 import Img from "gatsby-image";
 import { graphql, useStaticQuery } from "gatsby";
 import React from "react";
@@ -9,7 +9,25 @@ const StyledImage = styled(Img)`
   border-radius: 10px;
 `;
 
+const TypographyMemberName = ({ sx, ...props }) => {
+  return (
+    <Typography
+      sx={{
+        visibility: "visible",
+        animationDelay: "0.4s",
+        animationName: "fadeInUp",
+        fontWeight: "bold",
+        color: (theme) => theme.palette.primary.mainTextColor,
+        marginTop: (theme) => theme.spacing(2),
+      }}
+      variant="h4"
+      {...props}
+    />
+  );
+};
+
 const OurTeamSection = () => {
+  const theme = useTheme();
   const data = useStaticQuery(graphql`
     query {
       memberOne: file(relativePath: { eq: "team-1.jpg" }) {
@@ -58,7 +76,7 @@ const OurTeamSection = () => {
               animationDelay: "0.4s",
               animationName: "fadeInUp",
               fontWeight: "bold",
-              color: "#313450",
+              color: theme.palette.primary.mainTextColor,
               marginBottom: (theme) => theme.spacing(2),
             }}
             variant="h3"
@@ -84,19 +102,7 @@ const OurTeamSection = () => {
                 fluid={data.memberOne.childImageSharp.fluid}
                 alt="Member One"
               />
-              <Typography
-                sx={{
-                  visibility: "visible",
-                  animationDelay: "0.4s",
-                  animationName: "fadeInUp",
-                  fontWeight: "bold",
-                  color: "#313450",
-                  marginTop: (theme) => theme.spacing(2),
-                }}
-                variant="h4"
-              >
-                Kristina
-              </Typography>
+              <TypographyMemberName>Kristina</TypographyMemberName>
               <Typography variant="h6">Co-founder</Typography>
               <Typography variant="subtitle1" color="textSecondary">
                 Kristina is a founding partner of Tracktak and a value investor.
@@ -118,19 +124,7 @@ const OurTeamSection = () => {
                 fluid={data.memberOne.childImageSharp.fluid}
                 alt="Member One"
               />
-              <Typography
-                sx={{
-                  visibility: "visible",
-                  animationDelay: "0.4s",
-                  animationName: "fadeInUp",
-                  fontWeight: "bold",
-                  color: "#313450",
-                  marginTop: (theme) => theme.spacing(2),
-                }}
-                variant="h4"
-              >
-                Martin
-              </Typography>
+              <TypographyMemberName>Martin</TypographyMemberName>
               <Typography variant="h6">Co-founder</Typography>
               <Typography variant="subtitle1" color="textSecondary">
                 Martin is a founding partner of Tracktak and a value investor.
@@ -151,19 +145,7 @@ const OurTeamSection = () => {
                 fluid={data.memberOne.childImageSharp.fluid}
                 alt="Member One"
               />
-              <Typography
-                sx={{
-                  visibility: "visible",
-                  animationDelay: "0.4s",
-                  animationName: "fadeInUp",
-                  fontWeight: "bold",
-                  color: "#313450",
-                  marginTop: (theme) => theme.spacing(2),
-                }}
-                variant="h4"
-              >
-                Sam
-              </Typography>
+              <TypographyMemberName>Sam</TypographyMemberName>
               <Typography variant="h6">Co-founder</Typography>
               <Typography variant="subtitle1" color="textSecondary">
                 Sam joined us on April 2021. He is managing the company's
