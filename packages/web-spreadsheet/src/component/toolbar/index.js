@@ -9,7 +9,7 @@ import Strike from "./strike";
 import Underline from "./underline";
 import Border, { getBorder } from "./border";
 import Clearformat from "./clearformat";
-import Paintformat from "./paintformat";
+import Paintformat, { getPaintFormat } from "./paintformat";
 import TextColor from "./text_color";
 import FillColor from "./fill_color";
 import FontSize, { getFontSize } from "./font_size";
@@ -99,7 +99,7 @@ export default class Toolbar {
         (this.undoEl = getUndo(eventEmitter)),
         (this.redoEl = getRedo(eventEmitter)),
         getPrint(eventEmitter),
-        (this.paintformatEl = new Paintformat(formats)),
+        (this.paintformatEl = getPaintFormat(eventEmitter)),
         (this.clearformatEl = new Clearformat(formats)),
       ],
       buildDivider(),
@@ -178,11 +178,11 @@ export default class Toolbar {
   }
 
   paintformatActive() {
-    return this.paintformatEl.active();
+    return this.paintformatEl.toggleItem.active();
   }
 
   paintformatToggle() {
-    this.paintformatEl.toggle();
+    this.paintformatEl.toggleItem.toggle();
   }
 
   trigger(type) {

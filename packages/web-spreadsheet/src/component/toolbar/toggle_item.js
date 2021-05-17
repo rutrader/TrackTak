@@ -10,16 +10,16 @@ export const getToggleItem = (tag, eventEmitter) => {
     item.el.hasClass("active");
   };
 
+  const toggle = () => {
+    item.el.toggle();
+  };
+
   const setActive = (active) => {
     item.el.active(active);
   };
 
   item.el.child(icon).on("click", () => {
-    eventEmitter.emit(
-      spreadsheetEvents.toolbar.toggleItem,
-      tag,
-      item.el.toggle(),
-    );
+    eventEmitter.emit(spreadsheetEvents.toolbar.toggleItem, tag, toggle());
   });
 
   return {
