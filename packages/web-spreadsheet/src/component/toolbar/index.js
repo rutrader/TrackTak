@@ -18,9 +18,9 @@ import Format from "./format";
 import Formula from "./formula";
 import Freeze from "./freeze";
 import Merge from "./merge";
-import Redo from "./redo";
-import Undo from "./undo";
-import Print from "./print";
+import Redo, { getRedo } from "./redo";
+import Undo, { getUndo } from "./undo";
+import Print, { getPrint } from "./print";
 import Textwrap, { getTextWrap } from "./textwrap";
 import More from "./more";
 
@@ -96,9 +96,9 @@ export default class Toolbar {
     const style = data.defaultStyle();
     this.items = [
       [
-        (this.undoEl = new Undo(formats)),
-        (this.redoEl = new Redo(formats)),
-        new Print(formats),
+        (this.undoEl = getUndo(eventEmitter)),
+        (this.redoEl = getRedo(eventEmitter)),
+        getPrint(eventEmitter),
         (this.paintformatEl = new Paintformat(formats)),
         (this.clearformatEl = new Clearformat(formats)),
       ],
@@ -199,8 +199,8 @@ export default class Toolbar {
     const { data } = this;
     const style = data.getSelectedCellStyle();
     // console.log('canUndo:', data.canUndo());
-    this.undoEl.setState(!data.canUndo());
-    this.redoEl.setState(!data.canRedo());
+    this.undoEl.iconItem.setDisabled(!data.canUndo());
+    this.redoEl.iconItem.setDisabled(!data.canRedo());
     this.mergeEl.setState(data.canUnmerge(), !data.selector.multiple());
     this.autofilterEl.setState(!data.canAutofilter());
     // this.mergeEl.disabled();

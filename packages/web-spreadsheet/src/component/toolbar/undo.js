@@ -1,4 +1,15 @@
-import IconItem from "./icon_item";
+import IconItem, { getIconItem } from "./icon_item";
+
+export const getUndo = (eventEmitter) => {
+  const tag = "undo";
+  const shortcut = "Ctrl+Z";
+  const iconItem = getIconItem(tag, shortcut, eventEmitter);
+
+  return {
+    item: iconItem.item,
+    iconItem,
+  };
+};
 
 export default class Undo extends IconItem {
   constructor(formats) {
