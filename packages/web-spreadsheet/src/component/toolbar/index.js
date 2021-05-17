@@ -21,7 +21,7 @@ import Merge from "./merge";
 import Redo from "./redo";
 import Undo from "./undo";
 import Print from "./print";
-import Textwrap from "./textwrap";
+import Textwrap, { getTextWrap } from "./textwrap";
 import More from "./more";
 
 import { h } from "../element";
@@ -127,7 +127,7 @@ export default class Toolbar {
       [
         (this.alignEl = getAlign(style.align, eventEmitter)),
         (this.valignEl = getVAlign(style.valign, eventEmitter)),
-        (this.textwrapEl = new Textwrap(formats)),
+        (this.textwrapEl = getTextWrap(eventEmitter)),
       ],
       buildDivider(),
       [
@@ -217,7 +217,7 @@ export default class Toolbar {
     this.fillColorEl.setState(style.bgcolor);
     this.alignEl.setValue(style.align);
     this.valignEl.setValue(style.valign);
-    this.textwrapEl.setState(style.textwrap);
+    this.textwrapEl.toggleItem.setActive(style.textwrap);
     // console.log('freeze is Active:', data.freezeIsActive());
     this.freezeEl.setState(data.freezeIsActive());
   }

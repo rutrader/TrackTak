@@ -12,6 +12,7 @@ const spreadsheetEvents = {
     colorPaletteChange: "color-palette-change",
     fontChange: "font-change",
     fontSizeChange: "font-size-change",
+    toggleItem: "toggle-item",
   },
 };
 
