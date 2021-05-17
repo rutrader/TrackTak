@@ -24,10 +24,7 @@ const Authentication = ({
 }) => {
   const dispatch = useDispatch();
   const [formState, setFormState] = useState(initialState);
-  const {
-    signUp,
-    signIn,
-  } = useAuth();
+  const { signUp, signIn } = useAuth();
 
   const onError = (error) => {
     dispatch(
@@ -38,17 +35,6 @@ const Authentication = ({
     );
 
     onFailure();
-  };
-
-  const onSignUpSuccess = () => {
-    dispatch(
-      setMessage({
-        message:
-          "Please check your email and click on the link provided to verify your account.",
-        severity: "success",
-      }),
-    );
-    onSuccess();
   };
 
   const handleSwitchToSignInClick = () => {
@@ -78,14 +64,13 @@ const Authentication = ({
     navigate("/forgot-password/");
   };
 
-
   const handleSignUpSubmit = (event, payload) => {
     event.preventDefault();
     signUp(
       payload.email,
       payload.password,
       [{ Name: "name", Value: payload.name }],
-      onSignUpSuccess,
+      onSuccess,
       onError,
     );
   };
@@ -95,10 +80,30 @@ const Authentication = ({
     signIn(payload.email, payload.password, onSuccess, onError);
   };
 
+  const handleForgotPasswordSuccess = () => {
+    if (isModal) {
+      setFormState(AUTHENTICATION_FORM_STATE.SIGN_IN);
+      return;
+    }
+
+    navigate("/sign-in/");
+  };
+
+  const handleForgotPasswordCancelClick = () => {
+    if (isModal) {
+      setFormState(AUTHENTICATION_FORM_STATE.SIGN_IN);
+      return;
+    }
+
+    navigate(-1);
+  };
+
   return (
-    <Box sx={{
-      width: "500px",
-    }}>
+    <Box
+      sx={{
+        width: "500px",
+      }}
+    >
       {formState === AUTHENTICATION_FORM_STATE.SIGN_UP && (
         <SignUpForm
           onSubmit={handleSignUpSubmit}
@@ -113,7 +118,10 @@ const Authentication = ({
         />
       )}
       {formState === AUTHENTICATION_FORM_STATE.FORGOTTEN_PASSWORD && (
-        <ForgotPasswordForm />
+        <ForgotPasswordForm
+          onSuccess={handleForgotPasswordSuccess}
+          onCancelClick={handleForgotPasswordCancelClick}
+        />
       )}
     </Box>
   );

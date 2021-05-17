@@ -129,11 +129,11 @@ Resources:
         - Name: name
           AttributeDataType: String
           Mutable: true
-          Required: true
+          Required: false
         - Name: email
           AttributeDataType: String
           Mutable: true
-          Required: false
+          Required: true
       Policies:
         PasswordPolicy:
           MinimumLength: 8
@@ -143,6 +143,14 @@ Resources:
           RequireUppercase: false
       UsernameAttributes:
         - email
+      UsernameConfiguration:
+        CaseSensitive: true
+      AutoVerifiedAttributes:
+        - email
+      VerificationMessageTemplate:
+        DefaultEmailOption: CONFIRM_WITH_LINK
+      EmailVerificationSubject: Tracktak - Please verify your email
+      EmailVerificationMessage: Please click the link below to verify your email address. {####}
       MfaConfiguration: "OFF"
       LambdaConfig:
         CreateAuthChallenge: !GetAtt CreateAuthChallenge.Arn
@@ -194,7 +202,9 @@ Resources:
       GenerateSecret: false
       UserPoolId: !Ref UserPool
       ExplicitAuthFlows:
-        - CUSTOM_AUTH_FLOW_ONLY
+        - ALLOW_USER_SRP_AUTH
+        - ALLOW_CUSTOM_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
 
 Outputs:
   UserPoolId:

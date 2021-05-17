@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
@@ -7,8 +7,17 @@ import Authentication, {
   AUTHENTICATION_FORM_STATE,
 } from "../components/Authentication";
 import { navigate } from "gatsby-link";
+import { useAuth } from "../hooks/useAuth";
 
 const SignUp = () => {
+  const { isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated]);
+
   const handleSuccess = () => {
     navigate("/sign-in");
   };

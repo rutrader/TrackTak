@@ -92,6 +92,7 @@ export const forgotPasswordFlow = () => {
       newPassword,
       onSuccess,
       onFailure,
+      onChallengeFailure
     ) => {
       if (!user) {
         throw Error("Send verification email to user first!");
@@ -106,7 +107,7 @@ export const forgotPasswordFlow = () => {
             onFailure(err);
           },
           customChallenge: (params) => {
-            console.log(params);
+            onChallengeFailure(params);
           },
         },
         {

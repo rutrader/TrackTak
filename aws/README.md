@@ -11,9 +11,9 @@ Set the following environment variables
 ```bash
 export S3_BUCKET_NAME=tracktak-cognito;
 export SES_FROM_ADDRESS=registration@tracktak.com;
-export STACK_NAME=cognitoEmailAuthFlow;
-export USER_POOL_NAME=Tracktak
-export AWS_DEFAULT_REGION=eu-west-2
+export STACK_NAME=tracktakCognitoEmailAuthFlow;
+export USER_POOL_NAME=Tracktak;
+export AWS_DEFAULT_REGION=eu-west-2;
 ```
 
 Run

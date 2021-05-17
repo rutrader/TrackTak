@@ -7,12 +7,11 @@ import Typography from "@material-ui/core/Typography";
 import { useTheme } from "@material-ui/styles";
 import { useAuth } from "../hooks/useAuth";
 import Alert from "@material-ui/core/Alert";
-import { navigate } from "gatsby-link";
 import { setMessage } from "../redux/actions/snackbarActions";
 import { Box } from "@material-ui/core";
 import TracktakLogo from "./TracktakLogo";
 
-const ForgotPasswordForm = () => {
+const ForgotPasswordForm = ({ onSuccess, onCancelClick }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const { forgotPasswordFlow } = useAuth();
@@ -22,18 +21,21 @@ const ForgotPasswordForm = () => {
   const [challengeCode, setChallengeCode] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleCancelClick = () => {
-    navigate(-1);
-  };
-
-  const handleSuccess = () => {
-    navigate("/sign-in");
-  };
+ 
 
   const handlePasswordResetFailure = (err) => {
     dispatch(
       setMessage({
-        message: err?.message, // TODO All AWS messages should be mapped
+        message: 'Failed to reset password',
+        severity: "error",
+      }),
+    );
+  };
+
+  const handleChallengeFailure = () => {
+    dispatch(
+      setMessage({
+        message: 'Incorrect code entered',
         severity: "error",
       }),
     );
@@ -45,8 +47,9 @@ const ForgotPasswordForm = () => {
       forgotPasswordFlow.sendChallengeAnswer(
         challengeCode,
         password,
-        handleSuccess,
+        onSuccess,
         handlePasswordResetFailure,
+        handleChallengeFailure,
       );
     } else {
       forgotPasswordFlow.sendEmailVerification(
@@ -54,6 +57,7 @@ const ForgotPasswordForm = () => {
         () => {
           setVerificationEmailSent(true);
         },
+        () => {},
         handlePasswordResetFailure,
       );
     }
@@ -83,7 +87,7 @@ const ForgotPasswordForm = () => {
           width: "100%",
           marginTop: theme.spacing(3),
         }}>
-        <form onSubmit={handleSubmit} validate>
+        <form onSubmit={handleSubmit} validate="true">
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -141,7 +145,7 @@ const ForgotPasswordForm = () => {
             fullWidth
             variant="outlined"
             color="primary"
-            onClick={handleCancelClick}
+            onClick={onCancelClick}
             type="button"
           >
             Cancel

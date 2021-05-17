@@ -7,7 +7,7 @@ import { CognitoIdentityServiceProvider } from 'aws-sdk';
 const cup = new CognitoIdentityServiceProvider();
 
 export const handler: PostAuthenticationTriggerHandler = async event => {
-    if (event.request.userAttributes.email_verified !== 'true') {
+    if (event.request.userAttributes.email_verified !== 'true' && event.request.clientMetadata) {
       const params: CognitoIdentityServiceProvider.AdminUpdateUserAttributesRequest = {
           UserPoolId: event.userPoolId,
           UserAttributes: [{
