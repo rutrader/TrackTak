@@ -4,13 +4,13 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import TracktakLogoSvg from "../assets/tracktak-purple.svg";
 import { useTheme } from "@material-ui/styles";
 import { useAuth } from "../hooks/useAuth";
 import Alert from "@material-ui/core/Alert";
 import { navigate } from "gatsby-link";
 import { setMessage } from "../redux/actions/snackbarActions";
 import { Box } from "@material-ui/core";
+import TracktakLogo from "./TracktakLogo";
 
 const ForgotPasswordForm = () => {
   const theme = useTheme();
@@ -75,7 +75,7 @@ const ForgotPasswordForm = () => {
           alignItems: "center",
         }}
       >
-        <TracktakLogoSvg />
+        <TracktakLogo />
         <Typography component="h1" variant="h5">
           Forgot password
         </Typography>

@@ -3,11 +3,11 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import TracktakLogoSvg from "../assets/tracktak-purple.svg";
 import RoundButton from "./RoundButton";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import { useTheme } from "@material-ui/styles";
 import { Box } from "@material-ui/core";
+import TracktakLogo from "./TracktakLogo";
 
 const SignInForm = ({
   onSubmit,
@@ -35,7 +35,7 @@ const SignInForm = ({
         alignItems: "center",
       }}
     >
-      <TracktakLogoSvg />
+      <TracktakLogo />
       <Typography component="h1" variant="h5">
         Sign in
       </Typography>

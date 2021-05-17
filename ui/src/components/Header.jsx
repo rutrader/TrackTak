@@ -9,34 +9,51 @@ import {
   useTheme,
 } from "@material-ui/core";
 import React, { useState } from "react";
-import { Link } from "gatsby";
+import { Link, navigate } from "gatsby";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchTicker from "./SearchTicker";
 import TracktakLogo from "./TracktakLogo";
 import { useAuth } from "../hooks/useAuth";
 
-const getRightLinks = (isAuthenticated) => [
-  { to: "/how-to-do-a-dcf", text: "Documentation" },
-  { to: "/stock-valuations", text: "Valuations" },
-  { to: "/contact-us", text: "Contact" },
-  {
-    to: "/about-us",
-    text: "About us",
-  },
-  isAuthenticated
-    ? {
-        to: "/sign-out",
-        text: "Sign out",
-      }
-    : {
-        to: "/sign-in",
-        text: "Sign in",
-      },
-];
+const getRightLinks = (isAuthenticated) => {
+  const links = [
+    { to: "/how-to-do-a-dcf", text: "Documentation" },
+    { to: "/stock-valuations", text: "Valuations" },
+    { to: "/contact-us", text: "Contact" },
+    {
+      to: "/about-us",
+      text: "About us",
+    },
+  ];
+
+  if (!isAuthenticated) {
+    links.push({
+      to: "/sign-in",
+      text: "Sign in",
+    });
+  }
+
+  return links;
+};
 
 const allLinks = (isAuthenticated) => getRightLinks(isAuthenticated);
 
-const HeaderLink = ({ to, text, style }) => {
+const buttonStyle = {
+  textTransform: "none",
+  fontSize: "16px",
+  fontWeight: "bold",
+  color: "#313450",
+}
+
+const HeaderLink = ({ to, text, style, isSignOut = false }) => {
+  const { session, signOut } = useAuth();
+  const handleOnSignOut = () => {
+    if (session) {
+      signOut();
+      navigate("/");
+    }
+  }
+
   return (
     <Box
       sx={{
@@ -46,18 +63,21 @@ const HeaderLink = ({ to, text, style }) => {
         ...style,
       }}
     >
-      <Button
-        sx={{
-          textTransform: "none",
-          fontSize: "16px",
-          fontWeight: "bold",
-          color: "#313450",
-        }}
+      {isSignOut ? (
+        <Button
+        sx={buttonStyle}
+        onClick={handleOnSignOut}
+        >
+        Sign Out
+        </Button>
+      )
+      : (<Button
+        sx={buttonStyle}
         to={to}
         component={Link}
       >
         {text}
-      </Button>
+      </Button>)}
     </Box>
   );
 };
@@ -118,6 +138,11 @@ const Header = ({ hideSearch }) => {
                     {...link}
                   />
                 ))}
+                {isAuthenticated && (
+                    <HeaderLink sx={{ ml: 0 }} isSignOut>
+                      Sign Out
+                    </HeaderLink>
+                )}
               </Box>
             </Hidden>
             <Hidden mdUp implementation="css">
