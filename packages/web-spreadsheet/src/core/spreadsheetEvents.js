@@ -10,6 +10,7 @@ const spreadsheetEvents = {
     dropdownLineChange: "dropdown-line-change",
     borderPaletteChange: "border-palette-change",
     colorPaletteChange: "color-palette-change",
+    fontChange: "font-change",
   },
 };
 

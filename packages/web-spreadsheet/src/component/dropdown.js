@@ -30,7 +30,7 @@ export const getDropdown = (
   };
 
   const setTitle = (title) => {
-    title.el.html(title);
+    _title.html(title);
     hide();
   };
 
