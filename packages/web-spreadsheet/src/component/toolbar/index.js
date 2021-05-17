@@ -37,11 +37,12 @@ function initBtns2() {
   this.btns2 = [];
   this.items.forEach((it) => {
     if (Array.isArray(it)) {
-      it.forEach(({ el }) => {
-        const rect = el.box();
-        const { marginLeft, marginRight } = el.computedStyle();
+      it.forEach(({ el, item }) => {
+        let newEl = el ? el : item.el;
+        const rect = newEl.box();
+        const { marginLeft, marginRight } = newEl.computedStyle();
         this.btns2.push([
-          el,
+          newEl,
           rect.width + parseInt(marginLeft, 10) + parseInt(marginRight, 10),
         ]);
       });
@@ -123,7 +124,7 @@ export default class Toolbar {
       ],
       buildDivider(),
       [
-        (this.alignEl = getAlign(formats, style.align, eventEmitter)),
+        (this.alignEl = getAlign(style.align, eventEmitter)),
         (this.valignEl = new Valign(formats, style.valign)),
         (this.textwrapEl = new Textwrap(formats)),
       ],
@@ -147,10 +148,16 @@ export default class Toolbar {
             i.change = (...args) => {
               this.change(...args);
             };
+          } else {
+            this.btns.child(i.item.el);
           }
         });
       } else {
-        this.btns.child(it.el);
+        if (it.el) {
+          this.btns.child(it.el);
+        } else {
+          this.btns.child(it.item.el);
+        }
       }
     });
 

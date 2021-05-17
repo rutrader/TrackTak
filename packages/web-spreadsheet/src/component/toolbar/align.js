@@ -1,33 +1,25 @@
-import DropdownItem from "./dropdown_item";
-import DropdownAlign from "../dropdown_align";
-import Item from "./item";
+import { getDropdownAlign } from "../dropdown_align";
+import { getItem } from "./item";
 
-const getAlign = (formats, value, eventEmitter) => {
+const getAlign = (value, eventEmitter) => {
   let newValue = value;
+  const tag = "align";
   const aligns = ["left", "center", "right"];
-  const args = [formats, "align", "", value];
-  const item = new Item(...args);
-  const dropdownItem = new DropdownItem(...args, eventEmitter);
-  const dropdownAlign = new DropdownAlign(aligns, value, eventEmitter);
+  const item = getItem(tag);
+  const dropdownAlign = getDropdownAlign(aligns, newValue, eventEmitter);
 
-  item.el.child(dropdownAlign);
+  item.el.child(dropdownAlign.dropdown.element);
 
   const setValue = (v) => {
-    dropdownItem.setState(v);
+    newValue = v;
     dropdownAlign.setTitle(v);
   };
 
   return {
-    item,
-    dropdownItem,
     dropdownAlign,
     value: newValue,
     setValue,
-    dd: dropdownAlign,
-    el: item.el,
-    tag: dropdownItem.tag,
-    tip: dropdownItem.tip,
-    shortcut: dropdownItem.shortcut,
+    item,
   };
 };
 
