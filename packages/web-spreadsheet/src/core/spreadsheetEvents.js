@@ -11,6 +11,7 @@ const spreadsheetEvents = {
     borderPaletteChange: "border-palette-change",
     colorPaletteChange: "color-palette-change",
     fontChange: "font-change",
+    fontSizeChange: "font-size-change",
   },
 };
 

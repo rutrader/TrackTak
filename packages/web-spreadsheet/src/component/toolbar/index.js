@@ -12,7 +12,7 @@ import Clearformat from "./clearformat";
 import Paintformat from "./paintformat";
 import TextColor from "./text_color";
 import FillColor from "./fill_color";
-import FontSize from "./font_size";
+import FontSize, { getFontSize } from "./font_size";
 import Font, { getFont } from "./font";
 import Format from "./format";
 import Formula from "./formula";
@@ -107,7 +107,7 @@ export default class Toolbar {
       buildDivider(),
       [
         (this.fontEl = getFont(eventEmitter)),
-        (this.fontSizeEl = new FontSize(formats)),
+        (this.fontSizeEl = getFontSize(eventEmitter)),
       ],
       buildDivider(),
       [
@@ -208,7 +208,7 @@ export default class Toolbar {
     const { font, format } = style;
     this.formatEl.setState(format);
     this.fontEl.setValue(font.name);
-    this.fontSizeEl.setState(font.size);
+    this.fontSizeEl.setValue(font.size);
     this.boldEl.setState(font.bold);
     this.italicEl.setState(font.italic);
     this.underlineEl.setState(style.underline);
