@@ -9,7 +9,7 @@ import { useAuth } from "../hooks/useAuth";
 import Alert from "@material-ui/core/Alert";
 import { setMessage } from "../redux/actions/snackbarActions";
 import { Box } from "@material-ui/core";
-import TracktakLogo from "./TracktakLogo";
+import TracktakLogoSvg from "../icons/tracktak-purple.svg";
 
 const ForgotPasswordForm = ({ onSuccess, onCancelClick }) => {
   const theme = useTheme();
@@ -20,8 +20,6 @@ const ForgotPasswordForm = ({ onSuccess, onCancelClick }) => {
   const [email, setEmail] = useState("");
   const [challengeCode, setChallengeCode] = useState("");
   const [password, setPassword] = useState("");
-
- 
 
   const handlePasswordResetFailure = (err) => {
     dispatch(
@@ -79,7 +77,7 @@ const ForgotPasswordForm = ({ onSuccess, onCancelClick }) => {
           alignItems: "center",
         }}
       >
-        <TracktakLogo />
+        <TracktakLogoSvg />
         <Typography component="h1" variant="h5">
           Forgot password
         </Typography>

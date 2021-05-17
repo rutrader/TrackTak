@@ -7,7 +7,7 @@ import RoundButton from "./RoundButton";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import { useTheme } from "@material-ui/styles";
 import { Box } from "@material-ui/core";
-import TracktakLogo from "./TracktakLogo";
+import TracktakLogoSvg from "../icons/tracktak-purple.svg";
 
 const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
   const theme = useTheme();
@@ -33,7 +33,7 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
         alignItems: "center",
       }}
     >
-      <TracktakLogo />
+      <TracktakLogoSvg />
       <Typography component="h1" variant="h5">
         Sign up
       </Typography>
