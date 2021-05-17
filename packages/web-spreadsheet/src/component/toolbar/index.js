@@ -8,13 +8,13 @@ import Italic from "./italic";
 import Strike from "./strike";
 import Underline from "./underline";
 import Border, { getBorder } from "./border";
-import Clearformat from "./clearformat";
+import Clearformat, { getClearFormat } from "./clearformat";
 import Paintformat, { getPaintFormat } from "./paintformat";
 import TextColor from "./text_color";
 import FillColor from "./fill_color";
 import FontSize, { getFontSize } from "./font_size";
 import Font, { getFont } from "./font";
-import Format from "./format";
+import Format, { getFormat } from "./format";
 import Formula from "./formula";
 import Freeze from "./freeze";
 import Merge from "./merge";
@@ -100,10 +100,10 @@ export default class Toolbar {
         (this.redoEl = getRedo(eventEmitter)),
         getPrint(eventEmitter),
         (this.paintformatEl = getPaintFormat(eventEmitter)),
-        (this.clearformatEl = new Clearformat(formats)),
+        getClearFormat(eventEmitter),
       ],
       buildDivider(),
-      [(this.formatEl = new Format(formats))],
+      [(this.formatEl = getFormat(formats, eventEmitter))],
       buildDivider(),
       [
         (this.fontEl = getFont(eventEmitter)),
@@ -206,7 +206,8 @@ export default class Toolbar {
     // this.mergeEl.disabled();
     // console.log('selectedCell:', style, cell);
     const { font, format } = style;
-    this.formatEl.setState(format);
+    this.formatEl.setValue(format);
+    this.formatEld.setState(format);
     this.fontEl.setValue(font.name);
     this.fontSizeEl.setValue(font.size);
     this.boldEl.setState(font.bold);

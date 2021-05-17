@@ -1,9 +1,9 @@
-import Item, { getItem, withShortcut } from "./item";
+import Item, { getItem } from "./item";
 import getIcon from "../icon";
 import spreadsheetEvents from "../../core/spreadsheetEvents";
 
-export const getIconItem = (tag, shortcut, eventEmitter) => {
-  const item = withShortcut(getItem(tag, eventEmitter), shortcut);
+export const getIconItem = (tag, eventEmitter) => {
+  const item = getItem(tag, eventEmitter);
   const icon = getIcon(tag);
 
   const setDisabled = (disabled) => {
@@ -17,6 +17,16 @@ export const getIconItem = (tag, shortcut, eventEmitter) => {
   return {
     setDisabled,
     item,
+  };
+};
+
+export const withShortcut = ({ item, ...iconItem }, shortcut) => {
+  return {
+    ...iconItem,
+    item: {
+      ...item,
+      shortcut: (item.tip += ` (${shortcut})`),
+    },
   };
 };
 

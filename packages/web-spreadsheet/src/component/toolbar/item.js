@@ -17,13 +17,6 @@ export const getItem = (tag) => {
   };
 };
 
-export const withShortcut = (item, shortcut) => {
-  return {
-    ...item,
-    shortcut: (item.tip += ` (${shortcut})`),
-  };
-};
-
 export default class Item {
   // tooltip
   // tag: the subclass type

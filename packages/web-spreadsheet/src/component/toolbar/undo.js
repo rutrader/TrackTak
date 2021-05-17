@@ -1,9 +1,9 @@
-import IconItem, { getIconItem } from "./icon_item";
+import IconItem, { getIconItem, withShortcut } from "./icon_item";
 
 export const getUndo = (eventEmitter) => {
   const tag = "undo";
   const shortcut = "Ctrl+Z";
-  const iconItem = getIconItem(tag, shortcut, eventEmitter);
+  const iconItem = withShortcut(getIconItem(tag, eventEmitter), shortcut);
 
   return {
     item: iconItem.item,

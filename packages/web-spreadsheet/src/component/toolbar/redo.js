@@ -1,9 +1,9 @@
-import IconItem, { getIconItem } from "./icon_item";
+import IconItem, { getIconItem, withShortcut } from "./icon_item";
 
 export const getRedo = (eventEmitter) => {
   const tag = "redo";
   const shortcut = "Ctrl+Y";
-  const iconItem = getIconItem(tag, shortcut, eventEmitter);
+  const iconItem = withShortcut(getIconItem(tag, eventEmitter), shortcut);
 
   return {
     item: iconItem.item,

@@ -14,6 +14,7 @@ const spreadsheetEvents = {
     fontSizeChange: "font-size-change",
     toggleItem: "toggle-item",
     clickIcon: "click-icon",
+    formatChange: "format-change",
   },
 };
 
