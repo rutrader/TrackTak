@@ -7,7 +7,7 @@ import Bold from "./bold";
 import Italic from "./italic";
 import Strike from "./strike";
 import Underline from "./underline";
-import Border from "./border";
+import Border, { getBorder } from "./border";
 import Clearformat from "./clearformat";
 import Paintformat from "./paintformat";
 import TextColor from "./text_color";
@@ -120,7 +120,7 @@ export default class Toolbar {
       buildDivider(),
       [
         (this.fillColorEl = new FillColor(formats, style.bgcolor)),
-        (this.borderEl = new Border(formats)),
+        getBorder(eventEmitter),
         (this.mergeEl = new Merge(formats)),
       ],
       buildDivider(),

@@ -9,14 +9,14 @@ export const getDropdown = (
   placement,
   ...children
 ) => {
-  const element = new Element("div", `${cssPrefix}-dropdown ${placement}`);
+  const el = new Element("div", `${cssPrefix}-dropdown ${placement}`);
 
   let _title = title;
 
   if (typeof _title === "string") {
     _title = h("div", `${cssPrefix}-dropdown-title`).child(_title);
   } else if (showArrow) {
-    _title.element.addClass("arrow-left");
+    _title.el.addClass("arrow-left");
   }
   const contentEl = h("div", `${cssPrefix}-dropdown-content`)
     .css("width", width)
@@ -30,22 +30,22 @@ export const getDropdown = (
   };
 
   const setTitle = (title) => {
-    title.element.html(title);
+    title.el.html(title);
     hide();
   };
 
   const show = () => {
     contentEl.show();
-    element.parent().active();
-    bindClickoutside(element.parent(), () => {
+    el.parent().active();
+    bindClickoutside(el.parent(), () => {
       hide();
     });
   };
 
   const hide = () => {
-    element.parent().active(false);
+    el.parent().active(false);
     contentEl.hide();
-    unbindClickoutside(element.parent());
+    unbindClickoutside(el.parent());
   };
 
   setContentChildren(...children);
@@ -61,7 +61,7 @@ export const getDropdown = (
       }
     })
     .children(
-      _title.element.el,
+      _title.el,
       showArrow
         ? h("div", `${cssPrefix}-icon arrow-right`).child(
             h("div", `${cssPrefix}-icon-img arrow-down`),
@@ -69,11 +69,11 @@ export const getDropdown = (
         : "",
     );
 
-  element.children(headerEl, contentEl);
+  el.children(headerEl, contentEl);
 
   return {
     title: _title,
-    element,
+    el,
     contentEl,
     headerEl,
     setContentChildren,
@@ -92,8 +92,8 @@ export default class Dropdown extends Element {
     if (typeof this.title === "string") {
       this.title = h("div", `${cssPrefix}-dropdown-title`).child(this.title);
     } else if (showArrow) {
-      if (this.title.element) {
-        this.title.element.addClass("arrow-left");
+      if (this.title.el) {
+        this.title.el.addClass("arrow-left");
       } else {
         this.title.addClass("arrow-left");
       }

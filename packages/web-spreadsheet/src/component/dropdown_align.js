@@ -1,7 +1,8 @@
-import Dropdown, { getDropdown } from "./dropdown";
+import { getDropdown } from "./dropdown";
 import { h } from "./element";
 import { cssPrefix } from "../config";
 import getIcon from "./icon";
+import spreadsheetEvents from "../core/spreadsheetEvents";
 
 function buildItemWithIcon(iconName) {
   return h("div", `${cssPrefix}-item`).child(getIcon(iconName));
@@ -13,7 +14,7 @@ export const getDropdownAlign = (tag, aligns, align, eventEmitter) => {
     const name = `align-${it}`;
 
     return buildItemWithIcon(name).on("click", () => {
-      eventEmitter.emit(`${name}-click`, tag, it);
+      eventEmitter.emit(spreadsheetEvents.toolbar.alignChange, tag, it);
     });
   });
 
@@ -29,21 +30,3 @@ export const getDropdownAlign = (tag, aligns, align, eventEmitter) => {
     setTitle,
   };
 };
-
-export default class DropdownAlign extends Dropdown {
-  constructor(aligns, align) {
-    const icon = getIcon(`align-${align}`);
-    const naligns = aligns.map((it) =>
-      buildItemWithIcon(`align-${it}`).on("click", () => {
-        this.setTitle(it);
-        this.change(it);
-      }),
-    );
-    super(icon, "auto", true, "bottom-left", ...naligns);
-  }
-
-  setTitle(align) {
-    this.title.setName(`align-${align}`);
-    this.hide();
-  }
-}

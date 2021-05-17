@@ -71,11 +71,8 @@ export default class Print {
           h("div", "-title").child("Print settings"),
           h("div", "-right").children(
             h("div", `${cssPrefix}-buttons`).children(
-              getButton("cancel").element.on(
-                "click",
-                btnClick.bind(this, "cancel"),
-              ),
-              getButton("next", "primary").element.on(
+              getButton("cancel").el.on("click", btnClick.bind(this, "cancel")),
+              getButton("next", "primary").el.on(
                 "click",
                 btnClick.bind(this, "next"),
               ),

@@ -55,12 +55,8 @@ export default class SortFilter {
           this.filterbEl,
         ),
         h("div", `${cssPrefix}-buttons`).children(
-          getButton("cancel").element.on("click", () =>
-            this.btnClick("cancel"),
-          ),
-          getButton("ok", "primary").element.on("click", () =>
-            this.btnClick("ok"),
-          ),
+          getButton("cancel").el.on("click", () => this.btnClick("cancel")),
+          getButton("ok", "primary").el.on("click", () => this.btnClick("ok")),
         ),
       )
       .hide();

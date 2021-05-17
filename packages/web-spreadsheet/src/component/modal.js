@@ -10,7 +10,7 @@ export default class Modal {
       .css("width", width)
       .children(
         h("div", `${cssPrefix}-modal-header`).children(
-          getIcon("close").element.on("click.stop", () => this.hide()),
+          getIcon("close").el.on("click.stop", () => this.hide()),
           this.title,
         ),
         h("div", `${cssPrefix}-modal-content`).children(...content),

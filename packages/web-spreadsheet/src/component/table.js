@@ -62,9 +62,8 @@ export function renderCell(draw, data, rindex, cindex, yoffset = 0) {
   const dbox = getTableDrawBox(data, rindex, cindex, yoffset);
   dbox.bgcolor = style.bgcolor;
   if (style.border !== undefined) {
-    dbox.setBorders(style.border);
     // bboxes.push({ ri: rindex, ci: cindex, box: dbox });
-    draw.strokeBorders(dbox);
+    draw.strokeBorders(style.border, dbox);
   }
 
   const self = this;

@@ -8,7 +8,7 @@ const getAlign = (value, eventEmitter) => {
   const item = getItem(tag);
   const dropdownAlign = getDropdownAlign(tag, aligns, newValue, eventEmitter);
 
-  item.el.child(dropdownAlign.dropdown.element);
+  item.el.child(dropdownAlign.dropdown.el);
 
   const setValue = (v) => {
     newValue = v;

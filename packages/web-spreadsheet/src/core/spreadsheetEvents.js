@@ -6,12 +6,10 @@ const spreadsheetEvents = {
     updateSheet: "update-sheet",
   },
   toolbar: {
-    alignLeftClick: "align-left-click",
-    alignCenterClick: "align-center-click",
-    alignRightClick: "align-right-click",
-    alignTopClick: "align-top-click",
-    alignMiddleClick: "align-middle-click",
-    alignBottomClick: "align-bottom-click",
+    alignChange: "align-change",
+    dropdownLineChange: "dropdown-line-change",
+    borderPaletteChange: "border-palette-change",
+    colorPaletteChange: "color-palette-change",
   },
 };
 

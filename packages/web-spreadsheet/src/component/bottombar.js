@@ -86,7 +86,7 @@ export default class Bottombar {
       this.contextMenu.el,
       (this.menuEl = h("ul", `${cssPrefix}-menu`).child(
         h("li", "").children(
-          getIcon("add").element.on("click", () => {
+          getIcon("add").el.on("click", () => {
             eventEmitter.emit(spreadsheetEvents.bottombar.addSheet);
           }),
           h("span", "").child(this.moreEl),

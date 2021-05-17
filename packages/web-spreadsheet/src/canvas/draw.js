@@ -18,17 +18,8 @@ export function npx(px) {
 export const getDrawBox = (x, y, width, height, padding = 0) => {
   let _x = x;
   let _y = y;
-  let _borders = {
-    borderTop: null,
-    borderBottom: null,
-    borderRight: null,
-    borderLeft: null,
-  };
-  const bgcolor = "#ffffff";
 
-  const setBorders = (borders) => {
-    _borders = borders;
-  };
+  const bgcolor = "#ffffff";
 
   const innerWidth = () => {
     return width - padding * 2 - 2;
@@ -97,12 +88,10 @@ export const getDrawBox = (x, y, width, height, padding = 0) => {
   return {
     x: _x,
     y: _y,
-    borders: _borders,
     bgcolor,
     width,
     height,
     padding,
-    setBorders,
     innerWidth,
     innerHeight,
     getTextX,
@@ -310,28 +299,26 @@ const getDraw = (el, width, height) => {
     }
   };
 
-  const strokeBorders = (box) => {
+  const strokeBorders = (borders, box) => {
     ctx.save();
 
-    const {
-      borders: { borderLeft, borderRight, borderBottom, borderTop },
-    } = box;
+    const { left, right, bottom, top } = borders;
 
-    if (borderTop) {
-      this.border(...borderTop);
-      this.line(...box.topxys());
+    if (top) {
+      border(...top);
+      line(...box.topxys());
     }
-    if (borderRight) {
-      this.border(...borderRight);
-      this.line(...box.rightxys());
+    if (right) {
+      border(...right);
+      line(...box.rightxys());
     }
-    if (borderBottom) {
-      this.border(...borderBottom);
-      this.line(...box.bottomxys());
+    if (bottom) {
+      border(...bottom);
+      line(...box.bottomxys());
     }
-    if (borderLeft) {
-      this.border(...borderLeft);
-      this.line(...box.leftxys());
+    if (left) {
+      border(...left);
+      line(...box.leftxys());
     }
     ctx.restore();
   };

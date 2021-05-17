@@ -1,10 +1,34 @@
-import Dropdown from "./dropdown";
-import BorderPalette from "./border_palette";
-import getIcon from "./icon";
+import Dropdown, { getDropdown } from "./dropdown";
+import BorderPalette, { getBorderPalette } from "./border_palette";
+import getIcon, { Icon } from "./icon";
+import spreadsheetEvents from "../core/spreadsheetEvents";
 
-export default class DropdownBorder extends Dropdown {
+const getDropdownBorder = (tag, eventEmitter) => {
+  const icon = getIcon("border-all");
+  const borderPalette = getBorderPalette(tag, eventEmitter);
+
+  const dropdown = getDropdown(
+    icon,
+    "auto",
+    false,
+    "bottom-left",
+    borderPalette.el,
+  );
+
+  eventEmitter.on(spreadsheetEvents.toolbar.borderPaletteChange, () => {
+    dropdown.hide();
+  });
+
+  return {
+    dropdown,
+  };
+};
+
+export default getDropdownBorder;
+
+export class DropdownBorder extends Dropdown {
   constructor() {
-    const icon = getIcon("border-all");
+    const icon = new Icon("border-all");
     const borderPalette = new BorderPalette();
     borderPalette.change = (v) => {
       this.change(v);

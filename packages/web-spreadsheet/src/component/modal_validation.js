@@ -78,9 +78,9 @@ export default class ModalValidation extends Modal {
         svf.el,
       ),
       h("div", `${cssPrefix}-buttons`).children(
-        getButton("cancel").element.on("click", () => this.btnClick("cancel")),
-        getButton("remove").element.on("click", () => this.btnClick("remove")),
-        getButton("save", "primary").element.on("click", () =>
+        getButton("cancel").el.on("click", () => this.btnClick("cancel")),
+        getButton("remove").el.on("click", () => this.btnClick("remove")),
+        getButton("save", "primary").el.on("click", () =>
           this.btnClick("save"),
         ),
       ),
