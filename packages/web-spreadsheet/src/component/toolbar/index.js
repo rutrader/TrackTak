@@ -28,6 +28,7 @@ import { h } from "../element";
 import { cssPrefix } from "../../config";
 import { bind } from "../event";
 import getAlign from "./align";
+import getVAlign from "./valign";
 
 function buildDivider() {
   return h("div", `${cssPrefix}-toolbar-divider`);
@@ -125,7 +126,7 @@ export default class Toolbar {
       buildDivider(),
       [
         (this.alignEl = getAlign(style.align, eventEmitter)),
-        (this.valignEl = new Valign(formats, style.valign)),
+        (this.valignEl = getVAlign(style.valign, eventEmitter)),
         (this.textwrapEl = new Textwrap(formats)),
       ],
       buildDivider(),
@@ -215,7 +216,7 @@ export default class Toolbar {
     this.textColorEl.setState(style.color);
     this.fillColorEl.setState(style.bgcolor);
     this.alignEl.setValue(style.align);
-    this.valignEl.setState(style.valign);
+    this.valignEl.setValue(style.valign);
     this.textwrapEl.setState(style.textwrap);
     // console.log('freeze is Active:', data.freezeIsActive());
     this.freezeEl.setState(data.freezeIsActive());

@@ -6,7 +6,7 @@ const getAlign = (value, eventEmitter) => {
   const tag = "align";
   const aligns = ["left", "center", "right"];
   const item = getItem(tag);
-  const dropdownAlign = getDropdownAlign(aligns, newValue, eventEmitter);
+  const dropdownAlign = getDropdownAlign(tag, aligns, newValue, eventEmitter);
 
   item.el.child(dropdownAlign.dropdown.element);
 

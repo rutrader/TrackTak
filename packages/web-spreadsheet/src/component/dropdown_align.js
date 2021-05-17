@@ -7,13 +7,13 @@ function buildItemWithIcon(iconName) {
   return h("div", `${cssPrefix}-item`).child(getIcon(iconName));
 }
 
-export const getDropdownAlign = (aligns, align, eventEmitter) => {
+export const getDropdownAlign = (tag, aligns, align, eventEmitter) => {
   const icon = getIcon(`align-${align}`);
   const naligns = aligns.map((it) => {
     const name = `align-${it}`;
 
     return buildItemWithIcon(name).on("click", () => {
-      eventEmitter.emit(`${name}-click`, "align", it);
+      eventEmitter.emit(`${name}-click`, tag, it);
     });
   });
 

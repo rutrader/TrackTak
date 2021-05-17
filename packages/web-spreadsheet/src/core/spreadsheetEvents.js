@@ -7,8 +7,11 @@ const spreadsheetEvents = {
   },
   toolbar: {
     alignLeftClick: "align-left-click",
-    alignMiddleClick: "align-center-click",
+    alignCenterClick: "align-center-click",
     alignRightClick: "align-right-click",
+    alignTopClick: "align-top-click",
+    alignMiddleClick: "align-middle-click",
+    alignBottomClick: "align-bottom-click",
   },
 };
 
