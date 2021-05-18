@@ -2,8 +2,8 @@
 import { h } from "./element";
 import { bind, mouseMoveUp, bindTouch } from "./event";
 import { t } from "../locale/locale";
-import Resizer, { getResizer } from "./resizer";
-import Scrollbar, { getScrollbar } from "./scrollbar";
+import { getResizer } from "./getResizer";
+import { getScrollbar } from "./getScrollbar";
 import Selector from "./selector";
 import { getEditor } from "./editor";
 import Print from "./print";

@@ -1,7 +1,6 @@
 import { h } from "./element";
 import { mouseMoveUp } from "./event";
 import { cssPrefix } from "../config";
-import spreadsheetEvents from "../core/spreadsheetEvents";
 
 export const getResizer = (
   eventEmitter,
