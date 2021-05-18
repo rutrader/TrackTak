@@ -31,12 +31,11 @@ const changePassword = async (event) => {
     }
 
     const promise = new Promise(function(resolve, reject) {
-        lambda.invoke(params, function(err, data) {
+        lambda.invoke(params, function(err) {
             if (err) {
-                console.log(err, err.stack);
+                console.error(err, err.stack);
                 reject(err);
             } else {
-                console.log(data, event);
                 resolve(event);
             }
         });

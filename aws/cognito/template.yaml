@@ -149,8 +149,6 @@ Resources:
         - email
       VerificationMessageTemplate:
         DefaultEmailOption: CONFIRM_WITH_LINK
-      EmailVerificationSubject: Tracktak - Please verify your email
-      EmailVerificationMessage: Please click the link below to verify your email address. {####}
       MfaConfiguration: "OFF"
       LambdaConfig:
         CreateAuthChallenge: !GetAtt CreateAuthChallenge.Arn
@@ -201,6 +199,7 @@ Resources:
       ClientName: email-auth-client
       GenerateSecret: false
       UserPoolId: !Ref UserPool
+      PreventUserExistenceErrors: ENABLED
       ExplicitAuthFlows:
         - ALLOW_USER_SRP_AUTH
         - ALLOW_CUSTOM_AUTH
