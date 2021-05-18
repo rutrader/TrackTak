@@ -1,4 +1,4 @@
-import { getDropdown } from "./dropdown";
+import { getDropdown } from "./getDropdown";
 import { h } from "./element";
 import { fontSizes } from "../core/font";
 import { cssPrefix } from "../config";

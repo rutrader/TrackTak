@@ -1,4 +1,4 @@
-import { getDropdown } from "./dropdown";
+import { getDropdown } from "./getDropdown";
 import { getBorderPalette } from "./getBorderPalette";
 import getIcon from "./getIcon";
 import spreadsheetEvents from "../core/spreadsheetEvents";

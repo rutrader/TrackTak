@@ -1,4 +1,4 @@
-import { getDropdown } from "./dropdown";
+import { getDropdown } from "./getDropdown";
 import { h } from "./element";
 import { cssPrefix } from "../config";
 import getIcon from "./getIcon";

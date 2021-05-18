@@ -2,7 +2,7 @@ import { h } from "./element";
 import { bindClickoutside, unbindClickoutside } from "./event";
 import { cssPrefix } from "../config";
 import FormInput from "./form_input";
-import Dropdown from "./dropdown";
+import Dropdown from "./getDropdown";
 import { tf } from "../locale/locale";
 import spreadsheetEvents from "../core/spreadsheetEvents";
 import getIcon from "./getIcon";
