@@ -2,7 +2,7 @@
 import { h } from "./element";
 import { bind, mouseMoveUp, bindTouch } from "./event";
 import { t } from "../locale/locale";
-import Resizer from "./resizer";
+import Resizer, { getResizer } from "./resizer";
 import Scrollbar from "./scrollbar";
 import Selector from "./selector";
 import { getEditor } from "./editor";
@@ -660,20 +660,22 @@ function sheetInitEvents() {
   sortFilter.ok = (ci, order, o, v) =>
     sortFilterChange.call(this, ci, order, o, v);
 
-  // resizer finished callback
-  rowResizer.finishedFn = (cRect, distance) => {
+  eventEmitter.on(spreadsheetEvents.rowResizer.finished, (cRect, distance) => {
     rowResizerFinished.call(this, cRect, distance);
-  };
-  colResizer.finishedFn = (cRect, distance) => {
+  });
+
+  eventEmitter.on(spreadsheetEvents.colResizer.finished, (cRect, distance) => {
     colResizerFinished.call(this, cRect, distance);
-  };
-  // resizer unhide callback
-  rowResizer.unhideFn = (index) => {
+  });
+
+  eventEmitter.on(spreadsheetEvents.rowResizer.unhide, (index) => {
     unhideRowsOrCols.call(this, "row", index);
-  };
-  colResizer.unhideFn = (index) => {
+  });
+
+  eventEmitter.on(spreadsheetEvents.colResizer.unhide, (index) => {
     unhideRowsOrCols.call(this, "col", index);
-  };
+  });
+
   // scrollbar move callback
   verticalScrollbar.moveFn = (distance, evt) => {
     verticalScrollbarMove.call(this, distance, evt);
@@ -915,8 +917,17 @@ export default class Sheet {
     // table
     this.tableEl = h("canvas", `${cssPrefix}-table`);
     // resizer
-    this.rowResizer = new Resizer(false, data.rows.height);
-    this.colResizer = new Resizer(true, data.cols.minWidth);
+    this.rowResizer = getResizer(
+      eventEmitter,
+      spreadsheetEvents.rowResizer,
+      data.rows.height,
+    );
+    this.colResizer = getResizer(
+      eventEmitter,
+      spreadsheetEvents.colResizer,
+      data.cols.minWidth,
+      true,
+    );
     // scrollbar
     this.verticalScrollbar = new Scrollbar(true);
     this.horizontalScrollbar = new Scrollbar(false);

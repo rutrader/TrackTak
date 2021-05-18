@@ -1,4 +1,3 @@
-/* global document */
 import { h } from "./element";
 import { cssPrefix } from "../config";
 import getIcon from "./getIcon";

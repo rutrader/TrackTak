@@ -1,6 +1,4 @@
 import {
-  stringAt,
-  expr2xy,
   expr2cellRangeArgs,
   cellRangeArgs2expr,
   REGEX_EXPR_NONGLOBAL_AT_START,

@@ -12,6 +12,14 @@ const spreadsheetEvents = {
   editor: {
     change: "e_change",
   },
+  rowResizer: {
+    finished: "rr_finished",
+    unhide: "rr_unhide",
+  },
+  colResizer: {
+    finished: "cr_finished",
+    unhide: "cr_unhide",
+  },
   toolbar: {
     alignChange: "tb-align-change",
     dropdownLineChange: "tb-dropdown-line-change",
