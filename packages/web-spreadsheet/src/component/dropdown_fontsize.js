@@ -4,7 +4,7 @@ import { fontSizes } from "../core/font";
 import { cssPrefix } from "../config";
 import spreadsheetEvents from "../core/spreadsheetEvents";
 
-export const getDropdownFontSize = (tag, eventEmitter) => {
+export const makeDropdownFontSize = (eventEmitter) => (tag) => {
   const nfontSizes = fontSizes.map((it) =>
     h("div", `${cssPrefix}-item`)
       .on("click", () => {

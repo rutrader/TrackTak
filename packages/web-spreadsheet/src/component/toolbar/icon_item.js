@@ -25,7 +25,7 @@ export const withShortcut = ({ item, ...baseItem }, shortcut) => {
     ...baseItem,
     item: {
       ...item,
-      shortcut: (item.tip += ` (${shortcut})`),
+      shortcut: shortcut ? (item.tip += ` (${shortcut})`) : undefined,
     },
   };
 };

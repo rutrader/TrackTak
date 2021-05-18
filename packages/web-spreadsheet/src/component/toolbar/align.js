@@ -1,4 +1,4 @@
-import { getDropdownAlign } from "../dropdown_align";
+import { makeDropdownAlign } from "../dropdown_align";
 import { getItem } from "./item";
 
 const getAlign = (value, eventEmitter) => {
@@ -6,7 +6,7 @@ const getAlign = (value, eventEmitter) => {
   const tag = "align";
   const aligns = ["left", "center", "right"];
   const item = getItem(tag);
-  const dropdownAlign = getDropdownAlign(tag, aligns, newValue, eventEmitter);
+  const dropdownAlign = makeDropdownAlign(tag, aligns, newValue, eventEmitter);
 
   item.el.child(dropdownAlign.dropdown.el);
 

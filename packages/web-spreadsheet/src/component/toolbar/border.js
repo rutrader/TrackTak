@@ -1,11 +1,11 @@
 import DropdownItem from "./dropdown_item";
-import getDropdownBorder, { DropdownBorder } from "../dropdown_border";
+import makeDropdownBorder, { DropdownBorder } from "../dropdown_border";
 import { getItem } from "./item";
 
 export const getBorder = (eventEmitter) => {
   const tag = "border";
   const item = getItem(tag);
-  const dropdownBorder = getDropdownBorder(tag, eventEmitter);
+  const dropdownBorder = makeDropdownBorder(tag, eventEmitter);
 
   item.el.child(dropdownBorder.dropdown.el);
 

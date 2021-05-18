@@ -1,5 +1,5 @@
 import { h } from "./element";
-import DropdownColor, { getDropdownColor } from "./dropdown_color";
+import DropdownColor, { makeDropdownColor } from "./dropdown_color";
 import DropdownLineType, { getDropdownLineType } from "./dropdown_linetype";
 import { cssPrefix } from "../config";
 import getIcon, { Icon } from "./icon";
@@ -25,7 +25,7 @@ export const getBorderPalette = (tag, eventEmitter) => {
   let _color = "#000";
   let style = "thin";
   const mode = "all";
-  const ddColor = getDropdownColor(tag, "line-color", _color, eventEmitter);
+  const ddColor = makeDropdownColor("line-color", _color, eventEmitter)(tag);
 
   eventEmitter.on(
     spreadsheetEvents.toolbar.colorPaletteChange,

@@ -1,12 +1,12 @@
 import DropdownItem from "./dropdown_item";
-import DropdownFont, { getDropdownFont } from "../dropdown_font";
+import DropdownFont, { makeDropdownFont } from "../dropdown_font";
 import { getItem } from "./item";
 
 export const getFont = (eventEmitter) => {
   let value;
   const tag = "font-name";
   const item = getItem(tag);
-  const dropdownFont = getDropdownFont(tag, eventEmitter);
+  const dropdownFont = makeDropdownFont(tag, eventEmitter);
 
   item.el.child(dropdownFont.dropdown.el);
 

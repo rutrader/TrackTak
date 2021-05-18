@@ -1,12 +1,12 @@
 import DropdownItem from "./dropdown_item";
-import DropdownFormula, { getDropdownFormula } from "../dropdown_formula";
+import DropdownFormula, { makeDropdownFormula } from "../dropdown_formula";
 import { getItem } from "./item";
 
 export const getFormula = (eventEmitter) => {
   let value;
   const tag = "formula";
   const item = getItem(tag);
-  const dropdownFormula = getDropdownFormula(tag, eventEmitter);
+  const dropdownFormula = makeDropdownFormula(tag, eventEmitter);
 
   item.el.child(dropdownFormula.dropdown.el);
 

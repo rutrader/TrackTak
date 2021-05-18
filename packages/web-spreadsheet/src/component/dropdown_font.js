@@ -4,7 +4,7 @@ import { baseFonts } from "../core/font";
 import { cssPrefix } from "../config";
 import spreadsheetEvents from "../core/spreadsheetEvents";
 
-export const getDropdownFont = (tag, eventEmitter) => {
+export const makeDropdownFont = (eventEmitter) => (tag) => {
   const nfonts = baseFonts.map((it) =>
     h("div", `${cssPrefix}-item`)
       .on("click", () => {

@@ -1,12 +1,12 @@
 import DropdownItem from "./dropdown_item";
-import DropdownFontsize, { getDropdownFontSize } from "../dropdown_fontsize";
+import DropdownFontsize, { makeDropdownFontSize } from "../dropdown_fontsize";
 import { getItem } from "./item";
 
 export const getFontSize = (eventEmitter) => {
   let value;
   const tag = "font-size";
   const item = getItem(tag);
-  const dropdownFontSize = getDropdownFontSize(tag, eventEmitter);
+  const dropdownFontSize = makeDropdownFontSize(tag, eventEmitter);
 
   item.el.child(dropdownFontSize.dropdown.el);
 

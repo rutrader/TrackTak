@@ -30,6 +30,16 @@ import { bind } from "../event";
 import getAlign from "./align";
 import getVAlign from "./valign";
 import spreadsheetEvents from "../../core/spreadsheetEvents";
+import { makeIconItem } from "./makeIconItem";
+import { makeToggleItem } from "./makeToggleItem";
+import { getDropdownItem } from "./getDropdownItem";
+import makeDropdownBorder from "../dropdown_border";
+import { makeDropdownColor } from "../dropdown_color";
+import { makeDropdownFontSize } from "../dropdown_fontsize";
+import { makeDropdownFont } from "../dropdown_font";
+import { makeDropdownFormat } from "../dropdown_format";
+import { makeDropdownFormula } from "../dropdown_formula";
+import { makeDropdownAlign } from "../dropdown_align";
 
 function buildDivider() {
   return h("div", `${cssPrefix}-toolbar-divider`);
@@ -95,46 +105,81 @@ export default class Toolbar {
     this.widthFn = widthFn;
     this.isHide = isHide;
     const style = data.defaultStyle();
+
+    const getIconItem = makeIconItem(eventEmitter);
+    const getToggleItem = makeToggleItem(eventEmitter);
+
     this.items = [
       [
-        (this.undoEl = getUndo(eventEmitter)),
-        (this.redoEl = getRedo(eventEmitter)),
-        getPrint(eventEmitter),
-        (this.paintformatEl = getPaintFormat(eventEmitter)),
-        getClearFormat(eventEmitter),
-      ],
-      buildDivider(),
-      [(this.formatEl = getFormat(formats, eventEmitter))],
-      buildDivider(),
-      [
-        (this.fontEl = getFont(eventEmitter)),
-        (this.fontSizeEl = getFontSize(eventEmitter)),
+        (this.undoEl = getIconItem("undo", "Ctrl+Z")),
+        (this.redoEl = getIconItem("redo", "Ctrl+Y")),
+        getIconItem("print", "Ctrl+P"),
+        (this.paintformatEl = getToggleItem("paintformat")),
+        getIconItem("clearformat"),
       ],
       buildDivider(),
       [
-        (this.boldEl = getBold(eventEmitter)),
-        (this.italicEl = getItalic(eventEmitter)),
-        (this.underlineEl = getUnderline(eventEmitter)),
-        (this.strikeEl = getStrike(eventEmitter)),
-        (this.textColorEl = getTextColor(style.color, eventEmitter)),
+        (this.formatEl = getDropdownItem(
+          "format",
+          makeDropdownFormat(formats, eventEmitter),
+        )),
       ],
       buildDivider(),
       [
-        (this.fillColorEl = getFillColor(style.bgcolor, eventEmitter)),
-        getBorder(eventEmitter),
-        (this.mergeEl = getMerge(eventEmitter)),
+        (this.fontEl = getDropdownItem(
+          "font-name",
+          makeDropdownFont(eventEmitter),
+        )),
+        (this.fontSizeEl = getDropdownItem(
+          "font-size",
+          makeDropdownFontSize(eventEmitter),
+        )),
       ],
       buildDivider(),
       [
-        (this.alignEl = getAlign(style.align, eventEmitter)),
-        (this.valignEl = getVAlign(style.valign, eventEmitter)),
-        (this.textwrapEl = getTextWrap(eventEmitter)),
+        (this.boldEl = getToggleItem("font-bold", "Ctrl+B")),
+        (this.italicEl = getToggleItem("font-italic", "Ctrl+I")),
+        (this.underlineEl = getToggleItem("underline", "Ctrl+U")),
+        (this.strikeEl = getToggleItem("strike", "Ctrl+S")),
+        (this.textColorEl = getDropdownItem(
+          "color",
+          makeDropdownColor("color", style.color, eventEmitter),
+        )),
       ],
       buildDivider(),
       [
-        (this.freezeEl = getFreeze(eventEmitter)),
-        (this.autofilterEl = getAutofilter(eventEmitter)),
-        getFormula(eventEmitter),
+        (this.fillColorEl = getDropdownItem(
+          "bgcolor",
+          makeDropdownColor("bgcolor", style.bgcolor, eventEmitter),
+        )),
+        getDropdownItem("border", makeDropdownBorder(eventEmitter)),
+        (this.mergeEl = getToggleItem("merge")),
+      ],
+      buildDivider(),
+      [
+        (this.alignEl = getDropdownItem(
+          "align",
+          makeDropdownAlign(
+            ["left", "center", "right"],
+            style.align,
+            eventEmitter,
+          ),
+        )),
+        (this.valignEl = getDropdownItem(
+          "valign",
+          makeDropdownAlign(
+            ["top", "middle", "bottom"],
+            style.valign,
+            eventEmitter,
+          ),
+        )),
+        (this.textwrapEl = getToggleItem("textwrap")),
+      ],
+      buildDivider(),
+      [
+        (this.freezeEl = getToggleItem("freeze")),
+        (this.autofilterEl = getToggleItem("autofilter")),
+        getDropdownItem("formula", makeDropdownFormula(eventEmitter)),
         (this.moreEl = getMore()),
       ],
     ];
@@ -199,21 +244,21 @@ export default class Toolbar {
     this.undoEl.iconItem.setDisabled(!data.canUndo());
     this.redoEl.iconItem.setDisabled(!data.canRedo());
     this.mergeEl.toggleItem.setActive(data.canUnmerge());
-    this.mergeEl.setDisabled(!data.selector.multiple());
+    this.mergeEl.item.el.disabled(!data.selector.multiple());
     this.autofilterEl.toggleItem.setActive(!data.canAutofilter());
     // console.log('selectedCell:', style, cell);
     const { font, format } = style;
-    this.formatEl.setValue(format);
-    this.fontEl.setValue(font.name);
-    this.fontSizeEl.setValue(font.size);
+    this.formatEl.dropdown.setTitle(format);
+    this.fontEl.dropdown.dropdown.setTitle(font.name);
+    this.fontSizeEl.dropdown.dropdown.setTitle(font.size);
     this.boldEl.toggleItem.setActive(font.bold);
     this.italicEl.toggleItem.setActive(font.italic);
     this.underlineEl.toggleItem.setActive(style.underline);
     this.strikeEl.toggleItem.setActive(style.strike);
-    this.textColorEl.setValue(style.color);
-    this.fillColorEl.setValue(style.bgcolor);
-    this.alignEl.setValue(style.align);
-    this.valignEl.setValue(style.valign);
+    this.textColorEl.dropdown.setTitle(style.color);
+    this.fillColorEl.dropdown.setTitle(style.bgcolor);
+    this.alignEl.dropdown.setTitle(style.align);
+    this.valignEl.dropdown.setTitle(style.valign);
     this.textwrapEl.toggleItem.setActive(style.textwrap);
     // console.log('freeze is Active:', data.freezeIsActive());
     this.freezeEl.toggleItem.setActive(data.freezeIsActive());

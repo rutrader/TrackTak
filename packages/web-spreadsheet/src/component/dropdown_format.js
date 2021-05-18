@@ -3,7 +3,7 @@ import { h } from "./element";
 import { cssPrefix } from "../config";
 import spreadsheetEvents from "../core/spreadsheetEvents";
 
-export const getDropdownFormat = (tag, formats, eventEmitter) => {
+export const makeDropdownFormat = (formats, eventEmitter) => (tag) => {
   let nformats = Object.values(formats).slice(0);
 
   nformats.splice(2, 0, { key: "divider" });

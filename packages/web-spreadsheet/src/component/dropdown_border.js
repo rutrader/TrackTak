@@ -3,7 +3,7 @@ import BorderPalette, { getBorderPalette } from "./border_palette";
 import getIcon, { Icon } from "./icon";
 import spreadsheetEvents from "../core/spreadsheetEvents";
 
-const getDropdownBorder = (tag, eventEmitter) => {
+const makeDropdownBorder = (eventEmitter) => (tag) => {
   const icon = getIcon("border-all");
   const borderPalette = getBorderPalette(tag, eventEmitter);
 
@@ -24,7 +24,7 @@ const getDropdownBorder = (tag, eventEmitter) => {
   };
 };
 
-export default getDropdownBorder;
+export default makeDropdownBorder;
 
 export class DropdownBorder extends Dropdown {
   constructor() {

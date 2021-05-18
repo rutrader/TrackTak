@@ -6,7 +6,7 @@ import { HyperFormula } from "hyperformula";
 import getIcon from "./icon";
 import spreadsheetEvents from "../core/spreadsheetEvents";
 
-export const getDropdownFormula = (tag, eventEmitter) => {
+export const makeDropdownFormula = (eventEmitter) => (tag) => {
   const nformulas = HyperFormula.getRegisteredFunctionNames("enGB").map((it) =>
     h("div", `${cssPrefix}-item`)
       .on("click", () => {
