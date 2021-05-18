@@ -11,7 +11,7 @@ export const getToggleItem = (tag, eventEmitter) => {
   };
 
   const toggle = () => {
-    item.el.toggle();
+    return item.el.toggle();
   };
 
   const setActive = (active) => {
@@ -25,6 +25,7 @@ export const getToggleItem = (tag, eventEmitter) => {
   return {
     active,
     setActive,
+    toggle,
     item,
     icon,
   };

@@ -1,4 +1,20 @@
-import ToggleItem from "./toggle_item";
+import ToggleItem, { getToggleItem } from "./toggle_item";
+
+export const getMerge = (eventEmitter) => {
+  const tag = "merge";
+  const toggleItem = getToggleItem(tag, eventEmitter);
+  const item = toggleItem.item;
+
+  const setDisabled = (disabled) => {
+    item.el.disabled(disabled);
+  };
+
+  return {
+    item,
+    toggleItem,
+    setDisabled,
+  };
+};
 
 export default class Merge extends ToggleItem {
   constructor(formats) {

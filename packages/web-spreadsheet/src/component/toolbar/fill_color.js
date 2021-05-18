@@ -1,5 +1,27 @@
 import DropdownItem from "./dropdown_item";
-import DropdownColor from "../dropdown_color";
+import DropdownColor, { getDropdownColor } from "../dropdown_color";
+import { getItem } from "./item";
+
+export const getFillColor = (color, eventEmitter) => {
+  let value = color;
+  const tag = "bgcolor";
+  const item = getItem(tag);
+  const dropdownColor = getDropdownColor(tag, tag, value, eventEmitter);
+
+  item.el.child(dropdownColor.dropdown.el);
+
+  const setValue = (c) => {
+    dropdownColor.setTitle(c);
+    value = c;
+  };
+
+  return {
+    value,
+    item,
+    dropdownColor,
+    setValue,
+  };
+};
 
 export default class FillColor extends DropdownItem {
   constructor(formats, color) {

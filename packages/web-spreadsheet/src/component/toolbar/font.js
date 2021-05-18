@@ -29,7 +29,6 @@ export default class Font extends DropdownItem {
   }
 
   getValue(it) {
-    debugger;
     return it.key;
   }
 

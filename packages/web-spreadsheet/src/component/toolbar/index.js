@@ -3,21 +3,21 @@
 import Align from "./align";
 import Valign from "./valign";
 import Autofilter from "./autofilter";
-import Bold from "./bold";
-import Italic from "./italic";
-import Strike from "./strike";
-import Underline from "./underline";
+import Bold, { getBold } from "./bold";
+import Italic, { getItalic } from "./italic";
+import Strike, { getStrike } from "./strike";
+import Underline, { getUnderline } from "./underline";
 import Border, { getBorder } from "./border";
 import Clearformat, { getClearFormat } from "./clearformat";
 import Paintformat, { getPaintFormat } from "./paintformat";
-import TextColor from "./text_color";
-import FillColor from "./fill_color";
+import TextColor, { getTextColor } from "./text_color";
+import FillColor, { getFillColor } from "./fill_color";
 import FontSize, { getFontSize } from "./font_size";
 import Font, { getFont } from "./font";
 import Format, { getFormat } from "./format";
 import Formula from "./formula";
 import Freeze from "./freeze";
-import Merge from "./merge";
+import Merge, { getMerge } from "./merge";
 import Redo, { getRedo } from "./redo";
 import Undo, { getUndo } from "./undo";
 import Print, { getPrint } from "./print";
@@ -29,6 +29,7 @@ import { cssPrefix } from "../../config";
 import { bind } from "../event";
 import getAlign from "./align";
 import getVAlign from "./valign";
+import spreadsheetEvents from "../../core/spreadsheetEvents";
 
 function buildDivider() {
   return h("div", `${cssPrefix}-toolbar-divider`);
@@ -90,6 +91,7 @@ function moreResize() {
 export default class Toolbar {
   constructor(data, widthFn, formats, eventEmitter, isHide = false) {
     this.data = data;
+    this.eventEmitter = eventEmitter;
     this.change = () => {};
     this.widthFn = widthFn;
     this.isHide = isHide;
@@ -111,17 +113,17 @@ export default class Toolbar {
       ],
       buildDivider(),
       [
-        (this.boldEl = new Bold(formats)),
-        (this.italicEl = new Italic(formats)),
-        (this.underlineEl = new Underline(formats)),
-        (this.strikeEl = new Strike(formats)),
-        (this.textColorEl = new TextColor(formats, style.color)),
+        (this.boldEl = getBold(eventEmitter)),
+        (this.italicEl = getItalic(eventEmitter)),
+        (this.underlineEl = getUnderline(eventEmitter)),
+        (this.strikeEl = getStrike(eventEmitter)),
+        (this.textColorEl = getTextColor(style.color, eventEmitter)),
       ],
       buildDivider(),
       [
-        (this.fillColorEl = new FillColor(formats, style.bgcolor)),
+        (this.fillColorEl = getFillColor(style.bgcolor, eventEmitter)),
         getBorder(eventEmitter),
-        (this.mergeEl = new Merge(formats)),
+        (this.mergeEl = getMerge(eventEmitter)),
       ],
       buildDivider(),
       [
@@ -185,10 +187,6 @@ export default class Toolbar {
     this.paintformatEl.toggleItem.toggle();
   }
 
-  trigger(type) {
-    this[`${type}El`].click();
-  }
-
   resetData(data) {
     this.data = data;
     this.reset();
@@ -201,21 +199,20 @@ export default class Toolbar {
     // console.log('canUndo:', data.canUndo());
     this.undoEl.iconItem.setDisabled(!data.canUndo());
     this.redoEl.iconItem.setDisabled(!data.canRedo());
-    this.mergeEl.setState(data.canUnmerge(), !data.selector.multiple());
+    this.mergeEl.toggleItem.setActive(data.canUnmerge());
+    this.mergeEl.setDisabled(!data.selector.multiple());
     this.autofilterEl.setState(!data.canAutofilter());
-    // this.mergeEl.disabled();
     // console.log('selectedCell:', style, cell);
     const { font, format } = style;
     this.formatEl.setValue(format);
-    this.formatEld.setState(format);
     this.fontEl.setValue(font.name);
     this.fontSizeEl.setValue(font.size);
-    this.boldEl.setState(font.bold);
-    this.italicEl.setState(font.italic);
-    this.underlineEl.setState(style.underline);
-    this.strikeEl.setState(style.strike);
-    this.textColorEl.setState(style.color);
-    this.fillColorEl.setState(style.bgcolor);
+    this.boldEl.toggleItem.setActive(font.bold);
+    this.italicEl.toggleItem.setActive(font.italic);
+    this.underlineEl.toggleItem.setActive(style.underline);
+    this.strikeEl.toggleItem.setActive(style.strike);
+    this.textColorEl.setValue(style.color);
+    this.fillColorEl.setValue(style.bgcolor);
     this.alignEl.setValue(style.align);
     this.valignEl.setValue(style.valign);
     this.textwrapEl.toggleItem.setActive(style.textwrap);

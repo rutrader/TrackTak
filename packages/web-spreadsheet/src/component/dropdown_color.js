@@ -12,10 +12,14 @@ export const getDropdownColor = (tag, iconName, color, eventEmitter) => {
   eventEmitter.on(
     spreadsheetEvents.toolbar.colorPaletteChange,
     (_, bgColor) => {
-      icon.css("border-color", bgColor);
-      dropdown.hide();
+      setTitle(bgColor);
     },
   );
+
+  const setTitle = (color) => {
+    dropdown.title.css("border-color", color);
+    dropdown.hide();
+  };
 
   const dropdown = getDropdown(
     icon,
@@ -28,6 +32,7 @@ export const getDropdownColor = (tag, iconName, color, eventEmitter) => {
   return {
     dropdown,
     colorPalette,
+    setTitle,
   };
 };
 

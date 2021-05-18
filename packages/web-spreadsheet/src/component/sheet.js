@@ -572,6 +572,7 @@ function sheetInitEvents() {
     toolbar,
     modalValidation,
     sortFilter,
+    eventEmitter,
   } = this;
 
   // overlayer
@@ -759,9 +760,22 @@ function sheetInitEvents() {
           cut.call(this);
           evt.preventDefault();
           break;
+        case 83:
+          // ctrl + s
+          this.eventEmitter.emit(
+            spreadsheetEvents.toolbar.toggleItem,
+            "strike",
+            this.toolbar.strikeEl.toggleItem.toggle(),
+          );
+          evt.preventDefault();
+          break;
         case 85:
           // ctrl + u
-          toolbar.trigger("underline");
+          this.eventEmitter.emit(
+            spreadsheetEvents.toolbar.toggleItem,
+            "underline",
+            this.toolbar.underlineEl.toggleItem.toggle(),
+          );
           evt.preventDefault();
           break;
         case 86:
@@ -796,11 +810,19 @@ function sheetInitEvents() {
           break;
         case 66:
           // ctrl + B
-          toolbar.trigger("bold");
+          this.eventEmitter.emit(
+            spreadsheetEvents.toolbar.toggleItem,
+            "font-bold",
+            this.toolbar.boldEl.toggleItem.toggle(),
+          );
           break;
         case 73:
           // ctrl + I
-          toolbar.trigger("italic");
+          this.eventEmitter.emit(
+            spreadsheetEvents.toolbar.toggleItem,
+            "font-italic",
+            this.toolbar.italicEl.toggleItem.toggle(),
+          );
           break;
         default:
           break;
@@ -878,6 +900,7 @@ function sheetInitEvents() {
 export default class Sheet {
   constructor(targetEl, data, hyperFormula, formats, eventEmitter) {
     this.eventMap = new Map();
+    this.eventEmitter = eventEmitter;
     const { view, showToolbar, showContextmenu } = data.settings;
     this.el = h("div", `${cssPrefix}-sheet`);
     this.toolbar = new Toolbar(

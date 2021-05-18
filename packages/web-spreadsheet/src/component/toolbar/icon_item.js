@@ -20,9 +20,9 @@ export const getIconItem = (tag, eventEmitter) => {
   };
 };
 
-export const withShortcut = ({ item, ...iconItem }, shortcut) => {
+export const withShortcut = ({ item, ...baseItem }, shortcut) => {
   return {
-    ...iconItem,
+    ...baseItem,
     item: {
       ...item,
       shortcut: (item.tip += ` (${shortcut})`),
