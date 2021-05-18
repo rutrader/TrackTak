@@ -1,6 +1,6 @@
-import Dropdown, { getDropdown } from "./dropdown";
-import ColorPalette, { getColorPalette } from "./color_palette";
-import getIcon, { Icon } from "./icon";
+import { getDropdown } from "./dropdown";
+import { getColorPalette } from "./getColorPalette";
+import getIcon from "./getIcon";
 import spreadsheetEvents from "../core/spreadsheetEvents";
 
 export const makeDropdownColor = (iconName, color, eventEmitter) => (tag) => {
@@ -35,22 +35,3 @@ export const makeDropdownColor = (iconName, color, eventEmitter) => (tag) => {
     setTitle,
   };
 };
-
-export default class DropdownColor extends Dropdown {
-  constructor(iconName, color) {
-    const icon = new Icon(iconName)
-      .css("height", "16px")
-      .css("border-bottom", `3px solid ${color}`);
-    const colorPalette = new ColorPalette();
-    colorPalette.change = (v) => {
-      this.setTitle(v);
-      this.change(v);
-    };
-    super(icon, "auto", false, "bottom-left", colorPalette.el);
-  }
-
-  setTitle(color) {
-    this.title.css("border-color", color);
-    this.hide();
-  }
-}

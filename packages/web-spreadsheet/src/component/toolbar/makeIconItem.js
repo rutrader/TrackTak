@@ -1,4 +1,4 @@
-import { getIconItem, withShortcut } from "./icon_item";
+import { getIconItem, withShortcut } from "./getIconItem";
 
 export const makeIconItem = (eventEmitter) => (tag, shortcut) => {
   const iconItem = withShortcut(getIconItem(tag, eventEmitter), shortcut);

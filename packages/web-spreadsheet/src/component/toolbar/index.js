@@ -1,45 +1,18 @@
-/* global window */
-
-import Align from "./align";
-import Valign from "./valign";
-import Autofilter, { getAutofilter } from "./autofilter";
-import Bold, { getBold } from "./bold";
-import Italic, { getItalic } from "./italic";
-import Strike, { getStrike } from "./strike";
-import Underline, { getUnderline } from "./underline";
-import Border, { getBorder } from "./border";
-import Clearformat, { getClearFormat } from "./clearformat";
-import Paintformat, { getPaintFormat } from "./paintformat";
-import TextColor, { getTextColor } from "./text_color";
-import FillColor, { getFillColor } from "./fill_color";
-import FontSize, { getFontSize } from "./font_size";
-import Font, { getFont } from "./font";
-import Format, { getFormat } from "./format";
-import Formula, { getFormula } from "./formula";
-import Freeze, { getFreeze } from "./freeze";
-import Merge, { getMerge } from "./merge";
-import Redo, { getRedo } from "./redo";
-import Undo, { getUndo } from "./undo";
-import Print, { getPrint } from "./print";
-import Textwrap, { getTextWrap } from "./textwrap";
-import More, { getMore } from "./more";
+import { getMore } from "./more";
 
 import { h } from "../element";
 import { cssPrefix } from "../../config";
 import { bind } from "../event";
-import getAlign from "./align";
-import getVAlign from "./valign";
-import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { makeIconItem } from "./makeIconItem";
 import { makeToggleItem } from "./makeToggleItem";
 import { getDropdownItem } from "./getDropdownItem";
-import makeDropdownBorder from "../dropdown_border";
-import { makeDropdownColor } from "../dropdown_color";
-import { makeDropdownFontSize } from "../dropdown_fontsize";
-import { makeDropdownFont } from "../dropdown_font";
-import { makeDropdownFormat } from "../dropdown_format";
-import { makeDropdownFormula } from "../dropdown_formula";
-import { makeDropdownAlign } from "../dropdown_align";
+import { makeDropdownBorder } from "../makeDropdownBorder";
+import { makeDropdownColor } from "../makeDropdownColor";
+import { makeDropdownFontSize } from "../makeDropdownFontSize";
+import { makeDropdownFont } from "../makeDropdownFont";
+import { makeDropdownFormat } from "../makeDropdownFormat";
+import { makeDropdownFormula } from "../makeDropdownFormula";
+import { makeDropdownAlign } from "../makeDropdownAlign";
 
 function buildDivider() {
   return h("div", `${cssPrefix}-toolbar-divider`);
@@ -88,8 +61,8 @@ function moreResize() {
     }
   });
   btns.html("").children(...list1);
-  moreEl.dropdownMore.moreBtns.html("").children(...list2);
-  moreEl.dropdownMore.dropdown.contentEl.css("width", `${sumWidth2}px`);
+  moreEl.dropdown.dropdown.moreBtns.html("").children(...list2);
+  moreEl.dropdown.dropdown.dropdown.contentEl.css("width", `${sumWidth2}px`);
   if (list2.length > 0) {
     moreEl.show();
   } else {
@@ -240,13 +213,11 @@ export default class Toolbar {
     if (this.isHide) return;
     const { data } = this;
     const style = data.getSelectedCellStyle();
-    // console.log('canUndo:', data.canUndo());
     this.undoEl.iconItem.setDisabled(!data.canUndo());
     this.redoEl.iconItem.setDisabled(!data.canRedo());
     this.mergeEl.toggleItem.setActive(data.canUnmerge());
     this.mergeEl.item.el.disabled(!data.selector.multiple());
     this.autofilterEl.toggleItem.setActive(!data.canAutofilter());
-    // console.log('selectedCell:', style, cell);
     const { font, format } = style;
     this.formatEl.dropdown.setTitle(format);
     this.fontEl.dropdown.dropdown.setTitle(font.name);
@@ -260,7 +231,6 @@ export default class Toolbar {
     this.alignEl.dropdown.setTitle(style.align);
     this.valignEl.dropdown.setTitle(style.valign);
     this.textwrapEl.toggleItem.setActive(style.textwrap);
-    // console.log('freeze is Active:', data.freezeIsActive());
     this.freezeEl.toggleItem.setActive(data.freezeIsActive());
   }
 }

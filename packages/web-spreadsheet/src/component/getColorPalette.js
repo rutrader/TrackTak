@@ -91,14 +91,6 @@ const standardColors = [
   "#7030a0",
 ];
 
-function buildTd(bgcolor) {
-  return h("td", "").child(
-    h("div", `${cssPrefix}-color-palette-cell`)
-      .on("click.stop", () => this.change(bgcolor))
-      .css("background-color", bgcolor),
-  );
-}
-
 export const getColorPalette = (tag, eventEmitter) => {
   function buildTd(bgcolor) {
     return h("td", "").child(
@@ -135,26 +127,3 @@ export const getColorPalette = (tag, eventEmitter) => {
     el,
   };
 };
-
-export default class ColorPalette {
-  constructor() {
-    this.el = h("div", `${cssPrefix}-color-palette`);
-    this.change = () => {};
-    const table = h("table", "").children(
-      h("tbody", "").children(
-        h("tr", `${cssPrefix}-theme-color-placeholders`).children(
-          ...themeColorPlaceHolders.map((color) => buildTd.call(this, color)),
-        ),
-        ...themeColors.map((it) =>
-          h("tr", `${cssPrefix}-theme-colors`).children(
-            ...it.map((color) => buildTd.call(this, color)),
-          ),
-        ),
-        h("tr", `${cssPrefix}-standard-colors`).children(
-          ...standardColors.map((color) => buildTd.call(this, color)),
-        ),
-      ),
-    );
-    this.el.child(table);
-  }
-}

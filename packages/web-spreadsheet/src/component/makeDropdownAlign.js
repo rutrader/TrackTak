@@ -1,7 +1,7 @@
 import { getDropdown } from "./dropdown";
 import { h } from "./element";
 import { cssPrefix } from "../config";
-import getIcon from "./icon";
+import getIcon from "./getIcon";
 import spreadsheetEvents from "../core/spreadsheetEvents";
 
 function buildItemWithIcon(iconName) {

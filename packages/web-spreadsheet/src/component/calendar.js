@@ -1,6 +1,6 @@
 import { h } from "./element";
 import { t } from "../locale/locale";
-import getIcon from "./icon";
+import getIcon from "./getIcon";
 
 function addMonth(date, step) {
   date.setMonth(date.getMonth() + step);

@@ -1,7 +1,7 @@
 /* global document */
 import { h } from "./element";
 import { cssPrefix } from "../config";
-import getIcon from "./icon";
+import getIcon from "./getIcon";
 
 export function xtoast(title, content) {
   const el = h("div", `${cssPrefix}-toast`);

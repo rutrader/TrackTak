@@ -5,7 +5,7 @@ import FormInput from "./form_input";
 import Dropdown from "./dropdown";
 import { tf } from "../locale/locale";
 import spreadsheetEvents from "../core/spreadsheetEvents";
-import getIcon from "./icon";
+import getIcon from "./getIcon";
 
 class DropdownMore extends Dropdown {
   constructor(click) {
