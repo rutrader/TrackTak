@@ -2,7 +2,7 @@
 
 import Align from "./align";
 import Valign from "./valign";
-import Autofilter from "./autofilter";
+import Autofilter, { getAutofilter } from "./autofilter";
 import Bold, { getBold } from "./bold";
 import Italic, { getItalic } from "./italic";
 import Strike, { getStrike } from "./strike";
@@ -15,8 +15,8 @@ import FillColor, { getFillColor } from "./fill_color";
 import FontSize, { getFontSize } from "./font_size";
 import Font, { getFont } from "./font";
 import Format, { getFormat } from "./format";
-import Formula from "./formula";
-import Freeze from "./freeze";
+import Formula, { getFormula } from "./formula";
+import Freeze, { getFreeze } from "./freeze";
 import Merge, { getMerge } from "./merge";
 import Redo, { getRedo } from "./redo";
 import Undo, { getUndo } from "./undo";
@@ -133,9 +133,9 @@ export default class Toolbar {
       ],
       buildDivider(),
       [
-        (this.freezeEl = new Freeze(formats)),
-        (this.autofilterEl = new Autofilter(formats)),
-        (this.formulaEl = new Formula(formats)),
+        (this.freezeEl = getFreeze(eventEmitter)),
+        (this.autofilterEl = getAutofilter(eventEmitter)),
+        getFormula(eventEmitter),
         (this.moreEl = new More(formats)),
       ],
     ];
@@ -201,7 +201,7 @@ export default class Toolbar {
     this.redoEl.iconItem.setDisabled(!data.canRedo());
     this.mergeEl.toggleItem.setActive(data.canUnmerge());
     this.mergeEl.setDisabled(!data.selector.multiple());
-    this.autofilterEl.setState(!data.canAutofilter());
+    this.autofilterEl.toggleItem.setActive(!data.canAutofilter());
     // console.log('selectedCell:', style, cell);
     const { font, format } = style;
     this.formatEl.setValue(format);
@@ -217,6 +217,6 @@ export default class Toolbar {
     this.valignEl.setValue(style.valign);
     this.textwrapEl.toggleItem.setActive(style.textwrap);
     // console.log('freeze is Active:', data.freezeIsActive());
-    this.freezeEl.setState(data.freezeIsActive());
+    this.freezeEl.toggleItem.setActive(data.freezeIsActive());
   }
 }

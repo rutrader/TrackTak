@@ -15,6 +15,7 @@ const spreadsheetEvents = {
     toggleItem: "toggle-item",
     clickIcon: "click-icon",
     formatChange: "format-change",
+    formulaSet: "formula-set",
   },
 };
 
