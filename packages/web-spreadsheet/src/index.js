@@ -1,7 +1,7 @@
 import { h } from "./component/element";
 import DataProxy from "./core/data_proxy";
 import Sheet from "./component/sheet";
-import Bottombar from "./component/bottombar";
+import { getBottombar } from "./component/bottombar";
 import { cssPrefix } from "./config";
 import { locale, tf } from "./locale/locale";
 import "./index.less";
@@ -94,7 +94,7 @@ const getSpreadsheet = (element, options) => {
     datas[index].name = value;
   });
 
-  const bottombar = new Bottombar(eventEmitter);
+  const bottombar = getBottombar(eventEmitter);
 
   const addSheet = (
     name = `sheet${datas.length + 1}`,

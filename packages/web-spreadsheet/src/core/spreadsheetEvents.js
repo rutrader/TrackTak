@@ -4,6 +4,7 @@ const spreadsheetEvents = {
     selectSheet: "select-sheet",
     deleteSheet: "delete-sheet",
     updateSheet: "update-sheet",
+    clickDropdownMore: "click-dropdown-more",
   },
   toolbar: {
     alignChange: "align-change",
