@@ -9,6 +9,9 @@ const spreadsheetEvents = {
   rightClickMenu: {
     clickContextMenu: "rcm-click-context-menu",
   },
+  editor: {
+    change: "e_change",
+  },
   toolbar: {
     alignChange: "tb-align-change",
     dropdownLineChange: "tb-dropdown-line-change",

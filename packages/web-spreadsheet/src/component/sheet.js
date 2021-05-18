@@ -5,7 +5,7 @@ import { t } from "../locale/locale";
 import Resizer from "./resizer";
 import Scrollbar from "./scrollbar";
 import Selector from "./selector";
-import Editor from "./editor";
+import { getEditor } from "./editor";
 import Print from "./print";
 import { getContextMenu } from "./contextmenu";
 import Table from "./table";
@@ -682,9 +682,9 @@ function sheetInitEvents() {
     horizontalScrollbarMove.call(this, distance, evt);
   };
   // editor
-  editor.change = (state, itext) => {
+  eventEmitter.on(spreadsheetEvents.editor.change, (state, itext) => {
     dataSetCellText.call(this, itext, state);
-  };
+  });
   // modal validation
   modalValidation.change = (action, ...args) => {
     if (action === "save") {
@@ -932,11 +932,7 @@ export default class Sheet {
         title: () => t(`formula.${escapedFormulaName}`) || formulaName,
       };
     });
-    this.editor = new Editor(
-      formulaSuggestions,
-      () => this.getTableOffset(),
-      data,
-    );
+    this.editor = getEditor(formulaSuggestions, data, eventEmitter);
     this.hyperFormula = hyperFormula;
     // data validation
     this.modalValidation = new ModalValidation();
