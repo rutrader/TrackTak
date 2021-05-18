@@ -9,8 +9,8 @@ import getIcon from "./getIcon";
 
 const menuItems = [
   {
+    key: "delete",
     title: tf("contextmenu.deleteSheet"),
-    eventName: spreadsheetEvents.bottombar.deleteSheet,
   },
 ];
 
@@ -60,7 +60,10 @@ const getContextMenu = (eventEmitter) => {
     return h("div", `${cssPrefix}-item`)
       .child(item.title())
       .on("click", () => {
-        eventEmitter.emit(item.eventName);
+        eventEmitter.emit(
+          spreadsheetEvents.bottombar.clickContextMenu,
+          item.key,
+        );
         hide();
       });
   }

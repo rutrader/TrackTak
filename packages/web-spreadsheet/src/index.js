@@ -86,8 +86,10 @@ const getSpreadsheet = (element, options) => {
     sheet.resetData(d);
   });
 
-  eventEmitter.on(spreadsheetEvents.bottombar.deleteSheet, () => {
-    deleteSheet();
+  eventEmitter.on(spreadsheetEvents.bottombar.clickContextMenu, (key) => {
+    if (key === "delete") {
+      deleteSheet();
+    }
   });
 
   eventEmitter.on(spreadsheetEvents.bottombar.updateSheet, (index, value) => {

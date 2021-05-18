@@ -7,7 +7,7 @@ import Scrollbar from "./scrollbar";
 import Selector from "./selector";
 import Editor from "./editor";
 import Print from "./print";
-import ContextMenu from "./contextmenu";
+import { getContextMenu } from "./contextmenu";
 import Table from "./table";
 import Toolbar from "./toolbar/index";
 import ModalValidation from "./modal_validation";
@@ -693,9 +693,8 @@ function sheetInitEvents() {
       this.data.removeValidation();
     }
   };
-  // contextmenu
-  contextMenu.itemClick = (type) => {
-    // console.log('type:', type);
+
+  eventEmitter.on(spreadsheetEvents.rightClickMenu.clickContextMenu, (type) => {
     if (type === "validation") {
       modalValidation.setValue(this.data.getSelectedValidation());
     } else if (type === "copy") {
@@ -713,7 +712,7 @@ function sheetInitEvents() {
     } else {
       insertDeleteRowColumn.call(this, type);
     }
-  };
+  });
 
   bind(window, "resize", () => {
     this.reload();
@@ -942,7 +941,11 @@ export default class Sheet {
     // data validation
     this.modalValidation = new ModalValidation();
     // contextMenu
-    this.contextMenu = new ContextMenu(() => this.getRect(), !showContextmenu);
+    this.contextMenu = getContextMenu(
+      () => this.getRect(),
+      eventEmitter,
+      !showContextmenu,
+    );
     // selector
     this.selector = new Selector(data);
     this.overlayerCEl = h("div", `${cssPrefix}-overlayer-content`).children(
