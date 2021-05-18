@@ -20,6 +20,12 @@ const spreadsheetEvents = {
     finished: "cr_finished",
     unhide: "cr_unhide",
   },
+  verticalScrollbar: {
+    move: "vsb_move",
+  },
+  horizontalScrollbar: {
+    move: "hsb_move",
+  },
   toolbar: {
     alignChange: "tb-align-change",
     dropdownLineChange: "tb-dropdown-line-change",

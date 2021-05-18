@@ -3,7 +3,7 @@ import { h } from "./element";
 import { bind, mouseMoveUp, bindTouch } from "./event";
 import { t } from "../locale/locale";
 import Resizer, { getResizer } from "./resizer";
-import Scrollbar from "./scrollbar";
+import Scrollbar, { getScrollbar } from "./scrollbar";
 import Selector from "./selector";
 import { getEditor } from "./editor";
 import Print from "./print";
@@ -676,13 +676,17 @@ function sheetInitEvents() {
     unhideRowsOrCols.call(this, "col", index);
   });
 
-  // scrollbar move callback
-  verticalScrollbar.moveFn = (distance, evt) => {
+  eventEmitter.on(spreadsheetEvents.verticalScrollbar.move, (distance, evt) => {
     verticalScrollbarMove.call(this, distance, evt);
-  };
-  horizontalScrollbar.moveFn = (distance, evt) => {
-    horizontalScrollbarMove.call(this, distance, evt);
-  };
+  });
+
+  eventEmitter.on(
+    spreadsheetEvents.horizontalScrollbar.move,
+    (distance, evt) => {
+      horizontalScrollbarMove.call(this, distance, evt);
+    },
+  );
+
   // editor
   eventEmitter.on(spreadsheetEvents.editor.change, (state, itext) => {
     dataSetCellText.call(this, itext, state);
@@ -929,8 +933,8 @@ export default class Sheet {
       true,
     );
     // scrollbar
-    this.verticalScrollbar = new Scrollbar(true);
-    this.horizontalScrollbar = new Scrollbar(false);
+    this.verticalScrollbar = getScrollbar(eventEmitter, true);
+    this.horizontalScrollbar = getScrollbar(eventEmitter, false);
     // editor
     const formulaSuggestions = HyperFormula.getRegisteredFunctionNames(
       "enGB",
