@@ -1,4 +1,3 @@
-/* global window */
 export function bind(target, name, fn) {
   target.addEventListener(name, fn);
 }

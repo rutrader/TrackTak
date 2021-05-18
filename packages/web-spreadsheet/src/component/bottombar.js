@@ -1,7 +1,7 @@
 import { h } from "./element";
 import { bindClickoutside, unbindClickoutside } from "./event";
 import { cssPrefix } from "../config";
-import FormInput from "./form_input";
+import { getFormInput } from "./form_input";
 import { getDropdown } from "./getDropdown";
 import { tf } from "../locale/locale";
 import spreadsheetEvents from "../core/spreadsheetEvents";
@@ -99,7 +99,7 @@ export const getBottombar = (eventEmitter) => {
       })
       .on("dblclick", () => {
         const v = item.html();
-        const input = new FormInput("auto", "");
+        const input = getFormInput("auto", "");
         input.val(v);
         input.input.on("blur", ({ target }) => {
           const { value } = target;
