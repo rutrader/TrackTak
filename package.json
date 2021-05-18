@@ -34,6 +34,7 @@
     "rimraf": "^3.0.2"
   },
   "dependencies": {
-    "@tracktak/intrinsic-valuations": "file:packages\\dcf"
+    "@tracktak/intrinsic-valuations": "file:packages\\dcf",
+    "react-responsive-carousel": "^3.2.18"
   }
 }
