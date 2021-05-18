@@ -22,7 +22,7 @@ import Redo, { getRedo } from "./redo";
 import Undo, { getUndo } from "./undo";
 import Print, { getPrint } from "./print";
 import Textwrap, { getTextWrap } from "./textwrap";
-import More from "./more";
+import More, { getMore } from "./more";
 
 import { h } from "../element";
 import { cssPrefix } from "../../config";
@@ -61,7 +61,6 @@ function initBtns2() {
 
 function moreResize() {
   const { el, btns, moreEl, btns2 } = this;
-  const { moreBtns, contentEl } = moreEl.dd;
   el.css("width", `${this.widthFn() - 60}px`);
   const elBox = el.box();
 
@@ -79,8 +78,8 @@ function moreResize() {
     }
   });
   btns.html("").children(...list1);
-  moreBtns.html("").children(...list2);
-  contentEl.css("width", `${sumWidth2}px`);
+  moreEl.dropdownMore.moreBtns.html("").children(...list2);
+  moreEl.dropdownMore.dropdown.contentEl.css("width", `${sumWidth2}px`);
   if (list2.length > 0) {
     moreEl.show();
   } else {
@@ -136,7 +135,7 @@ export default class Toolbar {
         (this.freezeEl = getFreeze(eventEmitter)),
         (this.autofilterEl = getAutofilter(eventEmitter)),
         getFormula(eventEmitter),
-        (this.moreEl = new More(formats)),
+        (this.moreEl = getMore()),
       ],
     ];
 
