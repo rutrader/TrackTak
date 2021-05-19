@@ -1,4 +1,3 @@
-/* global window */
 import { h } from "./element";
 import { bind, mouseMoveUp, bindTouch } from "./event";
 import { t } from "../locale/locale";
