@@ -29,6 +29,7 @@ const duplicatePackageModules = [
   "gatsby",
   "gatsby-plugin-anchor-links",
   "hyperformula",
+  "lodash-es",
 ];
 
 const alias = {
