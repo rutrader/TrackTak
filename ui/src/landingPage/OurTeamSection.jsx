@@ -41,7 +41,7 @@ const OurTeamSection = () => {
               visibility: "visible",
               animationDelay: "0.2s",
               animationName: "fadeInDown",
-              fontSize: theme.fontSize.fontSizeMain,
+              fontSize: theme.typography.fontSize3,
               fontWeight: "bold",
             }}
             color="primary"
