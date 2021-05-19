@@ -58,6 +58,6 @@
   "dependencies": {
     "events": "^3.3.0",
     "hyperformula": "^0.6.0",
-    "lodash-es": "^4.17.20"
+    "lodash": "^4.17.20"
   }
 }
