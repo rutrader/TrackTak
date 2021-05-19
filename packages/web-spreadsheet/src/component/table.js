@@ -355,7 +355,8 @@ class Table {
     renderContent.call(this, viewRange, fw, fh, -x, -y);
     renderFixedHeaders.call(this, "all", viewRange, fw, fh, tx, ty);
     renderFixedLeftTopCell.call(this, fw, fh);
-    const [fri, fci] = data.freeze;
+
+    const [fri, fci] = data.getFreeze();
     if (fri > 0 || fci > 0) {
       // 2
       if (fri > 0) {

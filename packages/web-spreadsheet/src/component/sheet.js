@@ -412,7 +412,7 @@ export const getSheet = (
   }
 
   function sheetFreeze() {
-    const [ri, ci] = data.freeze;
+    const [ri, ci] = data.getFreeze();
     if (ri > 0 || ci > 0) {
       const fwidth = data.freezeTotalWidth();
       const fheight = data.freezeTotalHeight();
@@ -473,7 +473,7 @@ export const getSheet = (
   }
 
   function autofilter() {
-    data.autofilter();
+    data.changeAutofilter();
     sheetReset();
   }
 
@@ -622,11 +622,11 @@ export const getSheet = (
     if (type === "insert-row") {
       data.insert("row");
     } else if (type === "delete-row") {
-      data.delete("row");
+      data.deleteData("row");
     } else if (type === "insert-column") {
       data.insert("column");
     } else if (type === "delete-column") {
-      data.delete("column");
+      data.deleteData("column");
     } else if (type === "delete-cell") {
       data.deleteCell();
     } else if (type === "delete-cell-format") {

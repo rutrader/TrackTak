@@ -1,5 +1,5 @@
 import { h } from "./component/element";
-import DataProxy from "./core/data_proxy";
+import { getDataProxy } from "./core/data_proxy";
 import { getSheet } from "./component/sheet";
 import { getBottombar } from "./component/bottombar";
 import { cssPrefix } from "./config";
@@ -103,7 +103,7 @@ const getSpreadsheet = (element, options) => {
     active = true,
     options = newOptions,
   ) => {
-    const data = new DataProxy(name, options, hyperFormula);
+    const data = getDataProxy(name, options, hyperFormula);
 
     data.change(sheet);
 

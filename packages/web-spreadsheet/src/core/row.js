@@ -262,7 +262,7 @@ class Rows {
     this.len += n;
   }
 
-  delete(sri, eri) {
+  deleteRow(sri, eri) {
     const n = eri - sri + 1;
     const ndata = {};
     this.each((ri, row) => {
