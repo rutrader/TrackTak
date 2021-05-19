@@ -1,7 +1,7 @@
 import { h } from "./element";
 import { cssPrefix } from "../config";
 import getDraw from "../canvas/draw";
-import { renderCell } from "./table";
+// import { renderCell } from "./table";
 import { t } from "../locale/locale";
 import getButton from "./button";
 
@@ -158,7 +158,7 @@ export default class Print {
         th += rh;
         if (th < iheight) {
           for (let ci = 0; ci <= cr.eci; ci += 1) {
-            renderCell(draw, data, ri, ci, yoffset);
+            // renderCell(draw, data, ri, ci, yoffset);
             mViewRange.eci = ci;
           }
         } else {
@@ -174,7 +174,7 @@ export default class Print {
       if (scale < 1) draw.scale(scale, scale);
       const yof = yoffset;
       data.eachMergesInView(mViewRange, ({ sri, sci }) => {
-        renderCell(draw, data, sri, sci, yof);
+        // renderCell(draw, data, sri, sci, yof);
       });
       draw.restore();
 

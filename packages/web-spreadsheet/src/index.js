@@ -152,12 +152,12 @@ const getSpreadsheet = (element, options) => {
   };
 
   const showFormulas = () => {
-    sheet.table.calculateFormulas = false;
+    sheet.table.setCalculateFormulas(false);
     reRender();
   };
 
   const hideFormulas = () => {
-    sheet.table.calculateFormulas = true;
+    sheet.table.setCalculateFormulas(true);
     reRender();
   };
 

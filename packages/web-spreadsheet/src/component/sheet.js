@@ -7,7 +7,7 @@ import Selector from "./selector";
 import { getEditor } from "./editor";
 import Print from "./print";
 import { getContextMenu } from "./contextmenu";
-import Table from "./table";
+import { getTable } from "./table";
 import Toolbar from "./toolbar/index";
 import ModalValidation from "./modal_validation";
 import SortFilter from "./sort_filter";
@@ -183,7 +183,7 @@ export const getSheet = (
     sortFilter.el,
   );
   // table
-  const table = new Table(tableEl.el, data, hyperFormula, formats);
+  const table = getTable(tableEl.el, data, hyperFormula, formats);
   sheetInitEvents();
   sheetReset();
   // init selector [0, 0]
