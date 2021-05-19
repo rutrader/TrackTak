@@ -1,5 +1,3 @@
-import "./_.prototypes";
-
 const alphabets = [
   "A",
   "B",

@@ -1,7 +1,7 @@
 import { stringAt } from "../core/alphabet";
 import { getFontSizePxByPt } from "../core/font";
 
-import { Draw, DrawBox, thinLineWidth, npx } from "../canvas/draw";
+import getDraw, { Draw, getDrawBox, thinLineWidth, npx } from "../canvas/draw";
 
 // gobal var
 const cellPaddingWidth = 5;
@@ -22,9 +22,9 @@ function tableFixedHeaderStyle() {
   };
 }
 
-function getDrawBox(data, rindex, cindex, yoffset = 0) {
+function getTableDrawBox(data, rindex, cindex, yoffset = 0) {
   const { left, top, width, height } = data.cellRect(rindex, cindex);
-  return new DrawBox(left, top + yoffset, width, height, cellPaddingWidth);
+  return getDrawBox(left, top + yoffset, width, height, cellPaddingWidth);
 }
 /*
 function renderCellBorders(bboxes, translateFunc) {
@@ -59,12 +59,11 @@ export function renderCell(draw, data, rindex, cindex, yoffset = 0) {
   }
 
   const style = data.getCellStyleOrDefault(nrindex, cindex);
-  const dbox = getDrawBox(data, rindex, cindex, yoffset);
+  const dbox = getTableDrawBox(data, rindex, cindex, yoffset);
   dbox.bgcolor = style.bgcolor;
   if (style.border !== undefined) {
-    dbox.setBorders(style.border);
     // bboxes.push({ ri: rindex, ci: cindex, box: dbox });
-    draw.strokeBorders(dbox);
+    draw.strokeBorders(style.border, dbox);
   }
 
   const self = this;
@@ -130,7 +129,7 @@ function renderAutofilter(viewRange) {
     const afRange = autoFilter.hrange();
     if (viewRange.intersects(afRange)) {
       afRange.each((ri, ci) => {
-        const dbox = getDrawBox(data, ri, ci);
+        const dbox = getTableDrawBox(data, ri, ci);
         draw.dropdown(dbox);
       });
     }
@@ -140,7 +139,8 @@ function renderAutofilter(viewRange) {
 function renderContent(viewRange, fw, fh, tx, ty) {
   const { draw, data } = this;
   draw.save();
-  draw.translate(fw, fh).translate(tx, ty);
+  draw.translate(fw, fh);
+  draw.translate(tx, ty);
 
   const { exceptRowSet } = data;
   // const exceptRows = Array.from(exceptRowSet);
@@ -192,7 +192,8 @@ function renderContent(viewRange, fw, fh, tx, ty) {
 function renderSelectedHeaderCell(x, y, w, h) {
   const { draw } = this;
   draw.save();
-  draw.attr({ fillStyle: "rgba(75, 137, 255, 0.08)" }).fillRect(x, y, w, h);
+  draw.attr({ fillStyle: "rgba(75, 137, 255, 0.08)" });
+  draw.fillRect(x, y, w, h);
   draw.restore();
 }
 
@@ -267,7 +268,8 @@ function renderFixedLeftTopCell(fw, fh) {
   const { draw } = this;
   draw.save();
   // left-top-cell
-  draw.attr({ fillStyle: "#f4f5f8" }).fillRect(0, 0, fw, fh);
+  draw.attr({ fillStyle: "#f4f5f8" });
+  draw.fillRect(0, 0, fw, fh);
   draw.restore();
 }
 
@@ -276,7 +278,8 @@ function renderContentGrid({ sri, sci, eri, eci, w, h }, fw, fh, tx, ty) {
   const { settings } = data;
 
   draw.save();
-  draw.attr(tableGridStyle).translate(fw + tx, fh + ty);
+  draw.attr(tableGridStyle);
+  draw.translate(fw + tx, fh + ty);
   // const sumWidth = cols.sumWidth(sci, eci + 1);
   // const sumHeight = rows.sumHeight(sri, eri + 1);
   // console.log('sumWidth:', sumWidth);
@@ -302,7 +305,9 @@ function renderFreezeHighlightLine(fw, fh, ftw, fth) {
   const { draw, data } = this;
   const twidth = data.viewWidth() - fw;
   const theight = data.viewHeight() - fh;
-  draw.save().translate(fw, fh).attr({ strokeStyle: "rgba(75, 137, 255, .6)" });
+  draw.save();
+  draw.translate(fw, fh);
+  draw.attr({ strokeStyle: "rgba(75, 137, 255, .6)" });
   draw.line([0, fth], [twidth, fth]);
   draw.line([ftw, 0], [ftw, theight]);
   draw.restore();
@@ -312,7 +317,7 @@ function renderFreezeHighlightLine(fw, fh, ftw, fth) {
 class Table {
   constructor(el, data, hyperFormula, formats) {
     this.el = el;
-    this.draw = new Draw(el, data.viewWidth(), data.viewHeight());
+    this.draw = getDraw(el, data.viewWidth(), data.viewHeight());
     this.data = data;
     this.hyperFormula = hyperFormula;
     this.formats = formats;
@@ -350,7 +355,8 @@ class Table {
     renderContent.call(this, viewRange, fw, fh, -x, -y);
     renderFixedHeaders.call(this, "all", viewRange, fw, fh, tx, ty);
     renderFixedLeftTopCell.call(this, fw, fh);
-    const [fri, fci] = data.freeze;
+
+    const [fri, fci] = data.getFreeze();
     if (fri > 0 || fci > 0) {
       // 2
       if (fri > 0) {

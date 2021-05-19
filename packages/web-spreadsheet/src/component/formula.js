@@ -1,6 +1,4 @@
 import {
-  stringAt,
-  expr2xy,
   expr2cellRangeArgs,
   cellRangeArgs2expr,
   REGEX_EXPR_NONGLOBAL_AT_START,
@@ -25,11 +23,11 @@ function renderCell(left, top, width, height, color, selected = false) {
 function generalSelectCell(sri, sci, eri, eci) {
   if (this.cell) {
     const expr = cellRangeArgs2expr(sri, sci, eri, eci);
-    const text = this.editor.inputText;
+    const text = this.inputText;
     const { from, to } = this.cell;
 
-    this.editor.inputText = text.slice(0, from) + expr + text.slice(to);
-    this.editor.render();
+    this.inputText = text.slice(0, from) + expr + text.slice(to);
+    this.editorRender();
     setTimeout(() => {
       setCaretPosition(this.el, from + expr.length);
     });
@@ -39,17 +37,19 @@ function generalSelectCell(sri, sci, eri, eci) {
 }
 
 export default class Formula {
-  getCellPositionRange(cell) {
-    const cellExpr = this.editor.inputText.slice(cell.from, cell.to);
+  getCellPositionRange(cell, inputText) {
+    const cellExpr = inputText.slice(cell.from, cell.to);
     const cellRangeArgs = expr2cellRangeArgs(cellExpr);
 
     return new CellRange(...cellRangeArgs);
   }
 
-  constructor(editor) {
-    this.editor = editor;
-    this.el = this.editor.textEl.el;
-    this.cellEl = this.editor.cellEl.el;
+  constructor(textEl, cellEl, inputText, data, editorRender) {
+    this.el = textEl.el;
+    this.cellEl = cellEl.el;
+    this.inputText = inputText;
+    this.data = data;
+    this.editorRender = editorRender;
 
     this.cells = [];
     this.cell = null;
@@ -61,7 +61,7 @@ export default class Formula {
       if (document.activeElement !== this.el) return;
 
       this.cell = null;
-      if (this.editor.inputText[0] != "=") return;
+      if (inputText[0] != "=") return;
 
       const index = getCaretPosition(this.el);
       for (let cell of this.cells) {
@@ -90,7 +90,7 @@ export default class Formula {
         (this.cell.color !== cellLastSelectionColor ||
           !this.cellSelectStartRowCol)
       ) {
-        const cellRange = this.getCellPositionRange(this.cell);
+        const cellRange = this.getCellPositionRange(this.cell, this.inputText);
         this.cellSelectStartRowCol = [cellRange.sri, cellRange.sci];
         this.cellSelectEndRowCol = [cellRange.eri, cellRange.eci];
 
@@ -157,7 +157,7 @@ export default class Formula {
       let cellRange = new CellRange(...cellRangeArgs);
 
       // Reapply merge cells after translation
-      cellRange = this.editor.data.merges.union(cellRange);
+      cellRange = this.data.merges.union(cellRange);
 
       generalSelectCell.call(
         this,
@@ -177,6 +177,14 @@ export default class Formula {
     this.cellEl.innerHTML = "";
   }
 
+  setInputText = (text) => {
+    this.inputText = text;
+  };
+
+  setData = (d) => {
+    this.data = d;
+  };
+
   selectCell(ri, ci) {
     // To represent a single cell (no range), pass start and end row/col as
     // equal
@@ -194,7 +202,7 @@ export default class Formula {
 
       // Account for merge cells
       let cr = new CellRange(...cellRangeArgs);
-      cr = this.editor.data.merges.union(cr);
+      cr = this.data.merges.union(cr);
 
       // Keep current cell range start, but use new range end values
       generalSelectCell.call(this, cr.sri, cr.sci, cr.eri, cr.eci);
@@ -217,7 +225,7 @@ export default class Formula {
   }
 
   render() {
-    const text = this.editor.inputText;
+    const text = this.inputText;
     this.cells = [];
 
     let i = 0;
@@ -330,13 +338,13 @@ export default class Formula {
 
   renderCells() {
     const cells = this.cells;
-    const data = this.editor.data;
+    const data = this.data;
     let cellHtml = "";
 
     for (let cell of cells) {
       const { color } = cell;
       if (color) {
-        const cellRange = this.getCellPositionRange(cell);
+        const cellRange = this.getCellPositionRange(cell, this.inputText);
 
         const cellRangeIncludingMerges = data.merges.union(cellRange);
         const box = data.getRect(cellRangeIncludingMerges);

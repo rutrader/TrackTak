@@ -1,32 +1,18 @@
-/* global window */
-
-import Align from "./align";
-import Valign from "./valign";
-import Autofilter from "./autofilter";
-import Bold from "./bold";
-import Italic from "./italic";
-import Strike from "./strike";
-import Underline from "./underline";
-import Border from "./border";
-import Clearformat from "./clearformat";
-import Paintformat from "./paintformat";
-import TextColor from "./text_color";
-import FillColor from "./fill_color";
-import FontSize from "./font_size";
-import Font from "./font";
-import Format from "./format";
-import Formula from "./formula";
-import Freeze from "./freeze";
-import Merge from "./merge";
-import Redo from "./redo";
-import Undo from "./undo";
-import Print from "./print";
-import Textwrap from "./textwrap";
-import More from "./more";
+import { getMore } from "./more";
 
 import { h } from "../element";
 import { cssPrefix } from "../../config";
 import { bind } from "../event";
+import { makeIconItem } from "./makeIconItem";
+import { makeToggleItem } from "./makeToggleItem";
+import { getDropdownItem } from "./getDropdownItem";
+import { makeDropdownBorder } from "../makeDropdownBorder";
+import { makeDropdownColor } from "../makeDropdownColor";
+import { makeDropdownFontSize } from "../makeDropdownFontSize";
+import { makeDropdownFont } from "../makeDropdownFont";
+import { makeDropdownFormat } from "../makeDropdownFormat";
+import { makeDropdownFormula } from "../makeDropdownFormula";
+import { makeDropdownAlign } from "../makeDropdownAlign";
 
 function buildDivider() {
   return h("div", `${cssPrefix}-toolbar-divider`);
@@ -36,11 +22,12 @@ function initBtns2() {
   this.btns2 = [];
   this.items.forEach((it) => {
     if (Array.isArray(it)) {
-      it.forEach(({ el }) => {
-        const rect = el.box();
-        const { marginLeft, marginRight } = el.computedStyle();
+      it.forEach(({ el, item }) => {
+        let newEl = el ? el : item.el;
+        const rect = newEl.box();
+        const { marginLeft, marginRight } = newEl.computedStyle();
         this.btns2.push([
-          el,
+          newEl,
           rect.width + parseInt(marginLeft, 10) + parseInt(marginRight, 10),
         ]);
       });
@@ -57,7 +44,6 @@ function initBtns2() {
 
 function moreResize() {
   const { el, btns, moreEl, btns2 } = this;
-  const { moreBtns, contentEl } = moreEl.dd;
   el.css("width", `${this.widthFn() - 60}px`);
   const elBox = el.box();
 
@@ -75,8 +61,8 @@ function moreResize() {
     }
   });
   btns.html("").children(...list1);
-  moreBtns.html("").children(...list2);
-  contentEl.css("width", `${sumWidth2}px`);
+  moreEl.dropdown.dropdown.moreBtns.html("").children(...list2);
+  moreEl.dropdown.dropdown.dropdown.contentEl.css("width", `${sumWidth2}px`);
   if (list2.length > 0) {
     moreEl.show();
   } else {
@@ -85,53 +71,89 @@ function moreResize() {
 }
 
 export default class Toolbar {
-  constructor(data, widthFn, formats, isHide = false) {
+  constructor(data, widthFn, formats, eventEmitter, isHide = false) {
     this.data = data;
+    this.eventEmitter = eventEmitter;
     this.change = () => {};
     this.widthFn = widthFn;
     this.isHide = isHide;
     const style = data.defaultStyle();
+
+    const getIconItem = makeIconItem(eventEmitter);
+    const getToggleItem = makeToggleItem(eventEmitter);
+
     this.items = [
       [
-        (this.undoEl = new Undo(formats)),
-        (this.redoEl = new Redo(formats)),
-        new Print(formats),
-        (this.paintformatEl = new Paintformat(formats)),
-        (this.clearformatEl = new Clearformat(formats)),
-      ],
-      buildDivider(),
-      [(this.formatEl = new Format(formats))],
-      buildDivider(),
-      [
-        (this.fontEl = new Font(formats)),
-        (this.fontSizeEl = new FontSize(formats)),
+        (this.undoEl = getIconItem("undo", "Ctrl+Z")),
+        (this.redoEl = getIconItem("redo", "Ctrl+Y")),
+        getIconItem("print", "Ctrl+P"),
+        (this.paintformatEl = getToggleItem("paintformat")),
+        getIconItem("clearformat"),
       ],
       buildDivider(),
       [
-        (this.boldEl = new Bold(formats)),
-        (this.italicEl = new Italic(formats)),
-        (this.underlineEl = new Underline(formats)),
-        (this.strikeEl = new Strike(formats)),
-        (this.textColorEl = new TextColor(formats, style.color)),
+        (this.formatEl = getDropdownItem(
+          "format",
+          makeDropdownFormat(formats, eventEmitter),
+        )),
       ],
       buildDivider(),
       [
-        (this.fillColorEl = new FillColor(formats, style.bgcolor)),
-        (this.borderEl = new Border(formats)),
-        (this.mergeEl = new Merge(formats)),
+        (this.fontEl = getDropdownItem(
+          "font-name",
+          makeDropdownFont(eventEmitter),
+        )),
+        (this.fontSizeEl = getDropdownItem(
+          "font-size",
+          makeDropdownFontSize(eventEmitter),
+        )),
       ],
       buildDivider(),
       [
-        (this.alignEl = new Align(formats, style.align)),
-        (this.valignEl = new Valign(formats, style.valign)),
-        (this.textwrapEl = new Textwrap(formats)),
+        (this.boldEl = getToggleItem("font-bold", "Ctrl+B")),
+        (this.italicEl = getToggleItem("font-italic", "Ctrl+I")),
+        (this.underlineEl = getToggleItem("underline", "Ctrl+U")),
+        (this.strikeEl = getToggleItem("strike", "Ctrl+S")),
+        (this.textColorEl = getDropdownItem(
+          "color",
+          makeDropdownColor("color", style.color, eventEmitter),
+        )),
       ],
       buildDivider(),
       [
-        (this.freezeEl = new Freeze(formats)),
-        (this.autofilterEl = new Autofilter(formats)),
-        (this.formulaEl = new Formula(formats)),
-        (this.moreEl = new More(formats)),
+        (this.fillColorEl = getDropdownItem(
+          "bgcolor",
+          makeDropdownColor("bgcolor", style.bgcolor, eventEmitter),
+        )),
+        getDropdownItem("border", makeDropdownBorder(eventEmitter)),
+        (this.mergeEl = getToggleItem("merge")),
+      ],
+      buildDivider(),
+      [
+        (this.alignEl = getDropdownItem(
+          "align",
+          makeDropdownAlign(
+            ["left", "center", "right"],
+            style.align,
+            eventEmitter,
+          ),
+        )),
+        (this.valignEl = getDropdownItem(
+          "valign",
+          makeDropdownAlign(
+            ["top", "middle", "bottom"],
+            style.valign,
+            eventEmitter,
+          ),
+        )),
+        (this.textwrapEl = getToggleItem("textwrap")),
+      ],
+      buildDivider(),
+      [
+        (this.freezeEl = getToggleItem("freeze")),
+        (this.autofilterEl = getToggleItem("autofilter")),
+        getDropdownItem("formula", makeDropdownFormula(eventEmitter)),
+        (this.moreEl = getMore()),
       ],
     ];
 
@@ -141,13 +163,21 @@ export default class Toolbar {
     this.items.forEach((it) => {
       if (Array.isArray(it)) {
         it.forEach((i) => {
-          this.btns.child(i.el);
-          i.change = (...args) => {
-            this.change(...args);
-          };
+          if (i.el) {
+            this.btns.child(i.el);
+            i.change = (...args) => {
+              this.change(...args);
+            };
+          } else {
+            this.btns.child(i.item.el);
+          }
         });
       } else {
-        this.btns.child(it.el);
+        if (it.el) {
+          this.btns.child(it.el);
+        } else {
+          this.btns.child(it.item.el);
+        }
       }
     });
 
@@ -167,15 +197,11 @@ export default class Toolbar {
   }
 
   paintformatActive() {
-    return this.paintformatEl.active();
+    return this.paintformatEl.toggleItem.active();
   }
 
   paintformatToggle() {
-    this.paintformatEl.toggle();
-  }
-
-  trigger(type) {
-    this[`${type}El`].click();
+    this.paintformatEl.toggleItem.toggle();
   }
 
   resetData(data) {
@@ -187,27 +213,24 @@ export default class Toolbar {
     if (this.isHide) return;
     const { data } = this;
     const style = data.getSelectedCellStyle();
-    // console.log('canUndo:', data.canUndo());
-    this.undoEl.setState(!data.canUndo());
-    this.redoEl.setState(!data.canRedo());
-    this.mergeEl.setState(data.canUnmerge(), !data.selector.multiple());
-    this.autofilterEl.setState(!data.canAutofilter());
-    // this.mergeEl.disabled();
-    // console.log('selectedCell:', style, cell);
+    this.undoEl.iconItem.setDisabled(!data.canUndo());
+    this.redoEl.iconItem.setDisabled(!data.canRedo());
+    this.mergeEl.toggleItem.setActive(data.canUnmerge());
+    this.mergeEl.item.el.disabled(!data.selector.multiple());
+    this.autofilterEl.toggleItem.setActive(!data.canAutofilter());
     const { font, format } = style;
-    this.formatEl.setState(format);
-    this.fontEl.setState(font.name);
-    this.fontSizeEl.setState(font.size);
-    this.boldEl.setState(font.bold);
-    this.italicEl.setState(font.italic);
-    this.underlineEl.setState(style.underline);
-    this.strikeEl.setState(style.strike);
-    this.textColorEl.setState(style.color);
-    this.fillColorEl.setState(style.bgcolor);
-    this.alignEl.setState(style.align);
-    this.valignEl.setState(style.valign);
-    this.textwrapEl.setState(style.textwrap);
-    // console.log('freeze is Active:', data.freezeIsActive());
-    this.freezeEl.setState(data.freezeIsActive());
+    this.formatEl.dropdown.setTitle(format);
+    this.fontEl.dropdown.dropdown.setTitle(font.name);
+    this.fontSizeEl.dropdown.dropdown.setTitle(font.size);
+    this.boldEl.toggleItem.setActive(font.bold);
+    this.italicEl.toggleItem.setActive(font.italic);
+    this.underlineEl.toggleItem.setActive(style.underline);
+    this.strikeEl.toggleItem.setActive(style.strike);
+    this.textColorEl.dropdown.setTitle(style.color);
+    this.fillColorEl.dropdown.setTitle(style.bgcolor);
+    this.alignEl.dropdown.setTitle(style.align);
+    this.valignEl.dropdown.setTitle(style.valign);
+    this.textwrapEl.toggleItem.setActive(style.textwrap);
+    this.freezeEl.toggleItem.setActive(data.freezeIsActive());
   }
 }
