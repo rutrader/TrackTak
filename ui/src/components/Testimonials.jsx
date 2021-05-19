@@ -4,38 +4,38 @@ import FormatQuoteIcon from "@material-ui/icons/FormatQuote";
 
 export const TestimonialText = (props) => (
   <Typography
-    {...props}
     sx={{
-      fontSize: "18px",
+      fontSize: (theme) => theme.fontSize.fontSizeText,
     }}
     variant="subtitle1"
     color="textSecondary"
+    {...props}
   />
 );
 
 export const UserText = (props) => (
   <Typography
-    {...props}
     variant="h5"
     sx={{
       fontWeight: "bold",
       color: (theme) => theme.palette.primary.mainTextColor,
     }}
+    {...props}
   />
 );
 
 export const StyledFormatQuoteIcon = (props) => (
   <FormatQuoteIcon
-    {...props}
     fontSize="large"
     sx={{
       color: (theme) => theme.palette.secondary.light,
       transform: "scaleY(-1) scaleX(-1)",
     }}
+    {...props}
   />
 );
 
-const TTTestimonials = ({ testimonialName, testimonialMessage }) => {
+const Testimonials = ({ testimonialName, testimonialMessage }) => {
   return (
     <>
       <Paper elevation={6} sx={{ flex: "1 1 300px" }}>
@@ -49,4 +49,4 @@ const TTTestimonials = ({ testimonialName, testimonialMessage }) => {
   );
 };
 
-export default TTTestimonials;
+export default Testimonials;

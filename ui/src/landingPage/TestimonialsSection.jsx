@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   IconButton,
@@ -9,14 +9,12 @@ import {
 import MobileStepper from "@material-ui/core/MobileStepper";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
-import { useEffect } from "react";
-import { useState } from "react";
-import TTTestimonials from "../components/TTTestimonials";
+import Testimonials from "../components/Testimonials";
 
 const stepsMobile = [
   {
     description: (
-      <TTTestimonials
+      <Testimonials
         testimonialName="Oliver Djursing"
         testimonialMessage="It’s mind blowing how nice it all is, finance data is hard to find
         easily and reliably without paying a big premium or having to
@@ -27,7 +25,7 @@ const stepsMobile = [
   },
   {
     description: (
-      <TTTestimonials
+      <Testimonials
         testimonialName="Robbert Smit"
         testimonialMessage="This tool is absolutely awesome. Please continue the great work! I
       am definitely going to share this tool with my network who are all
@@ -38,7 +36,7 @@ const stepsMobile = [
   },
   {
     description: (
-      <TTTestimonials
+      <Testimonials
         testimonialName="Adam Parmer"
         testimonialMessage="I just signed up for alerts. Just wanted to thank you for putting
       this together. I really look forward to seeing what you put together
@@ -49,7 +47,7 @@ const stepsMobile = [
   },
   {
     description: (
-      <TTTestimonials
+      <Testimonials
         testimonialName="Stefan"
         testimonialMessage="I'm a regular user, I enjoy your site a lot and the tools you offer
       there."
@@ -62,14 +60,14 @@ const stepsDesktop = [
   {
     description: (
       <>
-        <TTTestimonials
+        <Testimonials
           testimonialName="Oliver Djursing"
           testimonialMessage="It’s mind blowing how nice it all is, finance data is hard to find
             easily and reliably without paying a big premium or having to
             searched the whole internet. I whole-heartedly believe this could be
             the new go-to source for private investors!"
         />
-        <TTTestimonials
+        <Testimonials
           testimonialName="Robbert Smit"
           testimonialMessage="This tool is absolutely awesome. Please continue the great work! I
           am definitely going to share this tool with my network who are all
@@ -82,14 +80,14 @@ const stepsDesktop = [
   {
     description: (
       <>
-        <TTTestimonials
+        <Testimonials
           testimonialName="Adam Parmer"
           testimonialMessage="I just signed up for alerts. Just wanted to thank you for putting
           this together. I really look forward to seeing what you put together
           in the future. I have been looking for a tool like this and I love
           that there is an editable 'Excel Table' inline."
         />
-        <TTTestimonials
+        <Testimonials
           testimonialName="Stefan"
           testimonialMessage="I'm a regular user, I enjoy your site a lot and the tools you offer
           there."
@@ -122,12 +120,12 @@ const TestimonialsSection = () => {
 
   return (
     <>
-      <Box id="testimonials">
+      <Box>
         <Box
-          style={{
+          sx={{
             marginLeft: "auto",
             marginRight: "auto",
-            marginBottom: "55px",
+            marginBottom: theme.spacing(7),
             textAlign: "center",
           }}
         >
@@ -136,10 +134,10 @@ const TestimonialsSection = () => {
               visibility: "visible",
               animationDelay: "0.2s",
               animationName: "fadeInDown",
+              fontSize: theme.fontSize.fontSizeMain,
+              fontWeight: "bold",
             }}
             color="primary"
-            fontSize={25}
-            fontWeight="bold"
             gutterBottom
           >
             Testimonials
@@ -151,7 +149,7 @@ const TestimonialsSection = () => {
               animationName: "fadeInUp",
               fontWeight: "bold",
               color: theme.palette.primary.mainTextColor,
-              marginBottom: (theme) => theme.spacing(2),
+              marginBottom: theme.spacing(2),
             }}
             variant="h3"
           >
