@@ -3,6 +3,7 @@
   "version": "1.1.7",
   "description": "A javascript spreadsheet based on x-spreadsheet in the style of Google Sheets",
   "main": "src/index.js",
+  "type": "module",
   "files": [
     "dist",
     "src"
@@ -58,6 +59,6 @@
   "dependencies": {
     "events": "^3.3.0",
     "hyperformula": "^0.6.0",
-    "lodash": "^4.17.20"
+    "lodash-es": "^4.17.20"
   }
 }

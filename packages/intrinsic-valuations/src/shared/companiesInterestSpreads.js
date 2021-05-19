@@ -1,4 +1,4 @@
-import mergeWith from "lodash/mergeWith";
+import { mergeWith } from "lodash-es";
 
 import smallCompaniesInterestSpreadsJson from "../data/smallCompaniesInterestSpreads.json";
 import largeCompaniesInterestSpreadsJson from "../data/largeCompaniesInterestSpreads.json";
@@ -24,7 +24,7 @@ const companiesInterestSpreads = mergeWith(
         to: srcValue.to,
       },
     };
-  }
+  },
 ).reverse();
 
 export default companiesInterestSpreads;
