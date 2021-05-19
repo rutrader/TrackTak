@@ -5,7 +5,7 @@ import FormatQuoteIcon from "@material-ui/icons/FormatQuote";
 export const TestimonialText = (props) => (
   <Typography
     sx={{
-      fontSize: (theme) => theme.fontSize.fontSizeText,
+      fontSize: (theme) => theme.typography.fontSize2,
     }}
     variant="subtitle1"
     color="textSecondary"

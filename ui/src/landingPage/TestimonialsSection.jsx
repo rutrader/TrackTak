@@ -134,7 +134,7 @@ const TestimonialsSection = () => {
               visibility: "visible",
               animationDelay: "0.2s",
               animationName: "fadeInDown",
-              fontSize: theme.fontSize.fontSizeMain,
+              fontSize: theme.typography.fontSize3,
               fontWeight: "bold",
             }}
             color="primary"
@@ -153,10 +153,11 @@ const TestimonialsSection = () => {
             }}
             variant="h3"
           >
-            What Users Says
+            Looking for more reasons?
           </Typography>
           <Typography variant="h6" color="textSecondary">
-            See what people have to say about us.
+            Hear from our users about what changed for the better since they
+            switched from Excel to tracktak.
           </Typography>
         </Box>
         <Box

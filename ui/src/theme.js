@@ -7,10 +7,8 @@ import {
 let theme = createMuiTheme({
   typography: {
     fontFamily: "Nunito",
-  },
-  fontSize: {
-    fontSizeMain: "25px",
-    fontSizeText: "18px",
+    fontSize2: "18px",
+    fontSize3: "25px",
   },
   palette: {
     tableBackground: alpha("#51509c", 0.04),
