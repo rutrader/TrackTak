@@ -1,184 +1,209 @@
-import { h } from './element';
-import { bindClickoutside, unbindClickoutside } from './event';
-import { cssPrefix } from '../config';
-import Icon from './icon';
-import FormInput from './form_input';
-import Dropdown from './dropdown';
-import { xtoast } from './message';
-import { tf } from '../locale/locale';
-
-class DropdownMore extends Dropdown {
-  constructor(click) {
-    const icon = new Icon('ellipsis');
-    super(icon, 'auto', false, 'top-left');
-    this.contentClick = click;
-  }
-
-  reset(items) {
-    const eles = items.map((it, i) => h('div', `${cssPrefix}-item`)
-      .css('width', '150px')
-      .css('font-weight', 'normal')
-      .on('click', () => {
-        this.contentClick(i);
-        this.hide();
-      })
-      .child(it));
-    this.setContentChildren(...eles);
-  }
-
-  setTitle() {}
-}
+import { h } from "./element";
+import { bindClickoutside, unbindClickoutside } from "./event";
+import { cssPrefix } from "../config";
+import { getFormInput } from "./form_input";
+import { getDropdown } from "./getDropdown";
+import { tf } from "../locale/locale";
+import spreadsheetEvents from "../core/spreadsheetEvents";
+import getIcon from "./getIcon";
 
 const menuItems = [
-  { key: 'delete', title: tf('contextmenu.deleteSheet') },
+  {
+    key: "delete",
+    title: tf("contextmenu.deleteSheet"),
+  },
 ];
 
-function buildMenuItem(item) {
-  return h('div', `${cssPrefix}-item`)
-    .child(item.title())
-    .on('click', () => {
-      this.itemClick(item.key);
-      this.hide();
-    });
-}
+const getDropdownMore = (eventEmitter) => {
+  const icon = getIcon("ellipsis");
+  const dropdown = getDropdown(icon, "auto", false, "top-left");
 
-function buildMenu() {
-  return menuItems.map(it => buildMenuItem.call(this, it));
-}
+  const reset = (items) => {
+    const eles = items.map((it, i) =>
+      h("div", `${cssPrefix}-item`)
+        .css("width", "150px")
+        .css("font-weight", "normal")
+        .on("click", () => {
+          eventEmitter.emit(spreadsheetEvents.bottombar.clickDropdownMore, i);
+          dropdown.hide();
+        })
+        .child(it),
+    );
+    dropdown.setContentChildren(...eles);
+  };
 
-class ContextMenu {
-  constructor() {
-    this.el = h('div', `${cssPrefix}-contextmenu`)
-      .css('width', '160px')
-      .children(...buildMenu.call(this))
-      .hide();
-    this.itemClick = () => {};
-  }
+  return {
+    dropdown,
+    reset,
+  };
+};
 
-  hide() {
-    const { el } = this;
+const getContextMenu = (eventEmitter) => {
+  const el = h("div", `${cssPrefix}-contextmenu`)
+    .css("width", "160px")
+    .children(...menuItems.map(buildMenuItem))
+    .hide();
+
+  const hide = () => {
     el.hide();
     unbindClickoutside(el);
-  }
+  };
 
-  setOffset(offset) {
-    const { el } = this;
+  const setOffset = (offset) => {
     el.offset(offset);
     el.show();
+
     bindClickoutside(el);
-  }
-}
+  };
 
-export default class Bottombar {
-  constructor(addFunc = () => {},
-    swapFunc = () => {},
-    deleteFunc = () => {},
-    updateFunc = () => {}) {
-    this.swapFunc = swapFunc;
-    this.updateFunc = updateFunc;
-    this.dataNames = [];
-    this.activeEl = null;
-    this.deleteEl = null;
-    this.items = [];
-    this.moreEl = new DropdownMore((i) => {
-      this.clickSwap2(this.items[i]);
-    });
-    this.contextMenu = new ContextMenu();
-    this.contextMenu.itemClick = deleteFunc;
-    this.el = h('div', `${cssPrefix}-bottombar`).children(
-      this.contextMenu.el,
-      this.menuEl = h('ul', `${cssPrefix}-menu`).child(
-        h('li', '').children(
-          new Icon('add').on('click', () => {
-            addFunc();
-          }),
-          h('span', '').child(this.moreEl),
-        ),
-      ),
-    );
-  }
-
-  addItem(name, active) {
-    this.dataNames.push(name);
-    const item = h('li', active ? 'active' : '').child(name);
-    item.on('click', () => {
-      this.clickSwap2(item);
-    }).on('contextmenu', (evt) => {
-      const { offsetLeft, offsetHeight } = evt.target;
-      this.contextMenu.setOffset({ left: offsetLeft, bottom: offsetHeight + 1 });
-      this.deleteEl = item;
-    }).on('dblclick', () => {
-      const v = item.html();
-      const input = new FormInput('auto', '');
-      input.val(v);
-      input.input.on('blur', ({ target }) => {
-        const { value } = target;
-        const nindex = this.dataNames.findIndex(it => it === v);
-        this.renameItem(nindex, value);
-        /*
-        this.dataNames.splice(nindex, 1, value);
-        this.moreEl.reset(this.dataNames);
-        item.html('').child(value);
-        this.updateFunc(nindex, value);
-        */
+  function buildMenuItem(item) {
+    return h("div", `${cssPrefix}-item`)
+      .child(item.title())
+      .on("click", () => {
+        eventEmitter.emit(
+          spreadsheetEvents.bottombar.clickContextMenu,
+          item.key,
+        );
+        hide();
       });
-      item.html('').child(input.el);
-      input.focus();
-    });
+  }
+
+  return {
+    el,
+    hide,
+    setOffset,
+  };
+};
+
+export const getBottombar = (eventEmitter) => {
+  let dataNames = [];
+  let activeEl = null;
+  let deleteEl = null;
+  let items = [];
+  const moreEl = getDropdownMore(eventEmitter);
+
+  const addItem = (name, active) => {
+    dataNames.push(name);
+    const item = h("li", active ? "active" : "").child(name);
+    item
+      .on("click", () => {
+        clickSwap2(item);
+      })
+      .on("contextmenu", (evt) => {
+        const { offsetLeft, offsetHeight } = evt.target;
+        contextMenu.setOffset({
+          left: offsetLeft,
+          bottom: offsetHeight + 1,
+        });
+        deleteEl = item;
+      })
+      .on("dblclick", () => {
+        const v = item.html();
+        const input = getFormInput("auto", "");
+        input.val(v);
+        input.input.on("blur", ({ target }) => {
+          const { value } = target;
+          const nindex = dataNames.findIndex((it) => it === v);
+
+          renameItem(nindex, value);
+        });
+        item.html("").child(input.el);
+        input.focus();
+      });
+
     if (active) {
-      this.clickSwap(item);
+      clickSwap(item);
     }
-    this.items.push(item);
-    this.menuEl.child(item);
-    this.moreEl.reset(this.dataNames);
-  }
 
-  renameItem(index, value) {
-    this.dataNames.splice(index, 1, value);
-    this.moreEl.reset(this.dataNames);
-    this.items[index].html('').child(value);
-    this.updateFunc(index, value);
-  }
+    items.push(item);
+    menuEl.child(item);
+    moreEl.reset(dataNames);
+  };
 
-  clear() {
-    this.items.forEach((it) => {
-      this.menuEl.removeChild(it.el);
+  const renameItem = (index, value) => {
+    dataNames.splice(index, 1, value);
+    moreEl.reset(dataNames);
+    items[index].html("").child(value);
+    eventEmitter.emit(spreadsheetEvents.bottombar.updateSheet, index, value);
+  };
+
+  const clear = () => {
+    items.forEach((it) => {
+      menuEl.removeChild(it.el);
     });
-    this.items = [];
-    this.dataNames = [];
-    this.moreEl.reset(this.dataNames);
-  }
+    items = [];
+    dataNames = [];
+    moreEl.reset(dataNames);
+  };
 
-  deleteItem() {
-    const { activeEl, deleteEl } = this;
-    if (this.items.length > 1) {
-      const index = this.items.findIndex(it => it === deleteEl);
-      this.items.splice(index, 1);
-      this.dataNames.splice(index, 1);
-      this.menuEl.removeChild(deleteEl.el);
-      this.moreEl.reset(this.dataNames);
+  const deleteItem = () => {
+    if (items.length > 1) {
+      const index = items.findIndex((it) => it === deleteEl);
+
+      items.splice(index, 1);
+      dataNames.splice(index, 1);
+      menuEl.removeChild(deleteEl.el);
+      moreEl.reset(dataNames);
       if (activeEl === deleteEl) {
-        const [f] = this.items;
-        this.activeEl = f;
-        this.activeEl.toggle();
+        const [f] = items;
+        activeEl = f;
+        activeEl.toggle();
         return [index, 0];
       }
       return [index, -1];
     }
     return [-1];
-  }
+  };
 
-  clickSwap2(item) {
-    const index = this.items.findIndex(it => it === item);
-    this.clickSwap(item);
-    this.activeEl.toggle();
-    this.swapFunc(index);
-  }
+  const clickSwap2 = (item) => {
+    const index = items.findIndex((it) => it === item);
 
-  clickSwap(item) {
-    if (this.activeEl !== null) {
-      this.activeEl.toggle();
+    clickSwap(item);
+    activeEl.toggle();
+    eventEmitter.emit(spreadsheetEvents.bottombar.selectSheet, index);
+  };
+
+  const clickSwap = (item) => {
+    if (activeEl !== null) {
+      activeEl.toggle();
     }
-    this.activeEl = item;
-  }
-}
+    activeEl = item;
+  };
+
+  eventEmitter.on(spreadsheetEvents.bottombar.clickDropdownMore, (i) => {
+    clickSwap2(items[i]);
+  });
+
+  const contextMenu = getContextMenu(eventEmitter);
+
+  const menuEl = h("ul", `${cssPrefix}-menu`).child(
+    h("li", "").children(
+      getIcon("add").el.on("click", () => {
+        eventEmitter.emit(spreadsheetEvents.bottombar.addSheet);
+      }),
+      h("span", "").child(moreEl.dropdown.el),
+    ),
+  );
+
+  const el = h("div", `${cssPrefix}-bottombar`).children(
+    contextMenu.el,
+    menuEl,
+  );
+
+  return {
+    el,
+    menuEl,
+    contextMenu,
+    moreEl,
+    items,
+    deleteEl,
+    activeEl,
+    dataNames,
+    addItem,
+    renameItem,
+    deleteItem,
+    clear,
+    clickSwap,
+    clickSwap2,
+  };
+};

@@ -1,218 +1,238 @@
-/* global window, document */
 import { h } from "./component/element";
-import DataProxy from "./core/data_proxy";
-import Sheet from "./component/sheet";
-import Bottombar from "./component/bottombar";
+import { getDataProxy } from "./core/data_proxy";
+import { getSheet } from "./component/sheet";
+import { getBottombar } from "./component/bottombar";
 import { cssPrefix } from "./config";
 import { locale, tf } from "./locale/locale";
 import "./index.less";
 import { HyperFormula } from "hyperformula";
 import { formatNumberRender, formatStringRender } from "./core/helper";
+import defaultOptions from "./core/defaultOptions";
+import { merge } from "lodash-es";
+import EventEmitter from "events";
+import spreadsheetEvents from "./core/spreadsheetEvents";
 
-class Spreadsheet {
-  constructor(selectors, options = {}) {
-    this.targetEl = selectors;
-    this.options = options;
-    this.sheetIndex = 1;
-    this.datas = [];
-    this.formats = {
-      normal: {
-        title: tf("format.normal"),
-        type: "string",
-        render: formatStringRender,
-      },
-      text: {
-        title: tf("format.text"),
-        type: "string",
-        render: formatStringRender,
-      },
-      number: {
-        title: tf("format.number"),
-        type: "number",
-        label: "1,000.12",
-        render: formatNumberRender,
-      },
-      percent: {
-        title: tf("format.percent"),
-        type: "number",
-        label: "10.12%",
-        render: (v) => `${formatNumberRender(v * 100)}%`,
-      },
-      date: {
-        title: tf("format.date"),
-        type: "date",
-        label: "26/09/2008",
-        render: formatStringRender,
-      },
-      time: {
-        title: tf("format.time"),
-        type: "date",
-        label: "15:59:00",
-        render: formatStringRender,
-      },
-      datetime: {
-        title: tf("format.datetime"),
-        type: "date",
-        label: "26/09/2008 15:59:00",
-        render: formatStringRender,
-      },
-      duration: {
-        title: tf("format.duration"),
-        type: "date",
-        label: "24:01:00",
-        render: formatStringRender,
-      },
-      ...(options.formats ?? {}),
-    };
+const getSpreadsheet = (element, options) => {
+  let datas = [];
+  let newOptions = merge(defaultOptions, options);
+  const eventEmitter = new EventEmitter();
 
-    this.hyperFormula = HyperFormula.buildEmpty({
-      licenseKey: "05054-b528f-a10c4-53f2a-04b57",
-    });
+  const formats = {
+    normal: {
+      title: tf("format.normal"),
+      type: "string",
+      render: formatStringRender,
+    },
+    text: {
+      title: tf("format.text"),
+      type: "string",
+      render: formatStringRender,
+    },
+    number: {
+      title: tf("format.number"),
+      type: "number",
+      label: "1,000.12",
+      render: formatNumberRender,
+    },
+    percent: {
+      title: tf("format.percent"),
+      type: "number",
+      label: "10.12%",
+      render: (v) => `${formatNumberRender(v * 100)}%`,
+    },
+    date: {
+      title: tf("format.date"),
+      type: "date",
+      label: "26/09/2008",
+      render: formatStringRender,
+    },
+    time: {
+      title: tf("format.time"),
+      type: "date",
+      label: "15:59:00",
+      render: formatStringRender,
+    },
+    datetime: {
+      title: tf("format.datetime"),
+      type: "date",
+      label: "26/09/2008 15:59:00",
+      render: formatStringRender,
+    },
+    duration: {
+      title: tf("format.duration"),
+      type: "date",
+      label: "24:01:00",
+      render: formatStringRender,
+    },
+    ...(options.formats ?? {}),
+  };
 
-    this.bottombar = new Bottombar(
-      () => {
-        const d = this.addSheet();
-        this.sheet.resetData(d);
-      },
-      (index) => {
-        const d = this.datas[index];
-        this.sheet.resetData(d);
-      },
-      () => {
-        this.deleteSheet();
-      },
-      (index, value) => {
-        this.datas[index].name = value;
-      },
-    );
-    this.data = this.addSheet();
-    const rootEl = h("div", `${cssPrefix}`).on("contextmenu", (evt) =>
-      evt.preventDefault(),
-    );
-    this.sheet = new Sheet(rootEl, this.data, this.hyperFormula, this.formats);
+  const hyperFormula = HyperFormula.buildEmpty({
+    licenseKey: "05054-b528f-a10c4-53f2a-04b57",
+  });
+  const rootEl = h("div", `${cssPrefix}`).on("contextmenu", (evt) =>
+    evt.preventDefault(),
+  );
 
-    // create canvas element
-    this.targetEl.appendChild(rootEl.el);
-    rootEl.child(this.bottombar.el);
-  }
+  eventEmitter.on(spreadsheetEvents.bottombar.addSheet, () => {
+    const data = addSheet();
 
-  setVariables = (variables) => {
+    sheet.resetData(data);
+  });
+
+  eventEmitter.on(spreadsheetEvents.bottombar.selectSheet, (index) => {
+    const d = datas[index];
+
+    sheet.resetData(d);
+  });
+
+  eventEmitter.on(spreadsheetEvents.bottombar.clickContextMenu, (key) => {
+    if (key === "delete") {
+      deleteSheet();
+    }
+  });
+
+  eventEmitter.on(spreadsheetEvents.bottombar.updateSheet, (index, value) => {
+    datas[index].name = value;
+  });
+
+  const bottombar = getBottombar(eventEmitter);
+
+  const addSheet = (
+    name = `sheet${datas.length + 1}`,
+    active = true,
+    options = newOptions,
+  ) => {
+    const data = getDataProxy(name, options, hyperFormula);
+
+    data.change(sheet);
+
+    datas.push(data);
+
+    bottombar.addItem(name, active);
+
+    return data;
+  };
+
+  const data = addSheet();
+
+  const sheet = getSheet(rootEl, data, hyperFormula, formats, eventEmitter);
+
+  // create canvas element
+  element.appendChild(rootEl.el);
+
+  rootEl.child(bottombar.el);
+
+  const setVariables = (variables) => {
     Object.keys(variables).forEach((key) => {
       const value = variables[key];
 
-      if (this.hyperFormula.isItPossibleToChangeNamedExpression(key, value)) {
-        this.hyperFormula.changeNamedExpression(key, value);
+      if (hyperFormula.isItPossibleToChangeNamedExpression(key, value)) {
+        hyperFormula.changeNamedExpression(key, value);
       }
 
-      if (this.hyperFormula.isItPossibleToAddNamedExpression(key, value)) {
-        this.hyperFormula.addNamedExpression(key, value);
+      if (hyperFormula.isItPossibleToAddNamedExpression(key, value)) {
+        hyperFormula.addNamedExpression(key, value);
       }
     });
   };
 
-  addSheet(name, active = true) {
-    const n = name || `sheet${this.sheetIndex}`;
-    const d = new DataProxy(n, this.options, this.hyperFormula);
-    d.change = (...args) => {
-      this.sheet.trigger("change", ...args);
-    };
-    this.datas.push(d);
-    // console.log('d:', n, d, this.datas);
-    this.bottombar.addItem(n, active);
-    this.sheetIndex += 1;
-    return d;
-  }
-
-  deleteSheet() {
-    const [oldIndex, nindex] = this.bottombar.deleteItem();
+  const deleteSheet = () => {
+    const [oldIndex, nindex] = bottombar.deleteItem();
     if (oldIndex >= 0) {
-      this.datas.splice(oldIndex, 1);
-      if (nindex >= 0) this.sheet.resetData(this.datas[nindex]);
+      datas.splice(oldIndex, 1);
+      if (nindex >= 0) {
+        sheet.resetData(datas[nindex]);
+      }
     }
-  }
-
-  destroy = () => {
-    this.targetEl.querySelector(`.${cssPrefix}`).remove();
   };
 
-  showFormulas = () => {
-    this.sheet.table.calculateFormulas = false;
-    this.reRender();
+  const destroy = () => {
+    rootEl.destroy();
   };
 
-  hideFormulas = () => {
-    this.sheet.table.calculateFormulas = true;
-    this.reRender();
+  const showFormulas = () => {
+    sheet.table.calculateFormulas = false;
+    reRender();
   };
 
-  loadData(dataSheets) {
-    this.bottombar.clear();
-    this.datas = [];
+  const hideFormulas = () => {
+    sheet.table.calculateFormulas = true;
+    reRender();
+  };
+
+  const setData = (dataSheets) => {
+    bottombar.clear();
+    datas = [];
     if (dataSheets.length > 0) {
       for (let i = 0; i < dataSheets.length; i += 1) {
         const it = dataSheets[i];
-        const nd = this.addSheet(it.name, i === 0);
+        const nd = addSheet(it.name, i === 0);
 
-        if (this.hyperFormula.isItPossibleToAddSheet(it.name)) {
-          this.hyperFormula.addSheet(it.name);
+        if (hyperFormula.isItPossibleToAddSheet(it.name)) {
+          hyperFormula.addSheet(it.name);
         }
         nd.setData(it);
         if (i === 0) {
-          this.sheet.resetData(nd);
+          sheet.resetData(nd);
         }
       }
     }
-    return this;
-  }
+  };
 
-  getData() {
-    return this.datas.map((it) => it.getData());
-  }
+  const getData = () => {
+    return datas.map((it) => it.getData());
+  };
 
-  cellText(ri, ci, text, sheetIndex = 0) {
-    this.datas[sheetIndex].setCellText(ri, ci, text, "finished");
-    return this;
-  }
+  const cellText = (ri, ci, text, sheetIndex = 0) => {
+    datas[sheetIndex].setCellText(ri, ci, text, "finished");
+  };
 
-  cell(ri, ci, sheetIndex = 0) {
-    return this.datas[sheetIndex].getCell(ri, ci);
-  }
+  const cell = (ri, ci, sheetIndex = 0) => {
+    return datas[sheetIndex].getCell(ri, ci);
+  };
 
-  cellStyle(ri, ci, sheetIndex = 0) {
-    return this.datas[sheetIndex].getCellStyle(ri, ci);
-  }
+  const cellStyle = (ri, ci, sheetIndex = 0) => {
+    return datas[sheetIndex].getCellStyle(ri, ci);
+  };
 
-  reRender() {
-    this.sheet.table.render();
-    return this;
-  }
+  const reRender = () => {
+    sheet.table.render();
+  };
 
-  on(eventName, func) {
-    this.sheet.on(eventName, func);
-    return this;
-  }
+  const on = (eventName, func) => {
+    sheet.on(eventName, func);
+  };
 
-  validate() {
-    const { validations } = this.data;
+  const validate = () => {
+    const { validations } = data;
     return validations.errors.size <= 0;
-  }
+  };
 
-  change(cb) {
-    this.sheet.on("change", cb);
-    return this;
-  }
+  const change = (cb) => {
+    sheet.on("change", cb);
+  };
 
-  static locale(lang, message) {
-    locale(lang, message);
-  }
-}
+  return {
+    addSheet,
+    setVariables,
+    deleteSheet,
+    destroy,
+    showFormulas,
+    hideFormulas,
+    setData,
+    getData,
+    cellText,
+    cell,
+    cellStyle,
+    reRender,
+    on,
+    validate,
+    change,
+    hyperFormula,
+    eventEmitter,
+  };
+};
 
-const spreadsheet = (el, options = {}) => new Spreadsheet(el, options);
-
-if (typeof window !== "undefined") {
-  window.x_spreadsheet = spreadsheet;
-  window.x_spreadsheet.locale = (lang, message) => locale(lang, message);
-}
-
-export default Spreadsheet;
-export { spreadsheet };
+export default getSpreadsheet;
+export { locale };
