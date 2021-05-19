@@ -1,6 +1,6 @@
 import { h } from "./component/element";
 import DataProxy from "./core/data_proxy";
-import Sheet from "./component/sheet";
+import { getSheet } from "./component/sheet";
 import { getBottombar } from "./component/bottombar";
 import { cssPrefix } from "./config";
 import { locale, tf } from "./locale/locale";
@@ -116,7 +116,7 @@ const getSpreadsheet = (element, options) => {
 
   const data = addSheet();
 
-  const sheet = new Sheet(rootEl, data, hyperFormula, formats, eventEmitter);
+  const sheet = getSheet(rootEl, data, hyperFormula, formats, eventEmitter);
 
   // create canvas element
   element.appendChild(rootEl.el);
