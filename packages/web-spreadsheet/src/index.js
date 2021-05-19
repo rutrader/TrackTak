@@ -8,7 +8,7 @@ import "./index.less";
 import { HyperFormula } from "hyperformula";
 import { formatNumberRender, formatStringRender } from "./core/helper";
 import defaultOptions from "./core/defaultOptions";
-import { merge } from "lodash";
+import { merge } from "lodash-es";
 import EventEmitter from "events";
 import spreadsheetEvents from "./core/spreadsheetEvents";
 
