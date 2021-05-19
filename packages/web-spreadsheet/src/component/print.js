@@ -1,10 +1,9 @@
-/* global window document */
-import { h } from './element';
-import { cssPrefix } from '../config';
-import Button from './button';
-import { Draw } from '../canvas/draw';
-import { renderCell } from './table';
-import { t } from '../locale/locale';
+import { h } from "./element";
+import { cssPrefix } from "../config";
+import getDraw from "../canvas/draw";
+import { renderCell } from "./table";
+import { t } from "../locale/locale";
+import getButton from "./button";
 
 // resolution: 72 => 595 x 842
 // 150 => 1240 x 1754
@@ -13,21 +12,21 @@ import { t } from '../locale/locale';
 // 96 * cm / 2.54 , 96 * cm / 2.54
 
 const PAGER_SIZES = [
-  ['A3', 11.69, 16.54],
-  ['A4', 8.27, 11.69],
-  ['A5', 5.83, 8.27],
-  ['B4', 9.84, 13.90],
-  ['B5', 6.93, 9.84],
+  ["A3", 11.69, 16.54],
+  ["A4", 8.27, 11.69],
+  ["A5", 5.83, 8.27],
+  ["B4", 9.84, 13.9],
+  ["B5", 6.93, 9.84],
 ];
 
-const PAGER_ORIENTATIONS = ['landscape', 'portrait'];
+const PAGER_ORIENTATIONS = ["landscape", "portrait"];
 
 function inches2px(inc) {
   return parseInt(96 * inc, 10);
 }
 
 function btnClick(type) {
-  if (type === 'cancel') {
+  if (type === "cancel") {
     this.el.hide();
   } else {
     this.toPrint();
@@ -59,46 +58,60 @@ export default class Print {
       padding: 50,
       orientation: PAGER_ORIENTATIONS[0],
       get width() {
-        return this.orientation === 'landscape' ? this.h : this.w;
+        return this.orientation === "landscape" ? this.h : this.w;
       },
       get height() {
-        return this.orientation === 'landscape' ? this.w : this.h;
+        return this.orientation === "landscape" ? this.w : this.h;
       },
     };
     this.data = data;
-    this.el = h('div', `${cssPrefix}-print`)
+    this.el = h("div", `${cssPrefix}-print`)
       .children(
-        h('div', `${cssPrefix}-print-bar`)
-          .children(
-            h('div', '-title').child('Print settings'),
-            h('div', '-right').children(
-              h('div', `${cssPrefix}-buttons`).children(
-                new Button('cancel').on('click', btnClick.bind(this, 'cancel')),
-                new Button('next', 'primary').on('click', btnClick.bind(this, 'next')),
+        h("div", `${cssPrefix}-print-bar`).children(
+          h("div", "-title").child("Print settings"),
+          h("div", "-right").children(
+            h("div", `${cssPrefix}-buttons`).children(
+              getButton("cancel").el.on("click", btnClick.bind(this, "cancel")),
+              getButton("next", "primary").el.on(
+                "click",
+                btnClick.bind(this, "next"),
               ),
             ),
           ),
-        h('div', `${cssPrefix}-print-content`)
-          .children(
-            this.contentEl = h('div', '-content'),
-            h('div', '-sider').child(
-              h('form', '').children(
-                h('fieldset', '').children(
-                  h('label', '').child(`${t('print.size')}`),
-                  h('select', '').children(
-                    ...PAGER_SIZES.map((it, index) => h('option', '').attr('value', index).child(`${it[0]} ( ${it[1]}''x${it[2]}'' )`)),
-                  ).on('change', pagerSizeChange.bind(this)),
-                ),
-                h('fieldset', '').children(
-                  h('label', '').child(`${t('print.orientation')}`),
-                  h('select', '').children(
-                    ...PAGER_ORIENTATIONS.map((it, index) => h('option', '').attr('value', index).child(`${t('print.orientations')[index]}`)),
-                  ).on('change', pagerOrientationChange.bind(this)),
-                ),
+        ),
+        h("div", `${cssPrefix}-print-content`).children(
+          (this.contentEl = h("div", "-content")),
+          h("div", "-sider").child(
+            h("form", "").children(
+              h("fieldset", "").children(
+                h("label", "").child(`${t("print.size")}`),
+                h("select", "")
+                  .children(
+                    ...PAGER_SIZES.map((it, index) =>
+                      h("option", "")
+                        .attr("value", index)
+                        .child(`${it[0]} ( ${it[1]}''x${it[2]}'' )`),
+                    ),
+                  )
+                  .on("change", pagerSizeChange.bind(this)),
+              ),
+              h("fieldset", "").children(
+                h("label", "").child(`${t("print.orientation")}`),
+                h("select", "")
+                  .children(
+                    ...PAGER_ORIENTATIONS.map((it, index) =>
+                      h("option", "")
+                        .attr("value", index)
+                        .child(`${t("print.orientations")[index]}`),
+                    ),
+                  )
+                  .on("change", pagerOrientationChange.bind(this)),
               ),
             ),
           ),
-      ).hide();
+        ),
+      )
+      .hide();
   }
 
   resetData(data) {
@@ -120,7 +133,7 @@ export default class Print {
     }
     let ri = 0;
     let yoffset = 0;
-    this.contentEl.html('');
+    this.contentEl.html("");
     this.canvases = [];
     const mViewRange = {
       sri: 0,
@@ -131,10 +144,10 @@ export default class Print {
     for (let i = 0; i < pages; i += 1) {
       let th = 0;
       let yo = 0;
-      const wrap = h('div', `${cssPrefix}-canvas-card`);
-      const canvas = h('canvas', `${cssPrefix}-canvas`);
+      const wrap = h("div", `${cssPrefix}-canvas-card`);
+      const canvas = h("canvas", `${cssPrefix}-canvas`);
       this.canvases.push(canvas.el);
-      const draw = new Draw(canvas.el, width, height);
+      const draw = getDraw(canvas.el, width, height);
       // cell-content
       draw.save();
       draw.translate(left, top);
@@ -168,7 +181,9 @@ export default class Print {
       mViewRange.sri = mViewRange.eri;
       mViewRange.sci = mViewRange.eci;
       yoffset += yo;
-      this.contentEl.child(h('div', `${cssPrefix}-canvas-card-wraper`).child(wrap.child(canvas)));
+      this.contentEl.child(
+        h("div", `${cssPrefix}-canvas-card-wraper`).child(wrap.child(canvas)),
+      );
     }
     this.el.show();
   }
@@ -176,16 +191,16 @@ export default class Print {
   toPrint() {
     this.el.hide();
     const { paper } = this;
-    const iframe = h('iframe', '').hide();
+    const iframe = h("iframe", "").hide();
     const { el } = iframe;
     window.document.body.appendChild(el);
     const { contentWindow } = el;
     const idoc = contentWindow.document;
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.innerHTML = `
       @page { size: ${paper.width}px ${paper.height}px; };
       canvas {
-        page-break-before: auto;        
+        page-break-before: auto;
         page-break-after: always;
         image-rendering: pixelated;
       };
@@ -193,7 +208,7 @@ export default class Print {
     idoc.head.appendChild(style);
     this.canvases.forEach((it) => {
       const cn = it.cloneNode(false);
-      const ctx = cn.getContext('2d');
+      const ctx = cn.getContext("2d");
       // ctx.imageSmoothingEnabled = true;
       ctx.drawImage(it, 0, 0);
       idoc.body.appendChild(cn);
