@@ -1,6 +1,7 @@
 const defaultOptions = {
   mode: "edit", // edit | read
   view: {
+    variablesSheetHeight: () => 100,
     height: () => document.documentElement.clientHeight,
     width: () => document.documentElement.clientWidth,
   },

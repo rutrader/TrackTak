@@ -42,16 +42,6 @@ export const getSheet = (
   formats,
   eventEmitter,
 ) => {
-  const on = (eventName, func) => {
-    eventMap.set(eventName, func);
-  };
-
-  const trigger = (eventName, ...args) => {
-    if (eventMap.has(eventName)) {
-      eventMap.get(eventName)(...args);
-    }
-  };
-
   const resetData = (datum) => {
     // before
     editor.clear();
@@ -107,8 +97,7 @@ export const getSheet = (
     };
   };
 
-  const eventMap = new Map();
-  const { view, showToolbar, showContextmenu } = data.settings;
+  const { view, showToolbar, showContextmenu } = data.options;
   const el = h("div", `${cssPrefix}-sheet`);
   const toolbar = new Toolbar(
     data,
@@ -228,11 +217,14 @@ export const getSheet = (
     const cell = data.getCell(ri, ci);
     if (multiple) {
       selector.setEnd(ri, ci, moving);
-      trigger("cells-selected", cell, selector.range);
+      eventEmitter.emit(
+        spreadsheetEvents.sheet.cellsSelected,
+        cell,
+        selector.range,
+      );
     } else {
-      // trigger click event
       selector.set(ri, ci, indexesUpdated);
-      trigger("cell-selected", cell, ri, ci);
+      eventEmitter.emit(spreadsheetEvents.sheet.cellSelected, cell, ri, ci);
     }
     toolbar.reset();
   }
@@ -452,7 +444,7 @@ export const getSheet = (
   }
 
   function paste(what, evt) {
-    if (data.settings.mode === "read") return;
+    if (data.options.mode === "read") return;
     if (data.paste(what, (msg) => xtoast("Tip", msg))) {
       sheetReset();
     } else if (evt) {
@@ -528,11 +520,7 @@ export const getSheet = (
           }
         },
         () => {
-          if (
-            isAutofillEl &&
-            selector.arange &&
-            data.settings.mode !== "read"
-          ) {
+          if (isAutofillEl && selector.arange && data.options.mode !== "read") {
             if (
               data.autofill(selector.arange, "all", (msg) => xtoast("Tip", msg))
             ) {
@@ -564,7 +552,7 @@ export const getSheet = (
   }
 
   function editorSet() {
-    if (data.settings.mode === "read") return;
+    if (data.options.mode === "read") return;
     editorSetOffset();
     editor.setCell(data.getSelectedCell(), data.getSelectedValidator());
     clearClipboard();
@@ -606,19 +594,24 @@ export const getSheet = (
   }
 
   function dataSetCellText(text, state = "finished") {
-    if (data.settings.mode === "read") return;
+    if (data.options.mode === "read") return;
     data.setSelectedCellText(text, state);
     const { ri, ci } = data.selector;
     if (state === "finished") {
-      trigger("cell-edited-finished", text, ri, ci);
+      eventEmitter.emit(
+        spreadsheetEvents.sheet.cellEditedFinished,
+        text,
+        ri,
+        ci,
+      );
     } else {
-      trigger("cell-edited", text, ri, ci);
+      eventEmitter.emit(spreadsheetEvents.sheet.cellEdited, text, ri, ci);
       table.render();
     }
   }
 
   function insertDeleteRowColumn(type) {
-    if (data.settings.mode === "read") return;
+    if (data.options.mode === "read") return;
     if (type === "insert-row") {
       data.insert("row");
     } else if (type === "delete-row") {
@@ -1026,8 +1019,6 @@ export const getSheet = (
 
   return {
     el,
-    on,
-    trigger,
     resetData,
     setData,
     freeze,

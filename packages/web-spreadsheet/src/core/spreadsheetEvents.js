@@ -10,21 +10,30 @@ const spreadsheetEvents = {
     clickContextMenu: "rcm-click-context-menu",
   },
   editor: {
-    change: "e_change",
+    change: "e-change",
   },
   rowResizer: {
-    finished: "rr_finished",
-    unhide: "rr_unhide",
+    finished: "rr-finished",
+    unhide: "rr-unhide",
   },
   colResizer: {
-    finished: "cr_finished",
-    unhide: "cr_unhide",
+    finished: "cr-finished",
+    unhide: "cr-unhide",
   },
   verticalScrollbar: {
-    move: "vsb_move",
+    move: "vsb-move",
   },
   horizontalScrollbar: {
-    move: "hsb_move",
+    move: "hsb-move",
+  },
+  data: {
+    change: "d-change",
+  },
+  sheet: {
+    cellSelected: "s-cell-selected",
+    cellsSelected: "s-cells-selected",
+    cellEditedFinished: "s-cell-edited-finished",
+    cellEdited: "s-cell-edited",
   },
   toolbar: {
     alignChange: "tb-align-change",

@@ -103,9 +103,7 @@ const getSpreadsheet = (element, options) => {
     active = true,
     options = newOptions,
   ) => {
-    const data = getDataProxy(name, options, hyperFormula);
-
-    data.change(sheet);
+    const data = getDataProxy(name, options, hyperFormula, eventEmitter);
 
     datas.push(data);
 
@@ -161,23 +159,48 @@ const getSpreadsheet = (element, options) => {
     reRender();
   };
 
+  const addVariablesSheet = (
+    name = `variables-sheet${datas.length + 1}`,
+    options = newOptions,
+  ) => {
+    const data = getDataProxy(name, options, hyperFormula);
+
+    return data;
+  };
+
+  const setVariablesData = (variableSheets) => {
+    variableSheets.forEach((variableSheet, i) => {
+      const data = addVariablesSheet(variableSheet.name);
+
+      if (hyperFormula.isItPossibleToAddSheet(variableSheet.name)) {
+        hyperFormula.addSheet(variableSheet.name);
+      }
+
+      data.setData(variableSheet);
+
+      if (i === 0) {
+        sheet.resetData(data);
+      }
+    });
+  };
+
   const setData = (dataSheets) => {
     bottombar.clear();
     datas = [];
-    if (dataSheets.length > 0) {
-      for (let i = 0; i < dataSheets.length; i += 1) {
-        const it = dataSheets[i];
-        const nd = addSheet(it.name, i === 0);
 
-        if (hyperFormula.isItPossibleToAddSheet(it.name)) {
-          hyperFormula.addSheet(it.name);
-        }
-        nd.setData(it);
-        if (i === 0) {
-          sheet.resetData(nd);
-        }
+    dataSheets.forEach((dataSheet, i) => {
+      const data = addSheet(dataSheet.name, i === 0);
+
+      if (hyperFormula.isItPossibleToAddSheet(dataSheet.name)) {
+        hyperFormula.addSheet(dataSheet.name);
       }
-    }
+
+      data.setData(dataSheet);
+
+      if (i === 0) {
+        sheet.resetData(data);
+      }
+    });
   };
 
   const getData = () => {
@@ -200,22 +223,15 @@ const getSpreadsheet = (element, options) => {
     sheet.table.render();
   };
 
-  const on = (eventName, func) => {
-    sheet.on(eventName, func);
-  };
-
   const validate = () => {
     const { validations } = data;
     return validations.errors.size <= 0;
   };
 
-  const change = (cb) => {
-    sheet.on("change", cb);
-  };
-
   return {
     addSheet,
     setVariables,
+    setVariablesData,
     deleteSheet,
     destroy,
     showFormulas,
@@ -226,9 +242,7 @@ const getSpreadsheet = (element, options) => {
     cell,
     cellStyle,
     reRender,
-    on,
     validate,
-    change,
     hyperFormula,
     eventEmitter,
   };

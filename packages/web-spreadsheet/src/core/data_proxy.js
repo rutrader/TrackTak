@@ -11,17 +11,21 @@ import { Validations } from "./validation";
 import { CellRange } from "./cell_range";
 import { expr2xy, xy2expr } from "./alphabet";
 import { t } from "../locale/locale";
+import spreadsheetEvents from "./spreadsheetEvents";
 
 const toolbarHeight = 41;
 const bottombarHeight = 41;
-export const getDataProxy = (name = "sheet", options, hyperFormula) => {
-  // save object
-  const settings = options;
+export const getDataProxy = (
+  name = "sheet",
+  options,
+  hyperFormula,
+  eventEmitter,
+) => {
   let freeze = [0, 0];
   let styles = []; // Array<Style>
   const merges = new Merges(); // [CellRange, ...]
-  const rows = new Rows(settings.row, hyperFormula);
-  const cols = new Cols(settings.col);
+  const rows = new Rows(options.row, hyperFormula);
+  const cols = new Cols(options.col);
   const validations = new Validations();
 
   // don't save object
@@ -602,10 +606,6 @@ export const getDataProxy = (name = "sheet", options, hyperFormula) => {
     return getCellStyleOrDefault(ri, ci);
   };
 
-  const change = (sheet) => (...args) => {
-    sheet.trigger("change", ...args);
-  };
-
   // state: input | finished
   const setCellText = (ri, ci, text, state) => {
     if (state === "finished") {
@@ -614,7 +614,7 @@ export const getDataProxy = (name = "sheet", options, hyperFormula) => {
       rows.setCellText(ri, ci, text);
     } else {
       rows.setCellText(ri, ci, text);
-      change(getData());
+      eventEmitter.emit(spreadsheetEvents.data.change, getData());
     }
 
     // validator
@@ -641,7 +641,7 @@ export const getDataProxy = (name = "sheet", options, hyperFormula) => {
   };
 
   const viewHeight = () => {
-    const { view, showToolbar } = settings;
+    const { view, showToolbar } = options;
     let h = view.height();
     h -= bottombarHeight;
     if (showToolbar) {
@@ -651,7 +651,7 @@ export const getDataProxy = (name = "sheet", options, hyperFormula) => {
   };
 
   const viewWidth = () => {
-    return settings.view.width();
+    return options.view.width();
   };
 
   const freezeViewRange = () => {
@@ -777,7 +777,7 @@ export const getDataProxy = (name = "sheet", options, hyperFormula) => {
   };
 
   const defaultStyle = () => {
-    return settings.style;
+    return options.style;
   };
 
   const addStyle = (nstyle) => {
@@ -793,7 +793,7 @@ export const getDataProxy = (name = "sheet", options, hyperFormula) => {
   const changeData = (cb) => {
     history.add(getData());
     cb();
-    change(getData());
+    eventEmitter.emit(spreadsheetEvents.data.change, getData());
   };
 
   const setData = (d) => {
@@ -1066,7 +1066,6 @@ export const getDataProxy = (name = "sheet", options, hyperFormula) => {
   }
 
   return {
-    change,
     rows,
     cols,
     merges,
@@ -1085,7 +1084,7 @@ export const getDataProxy = (name = "sheet", options, hyperFormula) => {
     redo,
     viewWidth,
     viewHeight,
-    settings,
+    options,
     getCell,
     getCellRectByXY,
     scroll,

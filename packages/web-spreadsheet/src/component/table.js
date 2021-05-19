@@ -252,14 +252,14 @@ export const getTable = (el, data, hyperFormula, formats) => {
   }
 
   function renderContentGrid({ sri, sci, eri, eci, w, h }, fw, fh, tx, ty) {
-    const { settings } = data;
+    const { options } = data;
 
     draw.save();
     draw.attr(tableGridStyle);
     draw.translate(fw + tx, fh + ty);
 
     draw.clearRect(0, 0, w, h);
-    if (!settings.showGrid) {
+    if (!options.showGrid) {
       draw.restore();
       return;
     }
