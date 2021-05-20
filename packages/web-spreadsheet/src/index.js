@@ -11,6 +11,7 @@ import { merge } from "lodash-es";
 import EventEmitter from "events";
 import spreadsheetEvents from "./core/spreadsheetEvents";
 import withToolbar from "./component/withToolbar";
+import { getTable } from "./component/getTable";
 
 const getSpreadsheet = (element, options) => {
   const newOptions = merge(defaultOptions, options);
@@ -123,9 +124,11 @@ const getSpreadsheet = (element, options) => {
   const data = addSheetData();
   const variablesData = addVariablesSheetData();
 
-  const variablesSheet = getSheet(variablesData, hyperFormula, eventEmitter);
+  const table = getTable(data, hyperFormula);
+  const variablesSheet = getSheet(variablesData, table, eventEmitter);
 
-  const sheet = withToolbar(getSheet(data, hyperFormula, eventEmitter))(rootEl);
+  const table2 = getTable(data, hyperFormula);
+  const sheet = withToolbar(getSheet(data, table2, eventEmitter))(rootEl);
 
   rootEl.child(variablesSheet.el);
   rootEl.child(sheet.el);

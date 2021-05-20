@@ -6,7 +6,6 @@ import { getScrollbar } from "./getScrollbar";
 import Selector from "./selector";
 import { getEditor } from "./editor";
 import { getContextMenu } from "./contextmenu";
-import { getTable } from "./getTable";
 import ModalValidation from "./modal_validation";
 import SortFilter from "./sort_filter";
 import { xtoast } from "./message";
@@ -33,7 +32,7 @@ function throttle(func, wait) {
   };
 }
 
-export const getSheet = (data, hyperFormula, eventEmitter) => {
+export const getSheet = (data, table, eventEmitter) => {
   const resetData = (datum) => {
     // before
     editor.clear();
@@ -93,8 +92,6 @@ export const getSheet = (data, hyperFormula, eventEmitter) => {
 
   let focusing;
 
-  // table
-  const tableEl = h("canvas", `${cssPrefix}-table`);
   // resizer
   const rowResizer = getResizer(
     eventEmitter,
@@ -143,7 +140,7 @@ export const getSheet = (data, hyperFormula, eventEmitter) => {
   const sortFilter = new SortFilter();
   // root element
   el.children(
-    tableEl,
+    table.el,
     overlayerEl.el,
     rowResizer.el,
     colResizer.el,
@@ -154,7 +151,6 @@ export const getSheet = (data, hyperFormula, eventEmitter) => {
     sortFilter.el,
   );
   // table
-  const table = getTable(tableEl.el, data, hyperFormula);
   sheetInitEvents();
   sheetReset();
   // init selector [0, 0]
@@ -255,7 +251,7 @@ export const getSheet = (data, hyperFormula, eventEmitter) => {
       colResizer.hide();
       return;
     }
-    const tRect = tableEl.box();
+    const tRect = table.el.box();
     const cRect = data.getCellRectByXY(evt.offsetX, evt.offsetY);
     if (cRect.ri >= 0 && cRect.ci === -1) {
       cRect.width = cols.indexWidth;
@@ -393,7 +389,7 @@ export const getSheet = (data, hyperFormula, eventEmitter) => {
   function sheetReset() {
     const tOffset = getTableOffset();
     const vRect = getRect();
-    tableEl.attr(vRect);
+    table.el.attr(vRect);
     overlayerEl.offset(vRect);
     overlayerCEl.offset(tOffset);
     el.css("width", `${vRect.width}px`);

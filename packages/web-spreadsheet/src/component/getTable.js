@@ -2,6 +2,8 @@ import { stringAt } from "../core/alphabet";
 import { getFontSizePxByPt } from "../core/font";
 
 import getDraw, { getDrawBox, thinLineWidth, npx } from "../canvas/draw";
+import { h } from "./element";
+import { cssPrefix } from "../config";
 
 const cellPaddingWidth = 5;
 const tableFixedHeaderCleanStyle = { fillStyle: "#f4f5f8" };
@@ -26,8 +28,9 @@ function getTableDrawBox(data, rindex, cindex, yoffset = 0) {
   return getDrawBox(left, top + yoffset, width, height, cellPaddingWidth);
 }
 
-export const getTable = (el, data, hyperFormula) => {
-  const draw = getDraw(el, data.viewWidth(), data.viewHeight());
+export const getTable = (data, hyperFormula) => {
+  const el = h("canvas", `${cssPrefix}-table`);
+  const draw = getDraw(el.el, data.viewWidth(), data.viewHeight());
   let calculateFormulas = true;
 
   const setCalculateFormulas = (shouldCalculateFormulas) => {
