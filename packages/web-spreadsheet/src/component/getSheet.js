@@ -33,13 +33,7 @@ function throttle(func, wait) {
   };
 }
 
-export const getSheet = (
-  targetEl,
-  data,
-  hyperFormula,
-  formats,
-  eventEmitter,
-) => {
+export const getSheet = (data, hyperFormula, formats, eventEmitter) => {
   const resetData = (datum) => {
     // before
     editor.clear();
@@ -923,7 +917,6 @@ export const getSheet = (
 
   return {
     el,
-    targetEl,
     resetData,
     setData,
     freeze,

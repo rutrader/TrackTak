@@ -116,30 +116,30 @@ const getSpreadsheet = (element, options) => {
     return data;
   };
 
-  // const addVariablesSheetData = (
-  //   name = `variables-sheet${datas.length + 1}`,
-  //   options = newOptions,
-  // ) => {
-  //   const data = getDataProxy(name, options, hyperFormula, eventEmitter);
+  const addVariablesSheetData = (
+    name = `variables-sheet${datas.length + 1}`,
+    options = newOptions,
+  ) => {
+    const data = getDataProxy(name, options, hyperFormula, eventEmitter);
 
-  //   return data;
-  // };
+    return data;
+  };
 
-  // const setVariablesData = (variableSheets) => {
-  //   variableSheets.forEach((variableSheet, i) => {
-  //     const data = addVariablesSheetData(variableSheet.name);
+  const setVariablesData = (variableSheets) => {
+    variableSheets.forEach((variableSheet, i) => {
+      const data = addVariablesSheetData(variableSheet.name);
 
-  //     if (hyperFormula.isItPossibleToAddSheet(variableSheet.name)) {
-  //       hyperFormula.addSheet(variableSheet.name);
-  //     }
+      if (hyperFormula.isItPossibleToAddSheet(variableSheet.name)) {
+        hyperFormula.addSheet(variableSheet.name);
+      }
 
-  //     data.setData(variableSheet);
+      data.setData(variableSheet);
 
-  //     if (i === 0) {
-  //       variablesSheet.resetData(data);
-  //     }
-  //   });
-  // };
+      if (i === 0) {
+        variablesSheet.resetData(data);
+      }
+    });
+  };
 
   const setData = (dataSheets) => {
     bottombar.clear();
@@ -157,19 +157,21 @@ const getSpreadsheet = (element, options) => {
   };
 
   const data = addSheetData();
-  // const variablesData = addVariablesSheetData();
+  const variablesData = addVariablesSheetData();
 
-  // const variablesSheet = getSheet(
-  //   rootEl,
-  //   variablesData,
-  //   hyperFormula,
-  //   formats,
-  //   eventEmitter,
-  // );
+  const variablesSheet = getSheet(
+    variablesData,
+    hyperFormula,
+    formats,
+    eventEmitter,
+  );
 
   const sheet = withToolbar(
-    getSheet(rootEl, data, hyperFormula, formats, eventEmitter),
-  );
+    getSheet(data, hyperFormula, formats, eventEmitter),
+  )(rootEl);
+
+  rootEl.child(variablesSheet.el);
+  rootEl.child(sheet.el);
 
   // create canvas element
   element.appendChild(rootEl.el);
@@ -242,7 +244,7 @@ const getSpreadsheet = (element, options) => {
   return {
     addSheetData,
     setVariables,
-    // setVariablesData,
+    setVariablesData,
     deleteSheetData,
     destroy,
     showFormulas,

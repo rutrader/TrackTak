@@ -2,8 +2,8 @@ import spreadsheetEvents from "../core/spreadsheetEvents";
 import { getPrint } from "./getPrint";
 import { getToolbar } from "./toolbar";
 
-const withToolbar = (sheet) => {
-  let { el, targetEl, data, formats, eventEmitter } = sheet;
+const withToolbar = (sheet) => (rootEl) => {
+  let { data, formats, eventEmitter } = sheet;
   const { view, showToolbar } = data.options;
 
   const print = getPrint(data);
@@ -65,7 +65,7 @@ const withToolbar = (sheet) => {
     eventEmitter.on(key, (type, value) => toolbarChange(type, value));
   });
 
-  targetEl.children(toolbar.el, el, print.el);
+  rootEl.children(toolbar.el, print.el);
 
   eventEmitter.on(spreadsheetEvents.sheet.cellSelected, () => {
     toolbar.reset();

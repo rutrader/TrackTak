@@ -317,44 +317,44 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     if (spreadsheet) {
-      // spreadsheet.setVariablesData([
-      //   {
-      //     name: "Inputs",
-      //     rows: {
-      //       0: {
-      //         cells: [
-      //           {
-      //             text: "CAGR Year 1-5",
-      //           },
-      //         ],
-      //       },
-      //     },
-      //   },
-      //   {
-      //     name: "Optional Inputs",
-      //     rows: {
-      //       0: {
-      //         cells: [
-      //           {
-      //             text: "Debt",
-      //           },
-      //         ],
-      //       },
-      //     },
-      //   },
-      //   {
-      //     name: "API",
-      //     rows: {
-      //       0: {
-      //         cells: [
-      //           {
-      //             text: "totalRevenue",
-      //           },
-      //         ],
-      //       },
-      //     },
-      //   },
-      // ]);
+      spreadsheet.setVariablesData([
+        {
+          name: "Inputs",
+          rows: {
+            0: {
+              cells: [
+                {
+                  text: "CAGR Year 1-5",
+                },
+              ],
+            },
+          },
+        },
+        {
+          name: "Optional Inputs",
+          rows: {
+            0: {
+              cells: [
+                {
+                  text: "Debt",
+                },
+              ],
+            },
+          },
+        },
+        {
+          name: "API",
+          rows: {
+            0: {
+              cells: [
+                {
+                  text: "totalRevenue",
+                },
+              ],
+            },
+          },
+        },
+      ]);
     }
   }, [spreadsheet]);
 
