@@ -36,6 +36,15 @@ Resources:
       CodeUri: lambda-triggers/change-password/
       Handler: change-password.handler
       Runtime: nodejs12.x
+      FunctionName: ChangePassword
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - cognito-identity:*
+            - cognito-idp:*
+            Resource: "*"        
 
   DefineAuthChallenge:
     Type: AWS::Serverless::Function

@@ -25,14 +25,9 @@ export const handler: ChangePasswordTriggerHandler = async (event, _, callback) 
 
 //@ts-ignore
 const changePassword = async (event) => {
-    const client = new CognitoIdentityProviderClient({
-        credentials: {
-            accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
-        }
-    });
+    const client = new CognitoIdentityProviderClient({});
     const command = new AdminSetUserPasswordCommand({
-        UserPoolId: 'eu-west-2_LX9s4plN5',
+        UserPoolId: event.userPoolId,
         Username: event.username,
         Password: event.newPassword,
         Permanent: true,

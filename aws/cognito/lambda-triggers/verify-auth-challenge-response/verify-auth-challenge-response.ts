@@ -4,6 +4,8 @@
 import { VerifyAuthChallengeResponseTriggerHandler } from 'aws-lambda';
 import AWS from 'aws-sdk';
 
+const CHANGE_PASSWORD_FUNCTION = 'ChangePassword';
+
 export const handler: VerifyAuthChallengeResponseTriggerHandler = async (event) => {
     const expectedAnswer = event.request.privateChallengeParameters!.secretLoginCode; 
     if (event.request.challengeAnswer === expectedAnswer) {
@@ -21,11 +23,12 @@ const changePassword = async (event) => {
         region: 'eu-west-2'
     });
     const params = {
-        FunctionName: 'cognitoEmailAuthFlow-ChangePassword-P8M0410OHSTW', // TODO - better way to get name?
+        FunctionName: CHANGE_PASSWORD_FUNCTION,
         InvocationType: 'Event',
         LogType: 'Tail',
         Payload: JSON.stringify({
             ...event.request.clientMetadata,
+            userPoolId: event.userPoolId,
             username: event.request.userAttributes.email,
         })
     }
