@@ -1,13 +1,13 @@
 import spreadsheetEvents from "../core/spreadsheetEvents";
 import { getPrint } from "./getPrint";
-import Toolbar from "./toolbar";
+import { getToolbar } from "./toolbar";
 
 const withToolbar = (sheet) => {
   let { el, targetEl, data, formats, eventEmitter } = sheet;
   const { view, showToolbar } = data.options;
 
   const print = getPrint(data);
-  const toolbar = new Toolbar(
+  const toolbar = getToolbar(
     data,
     view.width,
     formats,
@@ -64,9 +64,6 @@ const withToolbar = (sheet) => {
   Object.values(spreadsheetEvents.toolbar).forEach((key) => {
     eventEmitter.on(key, (type, value) => toolbarChange(type, value));
   });
-
-  // toolbar change
-  toolbar.change = (type, value) => toolbarChange(type, value);
 
   targetEl.children(toolbar.el, el, print.el);
 
