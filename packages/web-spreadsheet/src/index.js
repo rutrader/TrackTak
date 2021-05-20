@@ -1,6 +1,6 @@
 import { h } from "./component/element";
-import { getDataProxy } from "./core/data_proxy";
-import { getSheet } from "./component/sheet";
+import { getDataProxy } from "./core/getDataProxy";
+import { getSheet } from "./component/getSheet";
 import { getBottombar } from "./component/bottombar";
 import { cssPrefix } from "./config";
 import { locale, tf } from "./locale/locale";
@@ -11,6 +11,7 @@ import defaultOptions from "./core/defaultOptions";
 import { merge } from "lodash-es";
 import EventEmitter from "events";
 import spreadsheetEvents from "./core/spreadsheetEvents";
+import withToolbar from "./component/withToolbar";
 
 const getSpreadsheet = (element, options) => {
   let datas = [];
@@ -75,7 +76,7 @@ const getSpreadsheet = (element, options) => {
   );
 
   eventEmitter.on(spreadsheetEvents.bottombar.addSheet, () => {
-    const data = addSheet();
+    const data = addSheetData();
 
     sheet.resetData(data);
   });
@@ -88,7 +89,7 @@ const getSpreadsheet = (element, options) => {
 
   eventEmitter.on(spreadsheetEvents.bottombar.clickContextMenu, (key) => {
     if (key === "delete") {
-      deleteSheet();
+      deleteSheetData();
     }
   });
 
@@ -98,13 +99,16 @@ const getSpreadsheet = (element, options) => {
 
   const bottombar = getBottombar(eventEmitter);
 
-  const addSheet = (
+  const addSheetData = (
     name = `sheet${datas.length + 1}`,
     active = true,
     options = newOptions,
   ) => {
     const data = getDataProxy(name, options, hyperFormula, eventEmitter);
 
+    if (hyperFormula.isItPossibleToAddSheet(name)) {
+      hyperFormula.addSheet(name);
+    }
     datas.push(data);
 
     bottombar.addItem(name, active);
@@ -112,9 +116,60 @@ const getSpreadsheet = (element, options) => {
     return data;
   };
 
-  const data = addSheet();
+  // const addVariablesSheetData = (
+  //   name = `variables-sheet${datas.length + 1}`,
+  //   options = newOptions,
+  // ) => {
+  //   const data = getDataProxy(name, options, hyperFormula, eventEmitter);
 
-  const sheet = getSheet(rootEl, data, hyperFormula, formats, eventEmitter);
+  //   return data;
+  // };
+
+  // const setVariablesData = (variableSheets) => {
+  //   variableSheets.forEach((variableSheet, i) => {
+  //     const data = addVariablesSheetData(variableSheet.name);
+
+  //     if (hyperFormula.isItPossibleToAddSheet(variableSheet.name)) {
+  //       hyperFormula.addSheet(variableSheet.name);
+  //     }
+
+  //     data.setData(variableSheet);
+
+  //     if (i === 0) {
+  //       variablesSheet.resetData(data);
+  //     }
+  //   });
+  // };
+
+  const setData = (dataSheets) => {
+    bottombar.clear();
+    datas = [];
+
+    dataSheets.forEach((dataSheet, i) => {
+      const data = addSheetData(dataSheet.name, i === 0);
+
+      data.setData(dataSheet);
+
+      if (i === 0) {
+        sheet.resetData(data);
+      }
+    });
+  };
+
+  const data = addSheetData();
+  // const variablesData = addVariablesSheetData();
+
+  // const variablesSheet = getSheet(
+  //   rootEl,
+  //   variablesData,
+  //   hyperFormula,
+  //   formats,
+  //   eventEmitter,
+  // );
+
+  const sheet = withToolbar(
+    getSheet(rootEl, data, hyperFormula, formats, eventEmitter),
+  );
 
   // create canvas element
   element.appendChild(rootEl.el);
@@ -135,7 +190,7 @@ const getSpreadsheet = (element, options) => {
     });
   };
 
-  const deleteSheet = () => {
+  const deleteSheetData = () => {
     const [oldIndex, nindex] = bottombar.deleteItem();
     if (oldIndex >= 0) {
       datas.splice(oldIndex, 1);
@@ -157,50 +212,6 @@ const getSpreadsheet = (element, options) => {
   const hideFormulas = () => {
     sheet.table.setCalculateFormulas(true);
     reRender();
-  };
-
-  const addVariablesSheet = (
-    name = `variables-sheet${datas.length + 1}`,
-    options = newOptions,
-  ) => {
-    const data = getDataProxy(name, options, hyperFormula);
-
-    return data;
-  };
-
-  const setVariablesData = (variableSheets) => {
-    variableSheets.forEach((variableSheet, i) => {
-      const data = addVariablesSheet(variableSheet.name);
-
-      if (hyperFormula.isItPossibleToAddSheet(variableSheet.name)) {
-        hyperFormula.addSheet(variableSheet.name);
-      }
-
-      data.setData(variableSheet);
-
-      if (i === 0) {
-        sheet.resetData(data);
-      }
-    });
-  };
-
-  const setData = (dataSheets) => {
-    bottombar.clear();
-    datas = [];
-
-    dataSheets.forEach((dataSheet, i) => {
-      const data = addSheet(dataSheet.name, i === 0);
-
-      if (hyperFormula.isItPossibleToAddSheet(dataSheet.name)) {
-        hyperFormula.addSheet(dataSheet.name);
-      }
-
-      data.setData(dataSheet);
-
-      if (i === 0) {
-        sheet.resetData(data);
-      }
-    });
   };
 
   const getData = () => {
@@ -229,10 +240,10 @@ const getSpreadsheet = (element, options) => {
   };
 
   return {
-    addSheet,
+    addSheetData,
     setVariables,
-    setVariablesData,
-    deleteSheet,
+    // setVariablesData,
+    deleteSheetData,
     destroy,
     showFormulas,
     hideFormulas,

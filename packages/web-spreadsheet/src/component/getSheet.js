@@ -5,10 +5,8 @@ import { getResizer } from "./getResizer";
 import { getScrollbar } from "./getScrollbar";
 import Selector from "./selector";
 import { getEditor } from "./editor";
-import Print from "./print";
 import { getContextMenu } from "./contextmenu";
 import { getTable } from "./table";
-import Toolbar from "./toolbar/index";
 import ModalValidation from "./modal_validation";
 import SortFilter from "./sort_filter";
 import { xtoast } from "./message";
@@ -51,8 +49,7 @@ export const getSheet = (
     verticalScrollbarSet();
     horizontalScrollbarSet();
     editor.resetData(data);
-    toolbar.resetData(data);
-    print.resetData(data);
+    eventEmitter.emit(spreadsheetEvents.sheet.resetData, data);
     selector.resetData(data);
     table.resetData(data);
   };
@@ -97,19 +94,10 @@ export const getSheet = (
     };
   };
 
-  const { view, showToolbar, showContextmenu } = data.options;
+  const { showContextmenu } = data.options;
   const el = h("div", `${cssPrefix}-sheet`);
-  const toolbar = new Toolbar(
-    data,
-    view.width,
-    formats,
-    eventEmitter,
-    !showToolbar,
-  );
-  const print = new Print(data);
-  let focusing;
 
-  targetEl.children(toolbar.el, el, print.el);
+  let focusing;
 
   // table
   const tableEl = h("canvas", `${cssPrefix}-table`);
@@ -178,10 +166,6 @@ export const getSheet = (
   // init selector [0, 0]
   selectorSet(false, 0, 0);
 
-  Object.values(spreadsheetEvents.toolbar).forEach((key) => {
-    eventEmitter.on(key, (type, value) => toolbarChange(type, value));
-  });
-
   function scrollbarMove() {
     const { l, t, left, top, width, height } = data.getSelectedRect();
     const tableOffset = getTableOffset();
@@ -226,7 +210,6 @@ export const getSheet = (
       selector.set(ri, ci, indexesUpdated);
       eventEmitter.emit(spreadsheetEvents.sheet.cellSelected, cell, ri, ci);
     }
-    toolbar.reset();
   }
 
   // multiple: boolean
@@ -424,7 +407,7 @@ export const getSheet = (
     horizontalScrollbarSet();
     sheetFreeze();
     table.render();
-    toolbar.reset();
+    eventEmitter.emit(spreadsheetEvents.sheet.sheetReset);
     selector.reset();
   }
 
@@ -467,14 +450,6 @@ export const getSheet = (
   function autofilter() {
     data.changeAutofilter();
     sheetReset();
-  }
-
-  function toolbarChangePaintformatPaste() {
-    if (toolbar.paintformatActive()) {
-      paste("format");
-      clearClipboard();
-      toolbar.paintformatToggle();
-    }
   }
 
   function overlayerMousedown(evt) {
@@ -528,7 +503,7 @@ export const getSheet = (
             }
           }
           selector.hideAutofill();
-          toolbarChangePaintformatPaste();
+          eventEmitter.emit(spreadsheetEvents.sheet.mouseMoveUp);
         },
       );
     }
@@ -639,41 +614,6 @@ export const getSheet = (
     sheetReset();
   }
 
-  function toolbarChange(type, value) {
-    if (type === "undo") {
-      undo();
-    } else if (type === "redo") {
-      redo();
-    } else if (type === "print") {
-      print.preview();
-    } else if (type === "paintformat") {
-      if (value === true) copy();
-      else clearClipboard();
-    } else if (type === "clearformat") {
-      insertDeleteRowColumn("delete-cell-format");
-    } else if (type === "link") {
-      // link
-    } else if (type === "chart") {
-      // chart
-    } else if (type === "autofilter") {
-      // filter
-      autofilter();
-    } else if (type === "freeze") {
-      if (value) {
-        const { ri, ci } = data.selector;
-        freeze(ri, ci);
-      } else {
-        freeze(0, 0);
-      }
-    } else {
-      data.setSelectedCellAttr(type, value);
-      if (type === "formula" && !data.selector.multiple()) {
-        editorSet();
-      }
-      sheetReset();
-    }
-  }
-
   function sortFilterChange(ci, order, operator, value) {
     data.setAutoFilter(ci, order, operator, value);
     sheetReset();
@@ -756,9 +696,6 @@ export const getSheet = (
         overlayerTouch(direction, d);
       },
     });
-
-    // toolbar change
-    toolbar.change = (type, value) => toolbarChange(type, value);
 
     // sort filter ok
     sortFilter.ok = (ci, order, o, v) => sortFilterChange(ci, order, o, v);
@@ -880,24 +817,6 @@ export const getSheet = (
             cut();
             evt.preventDefault();
             break;
-          case 83:
-            // ctrl + s
-            eventEmitter.emit(
-              spreadsheetEvents.toolbar.toggleItem,
-              "strike",
-              toolbar.strikeEl.toggleItem.toggle(),
-            );
-            evt.preventDefault();
-            break;
-          case 85:
-            // ctrl + u
-            eventEmitter.emit(
-              spreadsheetEvents.toolbar.toggleItem,
-              "underline",
-              toolbar.underlineEl.toggleItem.toggle(),
-            );
-            evt.preventDefault();
-            break;
           case 86:
             // ctrl + v
             // => paste
@@ -928,25 +847,10 @@ export const getSheet = (
             selectorSet(false, -1, data.selector.ci, false);
             evt.preventDefault();
             break;
-          case 66:
-            // ctrl + B
-            eventEmitter.emit(
-              spreadsheetEvents.toolbar.toggleItem,
-              "font-bold",
-              toolbar.boldEl.toggleItem.toggle(),
-            );
-            break;
-          case 73:
-            // ctrl + I
-            eventEmitter.emit(
-              spreadsheetEvents.toolbar.toggleItem,
-              "font-italic",
-              toolbar.italicEl.toggleItem.toggle(),
-            );
-            break;
           default:
             break;
         }
+        eventEmitter.emit(spreadsheetEvents.sheet.ctrlKeyDown, evt, keyCode);
       } else {
         // console.log('evt.keyCode:', evt.keyCode);
         switch (keyCode) {
@@ -1019,14 +923,25 @@ export const getSheet = (
 
   return {
     el,
+    targetEl,
     resetData,
     setData,
     freeze,
     undo,
     redo,
     reload,
+    copy,
+    clearClipboard,
+    paste,
+    insertDeleteRowColumn,
+    autofilter,
+    editorSet,
+    sheetReset,
     getRect,
     getTableOffset,
     table,
+    data,
+    formats,
+    eventEmitter,
   };
 };

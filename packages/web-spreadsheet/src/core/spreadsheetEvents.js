@@ -34,6 +34,10 @@ const spreadsheetEvents = {
     cellsSelected: "s-cells-selected",
     cellEditedFinished: "s-cell-edited-finished",
     cellEdited: "s-cell-edited",
+    resetData: "s-reset-data",
+    sheetReset: "s-sheet-reset",
+    mouseMoveUp: "s-mouse-move-up",
+    ctrlKeyDown: "s-ctrl-key-down",
   },
   toolbar: {
     alignChange: "tb-align-change",

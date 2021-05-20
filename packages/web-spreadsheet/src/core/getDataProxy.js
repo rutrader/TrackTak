@@ -1066,6 +1066,7 @@ export const getDataProxy = (
   }
 
   return {
+    name,
     rows,
     cols,
     merges,
