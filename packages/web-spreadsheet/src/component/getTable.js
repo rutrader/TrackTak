@@ -26,7 +26,7 @@ function getTableDrawBox(data, rindex, cindex, yoffset = 0) {
   return getDrawBox(left, top + yoffset, width, height, cellPaddingWidth);
 }
 
-export const getTable = (el, data, hyperFormula, formats) => {
+export const getTable = (el, data, hyperFormula) => {
   const draw = getDraw(el, data.viewWidth(), data.viewHeight());
   let calculateFormulas = true;
 
@@ -75,9 +75,9 @@ export const getTable = (el, data, hyperFormula, formats) => {
         format = "text";
       }
 
-      if (format) {
-        cellText = formats[format].render(cellText);
-      }
+      // if (format) {
+      //   cellText = formats[format].render(cellText);
+      // }
       const font = Object.assign({}, style.font);
       font.size = getFontSizePxByPt(font.size);
 
@@ -354,7 +354,6 @@ export const getTable = (el, data, hyperFormula, formats) => {
     draw,
     data,
     hyperFormula,
-    formats,
     resetData,
     render,
     clear,

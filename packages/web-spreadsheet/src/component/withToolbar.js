@@ -3,14 +3,14 @@ import { getPrint } from "./getPrint";
 import { getToolbar } from "./toolbar";
 
 const withToolbar = (sheet) => (rootEl) => {
-  let { data, formats, eventEmitter } = sheet;
+  let { data, eventEmitter } = sheet;
   const { view, showToolbar } = data.options;
 
   const print = getPrint(data);
   const toolbar = getToolbar(
     data,
     view.width,
-    formats,
+    data.options.formats,
     eventEmitter,
     !showToolbar,
   );

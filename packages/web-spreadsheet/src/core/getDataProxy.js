@@ -16,10 +16,11 @@ import spreadsheetEvents from "./spreadsheetEvents";
 const toolbarHeight = 41;
 const bottombarHeight = 41;
 export const getDataProxy = (
-  name = "sheet",
+  name,
   options,
   hyperFormula,
   eventEmitter,
+  isVariablesSpreadsheet = false,
 ) => {
   let freeze = [0, 0];
   let styles = []; // Array<Style>
@@ -641,12 +642,24 @@ export const getDataProxy = (
   };
 
   const viewHeight = () => {
-    const { view, showToolbar } = options;
-    let h = view.height();
-    h -= bottombarHeight;
-    if (showToolbar) {
-      h -= toolbarHeight;
+    const { view, showToolbar, showVariablesSpreadsheet } = options;
+    let h;
+
+    if (isVariablesSpreadsheet) {
+      h = view.variablesSheetHeight();
+
+      if (showToolbar) {
+        h -= toolbarHeight;
+      }
+    } else {
+      h = view.height();
+
+      if (showVariablesSpreadsheet) {
+        h -= view.variablesSheetHeight();
+      }
+      h -= bottombarHeight;
     }
+
     return h;
   };
 

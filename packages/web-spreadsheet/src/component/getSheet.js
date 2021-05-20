@@ -6,7 +6,7 @@ import { getScrollbar } from "./getScrollbar";
 import Selector from "./selector";
 import { getEditor } from "./editor";
 import { getContextMenu } from "./contextmenu";
-import { getTable } from "./table";
+import { getTable } from "./getTable";
 import ModalValidation from "./modal_validation";
 import SortFilter from "./sort_filter";
 import { xtoast } from "./message";
@@ -33,7 +33,7 @@ function throttle(func, wait) {
   };
 }
 
-export const getSheet = (data, hyperFormula, formats, eventEmitter) => {
+export const getSheet = (data, hyperFormula, eventEmitter) => {
   const resetData = (datum) => {
     // before
     editor.clear();
@@ -154,7 +154,7 @@ export const getSheet = (data, hyperFormula, formats, eventEmitter) => {
     sortFilter.el,
   );
   // table
-  const table = getTable(tableEl.el, data, hyperFormula, formats);
+  const table = getTable(tableEl.el, data, hyperFormula);
   sheetInitEvents();
   sheetReset();
   // init selector [0, 0]
@@ -934,7 +934,6 @@ export const getSheet = (data, hyperFormula, formats, eventEmitter) => {
     getTableOffset,
     table,
     data,
-    formats,
     eventEmitter,
   };
 };

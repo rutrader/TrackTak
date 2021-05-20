@@ -3,10 +3,9 @@ import { getDataProxy } from "./core/getDataProxy";
 import { getSheet } from "./component/getSheet";
 import { getBottombar } from "./component/bottombar";
 import { cssPrefix } from "./config";
-import { locale, tf } from "./locale/locale";
+import { locale } from "./locale/locale";
 import "./index.less";
 import { HyperFormula } from "hyperformula";
-import { formatNumberRender, formatStringRender } from "./core/helper";
 import defaultOptions from "./core/defaultOptions";
 import { merge } from "lodash-es";
 import EventEmitter from "events";
@@ -14,59 +13,11 @@ import spreadsheetEvents from "./core/spreadsheetEvents";
 import withToolbar from "./component/withToolbar";
 
 const getSpreadsheet = (element, options) => {
-  let datas = [];
-  let newOptions = merge(defaultOptions, options);
-  const eventEmitter = new EventEmitter();
+  const newOptions = merge(defaultOptions, options);
 
-  const formats = {
-    normal: {
-      title: tf("format.normal"),
-      type: "string",
-      render: formatStringRender,
-    },
-    text: {
-      title: tf("format.text"),
-      type: "string",
-      render: formatStringRender,
-    },
-    number: {
-      title: tf("format.number"),
-      type: "number",
-      label: "1,000.12",
-      render: formatNumberRender,
-    },
-    percent: {
-      title: tf("format.percent"),
-      type: "number",
-      label: "10.12%",
-      render: (v) => `${formatNumberRender(v * 100)}%`,
-    },
-    date: {
-      title: tf("format.date"),
-      type: "date",
-      label: "26/09/2008",
-      render: formatStringRender,
-    },
-    time: {
-      title: tf("format.time"),
-      type: "date",
-      label: "15:59:00",
-      render: formatStringRender,
-    },
-    datetime: {
-      title: tf("format.datetime"),
-      type: "date",
-      label: "26/09/2008 15:59:00",
-      render: formatStringRender,
-    },
-    duration: {
-      title: tf("format.duration"),
-      type: "date",
-      label: "24:01:00",
-      render: formatStringRender,
-    },
-    ...(options.formats ?? {}),
-  };
+  let sheetDatas = [];
+  let variablesSheetDatas = [];
+  const eventEmitter = new EventEmitter();
 
   const hyperFormula = HyperFormula.buildEmpty({
     licenseKey: "05054-b528f-a10c4-53f2a-04b57",
@@ -82,7 +33,7 @@ const getSpreadsheet = (element, options) => {
   });
 
   eventEmitter.on(spreadsheetEvents.bottombar.selectSheet, (index) => {
-    const d = datas[index];
+    const d = sheetDatas[index];
 
     sheet.resetData(d);
   });
@@ -94,22 +45,21 @@ const getSpreadsheet = (element, options) => {
   });
 
   eventEmitter.on(spreadsheetEvents.bottombar.updateSheet, (index, value) => {
-    datas[index].name = value;
+    sheetDatas[index].name = value;
   });
 
   const bottombar = getBottombar(eventEmitter);
 
   const addSheetData = (
-    name = `sheet${datas.length + 1}`,
+    name = `sheet${sheetDatas.length + 1}`,
     active = true,
-    options = newOptions,
   ) => {
-    const data = getDataProxy(name, options, hyperFormula, eventEmitter);
+    const data = getDataProxy(name, newOptions, hyperFormula, eventEmitter);
 
     if (hyperFormula.isItPossibleToAddSheet(name)) {
       hyperFormula.addSheet(name);
     }
-    datas.push(data);
+    sheetDatas.push(data);
 
     bottombar.addItem(name, active);
 
@@ -117,17 +67,31 @@ const getSpreadsheet = (element, options) => {
   };
 
   const addVariablesSheetData = (
-    name = `variables-sheet${datas.length + 1}`,
-    options = newOptions,
+    name = `variables-sheet${sheetDatas.length + 1}`,
   ) => {
-    const data = getDataProxy(name, options, hyperFormula, eventEmitter);
+    const data = getDataProxy(
+      name,
+      newOptions,
+      hyperFormula,
+      eventEmitter,
+      true,
+    );
+
+    if (hyperFormula.isItPossibleToAddSheet(name)) {
+      hyperFormula.addSheet(name);
+    }
+
+    variablesSheetDatas.push(data);
 
     return data;
   };
 
   const setVariablesData = (variableSheets) => {
+    variablesSheetDatas = [];
+
     variableSheets.forEach((variableSheet, i) => {
-      const data = addVariablesSheetData(variableSheet.name);
+      const options = merge(defaultOptions, newOptions[i]);
+      const data = addVariablesSheetData(variableSheet.name, options);
 
       if (hyperFormula.isItPossibleToAddSheet(variableSheet.name)) {
         hyperFormula.addSheet(variableSheet.name);
@@ -143,7 +107,7 @@ const getSpreadsheet = (element, options) => {
 
   const setData = (dataSheets) => {
     bottombar.clear();
-    datas = [];
+    sheetDatas = [];
 
     dataSheets.forEach((dataSheet, i) => {
       const data = addSheetData(dataSheet.name, i === 0);
@@ -159,16 +123,9 @@ const getSpreadsheet = (element, options) => {
   const data = addSheetData();
   const variablesData = addVariablesSheetData();
 
-  const variablesSheet = getSheet(
-    variablesData,
-    hyperFormula,
-    formats,
-    eventEmitter,
-  );
+  const variablesSheet = getSheet(variablesData, hyperFormula, eventEmitter);
 
-  const sheet = withToolbar(
-    getSheet(data, hyperFormula, formats, eventEmitter),
-  )(rootEl);
+  const sheet = withToolbar(getSheet(data, hyperFormula, eventEmitter))(rootEl);
 
   rootEl.child(variablesSheet.el);
   rootEl.child(sheet.el);
@@ -195,9 +152,9 @@ const getSpreadsheet = (element, options) => {
   const deleteSheetData = () => {
     const [oldIndex, nindex] = bottombar.deleteItem();
     if (oldIndex >= 0) {
-      datas.splice(oldIndex, 1);
+      sheetDatas.splice(oldIndex, 1);
       if (nindex >= 0) {
-        sheet.resetData(datas[nindex]);
+        sheet.resetData(sheetDatas[nindex]);
       }
     }
   };
@@ -217,19 +174,19 @@ const getSpreadsheet = (element, options) => {
   };
 
   const getData = () => {
-    return datas.map((it) => it.getData());
+    return sheetDatas.map((it) => it.getData());
   };
 
   const cellText = (ri, ci, text, sheetIndex = 0) => {
-    datas[sheetIndex].setCellText(ri, ci, text, "finished");
+    sheetDatas[sheetIndex].setCellText(ri, ci, text, "finished");
   };
 
   const cell = (ri, ci, sheetIndex = 0) => {
-    return datas[sheetIndex].getCell(ri, ci);
+    return sheetDatas[sheetIndex].getCell(ri, ci);
   };
 
   const cellStyle = (ri, ci, sheetIndex = 0) => {
-    return datas[sheetIndex].getCellStyle(ri, ci);
+    return sheetDatas[sheetIndex].getCellStyle(ri, ci);
   };
 
   const reRender = () => {
