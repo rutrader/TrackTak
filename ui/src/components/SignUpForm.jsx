@@ -33,7 +33,7 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
       }}
     >
       <TracktakLogoSvg />
-      <Typography component="h1" variant="h5">
+      <Typography variant="h5">
         Sign up
       </Typography>
       <Box sx={{
@@ -77,6 +77,7 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                InputProps={{ inputProps: { minLength: 8 } }}
               />
             </Grid>
           </Grid>

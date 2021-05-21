@@ -7,6 +7,7 @@ import ForgotPasswordForm from "./ForgotPasswordForm";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
 import { Box } from "@material-ui/core";
+import { noop } from "../shared/utils";
 
 export const AUTHENTICATION_FORM_STATE = {
   SIGN_UP: "SIGN_UP",
@@ -14,13 +15,12 @@ export const AUTHENTICATION_FORM_STATE = {
   FORGOTTEN_PASSWORD: "FORGOTTEN_PASSWORD",
 };
 
-const noop = () => {};
-
 const Authentication = ({
   initialState = AUTHENTICATION_FORM_STATE.SIGN_IN,
   onSuccess = noop,
   onFailure = noop,
   isModal = false,
+  location
 }) => {
   const dispatch = useDispatch();
   const [formState, setFormState] = useState(initialState);
@@ -95,7 +95,11 @@ const Authentication = ({
       return;
     }
 
-    navigate(-1);
+    if (location.state?.referrer) {
+      navigate(-1);
+      return;
+    }
+    navigate("/");
   };
 
   return (

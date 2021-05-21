@@ -37,7 +37,7 @@ const SignIn = ({ location }) => {
       </Helmet>
       <Grid container justifyContent="center">
         <Grid item>
-          <Authentication onSuccess={handleSuccess} />
+          <Authentication onSuccess={handleSuccess} location={location} />
         </Grid>
       </Grid>
     </>

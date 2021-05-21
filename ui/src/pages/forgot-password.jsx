@@ -9,7 +9,7 @@ import Authentication, {
 import { navigate } from "gatsby";
 import { useAuth } from "../hooks/useAuth";
 
-const SignIn = () => {
+const SignIn = ({ location }) => {
   const { isAuthenticated } = useAuth();
 
   useEffect(() => {
@@ -34,6 +34,7 @@ const SignIn = () => {
           <Authentication
             initialState={AUTHENTICATION_FORM_STATE.FORGOTTEN_PASSWORD}
             onSuccess={handleSuccess}
+            location={location}
           />
         </Grid>
       </Grid>

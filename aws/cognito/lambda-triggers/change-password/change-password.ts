@@ -17,10 +17,14 @@ interface ChangePasswordTriggerEvent extends BaseTriggerEvent<'VerifyAuthChallen
 type ChangePasswordTriggerHandler = Handler<ChangePasswordTriggerEvent>;
 
 export const handler: ChangePasswordTriggerHandler = async (event, _, callback) => {
-    const response = await changePassword(event);
-    const responseCode = response?.$metadata?.httpStatusCode;
-    const passwordSet = responseCode && responseCode >= 200 && responseCode < 300;
-    return callback(null, passwordSet);
+    try {
+        const response = await changePassword(event);
+        const responseCode = response?.$metadata?.httpStatusCode;
+        const passwordSet = responseCode && responseCode >= 200 && responseCode < 300;
+        return callback(null, passwordSet);
+    } catch (err) {
+        return callback(err, null);    
+    }
 };
 
 //@ts-ignore

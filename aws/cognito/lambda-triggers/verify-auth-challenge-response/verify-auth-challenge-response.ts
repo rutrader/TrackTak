@@ -19,9 +19,7 @@ export const handler: VerifyAuthChallengeResponseTriggerHandler = async (event) 
 
 //@ts-ignore
 const changePassword = async (event) => {
-    const lambda = new AWS.Lambda({
-        region: 'eu-west-2'
-    });
+    const lambda = new AWS.Lambda();
     const params = {
         FunctionName: CHANGE_PASSWORD_FUNCTION,
         InvocationType: 'Event',

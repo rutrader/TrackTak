@@ -25,7 +25,7 @@ export S3_BUCKET_NAME=tracktak-cognito-test;
 export SES_FROM_ADDRESS=registration@tracktak.com;
 export STACK_NAME=tracktakCognitoEmailAuthFlowTest;
 export USER_POOL_NAME=TracktakTest;
-export AWS_DEFAULT_REGION=eu-west-2;
+export AWS_DEFAULT_REGION=eu-west-1;
 ```
 
 Run

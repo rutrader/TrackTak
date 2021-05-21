@@ -40,19 +40,19 @@ const allLinks = (isAuthenticated) => getRightLinks(isAuthenticated);
 
 const buttonStyle = {
   textTransform: "none",
-  fontSize: "16px",
   fontWeight: "bold",
-  color: "#313450",
-}
+  color: (theme) => theme.palette.primary.mainTextColor,
+};
 
 const HeaderLink = ({ to, text, style, isSignOut = false }) => {
   const { session, signOut } = useAuth();
+
   const handleOnSignOut = () => {
     if (session) {
       signOut();
       navigate("/");
     }
-  }
+  };
 
   return (
     <Box
@@ -64,20 +64,14 @@ const HeaderLink = ({ to, text, style, isSignOut = false }) => {
       }}
     >
       {isSignOut ? (
-        <Button
-        sx={buttonStyle}
-        onClick={handleOnSignOut}
-        >
-        Sign Out
+        <Button sx={buttonStyle} onClick={handleOnSignOut}>
+          Sign Out
         </Button>
-      )
-      : (<Button
-        sx={buttonStyle}
-        to={to}
-        component={Link}
-      >
-        {text}
-      </Button>)}
+      ) : (
+        <Button sx={buttonStyle} to={to} component={Link}>
+          {text}
+        </Button>
+      )}
     </Box>
   );
 };
@@ -139,9 +133,9 @@ const Header = ({ hideSearch }) => {
                   />
                 ))}
                 {isAuthenticated && (
-                    <HeaderLink sx={{ ml: 0 }} isSignOut>
-                      Sign Out
-                    </HeaderLink>
+                  <HeaderLink sx={{ ml: 0 }} isSignOut>
+                    Sign Out
+                  </HeaderLink>
                 )}
               </Box>
             </Hidden>

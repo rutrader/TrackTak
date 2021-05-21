@@ -7,6 +7,7 @@ import {
   isEmailVerified as isUserEmailVerified,
   forgotPasswordFlow,
 } from "../api/auth";
+import { noop } from "../shared/utils";
 
 const AuthContext = createContext();
 
@@ -64,16 +65,12 @@ const useProvideAuth = () => {
       onSuccess(session);
     };
 
-    const onNewPasswordRequired = () => {
-      console.error("New password required"); // TODO
-    };
-
     userSignIn(
       username,
       password,
       onCognitoSuccess,
       onFailure,
-      onNewPasswordRequired,
+      noop,
     );
   };
 

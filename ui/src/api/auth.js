@@ -11,6 +11,19 @@ const POOL_CONFIG = {
 
 const userPool = new CognitoUserPool(POOL_CONFIG);
 
+const AwsException = {
+  NOT_AUTHORIZED_EXCEPTION: "NotAuthorizedException",
+};
+
+const onCognitoFailure = (err, onError) => {
+  if (err.code === AwsException.NOT_AUTHORIZED_EXCEPTION) {
+    onError(Error("Incorrect username or password"));
+    return;
+  }
+
+  onError(Error("An error occured"));
+};
+
 export const signIn = (
   username,
   password,
@@ -30,7 +43,7 @@ export const signIn = (
 
   user.authenticateUser(authDetails, {
     onSuccess,
-    onFailure,
+    onFailure: (err) => onCognitoFailure(err, onFailure),
     newPasswordRequired,
   });
 };
@@ -51,7 +64,7 @@ export const signUp = (
 ) => {
   userPool.signUp(email, password, userAttributes, null, (err, result) => {
     if (err) {
-      onFailure(err);
+      onCognitoFailure(err, onFailure);
       return;
     }
     onSuccess(result);
@@ -79,7 +92,7 @@ export const forgotPasswordFlow = () => {
             onSuccess(session);
           },
           onFailure: (err) => {
-            onFailure(err);
+            onCognitoFailure(err, onFailure);
           },
           customChallenge: (params) => {
             onChallenge(params);
@@ -92,7 +105,7 @@ export const forgotPasswordFlow = () => {
       newPassword,
       onSuccess,
       onFailure,
-      onChallengeFailure
+      onChallengeFailure,
     ) => {
       if (!user) {
         throw Error("Send verification email to user first!");
@@ -104,7 +117,7 @@ export const forgotPasswordFlow = () => {
             onSuccess(session, userConfirmationNecessary);
           },
           onFailure: (err) => {
-            onFailure(err);
+            onCognitoFailure(err, onFailure);
           },
           customChallenge: (params) => {
             onChallengeFailure(params);
