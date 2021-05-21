@@ -4,12 +4,20 @@ import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import RedditIcon from "@material-ui/icons/Reddit";
 import dayjs from "dayjs";
 import TracktakLogoSvg from "../icons/tracktak-purple.svg";
+import resourceName from "../shared/resourceName";
+import { Helmet } from "react-helmet";
+import getTitle from "../shared/getTitle";
 
 const iconStyles = { width: "45px", height: "45px" };
 
 const Footer = () => {
   return (
-    <Box>
+    <>
+      <Helmet>
+        <title>{getTitle("Cookie Policy")}</title>
+        <link rel="canonical" href={`${resourceName}/cookie policy`} />
+        <meta name="description" content="Our cookie policy" />
+      </Helmet>
       <Box
         sx={{
           display: "flex",
@@ -59,8 +67,20 @@ const Footer = () => {
         <Typography align="center">
           © 2020 - {dayjs().format("YYYY")} tracktak ltd. All rights reserved.
         </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            mt: 2,
+          }}
+        >
+          <Typography>
+            <Link href="/cookie-policy">Cookie Policy</Link>
+          </Typography>
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 
