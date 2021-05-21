@@ -1,43 +1,32 @@
-import { stringAt } from "../core/alphabet";
-import { getFontSizePxByPt } from "../core/font";
+import { getFontSizePxByPt } from "../../core/font";
 
-import getDraw, { getDrawBox, thinLineWidth, npx } from "../canvas/draw";
-import { h } from "./element";
-import { cssPrefix } from "../config";
+import getDraw, { getDrawBox, thinLineWidth } from "../../canvas/draw";
+import { h } from "../element";
+import { cssPrefix } from "../../config";
 
 const cellPaddingWidth = 5;
-const tableFixedHeaderCleanStyle = { fillStyle: "#f4f5f8" };
 const tableGridStyle = {
   fillStyle: "#fff",
   lineWidth: thinLineWidth,
   strokeStyle: "#e6e6e6",
 };
-function tableFixedHeaderStyle() {
-  return {
-    textAlign: "center",
-    textBaseline: "middle",
-    font: `500 ${npx(12)}px Source Sans Pro`,
-    fillStyle: "#585757",
-    lineWidth: thinLineWidth(),
-    strokeStyle: "#e6e6e6",
-  };
-}
 
 function getTableDrawBox(data, rindex, cindex, yoffset = 0) {
   const { left, top, width, height } = data.cellRect(rindex, cindex);
   return getDrawBox(left, top + yoffset, width, height, cellPaddingWidth);
 }
 
-export const getTable = (data, hyperFormula) => {
+export const makeTable = ({
+  data,
+  hyperFormula,
+  renderFixedHeaders = () => {},
+  renderFixedLeftTopCell = () => {},
+}) => {
   const el = h("canvas", `${cssPrefix}-table`);
   const draw = getDraw(el.el, data.viewWidth(), data.viewHeight());
   let calculateFormulas = true;
 
-  const setCalculateFormulas = (shouldCalculateFormulas) => {
-    calculateFormulas = shouldCalculateFormulas;
-  };
-
-  function renderCell(draw, data, rindex, cindex, yoffset = 0) {
+  const renderCell = (draw, data, rindex, cindex, yoffset = 0) => {
     const { sortedRowMap, rows, cols } = data;
     if (rows.isHide(rindex) || cols.isHide(cindex)) return;
     let nrindex = rindex;
@@ -106,9 +95,13 @@ export const getTable = (data, hyperFormula) => {
         draw.frozen(dbox);
       }
     });
-  }
+  };
 
-  function renderAutofilter(viewRange) {
+  const setCalculateFormulas = (shouldCalculateFormulas) => {
+    calculateFormulas = shouldCalculateFormulas;
+  };
+
+  const renderAutofilter = (viewRange) => {
     if (viewRange) {
       const { autoFilter } = data;
       if (!autoFilter.active()) return;
@@ -120,11 +113,17 @@ export const getTable = (data, hyperFormula) => {
         });
       }
     }
-  }
+  };
 
-  function renderContent(viewRange, fw, fh, tx, ty) {
+  const renderContent = (
+    viewRange,
+    fixedHeaderWidth,
+    fixedHeaderHeight,
+    tx,
+    ty,
+  ) => {
     draw.save();
-    draw.translate(fw, fh);
+    draw.translate(fixedHeaderWidth, fixedHeaderHeight);
     draw.translate(tx, ty);
 
     const { exceptRowSet } = data;
@@ -172,94 +171,20 @@ export const getTable = (data, hyperFormula) => {
     renderAutofilter(viewRange);
 
     draw.restore();
-  }
+  };
 
-  function renderSelectedHeaderCell(x, y, w, h) {
-    draw.save();
-    draw.attr({ fillStyle: "rgba(75, 137, 255, 0.08)" });
-    draw.fillRect(x, y, w, h);
-    draw.restore();
-  }
-
-  // viewRange
-  // type: all | left | top
-  // w: the fixed width of header
-  // h: the fixed height of header
-  // tx: moving distance on x-axis
-  // ty: moving distance on y-axis
-  function renderFixedHeaders(type, viewRange, w, h, tx, ty) {
-    const sumHeight = viewRange.h; // rows.sumHeight(viewRange.sri, viewRange.eri + 1);
-    const sumWidth = viewRange.w; // cols.sumWidth(viewRange.sci, viewRange.eci + 1);
-    const nty = ty + h;
-    const ntx = tx + w;
-
-    draw.save();
-    // draw rect background
-    draw.attr(tableFixedHeaderCleanStyle);
-    if (type === "all" || type === "left") draw.fillRect(0, nty, w, sumHeight);
-    if (type === "all" || type === "top") draw.fillRect(ntx, 0, sumWidth, h);
-
-    const { sri, sci, eri, eci } = data.selector.range;
-    // console.log(data.selectIndexes);
-    // draw text
-    // text font, align...
-    draw.attr(tableFixedHeaderStyle());
-    // y-header-text
-    if (type === "all" || type === "left") {
-      data.rowEach(viewRange.sri, viewRange.eri, (i, y1, rowHeight) => {
-        const y = nty + y1;
-        const ii = i;
-        draw.line([0, y], [w, y]);
-        if (sri <= ii && ii < eri + 1) {
-          renderSelectedHeaderCell(0, y, w, rowHeight);
-        }
-        draw.fillText(ii + 1, w / 2, y + rowHeight / 2);
-        if (i > 0 && data.rows.isHide(i - 1)) {
-          draw.save();
-          draw.attr({ strokeStyle: "#c6c6c6" });
-          draw.line([5, y + 5], [w - 5, y + 5]);
-          draw.restore();
-        }
-      });
-      draw.line([0, sumHeight + nty], [w, sumHeight + nty]);
-      draw.line([w, nty], [w, sumHeight + nty]);
-    }
-    // x-header-text
-    if (type === "all" || type === "top") {
-      data.colEach(viewRange.sci, viewRange.eci, (i, x1, colWidth) => {
-        const x = ntx + x1;
-        const ii = i;
-        draw.line([x, 0], [x, h]);
-        if (sci <= ii && ii < eci + 1) {
-          renderSelectedHeaderCell(x, 0, colWidth, h);
-        }
-        draw.fillText(stringAt(ii), x + colWidth / 2, h / 2);
-        if (i > 0 && data.cols.isHide(i - 1)) {
-          draw.save();
-          draw.attr({ strokeStyle: "#c6c6c6" });
-          draw.line([x + 5, 5], [x + 5, h - 5]);
-          draw.restore();
-        }
-      });
-      draw.line([sumWidth + ntx, 0], [sumWidth + ntx, h]);
-      draw.line([0, h], [sumWidth + ntx, h]);
-    }
-    draw.restore();
-  }
-
-  function renderFixedLeftTopCell(fw, fh) {
-    draw.save();
-    draw.attr({ fillStyle: "#f4f5f8" });
-    draw.fillRect(0, 0, fw, fh);
-    draw.restore();
-  }
-
-  function renderContentGrid({ sri, sci, eri, eci, w, h }, fw, fh, tx, ty) {
+  const renderContentGrid = (
+    { sri, sci, eri, eci, w, h },
+    fixedHeaderWidth,
+    fixedHeaderHeight,
+    tx,
+    ty,
+  ) => {
     const { options } = data;
 
     draw.save();
     draw.attr(tableGridStyle);
-    draw.translate(fw + tx, fh + ty);
+    draw.translate(fixedHeaderWidth + tx, fixedHeaderHeight + ty);
 
     draw.clearRect(0, 0, w, h);
     if (!options.showGrid) {
@@ -276,31 +201,31 @@ export const getTable = (data, hyperFormula) => {
       if (i === eci) draw.line([x + cw, 0], [x + cw, h]);
     });
     draw.restore();
-  }
+  };
 
-  function renderFreezeHighlightLine(fw, fh, ftw, fth) {
-    const twidth = data.viewWidth() - fw;
-    const theight = data.viewHeight() - fh;
+  const renderFreezeHighlightLine = (
+    fixedHeaderWidth,
+    fixedHeaderHeight,
+    ftw,
+    fth,
+  ) => {
+    const twidth = data.viewWidth() - fixedHeaderWidth;
+    const theight = data.viewHeight() - fixedHeaderHeight;
     draw.save();
-    draw.translate(fw, fh);
+    draw.translate(fixedHeaderWidth, fixedHeaderHeight);
     draw.attr({ strokeStyle: "rgba(75, 137, 255, .6)" });
     draw.line([0, fth], [twidth, fth]);
     draw.line([ftw, 0], [ftw, theight]);
     draw.restore();
-  }
-
-  const resetData = (datum) => {
-    data = datum;
-    render();
   };
 
   const render = () => {
     // resize canvas
     const { rows, cols } = data;
     // fixed width of header
-    const fw = cols.indexWidth;
+    const fixedHeaderWidth = cols.indexWidth;
     // fixed height of header
-    const fh = rows.height;
+    const fixedHeaderHeight = rows.height;
 
     draw.resize(data.viewWidth(), data.viewHeight());
     clear();
@@ -311,10 +236,17 @@ export const getTable = (data, hyperFormula) => {
     const ty = data.freezeTotalHeight();
     const { x, y } = data.scroll;
     // 1
-    renderContentGrid(viewRange, fw, fh, tx, ty);
-    renderContent(viewRange, fw, fh, -x, -y);
-    renderFixedHeaders("all", viewRange, fw, fh, tx, ty);
-    renderFixedLeftTopCell(fw, fh);
+    renderContentGrid(viewRange, fixedHeaderWidth, fixedHeaderHeight, tx, ty);
+    renderContent(viewRange, fixedHeaderWidth, fixedHeaderHeight, -x, -y);
+    renderFixedHeaders(
+      "all",
+      viewRange,
+      fixedHeaderWidth,
+      fixedHeaderHeight,
+      tx,
+      ty,
+    );
+    renderFixedLeftTopCell(fixedHeaderWidth, fixedHeaderHeight);
 
     const [fri, fci] = data.getFreeze();
     if (fri > 0 || fci > 0) {
@@ -324,9 +256,16 @@ export const getTable = (data, hyperFormula) => {
         vr.sri = 0;
         vr.eri = fri - 1;
         vr.h = ty;
-        renderContentGrid(vr, fw, fh, tx, 0);
-        renderContent(vr, fw, fh, -x, 0);
-        renderFixedHeaders("top", vr, fw, fh, tx, 0);
+        renderContentGrid(vr, fixedHeaderWidth, fixedHeaderHeight, tx, 0);
+        renderContent(vr, fixedHeaderWidth, fixedHeaderHeight, -x, 0);
+        renderFixedHeaders(
+          "top",
+          vr,
+          fixedHeaderWidth,
+          fixedHeaderHeight,
+          tx,
+          0,
+        );
       }
       // 3
       if (fci > 0) {
@@ -334,17 +273,37 @@ export const getTable = (data, hyperFormula) => {
         vr.sci = 0;
         vr.eci = fci - 1;
         vr.w = tx;
-        renderContentGrid(vr, fw, fh, 0, ty);
-        renderFixedHeaders("left", vr, fw, fh, 0, ty);
-        renderContent(vr, fw, fh, 0, -y);
+        renderContentGrid(vr, fixedHeaderWidth, fixedHeaderHeight, 0, ty);
+        renderFixedHeaders(
+          "left",
+          vr,
+          fixedHeaderWidth,
+          fixedHeaderHeight,
+          0,
+          ty,
+        );
+        renderContent(vr, fixedHeaderWidth, fixedHeaderHeight, 0, -y);
       }
       // 4
       const freezeViewRange = data.freezeViewRange();
-      renderContentGrid(freezeViewRange, fw, fh, 0, 0);
-      renderFixedHeaders("all", freezeViewRange, fw, fh, 0, 0);
-      renderContent(freezeViewRange, fw, fh, 0, 0);
+      renderContentGrid(
+        freezeViewRange,
+        fixedHeaderWidth,
+        fixedHeaderHeight,
+        0,
+        0,
+      );
+      renderFixedHeaders(
+        "all",
+        freezeViewRange,
+        fixedHeaderWidth,
+        fixedHeaderHeight,
+        0,
+        0,
+      );
+      renderContent(freezeViewRange, fixedHeaderWidth, fixedHeaderHeight, 0, 0);
       // 5
-      renderFreezeHighlightLine(fw, fh, tx, ty);
+      renderFreezeHighlightLine(fixedHeaderWidth, fixedHeaderHeight, tx, ty);
     }
   };
 
@@ -352,14 +311,18 @@ export const getTable = (data, hyperFormula) => {
     draw.clear();
   };
 
+  const resetData = (datum) => {
+    data = datum;
+    render();
+  };
+
   return {
     el,
     draw,
-    data,
-    hyperFormula,
-    resetData,
-    render,
-    clear,
+    calculateFormulas,
     setCalculateFormulas,
+    clear,
+    render,
+    resetData,
   };
 };

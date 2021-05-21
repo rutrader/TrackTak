@@ -4,7 +4,7 @@ import { formatNumberRender, formatStringRender } from "./helper";
 const defaultOptions = {
   mode: "edit", // edit | read
   view: {
-    variablesSheetHeight: () => 100,
+    variablesSheetHeight: () => 200,
     height: () => document.documentElement.clientHeight,
     width: () => document.documentElement.clientWidth,
   },
