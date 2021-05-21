@@ -102,9 +102,9 @@ export const getTable = (data, hyperFormula) => {
     const { width, height } = data.getViewWidthHeight();
     return {
       width: width - cols.indexWidth,
-      height: height - rows.height,
+      height: height - rows.indexHeight,
       left: cols.indexWidth,
-      top: rows.height,
+      top: rows.indexHeight,
     };
   };
 

@@ -18,9 +18,9 @@ export const getVariablesTable = (data, hyperFormula) => {
     const { width, height } = data.getViewWidthHeight();
     return {
       width: width - cols.indexWidth,
-      height: height - rows.height,
-      left: cols.indexWidth,
-      top: rows.height,
+      height: height - rows.indexHeight,
+      left: 0,
+      top: 0,
     };
   };
 

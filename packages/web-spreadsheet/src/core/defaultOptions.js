@@ -14,6 +14,7 @@ const defaultOptions = {
   showContextmenu: true,
   row: {
     len: 100,
+    indexHeight: 25,
     height: 25,
   },
   col: {

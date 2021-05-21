@@ -233,7 +233,7 @@ export const getSheet = (rootEl, data, table, eventEmitter) => {
     const { offsetX, offsetY } = evt;
 
     const { rows, cols } = data;
-    if (offsetX > cols.indexWidth && offsetY > rows.height) {
+    if (offsetX > cols.indexWidth && offsetY > rows.indexHeight) {
       rowResizer.hide();
       colResizer.hide();
       return;
@@ -254,7 +254,7 @@ export const getSheet = (rootEl, data, table, eventEmitter) => {
       rowResizer.hide();
     }
     if (cRect.ri === -1 && cRect.ci >= 0) {
-      cRect.height = rows.height;
+      cRect.height = rows.indexHeight;
       colResizer.show(cRect, {
         height: tRect.height,
       });

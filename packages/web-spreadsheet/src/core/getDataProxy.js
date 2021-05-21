@@ -25,8 +25,8 @@ export const getDataProxy = (
   let freeze = [0, 0];
   let styles = []; // Array<Style>
   const merges = new Merges(); // [CellRange, ...]
-  const rows = new Rows(options.row, hyperFormula);
-  const cols = new Cols(options.col);
+  const rows = new Rows(options.row, hyperFormula, isVariablesSpreadsheet);
+  const cols = new Cols(options.col, isVariablesSpreadsheet);
   const validations = new Validations();
 
   // don't save object
@@ -277,7 +277,7 @@ export const getDataProxy = (
   const xyInSelectedRect = (x, y) => {
     const { left, top, width, height } = getSelectedRect();
     const x1 = x - cols.indexWidth;
-    const y1 = y - rows.height;
+    const y1 = y - rows.indexHeight;
     // console.log('x:', x, ',y:', y, 'left:', left, 'top:', top);
     return x1 > left && x1 < left + width && y1 > top && y1 < top + height;
   };
@@ -1038,30 +1038,30 @@ export const getDataProxy = (
   function getCellRowByY(y, scrollOffsety) {
     const fsh = freezeTotalHeight();
     // console.log('y:', y, ', fsh:', fsh);
-    let inits = rows.height;
-    if (fsh + rows.height < y) inits -= scrollOffsety;
+    let inits = rows.indexHeight;
+    if (fsh + rows.indexHeight < y) inits -= scrollOffsety;
 
     // handle ri in autofilter
     const frset = exceptRowSet;
 
     let ri = 0;
     let top = inits;
-    let { height } = rows;
+    let { indexHeight } = rows;
     for (; ri < rows.len; ri += 1) {
       if (top > y) break;
       if (!frset.has(ri)) {
-        height = rows.getHeight(ri);
-        top += height;
+        indexHeight = rows.getHeight(ri);
+        top += indexHeight;
       }
     }
-    top -= height;
+    top -= indexHeight;
     // console.log('ri:', ri, ', top:', top, ', height:', height);
 
     if (top <= 0) {
-      return { ri: -1, top: 0, height };
+      return { ri: -1, top: 0, height: indexHeight };
     }
 
-    return { ri: ri - 1, top, height };
+    return { ri: ri - 1, top, height: indexHeight };
   }
 
   function getCellColByX(x, scrollOffsetx) {

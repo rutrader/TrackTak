@@ -225,7 +225,7 @@ export const makeTable = ({
     // fixed width of header
     const fixedHeaderWidth = cols.indexWidth;
     // fixed height of header
-    const fixedHeaderHeight = rows.height;
+    const fixedHeaderHeight = rows.indexHeight;
 
     draw.resize(data.viewWidth(), data.viewHeight());
     clear();
