@@ -72,21 +72,6 @@ export const getSheet = (data, table, eventEmitter) => {
     sheetReset();
   };
 
-  const getRect = () => {
-    return { width: data.viewWidth(), height: data.viewHeight() };
-  };
-
-  const getTableOffset = () => {
-    const { rows, cols } = data;
-    const { width, height } = getRect();
-    return {
-      width: width - cols.indexWidth,
-      height: height - rows.height,
-      left: cols.indexWidth,
-      top: rows.height,
-    };
-  };
-
   const { showContextmenu } = data.options;
   const el = h("div", `${cssPrefix}-sheet`);
 
@@ -124,7 +109,7 @@ export const getSheet = (data, table, eventEmitter) => {
   const modalValidation = new ModalValidation();
   // contextMenu
   const contextMenu = getContextMenu(
-    () => getRect(),
+    () => data.getViewWidthHeight(),
     eventEmitter,
     !showContextmenu,
   );
@@ -158,7 +143,7 @@ export const getSheet = (data, table, eventEmitter) => {
 
   function scrollbarMove() {
     const { l, t, left, top, width, height } = data.getSelectedRect();
-    const tableOffset = getTableOffset();
+    const tableOffset = table.getOffset();
     // console.log(',l:', l, ', left:', left, ', tOffset.left:', tableOffset.width);
     if (Math.abs(left) + width > tableOffset.width) {
       horizontalScrollbar.move({ left: l + width - tableOffset.width });
@@ -363,14 +348,14 @@ export const getSheet = (data, table, eventEmitter) => {
   }
 
   function verticalScrollbarSet() {
-    const { height } = getTableOffset();
+    const { height } = table.getOffset();
     const erth = data.exceptRowTotalHeight(0, -1);
     // console.log('erth:', erth);
     verticalScrollbar.set(height, data.rows.totalHeight() - erth);
   }
 
   function horizontalScrollbarSet() {
-    const { width } = getTableOffset();
+    const { width } = table.getOffset();
     if (data) {
       horizontalScrollbar.set(width, data.cols.totalWidth());
     }
@@ -387,8 +372,8 @@ export const getSheet = (data, table, eventEmitter) => {
   }
 
   function sheetReset() {
-    const tOffset = getTableOffset();
-    const vRect = getRect();
+    const tOffset = table.getOffset();
+    const vRect = data.getViewWidthHeight();
     table.el.attr(vRect);
     overlayerEl.offset(vRect);
     overlayerCEl.offset(tOffset);
@@ -507,7 +492,7 @@ export const getSheet = (data, table, eventEmitter) => {
 
   function editorSetOffset() {
     const sOffset = data.getSelectedRect();
-    const tOffset = getTableOffset();
+    const tOffset = table.getOffset();
     let sPosition = "top";
     // console.log('sOffset:', sOffset, ':', tOffset);
     if (sOffset.top > tOffset.height / 2) {
@@ -926,8 +911,6 @@ export const getSheet = (data, table, eventEmitter) => {
     autofilter,
     editorSet,
     sheetReset,
-    getRect,
-    getTableOffset,
     table,
     data,
     eventEmitter,

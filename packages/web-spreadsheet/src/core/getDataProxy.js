@@ -293,6 +293,10 @@ export const getDataProxy = (
     return { left: -100, top: -100 };
   };
 
+  const getViewWidthHeight = () => {
+    return { width: viewWidth(), height: viewHeight() };
+  };
+
   const getRect = (cellRange) => {
     const { sri, sci, eri, eci } = cellRange;
     // console.log('sri:', sri, ',sci:', sci, ', eri:', eri, ', eci:', eci);
@@ -1084,6 +1088,7 @@ export const getDataProxy = (
     cols,
     merges,
     getRect,
+    getViewWidthHeight,
     contentRange,
     eachMergesInView,
     freezeTotalWidth,
