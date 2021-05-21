@@ -1,45 +1,39 @@
 {
-  "name": "x-data-spreadsheet",
+  "name": "x-spreadsheet-pro",
   "version": "1.1.7",
-  "description": "a javascript xpreadsheet",
-  "types": "src/index.d.ts",
+  "description": "A javascript spreadsheet based on x-spreadsheet in the style of Google Sheets",
   "main": "src/index.js",
+  "type": "module",
   "files": [
     "dist",
     "src"
   ],
-  "author": "myliang <liangyuliang0335@gmail.com>",
+  "author": "tracktak.com <admin@tracktak.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/myliang/x-spreadsheet.git"
-  },
-  "nyc": {
-    "all": true,
-    "include": [
-      "src/core/*.js",
-      "src/locale/locale.js"
-    ],
-    "exclude": [
-      "**/*.spec.js"
-    ]
+    "url": "https://github.com/TrackTak/TrackTak.git"
   },
   "scripts": {
     "dev": "webpack-dev-server --open --config config/webpack.dev.js",
     "build": "webpack --config config/webpack.prod.js",
-    "build-locale": "webpack --config config/webpack.locale.js",
-    "lint": "./node_modules/eslint/bin/eslint.js src",
-    "test": "nyc ./node_modules/mocha/bin/mocha --require @babel/register --recursive test",
-    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov -t 31ecdb12-8ecb-46f7-a486-65c2516307dd",
-    "postinstall": "opencollective-postinstall"
+    "build-locale": "webpack --config config/webpack.locale.js"
   },
   "keywords": [
     "javascript",
     "spreadsheet",
-    "canvas"
+    "canvas",
+    "tracktak",
+    "google sheets",
+    "formula",
+    "excel",
+    "datatable",
+    "handsontable",
+    "x-spreadsheet"
   ],
   "devDependencies": {
     "@babel/core": "^7.3.4",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-optional-chaining": "^7.13.12",
     "@babel/preset-env": "^7.3.4",
     "@babel/register": "^7.0.0",
     "babel-loader": "^8.0.5",
@@ -63,13 +57,8 @@
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {
+    "events": "^3.3.0",
     "hyperformula": "^0.6.0",
-    "lodash-es": "^4.17.20",
-    "opencollective": "^1.0.3",
-    "opencollective-postinstall": "^2.0.2"
-  },
-  "collective": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/x-spreadsheet"
+    "lodash-es": "^4.17.20"
   }
 }

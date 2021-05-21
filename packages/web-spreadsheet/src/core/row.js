@@ -1,6 +1,5 @@
 import helper from "./helper";
 import { expr2expr, REGEX_EXPR_GLOBAL } from "./alphabet";
-import { setFormulasOnDatasheets } from "..";
 
 class Rows {
   constructor({ len, height }, hyperFormula) {
@@ -263,7 +262,7 @@ class Rows {
     this.len += n;
   }
 
-  delete(sri, eri) {
+  deleteRow(sri, eri) {
     const n = eri - sri + 1;
     const ndata = {};
     this.each((ri, row) => {

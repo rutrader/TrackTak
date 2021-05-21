@@ -9,7 +9,7 @@ const iconStyles = { width: "45px", height: "45px" };
 
 const Footer = () => {
   return (
-    <Box>
+    <>
       <Box
         sx={{
           display: "flex",
@@ -59,8 +59,19 @@ const Footer = () => {
         <Typography align="center">
           © 2020 - {dayjs().format("YYYY")} tracktak ltd. All rights reserved.
         </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            mt: 2,
+          }}
+        >
+          <Typography>
+            <Link href="/cookie-policy">Cookie Policy</Link>
+          </Typography>
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 

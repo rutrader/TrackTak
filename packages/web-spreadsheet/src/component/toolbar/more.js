@@ -1,35 +1,41 @@
-import Dropdown from "../dropdown";
-import DropdownItem from "./dropdown_item";
+import { getDropdown } from "../getDropdown";
 
 import { cssPrefix } from "../../config";
 import { h } from "../element";
-import Icon from "../icon";
+import getIcon from "../getIcon";
+import { getDropdownItem } from "./getDropdownItem";
 
-class DropdownMore extends Dropdown {
-  constructor() {
-    const icon = new Icon("ellipsis");
-    const moreBtns = h("div", `${cssPrefix}-toolbar-more`);
-    super(icon, "auto", false, "bottom-right", moreBtns);
-    this.moreBtns = moreBtns;
-    this.contentEl.css("max-width", "420px");
-  }
-}
+const getDropdownMore = () => {
+  const icon = getIcon("ellipsis");
+  const moreBtns = h("div", `${cssPrefix}-toolbar-more`);
+  const dropdown = getDropdown(icon, "auto", false, "bottom-right", moreBtns);
 
-export default class More extends DropdownItem {
-  constructor(formats) {
-    super(formats, "more");
-    this.el.hide();
-  }
+  dropdown.contentEl.css("max-width", "420px");
 
-  dropdown() {
-    return new DropdownMore();
-  }
+  return {
+    moreBtns,
+    dropdown,
+  };
+};
 
-  show() {
-    this.el.show();
-  }
+export const getMore = () => {
+  const tag = "more";
+  const dropdown = getDropdownItem(tag, getDropdownMore);
 
-  hide() {
-    this.el.hide();
-  }
-}
+  const show = () => {
+    dropdown.item.el.show();
+  };
+
+  const hide = () => {
+    dropdown.item.el.hide();
+  };
+
+  hide();
+
+  return {
+    dropdown,
+    item: dropdown.item,
+    hide,
+    show,
+  };
+};

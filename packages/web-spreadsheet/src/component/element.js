@@ -127,12 +127,18 @@ class Element {
   }
   */
 
+  destroy = () => {
+    this.el.remove();
+  };
+
   child(arg) {
     let ele = arg;
     if (typeof arg === "string") {
       ele = document.createTextNode(arg);
     } else if (arg instanceof Element) {
       ele = arg.el;
+    } else if (arg.el) {
+      ele = arg.el.el;
     }
     this.el.appendChild(ele);
     return this;

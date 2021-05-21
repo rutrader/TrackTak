@@ -29,11 +29,11 @@ import selectScope from "../selectors/dcfSelectors/selectScope";
 import cells from "./cells";
 import { setCells, setScope } from "../redux/actions/dcfActions";
 import { isNil } from "lodash-es";
-import Spreadsheet from "../../../web-spreadsheet/src";
 import {
   convertFromCellIndexToLabel,
   formatNumberRender,
 } from "../../../web-spreadsheet/src/core/helper";
+import getSpreadsheet from "../../../web-spreadsheet/src";
 
 const defaultColWidth = 110;
 const columnAWidth = 170;
@@ -246,7 +246,7 @@ const DiscountedCashFlowTable = ({
       },
     };
 
-    spreadsheet = new Spreadsheet(dcfValuationElement, {
+    spreadsheet = getSpreadsheet(dcfValuationElement, {
       col: {
         width: defaultColWidth,
       },
@@ -280,7 +280,7 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     if (!hasAllRequiredInputsFilledIn && spreadsheet) {
-      spreadsheet.loadData([[]]);
+      spreadsheet.setData([[]]);
     }
   }, [hasAllRequiredInputsFilledIn, spreadsheet, isOnMobile]);
 
@@ -290,7 +290,7 @@ const DiscountedCashFlowTable = ({
 
       const dataSheets = getDataSheets(isOnMobile);
 
-      spreadsheet.loadData(dataSheets);
+      spreadsheet.setData(dataSheets);
 
       const sheetName = "DCF Valuation";
       const dataSheetFormulas = spreadsheet.hyperFormula.getAllSheetsFormulas();
@@ -319,10 +319,10 @@ const DiscountedCashFlowTable = ({
     if (spreadsheet && hasAllRequiredInputsFilledIn) {
       if (showFormulas) {
         spreadsheet.showFormulas();
-        spreadsheet.loadData(getDatasheetsColWidths(200, isOnMobile));
+        spreadsheet.setData(getDatasheetsColWidths(200, isOnMobile));
       } else {
         spreadsheet.hideFormulas();
-        spreadsheet.loadData(getDataSheets(isOnMobile));
+        spreadsheet.setData(getDataSheets(isOnMobile));
       }
     }
   }, [showFormulas, spreadsheet, isOnMobile, hasAllRequiredInputsFilledIn]);
@@ -330,9 +330,9 @@ const DiscountedCashFlowTable = ({
   useEffect(() => {
     if (spreadsheet && hasAllRequiredInputsFilledIn) {
       if (showYOYGrowth) {
-        spreadsheet.loadData(getDatasheetsYOYGrowth(spreadsheet, isOnMobile));
+        spreadsheet.setData(getDatasheetsYOYGrowth(spreadsheet, isOnMobile));
       } else {
-        spreadsheet.loadData(getDataSheets(isOnMobile));
+        spreadsheet.setData(getDataSheets(isOnMobile));
       }
     }
   }, [showYOYGrowth, spreadsheet, isOnMobile, hasAllRequiredInputsFilledIn]);
