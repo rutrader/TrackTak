@@ -5,7 +5,7 @@ class Cols {
     this._ = {};
     this.len = len;
     this.width = width;
-    this.indexWidth = 0;
+    this.indexWidth = indexWidth;
     this.minWidth = minWidth;
   }
 
