@@ -1,13 +1,14 @@
 import spreadsheetEvents from "../core/spreadsheetEvents";
 import { getPrint } from "./getPrint";
-import { getToolbar } from "./toolbar";
+import { getToolbar } from "./toolbar/getToolbar";
 
-const withToolbar = (sheet) => (rootEl) => {
-  let { data, eventEmitter } = sheet;
+const withToolbar = (sheet, rootEl) => {
+  let { data, eventEmitter, el } = sheet;
   const { view, showToolbar } = data.options;
 
   const print = getPrint(data);
   const toolbar = getToolbar(
+    el,
     data,
     view.width,
     data.options.formats,
@@ -61,11 +62,11 @@ const withToolbar = (sheet) => (rootEl) => {
     }
   }
 
+  rootEl.children(print.el);
+
   Object.values(spreadsheetEvents.toolbar).forEach((key) => {
     eventEmitter.on(key, (type, value) => toolbarChange(type, value));
   });
-
-  rootEl.children(toolbar.el, print.el);
 
   eventEmitter.on(spreadsheetEvents.sheet.cellSelected, () => {
     toolbar.reset();
@@ -117,6 +118,11 @@ const withToolbar = (sheet) => (rootEl) => {
       toolbar.italicEl.toggleItem.toggle();
     }
   });
+
+  setTimeout(() => {
+    toolbar.resize();
+    el.before(toolbar.el);
+  }, 2000);
 
   return {
     ...sheet,

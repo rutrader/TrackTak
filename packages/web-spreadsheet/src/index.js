@@ -13,6 +13,7 @@ import spreadsheetEvents from "./core/spreadsheetEvents";
 import withToolbar from "./component/withToolbar";
 import { getTable } from "./component/table/getTable";
 import { getVariablesTable } from "./component/table/getVariablesTable";
+import withVariablesToolbar from "./component/withVariablesToolbar";
 
 const getSpreadsheet = (element, options) => {
   const newOptions = merge(defaultOptions, options);
@@ -49,8 +50,6 @@ const getSpreadsheet = (element, options) => {
   eventEmitter.on(spreadsheetEvents.bottombar.updateSheet, (index, value) => {
     sheetDatas[index].name = value;
   });
-
-  const bottombar = getBottombar(eventEmitter);
 
   const addSheetData = (
     name = `sheet${sheetDatas.length + 1}`,
@@ -122,17 +121,21 @@ const getSpreadsheet = (element, options) => {
     });
   };
 
+  const bottombar = getBottombar(eventEmitter);
+
   const data = addSheetData();
   const variablesData = addVariablesSheetData();
 
-  const table = getVariablesTable(data, hyperFormula);
-  const variablesSheet = getSheet(variablesData, table, eventEmitter);
+  const variablesTable = getVariablesTable(data, hyperFormula);
+  const variablesSheet = withVariablesToolbar(
+    getSheet(rootEl, variablesData, variablesTable, eventEmitter),
+  );
 
-  const table2 = getTable(data, hyperFormula);
-  const sheet = withToolbar(getSheet(data, table2, eventEmitter))(rootEl);
-
-  rootEl.child(variablesSheet.el);
-  rootEl.child(sheet.el);
+  const table = getTable(data, hyperFormula);
+  const sheet = withToolbar(
+    getSheet(rootEl, data, table, eventEmitter),
+    rootEl,
+  );
 
   // create canvas element
   element.appendChild(rootEl.el);

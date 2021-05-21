@@ -2,7 +2,6 @@ import { getMore } from "./more";
 
 import { h } from "../element";
 import { cssPrefix } from "../../config";
-import { bind } from "../event";
 import { makeIconItem } from "./makeIconItem";
 import { makeToggleItem } from "./makeToggleItem";
 import { getDropdownItem } from "./getDropdownItem";
@@ -10,15 +9,17 @@ import { makeDropdownBorder } from "../makeDropdownBorder";
 import { makeDropdownColor } from "../makeDropdownColor";
 import { makeDropdownFontSize } from "../makeDropdownFontSize";
 import { makeDropdownFont } from "../makeDropdownFont";
-import { makeDropdownFormat } from "../makeDropdownFormat";
 import { makeDropdownFormula } from "../makeDropdownFormula";
 import { makeDropdownAlign } from "../makeDropdownAlign";
-
-function buildDivider() {
-  return h("div", `${cssPrefix}-toolbar-divider`);
-}
+import { buildDivider } from "./buildDivider";
+import { buildUndo } from "./buildUndo";
+import { buildRedo } from "./buildRedo";
+import { buildFormat } from "./buildFormat";
+import { buildItems } from "./buildItems";
+import { resize } from "./resize";
 
 export const getToolbar = (
+  sheetEl,
   data,
   widthFn,
   formats,
@@ -29,16 +30,14 @@ export const getToolbar = (
 
   const getIconItem = makeIconItem(eventEmitter);
   const getToggleItem = makeToggleItem(eventEmitter);
+  const toolbarType = "toolbar";
 
-  const undoEl = getIconItem("undo", "Ctrl+Z");
-  const redoEl = getIconItem("redo", "Ctrl+Y");
+  const undoEl = buildUndo(eventEmitter, toolbarType);
+  const redoEl = buildRedo(eventEmitter, toolbarType);
+  const formatEl = buildFormat(formats, eventEmitter, toolbarType);
   const printEl = getIconItem("print", "Ctrl+P");
   const paintformatEl = getToggleItem("paintformat");
   const clearformatEl = getIconItem("clearformat");
-  const formatEl = getDropdownItem(
-    "format",
-    makeDropdownFormat(formats, eventEmitter),
-  );
   const fontEl = getDropdownItem("font-name", makeDropdownFont(eventEmitter));
   const fontSizeEl = getDropdownItem(
     "font-size",
@@ -74,11 +73,10 @@ export const getToolbar = (
     makeDropdownFormula(eventEmitter),
   );
   const moreEl = getMore();
-
   const items = [
-    [undoEl, redoEl, printEl, paintformatEl, clearformatEl],
-    buildDivider(),
     [formatEl],
+    buildDivider(),
+    [undoEl, redoEl, printEl, paintformatEl, clearformatEl],
     buildDivider(),
     [fontEl, fontSizeEl],
     buildDivider(),
@@ -92,23 +90,15 @@ export const getToolbar = (
   ];
 
   const el = h("div", `${cssPrefix}-toolbar`);
-  const btnsEl = h("div", `${cssPrefix}-toolbar-btns`);
+  const buttonsEl = h("div", `${cssPrefix}-toolbar-btns`);
 
-  items.forEach((it) => {
-    if (Array.isArray(it)) {
-      it.forEach((i) => {
-        const iEl = i.el ? i.el : i.item.el;
+  setTimeout(() => {
+    sheetEl.before(el);
+  }, 2000);
 
-        btnsEl.child(iEl);
-      });
-    } else {
-      const itEl = it.el ? it.el : it.item.el;
+  buildItems(items, buttonsEl);
 
-      btnsEl.child(itEl);
-    }
-  });
-
-  el.child(btnsEl);
+  el.child(buttonsEl);
 
   const paintformatActive = () => {
     return paintformatEl.toggleItem.active();
@@ -120,7 +110,7 @@ export const getToolbar = (
 
   const resetData = (datum) => {
     data = datum;
-    reset();
+    reset(isHide, data, undoEl, redoEl, formatEl);
   };
 
   const reset = () => {
@@ -150,74 +140,6 @@ export const getToolbar = (
     freezeEl.toggleItem.setActive(data.freezeIsActive());
   };
 
-  function initBtns() {
-    const btns = [];
-
-    items.forEach((it) => {
-      if (Array.isArray(it)) {
-        it.forEach(({ el, item }) => {
-          let newEl = el ? el : item.el;
-          const rect = newEl.box();
-          const { marginLeft, marginRight } = newEl.computedStyle();
-          btns.push([
-            newEl,
-            rect.width + parseInt(marginLeft, 10) + parseInt(marginRight, 10),
-          ]);
-        });
-      } else {
-        const rect = it.box();
-        const { marginLeft, marginRight } = it.computedStyle();
-        btns.push([
-          it,
-          rect.width + parseInt(marginLeft, 10) + parseInt(marginRight, 10),
-        ]);
-      }
-    });
-
-    return btns;
-  }
-
-  function moreResize(btns) {
-    el.css("width", `${widthFn() - 60}px`);
-    const elBox = el.box();
-
-    let sumWidth = 160;
-    let sumWidth2 = 12;
-    const list1 = [];
-    const list2 = [];
-    btns.forEach(([it, w], index) => {
-      sumWidth += w;
-      if (index === btns.length - 1 || sumWidth < elBox.width) {
-        list1.push(it);
-      } else {
-        sumWidth2 += w;
-        list2.push(it);
-      }
-    });
-    btnsEl.html("").children(...list1);
-    moreEl.dropdown.dropdown.moreBtns.html("").children(...list2);
-    moreEl.dropdown.dropdown.dropdown.contentEl.css("width", `${sumWidth2}px`);
-    if (list2.length > 0) {
-      moreEl.show();
-    } else {
-      moreEl.hide();
-    }
-  }
-
-  if (isHide) {
-    el.hide();
-  } else {
-    reset();
-    setTimeout(() => {
-      const btns = initBtns();
-      moreResize(btns);
-    }, 0);
-    bind(window, "resize", () => {
-      const btns = initBtns();
-      moreResize(btns);
-    });
-  }
-
   return {
     paintformatActive,
     paintformatToggle,
@@ -228,5 +150,6 @@ export const getToolbar = (
     underlineEl,
     boldEl,
     italicEl,
+    resize: () => resize(isHide, items, reset, el, buttonsEl, moreEl, widthFn),
   };
 };

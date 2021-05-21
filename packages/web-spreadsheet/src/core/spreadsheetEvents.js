@@ -51,6 +51,11 @@ const spreadsheetEvents = {
     formatChange: "tb-format-change",
     formulaSet: "tb-formula-set",
   },
+  variablesToolbar: {
+    sheetChange: "vtb-sheet-change",
+    toggleItem: "vtb-toggle-item",
+    clickIcon: "vtb-click-icon",
+  },
 };
 
 export default spreadsheetEvents;

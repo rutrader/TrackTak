@@ -32,7 +32,7 @@ function throttle(func, wait) {
   };
 }
 
-export const getSheet = (data, table, eventEmitter) => {
+export const getSheet = (rootEl, data, table, eventEmitter) => {
   const resetData = (datum) => {
     // before
     editor.clear();
@@ -140,6 +140,8 @@ export const getSheet = (data, table, eventEmitter) => {
   sheetReset();
   // init selector [0, 0]
   selectorSet(false, 0, 0);
+
+  rootEl.child(el);
 
   function scrollbarMove() {
     const { l, t, left, top, width, height } = data.getSelectedRect();
