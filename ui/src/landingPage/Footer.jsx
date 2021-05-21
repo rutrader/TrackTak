@@ -4,20 +4,12 @@ import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import RedditIcon from "@material-ui/icons/Reddit";
 import dayjs from "dayjs";
 import TracktakLogoSvg from "../icons/tracktak-purple.svg";
-import resourceName from "../shared/resourceName";
-import { Helmet } from "react-helmet";
-import getTitle from "../shared/getTitle";
 
 const iconStyles = { width: "45px", height: "45px" };
 
 const Footer = () => {
   return (
     <>
-      <Helmet>
-        <title>{getTitle("Cookie Policy")}</title>
-        <link rel="canonical" href={`${resourceName}/cookie policy`} />
-        <meta name="description" content="Our cookie policy" />
-      </Helmet>
       <Box
         sx={{
           display: "flex",
@@ -70,8 +62,7 @@ const Footer = () => {
         <Box
           sx={{
             display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            justifyContent: "center",
             mt: 2,
           }}
         >
