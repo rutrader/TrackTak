@@ -135,7 +135,7 @@ const getDatasheetsColWidths = (colWidth, isOnMobile) => {
 
 const getDatasheetsYOYGrowth = (spreadsheet, isOnMobile) => {
   const dataSheets = getDataSheets(isOnMobile);
-  const dataSheetsValues = spreadsheet?.hyperFormula?.getAllSheetsValues();
+  const dataSheetsValues = spreadsheet?.hyperformula?.getAllSheetsValues();
 
   const newDataSheets = dataSheets.map((dataSheet, dataSheetIndex) => {
     const formulaSheet = dataSheetsValues[dataSheet.name];
@@ -280,7 +280,7 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     if (!hasAllRequiredInputsFilledIn && spreadsheet) {
-      spreadsheet.setData([[]]);
+      //  spreadsheet.setDatasheets([]);
     }
   }, [hasAllRequiredInputsFilledIn, spreadsheet, isOnMobile]);
 
@@ -290,11 +290,13 @@ const DiscountedCashFlowTable = ({
 
       const dataSheets = getDataSheets(isOnMobile);
 
-      spreadsheet.setData(dataSheets);
+      if (!spreadsheet.sheet.datas.length) {
+        spreadsheet.sheet.setDatasheets(dataSheets);
+      }
 
       const sheetName = "DCF Valuation";
-      const dataSheetFormulas = spreadsheet.hyperFormula.getAllSheetsFormulas();
-      const dataSheetValues = spreadsheet.hyperFormula.getAllSheetsValues();
+      const dataSheetFormulas = spreadsheet.hyperformula.getAllSheetsFormulas();
+      const dataSheetValues = spreadsheet.hyperformula.getAllSheetsValues();
       const cells = {};
 
       dataSheetValues[sheetName].forEach((columns, rowIndex) => {
@@ -317,68 +319,70 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     if (spreadsheet) {
-      spreadsheet.setVariablesData([
-        {
-          name: "Inputs",
-          rows: {
-            0: {
-              cells: [
-                {
-                  text: "CAGR Year 1-5",
-                },
-              ],
-            },
-          },
-        },
-        {
-          name: "Optional Inputs",
-          rows: {
-            0: {
-              cells: [
-                {
-                  text: "Debt",
-                },
-              ],
-            },
-          },
-        },
-        {
-          name: "API",
-          rows: {
-            0: {
-              cells: [
-                {
-                  text: "totalRevenue",
-                },
-              ],
-            },
-          },
-        },
-      ]);
+      // spreadsheet.setVariablesData([
+      //   {
+      //     name: "Inputs",
+      //     rows: {
+      //       0: {
+      //         cells: [
+      //           {
+      //             text: "CAGR Year 1-5",
+      //           },
+      //         ],
+      //       },
+      //     },
+      //   },
+      //   {
+      //     name: "Optional Inputs",
+      //     rows: {
+      //       0: {
+      //         cells: [
+      //           {
+      //             text: "Debt",
+      //           },
+      //         ],
+      //       },
+      //     },
+      //   },
+      //   {
+      //     name: "API",
+      //     rows: {
+      //       0: {
+      //         cells: [
+      //           {
+      //             text: "totalRevenue",
+      //           },
+      //         ],
+      //       },
+      //     },
+      //   },
+      // ]);
     }
   }, [spreadsheet]);
 
   useEffect(() => {
     if (spreadsheet && hasAllRequiredInputsFilledIn) {
-      if (showFormulas) {
-        spreadsheet.showFormulas();
-        spreadsheet.setData(getDatasheetsColWidths(200, isOnMobile));
-      } else {
-        spreadsheet.hideFormulas();
-        spreadsheet.setData(getDataSheets(isOnMobile));
-      }
-    }
-  }, [showFormulas, spreadsheet, isOnMobile, hasAllRequiredInputsFilledIn]);
-
-  useEffect(() => {
-    if (spreadsheet && hasAllRequiredInputsFilledIn) {
       if (showYOYGrowth) {
-        spreadsheet.setData(getDatasheetsYOYGrowth(spreadsheet, isOnMobile));
+        // spreadsheet.setDatasheets(
+        //   getDatasheetsYOYGrowth(spreadsheet, isOnMobile),
+        // );
       } else {
-        spreadsheet.setData(getDataSheets(isOnMobile));
+        // spreadsheet.setDatasheets(getDataSheets(isOnMobile));
       }
     }
   }, [showYOYGrowth, spreadsheet, isOnMobile, hasAllRequiredInputsFilledIn]);
+
+  useEffect(() => {
+    if (spreadsheet && hasAllRequiredInputsFilledIn) {
+      if (showFormulas) {
+        //    spreadsheet.showFormulas();
+        //   spreadsheet.setDatasheets(getDatasheetsColWidths(200, isOnMobile));
+      } else {
+        //   spreadsheet.hideFormulas();
+        //  spreadsheet.setDatasheets(getDataSheets(isOnMobile));
+      }
+    }
+  }, [showFormulas, spreadsheet, isOnMobile, hasAllRequiredInputsFilledIn]);
 
   useEffect(() => {
     // Dispatch only when we have all the data from the API

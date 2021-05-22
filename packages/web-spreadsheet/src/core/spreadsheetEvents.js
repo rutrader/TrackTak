@@ -38,6 +38,8 @@ const spreadsheetEvents = {
     sheetReset: "s-sheet-reset",
     mouseMoveUp: "s-mouse-move-up",
     ctrlKeyDown: "s-ctrl-key-down",
+    addData: "s-add-data",
+    deleteData: "s-delete-data",
   },
   toolbar: {
     alignChange: "tb-align-change",

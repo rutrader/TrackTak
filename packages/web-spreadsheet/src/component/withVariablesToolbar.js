@@ -48,10 +48,8 @@ const withVariablesToolbar = (sheet) => {
     toolbar.resetData(data);
   });
 
-  setTimeout(() => {
-    toolbar.resize();
-    el.before(toolbar.el);
-  }, 2000);
+  toolbar.resize();
+  el.before(toolbar.el);
 
   return {
     ...sheet,

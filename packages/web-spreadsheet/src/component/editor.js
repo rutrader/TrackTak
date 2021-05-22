@@ -16,7 +16,7 @@ function dateFormat(d) {
   return `${d.getFullYear()}-${month}-${date}`;
 }
 
-export const getEditor = (formulas, data, eventEmitter) => {
+export const getEditor = (formulas, eventEmitter) => {
   function insertText({ target }, itxt) {
     const { value, selectionEnd } = target;
     const ntxt = `${value.slice(0, selectionEnd)}${itxt}${value.slice(
@@ -103,8 +103,8 @@ export const getEditor = (formulas, data, eventEmitter) => {
     suggest.setItems(formulas);
   }
 
-  let _data = data;
-  let rowHeight = _data.rows.height;
+  let _data;
+
   const suggest = new Suggest(formulas, (it) => {
     const unescapedKey = it.key.replace("\\.", ".");
     suggestItemClick(unescapedKey);
@@ -165,7 +165,6 @@ export const getEditor = (formulas, data, eventEmitter) => {
 
   const resetData = (data) => {
     _data = data;
-    rowHeight = data.rows.height;
     formula.setData(_data);
   };
 
@@ -267,7 +266,6 @@ export const getEditor = (formulas, data, eventEmitter) => {
   const formula = new Formula(textEl, cellEl, inputText, _data, render);
 
   return {
-    rowHeight,
     suggest,
     datepicker,
     composing,

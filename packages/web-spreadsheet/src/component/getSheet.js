@@ -1,17 +1,14 @@
 import { h } from "./element";
 import { bind, mouseMoveUp, bindTouch } from "./event";
-import { t } from "../locale/locale";
-import { getResizer } from "./getResizer";
-import { getScrollbar } from "./getScrollbar";
 import Selector from "./selector";
-import { getEditor } from "./editor";
 import { getContextMenu } from "./contextmenu";
 import ModalValidation from "./modal_validation";
 import SortFilter from "./sort_filter";
 import { xtoast } from "./message";
 import { cssPrefix } from "../config";
-import { HyperFormula } from "hyperformula";
 import spreadsheetEvents from "../core/spreadsheetEvents";
+import { getDataProxy } from "../core/getDataProxy";
+import { getViewWidthHeight } from "./getViewWidthHeight";
 
 /**
  * @desc throttle fn
@@ -34,28 +31,96 @@ function throttle(func, wait) {
 
 export const getSheet = (
   rootEl,
-  data,
   table,
+  rowResizer,
+  colResizer,
+  verticalScrollbar,
+  horizontalScrollbar,
+  editor,
+  modalValidation,
+  contextMenu,
+  selector,
+  sortFilter,
   eventEmitter,
+  hyperformula,
+  options,
   isVariablesSpreadsheet,
 ) => {
+  let data;
+  const datas = [];
+
+  eventEmitter.on(spreadsheetEvents.bottombar.selectSheet, (index) => {
+    const d = datas[index];
+
+    resetData(d);
+  });
+
+  eventEmitter.on(spreadsheetEvents.bottombar.updateSheet, (index, value) => {
+    datas[index].name = value;
+  });
+
+  eventEmitter.on(
+    spreadsheetEvents.bottombar.deleteSheet,
+    ([oldIndex, nindex]) => {
+      if (oldIndex >= 0) {
+        datas.splice(oldIndex, 1);
+
+        if (nindex >= 0) {
+          resetData(datas[nindex]);
+        }
+      }
+    },
+  );
+
+  eventEmitter.on(spreadsheetEvents.bottombar.addSheet, () => {
+    const data = addData();
+
+    resetData(data);
+  });
+
+  const setDatasheets = (dataSheets) => {
+    dataSheets.forEach((dataSheet, i) => {
+      const data = addData(dataSheet.name, i === 0);
+
+      data.setData(dataSheet);
+    });
+
+    if (dataSheets.length) {
+      resetData(datas[0]);
+      sheetReset();
+      selectorSet(false, 0, 0);
+    }
+  };
+
+  const addData = (name = `sheet${datas.length + 1}`, active) => {
+    const data = getDataProxy(name, options, hyperformula, eventEmitter);
+
+    if (hyperformula.isItPossibleToAddSheet(name)) {
+      hyperformula.addSheet(name);
+    }
+
+    datas.push(data);
+
+    eventEmitter.emit(spreadsheetEvents.sheet.addData, name, active);
+
+    return data;
+  };
+
   const resetData = (datum) => {
     // before
     editor.clear();
 
     // after
     data = datum;
+
+    table.resetData(data);
+    editor.resetData(data);
+    selector.resetData(data);
+
     verticalScrollbarSet();
     horizontalScrollbarSet();
-    editor.resetData(data);
     eventEmitter.emit(spreadsheetEvents.sheet.resetData, data);
-    selector.resetData(data);
-    table.resetData(data);
-  };
-
-  const setData = (data) => {
-    data.setData(data);
-    sheetReset();
+    table.render();
   };
 
   // freeze rows or cols
@@ -78,58 +143,17 @@ export const getSheet = (
     sheetReset();
   };
 
-  const { showContextmenu } = data.options;
   const el = h("div", `${cssPrefix}-sheet`);
 
   let focusing;
 
-  // resizer
-  const rowResizer = getResizer(
-    eventEmitter,
-    spreadsheetEvents.rowResizer,
-    data.rows.height,
-  );
-  const colResizer = getResizer(
-    eventEmitter,
-    spreadsheetEvents.colResizer,
-    data.cols.minWidth,
-    true,
-  );
-  // scrollbar
-  const verticalScrollbar = getScrollbar(eventEmitter, true);
-  const horizontalScrollbar = getScrollbar(eventEmitter, false);
-  // editor
-  const formulaSuggestions = HyperFormula.getRegisteredFunctionNames(
-    "enGB",
-  ).map((formulaName) => {
-    const escapedFormulaName = formulaName.replace(".", "\\.");
-    return {
-      key: escapedFormulaName,
-      // Function that returns translation of the formula name if one exists,
-      // otherwise the formula name
-      title: () => t(`formula.${escapedFormulaName}`) || formulaName,
-    };
-  });
-  const editor = getEditor(formulaSuggestions, data, eventEmitter);
-  // data validation
-  const modalValidation = new ModalValidation();
-  // contextMenu
-  const contextMenu = getContextMenu(
-    () => data.getViewWidthHeight(),
-    eventEmitter,
-    !showContextmenu,
-  );
-  // selector
-  const selector = new Selector(data, isVariablesSpreadsheet);
   const overlayerCEl = h("div", `${cssPrefix}-overlayer-content`).children(
     editor.el,
     selector.el,
     editor.cellEl,
   );
   const overlayerEl = h("div", `${cssPrefix}-overlayer`).child(overlayerCEl);
-  // sortFilter
-  const sortFilter = new SortFilter();
-  // root element
+
   el.children(
     table.el,
     overlayerEl.el,
@@ -141,11 +165,7 @@ export const getSheet = (
     modalValidation.el,
     sortFilter.el,
   );
-  // table
   sheetInitEvents();
-  sheetReset();
-  // init selector [0, 0]
-  selectorSet(false, 0, 0);
 
   rootEl.child(el);
 
@@ -381,7 +401,7 @@ export const getSheet = (
 
   function sheetReset() {
     const tOffset = table.getOffset();
-    const vRect = data.getViewWidthHeight();
+    const vRect = getViewWidthHeight(options, isVariablesSpreadsheet);
     table.el.attr(vRect);
     overlayerEl.offset(vRect);
     overlayerCEl.offset(tOffset);
@@ -410,7 +430,7 @@ export const getSheet = (
   }
 
   function paste(what, evt) {
-    if (data.options.mode === "read") return;
+    if (options.mode === "read") return;
     if (data.paste(what, (msg) => xtoast("Tip", msg))) {
       sheetReset();
     } else if (evt) {
@@ -478,7 +498,7 @@ export const getSheet = (
           }
         },
         () => {
-          if (isAutofillEl && selector.arange && data.options.mode !== "read") {
+          if (isAutofillEl && selector.arange && options.mode !== "read") {
             if (
               data.autofill(selector.arange, "all", (msg) => xtoast("Tip", msg))
             ) {
@@ -510,7 +530,7 @@ export const getSheet = (
   }
 
   function editorSet() {
-    if (data.options.mode === "read") return;
+    if (options.mode === "read") return;
     editorSetOffset();
     editor.setCell(data.getSelectedCell(), data.getSelectedValidator());
     clearClipboard();
@@ -552,7 +572,7 @@ export const getSheet = (
   }
 
   function dataSetCellText(text, state = "finished") {
-    if (data.options.mode === "read") return;
+    if (options.mode === "read") return;
     data.setSelectedCellText(text, state);
     const { ri, ci } = data.selector;
     if (state === "finished") {
@@ -569,7 +589,7 @@ export const getSheet = (
   }
 
   function insertDeleteRowColumn(type) {
-    if (data.options.mode === "read") return;
+    if (options.mode === "read") return;
     if (type === "insert-row") {
       data.insert("row");
     } else if (type === "delete-row") {
@@ -906,8 +926,8 @@ export const getSheet = (
 
   return {
     el,
+    setDatasheets,
     resetData,
-    setData,
     freeze,
     undo,
     redo,
@@ -921,6 +941,7 @@ export const getSheet = (
     sheetReset,
     table,
     data,
+    datas,
     eventEmitter,
   };
 };

@@ -1,6 +1,7 @@
+import { getViewWidthHeight } from "../getViewWidthHeight";
 import { makeTable } from "./makeTable";
 
-export const getVariablesTable = (data, hyperFormula) => {
+export const getVariablesTable = (data, hyperformula, options) => {
   const {
     setCalculateFormulas,
     clear,
@@ -10,12 +11,12 @@ export const getVariablesTable = (data, hyperFormula) => {
     draw,
   } = makeTable({
     data,
-    hyperFormula,
+    hyperformula,
   });
 
   const getOffset = () => {
     const { rows, cols } = data;
-    const { width, height } = data.getViewWidthHeight();
+    const { width, height } = getViewWidthHeight(options, true);
 
     // TODO: Set magic numbers to options once data is fixed
     return {
@@ -30,7 +31,7 @@ export const getVariablesTable = (data, hyperFormula) => {
     el,
     draw,
     data,
-    hyperFormula,
+    hyperformula,
     resetData,
     render,
     clear,

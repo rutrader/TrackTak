@@ -12,20 +12,20 @@ import { CellRange } from "./cell_range";
 import { expr2xy, xy2expr } from "./alphabet";
 import { t } from "../locale/locale";
 import spreadsheetEvents from "./spreadsheetEvents";
+import { getViewWidthHeight } from "../component/getViewWidthHeight";
 
-const toolbarHeight = 41;
-const bottombarHeight = 41;
 export const getDataProxy = (
   name,
   options,
-  hyperFormula,
+  hyperformula,
   eventEmitter,
   isVariablesSpreadsheet = false,
 ) => {
+  const { width, height } = getViewWidthHeight(options, isVariablesSpreadsheet);
   let freeze = [0, 0];
   let styles = []; // Array<Style>
   const merges = new Merges(); // [CellRange, ...]
-  const rows = new Rows(options.row, hyperFormula, isVariablesSpreadsheet);
+  const rows = new Rows(options.row, hyperformula, isVariablesSpreadsheet);
   const cols = new Cols(options.col, isVariablesSpreadsheet);
   const validations = new Validations();
 
@@ -291,10 +291,6 @@ export const getDataProxy = (
       return getRect(clipboard.range);
     }
     return { left: -100, top: -100 };
-  };
-
-  const getViewWidthHeight = () => {
-    return { width: viewWidth(), height: viewHeight() };
   };
 
   const getRect = (cellRange) => {
@@ -603,7 +599,7 @@ export const getDataProxy = (
     const cell = rows.getCell(ri, ci);
     const cellStyle =
       cell && cell.style !== undefined ? styles[cell.style] : {};
-    return helper.merge(defaultStyle(), cellStyle);
+    return helper.merge(options.style, cellStyle);
   };
 
   const getSelectedCellStyle = () => {
@@ -643,32 +639,6 @@ export const getDataProxy = (
 
   const freezeTotalHeight = () => {
     return rows.sumHeight(0, freeze[0]);
-  };
-
-  const viewHeight = () => {
-    const { view, showToolbar, showVariablesSpreadsheet } = options;
-    let h;
-
-    if (isVariablesSpreadsheet) {
-      h = view.variablesSheetHeight();
-
-      if (showToolbar) {
-        h -= toolbarHeight;
-      }
-    } else {
-      h = view.height();
-
-      if (showVariablesSpreadsheet) {
-        h -= view.variablesSheetHeight();
-      }
-      h -= bottombarHeight;
-    }
-
-    return h;
-  };
-
-  const viewWidth = () => {
-    return options.view.width();
   };
 
   const freezeViewRange = () => {
@@ -715,12 +685,12 @@ export const getDataProxy = (
         y += rows.getHeight(i);
         eri = i;
       }
-      if (y > viewHeight()) break;
+      if (y > height) break;
     }
     for (let j = ci; j < cols.len; j += 1) {
       x += cols.getWidth(j);
       eci = j;
-      if (x > viewWidth()) break;
+      if (x > width) break;
     }
     // console.log(ri, ci, eri, eci, x, y);
     return new CellRange(ri, ci, eri, eci, x, y);
@@ -775,7 +745,7 @@ export const getDataProxy = (
         if (rowHeight > 0) {
           cb(i, y, rowHeight);
           y += rowHeight;
-          if (y > viewHeight()) break;
+          if (y > height) break;
         }
       }
     }
@@ -788,13 +758,9 @@ export const getDataProxy = (
       if (colWidth > 0) {
         cb(i, x, colWidth);
         x += colWidth;
-        if (x > viewWidth()) break;
+        if (x > width) break;
       }
     }
-  };
-
-  const defaultStyle = () => {
-    return options.style;
   };
 
   const addStyle = (nstyle) => {
@@ -1101,8 +1067,6 @@ export const getDataProxy = (
     setFreeze,
     undo,
     redo,
-    viewWidth,
-    viewHeight,
     options,
     getCell,
     getCellRectByXY,
@@ -1139,7 +1103,6 @@ export const getDataProxy = (
     colEach,
     viewRange,
     freezeViewRange,
-    defaultStyle,
     getSelectedCellStyle,
     canUndo,
     canRedo,

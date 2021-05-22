@@ -177,8 +177,7 @@ function setAllClipboardOffset(offset) {
 }
 
 export default class Selector {
-  constructor(data) {
-    this.data = data;
+  constructor() {
     this.br = new SelectorElement(true);
     this.t = new SelectorElement();
     this.l = new SelectorElement();

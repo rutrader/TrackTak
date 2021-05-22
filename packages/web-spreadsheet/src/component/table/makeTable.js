@@ -3,6 +3,7 @@ import { getFontSizePxByPt } from "../../core/font";
 import getDraw, { getDrawBox, thinLineWidth } from "../../canvas/draw";
 import { h } from "../element";
 import { cssPrefix } from "../../config";
+import { getViewWidthHeight } from "../getViewWidthHeight";
 
 const cellPaddingWidth = 5;
 const tableGridStyle = {
@@ -18,11 +19,15 @@ function getTableDrawBox(data, rindex, cindex, yoffset = 0) {
 
 export const makeTable = ({
   data,
-  hyperFormula,
+  options,
+  isVariablesSpreadsheet,
+  hyperformula,
   renderFixedHeaders = () => {},
 }) => {
+  const { width, height } = getViewWidthHeight(options, isVariablesSpreadsheet);
+
   const el = h("canvas", `${cssPrefix}-table`);
-  const draw = getDraw(el.el, data.viewWidth(), data.viewHeight());
+  const draw = getDraw(el.el, width, height);
   let calculateFormulas = true;
 
   const renderCell = (draw, data, rindex, cindex, yoffset = 0) => {
@@ -58,11 +63,11 @@ export const makeTable = ({
 
       // render text
       let cellText = calculateFormulas
-        ? hyperFormula.getCellValue(cellAddress)
+        ? hyperformula.getCellValue(cellAddress)
         : cell.text || "";
       let format = style.format;
 
-      if (!calculateFormulas && hyperFormula.doesCellHaveFormula(cellAddress)) {
+      if (!calculateFormulas && hyperformula.doesCellHaveFormula(cellAddress)) {
         format = "text";
       }
 
@@ -208,8 +213,8 @@ export const makeTable = ({
     ftw,
     fth,
   ) => {
-    const twidth = data.viewWidth() - fixedHeaderWidth;
-    const theight = data.viewHeight() - fixedHeaderHeight;
+    const twidth = width - fixedHeaderWidth;
+    const theight = height - fixedHeaderHeight;
     draw.save();
     draw.translate(fixedHeaderWidth, fixedHeaderHeight);
     draw.attr({ strokeStyle: "rgba(75, 137, 255, .6)" });
@@ -233,7 +238,7 @@ export const makeTable = ({
     // fixed height of header
     const fixedHeaderHeight = rows.indexHeight;
 
-    draw.resize(data.viewWidth(), data.viewHeight());
+    draw.resize(width, height);
     clear();
 
     const viewRange = data.viewRange();
@@ -319,7 +324,6 @@ export const makeTable = ({
 
   const resetData = (datum) => {
     data = datum;
-    render();
   };
 
   return {

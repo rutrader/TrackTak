@@ -18,15 +18,12 @@ import { buildFormat } from "./buildFormat";
 import { buildItems } from "./buildItems";
 import { resize } from "./resize";
 
-export const getToolbar = (
-  sheetEl,
-  data,
-  widthFn,
-  formats,
-  eventEmitter,
-  isHide = false,
-) => {
-  const style = data.defaultStyle();
+export const toolbarHeight = 41;
+
+export const getToolbar = (sheetEl, options, eventEmitter, isHide = false) => {
+  const widthFn = options.view.width;
+  let data;
+  const style = options.style;
 
   const getIconItem = makeIconItem(eventEmitter);
   const getToggleItem = makeToggleItem(eventEmitter);
@@ -34,7 +31,7 @@ export const getToolbar = (
 
   const undoEl = buildUndo(eventEmitter, toolbarType);
   const redoEl = buildRedo(eventEmitter, toolbarType);
-  const formatEl = buildFormat(formats, eventEmitter, toolbarType);
+  const formatEl = buildFormat(options.formats, eventEmitter, toolbarType);
   const printEl = getIconItem("print", "Ctrl+P");
   const paintformatEl = getToggleItem("paintformat");
   const clearformatEl = getIconItem("clearformat");

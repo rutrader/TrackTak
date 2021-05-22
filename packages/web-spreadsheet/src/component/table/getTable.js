@@ -2,6 +2,7 @@ import { stringAt } from "../../core/alphabet";
 
 import { thinLineWidth, npx } from "../../canvas/draw";
 import { makeTable } from "./makeTable";
+import { getViewWidthHeight } from "../getViewWidthHeight";
 
 const tableFixedHeaderCleanStyle = { fillStyle: "#f4f5f8" };
 
@@ -16,7 +17,13 @@ const tableFixedHeaderStyle = () => {
   };
 };
 
-export const getTable = (data, hyperFormula) => {
+export const getTable = (
+  options,
+  hyperformula,
+  isVariablesSpreadsheet = false,
+) => {
+  let data;
+
   const renderSelectedHeaderCell = (x, y, w, h) => {
     draw.save();
     draw.attr({ fillStyle: "rgba(75, 137, 255, 0.08)" });
@@ -92,7 +99,10 @@ export const getTable = (data, hyperFormula) => {
 
   const getOffset = () => {
     const { rows, cols } = data;
-    const { width, height } = data.getViewWidthHeight();
+    const { width, height } = getViewWidthHeight(
+      options,
+      isVariablesSpreadsheet,
+    );
     return {
       width: width - cols.indexWidth,
       height: height - rows.indexHeight,
@@ -105,20 +115,27 @@ export const getTable = (data, hyperFormula) => {
     setCalculateFormulas,
     clear,
     render,
-    resetData,
     el,
     draw,
+    resetData: resetDatum,
   } = makeTable({
-    data,
-    hyperFormula,
+    hyperformula,
     renderFixedHeaders,
+    options,
+    isVariablesSpreadsheet,
   });
+
+  const resetData = (datum) => {
+    data = datum;
+
+    resetDatum(data);
+  };
 
   return {
     el,
     draw,
     data,
-    hyperFormula,
+    hyperformula,
     resetData,
     render,
     clear,

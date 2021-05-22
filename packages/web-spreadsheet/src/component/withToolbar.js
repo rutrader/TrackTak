@@ -2,19 +2,13 @@ import spreadsheetEvents from "../core/spreadsheetEvents";
 import { getPrint } from "./getPrint";
 import { getToolbar } from "./toolbar/getToolbar";
 
-const withToolbar = (sheet, rootEl) => {
-  let { data, eventEmitter, el } = sheet;
-  const { view, showToolbar } = data.options;
+const withToolbar = (sheet, rootEl, options) => {
+  let data;
+  let { eventEmitter, el } = sheet;
+  const { showToolbar } = options;
 
-  const print = getPrint(data);
-  const toolbar = getToolbar(
-    el,
-    data,
-    view.width,
-    data.options.formats,
-    eventEmitter,
-    !showToolbar,
-  );
+  const print = getPrint();
+  const toolbar = getToolbar(el, options, eventEmitter, !showToolbar);
 
   function toolbarChangePaintformatPaste() {
     if (toolbar.paintformatActive()) {
@@ -91,6 +85,7 @@ const withToolbar = (sheet, rootEl) => {
 
     toolbar.resetData(data);
     print.resetData(data);
+    toolbar.resize();
   });
 
   eventEmitter.on(spreadsheetEvents.sheet.ctrlKeyDown, (evt, keyCode) => {
@@ -119,10 +114,7 @@ const withToolbar = (sheet, rootEl) => {
     }
   });
 
-  setTimeout(() => {
-    toolbar.resize();
-    el.before(toolbar.el);
-  }, 2000);
+  el.before(toolbar.el);
 
   return {
     ...sheet,

@@ -4,7 +4,7 @@ import { expr2expr, REGEX_EXPR_GLOBAL } from "./alphabet";
 class Rows {
   constructor(
     { len, height, indexHeight, variablesSheetIndexHeight },
-    hyperFormula,
+    hyperformula,
     isVariablesSpreadsheet,
   ) {
     this._ = {};
@@ -14,7 +14,7 @@ class Rows {
     this.indexHeight = isVariablesSpreadsheet
       ? variablesSheetIndexHeight
       : indexHeight;
-    this.hyperFormula = hyperFormula;
+    this.hyperformula = hyperformula;
   }
 
   getHeight(ri) {
@@ -122,7 +122,7 @@ class Rows {
     cell.text = text;
 
     // TODO: Fix the sheetIndex
-    this.hyperFormula.setCellContents({ col: ci, row: ri, sheet: 0 }, [[text]]);
+    this.hyperformula.setCellContents({ col: ci, row: ri, sheet: 0 }, [[text]]);
   };
 
   setCellText(ri, ci, text) {
@@ -182,7 +182,7 @@ class Rows {
                     });
 
                     ncell.text = nText;
-                    this.hyperFormula.setCellContents(
+                    this.hyperformula.setCellContents(
                       { col: nci, row: nri, sheet: 0 },
                       [[nText]],
                     );
@@ -198,7 +198,7 @@ class Rows {
                       const nText = text.substring(0, result.index) + index;
 
                       ncell.text = nText;
-                      this.hyperFormula.setCellContents(
+                      this.hyperformula.setCellContents(
                         { col: nci, row: nri, sheet: 0 },
                         [[nText]],
                       );
@@ -361,7 +361,7 @@ class Rows {
         } else if (what === "text") {
           if (cell.text) {
             delete cell.text;
-            this.hyperFormula.setCellContents(
+            this.hyperformula.setCellContents(
               {
                 col: ci,
                 row: ri,
@@ -419,9 +419,9 @@ class Rows {
       return cells.map((x) => x.text);
     });
 
-    const sheetName = this.hyperFormula.getSheetName(0);
+    const sheetName = this.hyperformula.getSheetName(0);
 
-    this.hyperFormula.setSheetContent(sheetName, sheetContent);
+    this.hyperformula.setSheetContent(sheetName, sheetContent);
   }
 
   getData() {

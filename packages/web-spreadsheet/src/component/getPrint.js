@@ -25,7 +25,9 @@ function inches2px(inc) {
   return parseInt(96 * inc, 10);
 }
 
-export const getPrint = (data) => {
+export const getPrint = () => {
+  let data;
+
   const paper = {
     w: inches2px(PAGER_SIZES[0][1]),
     h: inches2px(PAGER_SIZES[0][2]),
