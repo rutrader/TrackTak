@@ -4,7 +4,7 @@ import { formatNumberRender, formatStringRender } from "./helper";
 const defaultOptions = {
   mode: "edit", // edit | read
   view: {
-    variablesSheetHeight: () => 200,
+    variablesSheetHeight: () => 160,
     height: () => document.documentElement.clientHeight,
     width: () => document.documentElement.clientWidth,
   },
@@ -14,13 +14,15 @@ const defaultOptions = {
   showContextmenu: true,
   row: {
     len: 100,
-    indexHeight: 25,
+    variablesSheetIndexHeight: 0.000001,
+    indexHeight: 20,
     height: 25,
   },
   col: {
     len: 26,
     width: 100,
-    indexWidth: 60,
+    variablesSheetIndexWidth: 0.000001,
+    indexWidth: 25,
     minWidth: 60,
   },
   formats: {

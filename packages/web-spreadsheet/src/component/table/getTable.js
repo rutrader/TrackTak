@@ -24,13 +24,6 @@ export const getTable = (data, hyperFormula) => {
     draw.restore();
   };
 
-  const renderFixedLeftTopCell = (fw, fh) => {
-    draw.save();
-    draw.attr({ fillStyle: "#f4f5f8" });
-    draw.fillRect(0, 0, fw, fh);
-    draw.restore();
-  };
-
   // viewRange
   // type: all | left | top
   // w: the fixed width of header
@@ -119,7 +112,6 @@ export const getTable = (data, hyperFormula) => {
     data,
     hyperFormula,
     renderFixedHeaders,
-    renderFixedLeftTopCell,
   });
 
   return {

@@ -30,7 +30,7 @@ export const getDataProxy = (
   const validations = new Validations();
 
   // don't save object
-  const selector = new Selector();
+  const selector = new Selector(isVariablesSpreadsheet);
   const scroll = new Scroll();
   const history = new History();
   const clipboard = new Clipboard();

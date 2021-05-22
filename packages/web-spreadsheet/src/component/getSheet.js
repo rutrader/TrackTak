@@ -32,7 +32,13 @@ function throttle(func, wait) {
   };
 }
 
-export const getSheet = (rootEl, data, table, eventEmitter) => {
+export const getSheet = (
+  rootEl,
+  data,
+  table,
+  eventEmitter,
+  isVariablesSpreadsheet,
+) => {
   const resetData = (datum) => {
     // before
     editor.clear();
@@ -114,7 +120,7 @@ export const getSheet = (rootEl, data, table, eventEmitter) => {
     !showContextmenu,
   );
   // selector
-  const selector = new Selector(data);
+  const selector = new Selector(data, isVariablesSpreadsheet);
   const overlayerCEl = h("div", `${cssPrefix}-overlayer-content`).children(
     editor.el,
     selector.el,

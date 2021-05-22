@@ -3,7 +3,7 @@ import { expr2expr, REGEX_EXPR_GLOBAL } from "./alphabet";
 
 class Rows {
   constructor(
-    { len, height, indexHeight },
+    { len, height, indexHeight, variablesSheetIndexHeight },
     hyperFormula,
     isVariablesSpreadsheet,
   ) {
@@ -11,7 +11,9 @@ class Rows {
     this.len = len;
     // default row height
     this.height = height;
-    this.indexHeight = isVariablesSpreadsheet ? 0 : indexHeight;
+    this.indexHeight = isVariablesSpreadsheet
+      ? variablesSheetIndexHeight
+      : indexHeight;
     this.hyperFormula = hyperFormula;
   }
 

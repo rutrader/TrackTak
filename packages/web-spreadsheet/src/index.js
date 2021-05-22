@@ -128,7 +128,7 @@ const getSpreadsheet = (element, options) => {
 
   const variablesTable = getVariablesTable(data, hyperFormula);
   const variablesSheet = withVariablesToolbar(
-    getSheet(rootEl, variablesData, variablesTable, eventEmitter),
+    getSheet(rootEl, variablesData, variablesTable, eventEmitter, true),
     variablesSheetDatas,
   );
 
