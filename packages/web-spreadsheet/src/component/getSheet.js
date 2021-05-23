@@ -4,6 +4,15 @@ import { xtoast } from "./message";
 import { cssPrefix } from "../config";
 import spreadsheetEvents from "../core/spreadsheetEvents";
 import { makeGetViewWidthHeight } from "./makeGetViewWidthHeight";
+import { getResizer } from "./getResizer";
+import { getScrollbar } from "./getScrollbar";
+import { HyperFormula } from "hyperformula";
+import { getEditor } from "./editor";
+import ModalValidation from "./modal_validation";
+import { getContextMenu } from "./contextmenu";
+import Selector from "./selector";
+import SortFilter from "./sort_filter";
+import { t } from "../locale/locale";
 
 /**
  * @desc throttle fn
@@ -24,23 +33,80 @@ function throttle(func, wait) {
   };
 }
 
+const getFormulaSuggestions = () => {
+  const formulaSuggestions = HyperFormula.getRegisteredFunctionNames(
+    "enGB",
+  ).map((formulaName) => {
+    const escapedFormulaName = formulaName.replace(".", "\\.");
+    return {
+      key: escapedFormulaName,
+      // Function that returns translation of the formula name if one exists,
+      // otherwise the formula name
+      title: () => t(`formula.${escapedFormulaName}`) || formulaName,
+    };
+  });
+
+  return formulaSuggestions;
+};
+
+export const buildSheet = (options, eventEmitter) => {
+  const rowResizer = getResizer(
+    eventEmitter,
+    spreadsheetEvents.rowResizer,
+    options.row.height,
+  );
+  const colResizer = getResizer(
+    eventEmitter,
+    spreadsheetEvents.colResizer,
+    options.col.minWidth,
+    true,
+  );
+  const verticalScrollbar = getScrollbar(eventEmitter, true);
+  const horizontalScrollbar = getScrollbar(eventEmitter, false);
+  const editor = getEditor(getFormulaSuggestions(), eventEmitter);
+  const modalValidation = new ModalValidation();
+  const getViewWidthHeight = makeGetViewWidthHeight(options);
+  const contextMenu = getContextMenu(
+    () => getViewWidthHeight(),
+    eventEmitter,
+    !options.showContextMenu,
+  );
+  const selector = new Selector();
+  const sortFilter = new SortFilter();
+
+  return () => ({
+    rowResizer,
+    colResizer,
+    verticalScrollbar,
+    horizontalScrollbar,
+    editor,
+    modalValidation,
+    contextMenu,
+    selector,
+    sortFilter,
+  });
+};
+
 export const getSheet = (
+  builder,
   rootEl,
   table,
-  rowResizer,
-  colResizer,
-  verticalScrollbar,
-  horizontalScrollbar,
-  editor,
-  modalValidation,
-  contextMenu,
-  selector,
-  sortFilter,
   eventEmitter,
   hyperformula,
   options,
   isVariablesSpreadsheet,
 ) => {
+  const {
+    rowResizer,
+    colResizer,
+    verticalScrollbar,
+    horizontalScrollbar,
+    editor,
+    modalValidation,
+    contextMenu,
+    selector,
+    sortFilter,
+  } = builder();
   let data;
   const datas = [];
 

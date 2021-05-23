@@ -1,92 +1,31 @@
 import { h } from "./component/element";
-import { getSheet } from "./component/getSheet";
+import { buildSheet, getSheet } from "./component/getSheet";
 import { getBottombar } from "./component/bottombar";
 import { cssPrefix } from "./config";
-import { locale, t } from "./locale/locale";
+import { locale } from "./locale/locale";
 import "./index.less";
 import { HyperFormula } from "hyperformula";
 import EventEmitter from "events";
 import spreadsheetEvents from "./core/spreadsheetEvents";
 import withToolbar from "./component/withToolbar";
 import { getTable } from "./component/table/getTable";
-import { getResizer } from "./component/getResizer";
-import { getScrollbar } from "./component/getScrollbar";
-import { getEditor } from "./component/editor";
-import ModalValidation from "./component/modal_validation";
-import { getContextMenu } from "./component/contextmenu";
-import { makeGetViewWidthHeight } from "./component/makeGetViewWidthHeight";
-import Selector from "./component/selector";
-import SortFilter from "./component/sort_filter";
 import defaultOptions from "./core/defaultOptions";
 import { merge } from "lodash-es";
 import { buildDataProxy, makeGetDataProxy } from "./core/makeGetDataProxy";
 
-const getFormulaSuggestions = () => {
-  const formulaSuggestions = HyperFormula.getRegisteredFunctionNames(
-    "enGB",
-  ).map((formulaName) => {
-    const escapedFormulaName = formulaName.replace(".", "\\.");
-    return {
-      key: escapedFormulaName,
-      // Function that returns translation of the formula name if one exists,
-      // otherwise the formula name
-      title: () => t(`formula.${escapedFormulaName}`) || formulaName,
-    };
-  });
-
-  return formulaSuggestions;
-};
-
-const buildSheet = (element, options, hyperformula, eventEmitter) => {
+const buildSpreadsheet = (element, options, hyperformula, eventEmitter) => {
   const rootEl = h("div", `${cssPrefix}`).on("contextmenu", (evt) =>
     evt.preventDefault(),
   );
-  const getViewWidthHeight = makeGetViewWidthHeight(options);
 
   const table = getTable(options, hyperformula);
-  const rowResizer = getResizer(
-    eventEmitter,
-    spreadsheetEvents.rowResizer,
-    options.row.height,
-  );
-  const colResizer = getResizer(
-    eventEmitter,
-    spreadsheetEvents.colResizer,
-    options.col.minWidth,
-    true,
-  );
-  const verticalScrollbar = getScrollbar(eventEmitter, true);
-  const horizontalScrollbar = getScrollbar(eventEmitter, false);
-  const editor = getEditor(getFormulaSuggestions(), eventEmitter);
-  const modalValidation = new ModalValidation();
-  const contextMenu = getContextMenu(
-    () => getViewWidthHeight(),
-    eventEmitter,
-    !options.showContextMenu,
-  );
-  const selector = new Selector();
-  const sortFilter = new SortFilter();
+  const sheetBuilder = buildSheet(options, eventEmitter);
   const sheet = withToolbar(
-    getSheet(
-      rootEl,
-      table,
-      rowResizer,
-      colResizer,
-      verticalScrollbar,
-      horizontalScrollbar,
-      editor,
-      modalValidation,
-      contextMenu,
-      selector,
-      sortFilter,
-      eventEmitter,
-      hyperformula,
-      options,
-    ),
+    getSheet(sheetBuilder, rootEl, table, eventEmitter, hyperformula, options),
     rootEl,
     options,
   );
-  console.log("te");
+
   const dataProxyBuilder = buildDataProxy(options, hyperformula);
 
   const getDataProxy = makeGetDataProxy(
@@ -172,7 +111,7 @@ const getSpreadsheet = (element, options) => {
     showFormulas,
     hideFormulas,
     setDatasheets,
-  } = buildSheet(element, newOptions, hyperformula, eventEmitter);
+  } = buildSpreadsheet(element, newOptions, hyperformula, eventEmitter);
 
   const setVariables = (variables) => {
     Object.keys(variables).forEach((key) => {
