@@ -19,6 +19,7 @@ import Selector from "./component/selector";
 import SortFilter from "./component/sort_filter";
 import defaultOptions from "./core/defaultOptions";
 import { merge } from "lodash-es";
+import { makeGetDataProxy } from "./core/makeGetDataProxy";
 
 const getFormulaSuggestions = () => {
   const formulaSuggestions = HyperFormula.getRegisteredFunctionNames(
@@ -65,7 +66,6 @@ const buildSheet = (element, options, hyperformula, eventEmitter) => {
   );
   const selector = new Selector();
   const sortFilter = new SortFilter();
-
   const sheet = withToolbar(
     getSheet(
       rootEl,
@@ -86,6 +86,11 @@ const buildSheet = (element, options, hyperformula, eventEmitter) => {
     rootEl,
     options,
   );
+
+  const getDataProxy = makeGetDataProxy(options, hyperformula, eventEmitter);
+
+  const setDatasheets = sheet.makeSetDatasheets(getDataProxy);
+
   getBottombar(rootEl, eventEmitter);
 
   element.appendChild(rootEl.el);
@@ -100,11 +105,18 @@ const buildSheet = (element, options, hyperformula, eventEmitter) => {
     table.render();
   };
 
+  eventEmitter.on(spreadsheetEvents.bottombar.addSheet, () => {
+    const data = sheet.addData(getDataProxy);
+
+    sheet.resetData(data);
+  });
+
   return {
     sheet,
     rootEl,
     showFormulas,
     hideFormulas,
+    setDatasheets,
   };
 };
 
@@ -148,12 +160,13 @@ const getSpreadsheet = (element, options) => {
   });
   const eventEmitter = new EventEmitter();
 
-  const { rootEl, sheet, showFormulas, hideFormulas } = buildSheet(
-    element,
-    newOptions,
-    hyperformula,
-    eventEmitter,
-  );
+  const {
+    rootEl,
+    sheet,
+    showFormulas,
+    hideFormulas,
+    setDatasheets,
+  } = buildSheet(element, newOptions, hyperformula, eventEmitter);
 
   const setVariables = (variables) => {
     Object.keys(variables).forEach((key) => {
@@ -181,6 +194,7 @@ const getSpreadsheet = (element, options) => {
     hideFormulas,
     hyperformula,
     eventEmitter,
+    setDatasheets,
   };
 };
 

@@ -291,7 +291,7 @@ const DiscountedCashFlowTable = ({
       const dataSheets = getDataSheets(isOnMobile);
 
       if (!spreadsheet.sheet.datas.length) {
-        spreadsheet.sheet.setDatasheets(dataSheets);
+        spreadsheet.setDatasheets(dataSheets);
       }
 
       const sheetName = "DCF Valuation";

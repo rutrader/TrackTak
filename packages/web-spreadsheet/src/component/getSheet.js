@@ -3,7 +3,6 @@ import { bind, mouseMoveUp, bindTouch } from "./event";
 import { xtoast } from "./message";
 import { cssPrefix } from "../config";
 import spreadsheetEvents from "../core/spreadsheetEvents";
-import { getDataProxy } from "../core/getDataProxy";
 import { makeGetViewWidthHeight } from "./makeGetViewWidthHeight";
 
 /**
@@ -73,15 +72,9 @@ export const getSheet = (
     },
   );
 
-  eventEmitter.on(spreadsheetEvents.bottombar.addSheet, () => {
-    const data = addData();
-
-    resetData(data);
-  });
-
-  const setDatasheets = (dataSheets) => {
+  const makeSetDatasheets = (getDataProxy) => (dataSheets) => {
     dataSheets.forEach((dataSheet, i) => {
-      const data = addData(dataSheet.name, i === 0);
+      const data = addData(getDataProxy, dataSheet.name, i === 0);
 
       data.setData(dataSheet);
     });
@@ -93,8 +86,8 @@ export const getSheet = (
     }
   };
 
-  const addData = (name = `sheet${datas.length + 1}`, active) => {
-    const data = getDataProxy(name, options, hyperformula, eventEmitter);
+  const addData = (getDataProxy, name = `sheet${datas.length + 1}`, active) => {
+    const data = getDataProxy(name);
 
     if (hyperformula.isItPossibleToAddSheet(name)) {
       hyperformula.addSheet(name);
@@ -927,7 +920,7 @@ export const getSheet = (
 
   return {
     el,
-    setDatasheets,
+    makeSetDatasheets,
     resetData,
     freeze,
     undo,

@@ -14,13 +14,12 @@ import { t } from "../locale/locale";
 import spreadsheetEvents from "./spreadsheetEvents";
 import { makeGetViewWidthHeight } from "../component/makeGetViewWidthHeight";
 
-export const getDataProxy = (
-  name,
+export const makeGetDataProxy = (
   options,
   hyperformula,
   eventEmitter,
   isVariablesSpreadsheet = false,
-) => {
+) => (name) => {
   const getViewWidthHeight = makeGetViewWidthHeight(
     options,
     isVariablesSpreadsheet,
