@@ -921,6 +921,7 @@ export const getSheet = (
   return {
     el,
     makeSetDatasheets,
+    addData,
     resetData,
     freeze,
     undo,
