@@ -114,8 +114,6 @@ const withToolbar = (sheet, rootEl, options) => {
     }
   });
 
-  el.before(toolbar.el);
-
   return {
     ...sheet,
   };

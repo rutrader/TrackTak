@@ -1,10 +1,10 @@
 export const buildItems = (items, buttonsEl) => {
   items.forEach((it) => {
     if (Array.isArray(it)) {
-      it.forEach((i) => {
-        const iEl = i.el ? i.el : i.item.el;
+      it.forEach(({ el, item }) => {
+        const newEl = el ? el : item.el;
 
-        buttonsEl.child(iEl);
+        buttonsEl.child(newEl);
       });
     } else {
       const itEl = it.el ? it.el : it.item.el;

@@ -89,9 +89,7 @@ export const getToolbar = (sheetEl, options, eventEmitter, isHide = false) => {
   const el = h("div", `${cssPrefix}-toolbar`);
   const buttonsEl = h("div", `${cssPrefix}-toolbar-btns`);
 
-  setTimeout(() => {
-    sheetEl.before(el);
-  }, 2000);
+  sheetEl.before(el);
 
   buildItems(items, buttonsEl);
 

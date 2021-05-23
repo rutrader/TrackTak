@@ -11,17 +11,16 @@ export const resize = (
   moreEl,
   widthFn,
 ) => {
+  const buttons = initializeButtons(items);
+
   if (isHide) {
     el.hide();
   } else {
+    const resizer = () => {
+      moreResize(buttons, buttonsEl, el, moreEl, widthFn);
+    };
     reset();
-    setTimeout(() => {
-      const buttons = initializeButtons(items);
-      moreResize(buttons, buttonsEl, el, moreEl, widthFn);
-    }, 0);
-    bind(window, "resize", () => {
-      const buttons = initializeButtons(items);
-      moreResize(buttons, buttonsEl, el, moreEl, widthFn);
-    });
+    resizer();
+    bind(window, "resize", resizer);
   }
 };
