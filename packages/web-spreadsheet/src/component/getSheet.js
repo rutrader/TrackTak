@@ -127,7 +127,7 @@ export const getSheet = (
 
   eventEmitter.on(
     spreadsheetEvents.bottombar.deleteSheet,
-    ([oldIndex, nindex]) => {
+    (oldIndex, nindex) => {
       if (oldIndex >= 0) {
         datas.splice(oldIndex, 1);
 

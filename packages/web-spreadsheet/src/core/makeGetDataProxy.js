@@ -18,7 +18,7 @@ export const buildDataProxy = (
   options,
   hyperformula,
   isVariablesSpreadsheet,
-) => {
+) => () => {
   // save object
   const merges = new Merges(); // [CellRange, ...]
   const rows = new Rows(options.row, hyperformula, isVariablesSpreadsheet);
@@ -32,7 +32,7 @@ export const buildDataProxy = (
   const clipboard = new Clipboard();
   const autoFilter = new AutoFilter();
 
-  return () => ({
+  return {
     merges,
     rows,
     cols,
@@ -42,7 +42,7 @@ export const buildDataProxy = (
     history,
     clipboard,
     autoFilter,
-  });
+  };
 };
 
 export const makeGetDataProxy = (

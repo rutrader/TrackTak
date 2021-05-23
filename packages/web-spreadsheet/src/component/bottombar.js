@@ -151,13 +151,13 @@ export const getBottombar = (rootEl, eventEmitter) => {
         activeEl = f;
         activeEl.toggle();
 
-        eventEmitter.on(spreadsheetEvents.bottombar.deleteSheet, [index, 0]);
+        eventEmitter.emit(spreadsheetEvents.bottombar.deleteSheet, index, 0);
         return;
       }
-      eventEmitter.on(spreadsheetEvents.bottombar.deleteSheet, [index, -1]);
+      eventEmitter.emit(spreadsheetEvents.bottombar.deleteSheet, index, -1);
       return;
     }
-    eventEmitter.on(spreadsheetEvents.bottombar.deleteSheet, [-1]);
+    eventEmitter.emit(spreadsheetEvents.bottombar.deleteSheet, -1);
   };
 
   const clickSwap2 = (item) => {
