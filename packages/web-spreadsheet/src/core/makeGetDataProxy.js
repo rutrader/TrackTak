@@ -14,18 +14,12 @@ import { t } from "../locale/locale";
 import spreadsheetEvents from "./spreadsheetEvents";
 import { makeGetViewWidthHeight } from "../component/makeGetViewWidthHeight";
 
-export const makeGetDataProxy = (
+export const buildDataProxy = (
   options,
   hyperformula,
-  eventEmitter,
-  isVariablesSpreadsheet = false,
-) => (name) => {
-  const getViewWidthHeight = makeGetViewWidthHeight(
-    options,
-    isVariablesSpreadsheet,
-  );
-  let freeze = [0, 0];
-  let styles = []; // Array<Style>
+  isVariablesSpreadsheet,
+) => {
+  // save object
   const merges = new Merges(); // [CellRange, ...]
   const rows = new Rows(options.row, hyperformula, isVariablesSpreadsheet);
   const cols = new Cols(options.col, isVariablesSpreadsheet);
@@ -37,6 +31,44 @@ export const makeGetDataProxy = (
   const history = new History();
   const clipboard = new Clipboard();
   const autoFilter = new AutoFilter();
+
+  return () => ({
+    merges,
+    rows,
+    cols,
+    validations,
+    selector,
+    scroll,
+    history,
+    clipboard,
+    autoFilter,
+  });
+};
+
+export const makeGetDataProxy = (
+  builder,
+  options,
+  eventEmitter,
+  isVariablesSpreadsheet,
+) => (name) => {
+  const getViewWidthHeight = makeGetViewWidthHeight(
+    options,
+    isVariablesSpreadsheet,
+  );
+  let freeze = [0, 0];
+  let styles = []; // Array<Style>
+  const {
+    merges,
+    rows,
+    cols,
+    validations,
+    selector,
+    scroll,
+    history,
+    clipboard,
+    autoFilter,
+  } = builder();
+
   let exceptRowSet = new Set();
   let sortedRowMap = new Map();
   let unsortedRowMap = new Map();

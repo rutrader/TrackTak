@@ -14,6 +14,7 @@ class Rows {
     this.indexHeight = isVariablesSpreadsheet
       ? variablesSheetIndexHeight
       : indexHeight;
+
     this.hyperformula = hyperformula;
   }
 

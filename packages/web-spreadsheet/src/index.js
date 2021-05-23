@@ -19,7 +19,7 @@ import Selector from "./component/selector";
 import SortFilter from "./component/sort_filter";
 import defaultOptions from "./core/defaultOptions";
 import { merge } from "lodash-es";
-import { makeGetDataProxy } from "./core/makeGetDataProxy";
+import { buildDataProxy, makeGetDataProxy } from "./core/makeGetDataProxy";
 
 const getFormulaSuggestions = () => {
   const formulaSuggestions = HyperFormula.getRegisteredFunctionNames(
@@ -86,8 +86,14 @@ const buildSheet = (element, options, hyperformula, eventEmitter) => {
     rootEl,
     options,
   );
+  console.log("te");
+  const dataProxyBuilder = buildDataProxy(options, hyperformula);
 
-  const getDataProxy = makeGetDataProxy(options, hyperformula, eventEmitter);
+  const getDataProxy = makeGetDataProxy(
+    dataProxyBuilder,
+    options,
+    eventEmitter,
+  );
 
   const setDatasheets = sheet.makeSetDatasheets(getDataProxy);
 
