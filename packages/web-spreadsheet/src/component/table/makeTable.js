@@ -3,7 +3,7 @@ import { getFontSizePxByPt } from "../../core/font";
 import getDraw, { getDrawBox, thinLineWidth } from "../../canvas/draw";
 import { h } from "../element";
 import { cssPrefix } from "../../config";
-import { getViewWidthHeight } from "../getViewWidthHeight";
+import { makeGetViewWidthHeight } from "../makeGetViewWidthHeight";
 
 const cellPaddingWidth = 5;
 const tableGridStyle = {
@@ -24,10 +24,17 @@ export const makeTable = ({
   hyperformula,
   renderFixedHeaders = () => {},
 }) => {
-  const { width, height } = getViewWidthHeight(options, isVariablesSpreadsheet);
+  const getViewWidthHeight = makeGetViewWidthHeight(
+    options,
+    isVariablesSpreadsheet,
+  );
 
   const el = h("canvas", `${cssPrefix}-table`);
-  const draw = getDraw(el.el, width, height);
+  const draw = getDraw(
+    el.el,
+    getViewWidthHeight().width,
+    getViewWidthHeight().height,
+  );
   let calculateFormulas = true;
 
   const renderCell = (draw, data, rindex, cindex, yoffset = 0) => {
@@ -213,8 +220,8 @@ export const makeTable = ({
     ftw,
     fth,
   ) => {
-    const twidth = width - fixedHeaderWidth;
-    const theight = height - fixedHeaderHeight;
+    const twidth = getViewWidthHeight().width - fixedHeaderWidth;
+    const theight = getViewWidthHeight().height - fixedHeaderHeight;
     draw.save();
     draw.translate(fixedHeaderWidth, fixedHeaderHeight);
     draw.attr({ strokeStyle: "rgba(75, 137, 255, .6)" });
@@ -238,7 +245,7 @@ export const makeTable = ({
     // fixed height of header
     const fixedHeaderHeight = rows.indexHeight;
 
-    draw.resize(width, height);
+    draw.resize(getViewWidthHeight().width, getViewWidthHeight().height);
     clear();
 
     const viewRange = data.viewRange();

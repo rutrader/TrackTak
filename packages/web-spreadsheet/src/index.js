@@ -14,7 +14,7 @@ import { getScrollbar } from "./component/getScrollbar";
 import { getEditor } from "./component/editor";
 import ModalValidation from "./component/modal_validation";
 import { getContextMenu } from "./component/contextmenu";
-import { getViewWidthHeight } from "./component/getViewWidthHeight";
+import { makeGetViewWidthHeight } from "./component/makeGetViewWidthHeight";
 import Selector from "./component/selector";
 import SortFilter from "./component/sort_filter";
 import defaultOptions from "./core/defaultOptions";
@@ -40,7 +40,7 @@ const buildSheet = (element, options, hyperformula, eventEmitter) => {
   const rootEl = h("div", `${cssPrefix}`).on("contextmenu", (evt) =>
     evt.preventDefault(),
   );
-  const { width, height } = getViewWidthHeight(options);
+  const getViewWidthHeight = makeGetViewWidthHeight(options);
 
   const table = getTable(options, hyperformula);
   const rowResizer = getResizer(
@@ -59,10 +59,7 @@ const buildSheet = (element, options, hyperformula, eventEmitter) => {
   const editor = getEditor(getFormulaSuggestions(), eventEmitter);
   const modalValidation = new ModalValidation();
   const contextMenu = getContextMenu(
-    () => ({
-      width,
-      height,
-    }),
+    () => getViewWidthHeight(),
     eventEmitter,
     !options.showContextMenu,
   );

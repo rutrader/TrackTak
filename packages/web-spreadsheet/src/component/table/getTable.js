@@ -2,7 +2,7 @@ import { stringAt } from "../../core/alphabet";
 
 import { thinLineWidth, npx } from "../../canvas/draw";
 import { makeTable } from "./makeTable";
-import { getViewWidthHeight } from "../getViewWidthHeight";
+import { makeGetViewWidthHeight } from "../makeGetViewWidthHeight";
 
 const tableFixedHeaderCleanStyle = { fillStyle: "#f4f5f8" };
 
@@ -22,6 +22,10 @@ export const getTable = (
   hyperformula,
   isVariablesSpreadsheet = false,
 ) => {
+  const getViewWidthHeight = makeGetViewWidthHeight(
+    options,
+    isVariablesSpreadsheet,
+  );
   let data;
 
   const renderSelectedHeaderCell = (x, y, w, h) => {
@@ -99,10 +103,7 @@ export const getTable = (
 
   const getOffset = () => {
     const { rows, cols } = data;
-    const { width, height } = getViewWidthHeight(
-      options,
-      isVariablesSpreadsheet,
-    );
+    const { width, height } = getViewWidthHeight();
     return {
       width: width - cols.indexWidth,
       height: height - rows.indexHeight,

@@ -1,4 +1,4 @@
-import { getViewWidthHeight } from "../getViewWidthHeight";
+import { makeGetViewWidthHeight } from "../makeGetViewWidthHeight";
 import { makeTable } from "./makeTable";
 
 export const getVariablesTable = (data, hyperformula, options) => {
@@ -16,7 +16,7 @@ export const getVariablesTable = (data, hyperformula, options) => {
 
   const getOffset = () => {
     const { rows, cols } = data;
-    const { width, height } = getViewWidthHeight(options, true);
+    const { width, height } = makeGetViewWidthHeight(options, true)();
 
     // TODO: Set magic numbers to options once data is fixed
     return {

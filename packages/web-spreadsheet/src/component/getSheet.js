@@ -1,14 +1,10 @@
 import { h } from "./element";
 import { bind, mouseMoveUp, bindTouch } from "./event";
-import Selector from "./selector";
-import { getContextMenu } from "./contextmenu";
-import ModalValidation from "./modal_validation";
-import SortFilter from "./sort_filter";
 import { xtoast } from "./message";
 import { cssPrefix } from "../config";
 import spreadsheetEvents from "../core/spreadsheetEvents";
 import { getDataProxy } from "../core/getDataProxy";
-import { getViewWidthHeight } from "./getViewWidthHeight";
+import { makeGetViewWidthHeight } from "./makeGetViewWidthHeight";
 
 /**
  * @desc throttle fn
@@ -48,6 +44,11 @@ export const getSheet = (
 ) => {
   let data;
   const datas = [];
+
+  const getViewWidthHeight = makeGetViewWidthHeight(
+    options,
+    isVariablesSpreadsheet,
+  );
 
   eventEmitter.on(spreadsheetEvents.bottombar.selectSheet, (index) => {
     const d = datas[index];

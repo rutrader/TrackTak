@@ -12,7 +12,7 @@ import { CellRange } from "./cell_range";
 import { expr2xy, xy2expr } from "./alphabet";
 import { t } from "../locale/locale";
 import spreadsheetEvents from "./spreadsheetEvents";
-import { getViewWidthHeight } from "../component/getViewWidthHeight";
+import { makeGetViewWidthHeight } from "../component/makeGetViewWidthHeight";
 
 export const getDataProxy = (
   name,
@@ -21,7 +21,10 @@ export const getDataProxy = (
   eventEmitter,
   isVariablesSpreadsheet = false,
 ) => {
-  const { width, height } = getViewWidthHeight(options, isVariablesSpreadsheet);
+  const getViewWidthHeight = makeGetViewWidthHeight(
+    options,
+    isVariablesSpreadsheet,
+  );
   let freeze = [0, 0];
   let styles = []; // Array<Style>
   const merges = new Merges(); // [CellRange, ...]
@@ -685,12 +688,12 @@ export const getDataProxy = (
         y += rows.getHeight(i);
         eri = i;
       }
-      if (y > height) break;
+      if (y > getViewWidthHeight().height) break;
     }
     for (let j = ci; j < cols.len; j += 1) {
       x += cols.getWidth(j);
       eci = j;
-      if (x > width) break;
+      if (x > getViewWidthHeight().width) break;
     }
     // console.log(ri, ci, eri, eci, x, y);
     return new CellRange(ri, ci, eri, eci, x, y);
@@ -745,7 +748,7 @@ export const getDataProxy = (
         if (rowHeight > 0) {
           cb(i, y, rowHeight);
           y += rowHeight;
-          if (y > height) break;
+          if (y > getViewWidthHeight().height) break;
         }
       }
     }
@@ -758,7 +761,7 @@ export const getDataProxy = (
       if (colWidth > 0) {
         cb(i, x, colWidth);
         x += colWidth;
-        if (x > width) break;
+        if (x > getViewWidthHeight().width) break;
       }
     }
   };
@@ -1054,7 +1057,6 @@ export const getDataProxy = (
     cols,
     merges,
     getRect,
-    getViewWidthHeight,
     contentRange,
     eachMergesInView,
     freezeTotalWidth,

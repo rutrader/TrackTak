@@ -1,7 +1,10 @@
 import { bottombarHeight } from "./bottombar";
 import { toolbarHeight } from "./toolbar/getToolbar";
 
-export const getViewWidthHeight = (options, isVariablesSpreadsheet = false) => {
+export const makeGetViewWidthHeight = (
+  options,
+  isVariablesSpreadsheet = false,
+) => () => {
   const { view, showToolbar, showVariablesSpreadsheet } = options;
   let height;
 
