@@ -6,6 +6,7 @@ import {
   getCurrentUser,
   isEmailVerified as isUserEmailVerified,
   forgotPasswordFlow,
+  getUserData,
 } from "../api/auth";
 import { noop } from "../shared/utils";
 
@@ -31,6 +32,7 @@ const useProvideAuth = () => {
   const [session, setSession] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [userData, setUserData] = useState();
 
   useEffect(() => {
     const currentUser = getCurrentUser();
@@ -39,6 +41,8 @@ const useProvideAuth = () => {
         if (!error && session) {
           setSession(session);
           setIsAuthenticated(true);
+          const userData = getUserData(session);
+          setUserData(userData);
         }
       });
     }
@@ -63,25 +67,23 @@ const useProvideAuth = () => {
       setSession(session);
       setIsAuthenticated(true);
       onSuccess(session);
+      const userData = getUserData(session);
+      setUserData(userData);
     };
 
-    userSignIn(
-      username,
-      password,
-      onCognitoSuccess,
-      onFailure,
-      noop,
-    );
+    userSignIn(username, password, onCognitoSuccess, onFailure, noop);
   };
 
   const signOut = () => {
     userSignOut();
     setIsAuthenticated(false);
     setSession(null);
+    setUserData(null);
   };
 
   return {
     isAuthenticated,
+    userData,
     session,
     signUp,
     signIn,

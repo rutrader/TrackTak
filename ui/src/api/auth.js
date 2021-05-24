@@ -130,3 +130,5 @@ export const forgotPasswordFlow = () => {
     },
   };
 };
+
+export const getUserData = (session) => session.idToken.decodePayload();
