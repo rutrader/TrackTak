@@ -152,7 +152,11 @@ export const getSheet = (
     }
   };
 
-  const addData = (getDataProxy, name = `sheet${datas.length + 1}`, active) => {
+  const addData = (
+    getDataProxy,
+    name = `sheet${datas.length + 1}`,
+    active = true,
+  ) => {
     const data = getDataProxy(name);
 
     if (hyperformula.isItPossibleToAddSheet(name)) {
