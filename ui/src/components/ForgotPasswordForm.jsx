@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -11,6 +10,7 @@ import { setMessage } from "../redux/actions/snackbarActions";
 import { Box } from "@material-ui/core";
 import TracktakLogoSvg from "../icons/tracktak-purple.svg";
 import { noop } from "../shared/utils";
+import RoundButton from "./RoundButton";
 
 const ForgotPasswordForm = ({ onSuccess, onCancelClick }) => {
   const theme = useTheme();
@@ -81,7 +81,15 @@ const ForgotPasswordForm = ({ onSuccess, onCancelClick }) => {
         }}
       >
         <TracktakLogoSvg />
-        <Typography variant="h5">Forgot password</Typography>
+        <Typography
+          variant="h5"
+          sx={{
+            mt: (theme) => theme.spacing(1),
+            color: (theme) => theme.palette.primary.mainTextColor,
+          }}
+        >
+          Forgot password
+        </Typography>
         <Box
           sx={{
             width: "100%",
@@ -132,26 +140,31 @@ const ForgotPasswordForm = ({ onSuccess, onCancelClick }) => {
                 </>
               )}
             </Grid>
-            <Button
+
+            <RoundButton
               type="submit"
               fullWidth
               variant="contained"
               color="primary"
               sx={{
                 margin: theme.spacing(3, 0, 2),
+                textTransform: "none",
               }}
             >
               {verificationEmailSent ? "Submit" : "Send Verification Code"}
-            </Button>
-            <Button
+            </RoundButton>
+            <RoundButton
               fullWidth
               variant="outlined"
               color="primary"
               onClick={onCancelClick}
               type="button"
+              sx={{
+                textTransform: "none",
+              }}
             >
               Cancel
-            </Button>
+            </RoundButton>
           </form>
         </Box>
       </Box>
