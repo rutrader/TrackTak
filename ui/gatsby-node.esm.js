@@ -4,6 +4,7 @@
 import "dotenv/config";
 import webpack from "webpack";
 import path from "path";
+import featureToggle from "./src/shared/featureToggle";
 
 // https://github.com/gatsbyjs/gatsby/issues/19618
 
@@ -43,7 +44,7 @@ export const onCreateWebpackConfig = ({
 };
 
 export const onCreatePage = ({ page, actions }) => {
-  const { createPage } = actions;
+  const { createPage, deletePage } = actions;
 
   if (page.path === "/") {
     page.context.layout = "home";
@@ -54,6 +55,10 @@ export const onCreatePage = ({ page, actions }) => {
     page.context.layout = "fullscreen";
 
     createPage(page);
+  }
+
+  if (!featureToggle.AUTHENTICATION && page.path.match(/sign-in\/|sign-up\/|forgot-password\//)) {
+    deletePage(page)
   }
 };
 

@@ -14,6 +14,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SearchTicker from "./SearchTicker";
 import TracktakLogo from "./TracktakLogo";
 import { useAuth } from "../hooks/useAuth";
+import featureToggle from "../shared/featureToggle";
 
 const getRightLinks = (isAuthenticated) => {
   const links = [
@@ -26,7 +27,7 @@ const getRightLinks = (isAuthenticated) => {
     },
   ];
 
-  if (!isAuthenticated) {
+  if (featureToggle.AUTHENTICATION && !isAuthenticated) {
     links.push({
       to: "/sign-in",
       text: "Sign in",
@@ -132,7 +133,7 @@ const Header = ({ hideSearch }) => {
                     {...link}
                   />
                 ))}
-                {isAuthenticated && (
+                {featureToggle.AUTHENTICATION && isAuthenticated && (
                   <HeaderLink sx={{ ml: 0 }} isSignOut>
                     Sign Out
                   </HeaderLink>
