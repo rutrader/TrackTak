@@ -71,19 +71,18 @@ const OurTeamSection = () => {
           }}
         >
           <TeamMember
-            memberInfo="Kristina is a founding partner of Tracktak and a value investor.
-          Kristina &amp; Martin are jointly responsible for the direction of the
-          business. She is invovled in customer relations, partnerships,
-          building the application and the company's financial health."
+            memberInfo="Kristina is a founding partner of tracktak and a value investor.
+            Kristina &amp; Martin are jointly responsible for the direction of the
+            business. She is involved in helping users, partnerships,
+            building the application and the company's financial health."
             memberTitle="Co-founder"
             memberName="Kristina Olchova"
             fluid={data.memberOne.childImageSharp.fluid}
           />
           <TeamMember
-            memberInfo="Martin is a founding partner of Tracktak and a value investor.
-            Kristina &amp; Martin are jointly responsible for the direction
-            of the business. He is involved in marketing, partnerships,
-            building/creating the entire road map application."
+            memberInfo="Martin has over 8 years programming experience and is an avid
+            follower of Aswath Damodaran. He is involved in marketing, partnerships
+            and building out the road map for the application."
             memberTitle="Co-founder"
             memberName="Martin Dawson"
             fluid={data.memberOne.childImageSharp.fluid}
@@ -91,7 +90,7 @@ const OurTeamSection = () => {
           <TeamMember
             memberInfo="Sam joined us on April 2021. He is managing the company's
             technological projects and plans. Sam is responsible for
-            backend, front-end application and cloud development."
+            backend, front-end application, scaling and cloud development."
             memberTitle="Co-founder"
             memberName="Sam Rose"
             fluid={data.memberOne.childImageSharp.fluid}
