@@ -22,7 +22,7 @@ const OurTeamSection = () => {
           }
         }
       }
-      memberThree: file(relativePath: { eq: "martin.jpg" }) {
+      memberThree: file(relativePath: { eq: "sam-1.jpg" }) {
         childImageSharp {
           fluid(maxWidth: 300) {
             ...GatsbyImageSharpFluid_withWebp
@@ -67,7 +67,7 @@ const OurTeamSection = () => {
             }}
             variant="h3"
           >
-            Meet Our Board
+            Meet Our Founders
           </Typography>
         </Box>
         <Box
@@ -100,7 +100,7 @@ const OurTeamSection = () => {
             backend, front-end application, scaling and cloud development."
             memberTitle="Co-founder"
             memberName="Sam Rose"
-            fluid={data.memberTwo.childImageSharp.fluid}
+            fluid={data.memberThree.childImageSharp.fluid}
           />
         </Box>
       </Box>
