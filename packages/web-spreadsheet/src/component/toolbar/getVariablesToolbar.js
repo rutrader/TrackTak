@@ -12,12 +12,8 @@ import { buildItems } from "./buildItems";
 import { resize } from "./resize";
 import spreadsheetEvents from "../../core/spreadsheetEvents";
 
-export const getVariablesToolbar = (
-  widthFn,
-  formats,
-  eventEmitter,
-  isHide = false,
-) => {
+export const getVariablesToolbar = (getOptions, eventEmitter) => {
+  const hideFn = () => !getOptions().showVariablesSpreadsheet;
   let data;
   const variables = [
     { title: "Inputs" },
@@ -32,7 +28,11 @@ export const getVariablesToolbar = (
   );
   const undoEl = buildUndo(eventEmitter, toolbarType);
   const redoEl = buildRedo(eventEmitter, toolbarType);
-  const formatEl = buildFormat(formats, eventEmitter, toolbarType);
+  const formatEl = buildFormat(
+    () => getOptions().formats,
+    eventEmitter,
+    toolbarType,
+  );
   const moreEl = getMore();
 
   let items = [];
@@ -62,7 +62,7 @@ export const getVariablesToolbar = (
   });
 
   const reset = () => {
-    if (isHide) return;
+    if (hideFn()) return;
 
     const style = data.getSelectedCellStyle();
 
@@ -77,6 +77,5 @@ export const getVariablesToolbar = (
   return {
     el,
     reset,
-    resize: () => resize(isHide, items, reset, el, buttonsEl, moreEl, widthFn),
   };
 };

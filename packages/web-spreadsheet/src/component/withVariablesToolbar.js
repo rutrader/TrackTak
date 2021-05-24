@@ -3,12 +3,11 @@ import { getVariablesToolbar } from "./toolbar/getVariablesToolbar";
 
 const withVariablesToolbar = (sheet) => {
   let data;
-  let { eventEmitter, el: sheetEl, options } = sheet;
-  const { view, showVariablesSpreadsheet } = options;
+  let { eventEmitter, el: sheetEl, getOptions } = sheet;
+  const { view, showVariablesSpreadsheet } = getOptions();
 
   const toolbar = getVariablesToolbar(
-    view.width,
-    options.formats,
+    getOptions,
     eventEmitter,
     !showVariablesSpreadsheet,
   );

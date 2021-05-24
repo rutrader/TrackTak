@@ -15,14 +15,18 @@ import spreadsheetEvents from "./spreadsheetEvents";
 import { makeGetViewWidthHeight } from "../component/makeGetViewWidthHeight";
 
 export const buildDataProxy = (
-  options,
+  getOptions,
   hyperformula,
   isVariablesSpreadsheet,
 ) => () => {
   // save object
   const merges = new Merges(); // [CellRange, ...]
-  const rows = new Rows(options.row, hyperformula, isVariablesSpreadsheet);
-  const cols = new Cols(options.col, isVariablesSpreadsheet);
+  const rows = new Rows(
+    () => getOptions().row,
+    hyperformula,
+    isVariablesSpreadsheet,
+  );
+  const cols = new Cols(() => getOptions().col, isVariablesSpreadsheet);
   const validations = new Validations();
 
   // don't save object
@@ -47,12 +51,12 @@ export const buildDataProxy = (
 
 export const makeGetDataProxy = (
   builder,
-  options,
+  getOptions,
   eventEmitter,
   isVariablesSpreadsheet,
 ) => (name) => {
   const getViewWidthHeight = makeGetViewWidthHeight(
-    options,
+    getOptions,
     isVariablesSpreadsheet,
   );
   let freeze = [0, 0];
@@ -633,7 +637,7 @@ export const makeGetDataProxy = (
     const cell = rows.getCell(ri, ci);
     const cellStyle =
       cell && cell.style !== undefined ? styles[cell.style] : {};
-    return helper.merge(options.style, cellStyle);
+    return helper.merge(getOptions().style, cellStyle);
   };
 
   const getSelectedCellStyle = () => {
@@ -1100,7 +1104,6 @@ export const makeGetDataProxy = (
     setFreeze,
     undo,
     redo,
-    options,
     getCell,
     getCellRectByXY,
     scroll,

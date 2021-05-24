@@ -246,7 +246,7 @@ const DiscountedCashFlowTable = ({
       },
     };
 
-    spreadsheet = getSpreadsheet(dcfValuationElement, {
+    const options = {
       col: {
         width: defaultColWidth,
       },
@@ -269,7 +269,9 @@ const DiscountedCashFlowTable = ({
           }
         },
       },
-    });
+    };
+
+    spreadsheet = getSpreadsheet(dcfValuationElement, options);
 
     setSpreadsheet(spreadsheet);
 

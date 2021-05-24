@@ -21,10 +21,11 @@ import spreadsheetEvents from "../../core/spreadsheetEvents";
 
 export const toolbarHeight = 41;
 
-export const getToolbar = (sheetEl, options, eventEmitter, isHide = false) => {
-  const widthFn = options.view.width;
+export const getToolbar = (sheetEl, getOptions, eventEmitter) => {
+  const hideFn = () => !getOptions().showToolbar;
+  const widthFn = () => getOptions().view.width();
+
   let data;
-  const style = options.style;
 
   const getIconItem = makeIconItem(eventEmitter);
   const getToggleItem = makeToggleItem(eventEmitter);
@@ -32,7 +33,11 @@ export const getToolbar = (sheetEl, options, eventEmitter, isHide = false) => {
 
   const undoEl = buildUndo(eventEmitter, toolbarType);
   const redoEl = buildRedo(eventEmitter, toolbarType);
-  const formatEl = buildFormat(options.formats, eventEmitter, toolbarType);
+  const formatEl = buildFormat(
+    () => getOptions().formats,
+    eventEmitter,
+    toolbarType,
+  );
   const printEl = getIconItem("print", "Ctrl+P");
   const paintformatEl = getToggleItem("paintformat");
   const clearformatEl = getIconItem("clearformat");
@@ -47,21 +52,33 @@ export const getToolbar = (sheetEl, options, eventEmitter, isHide = false) => {
   const strikeEl = getToggleItem("strike", "Ctrl+S");
   const textColorEl = getDropdownItem(
     "color",
-    makeDropdownColor("color", style.color, eventEmitter),
+    makeDropdownColor(() => getOptions().style.color, "color", eventEmitter),
   );
   const fillColorEl = getDropdownItem(
     "bgcolor",
-    makeDropdownColor("bgcolor", style.bgcolor, eventEmitter),
+    makeDropdownColor(
+      () => getOptions().style.bgcolor,
+      "bgcolor",
+      eventEmitter,
+    ),
   );
   const borderEl = getDropdownItem("border", makeDropdownBorder(eventEmitter));
   const mergeEl = getToggleItem("merge");
   const alignEl = getDropdownItem(
     "align",
-    makeDropdownAlign(["left", "center", "right"], style.align, eventEmitter),
+    makeDropdownAlign(
+      () => getOptions().style.align,
+      ["left", "center", "right"],
+      eventEmitter,
+    ),
   );
   const valignEl = getDropdownItem(
     "valign",
-    makeDropdownAlign(["top", "middle", "bottom"], style.valign, eventEmitter),
+    makeDropdownAlign(
+      () => getOptions().style.valign,
+      ["top", "middle", "bottom"],
+      eventEmitter,
+    ),
   );
   const textwrapEl = getToggleItem("textwrap");
   const freezeEl = getToggleItem("freeze");
@@ -99,9 +116,9 @@ export const getToolbar = (sheetEl, options, eventEmitter, isHide = false) => {
   eventEmitter.on(spreadsheetEvents.sheet.switchData, (newData) => {
     data = newData;
 
-    reset(isHide, data, undoEl, redoEl, formatEl);
+    reset(hideFn(), data, undoEl, redoEl, formatEl);
 
-    resize(isHide, items, reset, el, buttonsEl, moreEl, widthFn);
+    resize(hideFn(), items, reset, el, buttonsEl, moreEl, widthFn);
   });
 
   eventEmitter.on(spreadsheetEvents.sheet.cellSelected, () => {
@@ -129,7 +146,7 @@ export const getToolbar = (sheetEl, options, eventEmitter, isHide = false) => {
   };
 
   const reset = () => {
-    if (isHide) return;
+    if (hideFn()) return;
     const style = data.getSelectedCellStyle();
 
     undoEl.iconItem.setDisabled(!data.canUndo());

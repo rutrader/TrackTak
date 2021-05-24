@@ -2,8 +2,8 @@ import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { makeGetViewWidthHeight } from "../makeGetViewWidthHeight";
 import { makeTable } from "./makeTable";
 
-export const getVariablesTable = (options, hyperformula, eventEmitter) => {
-  const getViewWidthHeight = makeGetViewWidthHeight(options, true);
+export const getVariablesTable = (getOptions, hyperformula, eventEmitter) => {
+  const getViewWidthHeight = makeGetViewWidthHeight(getOptions, true);
   let data;
 
   eventEmitter.on(spreadsheetEvents.sheet.switchData, (newData) => {
@@ -12,6 +12,7 @@ export const getVariablesTable = (options, hyperformula, eventEmitter) => {
 
   const { setCalculateFormulas, clear, render, el, draw } = makeTable({
     getViewWidthHeight,
+    getOptions,
     hyperformula,
     eventEmitter,
   });

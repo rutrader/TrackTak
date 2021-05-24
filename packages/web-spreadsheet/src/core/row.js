@@ -2,18 +2,14 @@ import helper from "./helper";
 import { expr2expr, REGEX_EXPR_GLOBAL } from "./alphabet";
 
 class Rows {
-  constructor(
-    { len, height, indexHeight, variablesSheetIndexHeight },
-    hyperformula,
-    isVariablesSpreadsheet,
-  ) {
+  constructor(getRow, hyperformula, isVariablesSpreadsheet) {
     this._ = {};
-    this.len = len;
+    this.len = getRow().len;
     // default row height
-    this.height = height;
+    this.height = getRow().height;
     this.indexHeight = isVariablesSpreadsheet
-      ? variablesSheetIndexHeight
-      : indexHeight;
+      ? getRow().variablesSheetIndexHeight
+      : getRow().indexHeight;
 
     this.hyperformula = hyperformula;
   }

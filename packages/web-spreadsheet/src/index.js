@@ -13,22 +13,29 @@ import defaultOptions from "./core/defaultOptions";
 import { merge } from "lodash-es";
 import { buildDataProxy, makeGetDataProxy } from "./core/makeGetDataProxy";
 
-const buildSpreadsheet = (element, options, hyperformula, eventEmitter) => {
+const buildSpreadsheet = (element, getOptions, hyperformula, eventEmitter) => {
   const rootEl = h("div", `${cssPrefix}`).on("contextmenu", (evt) =>
     evt.preventDefault(),
   );
 
-  const table = getTable(options, hyperformula, eventEmitter);
-  const sheetBuilder = buildSheet(options, eventEmitter);
+  const table = getTable(getOptions, hyperformula, eventEmitter);
+  const sheetBuilder = buildSheet(getOptions, eventEmitter);
   const sheet = withToolbar(
-    getSheet(sheetBuilder, rootEl, table, eventEmitter, hyperformula, options),
+    getSheet(
+      sheetBuilder,
+      rootEl,
+      table,
+      eventEmitter,
+      hyperformula,
+      getOptions,
+    ),
   );
 
-  const dataProxyBuilder = buildDataProxy(options, hyperformula);
+  const dataProxyBuilder = buildDataProxy(getOptions, hyperformula);
 
   const getDataProxy = makeGetDataProxy(
     dataProxyBuilder,
-    options,
+    getOptions,
     eventEmitter,
   );
 
@@ -97,7 +104,15 @@ const getSpreadsheet = (element, options) => {
   //     true,
   //   ),
   // );
-  const newOptions = merge(defaultOptions, options);
+  let newOptions = merge(defaultOptions, options);
+
+  const setOptions = (options) => {
+    newOptions = merge(defaultOptions, options);
+    sheet.sheetReset();
+  };
+
+  const getOptions = () => newOptions;
+
   const hyperformula = HyperFormula.buildEmpty({
     licenseKey: "05054-b528f-a10c4-53f2a-04b57",
   });
@@ -109,7 +124,7 @@ const getSpreadsheet = (element, options) => {
     showFormulas,
     hideFormulas,
     setDatasheets,
-  } = buildSpreadsheet(element, newOptions, hyperformula, eventEmitter);
+  } = buildSpreadsheet(element, getOptions, hyperformula, eventEmitter);
 
   const setVariables = (variables) => {
     Object.keys(variables).forEach((key) => {
@@ -132,6 +147,7 @@ const getSpreadsheet = (element, options) => {
   return {
     sheet,
     setVariables,
+    setOptions,
     destroy,
     showFormulas,
     hideFormulas,

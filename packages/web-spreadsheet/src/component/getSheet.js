@@ -49,27 +49,27 @@ const getFormulaSuggestions = () => {
   return formulaSuggestions;
 };
 
-export const buildSheet = (options, eventEmitter) => {
+export const buildSheet = (getOptions, eventEmitter) => {
   const rowResizer = getResizer(
     eventEmitter,
     spreadsheetEvents.rowResizer,
-    options.row.height,
+    () => getOptions().row.height,
   );
   const colResizer = getResizer(
     eventEmitter,
     spreadsheetEvents.colResizer,
-    options.col.minWidth,
+    () => getOptions().col.minWidth,
     true,
   );
   const verticalScrollbar = getScrollbar(eventEmitter, true);
   const horizontalScrollbar = getScrollbar(eventEmitter, false);
   const editor = getEditor(getFormulaSuggestions(), eventEmitter);
   const modalValidation = new ModalValidation();
-  const getViewWidthHeight = makeGetViewWidthHeight(options);
+  const getViewWidthHeight = makeGetViewWidthHeight(getOptions);
   const contextMenu = getContextMenu(
-    () => getViewWidthHeight(),
+    getViewWidthHeight,
     eventEmitter,
-    !options.showContextMenu,
+    () => !getOptions().showContextMenu,
   );
   const selector = new Selector(eventEmitter);
   const sortFilter = new SortFilter();
@@ -93,7 +93,7 @@ export const getSheet = (
   table,
   eventEmitter,
   hyperformula,
-  options,
+  getOptions,
   isVariablesSpreadsheet,
 ) => {
   const {
@@ -109,11 +109,6 @@ export const getSheet = (
   } = builder();
   let data;
   const datas = [];
-
-  const getViewWidthHeight = makeGetViewWidthHeight(
-    options,
-    isVariablesSpreadsheet,
-  );
 
   eventEmitter.on(spreadsheetEvents.bottombar.selectSheet, (index) => {
     const d = datas[index];
@@ -457,8 +452,12 @@ export const getSheet = (
   }
 
   function sheetReset() {
+    const getViewWidthHeight = makeGetViewWidthHeight(
+      getOptions,
+      isVariablesSpreadsheet,
+    );
     const tOffset = table.getOffset();
-    const vRect = getViewWidthHeight(options, isVariablesSpreadsheet);
+    const vRect = getViewWidthHeight();
     table.el.attr(vRect);
     overlayerEl.offset(vRect);
     overlayerCEl.offset(tOffset);
@@ -487,7 +486,7 @@ export const getSheet = (
   }
 
   function paste(what, evt) {
-    if (options.mode === "read") return;
+    if (getOptions().mode === "read") return;
     if (data.paste(what, (msg) => xtoast("Tip", msg))) {
       sheetReset();
     } else if (evt) {
@@ -555,7 +554,7 @@ export const getSheet = (
           }
         },
         () => {
-          if (isAutofillEl && selector.arange && options.mode !== "read") {
+          if (isAutofillEl && selector.arange && getOptions().mode !== "read") {
             if (
               data.autofill(selector.arange, "all", (msg) => xtoast("Tip", msg))
             ) {
@@ -587,7 +586,7 @@ export const getSheet = (
   }
 
   function editorSet() {
-    if (options.mode === "read") return;
+    if (getOptions().mode === "read") return;
     editorSetOffset();
     editor.setCell(data.getSelectedCell(), data.getSelectedValidator());
     clearClipboard();
@@ -629,7 +628,7 @@ export const getSheet = (
   }
 
   function dataSetCellText(text, state = "finished") {
-    if (options.mode === "read") return;
+    if (getOptions().mode === "read") return;
     data.setSelectedCellText(text, state);
     const { ri, ci } = data.selector;
     if (state === "finished") {
@@ -646,7 +645,7 @@ export const getSheet = (
   }
 
   function insertDeleteRowColumn(type) {
-    if (options.mode === "read") return;
+    if (getOptions().mode === "read") return;
     if (type === "insert-row") {
       data.insert("row");
     } else if (type === "delete-row") {
@@ -1000,7 +999,7 @@ export const getSheet = (
     table,
     data,
     datas,
-    options,
+    getOptions,
     rootEl,
     eventEmitter,
   };

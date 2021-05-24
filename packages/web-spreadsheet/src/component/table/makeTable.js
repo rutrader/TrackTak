@@ -19,6 +19,7 @@ function getTableDrawBox(data, rindex, cindex, yoffset = 0) {
 
 export const makeTable = ({
   getViewWidthHeight,
+  getOptions,
   hyperformula,
   eventEmitter,
   renderFixedHeaders = () => {},
@@ -192,14 +193,12 @@ export const makeTable = ({
     tx,
     ty,
   ) => {
-    const { options } = data;
-
     draw.save();
     draw.attr(tableGridStyle);
     draw.translate(fixedHeaderWidth + tx, fixedHeaderHeight + ty);
 
     draw.clearRect(0, 0, w, h);
-    if (!options.showGrid) {
+    if (!getOptions().showGrid) {
       draw.restore();
       return;
     }

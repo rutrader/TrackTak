@@ -4,8 +4,7 @@ import { getToolbar } from "./toolbar/getToolbar";
 
 const withToolbar = (sheet) => {
   let data;
-  let { eventEmitter, rootEl, el: sheetEl, options } = sheet;
-  const { showToolbar } = options;
+  let { eventEmitter, rootEl, el: sheetEl, getOptions } = sheet;
 
   const print = getPrint(rootEl, eventEmitter);
   const {
@@ -15,7 +14,7 @@ const withToolbar = (sheet) => {
     boldEl,
     underlineEl,
     italicEl,
-  } = getToolbar(sheetEl, options, eventEmitter, !showToolbar);
+  } = getToolbar(sheetEl, getOptions, eventEmitter);
 
   function toolbarChangePaintformatPaste() {
     if (paintformatActive()) {

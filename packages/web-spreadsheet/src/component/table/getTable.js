@@ -18,8 +18,8 @@ const tableFixedHeaderStyle = () => {
   };
 };
 
-export const getTable = (options, hyperformula, eventEmitter) => {
-  const getViewWidthHeight = makeGetViewWidthHeight(options);
+export const getTable = (getOptions, hyperformula, eventEmitter) => {
+  const getViewWidthHeight = makeGetViewWidthHeight(getOptions);
   let data;
 
   eventEmitter.on(spreadsheetEvents.sheet.switchData, (newData) => {
@@ -112,6 +112,7 @@ export const getTable = (options, hyperformula, eventEmitter) => {
 
   const { setCalculateFormulas, clear, render, el, draw } = makeTable({
     hyperformula,
+    getOptions,
     eventEmitter,
     renderFixedHeaders,
     getViewWidthHeight,
