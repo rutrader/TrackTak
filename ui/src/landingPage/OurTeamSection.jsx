@@ -8,14 +8,21 @@ const OurTeamSection = () => {
 
   const data = useStaticQuery(graphql`
     query {
-      memberOne: file(relativePath: { eq: "team-1.jpg" }) {
+      memberOne: file(relativePath: { eq: "kris.jpg" }) {
         childImageSharp {
           fluid(maxWidth: 300) {
             ...GatsbyImageSharpFluid_withWebp
           }
         }
       }
-      memberTwo: file(relativePath: { eq: "purple-background.png" }) {
+      memberTwo: file(relativePath: { eq: "martin.jpg" }) {
+        childImageSharp {
+          fluid(maxWidth: 300) {
+            ...GatsbyImageSharpFluid_withWebp
+          }
+        }
+      }
+      memberThree: file(relativePath: { eq: "martin.jpg" }) {
         childImageSharp {
           fluid(maxWidth: 300) {
             ...GatsbyImageSharpFluid_withWebp
@@ -85,7 +92,7 @@ const OurTeamSection = () => {
             and building out the road map for the application."
             memberTitle="Co-founder"
             memberName="Martin Dawson"
-            fluid={data.memberOne.childImageSharp.fluid}
+            fluid={data.memberTwo.childImageSharp.fluid}
           />
           <TeamMember
             memberInfo="Sam joined us on April 2021. He is managing the company's
@@ -93,7 +100,7 @@ const OurTeamSection = () => {
             backend, front-end application, scaling and cloud development."
             memberTitle="Co-founder"
             memberName="Sam Rose"
-            fluid={data.memberOne.childImageSharp.fluid}
+            fluid={data.memberTwo.childImageSharp.fluid}
           />
         </Box>
       </Box>
