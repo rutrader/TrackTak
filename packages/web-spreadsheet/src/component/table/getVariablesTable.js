@@ -1,22 +1,24 @@
+import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { makeGetViewWidthHeight } from "../makeGetViewWidthHeight";
 import { makeTable } from "./makeTable";
 
-export const getVariablesTable = (data, hyperformula, options) => {
-  const {
-    setCalculateFormulas,
-    clear,
-    render,
-    resetData,
-    el,
-    draw,
-  } = makeTable({
-    data,
+export const getVariablesTable = (options, hyperformula, eventEmitter) => {
+  const getViewWidthHeight = makeGetViewWidthHeight(options, true);
+  let data;
+
+  eventEmitter.on(spreadsheetEvents.sheet.switchData, (newData) => {
+    data = newData;
+  });
+
+  const { setCalculateFormulas, clear, render, el, draw } = makeTable({
+    getViewWidthHeight,
     hyperformula,
+    eventEmitter,
   });
 
   const getOffset = () => {
     const { rows, cols } = data;
-    const { width, height } = makeGetViewWidthHeight(options, true)();
+    const { width, height } = getViewWidthHeight();
 
     // TODO: Set magic numbers to options once data is fixed
     return {
@@ -32,7 +34,6 @@ export const getVariablesTable = (data, hyperformula, options) => {
     draw,
     data,
     hyperformula,
-    resetData,
     render,
     clear,
     setCalculateFormulas,

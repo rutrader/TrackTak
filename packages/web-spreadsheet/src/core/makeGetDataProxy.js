@@ -26,7 +26,7 @@ export const buildDataProxy = (
   const validations = new Validations();
 
   // don't save object
-  const selector = new Selector(isVariablesSpreadsheet);
+  const selector = new Selector();
   const scroll = new Scroll();
   const history = new History();
   const clipboard = new Clipboard();

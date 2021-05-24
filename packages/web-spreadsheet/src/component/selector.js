@@ -1,6 +1,7 @@
 import { h } from "./element";
 import { cssPrefix } from "../config";
 import { CellRange } from "../core/cell_range";
+import spreadsheetEvents from "../core/spreadsheetEvents";
 
 const selectorHeightBorderWidth = 2 * 2 - 1;
 let startZIndex = 10;
@@ -177,7 +178,7 @@ function setAllClipboardOffset(offset) {
 }
 
 export default class Selector {
-  constructor() {
+  constructor(eventEmitter) {
     this.br = new SelectorElement(true);
     this.t = new SelectorElement();
     this.l = new SelectorElement();
@@ -197,12 +198,14 @@ export default class Selector {
     this.lastci = -1;
 
     startZIndex += 1;
-  }
 
-  resetData(data) {
-    this.data = data;
-    this.range = data.selector.range;
-    this.resetAreaOffset();
+    const self = this;
+
+    eventEmitter.on(spreadsheetEvents.sheet.switchData, (newData) => {
+      self.data = newData;
+      self.range = newData.selector.range;
+      self.resetAreaOffset();
+    });
   }
 
   hide() {

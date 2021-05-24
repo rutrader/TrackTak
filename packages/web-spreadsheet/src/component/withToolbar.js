@@ -2,19 +2,27 @@ import spreadsheetEvents from "../core/spreadsheetEvents";
 import { getPrint } from "./getPrint";
 import { getToolbar } from "./toolbar/getToolbar";
 
-const withToolbar = (sheet, rootEl, options) => {
+const withToolbar = (sheet) => {
   let data;
-  let { eventEmitter, el } = sheet;
+  let { eventEmitter, rootEl, el: sheetEl, options } = sheet;
   const { showToolbar } = options;
 
-  const print = getPrint();
-  const toolbar = getToolbar(el, options, eventEmitter, !showToolbar);
+  const print = getPrint(eventEmitter);
+  const {
+    paintformatToggle,
+    paintformatActive,
+    reset,
+    strikeEl,
+    boldEl,
+    underlineEl,
+    italicEl,
+  } = getToolbar(sheetEl, options, eventEmitter, !showToolbar);
 
   function toolbarChangePaintformatPaste() {
-    if (toolbar.paintformatActive()) {
+    if (paintformatActive()) {
       sheet.paste("format");
       sheet.clearClipboard();
-      toolbar.paintformatToggle();
+      paintformatToggle();
     }
   }
 
@@ -63,29 +71,19 @@ const withToolbar = (sheet, rootEl, options) => {
   });
 
   eventEmitter.on(spreadsheetEvents.sheet.cellSelected, () => {
-    toolbar.reset();
+    reset();
   });
 
   eventEmitter.on(spreadsheetEvents.sheet.cellsSelected, () => {
-    toolbar.reset();
+    reset();
   });
 
   eventEmitter.on(spreadsheetEvents.sheet.sheetReset, () => {
-    toolbar.reset();
+    reset();
   });
 
   eventEmitter.on(spreadsheetEvents.sheet.mouseMoveUp, () => {
     toolbarChangePaintformatPaste();
-  });
-
-  eventEmitter.on(spreadsheetEvents.sheet.resetData, (datum) => {
-    // TODO: Refactor how spreadsheets initialized so don't
-    // have to do this horrid hack
-    data = datum;
-
-    toolbar.resetData(data);
-    print.resetData(data);
-    toolbar.resize();
   });
 
   eventEmitter.on(spreadsheetEvents.sheet.ctrlKeyDown, (evt, keyCode) => {
@@ -93,25 +91,29 @@ const withToolbar = (sheet, rootEl, options) => {
     if (keyCode === 83) {
       evt.preventDefault();
 
-      toolbar.strikeEl.toggleItem.toggle();
+      strikeEl.toggleItem.toggle();
     }
 
     // ctrl + u
     if (keyCode === 85) {
       evt.preventDefault();
 
-      toolbar.underlineEl.toggleItem.toggle();
+      underlineEl.toggleItem.toggle();
     }
 
     // ctrl + b
     if (keyCode === 66) {
-      toolbar.boldEl.toggleItem.toggle();
+      boldEl.toggleItem.toggle();
     }
 
     // ctrl + i
     if (keyCode === 73) {
-      toolbar.italicEl.toggleItem.toggle();
+      italicEl.toggleItem.toggle();
     }
+  });
+
+  eventEmitter.on(spreadsheetEvents.sheet.switchData, (newData) => {
+    data = newData;
   });
 
   return {

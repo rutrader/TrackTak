@@ -18,12 +18,10 @@ const buildSpreadsheet = (element, options, hyperformula, eventEmitter) => {
     evt.preventDefault(),
   );
 
-  const table = getTable(options, hyperformula);
+  const table = getTable(options, hyperformula, eventEmitter);
   const sheetBuilder = buildSheet(options, eventEmitter);
   const sheet = withToolbar(
     getSheet(sheetBuilder, rootEl, table, eventEmitter, hyperformula, options),
-    rootEl,
-    options,
   );
 
   const dataProxyBuilder = buildDataProxy(options, hyperformula);
@@ -53,7 +51,7 @@ const buildSpreadsheet = (element, options, hyperformula, eventEmitter) => {
   eventEmitter.on(spreadsheetEvents.bottombar.addSheet, () => {
     const data = sheet.addData(getDataProxy);
 
-    sheet.resetData(data);
+    sheet.switchData(data);
   });
 
   return {
@@ -80,14 +78,14 @@ const getSpreadsheet = (element, options) => {
   //     data.setData(variableSheet);
 
   //     if (i === 0) {
-  //       variablesSheet.resetData(data);
+  //       variablesSheet.switchData(data);
   //     }
   //   });
   // };
 
   // const variablesData = addVariablesSheetData();
 
-  // const variablesTable = getVariablesTable(data, hyperformula);
+  // const variablesTable = getVariablesTable(options, hyperformula, eventEmitter);
   // const variablesSheet = withVariablesToolbar(
   //   getSheet(
   //     rootEl,

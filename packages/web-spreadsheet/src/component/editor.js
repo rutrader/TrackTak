@@ -103,12 +103,26 @@ export const getEditor = (formulas, eventEmitter) => {
     suggest.setItems(formulas);
   }
 
-  let _data;
+  const render = () => {
+    if (composing) return;
+
+    const text = inputText;
+
+    if (text[0] != "=") {
+      textEl.html(text);
+    } else {
+      formula.render();
+    }
+
+    textlineEl.html(text);
+  };
 
   const suggest = new Suggest(formulas, (it) => {
     const unescapedKey = it.key.replace("\\.", ".");
     suggestItemClick(unescapedKey);
   });
+
+  let data;
 
   const datepicker = new Datepicker();
   datepicker.change((d) => {
@@ -142,6 +156,21 @@ export const getEditor = (formulas, eventEmitter) => {
   let _cell = null;
   let inputText = "";
 
+  const formula = new Formula(
+    textEl,
+    cellEl,
+    inputText,
+    data,
+    render,
+    eventEmitter,
+  );
+
+  eventEmitter.on(spreadsheetEvents.sheet.switchData, (newData) => {
+    clear();
+
+    data = newData;
+  });
+
   const setFreezeLengths = (width, height) => {
     freeze.w = width;
     freeze.h = height;
@@ -161,11 +190,6 @@ export const getEditor = (formulas, eventEmitter) => {
     formula.clear();
     resetSuggestItems();
     datepicker.hide();
-  };
-
-  const resetData = (data) => {
-    _data = data;
-    formula.setData(_data);
   };
 
   const setOffset = (offset, suggestPosition = "top") => {
@@ -237,20 +261,6 @@ export const getEditor = (formulas, eventEmitter) => {
     });
   };
 
-  const render = () => {
-    if (composing) return;
-
-    const text = inputText;
-
-    if (text[0] != "=") {
-      textEl.html(text);
-    } else {
-      formula.render();
-    }
-
-    textlineEl.html(text);
-  };
-
   const formulaCellSelecting = () => {
     return Boolean(formula.cell);
   };
@@ -263,15 +273,13 @@ export const getEditor = (formulas, eventEmitter) => {
     formula.selectCellRange(ri, ci);
   };
 
-  const formula = new Formula(textEl, cellEl, inputText, _data, render);
-
   return {
     suggest,
     datepicker,
     composing,
     areaEl,
     el,
-    data: _data,
+    data,
     cellEl,
     areaOffset,
     freeze,
@@ -280,7 +288,6 @@ export const getEditor = (formulas, eventEmitter) => {
     formula,
     setFreezeLengths,
     clear,
-    resetData,
     setOffset,
     setCell,
     setText,

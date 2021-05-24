@@ -3,7 +3,7 @@ import { getFontSizePxByPt } from "../../core/font";
 import getDraw, { getDrawBox, thinLineWidth } from "../../canvas/draw";
 import { h } from "../element";
 import { cssPrefix } from "../../config";
-import { makeGetViewWidthHeight } from "../makeGetViewWidthHeight";
+import spreadsheetEvents from "../../core/spreadsheetEvents";
 
 const cellPaddingWidth = 5;
 const tableGridStyle = {
@@ -18,16 +18,17 @@ function getTableDrawBox(data, rindex, cindex, yoffset = 0) {
 }
 
 export const makeTable = ({
-  data,
-  options,
-  isVariablesSpreadsheet,
+  getViewWidthHeight,
   hyperformula,
+  eventEmitter,
   renderFixedHeaders = () => {},
 }) => {
-  const getViewWidthHeight = makeGetViewWidthHeight(
-    options,
-    isVariablesSpreadsheet,
-  );
+  let data;
+
+  eventEmitter.on(spreadsheetEvents.sheet.switchData, (newData) => {
+    data = newData;
+    render();
+  });
 
   const el = h("canvas", `${cssPrefix}-table`);
   const draw = getDraw(
@@ -329,10 +330,6 @@ export const makeTable = ({
     draw.clear();
   };
 
-  const resetData = (datum) => {
-    data = datum;
-  };
-
   return {
     el,
     draw,
@@ -340,6 +337,5 @@ export const makeTable = ({
     setCalculateFormulas,
     clear,
     render,
-    resetData,
   };
 };

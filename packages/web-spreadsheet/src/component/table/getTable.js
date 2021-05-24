@@ -3,6 +3,7 @@ import { stringAt } from "../../core/alphabet";
 import { thinLineWidth, npx } from "../../canvas/draw";
 import { makeTable } from "./makeTable";
 import { makeGetViewWidthHeight } from "../makeGetViewWidthHeight";
+import spreadsheetEvents from "../../core/spreadsheetEvents";
 
 const tableFixedHeaderCleanStyle = { fillStyle: "#f4f5f8" };
 
@@ -17,16 +18,13 @@ const tableFixedHeaderStyle = () => {
   };
 };
 
-export const getTable = (
-  options,
-  hyperformula,
-  isVariablesSpreadsheet = false,
-) => {
-  const getViewWidthHeight = makeGetViewWidthHeight(
-    options,
-    isVariablesSpreadsheet,
-  );
+export const getTable = (options, hyperformula, eventEmitter) => {
+  const getViewWidthHeight = makeGetViewWidthHeight(options);
   let data;
+
+  eventEmitter.on(spreadsheetEvents.sheet.switchData, (newData) => {
+    data = newData;
+  });
 
   const renderSelectedHeaderCell = (x, y, w, h) => {
     draw.save();
@@ -112,32 +110,18 @@ export const getTable = (
     };
   };
 
-  const {
-    setCalculateFormulas,
-    clear,
-    render,
-    el,
-    draw,
-    resetData: resetDatum,
-  } = makeTable({
+  const { setCalculateFormulas, clear, render, el, draw } = makeTable({
     hyperformula,
+    eventEmitter,
     renderFixedHeaders,
-    options,
-    isVariablesSpreadsheet,
+    getViewWidthHeight,
   });
-
-  const resetData = (datum) => {
-    data = datum;
-
-    resetDatum(data);
-  };
 
   return {
     el,
     draw,
     data,
     hyperformula,
-    resetData,
     render,
     clear,
     setCalculateFormulas,

@@ -10,14 +10,15 @@ import { buildRedo } from "./buildRedo";
 import { buildFormat } from "./buildFormat";
 import { buildItems } from "./buildItems";
 import { resize } from "./resize";
+import spreadsheetEvents from "../../core/spreadsheetEvents";
 
 export const getVariablesToolbar = (
-  data,
   widthFn,
   formats,
   eventEmitter,
   isHide = false,
 ) => {
+  let data;
   const variables = [
     { title: "Inputs" },
     { title: "Optional Inputs" },
@@ -56,10 +57,9 @@ export const getVariablesToolbar = (
 
   el.child(buttonsEl);
 
-  const resetData = (datum) => {
+  eventEmitter.on(spreadsheetEvents.sheet.switchData, (datum) => {
     data = datum;
-    reset();
-  };
+  });
 
   const reset = () => {
     if (isHide) return;
@@ -77,7 +77,6 @@ export const getVariablesToolbar = (
   return {
     el,
     reset,
-    resetData,
     resize: () => resize(isHide, items, reset, el, buttonsEl, moreEl, widthFn),
   };
 };

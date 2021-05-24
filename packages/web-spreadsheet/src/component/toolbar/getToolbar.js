@@ -17,6 +17,7 @@ import { buildRedo } from "./buildRedo";
 import { buildFormat } from "./buildFormat";
 import { buildItems } from "./buildItems";
 import { resize } from "./resize";
+import spreadsheetEvents from "../../core/spreadsheetEvents";
 
 export const toolbarHeight = 41;
 
@@ -95,17 +96,36 @@ export const getToolbar = (sheetEl, options, eventEmitter, isHide = false) => {
 
   el.child(buttonsEl);
 
+  eventEmitter.on(spreadsheetEvents.sheet.switchData, (newData) => {
+    data = newData;
+
+    reset(isHide, data, undoEl, redoEl, formatEl);
+
+    resize(isHide, items, reset, el, buttonsEl, moreEl, widthFn);
+  });
+
+  eventEmitter.on(spreadsheetEvents.sheet.cellSelected, () => {
+    reset();
+  });
+
+  eventEmitter.on(spreadsheetEvents.sheet.cellsSelected, () => {
+    reset();
+  });
+
+  eventEmitter.on(spreadsheetEvents.sheet.sheetReset, () => {
+    reset();
+  });
+
+  eventEmitter.on(spreadsheetEvents.sheet.switchData, (datum) => {
+    data = datum;
+  });
+
   const paintformatActive = () => {
     return paintformatEl.toggleItem.active();
   };
 
   const paintformatToggle = () => {
     paintformatEl.toggleItem.toggle();
-  };
-
-  const resetData = (datum) => {
-    data = datum;
-    reset(isHide, data, undoEl, redoEl, formatEl);
   };
 
   const reset = () => {
@@ -140,11 +160,9 @@ export const getToolbar = (sheetEl, options, eventEmitter, isHide = false) => {
     paintformatToggle,
     el,
     reset,
-    resetData,
     strikeEl,
     underlineEl,
     boldEl,
     italicEl,
-    resize: () => resize(isHide, items, reset, el, buttonsEl, moreEl, widthFn),
   };
 };

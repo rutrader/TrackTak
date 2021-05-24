@@ -2,13 +2,13 @@ import spreadsheetEvents from "../core/spreadsheetEvents";
 import { getVariablesToolbar } from "./toolbar/getVariablesToolbar";
 
 const withVariablesToolbar = (sheet) => {
-  let { data, eventEmitter, el } = sheet;
-  const { view, showVariablesSpreadsheet } = data.options;
+  let data;
+  let { eventEmitter, el: sheetEl, options } = sheet;
+  const { view, showVariablesSpreadsheet } = options;
 
   const toolbar = getVariablesToolbar(
-    data,
     view.width,
-    data.options.formats,
+    options.formats,
     eventEmitter,
     !showVariablesSpreadsheet,
   );
@@ -28,28 +28,9 @@ const withVariablesToolbar = (sheet) => {
     eventEmitter.on(key, (type, value) => toolbarChange(type, value));
   });
 
-  eventEmitter.on(spreadsheetEvents.sheet.cellSelected, () => {
-    toolbar.reset();
+  eventEmitter.on(spreadsheetEvents.sheet.switchData, (newData) => {
+    data = newData;
   });
-
-  eventEmitter.on(spreadsheetEvents.sheet.cellsSelected, () => {
-    toolbar.reset();
-  });
-
-  eventEmitter.on(spreadsheetEvents.sheet.sheetReset, () => {
-    toolbar.reset();
-  });
-
-  eventEmitter.on(spreadsheetEvents.sheet.resetData, (datum) => {
-    // TODO: Refactor how spreadsheets initialized so don't
-    // have to do this horrid hack
-    data = datum;
-
-    toolbar.resetData(data);
-  });
-
-  toolbar.resize();
-  el.before(toolbar.el);
 
   return {
     ...sheet,

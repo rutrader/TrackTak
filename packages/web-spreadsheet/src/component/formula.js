@@ -6,6 +6,7 @@ import {
 } from "../core/alphabet";
 import { setCaretPosition, getCaretPosition } from "../core/caret";
 import CellRange from "../core/cell_range";
+import spreadsheetEvents from "../core/spreadsheetEvents";
 
 function renderCell(left, top, width, height, color, selected = false) {
   let style = `position:absolute;box-sizing: border-box;`;
@@ -44,12 +45,13 @@ export default class Formula {
     return new CellRange(...cellRangeArgs);
   }
 
-  constructor(textEl, cellEl, inputText, data, editorRender) {
+  constructor(textEl, cellEl, inputText, data, editorRender, eventEmitter) {
     this.el = textEl.el;
     this.cellEl = cellEl.el;
     this.inputText = inputText;
     this.data = data;
     this.editorRender = editorRender;
+    this.eventEmitter = eventEmitter;
 
     this.cells = [];
     this.cell = null;
@@ -57,6 +59,13 @@ export default class Formula {
     this.cellSelectEndRowCol = null;
 
     let cellLastSelectionColor = null;
+
+    const self = this;
+
+    eventEmitter.on(spreadsheetEvents.sheet.switchData, (newData) => {
+      self.data = newData;
+    });
+
     document.addEventListener("selectionchange", () => {
       if (document.activeElement !== this.el) return;
 
@@ -179,10 +188,6 @@ export default class Formula {
 
   setInputText = (text) => {
     this.inputText = text;
-  };
-
-  setData = (d) => {
-    this.data = d;
   };
 
   selectCell(ri, ci) {

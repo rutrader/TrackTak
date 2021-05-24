@@ -71,7 +71,7 @@ export const buildSheet = (options, eventEmitter) => {
     eventEmitter,
     !options.showContextMenu,
   );
-  const selector = new Selector();
+  const selector = new Selector(eventEmitter);
   const sortFilter = new SortFilter();
 
   return () => ({
@@ -118,7 +118,7 @@ export const getSheet = (
   eventEmitter.on(spreadsheetEvents.bottombar.selectSheet, (index) => {
     const d = datas[index];
 
-    resetData(d);
+    switchData(d);
   });
 
   eventEmitter.on(spreadsheetEvents.bottombar.updateSheet, (index, value) => {
@@ -132,7 +132,7 @@ export const getSheet = (
         datas.splice(oldIndex, 1);
 
         if (nindex >= 0) {
-          resetData(datas[nindex]);
+          switchData(datas[nindex]);
         }
       }
     },
@@ -146,7 +146,7 @@ export const getSheet = (
     });
 
     if (dataSheets.length) {
-      resetData(datas[0]);
+      switchData(datas[0]);
       sheetReset();
       selectorSet(false, 0, 0);
     }
@@ -170,21 +170,14 @@ export const getSheet = (
     return data;
   };
 
-  const resetData = (datum) => {
-    // before
-    editor.clear();
-
+  const switchData = (datum) => {
     // after
     data = datum;
 
-    table.resetData(data);
-    editor.resetData(data);
-    selector.resetData(data);
+    eventEmitter.emit(spreadsheetEvents.sheet.switchData, data);
 
     verticalScrollbarSet();
     horizontalScrollbarSet();
-    eventEmitter.emit(spreadsheetEvents.sheet.resetData, data);
-    table.render();
   };
 
   // freeze rows or cols
@@ -992,7 +985,7 @@ export const getSheet = (
     el,
     makeSetDatasheets,
     addData,
-    resetData,
+    switchData,
     freeze,
     undo,
     redo,
@@ -1007,6 +1000,8 @@ export const getSheet = (
     table,
     data,
     datas,
+    options,
+    rootEl,
     eventEmitter,
   };
 };

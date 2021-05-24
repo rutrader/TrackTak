@@ -4,6 +4,7 @@ import getDraw from "../canvas/draw";
 // import { renderCell } from "./table";
 import { t } from "../locale/locale";
 import getButton from "./button";
+import spreadsheetEvents from "../core/spreadsheetEvents";
 
 // resolution: 72 => 595 x 842
 // 150 => 1240 x 1754
@@ -25,7 +26,7 @@ function inches2px(inc) {
   return parseInt(96 * inc, 10);
 }
 
-export const getPrint = () => {
+export const getPrint = (eventEmitter) => {
   let data;
 
   const paper = {
@@ -88,6 +89,10 @@ export const getPrint = () => {
     )
     .hide();
 
+  eventEmitter.on(spreadsheetEvents.sheet.switchData, (newData) => {
+    data = newData;
+  });
+
   function btnClick(type) {
     if (type === "cancel") {
       el.hide();
@@ -111,10 +116,6 @@ export const getPrint = () => {
     paper.orientation = v;
     preview();
   }
-
-  const resetData = (datum) => {
-    data = datum;
-  };
 
   const preview = () => {
     const { width, height, padding } = paper;
@@ -210,7 +211,6 @@ export const getPrint = () => {
     paper,
     data,
     el,
-    resetData,
     preview,
     toPrint,
   };
