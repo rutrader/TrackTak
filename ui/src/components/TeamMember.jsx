@@ -46,18 +46,16 @@ const TypographyMemberName = ({ sx, ...props }) => {
 
 const TeamMember = ({ memberInfo, memberTitle, memberName, fluid }) => {
   return (
-    <>
-      <BoxColumnWrapper>
-        <BoxInfoWrapper>
-          <StyledImage fluid={fluid} />
-          <TypographyMemberName>{memberName}</TypographyMemberName>
-          <Typography variant="h6">{memberTitle}</Typography>
-          <Typography variant="subtitle1" color="textSecondary">
-            {memberInfo}
-          </Typography>
-        </BoxInfoWrapper>
-      </BoxColumnWrapper>
-    </>
+    <BoxColumnWrapper>
+      <BoxInfoWrapper>
+        <StyledImage fluid={fluid} />
+        <TypographyMemberName>{memberName}</TypographyMemberName>
+        <Typography variant="h6">{memberTitle}</Typography>
+        <Typography variant="subtitle1" color="textSecondary">
+          {memberInfo}
+        </Typography>
+      </BoxInfoWrapper>
+    </BoxColumnWrapper>
   );
 };
 

@@ -22,7 +22,7 @@ const OurTeamSection = () => {
           }
         }
       }
-      memberThree: file(relativePath: { eq: "sam-1.jpg" }) {
+      memberThree: file(relativePath: { eq: "sam.jpg" }) {
         childImageSharp {
           fluid(maxWidth: 300) {
             ...GatsbyImageSharpFluid_withWebp
@@ -34,75 +34,73 @@ const OurTeamSection = () => {
 
   return (
     <>
-      <Box>
-        <Box
+      <Box
+        sx={{
+          marginLeft: "auto",
+          marginRight: "auto",
+          marginBottom: theme.spacing(7),
+          textAlign: "center",
+        }}
+      >
+        <Typography
           sx={{
-            marginLeft: "auto",
-            marginRight: "auto",
-            marginBottom: theme.spacing(7),
-            textAlign: "center",
+            visibility: "visible",
+            animationDelay: "0.2s",
+            animationName: "fadeInDown",
+            fontSize: theme.typography.fontSize3,
+            fontWeight: "bold",
           }}
+          color="primary"
+          gutterBottom
         >
-          <Typography
-            sx={{
-              visibility: "visible",
-              animationDelay: "0.2s",
-              animationName: "fadeInDown",
-              fontSize: theme.typography.fontSize3,
-              fontWeight: "bold",
-            }}
-            color="primary"
-            gutterBottom
-          >
-            Our Team
-          </Typography>
-          <Typography
-            sx={{
-              visibility: "visible",
-              animationDelay: "0.4s",
-              animationName: "fadeInUp",
-              fontWeight: "bold",
-              color: theme.palette.primary.mainTextColor,
-              marginBottom: theme.spacing(2),
-            }}
-            variant="h3"
-          >
-            Meet Our Founders
-          </Typography>
-        </Box>
-        <Box
+          Our Team
+        </Typography>
+        <Typography
           sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 5,
+            visibility: "visible",
+            animationDelay: "0.4s",
+            animationName: "fadeInUp",
+            fontWeight: "bold",
+            color: theme.palette.primary.mainTextColor,
+            marginBottom: theme.spacing(2),
           }}
+          variant="h3"
         >
-          <TeamMember
-            memberInfo="Kristina is a founding partner of tracktak and a value investor.
+          Meet Our Founders
+        </Typography>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 5,
+        }}
+      >
+        <TeamMember
+          memberInfo="Kristina is a founding partner of tracktak and a value investor.
             Kristina &amp; Martin are jointly responsible for the direction of the
             business. She is involved in helping users, partnerships,
             building the application and the company's financial health."
-            memberTitle="Co-founder"
-            memberName="Kristina Olchova"
-            fluid={data.memberOne.childImageSharp.fluid}
-          />
-          <TeamMember
-            memberInfo="Martin has over 8 years programming experience and is an avid
+          memberTitle="Co-founder"
+          memberName="Kristina Olchova"
+          fluid={data.memberOne.childImageSharp.fluid}
+        />
+        <TeamMember
+          memberInfo="Martin has over 8 years programming experience and is an avid
             follower of Aswath Damodaran. He is involved in marketing, partnerships
             and building out the road map for the application."
-            memberTitle="Co-founder"
-            memberName="Martin Dawson"
-            fluid={data.memberTwo.childImageSharp.fluid}
-          />
-          <TeamMember
-            memberInfo="Sam joined us on April 2021. He is managing the company's
+          memberTitle="Co-founder"
+          memberName="Martin Dawson"
+          fluid={data.memberTwo.childImageSharp.fluid}
+        />
+        <TeamMember
+          memberInfo="Sam joined us on April 2021. He is managing the company's
             technological projects and plans. Sam is responsible for
             backend, front-end application, scaling and cloud development."
-            memberTitle="Co-founder"
-            memberName="Sam Rose"
-            fluid={data.memberThree.childImageSharp.fluid}
-          />
-        </Box>
+          memberTitle="Co-founder"
+          memberName="Sam Rose"
+          fluid={data.memberThree.childImageSharp.fluid}
+        />
       </Box>
     </>
   );
