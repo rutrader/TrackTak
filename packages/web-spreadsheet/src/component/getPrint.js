@@ -26,7 +26,7 @@ function inches2px(inc) {
   return parseInt(96 * inc, 10);
 }
 
-export const getPrint = (eventEmitter) => {
+export const getPrint = (rootEl, eventEmitter) => {
   let data;
 
   const paper = {
@@ -92,6 +92,8 @@ export const getPrint = (eventEmitter) => {
   eventEmitter.on(spreadsheetEvents.sheet.switchData, (newData) => {
     data = newData;
   });
+
+  rootEl.children(el);
 
   function btnClick(type) {
     if (type === "cancel") {

@@ -7,11 +7,10 @@ const withToolbar = (sheet) => {
   let { eventEmitter, rootEl, el: sheetEl, options } = sheet;
   const { showToolbar } = options;
 
-  const print = getPrint(eventEmitter);
+  const print = getPrint(rootEl, eventEmitter);
   const {
     paintformatToggle,
     paintformatActive,
-    reset,
     strikeEl,
     boldEl,
     underlineEl,
@@ -64,22 +63,8 @@ const withToolbar = (sheet) => {
     }
   }
 
-  rootEl.children(print.el);
-
   Object.values(spreadsheetEvents.toolbar).forEach((key) => {
     eventEmitter.on(key, (type, value) => toolbarChange(type, value));
-  });
-
-  eventEmitter.on(spreadsheetEvents.sheet.cellSelected, () => {
-    reset();
-  });
-
-  eventEmitter.on(spreadsheetEvents.sheet.cellsSelected, () => {
-    reset();
-  });
-
-  eventEmitter.on(spreadsheetEvents.sheet.sheetReset, () => {
-    reset();
   });
 
   eventEmitter.on(spreadsheetEvents.sheet.mouseMoveUp, () => {
