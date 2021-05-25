@@ -369,10 +369,14 @@ const DiscountedCashFlowTable = ({
           getDatasheetsYOYGrowth(spreadsheet, isOnMobile),
         );
       } else if (showFormulas) {
-        spreadsheet.showFormulas();
+        spreadsheet.setOptions({
+          showAllFormulas: true,
+        });
         spreadsheet.setDatasheets(getDatasheetsColWidths(200, isOnMobile));
       } else {
-        spreadsheet.hideFormulas();
+        spreadsheet.setOptions({
+          showAllFormulas: false,
+        });
         spreadsheet.setDatasheets(getDataSheets(isOnMobile));
       }
     }

@@ -52,16 +52,6 @@ const buildSpreadsheet = (
 
   element.appendChild(rootEl.el);
 
-  const showFormulas = () => {
-    table.setCalculateFormulas(false);
-    table.render();
-  };
-
-  const hideFormulas = () => {
-    table.setCalculateFormulas(true);
-    table.render();
-  };
-
   eventEmitter.on(spreadsheetEvents.bottombar.addSheet, () => {
     const data = sheet.addData(getDataProxy);
 
@@ -71,8 +61,6 @@ const buildSpreadsheet = (
   return {
     sheet,
     rootEl,
-    showFormulas,
-    hideFormulas,
     setDatasheets,
   };
 };
@@ -124,7 +112,10 @@ const getSpreadsheet = (element, options) => {
 
   const setOptions = (options) => {
     newOptions = merge(defaultOptions, options);
-    sheet.sheetReset();
+
+    if (newData) {
+      sheet.sheetReset();
+    }
   };
 
   const getOptions = () => newOptions;
@@ -133,13 +124,7 @@ const getSpreadsheet = (element, options) => {
     licenseKey: "05054-b528f-a10c4-53f2a-04b57",
   });
 
-  const {
-    rootEl,
-    sheet,
-    showFormulas,
-    hideFormulas,
-    setDatasheets,
-  } = buildSpreadsheet(
+  const { rootEl, sheet, setDatasheets } = buildSpreadsheet(
     element,
     getOptions,
     getData,
@@ -170,8 +155,6 @@ const getSpreadsheet = (element, options) => {
     setVariables,
     setOptions,
     destroy,
-    showFormulas,
-    hideFormulas,
     hyperformula,
     eventEmitter,
     setDatasheets,

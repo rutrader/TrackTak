@@ -104,7 +104,7 @@ export const getTable = (getOptions, getData, hyperformula, eventEmitter) => {
     };
   };
 
-  const { setCalculateFormulas, clear, render, el, draw } = makeTable({
+  const { clear, render, el, draw } = makeTable({
     hyperformula,
     getOptions,
     getData,
@@ -119,7 +119,6 @@ export const getTable = (getOptions, getData, hyperformula, eventEmitter) => {
     hyperformula,
     render,
     clear,
-    setCalculateFormulas,
     getOffset,
   };
 };

@@ -35,7 +35,6 @@ export const makeTable = ({
     getViewWidthHeight().width,
     getViewWidthHeight().height,
   );
-  let calculateFormulas = true;
 
   const renderCell = (draw, data, rindex, cindex, yoffset = 0) => {
     const { sortedRowMap, rows, cols } = data;
@@ -68,13 +67,16 @@ export const makeTable = ({
         sheet: 0,
       };
 
+      const showAllFormulas = getOptions().showAllFormulas;
+
       // render text
-      let cellText = calculateFormulas
-        ? hyperformula.getCellValue(cellAddress)
-        : cell.text || "";
+      let cellText = showAllFormulas
+        ? cell.text || ""
+        : hyperformula.getCellValue(cellAddress);
+
       let format = style.format;
 
-      if (!calculateFormulas && hyperformula.doesCellHaveFormula(cellAddress)) {
+      if (showAllFormulas && hyperformula.doesCellHaveFormula(cellAddress)) {
         format = "text";
       }
 
@@ -106,10 +108,6 @@ export const makeTable = ({
         draw.frozen(dbox);
       }
     });
-  };
-
-  const setCalculateFormulas = (shouldCalculateFormulas) => {
-    calculateFormulas = shouldCalculateFormulas;
   };
 
   const renderAutofilter = (viewRange) => {
@@ -330,8 +328,6 @@ export const makeTable = ({
   return {
     el,
     draw,
-    calculateFormulas,
-    setCalculateFormulas,
     clear,
     render,
   };

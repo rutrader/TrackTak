@@ -12,6 +12,7 @@ const defaultOptions = {
   showGrid: true,
   showToolbar: true,
   showContextmenu: true,
+  showAllFormulas: false,
   row: {
     len: 100,
     variablesSheetIndexHeight: 0.000001,

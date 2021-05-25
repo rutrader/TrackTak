@@ -9,7 +9,7 @@ export const getVariablesTable = (
 ) => {
   const getViewWidthHeight = makeGetViewWidthHeight(getOptions, true);
 
-  const { setCalculateFormulas, clear, render, el, draw } = makeTable({
+  const { clear, render, el, draw } = makeTable({
     getViewWidthHeight,
     getOptions,
     getData,
@@ -36,7 +36,6 @@ export const getVariablesTable = (
     hyperformula,
     render,
     clear,
-    setCalculateFormulas,
     getOffset,
   };
 };
