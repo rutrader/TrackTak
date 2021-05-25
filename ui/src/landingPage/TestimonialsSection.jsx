@@ -12,141 +12,75 @@ import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import Testimonials from "../components/Testimonials";
 
-const stepsMobile = [
-  {
-    description: (
-      <Testimonials
-        testimonialName="Robbert Smit"
-        testimonialMessage="This tool is absolutely awesome. Please continue the great work! I
+const robbertSmitTestimonial = (
+  <Testimonials
+    testimonialName="Robbert Smit"
+    testimonialMessage="This tool is absolutely awesome. Please continue the great work! I
       am definitely going to share this tool with my network who are all
       still using template models and have to fetch the inputs each time
       they want to do a calculation."
-      />
-    ),
-  },
-  {
-    description: (
-      <Testimonials
-        testimonialName="Stefan"
-        testimonialMessage="I'm a regular user, I enjoy your site a lot and the tools you offer
-      there."
-      />
-    ),
-  },
-  {
-    description: (
-      <Testimonials
-        testimonialName="Wonderful Idea!"
-        testimonialMessage={
-          <>
-            I love it. I initially found the prof's website and downloaded his
-            excel sheets and thought it was very tedious. Your website really
-            does make these analysis that much easier.
-            <Box>
-              Source:{" "}
-              <Link
-                rel="noreferrer"
-                target="_blank"
-                href="https://www.reddit.com/r/tracktak/comments/mvkwws/wonderful_idea/"
-              >
-                Reddit
-              </Link>
-            </Box>
-          </>
-        }
-      ></Testimonials>
-    ),
-  },
-  {
-    description: (
-      <Testimonials
-        testimonialName="Amazing!!!"
-        testimonialMessage={
-          <>
-            After finbox stopped the excel add-on I was desperate for a new tool
-            and your financial overview is simply something else!
-            <Box>
-              Source:{" "}
-              <Link
-                rel="noreferrer"
-                target="_blank"
-                href="https://www.reddit.com/r/tracktak/comments/mqep3m/amazing/"
-              >
-                Reddit
-              </Link>
-            </Box>
-          </>
-        }
-      ></Testimonials>
-    ),
-  },
-];
+  />
+);
+
+const stefanTestimonial = (
+  <Testimonials
+    testimonialName="Stefan"
+    testimonialMessage="I'm a regular user, I enjoy your site a lot and the tools you offer
+there."
+  />
+);
+
+const redditTestimonialOne = (
+  <Testimonials
+    testimonialName="Wonderful Idea!"
+    testimonialMessage={
+      <>
+        I love it. I initially found the prof's website and downloaded his excel
+        sheets and thought it was very tedious. Your website really does make
+        these analysis that much easier.
+        <Box>
+          Source:{" "}
+          <Link
+            rel="noreferrer"
+            target="_blank"
+            href="https://www.reddit.com/r/tracktak/comments/mvkwws/wonderful_idea/"
+          >
+            Reddit
+          </Link>
+        </Box>
+      </>
+    }
+  ></Testimonials>
+);
+
+const redditTestimonialTwo = (
+  <Testimonials
+    testimonialName="Amazing!!!"
+    testimonialMessage={
+      <>
+        After finbox stopped the excel add-on I was desperate for a new tool and
+        your financial overview is simply something else!
+        <Box>
+          Source:{" "}
+          <Link
+            rel="noreferrer"
+            target="_blank"
+            href="https://www.reddit.com/r/tracktak/comments/mqep3m/amazing/"
+          >
+            Reddit
+          </Link>
+        </Box>
+      </>
+    }
+  ></Testimonials>
+);
 
 const stepsDesktop = [
-  {
-    description: (
-      <>
-        <Testimonials
-          testimonialName="Robbert Smit"
-          testimonialMessage="This tool is absolutely awesome. Please continue the great work! I
-          am definitely going to share this tool with my network who are all
-          still using template models and have to fetch the inputs each time
-          they want to do a calculation."
-        />
-        <Testimonials
-          testimonialName="Stefan"
-          testimonialMessage="I'm a regular user, I enjoy your site a lot and the tools you offer
-      there."
-        />
-      </>
-    ),
-  },
-  {
-    description: (
-      <>
-        <Testimonials
-          testimonialName="Wonderful Idea!"
-          testimonialMessage={
-            <>
-              I love it. I initially found the prof's website and downloaded his
-              excel sheets and thought it was very tedious. Your website really
-              does make these analysis that much easier.
-              <Box>
-                Source:{" "}
-                <Link
-                  rel="noreferrer"
-                  target="_blank"
-                  href="https://www.reddit.com/r/tracktak/comments/mvkwws/wonderful_idea/"
-                >
-                  Reddit
-                </Link>
-              </Box>
-            </>
-          }
-        ></Testimonials>
-        <Testimonials
-          testimonialName="Amazing!!!"
-          testimonialMessage={
-            <>
-              After finbox stopped the excel add-on I was desperate for a new
-              tool and your financial overview is simply something else!
-              <Box>
-                Source:{" "}
-                <Link
-                  rel="noreferrer"
-                  target="_blank"
-                  href="https://www.reddit.com/r/tracktak/comments/mqep3m/amazing/"
-                >
-                  Reddit
-                </Link>
-              </Box>
-            </>
-          }
-        ></Testimonials>
-      </>
-    ),
-  },
+  [robbertSmitTestimonial, stefanTestimonial],
+  [redditTestimonialOne, redditTestimonialTwo],
 ];
+
+const stepsMobile = stepsDesktop.flatMap((x) => x);
 
 const TestimonialsSection = () => {
   const theme = useTheme();
@@ -225,9 +159,7 @@ const TestimonialsSection = () => {
             },
           }}
         >
-          {isOnMobile
-            ? stepsMobile[activeStep]?.description
-            : stepsDesktop[activeStep]?.description}
+          {isOnMobile ? stepsMobile[activeStep] : stepsDesktop[activeStep]}
         </Box>
         <MobileStepper
           sx={{
