@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   IconButton,
+  Link,
   Typography,
   useMediaQuery,
   useTheme,
@@ -12,17 +13,6 @@ import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import Testimonials from "../components/Testimonials";
 
 const stepsMobile = [
-  {
-    description: (
-      <Testimonials
-        testimonialName="Oliver Djursing"
-        testimonialMessage="It’s mind blowing how nice it all is, finance data is hard to find
-        easily and reliably without paying a big premium or having to
-        searched the whole internet. I whole-heartedly believe this could be
-        the new go-to source for private investors!"
-      />
-    ),
-  },
   {
     description: (
       <Testimonials
@@ -37,21 +27,57 @@ const stepsMobile = [
   {
     description: (
       <Testimonials
-        testimonialName="Adam Parmer"
-        testimonialMessage="I just signed up for alerts. Just wanted to thank you for putting
-      this together. I really look forward to seeing what you put together
-      in the future. I have been looking for a tool like this and I love
-      that there is an editable 'Excel Table' inline."
+        testimonialName="Stefan"
+        testimonialMessage="I'm a regular user, I enjoy your site a lot and the tools you offer
+      there."
       />
     ),
   },
   {
     description: (
       <Testimonials
-        testimonialName="Stefan"
-        testimonialMessage="I'm a regular user, I enjoy your site a lot and the tools you offer
-      there."
-      />
+        testimonialName="Wonderful Idea!"
+        testimonialMessage={
+          <>
+            I love it. I initially found the prof's website and downloaded his
+            excel sheets and thought it was very tedious. Your website really
+            does make these analysis that much easier.
+            <Box>
+              Source:{" "}
+              <Link
+                rel="noreferrer"
+                target="_blank"
+                href="https://www.reddit.com/r/tracktak/comments/mvkwws/wonderful_idea/"
+              >
+                Reddit
+              </Link>
+            </Box>
+          </>
+        }
+      ></Testimonials>
+    ),
+  },
+  {
+    description: (
+      <Testimonials
+        testimonialName="Amazing!!!"
+        testimonialMessage={
+          <>
+            After finbox stopped the excel add-on I was desperate for a new tool
+            and your financial overview is simply something else!
+            <Box>
+              Source:{" "}
+              <Link
+                rel="noreferrer"
+                target="_blank"
+                href="https://www.reddit.com/r/tracktak/comments/mqep3m/amazing/"
+              >
+                Reddit
+              </Link>
+            </Box>
+          </>
+        }
+      ></Testimonials>
     ),
   },
 ];
@@ -61,18 +87,16 @@ const stepsDesktop = [
     description: (
       <>
         <Testimonials
-          testimonialName="Oliver Djursing"
-          testimonialMessage="It’s mind blowing how nice it all is, finance data is hard to find
-            easily and reliably without paying a big premium or having to
-            searched the whole internet. I whole-heartedly believe this could be
-            the new go-to source for private investors!"
-        />
-        <Testimonials
           testimonialName="Robbert Smit"
           testimonialMessage="This tool is absolutely awesome. Please continue the great work! I
           am definitely going to share this tool with my network who are all
           still using template models and have to fetch the inputs each time
           they want to do a calculation."
+        />
+        <Testimonials
+          testimonialName="Stefan"
+          testimonialMessage="I'm a regular user, I enjoy your site a lot and the tools you offer
+      there."
         />
       </>
     ),
@@ -81,17 +105,44 @@ const stepsDesktop = [
     description: (
       <>
         <Testimonials
-          testimonialName="Adam Parmer"
-          testimonialMessage="I just signed up for alerts. Just wanted to thank you for putting
-          this together. I really look forward to seeing what you put together
-          in the future. I have been looking for a tool like this and I love
-          that there is an editable 'Excel Table' inline."
-        />
+          testimonialName="Wonderful Idea!"
+          testimonialMessage={
+            <>
+              I love it. I initially found the prof's website and downloaded his
+              excel sheets and thought it was very tedious. Your website really
+              does make these analysis that much easier.
+              <Box>
+                Source:{" "}
+                <Link
+                  rel="noreferrer"
+                  target="_blank"
+                  href="https://www.reddit.com/r/tracktak/comments/mvkwws/wonderful_idea/"
+                >
+                  Reddit
+                </Link>
+              </Box>
+            </>
+          }
+        ></Testimonials>
         <Testimonials
-          testimonialName="Stefan"
-          testimonialMessage="I'm a regular user, I enjoy your site a lot and the tools you offer
-          there."
-        />
+          testimonialName="Amazing!!!"
+          testimonialMessage={
+            <>
+              After finbox stopped the excel add-on I was desperate for a new
+              tool and your financial overview is simply something else!
+              <Box>
+                Source:{" "}
+                <Link
+                  rel="noreferrer"
+                  target="_blank"
+                  href="https://www.reddit.com/r/tracktak/comments/mqep3m/amazing/"
+                >
+                  Reddit
+                </Link>
+              </Box>
+            </>
+          }
+        ></Testimonials>
       </>
     ),
   },
