@@ -26,6 +26,7 @@ const defaultOptions = {
     indexWidth: 25,
     minWidth: 60,
   },
+  variables: {},
   formats: {
     normal: {
       title: tf("format.normal"),

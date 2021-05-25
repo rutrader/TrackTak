@@ -288,7 +288,9 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     if (spreadsheet && hasAllRequiredInputsFilledIn && scope) {
-      spreadsheet.setVariables(scope);
+      spreadsheet.setOptions({
+        variables: scope,
+      });
 
       const dataSheets = getDataSheets(isOnMobile);
 

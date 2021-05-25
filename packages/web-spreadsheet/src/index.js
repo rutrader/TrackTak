@@ -65,6 +65,8 @@ const buildSpreadsheet = (
   };
 };
 
+const buildVariablesSheet = () => {};
+
 const getSpreadsheet = (element, options) => {
   // const setVariablesData = (variableSheets) => {
   //   variablesSheetDatas = [];
@@ -100,9 +102,12 @@ const getSpreadsheet = (element, options) => {
   //   ),
   // );
   const eventEmitter = new EventEmitter();
+  const hyperformula = HyperFormula.buildEmpty({
+    licenseKey: "05054-b528f-a10c4-53f2a-04b57",
+  });
 
   let newData;
-  let newOptions = merge(defaultOptions, options);
+  let newOptions;
 
   eventEmitter.on(spreadsheetEvents.sheet.switchData, (data) => {
     newData = data;
@@ -113,28 +118,8 @@ const getSpreadsheet = (element, options) => {
   const setOptions = (options) => {
     newOptions = merge(defaultOptions, options);
 
-    if (newData) {
-      sheet.sheetReset();
-    }
-  };
-
-  const getOptions = () => newOptions;
-
-  const hyperformula = HyperFormula.buildEmpty({
-    licenseKey: "05054-b528f-a10c4-53f2a-04b57",
-  });
-
-  const { rootEl, sheet, setDatasheets } = buildSpreadsheet(
-    element,
-    getOptions,
-    getData,
-    hyperformula,
-    eventEmitter,
-  );
-
-  const setVariables = (variables) => {
-    Object.keys(variables).forEach((key) => {
-      const value = variables[key];
+    Object.keys(newOptions.variables).forEach((key) => {
+      const value = newOptions.variables[key];
 
       if (hyperformula.isItPossibleToChangeNamedExpression(key, value)) {
         hyperformula.changeNamedExpression(key, value);
@@ -144,7 +129,23 @@ const getSpreadsheet = (element, options) => {
         hyperformula.addNamedExpression(key, value);
       }
     });
+
+    if (newData) {
+      sheet.sheetReset();
+    }
   };
+
+  const getOptions = () => newOptions;
+
+  setOptions(options);
+
+  const { rootEl, sheet, setDatasheets } = buildSpreadsheet(
+    element,
+    getOptions,
+    getData,
+    hyperformula,
+    eventEmitter,
+  );
 
   const destroy = () => {
     rootEl.destroy();
@@ -152,7 +153,6 @@ const getSpreadsheet = (element, options) => {
 
   return {
     sheet,
-    setVariables,
     setOptions,
     destroy,
     hyperformula,
