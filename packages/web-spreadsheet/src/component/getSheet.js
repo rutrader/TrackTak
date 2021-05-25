@@ -136,6 +136,8 @@ export const getSheet = (
   const makeSetDatasheets = (getDataProxy) => (dataSheets) => {
     datas = [];
 
+    eventEmitter.emit(spreadsheetEvents.sheet.setDatasheets);
+
     dataSheets.forEach((dataSheet, i) => {
       const data = addData(getDataProxy, dataSheet.name, i === 0);
 

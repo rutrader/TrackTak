@@ -207,6 +207,10 @@ export const getBottombar = (rootEl, eventEmitter) => {
     addItem(name, active);
   });
 
+  eventEmitter.on(spreadsheetEvents.sheet.setDatasheets, () => {
+    clear();
+  });
+
   return {
     el,
     menuEl,

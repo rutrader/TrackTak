@@ -41,6 +41,7 @@ const spreadsheetEvents = {
     ctrlKeyDown: "s-ctrl-key-down",
     addData: "s-add-data",
     deleteData: "s-delete-data",
+    setDatasheets: "s-set-datasheets",
   },
   toolbar: {
     alignChange: "tb-align-change",
