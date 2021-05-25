@@ -282,7 +282,7 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     if (!hasAllRequiredInputsFilledIn && spreadsheet) {
-      //  spreadsheet.setDatasheets([]);
+      spreadsheet.setDatasheets([]);
     }
   }, [hasAllRequiredInputsFilledIn, spreadsheet, isOnMobile]);
 

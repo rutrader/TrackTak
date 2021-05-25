@@ -108,7 +108,7 @@ export const getSheet = (
     selector,
     sortFilter,
   } = builder();
-  const datas = [];
+  let datas = [];
 
   eventEmitter.on(spreadsheetEvents.bottombar.selectSheet, (index) => {
     const d = datas[index];
@@ -134,17 +134,26 @@ export const getSheet = (
   );
 
   const makeSetDatasheets = (getDataProxy) => (dataSheets) => {
+    datas = [];
+
     dataSheets.forEach((dataSheet, i) => {
       const data = addData(getDataProxy, dataSheet.name, i === 0);
+
+      if (hyperformula.isItPossibleToAddSheet(dataSheet.name)) {
+        hyperformula.addSheet(dataSheet.name);
+      }
 
       data.setData(dataSheet);
     });
 
-    if (dataSheets.length) {
-      switchData(datas[0]);
-      sheetReset();
-      selectorSet(false, 0, 0);
+    if (!dataSheets.length) {
+      // Add dummy data for now until dataProxy is refactored
+      addData(getDataProxy);
     }
+
+    switchData(datas[0]);
+    sheetReset();
+    selectorSet(false, 0, 0);
   };
 
   const addData = (
@@ -153,10 +162,6 @@ export const getSheet = (
     active = true,
   ) => {
     const data = getDataProxy(name);
-
-    if (hyperformula.isItPossibleToAddSheet(name)) {
-      hyperformula.addSheet(name);
-    }
 
     datas.push(data);
 
