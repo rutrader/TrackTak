@@ -252,7 +252,7 @@ const DiscountedCashFlowTable = ({
       },
       formats,
       view: {
-        height: () => 1050,
+        height: () => 1165,
         width: () => {
           if (containerRef?.current) {
             const containerStyle = getComputedStyle(containerRef.current);
@@ -365,26 +365,24 @@ const DiscountedCashFlowTable = ({
   useEffect(() => {
     if (spreadsheet && hasAllRequiredInputsFilledIn) {
       if (showYOYGrowth) {
-        // spreadsheet.setDatasheets(
-        //   getDatasheetsYOYGrowth(spreadsheet, isOnMobile),
-        // );
+        spreadsheet.setDatasheets(
+          getDatasheetsYOYGrowth(spreadsheet, isOnMobile),
+        );
+      } else if (showFormulas) {
+        spreadsheet.showFormulas();
+        spreadsheet.setDatasheets(getDatasheetsColWidths(200, isOnMobile));
       } else {
-        // spreadsheet.setDatasheets(getDataSheets(isOnMobile));
+        spreadsheet.hideFormulas();
+        spreadsheet.setDatasheets(getDataSheets(isOnMobile));
       }
     }
-  }, [showYOYGrowth, spreadsheet, isOnMobile, hasAllRequiredInputsFilledIn]);
-
-  useEffect(() => {
-    if (spreadsheet && hasAllRequiredInputsFilledIn) {
-      if (showFormulas) {
-        //    spreadsheet.showFormulas();
-        //   spreadsheet.setDatasheets(getDatasheetsColWidths(200, isOnMobile));
-      } else {
-        //   spreadsheet.hideFormulas();
-        //  spreadsheet.setDatasheets(getDataSheets(isOnMobile));
-      }
-    }
-  }, [showFormulas, spreadsheet, isOnMobile, hasAllRequiredInputsFilledIn]);
+  }, [
+    showYOYGrowth,
+    spreadsheet,
+    isOnMobile,
+    hasAllRequiredInputsFilledIn,
+    showFormulas,
+  ]);
 
   useEffect(() => {
     // Dispatch only when we have all the data from the API
