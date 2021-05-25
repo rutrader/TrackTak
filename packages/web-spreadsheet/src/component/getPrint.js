@@ -4,7 +4,6 @@ import getDraw from "../canvas/draw";
 // import { renderCell } from "./table";
 import { t } from "../locale/locale";
 import getButton from "./button";
-import spreadsheetEvents from "../core/spreadsheetEvents";
 
 // resolution: 72 => 595 x 842
 // 150 => 1240 x 1754
@@ -26,9 +25,7 @@ function inches2px(inc) {
   return parseInt(96 * inc, 10);
 }
 
-export const getPrint = (rootEl, eventEmitter) => {
-  let data;
-
+export const getPrint = (rootEl, getData) => {
   const paper = {
     w: inches2px(PAGER_SIZES[0][1]),
     h: inches2px(PAGER_SIZES[0][2]),
@@ -89,10 +86,6 @@ export const getPrint = (rootEl, eventEmitter) => {
     )
     .hide();
 
-  eventEmitter.on(spreadsheetEvents.sheet.switchData, (newData) => {
-    data = newData;
-  });
-
   rootEl.children(el);
 
   function btnClick(type) {
@@ -123,7 +116,7 @@ export const getPrint = (rootEl, eventEmitter) => {
     const { width, height, padding } = paper;
     const iwidth = width - padding * 2;
     const iheight = height - padding * 2;
-    const cr = data.contentRange();
+    const cr = getData().contentRange();
     const pages = parseInt(cr.h / iheight, 10) + 1;
     const scale = iwidth / cr.w;
     let left = padding;
@@ -153,7 +146,7 @@ export const getPrint = (rootEl, eventEmitter) => {
       if (scale < 1) draw.scale(scale, scale);
 
       for (; ri <= cr.eri; ri += 1) {
-        const rh = data.rows.getHeight(ri);
+        const rh = getData().rows.getHeight(ri);
         th += rh;
         if (th < iheight) {
           for (let ci = 0; ci <= cr.eci; ci += 1) {
@@ -211,7 +204,6 @@ export const getPrint = (rootEl, eventEmitter) => {
 
   return {
     paper,
-    data,
     el,
     preview,
     toPrint,

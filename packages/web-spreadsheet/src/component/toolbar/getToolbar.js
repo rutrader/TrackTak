@@ -21,11 +21,9 @@ import spreadsheetEvents from "../../core/spreadsheetEvents";
 
 export const toolbarHeight = 41;
 
-export const getToolbar = (sheetEl, getOptions, eventEmitter) => {
+export const getToolbar = (sheetEl, getOptions, getData, eventEmitter) => {
   const hideFn = () => !getOptions().showToolbar;
   const widthFn = () => getOptions().view.width();
-
-  let data;
 
   const getIconItem = makeIconItem(eventEmitter);
   const getToggleItem = makeToggleItem(eventEmitter);
@@ -114,9 +112,7 @@ export const getToolbar = (sheetEl, getOptions, eventEmitter) => {
   el.child(buttonsEl);
 
   eventEmitter.on(spreadsheetEvents.sheet.switchData, (newData) => {
-    data = newData;
-
-    reset(hideFn(), data, undoEl, redoEl, formatEl);
+    reset(hideFn(), newData, undoEl, redoEl, formatEl);
 
     resize(hideFn(), items, reset, el, buttonsEl, moreEl, widthFn);
   });
@@ -133,10 +129,6 @@ export const getToolbar = (sheetEl, getOptions, eventEmitter) => {
     reset();
   });
 
-  eventEmitter.on(spreadsheetEvents.sheet.switchData, (datum) => {
-    data = datum;
-  });
-
   const paintformatActive = () => {
     return paintformatEl.toggleItem.active();
   };
@@ -147,13 +139,13 @@ export const getToolbar = (sheetEl, getOptions, eventEmitter) => {
 
   const reset = () => {
     if (hideFn()) return;
-    const style = data.getSelectedCellStyle();
+    const style = getData().getSelectedCellStyle();
 
-    undoEl.iconItem.setDisabled(!data.canUndo());
-    redoEl.iconItem.setDisabled(!data.canRedo());
-    mergeEl.toggleItem.setActive(data.canUnmerge());
-    mergeEl.item.el.disabled(!data.selector.multiple());
-    autofilterEl.toggleItem.setActive(!data.canAutofilter());
+    undoEl.iconItem.setDisabled(!getData().canUndo());
+    redoEl.iconItem.setDisabled(!getData().canRedo());
+    mergeEl.toggleItem.setActive(getData().canUnmerge());
+    mergeEl.item.el.disabled(!getData().selector.multiple());
+    autofilterEl.toggleItem.setActive(!getData().canAutofilter());
 
     const { font, format } = style;
 
@@ -169,7 +161,7 @@ export const getToolbar = (sheetEl, getOptions, eventEmitter) => {
     alignEl.dropdown.setTitle(style.align);
     valignEl.dropdown.setTitle(style.valign);
     textwrapEl.toggleItem.setActive(style.textwrap);
-    freezeEl.toggleItem.setActive(data.freezeIsActive());
+    freezeEl.toggleItem.setActive(getData().freezeIsActive());
   };
 
   return {

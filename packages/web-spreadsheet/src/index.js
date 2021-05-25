@@ -13,13 +13,19 @@ import defaultOptions from "./core/defaultOptions";
 import { merge } from "lodash-es";
 import { buildDataProxy, makeGetDataProxy } from "./core/makeGetDataProxy";
 
-const buildSpreadsheet = (element, getOptions, hyperformula, eventEmitter) => {
+const buildSpreadsheet = (
+  element,
+  getOptions,
+  getData,
+  hyperformula,
+  eventEmitter,
+) => {
   const rootEl = h("div", `${cssPrefix}`).on("contextmenu", (evt) =>
     evt.preventDefault(),
   );
 
-  const table = getTable(getOptions, hyperformula, eventEmitter);
-  const sheetBuilder = buildSheet(getOptions, eventEmitter);
+  const table = getTable(getOptions, getData, hyperformula, eventEmitter);
+  const sheetBuilder = buildSheet(getOptions, getData, eventEmitter);
   const sheet = withToolbar(
     getSheet(
       sheetBuilder,
@@ -28,6 +34,7 @@ const buildSpreadsheet = (element, getOptions, hyperformula, eventEmitter) => {
       eventEmitter,
       hyperformula,
       getOptions,
+      getData,
     ),
   );
 
@@ -92,7 +99,7 @@ const getSpreadsheet = (element, options) => {
 
   // const variablesData = addVariablesSheetData();
 
-  // const variablesTable = getVariablesTable(options, hyperformula, eventEmitter);
+  // const variablesTable = getVariablesTable(getOptions, getData, hyperformula, eventEmitter);
   // const variablesSheet = withVariablesToolbar(
   //   getSheet(
   //     rootEl,
@@ -104,7 +111,16 @@ const getSpreadsheet = (element, options) => {
   //     true,
   //   ),
   // );
+  const eventEmitter = new EventEmitter();
+
+  let newData;
   let newOptions = merge(defaultOptions, options);
+
+  eventEmitter.on(spreadsheetEvents.sheet.switchData, (data) => {
+    newData = data;
+  });
+
+  const getData = () => newData;
 
   const setOptions = (options) => {
     newOptions = merge(defaultOptions, options);
@@ -116,7 +132,6 @@ const getSpreadsheet = (element, options) => {
   const hyperformula = HyperFormula.buildEmpty({
     licenseKey: "05054-b528f-a10c4-53f2a-04b57",
   });
-  const eventEmitter = new EventEmitter();
 
   const {
     rootEl,
@@ -124,7 +139,13 @@ const getSpreadsheet = (element, options) => {
     showFormulas,
     hideFormulas,
     setDatasheets,
-  } = buildSpreadsheet(element, getOptions, hyperformula, eventEmitter);
+  } = buildSpreadsheet(
+    element,
+    getOptions,
+    getData,
+    hyperformula,
+    eventEmitter,
+  );
 
   const setVariables = (variables) => {
     Object.keys(variables).forEach((key) => {

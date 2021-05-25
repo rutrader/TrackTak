@@ -20,14 +20,12 @@ function getTableDrawBox(data, rindex, cindex, yoffset = 0) {
 export const makeTable = ({
   getViewWidthHeight,
   getOptions,
+  getData,
   hyperformula,
   eventEmitter,
   renderFixedHeaders = () => {},
 }) => {
-  let data;
-
-  eventEmitter.on(spreadsheetEvents.sheet.switchData, (newData) => {
-    data = newData;
+  eventEmitter.on(spreadsheetEvents.sheet.switchData, () => {
     render();
   });
 
@@ -116,12 +114,12 @@ export const makeTable = ({
 
   const renderAutofilter = (viewRange) => {
     if (viewRange) {
-      const { autoFilter } = data;
+      const { autoFilter } = getData();
       if (!autoFilter.active()) return;
       const afRange = autoFilter.hrange();
       if (viewRange.intersects(afRange)) {
         afRange.each((ri, ci) => {
-          const dbox = getTableDrawBox(data, ri, ci);
+          const dbox = getTableDrawBox(getData(), ri, ci);
           draw.dropdown(dbox);
         });
       }
@@ -139,18 +137,18 @@ export const makeTable = ({
     draw.translate(fixedHeaderWidth, fixedHeaderHeight);
     draw.translate(tx, ty);
 
-    const { exceptRowSet } = data;
+    const { exceptRowSet } = getData();
     // const exceptRows = Array.from(exceptRowSet);
     const filteredTranslateFunc = (ri) => {
       const ret = exceptRowSet.has(ri);
       if (ret) {
-        const height = data.rows.getHeight(ri);
+        const height = getData().rows.getHeight(ri);
         draw.translate(0, -height);
       }
       return !ret;
     };
 
-    const exceptRowTotalHeight = data.exceptRowTotalHeight(
+    const exceptRowTotalHeight = getData().exceptRowTotalHeight(
       viewRange.sri,
       viewRange.eri,
     );
@@ -159,7 +157,7 @@ export const makeTable = ({
     draw.translate(0, -exceptRowTotalHeight);
     viewRange.each(
       (ri, ci) => {
-        renderCell(draw, data, ri, ci);
+        renderCell(draw, getData(), ri, ci);
       },
       (ri) => filteredTranslateFunc(ri),
     );
@@ -169,12 +167,12 @@ export const makeTable = ({
     const rset = new Set();
     draw.save();
     draw.translate(0, -exceptRowTotalHeight);
-    data.eachMergesInView(viewRange, ({ sri, sci, eri }) => {
+    getData().eachMergesInView(viewRange, ({ sri, sci, eri }) => {
       if (!exceptRowSet.has(sri)) {
-        renderCell(draw, data, sri, sci);
+        renderCell(draw, getData(), sri, sci);
       } else if (!rset.has(sri)) {
         rset.add(sri);
-        const height = data.rows.sumHeight(sri, eri + 1);
+        const height = getData().rows.sumHeight(sri, eri + 1);
         draw.translate(0, -height);
       }
     });
@@ -203,11 +201,11 @@ export const makeTable = ({
       return;
     }
 
-    data.rowEach(sri, eri, (i, y, ch) => {
+    getData().rowEach(sri, eri, (i, y, ch) => {
       if (i !== sri) draw.line([0, y], [w, y]);
       if (i === eri) draw.line([0, y + ch], [w, y + ch]);
     });
-    data.colEach(sci, eci, (i, x, cw) => {
+    getData().colEach(sci, eci, (i, x, cw) => {
       if (i !== sci) draw.line([x, 0], [x, h]);
       if (i === eci) draw.line([x + cw, 0], [x + cw, h]);
     });
@@ -239,8 +237,8 @@ export const makeTable = ({
 
   const render = () => {
     // resize canvas
-    const { rows, cols } = data;
-    // fixed width of header
+    const { rows, cols } = getData();
+    // fixed width of getData()
     const fixedHeaderWidth = cols.indexWidth;
     // fixed height of header
     const fixedHeaderHeight = rows.indexHeight;
@@ -248,11 +246,11 @@ export const makeTable = ({
     draw.resize(getViewWidthHeight().width, getViewWidthHeight().height);
     clear();
 
-    const viewRange = data.viewRange();
+    const viewRange = getData().viewRange();
 
-    const tx = data.freezeTotalWidth();
-    const ty = data.freezeTotalHeight();
-    const { x, y } = data.scroll;
+    const tx = getData().freezeTotalWidth();
+    const ty = getData().freezeTotalHeight();
+    const { x, y } = getData().scroll;
     // 1
     renderContentGrid(viewRange, fixedHeaderWidth, fixedHeaderHeight, tx, ty);
     renderContent(viewRange, fixedHeaderWidth, fixedHeaderHeight, -x, -y);
@@ -266,7 +264,7 @@ export const makeTable = ({
     );
     renderFixedLeftTopCell(fixedHeaderWidth, fixedHeaderHeight);
 
-    const [fri, fci] = data.getFreeze();
+    const [fri, fci] = getData().getFreeze();
     if (fri > 0 || fci > 0) {
       // 2
       if (fri > 0) {
@@ -303,7 +301,7 @@ export const makeTable = ({
         renderContent(vr, fixedHeaderWidth, fixedHeaderHeight, 0, -y);
       }
       // 4
-      const freezeViewRange = data.freezeViewRange();
+      const freezeViewRange = getData().freezeViewRange();
       renderContentGrid(
         freezeViewRange,
         fixedHeaderWidth,

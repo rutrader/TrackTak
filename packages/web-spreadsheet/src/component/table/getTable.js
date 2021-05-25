@@ -3,7 +3,6 @@ import { stringAt } from "../../core/alphabet";
 import { thinLineWidth, npx } from "../../canvas/draw";
 import { makeTable } from "./makeTable";
 import { makeGetViewWidthHeight } from "../makeGetViewWidthHeight";
-import spreadsheetEvents from "../../core/spreadsheetEvents";
 
 const tableFixedHeaderCleanStyle = { fillStyle: "#f4f5f8" };
 
@@ -18,13 +17,8 @@ const tableFixedHeaderStyle = () => {
   };
 };
 
-export const getTable = (getOptions, hyperformula, eventEmitter) => {
+export const getTable = (getOptions, getData, hyperformula, eventEmitter) => {
   const getViewWidthHeight = makeGetViewWidthHeight(getOptions);
-  let data;
-
-  eventEmitter.on(spreadsheetEvents.sheet.switchData, (newData) => {
-    data = newData;
-  });
 
   const renderSelectedHeaderCell = (x, y, w, h) => {
     draw.save();
@@ -51,14 +45,14 @@ export const getTable = (getOptions, hyperformula, eventEmitter) => {
     if (type === "all" || type === "left") draw.fillRect(0, nty, w, sumHeight);
     if (type === "all" || type === "top") draw.fillRect(ntx, 0, sumWidth, h);
 
-    const { sri, sci, eri, eci } = data.selector.range;
+    const { sri, sci, eri, eci } = getData().selector.range;
     // console.log(data.selectIndexes);
     // draw text
     // text font, align...
     draw.attr(tableFixedHeaderStyle());
     // y-header-text
     if (type === "all" || type === "left") {
-      data.rowEach(viewRange.sri, viewRange.eri, (i, y1, rowHeight) => {
+      getData().rowEach(viewRange.sri, viewRange.eri, (i, y1, rowHeight) => {
         const y = nty + y1;
         const ii = i;
         draw.line([0, y], [w, y]);
@@ -66,7 +60,7 @@ export const getTable = (getOptions, hyperformula, eventEmitter) => {
           renderSelectedHeaderCell(0, y, w, rowHeight);
         }
         draw.fillText(ii + 1, w / 2, y + rowHeight / 2);
-        if (i > 0 && data.rows.isHide(i - 1)) {
+        if (i > 0 && getData().rows.isHide(i - 1)) {
           draw.save();
           draw.attr({ strokeStyle: "#c6c6c6" });
           draw.line([5, y + 5], [w - 5, y + 5]);
@@ -78,7 +72,7 @@ export const getTable = (getOptions, hyperformula, eventEmitter) => {
     }
     // x-header-text
     if (type === "all" || type === "top") {
-      data.colEach(viewRange.sci, viewRange.eci, (i, x1, colWidth) => {
+      getData().colEach(viewRange.sci, viewRange.eci, (i, x1, colWidth) => {
         const x = ntx + x1;
         const ii = i;
         draw.line([x, 0], [x, h]);
@@ -86,7 +80,7 @@ export const getTable = (getOptions, hyperformula, eventEmitter) => {
           renderSelectedHeaderCell(x, 0, colWidth, h);
         }
         draw.fillText(stringAt(ii), x + colWidth / 2, h / 2);
-        if (i > 0 && data.cols.isHide(i - 1)) {
+        if (i > 0 && getData().cols.isHide(i - 1)) {
           draw.save();
           draw.attr({ strokeStyle: "#c6c6c6" });
           draw.line([x + 5, 5], [x + 5, h - 5]);
@@ -100,7 +94,7 @@ export const getTable = (getOptions, hyperformula, eventEmitter) => {
   };
 
   const getOffset = () => {
-    const { rows, cols } = data;
+    const { rows, cols } = getData();
     const { width, height } = getViewWidthHeight();
     return {
       width: width - cols.indexWidth,
@@ -113,6 +107,7 @@ export const getTable = (getOptions, hyperformula, eventEmitter) => {
   const { setCalculateFormulas, clear, render, el, draw } = makeTable({
     hyperformula,
     getOptions,
+    getData,
     eventEmitter,
     renderFixedHeaders,
     getViewWidthHeight,
@@ -121,7 +116,6 @@ export const getTable = (getOptions, hyperformula, eventEmitter) => {
   return {
     el,
     draw,
-    data,
     hyperformula,
     render,
     clear,

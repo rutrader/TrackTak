@@ -9,12 +9,9 @@ import { buildUndo } from "./buildUndo";
 import { buildRedo } from "./buildRedo";
 import { buildFormat } from "./buildFormat";
 import { buildItems } from "./buildItems";
-import { resize } from "./resize";
-import spreadsheetEvents from "../../core/spreadsheetEvents";
 
-export const getVariablesToolbar = (getOptions, eventEmitter) => {
+export const getVariablesToolbar = (getOptions, getData, eventEmitter) => {
   const hideFn = () => !getOptions().showVariablesSpreadsheet;
-  let data;
   const variables = [
     { title: "Inputs" },
     { title: "Optional Inputs" },
@@ -57,17 +54,13 @@ export const getVariablesToolbar = (getOptions, eventEmitter) => {
 
   el.child(buttonsEl);
 
-  eventEmitter.on(spreadsheetEvents.sheet.switchData, (datum) => {
-    data = datum;
-  });
-
   const reset = () => {
     if (hideFn()) return;
 
-    const style = data.getSelectedCellStyle();
+    const style = getData().getSelectedCellStyle();
 
-    undoEl.iconItem.setDisabled(!data.canUndo());
-    redoEl.iconItem.setDisabled(!data.canRedo());
+    undoEl.iconItem.setDisabled(!getData().canUndo());
+    redoEl.iconItem.setDisabled(!getData().canRedo());
 
     const { format } = style;
 

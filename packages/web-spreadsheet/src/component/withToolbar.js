@@ -3,10 +3,9 @@ import { getPrint } from "./getPrint";
 import { getToolbar } from "./toolbar/getToolbar";
 
 const withToolbar = (sheet) => {
-  let data;
-  let { eventEmitter, rootEl, el: sheetEl, getOptions } = sheet;
+  let { eventEmitter, rootEl, el: sheetEl, getOptions, getData } = sheet;
 
-  const print = getPrint(rootEl, eventEmitter);
+  const print = getPrint(rootEl, getData);
   const {
     paintformatToggle,
     paintformatActive,
@@ -14,7 +13,7 @@ const withToolbar = (sheet) => {
     boldEl,
     underlineEl,
     italicEl,
-  } = getToolbar(sheetEl, getOptions, eventEmitter);
+  } = getToolbar(sheetEl, getOptions, getData, eventEmitter);
 
   function toolbarChangePaintformatPaste() {
     if (paintformatActive()) {
@@ -48,14 +47,14 @@ const withToolbar = (sheet) => {
       sheet.autofilter();
     } else if (type === "freeze") {
       if (value) {
-        const { ri, ci } = data.selector;
+        const { ri, ci } = getData().selector;
         sheet.freeze(ri, ci);
       } else {
         sheet.freeze(0, 0);
       }
     } else {
-      data.setSelectedCellAttr(type, value);
-      if (type === "formula" && !data.selector.multiple()) {
+      getData().setSelectedCellAttr(type, value);
+      if (type === "formula" && !getData().selector.multiple()) {
         sheet.editorSet();
       }
       sheet.sheetReset();
@@ -94,10 +93,6 @@ const withToolbar = (sheet) => {
     if (keyCode === 73) {
       italicEl.toggleItem.toggle();
     }
-  });
-
-  eventEmitter.on(spreadsheetEvents.sheet.switchData, (newData) => {
-    data = newData;
   });
 
   return {

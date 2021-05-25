@@ -16,7 +16,7 @@ function dateFormat(d) {
   return `${d.getFullYear()}-${month}-${date}`;
 }
 
-export const getEditor = (formulas, eventEmitter) => {
+export const getEditor = (getData, formulas, eventEmitter) => {
   function insertText({ target }, itxt) {
     const { value, selectionEnd } = target;
     const ntxt = `${value.slice(0, selectionEnd)}${itxt}${value.slice(
@@ -122,8 +122,6 @@ export const getEditor = (formulas, eventEmitter) => {
     suggestItemClick(unescapedKey);
   });
 
-  let data;
-
   const datepicker = new Datepicker();
   datepicker.change((d) => {
     // console.log('d:', d);
@@ -160,15 +158,13 @@ export const getEditor = (formulas, eventEmitter) => {
     textEl,
     cellEl,
     inputText,
-    data,
+    getData,
     render,
     eventEmitter,
   );
 
-  eventEmitter.on(spreadsheetEvents.sheet.switchData, (newData) => {
+  eventEmitter.on(spreadsheetEvents.sheet.switchData, () => {
     clear();
-
-    data = newData;
   });
 
   const setFreezeLengths = (width, height) => {
@@ -279,7 +275,6 @@ export const getEditor = (formulas, eventEmitter) => {
     composing,
     areaEl,
     el,
-    data,
     cellEl,
     areaOffset,
     freeze,
