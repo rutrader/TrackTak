@@ -68,6 +68,7 @@ export const makeTable = ({
       };
 
       const showAllFormulas = getOptions().showAllFormulas;
+      const formats = getOptions().formats;
 
       // render text
       let cellText = showAllFormulas
@@ -80,9 +81,8 @@ export const makeTable = ({
         format = "text";
       }
 
-      // if (format) {
-      //   cellText = formats[format].render(cellText);
-      // }
+      cellText = formats[format].render(cellText);
+
       const font = Object.assign({}, style.font);
       font.size = getFontSizePxByPt(font.size);
 
