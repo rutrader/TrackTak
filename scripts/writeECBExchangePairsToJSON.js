@@ -1,12 +1,9 @@
-require("dotenv/config");
+import "dotenv/config";
 
-const fs = require("fs");
-const { exit } = require("process");
-const {
-  getExchangeSymbolList,
-  getEURBaseExchangeRate,
-} = require("../../node/src/api");
-const dayjs = require("dayjs");
+import fs from "fs";
+import { exit } from "process";
+import { getExchangeSymbolList, getEURBaseExchangeRate } from "../node/src/api";
+import dayjs from "dayjs";
 
 const writeECBExchangePairsToJSON = async () => {
   try {

@@ -83,9 +83,6 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "generate-exh-pairs": "node ./scripts/writeECBExchangePairsToJSON.js",
-    "generate-fundamentals": "node ./scripts/writeBulkFundamentalsDataToJSON.js",
-    "find-missing-gbonds": "node ./scripts/findMissingGBonds.js",
     "preinstall": "cd ../packages/intrinsic-valuations && npm install",
     "start": "gatsby develop",
     "build": "gatsby build",
