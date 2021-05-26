@@ -81,6 +81,9 @@ const makeFormatCellForExcelOutput = (
           formula = replaceAll(formula, key, value);
         });
       });
+
+      // Remove the equal sign
+      formula = formula.substring(1);
     }
 
     return {
