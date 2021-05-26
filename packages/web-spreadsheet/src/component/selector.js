@@ -1,6 +1,7 @@
 import { h } from "./element";
 import { cssPrefix } from "../config";
 import { CellRange } from "../core/cell_range";
+import spreadsheetEvents from "../core/spreadsheetEvents";
 
 const selectorHeightBorderWidth = 2 * 2 - 1;
 let startZIndex = 10;
@@ -77,10 +78,10 @@ class SelectorElement {
 }
 
 function calBRAreaOffset(offset) {
-  const { data } = this;
+  const { getData } = this;
   const { left, top, width, height, scroll, l, t } = offset;
-  const ftwidth = data.freezeTotalWidth();
-  const ftheight = data.freezeTotalHeight();
+  const ftwidth = getData().freezeTotalWidth();
+  const ftheight = getData().freezeTotalHeight();
   let left0 = left - ftwidth;
   if (ftwidth > l) left0 -= scroll.x;
   let top0 = top - ftheight;
@@ -94,9 +95,9 @@ function calBRAreaOffset(offset) {
 }
 
 function calTAreaOffset(offset) {
-  const { data } = this;
+  const { getData } = this;
   const { left, width, height, l, t, scroll } = offset;
-  const ftwidth = data.freezeTotalWidth();
+  const ftwidth = getData().freezeTotalWidth();
   let left0 = left - ftwidth;
   if (ftwidth > l) left0 -= scroll.x;
   return {
@@ -108,9 +109,9 @@ function calTAreaOffset(offset) {
 }
 
 function calLAreaOffset(offset) {
-  const { data } = this;
+  const { getData } = this;
   const { top, width, height, l, t, scroll } = offset;
-  const ftheight = data.freezeTotalHeight();
+  const ftheight = getData().freezeTotalHeight();
   let top0 = top - ftheight;
   // console.log('ftheight:', ftheight, ', t:', t);
   if (ftheight > t) top0 -= scroll.y;
@@ -177,8 +178,8 @@ function setAllClipboardOffset(offset) {
 }
 
 export default class Selector {
-  constructor(data) {
-    this.data = data;
+  constructor(eventEmitter, getData) {
+    this.getData = getData;
     this.br = new SelectorElement(true);
     this.t = new SelectorElement();
     this.l = new SelectorElement();
@@ -198,12 +199,13 @@ export default class Selector {
     this.lastci = -1;
 
     startZIndex += 1;
-  }
 
-  resetData(data) {
-    this.data = data;
-    this.range = data.selector.range;
-    this.resetAreaOffset();
+    const self = this;
+
+    eventEmitter.on(spreadsheetEvents.sheet.switchData, (newData) => {
+      self.range = newData.selector.range;
+      self.resetAreaOffset();
+    });
   }
 
   hide() {
@@ -211,9 +213,9 @@ export default class Selector {
   }
 
   resetOffset() {
-    const { data, tl, t, l, br } = this;
-    const freezeHeight = data.freezeTotalHeight();
-    const freezeWidth = data.freezeTotalWidth();
+    const { getData, tl, t, l, br } = this;
+    const freezeHeight = getData().freezeTotalHeight();
+    const freezeWidth = getData().freezeTotalWidth();
     if (freezeHeight > 0 || freezeWidth > 0) {
       tl.setOffset({ width: freezeWidth, height: freezeHeight });
       t.setOffset({ left: freezeWidth, height: freezeHeight });
@@ -229,16 +231,16 @@ export default class Selector {
 
   resetAreaOffset() {
     // console.log('offset:', offset);
-    const offset = this.data.getSelectedRect();
-    const coffset = this.data.getClipboardRect();
+    const offset = this.getData().getSelectedRect();
+    const coffset = this.getData().getClipboardRect();
     setAllAreaOffset.call(this, offset);
     setAllClipboardOffset.call(this, coffset);
     this.resetOffset();
   }
 
   resetBRTAreaOffset() {
-    const offset = this.data.getSelectedRect();
-    const coffset = this.data.getClipboardRect();
+    const offset = this.getData().getSelectedRect();
+    const coffset = this.getData().getClipboardRect();
     setBRAreaOffset.call(this, offset);
     setTAreaOffset.call(this, offset);
     setBRClipboardOffset.call(this, coffset);
@@ -247,8 +249,8 @@ export default class Selector {
   }
 
   resetBRLAreaOffset() {
-    const offset = this.data.getSelectedRect();
-    const coffset = this.data.getClipboardRect();
+    const offset = this.getData().getSelectedRect();
+    const coffset = this.getData().getClipboardRect();
     setBRAreaOffset.call(this, offset);
     setLAreaOffset.call(this, offset);
     setBRClipboardOffset.call(this, coffset);
@@ -257,14 +259,14 @@ export default class Selector {
   }
 
   set(ri, ci, indexesUpdated = true) {
-    const { data } = this;
-    const cellRange = data.calSelectedRangeByStart(ri, ci);
+    const { getData } = this;
+    const cellRange = getData().calSelectedRangeByStart(ri, ci);
     const { sri, sci } = cellRange;
     if (indexesUpdated) {
       let [cri, cci] = [ri, ci];
       if (ri < 0) cri = 0;
       if (ci < 0) cci = 0;
-      data.selector.setIndexes(cri, cci);
+      getData().selector.setIndexes(cri, cci);
       this.indexes = [cri, cci];
     }
 
@@ -277,19 +279,19 @@ export default class Selector {
   }
 
   setEnd(ri, ci, moving = true) {
-    const { data, lastri, lastci } = this;
+    const { getData, lastri, lastci } = this;
     if (moving) {
       if (ri === lastri && ci === lastci) return;
       this.lastri = ri;
       this.lastci = ci;
     }
-    this.range = data.calSelectedRangeByEnd(ri, ci);
-    setAllAreaOffset.call(this, this.data.getSelectedRect());
+    this.range = getData().calSelectedRangeByEnd(ri, ci);
+    setAllAreaOffset.call(this, this.getData().getSelectedRect());
   }
 
   reset() {
-    // console.log('::::', this.data);
-    const { eri, eci } = this.data.selector.range;
+    // console.log('::::', this.getData());
+    const { eri, eci } = this.getData().selector.range;
     this.setEnd(eri, eci);
   }
 
@@ -312,7 +314,7 @@ export default class Selector {
       this.arange = new CellRange(sri, nci, eri, sci - 1);
       // this.saIndexes = [sri, nci];
       // this.eaIndexes = [eri, sci - 1];
-      // data.calRangeIndexes2(
+      // this.getData().calRangeIndexes2(
     } else if (srn > 0) {
       // top
       // console.log('top');
@@ -343,7 +345,7 @@ export default class Selector {
     }
     if (this.arange !== null) {
       // console.log(this.saIndexes, ':', this.eaIndexes);
-      const offset = this.data.getRect(this.arange);
+      const offset = this.getData().getRect(this.arange);
       offset.width += 2;
       offset.height += 2;
       const { br, l, t, tl } = this;
@@ -361,7 +363,7 @@ export default class Selector {
   }
 
   showClipboard() {
-    const coffset = this.data.getClipboardRect();
+    const coffset = this.getData().getClipboardRect();
     setAllClipboardOffset.call(this, coffset);
     ["br", "l", "t", "tl"].forEach((property) => {
       this[property].showClipboard();

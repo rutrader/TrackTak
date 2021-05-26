@@ -1,14 +1,14 @@
-import helper from './helper';
+import helper from "./helper";
 
 class Cols {
-  constructor({
-    len, width, indexWidth, minWidth,
-  }) {
+  constructor(getCol, isVariablesSpreadsheet) {
     this._ = {};
-    this.len = len;
-    this.width = width;
-    this.indexWidth = indexWidth;
-    this.minWidth = minWidth;
+    this.len = getCol().len;
+    this.width = getCol().width;
+    this.indexWidth = isVariablesSpreadsheet
+      ? getCol().variablesSheetIndexWidth
+      : getCol().indexWidth;
+    this.minWidth = getCol().minWidth;
   }
 
   setData(d) {
@@ -70,7 +70,7 @@ class Cols {
   }
 
   sumWidth(min, max) {
-    return helper.rangeSum(min, max, i => this.getWidth(i));
+    return helper.rangeSum(min, max, (i) => this.getWidth(i));
   }
 
   totalWidth() {
@@ -79,6 +79,4 @@ class Cols {
 }
 
 export default {};
-export {
-  Cols,
-};
+export { Cols };

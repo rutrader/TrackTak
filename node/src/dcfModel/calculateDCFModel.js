@@ -16,23 +16,23 @@ const calculateDCFModel = (cells, scope) => {
     13,
   );
 
-  const hyperFormula = HyperFormula.buildFromArray(sheetData, {
+  const hyperformula = HyperFormula.buildFromArray(sheetData, {
     licenseKey: "05054-b528f-a10c4-53f2a-04b57",
   });
 
   Object.keys(scope).forEach((key) => {
     const value = scope[key] || 0;
 
-    if (hyperFormula.isItPossibleToChangeNamedExpression(key, value)) {
-      hyperFormula.changeNamedExpression(key, value);
+    if (hyperformula.isItPossibleToChangeNamedExpression(key, value)) {
+      hyperformula.changeNamedExpression(key, value);
     }
 
-    if (hyperFormula.isItPossibleToAddNamedExpression(key, value)) {
-      hyperFormula.addNamedExpression(key, value);
+    if (hyperformula.isItPossibleToAddNamedExpression(key, value)) {
+      hyperformula.addNamedExpression(key, value);
     }
   });
 
-  const dataSheetValues = hyperFormula.getSheetValues(0);
+  const dataSheetValues = hyperformula.getSheetValues(0);
 
   return dataSheetValues;
 };

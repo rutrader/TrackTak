@@ -44,12 +44,12 @@ export default class Formula {
     return new CellRange(...cellRangeArgs);
   }
 
-  constructor(textEl, cellEl, inputText, data, editorRender) {
+  constructor(textEl, cellEl, inputText, getData, editorRender, eventEmitter) {
     this.el = textEl.el;
     this.cellEl = cellEl.el;
     this.inputText = inputText;
-    this.data = data;
     this.editorRender = editorRender;
+    this.eventEmitter = eventEmitter;
 
     this.cells = [];
     this.cell = null;
@@ -57,6 +57,7 @@ export default class Formula {
     this.cellSelectEndRowCol = null;
 
     let cellLastSelectionColor = null;
+
     document.addEventListener("selectionchange", () => {
       if (document.activeElement !== this.el) return;
 
@@ -157,7 +158,7 @@ export default class Formula {
       let cellRange = new CellRange(...cellRangeArgs);
 
       // Reapply merge cells after translation
-      cellRange = this.data.merges.union(cellRange);
+      cellRange = this.getData().merges.union(cellRange);
 
       generalSelectCell.call(
         this,
@@ -181,10 +182,6 @@ export default class Formula {
     this.inputText = text;
   };
 
-  setData = (d) => {
-    this.data = d;
-  };
-
   selectCell(ri, ci) {
     // To represent a single cell (no range), pass start and end row/col as
     // equal
@@ -202,7 +199,7 @@ export default class Formula {
 
       // Account for merge cells
       let cr = new CellRange(...cellRangeArgs);
-      cr = this.data.merges.union(cr);
+      cr = this.getData().merges.union(cr);
 
       // Keep current cell range start, but use new range end values
       generalSelectCell.call(this, cr.sri, cr.sci, cr.eri, cr.eci);
@@ -338,7 +335,6 @@ export default class Formula {
 
   renderCells() {
     const cells = this.cells;
-    const data = this.data;
     let cellHtml = "";
 
     for (let cell of cells) {
@@ -346,8 +342,8 @@ export default class Formula {
       if (color) {
         const cellRange = this.getCellPositionRange(cell, this.inputText);
 
-        const cellRangeIncludingMerges = data.merges.union(cellRange);
-        const box = data.getRect(cellRangeIncludingMerges);
+        const cellRangeIncludingMerges = this.getData().merges.union(cellRange);
+        const box = this.getData().getRect(cellRangeIncludingMerges);
         const { left, top, width, height } = box;
         cellHtml += renderCell(
           left,

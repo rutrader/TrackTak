@@ -1,20 +1,18 @@
 import { h } from "./element";
 import { bind, mouseMoveUp, bindTouch } from "./event";
-import { t } from "../locale/locale";
-import { getResizer } from "./getResizer";
-import { getScrollbar } from "./getScrollbar";
-import Selector from "./selector";
-import { getEditor } from "./editor";
-import Print from "./print";
-import { getContextMenu } from "./contextmenu";
-import Table from "./table";
-import Toolbar from "./toolbar/index";
-import ModalValidation from "./modal_validation";
-import SortFilter from "./sort_filter";
 import { xtoast } from "./message";
 import { cssPrefix } from "../config";
-import { HyperFormula } from "hyperformula";
 import spreadsheetEvents from "../core/spreadsheetEvents";
+import { makeGetViewWidthHeight } from "./makeGetViewWidthHeight";
+import { getResizer } from "./getResizer";
+import { getScrollbar } from "./getScrollbar";
+import { HyperFormula } from "hyperformula";
+import { getEditor } from "./editor";
+import ModalValidation from "./modal_validation";
+import { getContextMenu } from "./contextmenu";
+import Selector from "./selector";
+import SortFilter from "./sort_filter";
+import { t } from "../locale/locale";
 
 /**
  * @desc throttle fn
@@ -35,111 +33,7 @@ function throttle(func, wait) {
   };
 }
 
-export const getSheet = (
-  targetEl,
-  data,
-  hyperFormula,
-  formats,
-  eventEmitter,
-) => {
-  const on = (eventName, func) => {
-    eventMap.set(eventName, func);
-  };
-
-  const trigger = (eventName, ...args) => {
-    if (eventMap.has(eventName)) {
-      eventMap.get(eventName)(...args);
-    }
-  };
-
-  const resetData = (datum) => {
-    // before
-    editor.clear();
-
-    // after
-    data = datum;
-    verticalScrollbarSet();
-    horizontalScrollbarSet();
-    editor.resetData(data);
-    toolbar.resetData(data);
-    print.resetData(data);
-    selector.resetData(data);
-    table.resetData(data);
-  };
-
-  const setData = (data) => {
-    data.setData(data);
-    sheetReset();
-  };
-
-  // freeze rows or cols
-  const freeze = (ri, ci) => {
-    data.setFreeze(ri, ci);
-    sheetReset();
-  };
-
-  const undo = () => {
-    data.undo();
-    sheetReset();
-  };
-
-  const redo = () => {
-    data.redo();
-    sheetReset();
-  };
-
-  const reload = () => {
-    sheetReset();
-  };
-
-  const getRect = () => {
-    return { width: data.viewWidth(), height: data.viewHeight() };
-  };
-
-  const getTableOffset = () => {
-    const { rows, cols } = data;
-    const { width, height } = getRect();
-    return {
-      width: width - cols.indexWidth,
-      height: height - rows.height,
-      left: cols.indexWidth,
-      top: rows.height,
-    };
-  };
-
-  const eventMap = new Map();
-  const { view, showToolbar, showContextmenu } = data.settings;
-  const el = h("div", `${cssPrefix}-sheet`);
-  const toolbar = new Toolbar(
-    data,
-    view.width,
-    formats,
-    eventEmitter,
-    !showToolbar,
-  );
-  const print = new Print(data);
-  let focusing;
-
-  targetEl.children(toolbar.el, el, print.el);
-
-  // table
-  const tableEl = h("canvas", `${cssPrefix}-table`);
-  // resizer
-  const rowResizer = getResizer(
-    eventEmitter,
-    spreadsheetEvents.rowResizer,
-    data.rows.height,
-  );
-  const colResizer = getResizer(
-    eventEmitter,
-    spreadsheetEvents.colResizer,
-    data.cols.minWidth,
-    true,
-  );
-  // scrollbar
-  const verticalScrollbar = getScrollbar(eventEmitter, true);
-  const horizontalScrollbar = getScrollbar(eventEmitter, false);
-  // editor
+const getFormulaSuggestions = () => {
   const formulaSuggestions = HyperFormula.getRegisteredFunctionNames(
     "enGB",
   ).map((formulaName) => {
@@ -151,28 +45,173 @@ export const getSheet = (
       title: () => t(`formula.${escapedFormulaName}`) || formulaName,
     };
   });
-  const editor = getEditor(formulaSuggestions, data, eventEmitter);
-  // data validation
-  const modalValidation = new ModalValidation();
-  // contextMenu
-  const contextMenu = getContextMenu(
-    () => getRect(),
+
+  return formulaSuggestions;
+};
+
+export const buildSheet = (getOptions, getData, eventEmitter) => {
+  const rowResizer = getResizer(
     eventEmitter,
-    !showContextmenu,
+    spreadsheetEvents.rowResizer,
+    () => getOptions().row.height,
   );
-  // selector
-  const selector = new Selector(data);
+  const colResizer = getResizer(
+    eventEmitter,
+    spreadsheetEvents.colResizer,
+    () => getOptions().col.minWidth,
+    true,
+  );
+  const verticalScrollbar = getScrollbar(eventEmitter, true);
+  const horizontalScrollbar = getScrollbar(eventEmitter, false);
+  const editor = getEditor(getData, getFormulaSuggestions(), eventEmitter);
+  const modalValidation = new ModalValidation();
+  const getViewWidthHeight = makeGetViewWidthHeight(getOptions);
+  const contextMenu = getContextMenu(
+    getViewWidthHeight,
+    eventEmitter,
+    () => !getOptions().showContextMenu,
+  );
+  const selector = new Selector(eventEmitter, getData);
+  const sortFilter = new SortFilter();
+
+  return () => ({
+    rowResizer,
+    colResizer,
+    verticalScrollbar,
+    horizontalScrollbar,
+    editor,
+    modalValidation,
+    contextMenu,
+    selector,
+    sortFilter,
+  });
+};
+
+export const getSheet = (
+  builder,
+  rootEl,
+  table,
+  eventEmitter,
+  hyperformula,
+  getOptions,
+  getData,
+  isVariablesSpreadsheet,
+) => {
+  const {
+    rowResizer,
+    colResizer,
+    verticalScrollbar,
+    horizontalScrollbar,
+    editor,
+    modalValidation,
+    contextMenu,
+    selector,
+    sortFilter,
+  } = builder();
+  let datas = [];
+
+  eventEmitter.on(spreadsheetEvents.bottombar.selectSheet, (index) => {
+    const d = datas[index];
+
+    switchData(d);
+  });
+
+  eventEmitter.on(spreadsheetEvents.bottombar.updateSheet, (index, value) => {
+    datas[index].name = value;
+  });
+
+  eventEmitter.on(
+    spreadsheetEvents.bottombar.deleteSheet,
+    (oldIndex, nindex) => {
+      if (oldIndex >= 0) {
+        datas.splice(oldIndex, 1);
+
+        if (nindex >= 0) {
+          switchData(datas[nindex]);
+        }
+      }
+    },
+  );
+
+  const makeSetDatasheets = (getDataProxy) => (dataSheets) => {
+    datas = [];
+
+    eventEmitter.emit(spreadsheetEvents.sheet.setDatasheets);
+
+    dataSheets.forEach((dataSheet, i) => {
+      const data = addData(getDataProxy, dataSheet.name, i === 0);
+
+      if (hyperformula.isItPossibleToAddSheet(dataSheet.name)) {
+        hyperformula.addSheet(dataSheet.name);
+      }
+
+      data.setData(dataSheet);
+    });
+
+    if (!dataSheets.length) {
+      // Add dummy data for now until dataProxy is refactored
+      addData(getDataProxy);
+    }
+
+    switchData(datas[0]);
+    sheetReset();
+    selectorSet(false, 0, 0);
+  };
+
+  const addData = (
+    getDataProxy,
+    name = `sheet${datas.length + 1}`,
+    active = true,
+  ) => {
+    const data = getDataProxy(name);
+
+    datas.push(data);
+
+    eventEmitter.emit(spreadsheetEvents.sheet.addData, name, active);
+
+    return data;
+  };
+
+  const switchData = (newData) => {
+    eventEmitter.emit(spreadsheetEvents.sheet.switchData, newData);
+
+    verticalScrollbarSet();
+    horizontalScrollbarSet();
+  };
+
+  // freeze rows or cols
+  const freeze = (ri, ci) => {
+    getData().setFreeze(ri, ci);
+    sheetReset();
+  };
+
+  const undo = () => {
+    getData().undo();
+    sheetReset();
+  };
+
+  const redo = () => {
+    getData().redo();
+    sheetReset();
+  };
+
+  const reload = () => {
+    sheetReset();
+  };
+
+  const el = h("div", `${cssPrefix}-sheet`);
+
+  let focusing;
+
   const overlayerCEl = h("div", `${cssPrefix}-overlayer-content`).children(
     editor.el,
     selector.el,
     editor.cellEl,
   );
   const overlayerEl = h("div", `${cssPrefix}-overlayer`).child(overlayerCEl);
-  // sortFilter
-  const sortFilter = new SortFilter();
-  // root element
+
   el.children(
-    tableEl,
+    table.el,
     overlayerEl.el,
     rowResizer.el,
     colResizer.el,
@@ -182,25 +221,18 @@ export const getSheet = (
     modalValidation.el,
     sortFilter.el,
   );
-  // table
-  const table = new Table(tableEl.el, data, hyperFormula, formats);
   sheetInitEvents();
-  sheetReset();
-  // init selector [0, 0]
-  selectorSet(false, 0, 0);
 
-  Object.values(spreadsheetEvents.toolbar).forEach((key) => {
-    eventEmitter.on(key, (type, value) => toolbarChange(type, value));
-  });
+  rootEl.child(el);
 
   function scrollbarMove() {
-    const { l, t, left, top, width, height } = data.getSelectedRect();
-    const tableOffset = getTableOffset();
+    const { l, t, left, top, width, height } = getData().getSelectedRect();
+    const tableOffset = table.getOffset();
     // console.log(',l:', l, ', left:', left, ', tOffset.left:', tableOffset.width);
     if (Math.abs(left) + width > tableOffset.width) {
       horizontalScrollbar.move({ left: l + width - tableOffset.width });
     } else {
-      const fsw = data.freezeTotalWidth();
+      const fsw = getData().freezeTotalWidth();
       if (left < fsw) {
         horizontalScrollbar.move({ left: l - 1 - fsw });
       }
@@ -209,7 +241,7 @@ export const getSheet = (
     if (Math.abs(top) + height > tableOffset.height) {
       verticalScrollbar.move({ top: t + height - tableOffset.height - 1 });
     } else {
-      const fsh = data.freezeTotalHeight();
+      const fsh = getData().freezeTotalHeight();
       if (top < fsh) {
         verticalScrollbar.move({ top: t - 1 - fsh });
       }
@@ -225,22 +257,24 @@ export const getSheet = (
   ) {
     if (ri === -1 && ci === -1) return;
     contextMenu.setMode(ri === -1 || ci === -1 ? "row-col" : "range");
-    const cell = data.getCell(ri, ci);
+    const cell = getData().getCell(ri, ci);
     if (multiple) {
       selector.setEnd(ri, ci, moving);
-      trigger("cells-selected", cell, selector.range);
+      eventEmitter.emit(
+        spreadsheetEvents.sheet.cellsSelected,
+        cell,
+        selector.range,
+      );
     } else {
-      // trigger click event
       selector.set(ri, ci, indexesUpdated);
-      trigger("cell-selected", cell, ri, ci);
+      eventEmitter.emit(spreadsheetEvents.sheet.cellSelected, cell, ri, ci);
     }
-    toolbar.reset();
   }
 
   // multiple: boolean
   // direction: left | right | up | down | row-first | row-last | col-first | col-last
   function selectorMove(multiple, direction) {
-    const { rows, cols } = data;
+    const { rows, cols } = getData();
     let [ri, ci] = selector.indexes;
     const { eri, eci } = selector.range;
     if (multiple) {
@@ -280,14 +314,14 @@ export const getSheet = (
     if (evt.target.className === `${cssPrefix}-resizer-hover`) return;
     const { offsetX, offsetY } = evt;
 
-    const { rows, cols } = data;
-    if (offsetX > cols.indexWidth && offsetY > rows.height) {
+    const { rows, cols } = getData();
+    if (offsetX > cols.indexWidth && offsetY > rows.indexHeight) {
       rowResizer.hide();
       colResizer.hide();
       return;
     }
-    const tRect = tableEl.box();
-    const cRect = data.getCellRectByXY(evt.offsetX, evt.offsetY);
+    const tRect = table.el.box();
+    const cRect = getData().getCellRectByXY(evt.offsetX, evt.offsetY);
     if (cRect.ri >= 0 && cRect.ci === -1) {
       cRect.width = cols.indexWidth;
       rowResizer.show(cRect, {
@@ -302,7 +336,7 @@ export const getSheet = (
       rowResizer.hide();
     }
     if (cRect.ri === -1 && cRect.ci >= 0) {
-      cRect.height = rows.height;
+      cRect.height = rows.indexHeight;
       colResizer.show(cRect, {
         height: tRect.height,
       });
@@ -324,7 +358,7 @@ export const getSheet = (
     const { left } = horizontalScrollbar.scroll();
     // console.log('evt:::', evt.wheelDelta, evt.detail * 40);
 
-    const { rows, cols } = data;
+    const { rows, cols } = getData();
 
     // deltaY for vertical delta
     const { deltaY, deltaX } = evt;
@@ -342,14 +376,14 @@ export const getSheet = (
     const moveY = (vertical) => {
       if (vertical > 0) {
         // up
-        const ri = data.scroll.ri + 1;
+        const ri = getData().scroll.ri + 1;
         if (ri < rows.len) {
           const rh = loopValue(ri, (i) => rows.getHeight(i));
           verticalScrollbar.move({ top: top + rh - 1 });
         }
       } else {
         // down
-        const ri = data.scroll.ri - 1;
+        const ri = getData().scroll.ri - 1;
         if (ri >= 0) {
           const rh = loopValue(ri, (i) => rows.getHeight(i));
           verticalScrollbar.move({ top: ri === 0 ? 0 : top - rh });
@@ -361,14 +395,14 @@ export const getSheet = (
     const moveX = (horizontal) => {
       if (horizontal > 0) {
         // left
-        const ci = data.scroll.ci + 1;
+        const ci = getData().scroll.ci + 1;
         if (ci < cols.len) {
           const cw = loopValue(ci, (i) => cols.getWidth(i));
           horizontalScrollbar.move({ left: left + cw - 1 });
         }
       } else {
         // right
-        const ci = data.scroll.ci - 1;
+        const ci = getData().scroll.ci - 1;
         if (ci >= 0) {
           const cw = loopValue(ci, (i) => cols.getWidth(i));
           horizontalScrollbar.move({ left: ci === 0 ? 0 : left - cw });
@@ -398,33 +432,37 @@ export const getSheet = (
   }
 
   function verticalScrollbarSet() {
-    const { height } = getTableOffset();
-    const erth = data.exceptRowTotalHeight(0, -1);
+    const { height } = table.getOffset();
+    const erth = getData().exceptRowTotalHeight(0, -1);
     // console.log('erth:', erth);
-    verticalScrollbar.set(height, data.rows.totalHeight() - erth);
+    verticalScrollbar.set(height, getData().rows.totalHeight() - erth);
   }
 
   function horizontalScrollbarSet() {
-    const { width } = getTableOffset();
-    if (data) {
-      horizontalScrollbar.set(width, data.cols.totalWidth());
+    const { width } = table.getOffset();
+    if (getData()) {
+      horizontalScrollbar.set(width, getData().cols.totalWidth());
     }
   }
 
   function sheetFreeze() {
-    const [ri, ci] = data.getFreeze();
+    const [ri, ci] = getData().getFreeze();
     if (ri > 0 || ci > 0) {
-      const fwidth = data.freezeTotalWidth();
-      const fheight = data.freezeTotalHeight();
+      const fwidth = getData().freezeTotalWidth();
+      const fheight = getData().freezeTotalHeight();
       editor.setFreezeLengths(fwidth, fheight);
     }
     selector.resetAreaOffset();
   }
 
   function sheetReset() {
-    const tOffset = getTableOffset();
-    const vRect = getRect();
-    tableEl.attr(vRect);
+    const getViewWidthHeight = makeGetViewWidthHeight(
+      getOptions,
+      isVariablesSpreadsheet,
+    );
+    const tOffset = table.getOffset();
+    const vRect = getViewWidthHeight();
+    table.el.attr(vRect);
     overlayerEl.offset(vRect);
     overlayerCEl.offset(tOffset);
     el.css("width", `${vRect.width}px`);
@@ -432,71 +470,65 @@ export const getSheet = (
     horizontalScrollbarSet();
     sheetFreeze();
     table.render();
-    toolbar.reset();
+    eventEmitter.emit(spreadsheetEvents.sheet.sheetReset);
     selector.reset();
   }
 
   function clearClipboard() {
-    data.clearClipboard();
+    getData().clearClipboard();
     selector.hideClipboard();
   }
 
   function copy() {
-    data.copy();
+    getData().copy();
     selector.showClipboard();
   }
 
   function cut() {
-    data.cut();
+    getData().cut();
     selector.showClipboard();
   }
 
   function paste(what, evt) {
-    if (data.settings.mode === "read") return;
-    if (data.paste(what, (msg) => xtoast("Tip", msg))) {
+    if (getOptions().mode === "read") return;
+    if (getData().paste(what, (msg) => xtoast("Tip", msg))) {
       sheetReset();
     } else if (evt) {
       const cdata = evt.clipboardData.getData("text/plain");
-      data.pasteFromText(cdata);
+      getData().pasteFromText(cdata);
       sheetReset();
     }
   }
 
   function hideRowsOrCols() {
-    data.hideRowsOrCols();
+    getData().hideRowsOrCols();
     sheetReset();
   }
 
   function unhideRowsOrCols(type, index) {
-    data.unhideRowsOrCols(type, index);
+    getData().unhideRowsOrCols(type, index);
     sheetReset();
   }
 
   function autofilter() {
-    data.changeAutofilter();
+    getData().changeAutofilter();
     sheetReset();
-  }
-
-  function toolbarChangePaintformatPaste() {
-    if (toolbar.paintformatActive()) {
-      paste("format");
-      clearClipboard();
-      toolbar.paintformatToggle();
-    }
   }
 
   function overlayerMousedown(evt) {
     const { offsetX, offsetY } = evt;
     const isAutofillEl =
       evt.target.className === `${cssPrefix}-selector-corner`;
-    const cellRect = data.getCellRectByXY(offsetX, offsetY);
+    const cellRect = getData().getCellRectByXY(offsetX, offsetY);
     const { left, top, width, height } = cellRect;
     let { ri, ci } = cellRect;
     // sort or filter
-    const { autoFilter } = data;
+    const { autoFilter } = getData();
     if (autoFilter.includes(ri, ci)) {
       if (left + width - 20 < offsetX && top + height - 20 < offsetY) {
-        const items = autoFilter.items(ci, (r, c) => data.rows.getCell(r, c));
+        const items = autoFilter.items(ci, (r, c) =>
+          getData().rows.getCell(r, c),
+        );
         sortFilter.hide();
         sortFilter.set(
           ci,
@@ -520,7 +552,7 @@ export const getSheet = (
       mouseMoveUp(
         window,
         (e) => {
-          ({ ri, ci } = data.getCellRectByXY(e.offsetX, e.offsetY));
+          ({ ri, ci } = getData().getCellRectByXY(e.offsetX, e.offsetY));
           if (isAutofillEl) {
             selector.showAutofill(ri, ci);
           } else if (e.buttons === 1 && !e.shiftKey) {
@@ -528,19 +560,17 @@ export const getSheet = (
           }
         },
         () => {
-          if (
-            isAutofillEl &&
-            selector.arange &&
-            data.settings.mode !== "read"
-          ) {
+          if (isAutofillEl && selector.arange && getOptions().mode !== "read") {
             if (
-              data.autofill(selector.arange, "all", (msg) => xtoast("Tip", msg))
+              getData().autofill(selector.arange, "all", (msg) =>
+                xtoast("Tip", msg),
+              )
             ) {
               table.render();
             }
           }
           selector.hideAutofill();
-          toolbarChangePaintformatPaste();
+          eventEmitter.emit(spreadsheetEvents.sheet.mouseMoveUp);
         },
       );
     }
@@ -553,8 +583,8 @@ export const getSheet = (
   }
 
   function editorSetOffset() {
-    const sOffset = data.getSelectedRect();
-    const tOffset = getTableOffset();
+    const sOffset = getData().getSelectedRect();
+    const tOffset = table.getOffset();
     let sPosition = "top";
     // console.log('sOffset:', sOffset, ':', tOffset);
     if (sOffset.top > tOffset.height / 2) {
@@ -564,14 +594,17 @@ export const getSheet = (
   }
 
   function editorSet() {
-    if (data.settings.mode === "read") return;
+    if (getOptions().mode === "read") return;
     editorSetOffset();
-    editor.setCell(data.getSelectedCell(), data.getSelectedValidator());
+    editor.setCell(
+      getData().getSelectedCell(),
+      getData().getSelectedValidator(),
+    );
     clearClipboard();
   }
 
   function verticalScrollbarMove(distance) {
-    data.scrolly(distance, () => {
+    getData().scrolly(distance, () => {
       selector.resetBRLAreaOffset();
       editorSetOffset();
       table.render();
@@ -579,7 +612,7 @@ export const getSheet = (
   }
 
   function horizontalScrollbarMove(distance) {
-    data.scrollx(distance, () => {
+    getData().scrollx(distance, () => {
       selector.resetBRTAreaOffset();
       editorSetOffset();
       table.render();
@@ -588,7 +621,7 @@ export const getSheet = (
 
   function rowResizerFinished(cRect, distance) {
     const { ri } = cRect;
-    data.rows.setHeight(ri, distance);
+    getData().rows.setHeight(ri, distance);
     table.render();
     selector.resetAreaOffset();
     verticalScrollbarSet();
@@ -597,7 +630,7 @@ export const getSheet = (
 
   function colResizerFinished(cRect, distance) {
     const { ci } = cRect;
-    data.cols.setWidth(ci, distance);
+    getData().cols.setWidth(ci, distance);
 
     table.render();
     selector.resetAreaOffset();
@@ -606,83 +639,53 @@ export const getSheet = (
   }
 
   function dataSetCellText(text, state = "finished") {
-    if (data.settings.mode === "read") return;
-    data.setSelectedCellText(text, state);
-    const { ri, ci } = data.selector;
+    if (getOptions().mode === "read") return;
+    getData().setSelectedCellText(text, state);
+    const { ri, ci } = getData().selector;
     if (state === "finished") {
-      trigger("cell-edited-finished", text, ri, ci);
+      eventEmitter.emit(
+        spreadsheetEvents.sheet.cellEditedFinished,
+        text,
+        ri,
+        ci,
+      );
     } else {
-      trigger("cell-edited", text, ri, ci);
+      eventEmitter.emit(spreadsheetEvents.sheet.cellEdited, text, ri, ci);
       table.render();
     }
   }
 
   function insertDeleteRowColumn(type) {
-    if (data.settings.mode === "read") return;
+    if (getOptions().mode === "read") return;
     if (type === "insert-row") {
-      data.insert("row");
+      getData().insert("row");
     } else if (type === "delete-row") {
-      data.deleteData("row");
+      getData().deleteData("row");
     } else if (type === "insert-column") {
-      data.insert("column");
+      getData().insert("column");
     } else if (type === "delete-column") {
-      data.deleteData("column");
+      getData().deleteData("column");
     } else if (type === "delete-cell") {
-      data.deleteCell();
+      getData().deleteCell();
     } else if (type === "delete-cell-format") {
-      data.deleteCell("format");
+      getData().deleteCell("format");
     } else if (type === "delete-cell-text") {
-      data.deleteCell("text");
+      getData().deleteCell("text");
     } else if (type === "cell-printable") {
-      data.setSelectedCellAttr("printable", true);
+      getData().setSelectedCellAttr("printable", true);
     } else if (type === "cell-non-printable") {
-      data.setSelectedCellAttr("printable", false);
+      getData().setSelectedCellAttr("printable", false);
     } else if (type === "cell-editable") {
-      data.setSelectedCellAttr("editable", true);
+      getData().setSelectedCellAttr("editable", true);
     } else if (type === "cell-non-editable") {
-      data.setSelectedCellAttr("editable", false);
+      getData().setSelectedCellAttr("editable", false);
     }
     clearClipboard();
     sheetReset();
   }
 
-  function toolbarChange(type, value) {
-    if (type === "undo") {
-      undo();
-    } else if (type === "redo") {
-      redo();
-    } else if (type === "print") {
-      print.preview();
-    } else if (type === "paintformat") {
-      if (value === true) copy();
-      else clearClipboard();
-    } else if (type === "clearformat") {
-      insertDeleteRowColumn("delete-cell-format");
-    } else if (type === "link") {
-      // link
-    } else if (type === "chart") {
-      // chart
-    } else if (type === "autofilter") {
-      // filter
-      autofilter();
-    } else if (type === "freeze") {
-      if (value) {
-        const { ri, ci } = data.selector;
-        freeze(ri, ci);
-      } else {
-        freeze(0, 0);
-      }
-    } else {
-      data.setSelectedCellAttr(type, value);
-      if (type === "formula" && !data.selector.multiple()) {
-        editorSet();
-      }
-      sheetReset();
-    }
-  }
-
   function sortFilterChange(ci, order, operator, value) {
-    data.setAutoFilter(ci, order, operator, value);
+    getData().setAutoFilter(ci, order, operator, value);
     sheetReset();
   }
 
@@ -703,14 +706,14 @@ export const getSheet = (
           editor.formulaCellSelecting()
         ) {
           const { offsetX, offsetY } = evt;
-          const { ri, ci } = data.getCellRectByXY(offsetX, offsetY);
+          const { ri, ci } = getData().getCellRectByXY(offsetX, offsetY);
           editor.formulaSelectCell(ri, ci);
 
           let lastCellRect = { ri: null, ci: null };
           mouseMoveUp(
             window,
             (e) => {
-              const cellRect = data.getCellRectByXY(e.offsetX, e.offsetY);
+              const cellRect = getData().getCellRectByXY(e.offsetX, e.offsetY);
 
               const hasRangeChanged =
                 cellRect.ri != lastCellRect.ri ||
@@ -735,7 +738,7 @@ export const getSheet = (
         // the left mouse button: mousedown → mouseup → click
         // the right mouse button: mousedown → contenxtmenu → mouseup
         if (evt.buttons === 2) {
-          if (data.xyInSelectedRect(evt.offsetX, evt.offsetY)) {
+          if (getData().xyInSelectedRect(evt.offsetX, evt.offsetY)) {
             contextMenu.setPosition(evt.offsetX, evt.offsetY);
           } else {
             overlayerMousedown(evt);
@@ -763,9 +766,6 @@ export const getSheet = (
         overlayerTouch(direction, d);
       },
     });
-
-    // toolbar change
-    toolbar.change = (type, value) => toolbarChange(type, value);
 
     // sort filter ok
     sortFilter.ok = (ci, order, o, v) => sortFilterChange(ci, order, o, v);
@@ -813,9 +813,9 @@ export const getSheet = (
     // modal validation
     modalValidation.change = (action, ...args) => {
       if (action === "save") {
-        data.addValidation(...args);
+        getData().addValidation(...args);
       } else {
-        data.removeValidation();
+        getData().removeValidation();
       }
     };
 
@@ -823,7 +823,7 @@ export const getSheet = (
       spreadsheetEvents.rightClickMenu.clickContextMenu,
       (type) => {
         if (type === "validation") {
-          modalValidation.setValue(data.getSelectedValidation());
+          modalValidation.setValue(getData().getSelectedValidation());
         } else if (type === "copy") {
           copy();
         } else if (type === "cut") {
@@ -887,24 +887,6 @@ export const getSheet = (
             cut();
             evt.preventDefault();
             break;
-          case 83:
-            // ctrl + s
-            eventEmitter.emit(
-              spreadsheetEvents.toolbar.toggleItem,
-              "strike",
-              toolbar.strikeEl.toggleItem.toggle(),
-            );
-            evt.preventDefault();
-            break;
-          case 85:
-            // ctrl + u
-            eventEmitter.emit(
-              spreadsheetEvents.toolbar.toggleItem,
-              "underline",
-              toolbar.underlineEl.toggleItem.toggle(),
-            );
-            evt.preventDefault();
-            break;
           case 86:
             // ctrl + v
             // => paste
@@ -932,35 +914,20 @@ export const getSheet = (
             break;
           case 32:
             // ctrl + space, all cells in col
-            selectorSet(false, -1, data.selector.ci, false);
+            selectorSet(false, -1, getData().selector.ci, false);
             evt.preventDefault();
-            break;
-          case 66:
-            // ctrl + B
-            eventEmitter.emit(
-              spreadsheetEvents.toolbar.toggleItem,
-              "font-bold",
-              toolbar.boldEl.toggleItem.toggle(),
-            );
-            break;
-          case 73:
-            // ctrl + I
-            eventEmitter.emit(
-              spreadsheetEvents.toolbar.toggleItem,
-              "font-italic",
-              toolbar.italicEl.toggleItem.toggle(),
-            );
             break;
           default:
             break;
         }
+        eventEmitter.emit(spreadsheetEvents.sheet.ctrlKeyDown, evt, keyCode);
       } else {
         // console.log('evt.keyCode:', evt.keyCode);
         switch (keyCode) {
           case 32:
             if (shiftKey) {
               // shift + space, all cells in row
-              selectorSet(false, data.selector.ri, -1, false);
+              selectorSet(false, getData().selector.ri, -1, false);
             }
             break;
           case 27: // esc
@@ -1026,16 +993,25 @@ export const getSheet = (
 
   return {
     el,
-    on,
-    trigger,
-    resetData,
-    setData,
+    makeSetDatasheets,
+    addData,
+    switchData,
     freeze,
     undo,
     redo,
     reload,
-    getRect,
-    getTableOffset,
+    copy,
+    clearClipboard,
+    paste,
+    insertDeleteRowColumn,
+    autofilter,
+    editorSet,
+    sheetReset,
     table,
+    datas,
+    getOptions,
+    getData,
+    rootEl,
+    eventEmitter,
   };
 };

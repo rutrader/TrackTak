@@ -3,6 +3,7 @@ const spreadsheetEvents = {
     addSheet: "bb-add-sheet",
     selectSheet: "bb-select-sheet",
     updateSheet: "bb-update-sheet",
+    deleteSheet: "bb-delete-sheet",
     clickDropdownMore: "bb-click-dropdown-more",
     clickContextMenu: "bb-click-context-menu",
   },
@@ -10,21 +11,37 @@ const spreadsheetEvents = {
     clickContextMenu: "rcm-click-context-menu",
   },
   editor: {
-    change: "e_change",
+    change: "e-change",
   },
   rowResizer: {
-    finished: "rr_finished",
-    unhide: "rr_unhide",
+    finished: "rr-finished",
+    unhide: "rr-unhide",
   },
   colResizer: {
-    finished: "cr_finished",
-    unhide: "cr_unhide",
+    finished: "cr-finished",
+    unhide: "cr-unhide",
   },
   verticalScrollbar: {
-    move: "vsb_move",
+    move: "vsb-move",
   },
   horizontalScrollbar: {
-    move: "hsb_move",
+    move: "hsb-move",
+  },
+  data: {
+    change: "d-change",
+  },
+  sheet: {
+    cellSelected: "s-cell-selected",
+    cellsSelected: "s-cells-selected",
+    cellEditedFinished: "s-cell-edited-finished",
+    cellEdited: "s-cell-edited",
+    switchData: "s-switch-data",
+    sheetReset: "s-sheet-reset",
+    mouseMoveUp: "s-mouse-move-up",
+    ctrlKeyDown: "s-ctrl-key-down",
+    addData: "s-add-data",
+    deleteData: "s-delete-data",
+    setDatasheets: "s-set-datasheets",
   },
   toolbar: {
     alignChange: "tb-align-change",
@@ -37,6 +54,11 @@ const spreadsheetEvents = {
     clickIcon: "tb-click-icon",
     formatChange: "tb-format-change",
     formulaSet: "tb-formula-set",
+  },
+  variablesToolbar: {
+    sheetChange: "vtb-sheet-change",
+    toggleItem: "vtb-toggle-item",
+    clickIcon: "vtb-click-icon",
   },
 };
 
