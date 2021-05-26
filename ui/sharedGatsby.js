@@ -14,6 +14,7 @@ import theme from "./src/theme";
 import { snackbarReducer } from "./src/redux/reducers/snackbarReducer";
 import PageSpinner from "./src/components/PageSpinner";
 import setURLSearchQuery from "./src/shared/setURLSearchQuery";
+import { ProvideAuth } from "./src/hooks/useAuth";
 import TTCookieBanner from "./src/components/TTCookieBanner";
 
 const store = createStore(undefined, {
@@ -27,9 +28,11 @@ export const wrapRootElement = ({ element }) => {
   // due to a gatsby/mui bug
   return (
     <TracktakProvider store={store} theme={theme}>
-      <PageSpinner />
-      {element}
-      <TTCookieBanner />
+      <ProvideAuth>
+        <PageSpinner />
+        {element}
+        <TTCookieBanner />
+      </ProvideAuth>
     </TracktakProvider>
   );
 };

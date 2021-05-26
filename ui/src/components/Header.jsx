@@ -9,24 +9,52 @@ import {
   useTheme,
 } from "@material-ui/core";
 import React, { useState } from "react";
-import { Link } from "gatsby";
+import { Link, navigate } from "gatsby";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchTicker from "./SearchTicker";
 import TracktakLogo from "./TracktakLogo";
+import { useAuth } from "../hooks/useAuth";
+import featureToggle from "../shared/featureToggle";
 
-const rightLinks = [
-  { to: "/how-to-do-a-dcf", text: "Documentation" },
-  { to: "/stock-valuations", text: "Valuations" },
-  { to: "/contact-us", text: "Contact" },
-  {
-    to: "/about-us",
-    text: "About us",
-  },
-];
+const getRightLinks = (isAuthenticated) => {
+  const links = [
+    { to: "/how-to-do-a-dcf", text: "Documentation" },
+    { to: "/stock-valuations", text: "Valuations" },
+    { to: "/contact-us", text: "Contact" },
+    {
+      to: "/about-us",
+      text: "About us",
+    },
+  ];
 
-const allLinks = [...rightLinks];
+  if (featureToggle.AUTHENTICATION && !isAuthenticated) {
+    links.push({
+      to: "/sign-in",
+      text: "Sign in",
+    });
+  }
 
-const HeaderLink = ({ to, text, style }) => {
+  return links;
+};
+
+const allLinks = (isAuthenticated) => getRightLinks(isAuthenticated);
+
+const buttonStyle = {
+  textTransform: "none",
+  fontWeight: "bold",
+  color: (theme) => theme.palette.primary.mainTextColor,
+};
+
+const HeaderLink = ({ to, text, style, isSignOut = false }) => {
+  const { session, signOut } = useAuth();
+
+  const handleOnSignOut = () => {
+    if (session) {
+      signOut();
+      navigate("/");
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -36,18 +64,15 @@ const HeaderLink = ({ to, text, style }) => {
         ...style,
       }}
     >
-      <Button
-        sx={{
-          textTransform: "none",
-          fontSize: "16px",
-          fontWeight: "bold",
-          color: "#313450",
-        }}
-        to={to}
-        component={Link}
-      >
-        {text}
-      </Button>
+      {isSignOut ? (
+        <Button sx={buttonStyle} onClick={handleOnSignOut}>
+          Sign Out
+        </Button>
+      ) : (
+        <Button sx={buttonStyle} to={to} component={Link}>
+          {text}
+        </Button>
+      )}
     </Box>
   );
 };
@@ -57,6 +82,7 @@ const Header = ({ hideSearch }) => {
   const extraPadding = 20;
   const paddingBottom = `${theme.mixins.toolbar.minHeight + extraPadding}px`;
   const [anchorEl, setAnchorEl] = useState(null);
+  const { isAuthenticated } = useAuth();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -100,13 +126,18 @@ const Header = ({ hideSearch }) => {
             </Box>
             <Hidden mdDown implementation="css">
               <Box sx={{ display: "flex" }}>
-                {rightLinks.map((link, i) => (
+                {getRightLinks(isAuthenticated).map((link, i) => (
                   <HeaderLink
                     key={link.to}
                     sx={{ ml: i === 0 ? 2 : 0 }}
                     {...link}
                   />
                 ))}
+                {featureToggle.AUTHENTICATION && isAuthenticated && (
+                  <HeaderLink sx={{ ml: 0 }} isSignOut>
+                    Sign Out
+                  </HeaderLink>
+                )}
               </Box>
             </Hidden>
             <Hidden mdUp implementation="css">
@@ -135,7 +166,7 @@ const Header = ({ hideSearch }) => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  {allLinks.map((link) => (
+                  {allLinks(isAuthenticated).map((link) => (
                     <MenuItem
                       key={link.to}
                       to={link.to}
