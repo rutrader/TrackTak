@@ -53,7 +53,7 @@ const OurTeamSection = () => {
           color="primary"
           gutterBottom
         >
-          Our Team
+          Meet Our
         </Typography>
         <Typography
           sx={{
@@ -66,7 +66,7 @@ const OurTeamSection = () => {
           }}
           variant="h3"
         >
-          Meet Our Founders
+          Founders
         </Typography>
       </Box>
       <Box

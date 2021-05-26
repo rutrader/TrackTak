@@ -51,6 +51,10 @@ const sendReqOrGetCachedData = async (
   return setCachedData(data, cacheKey, time);
 };
 
+// switch to piscina later
+const sensitivityAnalysisWorker = getSensitivityAnalysisWorker();
+const sensitivityAnalysisApi = wrap(nodeEndpoint(sensitivityAnalysisWorker));
+
 const api = {
   getBulkFundamentals: async (exchange, query) => {
     const data = await sendReqOrGetCachedData(
@@ -137,6 +141,8 @@ const api = {
           // API doesn't yet provide a lot of country government bonds
           if (error.response.status === 404) {
             const splits = code.split("10Y");
+
+            console.log(code);
 
             if (splits[0]) {
               const country = iso3311a2
@@ -254,17 +260,11 @@ const api = {
   computeSensitivityAnalysis: async (cells, existingScope, currentScopes) => {
     const data = await sendReqOrGetCachedData(
       async () => {
-        // switch to piscina later
-        const sensitivityAnalysisWorker = getSensitivityAnalysisWorker();
-        const api = wrap(nodeEndpoint(sensitivityAnalysisWorker));
-
-        const values = await api.computeSensitivityAnalysis(
+        const values = await sensitivityAnalysisApi.computeSensitivityAnalysis(
           cells,
           existingScope,
           currentScopes,
         );
-
-        sensitivityAnalysisWorker.terminate();
 
         return values;
       },

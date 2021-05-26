@@ -1,5 +1,3 @@
-/* global document */
-/* global window */
 class Element {
   constructor(tag, className = "") {
     if (typeof tag === "string") {
@@ -95,44 +93,13 @@ class Element {
     this.el.removeChild(el);
   }
 
-  /*
-  first() {
-    return this.el.firstChild;
-  }
-
-  last() {
-    return this.el.lastChild;
-  }
-
-  remove(ele) {
-    return this.el.removeChild(ele);
-  }
-
-  prepend(ele) {
-    const { el } = this;
-    if (el.children.length > 0) {
-      el.insertBefore(ele, el.firstChild);
-    } else {
-      el.appendChild(ele);
-    }
-    return this;
-  }
-
-  prev() {
-    return this.el.previousSibling;
-  }
-
-  next() {
-    return this.el.nextSibling;
-  }
-  */
-
   destroy = () => {
     this.el.remove();
   };
 
-  child(arg) {
+  getEle(arg) {
     let ele = arg;
+
     if (typeof arg === "string") {
       ele = document.createTextNode(arg);
     } else if (arg instanceof Element) {
@@ -140,7 +107,30 @@ class Element {
     } else if (arg.el) {
       ele = arg.el.el;
     }
+    return ele;
+  }
+
+  before(arg) {
+    const ele = this.getEle(arg);
+
+    this.el.before(ele);
+
+    return this;
+  }
+
+  after(arg) {
+    const ele = this.getEle(arg);
+
+    this.el.after(ele);
+
+    return this;
+  }
+
+  child(arg) {
+    const ele = this.getEle(arg);
+
     this.el.appendChild(ele);
+
     return this;
   }
 

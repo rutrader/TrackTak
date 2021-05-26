@@ -5,7 +5,7 @@ import { cssPrefix } from "../config";
 export const getResizer = (
   eventEmitter,
   eventResizeType,
-  minDistance,
+  getMinDistance,
   vertical = false,
 ) => {
   let moving = false;
@@ -79,6 +79,8 @@ export const getResizer = (
   };
 
   const mousedownHandler = (evt) => {
+    const minDistance = getMinDistance();
+
     let startEvt = evt;
     let distance = vertical ? cRect.width : cRect.height;
     // console.log('distance:', distance);
@@ -121,7 +123,6 @@ export const getResizer = (
     vertical,
     el,
     cRect,
-    minDistance,
     showUnhide,
     hideUnhide,
     show,

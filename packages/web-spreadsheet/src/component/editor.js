@@ -16,7 +16,7 @@ function dateFormat(d) {
   return `${d.getFullYear()}-${month}-${date}`;
 }
 
-export const getEditor = (formulas, data, eventEmitter) => {
+export const getEditor = (getData, formulas, eventEmitter) => {
   function insertText({ target }, itxt) {
     const { value, selectionEnd } = target;
     const ntxt = `${value.slice(0, selectionEnd)}${itxt}${value.slice(
@@ -103,8 +103,20 @@ export const getEditor = (formulas, data, eventEmitter) => {
     suggest.setItems(formulas);
   }
 
-  let _data = data;
-  let rowHeight = _data.rows.height;
+  const render = () => {
+    if (composing) return;
+
+    const text = inputText;
+
+    if (text[0] != "=") {
+      textEl.html(text);
+    } else {
+      formula.render();
+    }
+
+    textlineEl.html(text);
+  };
+
   const suggest = new Suggest(formulas, (it) => {
     const unescapedKey = it.key.replace("\\.", ".");
     suggestItemClick(unescapedKey);
@@ -142,6 +154,19 @@ export const getEditor = (formulas, data, eventEmitter) => {
   let _cell = null;
   let inputText = "";
 
+  const formula = new Formula(
+    textEl,
+    cellEl,
+    inputText,
+    getData,
+    render,
+    eventEmitter,
+  );
+
+  eventEmitter.on(spreadsheetEvents.sheet.switchData, () => {
+    clear();
+  });
+
   const setFreezeLengths = (width, height) => {
     freeze.w = width;
     freeze.h = height;
@@ -161,12 +186,6 @@ export const getEditor = (formulas, data, eventEmitter) => {
     formula.clear();
     resetSuggestItems();
     datepicker.hide();
-  };
-
-  const resetData = (data) => {
-    _data = data;
-    rowHeight = data.rows.height;
-    formula.setData(_data);
   };
 
   const setOffset = (offset, suggestPosition = "top") => {
@@ -238,20 +257,6 @@ export const getEditor = (formulas, data, eventEmitter) => {
     });
   };
 
-  const render = () => {
-    if (composing) return;
-
-    const text = inputText;
-
-    if (text[0] != "=") {
-      textEl.html(text);
-    } else {
-      formula.render();
-    }
-
-    textlineEl.html(text);
-  };
-
   const formulaCellSelecting = () => {
     return Boolean(formula.cell);
   };
@@ -264,16 +269,12 @@ export const getEditor = (formulas, data, eventEmitter) => {
     formula.selectCellRange(ri, ci);
   };
 
-  const formula = new Formula(textEl, cellEl, inputText, _data, render);
-
   return {
-    rowHeight,
     suggest,
     datepicker,
     composing,
     areaEl,
     el,
-    data: _data,
     cellEl,
     areaOffset,
     freeze,
@@ -282,7 +283,6 @@ export const getEditor = (formulas, data, eventEmitter) => {
     formula,
     setFreezeLengths,
     clear,
-    resetData,
     setOffset,
     setCell,
     setText,

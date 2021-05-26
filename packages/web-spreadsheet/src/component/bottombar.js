@@ -14,6 +14,8 @@ const menuItems = [
   },
 ];
 
+export const bottombarHeight = 41;
+
 const getDropdownMore = (eventEmitter) => {
   const icon = getIcon("ellipsis");
   const dropdown = getDropdown(icon, "auto", false, "top-left");
@@ -75,7 +77,7 @@ const getContextMenu = (eventEmitter) => {
   };
 };
 
-export const getBottombar = (eventEmitter) => {
+export const getBottombar = (rootEl, eventEmitter) => {
   let dataNames = [];
   let activeEl = null;
   let deleteEl = null;
@@ -148,11 +150,14 @@ export const getBottombar = (eventEmitter) => {
         const [f] = items;
         activeEl = f;
         activeEl.toggle();
-        return [index, 0];
+
+        eventEmitter.emit(spreadsheetEvents.bottombar.deleteSheet, index, 0);
+        return;
       }
-      return [index, -1];
+      eventEmitter.emit(spreadsheetEvents.bottombar.deleteSheet, index, -1);
+      return;
     }
-    return [-1];
+    eventEmitter.emit(spreadsheetEvents.bottombar.deleteSheet, -1);
   };
 
   const clickSwap2 = (item) => {
@@ -189,6 +194,22 @@ export const getBottombar = (eventEmitter) => {
     contextMenu.el,
     menuEl,
   );
+
+  rootEl.child(el);
+
+  eventEmitter.on(spreadsheetEvents.bottombar.clickContextMenu, (key) => {
+    if (key === "delete") {
+      deleteItem();
+    }
+  });
+
+  eventEmitter.on(spreadsheetEvents.sheet.addData, (name, active) => {
+    addItem(name, active);
+  });
+
+  eventEmitter.on(spreadsheetEvents.sheet.setDatasheets, () => {
+    clear();
+  });
 
   return {
     el,

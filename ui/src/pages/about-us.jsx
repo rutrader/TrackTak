@@ -19,7 +19,7 @@ const AboutUs = () => {
         About Us
       </Typography>
       <Typography gutterBottom paragraph>
-        We are a team of two developers and investors who follow Aswath
+        We are a team of three developers and investors who follow Aswath
         Damoradan's &amp; Warren Buffet's value investing principles.{"\n"}
         As much as we love Aswath's teachings his excel spreadsheets are very
         difficult to understand, therefore we decided that we would automate and
