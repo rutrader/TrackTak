@@ -4,22 +4,30 @@ import { getVariablesTable } from "../table/getVariablesTable";
 import withVariablesToolbar from "../withVariablesToolbar";
 import { buildSheet } from "./buildSheet";
 import { buildDataProxy } from "./buildDataProxy";
+import spreadsheetEvents from "../../core/spreadsheetEvents";
 
 export const buildVariablesSpreadsheet = (
   sheetEl,
   rootEl,
   getOptions,
-  getData,
   hyperformula,
   eventEmitter,
 ) => {
+  let newData;
+
+  const getData = () => newData;
+
+  eventEmitter.on(spreadsheetEvents.variablesSheet.switchData, (data) => {
+    newData = data;
+  });
+
   const variablesTable = getVariablesTable(
     getOptions,
     getData,
     hyperformula,
     eventEmitter,
   );
-  const sheetBuilder = buildSheet(getOptions, getData, eventEmitter);
+  const sheetBuilder = buildSheet(getOptions, getData, eventEmitter, true);
   const { sheet: variablesSheet, variablesToolbar } = withVariablesToolbar(
     getSheet(
       sheetBuilder,
@@ -29,18 +37,20 @@ export const buildVariablesSpreadsheet = (
       hyperformula,
       getOptions,
       getData,
+      true,
     ),
   );
 
-  const dataProxyBuilder = buildDataProxy(getOptions, hyperformula);
+  const dataProxyBuilder = buildDataProxy(getOptions, hyperformula, true);
 
   const getDataProxy = makeGetDataProxy(
     dataProxyBuilder,
     getOptions,
     eventEmitter,
+    true,
   );
 
-  const setDatasheets = variablesSheet.makeSetDatasheets(getDataProxy);
+  const setVariableDatasheets = variablesSheet.makeSetDatasheets(getDataProxy);
 
   sheetEl.before(variablesSheet.el);
   variablesSheet.el.before(variablesToolbar.el);
@@ -49,6 +59,6 @@ export const buildVariablesSpreadsheet = (
     variablesSheet,
     variablesToolbar,
     rootEl,
-    setDatasheets,
+    setVariableDatasheets,
   };
 };

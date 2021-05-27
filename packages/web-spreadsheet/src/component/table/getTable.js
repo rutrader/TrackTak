@@ -3,6 +3,7 @@ import { stringAt } from "../../core/alphabet";
 import { thinLineWidth, npx } from "../../canvas/draw";
 import { makeTable } from "./makeTable";
 import { makeGetViewWidthHeight } from "../makeGetViewWidthHeight";
+import spreadsheetEvents from "../../core/spreadsheetEvents";
 
 const tableFixedHeaderCleanStyle = { fillStyle: "#f4f5f8" };
 
@@ -24,6 +25,13 @@ export const getTable = (getOptions, getData, hyperformula, eventEmitter) => {
     draw.save();
     draw.attr({ fillStyle: "rgba(75, 137, 255, 0.08)" });
     draw.fillRect(x, y, w, h);
+    draw.restore();
+  };
+
+  const renderFixedLeftTopCell = (fw, fh) => {
+    draw.save();
+    draw.attr({ fillStyle: "#f4f5f8" });
+    draw.fillRect(0, 0, fw, fh);
     draw.restore();
   };
 
@@ -108,10 +116,14 @@ export const getTable = (getOptions, getData, hyperformula, eventEmitter) => {
     hyperformula,
     getOptions,
     getData,
-    eventEmitter,
     renderFixedHeaders,
+    renderFixedLeftTopCell,
     getViewWidthHeight,
   });
+
+  const switchData = () => render();
+
+  eventEmitter.on(spreadsheetEvents.sheet.switchData, switchData);
 
   return {
     el,

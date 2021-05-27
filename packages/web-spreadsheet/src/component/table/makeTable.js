@@ -3,7 +3,6 @@ import { getFontSizePxByPt } from "../../core/font";
 import getDraw, { getDrawBox, thinLineWidth } from "../../canvas/draw";
 import { h } from "../element";
 import { cssPrefix } from "../../config";
-import spreadsheetEvents from "../../core/spreadsheetEvents";
 
 const cellPaddingWidth = 5;
 const tableGridStyle = {
@@ -22,13 +21,9 @@ export const makeTable = ({
   getOptions,
   getData,
   hyperformula,
-  eventEmitter,
   renderFixedHeaders = () => {},
+  renderFixedLeftTopCell = () => {},
 }) => {
-  eventEmitter.on(spreadsheetEvents.sheet.switchData, () => {
-    render();
-  });
-
   const el = h("canvas", `${cssPrefix}-table`);
   const draw = getDraw(
     el.el,
@@ -223,13 +218,6 @@ export const makeTable = ({
     draw.attr({ strokeStyle: "rgba(75, 137, 255, .6)" });
     draw.line([0, fth], [twidth, fth]);
     draw.line([ftw, 0], [ftw, theight]);
-    draw.restore();
-  };
-
-  const renderFixedLeftTopCell = (fw, fh) => {
-    draw.save();
-    draw.attr({ fillStyle: "#f4f5f8" });
-    draw.fillRect(0, 0, fw, fh);
     draw.restore();
   };
 

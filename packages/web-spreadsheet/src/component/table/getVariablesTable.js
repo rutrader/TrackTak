@@ -1,3 +1,4 @@
+import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { makeGetViewWidthHeight } from "../makeGetViewWidthHeight";
 import { makeTable } from "./makeTable";
 
@@ -14,7 +15,6 @@ export const getVariablesTable = (
     getOptions,
     getData,
     hyperformula,
-    eventEmitter,
   });
 
   const getOffset = () => {
@@ -25,10 +25,14 @@ export const getVariablesTable = (
     return {
       width: width - cols.indexWidth,
       height: height - rows.indexHeight,
-      left: 0,
-      top: 0,
+      left: getOptions().variablesSheetIndexWidth,
+      top: getOptions().variablesSheetIndexHeight,
     };
   };
+
+  const switchData = () => render();
+
+  eventEmitter.on(spreadsheetEvents.variablesSheet.switchData, switchData);
 
   return {
     el,
@@ -37,5 +41,6 @@ export const getVariablesTable = (
     render,
     clear,
     getOffset,
+    type: "Variables",
   };
 };

@@ -8,6 +8,7 @@ class Cols {
     this.indexWidth = isVariablesSpreadsheet
       ? getCol().variablesSheetIndexWidth
       : getCol().indexWidth;
+
     this.minWidth = getCol().minWidth;
   }
 

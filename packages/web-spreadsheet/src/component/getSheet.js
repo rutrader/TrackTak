@@ -34,6 +34,7 @@ export const getSheet = (
   getData,
   isVariablesSpreadsheet,
 ) => {
+  const eventType = isVariablesSpreadsheet ? "variablesSheet" : "sheet";
   const {
     rowResizer,
     colResizer,
@@ -73,7 +74,7 @@ export const getSheet = (
   const makeSetDatasheets = (getDataProxy) => (dataSheets) => {
     datas = [];
 
-    eventEmitter.emit(spreadsheetEvents.sheet.setDatasheets);
+    eventEmitter.emit(spreadsheetEvents[eventType].setDatasheets);
 
     dataSheets.forEach((dataSheet, i) => {
       const data = addData(getDataProxy, dataSheet.name, i === 0);
@@ -104,13 +105,13 @@ export const getSheet = (
 
     datas.push(data);
 
-    eventEmitter.emit(spreadsheetEvents.sheet.addData, name, active);
+    eventEmitter.emit(spreadsheetEvents[eventType].addData, name, active);
 
     return data;
   };
 
   const switchData = (newData) => {
-    eventEmitter.emit(spreadsheetEvents.sheet.switchData, newData);
+    eventEmitter.emit(spreadsheetEvents[eventType].switchData, newData);
 
     verticalScrollbarSet();
     horizontalScrollbarSet();
@@ -198,13 +199,18 @@ export const getSheet = (
     if (multiple) {
       selector.setEnd(ri, ci, moving);
       eventEmitter.emit(
-        spreadsheetEvents.sheet.cellsSelected,
+        spreadsheetEvents[eventType].cellsSelected,
         cell,
         selector.range,
       );
     } else {
       selector.set(ri, ci, indexesUpdated);
-      eventEmitter.emit(spreadsheetEvents.sheet.cellSelected, cell, ri, ci);
+      eventEmitter.emit(
+        spreadsheetEvents[eventType].cellSelected,
+        cell,
+        ri,
+        ci,
+      );
     }
   }
 
@@ -407,7 +413,7 @@ export const getSheet = (
     horizontalScrollbarSet();
     sheetFreeze();
     table.render();
-    eventEmitter.emit(spreadsheetEvents.sheet.sheetReset);
+    eventEmitter.emit(spreadsheetEvents[eventType].sheetReset);
     selector.reset();
   }
 
@@ -507,7 +513,7 @@ export const getSheet = (
             }
           }
           selector.hideAutofill();
-          eventEmitter.emit(spreadsheetEvents.sheet.mouseMoveUp);
+          eventEmitter.emit(spreadsheetEvents[eventType].mouseMoveUp);
         },
       );
     }
@@ -581,13 +587,13 @@ export const getSheet = (
     const { ri, ci } = getData().selector;
     if (state === "finished") {
       eventEmitter.emit(
-        spreadsheetEvents.sheet.cellEditedFinished,
+        spreadsheetEvents[eventType].cellEditedFinished,
         text,
         ri,
         ci,
       );
     } else {
-      eventEmitter.emit(spreadsheetEvents.sheet.cellEdited, text, ri, ci);
+      eventEmitter.emit(spreadsheetEvents[eventType].cellEdited, text, ri, ci);
       table.render();
     }
   }
@@ -857,7 +863,11 @@ export const getSheet = (
           default:
             break;
         }
-        eventEmitter.emit(spreadsheetEvents.sheet.ctrlKeyDown, evt, keyCode);
+        eventEmitter.emit(
+          spreadsheetEvents[eventType].ctrlKeyDown,
+          evt,
+          keyCode,
+        );
       } else {
         // console.log('evt.keyCode:', evt.keyCode);
         switch (keyCode) {

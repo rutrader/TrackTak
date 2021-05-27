@@ -26,7 +26,12 @@ const getFormulaSuggestions = () => {
   return formulaSuggestions;
 };
 
-export const buildSheet = (getOptions, getData, eventEmitter) => {
+export const buildSheet = (
+  getOptions,
+  getData,
+  eventEmitter,
+  isVariablesSpreadsheet,
+) => {
   const rowResizer = getResizer(
     eventEmitter,
     spreadsheetEvents.rowResizer,
@@ -40,7 +45,12 @@ export const buildSheet = (getOptions, getData, eventEmitter) => {
   );
   const verticalScrollbar = getScrollbar(eventEmitter, true);
   const horizontalScrollbar = getScrollbar(eventEmitter, false);
-  const editor = getEditor(getData, getFormulaSuggestions(), eventEmitter);
+  const editor = getEditor(
+    getData,
+    getFormulaSuggestions(),
+    eventEmitter,
+    isVariablesSpreadsheet,
+  );
   const modalValidation = new ModalValidation();
   const getViewWidthHeight = makeGetViewWidthHeight(getOptions);
   const contextMenu = getContextMenu(
@@ -48,7 +58,7 @@ export const buildSheet = (getOptions, getData, eventEmitter) => {
     eventEmitter,
     () => !getOptions().showContextMenu,
   );
-  const selector = new Selector(eventEmitter, getData);
+  const selector = new Selector(eventEmitter, getData, isVariablesSpreadsheet);
   const sortFilter = new SortFilter();
 
   return () => ({

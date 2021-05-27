@@ -7,14 +7,48 @@ import { getBottombar } from "../bottombar";
 import { withVariablesSpreadsheet } from "../withVariablesSpreadsheet";
 import { buildSheet } from "./buildSheet";
 import { buildDataProxy } from "./buildDataProxy";
+import defaultOptions from "../../core/defaultOptions";
+import { merge } from "lodash-es";
 
 export const buildSpreadsheet = (
   rootEl,
-  getOptions,
-  getData,
+  options,
   hyperformula,
   eventEmitter,
 ) => {
+  let newData;
+  let newOptions;
+
+  const setOptions = (options) => {
+    newOptions = merge(defaultOptions, options);
+
+    Object.keys(newOptions.variables).forEach((key) => {
+      const value = newOptions.variables[key];
+
+      if (hyperformula.isItPossibleToChangeNamedExpression(key, value)) {
+        hyperformula.changeNamedExpression(key, value);
+      }
+
+      if (hyperformula.isItPossibleToAddNamedExpression(key, value)) {
+        hyperformula.addNamedExpression(key, value);
+      }
+    });
+
+    if (newData) {
+      sheet.sheetReset();
+    }
+  };
+
+  const getOptions = () => newOptions;
+
+  setOptions(options);
+
+  eventEmitter.on(spreadsheetEvents.sheet.switchData, (data) => {
+    newData = data;
+  });
+
+  const getData = () => newData;
+
   const table = getTable(getOptions, getData, hyperformula, eventEmitter);
   const sheetBuilder = buildSheet(getOptions, getData, eventEmitter);
 
@@ -58,5 +92,6 @@ export const buildSpreadsheet = (
     variablesSpreadsheet,
     rootEl,
     setDatasheets,
+    setOptions,
   };
 };
