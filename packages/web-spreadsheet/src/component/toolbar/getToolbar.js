@@ -21,7 +21,7 @@ import spreadsheetEvents from "../../core/spreadsheetEvents";
 
 export const toolbarHeight = 41;
 
-export const getToolbar = (sheetEl, getOptions, getData, eventEmitter) => {
+export const getToolbar = (getOptions, getData, eventEmitter) => {
   const hideFn = () => !getOptions().showToolbar;
   const widthFn = () => getOptions().view.width();
 
@@ -104,8 +104,6 @@ export const getToolbar = (sheetEl, getOptions, getData, eventEmitter) => {
 
   const el = h("div", `${cssPrefix}-toolbar`);
   const buttonsEl = h("div", `${cssPrefix}-toolbar-btns`);
-
-  sheetEl.before(el);
 
   buildItems(items, buttonsEl);
 

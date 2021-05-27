@@ -3,10 +3,10 @@ import { getPrint } from "./getPrint";
 import { getToolbar } from "./toolbar/getToolbar";
 
 const withToolbar = ({ sheet, ...args }) => {
-  const { eventEmitter, rootEl, el: sheetEl, getOptions, getData } = sheet;
+  const { eventEmitter, rootEl, getOptions, getData } = sheet;
 
   const print = getPrint(rootEl, getData);
-  const toolbar = getToolbar(sheetEl, getOptions, getData, eventEmitter);
+  const toolbar = getToolbar(getOptions, getData, eventEmitter);
   const {
     paintformatToggle,
     paintformatActive,

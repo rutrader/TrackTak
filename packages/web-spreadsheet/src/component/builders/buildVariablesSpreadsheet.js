@@ -43,6 +43,7 @@ export const buildVariablesSpreadsheet = (
   const setDatasheets = variablesSheet.makeSetDatasheets(getDataProxy);
 
   sheetEl.before(variablesSheet.el);
+  variablesSheet.el.before(variablesToolbar.el);
 
   return {
     variablesSheet,

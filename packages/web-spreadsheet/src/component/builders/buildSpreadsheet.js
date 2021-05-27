@@ -44,6 +44,8 @@ export const buildSpreadsheet = (
 
   getBottombar(rootEl, eventEmitter);
 
+  sheet.el.before(toolbar.el);
+
   eventEmitter.on(spreadsheetEvents.bottombar.addSheet, () => {
     const data = sheet.addData(getDataProxy);
 

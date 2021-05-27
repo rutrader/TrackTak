@@ -2,8 +2,7 @@ import spreadsheetEvents from "../core/spreadsheetEvents";
 import { getVariablesToolbar } from "./toolbar/getVariablesToolbar";
 
 const withVariablesToolbar = ({ sheet, ...args }) => {
-  let { eventEmitter, el: sheetEl, getOptions, getData } = sheet;
-  const { view, showVariablesSpreadsheet } = getOptions();
+  let { eventEmitter, getOptions, getData } = sheet;
 
   const variablesToolbar = getVariablesToolbar(
     getOptions,
