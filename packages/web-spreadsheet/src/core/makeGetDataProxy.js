@@ -1,53 +1,9 @@
-import Selector from "./selector";
-import Scroll from "./scroll";
-import History from "./history";
-import Clipboard from "./clipboard";
-import AutoFilter from "./auto_filter";
-import { Merges } from "./merge";
-import helper from "./helper";
-import { Rows } from "./row";
-import { Cols } from "./col";
-import { Validations } from "./validation";
 import { CellRange } from "./cell_range";
 import { expr2xy, xy2expr } from "./alphabet";
 import { t } from "../locale/locale";
 import spreadsheetEvents from "./spreadsheetEvents";
 import { makeGetViewWidthHeight } from "../component/makeGetViewWidthHeight";
-
-export const buildDataProxy = (
-  getOptions,
-  hyperformula,
-  isVariablesSpreadsheet,
-) => () => {
-  // save object
-  const merges = new Merges(); // [CellRange, ...]
-  const rows = new Rows(
-    () => getOptions().row,
-    hyperformula,
-    isVariablesSpreadsheet,
-  );
-  const cols = new Cols(() => getOptions().col, isVariablesSpreadsheet);
-  const validations = new Validations();
-
-  // don't save object
-  const selector = new Selector();
-  const scroll = new Scroll();
-  const history = new History();
-  const clipboard = new Clipboard();
-  const autoFilter = new AutoFilter();
-
-  return {
-    merges,
-    rows,
-    cols,
-    validations,
-    selector,
-    scroll,
-    history,
-    clipboard,
-    autoFilter,
-  };
-};
+import helper from "./helper";
 
 export const makeGetDataProxy = (
   builder,

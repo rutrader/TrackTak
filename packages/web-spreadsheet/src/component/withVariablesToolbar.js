@@ -1,11 +1,15 @@
 import spreadsheetEvents from "../core/spreadsheetEvents";
 import { getVariablesToolbar } from "./toolbar/getVariablesToolbar";
 
-const withVariablesToolbar = (sheet) => {
+const withVariablesToolbar = ({ sheet, ...args }) => {
   let { eventEmitter, el: sheetEl, getOptions, getData } = sheet;
   const { view, showVariablesSpreadsheet } = getOptions();
 
-  const toolbar = getVariablesToolbar(getOptions, getData, eventEmitter);
+  const variablesToolbar = getVariablesToolbar(
+    getOptions,
+    getData,
+    eventEmitter,
+  );
 
   function toolbarChange(type, value) {
     if (type === "undo") {
@@ -23,7 +27,9 @@ const withVariablesToolbar = (sheet) => {
   });
 
   return {
-    ...sheet,
+    ...args,
+    sheet,
+    variablesToolbar,
   };
 };
 
