@@ -22,8 +22,6 @@ export const buildSpreadsheet = (rootEl, options) => {
     licenseKey: "05054-b528f-a10c4-53f2a-04b57",
   });
 
-  modifyEventEmitter(spreadsheetEventEmitter, options.debugMode, "spreadsheet");
-
   const setOptions = (options) => {
     newOptions = merge(defaultOptions, options);
 
@@ -48,14 +46,14 @@ export const buildSpreadsheet = (rootEl, options) => {
 
   setOptions(options);
 
+  modifyEventEmitter(
+    spreadsheetEventEmitter,
+    getOptions().debugMode,
+    "spreadsheet",
+  );
+
   spreadsheetEventEmitter.on(spreadsheetEvents.sheet.switchData, (data) => {
     newData = data;
-  });
-
-  spreadsheetEventEmitter.on(spreadsheetEvents.bottombar.addSheet, () => {
-    const data = sheet.addData(getDataProxy);
-
-    sheet.switchData(data);
   });
 
   const getData = () => newData;
@@ -68,6 +66,14 @@ export const buildSpreadsheet = (rootEl, options) => {
   );
   const sheetBuilder = buildSheet(getOptions, getData, spreadsheetEventEmitter);
 
+  const dataProxyBuilder = buildDataProxy(getOptions, hyperformula);
+
+  const getDataProxy = makeGetDataProxy(
+    dataProxyBuilder,
+    getOptions,
+    spreadsheetEventEmitter,
+  );
+
   const { sheet, variablesSpreadsheet, toolbar } = withToolbar(
     withVariablesSpreadsheet(
       getSheet(
@@ -78,16 +84,9 @@ export const buildSpreadsheet = (rootEl, options) => {
         hyperformula,
         getOptions,
         getData,
+        getDataProxy,
       ),
     ),
-  );
-
-  const dataProxyBuilder = buildDataProxy(getOptions, hyperformula);
-
-  const getDataProxy = makeGetDataProxy(
-    dataProxyBuilder,
-    getOptions,
-    spreadsheetEventEmitter,
   );
 
   const setDatasheets = sheet.makeSetDatasheets(getDataProxy);

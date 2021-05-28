@@ -15,6 +15,8 @@ export const buildVariablesSpreadsheet = (
   getOptions,
   hyperformula,
 ) => {
+  let newData;
+
   const variablesSpreadsheetEventEmitter = new EventEmitter();
 
   modifyEventEmitter(
@@ -22,8 +24,6 @@ export const buildVariablesSpreadsheet = (
     getOptions().debugMode,
     "variablesSpreadsheet",
   );
-
-  let newData;
 
   const getData = () => newData;
 
@@ -46,6 +46,16 @@ export const buildVariablesSpreadsheet = (
     variablesSpreadsheetEventEmitter,
     true,
   );
+
+  const dataProxyBuilder = buildDataProxy(getOptions, hyperformula, true);
+
+  const getDataProxy = makeGetDataProxy(
+    dataProxyBuilder,
+    getOptions,
+    variablesSpreadsheetEventEmitter,
+    true,
+  );
+
   const { sheet: variablesSheet, variablesToolbar } = withVariablesToolbar(
     getSheet(
       sheetBuilder,
@@ -55,17 +65,9 @@ export const buildVariablesSpreadsheet = (
       hyperformula,
       getOptions,
       getData,
+      getDataProxy,
       true,
     ),
-  );
-
-  const dataProxyBuilder = buildDataProxy(getOptions, hyperformula, true);
-
-  const getDataProxy = makeGetDataProxy(
-    dataProxyBuilder,
-    getOptions,
-    variablesSpreadsheetEventEmitter,
-    true,
   );
 
   const setVariableDatasheets = variablesSheet.makeSetDatasheets(getDataProxy);

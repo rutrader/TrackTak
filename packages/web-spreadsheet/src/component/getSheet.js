@@ -32,6 +32,7 @@ export const getSheet = (
   hyperformula,
   getOptions,
   getData,
+  getDataProxy,
   isVariablesSpreadsheet,
 ) => {
   const {
@@ -55,6 +56,12 @@ export const getSheet = (
 
   eventEmitter.on(spreadsheetEvents.bottombar.updateSheet, (index, value) => {
     datas[index].name = value;
+  });
+
+  eventEmitter.on(spreadsheetEvents.bottombar.addSheet, () => {
+    const data = addData(getDataProxy);
+
+    switchData(data);
   });
 
   eventEmitter.on(
