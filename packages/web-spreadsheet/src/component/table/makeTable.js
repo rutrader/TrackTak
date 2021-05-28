@@ -55,11 +55,10 @@ export const makeTable = ({
     }
 
     draw.rect(dbox, () => {
-      // TODO: Fix sheets later
       const cellAddress = {
         col: cindex,
         row: rindex,
-        sheet: 0,
+        sheet: getData().sheetIndex,
       };
 
       const showAllFormulas = getOptions().showAllFormulas;

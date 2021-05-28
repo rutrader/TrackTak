@@ -89,7 +89,11 @@ export const getSheet = (
         hyperformula.addSheet(dataSheet.name);
       }
 
-      data.setData(dataSheet);
+      if (i === 0) {
+        switchData(data);
+      }
+
+      data.setData(dataSheet, i);
     });
 
     if (!dataSheets.length) {
@@ -97,7 +101,6 @@ export const getSheet = (
       addData(getDataProxy);
     }
 
-    switchData(datas[0]);
     sheetReset();
     selectorSet(false, 0, 0);
   };
@@ -107,7 +110,7 @@ export const getSheet = (
     name = `sheet${datas.length + 1}`,
     active = true,
   ) => {
-    const data = getDataProxy(name);
+    const data = getDataProxy(name, datas.length);
 
     datas.push(data);
 

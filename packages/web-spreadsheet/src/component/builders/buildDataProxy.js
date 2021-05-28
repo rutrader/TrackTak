@@ -10,6 +10,7 @@ import { Validations } from "../../core/validation";
 
 export const buildDataProxy = (
   getOptions,
+  getData,
   hyperformula,
   isVariablesSpreadsheet,
 ) => () => {
@@ -17,6 +18,7 @@ export const buildDataProxy = (
   const merges = new Merges(); // [CellRange, ...]
   const rows = new Rows(
     () => getOptions().row,
+    getData,
     hyperformula,
     isVariablesSpreadsheet,
   );

@@ -10,13 +10,14 @@ export const makeGetDataProxy = (
   getOptions,
   eventEmitter,
   isVariablesSpreadsheet,
-) => (name) => {
+) => (name, sheetIndex) => {
   const getViewWidthHeight = makeGetViewWidthHeight(
     getOptions,
     isVariablesSpreadsheet,
   );
   let freeze = [0, 0];
   let styles = []; // Array<Style>
+
   const {
     merges,
     rows,
@@ -773,13 +774,14 @@ export const makeGetDataProxy = (
     eventEmitter.emit(spreadsheetEvents.data.change, getData());
   };
 
-  const setData = (d) => {
+  // Refactor this later to use event emitter
+  const setData = (d, sheetIndex) => {
     Object.keys(d).forEach((property) => {
       if (property === "merges") {
         merges.setData(d.merges);
       }
       if (property === "rows") {
-        rows.setData(d.rows);
+        rows.setData(d.rows, sheetIndex);
       }
       if (property === "cols") {
         cols.setData(d.cols);
@@ -1107,5 +1109,6 @@ export const makeGetDataProxy = (
     exceptRowSet,
     getCellStyleOrDefault,
     getFreeze,
+    sheetIndex,
   };
 };

@@ -2,9 +2,10 @@ import helper from "./helper";
 import { expr2expr, REGEX_EXPR_GLOBAL } from "./alphabet";
 
 class Rows {
-  constructor(getRow, hyperformula, isVariablesSpreadsheet) {
+  constructor(getRow, getDataProxy, hyperformula, isVariablesSpreadsheet) {
     this._ = {};
     this.len = getRow().len;
+    this.getDataProxy = getDataProxy;
     // default row height
     this.height = getRow().height;
     this.indexHeight = isVariablesSpreadsheet
@@ -118,8 +119,10 @@ class Rows {
 
     cell.text = text;
 
-    // TODO: Fix the sheetIndex
-    this.hyperformula.setCellContents({ col: ci, row: ri, sheet: 0 }, [[text]]);
+    this.hyperformula.setCellContents(
+      { col: ci, row: ri, sheet: this.getDataProxy().sheetIndex },
+      [[text]],
+    );
   };
 
   setCellText(ri, ci, text) {
@@ -180,7 +183,11 @@ class Rows {
 
                     ncell.text = nText;
                     this.hyperformula.setCellContents(
-                      { col: nci, row: nri, sheet: 0 },
+                      {
+                        col: nci,
+                        row: nri,
+                        sheet: this.getDataProxy().sheetIndex,
+                      },
                       [[nText]],
                     );
                   } else if (
@@ -196,7 +203,11 @@ class Rows {
 
                       ncell.text = nText;
                       this.hyperformula.setCellContents(
-                        { col: nci, row: nri, sheet: 0 },
+                        {
+                          col: nci,
+                          row: nri,
+                          sheet: this.getDataProxy().sheetIndex,
+                        },
                         [[nText]],
                       );
                     }
@@ -362,7 +373,7 @@ class Rows {
               {
                 col: ci,
                 row: ri,
-                sheet: 0,
+                sheet: this.getDataProxy().sheetIndex,
               },
               "",
             );
@@ -405,7 +416,7 @@ class Rows {
     }
   }
 
-  setData(d) {
+  setData(d, sheetIndex) {
     if (d.len) {
       this.len = d.len;
       delete d.len;
@@ -416,7 +427,7 @@ class Rows {
       return cells.map((x) => x.text);
     });
 
-    const sheetName = this.hyperformula.getSheetName(0);
+    const sheetName = this.hyperformula.getSheetName(sheetIndex);
 
     this.hyperformula.setSheetContent(sheetName, sheetContent);
   }

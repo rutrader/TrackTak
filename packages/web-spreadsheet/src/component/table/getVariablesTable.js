@@ -21,7 +21,6 @@ export const getVariablesTable = (
     const { rows, cols } = getData();
     const { width, height } = getViewWidthHeight();
 
-    // TODO: Set magic numbers to options once data is fixed
     return {
       width: width - cols.indexWidth,
       height: height - rows.indexHeight,

@@ -39,7 +39,12 @@ export const buildVariablesSpreadsheet = (sheetEl, rootEl, getOptions) => {
   );
   const sheetBuilder = buildSheet(getOptions, getData, eventEmitter, true);
 
-  const dataProxyBuilder = buildDataProxy(getOptions, hyperformula, true);
+  const dataProxyBuilder = buildDataProxy(
+    getOptions,
+    getData,
+    hyperformula,
+    true,
+  );
 
   const getDataProxy = makeGetDataProxy(
     dataProxyBuilder,
