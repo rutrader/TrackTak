@@ -3,9 +3,7 @@ import { h } from "./element";
 import { cssPrefix } from "../config";
 import spreadsheetEvents from "../core/spreadsheetEvents";
 
-export const makeDropdownFormat = (getFormats, eventEmitter, toolbarType) => (
-  tag,
-) => {
+export const makeDropdownFormat = (getFormats, eventEmitter) => (tag) => {
   let nformats = Object.values(getFormats()).slice(0);
 
   nformats.splice(2, 0, { key: "divider" });
@@ -30,7 +28,7 @@ export const makeDropdownFormat = (getFormats, eventEmitter, toolbarType) => (
         setTitle(it.title());
 
         eventEmitter.emit(
-          spreadsheetEvents[toolbarType].formatChange,
+          spreadsheetEvents.toolbar.formatChange,
           tag,
           it.title().toLowerCase(),
         );

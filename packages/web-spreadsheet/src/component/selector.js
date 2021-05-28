@@ -2,7 +2,6 @@ import { h } from "./element";
 import { cssPrefix } from "../config";
 import { CellRange } from "../core/cell_range";
 import spreadsheetEvents from "../core/spreadsheetEvents";
-import { getSheetEventType } from "../shared/getSheetEventType";
 
 const selectorHeightBorderWidth = 2 * 2 - 1;
 let startZIndex = 10;
@@ -179,7 +178,7 @@ function setAllClipboardOffset(offset) {
 }
 
 export default class Selector {
-  constructor(eventEmitter, getData, isVariablesSpreadsheet) {
+  constructor(eventEmitter, getData) {
     this.getData = getData;
     this.br = new SelectorElement(true);
     this.t = new SelectorElement();
@@ -208,10 +207,7 @@ export default class Selector {
       self.resetAreaOffset();
     };
 
-    eventEmitter.on(
-      spreadsheetEvents[getSheetEventType(isVariablesSpreadsheet)].switchData,
-      switchData,
-    );
+    eventEmitter.on(spreadsheetEvents.toolbar.switchData, switchData);
   }
 
   hide() {

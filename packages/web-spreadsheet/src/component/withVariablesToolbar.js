@@ -21,7 +21,7 @@ const withVariablesToolbar = ({ sheet, ...args }) => {
     }
   }
 
-  Object.values(spreadsheetEvents.variablesToolbar).forEach((key) => {
+  Object.values(spreadsheetEvents.toolbar).forEach((key) => {
     eventEmitter.on(key, (type, value) => toolbarChange(type, value));
   });
 

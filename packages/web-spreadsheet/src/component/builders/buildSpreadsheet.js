@@ -9,15 +9,20 @@ import { buildSheet } from "./buildSheet";
 import { buildDataProxy } from "./buildDataProxy";
 import defaultOptions from "../../core/defaultOptions";
 import { merge } from "lodash-es";
+import EventEmitter from "events";
+import { modifyEventEmitter } from "../../shared/modifyEventEmitter";
+import { HyperFormula } from "hyperformula";
 
-export const buildSpreadsheet = (
-  rootEl,
-  options,
-  hyperformula,
-  eventEmitter,
-) => {
+export const buildSpreadsheet = (rootEl, options) => {
   let newData;
   let newOptions;
+
+  const spreadsheetEventEmitter = new EventEmitter();
+  const hyperformula = HyperFormula.buildEmpty({
+    licenseKey: "05054-b528f-a10c4-53f2a-04b57",
+  });
+
+  modifyEventEmitter(spreadsheetEventEmitter, options.debugMode, "spreadsheet");
 
   const setOptions = (options) => {
     newOptions = merge(defaultOptions, options);
@@ -43,14 +48,25 @@ export const buildSpreadsheet = (
 
   setOptions(options);
 
-  eventEmitter.on(spreadsheetEvents.sheet.switchData, (data) => {
+  spreadsheetEventEmitter.on(spreadsheetEvents.sheet.switchData, (data) => {
     newData = data;
+  });
+
+  spreadsheetEventEmitter.on(spreadsheetEvents.bottombar.addSheet, () => {
+    const data = sheet.addData(getDataProxy);
+
+    sheet.switchData(data);
   });
 
   const getData = () => newData;
 
-  const table = getTable(getOptions, getData, hyperformula, eventEmitter);
-  const sheetBuilder = buildSheet(getOptions, getData, eventEmitter);
+  const table = getTable(
+    getOptions,
+    getData,
+    hyperformula,
+    spreadsheetEventEmitter,
+  );
+  const sheetBuilder = buildSheet(getOptions, getData, spreadsheetEventEmitter);
 
   const { sheet, variablesSpreadsheet, toolbar } = withToolbar(
     withVariablesSpreadsheet(
@@ -58,7 +74,7 @@ export const buildSpreadsheet = (
         sheetBuilder,
         rootEl,
         table,
-        eventEmitter,
+        spreadsheetEventEmitter,
         hyperformula,
         getOptions,
         getData,
@@ -71,20 +87,15 @@ export const buildSpreadsheet = (
   const getDataProxy = makeGetDataProxy(
     dataProxyBuilder,
     getOptions,
-    eventEmitter,
+    spreadsheetEventEmitter,
   );
 
   const setDatasheets = sheet.makeSetDatasheets(getDataProxy);
 
-  getBottombar(rootEl, eventEmitter);
+  const bottombar = getBottombar(spreadsheetEventEmitter);
 
   sheet.el.before(toolbar.el);
-
-  eventEmitter.on(spreadsheetEvents.bottombar.addSheet, () => {
-    const data = sheet.addData(getDataProxy);
-
-    sheet.switchData(data);
-  });
+  sheet.el.after(bottombar.el);
 
   return {
     sheet,
@@ -93,5 +104,7 @@ export const buildSpreadsheet = (
     rootEl,
     setDatasheets,
     setOptions,
+    hyperformula,
+    spreadsheetEventEmitter,
   };
 };

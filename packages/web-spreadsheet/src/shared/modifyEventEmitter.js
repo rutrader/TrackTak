@@ -1,8 +1,14 @@
-export const modifyEventEmitter = (eventEmitter) => {
+export const modifyEventEmitter = (
+  eventEmitter,
+  debugMode,
+  spreadsheetType,
+) => {
   const oldEmit = eventEmitter.emit;
 
   eventEmitter.emit = (...args) => {
-    console.log(...args);
+    if (debugMode) {
+      console.log(spreadsheetType, ...args);
+    }
 
     oldEmit.call(eventEmitter, ...args);
   };

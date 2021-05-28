@@ -45,12 +45,7 @@ export const buildSheet = (
   );
   const verticalScrollbar = getScrollbar(eventEmitter, true);
   const horizontalScrollbar = getScrollbar(eventEmitter, false);
-  const editor = getEditor(
-    getData,
-    getFormulaSuggestions(),
-    eventEmitter,
-    isVariablesSpreadsheet,
-  );
+  const editor = getEditor(getData, getFormulaSuggestions(), eventEmitter);
   const modalValidation = new ModalValidation();
   const getViewWidthHeight = makeGetViewWidthHeight(getOptions);
   const contextMenu = getContextMenu(
@@ -58,7 +53,7 @@ export const buildSheet = (
     eventEmitter,
     () => !getOptions().showContextMenu,
   );
-  const selector = new Selector(eventEmitter, getData, isVariablesSpreadsheet);
+  const selector = new Selector(eventEmitter, getData);
   const sortFilter = new SortFilter();
 
   return () => ({

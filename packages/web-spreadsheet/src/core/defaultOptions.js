@@ -3,6 +3,7 @@ import { formatNumberRender, formatStringRender } from "./helper";
 
 const defaultOptions = {
   mode: "edit", // edit | read
+  debugMode: process.env.NODE_ENV === "development",
   view: {
     variablesSheetHeight: () => 160,
     height: () => document.documentElement.clientHeight,

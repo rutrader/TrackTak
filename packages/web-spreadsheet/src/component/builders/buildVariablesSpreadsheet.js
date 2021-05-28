@@ -5,35 +5,53 @@ import withVariablesToolbar from "../withVariablesToolbar";
 import { buildSheet } from "./buildSheet";
 import { buildDataProxy } from "./buildDataProxy";
 import spreadsheetEvents from "../../core/spreadsheetEvents";
+import { getBottombar } from "../bottombar";
+import EventEmitter from "events";
+import { modifyEventEmitter } from "../../shared/modifyEventEmitter";
 
 export const buildVariablesSpreadsheet = (
   sheetEl,
   rootEl,
   getOptions,
   hyperformula,
-  eventEmitter,
 ) => {
+  const variablesSpreadsheetEventEmitter = new EventEmitter();
+
+  modifyEventEmitter(
+    variablesSpreadsheetEventEmitter,
+    getOptions().debugMode,
+    "variablesSpreadsheet",
+  );
+
   let newData;
 
   const getData = () => newData;
 
-  eventEmitter.on(spreadsheetEvents.variablesSheet.switchData, (data) => {
-    newData = data;
-  });
+  variablesSpreadsheetEventEmitter.on(
+    spreadsheetEvents.sheet.switchData,
+    (data) => {
+      newData = data;
+    },
+  );
 
   const variablesTable = getVariablesTable(
     getOptions,
     getData,
     hyperformula,
-    eventEmitter,
+    variablesSpreadsheetEventEmitter,
   );
-  const sheetBuilder = buildSheet(getOptions, getData, eventEmitter, true);
+  const sheetBuilder = buildSheet(
+    getOptions,
+    getData,
+    variablesSpreadsheetEventEmitter,
+    true,
+  );
   const { sheet: variablesSheet, variablesToolbar } = withVariablesToolbar(
     getSheet(
       sheetBuilder,
       rootEl,
       variablesTable,
-      eventEmitter,
+      variablesSpreadsheetEventEmitter,
       hyperformula,
       getOptions,
       getData,
@@ -46,14 +64,17 @@ export const buildVariablesSpreadsheet = (
   const getDataProxy = makeGetDataProxy(
     dataProxyBuilder,
     getOptions,
-    eventEmitter,
+    variablesSpreadsheetEventEmitter,
     true,
   );
 
   const setVariableDatasheets = variablesSheet.makeSetDatasheets(getDataProxy);
 
+  const bottombar = getBottombar(variablesSpreadsheetEventEmitter);
+
   sheetEl.before(variablesSheet.el);
   variablesSheet.el.before(variablesToolbar.el);
+  sheetEl.before(bottombar.el);
 
   return {
     variablesSheet,

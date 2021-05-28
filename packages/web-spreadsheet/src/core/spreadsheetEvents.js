@@ -43,19 +43,6 @@ const spreadsheetEvents = {
     deleteData: "s-delete-data",
     setDatasheets: "s-set-datasheets",
   },
-  variablesSheet: {
-    cellSelected: "vs-cell-selected",
-    cellsSelected: "vs-cells-selected",
-    cellEditedFinished: "vs-cell-edited-finished",
-    cellEdited: "vs-cell-edited",
-    switchData: "vs-switch-data",
-    sheetReset: "vs-sheet-reset",
-    mouseMoveUp: "vs-mouse-move-up",
-    ctrlKeyDown: "vs-ctrl-key-down",
-    addData: "vs-add-data",
-    deleteData: "vs-delete-data",
-    setDatasheets: "vs-set-datasheets",
-  },
   toolbar: {
     alignChange: "tb-align-change",
     dropdownLineChange: "tb-dropdown-line-change",
@@ -67,11 +54,6 @@ const spreadsheetEvents = {
     clickIcon: "tb-click-icon",
     formatChange: "tb-format-change",
     formulaSet: "tb-formula-set",
-  },
-  variablesToolbar: {
-    sheetChange: "vtb-sheet-change",
-    toggleItem: "vtb-toggle-item",
-    clickIcon: "vtb-click-icon",
   },
 };
 

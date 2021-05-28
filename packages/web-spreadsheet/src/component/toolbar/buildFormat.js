@@ -1,8 +1,5 @@
 import { makeDropdownFormat } from "../makeDropdownFormat";
 import { getDropdownItem } from "./getDropdownItem";
 
-export const buildFormat = (getFormats, eventEmitter, toolbarType) =>
-  getDropdownItem(
-    "format",
-    makeDropdownFormat(getFormats, eventEmitter, toolbarType),
-  );
+export const buildFormat = (getFormats, eventEmitter) =>
+  getDropdownItem("format", makeDropdownFormat(getFormats, eventEmitter));

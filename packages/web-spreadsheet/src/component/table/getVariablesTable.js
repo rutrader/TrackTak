@@ -30,9 +30,9 @@ export const getVariablesTable = (
     };
   };
 
-  const switchData = () => render();
-
-  eventEmitter.on(spreadsheetEvents.variablesSheet.switchData, switchData);
+  eventEmitter.on(spreadsheetEvents.sheet.switchData, () => {
+    render();
+  });
 
   return {
     el,
@@ -41,6 +41,5 @@ export const getVariablesTable = (
     render,
     clear,
     getOffset,
-    type: "Variables",
   };
 };

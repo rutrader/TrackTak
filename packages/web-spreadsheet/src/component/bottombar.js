@@ -77,7 +77,7 @@ const getContextMenu = (eventEmitter) => {
   };
 };
 
-export const getBottombar = (rootEl, eventEmitter) => {
+export const getBottombar = (eventEmitter) => {
   let dataNames = [];
   let activeEl = null;
   let deleteEl = null;
@@ -194,8 +194,6 @@ export const getBottombar = (rootEl, eventEmitter) => {
     contextMenu.el,
     menuEl,
   );
-
-  rootEl.child(el);
 
   eventEmitter.on(spreadsheetEvents.bottombar.clickContextMenu, (key) => {
     if (key === "delete") {

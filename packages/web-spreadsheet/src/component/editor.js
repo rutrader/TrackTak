@@ -7,7 +7,6 @@ import { cssPrefix } from "../config";
 import Formula from "./formula";
 import { setCaretPosition, saveCaretPosition } from "../core/caret";
 import spreadsheetEvents from "../core/spreadsheetEvents";
-import { getSheetEventType } from "../shared/getSheetEventType";
 
 function dateFormat(d) {
   let month = d.getMonth() + 1;
@@ -17,12 +16,7 @@ function dateFormat(d) {
   return `${d.getFullYear()}-${month}-${date}`;
 }
 
-export const getEditor = (
-  getData,
-  formulas,
-  eventEmitter,
-  isVariablesSpreadsheet,
-) => {
+export const getEditor = (getData, formulas, eventEmitter) => {
   function insertText({ target }, itxt) {
     const { value, selectionEnd } = target;
     const ntxt = `${value.slice(0, selectionEnd)}${itxt}${value.slice(
@@ -169,12 +163,7 @@ export const getEditor = (
     eventEmitter,
   );
 
-  const switchData = () => clear();
-
-  eventEmitter.on(
-    spreadsheetEvents[getSheetEventType(isVariablesSpreadsheet)].switchData,
-    switchData,
-  );
+  eventEmitter.on(spreadsheetEvents.sheet.switchData, () => clear());
 
   const setFreezeLengths = (width, height) => {
     freeze.w = width;
