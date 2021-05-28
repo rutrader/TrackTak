@@ -43,6 +43,9 @@ const spreadsheetEvents = {
     deleteData: "s-delete-data",
     setDatasheets: "s-set-datasheets",
   },
+  formulaBar: {
+    inputChange: "fb-input-change",
+  },
   toolbar: {
     alignChange: "tb-align-change",
     dropdownLineChange: "tb-dropdown-line-change",
