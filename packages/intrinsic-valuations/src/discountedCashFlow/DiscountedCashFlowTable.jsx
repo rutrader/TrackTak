@@ -336,30 +336,30 @@ const DiscountedCashFlowTable = ({
             },
           },
         },
-        // {
-        //   name: "Optional Inputs",
-        //   rows: {
-        //     0: {
-        //       cells: [
-        //         {
-        //           text: "Debt",
-        //         },
-        //       ],
-        //     },
-        //   },
-        // },
-        // {
-        //   name: "API",
-        //   rows: {
-        //     0: {
-        //       cells: [
-        //         {
-        //           text: "totalRevenue",
-        //         },
-        //       ],
-        //     },
-        //   },
-        // },
+        {
+          name: "Optional Inputs",
+          rows: {
+            0: {
+              cells: [
+                {
+                  text: "Debt",
+                },
+              ],
+            },
+          },
+        },
+        {
+          name: "API",
+          rows: {
+            0: {
+              cells: [
+                {
+                  text: "totalRevenue",
+                },
+              ],
+            },
+          },
+        },
       ]);
     }
   }, [spreadsheet]);

@@ -8,51 +8,43 @@ import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { getBottombar } from "../bottombar";
 import EventEmitter from "events";
 import { modifyEventEmitter } from "../../shared/modifyEventEmitter";
+import { HyperFormula } from "hyperformula";
+import { hyperformulaLicenseKey } from "../../shared/hyperformulaLicenseKey";
 
-export const buildVariablesSpreadsheet = (
-  sheetEl,
-  rootEl,
-  getOptions,
-  hyperformula,
-) => {
+export const buildVariablesSpreadsheet = (sheetEl, rootEl, getOptions) => {
   let newData;
 
-  const variablesSpreadsheetEventEmitter = new EventEmitter();
+  const eventEmitter = new EventEmitter();
+  const hyperformula = HyperFormula.buildEmpty({
+    licenseKey: hyperformulaLicenseKey,
+  });
 
   modifyEventEmitter(
-    variablesSpreadsheetEventEmitter,
+    eventEmitter,
     getOptions().debugMode,
     "variablesSpreadsheet",
   );
 
   const getData = () => newData;
 
-  variablesSpreadsheetEventEmitter.on(
-    spreadsheetEvents.sheet.switchData,
-    (data) => {
-      newData = data;
-    },
-  );
+  eventEmitter.on(spreadsheetEvents.sheet.switchData, (data) => {
+    newData = data;
+  });
 
   const variablesTable = getVariablesTable(
     getOptions,
     getData,
     hyperformula,
-    variablesSpreadsheetEventEmitter,
+    eventEmitter,
   );
-  const sheetBuilder = buildSheet(
-    getOptions,
-    getData,
-    variablesSpreadsheetEventEmitter,
-    true,
-  );
+  const sheetBuilder = buildSheet(getOptions, getData, eventEmitter, true);
 
   const dataProxyBuilder = buildDataProxy(getOptions, hyperformula, true);
 
   const getDataProxy = makeGetDataProxy(
     dataProxyBuilder,
     getOptions,
-    variablesSpreadsheetEventEmitter,
+    eventEmitter,
     true,
   );
 
@@ -61,7 +53,7 @@ export const buildVariablesSpreadsheet = (
       sheetBuilder,
       rootEl,
       variablesTable,
-      variablesSpreadsheetEventEmitter,
+      eventEmitter,
       hyperformula,
       getOptions,
       getData,
@@ -72,7 +64,7 @@ export const buildVariablesSpreadsheet = (
 
   const setVariableDatasheets = variablesSheet.makeSetDatasheets(getDataProxy);
 
-  const bottombar = getBottombar(variablesSpreadsheetEventEmitter);
+  const bottombar = getBottombar(eventEmitter);
 
   sheetEl.before(variablesSheet.el);
   variablesSheet.el.before(variablesToolbar.el);

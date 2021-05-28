@@ -952,7 +952,6 @@ export const getSheet = (
     editorSet,
     sheetReset,
     table,
-    hyperformula,
     datas,
     getOptions,
     getData,

@@ -12,14 +12,15 @@ import { merge } from "lodash-es";
 import EventEmitter from "events";
 import { modifyEventEmitter } from "../../shared/modifyEventEmitter";
 import { HyperFormula } from "hyperformula";
+import { hyperformulaLicenseKey } from "../../shared/hyperformulaLicenseKey";
 
 export const buildSpreadsheet = (rootEl, options) => {
   let newData;
   let newOptions;
 
-  const spreadsheetEventEmitter = new EventEmitter();
+  const eventEmitter = new EventEmitter();
   const hyperformula = HyperFormula.buildEmpty({
-    licenseKey: "05054-b528f-a10c4-53f2a-04b57",
+    licenseKey: hyperformulaLicenseKey,
   });
 
   const setOptions = (options) => {
@@ -46,32 +47,23 @@ export const buildSpreadsheet = (rootEl, options) => {
 
   setOptions(options);
 
-  modifyEventEmitter(
-    spreadsheetEventEmitter,
-    getOptions().debugMode,
-    "spreadsheet",
-  );
+  modifyEventEmitter(eventEmitter, getOptions().debugMode, "spreadsheet");
 
-  spreadsheetEventEmitter.on(spreadsheetEvents.sheet.switchData, (data) => {
+  eventEmitter.on(spreadsheetEvents.sheet.switchData, (data) => {
     newData = data;
   });
 
   const getData = () => newData;
 
-  const table = getTable(
-    getOptions,
-    getData,
-    hyperformula,
-    spreadsheetEventEmitter,
-  );
-  const sheetBuilder = buildSheet(getOptions, getData, spreadsheetEventEmitter);
+  const table = getTable(getOptions, getData, hyperformula, eventEmitter);
+  const sheetBuilder = buildSheet(getOptions, getData, eventEmitter);
 
   const dataProxyBuilder = buildDataProxy(getOptions, hyperformula);
 
   const getDataProxy = makeGetDataProxy(
     dataProxyBuilder,
     getOptions,
-    spreadsheetEventEmitter,
+    eventEmitter,
   );
 
   const { sheet, variablesSpreadsheet, toolbar } = withToolbar(
@@ -80,7 +72,7 @@ export const buildSpreadsheet = (rootEl, options) => {
         sheetBuilder,
         rootEl,
         table,
-        spreadsheetEventEmitter,
+        eventEmitter,
         hyperformula,
         getOptions,
         getData,
@@ -91,7 +83,7 @@ export const buildSpreadsheet = (rootEl, options) => {
 
   const setDatasheets = sheet.makeSetDatasheets(getDataProxy);
 
-  const bottombar = getBottombar(spreadsheetEventEmitter);
+  const bottombar = getBottombar(eventEmitter);
 
   sheet.el.before(toolbar.el);
   sheet.el.after(bottombar.el);
@@ -104,6 +96,6 @@ export const buildSpreadsheet = (rootEl, options) => {
     setDatasheets,
     setOptions,
     hyperformula,
-    spreadsheetEventEmitter,
+    eventEmitter,
   };
 };
