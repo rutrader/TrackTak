@@ -4,9 +4,9 @@ import { getSheet } from "../getSheet";
 import { makeGetDataProxy } from "../../core/makeGetDataProxy";
 import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { getBottombar } from "../bottombar";
-import { withVariablesSpreadsheet } from "../withVariablesSpreadsheet";
 import { buildSheet } from "./buildSheet";
 import { buildDataProxy } from "./buildDataProxy";
+import { buildVariablesSpreadsheet } from "./buildVariablesSpreadsheet";
 import EventEmitter from "events";
 import { modifyEventEmitter } from "../../shared/modifyEventEmitter";
 import { getNewOptions } from "./getNewOptions";
@@ -56,20 +56,25 @@ export const buildSpreadsheet = (
     eventEmitter,
   );
 
-  const { sheet, variablesSpreadsheet, toolbar } = withToolbar(
-    withVariablesSpreadsheet(
-      getSheet(
-        sheetBuilder,
-        rootEl,
-        table,
-        eventEmitter,
-        hyperformula,
-        getOptions,
-        getData,
-        getDataProxy,
-      ),
-      variablesSpreadsheetOptions,
+  const { sheet, toolbar } = withToolbar(
+    getSheet(
+      sheetBuilder,
+      rootEl,
+      table,
+      eventEmitter,
+      hyperformula,
+      getOptions,
+      getData,
+      getDataProxy,
     ),
+    variablesSpreadsheetOptions,
+  );
+
+  const variablesSpreadsheet = buildVariablesSpreadsheet(
+    sheet.el,
+    rootEl,
+    variablesSpreadsheetOptions,
+    hyperformula,
   );
 
   const setDatasheets = sheet.makeSetDatasheets(getDataProxy);
