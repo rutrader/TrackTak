@@ -1,7 +1,6 @@
 import { stringAt } from "../../core/alphabet";
 
-import getDraw, { thinLineWidth, npx, getDrawBox } from "../../canvas/draw";
-import { makeGetViewWidthHeight } from "../makeGetViewWidthHeight";
+import { thinLineWidth, npx, getDrawBox } from "../../canvas/draw";
 import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { cssPrefix } from "../../config";
 import { h } from "../element";
@@ -36,12 +35,13 @@ export const getTable = (
   getData,
   hyperformula,
   eventEmitter,
-  isVariablesSpreadsheet,
+  getViewWidthHeight,
 ) => {
-  const getViewWidthHeight = makeGetViewWidthHeight(
-    getOptions,
-    isVariablesSpreadsheet,
-  );
+  let draw;
+
+  const setDraw = (newDraw) => {
+    draw = newDraw;
+  };
 
   const renderSelectedHeaderCell = (x, y, w, h) => {
     draw.save();
@@ -124,11 +124,6 @@ export const getTable = (
   };
 
   const el = h("canvas", `${cssPrefix}-table`);
-  const draw = getDraw(
-    el.el,
-    getViewWidthHeight().width,
-    getViewWidthHeight().height,
-  );
 
   const renderCell = (draw, data, rindex, cindex, yoffset = 0) => {
     const { sortedRowMap, rows, cols } = data;
@@ -429,10 +424,10 @@ export const getTable = (
 
   return {
     el,
-    draw,
     hyperformula,
     render,
     clear,
     getOffset,
+    setDraw,
   };
 };

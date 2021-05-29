@@ -11,6 +11,8 @@ import EventEmitter from "events";
 import { modifyEventEmitter } from "../../shared/modifyEventEmitter";
 import { getNewOptions } from "./getNewOptions";
 import { defaultOptions } from "../../core/defaultOptions";
+import { makeGetViewWidthHeight } from "../makeGetSheetViewWidthHeight";
+import getDraw from "../../canvas/draw";
 
 export const buildSpreadsheet = (
   rootEl,
@@ -45,7 +47,18 @@ export const buildSpreadsheet = (
 
   const getData = () => newData;
 
-  const table = getTable(getOptions, getData, hyperformula, eventEmitter);
+  const getViewWidthHeight = makeGetViewWidthHeight(getOptions, () => {
+    return variablesSpreadsheet.getOptions();
+  });
+
+  const table = getTable(
+    getOptions,
+    getData,
+    hyperformula,
+    eventEmitter,
+    getViewWidthHeight,
+  );
+
   const sheetBuilder = buildSheet(getOptions, getData, eventEmitter);
 
   const dataProxyBuilder = buildDataProxy(getOptions, getData, hyperformula);
@@ -54,6 +67,7 @@ export const buildSpreadsheet = (
     dataProxyBuilder,
     getOptions,
     eventEmitter,
+    getViewWidthHeight,
   );
 
   const { sheet, toolbar } = withToolbar(
@@ -66,6 +80,7 @@ export const buildSpreadsheet = (
       getOptions,
       getData,
       getDataProxy,
+      getViewWidthHeight,
     ),
     variablesSpreadsheetOptions,
   );
@@ -76,6 +91,14 @@ export const buildSpreadsheet = (
     variablesSpreadsheetOptions,
     hyperformula,
   );
+
+  const draw = getDraw(
+    table.el.el,
+    getViewWidthHeight().width,
+    getViewWidthHeight().height,
+  );
+
+  table.setDraw(draw);
 
   const setDatasheets = sheet.makeSetDatasheets(getDataProxy);
 

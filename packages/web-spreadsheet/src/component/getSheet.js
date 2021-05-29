@@ -3,7 +3,6 @@ import { bind, mouseMoveUp, bindTouch } from "./event";
 import { xtoast } from "./message";
 import { cssPrefix } from "../config";
 import spreadsheetEvents from "../core/spreadsheetEvents";
-import { makeGetViewWidthHeight } from "./makeGetViewWidthHeight";
 
 /**
  * @desc throttle fn
@@ -33,7 +32,7 @@ export const getSheet = (
   getOptions,
   getData,
   getDataProxy,
-  isVariablesSpreadsheet,
+  getViewWidthHeight,
 ) => {
   const {
     rowResizer,
@@ -403,10 +402,6 @@ export const getSheet = (
   }
 
   function sheetReset() {
-    const getViewWidthHeight = makeGetViewWidthHeight(
-      getOptions,
-      isVariablesSpreadsheet,
-    );
     const tOffset = table.getOffset();
     const vRect = getViewWidthHeight();
     table.el.attr(vRect);

@@ -7,7 +7,6 @@ import Selector from "../selector";
 import SortFilter from "../sort_filter";
 import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { HyperFormula } from "hyperformula";
-import { makeGetViewWidthHeight } from "../makeGetViewWidthHeight";
 import { t } from "../../locale/locale";
 
 const getFormulaSuggestions = () => {
@@ -30,7 +29,7 @@ export const buildSheet = (
   getOptions,
   getData,
   eventEmitter,
-  isVariablesSpreadsheet,
+  getViewWidthHeight,
 ) => {
   const rowResizer = getResizer(
     eventEmitter,
@@ -47,7 +46,6 @@ export const buildSheet = (
   const horizontalScrollbar = getScrollbar(eventEmitter, false);
   const editor = getEditor(getData, getFormulaSuggestions(), eventEmitter);
   const modalValidation = new ModalValidation();
-  const getViewWidthHeight = makeGetViewWidthHeight(getOptions);
   const contextMenu = getContextMenu(
     getViewWidthHeight,
     eventEmitter,

@@ -2,19 +2,14 @@ import { CellRange } from "./cell_range";
 import { expr2xy, xy2expr } from "./alphabet";
 import { t } from "../locale/locale";
 import spreadsheetEvents from "./spreadsheetEvents";
-import { makeGetViewWidthHeight } from "../component/makeGetViewWidthHeight";
 import helper from "./helper";
 
 export const makeGetDataProxy = (
   builder,
   getOptions,
   eventEmitter,
-  isVariablesSpreadsheet,
+  getViewWidthHeight,
 ) => (name, sheetIndex) => {
-  const getViewWidthHeight = makeGetViewWidthHeight(
-    getOptions,
-    isVariablesSpreadsheet,
-  );
   let freeze = [0, 0];
   let styles = []; // Array<Style>
 

@@ -382,7 +382,6 @@ const getDraw = (el, width, height) => {
   ctx.scale(dpr(), dpr());
 
   return {
-    el,
     width,
     height,
     ctx,
