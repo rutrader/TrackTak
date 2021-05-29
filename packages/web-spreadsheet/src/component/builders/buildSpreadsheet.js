@@ -9,23 +9,19 @@ import { buildSheet } from "./buildSheet";
 import { buildDataProxy } from "./buildDataProxy";
 import EventEmitter from "events";
 import { modifyEventEmitter } from "../../shared/modifyEventEmitter";
-import { HyperFormula } from "hyperformula";
-import { hyperformulaLicenseKey } from "../../shared/hyperformulaLicenseKey";
 import { getNewOptions } from "./getNewOptions";
 import { defaultOptions } from "../../core/defaultOptions";
 
 export const buildSpreadsheet = (
   rootEl,
   options,
+  hyperformula,
   variablesSpreadsheetOptions,
 ) => {
   let newData;
   let newOptions;
 
   const eventEmitter = new EventEmitter();
-  const hyperformula = HyperFormula.buildEmpty({
-    licenseKey: hyperformulaLicenseKey,
-  });
 
   const getOptions = () => newOptions;
 

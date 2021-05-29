@@ -959,6 +959,7 @@ export const getSheet = (
     getOptions,
     getData,
     rootEl,
+    hyperformula,
     eventEmitter,
   };
 

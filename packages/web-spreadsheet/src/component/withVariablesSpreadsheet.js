@@ -4,12 +4,13 @@ export const withVariablesSpreadsheet = (
   { sheet, ...args },
   variablesSpreadsheetOptions,
 ) => {
-  const { rootEl, el: sheetEl } = sheet;
+  const { rootEl, el: sheetEl, hyperformula } = sheet;
 
   const variablesSpreadsheet = buildVariablesSpreadsheet(
     sheetEl,
     rootEl,
     variablesSpreadsheetOptions,
+    hyperformula,
   );
 
   return {

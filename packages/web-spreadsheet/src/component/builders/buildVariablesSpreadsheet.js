@@ -7,20 +7,20 @@ import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { getBottombar } from "../bottombar";
 import EventEmitter from "events";
 import { modifyEventEmitter } from "../../shared/modifyEventEmitter";
-import { HyperFormula } from "hyperformula";
-import { hyperformulaLicenseKey } from "../../shared/hyperformulaLicenseKey";
 import { getNewOptions } from "./getNewOptions";
 import { defaultVariablesSpreadsheetOptions } from "../../core/defaultOptions";
 import { getTable } from "../table/getTable";
 
-export const buildVariablesSpreadsheet = (sheetEl, rootEl, options) => {
+export const buildVariablesSpreadsheet = (
+  sheetEl,
+  rootEl,
+  options,
+  hyperformula,
+) => {
   let newData;
   let newOptions;
 
   const eventEmitter = new EventEmitter();
-  const hyperformula = HyperFormula.buildEmpty({
-    licenseKey: hyperformulaLicenseKey,
-  });
 
   const getOptions = () => newOptions;
 

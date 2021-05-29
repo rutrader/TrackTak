@@ -3,20 +3,29 @@ import { cssPrefix } from "./config";
 import { locale } from "./locale/locale";
 import "./index.less";
 import { buildSpreadsheet } from "./component/builders/buildSpreadsheet";
+import { HyperFormula } from "hyperformula";
+import { hyperformulaLicenseKey } from "./shared/hyperformulaLicenseKey";
 
 const getSpreadsheet = (element, options, variablesSpreadsheetOptions) => {
   const rootEl = h("div", `${cssPrefix}`).on("contextmenu", (evt) =>
     evt.preventDefault(),
   );
+  const hyperformula = HyperFormula.buildEmpty({
+    licenseKey: hyperformulaLicenseKey,
+  });
 
   const {
     sheet,
     spreadsheetEventEmitter,
-    hyperformula,
     variablesSpreadsheet,
     setDatasheets,
     setOptions,
-  } = buildSpreadsheet(rootEl, options, variablesSpreadsheetOptions);
+  } = buildSpreadsheet(
+    rootEl,
+    options,
+    hyperformula,
+    variablesSpreadsheetOptions,
+  );
 
   element.appendChild(rootEl.el);
 
