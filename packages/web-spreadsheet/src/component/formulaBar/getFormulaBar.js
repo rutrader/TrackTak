@@ -119,6 +119,8 @@ export const getFormulaBar = (getData, formulas, eventEmitter) => {
     clear();
   });
   let composing = false;
+  const fxIcon = h("div", `${cssPrefix}-icon-fx`);
+
   let textEl = h("div", "textarea")
     .attr("contenteditable", "true")
     .on("input", (evt) => inputEventHandler(evt))
@@ -127,8 +129,13 @@ export const getFormulaBar = (getData, formulas, eventEmitter) => {
     .on("compositionstart.stop", () => (composing = true))
     .on("compositionend.stop", () => (composing = false));
 
+  const textareaContainer = h(
+    "div",
+    `${cssPrefix}-textarea-container`,
+  ).children(fxIcon, textEl);
+
   const areaEl = h("div", `${cssPrefix}-editor-area`)
-    .children(textEl, suggest.el, datepicker.el)
+    .children(textareaContainer, suggest.el, datepicker.el)
     .on("mousemove.stop", () => {})
     .on("mousedown.stop", () => {});
   const el = h("div", `${cssPrefix}-formula-bar`).children(areaEl);
