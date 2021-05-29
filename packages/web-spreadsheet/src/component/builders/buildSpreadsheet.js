@@ -45,6 +45,8 @@ export const buildSpreadsheet = (
     newData = data;
   });
 
+  eventEmitter.on(spreadsheetEvents.sheet.addData, (_, __, data) => {});
+
   const getData = () => newData;
 
   const getViewWidthHeight = makeGetViewWidthHeight(getOptions, () => {
@@ -65,6 +67,7 @@ export const buildSpreadsheet = (
 
   const getDataProxy = makeGetDataProxy(
     dataProxyBuilder,
+    hyperformula,
     getOptions,
     eventEmitter,
     getViewWidthHeight,

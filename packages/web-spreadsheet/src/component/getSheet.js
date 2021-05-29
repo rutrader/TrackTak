@@ -79,20 +79,25 @@ export const getSheet = (
   const makeSetDatasheets = (getDataProxy) => (dataSheets) => {
     datas = [];
 
-    eventEmitter.emit(spreadsheetEvents.sheet.setDatasheets);
+    eventEmitter.emit(spreadsheetEvents.sheet.setDatasheets, dataSheets);
 
     dataSheets.forEach((dataSheet, i) => {
+      const sheetContent = Object.values(dataSheet.rows).map(({ cells }) =>
+        cells.map((x) => x.text),
+      );
       const data = addData(getDataProxy, dataSheet.name, i === 0);
 
       if (hyperformula.isItPossibleToAddSheet(dataSheet.name)) {
         hyperformula.addSheet(dataSheet.name);
       }
 
+      hyperformula.setSheetContent(dataSheet.name, sheetContent);
+
       if (i === 0) {
         switchData(data);
       }
 
-      data.setData(dataSheet, i);
+      data.setData(dataSheet);
     });
 
     if (!dataSheets.length) {
@@ -109,7 +114,7 @@ export const getSheet = (
     name = `sheet${datas.length + 1}`,
     active = true,
   ) => {
-    const data = getDataProxy(name, datas.length);
+    const data = getDataProxy(name);
 
     datas.push(data);
 

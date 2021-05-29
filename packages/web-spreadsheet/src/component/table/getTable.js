@@ -148,13 +148,13 @@ export const getTable = (
       draw.strokeBorders(style.border, dbox);
     }
 
-    draw.rect(dbox, () => {
-      const cellAddress = {
-        col: cindex,
-        row: rindex,
-        sheet: getData().sheetIndex,
-      };
+    const cellAddress = {
+      col: cindex,
+      row: rindex,
+      sheet: getData().getSheetId(),
+    };
 
+    draw.rect(dbox, () => {
       const showAllFormulas = getOptions().showAllFormulas;
       const formats = getOptions().formats;
 

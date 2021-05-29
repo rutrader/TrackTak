@@ -79,6 +79,7 @@ export const buildVariablesSpreadsheet = (
 
   const getDataProxy = makeGetDataProxy(
     dataProxyBuilder,
+    hyperformula,
     getOptions,
     eventEmitter,
     getViewWidthHeight,

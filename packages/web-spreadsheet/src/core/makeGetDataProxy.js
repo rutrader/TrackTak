@@ -6,10 +6,11 @@ import helper from "./helper";
 
 export const makeGetDataProxy = (
   builder,
+  hyperformula,
   getOptions,
   eventEmitter,
   getViewWidthHeight,
-) => (name, sheetIndex) => {
+) => (name) => {
   let freeze = [0, 0];
   let styles = []; // Array<Style>
 
@@ -769,14 +770,13 @@ export const makeGetDataProxy = (
     eventEmitter.emit(spreadsheetEvents.data.change, getData());
   };
 
-  // Refactor this later to use event emitter
-  const setData = (d, sheetIndex) => {
+  const setData = (d) => {
     Object.keys(d).forEach((property) => {
       if (property === "merges") {
         merges.setData(d.merges);
       }
       if (property === "rows") {
-        rows.setData(d.rows, sheetIndex);
+        rows.setData(d.rows);
       }
       if (property === "cols") {
         cols.setData(d.cols);
@@ -1039,7 +1039,14 @@ export const makeGetDataProxy = (
     return { ci: ci - 1, left, width };
   }
 
+  const getSheetId = () => {
+    const sheetId = hyperformula.getSheetId(name);
+
+    return sheetId;
+  };
+
   return {
+    getSheetId,
     name,
     rows,
     cols,
@@ -1104,6 +1111,5 @@ export const makeGetDataProxy = (
     exceptRowSet,
     getCellStyleOrDefault,
     getFreeze,
-    sheetIndex,
   };
 };

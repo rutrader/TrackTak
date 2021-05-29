@@ -118,7 +118,7 @@ class Rows {
     cell.text = text;
 
     this.hyperformula.setCellContents(
-      { col: ci, row: ri, sheet: this.getDataProxy().sheetIndex },
+      { col: ci, row: ri, sheet: this.getDataProxy().getSheetId() },
       [[text]],
     );
   };
@@ -184,7 +184,7 @@ class Rows {
                       {
                         col: nci,
                         row: nri,
-                        sheet: this.getDataProxy().sheetIndex,
+                        sheet: this.getDataProxy().getSheetId(),
                       },
                       [[nText]],
                     );
@@ -204,7 +204,7 @@ class Rows {
                         {
                           col: nci,
                           row: nri,
-                          sheet: this.getDataProxy().sheetIndex,
+                          sheet: this.getDataProxy().getSheetId(),
                         },
                         [[nText]],
                       );
@@ -371,7 +371,7 @@ class Rows {
               {
                 col: ci,
                 row: ri,
-                sheet: this.getDataProxy().sheetIndex,
+                sheet: this.getDataProxy().getSheetId(),
               },
               "",
             );
@@ -414,20 +414,12 @@ class Rows {
     }
   }
 
-  setData(d, sheetIndex) {
+  setData(d) {
     if (d.len) {
       this.len = d.len;
       delete d.len;
     }
     this._ = d;
-
-    const sheetContent = Object.values(d).map(({ cells }) => {
-      return cells.map((x) => x.text);
-    });
-
-    const sheetName = this.hyperformula.getSheetName(sheetIndex);
-
-    this.hyperformula.setSheetContent(sheetName, sheetContent);
   }
 
   getData() {
