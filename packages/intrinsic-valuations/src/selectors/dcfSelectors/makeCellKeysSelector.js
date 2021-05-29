@@ -7,7 +7,7 @@ const makeCellKeysSelector = (startColumn, endColumn, rows) => {
     columns,
     startColumn,
     endColumn,
-    rows
+    rows,
   );
   return cellKeys.map((cellKey) => {
     return (state) => selectCells(state)[cellKey];

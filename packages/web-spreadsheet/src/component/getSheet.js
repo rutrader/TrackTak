@@ -93,6 +93,15 @@ export const getSheet = (
 
       hyperformula.setSheetContent(dataSheet.name, sheetContent);
 
+      if (getOptions().debugMode) {
+        const sheetId = hyperformula.getSheetId(dataSheet.name);
+
+        console.log(
+          `registered sheet content: ${dataSheet.name} (sheet id: ${sheetId})`,
+          hyperformula.getSheetFormulas(sheetId),
+        );
+      }
+
       if (i === 0) {
         switchData(data);
       }

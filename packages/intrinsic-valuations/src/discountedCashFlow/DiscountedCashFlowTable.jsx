@@ -34,6 +34,7 @@ import {
   formatNumberRender,
 } from "../../../web-spreadsheet/src/core/helper";
 import getSpreadsheet from "../../../web-spreadsheet/src";
+import { requiredInputsSheetName } from "./expressionCalculations";
 
 const defaultColWidth = 110;
 const columnAWidth = 170;
@@ -309,7 +310,7 @@ const DiscountedCashFlowTable = ({
         columns.forEach((_, columnIndex) => {
           const label = convertFromCellIndexToLabel(columnIndex, rowIndex + 1);
           const expr = dataSheetFormulas[sheetName][rowIndex][columnIndex];
-          const value = dataSheetValues[sheetName][rowIndex][columnIndex];
+          let value = dataSheetValues[sheetName][rowIndex][columnIndex];
 
           cells[label] = {
             ...cells[label],
@@ -327,7 +328,7 @@ const DiscountedCashFlowTable = ({
     if (spreadsheet) {
       spreadsheet.variablesSpreadsheet.setVariableDatasheets([
         {
-          name: "Required Inputs",
+          name: requiredInputsSheetName,
           rows: {
             0: {
               cells: [

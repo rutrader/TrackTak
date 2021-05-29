@@ -186,13 +186,13 @@ const SensitivityAnalysis = () => {
       if (currentScopes) {
         setIsLoading(true);
 
-        const { data } = await computeSensitivityAnalysis(
-          cells,
-          scope,
-          currentScopes,
-        );
+        // const { data } = await computeSensitivityAnalysis(
+        //   cells,
+        //   scope,
+        //   currentScopes,
+        // );
 
-        setEstimatedValues(data);
+        // setEstimatedValues(data);
       }
     };
 

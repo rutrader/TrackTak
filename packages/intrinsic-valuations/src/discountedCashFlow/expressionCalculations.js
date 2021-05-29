@@ -1,10 +1,10 @@
 import {
-  cagrYearOneToFiveQueryName,
   ebitTargetMarginInYearTenQueryName,
   yearOfConvergenceQueryName,
 } from "../shared/inputQueryNames";
 
-const cagrYearOneToFiveQueryNameTT = `${cagrYearOneToFiveQueryName}`;
+export const requiredInputsSheetName = "Required Inputs";
+const cagrYearOneToFiveQueryNameTT = `'${requiredInputsSheetName}'!$B$1`;
 const ebitTargetMarginInYearTenQueryNameTT = `${ebitTargetMarginInYearTenQueryName}`;
 const yearOfConvergenceQueryNameTT = `${yearOfConvergenceQueryName}`;
 
