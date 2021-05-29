@@ -12,6 +12,7 @@ const sharedOptions = {
   showToolbar: true,
   showGrid: true,
   showContextmenu: true,
+  showAllFormulas: false,
   row: {
     len: 100,
     indexHeight: 20,
@@ -92,17 +93,10 @@ const sharedOptions = {
 
 export const defaultOptions = merge({}, sharedOptions, {
   showVariablesSpreadsheet: true,
-  showAllFormulas: false,
 });
 
 export const defaultVariablesSpreadsheetOptions = merge({}, sharedOptions, {
   view: {
     height: () => 200,
-  },
-  row: {
-    indexHeight: 0.000001,
-  },
-  col: {
-    indexWidth: 0.000001,
   },
 });

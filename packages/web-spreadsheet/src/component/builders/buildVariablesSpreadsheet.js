@@ -1,6 +1,5 @@
 import { getSheet } from "../getSheet";
 import { makeGetDataProxy } from "../../core/makeGetDataProxy";
-import { getVariablesTable } from "../table/getVariablesTable";
 import withVariablesToolbar from "../withVariablesToolbar";
 import { buildSheet } from "./buildSheet";
 import { buildDataProxy } from "./buildDataProxy";
@@ -12,6 +11,7 @@ import { HyperFormula } from "hyperformula";
 import { hyperformulaLicenseKey } from "../../shared/hyperformulaLicenseKey";
 import { getNewOptions } from "./getNewOptions";
 import { defaultVariablesSpreadsheetOptions } from "../../core/defaultOptions";
+import { getTable } from "../table/getTable";
 
 export const buildVariablesSpreadsheet = (sheetEl, rootEl, options) => {
   let newData;
@@ -48,12 +48,7 @@ export const buildVariablesSpreadsheet = (sheetEl, rootEl, options) => {
     newData = data;
   });
 
-  const variablesTable = getVariablesTable(
-    getOptions,
-    getData,
-    hyperformula,
-    eventEmitter,
-  );
+  const table = getTable(getOptions, getData, hyperformula, eventEmitter, true);
   const sheetBuilder = buildSheet(getOptions, getData, eventEmitter, true);
 
   const dataProxyBuilder = buildDataProxy(getOptions, getData, hyperformula);
@@ -69,7 +64,7 @@ export const buildVariablesSpreadsheet = (sheetEl, rootEl, options) => {
     getSheet(
       sheetBuilder,
       rootEl,
-      variablesTable,
+      table,
       eventEmitter,
       hyperformula,
       getOptions,
