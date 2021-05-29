@@ -2,15 +2,13 @@ import helper from "./helper";
 import { expr2expr, REGEX_EXPR_GLOBAL } from "./alphabet";
 
 class Rows {
-  constructor(getRow, getDataProxy, hyperformula, isVariablesSpreadsheet) {
+  constructor(getRow, getDataProxy, hyperformula) {
     this._ = {};
     this.len = getRow().len;
     this.getDataProxy = getDataProxy;
     // default row height
     this.height = getRow().height;
-    this.indexHeight = isVariablesSpreadsheet
-      ? getRow().variablesSheetIndexHeight
-      : getRow().indexHeight;
+    this.indexHeight = getRow().indexHeight;
 
     this.hyperformula = hyperformula;
   }

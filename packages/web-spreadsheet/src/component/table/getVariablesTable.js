@@ -10,24 +10,12 @@ export const getVariablesTable = (
 ) => {
   const getViewWidthHeight = makeGetViewWidthHeight(getOptions, true);
 
-  const { clear, render, el, draw } = makeTable({
+  const { clear, render, el, draw, getOffset } = makeTable({
     getViewWidthHeight,
     getOptions,
     getData,
     hyperformula,
   });
-
-  const getOffset = () => {
-    const { rows, cols } = getData();
-    const { width, height } = getViewWidthHeight();
-
-    return {
-      width: width - cols.indexWidth,
-      height: height - rows.indexHeight,
-      left: getOptions().variablesSheetIndexWidth,
-      top: getOptions().variablesSheetIndexHeight,
-    };
-  };
 
   eventEmitter.on(spreadsheetEvents.sheet.switchData, () => {
     render();

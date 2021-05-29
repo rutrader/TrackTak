@@ -1,3 +1,4 @@
+import { defaultVariablesSpreadsheetOptions } from "../core/defaultOptions";
 import { bottombarHeight } from "./bottombar";
 import { toolbarHeight } from "./toolbar/getToolbar";
 
@@ -9,7 +10,8 @@ export const makeGetViewWidthHeight = (
   let height;
 
   if (isVariablesSpreadsheet) {
-    height = view.variablesSheetHeight();
+    // TODO: Change default to actual from getVariablesOptions
+    height = defaultVariablesSpreadsheetOptions.view.height();
 
     if (showToolbar) {
       height -= toolbarHeight;
@@ -18,7 +20,7 @@ export const makeGetViewWidthHeight = (
     height = view.height();
 
     if (showVariablesSpreadsheet) {
-      height -= view.variablesSheetHeight();
+      height -= defaultVariablesSpreadsheetOptions.view.height();
     }
     height -= bottombarHeight;
   }

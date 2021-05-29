@@ -10,14 +10,31 @@ import EventEmitter from "events";
 import { modifyEventEmitter } from "../../shared/modifyEventEmitter";
 import { HyperFormula } from "hyperformula";
 import { hyperformulaLicenseKey } from "../../shared/hyperformulaLicenseKey";
+import { getNewOptions } from "./getNewOptions";
+import { defaultVariablesSpreadsheetOptions } from "../../core/defaultOptions";
 
-export const buildVariablesSpreadsheet = (sheetEl, rootEl, getOptions) => {
+export const buildVariablesSpreadsheet = (sheetEl, rootEl, options) => {
   let newData;
+  let newOptions;
 
   const eventEmitter = new EventEmitter();
   const hyperformula = HyperFormula.buildEmpty({
     licenseKey: hyperformulaLicenseKey,
   });
+
+  const getOptions = () => newOptions;
+
+  const setOptions = (options) => {
+    newOptions = getNewOptions(
+      options,
+      defaultVariablesSpreadsheetOptions,
+      hyperformula,
+      newData,
+      variablesSheet,
+    );
+  };
+
+  setOptions(options);
 
   modifyEventEmitter(
     eventEmitter,
@@ -39,12 +56,7 @@ export const buildVariablesSpreadsheet = (sheetEl, rootEl, getOptions) => {
   );
   const sheetBuilder = buildSheet(getOptions, getData, eventEmitter, true);
 
-  const dataProxyBuilder = buildDataProxy(
-    getOptions,
-    getData,
-    hyperformula,
-    true,
-  );
+  const dataProxyBuilder = buildDataProxy(getOptions, getData, hyperformula);
 
   const getDataProxy = makeGetDataProxy(
     dataProxyBuilder,
@@ -80,5 +92,6 @@ export const buildVariablesSpreadsheet = (sheetEl, rootEl, getOptions) => {
     variablesToolbar,
     rootEl,
     setVariableDatasheets,
+    setOptions,
   };
 };

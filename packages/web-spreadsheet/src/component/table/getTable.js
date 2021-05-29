@@ -101,18 +101,7 @@ export const getTable = (getOptions, getData, hyperformula, eventEmitter) => {
     draw.restore();
   };
 
-  const getOffset = () => {
-    const { rows, cols } = getData();
-    const { width, height } = getViewWidthHeight();
-    return {
-      width: width - cols.indexWidth,
-      height: height - rows.indexHeight,
-      left: cols.indexWidth,
-      top: rows.indexHeight,
-    };
-  };
-
-  const { clear, render, el, draw } = makeTable({
+  const { clear, render, el, draw, getOffset } = makeTable({
     hyperformula,
     getOptions,
     getData,

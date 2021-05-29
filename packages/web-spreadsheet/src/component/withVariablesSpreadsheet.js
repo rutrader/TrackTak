@@ -1,12 +1,15 @@
 import { buildVariablesSpreadsheet } from "./builders/buildVariablesSpreadsheet";
 
-export const withVariablesSpreadsheet = ({ sheet, ...args }) => {
-  const { rootEl, el: sheetEl, getOptions } = sheet;
+export const withVariablesSpreadsheet = (
+  { sheet, ...args },
+  variablesSpreadsheetOptions,
+) => {
+  const { rootEl, el: sheetEl } = sheet;
 
   const variablesSpreadsheet = buildVariablesSpreadsheet(
     sheetEl,
     rootEl,
-    getOptions,
+    variablesSpreadsheetOptions,
   );
 
   return {

@@ -7,14 +7,18 @@ import { getBottombar } from "../bottombar";
 import { withVariablesSpreadsheet } from "../withVariablesSpreadsheet";
 import { buildSheet } from "./buildSheet";
 import { buildDataProxy } from "./buildDataProxy";
-import defaultOptions from "../../core/defaultOptions";
-import { merge } from "lodash-es";
 import EventEmitter from "events";
 import { modifyEventEmitter } from "../../shared/modifyEventEmitter";
 import { HyperFormula } from "hyperformula";
 import { hyperformulaLicenseKey } from "../../shared/hyperformulaLicenseKey";
+import { getNewOptions } from "./getNewOptions";
+import { defaultOptions } from "../../core/defaultOptions";
 
-export const buildSpreadsheet = (rootEl, options) => {
+export const buildSpreadsheet = (
+  rootEl,
+  options,
+  variablesSpreadsheetOptions,
+) => {
   let newData;
   let newOptions;
 
@@ -23,27 +27,17 @@ export const buildSpreadsheet = (rootEl, options) => {
     licenseKey: hyperformulaLicenseKey,
   });
 
-  const setOptions = (options) => {
-    newOptions = merge(defaultOptions, options);
-
-    Object.keys(newOptions.variables).forEach((key) => {
-      const value = newOptions.variables[key];
-
-      if (hyperformula.isItPossibleToChangeNamedExpression(key, value)) {
-        hyperformula.changeNamedExpression(key, value);
-      }
-
-      if (hyperformula.isItPossibleToAddNamedExpression(key, value)) {
-        hyperformula.addNamedExpression(key, value);
-      }
-    });
-
-    if (newData) {
-      sheet.sheetReset();
-    }
-  };
-
   const getOptions = () => newOptions;
+
+  const setOptions = (options) => {
+    newOptions = getNewOptions(
+      options,
+      defaultOptions,
+      hyperformula,
+      newData,
+      sheet,
+    );
+  };
 
   setOptions(options);
 
@@ -78,6 +72,7 @@ export const buildSpreadsheet = (rootEl, options) => {
         getData,
         getDataProxy,
       ),
+      variablesSpreadsheetOptions,
     ),
   );
 

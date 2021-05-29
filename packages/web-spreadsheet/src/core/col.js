@@ -1,13 +1,11 @@
 import helper from "./helper";
 
 class Cols {
-  constructor(getCol, isVariablesSpreadsheet) {
+  constructor(getCol) {
     this._ = {};
     this.len = getCol().len;
     this.width = getCol().width;
-    this.indexWidth = isVariablesSpreadsheet
-      ? getCol().variablesSheetIndexWidth
-      : getCol().indexWidth;
+    this.indexWidth = getCol().indexWidth;
 
     this.minWidth = getCol().minWidth;
   }

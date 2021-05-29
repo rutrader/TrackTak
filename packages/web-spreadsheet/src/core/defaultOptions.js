@@ -1,29 +1,25 @@
 import { tf } from "../locale/locale";
 import { formatNumberRender, formatStringRender } from "./helper";
+import { merge } from "lodash-es";
 
-const defaultOptions = {
+const sharedOptions = {
   mode: "edit", // edit | read
   debugMode: process.env.NODE_ENV === "development",
   view: {
-    variablesSheetHeight: () => 160,
     height: () => document.documentElement.clientHeight,
     width: () => document.documentElement.clientWidth,
   },
-  showVariablesSpreadsheet: true,
-  showGrid: true,
   showToolbar: true,
+  showGrid: true,
   showContextmenu: true,
-  showAllFormulas: false,
   row: {
     len: 100,
-    variablesSheetIndexHeight: 0.000001,
     indexHeight: 20,
     height: 25,
   },
   col: {
     len: 26,
     width: 100,
-    variablesSheetIndexWidth: 0.000001,
     indexWidth: 25,
     minWidth: 60,
   },
@@ -94,4 +90,19 @@ const defaultOptions = {
   },
 };
 
-export default defaultOptions;
+export const defaultOptions = merge({}, sharedOptions, {
+  showVariablesSpreadsheet: true,
+  showAllFormulas: false,
+});
+
+export const defaultVariablesSpreadsheetOptions = merge({}, sharedOptions, {
+  view: {
+    height: () => 200,
+  },
+  row: {
+    indexHeight: 0.000001,
+  },
+  col: {
+    indexWidth: 0.000001,
+  },
+});

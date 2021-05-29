@@ -8,21 +8,11 @@ import { Rows } from "../../core/row";
 import { Cols } from "../../core/col";
 import { Validations } from "../../core/validation";
 
-export const buildDataProxy = (
-  getOptions,
-  getData,
-  hyperformula,
-  isVariablesSpreadsheet,
-) => () => {
+export const buildDataProxy = (getOptions, getData, hyperformula) => () => {
   // save object
   const merges = new Merges(); // [CellRange, ...]
-  const rows = new Rows(
-    () => getOptions().row,
-    getData,
-    hyperformula,
-    isVariablesSpreadsheet,
-  );
-  const cols = new Cols(() => getOptions().col, isVariablesSpreadsheet);
+  const rows = new Rows(() => getOptions().row, getData, hyperformula);
+  const cols = new Cols(() => getOptions().col);
   const validations = new Validations();
 
   // don't save object

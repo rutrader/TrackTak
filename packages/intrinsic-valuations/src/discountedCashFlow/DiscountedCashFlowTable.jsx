@@ -64,6 +64,24 @@ const rowCells = cellKeysSorted.map((key) => {
 });
 
 const dcfValuationId = "dcf-valuation";
+const styles = [
+  {
+    format: "percent",
+  },
+  {
+    format: "million",
+  },
+  {
+    format: "million-currency",
+  },
+  {
+    format: "currency",
+  },
+  {
+    format: "number",
+  },
+];
+
 const getDataSheets = (isOnMobile) => {
   const rows = {};
 
@@ -82,23 +100,7 @@ const getDataSheets = (isOnMobile) => {
         },
       },
       rows,
-      styles: [
-        {
-          format: "percent",
-        },
-        {
-          format: "million",
-        },
-        {
-          format: "million-currency",
-        },
-        {
-          format: "currency",
-        },
-        {
-          format: "number",
-        },
-      ],
+      styles,
     },
   ];
 
@@ -325,16 +327,21 @@ const DiscountedCashFlowTable = ({
     if (spreadsheet) {
       spreadsheet.variablesSpreadsheet.setVariableDatasheets([
         {
-          name: "Inputs",
+          name: "Required Inputs",
           rows: {
             0: {
               cells: [
                 {
-                  text: "CAGR Year 1-5",
+                  text: "CAGR in Years 1-5",
+                },
+                {
+                  text: inputQueryParams.cagrYearOneToFive,
+                  style: styleMap.percent,
                 },
               ],
             },
           },
+          styles,
         },
         {
           name: "Optional Inputs",
@@ -347,6 +354,7 @@ const DiscountedCashFlowTable = ({
               ],
             },
           },
+          styles,
         },
         {
           name: "API",
@@ -359,10 +367,11 @@ const DiscountedCashFlowTable = ({
               ],
             },
           },
+          styles,
         },
       ]);
     }
-  }, [spreadsheet]);
+  }, [inputQueryParams.cagrYearOneToFive, spreadsheet]);
 
   useEffect(() => {
     if (spreadsheet && hasAllRequiredInputsFilledIn) {

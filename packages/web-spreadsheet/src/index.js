@@ -4,7 +4,7 @@ import { locale } from "./locale/locale";
 import "./index.less";
 import { buildSpreadsheet } from "./component/builders/buildSpreadsheet";
 
-const getSpreadsheet = (element, options) => {
+const getSpreadsheet = (element, options, variablesSpreadsheetOptions) => {
   const rootEl = h("div", `${cssPrefix}`).on("contextmenu", (evt) =>
     evt.preventDefault(),
   );
@@ -16,7 +16,7 @@ const getSpreadsheet = (element, options) => {
     variablesSpreadsheet,
     setDatasheets,
     setOptions,
-  } = buildSpreadsheet(rootEl, options);
+  } = buildSpreadsheet(rootEl, options, variablesSpreadsheetOptions);
 
   element.appendChild(rootEl.el);
 

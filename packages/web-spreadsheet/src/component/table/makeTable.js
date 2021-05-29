@@ -312,10 +312,23 @@ export const makeTable = ({
     draw.clear();
   };
 
+  const getOffset = () => {
+    const { rows, cols } = getData();
+    const { width, height } = getViewWidthHeight();
+
+    return {
+      width: width - cols.indexWidth,
+      height: height - rows.indexHeight,
+      left: getOptions().col.indexWidth,
+      top: getOptions().row.indexHeight,
+    };
+  };
+
   return {
     el,
     draw,
     clear,
     render,
+    getOffset,
   };
 };
