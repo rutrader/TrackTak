@@ -26,6 +26,7 @@ import {
   getSixToTenYrCostOfCapitalCalculation,
   getSixToTenYrTaxCalculation,
 } from "./expressionCalculations";
+import { requiredInputsSheetName } from "./templates/freeCashFlowFirmSimple/getRequiredInputs";
 
 const getExpressionProperties = (expr) => {
   return { className: "equation", expr };
@@ -108,7 +109,7 @@ const cells = {
   C7: getExpressionProperties("=IF(C2 > B2, (C2-B2) / C15, 0)"),
   C11: getExpressionProperties("=totalCostOfCapital"),
   C12: getExpressionProperties("=1/(1+C11)"),
-  C15: getExpressionProperties("=salesToCapitalRatio"),
+  C15: getExpressionProperties(`='${requiredInputsSheetName}'!$B$4`),
   M1: { value: "Terminal Year" },
   M2: getExpressionProperties(getRevenueCalculation("M2", "riskFreeRate")),
   M3: getExpressionProperties("=L3"),

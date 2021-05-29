@@ -1,12 +1,8 @@
-import {
-  ebitTargetMarginInYearTenQueryName,
-  yearOfConvergenceQueryName,
-} from "../shared/inputQueryNames";
+import { requiredInputsSheetName } from "./templates/freeCashFlowFirmSimple/getRequiredInputs";
 
-export const requiredInputsSheetName = "Required Inputs";
 const cagrYearOneToFiveQueryNameTT = `'${requiredInputsSheetName}'!$B$1`;
-const ebitTargetMarginInYearTenQueryNameTT = `${ebitTargetMarginInYearTenQueryName}`;
-const yearOfConvergenceQueryNameTT = `${yearOfConvergenceQueryName}`;
+const ebitTargetMarginInYearTenQueryNameTT = `'${requiredInputsSheetName}'!$B$2`;
+const yearOfConvergenceQueryNameTT = `'${requiredInputsSheetName}'!$B$3`;
 
 export const getPreviousColumn = (cellKey) => {
   const column = cellKey.charAt(0);

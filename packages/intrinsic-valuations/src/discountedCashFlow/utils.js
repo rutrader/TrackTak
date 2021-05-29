@@ -1,3 +1,30 @@
+export const styleMap = {
+  percent: 0,
+  million: 1,
+  "million-currency": 2,
+  currency: 3,
+  number: 4,
+  year: 4,
+};
+
+export const styles = [
+  {
+    format: "percent",
+  },
+  {
+    format: "million",
+  },
+  {
+    format: "million-currency",
+  },
+  {
+    format: "currency",
+  },
+  {
+    format: "number",
+  },
+];
+
 export const getColumnsBetween = (columns, startColumn, endColumn) => {
   const start = columns.indexOf(startColumn);
   const end = columns.indexOf(endColumn);

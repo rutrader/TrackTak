@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { padCellKeys } from "./utils";
+import { padCellKeys, styleMap, styles } from "./utils";
 import { Alert, Box, useMediaQuery, useTheme, Link } from "@material-ui/core";
 import useInputQueryParams from "../hooks/useInputQueryParams";
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
@@ -34,7 +34,8 @@ import {
   formatNumberRender,
 } from "../../../web-spreadsheet/src/core/helper";
 import getSpreadsheet from "../../../web-spreadsheet/src";
-import { requiredInputsSheetName } from "./expressionCalculations";
+import { getRequiredInputs } from "./templates/freeCashFlowFirmSimple/getRequiredInputs";
+import { getOptionalInputs } from "./templates/freeCashFlowFirmSimple/getOptionalInputs";
 
 const defaultColWidth = 110;
 const columnAWidth = 170;
@@ -44,15 +45,6 @@ const columns = [];
 for (let index = 0; index < 13; index++) {
   columns.push({ width: index === 0 ? 220 : defaultColWidth });
 }
-
-const styleMap = {
-  percent: 0,
-  million: 1,
-  "million-currency": 2,
-  currency: 3,
-  number: 4,
-  year: 4,
-};
 
 const cellKeysSorted = padCellKeys(Object.keys(cells).sort(sortAlphaNumeric));
 const rowCells = cellKeysSorted.map((key) => {
@@ -65,23 +57,6 @@ const rowCells = cellKeysSorted.map((key) => {
 });
 
 const dcfValuationId = "dcf-valuation";
-const styles = [
-  {
-    format: "percent",
-  },
-  {
-    format: "million",
-  },
-  {
-    format: "million-currency",
-  },
-  {
-    format: "currency",
-  },
-  {
-    format: "number",
-  },
-];
 
 const getDataSheets = (isOnMobile) => {
   const rows = {};
@@ -327,52 +302,11 @@ const DiscountedCashFlowTable = ({
   useEffect(() => {
     if (spreadsheet) {
       spreadsheet.variablesSpreadsheet.setVariableDatasheets([
-        {
-          name: requiredInputsSheetName,
-          rows: {
-            0: {
-              cells: [
-                {
-                  text: "CAGR in Years 1-5",
-                },
-                {
-                  text: inputQueryParams.cagrYearOneToFive,
-                  style: styleMap.percent,
-                },
-              ],
-            },
-          },
-          styles,
-        },
-        {
-          name: "Optional Inputs",
-          rows: {
-            0: {
-              cells: [
-                {
-                  text: "Debt",
-                },
-              ],
-            },
-          },
-          styles,
-        },
-        {
-          name: "API",
-          rows: {
-            0: {
-              cells: [
-                {
-                  text: "totalRevenue",
-                },
-              ],
-            },
-          },
-          styles,
-        },
+        getRequiredInputs(inputQueryParams),
+        getOptionalInputs(),
       ]);
     }
-  }, [inputQueryParams.cagrYearOneToFive, spreadsheet]);
+  }, [inputQueryParams, spreadsheet]);
 
   useEffect(() => {
     if (spreadsheet && hasAllRequiredInputsFilledIn) {
