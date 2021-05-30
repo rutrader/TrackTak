@@ -5,13 +5,16 @@ import { cssPrefix } from "./config";
 import { locale } from "./locale/locale";
 import "./index.less";
 import { HyperFormula } from "hyperformula";
-import EventEmitter from "events";
+import EventEmitter from "eventemitter3";
 import spreadsheetEvents from "./core/spreadsheetEvents";
 import withToolbar from "./component/withToolbar";
 import { getTable } from "./component/table/getTable";
 import defaultOptions from "./core/defaultOptions";
 import { merge } from "lodash-es";
 import { buildDataProxy, makeGetDataProxy } from "./core/makeGetDataProxy";
+import { getFormulaBar } from "./component/editor/getFormulaBar";
+import { getFormulaSuggestions } from "./shared/getFormulaSuggestions";
+import { modifyEventEmitter } from "./shared/modifyEventEmitter";
 
 const buildSpreadsheet = (
   element,
@@ -37,6 +40,14 @@ const buildSpreadsheet = (
       getData,
     ),
   );
+
+  const formulaBar = getFormulaBar(
+    getData,
+    getFormulaSuggestions(),
+    eventEmitter,
+  );
+
+  sheet.el.before(formulaBar.el);
 
   const dataProxyBuilder = buildDataProxy(getOptions, hyperformula);
 
@@ -102,6 +113,9 @@ const getSpreadsheet = (element, options) => {
   //   ),
   // );
   const eventEmitter = new EventEmitter();
+
+  modifyEventEmitter(eventEmitter);
+
   const hyperformula = HyperFormula.buildEmpty({
     licenseKey: "05054-b528f-a10c4-53f2a-04b57",
   });

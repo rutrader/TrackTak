@@ -1,24 +1,19 @@
 import Layout from "./Layout";
 import LayoutHome from "./LayoutHome";
 import React, { useEffect } from "react";
-import convertDotTickerToHyphen from "../shared/convertDotTickerToHyphen";
 import LayoutFullScreen from "./LayoutFullScreen";
 import TTSnackbar from "../components/TTSnackbar";
 
-const oldStockPathRegex = /\/(discounted-cash-flow|synthetic-credit-rating|industry-averages)\/[A-Za-z0-9]+\.\w+/g;
-const oldStockValuationpathRegex = /\/(stock-valuations)\/[A-Z0-9]+\.?[A-Z]+/g;
+const oldQueryPath = /cagrYearOneToFive=[0-9]+|ebitTargetMarginInYearTen=[0-9]+/g;
 
-const stockRedirect = (path) => {
-  const splitPath = path.split("/");
-  const page = splitPath[1];
-  const ticker = splitPath[2];
-  const newTicker = convertDotTickerToHyphen(ticker);
+const getNewSearch = (search) => {
+  let newSearch = search.replace("cagrYearOneToFive", "cagrInYears_1_5");
+  newSearch = newSearch.replace(
+    "ebitTargetMarginInYearTen",
+    "ebitTargetMarginInYear_10",
+  );
 
-  window.location.href = `/stock/${newTicker}/${page}`;
-};
-
-const valuationRedirect = () => {
-  window.location.href = "/stock-valuations";
+  return newSearch;
 };
 
 const Root = ({ children, pageContext, params }) => {
@@ -34,21 +29,18 @@ const Root = ({ children, pageContext, params }) => {
   return <Layout>{children}</Layout>;
 };
 
-export default ({ children, pageContext, path, params }) => {
-  const isStockRedirecting = path.match(oldStockPathRegex);
-  const isValuationRedirecting = path.match(oldStockValuationpathRegex);
+export default ({ children, pageContext, location, params }) => {
+  const redirectMatches = [...location.search.matchAll(oldQueryPath)];
 
   useEffect(() => {
-    if (isStockRedirecting) {
-      stockRedirect(path);
-    }
+    if (redirectMatches.length) {
+      const newSearch = getNewSearch(location.search);
 
-    if (isValuationRedirecting) {
-      valuationRedirect(path);
+      window.location.href = `${location.origin}${location.pathname}${newSearch}`;
     }
-  }, [isStockRedirecting, isValuationRedirecting, path]);
+  }, [redirectMatches, location.search, location.origin, location.pathname]);
 
-  if (isStockRedirecting || isValuationRedirecting) return null;
+  if (redirectMatches.length) return null;
 
   return (
     <Root pageContext={pageContext} params={params}>
