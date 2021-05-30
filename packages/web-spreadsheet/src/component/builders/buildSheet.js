@@ -2,7 +2,7 @@ import { getResizer } from "../getResizer";
 import { getScrollbar } from "../getScrollbar";
 import { getEditor } from "../editor";
 import ModalValidation from "../modal_validation";
-import { getContextMenu } from "../contextmenu";
+import { getContextMenu } from "../getContextmenu";
 import Selector from "../selector";
 import SortFilter from "../sort_filter";
 import spreadsheetEvents from "../../core/spreadsheetEvents";
@@ -46,11 +46,9 @@ export const buildSheet = (
   const horizontalScrollbar = getScrollbar(eventEmitter, false);
   const editor = getEditor(getData, getFormulaSuggestions(), eventEmitter);
   const modalValidation = new ModalValidation();
-  const contextMenu = getContextMenu(
-    getViewWidthHeight,
-    eventEmitter,
-    () => !getOptions().showContextMenu,
-  );
+  const contextMenu = getContextMenu(getViewWidthHeight, eventEmitter, () => {
+    return !getOptions().showContextmenu;
+  });
   const selector = new Selector(eventEmitter, getData);
   const sortFilter = new SortFilter();
 

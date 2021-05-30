@@ -61,7 +61,12 @@ export const buildSpreadsheet = (
     getViewWidthHeight,
   );
 
-  const sheetBuilder = buildSheet(getOptions, getData, eventEmitter);
+  const sheetBuilder = buildSheet(
+    getOptions,
+    getData,
+    eventEmitter,
+    getViewWidthHeight,
+  );
 
   const dataProxyBuilder = buildDataProxy(getOptions, getData, hyperformula);
 
