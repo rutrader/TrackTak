@@ -35,7 +35,7 @@ import {
   debtCalculation,
   marketValueCalculation,
   weightInCostOfCapitalCalculation,
-} from "./expressionCalculations";
+} from "./templates/freeCashFlowFirmSimple/expressionCalculations";
 
 export const DCFControlTypography = (props) => {
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();

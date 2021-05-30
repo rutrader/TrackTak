@@ -114,5 +114,6 @@ export const buildVariablesSpreadsheet = (
     setVariableDatasheets,
     setOptions,
     getOptions,
+    eventEmitter,
   };
 };

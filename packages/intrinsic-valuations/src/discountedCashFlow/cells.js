@@ -25,7 +25,7 @@ import {
   getSalesToCapitalRatioCalculation,
   getSixToTenYrCostOfCapitalCalculation,
   getSixToTenYrTaxCalculation,
-} from "./expressionCalculations";
+} from "./templates/freeCashFlowFirmSimple/expressionCalculations";
 import { requiredInputsSheetName } from "./templates/freeCashFlowFirmSimple/getRequiredInputs";
 
 const getExpressionProperties = (expr) => {

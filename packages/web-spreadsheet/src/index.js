@@ -5,6 +5,7 @@ import "./index.less";
 import { buildSpreadsheet } from "./component/builders/buildSpreadsheet";
 import { HyperFormula } from "hyperformula";
 import { hyperformulaLicenseKey } from "./shared/hyperformulaLicenseKey";
+import spreadsheetEvents from "./core/spreadsheetEvents";
 
 const getSpreadsheet = (element, options, variablesSpreadsheetOptions) => {
   const rootEl = h("div", `${cssPrefix}`).on("contextmenu", (evt) =>
@@ -20,6 +21,7 @@ const getSpreadsheet = (element, options, variablesSpreadsheetOptions) => {
     variablesSpreadsheet,
     setDatasheets,
     setOptions,
+    eventEmitter,
   } = buildSpreadsheet(
     rootEl,
     options,
@@ -41,8 +43,9 @@ const getSpreadsheet = (element, options, variablesSpreadsheetOptions) => {
     hyperformula,
     spreadsheetEventEmitter,
     setDatasheets,
+    eventEmitter,
   };
 };
 
 export default getSpreadsheet;
-export { locale };
+export { locale, spreadsheetEvents };

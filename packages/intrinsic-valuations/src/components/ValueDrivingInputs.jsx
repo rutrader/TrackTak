@@ -13,6 +13,13 @@ import { useLocation } from "@reach/router";
 import { useSelector } from "react-redux";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 import { isNil } from "lodash-es";
+import {
+  cagrInYears_1_5Label,
+  ebitTargetMarginInYear_10Label,
+  salesToCapitalRatioLabel,
+  yearOfConvergenceLabel,
+} from "../discountedCashFlow/templates/freeCashFlowFirmSimple/inputQueryNames";
+import { requiredInputsId } from "../discountedCashFlow/templates/freeCashFlowFirmSimple/getRequiredInputs";
 
 const ValueDrivingTextField = (props) => (
   <TextField
@@ -27,14 +34,6 @@ const ValueDrivingTextField = (props) => (
   />
 );
 
-export const cagrInYearsOneToFiveLabel = "CAGR in Years 1-5";
-export const ebitTargetMarginInYearTenLabel =
-  "Operating Target Margin in Year 10";
-export const yearOfConvergenceLabel = "Year of Convergence";
-export const salesToCapitalRatioLabel = "Sales to Capital Ratio";
-export const valueDrivingInputsHeader = "Value Driving Inputs";
-export const valueDrivingInputsId = "value-driving-inputs";
-
 const ValueDrivingInputs = () => {
   const theme = useTheme();
   const inputQueryParams = useInputQueryParams();
@@ -42,7 +41,7 @@ const ValueDrivingInputs = () => {
   const location = useLocation();
   const currentIndustry = useSelector(selectCurrentIndustry);
   const isFocusedOnValueDrivingInputs = location.hash?.includes(
-    valueDrivingInputsId,
+    requiredInputsId,
   );
 
   useEffect(() => {
@@ -66,27 +65,27 @@ const ValueDrivingInputs = () => {
           : null
       }
     >
-      <Typography variant="h5" gutterBottom id={valueDrivingInputsId}>
+      <Typography variant="h5" gutterBottom id={requiredInputsId}>
         <InfoOutlinedIconWrapper text={<InfoTextValueDrivingInputs />}>
-          {valueDrivingInputsHeader}
+          {/* {valueDrivingInputsHeader} */}
         </InfoOutlinedIconWrapper>
       </Typography>
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: theme.spacing(2) }}>
         <ValueDrivingTextField
-          label={cagrInYearsOneToFiveLabel}
-          value={inputQueryParams.cagrYearOneToFive}
+          label={cagrInYears_1_5Label}
+          value={inputQueryParams.cagrInYears_1_5}
           onBlur={(value) => {
-            setURLInput("cagrYearOneToFive", value);
+            setURLInput("cagrInYears_1_5", value);
           }}
           InputProps={{
             inputComponent: FormatInputToPercent,
           }}
         />
         <ValueDrivingTextField
-          label={ebitTargetMarginInYearTenLabel}
-          value={inputQueryParams.ebitTargetMarginInYearTen}
+          label={ebitTargetMarginInYear_10Label}
+          value={inputQueryParams.ebitTargetMarginInYear_10}
           onBlur={(value) => {
-            setURLInput("ebitTargetMarginInYearTen", value);
+            setURLInput("ebitTargetMarginInYear_10", value);
           }}
           InputProps={{
             inputComponent: FormatInputToPercent,

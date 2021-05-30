@@ -9,10 +9,6 @@ import { Box, Link, Typography, useTheme } from "@material-ui/core";
 import {
   CompanyOverviewStats,
   ValueDrivingInputs,
-  cagrInYearsOneToFiveLabel,
-  ebitTargetMarginInYearTenLabel,
-  salesToCapitalRatioLabel,
-  yearOfConvergenceLabel,
   Section,
   FormatRawNumberToPercent,
   FormatRawNumberToYear,
@@ -51,8 +47,8 @@ export const query = graphql`
   fragment ValuationInformation on ContentfulDcfTemplate {
     ticker
     salesToCapitalRatio
-    ebitTargetMarginInYearTen
-    cagrYearOneToFive
+    ebitTargetMarginInYear_10
+    cagrInYears_1_5
     dateOfValuation
     yearOfConvergence
     probabilityOfFailure
@@ -107,12 +103,12 @@ export const query = graphql`
           }
         }
       }
-      cagrYearOneToFiveDescription {
+      cagrInYears_1_5Description {
         childMarkdownRemark {
           html
         }
       }
-      ebitTargetMarginInYearTenDescription {
+      ebitTargetMarginInYear_10Description {
         childMarkdownRemark {
           html
         }
@@ -232,16 +228,16 @@ const Valuation = ({ data }) => {
     dateOfValuation,
     yearOfConvergence,
     salesToCapitalRatio,
-    cagrYearOneToFive,
-    ebitTargetMarginInYearTen,
+    ebitTargetMarginInYear_10,
+    cagrInYears_1_5,
     extraBusinessDescription,
     probabilityOfFailure,
     proceedsAsAPercentageOfBookValue,
     competitors,
     lookingForward,
     relativeNumbers,
-    cagrYearOneToFiveDescription,
-    ebitTargetMarginInYearTenDescription,
+    cagrInYears_1_5Description,
+    ebitTargetMarginInYear_10Description,
     salesToCapitalRatioDescription,
     yearOfConvergenceDescription,
     probabilityOfFailureDescription,
@@ -371,38 +367,38 @@ const Valuation = ({ data }) => {
         <Typography variant="h5" gutterBottom>
           The input values I chose for the DCF
         </Typography>
-        <Typography variant="h6" gutterBottom>
+        {/* <Typography variant="h6" gutterBottom>
           {cagrInYearsOneToFiveLabel}
-        </Typography>
+        </Typography> */}
         <Container>
           <NumberSpan>
-            <FormatRawNumberToPercent value={cagrYearOneToFive} />
+            <FormatRawNumberToPercent value={cagrInYears_1_5} />
           </NumberSpan>
-          {renderHtml(cagrYearOneToFiveDescription.childMarkdownRemark.html)}
+          {renderHtml(cagrInYears_1_5Description.childMarkdownRemark.html)}
         </Container>
-        <Typography variant="h6" gutterBottom>
-          {ebitTargetMarginInYearTenLabel}
-        </Typography>
+        {/* <Typography variant="h6" gutterBottom>
+          {ebitTargetMarginInYear_10Label}
+        </Typography> */}
         <Container>
           <NumberSpan>
-            <FormatRawNumberToPercent value={ebitTargetMarginInYearTen} />
+            <FormatRawNumberToPercent value={ebitTargetMarginInYear_10} />
           </NumberSpan>
           {renderHtml(
-            ebitTargetMarginInYearTenDescription.childMarkdownRemark.html,
+            ebitTargetMarginInYear_10Description.childMarkdownRemark.html,
           )}
         </Container>
-        <Typography variant="h6" gutterBottom>
+        {/* <Typography variant="h6" gutterBottom>
           {yearOfConvergenceLabel}
-        </Typography>
+        </Typography> */}
         <Container>
           <NumberSpan>
             <FormatRawNumberToYear value={yearOfConvergence} />
           </NumberSpan>
           {renderHtml(yearOfConvergenceDescription.childMarkdownRemark.html)}
         </Container>
-        <Typography variant="h6" gutterBottom>
+        {/* <Typography variant="h6" gutterBottom>
           {salesToCapitalRatioLabel}
-        </Typography>
+        </Typography> */}
         <Container>
           <NumberSpan>
             <FormatRawNumber decimalScale={2} value={salesToCapitalRatio} />

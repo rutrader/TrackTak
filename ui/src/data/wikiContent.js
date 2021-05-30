@@ -1,9 +1,6 @@
 import React from "react";
 import { Box, List, ListItem, TextField, Typography } from "@material-ui/core";
 import {
-  cagrInYearsOneToFiveLabel,
-  ebitTargetMarginInYearTenLabel,
-  yearOfConvergenceLabel,
   FormatInputToPercent,
   FormatInputToYear,
   Formula,
@@ -108,7 +105,7 @@ const wikiContent = [
         </Typography>
         <InputExampleBox>
           <TextField
-            label={cagrInYearsOneToFiveLabel}
+            // label={cagrInYearsOneToFiveLabel}
             disabled
             defaultValue={0.18}
             InputProps={{
@@ -146,7 +143,7 @@ const wikiContent = [
         </Typography>
         <InputExampleBox>
           <TextField
-            label={ebitTargetMarginInYearTenLabel}
+            // label={ebitTargetMarginInYear_10Label}
             disabled
             defaultValue={0.1}
             InputProps={{
@@ -178,7 +175,7 @@ const wikiContent = [
         </Typography>
         <InputExampleBox>
           <TextField
-            label={yearOfConvergenceLabel}
+            // label={yearOfConvergenceLabel}
             disabled
             defaultValue={5}
             InputProps={{

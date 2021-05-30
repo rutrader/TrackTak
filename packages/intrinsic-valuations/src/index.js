@@ -12,14 +12,7 @@ export { default as SyntheticCreditRating } from "./discountedCashFlow/Synthetic
 export { default as IndustryAverages } from "./discountedCashFlow/IndustryAverages";
 export { allInputNameTypeMappings } from "./discountedCashFlow/scopeNameTypeMapping";
 
-export {
-  default as ValueDrivingInputs,
-  cagrInYearsOneToFiveLabel,
-  ebitTargetMarginInYearTenLabel,
-  yearOfConvergenceLabel,
-  salesToCapitalRatioLabel,
-  valueDrivingInputsHeader,
-} from "./components/ValueDrivingInputs";
+export { default as ValueDrivingInputs } from "./components/ValueDrivingInputs";
 export { default as OptionalInputs } from "./components/OptionalInputs";
 export { default as IndustryAveragesResults } from "./components/IndustryAveragesResults";
 export { default as CostOfCapitalResults } from "./components/CostOfCapitalResults";

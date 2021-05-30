@@ -598,15 +598,28 @@ export const getSheet = (
     if (getOptions().mode === "read") return;
     getData().setSelectedCellText(text, state);
     const { ri, ci } = getData().selector;
+    const cellAddress = {
+      row: ri,
+      col: ci,
+      sheet: getData().getSheetId(),
+    };
+
+    const value = hyperformula.getCellValue(cellAddress);
+
     if (state === "finished") {
       eventEmitter.emit(
-        spreadsheetEvents.sheet.cellEditedFinished,
+        spreadsheetEvents.sheet.cellEdited,
         text,
-        ri,
-        ci,
+        value,
+        cellAddress,
       );
     } else {
-      eventEmitter.emit(spreadsheetEvents.sheet.cellEdited, text, ri, ci);
+      eventEmitter.emit(
+        spreadsheetEvents.sheet.cellEdit,
+        text,
+        value,
+        cellAddress,
+      );
       table.render();
     }
   }

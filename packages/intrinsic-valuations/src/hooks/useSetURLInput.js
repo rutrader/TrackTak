@@ -3,31 +3,37 @@ import convertParamsObjectToURLSearchParams from "../shared/convertParamsObjectT
 import { navigate } from "../shared/gatsby";
 import { useLocation } from "@reach/router";
 import { isNil } from "lodash-es";
+import { useCallback } from "react";
 
 const useSetURLInput = () => {
   const queryParams = useQueryParams();
   const location = useLocation();
 
-  return (key, value = null) => {
-    const urlSearchParams = convertParamsObjectToURLSearchParams(queryParams);
+  const setUrlInput = useCallback(
+    (key, value = null) => {
+      const urlSearchParams = convertParamsObjectToURLSearchParams(queryParams);
 
-    const existingValue = urlSearchParams.get(key);
-    const parsedExistingValue = isNil(existingValue)
-      ? null
-      : parseFloat(existingValue);
+      const existingValue = urlSearchParams.get(key);
+      const parsedExistingValue = isNil(existingValue)
+        ? null
+        : parseFloat(existingValue);
 
-    if (parsedExistingValue === value) return;
+      if (parsedExistingValue === value) return;
 
-    if (value || value === 0) {
-      urlSearchParams.set(key, value);
-    } else {
-      urlSearchParams.delete(key);
-    }
+      if (value || value === 0) {
+        urlSearchParams.set(key, value);
+      } else {
+        urlSearchParams.delete(key);
+      }
 
-    const path = `${location.pathname}?${urlSearchParams.toString()}`;
+      const path = `${location.pathname}?${urlSearchParams.toString()}`;
 
-    navigate(path);
-  };
+      navigate(path);
+    },
+    [location.pathname, queryParams],
+  );
+
+  return setUrlInput;
 };
 
 export default useSetURLInput;

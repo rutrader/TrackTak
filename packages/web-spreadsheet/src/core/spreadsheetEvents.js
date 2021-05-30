@@ -33,8 +33,8 @@ const spreadsheetEvents = {
   sheet: {
     cellSelected: "s-cell-selected",
     cellsSelected: "s-cells-selected",
-    cellEditedFinished: "s-cell-edited-finished",
     cellEdited: "s-cell-edited",
+    cellEdit: "s-cell-edit",
     switchData: "s-switch-data",
     sheetReset: "s-sheet-reset",
     mouseMoveUp: "s-mouse-move-up",

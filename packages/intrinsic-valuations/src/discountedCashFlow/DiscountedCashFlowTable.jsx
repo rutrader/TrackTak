@@ -15,10 +15,6 @@ import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSha
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import useInjectQueryParams from "../hooks/useInjectQueryParams";
 import { AnchorLink, navigate } from "../shared/gatsby";
-import {
-  valueDrivingInputsHeader,
-  valueDrivingInputsId,
-} from "../components/ValueDrivingInputs";
 import { useLocation } from "@reach/router";
 import selectThreeAverageYearsEffectiveTaxRate from "../selectors/fundamentalSelectors/selectThreeAverageYearsEffectiveTaxRate";
 import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
@@ -33,9 +29,17 @@ import {
   convertFromCellIndexToLabel,
   formatNumberRender,
 } from "../../../web-spreadsheet/src/core/helper";
-import getSpreadsheet from "../../../web-spreadsheet/src";
-import { getRequiredInputs } from "./templates/freeCashFlowFirmSimple/getRequiredInputs";
+import getSpreadsheet, {
+  spreadsheetEvents,
+} from "../../../web-spreadsheet/src";
+import {
+  getRequiredInputs,
+  requiredInputsId,
+  requiredInputsSheetName,
+} from "./templates/freeCashFlowFirmSimple/getRequiredInputs";
 import { getOptionalInputs } from "./templates/freeCashFlowFirmSimple/getOptionalInputs";
+import useSetURLInput from "../hooks/useSetURLInput";
+import { camelCase } from "change-case";
 
 const defaultColWidth = 110;
 const columnAWidth = 170;
@@ -190,6 +194,7 @@ const DiscountedCashFlowTable = ({
   const pastThreeYearsAverageEffectiveTaxRate = useSelector(
     selectThreeAverageYearsEffectiveTaxRate,
   );
+  const setURLInput = useSetURLInput();
 
   useEffect(() => {
     let spreadsheet;
@@ -257,6 +262,22 @@ const DiscountedCashFlowTable = ({
       spreadsheet?.destroy();
     };
   }, [currencySymbol]);
+
+  useEffect(() => {
+    if (spreadsheet) {
+      spreadsheet.variablesSpreadsheet.eventEmitter.on(
+        spreadsheetEvents.sheet.cellEdited,
+        (_, value, cellAddress) => {
+          const label = spreadsheet.hyperformula.getCellValue({
+            ...cellAddress,
+            col: cellAddress.col - 1,
+          });
+
+          setURLInput(camelCase(label), value);
+        },
+      );
+    }
+  }, [setURLInput, spreadsheet]);
 
   useEffect(() => {
     if (!hasAllRequiredInputsFilledIn && spreadsheet) {
@@ -354,10 +375,10 @@ const DiscountedCashFlowTable = ({
           marginalTaxRate: currentEquityRiskPremium.marginalTaxRate,
           sharesOutstanding,
           price,
-          cagrYearOneToFive: inputQueryParams.cagrYearOneToFive,
+          cagrInYears_1_5: inputQueryParams.cagrInYears_1_5,
           riskFreeRate,
           yearOfConvergence: inputQueryParams.yearOfConvergence,
-          ebitTargetMarginInYearTen: inputQueryParams.ebitTargetMarginInYearTen,
+          ebitTargetMarginInYear_10: inputQueryParams.ebitTargetMarginInYear_10,
           totalCostOfCapital: costOfCapital.totalCostOfCapital,
           salesToCapitalRatio: inputQueryParams.salesToCapitalRatio,
           nonOperatingAssets: inputQueryParams.nonOperatingAssets,
@@ -381,8 +402,8 @@ const DiscountedCashFlowTable = ({
     dispatch,
     incomeStatement.operatingIncome,
     incomeStatement.totalRevenue,
-    inputQueryParams.cagrYearOneToFive,
-    inputQueryParams.ebitTargetMarginInYearTen,
+    inputQueryParams.cagrInYears_1_5,
+    inputQueryParams.ebitTargetMarginInYear_10,
     inputQueryParams.netOperatingLoss,
     inputQueryParams.probabilityOfFailure,
     inputQueryParams.proceedsAsAPercentageOfBookValue,
@@ -397,7 +418,7 @@ const DiscountedCashFlowTable = ({
     inputQueryParams.nonOperatingAssets,
   ]);
 
-  const to = `${location.pathname}#${valueDrivingInputsId}`;
+  const to = `${location.pathname}#${requiredInputsId}`;
 
   return (
     <Box sx={{ position: "relative" }} ref={containerRef}>
@@ -433,7 +454,7 @@ const DiscountedCashFlowTable = ({
               navigate(to);
             }}
           >
-            {valueDrivingInputsHeader}
+            {requiredInputsSheetName}
           </Link>
           &nbsp;section above needs to be filled out first to generate the DCF.
         </Alert>
