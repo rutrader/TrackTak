@@ -61,6 +61,7 @@
     "gatsby-transformer-remark": "^2.16.0",
     "gatsby-transformer-sharp": "^2.12.0",
     "hyperformula": "^0.6.0",
+    "eventemitter3": "^4.0.7",
     "jsonp": "^0.2.1",
     "less": "3.9.0",
     "less-loader": "4.1.0",
