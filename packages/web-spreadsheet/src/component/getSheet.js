@@ -6,7 +6,7 @@ import spreadsheetEvents from "../core/spreadsheetEvents";
 import { makeGetViewWidthHeight } from "./makeGetViewWidthHeight";
 import { getResizer } from "./getResizer";
 import { getScrollbar } from "./getScrollbar";
-import { getEditor } from "./editor";
+import { getEditor } from "./editor/getEditor";
 import ModalValidation from "./modal_validation";
 import { getContextMenu } from "./contextmenu";
 import Selector from "./selector";

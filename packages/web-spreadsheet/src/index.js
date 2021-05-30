@@ -12,7 +12,7 @@ import { getTable } from "./component/table/getTable";
 import defaultOptions from "./core/defaultOptions";
 import { merge } from "lodash-es";
 import { buildDataProxy, makeGetDataProxy } from "./core/makeGetDataProxy";
-import { getFormulaBar } from "./component/formulaBar/getFormulaBar";
+import { getFormulaBar } from "./component/editor/getFormulaBar";
 import { getFormulaSuggestions } from "./shared/getFormulaSuggestions";
 import { modifyEventEmitter } from "./shared/modifyEventEmitter";
 

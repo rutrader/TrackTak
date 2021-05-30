@@ -12,6 +12,13 @@ const spreadsheetEvents = {
   },
   editor: {
     change: "e-change",
+    clear: "e-clear",
+    setText: "e-set-text",
+  },
+  formulaBar: {
+    change: "fb-change",
+    clear: "fb-clear",
+    setText: "fb-set-text",
   },
   rowResizer: {
     finished: "rr-finished",
@@ -42,9 +49,6 @@ const spreadsheetEvents = {
     addData: "s-add-data",
     deleteData: "s-delete-data",
     setDatasheets: "s-set-datasheets",
-  },
-  formulaBar: {
-    inputChange: "fb-input-change",
   },
   toolbar: {
     alignChange: "tb-align-change",

@@ -1,13 +1,19 @@
-import { cssPrefix } from "../../config";
-import { saveCaretPosition, setCaretPosition } from "../../core/caret";
-import spreadsheetEvents from "../../core/spreadsheetEvents";
-import Datepicker from "../datepicker";
 import { h } from "../element";
 import Suggest from "../suggest";
-import { dateFormat } from "../../shared/dateFormat";
+import Datepicker from "../datepicker";
+import { cssPrefix } from "../../config";
 import Formula from "../formula";
+import { setCaretPosition, saveCaretPosition } from "../../core/caret";
+import spreadsheetEvents from "../../core/spreadsheetEvents";
+import { dateFormat } from "../../shared/dateFormat";
 
-export const getFormulaBar = (getData, formulas, eventEmitter) => {
+export const getEditableInput = (
+  getData,
+  formulas,
+  eventEmitter,
+  el,
+  eventType,
+) => {
   function insertText({ target }, itxt) {
     const { value, selectionEnd } = target;
     const ntxt = `${value.slice(0, selectionEnd)}${itxt}${value.slice(
@@ -36,13 +42,12 @@ export const getFormulaBar = (getData, formulas, eventEmitter) => {
   }
 
   function inputEventHandler() {
-    const text = textEl.el.textContent;
-
     // save caret position
     const restore = saveCaretPosition(textEl.el);
 
-    inputText = text;
+    const text = textEl.el.textContent;
 
+    inputText = text;
     formula.setInputText(inputText);
 
     if (_validator) {
@@ -61,7 +66,7 @@ export const getFormulaBar = (getData, formulas, eventEmitter) => {
     }
     render();
 
-    eventEmitter.emit(spreadsheetEvents.formulaBar.inputChange, "input", text);
+    eventEmitter.emit(spreadsheetEvents[eventType].change, "input", text);
 
     // restore caret postion
     // to avoid caret postion missing when el.innerHTML changed
@@ -105,6 +110,8 @@ export const getFormulaBar = (getData, formulas, eventEmitter) => {
     } else {
       formula.render();
     }
+
+    textlineEl.html(text);
   };
 
   const suggest = new Suggest(formulas, (it) => {
@@ -119,8 +126,6 @@ export const getFormulaBar = (getData, formulas, eventEmitter) => {
     clear();
   });
   let composing = false;
-  const fxIcon = h("div", `${cssPrefix}-icon-fx`);
-
   let textEl = h("div", "textarea")
     .attr("contenteditable", "true")
     .on("input", (evt) => inputEventHandler(evt))
@@ -129,16 +134,14 @@ export const getFormulaBar = (getData, formulas, eventEmitter) => {
     .on("compositionstart.stop", () => (composing = true))
     .on("compositionend.stop", () => (composing = false));
 
-  const textareaContainer = h(
-    "div",
-    `${cssPrefix}-textarea-container`,
-  ).children(fxIcon, textEl);
+  let textlineEl = h("div", "textline");
 
   const areaEl = h("div", `${cssPrefix}-editor-area`)
-    .children(textareaContainer, suggest.el, datepicker.el)
     .on("mousemove.stop", () => {})
     .on("mousedown.stop", () => {});
-  const el = h("div", `${cssPrefix}-formula-bar`).children(areaEl);
+
+  el.children(areaEl);
+
   const cellEl = h("div", `${cssPrefix}-formula-cell`);
 
   suggest.bindInputEvents(textEl);
@@ -162,12 +165,6 @@ export const getFormulaBar = (getData, formulas, eventEmitter) => {
     clear();
   });
 
-  eventEmitter.on(spreadsheetEvents.sheet.cellSelected, (cell) => {
-    if (cell) {
-      setText(cell.text);
-    }
-  });
-
   const setFreezeLengths = (width, height) => {
     freeze.w = width;
     freeze.h = height;
@@ -176,7 +173,7 @@ export const getFormulaBar = (getData, formulas, eventEmitter) => {
   const clear = () => {
     if (inputText !== "") {
       eventEmitter.emit(
-        spreadsheetEvents.formulaBar.inputChange,
+        spreadsheetEvents[eventType].change,
         "finished",
         inputText,
       );
@@ -186,9 +183,11 @@ export const getFormulaBar = (getData, formulas, eventEmitter) => {
     inputText = "";
     formula.setInputText("");
     textEl.val("");
+    textlineEl.html("");
     formula.clear();
     resetSuggestItems();
     datepicker.hide();
+    eventEmitter.emit(spreadsheetEvents[eventType].clear);
   };
 
   const setOffset = (offset, suggestPosition = "top") => {
@@ -226,6 +225,7 @@ export const getFormulaBar = (getData, formulas, eventEmitter) => {
     if (cell && cell.editable === false) return;
 
     _cell = cell;
+
     const text = (_cell && _cell.text) || "";
     setText(text);
 
@@ -243,6 +243,8 @@ export const getFormulaBar = (getData, formulas, eventEmitter) => {
         suggest.search("");
       }
     }
+
+    eventEmitter.emit(spreadsheetEvents[eventType].setText, cell, text);
   };
 
   const setText = (text) => {
@@ -272,6 +274,8 @@ export const getFormulaBar = (getData, formulas, eventEmitter) => {
   };
 
   return {
+    textEl,
+    textlineEl,
     suggest,
     datepicker,
     composing,
