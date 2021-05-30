@@ -4,8 +4,8 @@ import {
   weightInCostOfCapitalCalculation,
 } from "./expressionCalculations";
 import {
-  cagrYearOneToFiveQueryName,
-  ebitTargetMarginInYearTenQueryName,
+  cagrInYears_1_5QueryName,
+  ebitTargetMarginInYear_10QueryName,
   yearOfConvergenceQueryName,
   salesToCapitalRatioQueryName,
 } from "../shared/inputQueryNames";
@@ -30,8 +30,8 @@ export const costOfCapitalNameTypeMapping = {
 };
 
 export const requiredInputNameTypeMapping = {
-  [cagrYearOneToFiveQueryName]: "percent",
-  [ebitTargetMarginInYearTenQueryName]: "percent",
+  [cagrInYears_1_5QueryName]: "percent",
+  [ebitTargetMarginInYear_10QueryName]: "percent",
   [yearOfConvergenceQueryName]: "year",
   [salesToCapitalRatioQueryName]: "number",
 };

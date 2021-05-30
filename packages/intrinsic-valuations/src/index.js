@@ -14,8 +14,8 @@ export { allInputNameTypeMappings } from "./discountedCashFlow/scopeNameTypeMapp
 
 export {
   default as ValueDrivingInputs,
-  cagrInYearsOneToFiveLabel,
-  ebitTargetMarginInYearTenLabel,
+  cagrInYears_1_5Label,
+  ebitTargetMarginInYear_10Label,
   yearOfConvergenceLabel,
   salesToCapitalRatioLabel,
   valueDrivingInputsHeader,
