@@ -7,8 +7,8 @@ import {
 } from "../components/OptionalInputs";
 import { TableNumberFormatter } from "../components/TableFormatters";
 import {
-  cagrInYearsOneToFiveLabel,
-  ebitTargetMarginInYearTenLabel,
+  cagrInYears_1_5Label,
+  ebitTargetMarginInYear_10Label,
   salesToCapitalRatioLabel,
   yearOfConvergenceLabel,
 } from "../components/ValueDrivingInputs";
@@ -104,46 +104,46 @@ const useSensitivityAnalysisDataTable = () => {
 
   useEffect(() => {
     const cagrMinMax = getDynamicMinMaxRange(
-      "cagrYearOneToFive",
+      "cagrInYears_1_5",
       inputQueryParams,
     );
     const ebitMarginMinMax = getDynamicMinMaxRange(
-      "ebitTargetMarginInYearTen",
+      "ebitTargetMarginInYear_10",
       inputQueryParams,
     );
 
-    const cagrYearOneToFiveValue = inputQueryParams.cagrYearOneToFive * 100;
-    const ebitTargetMarginInYearTenValue =
-      inputQueryParams.ebitTargetMarginInYearTen * 100;
+    const cagrInYears_1_5Value = inputQueryParams.cagrInYears_1_5 * 100;
+    const ebitTargetMarginInYear_10Value =
+      inputQueryParams.ebitTargetMarginInYear_10 * 100;
 
     setDataTable(
       [
         {
-          label: cagrInYearsOneToFiveLabel,
-          name: "cagrYearOneToFive",
-          step: getDynamicStep("cagrYearOneToFive", inputQueryParams),
+          label: cagrInYears_1_5Label,
+          name: "cagrInYears_1_5",
+          step: getDynamicStep("cagrInYears_1_5", inputQueryParams),
           marks: [
             { value: cagrMinMax.min, label: cagrMinMax.min },
             {
-              value: cagrYearOneToFiveValue,
-              label: cagrYearOneToFiveValue,
+              value: cagrInYears_1_5Value,
+              label: cagrInYears_1_5Value,
             },
             { value: cagrMinMax.max, label: cagrMinMax.max },
           ],
           ...cagrMinMax,
         },
         {
-          label: ebitTargetMarginInYearTenLabel,
-          name: "ebitTargetMarginInYearTen",
-          step: getDynamicStep("ebitTargetMarginInYearTen", inputQueryParams),
+          label: ebitTargetMarginInYear_10Label,
+          name: "ebitTargetMarginInYear_10",
+          step: getDynamicStep("ebitTargetMarginInYear_10", inputQueryParams),
           marks: [
             {
               value: ebitMarginMinMax.min,
               label: ebitMarginMinMax.min,
             },
             {
-              value: ebitTargetMarginInYearTenValue,
-              label: ebitTargetMarginInYearTenValue,
+              value: ebitTargetMarginInYear_10Value,
+              label: ebitTargetMarginInYear_10Value,
             },
             {
               value: ebitMarginMinMax.max,

@@ -1,11 +1,11 @@
 import {
-  cagrYearOneToFiveQueryName,
-  ebitTargetMarginInYearTenQueryName,
+  cagrInYears_1_5QueryName,
+  ebitTargetMarginInYear_10QueryName,
   yearOfConvergenceQueryName,
 } from "../shared/inputQueryNames";
 
-const cagrYearOneToFiveQueryNameTT = `${cagrYearOneToFiveQueryName}`;
-const ebitTargetMarginInYearTenQueryNameTT = `${ebitTargetMarginInYearTenQueryName}`;
+const cagrInYears_1_5QueryNameTT = `${cagrInYears_1_5QueryName}`;
+const ebitTargetMarginInYear_10QueryNameTT = `${ebitTargetMarginInYear_10QueryName}`;
 const yearOfConvergenceQueryNameTT = `${yearOfConvergenceQueryName}`;
 
 export const getPreviousColumn = (cellKey) => {
@@ -18,9 +18,9 @@ export const getPreviousColumn = (cellKey) => {
 export const getEBITMarginCalculation = (cellKey) => {
   const column = cellKey.charAt(0);
 
-  const falsyCondition = `${ebitTargetMarginInYearTenQueryNameTT} - ((${ebitTargetMarginInYearTenQueryNameTT} - B3) / ${yearOfConvergenceQueryNameTT}) * (${yearOfConvergenceQueryNameTT} - ${column}1)`;
+  const falsyCondition = `${ebitTargetMarginInYear_10QueryNameTT} - ((${ebitTargetMarginInYear_10QueryNameTT} - B3) / ${yearOfConvergenceQueryNameTT}) * (${yearOfConvergenceQueryNameTT} - ${column}1)`;
 
-  return `=IF(${column}1 > ${yearOfConvergenceQueryNameTT}, ${ebitTargetMarginInYearTenQueryNameTT}, ${falsyCondition})`;
+  return `=IF(${column}1 > ${yearOfConvergenceQueryNameTT}, ${ebitTargetMarginInYear_10QueryNameTT}, ${falsyCondition})`;
 };
 
 export const getReinvestmentCalculation = (cellKey) => {
@@ -37,10 +37,10 @@ export const getRevenueCalculation = (cellKey, growthRate) => {
 };
 
 export const getRevenueOneToFiveYrCalculation = (cellKey) =>
-  getRevenueCalculation(cellKey, cagrYearOneToFiveQueryNameTT);
+  getRevenueCalculation(cellKey, cagrInYears_1_5QueryNameTT);
 
 export const getRevenueSixToTenYrCalculation = (index, cellKey) => {
-  const formula = `${cagrYearOneToFiveQueryNameTT} - ((${cagrYearOneToFiveQueryNameTT}-riskFreeRate) / 5)`;
+  const formula = `${cagrInYears_1_5QueryNameTT} - ((${cagrInYears_1_5QueryNameTT}-riskFreeRate) / 5)`;
   const number = index + 1;
   const growthRevenueFormula = index === 0 ? formula : `${formula} * ${number}`;
 
