@@ -175,7 +175,11 @@ export const getFormulaBar = (getData, formulas, eventEmitter) => {
 
   const clear = () => {
     if (inputText !== "") {
-      eventEmitter.emit(spreadsheetEvents.editor.change, "finished", inputText);
+      eventEmitter.emit(
+        spreadsheetEvents.formulaBar.inputChange,
+        "finished",
+        inputText,
+      );
     }
     _cell = null;
     areaOffset = null;
