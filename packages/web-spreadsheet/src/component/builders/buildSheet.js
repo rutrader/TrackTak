@@ -45,7 +45,7 @@ export const buildSheet = (
   const verticalScrollbar = getScrollbar(eventEmitter, true);
   const horizontalScrollbar = getScrollbar(eventEmitter, false);
   const editor = getEditor(getData, getFormulaSuggestions(), eventEmitter);
-  const modalValidation = new ModalValidation();
+  const modalValidation = new ModalValidation(eventEmitter, getData);
   const contextMenu = getContextMenu(getViewWidthHeight, eventEmitter, () => {
     return !getOptions().showContextmenu;
   });

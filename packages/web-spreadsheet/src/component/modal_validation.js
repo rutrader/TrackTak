@@ -6,11 +6,12 @@ import { t } from "../locale/locale";
 import { h } from "./element";
 import { cssPrefix } from "../config";
 import getButton from "./button";
+import spreadsheetEvents from "../core/spreadsheetEvents";
 
 const fieldLabelWidth = 100;
 
 export default class ModalValidation extends Modal {
-  constructor() {
+  constructor(eventEmitter, getData) {
     const mf = new FormField(
       new FormSelect(
         "cell",
@@ -94,6 +95,10 @@ export default class ModalValidation extends Modal {
     this.vf = vf;
     this.svf = svf;
     this.change = () => {};
+
+    eventEmitter.on(spreadsheetEvents.rightClickMenu.validation, () => {
+      this.setValue(getData().getSelectedValidation());
+    });
   }
 
   showVf(it) {

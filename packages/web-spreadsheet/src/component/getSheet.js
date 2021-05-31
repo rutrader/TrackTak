@@ -76,6 +76,130 @@ export const getSheet = (
     },
   );
 
+  eventEmitter.on(spreadsheetEvents.rowResizer.finished, (cRect, distance) => {
+    rowResizerFinished(cRect, distance);
+  });
+
+  eventEmitter.on(spreadsheetEvents.colResizer.finished, (cRect, distance) => {
+    colResizerFinished(cRect, distance);
+  });
+
+  eventEmitter.on(spreadsheetEvents.rowResizer.unhide, (index) => {
+    unhideRowsOrCols("row", index);
+  });
+
+  eventEmitter.on(spreadsheetEvents.colResizer.unhide, (index) => {
+    unhideRowsOrCols("col", index);
+  });
+
+  eventEmitter.on(spreadsheetEvents.verticalScrollbar.move, (distance, evt) => {
+    verticalScrollbarMove(distance, evt);
+  });
+
+  eventEmitter.on(
+    spreadsheetEvents.horizontalScrollbar.move,
+    (distance, evt) => {
+      horizontalScrollbarMove(distance, evt);
+    },
+  );
+
+  // editor
+  eventEmitter.on(spreadsheetEvents.editor.change, (state, itext) => {
+    dataSetCellText(itext, state);
+  });
+
+  eventEmitter.on(spreadsheetEvents.rightClickMenu.copy, () => {
+    copy();
+  });
+
+  eventEmitter.on(spreadsheetEvents.rightClickMenu.cut, () => {
+    cut();
+  });
+
+  eventEmitter.on(spreadsheetEvents.rightClickMenu.paste, () => {
+    paste("all");
+  });
+
+  eventEmitter.on(spreadsheetEvents.rightClickMenu.pasteValue, () => {
+    paste("text");
+  });
+
+  eventEmitter.on(spreadsheetEvents.rightClickMenu.pasteFormat, () => {
+    paste("format");
+  });
+
+  eventEmitter.on(spreadsheetEvents.rightClickMenu.hide, () => {
+    hideRowsOrCols();
+  });
+
+  const handleInsertDeleting = (callback) => () => {
+    if (getOptions().mode === "read") return;
+
+    callback();
+
+    clearClipboard();
+    sheetReset();
+  };
+
+  const deleteCellText = () => {
+    handleInsertDeleting(() => getData().deleteCell("text"))();
+  };
+
+  const deleteCellFormat = () => {
+    handleInsertDeleting(() => getData().deleteCell("format"))();
+  };
+
+  eventEmitter.on(
+    spreadsheetEvents.rightClickMenu.insertRow,
+    handleInsertDeleting(() => getData().insert("row")),
+  );
+
+  eventEmitter.on(
+    spreadsheetEvents.rightClickMenu.deleteRow,
+    handleInsertDeleting(() => getData().deleteData("row")),
+  );
+
+  eventEmitter.on(
+    spreadsheetEvents.rightClickMenu.insertColumn,
+    handleInsertDeleting(() => getData().insert("column")),
+  );
+
+  eventEmitter.on(
+    spreadsheetEvents.rightClickMenu.deleteColumn,
+    handleInsertDeleting(() => getData().deleteData("column")),
+  );
+
+  eventEmitter.on(
+    spreadsheetEvents.rightClickMenu.deleteCellText,
+    deleteCellText,
+  );
+
+  eventEmitter.on(
+    spreadsheetEvents.rightClickMenu.cellPrintable,
+    handleInsertDeleting(() =>
+      getData().setSelectedCellAttr("printable", true),
+    ),
+  );
+
+  eventEmitter.on(
+    spreadsheetEvents.rightClickMenu.cellNonPrintable,
+    handleInsertDeleting(() =>
+      getData().setSelectedCellAttr("printable", false),
+    ),
+  );
+
+  eventEmitter.on(
+    spreadsheetEvents.rightClickMenu.cellEditable,
+    handleInsertDeleting(() => getData().setSelectedCellAttr("editable", true)),
+  );
+
+  eventEmitter.on(
+    spreadsheetEvents.rightClickMenu.cellNonEditable,
+    handleInsertDeleting(() =>
+      getData().setSelectedCellAttr("editable", false),
+    ),
+  );
+
   const makeSetDatasheets = (getDataProxy) => (dataSheets) => {
     datas = [];
 
@@ -624,35 +748,6 @@ export const getSheet = (
     }
   }
 
-  function insertDeleteRowColumn(type) {
-    if (getOptions().mode === "read") return;
-    if (type === "insert-row") {
-      getData().insert("row");
-    } else if (type === "delete-row") {
-      getData().deleteData("row");
-    } else if (type === "insert-column") {
-      getData().insert("column");
-    } else if (type === "delete-column") {
-      getData().deleteData("column");
-    } else if (type === "delete-cell") {
-      getData().deleteCell();
-    } else if (type === "delete-cell-format") {
-      getData().deleteCell("format");
-    } else if (type === "delete-cell-text") {
-      getData().deleteCell("text");
-    } else if (type === "cell-printable") {
-      getData().setSelectedCellAttr("printable", true);
-    } else if (type === "cell-non-printable") {
-      getData().setSelectedCellAttr("printable", false);
-    } else if (type === "cell-editable") {
-      getData().setSelectedCellAttr("editable", true);
-    } else if (type === "cell-non-editable") {
-      getData().setSelectedCellAttr("editable", false);
-    }
-    clearClipboard();
-    sheetReset();
-  }
-
   function sortFilterChange(ci, order, operator, value) {
     getData().setAutoFilter(ci, order, operator, value);
     sheetReset();
@@ -739,46 +834,6 @@ export const getSheet = (
     // sort filter ok
     sortFilter.ok = (ci, order, o, v) => sortFilterChange(ci, order, o, v);
 
-    eventEmitter.on(
-      spreadsheetEvents.rowResizer.finished,
-      (cRect, distance) => {
-        rowResizerFinished(cRect, distance);
-      },
-    );
-
-    eventEmitter.on(
-      spreadsheetEvents.colResizer.finished,
-      (cRect, distance) => {
-        colResizerFinished(cRect, distance);
-      },
-    );
-
-    eventEmitter.on(spreadsheetEvents.rowResizer.unhide, (index) => {
-      unhideRowsOrCols("row", index);
-    });
-
-    eventEmitter.on(spreadsheetEvents.colResizer.unhide, (index) => {
-      unhideRowsOrCols("col", index);
-    });
-
-    eventEmitter.on(
-      spreadsheetEvents.verticalScrollbar.move,
-      (distance, evt) => {
-        verticalScrollbarMove(distance, evt);
-      },
-    );
-
-    eventEmitter.on(
-      spreadsheetEvents.horizontalScrollbar.move,
-      (distance, evt) => {
-        horizontalScrollbarMove(distance, evt);
-      },
-    );
-
-    // editor
-    eventEmitter.on(spreadsheetEvents.editor.change, (state, itext) => {
-      dataSetCellText(itext, state);
-    });
     // modal validation
     modalValidation.change = (action, ...args) => {
       if (action === "save") {
@@ -787,29 +842,6 @@ export const getSheet = (
         getData().removeValidation();
       }
     };
-
-    eventEmitter.on(
-      spreadsheetEvents.rightClickMenu.clickContextMenu,
-      (type) => {
-        if (type === "validation") {
-          modalValidation.setValue(getData().getSelectedValidation());
-        } else if (type === "copy") {
-          copy();
-        } else if (type === "cut") {
-          cut();
-        } else if (type === "paste") {
-          paste("all");
-        } else if (type === "paste-value") {
-          paste("text");
-        } else if (type === "paste-format") {
-          paste("format");
-        } else if (type === "hide") {
-          hideRowsOrCols();
-        } else {
-          insertDeleteRowColumn(type);
-        }
-      },
-    );
 
     bind(window, "resize", () => {
       reload();
@@ -934,7 +966,7 @@ export const getSheet = (
             evt.preventDefault();
             break;
           case 8: // backspace
-            insertDeleteRowColumn("delete-cell-text");
+            deleteCellText();
             evt.preventDefault();
             break;
           default:
@@ -942,7 +974,7 @@ export const getSheet = (
         }
 
         if (key === "Delete") {
-          insertDeleteRowColumn("delete-cell-text");
+          deleteCellText();
           evt.preventDefault();
         } else if (
           (keyCode >= 65 && keyCode <= 90) ||
@@ -972,7 +1004,6 @@ export const getSheet = (
     copy,
     clearClipboard,
     paste,
-    insertDeleteRowColumn,
     autofilter,
     editorSet,
     sheetReset,
@@ -983,6 +1014,7 @@ export const getSheet = (
     rootEl,
     hyperformula,
     eventEmitter,
+    deleteCellFormat,
   };
 
   return { sheet };

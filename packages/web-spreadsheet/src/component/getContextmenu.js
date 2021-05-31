@@ -4,37 +4,37 @@ import { cssPrefix } from "../config";
 import { tf } from "../locale/locale";
 import spreadsheetEvents from "../core/spreadsheetEvents";
 
-const menuItems = [
+export const menuItems = [
+  { key: "comment", title: tf("contextmenu.comment"), label: "Ctrl+Alt+M" },
   { key: "copy", title: tf("contextmenu.copy"), label: "Ctrl+C" },
   { key: "cut", title: tf("contextmenu.cut"), label: "Ctrl+X" },
   { key: "paste", title: tf("contextmenu.paste"), label: "Ctrl+V" },
-  { key: "comment", title: tf("contextmenu.comment"), label: "Ctrl+Alt+M" },
   {
-    key: "paste-value",
+    key: "pasteValue",
     title: tf("contextmenu.pasteValue"),
     label: "Ctrl+Shift+V",
   },
   {
-    key: "paste-format",
+    key: "pasteFormat",
     title: tf("contextmenu.pasteFormat"),
     label: "Ctrl+Alt+V",
   },
   { key: "divider" },
-  { key: "insert-row", title: tf("contextmenu.insertRow") },
-  { key: "insert-column", title: tf("contextmenu.insertColumn") },
+  { key: "insertRow", title: tf("contextmenu.insertRow") },
+  { key: "insertColumn", title: tf("contextmenu.insertColumn") },
   { key: "divider" },
-  { key: "delete-row", title: tf("contextmenu.deleteRow") },
-  { key: "delete-column", title: tf("contextmenu.deleteColumn") },
-  { key: "delete-cell-text", title: tf("contextmenu.deleteCellText") },
+  { key: "deleteRow", title: tf("contextmenu.deleteRow") },
+  { key: "deleteColumn", title: tf("contextmenu.deleteColumn") },
+  { key: "deleteCellText", title: tf("contextmenu.deleteCellText") },
   { key: "hide", title: tf("contextmenu.hide") },
   { key: "divider" },
   { key: "validation", title: tf("contextmenu.validation") },
   { key: "divider" },
-  { key: "cell-printable", title: tf("contextmenu.cellprintable") },
-  { key: "cell-non-printable", title: tf("contextmenu.cellnonprintable") },
+  { key: "cellPrintable", title: tf("contextmenu.cellprintable") },
+  { key: "cellNonPrintable", title: tf("contextmenu.cellnonprintable") },
   { key: "divider" },
-  { key: "cell-editable", title: tf("contextmenu.celleditable") },
-  { key: "cell-non-editable", title: tf("contextmenu.cellnoneditable") },
+  { key: "cellEditable", title: tf("contextmenu.celleditable") },
+  { key: "cellNonEditable", title: tf("contextmenu.cellnoneditable") },
 ];
 
 export const getContextMenu = (viewFn, eventEmitter, hideFn) => {
@@ -44,10 +44,7 @@ export const getContextMenu = (viewFn, eventEmitter, hideFn) => {
     }
     return h("div", `${cssPrefix}-item`)
       .on("click", () => {
-        eventEmitter.emit(
-          spreadsheetEvents.rightClickMenu.clickContextMenu,
-          item.key,
-        );
+        eventEmitter.emit(spreadsheetEvents.rightClickMenu[item.key]);
         hide();
       })
       .children(item.title(), h("div", "label").child(item.label || ""));

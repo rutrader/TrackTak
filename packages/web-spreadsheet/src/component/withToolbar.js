@@ -38,7 +38,7 @@ const withToolbar = ({ sheet, ...args }) => {
         sheet.clearClipboard();
       }
     } else if (type === "clearformat") {
-      sheet.insertDeleteRowColumn("delete-cell-format");
+      sheet.deleteCellFormat("delete-cell-format");
     } else if (type === "link") {
       // link
     } else if (type === "chart") {
