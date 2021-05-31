@@ -57,7 +57,7 @@
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {
-    "events": "^3.3.0",
+    "eventemitter3": "^4.0.7",
     "hyperformula": "^0.6.0",
     "lodash-es": "^4.17.20"
   }

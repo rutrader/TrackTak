@@ -12,6 +12,13 @@ const spreadsheetEvents = {
   },
   editor: {
     change: "e-change",
+    clear: "e-clear",
+    setText: "e-set-text",
+  },
+  formulaBar: {
+    change: "fb-change",
+    clear: "fb-clear",
+    setText: "fb-set-text",
   },
   rowResizer: {
     finished: "rr-finished",

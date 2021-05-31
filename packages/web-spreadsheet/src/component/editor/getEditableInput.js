@@ -1,22 +1,19 @@
-//* global window */
-import { h } from "./element";
-import Suggest from "./suggest";
-import Datepicker from "./datepicker";
-import { cssPrefix } from "../config";
-// import { mouseMoveUp } from '../event';
-import Formula from "./formula";
-import { setCaretPosition, saveCaretPosition } from "../core/caret";
-import spreadsheetEvents from "../core/spreadsheetEvents";
+import { h } from "../element";
+import Suggest from "../suggest";
+import Datepicker from "../datepicker";
+import { cssPrefix } from "../../config";
+import Formula from "../formula";
+import { setCaretPosition, saveCaretPosition } from "../../core/caret";
+import spreadsheetEvents from "../../core/spreadsheetEvents";
+import { dateFormat } from "../../shared/dateFormat";
 
-function dateFormat(d) {
-  let month = d.getMonth() + 1;
-  let date = d.getDate();
-  if (month < 10) month = `0${month}`;
-  if (date < 10) date = `0${date}`;
-  return `${d.getFullYear()}-${month}-${date}`;
-}
-
-export const getEditor = (getData, formulas, eventEmitter) => {
+export const getEditableInput = (
+  getData,
+  formulas,
+  eventEmitter,
+  el,
+  eventType,
+) => {
   function insertText({ target }, itxt) {
     const { value, selectionEnd } = target;
     const ntxt = `${value.slice(0, selectionEnd)}${itxt}${value.slice(
@@ -69,7 +66,7 @@ export const getEditor = (getData, formulas, eventEmitter) => {
     }
     render();
 
-    eventEmitter.emit(spreadsheetEvents.editor.change, "input", text);
+    eventEmitter.emit(spreadsheetEvents[eventType].change, "input", text);
 
     // restore caret postion
     // to avoid caret postion missing when el.innerHTML changed
@@ -140,10 +137,11 @@ export const getEditor = (getData, formulas, eventEmitter) => {
   let textlineEl = h("div", "textline");
 
   const areaEl = h("div", `${cssPrefix}-editor-area`)
-    .children(textEl, textlineEl, suggest.el, datepicker.el)
     .on("mousemove.stop", () => {})
     .on("mousedown.stop", () => {});
-  const el = h("div", `${cssPrefix}-editor`).children(areaEl).hide();
+
+  el.children(areaEl);
+
   const cellEl = h("div", `${cssPrefix}-formula-cell`);
 
   suggest.bindInputEvents(textEl);
@@ -172,18 +170,22 @@ export const getEditor = (getData, formulas, eventEmitter) => {
 
   const clear = () => {
     if (inputText !== "") {
-      eventEmitter.emit(spreadsheetEvents.editor.change, "finished", inputText);
+      eventEmitter.emit(
+        spreadsheetEvents[eventType].change,
+        "finished",
+        inputText,
+      );
     }
     _cell = null;
     areaOffset = null;
     inputText = "";
     formula.setInputText("");
-    el.hide();
     textEl.val("");
     textlineEl.html("");
     formula.clear();
     resetSuggestItems();
     datepicker.hide();
+    eventEmitter.emit(spreadsheetEvents[eventType].clear);
   };
 
   const setOffset = (offset, suggestPosition = "top") => {
@@ -220,8 +222,8 @@ export const getEditor = (getData, formulas, eventEmitter) => {
   const setCell = (cell, validator) => {
     if (cell && cell.editable === false) return;
 
-    el.show();
     _cell = cell;
+
     const text = (_cell && _cell.text) || "";
     setText(text);
 
@@ -239,6 +241,8 @@ export const getEditor = (getData, formulas, eventEmitter) => {
         suggest.search("");
       }
     }
+
+    eventEmitter.emit(spreadsheetEvents[eventType].setText, cell, text);
   };
 
   const setText = (text) => {
@@ -268,6 +272,8 @@ export const getEditor = (getData, formulas, eventEmitter) => {
   };
 
   return {
+    textEl,
+    textlineEl,
     suggest,
     datepicker,
     composing,

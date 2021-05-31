@@ -1,9 +1,6 @@
-require("dotenv/config");
+import "dotenv/config";
 
-const {
-  getListOfExchanges,
-  getExchangeSymbolList,
-} = require("../../node/src/api");
+import api from "../node/src/api";
 
 const onlyUnique = (value, index, self) => {
   return self.indexOf(value) === index;
@@ -15,8 +12,8 @@ const noUnknown = (value) => {
 
 const findMissingGBonds = async () => {
   try {
-    const exchanges = await getListOfExchanges();
-    const gbonds = await getExchangeSymbolList("GBOND");
+    const exchanges = await api.getListOfExchanges();
+    const gbonds = await api.getExchangeSymbolList("GBOND");
 
     const filteredExchangeCountries = exchanges
       .map((x) => x.Country)
