@@ -223,7 +223,7 @@ export const getEditableInput = (
     }
   };
 
-  const setCell = (cell, validator, newText = "") => {
+  const setCell = (cell, validator) => {
     if (cell && cell.editable === false) return;
 
     _cell = cell;
