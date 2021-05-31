@@ -8,6 +8,7 @@ const menuItems = [
   { key: "copy", title: tf("contextmenu.copy"), label: "Ctrl+C" },
   { key: "cut", title: tf("contextmenu.cut"), label: "Ctrl+X" },
   { key: "paste", title: tf("contextmenu.paste"), label: "Ctrl+V" },
+  { key: "comment", title: tf("contextmenu.comment"), label: "Ctrl+Alt+M" },
   {
     key: "paste-value",
     title: tf("contextmenu.pasteValue"),

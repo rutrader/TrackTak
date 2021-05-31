@@ -25,6 +25,7 @@ export default {
     more: "More",
   },
   contextmenu: {
+    comment: "Comment",
     copy: "Copy",
     cut: "Cut",
     paste: "Paste",
