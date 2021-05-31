@@ -243,8 +243,6 @@ export const getEditableInput = (
         suggest.search("");
       }
     }
-
-    eventEmitter.emit(spreadsheetEvents[eventType].setText, cell, text);
   };
 
   const setText = (text) => {
@@ -252,13 +250,8 @@ export const getEditableInput = (
     formula.setInputText(inputText);
     // console.log('text>>:', text);
 
-    // firefox bug
-    textEl.el.blur();
-
+    eventEmitter.emit(spreadsheetEvents[eventType].setText, text);
     render();
-    setTimeout(() => {
-      setCaretPosition(textEl.el, text.length);
-    });
   };
 
   const formulaCellSelecting = () => {
