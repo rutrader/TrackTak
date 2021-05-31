@@ -13,6 +13,8 @@ import { getNewOptions } from "./getNewOptions";
 import { defaultOptions } from "../../core/defaultOptions";
 import { makeGetViewWidthHeight } from "../makeGetSheetViewWidthHeight";
 import getDraw from "../../canvas/draw";
+import { getFormulaBar } from "../editor/getFormulaBar";
+import { getFormulaSuggestions } from "../../shared/getFormulaSuggestions";
 
 export const buildSpreadsheet = (
   rootEl,
@@ -68,6 +70,12 @@ export const buildSpreadsheet = (
     getViewWidthHeight,
   );
 
+  const formulaBar = getFormulaBar(
+    getData,
+    getFormulaSuggestions(),
+    eventEmitter,
+  );
+
   const dataProxyBuilder = buildDataProxy(getOptions, getData, hyperformula);
 
   const getDataProxy = makeGetDataProxy(
@@ -113,6 +121,7 @@ export const buildSpreadsheet = (
   const bottombar = getBottombar(eventEmitter);
 
   sheet.el.before(toolbar.el);
+  sheet.el.before(formulaBar.el);
   sheet.el.after(bottombar.el);
 
   return {

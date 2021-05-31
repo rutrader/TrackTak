@@ -1,6 +1,6 @@
 import { getResizer } from "../getResizer";
 import { getScrollbar } from "../getScrollbar";
-import { getEditor } from "../editor";
+import { getEditor } from "../editor/getEditor";
 import ModalValidation from "../modal_validation";
 import { getContextMenu } from "../getContextmenu";
 import Selector from "../selector";
