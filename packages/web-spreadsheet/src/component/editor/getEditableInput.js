@@ -41,12 +41,7 @@ export const getEditableInput = (
     }
   }
 
-  function inputEventHandler() {
-    // save caret position
-    const restore = saveCaretPosition(textEl.el);
-
-    const text = textEl.el.textContent;
-
+  const setInputText = (text) => {
     inputText = text;
     formula.setInputText(inputText);
 
@@ -67,6 +62,13 @@ export const getEditableInput = (
     render();
 
     eventEmitter.emit(spreadsheetEvents[eventType].change, "input", text);
+  };
+
+  function inputEventHandler() {
+    // save caret position
+    const restore = saveCaretPosition(textEl.el);
+
+    setInputText(textEl.el.textContent);
 
     // restore caret postion
     // to avoid caret postion missing when el.innerHTML changed
@@ -221,7 +223,7 @@ export const getEditableInput = (
     }
   };
 
-  const setCell = (cell, validator) => {
+  const setCell = (cell, validator, newText = "") => {
     if (cell && cell.editable === false) return;
 
     _cell = cell;
@@ -277,10 +279,10 @@ export const getEditableInput = (
     cellEl,
     areaOffset,
     freeze,
-    cell: _cell,
     inputText,
     formula,
     setFreezeLengths,
+    setInputText,
     clear,
     setOffset,
     setCell,

@@ -37,18 +37,7 @@ export const getEditor = (getData, formulas, eventEmitter) => {
   });
 
   eventEmitter.on(spreadsheetEvents.formulaBar.change, (_, text) => {
-    const { ri, ci } = getData().selector;
-
-    editableInput.setCell(
-      getData().getSelectedCell(),
-      getData().getSelectedValidator(),
-    );
-
-    // editableInput.formulaSelectCell(ri, ci);
-
-    if (text !== editableInput.textEl.el.textContent) {
-      editableInput.setText(text);
-    }
+    editableInput.setInputText(text);
   });
 
   return {

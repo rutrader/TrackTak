@@ -578,6 +578,7 @@ export const getSheet = (
 
   function editorSet() {
     if (getOptions().mode === "read") return;
+
     editorSetOffset();
     editor.setCell(
       getData().getSelectedCell(),
