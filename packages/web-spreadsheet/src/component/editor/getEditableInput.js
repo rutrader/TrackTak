@@ -163,10 +163,6 @@ export const getEditableInput = (
     eventEmitter,
   );
 
-  eventEmitter.on(spreadsheetEvents.sheet.switchData, () => {
-    clear();
-  });
-
   const setFreezeLengths = (width, height) => {
     freeze.w = width;
     freeze.h = height;
