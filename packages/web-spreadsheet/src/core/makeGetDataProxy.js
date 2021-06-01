@@ -645,13 +645,33 @@ export const makeGetDataProxy = (
     return getCellStyleOrDefault(ri, ci);
   };
 
+  let editingCellAddress;
+
+  const hasStartedEditing = (row, col) => {
+    if (!editingCellAddress) {
+      editingCellAddress = {
+        row,
+        col,
+      };
+
+      return true;
+    }
+    return false;
+  };
+
+  const stopEditing = () => {
+    editingCellAddress = null;
+  };
+
   // state: input | finished
   const setCellText = (ri, ci, text, state) => {
     if (state === "finished") {
-      rows.setCellText(ri, ci, "");
-      history.add(getData());
       rows.setCellText(ri, ci, text);
+      stopEditing();
     } else {
+      if (hasStartedEditing(ri, ci)) {
+        history.add(getData());
+      }
       rows.setCellText(ri, ci, text);
       eventEmitter.emit(spreadsheetEvents.data.change, getData());
     }
@@ -1124,6 +1144,7 @@ export const makeGetDataProxy = (
     scrollx,
     setSelectedCellText,
     insert,
+    getData,
     deleteData,
     deleteCell,
     setSelectedCellAttr,
@@ -1151,5 +1172,6 @@ export const makeGetDataProxy = (
     exceptRowSet,
     getCellStyleOrDefault,
     getFreeze,
+    history,
   };
 };
