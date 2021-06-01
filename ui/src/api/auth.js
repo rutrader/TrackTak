@@ -13,11 +13,17 @@ const userPool = new CognitoUserPool(POOL_CONFIG);
 
 const AwsException = {
   NOT_AUTHORIZED_EXCEPTION: "NotAuthorizedException",
+  USERNAME_EXISTS_EXCEPTION: "UsernameExistsException"
 };
 
 const onCognitoFailure = (err, onError) => {
   if (err.code === AwsException.NOT_AUTHORIZED_EXCEPTION) {
     onError(Error("Incorrect username or password"));
+    return;
+  }
+
+  if (err.code === AwsException.USERNAME_EXISTS_EXCEPTION) {
+    onError(Error("This email address has already been registered"));
     return;
   }
 

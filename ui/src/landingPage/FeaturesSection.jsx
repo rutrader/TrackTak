@@ -5,7 +5,7 @@ import { RiTimerLine } from "react-icons/ri";
 import { AiOutlineGlobal } from "react-icons/ai";
 import { BiBookOpen } from "react-icons/bi";
 
-const BoxColumnWrapper = ({ sx, ...props }) => {
+export const BoxColumnWrapper = ({ sx, ...props }) => {
   return (
     <Box
       sx={{

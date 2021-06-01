@@ -135,7 +135,7 @@ const getDatasheetsColWidths = (colWidth, isOnMobile) => {
 
 const getDatasheetsYOYGrowth = (spreadsheet, isOnMobile) => {
   const dataSheets = getDataSheets(isOnMobile);
-  const dataSheetsValues = spreadsheet?.hyperFormula?.getAllSheetsValues();
+  const dataSheetsValues = spreadsheet?.hyperformula?.getAllSheetsValues();
 
   const newDataSheets = dataSheets.map((dataSheet, dataSheetIndex) => {
     const formulaSheet = dataSheetsValues[dataSheet.name];
@@ -246,13 +246,13 @@ const DiscountedCashFlowTable = ({
       },
     };
 
-    spreadsheet = getSpreadsheet(dcfValuationElement, {
+    const options = {
       col: {
         width: defaultColWidth,
       },
       formats,
       view: {
-        height: () => 1050,
+        height: () => 1165,
         width: () => {
           if (containerRef?.current) {
             const containerStyle = getComputedStyle(containerRef.current);
@@ -269,7 +269,9 @@ const DiscountedCashFlowTable = ({
           }
         },
       },
-    });
+    };
+
+    spreadsheet = getSpreadsheet(dcfValuationElement, options);
 
     setSpreadsheet(spreadsheet);
 
@@ -280,21 +282,25 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     if (!hasAllRequiredInputsFilledIn && spreadsheet) {
-      spreadsheet.setData([[]]);
+      spreadsheet.setDatasheets([]);
     }
   }, [hasAllRequiredInputsFilledIn, spreadsheet, isOnMobile]);
 
   useEffect(() => {
     if (spreadsheet && hasAllRequiredInputsFilledIn && scope) {
-      spreadsheet.setVariables(scope);
+      spreadsheet.setOptions({
+        variables: scope,
+      });
 
       const dataSheets = getDataSheets(isOnMobile);
 
-      spreadsheet.setData(dataSheets);
+      if (!spreadsheet.sheet.datas.length) {
+        spreadsheet.setDatasheets(dataSheets);
+      }
 
       const sheetName = "DCF Valuation";
-      const dataSheetFormulas = spreadsheet.hyperFormula.getAllSheetsFormulas();
-      const dataSheetValues = spreadsheet.hyperFormula.getAllSheetsValues();
+      const dataSheetFormulas = spreadsheet.hyperformula.getAllSheetsFormulas();
+      const dataSheetValues = spreadsheet.hyperformula.getAllSheetsValues();
       const cells = {};
 
       dataSheetValues[sheetName].forEach((columns, rowIndex) => {
@@ -316,26 +322,73 @@ const DiscountedCashFlowTable = ({
   }, [hasAllRequiredInputsFilledIn, isOnMobile, scope, spreadsheet, dispatch]);
 
   useEffect(() => {
-    if (spreadsheet && hasAllRequiredInputsFilledIn) {
-      if (showFormulas) {
-        spreadsheet.showFormulas();
-        spreadsheet.setData(getDatasheetsColWidths(200, isOnMobile));
-      } else {
-        spreadsheet.hideFormulas();
-        spreadsheet.setData(getDataSheets(isOnMobile));
-      }
+    if (spreadsheet) {
+      // spreadsheet.setVariablesData([
+      //   {
+      //     name: "Inputs",
+      //     rows: {
+      //       0: {
+      //         cells: [
+      //           {
+      //             text: "CAGR Year 1-5",
+      //           },
+      //         ],
+      //       },
+      //     },
+      //   },
+      //   {
+      //     name: "Optional Inputs",
+      //     rows: {
+      //       0: {
+      //         cells: [
+      //           {
+      //             text: "Debt",
+      //           },
+      //         ],
+      //       },
+      //     },
+      //   },
+      //   {
+      //     name: "API",
+      //     rows: {
+      //       0: {
+      //         cells: [
+      //           {
+      //             text: "totalRevenue",
+      //           },
+      //         ],
+      //       },
+      //     },
+      //   },
+      // ]);
     }
-  }, [showFormulas, spreadsheet, isOnMobile, hasAllRequiredInputsFilledIn]);
+  }, [spreadsheet]);
 
   useEffect(() => {
     if (spreadsheet && hasAllRequiredInputsFilledIn) {
       if (showYOYGrowth) {
-        spreadsheet.setData(getDatasheetsYOYGrowth(spreadsheet, isOnMobile));
+        spreadsheet.setDatasheets(
+          getDatasheetsYOYGrowth(spreadsheet, isOnMobile),
+        );
+      } else if (showFormulas) {
+        spreadsheet.setOptions({
+          showAllFormulas: true,
+        });
+        spreadsheet.setDatasheets(getDatasheetsColWidths(200, isOnMobile));
       } else {
-        spreadsheet.setData(getDataSheets(isOnMobile));
+        spreadsheet.setOptions({
+          showAllFormulas: false,
+        });
+        spreadsheet.setDatasheets(getDataSheets(isOnMobile));
       }
     }
-  }, [showYOYGrowth, spreadsheet, isOnMobile, hasAllRequiredInputsFilledIn]);
+  }, [
+    showYOYGrowth,
+    spreadsheet,
+    isOnMobile,
+    hasAllRequiredInputsFilledIn,
+    showFormulas,
+  ]);
 
   useEffect(() => {
     // Dispatch only when we have all the data from the API
@@ -357,10 +410,10 @@ const DiscountedCashFlowTable = ({
           marginalTaxRate: currentEquityRiskPremium.marginalTaxRate,
           sharesOutstanding,
           price,
-          cagrYearOneToFive: inputQueryParams.cagrYearOneToFive,
+          cagrInYears_1_5: inputQueryParams.cagrInYears_1_5,
           riskFreeRate,
           yearOfConvergence: inputQueryParams.yearOfConvergence,
-          ebitTargetMarginInYearTen: inputQueryParams.ebitTargetMarginInYearTen,
+          ebitTargetMarginInYear_10: inputQueryParams.ebitTargetMarginInYear_10,
           totalCostOfCapital: costOfCapital.totalCostOfCapital,
           salesToCapitalRatio: inputQueryParams.salesToCapitalRatio,
           nonOperatingAssets: inputQueryParams.nonOperatingAssets,
@@ -384,8 +437,8 @@ const DiscountedCashFlowTable = ({
     dispatch,
     incomeStatement.operatingIncome,
     incomeStatement.totalRevenue,
-    inputQueryParams.cagrYearOneToFive,
-    inputQueryParams.ebitTargetMarginInYearTen,
+    inputQueryParams.cagrInYears_1_5,
+    inputQueryParams.ebitTargetMarginInYear_10,
     inputQueryParams.netOperatingLoss,
     inputQueryParams.probabilityOfFailure,
     inputQueryParams.proceedsAsAPercentageOfBookValue,

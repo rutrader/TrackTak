@@ -8,6 +8,8 @@ import FeaturesSection from "../landingPage/FeaturesSection";
 // import ProcessSection from "../landingPage/ProcessSection";
 import { Box, Container } from "@material-ui/core";
 import Footer from "../landingPage/Footer";
+import TestimonialsSection from "../landingPage/TestimonialsSection";
+import OurTeamSection from "../landingPage/OurTeamSection";
 
 const Section = ({ sx, ...props }) => {
   return (
@@ -38,6 +40,12 @@ const Home = () => {
       <Container maxWidth="lg">
         <Section>
           <FeaturesSection />
+        </Section>
+        <Section>
+          <OurTeamSection />
+        </Section>
+        <Section>
+          <TestimonialsSection />
         </Section>
         {/* <ProcessSection /> */}
         <Section>

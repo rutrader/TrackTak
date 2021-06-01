@@ -1,6 +1,6 @@
 {
   "name": "@tracktak/intrinsic-valuations",
-  "version": "1.0.4",
+  "version": "1.1.4",
   "description": "A react package that allows external websites to use our intrinsic valuations for https://tracktak.com",
   "author": "tracktak",
   "license": "SEE LICENSE IN README.MD",
@@ -35,6 +35,7 @@
     "@reduxjs/toolkit": "^1.4.0",
     "axios": "^0.21.1",
     "babel-plugin-file-loader": "^2.0.0",
+    "eventemitter3": "^4.0.7",
     "babel-plugin-inline-react-svg": "^2.0.1",
     "change-case": "^4.1.2",
     "copyfiles": "^2.4.1",

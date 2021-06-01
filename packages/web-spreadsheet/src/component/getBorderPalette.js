@@ -13,7 +13,11 @@ export const getBorderPalette = (tag, eventEmitter) => {
   let _color = "#000";
   let style = "thin";
   const mode = "all";
-  const ddColor = makeDropdownColor("line-color", _color, eventEmitter)(tag);
+  const ddColor = makeDropdownColor(
+    () => style,
+    "line-color",
+    eventEmitter,
+  )(tag);
 
   eventEmitter.on(
     spreadsheetEvents.toolbar.colorPaletteChange,

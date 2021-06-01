@@ -8,8 +8,8 @@ function buildItemWithIcon(iconName) {
   return h("div", `${cssPrefix}-item`).child(getIcon(iconName));
 }
 
-export const makeDropdownAlign = (aligns, align, eventEmitter) => (tag) => {
-  const icon = getIcon(`align-${align}`);
+export const makeDropdownAlign = (getAlign, aligns, eventEmitter) => (tag) => {
+  const icon = getIcon(`align-${getAlign()}`);
   const naligns = aligns.map((it) => {
     const name = `align-${it}`;
 

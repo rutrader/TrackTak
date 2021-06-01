@@ -3,16 +3,18 @@ import { h } from "./element";
 import { cssPrefix } from "../config";
 import spreadsheetEvents from "../core/spreadsheetEvents";
 
-export const makeDropdownFormat = (formats, eventEmitter) => (tag) => {
-  let nformats = Object.values(formats).slice(0);
+export const makeDropdownFormat = (getFormats, eventEmitter, toolbarType) => (
+  tag,
+) => {
+  let nformats = Object.values(getFormats()).slice(0);
 
   nformats.splice(2, 0, { key: "divider" });
   nformats.splice(8, 0, { key: "divider" });
 
   const setTitle = (formatKey) => {
-    Object.keys(formats).forEach((key) => {
+    Object.keys(getFormats()).forEach((key) => {
       if (formatKey === key) {
-        dropdown.title.html(formats[key].title());
+        dropdown.title.html(getFormats()[key].title());
       }
     });
 
@@ -28,7 +30,7 @@ export const makeDropdownFormat = (formats, eventEmitter) => (tag) => {
         setTitle(it.title());
 
         eventEmitter.emit(
-          spreadsheetEvents.toolbar.formatChange,
+          spreadsheetEvents[toolbarType].formatChange,
           tag,
           it.title().toLowerCase(),
         );
@@ -50,7 +52,6 @@ export const makeDropdownFormat = (formats, eventEmitter) => (tag) => {
 
   return {
     dropdown,
-    formats,
     setTitle,
   };
 };

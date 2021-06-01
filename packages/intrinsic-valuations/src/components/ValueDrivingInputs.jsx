@@ -27,8 +27,8 @@ const ValueDrivingTextField = (props) => (
   />
 );
 
-export const cagrInYearsOneToFiveLabel = "CAGR in Years 1-5";
-export const ebitTargetMarginInYearTenLabel =
+export const cagrInYears_1_5Label = "CAGR in Years 1-5";
+export const ebitTargetMarginInYear_10Label =
   "Operating Target Margin in Year 10";
 export const yearOfConvergenceLabel = "Year of Convergence";
 export const salesToCapitalRatioLabel = "Sales to Capital Ratio";
@@ -73,20 +73,20 @@ const ValueDrivingInputs = () => {
       </Typography>
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: theme.spacing(2) }}>
         <ValueDrivingTextField
-          label={cagrInYearsOneToFiveLabel}
-          value={inputQueryParams.cagrYearOneToFive}
+          label={cagrInYears_1_5Label}
+          value={inputQueryParams.cagrInYears_1_5}
           onBlur={(value) => {
-            setURLInput("cagrYearOneToFive", value);
+            setURLInput("cagrInYears_1_5", value);
           }}
           InputProps={{
             inputComponent: FormatInputToPercent,
           }}
         />
         <ValueDrivingTextField
-          label={ebitTargetMarginInYearTenLabel}
-          value={inputQueryParams.ebitTargetMarginInYearTen}
+          label={ebitTargetMarginInYear_10Label}
+          value={inputQueryParams.ebitTargetMarginInYear_10}
           onBlur={(value) => {
-            setURLInput("ebitTargetMarginInYearTen", value);
+            setURLInput("ebitTargetMarginInYear_10", value);
           }}
           InputProps={{
             inputComponent: FormatInputToPercent,

@@ -109,11 +109,11 @@ const SensitivityAnalysis = () => {
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
   const [checkedItems, setCheckedItems] = useState([
     {
-      name: "cagrYearOneToFive",
+      name: "cagrInYears_1_5",
       value: true,
     },
     {
-      name: "ebitTargetMarginInYearTen",
+      name: "ebitTargetMarginInYear_10",
       value: true,
     },
   ]);

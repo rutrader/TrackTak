@@ -53,7 +53,7 @@ const makeFormatCellForExcelOutput = (
     const getDependency = makeGetDependency(currentSheetName);
 
     if (isExpressionDependency(formula)) {
-      const matches = formula.match(/[a-z]+[A-Za-z]*/g) ?? [];
+      const matches = formula.match(/[a-z]+[A-Za-z]*(\w+)?/g) ?? [];
 
       matches.forEach((match) => {
         formula = getDependency(
@@ -81,6 +81,9 @@ const makeFormatCellForExcelOutput = (
           formula = replaceAll(formula, key, value);
         });
       });
+
+      // Remove the equal sign
+      formula = formula.substring(1);
     }
 
     return {

@@ -19,11 +19,11 @@ const Template = (args, { history }) => {
       <button
         onClick={() => {
           history.navigate(
-            "/?cagrYearOneToFive=0.5&ebitTargetMarginInYearTen=0.70&yearOfConvergence=3&salesToCapitalRatio=2.5&probabilityOfFailure=0.3&proceedsAsAPercentageOfBookValue=0.2",
+            "/?cagrInYears_1_5=0.5&ebitTargetMarginInYear_10=0.70&yearOfConvergence=3&salesToCapitalRatio=2.5&probabilityOfFailure=0.3&proceedsAsAPercentageOfBookValue=0.2",
           );
         }}
       >
-        Update cagrYearOneToFive
+        Update cagrInYears_1_5
       </button>
       <DiscountedCashFlowSheet {...args} />;
     </div>

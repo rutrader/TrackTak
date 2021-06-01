@@ -33,13 +33,21 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
       }}
     >
       <TracktakLogoSvg />
-      <Typography variant="h5">
+      <Typography
+        variant="h5"
+        sx={{
+          mt: (theme) => theme.spacing(1),
+          color: (theme) => theme.palette.primary.mainTextColor,
+        }}
+      >
         Sign up
       </Typography>
-      <Box sx={{
+      <Box
+        sx={{
           width: "100%",
           marginTop: theme.spacing(3),
-        }}>
+        }}
+      >
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -88,6 +96,7 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
             color="primary"
             sx={{
               margin: theme.spacing(3, 0, 2),
+              textTransform: "none",
             }}
           >
             Sign Up

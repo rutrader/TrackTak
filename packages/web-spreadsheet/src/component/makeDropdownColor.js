@@ -3,10 +3,12 @@ import { getColorPalette } from "./getColorPalette";
 import getIcon from "./getIcon";
 import spreadsheetEvents from "../core/spreadsheetEvents";
 
-export const makeDropdownColor = (iconName, color, eventEmitter) => (tag) => {
+export const makeDropdownColor = (getColor, iconName, eventEmitter) => (
+  tag,
+) => {
   const icon = getIcon(iconName)
     .el.css("height", "16px")
-    .css("border-bottom", `3px solid ${color}`);
+    .css("border-bottom", `3px solid ${getColor()}`);
   const colorPalette = getColorPalette(tag, eventEmitter);
 
   eventEmitter.on(

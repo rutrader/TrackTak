@@ -1,10 +1,7 @@
-require("dotenv/config");
+import "dotenv/config";
 
-const fs = require("fs");
-const {
-  getListOfExchanges,
-  getBulkFundamentals,
-} = require("../../node/src/api");
+import fs from "fs";
+import { getListOfExchanges, getBulkFundamentals } from "../../node/src/api";
 
 const fundamentalsDataDir = `${__dirname}/../data/fundamentalsData`;
 

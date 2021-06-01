@@ -10,8 +10,9 @@ export const getCellsForRows = (columns, rows) => {
   return rows.flatMap((row) => columns.map((column) => column + row));
 };
 
-export const isExpressionDependency = (expr) =>
-  typeof expr === "string" && expr && expr.charAt(0) === "=";
+export const isExpressionDependency = (expr) => {
+  return typeof expr === "string" && !!expr && expr.charAt(0) === "=";
+};
 
 export const getRowNumberFromCellKey = (cellKey) =>
   parseInt(cellKey.replace(/[A-Z]+/gi, ""), 10);
