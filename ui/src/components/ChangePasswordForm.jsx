@@ -1,29 +1,71 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { useAuth } from "../hooks/useAuth";
 import { Link } from "@material-ui/core";
+import { setMessage } from "../redux/actions/snackbarActions";
 
-const ChangePasswordForm = ({ isEmailVerified }) => {
-  // const { } = useAuth();
+const ChangePasswordForm = ({ onVerificationCodeDialogOpen }) => {
+  const { isEmailVerified, getEmailVerificationCode, changePassword } = useAuth();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [isDirty, setIsDirty] = useState(false);
+  const dispatch = useDispatch();
 
   const handleFieldChange = (e, setter) => {
     const value = e.target.value;
     setter(value);
-    setIsDirty(true);
   };
+
+  const handleSuccess = () => {
+    dispatch(
+      setMessage({
+        message: "Successfully updated your password",
+        severity: "success",
+      }),
+    );
+    setOldPassword("");
+    setNewPassword("");
+  };
+
+  const handleError = (err) => {
+    dispatch(
+      setMessage({
+        message: "Failed to change password",
+        severity: "error",
+      }),
+    );
+  };
+
+  const handleVerificationCodeError = (err) => {
+    dispatch(
+      setMessage({
+        message: "Failed to send verification code",
+        severity: "error",
+      }),
+    );
+  };
+
+  const handleClickVerifyEmail = () => {
+    onVerificationCodeDialogOpen();
+    getEmailVerificationCode(handleVerificationCodeError);
+  }
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    changePassword(oldPassword, newPassword, handleSuccess, handleError);
+  }
+
+  const isButtonDisabled = !oldPassword || !newPassword || !isEmailVerified;
 
   return (
     <>
       <Typography variant="h6" gutterBottom>
         Change Password
       </Typography>
-      <form style={{ width: "100%" }} onSubmit={() => {}}>
+      <form style={{ width: "100%" }} onSubmit={handleSubmit}>
         <Grid container justifyContent="space-between">
           <Grid item xs={4}>
             <TextField
@@ -33,6 +75,7 @@ const ChangePasswordForm = ({ isEmailVerified }) => {
               fullWidth
               id="oldPassword"
               label="Old Password"
+              type="password"
               name="oldPassword"
               autoComplete="password"
               size="small"
@@ -61,7 +104,7 @@ const ChangePasswordForm = ({ isEmailVerified }) => {
               sx={{
                 textTransform: "none",
               }}
-              disabled={!isEmailVerified || !isDirty}
+              disabled={isButtonDisabled}
             >
               Change
             </Button>
@@ -69,13 +112,12 @@ const ChangePasswordForm = ({ isEmailVerified }) => {
               <Link
                 component="button"
                 variant="caption"
-                onClick={() => {
-                  console.info("I'm a button.");
-                }}
+                onClick={handleClickVerifyEmail}
                 sx={{
                   color: (theme) => theme.palette.warning.main,
                   textAlign: "left",
                 }}
+                type="button"
               >
                 Verify your account before changing password
               </Link>

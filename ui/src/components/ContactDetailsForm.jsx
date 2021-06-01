@@ -5,12 +5,15 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { useAuth } from "../hooks/useAuth";
 import { Link } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import { setMessage } from "../redux/actions/snackbarActions";
 
-const ContactDetailsForm = ({ currentName, currentEmail, isEmailVerified }) => {
-  // const { } = useAuth();
-  const [name, setName] = useState(currentName);
-  const [email, setEmail] = useState(currentEmail);
+const ContactDetailsForm = ({ currentName, currentEmail, onVerificationCodeDialogOpen }) => {
+  const { isEmailVerified, updateContactDetails, getEmailVerificationCode } = useAuth();
+  const [name, setName] = useState(currentName || '');
+  const [email, setEmail] = useState(currentEmail || '');
   const [isDirty, setIsDirty] = useState(false);
+  const dispatch = useDispatch();
 
   const handleFieldChange = (e, setter) => {
     const value = e.target.value;
@@ -24,16 +27,62 @@ const ContactDetailsForm = ({ currentName, currentEmail, isEmailVerified }) => {
     }
   }, [name, email, currentName, currentEmail]);
 
+  useEffect(() => {
+    setName(currentName);
+    setEmail(currentEmail);
+  }, [currentName, currentEmail]);
+
+  const handleSuccess = () => {
+    dispatch(
+      setMessage({
+        message: "Successfully updated your details",
+        severity: "success",
+      }),
+    );
+  };
+
+  const handleError = (err) => {
+    dispatch(
+      setMessage({
+        message: err?.message,
+        severity: "error",
+      }),
+    );
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    updateContactDetails(
+      { name: name ?? currentName, email: email ?? currentEmail },
+      handleSuccess,
+      handleError,
+    );
+  };
+
+  const handleVerificationCodeError = (err) => {
+    dispatch(
+      setMessage({
+        message: "Failed to send verification code",
+        severity: "error",
+      }),
+    );
+  };
+
+  const handleClickVerifyEmail = () => {
+    onVerificationCodeDialogOpen();
+    getEmailVerificationCode(handleVerificationCodeError);
+  }
+
   return (
     <>
       <Typography variant="h6" gutterBottom>
         Contact Details
       </Typography>
-      <form style={{ width: "100%" }} onSubmit={() => {}}>
+      <form style={{ width: "100%" }} onSubmit={handleSubmit}>
         <Grid container justifyContent="space-between">
           <Grid item xs={4}>
             <TextField
-              value={name ?? currentName}
+              value={name || ''}
               onChange={(e) => handleFieldChange(e, setName)}
               variant="outlined"
               required
@@ -47,7 +96,7 @@ const ContactDetailsForm = ({ currentName, currentEmail, isEmailVerified }) => {
           </Grid>
           <Grid item xs={4}>
             <TextField
-              value={email ?? currentEmail}
+              value={email || ''}
               onChange={(e) => handleFieldChange(e, setEmail)}
               variant="outlined"
               required
@@ -63,12 +112,11 @@ const ContactDetailsForm = ({ currentName, currentEmail, isEmailVerified }) => {
               <Link
                 component="button"
                 variant="caption"
-                onClick={() => {
-                  console.info("I'm a button.");
-                }}
+                onClick={handleClickVerifyEmail}
                 sx={{
                   color: (theme) => theme.palette.warning.main,
                 }}
+                type="button"
               >
                 Click here to verify your email
               </Link>
