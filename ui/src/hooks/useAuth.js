@@ -58,7 +58,7 @@ const useProvideAuth = () => {
         }
       });
     }
-  }, []);
+  }, [isAuthenticated]);
 
   const signUp = (
     email,
@@ -75,8 +75,6 @@ const useProvideAuth = () => {
       setSession(session);
       setIsAuthenticated(true);
       onSuccess(session);
-      const userData = getUserData(session);
-      setUserData(userData);
     };
 
     userSignIn(username, password, onCognitoSuccess, onFailure, noop);

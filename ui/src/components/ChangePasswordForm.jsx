@@ -66,8 +66,8 @@ const ChangePasswordForm = ({ onVerificationCodeDialogOpen }) => {
         Change Password
       </Typography>
       <form style={{ width: "100%" }} onSubmit={handleSubmit}>
-        <Grid container justifyContent="space-between">
-          <Grid item xs={4}>
+        <Grid container justifyContent="space-between" gap={1}>
+          <Grid item xs={12} sm={4}>
             <TextField
               onChange={(e) => setOldPassword(e.target.value)}
               variant="outlined"
@@ -81,7 +81,7 @@ const ChangePasswordForm = ({ onVerificationCodeDialogOpen }) => {
               size="small"
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={4}>
             <TextField
               onChange={(e) => handleFieldChange(e, setNewPassword)}
               variant="outlined"
@@ -95,7 +95,7 @@ const ChangePasswordForm = ({ onVerificationCodeDialogOpen }) => {
               size="small"
             />
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={12} sm={2}>
             <Button
               type="submit"
               fullWidth

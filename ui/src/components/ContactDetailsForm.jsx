@@ -8,10 +8,10 @@ import { Link } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { setMessage } from "../redux/actions/snackbarActions";
 
-const ContactDetailsForm = ({ currentName, currentEmail, onVerificationCodeDialogOpen }) => {
-  const { isEmailVerified, updateContactDetails, getEmailVerificationCode } = useAuth();
-  const [name, setName] = useState(currentName || '');
-  const [email, setEmail] = useState(currentEmail || '');
+const ContactDetailsForm = ({ onVerificationCodeDialogOpen }) => {
+  const { userData, isEmailVerified, updateContactDetails, getEmailVerificationCode } = useAuth();
+  const [name, setName] = useState(userData?.name);
+  const [email, setEmail] = useState(userData?.email);
   const [isDirty, setIsDirty] = useState(false);
   const dispatch = useDispatch();
 
@@ -22,15 +22,17 @@ const ContactDetailsForm = ({ currentName, currentEmail, onVerificationCodeDialo
   };
 
   useEffect(() => {
-    if (name === currentName && email === currentEmail) {
+    if (name === userData?.name && email === userData?.email) {
       setIsDirty(false);
     }
-  }, [name, email, currentName, currentEmail]);
+  }, [name, email, userData]);
 
   useEffect(() => {
-    setName(currentName);
-    setEmail(currentEmail);
-  }, [currentName, currentEmail]);
+    if(userData) {
+      setName(userData.name);
+      setEmail(userData.email);
+    }
+  }, [userData]);
 
   const handleSuccess = () => {
     dispatch(
@@ -53,7 +55,7 @@ const ContactDetailsForm = ({ currentName, currentEmail, onVerificationCodeDialo
   const handleSubmit = (e) => {
     e.preventDefault();
     updateContactDetails(
-      { name: name ?? currentName, email: email ?? currentEmail },
+      { name: name ?? userData?.name, email: email ?? userData.email },
       handleSuccess,
       handleError,
     );
@@ -79,8 +81,8 @@ const ContactDetailsForm = ({ currentName, currentEmail, onVerificationCodeDialo
         Contact Details
       </Typography>
       <form style={{ width: "100%" }} onSubmit={handleSubmit}>
-        <Grid container justifyContent="space-between">
-          <Grid item xs={4}>
+        <Grid container justifyContent="space-between" gap={1}>
+          <Grid item xs={12} sm={4}>
             <TextField
               value={name || ''}
               onChange={(e) => handleFieldChange(e, setName)}
@@ -94,7 +96,7 @@ const ContactDetailsForm = ({ currentName, currentEmail, onVerificationCodeDialo
               size="small"
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={4}>
             <TextField
               value={email || ''}
               onChange={(e) => handleFieldChange(e, setEmail)}
@@ -122,7 +124,7 @@ const ContactDetailsForm = ({ currentName, currentEmail, onVerificationCodeDialo
               </Link>
             )}
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={12} sm={2}>
             <Button
               type="submit"
               fullWidth
