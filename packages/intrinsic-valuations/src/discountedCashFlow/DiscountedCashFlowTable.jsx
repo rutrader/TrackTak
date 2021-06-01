@@ -40,6 +40,7 @@ import {
 import { getOptionalInputs } from "./templates/freeCashFlowFirmSimple/getOptionalInputs";
 import useSetURLInput from "../hooks/useSetURLInput";
 import { camelCase } from "change-case";
+import "./spreadsheet.less";
 
 const defaultColWidth = 110;
 const columnAWidth = 170;

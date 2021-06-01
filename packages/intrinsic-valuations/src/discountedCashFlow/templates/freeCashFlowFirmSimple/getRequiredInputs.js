@@ -21,6 +21,7 @@ export const getRequiredInputs = (inputQueryParams) => {
           {
             text: inputQueryParams.cagrInYears_1_5,
             style: styleMap.percent,
+            comment: `look at: a. Revenue growth in your company in recent years b. Your company's revenues, relative to the overall market size and larger players in the sector.`,
           },
         ],
       },

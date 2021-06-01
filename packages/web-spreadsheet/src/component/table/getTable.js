@@ -195,6 +195,9 @@ export const getTable = (
       if (frozen) {
         draw.frozen(dbox);
       }
+      if (cell.comment) {
+        draw.commentMarker(dbox);
+      }
     });
   };
 

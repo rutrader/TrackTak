@@ -1,4 +1,5 @@
 import { cssPrefix } from "../../config";
+import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { tf } from "../../locale/locale";
 import { setElementPosition } from "../../shared/setElementPosition";
 import { h } from "../element";
@@ -10,10 +11,13 @@ export const getComment = (getData, viewFn, contextMenuEl, eventEmitter) => {
 
   el.el.placeholder = tf("comment.placeholder")();
 
-  const show = () => {
+  const show = (cancelHide) => {
     const rect = getData().getSelectedRect();
     const indexWith = getData().cols.indexWidth;
     const indexHeight = getData().rows.indexHeight;
+    const comment = getData().getSelectedCell().comment;
+
+    el.val(comment);
 
     setElementPosition(
       el,
@@ -22,7 +26,16 @@ export const getComment = (getData, viewFn, contextMenuEl, eventEmitter) => {
       rect.top + indexHeight,
     );
 
-    bindClickoutside(el, null, [el, contextMenuEl]);
+    bindClickoutside(
+      el,
+      () => {
+        if (!cancelHide) {
+          el.val("");
+          hide();
+        }
+      },
+      [el, contextMenuEl],
+    );
   };
 
   const hide = () => {
@@ -30,6 +43,16 @@ export const getComment = (getData, viewFn, contextMenuEl, eventEmitter) => {
 
     unbindClickoutside(el);
   };
+
+  eventEmitter.on(spreadsheetEvents.sheet.cellSelected, (cell) => {
+    const comment = cell?.comment;
+
+    if (comment) {
+      show(true);
+    } else {
+      hide();
+    }
+  });
 
   return {
     el,
