@@ -24,6 +24,9 @@ export default {
     formula: "Functions",
     more: "More",
   },
+  comment: {
+    placeholder: "Add your comment...",
+  },
   contextmenu: {
     comment: "Comment",
     copy: "Copy",

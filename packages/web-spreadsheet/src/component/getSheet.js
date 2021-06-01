@@ -44,6 +44,7 @@ export const getSheet = (
     contextMenu,
     selector,
     sortFilter,
+    comment,
   } = builder();
   let datas = [];
 
@@ -106,6 +107,10 @@ export const getSheet = (
   // editor
   eventEmitter.on(spreadsheetEvents.editor.change, (state, itext) => {
     dataSetCellText(itext, state);
+  });
+
+  eventEmitter.on(spreadsheetEvents.rightClickMenu.comment, () => {
+    showComment();
   });
 
   eventEmitter.on(spreadsheetEvents.rightClickMenu.copy, () => {
@@ -304,6 +309,7 @@ export const getSheet = (
     contextMenu.el,
     modalValidation.el,
     sortFilter.el,
+    comment.el,
   );
   sheetInitEvents();
 
@@ -558,6 +564,10 @@ export const getSheet = (
     getData().clearClipboard();
     selector.hideClipboard();
   }
+
+  const showComment = () => {
+    comment.show();
+  };
 
   function copy() {
     getData().copy();
@@ -882,6 +892,11 @@ export const getSheet = (
           case 67:
             // ctrl + c
             copy();
+            evt.preventDefault();
+            break;
+          case 77:
+            // ctrl + alt + m
+            showComment();
             evt.preventDefault();
             break;
           case 88:

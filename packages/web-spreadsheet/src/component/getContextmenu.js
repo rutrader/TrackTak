@@ -3,6 +3,7 @@ import { bindClickoutside, unbindClickoutside } from "./event";
 import { cssPrefix } from "../config";
 import { tf } from "../locale/locale";
 import spreadsheetEvents from "../core/spreadsheetEvents";
+import { setElementPosition } from "../shared/setElementPosition";
 
 export const menuItems = [
   { key: "comment", title: tf("contextmenu.comment"), label: "Ctrl+Alt+M" },
@@ -75,23 +76,7 @@ export const getContextMenu = (viewFn, eventEmitter, hideFn) => {
     if (hideFn()) {
       return;
     }
-    const { width } = el.show().offset();
-    const view = viewFn();
-    const vhf = view.height / 2;
-    let left = x;
-    if (view.width - x <= width) {
-      left -= width;
-    }
-    el.css("left", `${left}px`);
-    if (y > vhf) {
-      el.css("bottom", `${view.height - y}px`)
-        .css("max-height", `${y}px`)
-        .css("top", "auto");
-    } else {
-      el.css("top", `${y}px`)
-        .css("max-height", `${view.height - y}px`)
-        .css("bottom", "auto");
-    }
+    setElementPosition(el, viewFn, x, y);
     bindClickoutside(el);
   };
 
