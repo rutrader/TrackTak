@@ -140,12 +140,12 @@ module.exports = {
       },
     },
     "gatsby-plugin-robots-txt",
-    {
-      resolve: "gatsby-plugin-manifest",
-      options: {
-        icon: "src/icons/tracktak-logo-small.svg",
-      },
-    },
+    // {
+    //   resolve: "gatsby-plugin-manifest",
+    //   options: {
+    //     icon: "src/icons/tracktak-logo-small.svg",
+    //   },
+    // },
     //"gatsby-plugin-offline",
     "gatsby-plugin-mdx",
     "gatsby-plugin-image",
