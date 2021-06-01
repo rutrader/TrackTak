@@ -230,6 +230,22 @@ const DiscountedCashFlowTable = ({
       },
     };
 
+    const width = () => {
+      if (containerRef?.current) {
+        const containerStyle = getComputedStyle(containerRef.current);
+        const paddingX =
+          parseFloat(containerStyle.paddingLeft) +
+          parseFloat(containerStyle.paddingRight);
+        const borderX =
+          parseFloat(containerStyle.borderLeftWidth) +
+          parseFloat(containerStyle.borderRightWidth);
+        const elementWidth =
+          containerRef.current.offsetWidth - paddingX - borderX;
+
+        return elementWidth;
+      }
+    };
+
     const options = {
       col: {
         width: defaultColWidth,
@@ -237,25 +253,22 @@ const DiscountedCashFlowTable = ({
       formats,
       view: {
         height: () => 1165,
-        width: () => {
-          if (containerRef?.current) {
-            const containerStyle = getComputedStyle(containerRef.current);
-            const paddingX =
-              parseFloat(containerStyle.paddingLeft) +
-              parseFloat(containerStyle.paddingRight);
-            const borderX =
-              parseFloat(containerStyle.borderLeftWidth) +
-              parseFloat(containerStyle.borderRightWidth);
-            const elementWidth =
-              containerRef.current.offsetWidth - paddingX - borderX;
-
-            return elementWidth;
-          }
-        },
+        width,
       },
     };
 
-    spreadsheet = getSpreadsheet(dcfValuationElement, options);
+    const variablesSpreadsheetOptions = {
+      formats,
+      view: {
+        width,
+      },
+    };
+
+    spreadsheet = getSpreadsheet(
+      dcfValuationElement,
+      options,
+      variablesSpreadsheetOptions,
+    );
 
     setSpreadsheet(spreadsheet);
 

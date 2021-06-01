@@ -33,6 +33,7 @@ export const getRequiredInputs = (inputQueryParams) => {
           {
             text: inputQueryParams.ebitTargetMarginInYear_10,
             style: styleMap.percent,
+            comment: `Start by looking at your company's current pre-tax operating margin but also look at the average for your industry.`,
           },
         ],
       },
@@ -44,6 +45,7 @@ export const getRequiredInputs = (inputQueryParams) => {
           {
             text: inputQueryParams.yearOfConvergence,
             style: styleMap.number,
+            comment: `The forecast year in which the companies current Operating margin will converge on the target Operating margin.`,
           },
         ],
       },
@@ -55,6 +57,7 @@ export const getRequiredInputs = (inputQueryParams) => {
           {
             text: inputQueryParams.salesToCapitalRatio,
             style: styleMap.number,
+            comment: `The default value is set to the industry average as this is usually a good starting point. You should also look at the previous years sales to capital ratio's in the above table to fine tune this value. In the DCF output we compute how much the company is going to reinvest to keep the business growing in future years. The higher you set this number, the more efficiently the business is growing and the higher the value of your growth.`,
           },
         ],
       },
