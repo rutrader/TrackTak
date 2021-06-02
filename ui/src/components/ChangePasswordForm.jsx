@@ -66,7 +66,7 @@ const ChangePasswordForm = ({ onVerificationCodeDialogOpen }) => {
         Change Password
       </Typography>
       <form style={{ width: "100%" }} onSubmit={handleSubmit}>
-        <Grid container justifyContent="space-between" gap={1}>
+        <Grid container justifyContent="space-between" gap={3}>
           <Grid item xs={12} sm={4}>
             <TextField
               onChange={(e) => setOldPassword(e.target.value)}
@@ -79,6 +79,7 @@ const ChangePasswordForm = ({ onVerificationCodeDialogOpen }) => {
               name="oldPassword"
               autoComplete="password"
               size="small"
+              InputProps={{ inputProps: { minLength: 8 } }}
             />
           </Grid>
           <Grid item xs={12} sm={4}>
@@ -93,6 +94,7 @@ const ChangePasswordForm = ({ onVerificationCodeDialogOpen }) => {
               id="newPassword"
               autoComplete="password"
               size="small"
+              InputProps={{ inputProps: { minLength: 8 } }}
             />
           </Grid>
           <Grid item xs={12} sm={2}>
@@ -117,7 +119,6 @@ const ChangePasswordForm = ({ onVerificationCodeDialogOpen }) => {
                   color: (theme) => theme.palette.warning.main,
                   textAlign: "left",
                 }}
-                type="button"
               >
                 Verify your account before changing password
               </Link>

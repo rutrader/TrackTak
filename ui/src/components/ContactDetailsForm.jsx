@@ -81,7 +81,7 @@ const ContactDetailsForm = ({ onVerificationCodeDialogOpen }) => {
         Contact Details
       </Typography>
       <form style={{ width: "100%" }} onSubmit={handleSubmit}>
-        <Grid container justifyContent="space-between" gap={1}>
+        <Grid container justifyContent="space-between" gap={3}>
           <Grid item xs={12} sm={4}>
             <TextField
               value={name || ''}
