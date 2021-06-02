@@ -34,7 +34,7 @@ export const getScrollbar = (eventEmitter, vertical) => {
     const d = distance - 1;
     if (contentDistance > d) {
       const cssKey = vertical ? "height" : "width";
-      el.css(cssKey, `${d - 15}px`);
+      el.css(cssKey, `${d}px`);
       contentEl
         .css(vertical ? "width" : "height", "1px")
         .css(cssKey, `${contentDistance}px`);
