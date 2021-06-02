@@ -4,7 +4,7 @@ import { merge } from "lodash-es";
 
 const sharedOptions = {
   mode: "edit", // edit | read
-  debugMode: process.env.NODE_ENV === "development",
+  debugMode: false,
   view: {
     height: () => document.documentElement.clientHeight,
     width: () => document.documentElement.clientWidth,
