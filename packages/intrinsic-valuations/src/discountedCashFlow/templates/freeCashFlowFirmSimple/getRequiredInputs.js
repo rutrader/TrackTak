@@ -12,6 +12,15 @@ export const requiredInputsId = "required-inputs";
 export const getRequiredInputs = (inputQueryParams) => {
   return {
     name: requiredInputsSheetName,
+    cols: {
+      0: {
+        width: 185,
+      },
+      1: {
+        width: 75,
+      },
+    },
+    styles,
     rows: {
       0: {
         cells: [
@@ -21,7 +30,7 @@ export const getRequiredInputs = (inputQueryParams) => {
           {
             text: inputQueryParams.cagrInYears_1_5,
             style: styleMap.percent,
-            comment: `look at: a. Revenue growth in your company in recent years b. Your company's revenues, relative to the overall market size and larger players in the sector.`,
+            comment: `Compound Annual Growth Rate - look at: a. Revenue growth in your company in recent years b. Your company's revenues, relative to the overall market size and larger players in the sector.`,
           },
         ],
       },
@@ -33,7 +42,7 @@ export const getRequiredInputs = (inputQueryParams) => {
           {
             text: inputQueryParams.ebitTargetMarginInYear_10,
             style: styleMap.percent,
-            comment: `Start by looking at your company's current pre-tax operating margin but also look at the average for your industry.`,
+            comment: `Earnings Before Interest and Taxes - Start by looking at your company's current pre-tax operating margin but also look at the average for your industry.`,
           },
         ],
       },
@@ -62,6 +71,5 @@ export const getRequiredInputs = (inputQueryParams) => {
         ],
       },
     },
-    styles,
   };
 };

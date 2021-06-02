@@ -5,20 +5,64 @@ export const optionalInputsSheetName = "Optional Inputs";
 export const getOptionalInputs = () => {
   return {
     name: optionalInputsSheetName,
+    cols: {
+      0: {
+        width: 155,
+      },
+      1: {
+        width: 75,
+      },
+      2: {
+        width: 230,
+      },
+      3: {
+        width: 85,
+      },
+      4: {
+        width: 175,
+      },
+      5: {
+        width: 85,
+      },
+      6: {
+        width: 195,
+      },
+      7: {
+        width: 85,
+      },
+      8: {
+        width: 250,
+      },
+      9: {
+        width: 85,
+      },
+    },
+    merges: ["A1:B1", "C1:D1", "E1:F1", "G1:H1", "I1:J1"],
+    styles: [
+      ...styles,
+      {
+        align: "center",
+        underline: true,
+        font: {
+          bold: true,
+        },
+      },
+    ],
     rows: {
       0: {
         cells: [
           {
             text: "Normal Debt",
+            style: 5,
           },
           { text: "" },
-          { text: "Convertible Debt" },
+          { text: "Convertible Debt", style: 5 },
           { text: "" },
-          { text: "Preferred Stock" },
+          { text: "Preferred Stock", style: 5 },
           { text: "" },
-          { text: "Employee Options" },
+          { text: "Employee Options", style: 5 },
           { text: "" },
-          { text: "Other" },
+          { text: "Other", style: 5 },
         ],
       },
       1: {
@@ -164,6 +208,5 @@ export const getOptionalInputs = () => {
         ],
       },
     },
-    styles,
   };
 };
