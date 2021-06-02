@@ -460,14 +460,14 @@ const DiscountedCashFlowTable = ({
       }}
       ref={containerRef}
     >
-      <Box
-        id={dcfValuationId}
-        sx={{
-          pointerEvents:
-            !hasAllRequiredInputsFilledIn || loadingCells ? "none" : undefined,
-        }}
-      />
-      {SubscribeCover ? <SubscribeCover /> : null}
+      <Box id={dcfValuationId} />
+      {SubscribeCover ? (
+        <SubscribeCover
+          sx={{
+            zIndex: 100,
+          }}
+        />
+      ) : null}
       {!hasAllRequiredInputsFilledIn && (
         <Alert
           severity="warning"
@@ -475,6 +475,7 @@ const DiscountedCashFlowTable = ({
             position: "absolute",
             left: "50%",
             top: "50%",
+            zIndex: 100,
             transform: "translate(-50%, -50%)",
             "& .MuiAlert-icon": {
               alignItems: "center",
