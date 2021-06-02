@@ -590,7 +590,17 @@
   }
 }
 
+.@{css-prefix}-actions {
+  display: flex;
+  align-items: center;
+
+  .@{css-prefix}-icon {
+    margin-right: 10px;
+  }
+}
+
 .@{css-prefix}-menu {
+  overflow: hidden;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -1082,6 +1092,7 @@ form fieldset {
 }
 
 .@{css-prefix}-icon {
+  cursor: pointer;
   width: 18px;
   height: 18px;
   margin: 1px 1px 2px 1px;
