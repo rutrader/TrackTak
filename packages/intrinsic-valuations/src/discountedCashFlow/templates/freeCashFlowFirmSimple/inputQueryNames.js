@@ -1,4 +1,4 @@
-import { camelCase } from "camel-case";
+import { camelCase } from "change-case";
 
 export const labels = {
   cagrInYears_1_5: "CAGR in Years 1-5",
@@ -13,7 +13,7 @@ export const labels = {
   numberOfPreferredShares: "Number of Preferred Shares",
   marketPricePerShare: "Market Price Per Share",
   annualDividendPerShare: "Annual Dividend Per Share",
-  numberOfEmployeeOptionsOutstanding: "Employee Options Outstanding",
+  employeeOptionsOutstanding: "Employee Options Outstanding",
   averageStrikePrice: "Average Strike Price",
   averageMaturityOfOptions: "Average Maturity",
   netOperatingLoss: "Net Operating Loss",

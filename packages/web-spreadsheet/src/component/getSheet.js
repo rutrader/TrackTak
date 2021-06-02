@@ -256,7 +256,7 @@ export const getSheet = (
 
     datas.push(data);
 
-    eventEmitter.emit(spreadsheetEvents.sheet.addData, name, active);
+    eventEmitter.emit(spreadsheetEvents.sheet.addData, name, active, data);
 
     return data;
   };

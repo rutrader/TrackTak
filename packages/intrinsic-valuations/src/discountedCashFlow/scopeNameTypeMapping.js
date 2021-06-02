@@ -32,7 +32,7 @@ export const requiredInputNameTypeMapping = {
 };
 
 export const optionalInputNameTypeMapping = {
-  [queryNames.numberOfEmployeeOptionsOutstanding]: "million",
+  [queryNames.employeeOptionsOutstanding]: "million",
   [queryNames.averageStrikePrice]: "currency",
   [queryNames.averageMaturityOfOptions]: "year",
   [queryNames.averageMaturityOfDebt]: "year",

@@ -106,9 +106,10 @@ const useSensitivityAnalysisDataTable = () => {
       inputQueryParams,
     );
 
-    const cagrInYears_1_5Value = inputQueryParams.cagrInYears_1_5 * 100;
+    const cagrInYears_1_5Value =
+      inputQueryParams[queryNames.cagrInYears_1_5] * 100;
     const ebitTargetMarginInYear_10Value =
-      inputQueryParams.ebitTargetMarginInYear_10 * 100;
+      inputQueryParams[queryNames.ebitTargetMarginInYear_10] * 100;
 
     setDataTable(
       [

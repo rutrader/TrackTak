@@ -40,8 +40,8 @@ import {
 import { getOptionalInputs } from "./templates/freeCashFlowFirmSimple/getOptionalInputs";
 import useSetURLInput from "../hooks/useSetURLInput";
 import { camelCase } from "change-case";
-import "./spreadsheet.less";
 import { allInputNameTypeMappings } from "./scopeNameTypeMapping";
+import { queryNames } from "./templates/freeCashFlowFirmSimple/inputQueryNames";
 
 const defaultColWidth = 110;
 const columnAWidth = 170;
@@ -197,6 +197,9 @@ const DiscountedCashFlowTable = ({
     selectThreeAverageYearsEffectiveTaxRate,
   );
   const setURLInput = useSetURLInput();
+  const isFocusedOnValueDrivingInputs = location.hash?.includes(
+    requiredInputsId,
+  );
 
   useEffect(() => {
     let spreadsheet;
@@ -274,6 +277,8 @@ const DiscountedCashFlowTable = ({
       variablesSpreadsheetOptions,
     );
 
+    spreadsheet.variablesSpreadsheet.variablesSheet.el.el.id = requiredInputsId;
+
     setSpreadsheet(spreadsheet);
 
     return () => {
@@ -292,7 +297,7 @@ const DiscountedCashFlowTable = ({
           });
 
           if (label) {
-            const urlName = camelCase(value);
+            const urlName = camelCase(label);
 
             if (allInputNameTypeMappings[urlName]) {
               setURLInput(camelCase(label), value);
@@ -348,7 +353,7 @@ const DiscountedCashFlowTable = ({
     if (spreadsheet) {
       spreadsheet.variablesSpreadsheet.setVariableDatasheets([
         getRequiredInputs(inputQueryParams),
-        getOptionalInputs(),
+        getOptionalInputs(inputQueryParams),
       ]);
     }
   }, [inputQueryParams, spreadsheet]);
@@ -399,19 +404,21 @@ const DiscountedCashFlowTable = ({
           marginalTaxRate: currentEquityRiskPremium.marginalTaxRate,
           sharesOutstanding,
           price,
-          cagrInYears_1_5: inputQueryParams.cagrInYears_1_5,
-          riskFreeRate,
-          yearOfConvergence: inputQueryParams.yearOfConvergence,
-          ebitTargetMarginInYear_10: inputQueryParams.ebitTargetMarginInYear_10,
-          totalCostOfCapital: costOfCapital.totalCostOfCapital,
-          salesToCapitalRatio: inputQueryParams.salesToCapitalRatio,
-          nonOperatingAssets: inputQueryParams.nonOperatingAssets,
-          netOperatingLoss: inputQueryParams.netOperatingLoss,
-          probabilityOfFailure: inputQueryParams.probabilityOfFailure,
-          proceedsAsAPercentageOfBookValue:
-            inputQueryParams.proceedsAsAPercentageOfBookValue,
           bookValueOfEquity: balanceSheet.bookValueOfEquity,
           valueOfAllOptionsOutstanding,
+          riskFreeRate,
+          totalCostOfCapital: costOfCapital.totalCostOfCapital,
+          cagrInYears_1_5: inputQueryParams[queryNames.cagrInYears_1_5],
+          yearOfConvergence: inputQueryParams[queryNames.yearOfConvergence],
+          ebitTargetMarginInYear_10:
+            inputQueryParams[queryNames.ebitTargetMarginInYear_10],
+          salesToCapitalRatio: inputQueryParams[queryNames.salesToCapitalRatio],
+          nonOperatingAssets: inputQueryParams[queryNames.nonOperatingAssets],
+          netOperatingLoss: inputQueryParams[queryNames.netOperatingLoss],
+          probabilityOfFailure:
+            inputQueryParams[queryNames.probabilityOfFailure],
+          proceedsAsAPercentageOfBookValue:
+            inputQueryParams[queryNames.proceedsAsAPercentageOfBookValue],
         }),
       );
     }
@@ -426,26 +433,33 @@ const DiscountedCashFlowTable = ({
     dispatch,
     incomeStatement.operatingIncome,
     incomeStatement.totalRevenue,
-    inputQueryParams.cagrInYears_1_5,
-    inputQueryParams.ebitTargetMarginInYear_10,
-    inputQueryParams.netOperatingLoss,
-    inputQueryParams.probabilityOfFailure,
-    inputQueryParams.proceedsAsAPercentageOfBookValue,
-    inputQueryParams.salesToCapitalRatio,
-    inputQueryParams.yearOfConvergence,
     pastThreeYearsAverageEffectiveTaxRate,
     price,
     riskFreeRate,
     sharesOutstanding,
     valueOfAllOptionsOutstanding,
     hasAllRequiredInputsFilledIn,
-    inputQueryParams.nonOperatingAssets,
+    inputQueryParams,
   ]);
 
   const to = `${location.pathname}#${requiredInputsId}`;
 
   return (
-    <Box sx={{ position: "relative" }} ref={containerRef}>
+    <Box
+      sx={{
+        position: "relative",
+        "& .x-spreadsheet-comment": {
+          fontFamily: theme.typography.fontFamily,
+        },
+        "& .x-spreadsheet-variables-sheet": isFocusedOnValueDrivingInputs
+          ? {
+              boxShadow: `0 0 5px ${theme.palette.primary.main}`,
+              border: `1px solid ${theme.palette.primary.main}`,
+            }
+          : {},
+      }}
+      ref={containerRef}
+    >
       <Box
         id={dcfValuationId}
         sx={{

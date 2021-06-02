@@ -47,7 +47,9 @@ export const buildSpreadsheet = (
     newData = data;
   });
 
-  eventEmitter.on(spreadsheetEvents.sheet.addData, (_, __, data) => {});
+  eventEmitter.on(spreadsheetEvents.sheet.addData, (_, __, data) => {
+    newData = data;
+  });
 
   const getData = () => newData;
 

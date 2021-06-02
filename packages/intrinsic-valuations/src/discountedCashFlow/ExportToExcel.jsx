@@ -36,6 +36,7 @@ import {
   marketValueCalculation,
   weightInCostOfCapitalCalculation,
 } from "./templates/freeCashFlowFirmSimple/expressionCalculations";
+import { queryNames } from "./templates/freeCashFlowFirmSimple/inputQueryNames";
 
 export const DCFControlTypography = (props) => {
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
@@ -100,9 +101,9 @@ const ExportToExcel = () => {
       interestExpense: incomeStatement.interestExpense,
       price,
       sharesOutstanding,
-      pretaxCostOfDebt: isNil(inputQueryParams.pretaxCostOfDebt)
+      pretaxCostOfDebt: isNil(inputQueryParams[queryNames.pretaxCostOfDebt])
         ? debtCalculation.estimatedCostOfDebt
-        : inputQueryParams.pretaxCostOfDebt,
+        : inputQueryParams[queryNames.pretaxCostOfDebt],
       unleveredBeta: currentIndustry.unleveredBeta,
       ...debtCalculation,
       ...marketValueCalculation,

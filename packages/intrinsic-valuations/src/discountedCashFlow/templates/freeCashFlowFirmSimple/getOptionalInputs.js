@@ -1,8 +1,9 @@
 import { styleMap, styles } from "../../utils";
+import { queryNames } from "./inputQueryNames";
 
 export const optionalInputsSheetName = "Optional Inputs";
 
-export const getOptionalInputs = () => {
+export const getOptionalInputs = (inputQueryParams) => {
   return {
     name: optionalInputsSheetName,
     cols: {
@@ -72,7 +73,7 @@ export const getOptionalInputs = () => {
             text: "Pre-tax Cost of Debt",
           },
           {
-            text: "",
+            text: inputQueryParams[queryNames.pretaxCostOfDebt],
             style: styleMap.percent,
             comment: `If you don't enter an input we will use a synthetic pre-tax cost of debt. You can override this by entering your own calculated pre-tax cost of debt here if you want.`,
           },

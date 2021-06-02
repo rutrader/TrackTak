@@ -12,6 +12,7 @@ import { defaultVariablesSpreadsheetOptions } from "../../core/defaultOptions";
 import { getTable } from "../table/getTable";
 import { makeGetVariablesSheetViewWidthHeight } from "../makeGetVariablesSheetViewWidthHeight";
 import getDraw from "../../canvas/draw";
+import { cssPrefix } from "../../config";
 
 export const buildVariablesSpreadsheet = (
   sheetEl,
@@ -98,6 +99,8 @@ export const buildVariablesSpreadsheet = (
       getViewWidthHeight,
     ),
   );
+
+  variablesSheet.el.addClass(`${cssPrefix}-variables-sheet`);
 
   const setVariableDatasheets = variablesSheet.makeSetDatasheets(getDataProxy);
 
