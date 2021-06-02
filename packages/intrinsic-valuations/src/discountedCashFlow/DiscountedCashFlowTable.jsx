@@ -41,6 +41,7 @@ import { getOptionalInputs } from "./templates/freeCashFlowFirmSimple/getOptiona
 import useSetURLInput from "../hooks/useSetURLInput";
 import { camelCase } from "change-case";
 import "./spreadsheet.less";
+import { allInputNameTypeMappings } from "./scopeNameTypeMapping";
 
 const defaultColWidth = 110;
 const columnAWidth = 170;
@@ -254,7 +255,7 @@ const DiscountedCashFlowTable = ({
       },
       formats,
       view: {
-        height: () => 1165,
+        height: () => 1250,
         width,
       },
     };
@@ -290,7 +291,13 @@ const DiscountedCashFlowTable = ({
             col: cellAddress.col - 1,
           });
 
-          setURLInput(camelCase(label), value);
+          if (label) {
+            const urlName = camelCase(value);
+
+            if (allInputNameTypeMappings[urlName]) {
+              setURLInput(camelCase(label), value);
+            }
+          }
         },
       );
     }

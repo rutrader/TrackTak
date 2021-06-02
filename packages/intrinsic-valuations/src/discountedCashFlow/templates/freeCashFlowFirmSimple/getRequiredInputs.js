@@ -1,10 +1,5 @@
 import { styleMap, styles } from "../../utils";
-import {
-  cagrInYears_1_5Label,
-  ebitTargetMarginInYear_10Label,
-  salesToCapitalRatioLabel,
-  yearOfConvergenceLabel,
-} from "./inputQueryNames";
+import { labels } from "./inputQueryNames";
 
 export const requiredInputsSheetName = "Required Inputs";
 export const requiredInputsId = "required-inputs";
@@ -25,7 +20,7 @@ export const getRequiredInputs = (inputQueryParams) => {
       0: {
         cells: [
           {
-            text: cagrInYears_1_5Label,
+            text: labels.cagrInYears_1_5,
           },
           {
             text: inputQueryParams.cagrInYears_1_5,
@@ -37,7 +32,7 @@ export const getRequiredInputs = (inputQueryParams) => {
       1: {
         cells: [
           {
-            text: ebitTargetMarginInYear_10Label,
+            text: labels.ebitTargetMarginInYear_10,
           },
           {
             text: inputQueryParams.ebitTargetMarginInYear_10,
@@ -49,7 +44,7 @@ export const getRequiredInputs = (inputQueryParams) => {
       2: {
         cells: [
           {
-            text: yearOfConvergenceLabel,
+            text: labels.yearOfConvergence,
           },
           {
             text: inputQueryParams.yearOfConvergence,
@@ -61,7 +56,7 @@ export const getRequiredInputs = (inputQueryParams) => {
       3: {
         cells: [
           {
-            text: salesToCapitalRatioLabel,
+            text: labels.salesToCapitalRatio,
           },
           {
             text: inputQueryParams.salesToCapitalRatio,

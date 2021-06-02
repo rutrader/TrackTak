@@ -97,6 +97,6 @@ export const defaultOptions = merge({}, sharedOptions, {
 
 export const defaultVariablesSpreadsheetOptions = merge({}, sharedOptions, {
   view: {
-    height: () => 200,
+    height: () => 205,
   },
 });

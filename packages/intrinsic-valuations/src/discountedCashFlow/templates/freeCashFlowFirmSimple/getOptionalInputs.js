@@ -52,17 +52,18 @@ export const getOptionalInputs = () => {
       0: {
         cells: [
           {
+            merge: [0, 1],
             text: "Normal Debt",
             style: 5,
           },
           { text: "" },
-          { text: "Convertible Debt", style: 5 },
+          { text: "Convertible Debt", style: 5, merge: [0, 1] },
           { text: "" },
-          { text: "Preferred Stock", style: 5 },
+          { text: "Preferred Stock", style: 5, merge: [0, 1] },
           { text: "" },
-          { text: "Employee Options", style: 5 },
+          { text: "Employee Options", style: 5, merge: [0, 1] },
           { text: "" },
-          { text: "Other", style: 5 },
+          { text: "Other", style: 5, merge: [0, 1] },
         ],
       },
       1: {

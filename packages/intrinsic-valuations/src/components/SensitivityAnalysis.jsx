@@ -23,6 +23,7 @@ import { Fragment } from "react";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import { computeSensitivityAnalysis } from "../api/api";
 import { allInputNameTypeMappings } from "../discountedCashFlow/scopeNameTypeMapping";
+import { queryNames } from "../discountedCashFlow/templates/freeCashFlowFirmSimple/inputQueryNames";
 
 const getModelScopes = (scope, xElement, yElement) => {
   const doesScopeExist =
@@ -109,11 +110,11 @@ const SensitivityAnalysis = () => {
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
   const [checkedItems, setCheckedItems] = useState([
     {
-      name: "cagrInYears_1_5",
+      name: queryNames.cagrInYears_1_5,
       value: true,
     },
     {
-      name: "ebitTargetMarginInYear_10",
+      name: queryNames.ebitTargetMarginInYear_10,
       value: true,
     },
   ]);

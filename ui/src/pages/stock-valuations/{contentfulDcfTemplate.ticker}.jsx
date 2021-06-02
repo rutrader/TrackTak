@@ -8,7 +8,6 @@ import { graphql, Link as RouterLink } from "gatsby";
 import { Box, Link, Typography, useTheme } from "@material-ui/core";
 import {
   CompanyOverviewStats,
-  ValueDrivingInputs,
   Section,
   FormatRawNumberToPercent,
   FormatRawNumberToYear,
@@ -35,11 +34,6 @@ import {
 } from "../../redux/thunks/fundamentalsThunks";
 import SubscribeCover from "../../components/SubscribeCover";
 import subscribePopupShownHook from "../../hooks/subscribePopupShownHook";
-import ProbabilityOfFailureInputs from "../../../../packages/intrinsic-valuations/src/components/ProbabilityOfFailureInputs";
-import {
-  probabilityOfFailureLabel,
-  proceedsAsPercentageOfBookValueLabel,
-} from "../../../../packages/intrinsic-valuations/src/components/OptionalInputs";
 import selectValuationCurrencyCode from "../../../../packages/intrinsic-valuations/src/selectors/fundamentalSelectors/selectValuationCurrencyCode";
 import selectGeneral from "../../../../packages/intrinsic-valuations/src/selectors/fundamentalSelectors/selectGeneral";
 
@@ -405,11 +399,11 @@ const Valuation = ({ data }) => {
           </NumberSpan>
           {renderHtml(salesToCapitalRatioDescription.childMarkdownRemark.html)}
         </Container>
-        {probabilityOfFailureLabel && (
+        {/* {probabilityOfFailureLabel && (
           <Typography variant="h6" gutterBottom>
             {probabilityOfFailureLabel}
           </Typography>
-        )}
+        )} */}
         {probabilityOfFailure && probabilityOfFailureDescription && (
           <Container>
             <NumberSpan>
@@ -420,11 +414,11 @@ const Valuation = ({ data }) => {
             )}
           </Container>
         )}
-        {proceedsAsPercentageOfBookValueLabel && (
+        {/* {proceedsAsPercentageOfBookValueLabel && (
           <Typography variant="h6" gutterBottom>
             {proceedsAsPercentageOfBookValueLabel}
           </Typography>
-        )}
+        )} */}
         {proceedsAsAPercentageOfBookValue && percentageOfBookValueDescription && (
           <Container>
             <NumberSpan>
@@ -445,26 +439,10 @@ const Valuation = ({ data }) => {
         <CostOfCapitalResults />
       </Section>
       <Section>
-        <ValueDrivingInputs />
-        {probabilityOfFailure && proceedsAsAPercentageOfBookValue && (
-          <Box
-            sx={{
-              mt: 2,
-              display: "flex",
-              gap: theme.spacing(2),
-              flexWrap: "wrap",
-              flexDirection: "column",
-            }}
-          >
-            <ProbabilityOfFailureInputs />
-          </Box>
-        )}
-        <Box sx={{ mt: 1 }}>
-          <Typography paragraph>
-            <b>Hint:</b> Have a play with the above inputs yourself and see how
-            the valuation changes.
-          </Typography>
-        </Box>
+        <Typography paragraph>
+          <b>Hint:</b> Have a play with the below inputs yourself and see how
+          the valuation changes.
+        </Typography>
       </Section>
       <Section>
         <DiscountedCashFlowSheet

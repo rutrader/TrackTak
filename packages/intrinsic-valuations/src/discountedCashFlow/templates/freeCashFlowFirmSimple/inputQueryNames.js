@@ -1,13 +1,30 @@
 import { camelCase } from "camel-case";
 
-export const cagrInYears_1_5Label = "CAGR in Years 1-5";
-export const ebitTargetMarginInYear_10Label = "EBIT Target Margin in Year 10";
-export const yearOfConvergenceLabel = "Year of Convergence";
-export const salesToCapitalRatioLabel = "Sales to Capital Ratio";
+export const labels = {
+  cagrInYears_1_5: "CAGR in Years 1-5",
+  ebitTargetMarginInYear_10: "EBIT Target Margin in Year 10",
+  yearOfConvergence: "Year of Convergence",
+  salesToCapitalRatio: "Sales to Capital Ratio",
+  pretaxCostOfDebt: "Pre-tax Cost of Debt",
+  averageMaturityOfDebt: "Average Maturity of Debt",
+  bookValueOfConvertibleDebt: "Book Value of Convertible Debt",
+  interestExpenseOnConvertibleDebt: "Interest Expense on Convertible Debt",
+  maturityOfConvertibleDebt: "Maturity of Convertible Debt",
+  numberOfPreferredShares: "Number of Preferred Shares",
+  marketPricePerShare: "Market Price Per Share",
+  annualDividendPerShare: "Annual Dividend Per Share",
+  numberOfEmployeeOptionsOutstanding: "Employee Options Outstanding",
+  averageStrikePrice: "Average Strike Price",
+  averageMaturityOfOptions: "Average Maturity",
+  netOperatingLoss: "Net Operating Loss",
+  nonOperatingAssets: "Non-operating assets",
+  probabilityOfFailure: "Probability of Failure",
+  proceedsAsAPercentageOfBookValue: "Proceeds as a Percentage of Book value",
+};
 
-export const cagrInYears_1_5QueryName = camelCase(cagrInYears_1_5Label);
-export const ebitTargetMarginInYear_10QueryName = camelCase(
-  ebitTargetMarginInYear_10Label,
-);
-export const yearOfConvergenceQueryName = camelCase(yearOfConvergenceLabel);
-export const salesToCapitalRatioQueryName = camelCase(salesToCapitalRatioLabel);
+export const queryNames = Object.keys(labels).reduce((prev, curr) => {
+  return {
+    ...prev,
+    [curr]: camelCase(labels[curr]),
+  };
+}, {});

@@ -12,12 +12,10 @@ import {
   CostOfCapitalResults,
   DiscountedCashFlowSheet,
   IndustryAveragesResults,
-  OptionalInputs,
   FinancialsSummary,
   Section,
   SubSection,
   withFundamentalsLoaded,
-  ValueDrivingInputs,
   useTicker,
 } from "@tracktak/intrinsic-valuations";
 import { Link as RouterLink } from "gatsby";
@@ -70,25 +68,15 @@ const DiscountedCashFlow = () => {
         </Box>
       </Section>
       <Section sx={{ display: "flex", gridColumnGap: 20, flexWrap: "wrap" }}>
-        <Box sx={{ flex: 1 }}>
-          <SubSection>
-            <ValueDrivingInputs />
-          </SubSection>
-          <SubSection>
-            <OptionalInputs />
-          </SubSection>
-        </Box>
-        <Box sx={{ flex: 1 }}>
-          <SubSection>
-            <IndustryAveragesResults />
-          </SubSection>
-          <SubSection>
-            <CostOfCapitalResults />
-          </SubSection>
-          <SubSection>
-            <BlackScholesResults />
-          </SubSection>
-        </Box>
+        <SubSection>
+          <IndustryAveragesResults />
+        </SubSection>
+        <SubSection>
+          <CostOfCapitalResults />
+        </SubSection>
+        <SubSection>
+          <BlackScholesResults />
+        </SubSection>
       </Section>
       <Section>
         <DiscountedCashFlowSheet
