@@ -245,8 +245,10 @@ const DiscountedCashFlowTable = ({
         return elementWidth;
       }
     };
+    const debugMode = process.env.NODE_ENV === "development";
 
     const options = {
+      debugMode,
       col: {
         width: defaultColWidth,
       },
@@ -258,6 +260,7 @@ const DiscountedCashFlowTable = ({
     };
 
     const variablesSpreadsheetOptions = {
+      debugMode,
       formats,
       view: {
         width,
