@@ -218,6 +218,10 @@ export const getSheet = (
 
       if (hyperformula.isItPossibleToAddSheet(dataSheet.name)) {
         hyperformula.addSheet(dataSheet.name);
+
+        if (i === 0) {
+          switchData(data);
+        }
       }
 
       hyperformula.setSheetContent(dataSheet.name, sheetContent);
@@ -229,10 +233,6 @@ export const getSheet = (
           `registered sheet content: ${dataSheet.name} (sheet id: ${sheetId})`,
           hyperformula.getSheetFormulas(sheetId),
         );
-      }
-
-      if (i === 0) {
-        switchData(data);
       }
 
       data.setData(dataSheet);

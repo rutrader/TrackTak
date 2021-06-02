@@ -43,15 +43,13 @@ export const buildSpreadsheet = (
 
   modifyEventEmitter(eventEmitter, getOptions().debugMode, "spreadsheet");
 
+  const getData = () => {
+    return newData;
+  };
+
   eventEmitter.on(spreadsheetEvents.sheet.switchData, (data) => {
     newData = data;
   });
-
-  eventEmitter.on(spreadsheetEvents.sheet.addData, (_, __, data) => {
-    newData = data;
-  });
-
-  const getData = () => newData;
 
   const getViewWidthHeight = makeGetViewWidthHeight(getOptions, () => {
     return variablesSpreadsheet.getOptions();

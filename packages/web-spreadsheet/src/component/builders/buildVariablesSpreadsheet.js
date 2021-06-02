@@ -47,7 +47,9 @@ export const buildVariablesSpreadsheet = (
 
   const getViewWidthHeight = makeGetVariablesSheetViewWidthHeight(getOptions);
 
-  const getData = () => newData;
+  const getData = () => {
+    return newData;
+  };
 
   eventEmitter.on(spreadsheetEvents.sheet.switchData, (data) => {
     newData = data;
