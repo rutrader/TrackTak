@@ -18,6 +18,7 @@ const SignInForm = ({
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
+    e.preventDefault();
     onSubmit(e, {
       email,
       password,
@@ -82,7 +83,7 @@ const SignInForm = ({
             </Grid>
           </Grid>
           <RoundButton
-            type="submit"
+            type="button"
             fullWidth
             variant="contained"
             color="primary"
@@ -90,6 +91,7 @@ const SignInForm = ({
               margin: theme.spacing(3, 0, 2),
               textTransform: "none",
             }}
+            onClick={handleSubmit}
           >
             Sign In
           </RoundButton>
