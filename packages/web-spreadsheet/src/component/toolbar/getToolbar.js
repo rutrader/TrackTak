@@ -81,8 +81,8 @@ export const getToolbar = (getOptions, getData, eventEmitter) => {
   );
   const moreEl = getMore();
   const items = [
-    [formatEl],
-    buildDivider(),
+    //  [formatEl],
+    // buildDivider(),
     [undoEl, redoEl],
     // [undoEl, redoEl, printEl, paintformatEl, clearformatEl],
     // buildDivider(),

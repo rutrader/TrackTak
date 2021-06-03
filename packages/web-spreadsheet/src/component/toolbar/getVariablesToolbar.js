@@ -17,8 +17,8 @@ export const getVariablesToolbar = (getOptions, getData, eventEmitter) => {
   const moreEl = getMore();
 
   const items = [
-    [formatEl],
-    buildDivider(),
+    // [formatEl],
+    // buildDivider(),
     [undoEl, redoEl],
     buildDivider(),
     [moreEl],

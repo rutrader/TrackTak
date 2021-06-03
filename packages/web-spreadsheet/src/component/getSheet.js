@@ -233,7 +233,9 @@ export const getSheet = (
           switchData(data);
         }
       } else {
-        data = addDataProxy();
+        const currentData = getData();
+
+        data = addDataProxy(currentData.name === dataSheet.name);
       }
 
       hyperformula.setSheetContent(dataSheet.name, sheetContent);

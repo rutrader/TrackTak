@@ -364,11 +364,11 @@ const DiscountedCashFlowTable = ({
   useEffect(() => {
     if (spreadsheet) {
       spreadsheet.variablesSpreadsheet.setVariableDatasheets([
-        getRequiredInputs(inputQueryParams),
+        getRequiredInputs(inputQueryParams, theme),
         getOptionalInputs(inputQueryParams),
       ]);
     }
-  }, [inputQueryParams, spreadsheet]);
+  }, [inputQueryParams, spreadsheet, theme]);
 
   useEffect(() => {
     if (spreadsheet && hasAllRequiredInputsFilledIn) {
@@ -499,7 +499,7 @@ const DiscountedCashFlowTable = ({
             },
           }}
         >
-          The&nbsp;
+          The green&nbsp;
           <Link
             component={AnchorLink}
             to={to}
@@ -507,9 +507,9 @@ const DiscountedCashFlowTable = ({
               navigate(to);
             }}
           >
-            {requiredInputsSheetName}
+            {requiredInputsSheetName.slice(0, -1)}
           </Link>
-          &nbsp;section above needs to be filled out first to generate the DCF.
+          &nbsp;cells above need to be filled out first to generate your DCF.
         </Alert>
       )}
     </Box>
