@@ -3,6 +3,7 @@ import {
   CognitoUser,
   CognitoUserPool,
 } from "amazon-cognito-identity-js";
+import { noop } from "../shared/utils";
 
 const POOL_CONFIG = {
   UserPoolId: process.env.GATSBY_COGNITO_USER_POOL_ID,
@@ -55,7 +56,7 @@ export const signIn = (
 };
 
 export const signOut = () => {
-  const user = userPool.getCurrentUser();
+  const user = getCurrentUser();
   if (user) {
     user.signOut();
   }
@@ -77,9 +78,13 @@ export const signUp = (
   });
 };
 
-export const getCurrentUser = () => userPool.getCurrentUser();
-
-export const isEmailVerified = () => getCurrentUser()?.isEmailVerified;
+export const getCurrentUser = () => {
+  const user = userPool.getCurrentUser();
+  if (user) {
+    user.getSession(noop);
+  }
+  return user;
+};
 
 export const forgotPasswordFlow = () => {
   let user = {};
@@ -136,3 +141,59 @@ export const forgotPasswordFlow = () => {
     },
   };
 };
+
+export const getUserData = (handleGetUserData) => {
+  const user = getCurrentUser();
+  return user.getUserAttributes(handleGetUserData);
+}
+
+export const changePassword = (
+  oldPassword,
+  newPassword,
+  onSuccess,
+  onError,
+) => {
+  const user = getCurrentUser();
+  user.changePassword(oldPassword, newPassword, (err, result) => {
+    if (err) {
+      onCognitoFailure(err, onError);
+      return;
+    }
+
+    onSuccess(result);
+  });
+};
+
+export const updateContactDetails = (contactDetails, onSuccess, onError) => {
+  const user = getCurrentUser();
+  const updatedAttributes = Object.keys(contactDetails).map((key) => ({
+    Name: key,
+    Value: contactDetails[key],
+  }));
+
+  user.updateAttributes(updatedAttributes, (err, result) => {
+    if (err) {
+      onCognitoFailure(err, onError);
+      return;
+    }
+
+    onSuccess(result);
+  });
+};
+
+export const getEmailVerificationCode = (onError) => {
+  const user = getCurrentUser();
+  user.getAttributeVerificationCode("email", {
+    onSuccess: noop,
+    onFailure: (err) => onCognitoFailure(err, onError),
+    inputVerificationCode: noop,
+  });
+};
+
+export const submitEmailVerificationCode = (code, onSuccess, onError) => {
+  const user = getCurrentUser();
+  user.verifyAttribute("email", code, {
+    onSuccess,
+    onFailure: (err) => onCognitoFailure(err, onError),
+  })
+}
