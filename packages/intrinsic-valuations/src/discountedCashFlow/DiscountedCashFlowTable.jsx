@@ -355,13 +355,10 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     if (spreadsheet) {
-      console.time("a");
-
       spreadsheet.variablesSpreadsheet.setVariableDatasheets([
         getRequiredInputs(inputQueryParams),
         getOptionalInputs(inputQueryParams),
       ]);
-      console.timeEnd("a");
     }
   }, [inputQueryParams, spreadsheet]);
 

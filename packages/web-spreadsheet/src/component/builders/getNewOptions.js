@@ -22,7 +22,7 @@ export const getNewOptions = (
   });
 
   if (data) {
-    sheet.sheetReset();
+    sheet.table.render();
   }
 
   return newOptions;

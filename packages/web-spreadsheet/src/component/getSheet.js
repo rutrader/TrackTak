@@ -214,14 +214,24 @@ export const getSheet = (
       const sheetContent = Object.values(dataSheet.rows).map(({ cells }) =>
         cells.map((x) => x.text),
       );
-      const data = addData(getDataProxy, dataSheet.name, i === 0);
+      let data;
+
+      // TODO: Remove later when we refactor bottomBar
+      const addDataProxy = (active) =>
+        addData(getDataProxy, dataSheet.name, active);
 
       if (hyperformula.isItPossibleToAddSheet(dataSheet.name)) {
+        const isFirstElement = i === 0;
+
+        data = addDataProxy(isFirstElement);
+
         hyperformula.addSheet(dataSheet.name);
 
-        if (i === 0) {
+        if (isFirstElement) {
           switchData(data);
         }
+      } else {
+        data = addDataProxy();
       }
 
       hyperformula.setSheetContent(dataSheet.name, sheetContent);
@@ -245,7 +255,6 @@ export const getSheet = (
     }
 
     sheetReset();
-    selectorSet(false, 0, 0);
   };
 
   const addData = (
