@@ -5,7 +5,7 @@ import { renderRichText } from "gatsby-source-contentful/rich-text";
 import { BLOCKS } from "@contentful/rich-text-types";
 import YouTube from "react-youtube";
 import { graphql, Link as RouterLink } from "gatsby";
-import { Box, Link, Typography, useTheme } from "@material-ui/core";
+import { Box, Link, Typography } from "@material-ui/core";
 import {
   CompanyOverviewStats,
   Section,
@@ -36,6 +36,7 @@ import SubscribeCover from "../../components/SubscribeCover";
 import subscribePopupShownHook from "../../hooks/subscribePopupShownHook";
 import selectValuationCurrencyCode from "../../../../packages/intrinsic-valuations/src/selectors/fundamentalSelectors/selectValuationCurrencyCode";
 import selectGeneral from "../../../../packages/intrinsic-valuations/src/selectors/fundamentalSelectors/selectGeneral";
+import { labels } from "../../../../packages/intrinsic-valuations/src/discountedCashFlow/templates/freeCashFlowFirmSimple/inputQueryNames";
 
 export const query = graphql`
   fragment ValuationInformation on ContentfulDcfTemplate {
@@ -202,7 +203,6 @@ const renderField = (field) => {
 };
 
 const Valuation = ({ data }) => {
-  const theme = useTheme();
   const [subscribePopupShown] = subscribePopupShownHook();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -274,8 +274,9 @@ const Valuation = ({ data }) => {
     general.countryISO,
   ]);
 
-  const marginOfSafety =
-    (estimatedValuePerShare - price) / estimatedValuePerShare;
+  const marginOfSafety = estimatedValuePerShare?.type
+    ? undefined
+    : (estimatedValuePerShare - price) / estimatedValuePerShare;
   const formattedDateOfValuation = dayjs(dateOfValuation).format(
     "Do MMM. YYYY",
   );
@@ -358,21 +359,27 @@ const Valuation = ({ data }) => {
         </Section>
       )}
       <Section>
+        <IndustryAveragesResults />
+      </Section>
+      <Section>
+        <CostOfCapitalResults />
+      </Section>
+      <Section>
         <Typography variant="h5" gutterBottom>
           The input values I chose for the DCF
         </Typography>
-        {/* <Typography variant="h6" gutterBottom>
-          {cagrInYearsOneToFiveLabel}
-        </Typography> */}
+        <Typography variant="h6" gutterBottom>
+          {labels.cagrInYears_1_5}
+        </Typography>
         <Container>
           <NumberSpan>
             <FormatRawNumberToPercent value={cagrInYears_1_5} />
           </NumberSpan>
           {renderHtml(cagrInYears_1_5Description.childMarkdownRemark.html)}
         </Container>
-        {/* <Typography variant="h6" gutterBottom>
-          {ebitTargetMarginInYear_10Label}
-        </Typography> */}
+        <Typography variant="h6" gutterBottom>
+          {labels.ebitTargetMarginInYear_10}
+        </Typography>
         <Container>
           <NumberSpan>
             <FormatRawNumberToPercent value={ebitTargetMarginInYear_10} />
@@ -381,29 +388,29 @@ const Valuation = ({ data }) => {
             ebitTargetMarginInYear_10Description.childMarkdownRemark.html,
           )}
         </Container>
-        {/* <Typography variant="h6" gutterBottom>
-          {yearOfConvergenceLabel}
-        </Typography> */}
+        <Typography variant="h6" gutterBottom>
+          {labels.yearOfConvergence}
+        </Typography>
         <Container>
           <NumberSpan>
             <FormatRawNumberToYear value={yearOfConvergence} />
           </NumberSpan>
           {renderHtml(yearOfConvergenceDescription.childMarkdownRemark.html)}
         </Container>
-        {/* <Typography variant="h6" gutterBottom>
-          {salesToCapitalRatioLabel}
-        </Typography> */}
+        <Typography variant="h6" gutterBottom>
+          {labels.salesToCapitalRatio}
+        </Typography>
         <Container>
           <NumberSpan>
             <FormatRawNumber decimalScale={2} value={salesToCapitalRatio} />
           </NumberSpan>
           {renderHtml(salesToCapitalRatioDescription.childMarkdownRemark.html)}
         </Container>
-        {/* {probabilityOfFailureLabel && (
+        {probabilityOfFailure && (
           <Typography variant="h6" gutterBottom>
-            {probabilityOfFailureLabel}
+            {labels.probabilityOfFailure}
           </Typography>
-        )} */}
+        )}
         {probabilityOfFailure && probabilityOfFailureDescription && (
           <Container>
             <NumberSpan>
@@ -414,11 +421,11 @@ const Valuation = ({ data }) => {
             )}
           </Container>
         )}
-        {/* {proceedsAsPercentageOfBookValueLabel && (
+        {proceedsAsAPercentageOfBookValue && (
           <Typography variant="h6" gutterBottom>
-            {proceedsAsPercentageOfBookValueLabel}
+            {labels.probabilityOfFailure}
           </Typography>
-        )} */}
+        )}
         {proceedsAsAPercentageOfBookValue && percentageOfBookValueDescription && (
           <Container>
             <NumberSpan>
@@ -431,12 +438,6 @@ const Valuation = ({ data }) => {
             )}
           </Container>
         )}
-      </Section>
-      <Section>
-        <IndustryAveragesResults />
-      </Section>
-      <Section>
-        <CostOfCapitalResults />
       </Section>
       <Section>
         <Typography paragraph>
@@ -458,7 +459,9 @@ const Valuation = ({ data }) => {
           I have estimated the shares to have a share price of
           <b>
             &nbsp;
-            <FormatRawNumberToCurrency value={estimatedValuePerShare} />
+            <FormatRawNumberToCurrency
+              value={estimatedValuePerShare?.type ? 0 : estimatedValuePerShare}
+            />
           </b>
           &nbsp;per share.
         </Typography>

@@ -27,6 +27,7 @@ import {
   getSixToTenYrTaxCalculation,
 } from "./templates/freeCashFlowFirmSimple/expressionCalculations";
 import { requiredInputsSheetName } from "./templates/freeCashFlowFirmSimple/getRequiredInputs";
+import { optionalInputsSheetName } from "./templates/freeCashFlowFirmSimple/getOptionalInputs";
 
 const getExpressionProperties = (expr) => {
   return { className: "equation", expr };
@@ -79,7 +80,7 @@ const cells = {
   B4: getExpressionProperties("=operatingIncome"),
   B5: getExpressionProperties("=pastThreeYearsAverageEffectiveTaxRate"),
   B6: getExpressionProperties("=IF(B4 > 0, B4 * (1-B5), B4)"),
-  B9: getExpressionProperties("=netOperatingLoss"),
+  B9: getExpressionProperties(`='${optionalInputsSheetName}'!J2`),
   B16: getExpressionProperties("=investedCapital"),
   B19: getExpressionProperties("=M8"),
   B20: getExpressionProperties("=M11"),
@@ -89,15 +90,15 @@ const cells = {
     "=SUM(C13, D13, E13, F13, G13, H13, I13, J13, K13, L13)",
   ),
   B24: getExpressionProperties("=B22+B23"),
-  B25: getExpressionProperties("=probabilityOfFailure"),
+  B25: getExpressionProperties(`='${optionalInputsSheetName}'!J4`),
   B26: getExpressionProperties(
-    "=(bookValueOfEquity+bookValueOfDebt)*proceedsAsAPercentageOfBookValue",
+    `=(bookValueOfEquity+bookValueOfDebt)*'${optionalInputsSheetName}'!J5`,
   ),
   B27: getExpressionProperties("=B24*(1-B25)+B26*B25"),
   B28: getExpressionProperties("=bookValueOfDebt"),
   B29: getExpressionProperties("=minorityInterest"),
   B30: getExpressionProperties("=cashAndShortTermInvestments"),
-  B31: getExpressionProperties("=nonOperatingAssets"),
+  B31: getExpressionProperties(`='${optionalInputsSheetName}'!J3`),
   B32: getExpressionProperties("=B27-B28-B29+B30+B31"),
   B33: getExpressionProperties("=valueOfAllOptionsOutstanding"),
   B34: getExpressionProperties("=B32-B33"),
