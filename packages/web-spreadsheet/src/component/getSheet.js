@@ -274,8 +274,7 @@ export const getSheet = (
   const switchData = (newData) => {
     eventEmitter.emit(spreadsheetEvents.sheet.switchData, newData);
 
-    verticalScrollbarSet();
-    horizontalScrollbarSet();
+    sheetReset();
   };
 
   // freeze rows or cols
