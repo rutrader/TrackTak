@@ -11,7 +11,6 @@ import CheckboxSlider from "./CheckboxSlider";
 import { useTheme } from "@material-ui/core/styles";
 import { isNil } from "lodash-es";
 import { useSelector } from "react-redux";
-import selectCells from "../selectors/dcfSelectors/selectCells";
 import selectScope from "../selectors/dcfSelectors/selectScope";
 import FormatRawNumberToCurrency from "./FormatRawNumberToCurrency";
 import useSensitivityAnalysisDataTable, {
@@ -24,6 +23,7 @@ import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFil
 import { computeSensitivityAnalysis } from "../api/api";
 import { allInputNameTypeMappings } from "../discountedCashFlow/scopeNameTypeMapping";
 import { queryNames } from "../discountedCashFlow/templates/freeCashFlowFirmSimple/inputQueryNames";
+import selectSheetsSerializedValues from "../selectors/dcfSelectors/selectSheetsSerializedValues";
 
 const getModelScopes = (scope, xElement, yElement) => {
   const doesScopeExist =
@@ -60,7 +60,7 @@ const getColumns = (yElement) => {
   });
 };
 
-const getRowData = (estimatedValues, xElement, cells, theme) => {
+const getRowData = (estimatedValues, xElement) => {
   if (!xElement) return [];
 
   const chunkedData = getChunksOfArray(estimatedValues, xElement.data.length);
@@ -76,19 +76,16 @@ const getRowData = (estimatedValues, xElement, cells, theme) => {
     };
 
     chunk.forEach((estimatedValue, z) => {
-      let sx;
+      // If not an error
+      if (!estimatedValue.type) {
+        let sx;
 
-      if (cells.B36.value === estimatedValue) {
-        sx = {
-          color: theme.palette.primary.main,
-        };
+        row[z.toString()] = (
+          <Box sx={sx}>
+            <FormatRawNumberToCurrency value={estimatedValue} />
+          </Box>
+        );
       }
-
-      row[z.toString()] = (
-        <Box sx={sx}>
-          <FormatRawNumberToCurrency value={estimatedValue} />
-        </Box>
-      );
     });
 
     return row;
@@ -99,7 +96,7 @@ const getRowData = (estimatedValues, xElement, cells, theme) => {
 
 const SensitivityAnalysis = () => {
   const theme = useTheme();
-  const cells = useSelector(selectCells);
+  const sheetsSerializedValues = useSelector(selectSheetsSerializedValues);
   const scope = useSelector(selectScope);
   const [estimatedValues, setEstimatedValues] = useState([]);
   const [data, setData] = useState([]);
@@ -177,28 +174,28 @@ const SensitivityAnalysis = () => {
 
   useEffect(() => {
     setIsLoading(false);
-    setData(getRowData(estimatedValues, xElement, cells, theme));
-  }, [cells, estimatedValues, theme, xElement]);
+    setData(getRowData(estimatedValues, xElement));
+  }, [estimatedValues, theme, xElement]);
 
   useEffect(() => {
     const fetchComputeSensitivityAnalysis = async () => {
       const currentScopes = getModelScopes(scope, xElement, yElement);
 
-      if (currentScopes) {
+      if (currentScopes && sheetsSerializedValues) {
         setIsLoading(true);
 
-        // const { data } = await computeSensitivityAnalysis(
-        //   cells,
-        //   scope,
-        //   currentScopes,
-        // );
+        const { data } = await computeSensitivityAnalysis(
+          sheetsSerializedValues,
+          scope,
+          currentScopes,
+        );
 
-        // setEstimatedValues(data);
+        setEstimatedValues(data);
       }
     };
 
     fetchComputeSensitivityAnalysis();
-  }, [cells, scope, xElement, yElement]);
+  }, [scope, sheetsSerializedValues, xElement, yElement]);
 
   return (
     <Fragment>

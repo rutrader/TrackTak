@@ -257,11 +257,15 @@ const api = {
     return data;
   },
 
-  computeSensitivityAnalysis: async (cells, existingScope, currentScopes) => {
+  computeSensitivityAnalysis: async (
+    sheetsSerializedValues,
+    existingScope,
+    currentScopes,
+  ) => {
     const data = await sendReqOrGetCachedData(
       async () => {
         const values = await sensitivityAnalysisApi.computeSensitivityAnalysis(
-          cells,
+          sheetsSerializedValues,
           existingScope,
           currentScopes,
         );
@@ -269,7 +273,7 @@ const api = {
         return values;
       },
       "computeSensitivityAnalysis",
-      { cells, existingScope, currentScopes },
+      { sheetsSerializedValues, existingScope, currentScopes },
     );
 
     return data;

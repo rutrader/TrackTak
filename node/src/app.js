@@ -19,9 +19,9 @@ app.options(publicRoutes[0], cors());
 
 // These routes are public so they have cors turned off
 app.post(publicRoutes[0], cors(), async (req, res) => {
-  const { cells, existingScope, currentScopes } = req.body;
+  const { sheetsSerializedValues, existingScope, currentScopes } = req.body;
   const values = await api.computeSensitivityAnalysis(
-    cells,
+    sheetsSerializedValues,
     existingScope,
     currentScopes,
   );

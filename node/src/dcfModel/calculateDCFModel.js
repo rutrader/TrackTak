@@ -1,27 +1,28 @@
 import { HyperFormula } from "hyperformula";
-import chunk from "lodash/chunk";
-import sortAlphaNumeric from "../../../packages/intrinsic-valuations/src/discountedCashFlow/sortAlphaNumeric";
-import { padCellKeys } from "../../../packages/intrinsic-valuations/src/discountedCashFlow/utils";
 
-// TODO: pass in the actual array of arrays instead of cells object
-// and converting it
-const calculateDCFModel = (cells, scope) => {
-  const cellKeysSorted = padCellKeys(Object.keys(cells).sort(sortAlphaNumeric));
-  const sheetData = chunk(
-    cellKeysSorted.map((key) => {
-      if (!cells[key]) return undefined;
-
-      return cells[key].expr || cells[key].value;
-    }),
-    13,
-  );
-
-  const hyperformula = HyperFormula.buildFromArray(sheetData, {
+const calculateDCFModel = (
+  sheetsSerializedValues,
+  existingScope,
+  currentScope,
+) => {
+  const hyperformula = HyperFormula.buildFromSheets(sheetsSerializedValues, {
     licenseKey: "05054-b528f-a10c4-53f2a-04b57",
   });
 
-  Object.keys(scope).forEach((key) => {
-    const value = scope[key] || 0;
+  // TODO: Make generic later on
+  const inputSheetId = hyperformula.getSheetId("Required Inputs");
+
+  hyperformula.setCellContents(
+    { sheet: inputSheetId, col: 1, row: 0 },
+    currentScope.cagrInYears_1_5,
+  );
+  hyperformula.setCellContents(
+    { sheet: inputSheetId, col: 1, row: 1 },
+    currentScope.ebitTargetMarginInYear_10,
+  );
+
+  Object.keys(existingScope).forEach((key) => {
+    const value = existingScope[key] || 0;
 
     if (hyperformula.isItPossibleToChangeNamedExpression(key, value)) {
       hyperformula.changeNamedExpression(key, value);
@@ -32,7 +33,10 @@ const calculateDCFModel = (cells, scope) => {
     }
   });
 
-  const dataSheetValues = hyperformula.getSheetValues(0);
+  // TODO: Make generic later on
+  const sheetId = hyperformula.getSheetId("DCF Valuation");
+
+  const dataSheetValues = hyperformula.getSheetValues(sheetId);
 
   return dataSheetValues;
 };

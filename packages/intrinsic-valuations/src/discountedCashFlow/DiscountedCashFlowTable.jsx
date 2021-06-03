@@ -23,7 +23,11 @@ import getChunksOfArray from "../shared/getChunksOfArray";
 import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
 import selectScope from "../selectors/dcfSelectors/selectScope";
 import cells from "./cells";
-import { setCells, setScope } from "../redux/actions/dcfActions";
+import {
+  setCells,
+  setScope,
+  setSheetsSerializedValues,
+} from "../redux/actions/dcfActions";
 import { isNil } from "lodash-es";
 import {
   convertFromCellIndexToLabel,
@@ -333,7 +337,7 @@ const DiscountedCashFlowTable = ({
   }, [scope, spreadsheet]);
 
   useEffect(() => {
-    if (spreadsheet && hasAllRequiredInputsFilledIn) {
+    if (spreadsheet && hasAllRequiredInputsFilledIn && scope) {
       const dataSheets = getDataSheets(isOnMobile);
 
       spreadsheet.setDatasheets(dataSheets);
@@ -358,8 +362,13 @@ const DiscountedCashFlowTable = ({
       });
 
       dispatch(setCells(cells));
+      dispatch(
+        setSheetsSerializedValues(
+          spreadsheet.hyperformula.getAllSheetsSerialized(),
+        ),
+      );
     }
-  }, [hasAllRequiredInputsFilledIn, isOnMobile, spreadsheet, dispatch]);
+  }, [hasAllRequiredInputsFilledIn, isOnMobile, spreadsheet, dispatch, scope]);
 
   useEffect(() => {
     if (spreadsheet) {

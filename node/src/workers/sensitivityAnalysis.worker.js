@@ -4,12 +4,17 @@ import { expose } from "comlink";
 import calculateDCFModel from "../dcfModel/calculateDCFModel";
 
 const sensitivityAnalysisWorker = {
-  computeSensitivityAnalysis: (cells, existingScope, currentScopes) => {
+  computeSensitivityAnalysis: (
+    sheetsSerializedValues,
+    existingScope,
+    currentScopes,
+  ) => {
     const values = currentScopes.map((currentScope) => {
-      const model = calculateDCFModel(cells, {
-        ...existingScope,
-        ...currentScope,
-      });
+      const model = calculateDCFModel(
+        sheetsSerializedValues,
+        existingScope,
+        currentScope,
+      );
       const estimatedPricePerShare = model[35][1];
 
       return estimatedPricePerShare;
