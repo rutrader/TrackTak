@@ -3,10 +3,64 @@ import { Box, Typography } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import selectRecentCashFlowStatement from "../selectors/fundamentalSelectors/selectRecentCashFlowStatement";
 import selectYearlyCashFlowStatements from "../selectors/fundamentalSelectors/selectYearlyCashFlowStatements";
-import useMapFinancialStatementRowData from "../hooks/useMapFinancialStatementRowData";
+import useGetFinancialStatementRowData from "../hooks/useGetFinancialStatementRowData";
 import useFinancialStatementColumns from "../hooks/useFinancialStatementColumns";
 import getSymbolFromCurrency from "currency-symbol-map";
 import FinancialsTable from "./FinancialsTable";
+
+const cashFlowParam = [
+  { valueKey: "netIncome" },
+  {
+    valueKey: "depreciation",
+    dataField: "Depreciation, depletion and amortization",
+  },
+  {
+    valueKey: "changeToAccountReceivables",
+    dataField: "Change in receivables",
+    className: "indented-cell",
+  },
+  {
+    valueKey: "changeReceivables",
+    dataField: "Change in receivables",
+    className: "indented-cell",
+  },
+  {
+    valueKey: "changeToInventory",
+    dataField: "Change in inventory",
+    className: "indented-cell",
+  },
+  {
+    valueKey: "changeToLiabilities",
+    dataField: "Change in liabilities",
+    className: "indented-cell",
+  },
+  {
+    valueKey: "totalCashFromOperatingActivities",
+    className: "bold-cell",
+  },
+  { valueKey: "investments" },
+  {
+    valueKey: "otherCashflowsFromInvestingActivities",
+  },
+  {
+    valueKey: "totalCashflowsFromInvestingActivities",
+    className: "bold-cell",
+  },
+  { valueKey: "salePurchaseOfStock", dataField: "Sale (purchase) of stock" },
+  { valueKey: "netBorrowings" },
+  { valueKey: "dividendsPaid" },
+  {
+    valueKey: "otherCashflowsFromFinancingActivities",
+  },
+  {
+    valueKey: "totalCashFromFinancingActivities",
+    className: "bold-cell",
+  },
+  { valueKey: "beginPeriodCashFlow", className: "indented-cell" },
+  { valueKey: "endPeriodCashFlow", className: "indented-cell" },
+  { valueKey: "changeInCash", className: "bold-cell" },
+  { valueKey: "capitalExpenditures", className: "bold-cell" },
+];
 
 const CashFlowStatement = () => {
   const currencyCode = useSelector(
@@ -15,66 +69,13 @@ const CashFlowStatement = () => {
   const currencySymbol = getSymbolFromCurrency(currencyCode);
   const yearlyCashFlowStatements = useSelector(selectYearlyCashFlowStatements);
   const cashFlowStatement = useSelector(selectRecentCashFlowStatement);
-  const mapCashFlowStatementRowData = useMapFinancialStatementRowData(
+  const data = useGetFinancialStatementRowData(
     cashFlowStatement,
     yearlyCashFlowStatements,
     true,
+    cashFlowParam,
   );
   const columns = useFinancialStatementColumns(yearlyCashFlowStatements, true);
-
-  const data = mapCashFlowStatementRowData([
-    { valueKey: "netIncome" },
-    {
-      valueKey: "depreciation",
-      dataField: "Depreciation, depletion and amortization",
-    },
-    {
-      valueKey: "changeToAccountReceivables",
-      dataField: "Change in receivables",
-      className: "indented-cell",
-    },
-    {
-      valueKey: "changeReceivables",
-      dataField: "Change in receivables",
-      className: "indented-cell",
-    },
-    {
-      valueKey: "changeToInventory",
-      dataField: "Change in inventory",
-      className: "indented-cell",
-    },
-    {
-      valueKey: "changeToLiabilities",
-      dataField: "Change in liabilities",
-      className: "indented-cell",
-    },
-    {
-      valueKey: "totalCashFromOperatingActivities",
-      className: "bold-cell",
-    },
-    { valueKey: "investments" },
-    {
-      valueKey: "otherCashflowsFromInvestingActivities",
-    },
-    {
-      valueKey: "totalCashflowsFromInvestingActivities",
-      className: "bold-cell",
-    },
-    { valueKey: "salePurchaseOfStock", dataField: "Sale (purchase) of stock" },
-    { valueKey: "netBorrowings" },
-    { valueKey: "dividendsPaid" },
-    {
-      valueKey: "otherCashflowsFromFinancingActivities",
-    },
-    {
-      valueKey: "totalCashFromFinancingActivities",
-      className: "bold-cell",
-    },
-    { valueKey: "beginPeriodCashFlow", className: "indented-cell" },
-    { valueKey: "endPeriodCashFlow", className: "indented-cell" },
-    { valueKey: "changeInCash", className: "bold-cell" },
-    { valueKey: "capitalExpenditures", className: "bold-cell" },
-  ]);
 
   return (
     <React.Fragment>

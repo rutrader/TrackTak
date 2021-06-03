@@ -241,6 +241,7 @@ export const getSheet = (
     if (!dataSheets.length) {
       // Add dummy data for now until dataProxy is refactored
       addData(getDataProxy);
+      switchData(datas[0]);
     }
 
     sheetReset();
