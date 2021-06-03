@@ -212,14 +212,22 @@ const DiscountedCashFlowTable = ({
         type: "number",
         format: "currency",
         label: `${currencySymbol}10.00`,
-        render: (v) => currencySymbol + formatNumberRender(v),
+        render: (v) => {
+          if (isNil(v)) return "";
+
+          return currencySymbol + formatNumberRender(v);
+        },
       },
       million: {
         title: () => "Million",
         format: "million",
         type: "number",
         label: "(000)",
-        render: (v) => formatNumberRender(v) / 1000000,
+        render: (v) => {
+          if (isNil(v)) return "";
+
+          return formatNumberRender(v) / 1000000;
+        },
       },
       "million-currency": {
         title: () => "Million Currency",
@@ -227,6 +235,8 @@ const DiscountedCashFlowTable = ({
         type: "number",
         label: `${currencySymbol}(000)`,
         render: (v) => {
+          if (isNil(v)) return "";
+
           const value = v / 1000000;
 
           return formats.currency.render(value);

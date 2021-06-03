@@ -1,5 +1,9 @@
 import { tf } from "../locale/locale";
-import { formatNumberRender, formatStringRender } from "./helper";
+import {
+  formatNumberRender,
+  formatStringRender,
+  formatPercentRender,
+} from "./helper";
 import { merge } from "lodash-es";
 
 const sharedOptions = {
@@ -46,7 +50,7 @@ const sharedOptions = {
       title: tf("format.percent"),
       type: "number",
       label: "10.12%",
-      render: (v) => `${formatNumberRender(v * 100)}%`,
+      render: formatPercentRender,
     },
     date: {
       title: tf("format.date"),
