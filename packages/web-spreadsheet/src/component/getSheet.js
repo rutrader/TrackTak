@@ -48,6 +48,8 @@ export const getSheet = (
   } = builder();
   let datas = [];
 
+  const getDatas = () => datas;
+
   eventEmitter.on(spreadsheetEvents.bottombar.selectSheet, (index) => {
     const d = datas[index];
 
@@ -554,7 +556,7 @@ export const getSheet = (
     selector.resetAreaOffset();
   }
 
-  function sheetReset() {
+  const render = () => {
     const tOffset = table.getOffset();
     const vRect = getViewWidthHeight();
     table.el.attr(vRect);
@@ -565,6 +567,10 @@ export const getSheet = (
     horizontalScrollbarSet();
     sheetFreeze();
     table.render();
+  };
+
+  function sheetReset() {
+    render();
     eventEmitter.emit(spreadsheetEvents.sheet.sheetReset);
     selector.reset();
   }
@@ -1021,6 +1027,7 @@ export const getSheet = (
     el,
     makeSetDatasheets,
     addData,
+    getDatas,
     switchData,
     freeze,
     undo,
@@ -1033,12 +1040,12 @@ export const getSheet = (
     editorSet,
     sheetReset,
     table,
-    datas,
     getOptions,
     getData,
     rootEl,
     hyperformula,
     eventEmitter,
+    render,
     deleteCellFormat,
   };
 

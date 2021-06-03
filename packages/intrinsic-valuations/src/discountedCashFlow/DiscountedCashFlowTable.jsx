@@ -326,9 +326,7 @@ const DiscountedCashFlowTable = ({
     if (spreadsheet && hasAllRequiredInputsFilledIn) {
       const dataSheets = getDataSheets(isOnMobile);
 
-      if (!spreadsheet.sheet.datas.length) {
-        spreadsheet.setDatasheets(dataSheets);
-      }
+      spreadsheet.setDatasheets(dataSheets);
 
       const sheetName = "DCF Valuation";
       const dataSheetFormulas = spreadsheet.hyperformula.getAllSheetsFormulas();
@@ -379,6 +377,8 @@ const DiscountedCashFlowTable = ({
         });
         spreadsheet.setDatasheets(getDataSheets(isOnMobile));
       }
+      // TODO: refactor this cause it's terrible
+      spreadsheet.sheet.switchData(spreadsheet.sheet.getDatas()[0]);
     }
   }, [
     showYOYGrowth,

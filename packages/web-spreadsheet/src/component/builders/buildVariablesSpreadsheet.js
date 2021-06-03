@@ -55,13 +55,7 @@ export const buildVariablesSpreadsheet = (
     newData = data;
   });
 
-  const table = getTable(
-    getOptions,
-    getData,
-    hyperformula,
-    eventEmitter,
-    getViewWidthHeight,
-  );
+  const table = getTable(getOptions, getData, hyperformula, getViewWidthHeight);
 
   const draw = getDraw(
     table.el.el,

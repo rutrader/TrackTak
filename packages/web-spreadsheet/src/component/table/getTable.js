@@ -1,7 +1,6 @@
 import { stringAt } from "../../core/alphabet";
 
 import { thinLineWidth, npx, getDrawBox } from "../../canvas/draw";
-import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { cssPrefix } from "../../config";
 import { h } from "../element";
 import { getFontSizePxByPt } from "../../core/font";
@@ -34,7 +33,6 @@ export const getTable = (
   getOptions,
   getData,
   hyperformula,
-  eventEmitter,
   getViewWidthHeight,
 ) => {
   let draw;
@@ -420,10 +418,6 @@ export const getTable = (
       top: getOptions().row.indexHeight,
     };
   };
-
-  const switchData = () => render();
-
-  eventEmitter.on(spreadsheetEvents.sheet.switchData, switchData);
 
   return {
     el,

@@ -55,13 +55,7 @@ export const buildSpreadsheet = (
     return variablesSpreadsheet.getOptions();
   });
 
-  const table = getTable(
-    getOptions,
-    getData,
-    hyperformula,
-    eventEmitter,
-    getViewWidthHeight,
-  );
+  const table = getTable(getOptions, getData, hyperformula, getViewWidthHeight);
 
   const sheetBuilder = buildSheet(
     getOptions,
