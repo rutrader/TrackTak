@@ -46,6 +46,7 @@ import useSetURLInput from "../hooks/useSetURLInput";
 import { camelCase } from "change-case";
 import { allInputNameTypeMappings } from "./scopeNameTypeMapping";
 import { queryNames } from "./templates/freeCashFlowFirmSimple/inputQueryNames";
+import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 
 const defaultColWidth = 110;
 const columnAWidth = 170;
@@ -175,7 +176,6 @@ const DiscountedCashFlowTable = ({
   showFormulas,
   showYOYGrowth,
   SubscribeCover,
-  loadingCells,
 }) => {
   const containerRef = useRef();
   const [spreadsheet, setSpreadsheet] = useState();
@@ -204,6 +204,17 @@ const DiscountedCashFlowTable = ({
   const isFocusedOnValueDrivingInputs = location.hash?.includes(
     requiredInputsId,
   );
+  const currentIndustry = useSelector(selectCurrentIndustry);
+
+  useEffect(() => {
+    if (isNil(inputQueryParams[queryNames.salesToCapitalRatio])) {
+      setURLInput(
+        queryNames.salesToCapitalRatio,
+        currentIndustry["sales/Capital"],
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     let spreadsheet;
@@ -212,6 +223,7 @@ const DiscountedCashFlowTable = ({
 
     const formats = {
       currency: {
+        key: "currency",
         title: () => "Currency",
         type: "number",
         format: "currency",
@@ -223,6 +235,7 @@ const DiscountedCashFlowTable = ({
         },
       },
       million: {
+        key: "million",
         title: () => "Million",
         format: "million",
         type: "number",
@@ -234,6 +247,7 @@ const DiscountedCashFlowTable = ({
         },
       },
       "million-currency": {
+        key: "million-currency",
         title: () => "Million Currency",
         format: "million-currency",
         type: "number",
@@ -466,6 +480,7 @@ const DiscountedCashFlowTable = ({
   ]);
 
   const to = `${location.pathname}#${requiredInputsId}`;
+  const zIndex = 100;
 
   return (
     <Box
@@ -487,7 +502,7 @@ const DiscountedCashFlowTable = ({
       {SubscribeCover ? (
         <SubscribeCover
           sx={{
-            zIndex: 100,
+            zIndex,
           }}
         />
       ) : null}
@@ -498,7 +513,7 @@ const DiscountedCashFlowTable = ({
             position: "absolute",
             left: "50%",
             top: "50%",
-            zIndex: 100,
+            zIndex,
             transform: "translate(-50%, -50%)",
             "& .MuiAlert-icon": {
               alignItems: "center",

@@ -29,7 +29,11 @@ export const getToolbar = (getOptions, getData, eventEmitter) => {
   const getToggleItem = makeToggleItem(eventEmitter);
   const undoEl = buildUndo(eventEmitter);
   const redoEl = buildRedo(eventEmitter);
-  const formatEl = buildFormat(() => getOptions().formats, eventEmitter);
+  const formatEl = buildFormat(
+    () => getOptions().formats,
+    () => getData().getData().styles,
+    eventEmitter,
+  );
   const printEl = getIconItem("print", "Ctrl+P");
   const paintformatEl = getToggleItem("paintformat");
   const clearformatEl = getIconItem("clearformat");
@@ -81,8 +85,8 @@ export const getToolbar = (getOptions, getData, eventEmitter) => {
   );
   const moreEl = getMore();
   const items = [
-    //  [formatEl],
-    // buildDivider(),
+    [formatEl],
+    buildDivider(),
     [undoEl, redoEl],
     // [undoEl, redoEl, printEl, paintformatEl, clearformatEl],
     // buildDivider(),

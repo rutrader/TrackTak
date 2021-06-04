@@ -446,10 +446,7 @@ const Valuation = ({ data }) => {
         </Typography>
       </Section>
       <Section>
-        <DiscountedCashFlowSheet
-          SubscribeCover={SubscribeCover}
-          loadingCells={!subscribePopupShown}
-        />
+        <DiscountedCashFlowSheet SubscribeCover={SubscribeCover} />
       </Section>
       <Section>
         <Typography variant="h5" gutterBottom>

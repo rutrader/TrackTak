@@ -24,10 +24,8 @@ import { setMessage } from "../redux/actions/snackbarActions";
 import { useLocation } from "@reach/router";
 import SubscribeCover from "./SubscribeCover";
 import useLocalStorageState from "use-local-storage-state";
-import subscribePopupShownHook from "../hooks/subscribePopupShownHook";
 
 const DiscountedCashFlow = () => {
-  const [subscribePopupShown] = subscribePopupShownHook();
   const [rotateSnackbarShown, setRotateSnackbarShown] = useLocalStorageState(
     "rotateSnackbarShown",
   );
@@ -79,10 +77,7 @@ const DiscountedCashFlow = () => {
         </SubSection>
       </Section>
       <Section>
-        <DiscountedCashFlowSheet
-          SubscribeCover={SubscribeCover}
-          loadingCells={!subscribePopupShown}
-        />
+        <DiscountedCashFlowSheet SubscribeCover={SubscribeCover} />
       </Section>
     </React.Fragment>
   );
