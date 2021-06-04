@@ -26,13 +26,16 @@ export const getEditor = (getData, formulas, eventEmitter) => {
     el.hide();
   });
 
-  eventEmitter.on(spreadsheetEvents.editor.setText, (text) => {
+  eventEmitter.on(spreadsheetEvents.editor.setText, (text, format) => {
     el.show();
     // firefox bug
     editableInput.textEl.el.blur();
 
     setTimeout(() => {
-      setCaretPosition(editableInput.textEl.el, text.length);
+      setCaretPosition(
+        editableInput.textEl.el,
+        format === "percent" ? text.length - 1 : text.length,
+      );
     });
   });
 

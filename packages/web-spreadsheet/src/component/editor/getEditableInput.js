@@ -235,12 +235,6 @@ export const getEditableInput = (
 
     let text = (_cell && _cell.text) || "";
 
-    text = setTextFormat(
-      text,
-      getFormatFromCell(_cell, getData().getData),
-      true,
-    );
-
     setText(text);
 
     _validator = validator;
@@ -260,11 +254,15 @@ export const getEditableInput = (
   };
 
   const setText = (text) => {
+    const format = getFormatFromCell(_cell, getData().getData);
+
+    text = setTextFormat(text, format, true);
+
     inputText = text;
     formula.setInputText(inputText);
     // console.log('text>>:', text);
 
-    eventEmitter.emit(spreadsheetEvents[eventType].setText, text);
+    eventEmitter.emit(spreadsheetEvents[eventType].setText, text, format);
     render();
   };
 
