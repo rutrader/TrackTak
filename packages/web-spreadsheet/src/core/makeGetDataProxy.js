@@ -241,6 +241,7 @@ export const makeGetDataProxy = (
     }
     const oldCell = rows.getCell(nri, ci);
     const oldText = oldCell ? oldCell.text : "";
+
     setCellText(nri, ci, text, state);
     // replace filter.value
     if (autoFilter.active()) {

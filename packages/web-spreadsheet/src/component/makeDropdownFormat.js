@@ -2,10 +2,12 @@ import { getDropdown } from "./getDropdown";
 import { h } from "./element";
 import { cssPrefix } from "../config";
 import spreadsheetEvents from "../core/spreadsheetEvents";
+import getFormatFromCell from "../shared/getFormatFromCell";
 
-export const makeDropdownFormat = (getFormats, getStyles, eventEmitter) => (
+export const makeDropdownFormat = (getOptions, getData, eventEmitter) => (
   tag,
 ) => {
+  const getFormats = () => getOptions().formats;
   let nformats = Object.values(getFormats()).slice(0);
 
   nformats.splice(2, 0, { key: "divider" });
@@ -22,12 +24,10 @@ export const makeDropdownFormat = (getFormats, getStyles, eventEmitter) => (
   };
 
   eventEmitter.on(spreadsheetEvents.sheet.cellSelected, (cell) => {
-    const styleKey = cell?.style;
+    const format = getFormatFromCell(cell, getData().getData);
 
-    if (styleKey) {
-      const formatKey = getStyles()[styleKey].format;
-
-      setTitle(formatKey);
+    if (format) {
+      setTitle(format);
     }
   });
 

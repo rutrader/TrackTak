@@ -13,11 +13,7 @@ export const getVariablesToolbar = (getOptions, getData, eventEmitter) => {
 
   const undoEl = buildUndo(eventEmitter);
   const redoEl = buildRedo(eventEmitter);
-  const formatEl = buildFormat(
-    () => getOptions().formats,
-    () => getData().getData().styles,
-    eventEmitter,
-  );
+  const formatEl = buildFormat(getOptions, getData, eventEmitter);
   const moreEl = getMore();
 
   const items = [

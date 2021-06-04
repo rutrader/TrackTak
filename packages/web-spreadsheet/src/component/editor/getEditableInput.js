@@ -6,6 +6,7 @@ import Formula from "../formula";
 import { setCaretPosition, saveCaretPosition } from "../../core/caret";
 import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { dateFormat } from "../../shared/dateFormat";
+import getFormatFromCell from "../../shared/getFormatFromCell";
 
 export const getEditableInput = (
   getData,
@@ -170,6 +171,12 @@ export const getEditableInput = (
 
   const clear = () => {
     if (inputText !== "") {
+      const format = getFormatFromCell(_cell, getData().getData);
+
+      if (format === "percent") {
+        inputText = (parseFloat(inputText, 10) / 100).toString();
+      }
+
       eventEmitter.emit(
         spreadsheetEvents[eventType].change,
         "finished",
@@ -224,7 +231,8 @@ export const getEditableInput = (
 
     _cell = cell;
 
-    const text = (_cell && _cell.text) || "";
+    let text = (_cell && _cell.text) || "";
+
     setText(text);
 
     _validator = validator;

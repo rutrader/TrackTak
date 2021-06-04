@@ -1,8 +1,8 @@
 import { makeDropdownFormat } from "../makeDropdownFormat";
 import { getDropdownItem } from "./getDropdownItem";
 
-export const buildFormat = (getFormats, getStyles, eventEmitter) =>
+export const buildFormat = (getOptions, getData, eventEmitter) =>
   getDropdownItem(
     "format",
-    makeDropdownFormat(getFormats, getStyles, eventEmitter),
+    makeDropdownFormat(getOptions, getData, eventEmitter),
   );
