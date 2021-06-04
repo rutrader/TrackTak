@@ -66,6 +66,7 @@ export const buildSpreadsheet = (
 
   const formulaBar = getFormulaBar(
     getData,
+    getOptions,
     getFormulaSuggestions(),
     eventEmitter,
   );

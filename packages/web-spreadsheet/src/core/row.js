@@ -1,7 +1,5 @@
 import helper from "./helper";
 import { expr2expr, REGEX_EXPR_GLOBAL } from "./alphabet";
-import setTextFormat from "../shared/setTextFormat";
-import getFormatFromCell from "../shared/getFormatFromCell";
 
 class Rows {
   constructor(getRow, getDataProxy, hyperformula) {
@@ -117,16 +115,11 @@ class Rows {
   _setCellText = (ri, ci, text) => {
     const cell = this.getCellOrNew(ri, ci);
 
-    const newText = setTextFormat(
-      text,
-      getFormatFromCell(cell, this.getDataProxy().getData),
-    );
-
-    cell.text = newText;
+    cell.text = text;
 
     this.hyperformula.setCellContents(
       { col: ci, row: ri, sheet: this.getDataProxy().getSheetId() },
-      [[newText]],
+      [[text]],
     );
   };
 

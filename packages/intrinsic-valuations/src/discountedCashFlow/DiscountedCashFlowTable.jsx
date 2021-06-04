@@ -32,6 +32,7 @@ import { isNil } from "lodash-es";
 import {
   convertFromCellIndexToLabel,
   formatNumberRender,
+  numberRegex,
 } from "../../../web-spreadsheet/src/core/helper";
 import getSpreadsheet, {
   spreadsheetEvents,
@@ -47,6 +48,7 @@ import { camelCase } from "change-case";
 import { allInputNameTypeMappings } from "./scopeNameTypeMapping";
 import { queryNames } from "./templates/freeCashFlowFirmSimple/inputQueryNames";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
+import replaceAll from "../shared/replaceAll";
 
 const defaultColWidth = 110;
 const columnAWidth = 170;
@@ -220,6 +222,7 @@ const DiscountedCashFlowTable = ({
     let spreadsheet;
 
     const dcfValuationElement = document.getElementById(`${dcfValuationId}`);
+    const million = 1000000;
 
     const formats = {
       currency: {
@@ -228,6 +231,15 @@ const DiscountedCashFlowTable = ({
         type: "number",
         format: "currency",
         label: `${currencySymbol}10.00`,
+        editRender: (v) => {
+          let text = v.toString();
+
+          if (!text.includes(currencySymbol) && !isNaN(parseFloat(text))) {
+            text = currencySymbol + text;
+          }
+
+          return text;
+        },
         render: (v) => {
           if (isNil(v) || v === "") return "";
 
@@ -240,10 +252,18 @@ const DiscountedCashFlowTable = ({
         format: "million",
         type: "number",
         label: "(000)",
+        editRender: (v, finishedEditing) => {
+          let text = v;
+
+          if (finishedEditing && typeof text === "number") {
+            text = text * million;
+          }
+          return text;
+        },
         render: (v) => {
           if (isNil(v) || v === "") return "";
 
-          return formatNumberRender(v) / 1000000;
+          return formatNumberRender(v / million);
         },
       },
       "million-currency": {
@@ -252,10 +272,19 @@ const DiscountedCashFlowTable = ({
         format: "million-currency",
         type: "number",
         label: `${currencySymbol}(000)`,
+        editRender: (v, finishedEditing) => {
+          let text = v;
+
+          if (finishedEditing && typeof text === "number") {
+            text = text * million;
+          }
+
+          return formats.currency.editRender(text, finishedEditing);
+        },
         render: (v) => {
           if (isNil(v) || v === "") return "";
 
-          const value = v / 1000000;
+          const value = v / million;
 
           return formats.currency.render(value);
         },

@@ -258,6 +258,7 @@ export const getSheet = (
           let text = setTextFormat(
             cell.text,
             getFormatFromCell(cell, getData().getData),
+            getOptions().formats,
             true,
           );
 

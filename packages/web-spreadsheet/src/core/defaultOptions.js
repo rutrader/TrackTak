@@ -54,6 +54,21 @@ const sharedOptions = {
       title: tf("format.percent"),
       type: "number",
       label: "10.12%",
+      editRender: (v, finishedEditing) => {
+        let text = v;
+
+        if (finishedEditing && typeof text === "number") {
+          text = text * 100;
+        }
+
+        text = text.toString();
+
+        if (!text.includes("%") && !isNaN(parseFloat(text))) {
+          text += "%";
+        }
+
+        return text;
+      },
       render: formatPercentRender,
     },
     date: {

@@ -11,6 +11,7 @@ import setTextFormat from "../../shared/setTextFormat";
 
 export const getEditableInput = (
   getData,
+  getOptions,
   formulas,
   eventEmitter,
   el,
@@ -70,6 +71,7 @@ export const getEditableInput = (
     let text = setTextFormat(
       textEl.el.textContent,
       getFormatFromCell(_cell, getData().getData),
+      getOptions().formats,
     );
 
     // save caret position
@@ -256,7 +258,7 @@ export const getEditableInput = (
   const setText = (text) => {
     const format = getFormatFromCell(_cell, getData().getData);
 
-    text = setTextFormat(text, format, true);
+    text = setTextFormat(text, format, getOptions().formats, true);
 
     inputText = text;
     formula.setInputText(inputText);

@@ -4,11 +4,12 @@ import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { h } from "../element";
 import { getEditableInput } from "./getEditableInput";
 
-export const getEditor = (getData, formulas, eventEmitter) => {
+export const getEditor = (getData, getOptions, formulas, eventEmitter) => {
   const el = h("div", `${cssPrefix}-editor`).hide();
 
   const editableInput = getEditableInput(
     getData,
+    getOptions,
     formulas,
     eventEmitter,
     el,

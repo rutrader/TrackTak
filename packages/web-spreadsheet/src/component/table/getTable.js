@@ -161,7 +161,6 @@ export const getTable = (
       let format = style.format;
 
       if (showAllFormulas) {
-        debugger;
         cellText = cell.text;
         if (hyperformula.doesCellHaveFormula(cellAddress)) {
           format = "text";
@@ -169,7 +168,6 @@ export const getTable = (
       } else {
         cellText = hyperformula.getCellValue(cellAddress);
       }
-
       cellText = formats[format].render(cellText);
 
       const font = Object.assign({}, style.font);

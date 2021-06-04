@@ -1,17 +1,11 @@
 import { isNil } from "lodash";
 
-const setTextFormat = (text, format, isDecimal) => {
+const setTextFormat = (text, format, formats, finishedEditing) => {
   let newText = text;
+  const editRender = format ? formats[format]?.editRender : null;
 
-  if (format === "percent" && !isNil(newText)) {
-    if (isDecimal && typeof newText === "number") {
-      newText = newText * 100;
-    }
-    newText = newText.toString();
-
-    if (!newText.includes("%") && !isNaN(parseFloat(newText))) {
-      newText += "%";
-    }
+  if (!isNil(newText) && editRender) {
+    newText = editRender(newText, finishedEditing);
   }
 
   return newText;
