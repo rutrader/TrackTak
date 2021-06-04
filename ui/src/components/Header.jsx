@@ -37,7 +37,6 @@ const getRightLinks = (isAuthenticated) => {
   return links;
 };
 
-const allLinks = (isAuthenticated) => getRightLinks(isAuthenticated);
 
 const buttonStyle = {
   textTransform: "none",
@@ -82,7 +81,15 @@ const Header = ({ hideSearch }) => {
   const extraPadding = 20;
   const paddingBottom = `${theme.mixins.toolbar.minHeight + extraPadding}px`;
   const [anchorEl, setAnchorEl] = useState(null);
-  const { isAuthenticated } = useAuth();
+  const [userMenuAnchorEl, setUserMenuAnchorEl] = useState(null);
+  const { isAuthenticated, session, signOut } = useAuth();
+
+  const handleOnSignOut = () => {
+    if (session) {
+      signOut();
+      navigate("/");
+    }
+  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -90,6 +97,62 @@ const Header = ({ hideSearch }) => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleAccountMenuClick = (event) => {
+    setUserMenuAnchorEl(event.currentTarget);
+  };
+
+  const handleAccountMenuClose = () => {
+    setUserMenuAnchorEl(null);
+    handleClose();
+  };
+
+  const getUserAccountMenuItems = () => (
+    <>
+      <MenuItem
+        key="account-settings"
+        to="/account-settings"
+        component={Link}
+        onClick={handleAccountMenuClose}
+        sx={buttonStyle}
+      >
+        My Account
+      </MenuItem>
+      <MenuItem
+        key="sign-out"
+        to="/"
+        component={Link}
+        onClick={handleOnSignOut}
+        sx={buttonStyle}
+      >
+        Sign Out
+      </MenuItem>
+    </>
+  );
+
+  const renderUserMenu = () => {
+    return (
+      <>
+        <Button
+          sx={buttonStyle}
+          onClick={handleAccountMenuClick}
+          aria-controls="account-menu-button"
+          aria-haspopup="true"
+        >
+          Account
+        </Button>
+        <Menu
+          id="account-menu"
+          anchorEl={userMenuAnchorEl}
+          keepMounted
+          open={Boolean(userMenuAnchorEl)}
+          onClose={handleAccountMenuClose}
+        >
+          {getUserAccountMenuItems()}
+        </Menu>
+      </>
+    );
   };
 
   return (
@@ -133,11 +196,9 @@ const Header = ({ hideSearch }) => {
                     {...link}
                   />
                 ))}
-                {featureToggle.AUTHENTICATION && isAuthenticated && (
-                  <HeaderLink sx={{ ml: 0 }} isSignOut>
-                    Sign Out
-                  </HeaderLink>
-                )}
+                {featureToggle.AUTHENTICATION &&
+                  isAuthenticated &&
+                  renderUserMenu()}
               </Box>
             </Hidden>
             <Hidden mdUp implementation="css">
@@ -166,7 +227,7 @@ const Header = ({ hideSearch }) => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  {allLinks(isAuthenticated).map((link) => (
+                  {getRightLinks(isAuthenticated).map((link) => (
                     <MenuItem
                       key={link.to}
                       to={link.to}
@@ -176,6 +237,9 @@ const Header = ({ hideSearch }) => {
                       {link.text}
                     </MenuItem>
                   ))}
+                  {featureToggle.AUTHENTICATION &&
+                    isAuthenticated &&
+                    getUserAccountMenuItems()}
                 </Menu>
               </Box>
             </Hidden>

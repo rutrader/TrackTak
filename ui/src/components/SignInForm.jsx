@@ -18,6 +18,7 @@ const SignInForm = ({
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
+    e.preventDefault();
     onSubmit(e, {
       email,
       password,
@@ -46,22 +47,23 @@ const SignInForm = ({
       </Typography>
       <Box
         sx={{
-          width: "100%",
           marginTop: theme.spacing(3),
         }}
       >
         <form onSubmit={handleSubmit}>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} justifyContent="center">
             <Grid item xs={12}>
               <TextField
                 onChange={(e) => setEmail(e.target.value)}
                 variant="outlined"
                 required
-                fullWidth
                 id="email"
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                sx={{
+                  display: 'flex',
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -69,17 +71,19 @@ const SignInForm = ({
                 onChange={(e) => setPassword(e.target.value)}
                 variant="outlined"
                 required
-                fullWidth
                 name="password"
                 label="Password"
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                sx={{
+                  display: 'flex',
+                }}
               />
             </Grid>
           </Grid>
           <RoundButton
-            type="submit"
+            type="button"
             fullWidth
             variant="contained"
             color="primary"
@@ -87,6 +91,7 @@ const SignInForm = ({
               margin: theme.spacing(3, 0, 2),
               textTransform: "none",
             }}
+            onClick={handleSubmit}
           >
             Sign In
           </RoundButton>

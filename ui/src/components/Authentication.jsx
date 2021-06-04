@@ -103,11 +103,7 @@ const Authentication = ({
   };
 
   return (
-    <Box
-      sx={{
-        width: "500px",
-      }}
-    >
+    <Box>
       {formState === AUTHENTICATION_FORM_STATE.SIGN_UP && (
         <SignUpForm
           onSubmit={handleSignUpSubmit}
