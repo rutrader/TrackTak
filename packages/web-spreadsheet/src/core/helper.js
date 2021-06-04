@@ -153,7 +153,7 @@ export function numberCalc(type, a1, a2) {
 }
 
 export const formatPercentRender = (v) => {
-  if (isNil(v)) return "";
+  if (isNil(v) || v === "") return "";
 
   return `${formatNumberRender(v * 100)}%`;
 };
@@ -165,7 +165,7 @@ export const formatStringRender = (v) => {
 };
 
 export const formatNumberRender = (v) => {
-  if (isNil(v)) return "";
+  if (isNil(v) || v === "") return "";
 
   // match "-12.1" or "12" or "12.1"
   if (/^(-?\d*.?\d*)$/.test(v)) {

@@ -203,7 +203,6 @@ const renderField = (field) => {
 };
 
 const Valuation = ({ data }) => {
-  const [subscribePopupShown] = subscribePopupShownHook();
   const location = useLocation();
   const dispatch = useDispatch();
   const price = useSelector(selectPrice);

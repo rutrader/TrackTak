@@ -3,6 +3,8 @@ import { bind, mouseMoveUp, bindTouch } from "./event";
 import { xtoast } from "./message";
 import { cssPrefix } from "../config";
 import spreadsheetEvents from "../core/spreadsheetEvents";
+import setTextFormat from "../shared/setTextFormat";
+import getFormatFromCell from "../shared/getFormatFromCell";
 
 /**
  * @desc throttle fn
@@ -150,6 +152,21 @@ export const getSheet = (
 
   const deleteCellText = () => {
     handleInsertDeleting(() => getData().deleteCell("text"))();
+
+    const cell = getData().getSelectedCell();
+    const { ri, ci } = getData().selector;
+    const cellAddress = {
+      row: ri,
+      col: ci,
+      sheet: getData().getSheetId(),
+    };
+
+    eventEmitter.emit(
+      spreadsheetEvents.sheet.cellEdited,
+      cell,
+      null,
+      cellAddress,
+    );
   };
 
   const deleteCellFormat = () => {
@@ -213,9 +230,6 @@ export const getSheet = (
     eventEmitter.emit(spreadsheetEvents.sheet.setDatasheets, dataSheets);
 
     dataSheets.forEach((dataSheet, i) => {
-      const sheetContent = Object.values(dataSheet.rows).map(({ cells }) =>
-        cells.map((x) => x.text),
-      );
       let data;
 
       // TODO: Remove later when we refactor bottomBar
@@ -237,6 +251,19 @@ export const getSheet = (
 
         data = addDataProxy(currentData.name === dataSheet.name);
       }
+      data.setData(dataSheet);
+
+      const sheetContent = Object.values(dataSheet.rows).map(({ cells }) => {
+        return cells.map((cell) => {
+          let text = setTextFormat(
+            cell.text,
+            getFormatFromCell(cell, getData().getData),
+            true,
+          );
+
+          return text;
+        });
+      });
 
       hyperformula.setSheetContent(dataSheet.name, sheetContent);
 
@@ -248,8 +275,6 @@ export const getSheet = (
           hyperformula.getSheetFormulas(sheetId),
         );
       }
-
-      data.setData(dataSheet);
     });
 
     if (!dataSheets.length) {
@@ -757,18 +782,19 @@ export const getSheet = (
     };
 
     const value = hyperformula.getCellValue(cellAddress);
+    const cell = getData().getSelectedCell();
 
     if (state === "finished") {
       eventEmitter.emit(
         spreadsheetEvents.sheet.cellEdited,
-        text,
+        cell,
         value,
         cellAddress,
       );
     } else {
       eventEmitter.emit(
         spreadsheetEvents.sheet.cellEdit,
-        text,
+        cell,
         value,
         cellAddress,
       );

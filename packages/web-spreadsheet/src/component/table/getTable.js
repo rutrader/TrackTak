@@ -157,14 +157,17 @@ export const getTable = (
       const formats = getOptions().formats;
 
       // render text
-      let cellText = showAllFormulas
-        ? cell.text || ""
-        : hyperformula.getCellValue(cellAddress);
-
+      let cellText = "";
       let format = style.format;
 
-      if (showAllFormulas && hyperformula.doesCellHaveFormula(cellAddress)) {
-        format = "text";
+      if (showAllFormulas) {
+        debugger;
+        cellText = cell.text;
+        if (hyperformula.doesCellHaveFormula(cellAddress)) {
+          format = "text";
+        }
+      } else {
+        cellText = hyperformula.getCellValue(cellAddress);
       }
 
       cellText = formats[format].render(cellText);

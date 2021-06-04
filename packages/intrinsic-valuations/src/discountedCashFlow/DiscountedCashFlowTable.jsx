@@ -229,7 +229,7 @@ const DiscountedCashFlowTable = ({
         format: "currency",
         label: `${currencySymbol}10.00`,
         render: (v) => {
-          if (isNil(v)) return "";
+          if (isNil(v) || v === "") return "";
 
           return currencySymbol + formatNumberRender(v);
         },
@@ -241,7 +241,7 @@ const DiscountedCashFlowTable = ({
         type: "number",
         label: "(000)",
         render: (v) => {
-          if (isNil(v)) return "";
+          if (isNil(v) || v === "") return "";
 
           return formatNumberRender(v) / 1000000;
         },
@@ -253,7 +253,7 @@ const DiscountedCashFlowTable = ({
         type: "number",
         label: `${currencySymbol}(000)`,
         render: (v) => {
-          if (isNil(v)) return "";
+          if (isNil(v) || v === "") return "";
 
           const value = v / 1000000;
 
