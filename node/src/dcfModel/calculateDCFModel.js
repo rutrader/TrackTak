@@ -1,10 +1,6 @@
 import { HyperFormula } from "hyperformula";
 
-const calculateDCFModel = (
-  sheetsSerializedValues,
-  existingScope,
-  currentScope,
-) => {
+const calculateDCFModel = (sheetsSerializedValues, scope) => {
   const hyperformula = HyperFormula.buildFromSheets(sheetsSerializedValues, {
     licenseKey: "05054-b528f-a10c4-53f2a-04b57",
   });
@@ -13,49 +9,49 @@ const calculateDCFModel = (
   const requiredInputsId = hyperformula.getSheetId("Required Inputs");
   const optionalInputsId = hyperformula.getSheetId("Optional Inputs");
 
-  if (currentScope.cagrInYears_1_5) {
+  if (scope.cagrInYears_1_5) {
     hyperformula.setCellContents(
       { sheet: requiredInputsId, col: 1, row: 0 },
-      currentScope.cagrInYears_1_5,
+      scope.cagrInYears_1_5,
     );
   }
-  if (currentScope.ebitTargetMarginInYear_10) {
+  if (scope.ebitTargetMarginInYear_10) {
     hyperformula.setCellContents(
       { sheet: requiredInputsId, col: 1, row: 1 },
-      currentScope.ebitTargetMarginInYear_10,
+      scope.ebitTargetMarginInYear_10,
     );
   }
 
-  if (currentScope.yearOfConvergence) {
+  if (scope.yearOfConvergence) {
     hyperformula.setCellContents(
       { sheet: requiredInputsId, col: 1, row: 2 },
-      currentScope.yearOfConvergence,
+      scope.yearOfConvergence,
     );
   }
 
-  if (currentScope.salesToCapitalRatio) {
+  if (scope.salesToCapitalRatio) {
     hyperformula.setCellContents(
       { sheet: requiredInputsId, col: 1, row: 3 },
-      currentScope.salesToCapitalRatio,
+      scope.salesToCapitalRatio,
     );
   }
 
-  if (currentScope.probabilityOfFailure) {
+  if (scope.probabilityOfFailure) {
     hyperformula.setCellContents(
       { sheet: optionalInputsId, col: 9, row: 3 },
-      currentScope.probabilityOfFailure,
+      scope.probabilityOfFailure,
     );
   }
 
-  if (currentScope.proceedsAsAPercentageOfBookValue) {
+  if (scope.proceedsAsAPercentageOfBookValue) {
     hyperformula.setCellContents(
       { sheet: optionalInputsId, col: 9, row: 4 },
-      currentScope.proceedsAsAPercentageOfBookValue,
+      scope.proceedsAsAPercentageOfBookValue,
     );
   }
 
-  Object.keys(existingScope).forEach((key) => {
-    const value = existingScope[key] || 0;
+  Object.keys(scope).forEach((key) => {
+    const value = scope[key] || 0;
 
     if (hyperformula.isItPossibleToChangeNamedExpression(key, value)) {
       hyperformula.changeNamedExpression(key, value);

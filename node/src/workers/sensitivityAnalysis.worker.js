@@ -10,11 +10,10 @@ const sensitivityAnalysisWorker = {
     currentScopes,
   ) => {
     const values = currentScopes.map((currentScope) => {
-      const model = calculateDCFModel(
-        sheetsSerializedValues,
-        existingScope,
-        currentScope,
-      );
+      const model = calculateDCFModel(sheetsSerializedValues, {
+        ...existingScope,
+        ...currentScope,
+      });
       const estimatedPricePerShare = model[35][1];
 
       return estimatedPricePerShare;
