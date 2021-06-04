@@ -28,6 +28,8 @@ export const makeDropdownFormat = (getOptions, getData, eventEmitter) => (
 
     if (format) {
       setTitle(format);
+    } else {
+      setTitle("normal");
     }
   });
 

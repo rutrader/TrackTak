@@ -42,6 +42,19 @@ export const getEditableInput = (
     }
   }
 
+  const setTextFormat = (text) => {
+    let newText = text.toString();
+    const format = getFormatFromCell(_cell, getData().getData);
+
+    if (format === "percent") {
+      if (!newText.includes("%") && !isNaN(parseFloat(newText))) {
+        newText += "%";
+      }
+    }
+
+    return newText;
+  };
+
   const setInputText = (text) => {
     inputText = text;
     formula.setInputText(inputText);
@@ -66,10 +79,12 @@ export const getEditableInput = (
   };
 
   function inputEventHandler() {
+    let text = setTextFormat(textEl.el.textContent);
+
     // save caret position
     const restore = saveCaretPosition(textEl.el);
 
-    setInputText(textEl.el.textContent);
+    setInputText(text);
 
     // restore caret postion
     // to avoid caret postion missing when el.innerHTML changed
@@ -171,12 +186,6 @@ export const getEditableInput = (
 
   const clear = () => {
     if (inputText !== "") {
-      const format = getFormatFromCell(_cell, getData().getData);
-
-      if (format === "percent") {
-        inputText = (parseFloat(inputText, 10) / 100).toString();
-      }
-
       eventEmitter.emit(
         spreadsheetEvents[eventType].change,
         "finished",
@@ -232,6 +241,8 @@ export const getEditableInput = (
     _cell = cell;
 
     let text = (_cell && _cell.text) || "";
+
+    text = setTextFormat(text);
 
     setText(text);
 
