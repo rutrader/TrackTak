@@ -259,7 +259,7 @@ export const getSheet = (
             cell.text,
             getFormatFromCell(cell, getData().getData),
             getOptions().formats,
-            true,
+            "finished",
           );
 
           return text;
@@ -784,11 +784,13 @@ export const getSheet = (
 
     const value = hyperformula.getCellValue(cellAddress);
     const cell = getData().getSelectedCell();
+    const format = getFormatFromCell(cell, getData().getData);
 
     if (state === "finished") {
       eventEmitter.emit(
         spreadsheetEvents.sheet.cellEdited,
         cell,
+        format,
         value,
         cellAddress,
       );
@@ -796,6 +798,7 @@ export const getSheet = (
       eventEmitter.emit(
         spreadsheetEvents.sheet.cellEdit,
         cell,
+        format,
         value,
         cellAddress,
       );

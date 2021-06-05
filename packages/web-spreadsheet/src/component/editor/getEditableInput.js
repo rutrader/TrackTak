@@ -72,6 +72,7 @@ export const getEditableInput = (
       textEl.el.textContent,
       getFormatFromCell(_cell, getData().getData),
       getOptions().formats,
+      "progress",
     );
 
     // save caret position
@@ -258,7 +259,7 @@ export const getEditableInput = (
   const setText = (text) => {
     const format = getFormatFromCell(_cell, getData().getData);
 
-    text = setTextFormat(text, format, getOptions().formats, true);
+    text = setTextFormat(text, format, getOptions().formats, "start");
 
     inputText = text;
     formula.setInputText(inputText);

@@ -32,7 +32,6 @@ import { isNil } from "lodash-es";
 import {
   convertFromCellIndexToLabel,
   formatNumberRender,
-  numberRegex,
 } from "../../../web-spreadsheet/src/core/helper";
 import getSpreadsheet, {
   spreadsheetEvents,
@@ -48,12 +47,12 @@ import { camelCase } from "change-case";
 import { allInputNameTypeMappings } from "./scopeNameTypeMapping";
 import { queryNames } from "./templates/freeCashFlowFirmSimple/inputQueryNames";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
-import replaceAll from "../shared/replaceAll";
 
 const defaultColWidth = 110;
 const columnAWidth = 170;
 
 const columns = [];
+const million = 1000000;
 
 for (let index = 0; index < 13; index++) {
   columns.push({ width: index === 0 ? 220 : defaultColWidth });
@@ -222,7 +221,6 @@ const DiscountedCashFlowTable = ({
     let spreadsheet;
 
     const dcfValuationElement = document.getElementById(`${dcfValuationId}`);
-    const million = 1000000;
 
     const formats = {
       currency: {
@@ -252,12 +250,13 @@ const DiscountedCashFlowTable = ({
         format: "million",
         type: "number",
         label: "(000)",
-        editRender: (v, finishedEditing) => {
+        editRender: (v, state) => {
           let text = v;
 
-          if (finishedEditing && typeof text === "number") {
+          if (state === "start" && typeof text === "number") {
             text = text * million;
           }
+
           return text;
         },
         render: (v) => {
@@ -272,14 +271,14 @@ const DiscountedCashFlowTable = ({
         format: "million-currency",
         type: "number",
         label: `${currencySymbol}(000)`,
-        editRender: (v, finishedEditing) => {
+        editRender: (v, state) => {
           let text = v;
 
-          if (finishedEditing && typeof text === "number") {
-            text = text * million;
+          if (state === "start" && typeof text === "number") {
+            text = text / million;
           }
 
-          return formats.currency.editRender(text, finishedEditing);
+          return formats.currency.editRender(text);
         },
         render: (v) => {
           if (isNil(v) || v === "") return "";
@@ -347,7 +346,7 @@ const DiscountedCashFlowTable = ({
     if (spreadsheet) {
       spreadsheet.variablesSpreadsheet.eventEmitter.on(
         spreadsheetEvents.sheet.cellEdited,
-        (_, value, cellAddress) => {
+        (_, format, value, cellAddress) => {
           const label = spreadsheet.hyperformula.getCellValue({
             ...cellAddress,
             col: cellAddress.col - 1,
@@ -357,7 +356,12 @@ const DiscountedCashFlowTable = ({
             const urlName = camelCase(label);
 
             if (allInputNameTypeMappings[urlName]) {
-              setURLInput(camelCase(label), value);
+              let newValue = value;
+
+              if (format === "million" || format === "million-currency") {
+                newValue *= million;
+              }
+              setURLInput(camelCase(label), newValue);
             }
           }
         },
