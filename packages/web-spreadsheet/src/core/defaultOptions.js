@@ -54,11 +54,13 @@ const sharedOptions = {
       title: tf("format.percent"),
       type: "number",
       label: "10.12%",
-      editRender: (v, finishedEditing) => {
+      editRender: (v, state) => {
+        if (v.toString().charAt(0) === "=") return v;
+
         let text = v;
 
-        if (finishedEditing && typeof text === "number") {
-          text = text * 100;
+        if (state === "start" && typeof v === "number") {
+          text *= 100;
         }
 
         text = text.toString();

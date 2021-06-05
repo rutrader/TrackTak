@@ -9,8 +9,14 @@ const useSetURLInput = () => {
   const queryParams = useQueryParams();
   const location = useLocation();
 
-  const setUrlInput = useCallback(
+  const setURLInput = useCallback(
     (key, value = null) => {
+      let newValue = value;
+
+      if (value === "") {
+        newValue = null;
+      }
+
       const urlSearchParams = convertParamsObjectToURLSearchParams(queryParams);
 
       const existingValue = urlSearchParams.get(key);
@@ -18,10 +24,10 @@ const useSetURLInput = () => {
         ? null
         : parseFloat(existingValue);
 
-      if (parsedExistingValue === value) return;
+      if (parsedExistingValue === newValue) return;
 
-      if (value || value === 0) {
-        urlSearchParams.set(key, value);
+      if (newValue || newValue === 0) {
+        urlSearchParams.set(key, newValue);
       } else {
         urlSearchParams.delete(key);
       }
@@ -33,7 +39,7 @@ const useSetURLInput = () => {
     [location.pathname, queryParams],
   );
 
-  return setUrlInput;
+  return setURLInput;
 };
 
 export default useSetURLInput;

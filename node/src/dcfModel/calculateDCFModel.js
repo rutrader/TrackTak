@@ -9,46 +9,47 @@ const calculateDCFModel = (sheetsSerializedValues, scope) => {
   const requiredInputsId = hyperformula.getSheetId("Required Inputs");
   const optionalInputsId = hyperformula.getSheetId("Optional Inputs");
 
-  if (scope.cagrInYears_1_5) {
-    hyperformula.setCellContents(
-      { sheet: requiredInputsId, col: 1, row: 0 },
-      scope.cagrInYears_1_5,
-    );
-  }
-  if (scope.ebitTargetMarginInYear_10) {
-    hyperformula.setCellContents(
-      { sheet: requiredInputsId, col: 1, row: 1 },
-      scope.ebitTargetMarginInYear_10,
-    );
-  }
+  // TODO: Remove these later when this hyperformula issue is fixed:
+  // https://github.com/handsontable/hyperformula/issues/686
+  hyperformula.setCellContents(
+    { sheet: requiredInputsId, col: 1, row: 0 },
+    scope.cagrInYears_1_5,
+  );
 
-  if (scope.yearOfConvergence) {
-    hyperformula.setCellContents(
-      { sheet: requiredInputsId, col: 1, row: 2 },
-      scope.yearOfConvergence,
-    );
-  }
+  hyperformula.setCellContents(
+    { sheet: requiredInputsId, col: 1, row: 1 },
+    scope.ebitTargetMarginInYear_10,
+  );
 
-  if (scope.salesToCapitalRatio) {
-    hyperformula.setCellContents(
-      { sheet: requiredInputsId, col: 1, row: 3 },
-      scope.salesToCapitalRatio,
-    );
-  }
+  hyperformula.setCellContents(
+    { sheet: requiredInputsId, col: 1, row: 2 },
+    scope.yearOfConvergence,
+  );
 
-  if (scope.probabilityOfFailure) {
-    hyperformula.setCellContents(
-      { sheet: optionalInputsId, col: 9, row: 3 },
-      scope.probabilityOfFailure,
-    );
-  }
+  hyperformula.setCellContents(
+    { sheet: requiredInputsId, col: 1, row: 3 },
+    scope.salesToCapitalRatio,
+  );
 
-  if (scope.proceedsAsAPercentageOfBookValue) {
-    hyperformula.setCellContents(
-      { sheet: optionalInputsId, col: 9, row: 4 },
-      scope.proceedsAsAPercentageOfBookValue,
-    );
-  }
+  hyperformula.setCellContents(
+    { sheet: optionalInputsId, col: 9, row: 3 },
+    scope.probabilityOfFailure,
+  );
+
+  hyperformula.setCellContents(
+    { sheet: optionalInputsId, col: 9, row: 4 },
+    scope.proceedsAsAPercentageOfBookValue,
+  );
+
+  hyperformula.setCellContents(
+    { sheet: optionalInputsId, col: 9, row: 1 },
+    scope.netOperatingLoss,
+  );
+
+  hyperformula.setCellContents(
+    { sheet: optionalInputsId, col: 9, row: 2 },
+    scope.nonOperatingAssets,
+  );
 
   Object.keys(scope).forEach((key) => {
     const value = scope[key] || 0;

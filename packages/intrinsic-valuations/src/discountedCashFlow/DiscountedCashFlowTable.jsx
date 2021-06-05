@@ -230,6 +230,8 @@ const DiscountedCashFlowTable = ({
         format: "currency",
         label: `${currencySymbol}10.00`,
         editRender: (v) => {
+          if (v.toString().charAt(0) === "=") return v;
+
           let text = v.toString();
 
           if (!text.includes(currencySymbol) && !isNaN(parseFloat(text))) {
@@ -251,13 +253,19 @@ const DiscountedCashFlowTable = ({
         type: "number",
         label: "(000)",
         editRender: (v, state) => {
-          let text = v;
+          if (v.toString().charAt(0) === "=") return v;
 
-          if (state === "start" && typeof text === "number") {
-            text = text * million;
+          let number = parseFloat(v, 10);
+
+          if (state === "start") {
+            number = number / million;
           }
 
-          return text;
+          if (state === "startInput" || state === "finished") {
+            number *= million;
+          }
+
+          return number;
         },
         render: (v) => {
           if (isNil(v) || v === "") return "";
@@ -272,13 +280,15 @@ const DiscountedCashFlowTable = ({
         type: "number",
         label: `${currencySymbol}(000)`,
         editRender: (v, state) => {
-          let text = v;
+          if (v.toString().charAt(0) === "=") return v;
 
-          if (state === "start" && typeof text === "number") {
-            text = text / million;
-          }
+          const currencyText = formats.currency.editRender(v);
+          const text = formats.million.editRender(
+            currencyText.substring(1),
+            state,
+          );
 
-          return formats.currency.editRender(text);
+          return currencyText.charAt(0) + text;
         },
         render: (v) => {
           if (isNil(v) || v === "") return "";
@@ -343,30 +353,37 @@ const DiscountedCashFlowTable = ({
   }, [currencySymbol]);
 
   useEffect(() => {
+    const cellEditedCallback = (_, __, value, cellAddress) => {
+      const label = spreadsheet.hyperformula.getCellValue({
+        ...cellAddress,
+        col: cellAddress.col - 1,
+      });
+      if (label) {
+        const urlName = camelCase(label);
+
+        if (allInputNameTypeMappings[urlName]) {
+          let newValue = value;
+
+          setURLInput(camelCase(label), newValue);
+        }
+      }
+    };
+
     if (spreadsheet) {
       spreadsheet.variablesSpreadsheet.eventEmitter.on(
         spreadsheetEvents.sheet.cellEdited,
-        (_, format, value, cellAddress) => {
-          const label = spreadsheet.hyperformula.getCellValue({
-            ...cellAddress,
-            col: cellAddress.col - 1,
-          });
-
-          if (label) {
-            const urlName = camelCase(label);
-
-            if (allInputNameTypeMappings[urlName]) {
-              let newValue = value;
-
-              if (format === "million" || format === "million-currency") {
-                newValue *= million;
-              }
-              setURLInput(camelCase(label), newValue);
-            }
-          }
-        },
+        cellEditedCallback,
       );
     }
+
+    return () => {
+      if (spreadsheet) {
+        spreadsheet.variablesSpreadsheet.eventEmitter.off(
+          spreadsheetEvents.sheet.cellEdited,
+          cellEditedCallback,
+        );
+      }
+    };
   }, [setURLInput, spreadsheet]);
 
   useEffect(() => {
@@ -376,15 +393,10 @@ const DiscountedCashFlowTable = ({
   }, [hasAllRequiredInputsFilledIn, spreadsheet, isOnMobile]);
 
   useEffect(() => {
-    if (spreadsheet && scope) {
+    if (spreadsheet && hasAllRequiredInputsFilledIn && scope) {
       spreadsheet.setOptions({
         variables: scope,
       });
-    }
-  }, [scope, spreadsheet]);
-
-  useEffect(() => {
-    if (spreadsheet && hasAllRequiredInputsFilledIn && scope) {
       const dataSheets = getDataSheets(isOnMobile);
 
       spreadsheet.setDatasheets(dataSheets);
@@ -427,7 +439,11 @@ const DiscountedCashFlowTable = ({
   }, [inputQueryParams, spreadsheet, theme]);
 
   useEffect(() => {
-    if (spreadsheet && hasAllRequiredInputsFilledIn) {
+    if (spreadsheet && hasAllRequiredInputsFilledIn && scope) {
+      spreadsheet.setOptions({
+        variables: scope,
+      });
+
       if (showYOYGrowth) {
         spreadsheet.setDatasheets(
           getDatasheetsYOYGrowth(spreadsheet, isOnMobile),
@@ -452,6 +468,7 @@ const DiscountedCashFlowTable = ({
     isOnMobile,
     hasAllRequiredInputsFilledIn,
     showFormulas,
+    scope,
   ]);
 
   useEffect(() => {

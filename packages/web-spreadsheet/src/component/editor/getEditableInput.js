@@ -68,17 +68,10 @@ export const getEditableInput = (
   };
 
   function inputEventHandler() {
-    let text = setTextFormat(
-      textEl.el.textContent,
-      getFormatFromCell(_cell, getData().getData),
-      getOptions().formats,
-      "progress",
-    );
-
     // save caret position
     const restore = saveCaretPosition(textEl.el);
 
-    setInputText(text);
+    setInputText(textEl.el.textContent);
 
     // restore caret postion
     // to avoid caret postion missing when el.innerHTML changed
@@ -179,7 +172,6 @@ export const getEditableInput = (
   };
 
   const clear = () => {
-    console.log(_cell);
     if (_cell) {
       eventEmitter.emit(
         spreadsheetEvents[eventType].change,

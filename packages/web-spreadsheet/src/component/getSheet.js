@@ -255,14 +255,7 @@ export const getSheet = (
 
       const sheetContent = Object.values(dataSheet.rows).map(({ cells }) => {
         return cells.map((cell) => {
-          let text = setTextFormat(
-            cell.text,
-            getFormatFromCell(cell, getData().getData),
-            getOptions().formats,
-            "finished",
-          );
-
-          return text;
+          return cell.text;
         });
       });
 
@@ -774,7 +767,16 @@ export const getSheet = (
 
   function dataSetCellText(text, state = "finished") {
     if (getOptions().mode === "read") return;
-    getData().setSelectedCellText(text, state);
+    const cell = getData().getSelectedCell();
+
+    let newText = setTextFormat(
+      text,
+      getFormatFromCell(cell, getData().getData),
+      getOptions().formats,
+      state,
+    );
+    getData().setSelectedCellText(newText, state);
+
     const { ri, ci } = getData().selector;
     const cellAddress = {
       row: ri,
@@ -783,7 +785,6 @@ export const getSheet = (
     };
 
     const value = hyperformula.getCellValue(cellAddress);
-    const cell = getData().getSelectedCell();
     const format = getFormatFromCell(cell, getData().getData);
 
     if (state === "finished") {
@@ -1045,7 +1046,7 @@ export const getSheet = (
           (keyCode >= 96 && keyCode <= 105) ||
           evt.key === "="
         ) {
-          dataSetCellText(evt.key, "input");
+          dataSetCellText(evt.key, "startInput");
           editorSet();
         } else if (keyCode === 113) {
           // F2
