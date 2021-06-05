@@ -1,10 +1,13 @@
-export const setElementPosition = (el, viewFn, x, y) => {
+const MIN_CELL_X = 400;
+
+export const setElementPosition = (el, viewFn, x, y, cellWidth) => {
   const { width } = el.show().offset();
   const view = viewFn();
   const vhf = view.height / 2;
   let left = x;
-  if (view.width - x <= width) {
-    left -= width;
+  if (view.width - x <= width && x > MIN_CELL_X) {
+    const shiftCellLeftAmount = width + cellWidth;
+    left -= shiftCellLeftAmount;
   }
   el.css("left", `${left}px`);
   if (y > vhf) {
