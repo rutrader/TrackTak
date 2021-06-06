@@ -54,8 +54,8 @@ const DiscountedCashFlowSheet = ({ SubscribeCover }) => {
               here.
             </Link>
           </Typography>
-          <Typography paragraph>
-            <b>Note:</b> Editing cells is in alpha stage.
+          <Typography gutterBottom>
+            <b>in (millions), except per share amounts</b>
           </Typography>
         </Box>
         <Box

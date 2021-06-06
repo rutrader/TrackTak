@@ -641,7 +641,7 @@ export const getSheet = (
     const { offsetX, offsetY } = evt;
     const isAutofillEl = getIsAutofillEl(evt.target.className);
 
-    const { ri, ci } = setOverlayerCellOffset(offsetX, offsetY);
+    let { ri, ci } = setOverlayerCellOffset(offsetX, offsetY);
 
     if (!evt.shiftKey) {
       if (isAutofillEl) {
