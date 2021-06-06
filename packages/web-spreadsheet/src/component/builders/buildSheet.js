@@ -9,6 +9,8 @@ import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { HyperFormula } from "hyperformula";
 import { t } from "../../locale/locale";
 import { getComment } from "../comment/getComment";
+import { h } from "../element";
+import { cssPrefix } from "../../config";
 
 const getFormulaSuggestions = () => {
   const formulaSuggestions = HyperFormula.getRegisteredFunctionNames(
@@ -55,13 +57,22 @@ export const buildSheet = (
   const contextMenu = getContextMenu(getViewWidthHeight, eventEmitter, () => {
     return !getOptions().showContextmenu;
   });
+  const selector = new Selector(eventEmitter, getData);
+
+  const overlayerCEl = h("div", `${cssPrefix}-overlayer-content`).children(
+    editor.el,
+    selector.el,
+    editor.cellEl,
+  );
+  const overlayerEl = h("div", `${cssPrefix}-overlayer`).child(overlayerCEl);
+
   const comment = getComment(
+    overlayerEl,
     getData,
     getViewWidthHeight,
     contextMenu.el,
     eventEmitter,
   );
-  const selector = new Selector(eventEmitter, getData);
   const sortFilter = new SortFilter();
 
   return () => ({
@@ -75,5 +86,7 @@ export const buildSheet = (
     selector,
     sortFilter,
     comment,
+    overlayerCEl,
+    overlayerEl,
   });
 };

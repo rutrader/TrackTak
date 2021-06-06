@@ -48,6 +48,8 @@ export const getSheet = (
     selector,
     sortFilter,
     comment,
+    overlayerCEl,
+    overlayerEl,
   } = builder();
   let datas = [];
 
@@ -324,13 +326,6 @@ export const getSheet = (
   const el = h("div", `${cssPrefix}-sheet`);
 
   let focusing;
-
-  const overlayerCEl = h("div", `${cssPrefix}-overlayer-content`).children(
-    editor.el,
-    selector.el,
-    editor.cellEl,
-  );
-  const overlayerEl = h("div", `${cssPrefix}-overlayer`).child(overlayerCEl);
 
   el.children(
     table.el,

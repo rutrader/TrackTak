@@ -1,6 +1,13 @@
 const MIN_CELL_X = 400;
 
-export const setElementPosition = (el, viewFn, x, y, cellWidth) => {
+export const setElementPosition = (
+  overlayerEl,
+  el,
+  viewFn,
+  x,
+  y,
+  cellWidth,
+) => {
   const { width } = el.show().offset();
   const view = viewFn();
   const vhf = view.height / 2;
