@@ -44,22 +44,23 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
       </Typography>
       <Box
         sx={{
-          width: "100%",
           marginTop: theme.spacing(3),
         }}
       >
         <form onSubmit={handleSubmit}>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} justifyContent="center">
             <Grid item xs={12}>
               <TextField
                 onChange={(e) => setName(e.target.value)}
                 autoComplete="name"
                 name="name"
                 variant="outlined"
-                fullWidth
                 id="name"
                 label="Name"
                 autoFocus
+                sx={{
+                  display: 'flex',
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -67,11 +68,13 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
                 onChange={(e) => setEmail(e.target.value)}
                 variant="outlined"
                 required
-                fullWidth
                 id="email"
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                sx={{
+                  display: 'flex',
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -79,13 +82,15 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
                 onChange={(e) => setPassword(e.target.value)}
                 variant="outlined"
                 required
-                fullWidth
                 name="password"
                 label="Password"
                 type="password"
                 id="password"
                 autoComplete="current-password"
                 InputProps={{ inputProps: { minLength: 8 } }}
+                sx={{
+                  display: 'flex',
+                }}
               />
             </Grid>
           </Grid>
