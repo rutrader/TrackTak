@@ -143,7 +143,8 @@ export const getEditableInput = (
 
   const areaEl = h("div", `${cssPrefix}-editor-area`)
     .on("mousemove.stop", () => {})
-    .on("mousedown.stop", () => {});
+    .on("mousedown.stop", () => {})
+    .on("touchstart.stop", () => {});
 
   el.children(areaEl);
 

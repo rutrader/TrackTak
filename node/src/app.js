@@ -37,6 +37,7 @@ app.use(
             "http://localhost:8000",
             "http://localhost:9000",
             "http://localhost:6006",
+            "http://192.168.1.101:8000",
           ]
         : [process.env.ORIGIN_URL],
     optionsSuccessStatus: 204,

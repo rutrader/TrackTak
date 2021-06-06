@@ -931,8 +931,11 @@ export const getSheet = (
         overlayerTouch(direction, d);
       },
       edit: (evt) => {
+        editor.clear();
+        contextMenu.hide();
+
         touchStartOverlayer(evt);
-        // editorSet();
+        editorSet();
       },
     });
 
