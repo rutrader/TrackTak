@@ -53,18 +53,17 @@ export const buildSheet = (
     getFormulaSuggestions(),
     eventEmitter,
   );
-  const modalValidation = new ModalValidation(eventEmitter, getData);
-  const contextMenu = getContextMenu(getViewWidthHeight, eventEmitter, () => {
-    return !getOptions().showContextmenu;
-  });
   const selector = new Selector(eventEmitter, getData);
-
   const overlayerCEl = h("div", `${cssPrefix}-overlayer-content`).children(
     editor.el,
     selector.el,
     editor.cellEl,
   );
   const overlayerEl = h("div", `${cssPrefix}-overlayer`).child(overlayerCEl);
+  const modalValidation = new ModalValidation(eventEmitter, getData);
+  const contextMenu = getContextMenu(overlayerEl, getViewWidthHeight, eventEmitter, () => {
+    return !getOptions().showContextmenu;
+  });
 
   const comment = getComment(
     overlayerEl,

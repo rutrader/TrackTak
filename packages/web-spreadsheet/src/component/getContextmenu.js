@@ -38,7 +38,7 @@ export const menuItems = [
   { key: "cellNonEditable", title: tf("contextmenu.cellnoneditable") },
 ];
 
-export const getContextMenu = (viewFn, eventEmitter, hideFn) => {
+export const getContextMenu = (overlayerEl, viewFn, eventEmitter, hideFn) => {
   function buildMenuItem(item) {
     if (item.key === "divider") {
       return h("div", `${cssPrefix}-item divider`);
@@ -76,7 +76,7 @@ export const getContextMenu = (viewFn, eventEmitter, hideFn) => {
     if (hideFn()) {
       return;
     }
-    setElementPosition(el, viewFn, x, y);
+    setElementPosition(overlayerEl, el, viewFn, x, y, { top: y });
     bindClickoutside(el);
   };
 
