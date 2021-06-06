@@ -21,21 +21,15 @@ import spreadsheetEvents from "../../core/spreadsheetEvents";
 
 export const toolbarHeight = 41;
 
-export const getToolbar = (sheetEl, getOptions, getData, eventEmitter) => {
+export const getToolbar = (getOptions, getData, eventEmitter) => {
   const hideFn = () => !getOptions().showToolbar;
   const widthFn = () => getOptions().view.width();
 
   const getIconItem = makeIconItem(eventEmitter);
   const getToggleItem = makeToggleItem(eventEmitter);
-  const toolbarType = "toolbar";
-
-  const undoEl = buildUndo(eventEmitter, toolbarType);
-  const redoEl = buildRedo(eventEmitter, toolbarType);
-  const formatEl = buildFormat(
-    () => getOptions().formats,
-    eventEmitter,
-    toolbarType,
-  );
+  const undoEl = buildUndo(eventEmitter);
+  const redoEl = buildRedo(eventEmitter);
+  const formatEl = buildFormat(getOptions, getData, eventEmitter);
   const printEl = getIconItem("print", "Ctrl+P");
   const paintformatEl = getToggleItem("paintformat");
   const clearformatEl = getIconItem("clearformat");
@@ -89,23 +83,23 @@ export const getToolbar = (sheetEl, getOptions, getData, eventEmitter) => {
   const items = [
     [formatEl],
     buildDivider(),
-    [undoEl, redoEl, printEl, paintformatEl, clearformatEl],
+    [undoEl, redoEl],
+    // [undoEl, redoEl, printEl, paintformatEl, clearformatEl],
+    // buildDivider(),
+    // [fontEl, fontSizeEl],
+    // buildDivider(),
+    // [boldEl, italicEl, underlineEl, strikeEl, textColorEl],
+    // buildDivider(),
+    // [fillColorEl, borderEl, mergeEl],
+    // buildDivider(),
+    // [alignEl, valignEl, textwrapEl],
     buildDivider(),
-    [fontEl, fontSizeEl],
-    buildDivider(),
-    [boldEl, italicEl, underlineEl, strikeEl, textColorEl],
-    buildDivider(),
-    [fillColorEl, borderEl, mergeEl],
-    buildDivider(),
-    [alignEl, valignEl, textwrapEl],
-    buildDivider(),
-    [freezeEl, autofilterEl, formulaEl, moreEl],
+    // [freezeEl, autofilterEl, formulaEl, moreEl],
+    [moreEl],
   ];
 
   const el = h("div", `${cssPrefix}-toolbar`);
   const buttonsEl = h("div", `${cssPrefix}-toolbar-btns`);
-
-  sheetEl.before(el);
 
   buildItems(items, buttonsEl);
 

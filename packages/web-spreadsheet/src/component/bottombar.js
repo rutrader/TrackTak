@@ -77,7 +77,7 @@ const getContextMenu = (eventEmitter) => {
   };
 };
 
-export const getBottombar = (rootEl, eventEmitter) => {
+export const getBottombar = (eventEmitter) => {
   let dataNames = [];
   let activeEl = null;
   let deleteEl = null;
@@ -181,21 +181,19 @@ export const getBottombar = (rootEl, eventEmitter) => {
 
   const contextMenu = getContextMenu(eventEmitter);
 
-  const menuEl = h("ul", `${cssPrefix}-menu`).child(
-    h("li", "").children(
-      getIcon("add").el.on("click", () => {
-        eventEmitter.emit(spreadsheetEvents.bottombar.addSheet);
-      }),
-      h("span", "").child(moreEl.dropdown.el),
-    ),
+  const menuEl = h("ul", `${cssPrefix}-menu`);
+  const actionsEl = h("div", `${cssPrefix}-actions`).children(
+    getIcon("add").el.on("click", () => {
+      eventEmitter.emit(spreadsheetEvents.bottombar.addSheet);
+    }),
+    h("span", "").child(moreEl.dropdown.el),
   );
 
   const el = h("div", `${cssPrefix}-bottombar`).children(
     contextMenu.el,
+    actionsEl,
     menuEl,
   );
-
-  rootEl.child(el);
 
   eventEmitter.on(spreadsheetEvents.bottombar.clickContextMenu, (key) => {
     if (key === "delete") {

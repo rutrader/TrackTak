@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { padCellKeys } from "./utils";
+import { padCellKeys, styleMap, styles } from "./utils";
 import { Alert, Box, useMediaQuery, useTheme, Link } from "@material-ui/core";
 import useInputQueryParams from "../hooks/useInputQueryParams";
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
@@ -15,10 +15,6 @@ import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSha
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import useInjectQueryParams from "../hooks/useInjectQueryParams";
 import { AnchorLink, navigate } from "../shared/gatsby";
-import {
-  valueDrivingInputsHeader,
-  valueDrivingInputsId,
-} from "../components/ValueDrivingInputs";
 import { useLocation } from "@reach/router";
 import selectThreeAverageYearsEffectiveTaxRate from "../selectors/fundamentalSelectors/selectThreeAverageYearsEffectiveTaxRate";
 import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
@@ -27,31 +23,43 @@ import getChunksOfArray from "../shared/getChunksOfArray";
 import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
 import selectScope from "../selectors/dcfSelectors/selectScope";
 import cells from "./cells";
-import { setCells, setScope } from "../redux/actions/dcfActions";
+import {
+  setCells,
+  setScope,
+  setSheetsSerializedValues,
+} from "../redux/actions/dcfActions";
 import { isNil } from "lodash-es";
 import {
   convertFromCellIndexToLabel,
   formatNumberRender,
 } from "../../../web-spreadsheet/src/core/helper";
-import getSpreadsheet from "../../../web-spreadsheet/src";
+import getSpreadsheet, {
+  spreadsheetEvents,
+} from "../../../web-spreadsheet/src";
+import {
+  getRequiredInputs,
+  requiredInputsId,
+  requiredInputsSheetName,
+} from "./templates/freeCashFlowFirmSimple/getRequiredInputs";
+import { getOptionalInputs } from "./templates/freeCashFlowFirmSimple/getOptionalInputs";
+import useSetURLInput from "../hooks/useSetURLInput";
+import { camelCase } from "change-case";
+import { allInputNameTypeMappings } from "./scopeNameTypeMapping";
+import {
+  labels,
+  queryNames,
+} from "./templates/freeCashFlowFirmSimple/inputQueryNames";
+import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 
 const defaultColWidth = 110;
 const columnAWidth = 170;
 
 const columns = [];
+const million = 1000000;
 
 for (let index = 0; index < 13; index++) {
   columns.push({ width: index === 0 ? 220 : defaultColWidth });
 }
-
-const styleMap = {
-  percent: 0,
-  million: 1,
-  "million-currency": 2,
-  currency: 3,
-  number: 4,
-  year: 4,
-};
 
 const cellKeysSorted = padCellKeys(Object.keys(cells).sort(sortAlphaNumeric));
 const rowCells = cellKeysSorted.map((key) => {
@@ -64,6 +72,7 @@ const rowCells = cellKeysSorted.map((key) => {
 });
 
 const dcfValuationId = "dcf-valuation";
+
 const getDataSheets = (isOnMobile) => {
   const rows = {};
 
@@ -82,23 +91,7 @@ const getDataSheets = (isOnMobile) => {
         },
       },
       rows,
-      styles: [
-        {
-          format: "percent",
-        },
-        {
-          format: "million",
-        },
-        {
-          format: "million-currency",
-        },
-        {
-          format: "currency",
-        },
-        {
-          format: "number",
-        },
-      ],
+      styles,
     },
   ];
 
@@ -187,7 +180,6 @@ const DiscountedCashFlowTable = ({
   showFormulas,
   showYOYGrowth,
   SubscribeCover,
-  loadingCells,
 }) => {
   const containerRef = useRef();
   const [spreadsheet, setSpreadsheet] = useState();
@@ -212,6 +204,21 @@ const DiscountedCashFlowTable = ({
   const pastThreeYearsAverageEffectiveTaxRate = useSelector(
     selectThreeAverageYearsEffectiveTaxRate,
   );
+  const setURLInput = useSetURLInput();
+  const isFocusedOnValueDrivingInputs = location.hash?.includes(
+    requiredInputsId,
+  );
+  const currentIndustry = useSelector(selectCurrentIndustry);
+
+  useEffect(() => {
+    if (isNil(inputQueryParams[queryNames.salesToCapitalRatio])) {
+      setURLInput(
+        queryNames.salesToCapitalRatio,
+        currentIndustry["sales/Capital"],
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     let spreadsheet;
@@ -220,58 +227,126 @@ const DiscountedCashFlowTable = ({
 
     const formats = {
       currency: {
+        key: "currency",
         title: () => "Currency",
         type: "number",
         format: "currency",
         label: `${currencySymbol}10.00`,
-        render: (v) => currencySymbol + formatNumberRender(v),
+        editRender: (v) => {
+          if (v.toString().charAt(0) === "=") return v;
+
+          let text = v.toString();
+
+          if (!text.includes(currencySymbol) && !isNaN(parseFloat(text))) {
+            text = currencySymbol + text;
+          }
+
+          return text;
+        },
+        render: (v) => {
+          if (isNil(v) || v === "") return "";
+
+          return currencySymbol + formatNumberRender(v);
+        },
       },
       million: {
+        key: "million",
         title: () => "Million",
         format: "million",
         type: "number",
         label: "(000)",
-        render: (v) => formatNumberRender(v) / 1000000,
+        editRender: (v, state) => {
+          if (v.toString().charAt(0) === "=") return v;
+
+          let number = parseFloat(v, 10);
+
+          if (state === "start") {
+            number = number / million;
+          }
+
+          if (state === "startInput" || state === "finished") {
+            number *= million;
+          }
+
+          return number;
+        },
+        render: (v) => {
+          if (isNil(v) || v === "") return "";
+
+          return formatNumberRender(v / million);
+        },
       },
       "million-currency": {
+        key: "million-currency",
         title: () => "Million Currency",
         format: "million-currency",
         type: "number",
         label: `${currencySymbol}(000)`,
+        editRender: (v, state) => {
+          if (v.toString().charAt(0) === "=") return v;
+
+          const currencyText = formats.currency.editRender(v);
+          const text = formats.million.editRender(
+            currencyText.substring(1),
+            state,
+          );
+
+          return currencyText.charAt(0) + text;
+        },
         render: (v) => {
-          const value = v / 1000000;
+          if (isNil(v) || v === "") return "";
+
+          const value = v / million;
 
           return formats.currency.render(value);
         },
       },
     };
 
+    const width = () => {
+      if (containerRef?.current) {
+        const containerStyle = getComputedStyle(containerRef.current);
+        const paddingX =
+          parseFloat(containerStyle.paddingLeft) +
+          parseFloat(containerStyle.paddingRight);
+        const borderX =
+          parseFloat(containerStyle.borderLeftWidth) +
+          parseFloat(containerStyle.borderRightWidth);
+        const elementWidth =
+          containerRef.current.offsetWidth - paddingX - borderX;
+
+        return elementWidth;
+      }
+    };
+    const debugMode = process.env.NODE_ENV === "development";
+
     const options = {
+      debugMode,
       col: {
         width: defaultColWidth,
       },
       formats,
       view: {
-        height: () => 1165,
-        width: () => {
-          if (containerRef?.current) {
-            const containerStyle = getComputedStyle(containerRef.current);
-            const paddingX =
-              parseFloat(containerStyle.paddingLeft) +
-              parseFloat(containerStyle.paddingRight);
-            const borderX =
-              parseFloat(containerStyle.borderLeftWidth) +
-              parseFloat(containerStyle.borderRightWidth);
-            const elementWidth =
-              containerRef.current.offsetWidth - paddingX - borderX;
-
-            return elementWidth;
-          }
-        },
+        height: () => 1250,
+        width,
       },
     };
 
-    spreadsheet = getSpreadsheet(dcfValuationElement, options);
+    const variablesSpreadsheetOptions = {
+      debugMode,
+      formats,
+      view: {
+        width,
+      },
+    };
+
+    spreadsheet = getSpreadsheet(
+      dcfValuationElement,
+      options,
+      variablesSpreadsheetOptions,
+    );
+
+    spreadsheet.variablesSpreadsheet.variablesSheet.el.el.id = requiredInputsId;
 
     setSpreadsheet(spreadsheet);
 
@@ -279,6 +354,46 @@ const DiscountedCashFlowTable = ({
       spreadsheet?.destroy();
     };
   }, [currencySymbol]);
+
+  useEffect(() => {
+    const cellEditedCallback = (_, __, value, cellAddress) => {
+      let label = spreadsheet.hyperformula.getCellValue({
+        ...cellAddress,
+        col: cellAddress.col - 1,
+      });
+
+      // TODO: Remove later
+      if (label === labels.ebitTargetMarginInYear_10 + " *") {
+        label = "EBIT Target Margin in Year 10";
+      }
+
+      if (label) {
+        const urlName = camelCase(label);
+
+        if (allInputNameTypeMappings[urlName]) {
+          let newValue = value;
+
+          setURLInput(camelCase(label), newValue);
+        }
+      }
+    };
+
+    if (spreadsheet) {
+      spreadsheet.variablesSpreadsheet.eventEmitter.on(
+        spreadsheetEvents.sheet.cellEdited,
+        cellEditedCallback,
+      );
+    }
+
+    return () => {
+      if (spreadsheet) {
+        spreadsheet.variablesSpreadsheet.eventEmitter.off(
+          spreadsheetEvents.sheet.cellEdited,
+          cellEditedCallback,
+        );
+      }
+    };
+  }, [setURLInput, spreadsheet]);
 
   useEffect(() => {
     if (!hasAllRequiredInputsFilledIn && spreadsheet) {
@@ -291,12 +406,9 @@ const DiscountedCashFlowTable = ({
       spreadsheet.setOptions({
         variables: scope,
       });
-
       const dataSheets = getDataSheets(isOnMobile);
 
-      if (!spreadsheet.sheet.datas.length) {
-        spreadsheet.setDatasheets(dataSheets);
-      }
+      spreadsheet.setDatasheets(dataSheets);
 
       const sheetName = "DCF Valuation";
       const dataSheetFormulas = spreadsheet.hyperformula.getAllSheetsFormulas();
@@ -307,7 +419,7 @@ const DiscountedCashFlowTable = ({
         columns.forEach((_, columnIndex) => {
           const label = convertFromCellIndexToLabel(columnIndex, rowIndex + 1);
           const expr = dataSheetFormulas[sheetName][rowIndex][columnIndex];
-          const value = dataSheetValues[sheetName][rowIndex][columnIndex];
+          let value = dataSheetValues[sheetName][rowIndex][columnIndex];
 
           cells[label] = {
             ...cells[label],
@@ -318,54 +430,29 @@ const DiscountedCashFlowTable = ({
       });
 
       dispatch(setCells(cells));
+      dispatch(
+        setSheetsSerializedValues(
+          spreadsheet.hyperformula.getAllSheetsSerialized(),
+        ),
+      );
     }
-  }, [hasAllRequiredInputsFilledIn, isOnMobile, scope, spreadsheet, dispatch]);
+  }, [hasAllRequiredInputsFilledIn, isOnMobile, spreadsheet, dispatch, scope]);
 
   useEffect(() => {
     if (spreadsheet) {
-      // spreadsheet.setVariablesData([
-      //   {
-      //     name: "Inputs",
-      //     rows: {
-      //       0: {
-      //         cells: [
-      //           {
-      //             text: "CAGR Year 1-5",
-      //           },
-      //         ],
-      //       },
-      //     },
-      //   },
-      //   {
-      //     name: "Optional Inputs",
-      //     rows: {
-      //       0: {
-      //         cells: [
-      //           {
-      //             text: "Debt",
-      //           },
-      //         ],
-      //       },
-      //     },
-      //   },
-      //   {
-      //     name: "API",
-      //     rows: {
-      //       0: {
-      //         cells: [
-      //           {
-      //             text: "totalRevenue",
-      //           },
-      //         ],
-      //       },
-      //     },
-      //   },
-      // ]);
+      spreadsheet.variablesSpreadsheet.setVariableDatasheets([
+        getRequiredInputs(inputQueryParams, theme),
+        getOptionalInputs(inputQueryParams),
+      ]);
     }
-  }, [spreadsheet]);
+  }, [inputQueryParams, spreadsheet, theme]);
 
   useEffect(() => {
-    if (spreadsheet && hasAllRequiredInputsFilledIn) {
+    if (spreadsheet && hasAllRequiredInputsFilledIn && scope) {
+      spreadsheet.setOptions({
+        variables: scope,
+      });
+
       if (showYOYGrowth) {
         spreadsheet.setDatasheets(
           getDatasheetsYOYGrowth(spreadsheet, isOnMobile),
@@ -381,6 +468,8 @@ const DiscountedCashFlowTable = ({
         });
         spreadsheet.setDatasheets(getDataSheets(isOnMobile));
       }
+      // TODO: refactor this cause it's terrible
+      spreadsheet.sheet.switchData(spreadsheet.sheet.getDatas()[0]);
     }
   }, [
     showYOYGrowth,
@@ -388,6 +477,7 @@ const DiscountedCashFlowTable = ({
     isOnMobile,
     hasAllRequiredInputsFilledIn,
     showFormulas,
+    scope,
   ]);
 
   useEffect(() => {
@@ -410,19 +500,21 @@ const DiscountedCashFlowTable = ({
           marginalTaxRate: currentEquityRiskPremium.marginalTaxRate,
           sharesOutstanding,
           price,
-          cagrInYears_1_5: inputQueryParams.cagrInYears_1_5,
-          riskFreeRate,
-          yearOfConvergence: inputQueryParams.yearOfConvergence,
-          ebitTargetMarginInYear_10: inputQueryParams.ebitTargetMarginInYear_10,
-          totalCostOfCapital: costOfCapital.totalCostOfCapital,
-          salesToCapitalRatio: inputQueryParams.salesToCapitalRatio,
-          nonOperatingAssets: inputQueryParams.nonOperatingAssets,
-          netOperatingLoss: inputQueryParams.netOperatingLoss,
-          probabilityOfFailure: inputQueryParams.probabilityOfFailure,
-          proceedsAsAPercentageOfBookValue:
-            inputQueryParams.proceedsAsAPercentageOfBookValue,
           bookValueOfEquity: balanceSheet.bookValueOfEquity,
           valueOfAllOptionsOutstanding,
+          riskFreeRate,
+          totalCostOfCapital: costOfCapital.totalCostOfCapital,
+          cagrInYears_1_5: inputQueryParams[queryNames.cagrInYears_1_5],
+          yearOfConvergence: inputQueryParams[queryNames.yearOfConvergence],
+          ebitTargetMarginInYear_10:
+            inputQueryParams[queryNames.ebitTargetMarginInYear_10],
+          salesToCapitalRatio: inputQueryParams[queryNames.salesToCapitalRatio],
+          nonOperatingAssets: inputQueryParams[queryNames.nonOperatingAssets],
+          netOperatingLoss: inputQueryParams[queryNames.netOperatingLoss],
+          probabilityOfFailure:
+            inputQueryParams[queryNames.probabilityOfFailure],
+          proceedsAsAPercentageOfBookValue:
+            inputQueryParams[queryNames.proceedsAsAPercentageOfBookValue],
         }),
       );
     }
@@ -437,34 +529,42 @@ const DiscountedCashFlowTable = ({
     dispatch,
     incomeStatement.operatingIncome,
     incomeStatement.totalRevenue,
-    inputQueryParams.cagrInYears_1_5,
-    inputQueryParams.ebitTargetMarginInYear_10,
-    inputQueryParams.netOperatingLoss,
-    inputQueryParams.probabilityOfFailure,
-    inputQueryParams.proceedsAsAPercentageOfBookValue,
-    inputQueryParams.salesToCapitalRatio,
-    inputQueryParams.yearOfConvergence,
     pastThreeYearsAverageEffectiveTaxRate,
     price,
     riskFreeRate,
     sharesOutstanding,
     valueOfAllOptionsOutstanding,
     hasAllRequiredInputsFilledIn,
-    inputQueryParams.nonOperatingAssets,
+    inputQueryParams,
   ]);
 
-  const to = `${location.pathname}#${valueDrivingInputsId}`;
+  const to = `${location.pathname}#${requiredInputsId}`;
+  const zIndex = 100;
 
   return (
-    <Box sx={{ position: "relative" }} ref={containerRef}>
-      <Box
-        id={dcfValuationId}
-        sx={{
-          pointerEvents:
-            !hasAllRequiredInputsFilledIn || loadingCells ? "none" : undefined,
-        }}
-      />
-      {SubscribeCover ? <SubscribeCover /> : null}
+    <Box
+      sx={{
+        position: "relative",
+        "& .x-spreadsheet-comment": {
+          fontFamily: theme.typography.fontFamily,
+        },
+        "& .x-spreadsheet-variables-sheet": isFocusedOnValueDrivingInputs
+          ? {
+              boxShadow: `0 0 5px ${theme.palette.primary.main}`,
+              border: `1px solid ${theme.palette.primary.main}`,
+            }
+          : {},
+      }}
+      ref={containerRef}
+    >
+      <Box id={dcfValuationId} />
+      {SubscribeCover ? (
+        <SubscribeCover
+          sx={{
+            zIndex,
+          }}
+        />
+      ) : null}
       {!hasAllRequiredInputsFilledIn && (
         <Alert
           severity="warning"
@@ -472,6 +572,7 @@ const DiscountedCashFlowTable = ({
             position: "absolute",
             left: "50%",
             top: "50%",
+            zIndex,
             transform: "translate(-50%, -50%)",
             "& .MuiAlert-icon": {
               alignItems: "center",
@@ -481,7 +582,7 @@ const DiscountedCashFlowTable = ({
             },
           }}
         >
-          The&nbsp;
+          The green&nbsp;
           <Link
             component={AnchorLink}
             to={to}
@@ -489,9 +590,9 @@ const DiscountedCashFlowTable = ({
               navigate(to);
             }}
           >
-            {valueDrivingInputsHeader}
+            {requiredInputsSheetName.slice(0, -1)}
           </Link>
-          &nbsp;section above needs to be filled out first to generate the DCF.
+          &nbsp;cells above need to be filled out first to generate your DCF.
         </Alert>
       )}
     </Box>

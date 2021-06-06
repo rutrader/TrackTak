@@ -1,20 +1,7 @@
 import React from "react";
-import { Box, List, ListItem, TextField, Typography } from "@material-ui/core";
-import {
-  cagrInYears_1_5Label,
-  ebitTargetMarginInYear_10Label,
-  yearOfConvergenceLabel,
-  FormatInputToPercent,
-  FormatInputToYear,
-  Formula,
-} from "@tracktak/intrinsic-valuations";
+import { Box, List, ListItem, Typography } from "@material-ui/core";
+import { Formula } from "@tracktak/intrinsic-valuations";
 
-const InputExampleBox = ({ sx, ...props }) => (
-  <Box sx={{ my: 2, ...sx }} {...props} />
-);
-
-// TODO: Think of what to do with the duplicate content from tooltips and wiki
-// do we share it or delete one? etc.
 const wikiContent = [
   {
     title: "What is a DCF?",
@@ -103,19 +90,9 @@ const wikiContent = [
         <Typography paragraph>
           The revenue growth rate is one of the main value drivers that really
           affects the estimated value per share. So it is really important that
-          you choose a realistic growth rate for your DCF. We provide an input
-          for you that looks like this:
+          you choose a realistic growth rate for your DCF. We provide a CAGR
+          input for you in the cell: 'Required Inputs'!$B1.
         </Typography>
-        <InputExampleBox>
-          <TextField
-            label={cagrInYears_1_5Label}
-            disabled
-            defaultValue={0.18}
-            InputProps={{
-              inputComponent: FormatInputToPercent,
-            }}
-          />
-        </InputExampleBox>
         <Typography paragraph>
           Compound Annual Growth Rate (CAGR) is the average growth rate that you
           think will happen for the company from year 1-5 (B2-G2). We then use
@@ -141,19 +118,10 @@ const wikiContent = [
     text: (
       <>
         <Typography paragraph>
-          Operating Margin is the other main value driving input that heavily
-          affects your DCF. We provide an input for you that looks like this:
+          Operating Target Margin is the other main value driving input that
+          heavily affects your DCF. We provide an input for you in the cell:
+          'Required Inputs'!$B2.
         </Typography>
-        <InputExampleBox>
-          <TextField
-            label={ebitTargetMarginInYear_10Label}
-            disabled
-            defaultValue={0.1}
-            InputProps={{
-              inputComponent: FormatInputToPercent,
-            }}
-          />
-        </InputExampleBox>
         <Typography paragraph>
           We use this input in Years 1-10 (B3-L3) and set the terminal year to
           be equal to year 10 (L3). To figure out what to put in this input you
@@ -174,18 +142,9 @@ const wikiContent = [
         </Typography>
         <Typography paragraph>
           The Year of Convergence input also affects the Operating Margin
-          calculations, it looks like this:
+          calculations. We provide an input for you in the cell: 'Required
+          Inputs'!$B3.
         </Typography>
-        <InputExampleBox>
-          <TextField
-            label={yearOfConvergenceLabel}
-            disabled
-            defaultValue={5}
-            InputProps={{
-              inputComponent: FormatInputToYear,
-            }}
-          />
-        </InputExampleBox>
         <Typography paragraph>
           The Operating Margin will slowly converge from the base years margin
           (B3) to your Operating margin in year 10 (L3). The speed at which this
@@ -224,12 +183,13 @@ const wikiContent = [
     cellsText: "C7-M7",
     text: (
       <>
-        This is how much the company is reinvesting into the company to grow.
-        Companies cannot grow their revenue or margins without reinvesting
-        profits back into the business. We calculate the difference between the
-        revenues from this year to the previous year and divide it by the sales
-        to capital ratio. This gives us the reinvestment amount for the current
-        year.
+        The sales to capital ratio one is that input that is used in these cells
+        and located in 'Required Inputs'!$B4. This is how much the company is
+        reinvesting into the company to grow. Companies cannot grow their
+        revenue or margins without reinvesting profits back into the business.
+        We calculate the difference between the revenues from this year to the
+        previous year and divide it by the sales to capital ratio. This gives us
+        the reinvestment amount for the current year.
       </>
     ),
   },
@@ -249,7 +209,8 @@ const wikiContent = [
     cellsText: "B9-M9",
     text: (
       <>
-        Net Operating Loss (NOL). Any losses from the previous years that the
+        The inputs for this are the sections in 'Optional Inputs'!$J2. Net
+        Operating Loss (NOL). Any losses from the previous years that the
         company is carrying over to this year. The reason this is important in a
         DCF is because it reduces the taxable income so the company has to pay
         less tax.
@@ -262,6 +223,7 @@ const wikiContent = [
     text: (
       <>
         <Typography paragraph>
+          The inputs for this are the sections in 'Optional Inputs'!$A1:$E1.
           Weighted Cost of Capital (WACC) has multiple elements that go in to
           calculating it. There are also different techniques to working out the
           WACC. We use Aswath Damodaran's bottom-up beta instead of the CAPM
@@ -730,11 +692,12 @@ const wikiContent = [
     cellsText: "B25",
     text: (
       <>
-        Many young, growth companies fail, especially if they have trouble
-        raising cash. Many distressed companies fail because they have trouble
-        making debt payments. This is a tough input to estimate but try to use
-        the agencies credit rating if the company has one, if not then use the
-        synthetic credit rating default spread as a guide.
+        The input for this is in 'Optional Inputs'!$J4. Many young, growth
+        companies fail, especially if they have trouble raising cash. Many
+        distressed companies fail because they have trouble making debt
+        payments. This is a tough input to estimate but try to use the agencies
+        credit rating if the company has one, if not then use the synthetic
+        credit rating default spread as a guide.
       </>
     ),
   },
@@ -743,13 +706,14 @@ const wikiContent = [
     cellsText: "B26",
     text: (
       <>
-        If the company fails then sometimes there will be assets that get sold
-        off (usually at fire sale prices) or cash left over to distribute to
-        shareholders. This is only true if all liabilities have been paid first
-        as shareholders are last in line if a company goes bankrupt. Sometimes
-        however, companies will continue to run themselves into the ground with
-        more debt to continue giving the executives a job and therefore will
-        never have proceeds to distribute to shareholders.
+        The input for this is in 'Optional Inputs'!$J5. If the company fails
+        then sometimes there will be assets that get sold off (usually at fire
+        sale prices) or cash left over to distribute to shareholders. This is
+        only true if all liabilities have been paid first as shareholders are
+        last in line if a company goes bankrupt. Sometimes however, companies
+        will continue to run themselves into the ground with more debt to
+        continue giving the executives a job and therefore will never have
+        proceeds to distribute to shareholders.
       </>
     ),
   },
@@ -780,9 +744,10 @@ const wikiContent = [
     cellsText: "B33",
     text: (
       <>
-        We minus Employee Options from Equity due to the company having to pay
-        cash to these employees when they exercise them. Thus there is less cash
-        attributable to shareholders.
+        The inputs for this are in 'Optional Inputs'!$H2:$H4. We minus Employee
+        Options from Equity due to the company having to pay cash to these
+        employees when they exercise them. Thus there is less cash attributable
+        to shareholders.
       </>
     ),
   },

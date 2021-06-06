@@ -6,9 +6,12 @@ import Formula from "../formula";
 import { setCaretPosition, saveCaretPosition } from "../../core/caret";
 import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { dateFormat } from "../../shared/dateFormat";
+import getFormatFromCell from "../../shared/getFormatFromCell";
+import setTextFormat from "../../shared/setTextFormat";
 
 export const getEditableInput = (
   getData,
+  getOptions,
   formulas,
   eventEmitter,
   el,
@@ -140,7 +143,8 @@ export const getEditableInput = (
 
   const areaEl = h("div", `${cssPrefix}-editor-area`)
     .on("mousemove.stop", () => {})
-    .on("mousedown.stop", () => {});
+    .on("mousedown.stop", () => {})
+    .on("touchstart.stop", () => {});
 
   el.children(areaEl);
 
@@ -169,13 +173,14 @@ export const getEditableInput = (
   };
 
   const clear = () => {
-    if (inputText !== "") {
+    if (_cell) {
       eventEmitter.emit(
         spreadsheetEvents[eventType].change,
         "finished",
         inputText,
       );
     }
+
     _cell = null;
     areaOffset = null;
     inputText = "";
@@ -224,7 +229,8 @@ export const getEditableInput = (
 
     _cell = cell;
 
-    const text = (_cell && _cell.text) || "";
+    let text = (_cell && _cell.text) || "";
+
     setText(text);
 
     _validator = validator;
@@ -244,11 +250,15 @@ export const getEditableInput = (
   };
 
   const setText = (text) => {
+    const format = getFormatFromCell(_cell, getData().getData);
+
+    text = setTextFormat(text, format, getOptions().formats, "start");
+
     inputText = text;
     formula.setInputText(inputText);
     // console.log('text>>:', text);
 
-    eventEmitter.emit(spreadsheetEvents[eventType].setText, text);
+    eventEmitter.emit(spreadsheetEvents[eventType].setText, text, format);
     render();
   };
 

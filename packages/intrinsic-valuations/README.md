@@ -34,8 +34,6 @@ For example FinancialsSummary can be removed if you have your own fundamentals p
 - `<CompanyOverviewStats />`
 - `<SensitivtyAnalysis />`
 - `<FinancialsSummary />`
-- `<ValueDrivingInputs />`
-- `<OptionalInputs />`
 - `<IndustryAveragesResults />`
 - `<CostOfCapitalResults SyntheticCreditRatingLink={fn: ReactNode} />`
 - `<BlackScholesResults />`

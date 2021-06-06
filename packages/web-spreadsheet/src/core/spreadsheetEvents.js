@@ -1,24 +1,35 @@
+import { menuItems } from "../component/getContextmenu";
+
 const spreadsheetEvents = {
   bottombar: {
-    addSheet: "bb-add-sheet",
-    selectSheet: "bb-select-sheet",
-    updateSheet: "bb-update-sheet",
-    deleteSheet: "bb-delete-sheet",
-    clickDropdownMore: "bb-click-dropdown-more",
-    clickContextMenu: "bb-click-context-menu",
+    addSheet: "bb-addSheet",
+    selectSheet: "bb-selectSheet",
+    updateSheet: "bb-updateSheet",
+    deleteSheet: "bb-deleteSheet",
+    clickDropdownMore: "bb-clickDropdownMore",
+    clickContextMenu: "bb-clickContextMenu",
   },
   rightClickMenu: {
-    clickContextMenu: "rcm-click-context-menu",
+    ...menuItems.reduce((prev, curr) => {
+      if (curr.key === "divider") {
+        return prev;
+      }
+
+      return {
+        ...prev,
+        [curr.key]: `rcm-${curr.key}`,
+      };
+    }, {}),
   },
   editor: {
     change: "e-change",
     clear: "e-clear",
-    setText: "e-set-text",
+    setText: "e-setText",
   },
   formulaBar: {
     change: "fb-change",
     clear: "fb-clear",
-    setText: "fb-set-text",
+    setText: "fb-setText",
   },
   rowResizer: {
     finished: "rr-finished",
@@ -38,34 +49,29 @@ const spreadsheetEvents = {
     change: "d-change",
   },
   sheet: {
-    cellSelected: "s-cell-selected",
-    cellsSelected: "s-cells-selected",
-    cellEditedFinished: "s-cell-edited-finished",
-    cellEdited: "s-cell-edited",
-    switchData: "s-switch-data",
-    sheetReset: "s-sheet-reset",
-    mouseMoveUp: "s-mouse-move-up",
-    ctrlKeyDown: "s-ctrl-key-down",
-    addData: "s-add-data",
-    deleteData: "s-delete-data",
-    setDatasheets: "s-set-datasheets",
+    cellSelected: "s-cellSelected",
+    cellsSelected: "s-cellsSelected",
+    cellEdited: "s-cellEdited",
+    cellEdit: "s-cellEdit",
+    switchData: "s-switchData",
+    sheetReset: "s-sheetReset",
+    mouseMoveUp: "s-mouseMoveUp",
+    ctrlKeyDown: "s-ctrlKeyDown",
+    addData: "s-addData",
+    deleteData: "s-deleteData",
+    setDatasheets: "s-setDatasheets",
   },
   toolbar: {
-    alignChange: "tb-align-change",
-    dropdownLineChange: "tb-dropdown-line-change",
-    borderPaletteChange: "tb-border-palette-change",
-    colorPaletteChange: "tb-color-palette-change",
-    fontChange: "tb-font-change",
-    fontSizeChange: "tb-font-size-change",
-    toggleItem: "tb-toggle-item",
-    clickIcon: "tb-click-icon",
-    formatChange: "tb-format-change",
-    formulaSet: "tb-formula-set",
-  },
-  variablesToolbar: {
-    sheetChange: "vtb-sheet-change",
-    toggleItem: "vtb-toggle-item",
-    clickIcon: "vtb-click-icon",
+    alignChange: "tb-alignChange",
+    dropdownLineChange: "tb-dropdownLineChange",
+    borderPaletteChange: "tb-borderPaletteChange",
+    colorPaletteChange: "tb-colorPaletteChange",
+    fontChange: "tb-fontChange",
+    fontSizeChange: "tb-fontSizeChange",
+    toggleItem: "tb-toggleItem",
+    clickIcon: "tb-clickIcon",
+    formatChange: "tb-formatChange",
+    formulaSet: "tb-formulaSet",
   },
 };
 

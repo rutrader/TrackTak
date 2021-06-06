@@ -4,11 +4,12 @@ import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { h } from "../element";
 import { getEditableInput } from "./getEditableInput";
 
-export const getEditor = (getData, formulas, eventEmitter) => {
+export const getEditor = (getData, getOptions, formulas, eventEmitter) => {
   const el = h("div", `${cssPrefix}-editor`).hide();
 
   const editableInput = getEditableInput(
     getData,
+    getOptions,
     formulas,
     eventEmitter,
     el,
@@ -26,13 +27,16 @@ export const getEditor = (getData, formulas, eventEmitter) => {
     el.hide();
   });
 
-  eventEmitter.on(spreadsheetEvents.editor.setText, (text) => {
+  eventEmitter.on(spreadsheetEvents.editor.setText, (text, format) => {
     el.show();
     // firefox bug
     editableInput.textEl.el.blur();
 
     setTimeout(() => {
-      setCaretPosition(editableInput.textEl.el, text.length);
+      setCaretPosition(
+        editableInput.textEl.el,
+        format === "percent" ? text.length - 1 : text.length,
+      );
     });
   });
 

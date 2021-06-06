@@ -1,18 +1,12 @@
 import { isNil } from "lodash-es";
 import { useEffect, useState } from "react";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
-import {
-  probabilityOfFailureLabel,
-  proceedsAsPercentageOfBookValueLabel,
-} from "../components/OptionalInputs";
 import { TableNumberFormatter } from "../components/TableFormatters";
-import {
-  cagrInYears_1_5Label,
-  ebitTargetMarginInYear_10Label,
-  salesToCapitalRatioLabel,
-  yearOfConvergenceLabel,
-} from "../components/ValueDrivingInputs";
 import { allInputNameTypeMappings } from "../discountedCashFlow/scopeNameTypeMapping";
+import {
+  labels,
+  queryNames,
+} from "../discountedCashFlow/templates/freeCashFlowFirmSimple/inputQueryNames";
 import roundDecimal from "../shared/roundDecimal";
 import useInputQueryParams from "./useInputQueryParams";
 
@@ -104,24 +98,25 @@ const useSensitivityAnalysisDataTable = () => {
 
   useEffect(() => {
     const cagrMinMax = getDynamicMinMaxRange(
-      "cagrInYears_1_5",
+      queryNames.cagrInYears_1_5,
       inputQueryParams,
     );
     const ebitMarginMinMax = getDynamicMinMaxRange(
-      "ebitTargetMarginInYear_10",
+      queryNames.ebitTargetMarginInYear_10,
       inputQueryParams,
     );
 
-    const cagrInYears_1_5Value = inputQueryParams.cagrInYears_1_5 * 100;
+    const cagrInYears_1_5Value =
+      inputQueryParams[queryNames.cagrInYears_1_5] * 100;
     const ebitTargetMarginInYear_10Value =
-      inputQueryParams.ebitTargetMarginInYear_10 * 100;
+      inputQueryParams[queryNames.ebitTargetMarginInYear_10] * 100;
 
     setDataTable(
       [
         {
-          label: cagrInYears_1_5Label,
-          name: "cagrInYears_1_5",
-          step: getDynamicStep("cagrInYears_1_5", inputQueryParams),
+          label: labels.cagrInYears_1_5,
+          name: queryNames.cagrInYears_1_5,
+          step: getDynamicStep(queryNames.cagrInYears_1_5, inputQueryParams),
           marks: [
             { value: cagrMinMax.min, label: cagrMinMax.min },
             {
@@ -133,9 +128,12 @@ const useSensitivityAnalysisDataTable = () => {
           ...cagrMinMax,
         },
         {
-          label: ebitTargetMarginInYear_10Label,
-          name: "ebitTargetMarginInYear_10",
-          step: getDynamicStep("ebitTargetMarginInYear_10", inputQueryParams),
+          label: labels.ebitTargetMarginInYear_10,
+          name: queryNames.ebitTargetMarginInYear_10,
+          step: getDynamicStep(
+            queryNames.ebitTargetMarginInYear_10,
+            inputQueryParams,
+          ),
           marks: [
             {
               value: ebitMarginMinMax.min,
@@ -153,8 +151,8 @@ const useSensitivityAnalysisDataTable = () => {
           ...ebitMarginMinMax,
         },
         {
-          label: yearOfConvergenceLabel,
-          name: "yearOfConvergence",
+          label: labels.yearOfConvergence,
+          name: queryNames.yearOfConvergence,
           marks: [
             { value: 0, label: "0" },
             { value: 5, label: "5" },
@@ -165,8 +163,8 @@ const useSensitivityAnalysisDataTable = () => {
           max: 10,
         },
         {
-          label: salesToCapitalRatioLabel,
-          name: "salesToCapitalRatio",
+          label: labels.salesToCapitalRatio,
+          name: queryNames.salesToCapitalRatio,
           step: 0.1,
           min: -5,
           max: 7,
@@ -177,8 +175,8 @@ const useSensitivityAnalysisDataTable = () => {
           ],
         },
         {
-          label: probabilityOfFailureLabel,
-          name: "probabilityOfFailure",
+          label: labels.probabilityOfFailure,
+          name: queryNames.probabilityOfFailure,
           step: 1,
           min: 0,
           max: 100,
@@ -189,8 +187,8 @@ const useSensitivityAnalysisDataTable = () => {
           ],
         },
         {
-          label: proceedsAsPercentageOfBookValueLabel,
-          name: "proceedsAsAPercentageOfBookValue",
+          label: labels.proceedsAsAPercentageOfBookValue,
+          name: queryNames.proceedsAsAPercentageOfBookValue,
           step: 1,
           min: 0,
           max: 100,

@@ -2,10 +2,11 @@ import spreadsheetEvents from "../core/spreadsheetEvents";
 import { getPrint } from "./getPrint";
 import { getToolbar } from "./toolbar/getToolbar";
 
-const withToolbar = (sheet) => {
-  let { eventEmitter, rootEl, el: sheetEl, getOptions, getData } = sheet;
+const withToolbar = ({ sheet, ...args }) => {
+  const { eventEmitter, rootEl, getOptions, getData } = sheet;
 
   const print = getPrint(rootEl, getData);
+  const toolbar = getToolbar(getOptions, getData, eventEmitter);
   const {
     paintformatToggle,
     paintformatActive,
@@ -13,7 +14,7 @@ const withToolbar = (sheet) => {
     boldEl,
     underlineEl,
     italicEl,
-  } = getToolbar(sheetEl, getOptions, getData, eventEmitter);
+  } = toolbar;
 
   function toolbarChangePaintformatPaste() {
     if (paintformatActive()) {
@@ -37,7 +38,7 @@ const withToolbar = (sheet) => {
         sheet.clearClipboard();
       }
     } else if (type === "clearformat") {
-      sheet.insertDeleteRowColumn("delete-cell-format");
+      sheet.deleteCellFormat("delete-cell-format");
     } else if (type === "link") {
       // link
     } else if (type === "chart") {
@@ -96,7 +97,9 @@ const withToolbar = (sheet) => {
   });
 
   return {
-    ...sheet,
+    ...args,
+    sheet,
+    toolbar,
   };
 };
 

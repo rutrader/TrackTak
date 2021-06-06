@@ -12,12 +12,10 @@ import {
   CostOfCapitalResults,
   DiscountedCashFlowSheet,
   IndustryAveragesResults,
-  OptionalInputs,
   FinancialsSummary,
   Section,
   SubSection,
   withFundamentalsLoaded,
-  ValueDrivingInputs,
   useTicker,
 } from "@tracktak/intrinsic-valuations";
 import { Link as RouterLink } from "gatsby";
@@ -26,10 +24,8 @@ import { setMessage } from "../redux/actions/snackbarActions";
 import { useLocation } from "@reach/router";
 import SubscribeCover from "./SubscribeCover";
 import useLocalStorageState from "use-local-storage-state";
-import subscribePopupShownHook from "../hooks/subscribePopupShownHook";
 
 const DiscountedCashFlow = () => {
-  const [subscribePopupShown] = subscribePopupShownHook();
   const [rotateSnackbarShown, setRotateSnackbarShown] = useLocalStorageState(
     "rotateSnackbarShown",
   );
@@ -70,31 +66,18 @@ const DiscountedCashFlow = () => {
         </Box>
       </Section>
       <Section sx={{ display: "flex", gridColumnGap: 20, flexWrap: "wrap" }}>
-        <Box sx={{ flex: 1 }}>
-          <SubSection>
-            <ValueDrivingInputs />
-          </SubSection>
-          <SubSection>
-            <OptionalInputs />
-          </SubSection>
-        </Box>
-        <Box sx={{ flex: 1 }}>
-          <SubSection>
-            <IndustryAveragesResults />
-          </SubSection>
-          <SubSection>
-            <CostOfCapitalResults />
-          </SubSection>
-          <SubSection>
-            <BlackScholesResults />
-          </SubSection>
-        </Box>
+        <SubSection>
+          <IndustryAveragesResults />
+        </SubSection>
+        <SubSection>
+          <CostOfCapitalResults />
+        </SubSection>
+        <SubSection>
+          <BlackScholesResults />
+        </SubSection>
       </Section>
       <Section>
-        <DiscountedCashFlowSheet
-          SubscribeCover={SubscribeCover}
-          loadingCells={!subscribePopupShown}
-        />
+        <DiscountedCashFlowSheet SubscribeCover={SubscribeCover} />
       </Section>
     </React.Fragment>
   );

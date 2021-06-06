@@ -15,14 +15,8 @@ const IndustryAveragesResults = () => {
 
   return (
     <React.Fragment>
-      <Typography variant="h5">
+      <Typography variant="h5" gutterBottom>
         Industry Averages ({isInUS ? "US" : "Global"})
-      </Typography>
-      <Typography
-        gutterBottom
-        style={{ fontWeight: theme.typography.fontWeightBold }}
-      >
-        {currentIndustry.industryName}
       </Typography>
       <Box
         sx={{
@@ -32,6 +26,9 @@ const IndustryAveragesResults = () => {
         }}
       >
         <StatsContainer>
+          <Typography style={{ fontWeight: theme.typography.fontWeightBold }}>
+            {currentIndustry.industryName}
+          </Typography>
           <BoldValueLabel
             value={
               <FormatRawNumberToPercent

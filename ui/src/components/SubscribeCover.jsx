@@ -9,7 +9,7 @@ import SubscribeMailingList from "./SubscribeMailingList";
 import subscribePopupShownHook from "../hooks/subscribePopupShownHook";
 import { useSelector } from "react-redux";
 
-const SubscribeCover = () => {
+const SubscribeCover = ({ sx, ...props }) => {
   const [
     subscribePopupShown,
     setSubscribePopupShown,
@@ -32,6 +32,7 @@ const SubscribeCover = () => {
         top: "30%",
         transform: "translate(-50%, -30%)",
         minWidth: "285px",
+        ...sx,
       }}
     >
       <Paper elevation={3} sx={{ p: 3 }}>

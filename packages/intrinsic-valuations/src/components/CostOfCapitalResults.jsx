@@ -8,7 +8,6 @@ import { InfoTextCostOfCapital } from "./InfoText";
 import BoldValueLabel from "./BoldValueLabel";
 import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
-import { pretaxCostOfDebtLabel } from "./OptionalInputs";
 import selectPretaxCostOfDebt from "../selectors/fundamentalSelectors/selectPretaxCostOfDebt";
 import useInputQueryParams from "../hooks/useInputQueryParams";
 import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
@@ -22,6 +21,10 @@ import { Link as RouterLink } from "../shared/gatsby";
 import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 import useTicker from "../hooks/useTicker";
 import { isNil } from "lodash-es";
+import {
+  labels,
+  queryNames,
+} from "../discountedCashFlow/templates/freeCashFlowFirmSimple/inputQueryNames";
 
 const DefaultSyntheticCreditRatingLink = ({
   ticker,
@@ -51,7 +54,9 @@ const CostOfCapitalResults = ({
   const costOfCapital = useInjectQueryParams(selectCostOfCapital);
   const riskFreeRate = useSelector(selectRiskFreeRate);
   const pretaxCostOfDebt = useInjectQueryParams(selectPretaxCostOfDebt);
-  const useQueryPretaxCostOfDebt = !isNil(inputQueryParams.pretaxCostOfDebt);
+  const useQueryPretaxCostOfDebt = !isNil(
+    inputQueryParams[queryNames.pretaxCostOfDebts],
+  );
   const location = useLocation();
 
   return (
@@ -91,10 +96,10 @@ const CostOfCapitalResults = ({
             value={<FormatRawNumberToPercent value={pretaxCostOfDebt} />}
             label={
               useQueryPretaxCostOfDebt ? (
-                `${pretaxCostOfDebtLabel} (Direct Input)`
+                `${labels.pretaxCostOfDebt} (Direct Input)`
               ) : (
                 <Box component="span">
-                  {pretaxCostOfDebtLabel}&nbsp;
+                  {labels.pretaxCostOfDebt}&nbsp;
                   <SyntheticCreditRatingLink
                     ticker={ticker}
                     searchParams={location.search}

@@ -1,12 +1,8 @@
-import {
-  cagrInYears_1_5QueryName,
-  ebitTargetMarginInYear_10QueryName,
-  yearOfConvergenceQueryName,
-} from "../shared/inputQueryNames";
+import { requiredInputsSheetName } from "./getRequiredInputs";
 
-const cagrInYears_1_5QueryNameTT = `${cagrInYears_1_5QueryName}`;
-const ebitTargetMarginInYear_10QueryNameTT = `${ebitTargetMarginInYear_10QueryName}`;
-const yearOfConvergenceQueryNameTT = `${yearOfConvergenceQueryName}`;
+const cagrInYears_1_5QueryNameTT = `'${requiredInputsSheetName}'!$B$1`;
+const ebitTargetMarginInYear_10QueryNameTT = `'${requiredInputsSheetName}'!$B$2`;
+const yearOfConvergenceQueryNameTT = `'${requiredInputsSheetName}'!$B$3`;
 
 export const getPreviousColumn = (cellKey) => {
   const column = cellKey.charAt(0);

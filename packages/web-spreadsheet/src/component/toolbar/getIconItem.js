@@ -2,7 +2,7 @@ import { getItem } from "./item";
 import getIcon from "../getIcon";
 import spreadsheetEvents from "../../core/spreadsheetEvents";
 
-export const getIconItem = (tag, eventEmitter, toolbarType) => {
+export const getIconItem = (tag, eventEmitter) => {
   const item = getItem(tag);
   const icon = getIcon(tag);
 
@@ -11,7 +11,7 @@ export const getIconItem = (tag, eventEmitter, toolbarType) => {
   };
 
   item.el.child(icon).on("click", () => {
-    eventEmitter.emit(spreadsheetEvents[toolbarType].toggleItem, tag);
+    eventEmitter.emit(spreadsheetEvents.toolbar.toggleItem, tag);
   });
 
   return {

@@ -2,10 +2,12 @@ import { getDropdown } from "./getDropdown";
 import { h } from "./element";
 import { cssPrefix } from "../config";
 import spreadsheetEvents from "../core/spreadsheetEvents";
+import getFormatFromCell from "../shared/getFormatFromCell";
 
-export const makeDropdownFormat = (getFormats, eventEmitter, toolbarType) => (
+export const makeDropdownFormat = (getOptions, getData, eventEmitter) => (
   tag,
 ) => {
+  const getFormats = () => getOptions().formats;
   let nformats = Object.values(getFormats()).slice(0);
 
   nformats.splice(2, 0, { key: "divider" });
@@ -21,19 +23,25 @@ export const makeDropdownFormat = (getFormats, eventEmitter, toolbarType) => (
     dropdown.hide();
   };
 
+  eventEmitter.on(spreadsheetEvents.sheet.cellSelected, (cell) => {
+    const format = getFormatFromCell(cell, getData().getData);
+
+    if (format) {
+      setTitle(format);
+    } else {
+      setTitle("normal");
+    }
+  });
+
   nformats = nformats.map((it) => {
     const item = h("div", `${cssPrefix}-item`);
     if (it.key === "divider") {
       item.addClass("divider");
     } else {
       item.child(it.title()).on("click", () => {
-        setTitle(it.title());
+        setTitle(it.key);
 
-        eventEmitter.emit(
-          spreadsheetEvents[toolbarType].formatChange,
-          tag,
-          it.title().toLowerCase(),
-        );
+        eventEmitter.emit(spreadsheetEvents.toolbar.formatChange, tag, it);
       });
       if (it.label) {
         item.child(h("div", "label").html(it.label));

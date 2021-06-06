@@ -4,17 +4,18 @@ import { sentenceCase } from "sentence-case";
 import { TableMillionFormatter } from "../components/TableFormatters";
 import selectIsInUS from "../selectors/fundamentalSelectors/selectIsInUS";
 import mapFromStatementsToDateObject from "../shared/mapFromStatementsToDateObject";
-import React from "react";
+import React, { useMemo } from "react";
 
-const useMapFinancialStatementRowData = (
+const useGetFinancialStatementRowData = (
   statement,
   yearlyStatements,
   useTTM,
+  param,
 ) => {
   const isInUS = useSelector(selectIsInUS);
 
-  return (data) =>
-    data
+  const data = useMemo(() => {
+    return param
       .map(
         ({
           valueKey,
@@ -56,6 +57,9 @@ const useMapFinancialStatementRowData = (
         },
       )
       .filter((x) => x !== null);
+  }, [isInUS, param, statement, useTTM, yearlyStatements]);
+
+  return data;
 };
 
-export default useMapFinancialStatementRowData;
+export default useGetFinancialStatementRowData;

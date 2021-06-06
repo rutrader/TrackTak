@@ -1,4 +1,4 @@
 import { makeIconItem } from "./makeIconItem";
 
-export const buildUndo = (eventEmitter, toolbarType) =>
-  makeIconItem(eventEmitter, toolbarType)("undo", "Ctrl+Z");
+export const buildUndo = (eventEmitter) =>
+  makeIconItem(eventEmitter)("undo", "Ctrl+Z");

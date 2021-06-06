@@ -14,7 +14,7 @@ import SensitivityAnalysis from "../components/SensitivityAnalysis";
 import Section from "../components/Section";
 import { Fragment } from "react";
 
-const DiscountedCashFlowSheet = ({ SubscribeCover, loadingCells }) => {
+const DiscountedCashFlowSheet = ({ SubscribeCover }) => {
   const [showFormulas, setShowFormulas] = useState(false);
   const [showYOYGrowth, setShowYOYGrowth] = useState(false);
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
@@ -54,8 +54,8 @@ const DiscountedCashFlowSheet = ({ SubscribeCover, loadingCells }) => {
               here.
             </Link>
           </Typography>
-          <Typography paragraph>
-            <b>Note:</b> Editing cells is in alpha stage.
+          <Typography gutterBottom>
+            <b>in (millions), except per share amounts</b>
           </Typography>
         </Box>
         <Box
@@ -96,7 +96,6 @@ const DiscountedCashFlowSheet = ({ SubscribeCover, loadingCells }) => {
         showFormulas={showFormulas}
         showYOYGrowth={showYOYGrowth}
         SubscribeCover={SubscribeCover}
-        loadingCells={loadingCells}
       />
       <Section>
         <SensitivityAnalysis />

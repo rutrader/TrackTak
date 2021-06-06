@@ -4,7 +4,7 @@ import baseAxios from "axios";
 let sensitivtyAnalysisSource;
 
 export const computeSensitivityAnalysis = async (
-  cells,
+  sheetsSerializedValues,
   existingScope,
   currentScopes,
 ) => {
@@ -17,7 +17,7 @@ export const computeSensitivityAnalysis = async (
   const res = await axios.post(
     `/api/v1/compute-sensitivity-analysis`,
     {
-      cells,
+      sheetsSerializedValues,
       existingScope,
       currentScopes,
     },

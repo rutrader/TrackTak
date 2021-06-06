@@ -202,10 +202,12 @@ export default class Selector {
 
     const self = this;
 
-    eventEmitter.on(spreadsheetEvents.sheet.switchData, (newData) => {
+    const switchData = (newData) => {
       self.range = newData.selector.range;
       self.resetAreaOffset();
-    });
+    };
+
+    eventEmitter.on(spreadsheetEvents.toolbar.switchData, switchData);
   }
 
   hide() {

@@ -1,24 +1,55 @@
 import { HyperFormula } from "hyperformula";
-import chunk from "lodash/chunk";
-import sortAlphaNumeric from "../../../packages/intrinsic-valuations/src/discountedCashFlow/sortAlphaNumeric";
-import { padCellKeys } from "../../../packages/intrinsic-valuations/src/discountedCashFlow/utils";
 
-// TODO: pass in the actual array of arrays instead of cells object
-// and converting it
-const calculateDCFModel = (cells, scope) => {
-  const cellKeysSorted = padCellKeys(Object.keys(cells).sort(sortAlphaNumeric));
-  const sheetData = chunk(
-    cellKeysSorted.map((key) => {
-      if (!cells[key]) return undefined;
-
-      return cells[key].expr || cells[key].value;
-    }),
-    13,
-  );
-
-  const hyperformula = HyperFormula.buildFromArray(sheetData, {
+const calculateDCFModel = (sheetsSerializedValues, scope) => {
+  const hyperformula = HyperFormula.buildFromSheets(sheetsSerializedValues, {
     licenseKey: "05054-b528f-a10c4-53f2a-04b57",
   });
+
+  // TODO: Make generic later on
+  const requiredInputsId = hyperformula.getSheetId("Required Inputs");
+  const optionalInputsId = hyperformula.getSheetId("Optional Inputs");
+
+  // TODO: Remove these later when this hyperformula issue is fixed:
+  // https://github.com/handsontable/hyperformula/issues/686
+  hyperformula.setCellContents(
+    { sheet: requiredInputsId, col: 1, row: 0 },
+    scope.cagrInYears_1_5,
+  );
+
+  hyperformula.setCellContents(
+    { sheet: requiredInputsId, col: 1, row: 1 },
+    scope.ebitTargetMarginInYear_10,
+  );
+
+  hyperformula.setCellContents(
+    { sheet: requiredInputsId, col: 1, row: 2 },
+    scope.yearOfConvergence,
+  );
+
+  hyperformula.setCellContents(
+    { sheet: requiredInputsId, col: 1, row: 3 },
+    scope.salesToCapitalRatio,
+  );
+
+  hyperformula.setCellContents(
+    { sheet: optionalInputsId, col: 9, row: 3 },
+    scope.probabilityOfFailure,
+  );
+
+  hyperformula.setCellContents(
+    { sheet: optionalInputsId, col: 9, row: 4 },
+    scope.proceedsAsAPercentageOfBookValue,
+  );
+
+  hyperformula.setCellContents(
+    { sheet: optionalInputsId, col: 9, row: 1 },
+    scope.netOperatingLoss,
+  );
+
+  hyperformula.setCellContents(
+    { sheet: optionalInputsId, col: 9, row: 2 },
+    scope.nonOperatingAssets,
+  );
 
   Object.keys(scope).forEach((key) => {
     const value = scope[key] || 0;
@@ -32,7 +63,10 @@ const calculateDCFModel = (cells, scope) => {
     }
   });
 
-  const dataSheetValues = hyperformula.getSheetValues(0);
+  // TODO: Make generic later on
+  const sheetId = hyperformula.getSheetId("DCF Valuation");
+
+  const dataSheetValues = hyperformula.getSheetValues(sheetId);
 
   return dataSheetValues;
 };

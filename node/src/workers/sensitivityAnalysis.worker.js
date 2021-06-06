@@ -4,9 +4,13 @@ import { expose } from "comlink";
 import calculateDCFModel from "../dcfModel/calculateDCFModel";
 
 const sensitivityAnalysisWorker = {
-  computeSensitivityAnalysis: (cells, existingScope, currentScopes) => {
+  computeSensitivityAnalysis: (
+    sheetsSerializedValues,
+    existingScope,
+    currentScopes,
+  ) => {
     const values = currentScopes.map((currentScope) => {
-      const model = calculateDCFModel(cells, {
+      const model = calculateDCFModel(sheetsSerializedValues, {
         ...existingScope,
         ...currentScope,
       });

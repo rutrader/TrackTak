@@ -2,13 +2,8 @@ import {
   costOfComponentCalculation,
   marketValueCalculation,
   weightInCostOfCapitalCalculation,
-} from "./expressionCalculations";
-import {
-  cagrInYears_1_5QueryName,
-  ebitTargetMarginInYear_10QueryName,
-  yearOfConvergenceQueryName,
-  salesToCapitalRatioQueryName,
-} from "../shared/inputQueryNames";
+} from "./templates/freeCashFlowFirmSimple/expressionCalculations";
+import { queryNames } from "./templates/freeCashFlowFirmSimple/inputQueryNames";
 
 export const costOfCapitalNameTypeMapping = {
   marginalTaxRate: "percent",
@@ -30,28 +25,28 @@ export const costOfCapitalNameTypeMapping = {
 };
 
 export const requiredInputNameTypeMapping = {
-  [cagrInYears_1_5QueryName]: "percent",
-  [ebitTargetMarginInYear_10QueryName]: "percent",
-  [yearOfConvergenceQueryName]: "year",
-  [salesToCapitalRatioQueryName]: "number",
+  [queryNames.cagrInYears_1_5]: "percent",
+  [queryNames.ebitTargetMarginInYear_10]: "percent",
+  [queryNames.yearOfConvergence]: "year",
+  [queryNames.salesToCapitalRatio]: "number",
 };
 
 export const optionalInputNameTypeMapping = {
-  numberOfEmployeeOptionsOutstanding: "million",
-  averageStrikePrice: "currency",
-  averageMaturityOfOptions: "year",
-  averageMaturityOfDebt: "year",
-  pretaxCostOfDebt: "percent",
-  bookValueOfConvertibleDebt: "million-currency",
-  interestExpenseOnConvertibleDebt: "million-currency",
-  maturityOfConvertibleDebt: "year",
-  numberOfPreferredShares: "million",
-  marketPricePerShare: "currency",
-  annualDividendPerShare: "currency",
-  netOperatingLoss: "million-currency",
-  nonOperatingAssets: "million-currency",
-  probabilityOfFailure: "percent",
-  proceedsAsAPercentageOfBookValue: "percent",
+  [queryNames.employeeOptionsOutstanding]: "million",
+  [queryNames.averageStrikePrice]: "currency",
+  [queryNames.averageMaturityOfOptions]: "year",
+  [queryNames.averageMaturityOfDebt]: "year",
+  [queryNames.pretaxCostOfDebt]: "percent",
+  [queryNames.bookValueOfConvertibleDebt]: "million-currency",
+  [queryNames.interestExpenseOnConvertibleDebt]: "million-currency",
+  [queryNames.maturityOfConvertibleDebt]: "year",
+  [queryNames.numberOfPreferredShares]: "million",
+  [queryNames.marketPricePerShare]: "currency",
+  [queryNames.annualDividendPerShare]: "currency",
+  [queryNames.netOperatingLoss]: "million-currency",
+  [queryNames.nonOperatingAssets]: "million-currency",
+  [queryNames.probabilityOfFailure]: "percent",
+  [queryNames.proceedsAsAPercentageOfBookValue]: "percent",
 };
 
 export const allInputNameTypeMappings = {

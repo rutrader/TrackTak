@@ -54,6 +54,10 @@
   }
 }
 
+.@{css-prefix} [contenteditable="true"] {
+  user-select: text;
+}
+
 .@{css-prefix} {
   font-size: 13px;
   line-height: normal;
@@ -72,7 +76,6 @@
 
 .@{css-prefix}-sheet {
   position: relative;
-  overflow: hidden;
 }
 
 .@{css-prefix}-table {
@@ -513,9 +516,18 @@
   }
 }
 
+.@{css-prefix}-comment {
+  border-radius: 10px;
+  border: 0;
+  outline: none;
+  padding: 10px;
+  min-height: 150px;
+}
+
 .@{css-prefix}-suggest,
 .@{css-prefix}-contextmenu,
-.@{css-prefix}-sort-filter {
+.@{css-prefix}-sort-filter,
+.@{css-prefix}-comment {
   position: absolute;
   box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
   background: #fff;
@@ -580,7 +592,17 @@
   }
 }
 
+.@{css-prefix}-actions {
+  display: flex;
+  align-items: center;
+
+  .@{css-prefix}-icon {
+    margin-right: 10px;
+  }
+}
+
 .@{css-prefix}-menu {
+  overflow: hidden;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -1066,6 +1088,7 @@ form fieldset {
 }
 
 .@{css-prefix}-icon {
+  cursor: pointer;
   width: 18px;
   height: 18px;
   margin: 1px 1px 2px 1px;

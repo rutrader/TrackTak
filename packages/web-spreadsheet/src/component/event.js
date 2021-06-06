@@ -14,11 +14,12 @@ export function unbindClickoutside(el) {
 // the left mouse button: mousedown → mouseup → click
 // the right mouse button: mousedown → contenxtmenu → mouseup
 // the right mouse button in firefox(>65.0): mousedown → contenxtmenu → mouseup → click on window
-export function bindClickoutside(el, cb) {
+export function bindClickoutside(el, cb, ignoredElements = [el]) {
   el.xclickoutside = (evt) => {
     // ignore double click
     // console.log('evt:', evt);
-    if (evt.detail === 2 || el.contains(evt.target)) return;
+    if (evt.detail === 2 || ignoredElements.some((x) => x.contains(evt.target)))
+      return;
     if (cb) cb(el);
     else {
       el.hide();
@@ -53,13 +54,15 @@ function calTouchDirection(spanx, spany, evt, cb) {
   }
 }
 // cb = (direction, distance) => {}
-export function bindTouch(target, { move, end }) {
+export function bindTouch(target, { move, end, edit }) {
   let startx = 0;
   let starty = 0;
   bind(target, "touchstart", (evt) => {
     const { pageX, pageY } = evt.touches[0];
     startx = pageX;
     starty = pageY;
+
+    edit(evt);
   });
   bind(target, "touchmove", (evt) => {
     if (!move) return;
