@@ -5,6 +5,7 @@ import { cssPrefix } from "../config";
 import spreadsheetEvents from "../core/spreadsheetEvents";
 import setTextFormat from "../shared/setTextFormat";
 import getFormatFromCell from "../shared/getFormatFromCell";
+import getTouchElementOffset from "../shared/getTouchElementOffset";
 
 /**
  * @desc throttle fn
@@ -641,31 +642,11 @@ export const getSheet = (
     sheetReset();
   }
 
-  function overlayerMousedown(evt) {
+  const mouseDownOverlayerCellOffset = (evt) => {
     const { offsetX, offsetY } = evt;
-    const isAutofillEl =
-      evt.target.className === `${cssPrefix}-selector-corner`;
-    const cellRect = getData().getCellRectByXY(offsetX, offsetY);
-    const { left, top, width, height } = cellRect;
-    let { ri, ci } = cellRect;
-    // sort or filter
-    const { autoFilter } = getData();
-    if (autoFilter.includes(ri, ci)) {
-      if (left + width - 20 < offsetX && top + height - 20 < offsetY) {
-        const items = autoFilter.items(ci, (r, c) =>
-          getData().rows.getCell(r, c),
-        );
-        sortFilter.hide();
-        sortFilter.set(
-          ci,
-          items,
-          autoFilter.getFilter(ci),
-          autoFilter.getSort(ci),
-        );
-        sortFilter.setOffset({ left, top: top + height + 2 });
-        return;
-      }
-    }
+    const isAutofillEl = getIsAutofillEl(evt.target.className);
+
+    const { ri, ci } = setOverlayerCellOffset(offsetX, offsetY);
 
     if (!evt.shiftKey) {
       if (isAutofillEl) {
@@ -706,7 +687,52 @@ export const getSheet = (
         selectorSet(true, ri, ci);
       }
     }
-  }
+  };
+
+  const getIsAutofillEl = (targetClassName) => {
+    return targetClassName === `${cssPrefix}-selector-corner`;
+  };
+
+  const touchStartOverlayer = (evt) => {
+    const { offsetX, offsetY } = getTouchElementOffset(evt);
+    const { ri, ci } = setOverlayerCellOffset(offsetX, offsetY);
+    const isAutofillEl = getIsAutofillEl(evt.target.className);
+
+    if (isAutofillEl) {
+      selector.showAutofill(ri, ci);
+    } else {
+      selectorSet(false, ri, ci);
+    }
+  };
+
+  const setOverlayerCellOffset = (offsetX, offsetY) => {
+    const cellRect = getData().getCellRectByXY(offsetX, offsetY);
+    const { left, top, width, height } = cellRect;
+    let { ri, ci } = cellRect;
+    // sort or filter
+    const { autoFilter } = getData();
+    if (autoFilter.includes(ri, ci)) {
+      if (left + width - 20 < offsetX && top + height - 20 < offsetY) {
+        const items = autoFilter.items(ci, (r, c) =>
+          getData().rows.getCell(r, c),
+        );
+        sortFilter.hide();
+        sortFilter.set(
+          ci,
+          items,
+          autoFilter.getFilter(ci),
+          autoFilter.getSort(ci),
+        );
+        sortFilter.setOffset({ left, top: top + height + 2 });
+        return;
+      }
+    }
+
+    return {
+      ri,
+      ci,
+    };
+  };
 
   function editorSetOffset() {
     const sOffset = getData().getSelectedRect();
@@ -813,12 +839,24 @@ export const getSheet = (
   }
 
   function sheetInitEvents() {
+    // Check if we are in chrome mobile simulation mode
+    let getIsInTouchMode = () => {
+      return (
+        getOptions().debugMode &&
+        window.navigator.userAgent.indexOf("Mobile") !== -1
+      );
+    };
+
     // overlayer
     overlayerEl
       .on("mousemove", (evt) => {
+        if (getIsInTouchMode()) return;
+
         overlayerMousemove(evt);
       })
       .on("mousedown", (evt) => {
+        if (getIsInTouchMode()) return;
+
         // If a formula cell is being edited and a left click is made,
         // set that formula cell to start at the selected sheet cell and set a
         // temporary mousemove event handler that updates said formula cell to
@@ -864,20 +902,24 @@ export const getSheet = (
           if (getData().xyInSelectedRect(evt.offsetX, evt.offsetY)) {
             contextMenu.setPosition(evt.offsetX, evt.offsetY);
           } else {
-            overlayerMousedown(evt);
+            mouseDownOverlayerCellOffset(evt);
             contextMenu.setPosition(evt.offsetX, evt.offsetY);
           }
           evt.stopPropagation();
         } else if (evt.detail === 2) {
           editorSet();
         } else {
-          overlayerMousedown(evt);
+          mouseDownOverlayerCellOffset(evt);
         }
       })
       .on("mousewheel.stop", (evt) => {
+        if (getIsInTouchMode()) return;
+
         // overlayerMousescroll(evt);
       })
       .on("mouseout", (evt) => {
+        if (getIsInTouchMode()) return;
+
         const { offsetX, offsetY } = evt;
         if (offsetY <= 0) colResizer.hide();
         if (offsetX <= 0) rowResizer.hide();
@@ -887,6 +929,10 @@ export const getSheet = (
     bindTouch(overlayerEl.el, {
       move: (direction, d) => {
         overlayerTouch(direction, d);
+      },
+      edit: (evt) => {
+        touchStartOverlayer(evt);
+        // editorSet();
       },
     });
 
