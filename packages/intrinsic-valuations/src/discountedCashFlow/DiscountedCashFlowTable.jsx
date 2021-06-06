@@ -582,7 +582,7 @@ const DiscountedCashFlowTable = ({
             },
           }}
         >
-          The green&nbsp;
+          The&nbsp;
           <Link
             component={AnchorLink}
             to={to}

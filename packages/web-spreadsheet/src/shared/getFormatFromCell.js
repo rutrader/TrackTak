@@ -1,4 +1,4 @@
-import { isNil } from "lodash";
+import { isNil } from "lodash-es";
 
 const getFormatFromCell = (cell, getData) => {
   const styleKey = cell?.style;
