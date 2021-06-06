@@ -1,5 +1,4 @@
-import { isNil } from "lodash";
-import getFormatFromCell from "../shared/getFormatFromCell";
+import { isNil } from "lodash-es";
 
 /* eslint-disable no-param-reassign */
 function cloneDeep(obj) {
