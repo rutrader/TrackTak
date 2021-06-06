@@ -24,6 +24,7 @@ export const getComment = (getData, viewFn, contextMenuEl, eventEmitter) => {
       viewFn,
       rect.left + rect.width + indexWith,
       rect.top + indexHeight,
+      rect.width
     );
 
     bindClickoutside(
