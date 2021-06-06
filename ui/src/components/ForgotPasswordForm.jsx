@@ -92,23 +92,24 @@ const ForgotPasswordForm = ({ onSuccess, onCancelClick }) => {
         </Typography>
         <Box
           sx={{
-            width: "100%",
             marginTop: theme.spacing(3),
           }}
         >
           <form onSubmit={handleSubmit} validate="true">
-            <Grid container spacing={2}>
+            <Grid container spacing={2} justifyContent="center">
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"
                   required
-                  fullWidth
                   id="email"
                   label="Email Address"
                   name="email"
                   autoComplete="email"
                   disabled={verificationEmailSent}
                   onChange={(e) => setEmail(e.target.value)}
+                  sx={{
+                    display: 'flex',
+                  }}
                 />
               </Grid>
               {verificationEmailSent && (
@@ -117,11 +118,13 @@ const ForgotPasswordForm = ({ onSuccess, onCancelClick }) => {
                     <TextField
                       variant="outlined"
                       required
-                      fullWidth
                       id="challengeCode"
                       label="Code"
                       name="challengeCode"
                       onChange={(e) => setChallengeCode(e.target.value)}
+                      sx={{
+                        display: 'flex',
+                      }}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -129,12 +132,14 @@ const ForgotPasswordForm = ({ onSuccess, onCancelClick }) => {
                       onChange={(e) => setPassword(e.target.value)}
                       variant="outlined"
                       required
-                      fullWidth
                       name="password"
                       label="Password"
                       type="password"
                       id="password"
                       InputProps={{ inputProps: { minLength: 8 } }}
+                      sx={{
+                        display: 'flex',
+                      }}
                     />
                   </Grid>
                 </>

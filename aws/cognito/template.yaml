@@ -28,6 +28,9 @@ Parameters:
   SESFromAddress:
     Type: String
     Description: The e-mail address to send the secret login code from
+  SESSourceARN:
+    Type: String
+    Description: The SES Source ARN Cognito will use for sending emails
 
 Resources:
   ChangePassword:
@@ -165,6 +168,11 @@ Resources:
         PreSignUp: !GetAtt PreSignUp.Arn
         VerifyAuthChallengeResponse: !GetAtt VerifyAuthChallengeResponse.Arn
         PostAuthentication: !GetAtt PostAuthentication.Arn
+      EmailConfiguration:
+        EmailSendingAccount: DEVELOPER
+        From: no-reply@tracktak.com
+        ReplyToEmailAddress: no-reply@tracktak.com
+        SourceArn: !Ref SESSourceARN
 
   DefineAuthChallengeInvocationPermission:
     Type: AWS::Lambda::Permission

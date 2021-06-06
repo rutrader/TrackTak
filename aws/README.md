@@ -17,6 +17,7 @@ export SES_FROM_ADDRESS=registration@tracktak.com;
 export STACK_NAME=tracktakCognitoEmailAuthFlow;
 export USER_POOL_NAME=Tracktak;
 export AWS_DEFAULT_REGION=eu-west-2;
+export SES_SOURCE_ARN=arn:aws:ses:eu-west-1:326973209868:identity/tracktak.com
 ```
 
 **TEST**
@@ -26,6 +27,7 @@ export SES_FROM_ADDRESS=registration@tracktak.com;
 export STACK_NAME=tracktakCognitoEmailAuthFlowTest;
 export USER_POOL_NAME=TracktakTest;
 export AWS_DEFAULT_REGION=eu-west-1;
+export SES_SOURCE_ARN=arn:aws:ses:eu-west-1:326973209868:identity/tracktak.com
 ```
 
 Run
