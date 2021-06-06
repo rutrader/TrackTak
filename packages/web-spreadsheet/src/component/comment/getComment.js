@@ -31,7 +31,7 @@ export const getComment = (
       viewFn,
       rect.left + rect.width + indexWith,
       rect.top + indexHeight,
-      rect.width,
+      rect,
     );
 
     bindClickoutside(
