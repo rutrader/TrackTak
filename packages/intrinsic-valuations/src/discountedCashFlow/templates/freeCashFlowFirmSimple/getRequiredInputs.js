@@ -14,7 +14,7 @@ export const getRequiredInputs = (inputQueryParams, theme) => {
     name: requiredInputsSheetName,
     cols: {
       0: {
-        width: 195,
+        width: 220,
       },
       1: {
         width: 75,
@@ -46,13 +46,11 @@ export const getRequiredInputs = (inputQueryParams, theme) => {
       },
       1: {
         cells: [
-          {
-            text: requiredFieldLabel(labels.ebitTargetMarginInYear_10),
-          },
+          { text: requiredFieldLabel(labels.ebitTargetMarginInYear_10) },
           {
             text: inputQueryParams[queryNames.ebitTargetMarginInYear_10],
             style: 5,
-            comment: `Earnings Before Interest and Taxes - Start by looking at your company's current pre-tax operating margin but also look at the average for your industry.`,
+            comment: `Start by looking at your company's current pre-tax operating margin but also look at the average for your industry.`,
           },
         ],
       },

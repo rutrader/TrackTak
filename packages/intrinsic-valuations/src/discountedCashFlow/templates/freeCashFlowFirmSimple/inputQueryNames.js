@@ -2,7 +2,7 @@ import { camelCase } from "change-case";
 
 export const labels = {
   cagrInYears_1_5: "CAGR in Years 1-5",
-  ebitTargetMarginInYear_10: "EBIT Target Margin in Year 10",
+  ebitTargetMarginInYear_10: "Operating Target Margin in Year 10",
   yearOfConvergence: "Year of Convergence",
   salesToCapitalRatio: "Sales to Capital Ratio",
   pretaxCostOfDebt: "Pre-tax Cost of Debt",
@@ -23,6 +23,13 @@ export const labels = {
 };
 
 export const queryNames = Object.keys(labels).reduce((prev, curr) => {
+  // TODO: Remove once we convert to ebit fully
+  if (curr === "ebitTargetMarginInYear_10") {
+    return {
+      ...prev,
+      [curr]: camelCase("EBIT Target Margin in Year 10"),
+    };
+  }
   return {
     ...prev,
     [curr]: camelCase(labels[curr]),

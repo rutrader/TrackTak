@@ -33,7 +33,6 @@ import {
   getTenYearGovernmentBondLastCloseThunk,
 } from "../../redux/thunks/fundamentalsThunks";
 import SubscribeCover from "../../components/SubscribeCover";
-import subscribePopupShownHook from "../../hooks/subscribePopupShownHook";
 import selectValuationCurrencyCode from "../../../../packages/intrinsic-valuations/src/selectors/fundamentalSelectors/selectValuationCurrencyCode";
 import selectGeneral from "../../../../packages/intrinsic-valuations/src/selectors/fundamentalSelectors/selectGeneral";
 import { labels } from "../../../../packages/intrinsic-valuations/src/discountedCashFlow/templates/freeCashFlowFirmSimple/inputQueryNames";

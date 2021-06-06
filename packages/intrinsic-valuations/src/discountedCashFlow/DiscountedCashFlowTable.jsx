@@ -45,7 +45,10 @@ import { getOptionalInputs } from "./templates/freeCashFlowFirmSimple/getOptiona
 import useSetURLInput from "../hooks/useSetURLInput";
 import { camelCase } from "change-case";
 import { allInputNameTypeMappings } from "./scopeNameTypeMapping";
-import { queryNames } from "./templates/freeCashFlowFirmSimple/inputQueryNames";
+import {
+  labels,
+  queryNames,
+} from "./templates/freeCashFlowFirmSimple/inputQueryNames";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 
 const defaultColWidth = 110;
@@ -354,10 +357,16 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     const cellEditedCallback = (_, __, value, cellAddress) => {
-      const label = spreadsheet.hyperformula.getCellValue({
+      let label = spreadsheet.hyperformula.getCellValue({
         ...cellAddress,
         col: cellAddress.col - 1,
       });
+
+      // TODO: Remove later
+      if (label === labels.ebitTargetMarginInYear_10 + " *") {
+        label = "EBIT Target Margin in Year 10";
+      }
+
       if (label) {
         const urlName = camelCase(label);
 

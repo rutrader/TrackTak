@@ -3,14 +3,18 @@ import LayoutHome from "./LayoutHome";
 import React, { useEffect } from "react";
 import LayoutFullScreen from "./LayoutFullScreen";
 import TTSnackbar from "../components/TTSnackbar";
+import { queryNames } from "../../../packages/intrinsic-valuations/src/discountedCashFlow/templates/freeCashFlowFirmSimple/inputQueryNames";
 
 const oldQueryPath = /cagrYearOneToFive=[0-9]+|ebitTargetMarginInYearTen=[0-9]+/g;
 
 const getNewSearch = (search) => {
-  let newSearch = search.replace("cagrYearOneToFive", "cagrInYears_1_5");
+  let newSearch = search.replace(
+    "cagrYearOneToFive",
+    queryNames.cagrInYears_1_5,
+  );
   newSearch = newSearch.replace(
     "ebitTargetMarginInYearTen",
-    "ebitTargetMarginInYear_10",
+    queryNames.ebitTargetMarginInYear_10,
   );
 
   return newSearch;
