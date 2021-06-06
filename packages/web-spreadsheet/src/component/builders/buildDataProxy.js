@@ -18,7 +18,7 @@ export const buildDataProxy = (getOptions, getData, hyperformula) => () => {
   // don't save object
   const selector = new Selector();
   const scroll = new Scroll();
-  const history = new History();
+  const history = new History(hyperformula);
   const clipboard = new Clipboard();
   const autoFilter = new AutoFilter();
 

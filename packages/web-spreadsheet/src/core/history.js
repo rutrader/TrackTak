@@ -1,7 +1,10 @@
 // import helper from '../helper';
 
+import mapDatasheetToSheetContent from "../shared/mapDatasheetToSheetContent";
+
 export default class History {
-  constructor() {
+  constructor(hyperformula) {
+    this.hyperformula = hyperformula;
     this.undoItems = [];
     this.redoItems = [];
   }
@@ -23,7 +26,13 @@ export default class History {
     const { undoItems, redoItems } = this;
     if (this.canUndo()) {
       redoItems.push(JSON.stringify(currentd));
-      cb(JSON.parse(undoItems.pop()));
+      const dataSheet = JSON.parse(undoItems.pop());
+      const sheetContent = mapDatasheetToSheetContent(dataSheet);
+
+      // TODO: make this just undo later
+      this.hyperformula.setSheetContent(dataSheet.name, sheetContent);
+
+      cb(dataSheet);
     }
   }
 
@@ -31,7 +40,13 @@ export default class History {
     const { undoItems, redoItems } = this;
     if (this.canRedo()) {
       undoItems.push(JSON.stringify(currentd));
-      cb(JSON.parse(redoItems.pop()));
+      const dataSheet = JSON.parse(redoItems.pop());
+      const sheetContent = mapDatasheetToSheetContent(dataSheet);
+
+      // TODO: make this just redo later
+      this.hyperformula.setSheetContent(dataSheet.name, sheetContent);
+
+      cb(dataSheet);
     }
   }
 }

@@ -6,6 +6,7 @@ import spreadsheetEvents from "../core/spreadsheetEvents";
 import setTextFormat from "../shared/setTextFormat";
 import getFormatFromCell from "../shared/getFormatFromCell";
 import getTouchElementOffset from "../shared/getTouchElementOffset";
+import mapDatasheetToSheetContent from "../shared/mapDatasheetToSheetContent";
 
 /**
  * @desc throttle fn
@@ -256,11 +257,7 @@ export const getSheet = (
       }
       data.setData(dataSheet);
 
-      const sheetContent = Object.values(dataSheet.rows).map(({ cells }) => {
-        return cells.map((cell) => {
-          return cell.text;
-        });
-      });
+      const sheetContent = mapDatasheetToSheetContent(dataSheet);
 
       hyperformula.setSheetContent(dataSheet.name, sheetContent);
 
