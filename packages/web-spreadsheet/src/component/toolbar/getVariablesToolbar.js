@@ -7,9 +7,12 @@ import { buildUndo } from "./buildUndo";
 import { buildRedo } from "./buildRedo";
 import { buildFormat } from "./buildFormat";
 import { buildItems } from "./buildItems";
+import spreadsheetEvents from "../../core/spreadsheetEvents";
+import { resize } from "./resize";
 
 export const getVariablesToolbar = (getOptions, getData, eventEmitter) => {
-  const hideFn = () => !getOptions().showVariablesSpreadsheet;
+  const hideFn = () => !getOptions().show;
+  const widthFn = () => getOptions().view.width();
 
   const undoEl = buildUndo(eventEmitter);
   const redoEl = buildRedo(eventEmitter);
@@ -19,8 +22,9 @@ export const getVariablesToolbar = (getOptions, getData, eventEmitter) => {
   const items = [
     [formatEl],
     buildDivider(),
-    [undoEl, redoEl],
-    buildDivider(),
+    // TODO: Fix triggering the url and then add it back
+    // [undoEl, redoEl],
+    // buildDivider(),
     [moreEl],
   ];
 
@@ -30,6 +34,24 @@ export const getVariablesToolbar = (getOptions, getData, eventEmitter) => {
   buildItems(items, buttonsEl);
 
   el.child(buttonsEl);
+
+  eventEmitter.on(spreadsheetEvents.sheet.switchData, (newData) => {
+    reset(hideFn(), newData, undoEl, redoEl, formatEl);
+
+    resize(hideFn(), items, reset, el, buttonsEl, moreEl, widthFn);
+  });
+
+  eventEmitter.on(spreadsheetEvents.sheet.cellSelected, () => {
+    reset();
+  });
+
+  eventEmitter.on(spreadsheetEvents.sheet.cellsSelected, () => {
+    reset();
+  });
+
+  eventEmitter.on(spreadsheetEvents.sheet.sheetReset, () => {
+    reset();
+  });
 
   const reset = () => {
     if (hideFn()) return;

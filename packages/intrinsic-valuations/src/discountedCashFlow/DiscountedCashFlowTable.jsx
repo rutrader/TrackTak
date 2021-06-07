@@ -45,10 +45,7 @@ import { getOptionalInputs } from "./templates/freeCashFlowFirmSimple/getOptiona
 import useSetURLInput from "../hooks/useSetURLInput";
 import { camelCase } from "change-case";
 import { allInputNameTypeMappings } from "./scopeNameTypeMapping";
-import {
-  labels,
-  queryNames,
-} from "./templates/freeCashFlowFirmSimple/inputQueryNames";
+import { queryNames } from "./templates/freeCashFlowFirmSimple/inputQueryNames";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 
 const defaultColWidth = 110;
@@ -363,11 +360,11 @@ const DiscountedCashFlowTable = ({
       });
 
       // TODO: Remove later
-      if (label === labels.ebitTargetMarginInYear_10 + " *") {
-        label = "EBIT Target Margin in Year 10";
-      }
-
       if (label) {
+        if (label.includes("Operating Target Margin")) {
+          label = "EBIT Target Margin in Year 10";
+        }
+
         const urlName = camelCase(label);
 
         if (allInputNameTypeMappings[urlName]) {
@@ -394,6 +391,16 @@ const DiscountedCashFlowTable = ({
       }
     };
   }, [setURLInput, spreadsheet]);
+
+  useEffect(() => {
+    if (spreadsheet) {
+      // Disable main sheet editing on mobile for now
+      // until we make mobile have better UX
+      spreadsheet.setOptions({
+        mode: isOnMobile ? "read" : "edit",
+      });
+    }
+  }, [isOnMobile, spreadsheet]);
 
   useEffect(() => {
     if (!hasAllRequiredInputsFilledIn && spreadsheet) {

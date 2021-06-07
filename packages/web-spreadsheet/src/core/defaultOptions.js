@@ -120,12 +120,11 @@ const sharedOptions = {
   },
 };
 
-export const defaultOptions = merge({}, sharedOptions, {
-  showVariablesSpreadsheet: true,
-});
+export const defaultOptions = sharedOptions;
 
 export const defaultVariablesSpreadsheetOptions = merge({}, sharedOptions, {
   view: {
     height: () => 205,
   },
+  show: true,
 });

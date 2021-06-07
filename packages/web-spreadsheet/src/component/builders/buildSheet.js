@@ -61,12 +61,11 @@ export const buildSheet = (
   );
   const overlayerEl = h("div", `${cssPrefix}-overlayer`).child(overlayerCEl);
   const modalValidation = new ModalValidation(eventEmitter, getData);
-  const contextMenu = getContextMenu(overlayerEl, getViewWidthHeight, eventEmitter, () => {
+  const contextMenu = getContextMenu(getViewWidthHeight, eventEmitter, () => {
     return !getOptions().showContextmenu;
   });
 
   const comment = getComment(
-    overlayerEl,
     getData,
     getViewWidthHeight,
     contextMenu.el,
