@@ -51,7 +51,7 @@
     "react-number-format": "^4.5.0",
     "react-redux": "^7.2.2",
     "react-show-more": "^2.0.0",
-    "hyperformula": "^0.6.0",
+    "hyperformula": "^0.6.2",
     "react-table": "^7.6.2",
     "react-window": "^1.8.6",
     "redux": "^4.0.5",

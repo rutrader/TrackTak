@@ -47,6 +47,7 @@ import { camelCase } from "change-case";
 import { allInputNameTypeMappings } from "./scopeNameTypeMapping";
 import { queryNames } from "./templates/freeCashFlowFirmSimple/inputQueryNames";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
+import getEmployeeOptionsSheet from "./templates/freeCashFlowFirmSimple/getEmployeeOptionsSheet";
 
 const defaultColWidth = 110;
 const columnAWidth = 170;
@@ -90,6 +91,7 @@ const getDataSheets = (isOnMobile) => {
       rows,
       styles,
     },
+    getEmployeeOptionsSheet(),
   ];
 
   // Do not put this as a ternary with undefined on the data
@@ -496,6 +498,8 @@ const DiscountedCashFlowTable = ({
     ) {
       dispatch(
         setScope({
+          standardDeviationInStockPrices:
+            currentIndustry.standardDeviationInStockPrices,
           matureMarketEquityRiskPremium,
           pastThreeYearsAverageEffectiveTaxRate,
           totalRevenue: incomeStatement.totalRevenue,
