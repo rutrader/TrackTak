@@ -6,13 +6,7 @@ import { h } from "../element";
 import { unbindClickoutside } from "../event";
 import { bindClickoutside } from "../event";
 
-export const getComment = (
-  overlayerEl,
-  getData,
-  viewFn,
-  contextMenuEl,
-  eventEmitter,
-) => {
+export const getComment = (getData, viewFn, contextMenuEl, eventEmitter) => {
   const el = h("textarea", `${cssPrefix}-comment`).hide();
 
   el.el.placeholder = tf("comment.placeholder")();
@@ -26,12 +20,11 @@ export const getComment = (
     el.val(comment);
 
     setElementPosition(
-      overlayerEl,
       el,
       viewFn,
       rect.left + rect.width + indexWith,
       rect.top + indexHeight,
-      rect,
+      rect.width,
     );
 
     bindClickoutside(
