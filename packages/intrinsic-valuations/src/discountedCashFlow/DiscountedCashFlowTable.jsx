@@ -45,10 +45,7 @@ import { getOptionalInputs } from "./templates/freeCashFlowFirmSimple/getOptiona
 import useSetURLInput from "../hooks/useSetURLInput";
 import { camelCase } from "change-case";
 import { allInputNameTypeMappings } from "./scopeNameTypeMapping";
-import {
-  labels,
-  queryNames,
-} from "./templates/freeCashFlowFirmSimple/inputQueryNames";
+import { queryNames } from "./templates/freeCashFlowFirmSimple/inputQueryNames";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 
 const defaultColWidth = 110;
@@ -396,11 +393,11 @@ const DiscountedCashFlowTable = ({
   }, [setURLInput, spreadsheet]);
 
   useEffect(() => {
-    if (spreadsheet && isOnMobile) {
+    if (spreadsheet) {
       // Disable main sheet editing on mobile for now
       // until we make mobile have better UX
       spreadsheet.setOptions({
-        mode: "read",
+        mode: isOnMobile ? "read" : "edit",
       });
     }
   }, [isOnMobile, spreadsheet]);
