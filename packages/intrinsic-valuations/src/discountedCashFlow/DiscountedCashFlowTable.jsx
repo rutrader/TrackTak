@@ -363,11 +363,11 @@ const DiscountedCashFlowTable = ({
       });
 
       // TODO: Remove later
-      if (label === labels.ebitTargetMarginInYear_10 + " *") {
-        label = "EBIT Target Margin in Year 10";
-      }
-
       if (label) {
+        if (label.includes("Operating Target Margin")) {
+          label = "EBIT Target Margin in Year 10";
+        }
+
         const urlName = camelCase(label);
 
         if (allInputNameTypeMappings[urlName]) {
@@ -394,6 +394,16 @@ const DiscountedCashFlowTable = ({
       }
     };
   }, [setURLInput, spreadsheet]);
+
+  useEffect(() => {
+    if (spreadsheet && isOnMobile) {
+      // Disable main sheet editing on mobile for now
+      // until we make mobile have better UX
+      spreadsheet.setOptions({
+        mode: "read",
+      });
+    }
+  }, [isOnMobile, spreadsheet]);
 
   useEffect(() => {
     if (!hasAllRequiredInputsFilledIn && spreadsheet) {

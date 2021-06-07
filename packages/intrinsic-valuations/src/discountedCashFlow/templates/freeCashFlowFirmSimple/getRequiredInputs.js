@@ -14,7 +14,7 @@ export const getRequiredInputs = (inputQueryParams, theme) => {
     name: requiredInputsSheetName,
     cols: {
       0: {
-        width: 220,
+        width: 170,
       },
       1: {
         width: 75,
@@ -45,8 +45,9 @@ export const getRequiredInputs = (inputQueryParams, theme) => {
         ],
       },
       1: {
+        height: 35,
         cells: [
-          { text: requiredFieldLabel(labels.ebitTargetMarginInYear_10) },
+          { text: requiredFieldLabel("Operating Target Margin in\nYear 10") },
           {
             text: inputQueryParams[queryNames.ebitTargetMarginInYear_10],
             style: 5,

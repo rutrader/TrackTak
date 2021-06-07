@@ -5,12 +5,14 @@ export const makeGetViewWidthHeight = (
   getOptions,
   getVariablesSheetOptions,
 ) => () => {
-  const { view, showToolbar, showVariablesSpreadsheet } = getOptions();
+  const { view, showToolbar } = getOptions();
+  const { show: showVariablesSheet } = getVariablesSheetOptions();
+
   let height;
 
   height = view.height();
 
-  if (showVariablesSpreadsheet) {
+  if (showVariablesSheet) {
     height -= getVariablesSheetOptions().view.height();
   }
 
