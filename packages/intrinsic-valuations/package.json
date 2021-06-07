@@ -1,6 +1,6 @@
 {
   "name": "@tracktak/intrinsic-valuations",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A react package that allows external websites to use our intrinsic valuations for https://tracktak.com",
   "author": "tracktak",
   "license": "SEE LICENSE IN README.MD",
