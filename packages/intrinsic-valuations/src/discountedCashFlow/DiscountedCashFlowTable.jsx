@@ -47,6 +47,7 @@ import { camelCase } from "change-case";
 import { allInputNameTypeMappings } from "./scopeNameTypeMapping";
 import { queryNames } from "./templates/freeCashFlowFirmSimple/inputQueryNames";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
+import { currencySymbolMap } from "currency-symbol-map";
 
 const defaultColWidth = 110;
 const columnAWidth = 170;
@@ -341,6 +342,9 @@ const DiscountedCashFlowTable = ({
       dcfValuationElement,
       options,
       variablesSpreadsheetOptions,
+      {
+        currencySymbol: Object.values(currencySymbolMap),
+      },
     );
 
     spreadsheet.variablesSpreadsheet.variablesSheet.el.el.id = requiredInputsId;

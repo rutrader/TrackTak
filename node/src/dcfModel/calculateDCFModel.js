@@ -1,8 +1,10 @@
 import { HyperFormula } from "hyperformula";
+import { currencySymbolMap } from "currency-symbol-map";
 
 const calculateDCFModel = (sheetsSerializedValues, scope) => {
   const hyperformula = HyperFormula.buildFromSheets(sheetsSerializedValues, {
     licenseKey: "05054-b528f-a10c4-53f2a-04b57",
+    currencySymbol: Object.values(currencySymbolMap),
   });
 
   // TODO: Make generic later on
