@@ -9,7 +9,7 @@ import cells from "../../discountedCashFlow/cells";
 
 const initialState = {
   cells,
-  sheetsSetializedValues: null,
+  sheetsSerializedValues: null,
   sheetsValues: null,
 };
 
@@ -21,8 +21,8 @@ export const dcfReducer = createReducer(initialState, (builder) => {
     };
   });
   builder.addCase(setSheetsSerializedValues, (state, { payload }) => {
-    state.sheetsSetializedValues = {
-      ...state.sheetsSetializedValues,
+    state.sheetsSerializedValues = {
+      ...state.sheetsSerializedValues,
       ...payload,
     };
   });

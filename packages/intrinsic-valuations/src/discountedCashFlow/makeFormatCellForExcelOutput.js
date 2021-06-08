@@ -34,6 +34,7 @@ const makeGetDependency = (currentSheetName) => (
 
 const makeFormatCellForExcelOutput = (
   currencySymbol,
+  sheetsValues,
   inputDataKeys,
   costOfCapitalDataKeys,
   scope,
@@ -88,6 +89,10 @@ const makeFormatCellForExcelOutput = (
       formula = replaceAll(formula, "'Optional Inputs'!J3", "'Inputs'!B17");
       formula = replaceAll(formula, "'Optional Inputs'!J4", "'Inputs'!B18");
       formula = replaceAll(formula, "'Optional Inputs'!J5", "'Inputs'!B19");
+      formula = formula.replace(
+        /'Employee Options'!\$B\$17/g,
+        `${sheetsValues["Employee Options"][16][1]}`,
+      );
 
       // Remove the equal sign
       formula = formula.substring(1);
