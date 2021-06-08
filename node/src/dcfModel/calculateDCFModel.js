@@ -1,5 +1,6 @@
 import { HyperFormula } from "hyperformula";
 import { currencySymbolMap } from "currency-symbol-map";
+import isNil from "lodash/isNil";
 
 const calculateDCFModel = (sheetsSerializedValues, scope) => {
   const hyperformula = HyperFormula.buildFromSheets(sheetsSerializedValues, {
@@ -13,7 +14,7 @@ const calculateDCFModel = (sheetsSerializedValues, scope) => {
 
   // TODO: Remove these later when this hyperformula issue is fixed:
   // https://github.com/handsontable/hyperformula/issues/686
-  if (requiredInputsId) {
+  if (!isNil(requiredInputsId)) {
     hyperformula.setCellContents(
       { sheet: requiredInputsId, col: 1, row: 0 },
       scope.cagrInYears_1_5,
@@ -35,7 +36,7 @@ const calculateDCFModel = (sheetsSerializedValues, scope) => {
     );
   }
 
-  if (optionalInputsId) {
+  if (!isNil(optionalInputsId)) {
     hyperformula.setCellContents(
       { sheet: optionalInputsId, col: 9, row: 3 },
       scope.probabilityOfFailure,
