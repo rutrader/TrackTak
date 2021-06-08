@@ -48,6 +48,7 @@ import { allInputNameTypeMappings } from "./scopeNameTypeMapping";
 import { queryNames } from "./templates/freeCashFlowFirmSimple/inputQueryNames";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 import getEmployeeOptionsSheet from "./templates/freeCashFlowFirmSimple/getEmployeeOptionsSheet";
+import { currencySymbolMap } from "currency-symbol-map";
 
 const defaultColWidth = 110;
 const columnAWidth = 170;
@@ -343,6 +344,9 @@ const DiscountedCashFlowTable = ({
       dcfValuationElement,
       options,
       variablesSpreadsheetOptions,
+      {
+        currencySymbol: Object.values(currencySymbolMap),
+      },
     );
 
     spreadsheet.variablesSpreadsheet.variablesSheet.el.el.id = requiredInputsId;
@@ -547,6 +551,7 @@ const DiscountedCashFlowTable = ({
     valueOfAllOptionsOutstanding,
     hasAllRequiredInputsFilledIn,
     inputQueryParams,
+    currentIndustry.standardDeviationInStockPrices,
   ]);
 
   const to = `${location.pathname}#${requiredInputsId}`;

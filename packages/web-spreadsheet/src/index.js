@@ -7,12 +7,18 @@ import { HyperFormula } from "hyperformula";
 import { hyperformulaLicenseKey } from "./shared/hyperformulaLicenseKey";
 import spreadsheetEvents from "./core/spreadsheetEvents";
 
-const getSpreadsheet = (element, options, variablesSpreadsheetOptions) => {
+const getSpreadsheet = (
+  element,
+  options,
+  variablesSpreadsheetOptions,
+  hyperformulaConfig,
+) => {
   const rootEl = h("div", `${cssPrefix}`).on("contextmenu", (evt) =>
     evt.preventDefault(),
   );
   const hyperformula = HyperFormula.buildEmpty({
     licenseKey: hyperformulaLicenseKey,
+    ...hyperformulaConfig,
   });
 
   const {

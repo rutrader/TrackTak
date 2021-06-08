@@ -1,8 +1,11 @@
 import { HyperFormula } from "hyperformula";
+import { currencySymbolMap } from "currency-symbol-map";
+import isNil from "lodash/isNil";
 
 const calculateDCFModel = (sheetsSerializedValues, scope) => {
   const hyperformula = HyperFormula.buildFromSheets(sheetsSerializedValues, {
     licenseKey: "05054-b528f-a10c4-53f2a-04b57",
+    currencySymbol: Object.values(currencySymbolMap),
   });
 
   // TODO: Make generic later on
@@ -11,45 +14,49 @@ const calculateDCFModel = (sheetsSerializedValues, scope) => {
 
   // TODO: Remove these later when this hyperformula issue is fixed:
   // https://github.com/handsontable/hyperformula/issues/686
-  hyperformula.setCellContents(
-    { sheet: requiredInputsId, col: 1, row: 0 },
-    scope.cagrInYears_1_5,
-  );
+  if (!isNil(requiredInputsId)) {
+    hyperformula.setCellContents(
+      { sheet: requiredInputsId, col: 1, row: 0 },
+      scope.cagrInYears_1_5,
+    );
 
-  hyperformula.setCellContents(
-    { sheet: requiredInputsId, col: 1, row: 1 },
-    scope.ebitTargetMarginInYear_10,
-  );
+    hyperformula.setCellContents(
+      { sheet: requiredInputsId, col: 1, row: 1 },
+      scope.ebitTargetMarginInYear_10,
+    );
 
-  hyperformula.setCellContents(
-    { sheet: requiredInputsId, col: 1, row: 2 },
-    scope.yearOfConvergence,
-  );
+    hyperformula.setCellContents(
+      { sheet: requiredInputsId, col: 1, row: 2 },
+      scope.yearOfConvergence,
+    );
 
-  hyperformula.setCellContents(
-    { sheet: requiredInputsId, col: 1, row: 3 },
-    scope.salesToCapitalRatio,
-  );
+    hyperformula.setCellContents(
+      { sheet: requiredInputsId, col: 1, row: 3 },
+      scope.salesToCapitalRatio,
+    );
+  }
 
-  hyperformula.setCellContents(
-    { sheet: optionalInputsId, col: 9, row: 3 },
-    scope.probabilityOfFailure,
-  );
+  if (!isNil(optionalInputsId)) {
+    hyperformula.setCellContents(
+      { sheet: optionalInputsId, col: 9, row: 3 },
+      scope.probabilityOfFailure,
+    );
 
-  hyperformula.setCellContents(
-    { sheet: optionalInputsId, col: 9, row: 4 },
-    scope.proceedsAsAPercentageOfBookValue,
-  );
+    hyperformula.setCellContents(
+      { sheet: optionalInputsId, col: 9, row: 4 },
+      scope.proceedsAsAPercentageOfBookValue,
+    );
 
-  hyperformula.setCellContents(
-    { sheet: optionalInputsId, col: 9, row: 1 },
-    scope.netOperatingLoss,
-  );
+    hyperformula.setCellContents(
+      { sheet: optionalInputsId, col: 9, row: 1 },
+      scope.netOperatingLoss,
+    );
 
-  hyperformula.setCellContents(
-    { sheet: optionalInputsId, col: 9, row: 2 },
-    scope.nonOperatingAssets,
-  );
+    hyperformula.setCellContents(
+      { sheet: optionalInputsId, col: 9, row: 2 },
+      scope.nonOperatingAssets,
+    );
+  }
 
   Object.keys(scope).forEach((key) => {
     const value = scope[key] || 0;
