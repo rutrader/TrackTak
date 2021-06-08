@@ -8,6 +8,7 @@ import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { dateFormat } from "../../shared/dateFormat";
 import getFormatFromCell from "../../shared/getFormatFromCell";
 import setTextFormat from "../../shared/setTextFormat";
+import { isNil } from "lodash-es";
 
 export const getEditableInput = (
   getData,
@@ -229,7 +230,7 @@ export const getEditableInput = (
 
     _cell = cell;
 
-    let text = (_cell && _cell.text) || "";
+    let text = !isNil(_cell?.text) ? cell.text : "";
 
     setText(text);
 
