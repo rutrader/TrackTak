@@ -7,7 +7,6 @@ import {
   useTheme,
 } from "@material-ui/core";
 import {
-  BlackScholesResults,
   CompanyOverviewStats,
   CostOfCapitalResults,
   DiscountedCashFlowSheet,
@@ -71,9 +70,6 @@ const DiscountedCashFlow = () => {
         </SubSection>
         <SubSection>
           <CostOfCapitalResults />
-        </SubSection>
-        <SubSection>
-          <BlackScholesResults />
         </SubSection>
       </Section>
       <Section>

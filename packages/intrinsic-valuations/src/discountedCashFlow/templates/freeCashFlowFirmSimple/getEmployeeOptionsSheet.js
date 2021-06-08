@@ -126,7 +126,7 @@ const getEmployeeOptionsSheet = () => {
           },
           {
             text:
-              "=(LN(B8 / B3) + (B6 + (B5 * B5) / 2) * B4) / (B5 * SQRT(B4))",
+              "=IFERROR((LN(B8 / B3) + (B6 + (B5 * B5) / 2) * B4) / (B5 * SQRT(B4)), 0)",
           },
         ],
       },

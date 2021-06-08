@@ -100,7 +100,7 @@ const cells = {
   B30: getExpressionProperties("=cashAndShortTermInvestments"),
   B31: getExpressionProperties(`='${optionalInputsSheetName}'!J3`),
   B32: getExpressionProperties("=B27-B28-B29+B30+B31"),
-  B33: getExpressionProperties("=valueOfAllOptionsOutstanding"),
+  B33: getExpressionProperties("='Employee Options'!$B$17"),
   B34: getExpressionProperties("=B32-B33"),
   B35: getExpressionProperties("=price"),
   B36: getExpressionProperties(
