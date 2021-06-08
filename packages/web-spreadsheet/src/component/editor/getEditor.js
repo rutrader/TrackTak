@@ -35,7 +35,7 @@ export const getEditor = (getData, getOptions, formulas, eventEmitter) => {
     setTimeout(() => {
       setCaretPosition(
         editableInput.textEl.el,
-        format === "percent" ? text.length - 1 : text.length,
+        format === "percent" && text.length > 0 ? text.length - 1 : text.length,
       );
     });
   });

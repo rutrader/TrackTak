@@ -230,11 +230,16 @@ const DiscountedCashFlowTable = ({
         format: "currency",
         label: `${currencySymbol}10.00`,
         editRender: (v) => {
-          const firstChar = v.toString().charAt(0);
-
-          if (firstChar === "=" || firstChar === currencySymbol) return v;
-
           let text = v.toString();
+          const firstChar = text.charAt(0);
+
+          if (
+            (firstChar === currencySymbol && text.length === 1) ||
+            text.length === 0
+          )
+            return "";
+
+          if (firstChar === "=" || text.includes(currencySymbol)) return v;
 
           text = currencySymbol + text;
 
@@ -265,7 +270,7 @@ const DiscountedCashFlowTable = ({
             number *= million;
           }
 
-          return number;
+          return number.toString();
         },
         render: (v) => {
           if (isNil(v) || v === "") return "";
