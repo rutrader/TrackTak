@@ -26,6 +26,7 @@ import {
   setCells,
   setScope,
   setSheetsSerializedValues,
+  setSheetsValues,
 } from "../redux/actions/dcfActions";
 import { isNil } from "lodash-es";
 import {
@@ -444,6 +445,7 @@ const DiscountedCashFlowTable = ({
           spreadsheet.hyperformula.getAllSheetsSerialized(),
         ),
       );
+      dispatch(setSheetsValues(spreadsheet.hyperformula.getAllSheetsValues()));
     }
   }, [hasAllRequiredInputsFilledIn, isOnMobile, spreadsheet, dispatch, scope]);
 

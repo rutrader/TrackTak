@@ -1,4 +1,4 @@
 const selectSheetsSerializedValues = (state) =>
-  state.dcf.sheetsSetializedValues;
+  state.dcf.sheetsSerializedValues;
 
 export default selectSheetsSerializedValues;
