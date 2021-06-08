@@ -3,12 +3,13 @@ import Suggest from "../suggest";
 import Datepicker from "../datepicker";
 import { cssPrefix } from "../../config";
 import Formula from "../formula";
-import { setCaretPosition, saveCaretPosition } from "../../core/caret";
+import { setCaretPosition } from "../../core/caret";
 import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { dateFormat } from "../../shared/dateFormat";
 import getFormatFromCell from "../../shared/getFormatFromCell";
 import setTextFormat from "../../shared/setTextFormat";
 import { isNil } from "lodash-es";
+import getCaretPositionIndex from "../../shared/getCaretPositionIndex";
 
 export const getEditableInput = (
   getData,
@@ -46,37 +47,39 @@ export const getEditableInput = (
   }
 
   const setInputText = (text) => {
-    inputText = text;
+    const format = getFormatFromCell(_cell, getData().getData);
+
+    inputText = setTextFormat(text, format, getOptions().formats, "input");
     formula.setInputText(inputText);
 
     if (_validator) {
       if (_validator.type === "list") {
-        suggest.search(text);
+        suggest.search(inputText);
       } else {
         suggest.hide();
       }
     } else {
-      const start = text.lastIndexOf("=");
+      const start = inputText.lastIndexOf("=");
       if (start !== -1) {
-        suggest.search(text.substring(start + 1));
+        suggest.search(inputText.substring(start + 1));
       } else {
         suggest.hide();
       }
     }
     render();
 
-    eventEmitter.emit(spreadsheetEvents[eventType].change, "input", text);
+    eventEmitter.emit(spreadsheetEvents[eventType].change, "input", inputText);
   };
 
   function inputEventHandler() {
-    // save caret position
-    const restore = saveCaretPosition(textEl.el);
-
     setInputText(textEl.el.textContent);
 
-    // restore caret postion
-    // to avoid caret postion missing when el.innerHTML changed
-    restore();
+    const format = getFormatFromCell(_cell, getData().getData);
+
+    setCaretPosition(
+      textEl.el,
+      getCaretPositionIndex(textEl.el.textContent, format),
+    );
   }
 
   function suggestItemClick(it) {
@@ -252,14 +255,12 @@ export const getEditableInput = (
 
   const setText = (text) => {
     const format = getFormatFromCell(_cell, getData().getData);
+    inputText = setTextFormat(text, format, getOptions().formats, "start");
 
-    text = setTextFormat(text, format, getOptions().formats, "start");
-
-    inputText = text;
     formula.setInputText(inputText);
     // console.log('text>>:', text);
 
-    eventEmitter.emit(spreadsheetEvents[eventType].setText, text, format);
+    eventEmitter.emit(spreadsheetEvents[eventType].setText, inputText, format);
     render();
   };
 
