@@ -58,7 +58,7 @@
   },
   "dependencies": {
     "eventemitter3": "^4.0.7",
-    "hyperformula": "^0.6.0",
+    "hyperformula": "^0.6.2",
     "lodash-es": "^4.17.20"
   }
 }

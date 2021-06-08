@@ -170,6 +170,14 @@ export const getTable = (
       }
       cellText = formats[format].render(cellText);
 
+      if (cellText.value) {
+        const error = cellText;
+
+        cellText = error.value;
+
+        console.error(error);
+      }
+
       const font = Object.assign({}, style.font);
       font.size = getFontSizePxByPt(font.size);
 

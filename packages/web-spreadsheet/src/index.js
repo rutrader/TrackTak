@@ -21,6 +21,9 @@ const getSpreadsheet = (
     ...hyperformulaConfig,
   });
 
+  hyperformula.addNamedExpression("TRUE", "=TRUE()");
+  hyperformula.addNamedExpression("FALSE", "=FALSE()");
+
   const {
     sheet,
     spreadsheetEventEmitter,

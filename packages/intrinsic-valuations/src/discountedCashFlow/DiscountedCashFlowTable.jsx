@@ -6,7 +6,6 @@ import { Alert, Box, useMediaQuery, useTheme, Link } from "@material-ui/core";
 import useInputQueryParams from "../hooks/useInputQueryParams";
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
 import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
-import selectValueOfAllOptionsOutstanding from "../selectors/fundamentalSelectors/selectValueOfAllOptionsOutstanding";
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
 import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
@@ -47,6 +46,7 @@ import { camelCase } from "change-case";
 import { allInputNameTypeMappings } from "./scopeNameTypeMapping";
 import { queryNames } from "./templates/freeCashFlowFirmSimple/inputQueryNames";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
+import getEmployeeOptionsSheet from "./templates/freeCashFlowFirmSimple/getEmployeeOptionsSheet";
 import { currencySymbolMap } from "currency-symbol-map";
 
 const defaultColWidth = 110;
@@ -91,6 +91,7 @@ const getDataSheets = (isOnMobile) => {
       rows,
       styles,
     },
+    getEmployeeOptionsSheet(),
   ];
 
   // Do not put this as a ternary with undefined on the data
@@ -195,9 +196,6 @@ const DiscountedCashFlowTable = ({
   const costOfCapital = useInjectQueryParams(selectCostOfCapital);
   const riskFreeRate = useSelector(selectRiskFreeRate);
   const sharesOutstanding = useSelector(selectSharesOutstanding);
-  const valueOfAllOptionsOutstanding = useInjectQueryParams(
-    selectValueOfAllOptionsOutstanding,
-  );
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
   const pastThreeYearsAverageEffectiveTaxRate = useSelector(
     selectThreeAverageYearsEffectiveTaxRate,
@@ -357,7 +355,7 @@ const DiscountedCashFlowTable = ({
   }, [currencySymbol]);
 
   useEffect(() => {
-    const cellEditedCallback = (_, __, value, cellAddress) => {
+    const cellEditedCallback = ({ cellAddress, value }) => {
       let label = spreadsheet.hyperformula.getCellValue({
         ...cellAddress,
         col: cellAddress.col - 1,
@@ -500,6 +498,8 @@ const DiscountedCashFlowTable = ({
     ) {
       dispatch(
         setScope({
+          standardDeviationInStockPrices:
+            currentIndustry.standardDeviationInStockPrices,
           matureMarketEquityRiskPremium,
           pastThreeYearsAverageEffectiveTaxRate,
           totalRevenue: incomeStatement.totalRevenue,
@@ -512,7 +512,6 @@ const DiscountedCashFlowTable = ({
           sharesOutstanding,
           price,
           bookValueOfEquity: balanceSheet.bookValueOfEquity,
-          valueOfAllOptionsOutstanding,
           riskFreeRate,
           totalCostOfCapital: costOfCapital.totalCostOfCapital,
           cagrInYears_1_5: inputQueryParams[queryNames.cagrInYears_1_5],
@@ -544,9 +543,9 @@ const DiscountedCashFlowTable = ({
     price,
     riskFreeRate,
     sharesOutstanding,
-    valueOfAllOptionsOutstanding,
     hasAllRequiredInputsFilledIn,
     inputQueryParams,
+    currentIndustry.standardDeviationInStockPrices,
   ]);
 
   const to = `${location.pathname}#${requiredInputsId}`;

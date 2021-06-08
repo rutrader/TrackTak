@@ -32,7 +32,7 @@ const getModelScopes = (scope, xElement, yElement) => {
   if (!doesScopeExist) return null;
 
   const scopes = xElement.data.flatMap((xElementValue) => {
-    return yElement.data.map((yElementValue, i) => {
+    return yElement.data.map((yElementValue) => {
       return {
         [xElement.name]: xElementValue,
         [yElement.name]: yElementValue,

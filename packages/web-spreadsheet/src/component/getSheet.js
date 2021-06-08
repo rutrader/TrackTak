@@ -164,13 +164,12 @@ export const getSheet = (
       col: ci,
       sheet: getData().getSheetId(),
     };
-
-    eventEmitter.emit(
-      spreadsheetEvents.sheet.cellEdited,
+    const param = {
       cell,
-      null,
       cellAddress,
-    );
+    };
+
+    eventEmitter.emit(spreadsheetEvents.sheet.cellEdited, param);
   };
 
   const deleteCellFormat = () => {
@@ -804,23 +803,17 @@ export const getSheet = (
 
     const value = hyperformula.getCellValue(cellAddress);
     const format = getFormatFromCell(cell, getData().getData);
+    const param = {
+      cell,
+      cellAddress,
+      format,
+      value,
+    };
 
     if (state === "finished") {
-      eventEmitter.emit(
-        spreadsheetEvents.sheet.cellEdited,
-        cell,
-        format,
-        value,
-        cellAddress,
-      );
+      eventEmitter.emit(spreadsheetEvents.sheet.cellEdited, param);
     } else {
-      eventEmitter.emit(
-        spreadsheetEvents.sheet.cellEdit,
-        cell,
-        format,
-        value,
-        cellAddress,
-      );
+      eventEmitter.emit(spreadsheetEvents.sheet.cellEdit, param);
       table.render();
     }
   }

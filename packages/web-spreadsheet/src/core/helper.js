@@ -163,12 +163,12 @@ export const formatStringRender = (v) => {
   return v;
 };
 
-export const formatNumberRender = (v) => {
+export const formatNumberRender = (v, fixedDigitNumber = 2) => {
   if (isNil(v) || v === "") return "";
 
   // match "-12.1" or "12" or "12.1"
   if (/^(-?\d*.?\d*)$/.test(v)) {
-    const v1 = Number(v).toFixed(2).toString();
+    const v1 = Number(v).toFixed(fixedDigitNumber).toString();
     const [first, ...parts] = v1.split(".");
     return [first.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"), ...parts].join(
       ".",
