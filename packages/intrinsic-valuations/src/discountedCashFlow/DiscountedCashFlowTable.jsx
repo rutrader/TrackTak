@@ -230,13 +230,13 @@ const DiscountedCashFlowTable = ({
         format: "currency",
         label: `${currencySymbol}10.00`,
         editRender: (v) => {
-          if (v.toString().charAt(0) === "=") return v;
+          const firstChar = v.toString().charAt(0);
+
+          if (firstChar === "=" || firstChar === currencySymbol) return v;
 
           let text = v.toString();
 
-          if (!text.includes(currencySymbol) && !isNaN(parseFloat(text))) {
-            text = currencySymbol + text;
-          }
+          text = currencySymbol + text;
 
           return text;
         },
@@ -253,7 +253,7 @@ const DiscountedCashFlowTable = ({
         type: "number",
         label: "(000)",
         editRender: (v, state) => {
-          if (v.toString().charAt(0) === "=") return v;
+          if (v.toString().charAt(0) === "=" || !v) return v;
 
           let number = parseFloat(v, 10);
 
@@ -280,8 +280,6 @@ const DiscountedCashFlowTable = ({
         type: "number",
         label: `${currencySymbol}(000)`,
         editRender: (v, state) => {
-          if (v.toString().charAt(0) === "=") return v;
-
           const currencyText = formats.currency.editRender(v);
           const text = formats.million.editRender(
             currencyText.substring(1),
