@@ -8,6 +8,9 @@ const calculateDCFModel = (sheetsSerializedValues, scope) => {
     currencySymbol: Object.values(currencySymbolMap),
   });
 
+  hyperformula.addNamedExpression("TRUE", "=TRUE()");
+  hyperformula.addNamedExpression("FALSE", "=FALSE()");
+
   // TODO: Make generic later on
   const requiredInputsId = hyperformula.getSheetId("Required Inputs");
   const optionalInputsId = hyperformula.getSheetId("Optional Inputs");

@@ -19,6 +19,9 @@ const getEmployeeOptionsSheet = () => {
       0: {
         width: 260,
       },
+      1: {
+        width: 165,
+      },
     },
     rows: {
       0: {
@@ -164,30 +167,32 @@ const getEmployeeOptionsSheet = () => {
           },
         ],
       },
-      15: {
+      14: {
         cells: [
           {
             text: "",
           },
         ],
       },
-      16: {
+      15: {
         cells: [
           {
             text: "Value per option",
           },
           {
-            text: "=(B10*B14-B11*(EXP((0-B6)*B4))*B18)",
+            text: "=B8 * B11 - B3 * EXP(-B6 * B4) * B14",
+            style: styleMap.currency,
           },
         ],
       },
-      17: {
+      16: {
         cells: [
           {
             text: "Value of all options",
           },
           {
-            text: "=B2*B20",
+            text: "=B16*B2",
+            style: styleMap["million-currency"],
           },
         ],
       },
