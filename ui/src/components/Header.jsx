@@ -19,6 +19,7 @@ import featureToggle from "../shared/featureToggle";
 const getRightLinks = (isAuthenticated) => {
   const links = [
     { to: "/how-to-do-a-dcf", text: "Documentation" },
+    { to: "/blogs", text: "Blogs" },
     { to: "/stock-valuations", text: "Valuations" },
     { to: "/contact-us", text: "Contact" },
     {
@@ -36,7 +37,6 @@ const getRightLinks = (isAuthenticated) => {
 
   return links;
 };
-
 
 const buttonStyle = {
   textTransform: "none",
