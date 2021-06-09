@@ -1,16 +1,6 @@
-import { HyperFormula } from "hyperformula";
-import { currencySymbolMap } from "currency-symbol-map";
 import isNil from "lodash/isNil";
 
-const calculateDCFModel = (sheetsSerializedValues, scope) => {
-  const hyperformula = HyperFormula.buildFromSheets(sheetsSerializedValues, {
-    licenseKey: "05054-b528f-a10c4-53f2a-04b57",
-    currencySymbol: Object.values(currencySymbolMap),
-  });
-
-  hyperformula.addNamedExpression("TRUE", "=TRUE()");
-  hyperformula.addNamedExpression("FALSE", "=FALSE()");
-
+const calculateDCFModel = (hyperformula, scope) => {
   // TODO: Make generic later on
   const requiredInputsId = hyperformula.getSheetId("Required Inputs");
   const optionalInputsId = hyperformula.getSheetId("Optional Inputs");
