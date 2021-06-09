@@ -7,6 +7,7 @@ import getTitle from "../../shared/getTitle";
 import { renderRichText } from "gatsby-source-contentful/rich-text";
 import { Section } from "@tracktak/intrinsic-valuations";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
+import { INLINES } from "@contentful/rich-text-types";
 
 export const query = graphql`
   fragment BlogInformation on ContentfulBlog {
@@ -36,8 +37,24 @@ export const query = graphql`
   }
 `;
 
+const options = {
+  renderNode: {
+    [INLINES.HYPERLINK]: ({ data }, children) => (
+      <a
+        href={data.uri}
+        target={`${data.uri.startsWith(resourceName) ? "_self" : "_blank"}`}
+        rel={`${
+          data.uri.startsWith(resourceName) ? "" : "noopener noreferrer"
+        }`}
+      >
+        {children}
+      </a>
+    ),
+  },
+};
+
 const renderField = (field) => {
-  return renderRichText(field);
+  return renderRichText(field, options);
 };
 
 const Blog = ({ data }) => {
@@ -56,10 +73,17 @@ const Blog = ({ data }) => {
         <link rel="canonical" href={`${resourceName}/blogs/${slug}`} />
         <meta name="description" content={descriptionBlog} />
       </Helmet>
-      <Box sx={{ whiteSpace: "nowrap" }}>
+      <Box>
         {dateOfBlog && (
-          <Typography textAlign="right" gutterBottom>
-            This blog was done on the {dateOfBlog}
+          <Typography
+            gutterBottom
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              flexWrap: "wrap",
+            }}
+          >
+            This blog was done on the<Box>&nbsp;{dateOfBlog}</Box>
           </Typography>
         )}
       </Box>
