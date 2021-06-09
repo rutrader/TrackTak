@@ -21,21 +21,7 @@ export const query = graphql`
     allContentfulBlog {
       edges {
         node {
-          blogContent {
-            raw
-          }
-          dateOfBlog
-          slug
-          blogName
-          cardImage {
-            ... on ContentfulAsset {
-              contentful_id
-              __typename
-              fluid(maxWidth: 200, quality: 80) {
-                ...GatsbyContentfulFluid_withWebp
-              }
-            }
-          }
+          ...BlogInformation
         }
       }
     }

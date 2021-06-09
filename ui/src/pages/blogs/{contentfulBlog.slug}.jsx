@@ -9,15 +9,29 @@ import { Section } from "@tracktak/intrinsic-valuations";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
 
 export const query = graphql`
+  fragment BlogInformation on ContentfulBlog {
+    dateOfBlog
+    slug
+    blogName
+    blogTitle
+    descriptionBlog
+    blogContent {
+      raw
+    }
+    cardImage {
+      ... on ContentfulAsset {
+        contentful_id
+        __typename
+        fluid(maxWidth: 200, quality: 80) {
+          ...GatsbyContentfulFluid_withWebp
+        }
+      }
+    }
+  }
+
   query Blog {
     contentfulBlog {
-      dateOfBlog
-      blogName
-      blogTitle
-      descriptionBlog
-      blogContent {
-        raw
-      }
+      ...BlogInformation
     }
   }
 `;
