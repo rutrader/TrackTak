@@ -380,6 +380,8 @@ export const getSheet = (
         selector.range,
       );
     } else {
+      // Blur the content editable to fix safari bug
+      editor.textEl.el.blur();
       selector.set(ri, ci, indexesUpdated);
       eventEmitter.emit(spreadsheetEvents.sheet.cellSelected, cell, ri, ci);
     }
