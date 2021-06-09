@@ -13,6 +13,8 @@ export const query = graphql`
     contentfulBlog {
       dateOfBlog
       blogName
+      blogTitle
+      descriptionBlog
       blogContent {
         raw
       }
@@ -25,19 +27,25 @@ const renderField = (field) => {
 };
 
 const Blog = ({ data }) => {
-  const { blogContent, dateOfBlog } = data.contentfulBlog;
+  const {
+    blogContent,
+    dateOfBlog,
+    slug,
+    blogTitle,
+    descriptionBlog,
+  } = data.contentfulBlog;
 
   return (
     <>
       <Helmet>
-        <title>{getTitle("Blog")}</title>
-        <link rel="canonical" href={`${resourceName}/blogs`} />
-        <meta name="description" content="Blog" />
+        <title>{getTitle(`${blogTitle}`)}</title>
+        <link rel="canonical" href={`${resourceName}/blogs/${slug}`} />
+        <meta name="description" content={descriptionBlog} />
       </Helmet>
-      <Box>
+      <Box sx={{ whiteSpace: "nowrap" }}>
         {dateOfBlog && (
           <Typography textAlign="right" gutterBottom>
-            This write up was done on the {dateOfBlog}
+            This blog was done on the {dateOfBlog}
           </Typography>
         )}
       </Box>

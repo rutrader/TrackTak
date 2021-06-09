@@ -17,7 +17,7 @@ import resourceName from "../../shared/resourceName";
 import Img from "gatsby-image";
 
 export const query = graphql`
-  query BlogQuery {
+  query BlogsQuery {
     allContentfulBlog {
       edges {
         node {
@@ -42,15 +42,15 @@ export const query = graphql`
   }
 `;
 
-const BlogTemplates = ({ data }) => {
+const Blogs = ({ data }) => {
   const theme = useTheme();
 
   return (
     <>
       <Helmet>
-        <title>{getTitle("Blog")}</title>
+        <title>{getTitle("Blogs")}</title>
         <link rel="canonical" href={`${resourceName}/blogs`} />
-        <meta name="description" content="Blog" />
+        <meta name="description" content="tracktak blogs" />
       </Helmet>
       <Typography variant="h5" gutterBottom>
         Blogs
@@ -86,12 +86,6 @@ const BlogTemplates = ({ data }) => {
                     <Typography gutterBottom variant="h5">
                       {blogName}
                     </Typography>
-                    <Typography
-                      variant="body2"
-                      color="textSecondary"
-                      paragraph
-                      component="div"
-                    ></Typography>
                   </CardActionArea>
                   <CardActions>
                     <Box
@@ -122,4 +116,4 @@ const BlogTemplates = ({ data }) => {
   );
 };
 
-export default BlogTemplates;
+export default Blogs;
