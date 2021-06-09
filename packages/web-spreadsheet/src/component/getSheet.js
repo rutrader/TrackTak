@@ -1078,7 +1078,9 @@ export const getSheet = (
           (keyCode >= 65 && keyCode <= 90) ||
           (keyCode >= 48 && keyCode <= 57) ||
           (keyCode >= 96 && keyCode <= 105) ||
-          evt.key === "="
+          evt.key === "=" ||
+          evt.key === "." ||
+          evt.key === "-"
         ) {
           dataSetCellText(evt.key, "startInput");
           editorSet();

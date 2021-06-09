@@ -55,21 +55,17 @@ const sharedOptions = {
       type: "number",
       label: "10.12%",
       editRender: (v, state) => {
-        if (v.toString().charAt(0) === "=") return v;
+        let text = parseFloat(v, 10);
 
-        let text = v;
+        if (isNaN(text)) return v;
 
-        if (state === "start" && typeof v === "number") {
+        if (state === "start") {
           text *= 100;
         }
 
-        text = text.toString();
+        text = v.toString();
 
-        if (!text.includes("%") && !isNaN(parseFloat(text))) {
-          text += "%";
-        }
-
-        return text;
+        return !text.includes("%") ? text + "%" : v;
       },
       render: formatPercentRender,
     },
