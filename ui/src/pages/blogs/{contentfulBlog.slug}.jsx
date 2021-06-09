@@ -76,7 +76,6 @@ const Blog = ({ data }) => {
       <Box>
         {dateOfBlog && (
           <Typography
-            textAlign="right"
             gutterBottom
             sx={{
               display: "flex",
@@ -84,7 +83,7 @@ const Blog = ({ data }) => {
               flexWrap: "wrap",
             }}
           >
-            This blog was done on the <Box>&nbsp;{dateOfBlog}</Box>
+            This blog was done on the<Box>&nbsp;{dateOfBlog}</Box>
           </Typography>
         )}
       </Box>
