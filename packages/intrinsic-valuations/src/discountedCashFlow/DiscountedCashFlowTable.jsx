@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { padCellKeys, styleMap, styles } from "./utils";
 import { Alert, Box, useMediaQuery, useTheme, Link } from "@material-ui/core";
 import useInputQueryParams from "../hooks/useInputQueryParams";
 import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
@@ -17,11 +16,8 @@ import { AnchorLink, navigate } from "../shared/gatsby";
 import { useLocation } from "@reach/router";
 import selectThreeAverageYearsEffectiveTaxRate from "../selectors/fundamentalSelectors/selectThreeAverageYearsEffectiveTaxRate";
 import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
-import sortAlphaNumeric from "./sortAlphaNumeric";
-import getChunksOfArray from "../shared/getChunksOfArray";
 import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
 import selectScope from "../selectors/dcfSelectors/selectScope";
-import cells from "./cells";
 import {
   setCells,
   setScope,
@@ -36,71 +32,28 @@ import {
 import getSpreadsheet, {
   spreadsheetEvents,
 } from "../../../web-spreadsheet/src";
-import {
-  getRequiredInputs,
-  requiredInputsId,
-  requiredInputsSheetName,
-} from "./templates/freeCashFlowFirmSimple/getRequiredInputs";
-import { getOptionalInputs } from "./templates/freeCashFlowFirmSimple/getOptionalInputs";
 import useSetURLInput from "../hooks/useSetURLInput";
 import { camelCase } from "change-case";
 import { allInputNameTypeMappings } from "./scopeNameTypeMapping";
 import { queryNames } from "./templates/freeCashFlowFirmSimple/inputQueryNames";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
-import getEmployeeOptionsSheet from "./templates/freeCashFlowFirmSimple/getEmployeeOptionsSheet";
 import { currencySymbolMap } from "currency-symbol-map";
+import { requiredInputsSheetName } from "./templates/freeCashFlowFirmSimple/expressionCalculations";
+import getVariablesData from "./templates/freeCashFlowFirmSimple/data/getVariablesData";
+import getEmployeeOptionsData from "./templates/freeCashFlowFirmSimple/data/getEmployeeOptionsData";
+import getDCFValuationData from "./templates/freeCashFlowFirmSimple/data/getDCFValuationData";
 
-const defaultColWidth = 110;
+const requiredInputsId = "required-inputs";
+const dcfValuationId = "dcf-valuation";
 const columnAWidth = 170;
-
-const columns = [];
+const defaultColWidth = 110;
 const million = 1000000;
 
-for (let index = 0; index < 13; index++) {
-  columns.push({ width: index === 0 ? 220 : defaultColWidth });
-}
-
-const cellKeysSorted = padCellKeys(Object.keys(cells).sort(sortAlphaNumeric));
-const rowCells = cellKeysSorted.map((key) => {
-  const cell = cells[key];
-
-  return {
-    text: cell?.expr ?? cell?.value ?? "",
-    style: styleMap[cell?.type],
-  };
-});
-
-const dcfValuationId = "dcf-valuation";
-
 const getDataSheets = (isOnMobile) => {
-  const rows = {};
-
-  getChunksOfArray(rowCells, columns.length).forEach((data, i) => {
-    rows[i] = {
-      cells: data,
-    };
-  });
-
   const dataSheets = [
-    {
-      name: "DCF Valuation",
-      cols: {
-        0: {
-          width: columnAWidth,
-        },
-      },
-      rows,
-      styles,
-    },
-    getEmployeeOptionsSheet(),
+    getDCFValuationData(isOnMobile),
+    getEmployeeOptionsData(),
   ];
-
-  // Do not put this as a ternary with undefined on the data
-  // the moronic chinese coder is checking for existence of keys
-  // so it will crash... :(
-  if (!isOnMobile) {
-    dataSheets[0].freeze = "B38";
-  }
 
   return dataSheets;
 };
@@ -137,35 +90,36 @@ const getDatasheetsYOYGrowth = (spreadsheet, isOnMobile) => {
     Object.keys(dataSheet.rows).forEach((rowKey) => {
       const cells = dataSheet.rows[rowKey].cells;
       const formulaRow = formulaSheet[rowKey];
+      if (Array.isArray(cells)) {
+        newRows[rowKey] = {
+          ...dataSheet.rows[rowKey],
+          cells: cells.map((cell, i) => {
+            const previousFormulaValue = formulaRow[i - 1]
+              ? formulaRow[i - 1]
+              : null;
+            let currentFormulaValue = formulaRow[i];
 
-      newRows[rowKey] = {
-        ...dataSheet.rows[rowKey],
-        cells: cells.map((cell, i) => {
-          const previousFormulaValue = formulaRow[i - 1]
-            ? formulaRow[i - 1]
-            : null;
-          let currentFormulaValue = formulaRow[i];
+            if (
+              typeof previousFormulaValue === "number" &&
+              typeof currentFormulaValue === "number" &&
+              (rowKey !== "0" || dataSheetIndex !== 0)
+            ) {
+              return {
+                ...cell,
+                text:
+                  (currentFormulaValue - previousFormulaValue) /
+                  currentFormulaValue,
+                style: 0,
+              };
+            }
 
-          if (
-            typeof previousFormulaValue === "number" &&
-            typeof currentFormulaValue === "number" &&
-            (rowKey !== "0" || dataSheetIndex !== 0)
-          ) {
             return {
               ...cell,
-              text:
-                (currentFormulaValue - previousFormulaValue) /
-                currentFormulaValue,
-              style: styleMap.percent,
+              text: currentFormulaValue,
             };
-          }
-
-          return {
-            ...cell,
-            text: currentFormulaValue,
-          };
-        }),
-      };
+          }),
+        };
+      }
     });
     return {
       ...dataSheet,
@@ -346,7 +300,7 @@ const DiscountedCashFlowTable = ({
       },
     );
 
-    spreadsheet.variablesSpreadsheet.variablesSheet.el.el.id = requiredInputsId;
+    spreadsheet.variablesSpreadsheet.sheet.el.el.id = requiredInputsId;
 
     setSpreadsheet(spreadsheet);
 
@@ -357,6 +311,13 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     const cellEditedCallback = ({ cellAddress, value }) => {
+      // We will use this later to allow users to save their
+      // sheets. For now it's to make it easier for us to create
+      // our templates.
+      if (process.env.NODE_ENV === "development") {
+        console.log("datas: ", spreadsheet.getDatas());
+      }
+
       let label = spreadsheet.hyperformula.getCellValue({
         ...cellAddress,
         col: cellAddress.col - 1,
@@ -451,12 +412,11 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     if (spreadsheet) {
-      spreadsheet.variablesSpreadsheet.setVariableDatasheets([
-        getRequiredInputs(inputQueryParams, theme),
-        getOptionalInputs(inputQueryParams),
-      ]);
+      spreadsheet.variablesSpreadsheet.setVariableDatasheets(
+        getVariablesData(inputQueryParams),
+      );
     }
-  }, [inputQueryParams, spreadsheet, theme]);
+  }, [inputQueryParams, spreadsheet]);
 
   useEffect(() => {
     if (spreadsheet && hasAllRequiredInputsFilledIn && scope) {

@@ -1,4 +1,5 @@
-import { requiredInputsSheetName } from "./getRequiredInputs";
+export const requiredInputsSheetName = "Required Inputs";
+export const optionalInputsSheetName = "Optional Inputs";
 
 const cagrInYears_1_5QueryNameTT = `'${requiredInputsSheetName}'!$B$1`;
 const ebitTargetMarginInYear_10QueryNameTT = `'${requiredInputsSheetName}'!$B$2`;

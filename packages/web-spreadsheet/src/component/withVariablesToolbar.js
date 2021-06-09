@@ -4,11 +4,7 @@ import { getVariablesToolbar } from "./toolbar/getVariablesToolbar";
 const withVariablesToolbar = ({ sheet, ...args }) => {
   let { eventEmitter, getOptions, getData } = sheet;
 
-  const variablesToolbar = getVariablesToolbar(
-    getOptions,
-    getData,
-    eventEmitter,
-  );
+  const toolbar = getVariablesToolbar(getOptions, getData, eventEmitter);
 
   function toolbarChange(type, value) {
     if (type === "undo") {
@@ -28,7 +24,7 @@ const withVariablesToolbar = ({ sheet, ...args }) => {
   return {
     ...args,
     sheet,
-    variablesToolbar,
+    toolbar,
   };
 };
 

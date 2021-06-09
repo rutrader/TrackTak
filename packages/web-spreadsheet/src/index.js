@@ -29,6 +29,7 @@ const getSpreadsheet = (
     spreadsheetEventEmitter,
     variablesSpreadsheet,
     setDatasheets,
+    getDatas,
     setOptions,
     eventEmitter,
   } = buildSpreadsheet(
@@ -52,6 +53,7 @@ const getSpreadsheet = (
     hyperformula,
     spreadsheetEventEmitter,
     setDatasheets,
+    getDatas,
     eventEmitter,
   };
 };
