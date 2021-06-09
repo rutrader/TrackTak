@@ -1,6 +1,7 @@
 import { cssPrefix } from "../../config";
 import { setCaretPosition } from "../../core/caret";
 import spreadsheetEvents from "../../core/spreadsheetEvents";
+import getCaretPositionIndex from "../../shared/getCaretPositionIndex";
 import { h } from "../element";
 import { getEditableInput } from "./getEditableInput";
 
@@ -35,7 +36,7 @@ export const getEditor = (getData, getOptions, formulas, eventEmitter) => {
     setTimeout(() => {
       setCaretPosition(
         editableInput.textEl.el,
-        format === "percent" ? text.length - 1 : text.length,
+        getCaretPositionIndex(text, format),
       );
     });
   });

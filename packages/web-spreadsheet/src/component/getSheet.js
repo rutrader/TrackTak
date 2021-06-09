@@ -380,6 +380,8 @@ export const getSheet = (
         selector.range,
       );
     } else {
+      // Blur the content editable to fix safari bug
+      editor.textEl.el.blur();
       selector.set(ri, ci, indexesUpdated);
       eventEmitter.emit(spreadsheetEvents.sheet.cellSelected, cell, ri, ci);
     }
@@ -1078,7 +1080,9 @@ export const getSheet = (
           (keyCode >= 65 && keyCode <= 90) ||
           (keyCode >= 48 && keyCode <= 57) ||
           (keyCode >= 96 && keyCode <= 105) ||
-          evt.key === "="
+          evt.key === "=" ||
+          evt.key === "." ||
+          evt.key === "-"
         ) {
           dataSetCellText(evt.key, "startInput");
           editorSet();
