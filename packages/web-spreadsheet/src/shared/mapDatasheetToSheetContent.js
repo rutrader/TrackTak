@@ -3,7 +3,9 @@ const mapDatasheetToSheetContent = (dataSheet) => {
     .filter((x) => typeof x === "object")
     .map(({ cells }) => {
       // TODO: Remove this when we switch all to hyperformula as a single source of truth
-      const cellsKeys = Object.keys(cells);
+      const cellsKeys = Object.keys(cells).filter(
+        (x) => !isNaN(parseInt(x, 10)),
+      );
       const lastCellKey = cellsKeys[cellsKeys.length - 1];
       const paddedCellKeys = [];
 

@@ -279,7 +279,7 @@ const getCostOfCapitalData = () => {
             text: "Method of Calculating Pre-tax Cost of Debt",
           },
           1: {
-            text: `=IF(ISBLANK('Optional Inputs'!$B$2), "Synthetic Credit Rating", "Manual Input")`,
+            text: `=IF('Optional Inputs'!$B$2="", "Synthetic Credit Rating", "Manual Input")`,
           },
           2: {
             text: "Estimated Value of Equity in Convertible",
@@ -292,7 +292,7 @@ const getCostOfCapitalData = () => {
             text: "Pre-tax Cost of Debt",
           },
           1: {
-            text: `=IF(ISBLANK('Optional Inputs'!$B$2), estimatedCostOfDebt, 'Optional Inputs'!$B$2)`,
+            text: `=IF('Optional Inputs'!$B$2="", estimatedCostOfDebt, 'Optional Inputs'!$B$2)`,
           },
           2: {
             text: "Levered Beta for Equity",
