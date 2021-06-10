@@ -259,20 +259,27 @@ export const getSheet = (
         data = addDataProxy(currentData.name === dataSheet.name);
       }
       data.setData(dataSheet);
-
-      const sheetContent = mapDatasheetToSheetContent(dataSheet);
-
-      hyperformula.setSheetContent(dataSheet.name, sheetContent);
-
-      if (getOptions().debugMode) {
-        const sheetId = hyperformula.getSheetId(dataSheet.name);
-
-        console.log(
-          `registered sheet content: ${dataSheet.name} (sheet id: ${sheetId})`,
-          hyperformula.getSheetFormulas(sheetId),
-        );
-      }
     });
+
+    // Some sheets have to be added before others for hyperformula
+    // if they are depended on. Can also use rebuildAndRecalculate()
+    // but that has a performance hit.
+    dataSheets
+      .sort((x) => x.calculationOrder)
+      .forEach((dataSheet) => {
+        const sheetContent = mapDatasheetToSheetContent(dataSheet);
+
+        hyperformula.setSheetContent(dataSheet.name, sheetContent);
+
+        if (getOptions().debugMode) {
+          const sheetId = hyperformula.getSheetId(dataSheet.name);
+
+          console.log(
+            `registered sheet content: ${dataSheet.name} (sheet id: ${sheetId})`,
+            hyperformula.getSheetFormulas(sheetId),
+          );
+        }
+      });
 
     if (!dataSheets.length) {
       // Add dummy data for now until dataProxy is refactored
