@@ -56,6 +56,10 @@ export const getSheet = (
 
   const getDatas = () => datas;
 
+  const getDataValues = () => {
+    return datas.map((x) => x.getData());
+  };
+
   eventEmitter.on(spreadsheetEvents.bottombar.selectSheet, (index) => {
     const d = datas[index];
 
@@ -1118,6 +1122,7 @@ export const getSheet = (
     eventEmitter,
     render,
     deleteCellFormat,
+    getDataValues,
   };
 
   return { sheet };

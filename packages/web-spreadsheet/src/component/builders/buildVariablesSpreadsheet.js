@@ -33,7 +33,7 @@ export const buildVariablesSpreadsheet = (
       defaultVariablesSpreadsheetOptions,
       hyperformula,
       newData,
-      variablesSheet,
+      sheet,
     );
   };
 
@@ -82,7 +82,7 @@ export const buildVariablesSpreadsheet = (
     getViewWidthHeight,
   );
 
-  const { sheet: variablesSheet, variablesToolbar } = withVariablesToolbar(
+  const { sheet, toolbar } = withVariablesToolbar(
     getSheet(
       sheetBuilder,
       rootEl,
@@ -96,19 +96,19 @@ export const buildVariablesSpreadsheet = (
     ),
   );
 
-  variablesSheet.el.addClass(`${cssPrefix}-variables-sheet`);
+  sheet.el.addClass(`${cssPrefix}-variables-sheet`);
 
-  const setVariableDatasheets = variablesSheet.makeSetDatasheets(getDataProxy);
+  const setVariableDatasheets = sheet.makeSetDatasheets(getDataProxy);
 
   const bottombar = getBottombar(eventEmitter);
 
-  sheetEl.before(variablesSheet.el);
-  variablesSheet.el.before(variablesToolbar.el);
+  sheetEl.before(sheet.el);
+  sheet.el.before(toolbar.el);
   sheetEl.before(bottombar.el);
 
   return {
-    variablesSheet,
-    variablesToolbar,
+    sheet,
+    toolbar,
     rootEl,
     setVariableDatasheets,
     setOptions,

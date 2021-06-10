@@ -1,11 +1,23 @@
-import { styleMap, styles } from "../../utils";
-import { labels } from "./inputQueryNames";
-
-const getEmployeeOptionsSheet = () => {
-  const dataSheet = {
+const getEmployeeOptionsData = () => {
+  return {
     name: "Employee Options",
+    freeze: "A1",
     styles: [
-      ...styles,
+      {
+        format: "percent",
+      },
+      {
+        format: "million",
+      },
+      {
+        format: "million-currency",
+      },
+      {
+        format: "currency",
+      },
+      {
+        format: "number",
+      },
       {
         align: "center",
         underline: true,
@@ -15,14 +27,6 @@ const getEmployeeOptionsSheet = () => {
       },
     ],
     merges: ["A1:B1"],
-    cols: {
-      0: {
-        width: 260,
-      },
-      1: {
-        width: 165,
-      },
-    },
     rows: {
       0: {
         cells: [
@@ -38,33 +42,33 @@ const getEmployeeOptionsSheet = () => {
       1: {
         cells: [
           {
-            text: labels.employeeOptionsOutstanding,
+            text: "Employee Options Outstanding",
           },
           {
             text: "='Optional Inputs'!$H$2",
-            style: styleMap.million,
+            style: 1,
           },
         ],
       },
       2: {
         cells: [
           {
-            text: labels.averageStrikePrice,
+            text: "Average Strike Price",
           },
           {
             text: "='Optional Inputs'!$H$3",
-            style: styleMap.currency,
+            style: 3,
           },
         ],
       },
       3: {
         cells: [
           {
-            text: labels.averageMaturityOfOptions,
+            text: "Average Maturity",
           },
           {
             text: "='Optional Inputs'!$H$4",
-            style: styleMap.year,
+            style: 4,
           },
         ],
       },
@@ -75,7 +79,7 @@ const getEmployeeOptionsSheet = () => {
           },
           {
             text: "=standardDeviationInStockPrices",
-            style: styleMap.percent,
+            style: 0,
           },
         ],
       },
@@ -86,7 +90,7 @@ const getEmployeeOptionsSheet = () => {
           },
           {
             text: "=riskFreeRate",
-            style: styleMap.percent,
+            style: 0,
           },
         ],
       },
@@ -97,7 +101,7 @@ const getEmployeeOptionsSheet = () => {
           },
           {
             text: "=sharesOutstanding",
-            style: styleMap.million,
+            style: 1,
           },
         ],
       },
@@ -108,7 +112,7 @@ const getEmployeeOptionsSheet = () => {
           },
           {
             text: "=price",
-            style: styleMap.currency,
+            style: 3,
           },
         ],
       },
@@ -181,7 +185,7 @@ const getEmployeeOptionsSheet = () => {
           },
           {
             text: "=B8 * B11 - B3 * EXP(-B6 * B4) * B14",
-            style: styleMap.currency,
+            style: 3,
           },
         ],
       },
@@ -192,14 +196,24 @@ const getEmployeeOptionsSheet = () => {
           },
           {
             text: "=B16*B2",
-            style: styleMap["million-currency"],
+            style: 2,
           },
         ],
       },
+      len: 100,
     },
+    cols: {
+      0: {
+        width: 260,
+      },
+      1: {
+        width: 165,
+      },
+      len: 26,
+    },
+    validations: [],
+    autofilter: {},
   };
-
-  return dataSheet;
 };
 
-export default getEmployeeOptionsSheet;
+export default getEmployeeOptionsData;

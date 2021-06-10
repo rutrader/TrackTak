@@ -113,6 +113,13 @@ export const buildSpreadsheet = (
 
   const setDatasheets = sheet.makeSetDatasheets(getDataProxy);
 
+  const getDatas = () => {
+    return {
+      datas: sheet.getDataValues(),
+      variablesDatas: variablesSpreadsheet.sheet.getDataValues(),
+    };
+  };
+
   const bottombar = getBottombar(eventEmitter);
 
   sheet.el.before(toolbar.el);
@@ -125,6 +132,7 @@ export const buildSpreadsheet = (
     variablesSpreadsheet,
     rootEl,
     setDatasheets,
+    getDatas,
     setOptions,
     hyperformula,
     eventEmitter,
