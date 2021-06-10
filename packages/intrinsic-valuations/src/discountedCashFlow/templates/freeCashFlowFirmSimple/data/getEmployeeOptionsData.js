@@ -1,5 +1,6 @@
 const getEmployeeOptionsData = () => {
   return {
+    calculationOrder: 0,
     name: "Employee Options",
     freeze: "A1",
     styles: [
