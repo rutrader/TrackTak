@@ -39,9 +39,11 @@ import { queryNames } from "./templates/freeCashFlowFirmSimple/inputQueryNames";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 import { currencySymbolMap } from "currency-symbol-map";
 import { requiredInputsSheetName } from "./templates/freeCashFlowFirmSimple/expressionCalculations";
-import getVariablesData from "./templates/freeCashFlowFirmSimple/data/getVariablesData";
+import getRequiredInputsData from "./templates/freeCashFlowFirmSimple/data/getRequiredInputsData";
 import getEmployeeOptionsData from "./templates/freeCashFlowFirmSimple/data/getEmployeeOptionsData";
 import getDCFValuationData from "./templates/freeCashFlowFirmSimple/data/getDCFValuationData";
+import getCostOfCapitalData from "./templates/freeCashFlowFirmSimple/data/getCostOfCapitalData";
+import getOptionalInputsData from "./templates/freeCashFlowFirmSimple/data/getOptionalInputsData";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
@@ -52,6 +54,7 @@ const million = 1000000;
 const getDataSheets = (isOnMobile) => {
   const dataSheets = [
     getDCFValuationData(isOnMobile),
+    getCostOfCapitalData(),
     getEmployeeOptionsData(),
   ];
 
@@ -412,9 +415,10 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     if (spreadsheet) {
-      spreadsheet.variablesSpreadsheet.setVariableDatasheets(
-        getVariablesData(inputQueryParams),
-      );
+      spreadsheet.variablesSpreadsheet.setVariableDatasheets([
+        getRequiredInputsData(inputQueryParams),
+        getOptionalInputsData(inputQueryParams),
+      ]);
     }
   }, [inputQueryParams, spreadsheet]);
 
