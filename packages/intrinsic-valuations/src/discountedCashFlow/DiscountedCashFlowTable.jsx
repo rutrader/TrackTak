@@ -44,6 +44,7 @@ import getEmployeeOptionsData from "./templates/freeCashFlowFirmSimple/data/getE
 import getDCFValuationData from "./templates/freeCashFlowFirmSimple/data/getDCFValuationData";
 import getCostOfCapitalData from "./templates/freeCashFlowFirmSimple/data/getCostOfCapitalData";
 import getOptionalInputsData from "./templates/freeCashFlowFirmSimple/data/getOptionalInputsData";
+import selectEstimatedCostOfDebt from "../selectors/fundamentalSelectors/selectEstimatedCostOfDebt";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
@@ -163,6 +164,7 @@ const DiscountedCashFlowTable = ({
     requiredInputsId,
   );
   const currentIndustry = useSelector(selectCurrentIndustry);
+  const estimatedCostOfDebt = useSelector(selectEstimatedCostOfDebt);
 
   useEffect(() => {
     if (isNil(inputQueryParams[queryNames.salesToCapitalRatio])) {
@@ -464,54 +466,34 @@ const DiscountedCashFlowTable = ({
     ) {
       dispatch(
         setScope({
-          standardDeviationInStockPrices:
-            currentIndustry.standardDeviationInStockPrices,
+          ...incomeStatement,
+          ...balanceSheet,
+          ...currentEquityRiskPremium,
+          ...currentIndustry,
+          estimatedCostOfDebt,
           matureMarketEquityRiskPremium,
           pastThreeYearsAverageEffectiveTaxRate,
-          totalRevenue: incomeStatement.totalRevenue,
-          operatingIncome: incomeStatement.operatingIncome,
-          investedCapital: balanceSheet.investedCapital,
-          bookValueOfDebt: balanceSheet.bookValueOfDebt,
-          cashAndShortTermInvestments: balanceSheet.cashAndShortTermInvestments,
-          minorityInterest: balanceSheet.minorityInterest,
-          marginalTaxRate: currentEquityRiskPremium.marginalTaxRate,
           sharesOutstanding,
           price,
-          bookValueOfEquity: balanceSheet.bookValueOfEquity,
           riskFreeRate,
           totalCostOfCapital: costOfCapital.totalCostOfCapital,
-          cagrInYears_1_5: inputQueryParams[queryNames.cagrInYears_1_5],
-          yearOfConvergence: inputQueryParams[queryNames.yearOfConvergence],
-          ebitTargetMarginInYear_10:
-            inputQueryParams[queryNames.ebitTargetMarginInYear_10],
-          salesToCapitalRatio: inputQueryParams[queryNames.salesToCapitalRatio],
-          nonOperatingAssets: inputQueryParams[queryNames.nonOperatingAssets],
-          netOperatingLoss: inputQueryParams[queryNames.netOperatingLoss],
-          probabilityOfFailure:
-            inputQueryParams[queryNames.probabilityOfFailure],
-          proceedsAsAPercentageOfBookValue:
-            inputQueryParams[queryNames.proceedsAsAPercentageOfBookValue],
         }),
       );
     }
   }, [
-    balanceSheet.bookValueOfDebt,
-    balanceSheet.bookValueOfEquity,
-    balanceSheet.cashAndShortTermInvestments,
-    balanceSheet.investedCapital,
-    balanceSheet.minorityInterest,
+    balanceSheet,
+    incomeStatement,
+    currentEquityRiskPremium,
+    currentIndustry,
     costOfCapital.totalCostOfCapital,
-    currentEquityRiskPremium.marginalTaxRate,
     dispatch,
-    incomeStatement.operatingIncome,
-    incomeStatement.totalRevenue,
     pastThreeYearsAverageEffectiveTaxRate,
     price,
     riskFreeRate,
     sharesOutstanding,
     hasAllRequiredInputsFilledIn,
     inputQueryParams,
-    currentIndustry.standardDeviationInStockPrices,
+    estimatedCostOfDebt,
   ]);
 
   const to = `${location.pathname}#${requiredInputsId}`;

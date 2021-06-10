@@ -145,15 +145,24 @@ const getCostOfCapitalData = () => {
           0: {
             text: "Number of Shares Outstanding",
           },
+          1: {
+            text: "=sharesOutstanding",
+          },
           2: {
             text: "Operating Leases Value",
+          },
+          3: {
+            text: "=capitalLeaseObligations",
           },
         },
       },
       3: {
         cells: {
           0: {
-            text: "Current Market Price per Share",
+            text: "Market Price per Share",
+          },
+          1: {
+            text: "=price",
           },
         },
       },
@@ -161,6 +170,9 @@ const getCostOfCapitalData = () => {
         cells: {
           0: {
             text: "Unlevered Beta",
+          },
+          1: {
+            text: "=unleveredBeta",
           },
           2: {
             text: "Preferred Stock",
@@ -173,8 +185,14 @@ const getCostOfCapitalData = () => {
           0: {
             text: "Riskfree Rate",
           },
+          1: {
+            text: "=riskFreeRate",
+          },
           2: {
-            text: "Number of Shares Outstanding",
+            text: "Number of Preferred Shares Outstanding",
+          },
+          3: {
+            text: "='Optional Inputs'!$F$2",
           },
         },
       },
@@ -183,15 +201,24 @@ const getCostOfCapitalData = () => {
           0: {
             text: "Equity Risk Premium",
           },
+          1: {
+            text: "=equityRiskPremium",
+          },
           2: {
-            text: "Market Price per Share",
+            text: "Market Price per Preferred Share",
+          },
+          3: {
+            text: "='Optional Inputs'!$F$3",
           },
         },
       },
       7: {
         cells: {
           2: {
-            text: "Annual Dividend per Share",
+            text: "Annual Dividend per Preferred Share",
+          },
+          3: {
+            text: "='Optional Inputs'!$F$4",
           },
         },
       },
@@ -208,6 +235,9 @@ const getCostOfCapitalData = () => {
           0: {
             text: "Book Value",
           },
+          1: {
+            text: "=bookValueOfDebt",
+          },
           2: {
             text: "Output",
             style: 7,
@@ -219,8 +249,14 @@ const getCostOfCapitalData = () => {
           0: {
             text: "Interest Expense",
           },
+          1: {
+            text: "=interestExpense",
+          },
           2: {
             text: "Estimated Market Value of Straight Debt",
+          },
+          3: {
+            text: "=B11*(1-(1+B14)^(-B12))/B14+B10/(1+B14)^B12",
           },
         },
       },
@@ -228,6 +264,9 @@ const getCostOfCapitalData = () => {
         cells: {
           0: {
             text: "Average Maturity",
+          },
+          1: {
+            text: "='Optional Inputs'!$B$3",
           },
           2: {
             text: "Estimated Value of Straight Debt in Convertible",
@@ -239,6 +278,9 @@ const getCostOfCapitalData = () => {
           0: {
             text: "Method of Calculating Pre-tax Cost of Debt",
           },
+          1: {
+            text: `=IF(ISBLANK('Optional Inputs'!$B$2), "Synthetic Credit Rating", "Manual Input")`,
+          },
           2: {
             text: "Estimated Value of Equity in Convertible",
           },
@@ -249,6 +291,9 @@ const getCostOfCapitalData = () => {
           0: {
             text: "Pre-tax Cost of Debt",
           },
+          1: {
+            text: `=IF(ISBLANK('Optional Inputs'!$B$2), estimatedCostOfDebt, 'Optional Inputs'!$B$2)`,
+          },
           2: {
             text: "Levered Beta for Equity",
           },
@@ -258,6 +303,9 @@ const getCostOfCapitalData = () => {
         cells: {
           0: {
             text: "Marginal Tax Rate",
+          },
+          1: {
+            text: "=marginalTaxRate",
           },
           2: {
             style: 13,
@@ -327,7 +375,10 @@ const getCostOfCapitalData = () => {
       17: {
         cells: {
           0: {
-            text: "Book Value",
+            text: "Book Value of Convertible Debt",
+          },
+          1: {
+            text: "='Optional Inputs'!$D$2",
           },
           2: {
             text: "Cost of Component",
@@ -351,21 +402,20 @@ const getCostOfCapitalData = () => {
       18: {
         cells: {
           0: {
-            text: "Interest Expense",
+            text: "Interest Expense on Convertible Debt",
+          },
+          1: {
+            text: "='Optional Inputs'!$D$3",
           },
         },
       },
       19: {
         cells: {
           0: {
-            text: "Average Maturity",
+            text: "Average Maturity of Convertible Debt",
           },
-        },
-      },
-      20: {
-        cells: {
-          0: {
-            text: "Market Value",
+          1: {
+            text: "='Optional Inputs'!$D$4",
           },
         },
       },
@@ -382,6 +432,9 @@ const getCostOfCapitalData = () => {
     cols: {
       0: {
         width: 259,
+      },
+      1: {
+        width: 150,
       },
       2: {
         width: 281,
