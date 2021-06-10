@@ -9,6 +9,8 @@ const getHyperformulaInstance = (sheetsSerializedValues) => {
   const hyperformula = HyperFormula.buildFromSheets(sheetsSerializedValues, {
     licenseKey: "05054-b528f-a10c4-53f2a-04b57",
     currencySymbol: Object.values(currencySymbolMap),
+    // https://github.com/handsontable/hyperformula/issues/686
+    matrixDetection: false,
   });
   hyperformula.addNamedExpression("TRUE", "=TRUE()");
   hyperformula.addNamedExpression("FALSE", "=FALSE()");

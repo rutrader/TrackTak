@@ -9,6 +9,7 @@ const getDCFValuationData = (isOnMobile) => {
 
   return {
     ...desktopData,
+    calculationOrder: 1,
     name: "DCF Valuation",
     styles: [
       {
