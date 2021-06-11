@@ -37,6 +37,7 @@ export const optionalInputNameTypeMapping = {
   [queryNames.averageMaturityOfOptions]: "year",
   [queryNames.averageMaturityOfDebt]: "year",
   [queryNames.pretaxCostOfDebt]: "percent",
+  [queryNames.marketValueOfConvertibleBond]: "million-currency",
   [queryNames.bookValueOfConvertibleDebt]: "million-currency",
   [queryNames.interestExpenseOnConvertibleDebt]: "million-currency",
   [queryNames.maturityOfConvertibleDebt]: "year",

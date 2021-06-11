@@ -224,10 +224,12 @@ const getOptionalInputsData = (inputQueryParams) => {
             text: "",
           },
           2: {
-            text: "",
+            text: "Market Value of Convertible Bond",
           },
           3: {
-            text: "",
+            text: inputQueryParams[queryNames.marketValueOfConvertibleBond],
+            style: 2,
+            comment: "This is the equity part of the convertible bond.",
           },
           4: {
             text: "",

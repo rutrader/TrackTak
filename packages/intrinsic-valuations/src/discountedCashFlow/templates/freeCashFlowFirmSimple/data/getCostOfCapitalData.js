@@ -68,36 +68,23 @@ const getCostOfCapitalData = () => {
           right: ["thin", "#000"],
           bottom: ["thin", "#000"],
         },
+        format: "million-currency",
       },
       {
         border: {
           bottom: ["thin", "#000"],
         },
+        format: "million-currency",
       },
       {
         border: {
           right: ["thin", "#000"],
         },
+        format: "percent",
       },
       {
         border: {
           right: ["thin", "#000"],
-          bottom: ["thin", "#000"],
-        },
-        font: {
-          bold: true,
-        },
-      },
-      {
-        border: {
-          right: ["thin", "#000"],
-        },
-        font: {
-          bold: true,
-        },
-      },
-      {
-        border: {
           bottom: ["thin", "#000"],
         },
         font: {
@@ -105,16 +92,37 @@ const getCostOfCapitalData = () => {
         },
       },
       {
-        bgcolor: "#00b04e",
+        border: {
+          right: ["thin", "#000"],
+        },
+        font: {
+          bold: true,
+        },
       },
       {
-        bgcolor: "#93d051",
-      },
-      {
-        bgcolor: "#71ae47",
+        border: {
+          bottom: ["thin", "#000"],
+        },
+        font: {
+          bold: true,
+        },
       },
       {
         bgcolor: "#a7d08c",
+        format: "percent",
+      },
+      {
+        border: {
+          right: ["thin", "#000"],
+          bottom: ["thin", "#000"],
+        },
+        format: "percent",
+      },
+      {
+        border: {
+          bottom: ["thin", "#000"],
+        },
+        format: "percent",
       },
     ],
     merges: ["A1:B1"],
@@ -146,12 +154,14 @@ const getCostOfCapitalData = () => {
             text: "Number of Shares Outstanding",
           },
           1: {
+            style: 1,
             text: "=sharesOutstanding",
           },
           2: {
             text: "Operating Leases Value",
           },
           3: {
+            style: 2,
             text: "=capitalLeaseObligations",
           },
         },
@@ -162,6 +172,7 @@ const getCostOfCapitalData = () => {
             text: "Market Price per Share",
           },
           1: {
+            style: 3,
             text: "=price",
           },
         },
@@ -172,6 +183,7 @@ const getCostOfCapitalData = () => {
             text: "Unlevered Beta",
           },
           1: {
+            style: 4,
             text: "=unleveredBeta",
           },
           2: {
@@ -186,12 +198,14 @@ const getCostOfCapitalData = () => {
             text: "Riskfree Rate",
           },
           1: {
+            style: 0,
             text: "=riskFreeRate",
           },
           2: {
             text: "Number of Preferred Shares Outstanding",
           },
           3: {
+            style: 1,
             text: "='Optional Inputs'!$F$2",
           },
         },
@@ -203,12 +217,14 @@ const getCostOfCapitalData = () => {
           },
           1: {
             text: "=equityRiskPremium",
+            style: 0,
           },
           2: {
             text: "Market Price per Preferred Share",
           },
           3: {
             text: "='Optional Inputs'!$F$3",
+            style: 3,
           },
         },
       },
@@ -219,6 +235,7 @@ const getCostOfCapitalData = () => {
           },
           3: {
             text: "='Optional Inputs'!$F$4",
+            style: 3,
           },
         },
       },
@@ -237,6 +254,7 @@ const getCostOfCapitalData = () => {
           },
           1: {
             text: "=bookValueOfDebt",
+            style: 2,
           },
           2: {
             text: "Output",
@@ -251,12 +269,14 @@ const getCostOfCapitalData = () => {
           },
           1: {
             text: "=interestExpense",
+            style: 2,
           },
           2: {
             text: "Estimated Market Value of Straight Debt",
           },
           3: {
             text: "=B11*(1-(1+B14)^(-B12))/B14+B10/(1+B14)^B12",
+            style: 2,
           },
         },
       },
@@ -267,9 +287,14 @@ const getCostOfCapitalData = () => {
           },
           1: {
             text: "='Optional Inputs'!$B$3",
+            style: 4,
           },
           2: {
             text: "Estimated Value of Straight Debt in Convertible",
+          },
+          3: {
+            text: "=B19*(1-(1+B14)^(-B20))/B14+B18/(1+B14)^B20",
+            style: 2,
           },
         },
       },
@@ -284,6 +309,10 @@ const getCostOfCapitalData = () => {
           2: {
             text: "Estimated Value of Equity in Convertible",
           },
+          3: {
+            text: "=B21-D12",
+            style: 2,
+          },
         },
       },
       13: {
@@ -293,9 +322,14 @@ const getCostOfCapitalData = () => {
           },
           1: {
             text: `=IF('Optional Inputs'!$B$2="", estimatedCostOfDebt, 'Optional Inputs'!$B$2)`,
+            style: 0,
           },
           2: {
             text: "Levered Beta for Equity",
+          },
+          3: {
+            text: "=B5*(1+(1-B15)*(E16/D16))",
+            style: 4,
           },
         },
       },
@@ -306,6 +340,7 @@ const getCostOfCapitalData = () => {
           },
           1: {
             text: "=marginalTaxRate",
+            style: 0,
           },
           2: {
             style: 13,
@@ -335,15 +370,19 @@ const getCostOfCapitalData = () => {
             style: 16,
           },
           3: {
+            text: "=B3*B4",
             style: 13,
           },
           4: {
+            text: "=D11+D12+D3",
             style: 13,
           },
           5: {
+            text: "=D6*D7",
             style: 13,
           },
           6: {
+            text: "=SUM(D16:F16)",
             style: 14,
           },
         },
@@ -359,16 +398,20 @@ const getCostOfCapitalData = () => {
             style: 16,
           },
           3: {
-            style: 13,
+            text: "=D16/G16",
+            style: 20,
           },
           4: {
-            style: 13,
+            text: "=E16/G16",
+            style: 20,
           },
           5: {
-            style: 13,
+            text: "=F16/G16",
+            style: 20,
           },
           6: {
-            style: 14,
+            text: "=SUM(D17:F17)",
+            style: 21,
           },
         },
       },
@@ -379,23 +422,27 @@ const getCostOfCapitalData = () => {
           },
           1: {
             text: "='Optional Inputs'!$D$2",
+            style: 2,
           },
           2: {
             text: "Cost of Component",
             style: 17,
           },
           3: {
+            text: "=B6+D14*B7",
             style: 15,
           },
           4: {
+            text: "=B14*(1-B15)",
             style: 15,
           },
           5: {
+            text: "=IF(ISERROR(D8/D7), 0, D8/D7)",
             style: 15,
           },
           6: {
-            style: 22,
-            text: "",
+            style: 19,
+            text: "=D17*D18+E17*E18+F17*F18",
           },
         },
       },
@@ -406,6 +453,7 @@ const getCostOfCapitalData = () => {
           },
           1: {
             text: "='Optional Inputs'!$D$3",
+            style: 2,
           },
         },
       },
@@ -416,6 +464,18 @@ const getCostOfCapitalData = () => {
           },
           1: {
             text: "='Optional Inputs'!$D$4",
+            style: 4,
+          },
+        },
+      },
+      20: {
+        cells: {
+          0: {
+            text: "Market Value of Convertible Bond",
+          },
+          1: {
+            text: "='Optional Inputs'!$D$5",
+            style: 2,
           },
         },
       },
