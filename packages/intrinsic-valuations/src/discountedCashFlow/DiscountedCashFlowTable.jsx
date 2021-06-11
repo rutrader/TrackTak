@@ -19,6 +19,7 @@ import selectScope from "../selectors/dcfSelectors/selectScope";
 import {
   setCells,
   setScope,
+  setSheetsDatas,
   setSheetsSerializedValues,
   setSheetsValues,
 } from "../redux/actions/dcfActions";
@@ -404,6 +405,7 @@ const DiscountedCashFlowTable = ({
         });
       });
 
+      // TODO: Remove setCells and consolidate the others in a better place
       dispatch(setCells(cells));
       dispatch(
         setSheetsSerializedValues(
@@ -411,6 +413,7 @@ const DiscountedCashFlowTable = ({
         ),
       );
       dispatch(setSheetsValues(spreadsheet.hyperformula.getAllSheetsValues()));
+      dispatch(setSheetsDatas(spreadsheet.getDatas()));
     }
   }, [hasAllRequiredInputsFilledIn, isOnMobile, spreadsheet, dispatch, scope]);
 
