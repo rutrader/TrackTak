@@ -142,10 +142,6 @@ const getCostOfCapitalData = () => {
             text: "Equity",
             style: 7,
           },
-          2: {
-            style: 7,
-            text: "Operating Leases",
-          },
         },
       },
       2: {
@@ -156,13 +152,6 @@ const getCostOfCapitalData = () => {
           1: {
             style: 1,
             text: "=sharesOutstanding",
-          },
-          2: {
-            text: "Operating Leases Value",
-          },
-          3: {
-            style: 2,
-            text: "=capitalLeaseObligations",
           },
         },
       },
@@ -188,10 +177,6 @@ const getCostOfCapitalData = () => {
             comment:
               "Is a measure of the market risk of the company relative to it's peers in the same industry without the impact of debt. This determines how much risk comes with owning a stock.",
           },
-          2: {
-            text: "Preferred Stock",
-            style: 7,
-          },
         },
       },
       5: {
@@ -205,13 +190,6 @@ const getCostOfCapitalData = () => {
             comment:
               "Refers to the theoretical rate of return of an investment with zero risk.",
           },
-          2: {
-            text: "Number of Preferred Shares Outstanding",
-          },
-          3: {
-            style: 1,
-            text: "='Optional Inputs'!$F$2",
-          },
         },
       },
       6: {
@@ -223,31 +201,16 @@ const getCostOfCapitalData = () => {
             text: "=equityRiskPremium",
             style: 0,
           },
-          2: {
-            text: "Market Price per Preferred Share",
-          },
-          3: {
-            text: "='Optional Inputs'!$F$3",
-            style: 3,
-          },
         },
       },
       7: {
-        cells: {
-          2: {
-            text: "Annual Dividend per Preferred Share",
-          },
-          3: {
-            text: "='Optional Inputs'!$F$4",
-            style: 3,
-          },
-        },
+        cells: {},
       },
       8: {
         cells: {
           0: {
             style: 7,
-            text: "Straight Debt",
+            text: "Normal Debt",
           },
         },
       },
@@ -276,7 +239,7 @@ const getCostOfCapitalData = () => {
             style: 2,
           },
           2: {
-            text: "Estimated Market Value of Straight Debt",
+            text: "Estimated Market Value of Normal Debt",
           },
           3: {
             text: "=B11*(1-(1+B14)^(-B12))/B14+B10/(1+B14)^B12",
@@ -294,10 +257,11 @@ const getCostOfCapitalData = () => {
             style: 4,
           },
           2: {
-            text: "Estimated Value of Straight Debt in Convertible",
+            text: "Estimated Value of Normal Debt in Convertible",
           },
           3: {
-            text: "=B19*(1-(1+B14)^(-B20))/B14+B18/(1+B14)^B20",
+            text:
+              "='Optional Inputs'!$D$3*(1-(1+B14)^(-'Optional Inputs'!$D$4))/B14+'Optional Inputs'!$D$2/(1+B14)^'Optional Inputs'!$D$4",
             style: 2,
           },
         },
@@ -314,7 +278,7 @@ const getCostOfCapitalData = () => {
             text: "Estimated Value of Equity in Convertible",
           },
           3: {
-            text: "=B21-D12",
+            text: "='Optional Inputs'!$D$5-D12",
             style: 2,
           },
         },
@@ -322,7 +286,7 @@ const getCostOfCapitalData = () => {
       13: {
         cells: {
           0: {
-            text: "Pre-tax Cost of Debt",
+            text: `="Pre-tax Cost of Debt"&" ("&B13&")"`,
           },
           1: {
             text: `=IF('Optional Inputs'!$B$2="", estimatedCostOfDebt, 'Optional Inputs'!$B$2)`,
@@ -382,11 +346,11 @@ const getCostOfCapitalData = () => {
             style: 13,
           },
           4: {
-            text: "=D11+D12+D3",
+            text: "=D11+D12+B18",
             style: 13,
           },
           5: {
-            text: "=D6*D7",
+            text: "='Optional Inputs'!$F$2*'Optional Inputs'!$F$3",
             style: 13,
           },
           6: {
@@ -399,7 +363,7 @@ const getCostOfCapitalData = () => {
         cells: {
           0: {
             style: 7,
-            text: "Convertible Debt",
+            text: "Operating Leases",
           },
           2: {
             text: "Weight in Cost of Capital",
@@ -426,11 +390,11 @@ const getCostOfCapitalData = () => {
       17: {
         cells: {
           0: {
-            text: "Book Value of Convertible Debt",
+            text: "Operating Leases Value",
           },
           1: {
-            text: "='Optional Inputs'!$D$2",
             style: 2,
+            text: "=capitalLeaseObligations",
           },
           2: {
             text: "Cost of Component",
@@ -445,7 +409,8 @@ const getCostOfCapitalData = () => {
             style: 15,
           },
           5: {
-            text: "=IF(ISERROR(D8/D7), 0, D8/D7)",
+            text:
+              "=IF(ISERROR('Optional Inputs'!$F$4/'Optional Inputs'!$F$3), 0, 'Optional Inputs'!$F$4/'Optional Inputs'!$F$3)",
             style: 15,
           },
           6: {
@@ -453,39 +418,6 @@ const getCostOfCapitalData = () => {
             text: "=D17*D18+E17*E18+F17*F18",
             comment:
               "The total cost of raising capital (cash) for the company, weighted by equity and debt.",
-          },
-        },
-      },
-      18: {
-        cells: {
-          0: {
-            text: "Interest Expense on Convertible Debt",
-          },
-          1: {
-            text: "='Optional Inputs'!$D$3",
-            style: 2,
-          },
-        },
-      },
-      19: {
-        cells: {
-          0: {
-            text: "Average Maturity of Convertible Debt",
-          },
-          1: {
-            text: "='Optional Inputs'!$D$4",
-            style: 4,
-          },
-        },
-      },
-      20: {
-        cells: {
-          0: {
-            text: "Market Value of Convertible Bond",
-          },
-          1: {
-            text: "='Optional Inputs'!$D$5",
-            style: 2,
           },
         },
       },
@@ -501,7 +433,7 @@ const getCostOfCapitalData = () => {
     },
     cols: {
       0: {
-        width: 259,
+        width: 280,
       },
       1: {
         width: 150,

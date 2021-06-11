@@ -299,13 +299,13 @@ const wikiContent = [
           <ListItem>
             <Box>
               <Box component="span" style={{ fontWeight: "bold" }}>
-                Estimated Market Value of Straight Debt&nbsp;
+                Estimated Market Value of Normal Debt&nbsp;
               </Box>
-              - The market value of straight debt.
+              - The market value of Normal debt.
               <Formula
                 formula="cd = ie * (1 - (1 + pt) ** - m)) / pt + bd / (1 + pt) ** m"
                 explanations={[
-                  "cd = Estimated Market Value of Straight Debt in Convertible",
+                  "cd = Estimated Market Value of Normal Debt in Convertible",
                   "ie = Interest Expense",
                   "pt = Pre-tax Cost of Debt",
                   "m =  Average Maturity of Debt",
@@ -317,13 +317,13 @@ const wikiContent = [
           <ListItem>
             <Box>
               <Box component="span" style={{ fontWeight: "bold" }}>
-                Estimated Market Value of Straight Debt in Convertible&nbsp;
+                Estimated Market Value of Normal Debt in Convertible&nbsp;
               </Box>
-              - The market value of straight debt in convertible.
+              - The market value of Normal debt in convertible.
               <Formula
                 formula="cd = iecd * (1 - (1 + pt) ** - mcd)) / pt + bcd / (1 + pt) ** mcd"
                 explanations={[
-                  "cd = Estimated Market Value of Straight Debt in Convertible",
+                  "cd = Estimated Market Value of Normal Debt in Convertible",
                   "iecd = Interest Expense on Convertible Debt",
                   "pt = Pre-tax Cost of Debt",
                   "mcd = Maturity of Convertible Debt",
@@ -342,8 +342,8 @@ const wikiContent = [
                 formula="d = sd + cd"
                 explanations={[
                   "d = Debt Market Value",
-                  "sd = Estimated Market Value of Straight Debt",
-                  "cd = Estimated Market Value of Straight Debt in Convertible",
+                  "sd = Estimated Market Value of Normal Debt",
+                  "cd = Estimated Market Value of Normal Debt in Convertible",
                 ]}
               />
             </Box>
