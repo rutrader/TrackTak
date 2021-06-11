@@ -185,6 +185,8 @@ const getCostOfCapitalData = () => {
           1: {
             style: 4,
             text: "=unleveredBeta",
+            comment:
+              "Is a measure of the market risk of the company relative to it's peers in the same industry without the impact of debt. This determines how much risk comes with owning a stock.",
           },
           2: {
             text: "Preferred Stock",
@@ -200,6 +202,8 @@ const getCostOfCapitalData = () => {
           1: {
             style: 0,
             text: "=riskFreeRate",
+            comment:
+              "Refers to the theoretical rate of return of an investment with zero risk.",
           },
           2: {
             text: "Number of Preferred Shares Outstanding",
@@ -323,6 +327,8 @@ const getCostOfCapitalData = () => {
           1: {
             text: `=IF('Optional Inputs'!$B$2="", estimatedCostOfDebt, 'Optional Inputs'!$B$2)`,
             style: 0,
+            comment:
+              "By default this is the synthetic credit rating pre-tax cost of debt that we have automatically calculated for you which is fine for most cases. If you manually input a cost of debt in the Normal Debt input field then it will overwrite this synthetic cost of debt.",
           },
           2: {
             text: "Levered Beta for Equity",
@@ -330,6 +336,8 @@ const getCostOfCapitalData = () => {
           3: {
             text: "=B5*(1+(1-B15)*(E16/D16))",
             style: 4,
+            comment:
+              "Is a measure of market risk of the company relative to it's peers in the same industry including the impact of debt on the company. This determines how much risk comes with owning a stock.",
           },
         },
       },
@@ -443,6 +451,8 @@ const getCostOfCapitalData = () => {
           6: {
             style: 19,
             text: "=D17*D18+E17*E18+F17*F18",
+            comment:
+              "The total cost of raising capital (cash) for the company, weighted by equity and debt.",
           },
         },
       },
