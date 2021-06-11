@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { Alert, Box, useMediaQuery, useTheme, Link } from "@material-ui/core";
 import useInputQueryParams from "../hooks/useInputQueryParams";
-import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
 import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
 import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
@@ -11,7 +10,6 @@ import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
-import useInjectQueryParams from "../hooks/useInjectQueryParams";
 import { AnchorLink, navigate } from "../shared/gatsby";
 import { useLocation } from "@reach/router";
 import selectThreeAverageYearsEffectiveTaxRate from "../selectors/fundamentalSelectors/selectThreeAverageYearsEffectiveTaxRate";
@@ -67,7 +65,7 @@ const getDatasheetsColWidths = (colWidth, isOnMobile) => {
   const newDataSheets = dataSheets.map((dataSheet, datasheetIndex) => {
     const newCols = {};
 
-    dataSheet.rows[0].cells.forEach((_, columnIndex) => {
+    Object.values(dataSheet.rows[0].cells).forEach((_, columnIndex) => {
       newCols[columnIndex] = {
         width:
           datasheetIndex === 0 && columnIndex === 0 ? columnAWidth : colWidth,
@@ -83,57 +81,59 @@ const getDatasheetsColWidths = (colWidth, isOnMobile) => {
   return newDataSheets;
 };
 
-const getDatasheetsYOYGrowth = (spreadsheet, isOnMobile) => {
-  const dataSheets = getDataSheets(isOnMobile);
+const getYOYDataSheets = (spreadsheet, isOnMobile) => {
+  const dcfValuationDataSheet = getDCFValuationData(isOnMobile);
   const dataSheetsValues = spreadsheet?.hyperformula?.getAllSheetsValues();
 
-  const newDataSheets = dataSheets.map((dataSheet, dataSheetIndex) => {
-    const formulaSheet = dataSheetsValues[dataSheet.name];
-    const newRows = {};
+  const formulaSheet = dataSheetsValues[dcfValuationDataSheet.name];
+  const newRows = {};
 
-    Object.keys(dataSheet.rows).forEach((rowKey) => {
-      const cells = dataSheet.rows[rowKey].cells;
-      const formulaRow = formulaSheet[rowKey];
-      if (Array.isArray(cells)) {
-        newRows[rowKey] = {
-          ...dataSheet.rows[rowKey],
-          cells: cells.map((cell, i) => {
-            const previousFormulaValue = formulaRow[i - 1]
-              ? formulaRow[i - 1]
-              : null;
-            let currentFormulaValue = formulaRow[i];
+  Object.keys(dcfValuationDataSheet.rows).forEach((rowKey) => {
+    const cells = dcfValuationDataSheet.rows[rowKey].cells;
+    const formulaRow = formulaSheet[rowKey];
+    if (typeof cells === "object") {
+      newRows[rowKey] = {
+        ...dcfValuationDataSheet.rows[rowKey],
+        cells: Object.values(cells).map((cell, i) => {
+          const previousFormulaValue = formulaRow[i - 1]
+            ? formulaRow[i - 1]
+            : null;
+          let currentFormulaValue = formulaRow[i];
 
-            if (
-              typeof previousFormulaValue === "number" &&
-              typeof currentFormulaValue === "number" &&
-              (rowKey !== "0" || dataSheetIndex !== 0)
-            ) {
-              return {
-                ...cell,
-                text:
-                  (currentFormulaValue - previousFormulaValue) /
-                  currentFormulaValue,
-                style: 0,
-              };
-            }
-
+          if (
+            typeof previousFormulaValue === "number" &&
+            typeof currentFormulaValue === "number" &&
+            rowKey !== "0"
+          ) {
             return {
               ...cell,
-              text: currentFormulaValue,
+              text:
+                (currentFormulaValue - previousFormulaValue) /
+                currentFormulaValue,
+              style: 0,
             };
-          }),
-        };
-      }
-    });
-    return {
-      ...dataSheet,
-      rows: newRows,
-    };
+          }
+
+          return {
+            ...cell,
+            text: currentFormulaValue,
+          };
+        }),
+      };
+    }
   });
 
-  return newDataSheets;
-};
+  const newDCFValuationDataSheet = {
+    ...dcfValuationDataSheet,
+    rows: newRows,
+  };
 
+  const dataSheets = getDataSheets(isOnMobile);
+
+  dataSheets[0] = newDCFValuationDataSheet;
+
+  return dataSheets;
+};
 const DiscountedCashFlowTable = ({
   showFormulas,
   showYOYGrowth,
@@ -152,7 +152,6 @@ const DiscountedCashFlowTable = ({
   const balanceSheet = useSelector(selectRecentBalanceSheet);
   const currentEquityRiskPremium = useSelector(selectCurrentEquityRiskPremium);
   const price = useSelector(selectPrice);
-  const costOfCapital = useInjectQueryParams(selectCostOfCapital);
   const riskFreeRate = useSelector(selectRiskFreeRate);
   const sharesOutstanding = useSelector(selectSharesOutstanding);
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
@@ -431,9 +430,7 @@ const DiscountedCashFlowTable = ({
       });
 
       if (showYOYGrowth) {
-        spreadsheet.setDatasheets(
-          getDatasheetsYOYGrowth(spreadsheet, isOnMobile),
-        );
+        spreadsheet.setDatasheets(getYOYDataSheets(spreadsheet, isOnMobile));
       } else if (showFormulas) {
         spreadsheet.setOptions({
           showAllFormulas: true,
@@ -459,24 +456,20 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     // Dispatch only when we have all the data from the API
-    if (
-      hasAllRequiredInputsFilledIn &&
-      !isNil(price) &&
-      !isNil(costOfCapital.totalCostOfCapital)
-    ) {
+    if (hasAllRequiredInputsFilledIn && !isNil(price)) {
       dispatch(
         setScope({
+          ...currentIndustry,
+          ...currentEquityRiskPremium,
           ...incomeStatement,
           ...balanceSheet,
-          ...currentEquityRiskPremium,
-          ...currentIndustry,
+          ...inputQueryParams,
           estimatedCostOfDebt,
           matureMarketEquityRiskPremium,
           pastThreeYearsAverageEffectiveTaxRate,
           sharesOutstanding,
           price,
           riskFreeRate,
-          totalCostOfCapital: costOfCapital.totalCostOfCapital,
         }),
       );
     }
@@ -485,7 +478,6 @@ const DiscountedCashFlowTable = ({
     incomeStatement,
     currentEquityRiskPremium,
     currentIndustry,
-    costOfCapital.totalCostOfCapital,
     dispatch,
     pastThreeYearsAverageEffectiveTaxRate,
     price,

@@ -1,6 +1,6 @@
 const getCostOfCapitalData = () => {
   return {
-    calculationOrder: 2,
+    calculationOrder: 1,
     name: "Cost of Capital",
     freeze: "A1",
     styles: [
@@ -108,7 +108,7 @@ const getCostOfCapitalData = () => {
         },
       },
       {
-        bgcolor: "#a7d08c",
+        bgcolor: "rgba(120, 73, 191, 0.4)",
         format: "percent",
       },
       {
@@ -370,7 +370,7 @@ const getCostOfCapitalData = () => {
             style: 16,
           },
           3: {
-            text: "=B3*B4",
+            text: "=B3*B4+D13",
             style: 13,
           },
           4: {

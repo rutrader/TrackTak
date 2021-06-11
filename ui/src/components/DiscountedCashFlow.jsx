@@ -8,7 +8,6 @@ import {
 } from "@material-ui/core";
 import {
   CompanyOverviewStats,
-  CostOfCapitalResults,
   DiscountedCashFlowSheet,
   IndustryAveragesResults,
   FinancialsSummary,
@@ -67,9 +66,6 @@ const DiscountedCashFlow = () => {
       <Section sx={{ display: "flex", gridColumnGap: 20, flexWrap: "wrap" }}>
         <SubSection>
           <IndustryAveragesResults />
-        </SubSection>
-        <SubSection>
-          <CostOfCapitalResults />
         </SubSection>
       </Section>
       <Section>

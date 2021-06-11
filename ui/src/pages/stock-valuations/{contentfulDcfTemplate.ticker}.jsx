@@ -13,7 +13,6 @@ import {
   FormatRawNumberToYear,
   FormatRawNumber,
   FormatRawNumberToCurrency,
-  CostOfCapitalResults,
   DiscountedCashFlowSheet,
   IndustryAveragesResults,
   selectPrice,
@@ -358,9 +357,6 @@ const Valuation = ({ data }) => {
       )}
       <Section>
         <IndustryAveragesResults />
-      </Section>
-      <Section>
-        <CostOfCapitalResults />
       </Section>
       <Section>
         <Typography variant="h5" gutterBottom>

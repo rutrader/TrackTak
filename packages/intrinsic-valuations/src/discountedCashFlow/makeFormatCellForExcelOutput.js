@@ -85,10 +85,10 @@ const makeFormatCellForExcelOutput = (
 
       // TODO: Remove these once we refactor the export to excel to be from spreadsheet
       formula = replaceAll(formula, "Required Inputs", "Inputs");
-      formula = replaceAll(formula, "'Optional Inputs'!J2", "'Inputs'!B16");
-      formula = replaceAll(formula, "'Optional Inputs'!J3", "'Inputs'!B17");
-      formula = replaceAll(formula, "'Optional Inputs'!J4", "'Inputs'!B18");
-      formula = replaceAll(formula, "'Optional Inputs'!J5", "'Inputs'!B19");
+      formula = replaceAll(formula, "'Optional Inputs'!J2", "'Inputs'!B17");
+      formula = replaceAll(formula, "'Optional Inputs'!J3", "'Inputs'!B18");
+      formula = replaceAll(formula, "'Optional Inputs'!J4", "'Inputs'!B19");
+      formula = replaceAll(formula, "'Optional Inputs'!J5", "'Inputs'!B20");
       formula = formula.replace(
         /'Employee Options'!\$B\$17/g,
         `${sheetsValues["Employee Options"][16][1]}`,

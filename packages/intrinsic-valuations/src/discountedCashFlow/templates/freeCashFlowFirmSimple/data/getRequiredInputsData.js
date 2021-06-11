@@ -45,8 +45,8 @@ const getRequiredInputsData = (inputQueryParams) => {
         },
       },
       1: {
+        height: 35,
         cells: {
-          height: 35,
           0: {
             text: "Operating Target Margin in\nYear 10 *",
           },

@@ -9,6 +9,7 @@ const getDCFValuationData = (isOnMobile) => {
 
   return {
     ...desktopData,
+    calculationOrder: 2,
     name: "DCF Valuation",
     styles: [
       {
@@ -590,7 +591,7 @@ const getDCFValuationData = (isOnMobile) => {
             style: 0,
           },
           2: {
-            text: "=totalCostOfCapital",
+            text: "='Cost of Capital'!$G$18",
             style: 0,
           },
           3: {

@@ -45,6 +45,8 @@ const IndustryAveragesResults = () => {
             }
             label="Pre-tax Operating Margin (TTM)"
           />
+        </StatsContainer>
+        <StatsContainer>
           <BoldValueLabel
             value={
               <FormatRawNumberToPercent value={currentIndustry.afterTaxROIC} />
@@ -55,14 +57,14 @@ const IndustryAveragesResults = () => {
             value={currentIndustry["sales/Capital"]}
             label="Sales to Capital Ratio"
           />
-        </StatsContainer>
-        <StatsContainer>
           <BoldValueLabel
             value={
               <FormatRawNumberToPercent value={currentIndustry.costOfCapital} />
             }
             label="Cost of Capital"
           />
+        </StatsContainer>
+        <StatsContainer>
           <BoldValueLabel
             value={currentIndustry.unleveredBeta}
             label="Unlevered Beta"

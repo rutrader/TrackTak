@@ -13,7 +13,6 @@ export { default as IndustryAverages } from "./discountedCashFlow/IndustryAverag
 export { allInputNameTypeMappings } from "./discountedCashFlow/scopeNameTypeMapping";
 
 export { default as IndustryAveragesResults } from "./components/IndustryAveragesResults";
-export { default as CostOfCapitalResults } from "./components/CostOfCapitalResults";
 export { default as FinancialStatements } from "./components/FinancialStatements";
 export { default as FinancialsSummary } from "./components/FinancialsSummary";
 export { default as CompanyOverviewStats } from "./components/CompanyOverviewStats";
