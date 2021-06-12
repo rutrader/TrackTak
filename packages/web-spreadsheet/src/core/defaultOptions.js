@@ -6,7 +6,7 @@ import {
 } from "./helper";
 import { merge } from "lodash-es";
 
-const sharedOptions = {
+export const sharedOptions = {
   mode: "edit", // edit | read
   debugMode: false,
   view: {

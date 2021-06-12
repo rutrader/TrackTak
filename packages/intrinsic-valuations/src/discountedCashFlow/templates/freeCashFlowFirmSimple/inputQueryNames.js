@@ -10,6 +10,7 @@ export const labels = {
   bookValueOfConvertibleDebt: "Book Value of Convertible Debt",
   interestExpenseOnConvertibleDebt: "Interest Expense on Convertible Debt",
   maturityOfConvertibleDebt: "Maturity of Convertible Debt",
+  marketValueOfConvertibleBond: "Market Value of Convertible Bond",
   numberOfPreferredShares: "Number of Preferred Shares",
   marketPricePerShare: "Market Price Per Share",
   annualDividendPerShare: "Annual Dividend Per Share",

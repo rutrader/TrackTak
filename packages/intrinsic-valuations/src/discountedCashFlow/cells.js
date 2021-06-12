@@ -108,7 +108,7 @@ const cells = {
   ),
   B37: getExpressionProperties("=IFERROR((B36-B35)/B36, 0)"),
   C7: getExpressionProperties("=IF(C2 > B2, (C2-B2) / C15, 0)"),
-  C11: getExpressionProperties("=totalCostOfCapital"),
+  C11: getExpressionProperties("='Cost of Capital'!$G$18"),
   C12: getExpressionProperties("=1/(1+C11)"),
   C15: getExpressionProperties(`='${requiredInputsSheetName}'!$B$4`),
   M1: { value: "Terminal Year" },

@@ -1,9 +1,20 @@
 const mapDatasheetToSheetContent = (dataSheet) => {
   const sheetContent = Object.values(dataSheet.rows)
-    .filter((x) => Array.isArray(x?.cells))
+    .filter((x) => typeof x === "object")
     .map(({ cells }) => {
-      return cells.map((cell) => {
-        return cell.text;
+      // TODO: Remove this when we switch all to hyperformula as a single source of truth
+      const cellsKeys = Object.keys(cells).filter(
+        (x) => !isNaN(parseInt(x, 10)),
+      );
+      const lastCellKey = cellsKeys[cellsKeys.length - 1];
+      const paddedCellKeys = [];
+
+      for (let index = 0; index <= parseInt(lastCellKey, 10); index++) {
+        paddedCellKeys.push(index);
+      }
+
+      return paddedCellKeys.map((key) => {
+        return cells[key]?.text ?? null;
       });
     });
 

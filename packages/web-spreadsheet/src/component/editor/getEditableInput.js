@@ -47,7 +47,7 @@ export const getEditableInput = (
   }
 
   const setInputText = (text) => {
-    const format = getFormatFromCell(_cell, getData().getData);
+    const format = getFormatFromCell(_cell, getData().getData().styles);
 
     inputText = setTextFormat(text, format, getOptions().formats, "input");
     formula.setInputText(inputText);
@@ -74,7 +74,7 @@ export const getEditableInput = (
   function inputEventHandler() {
     setInputText(textEl.el.textContent);
 
-    const format = getFormatFromCell(_cell, getData().getData);
+    const format = getFormatFromCell(_cell, getData().getData().styles);
 
     setCaretPosition(
       textEl.el,
@@ -254,7 +254,7 @@ export const getEditableInput = (
   };
 
   const setText = (text) => {
-    const format = getFormatFromCell(_cell, getData().getData);
+    const format = getFormatFromCell(_cell, getData().getData().styles);
     inputText = setTextFormat(text, format, getOptions().formats, "start");
 
     formula.setInputText(inputText);

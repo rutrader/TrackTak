@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { Alert, Box, useMediaQuery, useTheme, Link } from "@material-ui/core";
 import useInputQueryParams from "../hooks/useInputQueryParams";
-import selectCostOfCapital from "../selectors/fundamentalSelectors/selectCostOfCapital";
 import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
 import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
@@ -11,7 +10,6 @@ import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
-import useInjectQueryParams from "../hooks/useInjectQueryParams";
 import { AnchorLink, navigate } from "../shared/gatsby";
 import { useLocation } from "@reach/router";
 import selectThreeAverageYearsEffectiveTaxRate from "../selectors/fundamentalSelectors/selectThreeAverageYearsEffectiveTaxRate";
@@ -21,6 +19,7 @@ import selectScope from "../selectors/dcfSelectors/selectScope";
 import {
   setCells,
   setScope,
+  setSheetsDatas,
   setSheetsSerializedValues,
   setSheetsValues,
 } from "../redux/actions/dcfActions";
@@ -39,9 +38,12 @@ import { queryNames } from "./templates/freeCashFlowFirmSimple/inputQueryNames";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 import { currencySymbolMap } from "currency-symbol-map";
 import { requiredInputsSheetName } from "./templates/freeCashFlowFirmSimple/expressionCalculations";
-import getVariablesData from "./templates/freeCashFlowFirmSimple/data/getVariablesData";
+import getRequiredInputsData from "./templates/freeCashFlowFirmSimple/data/getRequiredInputsData";
 import getEmployeeOptionsData from "./templates/freeCashFlowFirmSimple/data/getEmployeeOptionsData";
 import getDCFValuationData from "./templates/freeCashFlowFirmSimple/data/getDCFValuationData";
+import getCostOfCapitalData from "./templates/freeCashFlowFirmSimple/data/getCostOfCapitalData";
+import getOptionalInputsData from "./templates/freeCashFlowFirmSimple/data/getOptionalInputsData";
+import selectEstimatedCostOfDebt from "../selectors/fundamentalSelectors/selectEstimatedCostOfDebt";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
@@ -52,6 +54,7 @@ const million = 1000000;
 const getDataSheets = (isOnMobile) => {
   const dataSheets = [
     getDCFValuationData(isOnMobile),
+    getCostOfCapitalData(),
     getEmployeeOptionsData(),
   ];
 
@@ -63,7 +66,7 @@ const getDatasheetsColWidths = (colWidth, isOnMobile) => {
   const newDataSheets = dataSheets.map((dataSheet, datasheetIndex) => {
     const newCols = {};
 
-    dataSheet.rows[0].cells.forEach((_, columnIndex) => {
+    Object.values(dataSheet.rows[0].cells).forEach((_, columnIndex) => {
       newCols[columnIndex] = {
         width:
           datasheetIndex === 0 && columnIndex === 0 ? columnAWidth : colWidth,
@@ -79,57 +82,59 @@ const getDatasheetsColWidths = (colWidth, isOnMobile) => {
   return newDataSheets;
 };
 
-const getDatasheetsYOYGrowth = (spreadsheet, isOnMobile) => {
-  const dataSheets = getDataSheets(isOnMobile);
+const getYOYDataSheets = (spreadsheet, isOnMobile) => {
+  const dcfValuationDataSheet = getDCFValuationData(isOnMobile);
   const dataSheetsValues = spreadsheet?.hyperformula?.getAllSheetsValues();
 
-  const newDataSheets = dataSheets.map((dataSheet, dataSheetIndex) => {
-    const formulaSheet = dataSheetsValues[dataSheet.name];
-    const newRows = {};
+  const formulaSheet = dataSheetsValues[dcfValuationDataSheet.name];
+  const newRows = {};
 
-    Object.keys(dataSheet.rows).forEach((rowKey) => {
-      const cells = dataSheet.rows[rowKey].cells;
-      const formulaRow = formulaSheet[rowKey];
-      if (Array.isArray(cells)) {
-        newRows[rowKey] = {
-          ...dataSheet.rows[rowKey],
-          cells: cells.map((cell, i) => {
-            const previousFormulaValue = formulaRow[i - 1]
-              ? formulaRow[i - 1]
-              : null;
-            let currentFormulaValue = formulaRow[i];
+  Object.keys(dcfValuationDataSheet.rows).forEach((rowKey) => {
+    const cells = dcfValuationDataSheet.rows[rowKey].cells;
+    const formulaRow = formulaSheet[rowKey];
+    if (typeof cells === "object") {
+      newRows[rowKey] = {
+        ...dcfValuationDataSheet.rows[rowKey],
+        cells: Object.values(cells).map((cell, i) => {
+          const previousFormulaValue = formulaRow[i - 1]
+            ? formulaRow[i - 1]
+            : null;
+          let currentFormulaValue = formulaRow[i];
 
-            if (
-              typeof previousFormulaValue === "number" &&
-              typeof currentFormulaValue === "number" &&
-              (rowKey !== "0" || dataSheetIndex !== 0)
-            ) {
-              return {
-                ...cell,
-                text:
-                  (currentFormulaValue - previousFormulaValue) /
-                  currentFormulaValue,
-                style: 0,
-              };
-            }
-
+          if (
+            typeof previousFormulaValue === "number" &&
+            typeof currentFormulaValue === "number" &&
+            rowKey !== "0"
+          ) {
             return {
               ...cell,
-              text: currentFormulaValue,
+              text:
+                (currentFormulaValue - previousFormulaValue) /
+                currentFormulaValue,
+              style: 0,
             };
-          }),
-        };
-      }
-    });
-    return {
-      ...dataSheet,
-      rows: newRows,
-    };
+          }
+
+          return {
+            ...cell,
+            text: currentFormulaValue,
+          };
+        }),
+      };
+    }
   });
 
-  return newDataSheets;
-};
+  const newDCFValuationDataSheet = {
+    ...dcfValuationDataSheet,
+    rows: newRows,
+  };
 
+  const dataSheets = getDataSheets(isOnMobile);
+
+  dataSheets[0] = newDCFValuationDataSheet;
+
+  return dataSheets;
+};
 const DiscountedCashFlowTable = ({
   showFormulas,
   showYOYGrowth,
@@ -148,7 +153,6 @@ const DiscountedCashFlowTable = ({
   const balanceSheet = useSelector(selectRecentBalanceSheet);
   const currentEquityRiskPremium = useSelector(selectCurrentEquityRiskPremium);
   const price = useSelector(selectPrice);
-  const costOfCapital = useInjectQueryParams(selectCostOfCapital);
   const riskFreeRate = useSelector(selectRiskFreeRate);
   const sharesOutstanding = useSelector(selectSharesOutstanding);
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
@@ -160,6 +164,7 @@ const DiscountedCashFlowTable = ({
     requiredInputsId,
   );
   const currentIndustry = useSelector(selectCurrentIndustry);
+  const estimatedCostOfDebt = useSelector(selectEstimatedCostOfDebt);
 
   useEffect(() => {
     if (isNil(inputQueryParams[queryNames.salesToCapitalRatio])) {
@@ -400,6 +405,7 @@ const DiscountedCashFlowTable = ({
         });
       });
 
+      // TODO: Remove setCells and consolidate the others in a better place
       dispatch(setCells(cells));
       dispatch(
         setSheetsSerializedValues(
@@ -407,14 +413,16 @@ const DiscountedCashFlowTable = ({
         ),
       );
       dispatch(setSheetsValues(spreadsheet.hyperformula.getAllSheetsValues()));
+      dispatch(setSheetsDatas(spreadsheet.getDatas()));
     }
   }, [hasAllRequiredInputsFilledIn, isOnMobile, spreadsheet, dispatch, scope]);
 
   useEffect(() => {
     if (spreadsheet) {
-      spreadsheet.variablesSpreadsheet.setVariableDatasheets(
-        getVariablesData(inputQueryParams),
-      );
+      spreadsheet.variablesSpreadsheet.setVariableDatasheets([
+        getRequiredInputsData(inputQueryParams),
+        getOptionalInputsData(inputQueryParams),
+      ]);
     }
   }, [inputQueryParams, spreadsheet]);
 
@@ -425,9 +433,7 @@ const DiscountedCashFlowTable = ({
       });
 
       if (showYOYGrowth) {
-        spreadsheet.setDatasheets(
-          getDatasheetsYOYGrowth(spreadsheet, isOnMobile),
-        );
+        spreadsheet.setDatasheets(getYOYDataSheets(spreadsheet, isOnMobile));
       } else if (showFormulas) {
         spreadsheet.setOptions({
           showAllFormulas: true,
@@ -453,29 +459,29 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     // Dispatch only when we have all the data from the API
-    if (
-      hasAllRequiredInputsFilledIn &&
-      !isNil(price) &&
-      !isNil(costOfCapital.totalCostOfCapital)
-    ) {
+    if (hasAllRequiredInputsFilledIn && !isNil(price)) {
       dispatch(
         setScope({
+          unleveredBeta: currentIndustry.unleveredBeta,
+          equityRiskPremium: currentEquityRiskPremium.equityRiskPremium,
+          estimatedCostOfDebt,
           standardDeviationInStockPrices:
             currentIndustry.standardDeviationInStockPrices,
           matureMarketEquityRiskPremium,
           pastThreeYearsAverageEffectiveTaxRate,
           totalRevenue: incomeStatement.totalRevenue,
+          interestExpense: incomeStatement.interestExpense,
           operatingIncome: incomeStatement.operatingIncome,
           investedCapital: balanceSheet.investedCapital,
           bookValueOfDebt: balanceSheet.bookValueOfDebt,
           cashAndShortTermInvestments: balanceSheet.cashAndShortTermInvestments,
           minorityInterest: balanceSheet.minorityInterest,
+          capitalLeaseObligations: balanceSheet.capitalLeaseObligations,
           marginalTaxRate: currentEquityRiskPremium.marginalTaxRate,
           sharesOutstanding,
           price,
           bookValueOfEquity: balanceSheet.bookValueOfEquity,
           riskFreeRate,
-          totalCostOfCapital: costOfCapital.totalCostOfCapital,
           cagrInYears_1_5: inputQueryParams[queryNames.cagrInYears_1_5],
           yearOfConvergence: inputQueryParams[queryNames.yearOfConvergence],
           ebitTargetMarginInYear_10:
@@ -493,21 +499,26 @@ const DiscountedCashFlowTable = ({
   }, [
     balanceSheet.bookValueOfDebt,
     balanceSheet.bookValueOfEquity,
+    balanceSheet.capitalLeaseObligations,
     balanceSheet.cashAndShortTermInvestments,
     balanceSheet.investedCapital,
     balanceSheet.minorityInterest,
-    costOfCapital.totalCostOfCapital,
+    currentEquityRiskPremium.equityRiskPremium,
     currentEquityRiskPremium.marginalTaxRate,
+    currentEquityRiskPremium.unleveredBeta,
+    currentIndustry.standardDeviationInStockPrices,
+    currentIndustry.unleveredBeta,
     dispatch,
+    estimatedCostOfDebt,
+    hasAllRequiredInputsFilledIn,
+    incomeStatement.interestExpense,
     incomeStatement.operatingIncome,
     incomeStatement.totalRevenue,
+    inputQueryParams,
     pastThreeYearsAverageEffectiveTaxRate,
     price,
     riskFreeRate,
     sharesOutstanding,
-    hasAllRequiredInputsFilledIn,
-    inputQueryParams,
-    currentIndustry.standardDeviationInStockPrices,
   ]);
 
   const to = `${location.pathname}#${requiredInputsId}`;

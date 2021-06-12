@@ -5,6 +5,8 @@ import {
 } from "./templates/freeCashFlowFirmSimple/expressionCalculations";
 import { queryNames } from "./templates/freeCashFlowFirmSimple/inputQueryNames";
 
+// TODO: Remove most of this and share the remaining ones with
+// queryNames file
 export const costOfCapitalNameTypeMapping = {
   marginalTaxRate: "percent",
   equityRiskPremium: "percent",
@@ -20,6 +22,9 @@ export const costOfCapitalNameTypeMapping = {
   pretaxCostOfDebt: "percent",
   unleveredBeta: "number",
   leveredBeta: "number",
+  estimatedCostOfDebt: "percent",
+  standardDeviationInStockPrices: "percent",
+  capitalLeaseObligations: "million-currency",
   estimatedMarketValueOfStraightDebt: "million-currency",
   estimatedValueOfStraightDebtInConvertibleDebt: "million-currency",
 };
@@ -37,6 +42,7 @@ export const optionalInputNameTypeMapping = {
   [queryNames.averageMaturityOfOptions]: "year",
   [queryNames.averageMaturityOfDebt]: "year",
   [queryNames.pretaxCostOfDebt]: "percent",
+  [queryNames.marketValueOfConvertibleBond]: "million-currency",
   [queryNames.bookValueOfConvertibleDebt]: "million-currency",
   [queryNames.interestExpenseOnConvertibleDebt]: "million-currency",
   [queryNames.maturityOfConvertibleDebt]: "year",
