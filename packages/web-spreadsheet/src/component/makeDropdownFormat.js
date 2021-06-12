@@ -24,7 +24,7 @@ export const makeDropdownFormat = (getOptions, getData, eventEmitter) => (
   };
 
   eventEmitter.on(spreadsheetEvents.sheet.cellSelected, (cell) => {
-    const format = getFormatFromCell(cell, getData().getData);
+    const format = getFormatFromCell(cell, getData().getData().styles);
 
     if (format) {
       setTitle(format);

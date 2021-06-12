@@ -1,51 +1,18 @@
-import {
-  Box,
-  IconButton,
-  listItemClasses,
-  Typography,
-} from "@material-ui/core";
+import { Box, IconButton, Typography } from "@material-ui/core";
 import React from "react";
-import { getNumberOfColumns, padCellKeys } from "./utils";
-import useInputQueryParams from "../hooks/useInputQueryParams";
-import { sentenceCase } from "change-case";
-import makeFormatCellForExcelOutput, {
-  costOfCapitalWorksheetName,
-  inputsWorksheetName,
-  valuationWorksheetName,
-} from "./makeFormatCellForExcelOutput";
-import makeFormatValueForExcelOutput from "./makeFormatValueForExcelOutput";
-import sortAlphaNumeric from "./sortAlphaNumeric";
-import getChunksOfArray from "../shared/getChunksOfArray";
 import { useSelector } from "react-redux";
 import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
-import selectGovernmentBondTenYearYield from "../selectors/fundamentalSelectors/selectGovernmentBondTenYearYield";
 import selectScope from "../selectors/dcfSelectors/selectScope";
 import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
-import cells from "./cells";
-import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
-import selectInterestSpread from "../selectors/fundamentalSelectors/selectInterestSpread";
-import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
-import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
-import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
-import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
-import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
-import { range, replace } from "lodash-es";
-import scopeNameTypeMapping, {
-  allInputNameTypeMappings,
-} from "./scopeNameTypeMapping";
-import {
-  costOfComponentCalculation,
-  debtCalculation,
-  marketValueCalculation,
-  weightInCostOfCapitalCalculation,
-} from "./templates/freeCashFlowFirmSimple/expressionCalculations";
-import { queryNames } from "./templates/freeCashFlowFirmSimple/inputQueryNames";
-import selectSheetsValues from "../selectors/dcfSelectors/selectSheetsValues";
-import selectSheetsSerializedValues from "../selectors/dcfSelectors/selectSheetsSerializedValues";
+import scopeNameTypeMapping from "./scopeNameTypeMapping";
 import selectSheetsDatas from "../selectors/dcfSelectors/selectSheetsDatas";
 import replaceAll from "../shared/replaceAll";
+import { sharedOptions } from "../../../web-spreadsheet/src/core/defaultOptions";
+import getFormatFromCell from "../../../web-spreadsheet/src/shared/getFormatFromCell";
+import formatToExcelType from "./formatToExcelType";
+import { isNil } from "lodash-es";
 
 // TODO: Once we put in variables sheet then remove this
 const apiVariablesWorksheetName = "API Variables";
@@ -98,11 +65,18 @@ function coordinateToReference(row, col) {
 }
 
 // Source: https://github.com/myliang/x-spreadsheet/issues/419
-const xtos = async (sheetsDatas, scope, keepMerges, keepFormulas) => {
+const xtos = async (
+  sheetsDatas,
+  scope,
+  currencySymbol,
+  keepMerges,
+  keepFormulas,
+) => {
   const { utils } = await import("xlsx/xlsx.mini");
   const scopeIndexes = {};
+  const scopeArray = Object.keys(scope);
 
-  Object.keys(scope).forEach((key, i) => {
+  scopeArray.forEach((key, i) => {
     scopeIndexes[key] = i;
   });
 
@@ -113,25 +87,27 @@ const xtos = async (sheetsDatas, scope, keepMerges, keepFormulas) => {
 
   const appendWorksheet = (dataSheet) => {
     var ws = {
-      ["!cols"]: [],
+      "!cols": [],
     };
-    var rowobj = dataSheet.rows;
+    let rowobj = dataSheet.rows;
+    let minCoord, maxCoord;
+
     for (var ri = 0; ri < rowobj.len; ++ri) {
       var row = rowobj[ri];
       if (!row) continue;
 
-      var minCoord, maxCoord;
       // eslint-disable-next-line no-loop-func
       Object.keys(row.cells).forEach(function (k) {
         var idx = +k;
         if (isNaN(idx)) return;
 
         const cell = row.cells[k];
+        const format = getFormatFromCell(cell, dataSheet.styles);
+
         let cellText = cell.text;
-        let type = "s";
 
         var lastRef = coordinateToReference(ri + 1, idx + 1);
-        if (minCoord == undefined) {
+        if (minCoord === undefined) {
           minCoord = {
             r: ri,
             c: idx,
@@ -140,7 +116,7 @@ const xtos = async (sheetsDatas, scope, keepMerges, keepFormulas) => {
           if (ri < minCoord.r) minCoord.r = ri;
           if (idx < minCoord.c) minCoord.c = idx;
         }
-        if (maxCoord == undefined) {
+        if (maxCoord === undefined) {
           maxCoord = {
             r: ri,
             c: idx,
@@ -150,45 +126,40 @@ const xtos = async (sheetsDatas, scope, keepMerges, keepFormulas) => {
           if (idx > maxCoord.c) maxCoord.c = idx;
         }
 
-        if (!cellText) {
-          cellText = "";
-          type = "z";
-        } else if (!isNaN(parseFloat(cellText))) {
-          cellText = parseFloat(cellText);
-          type = "n";
-        } else if (cellText === "true" || cellText === "false") {
-          cellText = Boolean(cellText);
-          type = "b";
+        const excelFormat = formatToExcelType(format, currencySymbol);
+
+        if (isNil(cellText) || cellText === "") {
+          excelFormat.t = "z";
         }
 
-        ws[lastRef] = {
-          v: cellText,
-          t: type,
-        };
+        let formula;
 
-        if (keepFormulas && type == "s" && cellText[0] == "=") {
-          let formula = cellText.slice(1);
+        if (keepFormulas && cellText?.[0] === "=") {
+          formula = cellText.slice(1);
 
-          // Match a camelCase tracktak variable
-          const matches =
-            formula.match(/\b([a-z][a-z0-9]+[A-Z])+[a-z0-9]+\b|\b[a-z]+\b/g) ??
-            [];
-
-          matches.forEach((match) => {
-            const cellRow = scopeIndexes[match] + 1;
+          scopeArray.forEach((key) => {
+            const cellRow = scopeIndexes[key] + 1;
 
             // set it to the API sheet cell instead
             formula = replaceAll(
               formula,
-              match,
+              `\\b${key}\\b`,
               `'${apiVariablesWorksheetName}'!$B$${cellRow}`,
             );
           });
-          ws[lastRef].f = formula;
+          excelFormat.t = "s";
         }
 
-        if (keepMerges && cell.merge != undefined) {
-          if (ws["!merges"] == undefined) ws["!merges"] = [];
+        ws[lastRef] = {
+          ...excelFormat,
+          v: cellText,
+          f: formula,
+        };
+
+        if (keepMerges && cell.merge !== undefined) {
+          if (ws["!merges"] === undefined) {
+            ws["!merges"] = [];
+          }
 
           ws["!merges"].push({
             s: {
@@ -209,13 +180,14 @@ const xtos = async (sheetsDatas, scope, keepMerges, keepFormulas) => {
         coordinateToReference(maxCoord.r + 1, maxCoord.c + 1);
     }
 
-    Object.keys(dataSheet.cols).forEach((key) => {
-      const value = dataSheet.cols[key];
+    // Set col widths
+    for (let index = 0; index <= maxCoord.c; index++) {
+      const col = dataSheet.cols[index];
 
       ws["!cols"].push({
-        wpx: value?.width,
+        wpx: col?.width ?? sharedOptions.col.width,
       });
-    });
+    }
 
     utils.book_append_sheet(workbook, ws, dataSheet.name);
   };
@@ -228,46 +200,58 @@ const xtos = async (sheetsDatas, scope, keepMerges, keepFormulas) => {
     appendWorksheet(sheetData);
   });
 
+  const apiVariablesWorksheet = {};
+
+  scopeArray.forEach((key, i) => {
+    const value = scope[key];
+    const cellRow = scopeIndexes[key] + 1;
+    const format = scopeNameTypeMapping[key];
+
+    if (format && value !== null) {
+      const excelFormat = formatToExcelType(format, currencySymbol);
+
+      apiVariablesWorksheet[`B${cellRow}`] = {
+        ...excelFormat,
+        v: value,
+      };
+
+      apiVariablesWorksheet[`A${cellRow}`] = {
+        t: "s",
+        v: key,
+      };
+    }
+
+    if (i === scopeArray.length - 1) {
+      apiVariablesWorksheet["!ref"] = `A1:B${cellRow}`;
+    }
+  });
+
+  apiVariablesWorksheet["!cols"] = [{ wpx: 350 }, { wpx: 150 }];
+
+  utils.book_append_sheet(
+    workbook,
+    apiVariablesWorksheet,
+    apiVariablesWorksheetName,
+  );
+
   return workbook;
 };
 
 const ExportToExcel = () => {
   const general = useSelector(selectGeneral);
-  const governmentBondTenYearYield = useSelector(
-    selectGovernmentBondTenYearYield,
-  );
-  const currentEquityRiskPremium = useSelector(selectCurrentEquityRiskPremium);
   const scope = useSelector(selectScope);
   const valuationCurrencySymbol = useSelector(selectValuationCurrencySymbol);
-  const inputQueryParams = useInputQueryParams();
-  const interestSpread = useSelector(selectInterestSpread);
-  const currentIndustry = useSelector(selectCurrentIndustry);
-  const incomeStatement = useSelector(selectRecentIncomeStatement);
-  const balanceSheet = useSelector(selectRecentBalanceSheet);
-  const price = useSelector(selectPrice);
-  const sharesOutstanding = useSelector(selectSharesOutstanding);
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
-  const sheetsValues = useSelector(selectSheetsValues);
   const sheetsDatas = useSelector(selectSheetsDatas);
 
-  const exportToCSVOnClick = async () => {
-    const { utils, writeFile } = await import("xlsx/xlsx.mini");
-    const workbook = await xtos(sheetsDatas, scope, true, true);
-
-    const scopeData = Object.keys(scope).map((key) => {
-      const value = scope[key];
-
-      return [key, value];
-    });
-
-    const apiVariablesWorksheet = utils.aoa_to_sheet(scopeData);
-
-    apiVariablesWorksheet["!cols"] = [{ wpx: 350 }, { wpx: 150 }];
-
-    utils.book_append_sheet(
-      workbook,
-      apiVariablesWorksheet,
-      apiVariablesWorksheetName,
+  const exportToExcel = async () => {
+    const { writeFile } = await import("xlsx/xlsx.mini");
+    const workbook = await xtos(
+      sheetsDatas,
+      scope,
+      valuationCurrencySymbol,
+      true,
+      true,
     );
 
     writeFile(workbook, `${general.code}.${general.exchange}_DCF.xlsx`);
@@ -277,7 +261,7 @@ const ExportToExcel = () => {
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <IconButton
         variant="outlined"
-        onClick={exportToCSVOnClick}
+        onClick={exportToExcel}
         disabled={!hasAllRequiredInputsFilledIn}
       >
         <CloudDownloadIcon />

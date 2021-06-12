@@ -141,7 +141,7 @@ const getEmployeeOptionsData = () => {
             text: "N (d1)",
           },
           1: {
-            text: "=NORMSDIST(B10, TRUE)",
+            text: "=NORMDIST(B10, 0, 1, TRUE)",
           },
         },
       },
@@ -168,7 +168,7 @@ const getEmployeeOptionsData = () => {
             text: "N (d2)",
           },
           1: {
-            text: "=NORMSDIST(B13, TRUE)",
+            text: "=NORMDIST(B13, 0, 1, TRUE)",
           },
         },
       },

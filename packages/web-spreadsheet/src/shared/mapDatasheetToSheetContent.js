@@ -14,7 +14,7 @@ const mapDatasheetToSheetContent = (dataSheet) => {
       }
 
       return paddedCellKeys.map((key) => {
-        return cells[key]?.text ?? "";
+        return cells[key]?.text ?? null;
       });
     });
 

@@ -798,13 +798,10 @@ export const getSheet = (
   function dataSetCellText(text, state = "finished") {
     if (getOptions().mode === "read") return;
     const cell = getData().getSelectedCell();
+    const styles = getData().getData().styles;
+    const format = getFormatFromCell(cell, styles);
 
-    let newText = setTextFormat(
-      text,
-      getFormatFromCell(cell, getData().getData),
-      getOptions().formats,
-      state,
-    );
+    let newText = setTextFormat(text, format, getOptions().formats, state);
     getData().setSelectedCellText(newText, state);
 
     const { ri, ci } = getData().selector;
@@ -815,7 +812,6 @@ export const getSheet = (
     };
 
     const value = hyperformula.getCellValue(cellAddress);
-    const format = getFormatFromCell(cell, getData().getData);
     const param = {
       cell,
       cellAddress,
