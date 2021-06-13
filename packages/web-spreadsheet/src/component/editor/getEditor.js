@@ -22,15 +22,6 @@ export const getEditor = (getData, getOptions, formulas, eventEmitter) => {
     editableInput.datepicker.el,
   );
 
-  editableInput.textEl.el.addEventListener("keydown", (e) => {
-    const keyCode = e.keyCode || e.which;
-
-    // escape
-    if (keyCode === 27) {
-      return editableInput.clear();
-    }
-  });
-
   eventEmitter.on(spreadsheetEvents.editor.clear, () => {
     el.hide();
   });
