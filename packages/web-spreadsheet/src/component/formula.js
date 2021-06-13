@@ -23,10 +23,10 @@ function renderCell(left, top, width, height, color, selected = false) {
 function generalSelectCell(sri, sci, eri, eci) {
   if (this.cell) {
     const expr = cellRangeArgs2expr(sri, sci, eri, eci);
-    const text = this.inputText;
     const { from, to } = this.cell;
+    const text = this.getInputText();
 
-    this.inputText = text.slice(0, from) + expr + text.slice(to);
+    this.setInputText(text.slice(0, from) + expr + text.slice(to));
     this.editorRender();
     setTimeout(() => {
       setCaretPosition(this.el, from + expr.length);
@@ -44,12 +44,22 @@ export default class Formula {
     return new CellRange(...cellRangeArgs);
   }
 
-  constructor(textEl, cellEl, inputText, getData, editorRender, eventEmitter) {
+  constructor(
+    textEl,
+    getData,
+    cellEl,
+    getInputText,
+    setInputText,
+    editorRender,
+    eventEmitter,
+  ) {
     this.el = textEl.el;
     this.cellEl = cellEl.el;
-    this.inputText = inputText;
+    this.getInputText = getInputText;
+    this.setInputText = setInputText;
     this.editorRender = editorRender;
     this.eventEmitter = eventEmitter;
+    this.getData = getData;
 
     this.cells = [];
     this.cell = null;
@@ -58,17 +68,19 @@ export default class Formula {
 
     let cellLastSelectionColor = null;
 
+    const that = this;
+
     document.addEventListener("selectionchange", () => {
-      if (document.activeElement !== this.el) return;
+      if (document.activeElement !== that.el) return;
 
-      this.cell = null;
-      if (inputText[0] != "=") return;
+      that.cell = null;
+      if (that.getInputText()[0] !== "=") return;
 
-      const index = getCaretPosition(this.el);
-      for (let cell of this.cells) {
+      const index = getCaretPosition(that.el);
+      for (let cell of that.cells) {
         const { from, to } = cell;
         if (from <= index && index <= to) {
-          this.cell = cell;
+          that.cell = cell;
           break;
         }
       }
@@ -86,27 +98,30 @@ export default class Formula {
       // TODO: find a more reliable way to check a change of cell than by using
       //       the color property
       if (
-        this.cell &&
-        this.cell.color &&
-        (this.cell.color !== cellLastSelectionColor ||
-          !this.cellSelectStartRowCol)
+        that.cell &&
+        that.cell.color &&
+        (that.cell.color !== cellLastSelectionColor ||
+          !that.cellSelectStartRowCol)
       ) {
-        const cellRange = this.getCellPositionRange(this.cell, this.inputText);
-        this.cellSelectStartRowCol = [cellRange.sri, cellRange.sci];
-        this.cellSelectEndRowCol = [cellRange.eri, cellRange.eci];
+        const cellRange = that.getCellPositionRange(
+          that.cell,
+          that.getInputText(),
+        );
+        that.cellSelectStartRowCol = [cellRange.sri, cellRange.sci];
+        that.cellSelectEndRowCol = [cellRange.eri, cellRange.eci];
 
-        cellLastSelectionColor = this.cell.color;
+        cellLastSelectionColor = that.cell.color;
       }
 
-      this.renderCells();
+      that.renderCells();
     });
 
     this.el.addEventListener("keydown", (e) => {
       const keyCode = e.keyCode || e.which;
 
-      if ([37, 38, 39, 40].indexOf(keyCode) == -1) return;
+      if ([27, 37, 38, 39, 40].indexOf(keyCode) == -1) return;
 
-      if (!this.cell || this.cell.from == this.cell.to) return;
+      if (!that.cell || that.cell.from == that.cell.to) return;
 
       e.preventDefault();
       e.stopPropagation();
@@ -133,35 +148,35 @@ export default class Formula {
 
       // If the shift key is applied, hold the start position fixed
       if (!e.shiftKey) {
-        this.cellSelectStartRowCol[0] = Math.max(
+        that.cellSelectStartRowCol[0] = Math.max(
           0,
-          this.cellSelectStartRowCol[0] + rowShift,
+          that.cellSelectStartRowCol[0] + rowShift,
         );
-        this.cellSelectStartRowCol[1] = Math.max(
+        that.cellSelectStartRowCol[1] = Math.max(
           0,
-          this.cellSelectStartRowCol[1] + colShift,
+          that.cellSelectStartRowCol[1] + colShift,
         );
       }
-      this.cellSelectEndRowCol[0] = Math.max(
+      that.cellSelectEndRowCol[0] = Math.max(
         0,
-        this.cellSelectEndRowCol[0] + rowShift,
+        that.cellSelectEndRowCol[0] + rowShift,
       );
-      this.cellSelectEndRowCol[1] = Math.max(
+      that.cellSelectEndRowCol[1] = Math.max(
         0,
-        this.cellSelectEndRowCol[1] + colShift,
+        that.cellSelectEndRowCol[1] + colShift,
       );
 
       // Get values before merge cells applied
-      const cellRangeArgs = this.getCellRangeArgsFromSelectStartEnd();
+      const cellRangeArgs = that.getCellRangeArgsFromSelectStartEnd();
 
       // Account for merge cells
       let cellRange = new CellRange(...cellRangeArgs);
 
       // Reapply merge cells after translation
-      cellRange = this.getData().merges.union(cellRange);
+      cellRange = that.getData().merges.union(cellRange);
 
       generalSelectCell.call(
-        this,
+        that,
         cellRange.sri,
         cellRange.sci,
         cellRange.eri,
@@ -177,10 +192,6 @@ export default class Formula {
     this.cells = [];
     this.cellEl.innerHTML = "";
   }
-
-  setInputText = (text) => {
-    this.inputText = text;
-  };
 
   selectCell(ri, ci) {
     // To represent a single cell (no range), pass start and end row/col as
@@ -222,7 +233,7 @@ export default class Formula {
   }
 
   render() {
-    const text = this.inputText;
+    const text = this.getInputText();
     this.cells = [];
 
     let i = 0;
@@ -335,13 +346,13 @@ export default class Formula {
 
   renderCells() {
     const cells = this.cells;
+
     let cellHtml = "";
 
     for (let cell of cells) {
       const { color } = cell;
       if (color) {
-        const cellRange = this.getCellPositionRange(cell, this.inputText);
-
+        const cellRange = this.getCellPositionRange(cell, this.getInputText());
         const cellRangeIncludingMerges = this.getData().merges.union(cellRange);
         const box = this.getData().getRect(cellRangeIncludingMerges);
         const { left, top, width, height } = box;

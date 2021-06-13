@@ -1,7 +1,5 @@
 import { cssPrefix } from "../../config";
-import { setCaretPosition } from "../../core/caret";
 import spreadsheetEvents from "../../core/spreadsheetEvents";
-import getCaretPositionIndex from "../../shared/getCaretPositionIndex";
 import { h } from "../element";
 import { getEditableInput } from "./getEditableInput";
 
@@ -23,6 +21,15 @@ export const getEditor = (getData, getOptions, formulas, eventEmitter) => {
     editableInput.suggest.el,
     editableInput.datepicker.el,
   );
+
+  editableInput.textEl.el.addEventListener("keydown", (e) => {
+    const keyCode = e.keyCode || e.which;
+
+    // escape
+    if (keyCode === 27) {
+      return editableInput.clear();
+    }
+  });
 
   eventEmitter.on(spreadsheetEvents.editor.clear, () => {
     el.hide();
