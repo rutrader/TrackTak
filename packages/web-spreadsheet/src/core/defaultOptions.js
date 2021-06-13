@@ -55,17 +55,20 @@ export const sharedOptions = {
       type: "number",
       label: "10.12%",
       editRender: (v, state) => {
+        // TODO: Remove all this when we have proper masking
         let text = parseFloat(v, 10);
 
         if (isNaN(text)) return v;
 
         if (state === "start") {
-          text *= 100;
+          return (text * 100).toString();
         }
 
-        text = v.toString();
+        if (state === "startInput" || state === "finished") {
+          return (text / 100).toString();
+        }
 
-        return !text.includes("%") ? text + "%" : v;
+        return !v.toString().includes("%") ? v + "%" : v;
       },
       render: formatPercentRender,
     },
