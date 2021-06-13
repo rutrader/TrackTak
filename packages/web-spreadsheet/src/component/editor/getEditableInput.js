@@ -26,7 +26,6 @@ export const getEditableInput = (
     )}`;
     target.value = ntxt;
     inputText = ntxt;
-    formula.setInputText(inputText);
     render();
 
     setCaretPosition(target, selectionEnd + 1);
@@ -50,7 +49,6 @@ export const getEditableInput = (
     const format = getFormatFromCell(_cell, getData().getData().styles);
 
     inputText = setTextFormat(text, format, getOptions().formats, "input");
-    formula.setInputText(inputText);
 
     if (_validator) {
       if (_validator.type === "list") {
@@ -97,7 +95,6 @@ export const getEditableInput = (
       position = inputText.length;
       inputText += `)${eit}`;
     }
-    formula.setInputText(inputText);
     render();
     setCaretPosition(textEl.el, position);
   }
@@ -111,7 +108,7 @@ export const getEditableInput = (
 
     const text = inputText;
 
-    if (text[0] != "=") {
+    if (text[0] !== "=") {
       textEl.html(text);
     } else {
       formula.render();
@@ -159,19 +156,7 @@ export const getEditableInput = (
   let _cell = null;
   let inputText = "";
 
-  const formula = new Formula(
-    textEl,
-    cellEl,
-    inputText,
-    getData,
-    render,
-    eventEmitter,
-  );
-
-  const setFreezeLengths = (width, height) => {
-    freeze.w = width;
-    freeze.h = height;
-  };
+  const getInputText = () => inputText;
 
   const clear = () => {
     if (_cell) {
@@ -185,13 +170,17 @@ export const getEditableInput = (
     _cell = null;
     areaOffset = null;
     inputText = "";
-    formula.setInputText("");
     textEl.val("");
     textlineEl.html("");
     formula.clear();
     resetSuggestItems();
     datepicker.hide();
     eventEmitter.emit(spreadsheetEvents[eventType].clear);
+  };
+
+  const setFreezeLengths = (width, height) => {
+    freeze.w = width;
+    freeze.h = height;
   };
 
   const setOffset = (offset, suggestPosition = "top") => {
@@ -258,9 +247,6 @@ export const getEditableInput = (
     const format = getFormatFromCell(_cell, getData().getData().styles);
     inputText = setTextFormat(text, format, getOptions().formats, "start");
 
-    formula.setInputText(inputText);
-    // console.log('text>>:', text);
-
     eventEmitter.emit(spreadsheetEvents[eventType].setText, inputText, format);
 
     // firefox bug
@@ -280,6 +266,16 @@ export const getEditableInput = (
   const formulaSelectCellRange = (ri, ci) => {
     formula.selectCellRange(ri, ci);
   };
+
+  const formula = new Formula(
+    textEl,
+    getData,
+    cellEl,
+    getInputText,
+    setInputText,
+    render,
+    eventEmitter,
+  );
 
   return {
     textEl,

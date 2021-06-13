@@ -1,7 +1,5 @@
 import { cssPrefix } from "../../config";
-import { setCaretPosition } from "../../core/caret";
 import spreadsheetEvents from "../../core/spreadsheetEvents";
-import getCaretPositionIndex from "../../shared/getCaretPositionIndex";
 import { h } from "../element";
 import { getEditableInput } from "./getEditableInput";
 
