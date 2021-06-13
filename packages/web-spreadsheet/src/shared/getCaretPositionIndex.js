@@ -1,7 +1,7 @@
-const getCaretPositionIndex = (text, format) => {
-  return format === "percent" && text.length > 0 && text.includes("%")
-    ? text.length - 1
-    : text.length;
+const getCaretPositionIndex = (text) => {
+  let stringText = text.toString();
+
+  return stringText.length;
 };
 
 export default getCaretPositionIndex;

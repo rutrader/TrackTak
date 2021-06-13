@@ -28,17 +28,8 @@ export const getEditor = (getData, getOptions, formulas, eventEmitter) => {
     el.hide();
   });
 
-  eventEmitter.on(spreadsheetEvents.editor.setText, (text, format) => {
+  eventEmitter.on(spreadsheetEvents.editor.setText, () => {
     el.show();
-    // firefox bug
-    editableInput.textEl.el.blur();
-
-    setTimeout(() => {
-      setCaretPosition(
-        editableInput.textEl.el,
-        getCaretPositionIndex(text, format),
-      );
-    });
   });
 
   eventEmitter.on(spreadsheetEvents.formulaBar.change, (_, text) => {
