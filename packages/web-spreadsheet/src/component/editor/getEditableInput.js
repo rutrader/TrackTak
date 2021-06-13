@@ -3,7 +3,7 @@ import Suggest from "../suggest";
 import Datepicker from "../datepicker";
 import { cssPrefix } from "../../config";
 import Formula from "../formula";
-import { setCaretPosition } from "../../core/caret";
+import { saveCaretPosition, setCaretPosition } from "../../core/caret";
 import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { dateFormat } from "../../shared/dateFormat";
 import getFormatFromCell from "../../shared/getFormatFromCell";
@@ -72,14 +72,11 @@ export const getEditableInput = (
   };
 
   function inputEventHandler() {
+    const restore = saveCaretPosition(textEl.el);
+
     setInputText(textEl.el.textContent);
 
-    const format = getFormatFromCell(_cell, getData().getData().styles);
-
-    setCaretPosition(
-      textEl.el,
-      getCaretPositionIndex(textEl.el.textContent, format),
-    );
+    restore();
   }
 
   function suggestItemClick(it) {
@@ -237,6 +234,10 @@ export const getEditableInput = (
 
     setText(text);
 
+    setTimeout(() => {
+      setCaretPosition(textEl.el, getCaretPositionIndex(textEl.el.textContent));
+    });
+
     _validator = validator;
     if (_validator) {
       const { type } = _validator;
@@ -261,6 +262,10 @@ export const getEditableInput = (
     // console.log('text>>:', text);
 
     eventEmitter.emit(spreadsheetEvents[eventType].setText, inputText, format);
+
+    // firefox bug
+    textEl.el.blur();
+
     render();
   };
 
