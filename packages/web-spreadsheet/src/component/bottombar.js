@@ -20,8 +20,8 @@ const getDropdownMore = (eventEmitter) => {
   const icon = getIcon("ellipsis");
   const dropdown = getDropdown(icon, "auto", false, "top-left");
 
-  const reset = (items) => {
-    const eles = items.map((it, i) =>
+  const reset = (names) => {
+    const eles = names.map((name, i) =>
       h("div", `${cssPrefix}-item`)
         .css("width", "150px")
         .css("font-weight", "normal")
@@ -29,7 +29,7 @@ const getDropdownMore = (eventEmitter) => {
           eventEmitter.emit(spreadsheetEvents.bottombar.clickDropdownMore, i);
           dropdown.hide();
         })
-        .child(it),
+        .child(name),
     );
     dropdown.setContentChildren(...eles);
   };
@@ -77,19 +77,19 @@ const getContextMenu = (eventEmitter) => {
   };
 };
 
-export const getBottombar = (eventEmitter) => {
-  let dataNames = [];
-  let activeEl = null;
+export const getBottombar = (eventEmitter, getDataValues, getDataValue) => {
+  const getSheetNames = () => getDataValues().map((x) => x.name);
+  const getCurrentSheetName = () => getDataValue().name;
+
   let deleteEl = null;
   let items = [];
   const moreEl = getDropdownMore(eventEmitter);
 
   const addItem = (name, active) => {
-    dataNames.push(name);
     const item = h("li", active ? "active" : "").child(name);
     item
       .on("click", () => {
-        clickSwap2(item);
+        clickSwap();
       })
       .on("contextmenu", (evt) => {
         const { offsetLeft, offsetHeight } = evt.target;
@@ -105,7 +105,7 @@ export const getBottombar = (eventEmitter) => {
         input.val(v);
         input.input.on("blur", ({ target }) => {
           const { value } = target;
-          const nindex = dataNames.findIndex((it) => it === v);
+          const nindex = getSheetNames().findIndex((it) => it === v);
 
           renameItem(nindex, value);
         });
@@ -113,13 +113,9 @@ export const getBottombar = (eventEmitter) => {
         input.focus();
       });
 
-    if (active) {
-      clickSwap(item);
-    }
-
     items.push(item);
     menuEl.child(item);
-    moreEl.reset(dataNames);
+    moreEl.reset(getSheetNames());
   };
 
   const renameItem = (index, value) => {
@@ -139,6 +135,9 @@ export const getBottombar = (eventEmitter) => {
   };
 
   const deleteItem = () => {
+    let oldIndex = null;
+    let newIndex = null;
+
     if (items.length > 1) {
       const index = items.findIndex((it) => it === deleteEl);
 
@@ -146,37 +145,31 @@ export const getBottombar = (eventEmitter) => {
       dataNames.splice(index, 1);
       menuEl.removeChild(deleteEl.el);
       moreEl.reset(dataNames);
-      if (activeEl === deleteEl) {
-        const [f] = items;
-        activeEl = f;
-        activeEl.toggle();
+      if (index === activeIndex) {
+        if (items[0]) {
+          items[0].toggle();
+        }
 
-        eventEmitter.emit(spreadsheetEvents.bottombar.deleteSheet, index, 0);
-        return;
+        newIndex = 0;
+      } else {
+        newIndex = -1;
       }
-      eventEmitter.emit(spreadsheetEvents.bottombar.deleteSheet, index, -1);
-      return;
+      oldIndex = index;
     }
-    eventEmitter.emit(spreadsheetEvents.bottombar.deleteSheet, -1);
+    eventEmitter.emit(
+      spreadsheetEvents.bottombar.deleteSheet,
+      oldIndex,
+      newIndex,
+    );
   };
 
-  const clickSwap2 = (item) => {
-    const index = items.findIndex((it) => it === item);
-
-    clickSwap(item);
-    activeEl.toggle();
+  const clickSwap = (index) => {
+    items[index].toggle();
     eventEmitter.emit(spreadsheetEvents.bottombar.selectSheet, index);
   };
 
-  const clickSwap = (item) => {
-    if (activeEl !== null) {
-      activeEl.toggle();
-    }
-    activeEl = item;
-  };
-
   eventEmitter.on(spreadsheetEvents.bottombar.clickDropdownMore, (i) => {
-    clickSwap2(items[i]);
+    clickSwap(i);
   });
 
   const contextMenu = getContextMenu(eventEmitter);
@@ -216,13 +209,10 @@ export const getBottombar = (eventEmitter) => {
     moreEl,
     items,
     deleteEl,
-    activeEl,
     dataNames,
     addItem,
     renameItem,
     deleteItem,
     clear,
-    clickSwap,
-    clickSwap2,
   };
 };
