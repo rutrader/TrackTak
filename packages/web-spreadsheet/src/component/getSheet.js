@@ -231,10 +231,16 @@ export const getSheet = (
     ),
   );
 
+  // Can't use datas length because user could
+  // delete in between sheets
+  let totalDatasAdded = 0;
+
   const makeSetDatasheets = (getDataProxy) => (dataSheets) => {
     datas = [];
 
     const addDataProxy = (name) => {
+      totalDatasAdded += 1;
+
       const data = getDataProxy(name);
 
       datas.push(data);
@@ -292,16 +298,16 @@ export const getSheet = (
     sheetReset();
   };
 
-  const addData = (
-    getDataProxy,
-    name = `sheet${datas.length + 1}`,
-    active = true,
-  ) => {
-    const data = getDataProxy(name);
+  const addData = (getDataProxy, name, active = true) => {
+    totalDatasAdded += 1;
+
+    const newName = name ?? `sheet${totalDatasAdded}`;
+
+    const data = getDataProxy(newName);
 
     datas.push(data);
 
-    eventEmitter.emit(spreadsheetEvents.sheet.addData, name, active, data);
+    eventEmitter.emit(spreadsheetEvents.sheet.addData, newName, active, data);
 
     return data;
   };
