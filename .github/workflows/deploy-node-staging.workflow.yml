@@ -24,6 +24,6 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: node-express-env-staging
           environment_name: NodeExpressEnvStaging-env
-          version_label: 3.0.5
+          version_label: 3.0.6
           region: eu-west-2
           deployment_package: ./node/build.zip
