@@ -34,7 +34,7 @@ export { default as Section } from "./components/Section";
 export { default as SubSection } from "./components/SubSection";
 
 export { default as replaceSpaceWithHyphen } from "./shared/replaceSpaceWithHyphen";
-export { default as convertGBXToGBP } from "./shared/convertGBXToGBP";
+export { default as convertSubCurrencyToCurrency } from "./shared/convertSubCurrencyToCurrency";
 export { default as convertFundamentals } from "./shared/convertFundamentals";
 
 export { default as TracktakLogo } from "./icons/tracktak.svg";
