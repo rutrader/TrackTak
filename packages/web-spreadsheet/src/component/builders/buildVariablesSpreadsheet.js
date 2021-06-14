@@ -100,9 +100,7 @@ export const buildVariablesSpreadsheet = (
 
   const setVariableDatasheets = sheet.makeSetDatasheets(getDataProxy);
 
-  const bottombar = getBottombar(eventEmitter, sheet.getDataValues, () =>
-    getData.getData(),
-  );
+  const bottombar = getBottombar(eventEmitter, sheet.getDataValues, getOptions);
 
   sheetEl.before(sheet.el);
   sheet.el.before(toolbar.el);

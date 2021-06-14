@@ -234,23 +234,31 @@ export const getSheet = (
   const makeSetDatasheets = (getDataProxy) => (dataSheets) => {
     datas = [];
 
-    eventEmitter.emit(spreadsheetEvents.sheet.setDatasheets, dataSheets);
+    const addDataProxy = (name) => {
+      const data = getDataProxy(name);
+
+      datas.push(data);
+
+      return data;
+    };
+
+    if (!dataSheets.length) {
+      // Add dummy data for now until dataProxy is refactored
+      addDataProxy("sheet1");
+      switchData(datas[0]);
+    }
 
     dataSheets.forEach((dataSheet, i) => {
       let data;
 
-      // TODO: Remove later when we refactor bottomBar
-      const addDataProxy = (active) =>
-        addData(getDataProxy, dataSheet.name, active);
-
       if (hyperformula.isItPossibleToAddSheet(dataSheet.name)) {
-        const isFirstElement = i === 0;
+        const active = getOptions().activeIndex === i;
 
-        data = addDataProxy(isFirstElement);
+        data = addDataProxy(dataSheet.name);
 
         hyperformula.addSheet(dataSheet.name);
 
-        if (isFirstElement) {
+        if (active) {
           switchData(data);
         }
       } else {
@@ -281,11 +289,7 @@ export const getSheet = (
         }
       });
 
-    if (!dataSheets.length) {
-      // Add dummy data for now until dataProxy is refactored
-      addData(getDataProxy);
-      switchData(datas[0]);
-    }
+    eventEmitter.emit(spreadsheetEvents.sheet.setDatasheets, dataSheets);
 
     sheetReset();
   };

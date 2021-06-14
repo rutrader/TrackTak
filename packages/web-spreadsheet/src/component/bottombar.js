@@ -77,27 +77,37 @@ const getContextMenu = (eventEmitter) => {
   };
 };
 
-export const getBottombar = (eventEmitter, getDataValues, getDataValue) => {
+export const getBottombar = (
+  eventEmitter,
+  getDataValues,
+  getDataValue,
+  getOptions,
+) => {
   const getSheetNames = () => getDataValues().map((x) => x.name);
-  const getCurrentSheetName = () => getDataValue().name;
 
-  let deleteEl = null;
   let items = [];
+  let previousIndex = null;
+  let deleteIndex = null;
   const moreEl = getDropdownMore(eventEmitter);
 
-  const addItem = (name, active) => {
-    const item = h("li", active ? "active" : "").child(name);
-    item
+  const addItem = (name, active, i) => {
+    if (active) {
+      previousIndex = i;
+    }
+
+    const item = h("li", active ? "active" : "")
+      .child(name)
       .on("click", () => {
-        clickSwap();
+        click(i);
       })
       .on("contextmenu", (evt) => {
         const { offsetLeft, offsetHeight } = evt.target;
+
         contextMenu.setOffset({
           left: offsetLeft,
           bottom: offsetHeight + 1,
         });
-        deleteEl = item;
+        deleteIndex = i;
       })
       .on("dblclick", () => {
         const v = item.html();
@@ -105,24 +115,47 @@ export const getBottombar = (eventEmitter, getDataValues, getDataValue) => {
         input.val(v);
         input.input.on("blur", ({ target }) => {
           const { value } = target;
-          const nindex = getSheetNames().findIndex((it) => it === v);
 
-          renameItem(nindex, value);
+          renameItem(i, value);
         });
         item.html("").child(input.el);
         input.focus();
       });
 
-    items.push(item);
     menuEl.child(item);
-    moreEl.reset(getSheetNames());
+
+    return item;
+  };
+
+  const setItems = (dataSheets) => {
+    items = dataSheets.map((dataSheet, i) => {
+      const activeIndex = getOptions().activeIndex;
+      const active = activeIndex === i;
+
+      const item = addItem(dataSheet.name, active, i);
+
+      return item;
+    });
   };
 
   const renameItem = (index, value) => {
-    dataNames.splice(index, 1, value);
-    moreEl.reset(dataNames);
-    items[index].html("").child(value);
     eventEmitter.emit(spreadsheetEvents.bottombar.updateSheet, index, value);
+    moreEl.reset(getSheetNames());
+    items[index].html("").child(value);
+  };
+
+  const deleteItem = () => {
+    if (items.length > 1) {
+      const newIndex = 0;
+
+      eventEmitter.emit(
+        spreadsheetEvents.bottombar.deleteSheet,
+        deleteIndex,
+        newIndex,
+      );
+      clear();
+      setItems(getDataValues());
+    }
   };
 
   const clear = () => {
@@ -130,46 +163,25 @@ export const getBottombar = (eventEmitter, getDataValues, getDataValue) => {
       menuEl.removeChild(it.el);
     });
     items = [];
-    dataNames = [];
-    moreEl.reset(dataNames);
+    moreEl.reset(getSheetNames());
   };
 
-  const deleteItem = () => {
-    let oldIndex = null;
-    let newIndex = null;
-
-    if (items.length > 1) {
-      const index = items.findIndex((it) => it === deleteEl);
-
-      items.splice(index, 1);
-      dataNames.splice(index, 1);
-      menuEl.removeChild(deleteEl.el);
-      moreEl.reset(dataNames);
-      if (index === activeIndex) {
-        if (items[0]) {
-          items[0].toggle();
-        }
-
-        newIndex = 0;
-      } else {
-        newIndex = -1;
-      }
-      oldIndex = index;
+  const click = (index) => {
+    // Do not toggle the same sheet
+    if (index !== previousIndex) {
+      // Set the previous one unactive
+      items[previousIndex].toggle();
+      // Set the current one active
+      items[index].toggle();
     }
-    eventEmitter.emit(
-      spreadsheetEvents.bottombar.deleteSheet,
-      oldIndex,
-      newIndex,
-    );
-  };
 
-  const clickSwap = (index) => {
-    items[index].toggle();
+    previousIndex = index;
+
     eventEmitter.emit(spreadsheetEvents.bottombar.selectSheet, index);
   };
 
   eventEmitter.on(spreadsheetEvents.bottombar.clickDropdownMore, (i) => {
-    clickSwap(i);
+    click(i);
   });
 
   const contextMenu = getContextMenu(eventEmitter);
@@ -195,11 +207,16 @@ export const getBottombar = (eventEmitter, getDataValues, getDataValue) => {
   });
 
   eventEmitter.on(spreadsheetEvents.sheet.addData, (name, active) => {
-    addItem(name, active);
+    items[previousIndex].toggle();
+
+    const item = addItem(name, active, items.length);
+
+    items.push(item);
   });
 
-  eventEmitter.on(spreadsheetEvents.sheet.setDatasheets, () => {
+  eventEmitter.on(spreadsheetEvents.sheet.setDatasheets, (dataSheets) => {
     clear();
+    setItems(dataSheets);
   });
 
   return {
@@ -208,11 +225,7 @@ export const getBottombar = (eventEmitter, getDataValues, getDataValue) => {
     contextMenu,
     moreEl,
     items,
-    deleteEl,
-    dataNames,
-    addItem,
     renameItem,
     deleteItem,
-    clear,
   };
 };
