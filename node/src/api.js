@@ -249,7 +249,11 @@ const api = {
             ...query,
           },
         });
-        return data;
+
+        const result = data.filter((datum) => {
+          return datum.Exchange !== "TSE";
+        });
+        return result;
       },
       "autocompleteQuery",
       { queryString, query },
