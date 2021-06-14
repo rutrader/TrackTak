@@ -54,7 +54,7 @@ const Blogs = ({ data }) => {
 
             return (
               <ListItem key={slug}>
-                <Card>
+                <Card sx={{ width: "100%" }}>
                   <CardActionArea
                     style={{ padding: theme.spacing(2) }}
                     onClick={() => {
