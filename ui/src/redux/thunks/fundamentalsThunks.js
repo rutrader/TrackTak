@@ -7,7 +7,7 @@ import {
   getPrices,
 } from "../../api/api";
 import {
-  convertGBXToGBP,
+  convertSubCurrencyToCurrency,
   setExchangeRates,
   setLastPriceClose,
   setTenYearGovernmentBondLastClose,
@@ -28,8 +28,8 @@ export const getExchangeRatesThunk = createAsyncThunk(
     const baseCurrency = balanceSheet.currencyCode;
     const quoteCurrency = currencyCode;
     // UK stocks are quoted in pence so we convert it to GBP for ease of use
-    const convertedBaseCurrency = convertGBXToGBP(baseCurrency);
-    const convertedQuoteCurrency = convertGBXToGBP(quoteCurrency);
+    const convertedBaseCurrency = convertSubCurrencyToCurrency(baseCurrency);
+    const convertedQuoteCurrency = convertSubCurrencyToCurrency(quoteCurrency);
     const from = dayjs(
       getMinimumHistoricalDateFromFinancialStatements(
         incomeStatement,

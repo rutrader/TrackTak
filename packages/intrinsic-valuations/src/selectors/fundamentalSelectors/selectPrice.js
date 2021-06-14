@@ -7,7 +7,7 @@ const selectPrice = createSelector(
   selectGeneral,
   selectPriceLastClose,
   (general, priceLastClose) => {
-    return general?.currencyCode === "GBX"
+    return general?.currencyCode === "GBX" || general?.currencyCode === "ILA"
       ? isNil(priceLastClose)
         ? null
         : priceLastClose / 100
