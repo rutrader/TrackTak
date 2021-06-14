@@ -252,13 +252,11 @@ export const getSheet = (
       let data;
 
       if (hyperformula.isItPossibleToAddSheet(dataSheet.name)) {
-        const active = getOptions().activeIndex === i;
-
         data = addDataProxy(dataSheet.name);
 
         hyperformula.addSheet(dataSheet.name);
 
-        if (active) {
+        if (dataSheet.active) {
           switchData(data);
         }
       } else {

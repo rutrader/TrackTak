@@ -128,11 +128,8 @@ export const getBottombar = (
   };
 
   const setItems = (dataSheets) => {
-    items = dataSheets.map((dataSheet, i) => {
-      const activeIndex = getOptions().activeIndex;
-      const active = activeIndex === i;
-
-      const item = addItem(dataSheet.name, active, i);
+    items = dataSheets.map(({ name, active }, i) => {
+      const item = addItem(name, active, i);
 
       return item;
     });
@@ -155,6 +152,8 @@ export const getBottombar = (
       );
       clear();
       setItems(getDataValues());
+      items[newIndex].toggle();
+      previousIndex = newIndex;
     }
   };
 

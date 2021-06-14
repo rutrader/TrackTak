@@ -28,7 +28,6 @@ export const sharedOptions = {
     indexWidth: 25,
     minWidth: 60,
   },
-  activeIndex: 0,
   variables: {},
   formats: {
     normal: {

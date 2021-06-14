@@ -2,6 +2,7 @@ import { queryNames } from "../inputQueryNames";
 
 const getRequiredInputsData = (inputQueryParams) => {
   return {
+    active: true,
     name: "Required Inputs",
     freeze: "A1",
     styles: [
