@@ -120,7 +120,7 @@ export const buildSpreadsheet = (
     };
   };
 
-  const bottombar = getBottombar(eventEmitter);
+  const bottombar = getBottombar(eventEmitter, sheet.getDataValues, getOptions);
 
   sheet.el.before(toolbar.el);
   sheet.el.before(formulaBar.el);

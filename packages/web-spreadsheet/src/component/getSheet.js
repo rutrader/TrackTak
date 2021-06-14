@@ -231,26 +231,38 @@ export const getSheet = (
     ),
   );
 
+  // Can't use datas length because user could
+  // delete in between sheets
+  let totalDatasAdded = 0;
+
   const makeSetDatasheets = (getDataProxy) => (dataSheets) => {
     datas = [];
 
-    eventEmitter.emit(spreadsheetEvents.sheet.setDatasheets, dataSheets);
+    const addDataProxy = (name) => {
+      totalDatasAdded += 1;
+
+      const data = getDataProxy(name);
+
+      datas.push(data);
+
+      return data;
+    };
+
+    if (!dataSheets.length) {
+      // Add dummy data for now until dataProxy is refactored
+      addDataProxy("sheet1");
+      switchData(datas[0]);
+    }
 
     dataSheets.forEach((dataSheet, i) => {
       let data;
 
-      // TODO: Remove later when we refactor bottomBar
-      const addDataProxy = (active) =>
-        addData(getDataProxy, dataSheet.name, active);
-
       if (hyperformula.isItPossibleToAddSheet(dataSheet.name)) {
-        const isFirstElement = i === 0;
-
-        data = addDataProxy(isFirstElement);
+        data = addDataProxy(dataSheet.name);
 
         hyperformula.addSheet(dataSheet.name);
 
-        if (isFirstElement) {
+        if (dataSheet.active) {
           switchData(data);
         }
       } else {
@@ -281,25 +293,21 @@ export const getSheet = (
         }
       });
 
-    if (!dataSheets.length) {
-      // Add dummy data for now until dataProxy is refactored
-      addData(getDataProxy);
-      switchData(datas[0]);
-    }
+    eventEmitter.emit(spreadsheetEvents.sheet.setDatasheets, dataSheets);
 
     sheetReset();
   };
 
-  const addData = (
-    getDataProxy,
-    name = `sheet${datas.length + 1}`,
-    active = true,
-  ) => {
-    const data = getDataProxy(name);
+  const addData = (getDataProxy, name, active = true) => {
+    totalDatasAdded += 1;
+
+    const newName = name ?? `sheet${totalDatasAdded}`;
+
+    const data = getDataProxy(newName);
 
     datas.push(data);
 
-    eventEmitter.emit(spreadsheetEvents.sheet.addData, name, active, data);
+    eventEmitter.emit(spreadsheetEvents.sheet.addData, newName, active, data);
 
     return data;
   };
