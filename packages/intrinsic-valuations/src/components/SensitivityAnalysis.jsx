@@ -196,7 +196,6 @@ const SensitivityAnalysis = () => {
           sheetsSerializedValues,
           scope,
           currentScopes,
-          sheetsValues,
         );
 
         setEstimatedValues(data);
@@ -204,7 +203,7 @@ const SensitivityAnalysis = () => {
     };
 
     fetchComputeSensitivityAnalysis();
-  }, [scope, sheetsSerializedValues, xElement, yElement, sheetsValues]);
+  }, [scope, sheetsSerializedValues, xElement, yElement]);
 
   return (
     <Fragment>
