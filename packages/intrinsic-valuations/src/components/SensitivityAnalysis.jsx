@@ -24,6 +24,7 @@ import { computeSensitivityAnalysis } from "../api/api";
 import { allInputNameTypeMappings } from "../discountedCashFlow/scopeNameTypeMapping";
 import { queryNames } from "../discountedCashFlow/templates/freeCashFlowFirmSimple/inputQueryNames";
 import selectSheetsSerializedValues from "../selectors/dcfSelectors/selectSheetsSerializedValues";
+import selectSheetsValues from "../selectors/dcfSelectors/selectSheetsValues";
 
 const getModelScopes = (scope, xElement, yElement) => {
   const doesScopeExist =
@@ -60,7 +61,7 @@ const getColumns = (yElement) => {
   });
 };
 
-const getRowData = (estimatedValues, xElement) => {
+const getRowData = (estimatedValues, xElement, sheetsValues, theme) => {
   if (!xElement) return [];
 
   const chunkedData = getChunksOfArray(estimatedValues, xElement.data.length);
@@ -80,6 +81,12 @@ const getRowData = (estimatedValues, xElement) => {
       if (!estimatedValue.type) {
         let sx;
 
+        if (sheetsValues["DCF Valuation"][35][1] === estimatedValue) {
+          sx = {
+            color: theme.palette.primary.main,
+          };
+        }
+
         row[z.toString()] = (
           <Box sx={sx}>
             <FormatRawNumberToCurrency value={estimatedValue} />
@@ -97,6 +104,7 @@ const getRowData = (estimatedValues, xElement) => {
 const SensitivityAnalysis = () => {
   const theme = useTheme();
   const sheetsSerializedValues = useSelector(selectSheetsSerializedValues);
+  const sheetsValues = useSelector(selectSheetsValues);
   const scope = useSelector(selectScope);
   const [estimatedValues, setEstimatedValues] = useState([]);
   const [data, setData] = useState([]);
@@ -174,8 +182,8 @@ const SensitivityAnalysis = () => {
 
   useEffect(() => {
     setIsLoading(false);
-    setData(getRowData(estimatedValues, xElement));
-  }, [estimatedValues, theme, xElement]);
+    setData(getRowData(estimatedValues, xElement, sheetsValues, theme));
+  }, [estimatedValues, sheetsValues, theme, xElement]);
 
   useEffect(() => {
     const fetchComputeSensitivityAnalysis = async () => {
@@ -188,6 +196,7 @@ const SensitivityAnalysis = () => {
           sheetsSerializedValues,
           scope,
           currentScopes,
+          sheetsValues,
         );
 
         setEstimatedValues(data);
@@ -195,7 +204,7 @@ const SensitivityAnalysis = () => {
     };
 
     fetchComputeSensitivityAnalysis();
-  }, [scope, sheetsSerializedValues, xElement, yElement]);
+  }, [scope, sheetsSerializedValues, xElement, yElement, sheetsValues]);
 
   return (
     <Fragment>
