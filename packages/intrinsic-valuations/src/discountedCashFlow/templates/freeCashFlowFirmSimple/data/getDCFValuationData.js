@@ -28,6 +28,10 @@ const getDCFValuationData = (isOnMobile) => {
       {
         format: "number",
       },
+      {
+        format: "currency",
+        color: "#43cea2",
+      },
     ],
     merges: [],
     rows: {
@@ -1753,7 +1757,7 @@ const getDCFValuationData = (isOnMobile) => {
           },
           1: {
             text: "=IF(B34/sharesOutstanding < 0, 0, B34/sharesOutstanding)",
-            style: 3,
+            style: 5,
           },
           2: {
             text: "",

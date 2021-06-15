@@ -376,7 +376,14 @@ const DiscountedCashFlowTable = ({
       spreadsheet.setDatasheets([]);
     }
   }, [hasAllRequiredInputsFilledIn, spreadsheet, isOnMobile]);
-
+  useEffect(() => {
+    if (spreadsheet) {
+      spreadsheet.variablesSpreadsheet.setVariableDatasheets([
+        getRequiredInputsData(inputQueryParams),
+        getOptionalInputsData(inputQueryParams),
+      ]);
+    }
+  }, [inputQueryParams, spreadsheet]);
   useEffect(() => {
     if (spreadsheet && hasAllRequiredInputsFilledIn && scope) {
       spreadsheet.setOptions({
@@ -416,15 +423,6 @@ const DiscountedCashFlowTable = ({
       dispatch(setSheetsDatas(spreadsheet.getDatas()));
     }
   }, [hasAllRequiredInputsFilledIn, isOnMobile, spreadsheet, dispatch, scope]);
-
-  useEffect(() => {
-    if (spreadsheet) {
-      spreadsheet.variablesSpreadsheet.setVariableDatasheets([
-        getRequiredInputsData(inputQueryParams),
-        getOptionalInputsData(inputQueryParams),
-      ]);
-    }
-  }, [inputQueryParams, spreadsheet]);
 
   useEffect(() => {
     if (spreadsheet && hasAllRequiredInputsFilledIn && scope) {
