@@ -30,8 +30,8 @@ const getDCFValuationData = (isOnMobile) => {
       },
       {
         format: "currency",
-color: "#43cea2"
-      }
+        color: "#43cea2",
+      },
     ],
     merges: [],
     rows: {
