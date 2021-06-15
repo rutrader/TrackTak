@@ -7,7 +7,8 @@ import getTitle from "../../shared/getTitle";
 import { renderRichText } from "gatsby-source-contentful/rich-text";
 import { Section } from "@tracktak/intrinsic-valuations";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
-import { INLINES } from "@contentful/rich-text-types";
+import { INLINES, BLOCKS } from "@contentful/rich-text-types";
+import Img from "gatsby-image";
 
 export const query = graphql`
   fragment BlogInformation on ContentfulBlog {
@@ -18,6 +19,15 @@ export const query = graphql`
     descriptionBlog
     blogContent {
       raw
+      references {
+        ... on ContentfulAsset {
+          contentful_id
+          __typename
+          fluid(maxWidth: 3080, quality: 90) {
+            ...GatsbyContentfulFluid_withWebp
+          }
+        }
+      }
     }
     cardImage {
       ... on ContentfulAsset {
@@ -39,6 +49,9 @@ export const query = graphql`
 
 const options = {
   renderNode: {
+    [BLOCKS.EMBEDDED_ASSET]: (node) => {
+      return <Img {...node.data.target} />;
+    },
     [INLINES.HYPERLINK]: ({ data }, children) => (
       <a
         href={data.uri}
