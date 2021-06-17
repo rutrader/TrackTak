@@ -60,6 +60,7 @@ const spreadsheetEvents = {
     addData: "s-addData",
     deleteData: "s-deleteData",
     setDatasheets: "s-setDatasheets",
+    clickOutside: "s-clickOutside",
   },
   toolbar: {
     alignChange: "tb-alignChange",

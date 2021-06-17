@@ -26,6 +26,10 @@ export const getEditor = (getData, getOptions, formulas, eventEmitter) => {
     el.hide();
   });
 
+  eventEmitter.on(spreadsheetEvents.sheet.clickOutside, () => {
+    el.hide();
+  });
+
   eventEmitter.on(spreadsheetEvents.editor.setText, () => {
     el.show();
   });

@@ -47,12 +47,17 @@ export const getComment = (getData, viewFn, contextMenuEl, eventEmitter) => {
 
   eventEmitter.on(spreadsheetEvents.sheet.cellSelected, (cell) => {
     const comment = cell?.comment;
-
     if (comment) {
       show(true);
-    } else {
-      hide();
     }
+  });
+
+  eventEmitter.on(spreadsheetEvents.sheet.clickOutside, () => {
+    hide();
+  });
+
+  eventEmitter.on(spreadsheetEvents.editor.clear, () => {
+    hide();
   });
 
   return {
