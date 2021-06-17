@@ -223,8 +223,13 @@ export const getEditableInput = (
 
     setText(text);
 
+    const format = getFormatFromCell(_cell, getData().getData().styles);
+
     setTimeout(() => {
-      setCaretPosition(textEl.el, getCaretPositionIndex(textEl.el.textContent));
+      setCaretPosition(
+        textEl.el,
+        getCaretPositionIndex(textEl.el.textContent, format),
+      );
     });
 
     _validator = validator;

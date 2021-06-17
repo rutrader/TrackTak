@@ -151,18 +151,6 @@ export function numberCalc(type, a1, a2) {
   return ret.toFixed(Math.max(al1, al2));
 }
 
-export const formatPercentRender = (v) => {
-  if (isNil(v) || v === "") return "";
-
-  return `${formatNumberRender(v * 100)}%`;
-};
-
-export const formatStringRender = (v) => {
-  if (isNil(v)) return "";
-
-  return v;
-};
-
 export const formatNumberRender = (v, fixedDigitNumber = 2) => {
   if (isNil(v) || v === "") return "";
 

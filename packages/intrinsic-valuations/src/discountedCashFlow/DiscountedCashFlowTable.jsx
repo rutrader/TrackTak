@@ -44,6 +44,7 @@ import getDCFValuationData from "./templates/freeCashFlowFirmSimple/data/getDCFV
 import getCostOfCapitalData from "./templates/freeCashFlowFirmSimple/data/getCostOfCapitalData";
 import getOptionalInputsData from "./templates/freeCashFlowFirmSimple/data/getOptionalInputsData";
 import selectEstimatedCostOfDebt from "../selectors/fundamentalSelectors/selectEstimatedCostOfDebt";
+import numfmt from "numfmt";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
@@ -181,6 +182,18 @@ const DiscountedCashFlowTable = ({
 
     const dcfValuationElement = document.getElementById(`${dcfValuationId}`);
 
+    const patterns = {
+      currency: {
+        render: `"${currencySymbol}"#,##0.##`,
+      },
+      million: {
+        render: "#.##,,",
+      },
+      "million-currency": {
+        render: `"${currencySymbol}"#.##,,`,
+      },
+    };
+
     const formats = {
       currency: {
         key: "currency",
@@ -188,74 +201,23 @@ const DiscountedCashFlowTable = ({
         type: "number",
         format: "currency",
         label: `${currencySymbol}10.00`,
-        editRender: (v) => {
-          if (v.toString().charAt(0) === currencySymbol) {
-            return v;
-          }
-
-          let text = parseFloat(v, 10);
-
-          if (isNaN(text)) return v;
-
-          text = v.toString();
-
-          return !text.includes(currencySymbol) ? currencySymbol + text : v;
-        },
-        render: (v) => {
-          if (isNil(v) || v === "") return "";
-
-          return currencySymbol + formatNumberRender(v);
-        },
+        pattern: patterns.currency.render,
       },
       million: {
         key: "million",
         title: () => "Million",
         format: "million",
         type: "number",
-        label: "(000)",
-        editRender: (v, state) => {
-          let number = parseFloat(v, 10);
-
-          if (isNaN(number)) return v;
-
-          if (state === "start") {
-            return (number / million).toString();
-          }
-
-          if (state === "startInput" || state === "finished") {
-            return number * million.toString();
-          }
-
-          return v.toString();
-        },
-        render: (v) => {
-          if (isNil(v) || v === "") return "";
-
-          return formatNumberRender(v / million);
-        },
+        label: "1,000,000",
+        pattern: patterns.million.render,
       },
       "million-currency": {
         key: "million-currency",
         title: () => "Million Currency",
         format: "million-currency",
         type: "number",
-        label: `${currencySymbol}(000)`,
-        editRender: (v, state) => {
-          const currencyText = formats.currency.editRender(v);
-          const text = formats.million.editRender(
-            currencyText.substring(1),
-            state,
-          );
-
-          return currencyText.charAt(0) + text;
-        },
-        render: (v) => {
-          if (isNil(v) || v === "") return "";
-
-          const value = v / million;
-
-          return formats.currency.render(value);
-        },
+        label: `${currencySymbol}1,000,000`,
+        pattern: patterns["million-currency"].render,
       },
     };
 

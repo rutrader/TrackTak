@@ -1,10 +1,17 @@
 import { tf } from "../locale/locale";
-import {
-  formatNumberRender,
-  formatStringRender,
-  formatPercentRender,
-} from "./helper";
 import { merge } from "lodash-es";
+import numfmt from "numfmt";
+
+const patterns = {
+  percent: {
+    edit: "0.##%",
+    render: "0.00%",
+  },
+  number: {
+    edit: "#,##0.##",
+    render: "#,##0.00",
+  },
+};
 
 export const sharedOptions = {
   mode: "edit", // edit | read
@@ -34,71 +41,67 @@ export const sharedOptions = {
       key: "normal",
       title: tf("format.normal"),
       type: "string",
-      render: formatStringRender,
     },
     text: {
       key: "text",
       title: tf("format.text"),
       type: "string",
-      render: formatStringRender,
     },
     number: {
       key: "number",
       title: tf("format.number"),
       type: "number",
       label: "1,000.12",
-      render: formatNumberRender,
+      pattern: patterns.number.render,
+      editPattern: patterns.number.edit,
+      renderFormatter: numfmt(patterns.number.render),
+      editRenderFormatter: numfmt(patterns.number.edit),
+      editRender: (v) => {
+        return sharedOptions.formats.number.editRenderFormatter(v);
+      },
     },
     percent: {
       key: "percent",
       title: tf("format.percent"),
       type: "number",
       label: "10.12%",
-      editRender: (v, state) => {
-        // TODO: Remove all this when we have proper masking
-        let text = parseFloat(v, 10);
+      pattern: patterns.percent.render,
+      editPattern: patterns.percent.edit,
+      renderFormatter: numfmt(patterns.percent.render),
+      editRenderFormatter: numfmt(patterns.percent.edit),
+      editRender: (v) => {
+        let text = v.toString();
 
-        if (isNaN(text)) return v;
+        text = text.includes("%") ? text : text + "%";
 
-        if (state === "start") {
-          return (text * 100).toString();
-        }
+        text = sharedOptions.formats.percent.editRenderFormatter(text);
 
-        if (state === "startInput" || state === "finished") {
-          return (text / 100).toString();
-        }
-
-        return !v.toString().includes("%") ? v + "%" : v;
+        return text;
       },
-      render: formatPercentRender,
     },
     date: {
       key: "date",
       title: tf("format.date"),
       type: "date",
       label: "26/09/2008",
-      render: formatStringRender,
     },
     time: {
       key: "time",
       title: tf("format.time"),
       type: "date",
       label: "15:59:00",
-      render: formatStringRender,
     },
     datetime: {
       key: "datetime",
       title: tf("format.datetime"),
       type: "date",
       label: "26/09/2008 15:59:00",
-      render: formatStringRender,
     },
     duration: {
       key: "duration",
       title: tf("format.duration"),
       type: "date",
       label: "24:01:00",
-      render: formatStringRender,
     },
   },
   style: {

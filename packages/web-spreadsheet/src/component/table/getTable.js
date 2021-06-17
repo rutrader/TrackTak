@@ -4,6 +4,7 @@ import { thinLineWidth, npx, getDrawBox } from "../../canvas/draw";
 import { cssPrefix } from "../../config";
 import { h } from "../element";
 import { getFontSizePxByPt } from "../../core/font";
+import numfmt from "numfmt";
 
 const tableFixedHeaderCleanStyle = { fillStyle: "#f4f5f8" };
 const cellPaddingWidth = 5;
@@ -168,7 +169,9 @@ export const getTable = (
       } else {
         cellText = hyperformula.getCellValue(cellAddress);
       }
-      cellText = formats[format].render(cellText);
+      const formatter = numfmt(formats[format].pattern);
+
+      cellText = formatter(cellText);
 
       if (cellText.value) {
         const error = cellText;
