@@ -959,6 +959,10 @@ export const getSheet = (
 
     bind(window, "click", (evt) => {
       focusing = overlayerEl.contains(evt.target);
+
+      if (!focusing) {
+        eventEmitter.emit(spreadsheetEvents.sheet.clickOutside, evt);
+      }
     });
 
     bind(window, "paste", (evt) => {
