@@ -187,10 +187,10 @@ const DiscountedCashFlowTable = ({
         render: `"${currencySymbol}"#,##0.##`,
       },
       million: {
-        render: "#.##,,",
+        render: "#,##0.00,,",
       },
       "million-currency": {
-        render: `"${currencySymbol}"#.##,,`,
+        render: `"${currencySymbol}"#,##0.00,,`,
       },
     };
 
