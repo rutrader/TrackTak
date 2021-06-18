@@ -262,7 +262,7 @@ export const getSheet = (
 
         hyperformula.addSheet(dataSheet.name);
 
-        if (dataSheet.active) {
+        if (i === 0) {
           switchData(data);
         }
       } else {
@@ -298,7 +298,7 @@ export const getSheet = (
     sheetReset();
   };
 
-  const addData = (getDataProxy, name, active = true) => {
+  const addData = (getDataProxy, name) => {
     totalDatasAdded += 1;
 
     const newName = name ?? `sheet${totalDatasAdded}`;
@@ -307,7 +307,7 @@ export const getSheet = (
 
     datas.push(data);
 
-    eventEmitter.emit(spreadsheetEvents.sheet.addData, newName, active, data);
+    eventEmitter.emit(spreadsheetEvents.sheet.addData, newName, data);
 
     return data;
   };

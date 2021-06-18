@@ -77,12 +77,7 @@ const getContextMenu = (eventEmitter) => {
   };
 };
 
-export const getBottombar = (
-  eventEmitter,
-  getDataValues,
-  getDataValue,
-  getOptions,
-) => {
+export const getBottombar = (eventEmitter, getDataValues, getDataValue) => {
   const getSheetNames = () => getDataValues().map((x) => x.name);
 
   let items = [];
@@ -90,7 +85,9 @@ export const getBottombar = (
   let deleteIndex = null;
   const moreEl = getDropdownMore(eventEmitter);
 
-  const addItem = (name, active, i) => {
+  const addItem = (name, i) => {
+    const active = getDataValue().name === name;
+
     if (active) {
       previousIndex = i;
     }
@@ -128,8 +125,8 @@ export const getBottombar = (
   };
 
   const setItems = (dataSheets) => {
-    items = dataSheets.map(({ name, active }, i) => {
-      const item = addItem(name, active, i);
+    items = dataSheets.map(({ name }, i) => {
+      const item = addItem(name, i);
 
       return item;
     });
@@ -205,10 +202,10 @@ export const getBottombar = (
     }
   });
 
-  eventEmitter.on(spreadsheetEvents.sheet.addData, (name, active) => {
+  eventEmitter.on(spreadsheetEvents.sheet.addData, (name) => {
     items[previousIndex].toggle();
 
-    const item = addItem(name, active, items.length);
+    const item = addItem(name, items.length);
 
     items.push(item);
   });
