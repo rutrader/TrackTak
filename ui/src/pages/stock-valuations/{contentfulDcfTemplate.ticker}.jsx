@@ -440,7 +440,10 @@ const Valuation = ({ data }) => {
         </Typography>
       </Section>
       <Section>
-        <DiscountedCashFlowSheet SubscribeCover={SubscribeCover} />
+        <DiscountedCashFlowSheet
+          hideSensitivityAnalysis
+          SubscribeCover={SubscribeCover}
+        />
       </Section>
       <Section>
         <Typography variant="h5" gutterBottom>
@@ -470,7 +473,7 @@ const Valuation = ({ data }) => {
         <Typography>
           <Link
             component={RouterLink}
-            to={`/stock/${ticker}/discounted-cash-flow${location.search}`}
+            to={`/stock/${ticker}/discounted-cash-flow`}
           >
             <b>Click here&nbsp;</b>
           </Link>

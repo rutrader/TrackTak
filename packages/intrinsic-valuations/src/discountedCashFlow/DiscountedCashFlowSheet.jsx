@@ -14,7 +14,10 @@ import SensitivityAnalysis from "../components/SensitivityAnalysis";
 import Section from "../components/Section";
 import { Fragment } from "react";
 
-const DiscountedCashFlowSheet = ({ SubscribeCover }) => {
+const DiscountedCashFlowSheet = ({
+  SubscribeCover,
+  hideSensitivityAnalysis,
+}) => {
   const [showFormulas, setShowFormulas] = useState(false);
   const [showYOYGrowth, setShowYOYGrowth] = useState(false);
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
@@ -97,9 +100,11 @@ const DiscountedCashFlowSheet = ({ SubscribeCover }) => {
         showYOYGrowth={showYOYGrowth}
         SubscribeCover={SubscribeCover}
       />
-      <Section>
-        <SensitivityAnalysis />
-      </Section>
+      {!hideSensitivityAnalysis && (
+        <Section>
+          <SensitivityAnalysis />
+        </Section>
+      )}
     </Fragment>
   );
 };

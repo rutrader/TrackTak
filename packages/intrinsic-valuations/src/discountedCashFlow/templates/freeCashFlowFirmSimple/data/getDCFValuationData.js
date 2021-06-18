@@ -16,12 +16,8 @@ const getDCFValuationData = (isOnMobile) => {
       {
         format: "percent",
       },
-      {
-        format: "million",
-      },
-      {
-        format: "million-currency",
-      },
+      {},
+      {},
       {
         format: "currency",
       },
@@ -95,56 +91,56 @@ const getDCFValuationData = (isOnMobile) => {
           },
           1: {
             text: "=totalRevenue",
-            style: 2,
+            style: 3,
           },
           2: {
             text: "=B2*(1+'Required Inputs'!$B$1)",
-            style: 2,
+            style: 3,
           },
           3: {
             text: "=C2*(1+'Required Inputs'!$B$1)",
-            style: 2,
+            style: 3,
           },
           4: {
             text: "=D2*(1+'Required Inputs'!$B$1)",
-            style: 2,
+            style: 3,
           },
           5: {
             text: "=E2*(1+'Required Inputs'!$B$1)",
-            style: 2,
+            style: 3,
           },
           6: {
             text: "=F2*(1+'Required Inputs'!$B$1)",
-            style: 2,
+            style: 3,
           },
           7: {
             text:
               "=G2*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-riskFreeRate) / 5))",
-            style: 2,
+            style: 3,
           },
           8: {
             text:
               "=H2*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-riskFreeRate) / 5) * 2)",
-            style: 2,
+            style: 3,
           },
           9: {
             text:
               "=I2*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-riskFreeRate) / 5) * 3)",
-            style: 2,
+            style: 3,
           },
           10: {
             text:
               "=J2*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-riskFreeRate) / 5) * 4)",
-            style: 2,
+            style: 3,
           },
           11: {
             text:
               "=K2*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-riskFreeRate) / 5) * 5)",
-            style: 2,
+            style: 3,
           },
           12: {
             text: "=L2*(1+riskFreeRate)",
-            style: 2,
+            style: 3,
           },
         },
       },
@@ -220,51 +216,51 @@ const getDCFValuationData = (isOnMobile) => {
           },
           1: {
             text: "=operatingIncome",
-            style: 2,
+            style: 3,
           },
           2: {
             text: "=C3*C2",
-            style: 2,
+            style: 3,
           },
           3: {
             text: "=D3*D2",
-            style: 2,
+            style: 3,
           },
           4: {
             text: "=E3*E2",
-            style: 2,
+            style: 3,
           },
           5: {
             text: "=F3*F2",
-            style: 2,
+            style: 3,
           },
           6: {
             text: "=G3*G2",
-            style: 2,
+            style: 3,
           },
           7: {
             text: "=H3*H2",
-            style: 2,
+            style: 3,
           },
           8: {
             text: "=I3*I2",
-            style: 2,
+            style: 3,
           },
           9: {
             text: "=J3*J2",
-            style: 2,
+            style: 3,
           },
           10: {
             text: "=K3*K2",
-            style: 2,
+            style: 3,
           },
           11: {
             text: "=L3*L2",
-            style: 2,
+            style: 3,
           },
           12: {
             text: "=M3*M2",
-            style: 2,
+            style: 3,
           },
         },
       },
@@ -330,51 +326,51 @@ const getDCFValuationData = (isOnMobile) => {
           },
           1: {
             text: "=IF(B4 > 0, B4 * (1-B5), B4)",
-            style: 2,
+            style: 3,
           },
           2: {
             text: "=IF(C4 > 0, IF(C4 < B9, C4, C4 - (C4 - B9) * C5), C4)",
-            style: 2,
+            style: 3,
           },
           3: {
             text: "=IF(D4 > 0, IF(D4 < C9, D4, D4 - (D4 - C9) * D5), D4)",
-            style: 2,
+            style: 3,
           },
           4: {
             text: "=IF(E4 > 0, IF(E4 < D9, E4, E4 - (E4 - D9) * E5), E4)",
-            style: 2,
+            style: 3,
           },
           5: {
             text: "=IF(F4 > 0, IF(F4 < E9, F4, F4 - (F4 - E9) * F5), F4)",
-            style: 2,
+            style: 3,
           },
           6: {
             text: "=IF(G4 > 0, IF(G4 < F9, G4, G4 - (G4 - F9) * G5), G4)",
-            style: 2,
+            style: 3,
           },
           7: {
             text: "=IF(H4 > 0, IF(H4 < G9, H4, H4 - (H4 - G9) * H5), H4)",
-            style: 2,
+            style: 3,
           },
           8: {
             text: "=IF(I4 > 0, IF(I4 < H9, I4, I4 - (I4 - H9) * I5), I4)",
-            style: 2,
+            style: 3,
           },
           9: {
             text: "=IF(J4 > 0, IF(J4 < I9, J4, J4 - (J4 - I9) * J5), J4)",
-            style: 2,
+            style: 3,
           },
           10: {
             text: "=IF(K4 > 0, IF(K4 < J9, K4, K4 - (K4 - J9) * K5), K4)",
-            style: 2,
+            style: 3,
           },
           11: {
             text: "=IF(L4 > 0, IF(L4 < K9, L4, L4 - (L4 - K9) * L5), L4)",
-            style: 2,
+            style: 3,
           },
           12: {
             text: "=M4*(1-M5)",
-            style: 2,
+            style: 3,
           },
         },
       },
@@ -385,51 +381,51 @@ const getDCFValuationData = (isOnMobile) => {
           },
           1: {
             text: "",
-            style: 2,
+            style: 3,
           },
           2: {
             text: "=IF(C2 > B2, (C2-B2) / C15, 0)",
-            style: 2,
+            style: 3,
           },
           3: {
             text: "=(D2-C2)/D15",
-            style: 2,
+            style: 3,
           },
           4: {
             text: "=(E2-D2)/E15",
-            style: 2,
+            style: 3,
           },
           5: {
             text: "=(F2-E2)/F15",
-            style: 2,
+            style: 3,
           },
           6: {
             text: "=(G2-F2)/G15",
-            style: 2,
+            style: 3,
           },
           7: {
             text: "=(H2-G2)/H15",
-            style: 2,
+            style: 3,
           },
           8: {
             text: "=(I2-H2)/I15",
-            style: 2,
+            style: 3,
           },
           9: {
             text: "=(J2-I2)/J15",
-            style: 2,
+            style: 3,
           },
           10: {
             text: "=(K2-J2)/K15",
-            style: 2,
+            style: 3,
           },
           11: {
             text: "=(L2-K2)/L15",
-            style: 2,
+            style: 3,
           },
           12: {
             text: "=IF(riskFreeRate > 0, (riskFreeRate / M17) * M6, 0)",
-            style: 2,
+            style: 3,
           },
         },
       },
@@ -440,51 +436,51 @@ const getDCFValuationData = (isOnMobile) => {
           },
           1: {
             text: "",
-            style: 2,
+            style: 3,
           },
           2: {
             text: "=C6 - C7",
-            style: 2,
+            style: 3,
           },
           3: {
             text: "=D6 - D7",
-            style: 2,
+            style: 3,
           },
           4: {
             text: "=E6 - E7",
-            style: 2,
+            style: 3,
           },
           5: {
             text: "=F6 - F7",
-            style: 2,
+            style: 3,
           },
           6: {
             text: "=G6 - G7",
-            style: 2,
+            style: 3,
           },
           7: {
             text: "=H6 - H7",
-            style: 2,
+            style: 3,
           },
           8: {
             text: "=I6 - I7",
-            style: 2,
+            style: 3,
           },
           9: {
             text: "=J6 - J7",
-            style: 2,
+            style: 3,
           },
           10: {
             text: "=K6 - K7",
-            style: 2,
+            style: 3,
           },
           11: {
             text: "=L6 - L7",
-            style: 2,
+            style: 3,
           },
           12: {
             text: "=M6 - M7",
-            style: 2,
+            style: 3,
           },
         },
       },
@@ -495,51 +491,51 @@ const getDCFValuationData = (isOnMobile) => {
           },
           1: {
             text: "='Optional Inputs'!J2",
-            style: 2,
+            style: 3,
           },
           2: {
             text: "=IF(C4 < 0, B9 - C4, IF(B9 > C4, B9 - C4, 0))",
-            style: 2,
+            style: 3,
           },
           3: {
             text: "=IF(D4 < 0, C9 - D4, IF(C9 > D4, C9 - D4, 0))",
-            style: 2,
+            style: 3,
           },
           4: {
             text: "=IF(E4 < 0, D9 - E4, IF(D9 > E4, D9 - E4, 0))",
-            style: 2,
+            style: 3,
           },
           5: {
             text: "=IF(F4 < 0, E9 - F4, IF(E9 > F4, E9 - F4, 0))",
-            style: 2,
+            style: 3,
           },
           6: {
             text: "=IF(G4 < 0, F9 - G4, IF(F9 > G4, F9 - G4, 0))",
-            style: 2,
+            style: 3,
           },
           7: {
             text: "=IF(H4 < 0, G9 - H4, IF(G9 > H4, G9 - H4, 0))",
-            style: 2,
+            style: 3,
           },
           8: {
             text: "=IF(I4 < 0, H9 - I4, IF(H9 > I4, H9 - I4, 0))",
-            style: 2,
+            style: 3,
           },
           9: {
             text: "=IF(J4 < 0, I9 - J4, IF(I9 > J4, I9 - J4, 0))",
-            style: 2,
+            style: 3,
           },
           10: {
             text: "=IF(K4 < 0, J9 - K4, IF(J9 > K4, J9 - K4, 0))",
-            style: 2,
+            style: 3,
           },
           11: {
             text: "=IF(L4 < 0, K9 - L4, IF(K9 > L4, K9 - L4, 0))",
-            style: 2,
+            style: 3,
           },
           12: {
             text: "=IF(M4 < 0, L9 - M4, IF(L9 > M4, L9 - M4, 0))",
-            style: 2,
+            style: 3,
           },
         },
       },
@@ -703,51 +699,51 @@ const getDCFValuationData = (isOnMobile) => {
           },
           1: {
             text: "",
-            style: 2,
+            style: 3,
           },
           2: {
             text: "=C8*C12",
-            style: 2,
+            style: 3,
           },
           3: {
             text: "=D8*D12",
-            style: 2,
+            style: 3,
           },
           4: {
             text: "=E8*E12",
-            style: 2,
+            style: 3,
           },
           5: {
             text: "=F8*F12",
-            style: 2,
+            style: 3,
           },
           6: {
             text: "=G8*G12",
-            style: 2,
+            style: 3,
           },
           7: {
             text: "=H8*H12",
-            style: 2,
+            style: 3,
           },
           8: {
             text: "=I8*I12",
-            style: 2,
+            style: 3,
           },
           9: {
             text: "=J8*J12",
-            style: 2,
+            style: 3,
           },
           10: {
             text: "=K8*K12",
-            style: 2,
+            style: 3,
           },
           11: {
             text: "=L8*L12",
-            style: 2,
+            style: 3,
           },
           12: {
             text: "",
-            style: 2,
+            style: 3,
           },
         },
       },
@@ -856,51 +852,51 @@ const getDCFValuationData = (isOnMobile) => {
           },
           1: {
             text: "=investedCapital",
-            style: 2,
+            style: 3,
           },
           2: {
             text: "=B16+C7",
-            style: 2,
+            style: 3,
           },
           3: {
             text: "=C16+D7",
-            style: 2,
+            style: 3,
           },
           4: {
             text: "=D16+E7",
-            style: 2,
+            style: 3,
           },
           5: {
             text: "=E16+F7",
-            style: 2,
+            style: 3,
           },
           6: {
             text: "=F16+G7",
-            style: 2,
+            style: 3,
           },
           7: {
             text: "=G16+H7",
-            style: 2,
+            style: 3,
           },
           8: {
             text: "=H16+I7",
-            style: 2,
+            style: 3,
           },
           9: {
             text: "=I16+J7",
-            style: 2,
+            style: 3,
           },
           10: {
             text: "=J16+K7",
-            style: 2,
+            style: 3,
           },
           11: {
             text: "=K16+L7",
-            style: 2,
+            style: 3,
           },
           12: {
             text: "",
-            style: 2,
+            style: 3,
           },
         },
       },
@@ -1009,7 +1005,7 @@ const getDCFValuationData = (isOnMobile) => {
           },
           1: {
             text: "=M8",
-            style: 2,
+            style: 3,
           },
           2: {
             text: "",
@@ -1097,7 +1093,7 @@ const getDCFValuationData = (isOnMobile) => {
           },
           1: {
             text: "=B19/(B20-riskFreeRate)",
-            style: 2,
+            style: 3,
           },
           2: {
             text: "",
@@ -1141,7 +1137,7 @@ const getDCFValuationData = (isOnMobile) => {
           },
           1: {
             text: "=B21*L12",
-            style: 2,
+            style: 3,
           },
           2: {
             text: "",
@@ -1185,7 +1181,7 @@ const getDCFValuationData = (isOnMobile) => {
           },
           1: {
             text: "=SUM(C13, D13, E13, F13, G13, H13, I13, J13, K13, L13)",
-            style: 2,
+            style: 3,
           },
           2: {
             text: "",
@@ -1229,7 +1225,7 @@ const getDCFValuationData = (isOnMobile) => {
           },
           1: {
             text: "=B22+B23",
-            style: 2,
+            style: 3,
           },
           2: {
             text: "",
@@ -1317,7 +1313,7 @@ const getDCFValuationData = (isOnMobile) => {
           },
           1: {
             text: "=(bookValueOfEquity+bookValueOfDebt)*'Optional Inputs'!J5",
-            style: 2,
+            style: 3,
           },
           2: {
             text: "",
@@ -1361,7 +1357,7 @@ const getDCFValuationData = (isOnMobile) => {
           },
           1: {
             text: "=B24*(1-B25)+B26*B25",
-            style: 2,
+            style: 3,
           },
           2: {
             text: "",
@@ -1405,7 +1401,7 @@ const getDCFValuationData = (isOnMobile) => {
           },
           1: {
             text: "=bookValueOfDebt",
-            style: 2,
+            style: 3,
           },
           2: {
             text: "",
@@ -1449,7 +1445,7 @@ const getDCFValuationData = (isOnMobile) => {
           },
           1: {
             text: "=minorityInterest",
-            style: 2,
+            style: 3,
           },
           2: {
             text: "",
@@ -1493,7 +1489,7 @@ const getDCFValuationData = (isOnMobile) => {
           },
           1: {
             text: "=cashAndShortTermInvestments",
-            style: 2,
+            style: 3,
           },
           2: {
             text: "",
@@ -1537,7 +1533,7 @@ const getDCFValuationData = (isOnMobile) => {
           },
           1: {
             text: "='Optional Inputs'!J3",
-            style: 2,
+            style: 3,
           },
           2: {
             text: "",
@@ -1581,7 +1577,7 @@ const getDCFValuationData = (isOnMobile) => {
           },
           1: {
             text: "=B27-B28-B29+B30+B31",
-            style: 2,
+            style: 3,
           },
           2: {
             text: "",
@@ -1625,7 +1621,7 @@ const getDCFValuationData = (isOnMobile) => {
           },
           1: {
             text: "='Employee Options'!$B$17",
-            style: 2,
+            style: 3,
           },
           2: {
             text: "",
@@ -1669,7 +1665,7 @@ const getDCFValuationData = (isOnMobile) => {
           },
           1: {
             text: "=B32-B33",
-            style: 2,
+            style: 3,
           },
           2: {
             text: "",

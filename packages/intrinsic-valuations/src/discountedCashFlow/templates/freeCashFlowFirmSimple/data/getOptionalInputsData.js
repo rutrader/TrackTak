@@ -8,12 +8,8 @@ const getOptionalInputsData = (inputQueryParams) => {
       {
         format: "percent",
       },
-      {
-        format: "million",
-      },
-      {
-        format: "million-currency",
-      },
+      {},
+      {},
       {
         format: "currency",
       },
@@ -87,7 +83,7 @@ const getOptionalInputsData = (inputQueryParams) => {
           },
           3: {
             text: inputQueryParams[queryNames.bookValueOfConvertibleDebt],
-            style: 2,
+            style: 3,
             comment:
               "Debt which is convertible to equity at some point in time. This is found in the financial statements",
           },
@@ -96,7 +92,7 @@ const getOptionalInputsData = (inputQueryParams) => {
           },
           5: {
             text: inputQueryParams[queryNames.numberOfPreferredShares],
-            style: 1,
+            style: 4,
             comment:
               "Shares of a company’s stock with dividends that are paid out to shareholders before common stock dividends are issued, i.e they have priority. This is found in the financial statements.",
           },
@@ -105,7 +101,7 @@ const getOptionalInputsData = (inputQueryParams) => {
           },
           7: {
             text: inputQueryParams[queryNames.employeeOptionsOutstanding],
-            style: 1,
+            style: 4,
             comment:
               "The same as shares outstanding but specifically for the employees options outstanding instead. If the company does have employee options outstanding, enter the total number here, vested and non vested, in the money and out of the money. This is found in the financial statements.",
           },
@@ -114,7 +110,7 @@ const getOptionalInputsData = (inputQueryParams) => {
           },
           9: {
             text: inputQueryParams[queryNames.netOperatingLoss],
-            style: 2,
+            style: 3,
             comment:
               "Any losses from the previous years that the company is carrying over to this year. It allows the company to reduce it's taxable income for the current year. This is found in the financial statements.",
           },
@@ -136,7 +132,7 @@ const getOptionalInputsData = (inputQueryParams) => {
           },
           3: {
             text: inputQueryParams[queryNames.interestExpenseOnConvertibleDebt],
-            style: 2,
+            style: 3,
             comment:
               "The same as normal interest expense but for Convertible Debt. This is found in the financial statements.",
           },
@@ -163,7 +159,7 @@ const getOptionalInputsData = (inputQueryParams) => {
           },
           9: {
             text: inputQueryParams[queryNames.nonOperatingAssets],
-            style: 2,
+            style: 3,
             comment:
               "Also known as 'cross holdings in other companies'. This is the earnings that don't (and will never) show up as part of the operating income. The most common non-operating assets are minority cross-holdings in other companies (which are not consolidated). You can find the book value of these holdings on the balance sheet, but best practice is to convert it to the market value. (Apply a price to book ratio, based on the sector that the company is in to the book value).",
           },
@@ -228,7 +224,7 @@ const getOptionalInputsData = (inputQueryParams) => {
           },
           3: {
             text: inputQueryParams[queryNames.marketValueOfConvertibleBond],
-            style: 2,
+            style: 3,
             comment: "This is the equity part of the convertible bond.",
           },
           4: {

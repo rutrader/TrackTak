@@ -6,8 +6,13 @@ const getInputQueryParams = (query) => {
   const inputQueryParams = {};
 
   Object.keys(allInputNameTypeMappings).forEach((name) => {
-    // Set it to null and not undefined so that they still get sent through the axios requests
-    inputQueryParams[name] = query[name] ? parseFloat(query[name]) : null;
+    //Temp
+    if (query[name]?.includes("%")) {
+      inputQueryParams[name] = query[name];
+    } else {
+      // Set it to null and not undefined so that they still get sent through the axios requests
+      inputQueryParams[name] = query[name] ? parseFloat(query[name]) : null;
+    }
   });
 
   return inputQueryParams;

@@ -1,42 +1,18 @@
-const formatToExcelType = (format, currencySymbol) => {
-  if (format === "percent") {
-    return {
-      z: "0.00%",
-      t: "n",
-    };
+const formatToExcelType = (format) => {
+  let type = "s";
+
+  if (
+    format === "number" ||
+    format === "year" ||
+    format === "percent" ||
+    format === "million" ||
+    format === "million-currency" ||
+    format === "currency"
+  ) {
+    type = "n";
   }
 
-  if (format === "million") {
-    return {
-      z: "#,##0.00,,",
-      t: "n",
-    };
-  }
-
-  if (format === "million-currency") {
-    return {
-      z: `${currencySymbol}#,##0.00,,`,
-      t: "n",
-    };
-  }
-
-  if (format === "currency") {
-    return {
-      z: `${currencySymbol}#,##0.00`,
-      t: "n",
-    };
-  }
-
-  if (format === "number" || format === "year") {
-    return {
-      z: "0.00",
-      t: "n",
-    };
-  }
-
-  return {
-    t: "s",
-  };
+  return type;
 };
 
 export default formatToExcelType;

@@ -9,12 +9,8 @@ const getRequiredInputsData = (inputQueryParams) => {
       {
         format: "percent",
       },
-      {
-        format: "million",
-      },
-      {
-        format: "million-currency",
-      },
+      {},
+      {},
       {
         format: "currency",
       },

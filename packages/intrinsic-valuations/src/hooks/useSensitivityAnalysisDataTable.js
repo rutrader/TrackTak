@@ -68,7 +68,7 @@ const getDynamicMinMaxRange = (name, inputQueryParams) => {
     };
   }
 
-  const value = inputQueryParams[name] * 100;
+  const value = parseFloat(inputQueryParams[name]);
   const quarter = value / 4;
   const half = value / 2;
 
@@ -83,7 +83,7 @@ const getDynamicStep = (name, inputQueryParams) => {
     return 1;
   }
 
-  const value = inputQueryParams[name];
+  const value = parseFloat(inputQueryParams[name]) / 100;
 
   if ((value <= 0.1 && value >= 0) || (value >= -0.1 && value <= 0)) {
     return 0.5;
@@ -106,10 +106,12 @@ const useSensitivityAnalysisDataTable = () => {
       inputQueryParams,
     );
 
-    const cagrInYears_1_5Value =
-      inputQueryParams[queryNames.cagrInYears_1_5] * 100;
-    const ebitTargetMarginInYear_10Value =
-      inputQueryParams[queryNames.ebitTargetMarginInYear_10] * 100;
+    const cagrInYears_1_5Value = parseFloat(
+      inputQueryParams[queryNames.cagrInYears_1_5],
+    );
+    const ebitTargetMarginInYear_10Value = parseFloat(
+      inputQueryParams[queryNames.ebitTargetMarginInYear_10],
+    );
 
     setDataTable(
       [
@@ -200,7 +202,7 @@ const useSensitivityAnalysisDataTable = () => {
         },
       ].map((datum) => {
         const type = allInputNameTypeMappings[datum.name];
-        const midPoint = inputQueryParams[datum.name];
+        let midPoint = parseFloat(inputQueryParams[datum.name]);
         const extraData = {
           modifier: (value) => value,
         };
@@ -210,6 +212,7 @@ const useSensitivityAnalysisDataTable = () => {
           extraData.modifier = (value) => {
             return isNil(value) ? value : roundDecimal(value * 100, 2);
           };
+          midPoint /= 100;
         }
 
         if (type === "year" || type === "number") {

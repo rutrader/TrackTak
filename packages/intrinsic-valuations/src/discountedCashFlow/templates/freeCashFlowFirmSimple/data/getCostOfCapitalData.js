@@ -7,12 +7,8 @@ const getCostOfCapitalData = () => {
       {
         format: "percent",
       },
-      {
-        format: "million",
-      },
-      {
-        format: "million-currency",
-      },
+      {},
+      {},
       {
         format: "currency",
       },
@@ -68,13 +64,13 @@ const getCostOfCapitalData = () => {
           right: ["thin", "#000"],
           bottom: ["thin", "#000"],
         },
-        format: "million-currency",
+        format: "currency",
       },
       {
         border: {
           bottom: ["thin", "#000"],
         },
-        format: "million-currency",
+        format: "currency",
       },
       {
         border: {
@@ -150,7 +146,7 @@ const getCostOfCapitalData = () => {
             text: "Number of Shares Outstanding",
           },
           1: {
-            style: 1,
+            style: 4,
             text: "=sharesOutstanding",
           },
         },
@@ -221,7 +217,7 @@ const getCostOfCapitalData = () => {
           },
           1: {
             text: "=bookValueOfDebt",
-            style: 2,
+            style: 3,
           },
           2: {
             text: "Output",
@@ -236,14 +232,14 @@ const getCostOfCapitalData = () => {
           },
           1: {
             text: "=interestExpense",
-            style: 2,
+            style: 3,
           },
           2: {
             text: "Estimated Market Value of Normal Debt",
           },
           3: {
             text: "=B11*(1-(1+B14)^(-B12))/B14+B10/(1+B14)^B12",
-            style: 2,
+            style: 3,
           },
         },
       },
@@ -262,7 +258,7 @@ const getCostOfCapitalData = () => {
           3: {
             text:
               "='Optional Inputs'!$D$3*(1-(1+B14)^(-'Optional Inputs'!$D$4))/B14+'Optional Inputs'!$D$2/(1+B14)^'Optional Inputs'!$D$4",
-            style: 2,
+            style: 3,
           },
         },
       },
@@ -279,7 +275,7 @@ const getCostOfCapitalData = () => {
           },
           3: {
             text: "='Optional Inputs'!$D$5-D12",
-            style: 2,
+            style: 3,
           },
         },
       },
@@ -393,7 +389,7 @@ const getCostOfCapitalData = () => {
             text: "Operating Leases Value",
           },
           1: {
-            style: 2,
+            style: 3,
             text: "=capitalLeaseObligations",
           },
           2: {
