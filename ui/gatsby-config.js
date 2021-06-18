@@ -31,6 +31,7 @@ const duplicatePackageModules = [
   "hyperformula",
   "lodash-es",
   "eventemitter3",
+  "numfmt",
 ];
 
 const alias = {
