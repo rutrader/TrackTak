@@ -967,6 +967,8 @@ export const getSheet = (
       focusing = overlayerEl.contains(evt.target);
 
       if (!focusing) {
+        editor.clear();
+
         eventEmitter.emit(spreadsheetEvents.sheet.clickOutside, evt);
       }
     });
