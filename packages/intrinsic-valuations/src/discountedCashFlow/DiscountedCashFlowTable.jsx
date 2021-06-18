@@ -60,6 +60,23 @@ const getDataSheets = (isOnMobile) => {
   return dataSheets;
 };
 
+// Temporary until patterns are in the cell
+// instead of formats
+export const getFormats = (currencySymbol) => {
+  const formats = {
+    currency: {
+      key: "currency",
+      title: () => "Currency",
+      type: "number",
+      format: "currency",
+      label: `${currencySymbol}10.00`,
+      pattern: `"${currencySymbol}"#,##0.##`,
+    },
+  };
+
+  return formats;
+};
+
 const getDatasheetsColWidths = (colWidth, isOnMobile) => {
   const dataSheets = getDataSheets(isOnMobile);
   const newDataSheets = dataSheets.map((dataSheet, datasheetIndex) => {
@@ -180,23 +197,6 @@ const DiscountedCashFlowTable = ({
 
     const dcfValuationElement = document.getElementById(`${dcfValuationId}`);
 
-    const patterns = {
-      currency: {
-        render: `"${currencySymbol}"#,##0.##`,
-      },
-    };
-
-    const formats = {
-      currency: {
-        key: "currency",
-        title: () => "Currency",
-        type: "number",
-        format: "currency",
-        label: `${currencySymbol}10.00`,
-        pattern: patterns.currency.render,
-      },
-    };
-
     const width = () => {
       if (containerRef?.current) {
         const containerStyle = getComputedStyle(containerRef.current);
@@ -219,7 +219,7 @@ const DiscountedCashFlowTable = ({
       col: {
         width: defaultColWidth,
       },
-      formats,
+      formats: getFormats(currencySymbol),
       view: {
         height: () => 1250,
         width,
@@ -228,7 +228,7 @@ const DiscountedCashFlowTable = ({
 
     const variablesSpreadsheetOptions = {
       debugMode,
-      formats,
+      formats: getFormats(currencySymbol),
       view: {
         width,
       },

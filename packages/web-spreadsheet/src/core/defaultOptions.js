@@ -52,9 +52,6 @@ export const sharedOptions = {
       type: "number",
       label: "1,000.12",
       pattern: patterns.number.render,
-      editRender: (v) => {
-        return numfmt(patterns.number.render)(v);
-      },
     },
     percent: {
       key: "percent",
@@ -68,7 +65,7 @@ export const sharedOptions = {
 
         text = text.includes("%") ? text : text + "%";
 
-        text = numfmt(patterns.percent.edit);
+        text = numfmt(patterns.percent.edit)(text);
 
         return text;
       },

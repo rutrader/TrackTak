@@ -10,9 +10,11 @@ import scopeNameTypeMapping from "./scopeNameTypeMapping";
 import selectSheetsDatas from "../selectors/dcfSelectors/selectSheetsDatas";
 import replaceAll from "../shared/replaceAll";
 import { sharedOptions } from "../../../web-spreadsheet/src/core/defaultOptions";
-import getFormatFromCell from "../../../web-spreadsheet/src/shared/getFormatFromCell";
 import formatToExcelType from "./formatToExcelType";
 import { isNil } from "lodash-es";
+import { getFormats } from "./DiscountedCashFlowTable";
+import getFormatFromCell from "../../../web-spreadsheet/src/shared/getFormatFromCell";
+import numfmt from "numfmt";
 
 // TODO: Once we put in variables sheet then remove this
 const apiVariablesWorksheetName = "API Variables";
@@ -75,6 +77,11 @@ const xtos = async (
   const { utils } = await import("xlsx/xlsx.mini");
   const scopeIndexes = {};
   const scopeArray = Object.keys(scope);
+  // TODO: Remove later
+  const formats = {
+    ...sharedOptions.formats,
+    ...getFormats(currencySymbol),
+  };
 
   scopeArray.forEach((key, i) => {
     scopeIndexes[key] = i;
@@ -126,10 +133,20 @@ const xtos = async (
           if (idx > maxCoord.c) maxCoord.c = idx;
         }
 
-        const excelFormat = formatToExcelType(format, currencySymbol);
+        let pattern = formats[format]?.pattern;
+
+        const excelFormat = {
+          t: formatToExcelType(format),
+          z: pattern,
+        };
 
         if (isNil(cellText) || cellText === "") {
           excelFormat.t = "z";
+        }
+
+        // Already formatted to %
+        if (numfmt.isPercent(cellText)) {
+          cellText = parseFloat(cellText) / 100;
         }
 
         let formula;
@@ -203,15 +220,30 @@ const xtos = async (
   const apiVariablesWorksheet = {};
 
   scopeArray.forEach((key, i) => {
-    const value = scope[key];
+    let value = scope[key];
     const cellRow = scopeIndexes[key] + 1;
     const format = scopeNameTypeMapping[key];
+    let z = formats[format]?.pattern;
+
+    if (format === "million") {
+      z = sharedOptions.formats.number.pattern;
+    }
+
+    if (format === "million-currency") {
+      z = sharedOptions.formats.currency.pattern;
+    }
 
     if (format && value !== null) {
-      const excelFormat = formatToExcelType(format, currencySymbol);
+      let t = formatToExcelType(format);
+
+      // Already formatted to %
+      if (numfmt.isPercent(value)) {
+        value = parseFloat(value) / 100;
+      }
 
       apiVariablesWorksheet[`B${cellRow}`] = {
-        ...excelFormat,
+        t,
+        z,
         v: value,
       };
 
