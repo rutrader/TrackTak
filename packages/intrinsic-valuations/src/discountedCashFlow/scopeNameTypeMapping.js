@@ -70,7 +70,6 @@ export const balanceSheetTypeMappings = {
   bookValueOfDebt: "million-currency",
   cashAndShortTermInvestments: "million-currency",
   minorityInterest: "million-currency",
-  totalRevenue: "million-currency",
   bookValueOfEquity: "million-currency",
 };
 

@@ -169,9 +169,13 @@ export const getTable = (
       } else {
         cellText = hyperformula.getCellValue(cellAddress);
       }
-      const formatter = numfmt(formats[format].pattern);
 
-      cellText = formatter(cellText);
+      cellText = numfmt(formats[format].pattern)(cellText);
+
+      // Remove trailing dot that formatting leaves if ends in .##
+      if (cellText && cellText.charAt(cellText.length - 1) === ".") {
+        cellText = cellText.slice(0, cellText.length - 1);
+      }
 
       if (cellText.value) {
         const error = cellText;

@@ -6,20 +6,6 @@ const formatToExcelType = (format, currencySymbol) => {
     };
   }
 
-  if (format === "million") {
-    return {
-      z: "#,##0.00,,",
-      t: "n",
-    };
-  }
-
-  if (format === "million-currency") {
-    return {
-      z: `${currencySymbol}#,##0.00,,`,
-      t: "n",
-    };
-  }
-
   if (format === "currency") {
     return {
       z: `${currencySymbol}#,##0.00`,

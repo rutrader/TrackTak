@@ -44,13 +44,11 @@ import getDCFValuationData from "./templates/freeCashFlowFirmSimple/data/getDCFV
 import getCostOfCapitalData from "./templates/freeCashFlowFirmSimple/data/getCostOfCapitalData";
 import getOptionalInputsData from "./templates/freeCashFlowFirmSimple/data/getOptionalInputsData";
 import selectEstimatedCostOfDebt from "../selectors/fundamentalSelectors/selectEstimatedCostOfDebt";
-import numfmt from "numfmt";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
 const columnAWidth = 170;
 const defaultColWidth = 110;
-const million = 1000000;
 
 const getDataSheets = (isOnMobile) => {
   const dataSheets = [
@@ -186,12 +184,6 @@ const DiscountedCashFlowTable = ({
       currency: {
         render: `"${currencySymbol}"#,##0.##`,
       },
-      million: {
-        render: "#,##0.00,,",
-      },
-      "million-currency": {
-        render: `"${currencySymbol}"#,##0.00,,`,
-      },
     };
 
     const formats = {
@@ -202,22 +194,6 @@ const DiscountedCashFlowTable = ({
         format: "currency",
         label: `${currencySymbol}10.00`,
         pattern: patterns.currency.render,
-      },
-      million: {
-        key: "million",
-        title: () => "Million",
-        format: "million",
-        type: "number",
-        label: "1,000,000",
-        pattern: patterns.million.render,
-      },
-      "million-currency": {
-        key: "million-currency",
-        title: () => "Million Currency",
-        format: "million-currency",
-        type: "number",
-        label: `${currencySymbol}1,000,000`,
-        pattern: patterns["million-currency"].render,
       },
     };
 

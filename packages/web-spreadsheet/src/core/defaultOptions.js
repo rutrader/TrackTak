@@ -8,8 +8,7 @@ const patterns = {
     render: "0.00%",
   },
   number: {
-    edit: "#,##0.##",
-    render: "#,##0.00",
+    render: "#,##0.##",
   },
 };
 
@@ -53,11 +52,8 @@ export const sharedOptions = {
       type: "number",
       label: "1,000.12",
       pattern: patterns.number.render,
-      editPattern: patterns.number.edit,
-      renderFormatter: numfmt(patterns.number.render),
-      editRenderFormatter: numfmt(patterns.number.edit),
       editRender: (v) => {
-        return sharedOptions.formats.number.editRenderFormatter(v);
+        return numfmt(patterns.number.render)(v);
       },
     },
     percent: {
@@ -67,14 +63,12 @@ export const sharedOptions = {
       label: "10.12%",
       pattern: patterns.percent.render,
       editPattern: patterns.percent.edit,
-      renderFormatter: numfmt(patterns.percent.render),
-      editRenderFormatter: numfmt(patterns.percent.edit),
       editRender: (v) => {
         let text = v.toString();
 
         text = text.includes("%") ? text : text + "%";
 
-        text = sharedOptions.formats.percent.editRenderFormatter(text);
+        text = numfmt(patterns.percent.edit);
 
         return text;
       },
