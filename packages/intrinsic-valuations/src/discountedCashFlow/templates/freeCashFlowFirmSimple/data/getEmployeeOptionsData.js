@@ -7,12 +7,8 @@ const getEmployeeOptionsData = () => {
       {
         format: "percent",
       },
-      {
-        format: "million",
-      },
-      {
-        format: "million-currency",
-      },
+      {},
+      {},
       {
         format: "currency",
       },
@@ -47,7 +43,7 @@ const getEmployeeOptionsData = () => {
           },
           1: {
             text: "='Optional Inputs'!$H$2",
-            style: 1,
+            style: 4,
           },
         },
       },
@@ -102,7 +98,7 @@ const getEmployeeOptionsData = () => {
           },
           1: {
             text: "=sharesOutstanding",
-            style: 1,
+            style: 4,
           },
         },
       },
@@ -197,7 +193,7 @@ const getEmployeeOptionsData = () => {
           },
           1: {
             text: "=B16*B2",
-            style: 2,
+            style: 3,
           },
         },
       },

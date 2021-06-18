@@ -37,20 +37,20 @@ export const requiredInputNameTypeMapping = {
 };
 
 export const optionalInputNameTypeMapping = {
-  [queryNames.employeeOptionsOutstanding]: "million",
+  [queryNames.employeeOptionsOutstanding]: "number",
   [queryNames.averageStrikePrice]: "currency",
   [queryNames.averageMaturityOfOptions]: "year",
   [queryNames.averageMaturityOfDebt]: "year",
   [queryNames.pretaxCostOfDebt]: "percent",
-  [queryNames.marketValueOfConvertibleBond]: "million-currency",
-  [queryNames.bookValueOfConvertibleDebt]: "million-currency",
-  [queryNames.interestExpenseOnConvertibleDebt]: "million-currency",
+  [queryNames.marketValueOfConvertibleBond]: "currency",
+  [queryNames.bookValueOfConvertibleDebt]: "currency",
+  [queryNames.interestExpenseOnConvertibleDebt]: "currency",
   [queryNames.maturityOfConvertibleDebt]: "year",
-  [queryNames.numberOfPreferredShares]: "million",
+  [queryNames.numberOfPreferredShares]: "number",
   [queryNames.marketPricePerShare]: "currency",
   [queryNames.annualDividendPerShare]: "currency",
-  [queryNames.netOperatingLoss]: "million-currency",
-  [queryNames.nonOperatingAssets]: "million-currency",
+  [queryNames.netOperatingLoss]: "currency",
+  [queryNames.nonOperatingAssets]: "currency",
   [queryNames.probabilityOfFailure]: "percent",
   [queryNames.proceedsAsAPercentageOfBookValue]: "percent",
 };
@@ -70,7 +70,6 @@ export const balanceSheetTypeMappings = {
   bookValueOfDebt: "million-currency",
   cashAndShortTermInvestments: "million-currency",
   minorityInterest: "million-currency",
-  totalRevenue: "million-currency",
   bookValueOfEquity: "million-currency",
 };
 

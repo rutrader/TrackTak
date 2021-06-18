@@ -49,7 +49,6 @@ const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
 const columnAWidth = 170;
 const defaultColWidth = 110;
-const million = 1000000;
 
 const getDataSheets = (isOnMobile) => {
   const dataSheets = [
@@ -59,6 +58,23 @@ const getDataSheets = (isOnMobile) => {
   ];
 
   return dataSheets;
+};
+
+// Temporary until patterns are in the cell
+// instead of formats
+export const getFormats = (currencySymbol) => {
+  const formats = {
+    currency: {
+      key: "currency",
+      title: () => "Currency",
+      type: "number",
+      format: "currency",
+      label: `${currencySymbol}10.00`,
+      pattern: `"${currencySymbol}"#,##0.##`,
+    },
+  };
+
+  return formats;
 };
 
 const getDatasheetsColWidths = (colWidth, isOnMobile) => {
@@ -181,84 +197,6 @@ const DiscountedCashFlowTable = ({
 
     const dcfValuationElement = document.getElementById(`${dcfValuationId}`);
 
-    const formats = {
-      currency: {
-        key: "currency",
-        title: () => "Currency",
-        type: "number",
-        format: "currency",
-        label: `${currencySymbol}10.00`,
-        editRender: (v) => {
-          if (v.toString().charAt(0) === currencySymbol) {
-            return v;
-          }
-
-          let text = parseFloat(v, 10);
-
-          if (isNaN(text)) return v;
-
-          text = v.toString();
-
-          return !text.includes(currencySymbol) ? currencySymbol + text : v;
-        },
-        render: (v) => {
-          if (isNil(v) || v === "") return "";
-
-          return currencySymbol + formatNumberRender(v);
-        },
-      },
-      million: {
-        key: "million",
-        title: () => "Million",
-        format: "million",
-        type: "number",
-        label: "(000)",
-        editRender: (v, state) => {
-          let number = parseFloat(v, 10);
-
-          if (isNaN(number)) return v;
-
-          if (state === "start") {
-            return (number / million).toString();
-          }
-
-          if (state === "startInput" || state === "finished") {
-            return number * million.toString();
-          }
-
-          return v.toString();
-        },
-        render: (v) => {
-          if (isNil(v) || v === "") return "";
-
-          return formatNumberRender(v / million);
-        },
-      },
-      "million-currency": {
-        key: "million-currency",
-        title: () => "Million Currency",
-        format: "million-currency",
-        type: "number",
-        label: `${currencySymbol}(000)`,
-        editRender: (v, state) => {
-          const currencyText = formats.currency.editRender(v);
-          const text = formats.million.editRender(
-            currencyText.substring(1),
-            state,
-          );
-
-          return currencyText.charAt(0) + text;
-        },
-        render: (v) => {
-          if (isNil(v) || v === "") return "";
-
-          const value = v / million;
-
-          return formats.currency.render(value);
-        },
-      },
-    };
-
     const width = () => {
       if (containerRef?.current) {
         const containerStyle = getComputedStyle(containerRef.current);
@@ -281,7 +219,7 @@ const DiscountedCashFlowTable = ({
       col: {
         width: defaultColWidth,
       },
-      formats,
+      formats: getFormats(currencySymbol),
       view: {
         height: () => 1250,
         width,
@@ -290,7 +228,7 @@ const DiscountedCashFlowTable = ({
 
     const variablesSpreadsheetOptions = {
       debugMode,
-      formats,
+      formats: getFormats(currencySymbol),
       view: {
         width,
       },

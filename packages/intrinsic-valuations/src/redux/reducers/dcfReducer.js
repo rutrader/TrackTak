@@ -7,6 +7,7 @@ import {
 } from "../actions/dcfActions";
 import { createReducer } from "@reduxjs/toolkit";
 import cells from "../../discountedCashFlow/cells";
+import scopeNameTypeMapping from "../../discountedCashFlow/scopeNameTypeMapping";
 
 const initialState = {
   cells,
@@ -45,9 +46,24 @@ export const dcfReducer = createReducer(initialState, (builder) => {
     };
   });
   builder.addCase(setScope, (state, { payload }) => {
+    const modifiedScope = {};
+
+    Object.keys(payload).forEach((key) => {
+      let value = payload[key];
+
+      if (
+        scopeNameTypeMapping[key] === "million" ||
+        scopeNameTypeMapping[key] === "million-currency"
+      ) {
+        value /= 1000000;
+      }
+
+      modifiedScope[key] = value;
+    });
+
     state.scope = {
       ...state.scope,
-      ...payload,
+      ...modifiedScope,
     };
   });
 });

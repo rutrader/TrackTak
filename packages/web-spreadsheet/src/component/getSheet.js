@@ -819,7 +819,13 @@ export const getSheet = (
       sheet: getData().getSheetId(),
     };
 
-    const value = hyperformula.getCellValue(cellAddress);
+    let value = hyperformula.getCellValue(cellAddress);
+
+    // Temporary
+    if (format === "percent") {
+      value = hyperformula.getCellSerialized(cellAddress);
+    }
+
     const param = {
       cell,
       cellAddress,
