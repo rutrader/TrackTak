@@ -106,7 +106,7 @@ export const getEditableInput = (
   const render = () => {
     if (composing) return;
 
-    const text = inputText;
+    const text = inputText ?? "";
 
     if (text[0] !== "=") {
       textEl.html(text);

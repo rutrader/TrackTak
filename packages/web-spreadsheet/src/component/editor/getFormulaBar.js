@@ -28,9 +28,7 @@ export const getFormulaBar = (getData, getOptions, formulas, eventEmitter) => {
   );
 
   eventEmitter.on(spreadsheetEvents.sheet.cellSelected, (cell) => {
-    if (cell) {
-      editableInput.setText(cell.text);
-    }
+    editableInput.setText(cell?.text);
   });
 
   eventEmitter.on(spreadsheetEvents.editor.change, (_, text) => {
