@@ -40,8 +40,8 @@ export const query = graphql`
     }
   }
 
-  query Blog {
-    contentfulBlog {
+  query Blog($slug: String) {
+    contentfulBlog(slug: { eq: $slug }) {
       ...BlogInformation
     }
   }
