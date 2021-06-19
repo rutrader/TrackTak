@@ -1006,6 +1006,10 @@ export const getSheet = (
         overlayerTouch(direction, d);
       },
       touchstart: (evt) => {
+        setFocusing(true);
+
+        turnOffUnfocusedSheet();
+
         editor.clear();
         contextMenu.hide();
 
