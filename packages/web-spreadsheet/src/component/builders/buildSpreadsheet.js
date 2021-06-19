@@ -1,5 +1,4 @@
 import { getTable } from "../table/getTable";
-import withToolbar from "../withToolbar";
 import { getSheet } from "../getSheet";
 import { makeGetDataProxy } from "../../core/makeGetDataProxy";
 import spreadsheetEvents from "../../core/spreadsheetEvents";
@@ -13,6 +12,8 @@ import { getNewOptions } from "./getNewOptions";
 import { defaultOptions } from "../../core/defaultOptions";
 import { makeGetViewWidthHeight } from "../makeGetSheetViewWidthHeight";
 import getDraw from "../../canvas/draw";
+import { getPrint } from "../getPrint";
+import { getToolbar } from "../toolbar/getToolbar";
 import { getFormulaBar } from "../editor/getFormulaBar";
 import { getFormulaSuggestions } from "../../shared/getFormulaSuggestions";
 
@@ -26,6 +27,34 @@ export const buildSpreadsheet = (
   let newOptions;
 
   const eventEmitter = new EventEmitter();
+  const variablesEventEmitter = new EventEmitter();
+
+  const globalEventEmitter = {
+    on: (...args) => {
+      eventEmitter.on(...args);
+      variablesEventEmitter.on(...args);
+    },
+    emit: (...args) => {
+      if (sheet?.getFocusing()) {
+        eventEmitter.emit(...args);
+
+        return;
+      }
+      variablesEventEmitter.emit(...args);
+    },
+  };
+
+  const getData = () => {
+    return newData;
+  };
+
+  const getFocusedData = () => {
+    if (sheet?.getFocusing()) {
+      return getData();
+    }
+
+    return variablesSpreadsheet.getData();
+  };
 
   const getOptions = () => newOptions;
 
@@ -43,10 +72,6 @@ export const buildSpreadsheet = (
 
   modifyEventEmitter(eventEmitter, getOptions().debugMode, "spreadsheet");
 
-  const getData = () => {
-    return newData;
-  };
-
   eventEmitter.on(spreadsheetEvents.sheet.switchData, (data) => {
     newData = data;
   });
@@ -57,18 +82,20 @@ export const buildSpreadsheet = (
 
   const table = getTable(getOptions, getData, hyperformula, getViewWidthHeight);
 
+  const toolbar = getToolbar(getOptions, getFocusedData, globalEventEmitter);
+
+  const formulaBar = getFormulaBar(
+    getOptions,
+    getFocusedData,
+    getFormulaSuggestions(),
+    globalEventEmitter,
+  );
+
   const sheetBuilder = buildSheet(
     getOptions,
     getData,
     eventEmitter,
     getViewWidthHeight,
-  );
-
-  const formulaBar = getFormulaBar(
-    getData,
-    getOptions,
-    getFormulaSuggestions(),
-    eventEmitter,
   );
 
   const dataProxyBuilder = buildDataProxy(getOptions, getData, hyperformula);
@@ -81,23 +108,31 @@ export const buildSpreadsheet = (
     getViewWidthHeight,
   );
 
-  const { sheet, toolbar } = withToolbar(
-    getSheet(
-      sheetBuilder,
-      rootEl,
-      table,
-      eventEmitter,
-      hyperformula,
-      getOptions,
-      getData,
-      getDataProxy,
-      getViewWidthHeight,
-    ),
-    variablesSpreadsheetOptions,
+  const print = getPrint(rootEl, getData);
+
+  const { sheet } = getSheet(
+    toolbar,
+    print,
+    sheetBuilder,
+    rootEl,
+    table,
+    eventEmitter,
+    hyperformula,
+    getOptions,
+    getData,
+    getDataProxy,
+    getViewWidthHeight,
+    () => {
+      variablesSpreadsheet.sheet.setFocusing(false);
+    },
   );
 
   const variablesSpreadsheet = buildVariablesSpreadsheet(
-    sheet.el,
+    variablesEventEmitter,
+    toolbar,
+    formulaBar,
+    print,
+    sheet,
     rootEl,
     variablesSpreadsheetOptions,
     hyperformula,
@@ -124,9 +159,8 @@ export const buildSpreadsheet = (
     getData().getData(),
   );
 
-  sheet.el.before(toolbar.el);
-  sheet.el.before(formulaBar.el);
   sheet.el.after(bottombar.el);
+  rootEl.children(print.el);
 
   return {
     sheet,

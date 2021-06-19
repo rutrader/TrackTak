@@ -1,11 +1,9 @@
 import { getSheet } from "../getSheet";
 import { makeGetDataProxy } from "../../core/makeGetDataProxy";
-import withVariablesToolbar from "../withVariablesToolbar";
 import { buildSheet } from "./buildSheet";
 import { buildDataProxy } from "./buildDataProxy";
 import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { getBottombar } from "../bottombar";
-import EventEmitter from "events";
 import { modifyEventEmitter } from "../../shared/modifyEventEmitter";
 import { getNewOptions } from "./getNewOptions";
 import { defaultVariablesSpreadsheetOptions } from "../../core/defaultOptions";
@@ -15,15 +13,17 @@ import getDraw from "../../canvas/draw";
 import { cssPrefix } from "../../config";
 
 export const buildVariablesSpreadsheet = (
-  sheetEl,
+  eventEmitter,
+  toolbar,
+  formulaBar,
+  print,
+  mainSheet,
   rootEl,
   options,
   hyperformula,
 ) => {
   let newData;
   let newOptions;
-
-  const eventEmitter = new EventEmitter();
 
   const getOptions = () => newOptions;
 
@@ -82,18 +82,21 @@ export const buildVariablesSpreadsheet = (
     getViewWidthHeight,
   );
 
-  const { sheet, toolbar } = withVariablesToolbar(
-    getSheet(
-      sheetBuilder,
-      rootEl,
-      table,
-      eventEmitter,
-      hyperformula,
-      getOptions,
-      getData,
-      getDataProxy,
-      getViewWidthHeight,
-    ),
+  const { sheet } = getSheet(
+    toolbar,
+    print,
+    sheetBuilder,
+    rootEl,
+    table,
+    eventEmitter,
+    hyperformula,
+    getOptions,
+    getData,
+    getDataProxy,
+    getViewWidthHeight,
+    () => {
+      mainSheet.setFocusing(false);
+    },
   );
 
   sheet.el.addClass(`${cssPrefix}-variables-sheet`);
@@ -104,17 +107,18 @@ export const buildVariablesSpreadsheet = (
     getData().getData(),
   );
 
-  sheetEl.before(sheet.el);
-  sheet.el.before(toolbar.el);
-  sheetEl.before(bottombar.el);
+  mainSheet.el.before(toolbar.el);
+  mainSheet.el.before(formulaBar.el);
+  mainSheet.el.before(sheet.el);
+  mainSheet.el.before(bottombar.el);
 
   return {
     sheet,
-    toolbar,
     rootEl,
     setVariableDatasheets,
     setOptions,
     getOptions,
     eventEmitter,
+    getData,
   };
 };

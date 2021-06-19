@@ -105,10 +105,12 @@ export const getToolbar = (getOptions, getData, eventEmitter) => {
 
   el.child(buttonsEl);
 
-  eventEmitter.on(spreadsheetEvents.sheet.switchData, (newData) => {
-    reset(hideFn(), newData, undoEl, redoEl, formatEl);
+  eventEmitter.on(spreadsheetEvents.sheet.switchData, () => {
+    if (getData() !== undefined) {
+      reset();
 
-    resize(hideFn(), items, reset, el, buttonsEl, moreEl, widthFn);
+      resize(hideFn(), items, reset, el, buttonsEl, moreEl, widthFn);
+    }
   });
 
   eventEmitter.on(spreadsheetEvents.sheet.cellSelected, () => {
@@ -121,6 +123,32 @@ export const getToolbar = (getOptions, getData, eventEmitter) => {
 
   eventEmitter.on(spreadsheetEvents.sheet.sheetReset, () => {
     reset();
+  });
+
+  eventEmitter.on(spreadsheetEvents.sheet.ctrlKeyDown, (evt, keyCode) => {
+    // ctrl + s
+    if (keyCode === 83) {
+      evt.preventDefault();
+
+      strikeEl.toggleItem.toggle();
+    }
+
+    // ctrl + u
+    if (keyCode === 85) {
+      evt.preventDefault();
+
+      underlineEl.toggleItem.toggle();
+    }
+
+    // ctrl + b
+    if (keyCode === 66) {
+      boldEl.toggleItem.toggle();
+    }
+
+    // ctrl + i
+    if (keyCode === 73) {
+      italicEl.toggleItem.toggle();
+    }
   });
 
   const paintformatActive = () => {
