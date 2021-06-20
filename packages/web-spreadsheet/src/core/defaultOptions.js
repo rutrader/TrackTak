@@ -19,7 +19,6 @@ export const sharedOptions = {
     height: () => document.documentElement.clientHeight,
     width: () => document.documentElement.clientWidth,
   },
-  showToolbar: true,
   showGrid: true,
   showContextmenu: true,
   showAllFormulas: false,
@@ -115,11 +114,14 @@ export const sharedOptions = {
   },
 };
 
-export const defaultOptions = sharedOptions;
+export const defaultOptions = {
+  ...sharedOptions,
+  showToolbar: true,
+};
 
 export const defaultVariablesSpreadsheetOptions = merge({}, sharedOptions, {
   view: {
-    height: () => 205,
+    height: () => 165,
   },
   show: true,
 });
