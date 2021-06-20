@@ -106,11 +106,9 @@ export const getToolbar = (getOptions, getData, eventEmitter) => {
   el.child(buttonsEl);
 
   eventEmitter.on(spreadsheetEvents.sheet.switchData, () => {
-    if (getData() !== undefined) {
-      reset();
+    reset();
 
-      resize(hideFn(), items, reset, el, buttonsEl, moreEl, widthFn);
-    }
+    resize(hideFn(), items, reset, el, buttonsEl, moreEl, widthFn);
   });
 
   eventEmitter.on(spreadsheetEvents.sheet.cellSelected, () => {
@@ -160,7 +158,7 @@ export const getToolbar = (getOptions, getData, eventEmitter) => {
   };
 
   const reset = () => {
-    if (hideFn()) return;
+    if (hideFn() || !getData()) return;
     const style = getData().getSelectedCellStyle();
 
     undoEl.iconItem.setDisabled(!getData().canUndo());
