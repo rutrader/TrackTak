@@ -33,13 +33,18 @@ export const getEditableInput = (
 
   function keydownEventHandler(evt) {
     const { keyCode, altKey } = evt;
-    if (keyCode !== 13 && keyCode !== 9) {
+    if (keyCode !== 13 && keyCode !== 9 && keyCode !== 27) {
       evt.stopPropagation();
     }
     if (keyCode === 13 && altKey) {
       insertText(evt, "\n");
       evt.stopPropagation();
     }
+
+    if (keyCode === 27) {
+      clear();
+    }
+
     if (keyCode === 13 && !altKey) {
       evt.preventDefault();
     }
