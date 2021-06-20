@@ -81,16 +81,11 @@ export const getBottombar = (eventEmitter, getDataValues, getDataValue) => {
   const getSheetNames = () => getDataValues().map((x) => x.name);
 
   let items = [];
-  let previousIndex = null;
   let deleteIndex = null;
   const moreEl = getDropdownMore(eventEmitter);
 
   const addItem = (name, i) => {
     const active = getDataValue().name === name;
-
-    if (active) {
-      previousIndex = i;
-    }
 
     const item = h("li", active ? "active" : "")
       .child(name)
@@ -124,7 +119,9 @@ export const getBottombar = (eventEmitter, getDataValues, getDataValue) => {
     return item;
   };
 
-  const setItems = (dataSheets) => {
+  const setItems = (dataSheets = getDataValues()) => {
+    clear();
+
     items = dataSheets.map(({ name }, i) => {
       const item = addItem(name, i);
 
@@ -147,10 +144,7 @@ export const getBottombar = (eventEmitter, getDataValues, getDataValue) => {
         deleteIndex,
         newIndex,
       );
-      clear();
-      setItems(getDataValues());
-      items[newIndex].toggle();
-      previousIndex = newIndex;
+      setItems();
     }
   };
 
@@ -163,17 +157,9 @@ export const getBottombar = (eventEmitter, getDataValues, getDataValue) => {
   };
 
   const click = (index) => {
-    // Do not toggle the same sheet
-    if (index !== previousIndex) {
-      // Set the previous one unactive
-      items[previousIndex].toggle();
-      // Set the current one active
-      items[index].toggle();
-    }
-
-    previousIndex = index;
-
     eventEmitter.emit(spreadsheetEvents.bottombar.selectSheet, index);
+
+    setItems();
   };
 
   eventEmitter.on(spreadsheetEvents.bottombar.clickDropdownMore, (i) => {
@@ -202,16 +188,11 @@ export const getBottombar = (eventEmitter, getDataValues, getDataValue) => {
     }
   });
 
-  eventEmitter.on(spreadsheetEvents.sheet.addData, (name) => {
-    items[previousIndex].toggle();
-
-    const item = addItem(name, items.length);
-
-    items.push(item);
+  eventEmitter.on(spreadsheetEvents.sheet.addData, () => {
+    setItems();
   });
 
   eventEmitter.on(spreadsheetEvents.sheet.setDatasheets, (dataSheets) => {
-    clear();
     setItems(dataSheets);
   });
 

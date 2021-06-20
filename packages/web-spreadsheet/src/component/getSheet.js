@@ -57,7 +57,9 @@ export const getSheet = (
   } = builder();
   let datas = [];
 
-  const getDatas = () => datas;
+  const getDatas = () => {
+    return datas;
+  };
 
   const getDataValues = () => {
     return datas.map((x) => x.getData());
@@ -74,9 +76,7 @@ export const getSheet = (
   });
 
   eventEmitter.on(spreadsheetEvents.bottombar.addSheet, () => {
-    const data = addData(getDataProxy);
-
-    switchData(data);
+    addData(getDataProxy);
   });
 
   eventEmitter.on(
@@ -323,9 +323,7 @@ export const getSheet = (
           switchData(data);
         }
       } else {
-        const currentData = getData();
-
-        data = addDataProxy(currentData.name === dataSheet.name);
+        data = addDataProxy(dataSheet.name);
       }
       data.setData(dataSheet);
     });
@@ -364,9 +362,9 @@ export const getSheet = (
 
     datas.push(data);
 
-    eventEmitter.emit(spreadsheetEvents.sheet.addData, newName, data);
+    switchData(data);
 
-    return data;
+    eventEmitter.emit(spreadsheetEvents.sheet.addData, newName, data);
   };
 
   const switchData = (newData) => {
