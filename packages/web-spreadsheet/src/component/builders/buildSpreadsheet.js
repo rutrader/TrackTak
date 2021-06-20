@@ -35,12 +35,17 @@ export const buildSpreadsheet = (
       variablesEventEmitter.on(...args);
     },
     emit: (...args) => {
-      if (sheet?.getFocusing()) {
+      if (sheet?.getLastFocused()) {
         eventEmitter.emit(...args);
 
         return;
       }
-      variablesEventEmitter.emit(...args);
+
+      if (variablesSpreadsheet?.sheet?.getLastFocused()) {
+        variablesEventEmitter.emit(...args);
+
+        return;
+      }
     },
   };
 
@@ -49,11 +54,13 @@ export const buildSpreadsheet = (
   };
 
   const getFocusedData = () => {
-    if (sheet?.getFocusing()) {
+    if (sheet?.getLastFocused()) {
       return getData();
     }
 
-    return variablesSpreadsheet.getData();
+    if (variablesSpreadsheet?.sheet?.getLastFocused()) {
+      return variablesSpreadsheet.getData();
+    }
   };
 
   const getOptions = () => newOptions;
@@ -123,7 +130,7 @@ export const buildSpreadsheet = (
     getDataProxy,
     getViewWidthHeight,
     () => {
-      variablesSpreadsheet.sheet.setFocusing(false);
+      variablesSpreadsheet.sheet.setLastFocused(false);
     },
   );
 

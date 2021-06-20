@@ -95,7 +95,7 @@ export const buildVariablesSpreadsheet = (
     getDataProxy,
     getViewWidthHeight,
     () => {
-      mainSheet.setFocusing(false);
+      mainSheet.setLastFocused(false);
     },
   );
 

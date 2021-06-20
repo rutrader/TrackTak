@@ -39,7 +39,7 @@ export const getSheet = (
   getData,
   getDataProxy,
   getViewWidthHeight,
-  turnOffUnfocusedSheet,
+  overlayerClickCallback,
 ) => {
   const {
     rowResizer,
@@ -396,11 +396,12 @@ export const getSheet = (
   const el = h("div", `${cssPrefix}-sheet`);
 
   let focusing;
+  let lastFocused;
 
-  const getFocusing = () => focusing;
+  const getLastFocused = () => lastFocused;
 
-  const setFocusing = (focus) => {
-    focusing = focus;
+  const setLastFocused = (focused) => {
+    lastFocused = focused;
   };
 
   el.children(
@@ -926,9 +927,8 @@ export const getSheet = (
       .on("mousedown", (evt) => {
         if (getIsInTouchMode()) return;
 
-        setFocusing(true);
-
-        turnOffUnfocusedSheet();
+        overlayerClickCallback();
+        lastFocused = true;
 
         // If a formula cell is being edited and a left click is made,
         // set that formula cell to start at the selected sheet cell and set a
@@ -1004,15 +1004,31 @@ export const getSheet = (
         overlayerTouch(direction, d);
       },
       touchstart: (evt) => {
-        setFocusing(true);
+        overlayerClickCallback();
 
-        turnOffUnfocusedSheet();
+        lastFocused = true;
 
         editor.clear();
         contextMenu.hide();
 
         touchStartOverlayer(evt);
         editorSet();
+      },
+    });
+
+    const clickWindow = (evt) => {
+      focusing = overlayerEl.contains(evt.target);
+
+      if (!focusing) {
+        editor.clear();
+
+        eventEmitter.emit(spreadsheetEvents.sheet.clickOutside, evt);
+      }
+    };
+
+    bindTouch(window, {
+      touchstart: (evt) => {
+        clickWindow(evt);
       },
     });
 
@@ -1033,11 +1049,9 @@ export const getSheet = (
     });
 
     bind(window, "mousedown", (evt) => {
-      if (!focusing) {
-        editor.clear();
+      if (getIsInTouchMode()) return;
 
-        eventEmitter.emit(spreadsheetEvents.sheet.clickOutside, evt);
-      }
+      clickWindow(evt);
     });
 
     bind(window, "paste", (evt) => {
@@ -1215,9 +1229,9 @@ export const getSheet = (
       render,
       deleteCellFormat,
       getDataValues,
-      getFocusing,
-      setFocusing,
-      focusing,
+      getLastFocused,
+      setLastFocused,
+      lastFocused,
     },
   };
 };
