@@ -61,8 +61,6 @@ function inputKeydownHandler(evt) {
     case 9:
       inputEnter.call(this, evt);
       break;
-    case 27:
-      break;
     default:
       evt.stopPropagation();
       break;
