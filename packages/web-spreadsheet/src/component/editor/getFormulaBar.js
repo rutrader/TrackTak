@@ -3,7 +3,7 @@ import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { h } from "../element";
 import { getEditableInput } from "./getEditableInput";
 
-export const getFormulaBar = (getData, getOptions, formulas, eventEmitter) => {
+export const getFormulaBar = (getOptions, getData, formulas, eventEmitter) => {
   const el = h("div", `${cssPrefix}-formula-bar`);
 
   const editableInput = getEditableInput(

@@ -28,6 +28,8 @@ function throttle(func, wait) {
 }
 
 export const getSheet = (
+  toolbar,
+  print,
   builder,
   rootEl,
   table,
@@ -37,6 +39,7 @@ export const getSheet = (
   getData,
   getDataProxy,
   getViewWidthHeight,
+  overlayerClickCallback,
 ) => {
   const {
     rowResizer,
@@ -54,7 +57,9 @@ export const getSheet = (
   } = builder();
   let datas = [];
 
-  const getDatas = () => datas;
+  const getDatas = () => {
+    return datas;
+  };
 
   const getDataValues = () => {
     return datas.map((x) => x.getData());
@@ -71,9 +76,7 @@ export const getSheet = (
   });
 
   eventEmitter.on(spreadsheetEvents.bottombar.addSheet, () => {
-    const data = addData(getDataProxy);
-
-    switchData(data);
+    addData(getDataProxy);
   });
 
   eventEmitter.on(
@@ -231,6 +234,60 @@ export const getSheet = (
     ),
   );
 
+  eventEmitter.on(spreadsheetEvents.sheet.mouseMoveUp, () => {
+    toolbarChangePaintformatPaste();
+  });
+
+  Object.values(spreadsheetEvents.toolbar).forEach((key) => {
+    eventEmitter.on(key, (type, value) => toolbarChange(type, value));
+  });
+
+  const toolbarChangePaintformatPaste = () => {
+    if (toolbar.paintformatActive()) {
+      paste("format");
+      clearClipboard();
+      toolbar.paintformatToggle();
+    }
+  };
+
+  function toolbarChange(type, value) {
+    if (type === "undo") {
+      undo();
+    } else if (type === "redo") {
+      redo();
+    } else if (type === "print") {
+      print.preview();
+    } else if (type === "paintformat") {
+      if (value === true) {
+        copy();
+      } else {
+        clearClipboard();
+      }
+    } else if (type === "clearformat") {
+      deleteCellFormat("delete-cell-format");
+    } else if (type === "link") {
+      // link
+    } else if (type === "chart") {
+      // chart
+    } else if (type === "autofilter") {
+      // filter
+      autofilter();
+    } else if (type === "freeze") {
+      if (value) {
+        const { ri, ci } = getData().selector;
+        freeze(ri, ci);
+      } else {
+        freeze(0, 0);
+      }
+    } else {
+      getData().setSelectedCellAttr(type, value);
+      if (type === "formula" && !getData().selector.multiple()) {
+        editorSet();
+      }
+      sheetReset();
+    }
+  }
+
   // Can't use datas length because user could
   // delete in between sheets
   let totalDatasAdded = 0;
@@ -266,9 +323,7 @@ export const getSheet = (
           switchData(data);
         }
       } else {
-        const currentData = getData();
-
-        data = addDataProxy(currentData.name === dataSheet.name);
+        data = addDataProxy(dataSheet.name);
       }
       data.setData(dataSheet);
     });
@@ -307,9 +362,9 @@ export const getSheet = (
 
     datas.push(data);
 
-    eventEmitter.emit(spreadsheetEvents.sheet.addData, newName, data);
+    switchData(data);
 
-    return data;
+    eventEmitter.emit(spreadsheetEvents.sheet.addData, newName, data);
   };
 
   const switchData = (newData) => {
@@ -341,6 +396,13 @@ export const getSheet = (
   const el = h("div", `${cssPrefix}-sheet`);
 
   let focusing;
+  let lastFocused;
+
+  const getLastFocused = () => lastFocused;
+
+  const setLastFocused = (focused) => {
+    lastFocused = focused;
+  };
 
   el.children(
     table.el,
@@ -865,6 +927,9 @@ export const getSheet = (
       .on("mousedown", (evt) => {
         if (getIsInTouchMode()) return;
 
+        overlayerClickCallback();
+        lastFocused = true;
+
         // If a formula cell is being edited and a left click is made,
         // set that formula cell to start at the selected sheet cell and set a
         // temporary mousemove event handler that updates said formula cell to
@@ -938,12 +1003,32 @@ export const getSheet = (
       move: (direction, d) => {
         overlayerTouch(direction, d);
       },
-      edit: (evt) => {
+      touchstart: (evt) => {
+        overlayerClickCallback();
+
+        lastFocused = true;
+
         editor.clear();
         contextMenu.hide();
 
         touchStartOverlayer(evt);
         editorSet();
+      },
+    });
+
+    const clickWindow = (evt) => {
+      focusing = overlayerEl.contains(evt.target);
+
+      if (!focusing) {
+        editor.clear();
+
+        eventEmitter.emit(spreadsheetEvents.sheet.clickOutside, evt);
+      }
+    };
+
+    bindTouch(window, {
+      touchstart: (evt) => {
+        clickWindow(evt);
       },
     });
 
@@ -963,14 +1048,10 @@ export const getSheet = (
       reload();
     });
 
-    bind(window, "click", (evt) => {
-      focusing = overlayerEl.contains(evt.target);
+    bind(window, "mousedown", (evt) => {
+      if (getIsInTouchMode()) return;
 
-      if (!focusing) {
-        editor.clear();
-
-        eventEmitter.emit(spreadsheetEvents.sheet.clickOutside, evt);
-      }
+      clickWindow(evt);
     });
 
     bind(window, "paste", (evt) => {
@@ -1121,32 +1202,36 @@ export const getSheet = (
     });
   }
 
-  const sheet = {
-    el,
-    makeSetDatasheets,
-    addData,
-    getDatas,
-    switchData,
-    freeze,
-    undo,
-    redo,
-    reload,
-    copy,
-    clearClipboard,
-    paste,
-    autofilter,
-    editorSet,
-    sheetReset,
-    table,
-    getOptions,
-    getData,
-    rootEl,
-    hyperformula,
-    eventEmitter,
-    render,
-    deleteCellFormat,
-    getDataValues,
+  return {
+    sheet: {
+      el,
+      makeSetDatasheets,
+      addData,
+      getDatas,
+      switchData,
+      freeze,
+      undo,
+      redo,
+      reload,
+      copy,
+      clearClipboard,
+      paste,
+      autofilter,
+      overlayerEl,
+      editorSet,
+      sheetReset,
+      table,
+      getOptions,
+      getData,
+      rootEl,
+      hyperformula,
+      eventEmitter,
+      render,
+      deleteCellFormat,
+      getDataValues,
+      getLastFocused,
+      setLastFocused,
+      lastFocused,
+    },
   };
-
-  return { sheet };
 };

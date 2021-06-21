@@ -1,8 +1,8 @@
-export function bind(target, name, fn) {
-  target.addEventListener(name, fn);
+export function bind(target, name, fn, options) {
+  target.addEventListener(name, fn, options);
 }
-export function unbind(target, name, fn) {
-  target.removeEventListener(name, fn);
+export function unbind(target, name, fn, options) {
+  target.removeEventListener(name, fn, options);
 }
 export function unbindClickoutside(el) {
   if (el.xclickoutside) {
@@ -54,7 +54,7 @@ function calTouchDirection(spanx, spany, evt, cb) {
   }
 }
 // cb = (direction, distance) => {}
-export function bindTouch(target, { move, end, edit }) {
+export function bindTouch(target, { move, end, touchstart }) {
   let startx = 0;
   let starty = 0;
   bind(target, "touchstart", (evt) => {
@@ -62,7 +62,7 @@ export function bindTouch(target, { move, end, edit }) {
     startx = pageX;
     starty = pageY;
 
-    edit(evt);
+    touchstart(evt);
   });
   bind(target, "touchmove", (evt) => {
     if (!move) return;

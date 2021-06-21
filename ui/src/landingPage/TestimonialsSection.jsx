@@ -29,8 +29,38 @@ const stefanTestimonial = (
 there."
   />
 );
+const oliverTestimonial = (
+  <Testimonials
+    testimonialName="Oliver Djursing"
+    testimonialMessage="It’s mind bugling how nice it all is, finance data is hard to find easily and reliably without paying a big premium or having to searched the whole internet. I whole-heartedly believe this could be the new go-to source for private investors!"
+  />
+);
 
 const redditTestimonialOne = (
+  <Testimonials
+    testimonialName="This website is amazing!"
+    testimonialMessage={
+      <>
+        It automates DCFs with sensitivity analysis and a huge range of
+        customization available. It also provides you with tonnes of financial
+        and industry information. I highly recommend this website if you're into
+        fundamental analysis.
+        <Box>
+          Source:{" "}
+          <Link
+            rel="noreferrer"
+            target="_blank"
+            href="https://www.reddit.com/r/neoliberal/comments/o3a9bp/discussion_thread/h2c2fru/?context=3"
+          >
+            Reddit
+          </Link>
+        </Box>
+      </>
+    }
+  ></Testimonials>
+);
+
+const redditTestimonialTwo = (
   <Testimonials
     testimonialName="Wonderful Idea!"
     testimonialMessage={
@@ -53,7 +83,7 @@ const redditTestimonialOne = (
   ></Testimonials>
 );
 
-const redditTestimonialTwo = (
+const redditTestimonialThree = (
   <Testimonials
     testimonialName="Amazing!!!"
     testimonialMessage={
@@ -77,7 +107,8 @@ const redditTestimonialTwo = (
 
 const stepsDesktop = [
   [robbertSmitTestimonial, stefanTestimonial],
-  [redditTestimonialOne, redditTestimonialTwo],
+  [oliverTestimonial, redditTestimonialOne],
+  [redditTestimonialTwo, redditTestimonialThree],
 ];
 
 const stepsMobile = stepsDesktop.flatMap((x) => x);
