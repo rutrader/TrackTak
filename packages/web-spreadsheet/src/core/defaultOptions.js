@@ -62,9 +62,11 @@ export const sharedOptions = {
       editRender: (v) => {
         let text = v.toString();
 
-        text = text.includes("%") ? text : text + "%";
+        if (text.charAt(0) !== "=") {
+          text = text.includes("%") ? text : text + "%";
 
-        text = numfmt(patterns.percent.edit)(text);
+          text = numfmt(patterns.percent.edit)(text);
+        }
 
         return text;
       },
