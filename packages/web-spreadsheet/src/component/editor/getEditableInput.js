@@ -52,6 +52,7 @@ export const getEditableInput = (
 
   const resetCellText = () => {
     setCell(initialCell);
+    setInputText(initialCell.text);
     clear();
   };
 
