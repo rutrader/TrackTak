@@ -33,17 +33,28 @@ export const getEditableInput = (
 
   function keydownEventHandler(evt) {
     const { keyCode, altKey } = evt;
-    if (keyCode !== 13 && keyCode !== 9) {
+    if (keyCode !== 13 && keyCode !== 9 && keyCode !== 27) {
       evt.stopPropagation();
     }
     if (keyCode === 13 && altKey) {
       insertText(evt, "\n");
       evt.stopPropagation();
     }
+
+    if (keyCode === 27) {
+      resetCellText();
+    }
+
     if (keyCode === 13 && !altKey) {
       evt.preventDefault();
     }
   }
+
+  const resetCellText = () => {
+    setCell(initialCell);
+    setInputText(initialCell.text);
+    clear();
+  };
 
   const setInputText = (text) => {
     const format = getFormatFromCell(_cell, getData().getData().styles);
@@ -154,6 +165,7 @@ export const getEditableInput = (
   let areaOffset = null;
   const freeze = { w: 0, h: 0 };
   let _cell = null;
+  let initialCell = null;
   let inputText = "";
 
   const getInputText = () => inputText;
@@ -169,6 +181,7 @@ export const getEditableInput = (
 
     _cell = null;
     areaOffset = null;
+    initialCell = null;
     inputText = "";
     textEl.val("");
     textlineEl.html("");
@@ -218,6 +231,7 @@ export const getEditableInput = (
     if (cell && cell.editable === false) return;
 
     _cell = cell;
+    initialCell = { ...cell };
 
     let text = !isNil(_cell?.text) ? cell.text : "";
 
