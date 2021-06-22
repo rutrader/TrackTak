@@ -16,6 +16,8 @@ import { getPrint } from "../getPrint";
 import { getToolbar } from "../toolbar/getToolbar";
 import { getFormulaBar } from "../editor/getFormulaBar";
 import { getFormulaSuggestions } from "../../shared/getFormulaSuggestions";
+import Manager from "undo-redo-manager";
+import mapDatasheetToSheetContent from "../../shared/mapDatasheetToSheetContent";
 
 export const buildSpreadsheet = (
   rootEl,
@@ -89,7 +91,32 @@ export const buildSpreadsheet = (
 
   const table = getTable(getOptions, getData, hyperformula, getViewWidthHeight);
 
-  const toolbar = getToolbar(getOptions, getFocusedData, globalEventEmitter);
+  const history = new Manager(({ type, data }) => {
+    const parsedData = JSON.parse(data);
+    let currentData;
+    let currentSheet = type === "main" ? sheet : variablesSpreadsheet.sheet;
+
+    currentData = currentSheet.getData().getData();
+    currentSheet.getData().setData(parsedData);
+
+    const sheetContent = mapDatasheetToSheetContent(parsedData);
+
+    hyperformula.setSheetContent(parsedData.name, sheetContent);
+
+    currentSheet.sheetReset();
+    sheet.sheetReset();
+
+    return {
+      type,
+      data: JSON.stringify(currentData),
+    };
+  }, 20);
+  const toolbar = getToolbar(
+    getOptions,
+    getFocusedData,
+    history,
+    globalEventEmitter,
+  );
 
   const formulaBar = getFormulaBar(
     getOptions,
@@ -108,17 +135,20 @@ export const buildSpreadsheet = (
   const dataProxyBuilder = buildDataProxy(getOptions, getData, hyperformula);
 
   const getDataProxy = makeGetDataProxy(
+    "main",
     dataProxyBuilder,
     hyperformula,
     getOptions,
     eventEmitter,
     getViewWidthHeight,
+    history,
   );
 
   const print = getPrint(rootEl, getData);
 
   const { sheet } = getSheet(
     toolbar,
+    history,
     print,
     sheetBuilder,
     rootEl,
@@ -137,6 +167,7 @@ export const buildSpreadsheet = (
   const variablesSpreadsheet = buildVariablesSpreadsheet(
     variablesEventEmitter,
     toolbar,
+    history,
     formulaBar,
     print,
     sheet,

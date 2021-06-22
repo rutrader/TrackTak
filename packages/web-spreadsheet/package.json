@@ -60,6 +60,7 @@
     "eventemitter3": "^4.0.7",
     "hyperformula": "^0.6.2",
     "lodash-es": "^4.17.20",
-    "numfmt": "^1.0.0"
+    "numfmt": "^1.0.0",
+    "undo-redo-manager": "^1.0.0"
   }
 }
