@@ -1,35 +1,58 @@
-export default class Clipboard {
-  constructor() {
-    this.range = null; // CellRange
-    this.state = 'clear';
-  }
+import convertIndexesToAmount from "../shared/convertIndexesToAmount";
 
-  copy(cellRange) {
-    this.range = cellRange;
-    this.state = 'copy';
-    return this;
-  }
+const getClipboard = (hyperformula, getData) => {
+  let range = null;
+  let state = "clear";
 
-  cut(cellRange) {
-    this.range = cellRange;
-    this.state = 'cut';
-    return this;
-  }
+  const getRange = () => range;
+  const getState = () => state;
 
-  isCopy() {
-    return this.state === 'copy';
-  }
+  const copy = (cellRange) => {
+    range = cellRange;
+    state = "copy";
+    hyperformula.copy(
+      {
+        sheet: getData().getSheetId(),
+        col: cellRange.sci,
+        row: cellRange.sri,
+      },
+      convertIndexesToAmount(cellRange.sci, cellRange.eci),
+      convertIndexesToAmount(cellRange.sri, cellRange.eri),
+    );
+  };
 
-  isCut() {
-    return this.state === 'cut';
-  }
+  const cut = (cellRange) => {
+    range = cellRange;
+    state = "cut";
+  };
 
-  isClear() {
-    return this.state === 'clear';
-  }
+  const isCopy = () => {
+    return state === "copy";
+  };
 
-  clear() {
-    this.range = null;
-    this.state = 'clear';
-  }
-}
+  const isCut = () => {
+    return state === "cut";
+  };
+
+  const isClear = () => {
+    return state === "clear";
+  };
+
+  const clear = () => {
+    range = null;
+    state = "clear";
+  };
+
+  return {
+    copy,
+    cut,
+    isCopy,
+    isCut,
+    isClear,
+    clear,
+    getRange,
+    getState,
+  };
+};
+
+export default getClipboard;

@@ -102,11 +102,24 @@ class Rows {
   setCell(ri, ci, cell, what = "all") {
     const row = this.getOrNew(ri);
 
+    const paste = () => {
+      const newCell = this.getCellOrNew(ri, ci);
+
+      // TODO: Remove later
+      newCell.text = cell.text;
+
+      this.hyperformula.paste({
+        col: ci,
+        row: ri,
+        sheet: this.getDataProxy().getSheetId(),
+      });
+    };
+
     if (what === "all") {
       row.cells[ci] = cell;
-      this._setCellText(ri, ci, cell.text);
+      paste();
     } else if (what === "text") {
-      this._setCellText(ri, ci, cell.text);
+      paste();
     } else if (what === "format") {
       row.cells[ci] = row.cells[ci] || {};
       row.cells[ci].style = cell.style;

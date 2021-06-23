@@ -1127,7 +1127,7 @@ export const getSheet = (
             break;
           case 32:
             // ctrl + space, all cells in col
-            selectorSet(false, -1, getData().selector.ci, false);
+            selectorSet(false, -1, getData().selector.getIndexes().ci, false);
             evt.preventDefault();
             break;
           default:

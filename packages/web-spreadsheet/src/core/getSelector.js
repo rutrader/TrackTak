@@ -21,8 +21,6 @@ const getSelector = () => {
     setIndexes,
     getIndexes,
     range,
-    ri,
-    ci,
   };
 };
 export default getSelector;

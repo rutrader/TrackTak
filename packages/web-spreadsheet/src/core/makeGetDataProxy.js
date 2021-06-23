@@ -74,13 +74,13 @@ export const makeGetDataProxy = (
   const paste = (what = "all", error = () => {}) => {
     // console.log('sIndexes:', sIndexes);
     if (clipboard.isClear()) return false;
-    if (!canPaste(clipboard.range, selector.range, error)) return false;
+    if (!canPaste(clipboard.getRange(), selector.range, error)) return false;
 
     changeData(() => {
       if (clipboard.isCopy()) {
-        copyPaste(clipboard.range, selector.range, what);
+        copyPaste(clipboard.getRange(), selector.range, what);
       } else if (clipboard.isCut()) {
-        cutPaste(clipboard.range, selector.range);
+        cutPaste(clipboard.getRange(), selector.range);
       }
     });
     return true;
@@ -261,7 +261,7 @@ export const makeGetDataProxy = (
 
   const getClipboardRect = () => {
     if (!clipboard.isClear()) {
-      return getRect(clipboard.range);
+      return getRect(clipboard.getRange());
     }
     return { left: -100, top: -100 };
   };

@@ -6,6 +6,7 @@ import { Rows } from "../../core/row";
 import { Cols } from "../../core/col";
 import { Validations } from "../../core/validation";
 import getSelector from "../../core/getSelector";
+import getClipboard from "../../core/clipboard";
 
 export const buildDataProxy = (getOptions, getData, hyperformula) => () => {
   // save object
@@ -17,7 +18,7 @@ export const buildDataProxy = (getOptions, getData, hyperformula) => () => {
   // don't save object
   const selector = getSelector();
   const scroll = new Scroll();
-  const clipboard = new Clipboard();
+  const clipboard = getClipboard(hyperformula, getData);
   const autoFilter = new AutoFilter();
 
   return {
