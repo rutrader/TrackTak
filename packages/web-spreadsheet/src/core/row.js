@@ -258,27 +258,11 @@ class Rows {
   }
 
   insert(sri, n = 1) {
-    const ndata = {};
-    this.each((ri, row) => {
-      let nri = parseInt(ri, 10);
-      if (nri >= sri) {
-        nri += n;
-        this.eachCells(ri, (ci, cell) => {
-          if (cell.text && cell.text[0] === "=") {
-            this._setCellText(
-              ri,
-              ci,
-              cell.text.replace(REGEX_EXPR_GLOBAL, (word) =>
-                expr2expr(word, 0, n, true, (x, y) => y >= sri),
-              ),
-            );
-          }
-        });
-      }
-      ndata[nri] = row;
-    });
-    this._ = ndata;
-    this.len += n;
+    const sheetId = this.getDataProxy().getSheetId();
+
+    if (!this.hyperformula.isItPossibleToAddRows(sheetId)) return;
+
+    this.hyperformula.addRows(sheetId, [sri, n]);
   }
 
   deleteRow(sri, eri) {
@@ -293,26 +277,11 @@ class Rows {
   }
 
   insertColumn(sci, n = 1) {
-    this.each((ri, row) => {
-      const rndata = {};
-      this.eachCells(ri, (ci, cell) => {
-        let nci = parseInt(ci, 10);
-        if (nci >= sci) {
-          nci += n;
-          if (cell.text && cell.text[0] === "=") {
-            cell.text = this._setCellText(
-              ri,
-              ci,
-              cell.text.replace(REGEX_EXPR_GLOBAL, (word) =>
-                expr2expr(word, n, 0, true, (x) => x >= sci),
-              ),
-            );
-          }
-        }
-        rndata[nci] = cell;
-      });
-      row.cells = rndata;
-    });
+    const sheetId = this.getDataProxy().getSheetId();
+
+    if (!this.hyperformula.isItPossibleToAddColumns(sheetId)) return;
+
+    this.hyperformula.addColumns(sheetId, [sci, n]);
   }
 
   deleteColumn(sci, eci) {
