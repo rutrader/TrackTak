@@ -49,6 +49,7 @@
     "microbundle": "^0.13.0",
     "numfmt": "^1.0.0",
     "postcss": "^8.2.15",
+    "undo-redo-manager": "^1.0.0",
     "query-string": "^7.0.0",
     "react-number-format": "^4.5.0",
     "react-redux": "^7.2.2",

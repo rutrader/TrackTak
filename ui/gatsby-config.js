@@ -32,6 +32,7 @@ const duplicatePackageModules = [
   "lodash-es",
   "eventemitter3",
   "numfmt",
+  "undo-redo-manager",
 ];
 
 const alias = {
