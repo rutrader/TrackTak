@@ -5,11 +5,13 @@ import spreadsheetEvents from "./spreadsheetEvents";
 import helper from "./helper";
 
 export const makeGetDataProxy = (
+  type,
   builder,
   hyperformula,
   getOptions,
   eventEmitter,
   getViewWidthHeight,
+  history,
 ) => (name) => {
   let freeze = [0, 0];
   let styles = []; // Array<Style>
@@ -21,7 +23,6 @@ export const makeGetDataProxy = (
     validations,
     selector,
     scroll,
-    history,
     clipboard,
     autoFilter,
   } = builder();
@@ -58,26 +59,6 @@ export const makeGetDataProxy = (
       ret.validator = v.validator;
     }
     return ret;
-  };
-
-  const canUndo = () => {
-    return history.canUndo();
-  };
-
-  const canRedo = () => {
-    return history.canRedo();
-  };
-
-  const undo = () => {
-    history.undo(getData(), (d) => {
-      setData(d);
-    });
-  };
-
-  const redo = () => {
-    history.redo(getData(), (d) => {
-      setData(d);
-    });
   };
 
   const copy = () => {
@@ -624,7 +605,7 @@ export const makeGetDataProxy = (
       stopEditing();
     } else {
       if (hasStartedEditing(ri, ci)) {
-        history.add(getData());
+        history.push({ type, data: JSON.stringify(getData()) });
       }
       rows.setCellText(ri, ci, text);
       eventEmitter.emit(spreadsheetEvents.data.change, getData());
@@ -786,7 +767,7 @@ export const makeGetDataProxy = (
   };
 
   const changeData = (cb) => {
-    history.add(getData());
+    history.push({ type, data: JSON.stringify(getData()) });
     cb();
     eventEmitter.emit(spreadsheetEvents.data.change, getData());
   };
@@ -1083,8 +1064,6 @@ export const makeGetDataProxy = (
     calSelectedRangeByStart,
     setData,
     setFreeze,
-    undo,
-    redo,
     getCell,
     getCellRectByXY,
     scroll,
@@ -1122,8 +1101,6 @@ export const makeGetDataProxy = (
     viewRange,
     freezeViewRange,
     getSelectedCellStyle,
-    canUndo,
-    canRedo,
     canUnmerge,
     canAutofilter,
     freezeIsActive,

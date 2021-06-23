@@ -24,10 +24,7 @@ import {
   setSheetsValues,
 } from "../redux/actions/dcfActions";
 import { isNil } from "lodash-es";
-import {
-  convertFromCellIndexToLabel,
-  formatNumberRender,
-} from "../../../web-spreadsheet/src/core/helper";
+import { convertFromCellIndexToLabel } from "../../../web-spreadsheet/src/core/helper";
 import getSpreadsheet, {
   spreadsheetEvents,
 } from "../../../web-spreadsheet/src";

@@ -29,6 +29,7 @@ function throttle(func, wait) {
 
 export const getSheet = (
   toolbar,
+  history,
   print,
   builder,
   rootEl,
@@ -380,13 +381,13 @@ export const getSheet = (
   };
 
   const undo = () => {
-    getData().undo();
-    sheetReset();
+    history.undo();
+    toolbar.reset();
   };
 
   const redo = () => {
-    getData().redo();
-    sheetReset();
+    history.redo();
+    toolbar.reset();
   };
 
   const reload = () => {

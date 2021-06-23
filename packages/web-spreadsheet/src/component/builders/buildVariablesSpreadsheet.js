@@ -15,6 +15,7 @@ import { cssPrefix } from "../../config";
 export const buildVariablesSpreadsheet = (
   eventEmitter,
   toolbar,
+  history,
   formulaBar,
   print,
   mainSheet,
@@ -75,15 +76,18 @@ export const buildVariablesSpreadsheet = (
   const dataProxyBuilder = buildDataProxy(getOptions, getData, hyperformula);
 
   const getDataProxy = makeGetDataProxy(
+    "variables",
     dataProxyBuilder,
     hyperformula,
     getOptions,
     eventEmitter,
     getViewWidthHeight,
+    history,
   );
 
   const { sheet } = getSheet(
     toolbar,
+    history,
     print,
     sheetBuilder,
     rootEl,
@@ -114,6 +118,7 @@ export const buildVariablesSpreadsheet = (
 
   return {
     sheet,
+    getDataProxy,
     rootEl,
     setVariableDatasheets,
     setOptions,
