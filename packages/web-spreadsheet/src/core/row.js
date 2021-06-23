@@ -1,5 +1,6 @@
 import helper from "./helper";
 import { expr2expr, REGEX_EXPR_GLOBAL } from "./alphabet";
+import convertIndexesToAmount from "../shared/convertIndexesToAmount";
 
 class Rows {
   constructor(getRow, getDataProxy, hyperformula) {
@@ -277,18 +278,14 @@ class Rows {
   }
 
   deleteRow(sri, eri) {
-    const n = eri - sri + 1;
-    const ndata = {};
-    this.each((ri, row) => {
-      const nri = parseInt(ri, 10);
-      if (nri < sri) {
-        ndata[nri] = row;
-      } else if (ri > eri) {
-        ndata[nri - n] = row;
-      }
-    });
-    this._ = ndata;
-    this.len -= n;
+    const sheetId = this.getDataProxy().getSheetId();
+
+    if (!this.hyperformula.isItPossibleToRemoveRows(sheetId)) return;
+
+    this.hyperformula.removeRows(sheetId, [
+      sri,
+      convertIndexesToAmount(sri, eri),
+    ]);
   }
 
   insertColumn(sci, n = 1) {
@@ -319,7 +316,10 @@ class Rows {
 
     if (!this.hyperformula.isItPossibleToRemoveColumns(sheetId)) return;
 
-    this.hyperformula.removeColumns(sheetId, [sci, eci]);
+    this.hyperformula.removeColumns(sheetId, [
+      sci,
+      convertIndexesToAmount(sci, eci),
+    ]);
   }
 
   // what: all | text | format | merge
