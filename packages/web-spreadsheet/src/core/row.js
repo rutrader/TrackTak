@@ -115,6 +115,7 @@ class Rows {
   _setCellText = (ri, ci, text) => {
     const cell = this.getCellOrNew(ri, ci);
 
+    // TODO: Remove later
     cell.text = text;
 
     this.hyperformula.setCellContents(
@@ -284,17 +285,6 @@ class Rows {
         ndata[nri] = row;
       } else if (ri > eri) {
         ndata[nri - n] = row;
-        this.eachCells(ri, (ci, cell) => {
-          if (cell.text && cell.text[0] === "=") {
-            this._setCellText(
-              ri,
-              ci,
-              cell.text.replace(REGEX_EXPR_GLOBAL, (word) =>
-                expr2expr(word, 0, -n, true, (x, y) => y > eri),
-              ),
-            );
-          }
-        });
       }
     });
     this._ = ndata;
@@ -325,28 +315,11 @@ class Rows {
   }
 
   deleteColumn(sci, eci) {
-    const n = eci - sci + 1;
-    this.each((ri, row) => {
-      const rndata = {};
-      this.eachCells(ri, (ci, cell) => {
-        const nci = parseInt(ci, 10);
-        if (nci < sci) {
-          rndata[nci] = cell;
-        } else if (nci > eci) {
-          rndata[nci - n] = cell;
-          if (cell.text && cell.text[0] === "=") {
-            cell.text = this._setCellText(
-              ri,
-              ci,
-              cell.text.replace(REGEX_EXPR_GLOBAL, (word) =>
-                expr2expr(word, -n, 0, true, (x) => x > eci),
-              ),
-            );
-          }
-        }
-      });
-      row.cells = rndata;
-    });
+    const sheetId = this.getDataProxy().getSheetId();
+
+    if (!this.hyperformula.isItPossibleToRemoveColumns(sheetId)) return;
+
+    this.hyperformula.removeColumns(sheetId, [sci, eci]);
   }
 
   // what: all | text | format | merge
@@ -365,17 +338,14 @@ class Rows {
         if (what === "all") {
           delete row.cells[ci];
         } else if (what === "text") {
-          if (cell.text) {
-            delete cell.text;
-            this.hyperformula.setCellContents(
-              {
-                col: ci,
-                row: ri,
-                sheet: this.getDataProxy().getSheetId(),
-              },
-              "",
-            );
-          }
+          this.hyperformula.setCellContents(
+            {
+              col: ci,
+              row: ri,
+              sheet: this.getDataProxy().getSheetId(),
+            },
+            "",
+          );
           if (cell.value) delete cell.value;
         } else if (what === "format") {
           if (cell.style !== undefined) delete cell.style;

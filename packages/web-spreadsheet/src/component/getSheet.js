@@ -381,11 +381,14 @@ export const getSheet = (
   };
 
   const undo = () => {
+    // TODO: add back later
+    // hyperformula.undo();
     history.undo();
     toolbar.reset();
   };
 
   const redo = () => {
+    // hyperformula.redo();
     history.redo();
     toolbar.reset();
   };

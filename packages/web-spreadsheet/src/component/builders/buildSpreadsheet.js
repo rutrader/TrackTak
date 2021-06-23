@@ -99,8 +99,8 @@ export const buildSpreadsheet = (
     currentData = currentSheet.getData().getData();
     currentSheet.getData().setData(parsedData);
 
+    // TODO: Remove later
     const sheetContent = mapDatasheetToSheetContent(parsedData);
-
     hyperformula.setSheetContent(parsedData.name, sheetContent);
 
     currentSheet.sheetReset();

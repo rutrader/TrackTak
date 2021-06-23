@@ -461,12 +461,14 @@ export const makeGetDataProxy = (
       const { range } = selector;
       const { sri, sci, eri, eci } = selector.range;
       const [rsize, csize] = selector.range.size();
+
       let si = sri;
       let size = rsize;
       if (type === "row") {
         rows.deleteRow(sri, eri);
       } else if (type === "column") {
         rows.deleteColumn(sci, eci);
+
         si = range.sci;
         size = csize;
         cols.len -= 1;
@@ -757,7 +759,6 @@ export const makeGetDataProxy = (
   };
 
   const addStyle = (nstyle) => {
-    // console.log('old.styles:', styles, nstyle);
     for (let i = 0; i < styles.length; i += 1) {
       const style = styles[i];
       if (helper.equals(style, nstyle)) return i;
