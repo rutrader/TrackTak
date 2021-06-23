@@ -101,15 +101,19 @@ class Rows {
   // what: all | text | format
   setCell(ri, ci, cell, what = "all") {
     const row = this.getOrNew(ri);
+
     if (what === "all") {
       row.cells[ci] = cell;
+      this._setCellText(ri, ci, cell.text);
     } else if (what === "text") {
-      row.cells[ci] = row.cells[ci] || {};
       this._setCellText(ri, ci, cell.text);
     } else if (what === "format") {
       row.cells[ci] = row.cells[ci] || {};
       row.cells[ci].style = cell.style;
-      if (cell.merge) row.cells[ci].merge = cell.merge;
+
+      if (cell.merge) {
+        row.cells[ci].merge = cell.merge;
+      }
     }
   }
 
@@ -141,7 +145,7 @@ class Rows {
     const deci = dstCellRange.eci;
     const [rn, cn] = srcCellRange.size();
     const [drn, dcn] = dstCellRange.size();
-    // console.log(srcIndexes, dstIndexes);
+
     let isAdd = true;
     let dn = 0;
     if (deri < sri || deci < sci) {
@@ -398,5 +402,4 @@ class Rows {
   }
 }
 
-export default {};
 export { Rows };
