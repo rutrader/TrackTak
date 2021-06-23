@@ -45,13 +45,14 @@ export const makeGetDataProxy = (
   };
 
   const getSelectedValidator = () => {
-    const { ri, ci } = selector;
+    const { ri, ci } = selector.getIndexes();
     const v = validations.get(ri, ci);
     return v ? v.validator : null;
   };
 
   const getSelectedValidation = () => {
-    const { ri, ci, range } = selector;
+    const { range } = selector;
+    const { ri, ci } = selector.getIndexes();
     const v = validations.get(ri, ci);
     const ret = { ref: range.toString() };
     if (v !== null) {
@@ -110,8 +111,7 @@ export const makeGetDataProxy = (
 
   const calSelectedRangeByEnd = (ri, ci) => {
     let { sri, sci, eri, eci } = selector.range;
-    const cri = selector.ri;
-    const cci = selector.ci;
+    const { ri: cri, ci: cci } = selector.getIndexes();
     let [nri, nci] = [ri, ci];
     if (ri < 0) nri = rows.len - 1;
     if (ci < 0) nci = cols.len - 1;
@@ -151,10 +151,10 @@ export const makeGetDataProxy = (
       } else if (property === "border") {
         setStyleBorders(value);
       } else if (property === "formula") {
-        // console.log('>>>', selector.multiple());
-        const { ri, ci, range } = selector;
-        if (selector.multiple()) {
-          const [rn, cn] = selector.size();
+        const { range } = selector;
+        const { ri, ci } = selector.getIndexes();
+        if (selector.range.multiple()) {
+          const [rn, cn] = selector.range.size();
           const { sri, sci, eri, eci } = range;
           if (rn > 1) {
             for (let i = sci; i <= eci; i += 1) {
@@ -215,7 +215,7 @@ export const makeGetDataProxy = (
 
   // state: input | finished
   const setSelectedCellText = (text, state = "input") => {
-    const { ri, ci } = selector;
+    const { ri, ci } = selector.getIndexes();
     let nri = ri;
     if (unsortedRowMap.has(ri)) {
       nri = unsortedRowMap.get(ri);
@@ -239,7 +239,7 @@ export const makeGetDataProxy = (
   };
 
   const getSelectedCell = () => {
-    const { ri, ci } = selector;
+    const { ri, ci } = selector.getIndexes();
     let nri = ri;
     if (unsortedRowMap.has(ri)) {
       nri = unsortedRowMap.get(ri);
@@ -339,7 +339,7 @@ export const makeGetDataProxy = (
       const [rn, cn] = cell.merge;
       if (sri + rn === eri && sci + cn === eci) return true;
     }
-    return !selector.multiple();
+    return !selector.range.multiple();
   };
 
   const canUnmerge = () => {
@@ -354,7 +354,7 @@ export const makeGetDataProxy = (
 
   const merge = () => {
     if (isSignleSelected()) return;
-    const [rn, cn] = selector.size();
+    const [rn, cn] = selector.range.size();
     // console.log('merge:', rn, cn);
     if (rn > 1 || cn > 1) {
       const { sri, sci } = selector.range;
@@ -576,7 +576,7 @@ export const makeGetDataProxy = (
   };
 
   const getSelectedCellStyle = () => {
-    const { ri, ci } = selector;
+    const { ri, ci } = selector.getIndexes();
     return getCellStyleOrDefault(ri, ci);
   };
 
@@ -694,7 +694,7 @@ export const makeGetDataProxy = (
   };
 
   const hideRowsOrCols = () => {
-    const [rlen, clen] = selector.size();
+    const [rlen, clen] = selector.range.size();
     const { sri, sci, eri, eci } = selector.range;
     if (rlen === rows.len) {
       for (let ci = sci; ci <= eci; ci += 1) {

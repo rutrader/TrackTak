@@ -165,7 +165,7 @@ export const getToolbar = (getOptions, getData, history, eventEmitter) => {
     const style = getData().getSelectedCellStyle();
 
     mergeEl.toggleItem.setActive(getData().canUnmerge());
-    mergeEl.item.el.disabled(!getData().selector.multiple());
+    mergeEl.item.el.disabled(!getData().selector.range.multiple());
     autofilterEl.toggleItem.setActive(!getData().canAutofilter());
 
     const { font, format } = style;

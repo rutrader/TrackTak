@@ -166,7 +166,7 @@ export const getSheet = (
     handleInsertDeleting(() => getData().deleteCell("text"))();
 
     const cell = getData().getSelectedCell();
-    const { ri, ci } = getData().selector;
+    const { ri, ci } = getData().selector.getIndexes();
     const cellAddress = {
       row: ri,
       col: ci,
@@ -275,14 +275,14 @@ export const getSheet = (
       autofilter();
     } else if (type === "freeze") {
       if (value) {
-        const { ri, ci } = getData().selector;
+        const { ri, ci } = getData().selector.getIndexes();
         freeze(ri, ci);
       } else {
         freeze(0, 0);
       }
     } else {
       getData().setSelectedCellAttr(type, value);
-      if (type === "formula" && !getData().selector.multiple()) {
+      if (type === "formula" && !getData().selector.range.multiple()) {
         editorSet();
       }
       sheetReset();
@@ -875,7 +875,7 @@ export const getSheet = (
     let newText = setTextFormat(text, format, getOptions().formats, state);
     getData().setSelectedCellText(newText, state);
 
-    const { ri, ci } = getData().selector;
+    const { ri, ci } = getData().selector.getIndexes();
     const cellAddress = {
       row: ri,
       col: ci,
@@ -1137,7 +1137,7 @@ export const getSheet = (
           case 32:
             if (shiftKey) {
               // shift + space, all cells in row
-              selectorSet(false, getData().selector.ri, -1, false);
+              selectorSet(false, getData().selector.getIndexes().ri, -1, false);
             }
             break;
           case 27: // esc
