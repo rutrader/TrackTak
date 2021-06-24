@@ -24,6 +24,15 @@ const getClipboard = (hyperformula, getData) => {
   const cut = (cellRange) => {
     range = cellRange;
     state = "cut";
+    hyperformula.cut(
+      {
+        sheet: getData().getSheetId(),
+        col: cellRange.sci,
+        row: cellRange.sri,
+      },
+      convertIndexesToAmount(cellRange.sci, cellRange.eci),
+      convertIndexesToAmount(cellRange.sri, cellRange.eri),
+    );
   };
 
   const isCopy = () => {

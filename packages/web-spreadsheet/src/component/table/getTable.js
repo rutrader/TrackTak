@@ -170,19 +170,19 @@ export const getTable = (
         cellText = hyperformula.getCellValue(cellAddress);
       }
 
-      cellText = numfmt(formats[format].pattern)(cellText);
-
-      // Remove trailing dot that formatting leaves if ends in .##
-      if (cellText && cellText.charAt(cellText.length - 1) === ".") {
-        cellText = cellText.slice(0, cellText.length - 1);
-      }
-
-      if (cellText.value) {
+      if (cellText?.value) {
         const error = cellText;
 
         cellText = error.value;
 
-        console.error(error);
+        console.error("hyperformula error", error);
+      } else {
+        cellText = numfmt(formats[format].pattern)(cellText);
+
+        // Remove trailing dot that formatting leaves if ends in .##
+        if (cellText && cellText.charAt(cellText.length - 1) === ".") {
+          cellText = cellText.slice(0, cellText.length - 1);
+        }
       }
 
       const font = Object.assign({}, style.font);

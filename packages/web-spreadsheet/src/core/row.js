@@ -249,6 +249,12 @@ class Rows {
         if (srcCellRange.includes(ri, ci)) {
           nri = dstCellRange.sri + (nri - srcCellRange.sri);
           nci = dstCellRange.sci + (nci - srcCellRange.sci);
+
+          this.hyperformula.paste({
+            col: nci,
+            row: nri,
+            sheet: this.getDataProxy().getSheetId(),
+          });
         }
         ncellmm[nri] = ncellmm[nri] || { cells: {} };
         ncellmm[nri].cells[nci] = this._[ri].cells[ci];
