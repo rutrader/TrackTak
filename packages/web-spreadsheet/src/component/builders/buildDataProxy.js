@@ -1,4 +1,3 @@
-import Selector from "../../core/selector";
 import Scroll from "../../core/scroll";
 import Clipboard from "../../core/clipboard";
 import AutoFilter from "../../core/auto_filter";
@@ -6,6 +5,8 @@ import { Merges } from "../../core/merge";
 import { Rows } from "../../core/row";
 import { Cols } from "../../core/col";
 import { Validations } from "../../core/validation";
+import getSelector from "../../core/getSelector";
+import getClipboard from "../../core/clipboard";
 
 export const buildDataProxy = (getOptions, getData, hyperformula) => () => {
   // save object
@@ -15,9 +16,9 @@ export const buildDataProxy = (getOptions, getData, hyperformula) => () => {
   const validations = new Validations();
 
   // don't save object
-  const selector = new Selector();
+  const selector = getSelector();
   const scroll = new Scroll();
-  const clipboard = new Clipboard();
+  const clipboard = getClipboard(hyperformula, getData);
   const autoFilter = new AutoFilter();
 
   return {

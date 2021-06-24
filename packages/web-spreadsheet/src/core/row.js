@@ -1,5 +1,6 @@
 import helper from "./helper";
 import { expr2expr, REGEX_EXPR_GLOBAL } from "./alphabet";
+import convertIndexesToAmount from "../shared/convertIndexesToAmount";
 
 class Rows {
   constructor(getRow, getDataProxy, hyperformula) {
@@ -100,21 +101,39 @@ class Rows {
   // what: all | text | format
   setCell(ri, ci, cell, what = "all") {
     const row = this.getOrNew(ri);
+
+    const paste = () => {
+      const newCell = this.getCellOrNew(ri, ci);
+
+      // TODO: Remove later
+      newCell.text = cell.text;
+
+      this.hyperformula.paste({
+        col: ci,
+        row: ri,
+        sheet: this.getDataProxy().getSheetId(),
+      });
+    };
+
     if (what === "all") {
       row.cells[ci] = cell;
+      paste();
     } else if (what === "text") {
-      row.cells[ci] = row.cells[ci] || {};
-      this._setCellText(ri, ci, cell.text);
+      paste();
     } else if (what === "format") {
       row.cells[ci] = row.cells[ci] || {};
       row.cells[ci].style = cell.style;
-      if (cell.merge) row.cells[ci].merge = cell.merge;
+
+      if (cell.merge) {
+        row.cells[ci].merge = cell.merge;
+      }
     }
   }
 
   _setCellText = (ri, ci, text) => {
     const cell = this.getCellOrNew(ri, ci);
 
+    // TODO: Remove later
     cell.text = text;
 
     this.hyperformula.setCellContents(
@@ -139,7 +158,7 @@ class Rows {
     const deci = dstCellRange.eci;
     const [rn, cn] = srcCellRange.size();
     const [drn, dcn] = dstCellRange.size();
-    // console.log(srcIndexes, dstIndexes);
+
     let isAdd = true;
     let dn = 0;
     if (deri < sri || deci < sci) {
@@ -252,101 +271,41 @@ class Rows {
   }
 
   insert(sri, n = 1) {
-    const ndata = {};
-    this.each((ri, row) => {
-      let nri = parseInt(ri, 10);
-      if (nri >= sri) {
-        nri += n;
-        this.eachCells(ri, (ci, cell) => {
-          if (cell.text && cell.text[0] === "=") {
-            this._setCellText(
-              ri,
-              ci,
-              cell.text.replace(REGEX_EXPR_GLOBAL, (word) =>
-                expr2expr(word, 0, n, true, (x, y) => y >= sri),
-              ),
-            );
-          }
-        });
-      }
-      ndata[nri] = row;
-    });
-    this._ = ndata;
-    this.len += n;
+    const sheetId = this.getDataProxy().getSheetId();
+
+    if (!this.hyperformula.isItPossibleToAddRows(sheetId)) return;
+
+    this.hyperformula.addRows(sheetId, [sri, n]);
   }
 
   deleteRow(sri, eri) {
-    const n = eri - sri + 1;
-    const ndata = {};
-    this.each((ri, row) => {
-      const nri = parseInt(ri, 10);
-      if (nri < sri) {
-        ndata[nri] = row;
-      } else if (ri > eri) {
-        ndata[nri - n] = row;
-        this.eachCells(ri, (ci, cell) => {
-          if (cell.text && cell.text[0] === "=") {
-            this._setCellText(
-              ri,
-              ci,
-              cell.text.replace(REGEX_EXPR_GLOBAL, (word) =>
-                expr2expr(word, 0, -n, true, (x, y) => y > eri),
-              ),
-            );
-          }
-        });
-      }
-    });
-    this._ = ndata;
-    this.len -= n;
+    const sheetId = this.getDataProxy().getSheetId();
+
+    if (!this.hyperformula.isItPossibleToRemoveRows(sheetId)) return;
+
+    this.hyperformula.removeRows(sheetId, [
+      sri,
+      convertIndexesToAmount(sri, eri),
+    ]);
   }
 
   insertColumn(sci, n = 1) {
-    this.each((ri, row) => {
-      const rndata = {};
-      this.eachCells(ri, (ci, cell) => {
-        let nci = parseInt(ci, 10);
-        if (nci >= sci) {
-          nci += n;
-          if (cell.text && cell.text[0] === "=") {
-            cell.text = this._setCellText(
-              ri,
-              ci,
-              cell.text.replace(REGEX_EXPR_GLOBAL, (word) =>
-                expr2expr(word, n, 0, true, (x) => x >= sci),
-              ),
-            );
-          }
-        }
-        rndata[nci] = cell;
-      });
-      row.cells = rndata;
-    });
+    const sheetId = this.getDataProxy().getSheetId();
+
+    if (!this.hyperformula.isItPossibleToAddColumns(sheetId)) return;
+
+    this.hyperformula.addColumns(sheetId, [sci, n]);
   }
 
   deleteColumn(sci, eci) {
-    const n = eci - sci + 1;
-    this.each((ri, row) => {
-      const rndata = {};
-      this.eachCells(ri, (ci, cell) => {
-        const nci = parseInt(ci, 10);
-        if (nci < sci) {
-          rndata[nci] = cell;
-        } else if (nci > eci) {
-          rndata[nci - n] = cell;
-          if (cell.text && cell.text[0] === "=") {
-            cell.text = this._setCellText(
-              ri,
-              ci,
-              cell.text.replace(REGEX_EXPR_GLOBAL, (word) =>
-                expr2expr(word, -n, 0, true, (x) => x > eci),
-              ),
-            );
-          }
-        }
-      });
-      row.cells = rndata;
-    });
+    const sheetId = this.getDataProxy().getSheetId();
+
+    if (!this.hyperformula.isItPossibleToRemoveColumns(sheetId)) return;
+
+    this.hyperformula.removeColumns(sheetId, [
+      sci,
+      convertIndexesToAmount(sci, eci),
+    ]);
   }
 
   // what: all | text | format | merge
@@ -365,17 +324,14 @@ class Rows {
         if (what === "all") {
           delete row.cells[ci];
         } else if (what === "text") {
-          if (cell.text) {
-            delete cell.text;
-            this.hyperformula.setCellContents(
-              {
-                col: ci,
-                row: ri,
-                sheet: this.getDataProxy().getSheetId(),
-              },
-              "",
-            );
-          }
+          this.hyperformula.setCellContents(
+            {
+              col: ci,
+              row: ri,
+              sheet: this.getDataProxy().getSheetId(),
+            },
+            "",
+          );
           if (cell.value) delete cell.value;
         } else if (what === "format") {
           if (cell.style !== undefined) delete cell.style;
@@ -428,5 +384,4 @@ class Rows {
   }
 }
 
-export default {};
 export { Rows };
