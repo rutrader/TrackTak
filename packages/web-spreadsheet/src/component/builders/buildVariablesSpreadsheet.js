@@ -15,6 +15,8 @@ import { cssPrefix } from "../../config";
 export const buildVariablesSpreadsheet = (
   eventEmitter,
   toolbar,
+  rangeSelector,
+  clipboard,
   history,
   formulaBar,
   print,
@@ -56,7 +58,13 @@ export const buildVariablesSpreadsheet = (
     newData = data;
   });
 
-  const table = getTable(getOptions, getData, hyperformula, getViewWidthHeight);
+  const table = getTable(
+    getOptions,
+    getData,
+    rangeSelector,
+    hyperformula,
+    getViewWidthHeight,
+  );
 
   const draw = getDraw(
     table.el.el,
@@ -69,6 +77,7 @@ export const buildVariablesSpreadsheet = (
   const sheetBuilder = buildSheet(
     getOptions,
     getData,
+    rangeSelector,
     eventEmitter,
     getViewWidthHeight,
   );
@@ -77,6 +86,8 @@ export const buildVariablesSpreadsheet = (
 
   const getDataProxy = makeGetDataProxy(
     "variables",
+    rangeSelector,
+    clipboard,
     dataProxyBuilder,
     hyperformula,
     getOptions,
@@ -87,6 +98,7 @@ export const buildVariablesSpreadsheet = (
 
   const { sheet } = getSheet(
     toolbar,
+    rangeSelector,
     history,
     print,
     sheetBuilder,

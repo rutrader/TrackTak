@@ -14,6 +14,8 @@ import { makeGetViewWidthHeight } from "../makeGetSheetViewWidthHeight";
 import getDraw from "../../canvas/draw";
 import { getPrint } from "../getPrint";
 import { getToolbar } from "../toolbar/getToolbar";
+import getRangeSelector from "../../core/getRangeSelector";
+import getClipboard from "../../core/getClipboard";
 import { getFormulaBar } from "../editor/getFormulaBar";
 import { getFormulaSuggestions } from "../../shared/getFormulaSuggestions";
 import Manager from "undo-redo-manager";
@@ -89,7 +91,15 @@ export const buildSpreadsheet = (
     return variablesSpreadsheet.getOptions();
   });
 
-  const table = getTable(getOptions, getData, hyperformula, getViewWidthHeight);
+  const rangeSelector = getRangeSelector();
+
+  const table = getTable(
+    getOptions,
+    getData,
+    rangeSelector,
+    hyperformula,
+    getViewWidthHeight,
+  );
 
   const history = new Manager(({ type, data }) => {
     const parsedData = JSON.parse(data);
@@ -114,9 +124,12 @@ export const buildSpreadsheet = (
   const toolbar = getToolbar(
     getOptions,
     getFocusedData,
+    rangeSelector,
     history,
     globalEventEmitter,
   );
+
+  const clipboard = getClipboard(hyperformula, getData);
 
   const formulaBar = getFormulaBar(
     getOptions,
@@ -128,6 +141,7 @@ export const buildSpreadsheet = (
   const sheetBuilder = buildSheet(
     getOptions,
     getData,
+    rangeSelector,
     eventEmitter,
     getViewWidthHeight,
   );
@@ -136,6 +150,8 @@ export const buildSpreadsheet = (
 
   const getDataProxy = makeGetDataProxy(
     "main",
+    rangeSelector,
+    clipboard,
     dataProxyBuilder,
     hyperformula,
     getOptions,
@@ -148,6 +164,7 @@ export const buildSpreadsheet = (
 
   const { sheet } = getSheet(
     toolbar,
+    rangeSelector,
     history,
     print,
     sheetBuilder,
@@ -167,6 +184,8 @@ export const buildSpreadsheet = (
   const variablesSpreadsheet = buildVariablesSpreadsheet(
     variablesEventEmitter,
     toolbar,
+    rangeSelector,
+    clipboard,
     history,
     formulaBar,
     print,

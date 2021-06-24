@@ -1,6 +1,6 @@
 import { CellRange } from "./cell_range";
 
-const getSelector = () => {
+const getRangeSelector = () => {
   const range = new CellRange(0, 0, 0, 0);
   let ri = 0;
   let ci = 0;
@@ -23,4 +23,4 @@ const getSelector = () => {
     range,
   };
 };
-export default getSelector;
+export default getRangeSelector;

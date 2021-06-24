@@ -31,6 +31,7 @@ const getFormulaSuggestions = () => {
 export const buildSheet = (
   getOptions,
   getData,
+  rangeSelector,
   eventEmitter,
   getViewWidthHeight,
 ) => {
@@ -53,7 +54,7 @@ export const buildSheet = (
     getFormulaSuggestions(),
     eventEmitter,
   );
-  const selector = new Selector(eventEmitter, getData);
+  const selector = new Selector(eventEmitter, getData, rangeSelector);
   const overlayerCEl = h("div", `${cssPrefix}-overlayer-content`).children(
     editor.el,
     selector.el,

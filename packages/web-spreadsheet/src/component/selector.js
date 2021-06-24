@@ -178,8 +178,9 @@ function setAllClipboardOffset(offset) {
 }
 
 export default class Selector {
-  constructor(eventEmitter, getData) {
+  constructor(eventEmitter, getData, rangeSelector) {
     this.getData = getData;
+    this.rangeSelector = rangeSelector;
     this.br = new SelectorElement(true);
     this.t = new SelectorElement();
     this.l = new SelectorElement();
@@ -268,7 +269,7 @@ export default class Selector {
       let [cri, cci] = [ri, ci];
       if (ri < 0) cri = 0;
       if (ci < 0) cci = 0;
-      getData().selector.setIndexes(cri, cci);
+      this.rangeSelector.setIndexes(cri, cci);
       this.indexes = [cri, cci];
     }
 
@@ -293,7 +294,7 @@ export default class Selector {
 
   reset() {
     // console.log('::::', this.getData());
-    const { eri, eci } = this.getData().selector.range;
+    const { eri, eci } = this.rangeSelector.range;
     this.setEnd(eri, eci);
   }
 
