@@ -1237,6 +1237,7 @@ export const getSheet = (
       getLastFocused,
       setLastFocused,
       lastFocused,
+      selector,
     },
   };
 };

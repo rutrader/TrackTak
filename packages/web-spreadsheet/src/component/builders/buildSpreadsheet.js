@@ -62,9 +62,7 @@ export const buildSpreadsheet = (
       return getData();
     }
 
-    if (variablesSpreadsheet?.sheet?.getLastFocused()) {
-      return variablesSpreadsheet.getData();
-    }
+    return variablesSpreadsheet.getData();
   };
 
   const getOptions = () => newOptions;
@@ -85,6 +83,14 @@ export const buildSpreadsheet = (
 
   eventEmitter.on(spreadsheetEvents.sheet.switchData, (data) => {
     newData = data;
+  });
+
+  eventEmitter.on(spreadsheetEvents.sheet.cellSelected, () => {
+    variablesSpreadsheet.sheet.selector.el.hide();
+  });
+
+  variablesEventEmitter.on(spreadsheetEvents.sheet.cellSelected, () => {
+    sheet.selector.el.hide();
   });
 
   const getViewWidthHeight = makeGetViewWidthHeight(getOptions, () => {
