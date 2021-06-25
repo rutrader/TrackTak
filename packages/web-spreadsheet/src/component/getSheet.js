@@ -362,6 +362,10 @@ export const getSheet = (
 
     const data = getDataProxy(newName);
 
+    if (hyperformula.isItPossibleToAddSheet(newName)) {
+      hyperformula.addSheet(newName);
+    }
+
     datas.push(data);
 
     switchData(data);
