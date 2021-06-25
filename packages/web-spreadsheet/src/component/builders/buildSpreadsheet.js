@@ -14,10 +14,13 @@ import { makeGetViewWidthHeight } from "../makeGetSheetViewWidthHeight";
 import getDraw from "../../canvas/draw";
 import { getPrint } from "../getPrint";
 import { getToolbar } from "../toolbar/getToolbar";
+import getRangeSelector from "../../core/getRangeSelector";
+import getClipboard from "../../core/getClipboard";
 import { getFormulaBar } from "../editor/getFormulaBar";
 import { getFormulaSuggestions } from "../../shared/getFormulaSuggestions";
 import Manager from "undo-redo-manager";
 import mapDatasheetToSheetContent from "../../shared/mapDatasheetToSheetContent";
+import { bind } from "../event";
 
 export const buildSpreadsheet = (
   rootEl,
@@ -60,9 +63,7 @@ export const buildSpreadsheet = (
       return getData();
     }
 
-    if (variablesSpreadsheet?.sheet?.getLastFocused()) {
-      return variablesSpreadsheet.getData();
-    }
+    return variablesSpreadsheet.getData();
   };
 
   const getOptions = () => newOptions;
@@ -85,11 +86,27 @@ export const buildSpreadsheet = (
     newData = data;
   });
 
+  eventEmitter.on(spreadsheetEvents.sheet.cellSelected, () => {
+    variablesSpreadsheet.sheet.selector.el.hide();
+  });
+
+  variablesEventEmitter.on(spreadsheetEvents.sheet.cellSelected, () => {
+    sheet.selector.el.hide();
+  });
+
   const getViewWidthHeight = makeGetViewWidthHeight(getOptions, () => {
     return variablesSpreadsheet.getOptions();
   });
 
-  const table = getTable(getOptions, getData, hyperformula, getViewWidthHeight);
+  const rangeSelector = getRangeSelector();
+
+  const table = getTable(
+    getOptions,
+    getData,
+    rangeSelector,
+    hyperformula,
+    getViewWidthHeight,
+  );
 
   const history = new Manager(({ type, data }) => {
     const parsedData = JSON.parse(data);
@@ -114,9 +131,12 @@ export const buildSpreadsheet = (
   const toolbar = getToolbar(
     getOptions,
     getFocusedData,
+    rangeSelector,
     history,
     globalEventEmitter,
   );
+
+  const clipboard = getClipboard(hyperformula, getData);
 
   const formulaBar = getFormulaBar(
     getOptions,
@@ -128,14 +148,21 @@ export const buildSpreadsheet = (
   const sheetBuilder = buildSheet(
     getOptions,
     getData,
+    rangeSelector,
     eventEmitter,
     getViewWidthHeight,
   );
 
-  const dataProxyBuilder = buildDataProxy(getOptions, getData, hyperformula);
+  const dataProxyBuilder = buildDataProxy(
+    getOptions,
+    getFocusedData,
+    hyperformula,
+  );
 
   const getDataProxy = makeGetDataProxy(
     "main",
+    rangeSelector,
+    clipboard,
     dataProxyBuilder,
     hyperformula,
     getOptions,
@@ -148,6 +175,7 @@ export const buildSpreadsheet = (
 
   const { sheet } = getSheet(
     toolbar,
+    rangeSelector,
     history,
     print,
     sheetBuilder,
@@ -166,7 +194,10 @@ export const buildSpreadsheet = (
 
   const variablesSpreadsheet = buildVariablesSpreadsheet(
     variablesEventEmitter,
+    getFocusedData,
     toolbar,
+    rangeSelector,
+    clipboard,
     history,
     formulaBar,
     print,
@@ -199,6 +230,18 @@ export const buildSpreadsheet = (
 
   sheet.el.after(bottombar.el);
   rootEl.children(print.el);
+
+  bind(window, "paste", (evt) => {
+    evt.preventDefault();
+
+    if (sheet?.getLastFocused()) {
+      sheet.paste("all", evt);
+
+      return;
+    }
+
+    variablesSpreadsheet.sheet.paste("all", evt);
+  });
 
   return {
     sheet,

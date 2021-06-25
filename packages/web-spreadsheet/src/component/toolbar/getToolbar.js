@@ -21,7 +21,13 @@ import spreadsheetEvents from "../../core/spreadsheetEvents";
 
 export const toolbarHeight = 41;
 
-export const getToolbar = (getOptions, getData, history, eventEmitter) => {
+export const getToolbar = (
+  getOptions,
+  getData,
+  rangeSelector,
+  history,
+  eventEmitter,
+) => {
   const hideFn = () => !getOptions().showToolbar;
   const widthFn = () => getOptions().view.width();
 
@@ -165,7 +171,7 @@ export const getToolbar = (getOptions, getData, history, eventEmitter) => {
     const style = getData().getSelectedCellStyle();
 
     mergeEl.toggleItem.setActive(getData().canUnmerge());
-    mergeEl.item.el.disabled(!getData().selector.range.multiple());
+    mergeEl.item.el.disabled(!rangeSelector.range.multiple());
     autofilterEl.toggleItem.setActive(!getData().canAutofilter());
 
     const { font, format } = style;

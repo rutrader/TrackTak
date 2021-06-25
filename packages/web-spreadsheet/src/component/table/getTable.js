@@ -33,6 +33,7 @@ const tableFixedHeaderStyle = () => {
 export const getTable = (
   getOptions,
   getData,
+  rangeSelector,
   hyperformula,
   getViewWidthHeight,
 ) => {
@@ -74,7 +75,7 @@ export const getTable = (
     if (type === "all" || type === "left") draw.fillRect(0, nty, w, sumHeight);
     if (type === "all" || type === "top") draw.fillRect(ntx, 0, sumWidth, h);
 
-    const { sri, sci, eri, eci } = getData().selector.range;
+    const { sri, sci, eri, eci } = rangeSelector.range;
     // console.log(data.selectIndexes);
     // draw text
     // text font, align...
@@ -170,19 +171,19 @@ export const getTable = (
         cellText = hyperformula.getCellValue(cellAddress);
       }
 
-      cellText = numfmt(formats[format].pattern)(cellText);
-
-      // Remove trailing dot that formatting leaves if ends in .##
-      if (cellText && cellText.charAt(cellText.length - 1) === ".") {
-        cellText = cellText.slice(0, cellText.length - 1);
-      }
-
-      if (cellText.value) {
+      if (cellText?.value) {
         const error = cellText;
 
         cellText = error.value;
 
-        console.error(error);
+        console.error("hyperformula error", error);
+      } else {
+        cellText = numfmt(formats[format].pattern)(cellText);
+
+        // Remove trailing dot that formatting leaves if ends in .##
+        if (cellText && cellText.charAt(cellText.length - 1) === ".") {
+          cellText = cellText.slice(0, cellText.length - 1);
+        }
       }
 
       const font = Object.assign({}, style.font);

@@ -29,6 +29,7 @@ function throttle(func, wait) {
 
 export const getSheet = (
   toolbar,
+  rangeSelector,
   history,
   print,
   builder,
@@ -166,7 +167,7 @@ export const getSheet = (
     handleInsertDeleting(() => getData().deleteCell("text"))();
 
     const cell = getData().getSelectedCell();
-    const { ri, ci } = getData().selector.getIndexes();
+    const { ri, ci } = rangeSelector.getIndexes();
     const cellAddress = {
       row: ri,
       col: ci,
@@ -275,14 +276,14 @@ export const getSheet = (
       autofilter();
     } else if (type === "freeze") {
       if (value) {
-        const { ri, ci } = getData().selector.getIndexes();
+        const { ri, ci } = rangeSelector.getIndexes();
         freeze(ri, ci);
       } else {
         freeze(0, 0);
       }
     } else {
       getData().setSelectedCellAttr(type, value);
-      if (type === "formula" && !getData().selector.range.multiple()) {
+      if (type === "formula" && !rangeSelector.range.multiple()) {
         editorSet();
       }
       sheetReset();
@@ -878,7 +879,7 @@ export const getSheet = (
     let newText = setTextFormat(text, format, getOptions().formats, state);
     getData().setSelectedCellText(newText, state);
 
-    const { ri, ci } = getData().selector.getIndexes();
+    const { ri, ci } = rangeSelector.getIndexes();
     const cellAddress = {
       row: ri,
       col: ci,
@@ -1058,11 +1059,6 @@ export const getSheet = (
       clickWindow(evt);
     });
 
-    bind(window, "paste", (evt) => {
-      paste("all", evt);
-      evt.preventDefault();
-    });
-
     // for selector
     bind(window, "keydown", (evt) => {
       if (!focusing) return;
@@ -1127,7 +1123,7 @@ export const getSheet = (
             break;
           case 32:
             // ctrl + space, all cells in col
-            selectorSet(false, -1, getData().selector.getIndexes().ci, false);
+            selectorSet(false, -1, rangeSelector.getIndexes().ci, false);
             evt.preventDefault();
             break;
           default:
@@ -1140,7 +1136,7 @@ export const getSheet = (
           case 32:
             if (shiftKey) {
               // shift + space, all cells in row
-              selectorSet(false, getData().selector.getIndexes().ri, -1, false);
+              selectorSet(false, rangeSelector.getIndexes().ri, -1, false);
             }
             break;
           case 27: // esc
@@ -1236,6 +1232,7 @@ export const getSheet = (
       getLastFocused,
       setLastFocused,
       lastFocused,
+      selector,
     },
   };
 };

@@ -6,6 +6,8 @@ import helper from "./helper";
 
 export const makeGetDataProxy = (
   type,
+  rangeSelector,
+  clipboard,
   builder,
   hyperformula,
   getOptions,
@@ -16,16 +18,7 @@ export const makeGetDataProxy = (
   let freeze = [0, 0];
   let styles = []; // Array<Style>
 
-  const {
-    merges,
-    rows,
-    cols,
-    validations,
-    selector,
-    scroll,
-    clipboard,
-    autoFilter,
-  } = builder();
+  const { merges, rows, cols, validations, scroll, autoFilter } = builder();
 
   let exceptRowSet = new Set();
   let sortedRowMap = new Map();
@@ -38,21 +31,21 @@ export const makeGetDataProxy = (
   };
 
   const removeValidation = () => {
-    const { range } = selector;
+    const { range } = rangeSelector;
     changeData(() => {
       validations.remove(range);
     });
   };
 
   const getSelectedValidator = () => {
-    const { ri, ci } = selector.getIndexes();
+    const { ri, ci } = rangeSelector.getIndexes();
     const v = validations.get(ri, ci);
     return v ? v.validator : null;
   };
 
   const getSelectedValidation = () => {
-    const { range } = selector;
-    const { ri, ci } = selector.getIndexes();
+    const { range } = rangeSelector;
+    const { ri, ci } = rangeSelector.getIndexes();
     const v = validations.get(ri, ci);
     const ret = { ref: range.toString() };
     if (v !== null) {
@@ -63,24 +56,25 @@ export const makeGetDataProxy = (
   };
 
   const copy = () => {
-    clipboard.copy(selector.range);
+    clipboard.copy(rangeSelector.range);
   };
 
   const cut = () => {
-    clipboard.cut(selector.range);
+    clipboard.cut(rangeSelector.range);
   };
 
   // what: all | text | format
   const paste = (what = "all", error = () => {}) => {
     // console.log('sIndexes:', sIndexes);
     if (clipboard.isClear()) return false;
-    if (!canPaste(clipboard.getRange(), selector.range, error)) return false;
+    if (!canPaste(clipboard.getRange(), rangeSelector.range, error))
+      return false;
 
     changeData(() => {
       if (clipboard.isCopy()) {
-        copyPaste(clipboard.getRange(), selector.range, what);
+        copyPaste(clipboard.getRange(), rangeSelector.range, what);
       } else if (clipboard.isCut()) {
-        cutPaste(clipboard.getRange(), selector.range);
+        cutPaste(clipboard.getRange(), rangeSelector.range);
       }
     });
     return true;
@@ -92,12 +86,12 @@ export const makeGetDataProxy = (
       .map((it) => it.replace(/"/g, "").split("\t"));
     if (lines.length > 0) lines.length -= 1;
     changeData(() => {
-      rows.paste(lines, selector.range);
+      rows.paste(lines, rangeSelector.range);
     });
   };
 
   const autofill = (cellRange, what, error = () => {}) => {
-    const srcRange = selector.range;
+    const srcRange = rangeSelector.range;
     if (!canPaste(srcRange, cellRange, error)) return false;
     changeData(() => {
       copyPaste(srcRange, cellRange, what, true);
@@ -110,8 +104,8 @@ export const makeGetDataProxy = (
   };
 
   const calSelectedRangeByEnd = (ri, ci) => {
-    let { sri, sci, eri, eci } = selector.range;
-    const { ri: cri, ci: cci } = selector.getIndexes();
+    let { sri, sci, eri, eci } = rangeSelector.range;
+    const { ri: cri, ci: cci } = rangeSelector.getIndexes();
     let [nri, nci] = [ri, ci];
     if (ri < 0) nri = rows.len - 1;
     if (ci < 0) nci = cols.len - 1;
@@ -119,10 +113,10 @@ export const makeGetDataProxy = (
     else [sri, eri] = [nri, cri];
     if (nci > cci) [sci, eci] = [cci, nci];
     else [sci, eci] = [nci, cci];
-    selector.range = merges.union(new CellRange(sri, sci, eri, eci));
-    selector.range = merges.union(selector.range);
-    // console.log('selector.range:', selector.range);
-    return selector.range;
+    rangeSelector.range = merges.union(new CellRange(sri, sci, eri, eci));
+    rangeSelector.range = merges.union(rangeSelector.range);
+    // console.log('rangeSelector.range:', rangeSelector.range);
+    return rangeSelector.range;
   };
 
   const calSelectedRangeByStart = (ri, ci) => {
@@ -139,7 +133,7 @@ export const makeGetDataProxy = (
         cellRange.eci = cols.len - 1;
       }
     }
-    selector.range = cellRange;
+    rangeSelector.range = cellRange;
     return cellRange;
   };
 
@@ -151,10 +145,10 @@ export const makeGetDataProxy = (
       } else if (property === "border") {
         setStyleBorders(value);
       } else if (property === "formula") {
-        const { range } = selector;
-        const { ri, ci } = selector.getIndexes();
-        if (selector.range.multiple()) {
-          const [rn, cn] = selector.range.size();
+        const { range } = rangeSelector;
+        const { ri, ci } = rangeSelector.getIndexes();
+        if (rangeSelector.range.multiple()) {
+          const [rn, cn] = rangeSelector.range.size();
           const { sri, sci, eri, eci } = range;
           if (rn > 1) {
             for (let i = sci; i <= eci; i += 1) {
@@ -175,7 +169,7 @@ export const makeGetDataProxy = (
           rows._setCellText(ri, ci, `=${value}()`);
         }
       } else {
-        selector.range.each((ri, ci) => {
+        rangeSelector.range.each((ri, ci) => {
           const cell = rows.getCellOrNew(ri, ci);
           let cstyle = {};
           if (cell.style !== undefined) {
@@ -215,7 +209,7 @@ export const makeGetDataProxy = (
 
   // state: input | finished
   const setSelectedCellText = (text, state = "input") => {
-    const { ri, ci } = selector.getIndexes();
+    const { ri, ci } = rangeSelector.getIndexes();
     let nri = ri;
     if (unsortedRowMap.has(ri)) {
       nri = unsortedRowMap.get(ri);
@@ -239,7 +233,7 @@ export const makeGetDataProxy = (
   };
 
   const getSelectedCell = () => {
-    const { ri, ci } = selector.getIndexes();
+    const { ri, ci } = rangeSelector.getIndexes();
     let nri = ri;
     if (unsortedRowMap.has(ri)) {
       nri = unsortedRowMap.get(ri);
@@ -256,7 +250,7 @@ export const makeGetDataProxy = (
   };
 
   const getSelectedRect = () => {
-    return getRect(selector.range);
+    return getRect(rangeSelector.range);
   };
 
   const getClipboardRect = () => {
@@ -269,7 +263,7 @@ export const makeGetDataProxy = (
   const getRect = (cellRange) => {
     const { sri, sci, eri, eci } = cellRange;
     // console.log('sri:', sri, ',sci:', sci, ', eri:', eri, ', eci:', eci);
-    // no selector
+    // no rangeSelector
     if (sri < 0 && sci < 0) {
       return {
         left: 0,
@@ -333,17 +327,17 @@ export const makeGetDataProxy = (
   };
 
   const isSignleSelected = () => {
-    const { sri, sci, eri, eci } = selector.range;
+    const { sri, sci, eri, eci } = rangeSelector.range;
     const cell = getCell(sri, sci);
     if (cell && cell.merge) {
       const [rn, cn] = cell.merge;
       if (sri + rn === eri && sci + cn === eci) return true;
     }
-    return !selector.range.multiple();
+    return !rangeSelector.range.multiple();
   };
 
   const canUnmerge = () => {
-    const { sri, sci, eri, eci } = selector.range;
+    const { sri, sci, eri, eci } = rangeSelector.range;
     const cell = getCell(sri, sci);
     if (cell && cell.merge) {
       const [rn, cn] = cell.merge;
@@ -354,16 +348,16 @@ export const makeGetDataProxy = (
 
   const merge = () => {
     if (isSignleSelected()) return;
-    const [rn, cn] = selector.range.size();
+    const [rn, cn] = rangeSelector.range.size();
     // console.log('merge:', rn, cn);
     if (rn > 1 || cn > 1) {
-      const { sri, sci } = selector.range;
+      const { sri, sci } = rangeSelector.range;
       changeData(() => {
         const cell = rows.getCellOrNew(sri, sci);
         cell.merge = [rn - 1, cn - 1];
-        merges.add(selector.range);
+        merges.add(rangeSelector.range);
         // delete merge cells
-        rows.deleteCells(selector.range);
+        rows.deleteCells(rangeSelector.range);
         // console.log('cell:', cell, d);
         rows.setCell(sri, sci, cell);
       });
@@ -372,10 +366,10 @@ export const makeGetDataProxy = (
 
   const unmerge = () => {
     if (!isSignleSelected()) return;
-    const { sri, sci } = selector.range;
+    const { sri, sci } = rangeSelector.range;
     changeData(() => {
       rows.deleteCell(sri, sci, "merge");
-      merges.deleteWithin(selector.range);
+      merges.deleteWithin(rangeSelector.range);
     });
   };
 
@@ -391,7 +385,7 @@ export const makeGetDataProxy = (
         sortedRowMap = new Map();
         unsortedRowMap = new Map();
       } else {
-        autoFilter.ref = selector.range.toString();
+        autoFilter.ref = rangeSelector.range.toString();
       }
     });
   };
@@ -428,9 +422,9 @@ export const makeGetDataProxy = (
 
   const deleteCell = (what = "all") => {
     changeData(() => {
-      rows.deleteCells(selector.range, what);
+      rows.deleteCells(rangeSelector.range, what);
       if (what === "all" || what === "format") {
-        merges.deleteWithin(selector.range);
+        merges.deleteWithin(rangeSelector.range);
       }
     });
   };
@@ -438,7 +432,7 @@ export const makeGetDataProxy = (
   // type: row | column
   const insert = (type, n = 1) => {
     changeData(() => {
-      const { sri, sci } = selector.range;
+      const { sri, sci } = rangeSelector.range;
       let si = sri;
       if (type === "row") {
         rows.insert(sri, n);
@@ -458,9 +452,9 @@ export const makeGetDataProxy = (
   // type: row | column
   const deleteData = (type) => {
     changeData(() => {
-      const { range } = selector;
-      const { sri, sci, eri, eci } = selector.range;
-      const [rsize, csize] = selector.range.size();
+      const { range } = rangeSelector;
+      const { sri, sci, eri, eci } = rangeSelector.range;
+      const [rsize, csize] = rangeSelector.range.size();
 
       let si = sri;
       let size = rsize;
@@ -578,7 +572,7 @@ export const makeGetDataProxy = (
   };
 
   const getSelectedCellStyle = () => {
-    const { ri, ci } = selector.getIndexes();
+    const { ri, ci } = rangeSelector.getIndexes();
     return getCellStyleOrDefault(ri, ci);
   };
 
@@ -696,8 +690,8 @@ export const makeGetDataProxy = (
   };
 
   const hideRowsOrCols = () => {
-    const [rlen, clen] = selector.range.size();
-    const { sri, sci, eri, eci } = selector.range;
+    const [rlen, clen] = rangeSelector.range.size();
+    const { sri, sci, eri, eci } = rangeSelector.range;
     if (rlen === rows.len) {
       for (let ci = sci; ci <= eci; ci += 1) {
         cols.setHide(ci, true);
@@ -884,7 +878,7 @@ export const makeGetDataProxy = (
   }
 
   function setStyleBorders({ mode, style, color }) {
-    const { sri, sci, eri, eci } = selector.range;
+    const { sri, sci, eri, eci } = rangeSelector.range;
     const multiple = !isSignleSelected();
     if (!multiple) {
       if (mode === "inside" || mode === "horizontal" || mode === "vertical") {
@@ -899,7 +893,7 @@ export const makeGetDataProxy = (
         right: [style, color],
       });
     } else if (mode === "none") {
-      selector.range.each((ri, ci) => {
+      rangeSelector.range.each((ri, ci) => {
         const cell = rows.getCell(ri, ci);
         if (cell && cell.style !== undefined) {
           const ns = helper.cloneDeep(styles[cell.style]);
@@ -1059,7 +1053,7 @@ export const makeGetDataProxy = (
     eachMergesInView,
     freezeTotalWidth,
     freezeTotalHeight,
-    selector,
+    rangeSelector,
     getSelectedRect,
     getClipboardRect,
     calSelectedRangeByStart,
