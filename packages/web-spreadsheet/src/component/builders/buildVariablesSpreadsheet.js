@@ -14,6 +14,7 @@ import { cssPrefix } from "../../config";
 
 export const buildVariablesSpreadsheet = (
   eventEmitter,
+  getFocusedData,
   toolbar,
   rangeSelector,
   clipboard,
@@ -82,7 +83,11 @@ export const buildVariablesSpreadsheet = (
     getViewWidthHeight,
   );
 
-  const dataProxyBuilder = buildDataProxy(getOptions, getData, hyperformula);
+  const dataProxyBuilder = buildDataProxy(
+    getOptions,
+    getFocusedData,
+    hyperformula,
+  );
 
   const getDataProxy = makeGetDataProxy(
     "variables",

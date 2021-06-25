@@ -1059,11 +1059,6 @@ export const getSheet = (
       clickWindow(evt);
     });
 
-    bind(window, "paste", (evt) => {
-      paste("all", evt);
-      evt.preventDefault();
-    });
-
     // for selector
     bind(window, "keydown", (evt) => {
       if (!focusing) return;

@@ -5,10 +5,14 @@ import { Rows } from "../../core/row";
 import { Cols } from "../../core/col";
 import { Validations } from "../../core/validation";
 
-export const buildDataProxy = (getOptions, getData, hyperformula) => () => {
+export const buildDataProxy = (
+  getOptions,
+  getFocusedData,
+  hyperformula,
+) => () => {
   // save object
   const merges = new Merges(); // [CellRange, ...]
-  const rows = new Rows(() => getOptions().row, getData, hyperformula);
+  const rows = new Rows(() => getOptions().row, getFocusedData, hyperformula);
   const cols = new Cols(() => getOptions().col);
   const validations = new Validations();
 

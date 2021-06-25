@@ -20,6 +20,7 @@ import { getFormulaBar } from "../editor/getFormulaBar";
 import { getFormulaSuggestions } from "../../shared/getFormulaSuggestions";
 import Manager from "undo-redo-manager";
 import mapDatasheetToSheetContent from "../../shared/mapDatasheetToSheetContent";
+import { bind } from "../event";
 
 export const buildSpreadsheet = (
   rootEl,
@@ -152,7 +153,11 @@ export const buildSpreadsheet = (
     getViewWidthHeight,
   );
 
-  const dataProxyBuilder = buildDataProxy(getOptions, getData, hyperformula);
+  const dataProxyBuilder = buildDataProxy(
+    getOptions,
+    getFocusedData,
+    hyperformula,
+  );
 
   const getDataProxy = makeGetDataProxy(
     "main",
@@ -189,6 +194,7 @@ export const buildSpreadsheet = (
 
   const variablesSpreadsheet = buildVariablesSpreadsheet(
     variablesEventEmitter,
+    getFocusedData,
     toolbar,
     rangeSelector,
     clipboard,
@@ -224,6 +230,18 @@ export const buildSpreadsheet = (
 
   sheet.el.after(bottombar.el);
   rootEl.children(print.el);
+
+  bind(window, "paste", (evt) => {
+    evt.preventDefault();
+
+    if (sheet?.getLastFocused()) {
+      sheet.paste("all", evt);
+
+      return;
+    }
+
+    variablesSpreadsheet.sheet.paste("all", evt);
+  });
 
   return {
     sheet,
