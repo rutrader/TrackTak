@@ -75,7 +75,7 @@ const getEmployeeOptionsData = () => {
             text: "Standard deviation in stock price (volatility)",
           },
           1: {
-            text: "=FIN(standardDeviationInStockPrices)",
+            text: '=FIN("standardDeviationInStockPrices")',
             style: 0,
           },
         },
@@ -86,7 +86,7 @@ const getEmployeeOptionsData = () => {
             text: "Risk free rate",
           },
           1: {
-            text: "=FIN(riskFreeRate)",
+            text: '=FIN("riskFreeRate")',
             style: 0,
           },
         },
@@ -97,7 +97,7 @@ const getEmployeeOptionsData = () => {
             text: "Shares outstanding",
           },
           1: {
-            text: "=FIN(sharesOutstanding)/ 1000000",
+            text: '=FIN("sharesOutstanding")/ 1000000',
             style: 4,
           },
         },
@@ -108,7 +108,7 @@ const getEmployeeOptionsData = () => {
             text: "Share price",
           },
           1: {
-            text: "=FIN(price)",
+            text: '=FIN("price")',
             style: 3,
           },
         },

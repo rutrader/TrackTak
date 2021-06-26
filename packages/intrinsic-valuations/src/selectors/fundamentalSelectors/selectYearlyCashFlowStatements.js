@@ -9,13 +9,13 @@ export const selectSortedYearlyCashFlowStatements = createSelector(
     Object.values(yearlyCashFlowStatements).sort(dateSortComparer),
 );
 
-export const selectSortedQuarterlCashFlowStatements = createSelector(
+export const selectSortedQuarterlyCashFlowStatements = createSelector(
   (state) => state.fundamentals.cashFlowStatement?.quarterly ?? {},
   (quarterlyCashFlowStatements) =>
     Object.values(quarterlyCashFlowStatements).sort(dateSortComparer),
 );
 
-const selectYearlyBalanceSheets = createSelector(
+const selectYearlyCashFlowStatements = createSelector(
   selectConvertCurrency,
   selectSortedYearlyCashFlowStatements,
   (convertCurrency, yearlyCashFlowStatements) => {
@@ -37,4 +37,4 @@ const selectYearlyBalanceSheets = createSelector(
   },
 );
 
-export default selectYearlyBalanceSheets;
+export default selectYearlyCashFlowStatements;

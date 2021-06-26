@@ -147,7 +147,7 @@ const getCostOfCapitalData = () => {
           },
           1: {
             style: 4,
-            text: "=FIN(sharesOutstanding) / 1000000",
+            text: '=FIN("sharesOutstanding") / 1000000',
           },
         },
       },
@@ -158,7 +158,7 @@ const getCostOfCapitalData = () => {
           },
           1: {
             style: 3,
-            text: "=FIN(price)",
+            text: '=FIN("price")',
           },
         },
       },
@@ -169,7 +169,7 @@ const getCostOfCapitalData = () => {
           },
           1: {
             style: 4,
-            text: "=FIN(unleveredBeta)",
+            text: '=FIN("unleveredBeta")',
             comment:
               "Is a measure of the market risk of the company relative to it's peers in the same industry without the impact of debt. This determines how much risk comes with owning a stock.",
           },
@@ -182,7 +182,7 @@ const getCostOfCapitalData = () => {
           },
           1: {
             style: 0,
-            text: "=FIN(riskFreeRate)",
+            text: '=FIN("riskFreeRate")',
             comment:
               "Refers to the theoretical rate of return of an investment with zero risk.",
           },
@@ -194,7 +194,7 @@ const getCostOfCapitalData = () => {
             text: "Equity Risk Premium",
           },
           1: {
-            text: "=FIN(equityRiskPremium)",
+            text: '=FIN("equityRiskPremium")',
             style: 0,
           },
         },
@@ -216,7 +216,7 @@ const getCostOfCapitalData = () => {
             text: "Book Value",
           },
           1: {
-            text: "=FIN(bookValueOfDebt) / 1000000",
+            text: '=FIN("bookValueOfDebt") / 1000000',
             style: 3,
           },
           2: {
@@ -231,7 +231,7 @@ const getCostOfCapitalData = () => {
             text: "Interest Expense",
           },
           1: {
-            text: "=FIN(interestExpense) / 1000000",
+            text: '=FIN("interestExpense") / 1000000',
             style: 3,
           },
           2: {
@@ -285,7 +285,8 @@ const getCostOfCapitalData = () => {
             text: `="Pre-tax Cost of Debt"&" ("&B13&")"`,
           },
           1: {
-            text: `=IF('Optional Inputs'!$B$2="", FIN(estimatedCostOfDebt), 'Optional Inputs'!$B$2)`,
+            text:
+              "=IF('Optional Inputs'!$B$2=\"\", FIN(\"estimatedCostOfDebt\"), 'Optional Inputs'!$B$2)",
             style: 0,
             comment:
               "By default this is the synthetic credit rating pre-tax cost of debt that we have automatically calculated for you which is fine for most cases. If you manually input a cost of debt in the Normal Debt input field then it will overwrite this synthetic cost of debt.",
@@ -307,7 +308,7 @@ const getCostOfCapitalData = () => {
             text: "Marginal Tax Rate",
           },
           1: {
-            text: "=FIN(marginalTaxRate)",
+            text: '=FIN("marginalTaxRate")',
             style: 0,
           },
           2: {
@@ -390,7 +391,7 @@ const getCostOfCapitalData = () => {
           },
           1: {
             style: 3,
-            text: "=FIN(capitalLeaseObligations) / 1000000",
+            text: '=FIN("capitalLeaseObligations") / 1000000',
           },
           2: {
             text: "Cost of Component",

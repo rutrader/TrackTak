@@ -48,6 +48,9 @@ import {
   makeFinancialPlugin,
 } from "./plugins/FinancialPlugin";
 import HyperFormula from "hyperformula";
+import selectYearlyIncomeStatements from "../selectors/fundamentalSelectors/selectYearlyIncomeStatements";
+import selectYearlyBalanceSheets from "../selectors/fundamentalSelectors/selectYearlyBalanceSheets";
+import selectYearlyCashFlowStatements from "../selectors/fundamentalSelectors/selectYearlyCashFlowStatements";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
@@ -172,6 +175,9 @@ const DiscountedCashFlowTable = ({
   const ttmIncomeStatement = useSelector(selectRecentIncomeStatement);
   const ttmBalanceSheet = useSelector(selectRecentBalanceSheet);
   const ttmCashFlowStatement = useSelector(selectRecentCashFlowStatement);
+  const yearlyIncomeStatements = useSelector(selectYearlyIncomeStatements);
+  const yearlyBalanceSheets = useSelector(selectYearlyBalanceSheets);
+  const yearlyCashFlowStatements = useSelector(selectYearlyCashFlowStatements);
   const currentEquityRiskPremium = useSelector(selectCurrentEquityRiskPremium);
   const price = useSelector(selectPrice);
   const riskFreeRate = useSelector(selectRiskFreeRate);
@@ -243,12 +249,15 @@ const DiscountedCashFlowTable = ({
       makeFinancialPlugin({
         incomeStatements: {
           ttm: ttmIncomeStatement,
+          yearly: yearlyIncomeStatements,
         },
         balanceSheets: {
           ttm: ttmBalanceSheet,
+          yearly: yearlyBalanceSheets,
         },
         cashFlowStatements: {
           ttm: ttmCashFlowStatement,
+          yearly: yearlyCashFlowStatements,
         },
         riskFreeRate,
         currentEquityRiskPremium,
@@ -290,6 +299,9 @@ const DiscountedCashFlowTable = ({
     ttmBalanceSheet,
     ttmCashFlowStatement,
     ttmIncomeStatement,
+    yearlyBalanceSheets,
+    yearlyCashFlowStatements,
+    yearlyIncomeStatements,
   ]);
 
   useEffect(() => {

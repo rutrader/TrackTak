@@ -19,16 +19,32 @@ export const makeFinancialPlugin = ({
     matureMarketEquityRiskPremium,
   };
 
+  const getPropertyFromOneOfStatements = (attribute, date) => {
+    return (
+      incomeStatements.yearly[date][attribute] ||
+      balanceSheets.yearly[date][attribute] ||
+      cashFlowStatements.yearly[date][attribute] ||
+      0
+    );
+  };
+
   class FinancialPlugin extends FunctionPlugin {
     financial({ args }) {
       if (!args.length) {
         return new InvalidArgumentsError(1);
       }
 
-      if (args.length === 1) {
-        const attribute = args[0].expressionName;
+      const attribute = args[0].value;
 
+      // TODO: Add proper error checking here later
+      if (args.length === 1) {
         return ttmData[attribute] || 0;
+      }
+
+      const startDate = args[1].value;
+
+      if (args.length === 2) {
+        return getPropertyFromOneOfStatements(attribute, startDate);
       }
     }
   }

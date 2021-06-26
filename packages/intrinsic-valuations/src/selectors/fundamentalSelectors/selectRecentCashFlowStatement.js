@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import getCashFlowStatement from "../../shared/getCashFlowStatement";
 import {
-  selectSortedQuarterlCashFlowStatements,
+  selectSortedQuarterlyCashFlowStatements,
   selectSortedYearlyCashFlowStatements,
 } from "./selectYearlyCashFlowStatements";
 import selectConvertCurrency from "./selectConvertCurrency";
@@ -12,7 +12,7 @@ import getNonUSFinancialData from "../../shared/getNonUSFinancialData";
 const selectRecentCashFlowStatement = createSelector(
   selectConvertCurrency,
   selectIsInUS,
-  selectSortedQuarterlCashFlowStatements,
+  selectSortedQuarterlyCashFlowStatements,
   selectSortedYearlyCashFlowStatements,
   (
     convertCurrency,
