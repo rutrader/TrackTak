@@ -90,7 +90,7 @@ const getDCFValuationData = (isOnMobile) => {
             text: "Revenues",
           },
           1: {
-            text: "=FIN(revenue)",
+            text: "=FIN(revenue) / 1000000",
             style: 3,
           },
           2: {
@@ -115,31 +115,31 @@ const getDCFValuationData = (isOnMobile) => {
           },
           7: {
             text:
-              "=G2*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-riskFreeRate) / 5))",
+              "=G2*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-FIN(riskFreeRate)) / 5))",
             style: 3,
           },
           8: {
             text:
-              "=H2*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-riskFreeRate) / 5) * 2)",
+              "=H2*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-FIN(riskFreeRate)) / 5) * 2)",
             style: 3,
           },
           9: {
             text:
-              "=I2*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-riskFreeRate) / 5) * 3)",
+              "=I2*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-FIN(riskFreeRate)) / 5) * 3)",
             style: 3,
           },
           10: {
             text:
-              "=J2*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-riskFreeRate) / 5) * 4)",
+              "=J2*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-FIN(riskFreeRate)) / 5) * 4)",
             style: 3,
           },
           11: {
             text:
-              "=K2*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-riskFreeRate) / 5) * 5)",
+              "=K2*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-FIN(riskFreeRate)) / 5) * 5)",
             style: 3,
           },
           12: {
-            text: "=L2*(1+riskFreeRate)",
+            text: "=L2*(1+FIN(riskFreeRate))",
             style: 3,
           },
         },
@@ -215,7 +215,7 @@ const getDCFValuationData = (isOnMobile) => {
             text: "Operating Income",
           },
           1: {
-            text: "=operatingIncome",
+            text: "=IFERROR(FIN(operatingIncome) / 1000000, 0)",
             style: 3,
           },
           2: {
@@ -270,7 +270,7 @@ const getDCFValuationData = (isOnMobile) => {
             text: "Tax Rate",
           },
           1: {
-            text: "=pastThreeYearsAverageEffectiveTaxRate",
+            text: "=FIN(pastThreeYearsAverageEffectiveTaxRate)",
             style: 0,
           },
           2: {
@@ -314,7 +314,7 @@ const getDCFValuationData = (isOnMobile) => {
             style: 0,
           },
           12: {
-            text: "=marginalTaxRate",
+            text: "=FIN(marginalTaxRate)",
             style: 0,
           },
         },
@@ -424,7 +424,8 @@ const getDCFValuationData = (isOnMobile) => {
             style: 3,
           },
           12: {
-            text: "=IF(riskFreeRate > 0, (riskFreeRate / M17) * M6, 0)",
+            text:
+              "=IF(FIN(riskFreeRate) > 0, (FIN(riskFreeRate) / M17) * M6, 0)",
             style: 3,
           },
         },
@@ -632,7 +633,7 @@ const getDCFValuationData = (isOnMobile) => {
             style: 0,
           },
           12: {
-            text: "=matureMarketEquityRiskPremium + riskFreeRate",
+            text: "=FIN(matureMarketEquityRiskPremium) + FIN(riskFreeRate)",
             style: 0,
           },
         },
@@ -851,7 +852,7 @@ const getDCFValuationData = (isOnMobile) => {
             text: "Invested Capital",
           },
           1: {
-            text: "=investedCapital",
+            text: "=IFERROR(FIN(investedCapital) / 1000000, 0)",
             style: 3,
           },
           2: {
@@ -1092,7 +1093,7 @@ const getDCFValuationData = (isOnMobile) => {
             text: "Terminal Value",
           },
           1: {
-            text: "=B19/(B20-riskFreeRate)",
+            text: "=B19/(B20-FIN(riskFreeRate))",
             style: 3,
           },
           2: {
@@ -1312,7 +1313,8 @@ const getDCFValuationData = (isOnMobile) => {
             text: "Proceeds if the Firm Fails",
           },
           1: {
-            text: "=(bookValueOfEquity+bookValueOfDebt)*'Optional Inputs'!J5",
+            text:
+              "=((FIN(bookValueOfEquity)/1000000)+(FIN(bookValueOfDebt)/1000000))*'Optional Inputs'!J5",
             style: 3,
           },
           2: {
@@ -1400,7 +1402,7 @@ const getDCFValuationData = (isOnMobile) => {
             text: "- Debt",
           },
           1: {
-            text: "=bookValueOfDebt",
+            text: "=IFERROR(FIN(bookValueOfDebt) / 1000000, 0)",
             style: 3,
           },
           2: {
@@ -1444,7 +1446,7 @@ const getDCFValuationData = (isOnMobile) => {
             text: "- Minority Interests",
           },
           1: {
-            text: "=minorityInterest",
+            text: "=IFERROR(FIN(minorityInterest)  / 1000000, 0)",
             style: 3,
           },
           2: {
@@ -1488,7 +1490,7 @@ const getDCFValuationData = (isOnMobile) => {
             text: "+ Cash",
           },
           1: {
-            text: "=cashAndShortTermInvestments",
+            text: "=IFERROR(FIN(cashAndShortTermInvestments) / 1000000, 0)",
             style: 3,
           },
           2: {
@@ -1708,7 +1710,7 @@ const getDCFValuationData = (isOnMobile) => {
             text: "Current Price",
           },
           1: {
-            text: "=price",
+            text: "=FIN(price)",
             style: 3,
           },
           2: {
@@ -1752,7 +1754,8 @@ const getDCFValuationData = (isOnMobile) => {
             text: "Estimated Value Per Share",
           },
           1: {
-            text: "=IF(B34/sharesOutstanding < 0, 0, B34/sharesOutstanding)",
+            text:
+              "=IF(B34/FIN(sharesOutstanding) < 0, 0, B34/(FIN(sharesOutstanding) / 1000000))",
             style: 5,
           },
           2: {

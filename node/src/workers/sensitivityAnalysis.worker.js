@@ -4,8 +4,12 @@ import { parentPort } from "worker_threads";
 import nodeEndpoint from "comlink/dist/umd/node-adapter";
 import { expose } from "comlink";
 import calculateDCFModel from "../dcfModel/calculateDCFModel";
+import {
+  finTranslations,
+  makeFinancialPlugin,
+} from "../../../packages/intrinsic-valuations/src/discountedCashFlow/plugins/FinancialPlugin";
 
-const getHyperformulaInstance = (sheetsSerializedValues) => {
+const getHyperformulaInstance = (existingScope, sheetsSerializedValues) => {
   const hyperformula = HyperFormula.buildFromSheets(sheetsSerializedValues, {
     licenseKey: "05054-b528f-a10c4-53f2a-04b57",
     currencySymbol: Object.values(currencySymbolMap),
@@ -14,6 +18,11 @@ const getHyperformulaInstance = (sheetsSerializedValues) => {
   });
   hyperformula.addNamedExpression("TRUE", "=TRUE()");
   hyperformula.addNamedExpression("FALSE", "=FALSE()");
+
+  HyperFormula.registerFunctionPlugin(
+    makeFinancialPlugin(existingScope),
+    finTranslations,
+  );
 
   return hyperformula;
 };
@@ -24,7 +33,10 @@ const sensitivityAnalysisWorker = {
     existingScope,
     currentScopes,
   ) => {
-    const hyperformula = getHyperformulaInstance(sheetsSerializedValues);
+    const hyperformula = getHyperformulaInstance(
+      existingScope,
+      sheetsSerializedValues,
+    );
     const values = currentScopes.map((currentScope) => {
       const model = calculateDCFModel(hyperformula, {
         ...existingScope,

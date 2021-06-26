@@ -1,26 +1,46 @@
 import { FunctionPlugin, InvalidArgumentsError } from "hyperformula";
+import matureMarketEquityRiskPremium from "../../shared/matureMarketEquityRiskPremium";
 
-export const makeFinancialPlugin = (
+export const makeFinancialPlugin = ({
   incomeStatements,
   balanceSheets,
   cashFlowStatements,
-) => {
+  currentEquityRiskPremium,
+  currentIndustry,
+  ...financialData
+}) => {
+  const ttmData = {
+    ...financialData,
+    ...incomeStatements.ttm,
+    ...balanceSheets.ttm,
+    ...cashFlowStatements.ttm,
+    ...currentEquityRiskPremium,
+    ...currentIndustry,
+    matureMarketEquityRiskPremium,
+  };
+
   class FinancialPlugin extends FunctionPlugin {
-    fin({ args }) {
+    financial({ args }) {
       if (!args.length) {
         return new InvalidArgumentsError(1);
       }
 
       if (args.length === 1) {
         const attribute = args[0].expressionName;
+
+        return ttmData[attribute] || 0;
       }
     }
   }
 
   FinancialPlugin.implementedFunctions = {
-    FIN: {
-      method: "fin",
+    FINANCIAL: {
+      method: "financial",
     },
+  };
+
+  FinancialPlugin.aliases = {
+    FIN: "FINANCIAL",
   };
 
   return FinancialPlugin;

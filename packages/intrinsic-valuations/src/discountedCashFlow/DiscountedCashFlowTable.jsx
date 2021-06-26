@@ -188,27 +188,6 @@ const DiscountedCashFlowTable = ({
   const estimatedCostOfDebt = useSelector(selectEstimatedCostOfDebt);
 
   useEffect(() => {
-    HyperFormula.registerFunctionPlugin(
-      makeFinancialPlugin({
-        incomeStatement: {
-          ttm: ttmIncomeStatement,
-        },
-        balanceSheet: {
-          ttm: ttmBalanceSheet,
-        },
-        cashFlowStatement: {
-          ttm: ttmCashFlowStatement,
-        },
-      }),
-      finTranslations,
-    );
-
-    return () => {
-      HyperFormula.unregisterFunctionPlugin(FinancialPlugin);
-    };
-  }, [ttmBalanceSheet, ttmIncomeStatement, ttmCashFlowStatement]);
-
-  useEffect(() => {
     if (isNil(inputQueryParams[queryNames.salesToCapitalRatio])) {
       setURLInput(
         queryNames.salesToCapitalRatio,
@@ -260,6 +239,28 @@ const DiscountedCashFlowTable = ({
       },
     };
 
+    HyperFormula.registerFunctionPlugin(
+      makeFinancialPlugin({
+        incomeStatements: {
+          ttm: ttmIncomeStatement,
+        },
+        balanceSheets: {
+          ttm: ttmBalanceSheet,
+        },
+        cashFlowStatements: {
+          ttm: ttmCashFlowStatement,
+        },
+        riskFreeRate,
+        currentEquityRiskPremium,
+        currentIndustry,
+        estimatedCostOfDebt,
+        pastThreeYearsAverageEffectiveTaxRate,
+        price,
+        sharesOutstanding,
+      }),
+      finTranslations,
+    );
+
     spreadsheet = getSpreadsheet(
       dcfValuationElement,
       options,
@@ -275,8 +276,21 @@ const DiscountedCashFlowTable = ({
 
     return () => {
       spreadsheet?.destroy();
+      HyperFormula.unregisterFunctionPlugin(FinancialPlugin);
     };
-  }, [currencySymbol]);
+  }, [
+    currencySymbol,
+    currentEquityRiskPremium,
+    currentIndustry,
+    estimatedCostOfDebt,
+    pastThreeYearsAverageEffectiveTaxRate,
+    price,
+    riskFreeRate,
+    sharesOutstanding,
+    ttmBalanceSheet,
+    ttmCashFlowStatement,
+    ttmIncomeStatement,
+  ]);
 
   useEffect(() => {
     const cellEditedCallback = ({ cellAddress, value }) => {
@@ -387,10 +401,6 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     if (spreadsheet && hasAllRequiredInputsFilledIn && scope) {
-      spreadsheet.setOptions({
-        variables: scope,
-      });
-
       if (showYOYGrowth) {
         spreadsheet.setDatasheets(getYOYDataSheets(spreadsheet, isOnMobile));
       } else if (showFormulas) {
@@ -421,27 +431,22 @@ const DiscountedCashFlowTable = ({
     if (hasAllRequiredInputsFilledIn && !isNil(price)) {
       dispatch(
         setScope({
-          unleveredBeta: currentIndustry.unleveredBeta,
-          equityRiskPremium: currentEquityRiskPremium.equityRiskPremium,
-          estimatedCostOfDebt,
-          standardDeviationInStockPrices:
-            currentIndustry.standardDeviationInStockPrices,
-          matureMarketEquityRiskPremium,
-          pastThreeYearsAverageEffectiveTaxRate,
-          revenue: ttmIncomeStatement.revenue,
-          interestExpense: ttmIncomeStatement.interestExpense,
-          operatingIncome: ttmIncomeStatement.operatingIncome,
-          investedCapital: ttmBalanceSheet.investedCapital,
-          bookValueOfDebt: ttmBalanceSheet.bookValueOfDebt,
-          cashAndShortTermInvestments:
-            ttmBalanceSheet.cashAndShortTermInvestments,
-          minorityInterest: ttmBalanceSheet.minorityInterest,
-          capitalLeaseObligations: ttmBalanceSheet.capitalLeaseObligations,
-          marginalTaxRate: currentEquityRiskPremium.marginalTaxRate,
-          sharesOutstanding,
-          price,
-          bookValueOfEquity: ttmBalanceSheet.bookValueOfEquity,
+          incomeStatements: {
+            ttm: ttmIncomeStatement,
+          },
+          balanceSheets: {
+            ttm: ttmBalanceSheet,
+          },
+          cashFlowStatements: {
+            ttm: ttmCashFlowStatement,
+          },
           riskFreeRate,
+          currentEquityRiskPremium,
+          currentIndustry,
+          estimatedCostOfDebt,
+          pastThreeYearsAverageEffectiveTaxRate,
+          price,
+          sharesOutstanding,
           cagrInYears_1_5: inputQueryParams[queryNames.cagrInYears_1_5],
           yearOfConvergence: inputQueryParams[queryNames.yearOfConvergence],
           ebitTargetMarginInYear_10:
@@ -457,28 +462,19 @@ const DiscountedCashFlowTable = ({
       );
     }
   }, [
-    ttmBalanceSheet.bookValueOfDebt,
-    ttmBalanceSheet.bookValueOfEquity,
-    ttmBalanceSheet.capitalLeaseObligations,
-    ttmBalanceSheet.cashAndShortTermInvestments,
-    ttmBalanceSheet.investedCapital,
-    ttmBalanceSheet.minorityInterest,
-    currentEquityRiskPremium.equityRiskPremium,
-    currentEquityRiskPremium.marginalTaxRate,
-    currentEquityRiskPremium.unleveredBeta,
-    currentIndustry.standardDeviationInStockPrices,
-    currentIndustry.unleveredBeta,
+    currentEquityRiskPremium,
+    currentIndustry,
     dispatch,
     estimatedCostOfDebt,
     hasAllRequiredInputsFilledIn,
-    ttmIncomeStatement.interestExpense,
-    ttmIncomeStatement.operatingIncome,
-    ttmIncomeStatement.revenue,
     inputQueryParams,
     pastThreeYearsAverageEffectiveTaxRate,
     price,
     riskFreeRate,
     sharesOutstanding,
+    ttmBalanceSheet,
+    ttmCashFlowStatement,
+    ttmIncomeStatement,
   ]);
 
   const to = `${location.pathname}#${requiredInputsId}`;
