@@ -69,13 +69,7 @@ export const buildSpreadsheet = (
   const getOptions = () => newOptions;
 
   const setOptions = (options) => {
-    newOptions = getNewOptions(
-      options,
-      defaultOptions,
-      hyperformula,
-      newData,
-      sheet,
-    );
+    newOptions = getNewOptions(options, defaultOptions, newData, sheet);
   };
 
   setOptions(options);

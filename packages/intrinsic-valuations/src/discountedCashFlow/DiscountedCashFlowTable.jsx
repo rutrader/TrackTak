@@ -6,6 +6,7 @@ import useInputQueryParams from "../hooks/useInputQueryParams";
 import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
 import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
+import selectRecentCashFlowStatement from "../selectors/fundamentalSelectors/selectRecentCashFlowStatement";
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
@@ -41,6 +42,12 @@ import getDCFValuationData from "./templates/freeCashFlowFirmSimple/data/getDCFV
 import getCostOfCapitalData from "./templates/freeCashFlowFirmSimple/data/getCostOfCapitalData";
 import getOptionalInputsData from "./templates/freeCashFlowFirmSimple/data/getOptionalInputsData";
 import selectEstimatedCostOfDebt from "../selectors/fundamentalSelectors/selectEstimatedCostOfDebt";
+import {
+  FinancialPlugin,
+  finTranslations,
+  makeFinancialPlugin,
+} from "./plugins/FinancialPlugin";
+import HyperFormula from "hyperformula";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
@@ -162,8 +169,9 @@ const DiscountedCashFlowTable = ({
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const dispatch = useDispatch();
   const inputQueryParams = useInputQueryParams();
-  const incomeStatement = useSelector(selectRecentIncomeStatement);
-  const balanceSheet = useSelector(selectRecentBalanceSheet);
+  const ttmIncomeStatement = useSelector(selectRecentIncomeStatement);
+  const ttmBalanceSheet = useSelector(selectRecentBalanceSheet);
+  const ttmCashFlowStatement = useSelector(selectRecentCashFlowStatement);
   const currentEquityRiskPremium = useSelector(selectCurrentEquityRiskPremium);
   const price = useSelector(selectPrice);
   const riskFreeRate = useSelector(selectRiskFreeRate);
@@ -178,6 +186,27 @@ const DiscountedCashFlowTable = ({
   );
   const currentIndustry = useSelector(selectCurrentIndustry);
   const estimatedCostOfDebt = useSelector(selectEstimatedCostOfDebt);
+
+  useEffect(() => {
+    HyperFormula.registerFunctionPlugin(
+      makeFinancialPlugin({
+        incomeStatement: {
+          ttm: ttmIncomeStatement,
+        },
+        balanceSheet: {
+          ttm: ttmBalanceSheet,
+        },
+        cashFlowStatement: {
+          ttm: ttmCashFlowStatement,
+        },
+      }),
+      finTranslations,
+    );
+
+    return () => {
+      HyperFormula.unregisterFunctionPlugin(FinancialPlugin);
+    };
+  }, [ttmBalanceSheet, ttmIncomeStatement, ttmCashFlowStatement]);
 
   useEffect(() => {
     if (isNil(inputQueryParams[queryNames.salesToCapitalRatio])) {
@@ -321,9 +350,6 @@ const DiscountedCashFlowTable = ({
   }, [inputQueryParams, spreadsheet]);
   useEffect(() => {
     if (spreadsheet && hasAllRequiredInputsFilledIn && scope) {
-      spreadsheet.setOptions({
-        variables: scope,
-      });
       const dataSheets = getDataSheets(isOnMobile);
 
       spreadsheet.setDatasheets(dataSheets);
@@ -402,18 +428,19 @@ const DiscountedCashFlowTable = ({
             currentIndustry.standardDeviationInStockPrices,
           matureMarketEquityRiskPremium,
           pastThreeYearsAverageEffectiveTaxRate,
-          totalRevenue: incomeStatement.totalRevenue,
-          interestExpense: incomeStatement.interestExpense,
-          operatingIncome: incomeStatement.operatingIncome,
-          investedCapital: balanceSheet.investedCapital,
-          bookValueOfDebt: balanceSheet.bookValueOfDebt,
-          cashAndShortTermInvestments: balanceSheet.cashAndShortTermInvestments,
-          minorityInterest: balanceSheet.minorityInterest,
-          capitalLeaseObligations: balanceSheet.capitalLeaseObligations,
+          totalRevenue: ttmIncomeStatement.totalRevenue,
+          interestExpense: ttmIncomeStatement.interestExpense,
+          operatingIncome: ttmIncomeStatement.operatingIncome,
+          investedCapital: ttmBalanceSheet.investedCapital,
+          bookValueOfDebt: ttmBalanceSheet.bookValueOfDebt,
+          cashAndShortTermInvestments:
+            ttmBalanceSheet.cashAndShortTermInvestments,
+          minorityInterest: ttmBalanceSheet.minorityInterest,
+          capitalLeaseObligations: ttmBalanceSheet.capitalLeaseObligations,
           marginalTaxRate: currentEquityRiskPremium.marginalTaxRate,
           sharesOutstanding,
           price,
-          bookValueOfEquity: balanceSheet.bookValueOfEquity,
+          bookValueOfEquity: ttmBalanceSheet.bookValueOfEquity,
           riskFreeRate,
           cagrInYears_1_5: inputQueryParams[queryNames.cagrInYears_1_5],
           yearOfConvergence: inputQueryParams[queryNames.yearOfConvergence],
@@ -430,12 +457,12 @@ const DiscountedCashFlowTable = ({
       );
     }
   }, [
-    balanceSheet.bookValueOfDebt,
-    balanceSheet.bookValueOfEquity,
-    balanceSheet.capitalLeaseObligations,
-    balanceSheet.cashAndShortTermInvestments,
-    balanceSheet.investedCapital,
-    balanceSheet.minorityInterest,
+    ttmBalanceSheet.bookValueOfDebt,
+    ttmBalanceSheet.bookValueOfEquity,
+    ttmBalanceSheet.capitalLeaseObligations,
+    ttmBalanceSheet.cashAndShortTermInvestments,
+    ttmBalanceSheet.investedCapital,
+    ttmBalanceSheet.minorityInterest,
     currentEquityRiskPremium.equityRiskPremium,
     currentEquityRiskPremium.marginalTaxRate,
     currentEquityRiskPremium.unleveredBeta,
@@ -444,9 +471,9 @@ const DiscountedCashFlowTable = ({
     dispatch,
     estimatedCostOfDebt,
     hasAllRequiredInputsFilledIn,
-    incomeStatement.interestExpense,
-    incomeStatement.operatingIncome,
-    incomeStatement.totalRevenue,
+    ttmIncomeStatement.interestExpense,
+    ttmIncomeStatement.operatingIncome,
+    ttmIncomeStatement.totalRevenue,
     inputQueryParams,
     pastThreeYearsAverageEffectiveTaxRate,
     price,

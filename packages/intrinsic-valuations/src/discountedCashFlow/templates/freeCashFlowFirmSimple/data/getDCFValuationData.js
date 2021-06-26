@@ -90,7 +90,7 @@ const getDCFValuationData = (isOnMobile) => {
             text: "Revenues",
           },
           1: {
-            text: "=totalRevenue",
+            text: "=FIN(revenue)",
             style: 3,
           },
           2: {
