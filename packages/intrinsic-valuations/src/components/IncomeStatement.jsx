@@ -11,7 +11,7 @@ import getSymbolFromCurrency from "currency-symbol-map";
 
 const incomeStatementParam = [
   {
-    valueKey: "totalRevenue",
+    valueKey: "revenue",
     dataField: "Revenue",
     className: "bold-cell",
   },

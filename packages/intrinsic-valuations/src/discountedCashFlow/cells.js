@@ -75,7 +75,7 @@ const cells = {
   },
   A37: { value: "Margin of Safety" },
   B1: { value: "Base Year" },
-  B2: getExpressionProperties("=totalRevenue"),
+  B2: getExpressionProperties("=revenue"),
   B3: getExpressionProperties("=B4/B2"),
   B4: getExpressionProperties("=operatingIncome"),
   B5: getExpressionProperties("=pastThreeYearsAverageEffectiveTaxRate"),

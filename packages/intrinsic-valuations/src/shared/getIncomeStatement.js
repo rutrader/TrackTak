@@ -17,12 +17,10 @@ const getIncomeStatement = (
   const calculations = {};
 
   calculations.grossMargin =
-    convertedIncomeStatement.grossProfit /
-    convertedIncomeStatement.totalRevenue;
+    convertedIncomeStatement.grossProfit / convertedIncomeStatement.revenue;
 
   calculations.operatingMargin =
-    convertedIncomeStatement.operatingIncome /
-    convertedIncomeStatement.totalRevenue;
+    convertedIncomeStatement.operatingIncome / convertedIncomeStatement.revenue;
 
   calculations.effectiveTaxRate =
     convertedIncomeStatement.incomeTaxExpense /
@@ -30,7 +28,7 @@ const getIncomeStatement = (
 
   calculations.netMargin =
     convertedIncomeStatement.netIncomeFromContinuingOps /
-    convertedIncomeStatement.totalRevenue;
+    convertedIncomeStatement.revenue;
 
   return {
     ...convertedIncomeStatement,

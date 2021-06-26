@@ -30,12 +30,14 @@ const convertIncomeStatement = ({
   date,
   filing_date,
   currency_symbol,
+  totalRevenue,
   ...incomeStatement
 }) => {
   const newIncomeStatement = {
     date,
     filingDate: filing_date,
     currencyCode: currency_symbol,
+    revenue: getValueFromString(totalRevenue),
     ...incomeStatement,
   };
 

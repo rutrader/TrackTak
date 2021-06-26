@@ -61,7 +61,7 @@ export const allInputNameTypeMappings = {
 };
 
 export const incomeStatementTypeMappings = {
-  totalRevenue: "million-currency",
+  revenue: "million-currency",
   operatingIncome: "million-currency",
 };
 

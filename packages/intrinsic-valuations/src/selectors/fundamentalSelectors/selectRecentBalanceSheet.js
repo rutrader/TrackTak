@@ -33,7 +33,7 @@ const selectRecentBalanceSheet = createSelector(
     return getBalanceSheet(
       balanceSheet,
       convertCurrency,
-      recentIncomeStatement.totalRevenue,
+      recentIncomeStatement.revenue,
       mostRecentQuarter,
     );
   },
