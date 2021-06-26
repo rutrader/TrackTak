@@ -43,7 +43,7 @@ const incomeStatementParam = [
     className: "indented-cell",
   },
   {
-    valueKey: "totalOperatingExpenses",
+    valueKey: "operatingExpenses",
     className: "bold-cell",
   },
   { valueKey: "operatingIncome", className: "bold-cell" },
@@ -62,7 +62,7 @@ const incomeStatementParam = [
   },
   { valueKey: "netInterestIncome" },
   {
-    valueKey: "totalOtherIncomeExpenseNet",
+    valueKey: "otherIncomeExpense",
     className: "indented-cell",
     dataField: "Total other income (expense)",
   },
