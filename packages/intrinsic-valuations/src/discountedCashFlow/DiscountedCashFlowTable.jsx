@@ -244,30 +244,29 @@ const DiscountedCashFlowTable = ({
       },
     };
 
-    HyperFormula.registerFunctionPlugin(
-      makeFinancialPlugin({
-        incomeStatements: {
-          ttm: ttmIncomeStatement,
-          yearly: yearlyIncomeStatements,
-        },
-        balanceSheets: {
-          ttm: ttmBalanceSheet,
-          yearly: yearlyBalanceSheets,
-        },
-        cashFlowStatements: {
-          ttm: ttmCashFlowStatement,
-          yearly: yearlyCashFlowStatements,
-        },
-        riskFreeRate,
-        currentEquityRiskPremium,
-        currentIndustry,
-        estimatedCostOfDebt,
-        pastThreeYearsAverageEffectiveTaxRate,
-        price,
-        sharesOutstanding,
-      }),
-      finTranslations,
-    );
+    let FinancialPlugin = makeFinancialPlugin({
+      incomeStatements: {
+        ttm: ttmIncomeStatement,
+        yearly: yearlyIncomeStatements,
+      },
+      balanceSheets: {
+        ttm: ttmBalanceSheet,
+        yearly: yearlyBalanceSheets,
+      },
+      cashFlowStatements: {
+        ttm: ttmCashFlowStatement,
+        yearly: yearlyCashFlowStatements,
+      },
+      riskFreeRate,
+      currentEquityRiskPremium,
+      currentIndustry,
+      estimatedCostOfDebt,
+      pastThreeYearsAverageEffectiveTaxRate,
+      price,
+      sharesOutstanding,
+    });
+
+    HyperFormula.registerFunctionPlugin(FinancialPlugin, finTranslations);
 
     spreadsheet = getSpreadsheet(
       dcfValuationElement,

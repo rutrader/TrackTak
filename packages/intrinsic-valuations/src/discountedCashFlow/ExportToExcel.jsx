@@ -15,6 +15,7 @@ import { isNil } from "lodash-es";
 import { getFormats } from "./DiscountedCashFlowTable";
 import getFormatFromCell from "../../../web-spreadsheet/src/shared/getFormatFromCell";
 import numfmt from "numfmt";
+import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
 
 // TODO: Once we put in variables sheet then remove this
 const apiVariablesWorksheetName = "API Variables";
@@ -76,7 +77,35 @@ const xtos = async (
 ) => {
   const { utils } = await import("xlsx/xlsx.mini");
   const scopeIndexes = {};
-  const scopeArray = Object.keys(scope);
+
+  // TEMP
+  const newScope = {
+    ...scope,
+    revenue: scope.incomeStatements.ttm.revenue,
+    interestExpense: scope.incomeStatements.ttm.interestExpense,
+    operatingIncome: scope.incomeStatements.ttm.operatingIncome,
+    investedCapital: scope.balanceSheets.ttm.investedCapital,
+    bookValueOfDebt: scope.balanceSheets.ttm.bookValueOfDebt,
+    bookValueOfEquity: scope.balanceSheets.ttm.bookValueOfEquity,
+    cashAndShortTermInvestments:
+      scope.balanceSheets.ttm.cashAndShortTermInvestments,
+    minorityInterest: scope.balanceSheets.ttm.minorityInterest,
+    capitalLeaseObligations: scope.balanceSheets.ttm.capitalLeaseObligations,
+    unleveredBeta: scope.currentIndustry.unleveredBeta,
+    standardDeviationInStockPrices:
+      scope.currentIndustry.standardDeviationInStockPrices,
+    equityRiskPremium: scope.currentEquityRiskPremium.equityRiskPremium,
+    marginalTaxRate: scope.currentEquityRiskPremium.marginalTaxRate,
+    matureMarketEquityRiskPremium,
+  };
+
+  delete newScope.incomeStatements;
+  delete newScope.balanceSheets;
+  delete newScope.cashFlowStatements;
+  delete newScope.currentIndustry;
+  delete newScope.currentEquityRiskPremium;
+
+  const scopeArray = Object.keys(newScope);
   // TODO: Remove later
   const formats = {
     ...sharedOptions.formats,
@@ -160,7 +189,7 @@ const xtos = async (
             // set it to the API sheet cell instead
             formula = replaceAll(
               formula,
-              `\\b${key}\\b`,
+              `FIN\\("\\b${key}\\b"\\)`,
               `'${apiVariablesWorksheetName}'!$B$${cellRow}`,
             );
           });
@@ -220,7 +249,7 @@ const xtos = async (
   const apiVariablesWorksheet = {};
 
   scopeArray.forEach((key, i) => {
-    let value = scope[key];
+    let value = newScope[key];
     const cellRow = scopeIndexes[key] + 1;
     const format = scopeNameTypeMapping[key];
     let z = formats[format]?.pattern;

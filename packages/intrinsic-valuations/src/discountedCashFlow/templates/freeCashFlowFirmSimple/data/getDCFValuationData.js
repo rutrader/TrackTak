@@ -135,7 +135,7 @@ const getDCFValuationData = (isOnMobile) => {
           },
           11: {
             text:
-              "=K2*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-FIN(riskFreeRate)) / 5) * 5)",
+              "=K2*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-FIN(\"riskFreeRate\")) / 5) * 5)",
             style: 3,
           },
           12: {
