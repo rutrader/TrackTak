@@ -143,7 +143,7 @@ The below is an example from IRobot, but the principle/structure is the same for
           interestExpense: 0,
           incomeBeforeTax: 15026000,
           incomeTaxExpense: 1691000,
-          totalRevenue: 544827000,
+          revenue: 544827000,
           date: '2020-12-31'
         },
         '2020-09-30': {
@@ -151,7 +151,7 @@ The below is an example from IRobot, but the principle/structure is the same for
           interestExpense: 0,
           incomeBeforeTax: 123234000,
           incomeTaxExpense: 29982000,
-          totalRevenue: 413145000,
+          revenue: 413145000,
           date: '2020-09-30'
         },
         '2020-06-30': {
@@ -159,7 +159,7 @@ The below is an example from IRobot, but the principle/structure is the same for
           interestExpense: 0,
           incomeBeforeTax: 69899000,
           incomeTaxExpense: 11283000,
-          totalRevenue: 279883000,
+          revenue: 279883000,
           date: '2020-06-30'
         },
         '2020-03-31': {
@@ -167,7 +167,7 @@ The below is an example from IRobot, but the principle/structure is the same for
           interestExpense: 0,
           incomeBeforeTax: -20244000,
           incomeTaxExpense: -2109000,
-          totalRevenue: 192535000,
+          revenue: 192535000,
           date: '2020-03-31'
         },
       },
@@ -177,7 +177,7 @@ The below is an example from IRobot, but the principle/structure is the same for
           interestExpense: 0,
           incomeBeforeTax: 187915000,
           incomeTaxExpense: 40847000,
-          totalRevenue: 1430390000,
+          revenue: 1430390000,
           date: '2020-12-31'
         },
       }

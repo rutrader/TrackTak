@@ -3,7 +3,7 @@ import convertCalculationToZeroIfNaN from "./convertCalculationToZeroIfNaN";
 const getBalanceSheet = (
   balanceSheet,
   convertCurrency,
-  totalRevenue,
+  revenue,
   dateToConvertCurrencyAt,
 ) => {
   const convertedBalanceSheet = {};
@@ -46,8 +46,7 @@ const getBalanceSheet = (
     calculations.bookValueOfDebt -
     calculations.cashAndShortTermInvestments;
 
-  calculations.salesToCapitalRatio =
-    totalRevenue / calculations.investedCapital;
+  calculations.salesToCapitalRatio = revenue / calculations.investedCapital;
 
   // Take it out here because we show capital leases as a separate line
   // on the balance statement

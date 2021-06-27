@@ -1,5 +1,5 @@
 const getOperatingMargin = (incomeStatement) => {
-  return incomeStatement.operatingIncome / incomeStatement.totalRevenue;
+  return incomeStatement.operatingIncome / incomeStatement.revenue;
 };
 
 export default getOperatingMargin;

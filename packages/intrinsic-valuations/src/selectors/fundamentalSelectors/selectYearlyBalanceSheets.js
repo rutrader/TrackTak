@@ -31,7 +31,7 @@ const selectYearlyBalanceSheets = createSelector(
       newYearlyBalanceSheets[balanceSheet.date] = getBalanceSheet(
         balanceSheet,
         convertCurrency,
-        incomeStatement?.totalRevenue ?? 0,
+        incomeStatement?.revenue ?? 0,
         balanceSheet.date,
       );
     });

@@ -6,6 +6,7 @@ import useInputQueryParams from "../hooks/useInputQueryParams";
 import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
 import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
+import selectRecentCashFlowStatement from "../selectors/fundamentalSelectors/selectRecentCashFlowStatement";
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
@@ -41,6 +42,14 @@ import getDCFValuationData from "./templates/freeCashFlowFirmSimple/data/getDCFV
 import getCostOfCapitalData from "./templates/freeCashFlowFirmSimple/data/getCostOfCapitalData";
 import getOptionalInputsData from "./templates/freeCashFlowFirmSimple/data/getOptionalInputsData";
 import selectEstimatedCostOfDebt from "../selectors/fundamentalSelectors/selectEstimatedCostOfDebt";
+import {
+  finTranslations,
+  makeFinancialPlugin,
+} from "./plugins/FinancialPlugin";
+import HyperFormula from "hyperformula";
+import selectYearlyIncomeStatements from "../selectors/fundamentalSelectors/selectYearlyIncomeStatements";
+import selectYearlyBalanceSheets from "../selectors/fundamentalSelectors/selectYearlyBalanceSheets";
+import selectYearlyCashFlowStatements from "../selectors/fundamentalSelectors/selectYearlyCashFlowStatements";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
@@ -162,8 +171,12 @@ const DiscountedCashFlowTable = ({
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const dispatch = useDispatch();
   const inputQueryParams = useInputQueryParams();
-  const incomeStatement = useSelector(selectRecentIncomeStatement);
-  const balanceSheet = useSelector(selectRecentBalanceSheet);
+  const ttmIncomeStatement = useSelector(selectRecentIncomeStatement);
+  const ttmBalanceSheet = useSelector(selectRecentBalanceSheet);
+  const ttmCashFlowStatement = useSelector(selectRecentCashFlowStatement);
+  const yearlyIncomeStatements = useSelector(selectYearlyIncomeStatements);
+  const yearlyBalanceSheets = useSelector(selectYearlyBalanceSheets);
+  const yearlyCashFlowStatements = useSelector(selectYearlyCashFlowStatements);
   const currentEquityRiskPremium = useSelector(selectCurrentEquityRiskPremium);
   const price = useSelector(selectPrice);
   const riskFreeRate = useSelector(selectRiskFreeRate);
@@ -231,6 +244,30 @@ const DiscountedCashFlowTable = ({
       },
     };
 
+    let FinancialPlugin = makeFinancialPlugin({
+      incomeStatements: {
+        ttm: ttmIncomeStatement,
+        yearly: yearlyIncomeStatements,
+      },
+      balanceSheets: {
+        ttm: ttmBalanceSheet,
+        yearly: yearlyBalanceSheets,
+      },
+      cashFlowStatements: {
+        ttm: ttmCashFlowStatement,
+        yearly: yearlyCashFlowStatements,
+      },
+      riskFreeRate,
+      currentEquityRiskPremium,
+      currentIndustry,
+      estimatedCostOfDebt,
+      pastThreeYearsAverageEffectiveTaxRate,
+      price,
+      sharesOutstanding,
+    });
+
+    HyperFormula.registerFunctionPlugin(FinancialPlugin, finTranslations);
+
     spreadsheet = getSpreadsheet(
       dcfValuationElement,
       options,
@@ -246,8 +283,24 @@ const DiscountedCashFlowTable = ({
 
     return () => {
       spreadsheet?.destroy();
+      HyperFormula.unregisterFunctionPlugin(FinancialPlugin);
     };
-  }, [currencySymbol]);
+  }, [
+    currencySymbol,
+    currentEquityRiskPremium,
+    currentIndustry,
+    estimatedCostOfDebt,
+    pastThreeYearsAverageEffectiveTaxRate,
+    price,
+    riskFreeRate,
+    sharesOutstanding,
+    ttmBalanceSheet,
+    ttmCashFlowStatement,
+    ttmIncomeStatement,
+    yearlyBalanceSheets,
+    yearlyCashFlowStatements,
+    yearlyIncomeStatements,
+  ]);
 
   useEffect(() => {
     const cellEditedCallback = ({ cellAddress, value }) => {
@@ -321,9 +374,6 @@ const DiscountedCashFlowTable = ({
   }, [inputQueryParams, spreadsheet]);
   useEffect(() => {
     if (spreadsheet && hasAllRequiredInputsFilledIn && scope) {
-      spreadsheet.setOptions({
-        variables: scope,
-      });
       const dataSheets = getDataSheets(isOnMobile);
 
       spreadsheet.setDatasheets(dataSheets);
@@ -361,10 +411,6 @@ const DiscountedCashFlowTable = ({
 
   useEffect(() => {
     if (spreadsheet && hasAllRequiredInputsFilledIn && scope) {
-      spreadsheet.setOptions({
-        variables: scope,
-      });
-
       if (showYOYGrowth) {
         spreadsheet.setDatasheets(getYOYDataSheets(spreadsheet, isOnMobile));
       } else if (showFormulas) {
@@ -395,26 +441,22 @@ const DiscountedCashFlowTable = ({
     if (hasAllRequiredInputsFilledIn && !isNil(price)) {
       dispatch(
         setScope({
-          unleveredBeta: currentIndustry.unleveredBeta,
-          equityRiskPremium: currentEquityRiskPremium.equityRiskPremium,
-          estimatedCostOfDebt,
-          standardDeviationInStockPrices:
-            currentIndustry.standardDeviationInStockPrices,
-          matureMarketEquityRiskPremium,
-          pastThreeYearsAverageEffectiveTaxRate,
-          totalRevenue: incomeStatement.totalRevenue,
-          interestExpense: incomeStatement.interestExpense,
-          operatingIncome: incomeStatement.operatingIncome,
-          investedCapital: balanceSheet.investedCapital,
-          bookValueOfDebt: balanceSheet.bookValueOfDebt,
-          cashAndShortTermInvestments: balanceSheet.cashAndShortTermInvestments,
-          minorityInterest: balanceSheet.minorityInterest,
-          capitalLeaseObligations: balanceSheet.capitalLeaseObligations,
-          marginalTaxRate: currentEquityRiskPremium.marginalTaxRate,
-          sharesOutstanding,
-          price,
-          bookValueOfEquity: balanceSheet.bookValueOfEquity,
+          incomeStatements: {
+            ttm: ttmIncomeStatement,
+          },
+          balanceSheets: {
+            ttm: ttmBalanceSheet,
+          },
+          cashFlowStatements: {
+            ttm: ttmCashFlowStatement,
+          },
           riskFreeRate,
+          currentEquityRiskPremium,
+          currentIndustry,
+          estimatedCostOfDebt,
+          pastThreeYearsAverageEffectiveTaxRate,
+          price,
+          sharesOutstanding,
           cagrInYears_1_5: inputQueryParams[queryNames.cagrInYears_1_5],
           yearOfConvergence: inputQueryParams[queryNames.yearOfConvergence],
           ebitTargetMarginInYear_10:
@@ -430,28 +472,19 @@ const DiscountedCashFlowTable = ({
       );
     }
   }, [
-    balanceSheet.bookValueOfDebt,
-    balanceSheet.bookValueOfEquity,
-    balanceSheet.capitalLeaseObligations,
-    balanceSheet.cashAndShortTermInvestments,
-    balanceSheet.investedCapital,
-    balanceSheet.minorityInterest,
-    currentEquityRiskPremium.equityRiskPremium,
-    currentEquityRiskPremium.marginalTaxRate,
-    currentEquityRiskPremium.unleveredBeta,
-    currentIndustry.standardDeviationInStockPrices,
-    currentIndustry.unleveredBeta,
+    currentEquityRiskPremium,
+    currentIndustry,
     dispatch,
     estimatedCostOfDebt,
     hasAllRequiredInputsFilledIn,
-    incomeStatement.interestExpense,
-    incomeStatement.operatingIncome,
-    incomeStatement.totalRevenue,
     inputQueryParams,
     pastThreeYearsAverageEffectiveTaxRate,
     price,
     riskFreeRate,
     sharesOutstanding,
+    ttmBalanceSheet,
+    ttmCashFlowStatement,
+    ttmIncomeStatement,
   ]);
 
   const to = `${location.pathname}#${requiredInputsId}`;

@@ -3,7 +3,7 @@ import { cssPrefix } from "./config";
 import { locale } from "./locale/locale";
 import "./index.less";
 import { buildSpreadsheet } from "./component/builders/buildSpreadsheet";
-import { HyperFormula } from "hyperformula";
+import HyperFormula from "hyperformula";
 import { hyperformulaLicenseKey } from "./shared/hyperformulaLicenseKey";
 import spreadsheetEvents from "./core/spreadsheetEvents";
 
@@ -16,6 +16,7 @@ const getSpreadsheet = (
   const rootEl = h("div", `${cssPrefix}`).on("contextmenu", (evt) =>
     evt.preventDefault(),
   );
+
   const hyperformula = HyperFormula.buildEmpty({
     licenseKey: hyperformulaLicenseKey,
     // https://github.com/handsontable/hyperformula/issues/686

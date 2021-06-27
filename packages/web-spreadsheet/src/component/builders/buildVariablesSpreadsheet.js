@@ -35,7 +35,6 @@ export const buildVariablesSpreadsheet = (
     newOptions = getNewOptions(
       options,
       defaultVariablesSpreadsheetOptions,
-      hyperformula,
       newData,
       sheet,
     );
