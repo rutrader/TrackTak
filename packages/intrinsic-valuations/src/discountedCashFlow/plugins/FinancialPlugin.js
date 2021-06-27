@@ -9,8 +9,15 @@ export const makeFinancialPlugin = (data) => {
     cashFlowStatements,
     currentEquityRiskPremium,
     currentIndustry,
+    general,
+    highlights,
+    exchangeRates,
     ...financialData
   } = data;
+
+  const lastExchangeRate = exchangeRates
+    ? Object.values(exchangeRates)[0].close
+    : 1;
 
   const ttmData = {
     ...financialData,
@@ -19,6 +26,9 @@ export const makeFinancialPlugin = (data) => {
     ...cashFlowStatements.ttm,
     ...currentEquityRiskPremium,
     ...currentIndustry,
+    ...general,
+    ...highlights,
+    lastExchangeRate,
     matureMarketEquityRiskPremium,
   };
 

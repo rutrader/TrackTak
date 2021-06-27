@@ -50,6 +50,10 @@ import HyperFormula from "hyperformula";
 import selectYearlyIncomeStatements from "../selectors/fundamentalSelectors/selectYearlyIncomeStatements";
 import selectYearlyBalanceSheets from "../selectors/fundamentalSelectors/selectYearlyBalanceSheets";
 import selectYearlyCashFlowStatements from "../selectors/fundamentalSelectors/selectYearlyCashFlowStatements";
+import getSyntheticCreditRatingData from "./templates/freeCashFlowFirmSimple/data/getSyntheticCreditRatingData";
+import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
+import selectHighlights from "../selectors/fundamentalSelectors/selectHighlights";
+import selectExchangeRates from "../selectors/fundamentalSelectors/selectExchangeRates";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
@@ -61,6 +65,7 @@ const getDataSheets = (isOnMobile) => {
     getDCFValuationData(isOnMobile),
     getCostOfCapitalData(),
     getEmployeeOptionsData(),
+    getSyntheticCreditRatingData(),
   ];
 
   return dataSheets;
@@ -191,6 +196,9 @@ const DiscountedCashFlowTable = ({
   );
   const currentIndustry = useSelector(selectCurrentIndustry);
   const estimatedCostOfDebt = useSelector(selectEstimatedCostOfDebt);
+  const general = useSelector(selectGeneral);
+  const highlights = useSelector(selectHighlights);
+  const exchangeRates = useSelector(selectExchangeRates);
 
   useEffect(() => {
     if (isNil(inputQueryParams[queryNames.salesToCapitalRatio])) {
@@ -257,6 +265,9 @@ const DiscountedCashFlowTable = ({
         ttm: ttmCashFlowStatement,
         yearly: yearlyCashFlowStatements,
       },
+      exchangeRates,
+      general,
+      highlights,
       riskFreeRate,
       currentEquityRiskPremium,
       currentIndustry,
@@ -290,6 +301,9 @@ const DiscountedCashFlowTable = ({
     currentEquityRiskPremium,
     currentIndustry,
     estimatedCostOfDebt,
+    exchangeRates,
+    general,
+    highlights,
     pastThreeYearsAverageEffectiveTaxRate,
     price,
     riskFreeRate,
