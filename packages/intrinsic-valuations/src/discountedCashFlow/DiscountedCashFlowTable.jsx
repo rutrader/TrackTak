@@ -43,7 +43,6 @@ import getCostOfCapitalData from "./templates/freeCashFlowFirmSimple/data/getCos
 import getOptionalInputsData from "./templates/freeCashFlowFirmSimple/data/getOptionalInputsData";
 import selectEstimatedCostOfDebt from "../selectors/fundamentalSelectors/selectEstimatedCostOfDebt";
 import {
-  FinancialPlugin,
   finTranslations,
   makeFinancialPlugin,
 } from "./plugins/FinancialPlugin";
