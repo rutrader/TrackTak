@@ -443,12 +443,15 @@ const DiscountedCashFlowTable = ({
         setScope({
           incomeStatements: {
             ttm: ttmIncomeStatement,
+            yearly: yearlyIncomeStatements,
           },
           balanceSheets: {
             ttm: ttmBalanceSheet,
+            yearly: yearlyBalanceSheets,
           },
           cashFlowStatements: {
             ttm: ttmCashFlowStatement,
+            yearly: yearlyCashFlowStatements,
           },
           riskFreeRate,
           currentEquityRiskPremium,
@@ -485,6 +488,9 @@ const DiscountedCashFlowTable = ({
     ttmBalanceSheet,
     ttmCashFlowStatement,
     ttmIncomeStatement,
+    yearlyBalanceSheets,
+    yearlyCashFlowStatements,
+    yearlyIncomeStatements,
   ]);
 
   const to = `${location.pathname}#${requiredInputsId}`;
