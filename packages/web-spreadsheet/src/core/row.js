@@ -103,11 +103,6 @@ class Rows {
     const row = this.getOrNew(ri);
 
     const paste = () => {
-      const newCell = this.getCellOrNew(ri, ci);
-
-      // TODO: Remove later
-      newCell.text = cell.text;
-
       this.hyperformula.paste({
         col: ci,
         row: ri,
@@ -131,11 +126,6 @@ class Rows {
   }
 
   _setCellText = (ri, ci, text) => {
-    const cell = this.getCellOrNew(ri, ci);
-
-    // TODO: Remove later
-    cell.text = text;
-
     this.hyperformula.setCellContents(
       { col: ci, row: ri, sheet: this.getDataProxy().getSheetId() },
       [[text]],
@@ -175,61 +165,6 @@ class Rows {
                 const nri = ii + (i - sri);
                 const nci = jj + (j - sci);
                 const ncell = helper.cloneDeep(this._[i].cells[j]);
-                // ncell.text
-                if (autofill && ncell && ncell.text && ncell.text.length > 0) {
-                  const { text } = ncell;
-                  let n = jj - dsci + (ii - dsri) + 2;
-                  if (!isAdd) {
-                    n -= dn + 1;
-                  }
-                  if (text[0] === "=") {
-                    const nText = text.replace(REGEX_EXPR_GLOBAL, (word) => {
-                      let [xn, yn] = [0, 0];
-                      if (sri === dsri) {
-                        xn = n - 1;
-                        // if (isAdd) xn -= 1;
-                      } else {
-                        yn = n - 1;
-                      }
-                      if (/^\d+$/.test(word)) return word;
-
-                      // Set expr2expr to not perform translation on axes with an
-                      // absolute reference
-                      return expr2expr(word, xn, yn, false);
-                    });
-
-                    ncell.text = nText;
-                    this.hyperformula.setCellContents(
-                      {
-                        col: nci,
-                        row: nri,
-                        sheet: this.getDataProxy().getSheetId(),
-                      },
-                      [[nText]],
-                    );
-                  } else if (
-                    (rn <= 1 && cn > 1 && (dsri > eri || deri < sri)) ||
-                    (cn <= 1 && rn > 1 && (dsci > eci || deci < sci)) ||
-                    (rn <= 1 && cn <= 1)
-                  ) {
-                    const result = /[\\.\d]+$/.exec(text);
-                    // console.log('result:', result);
-                    if (result !== null) {
-                      const index = Number(result[0]) + n - 1;
-                      const nText = text.substring(0, result.index) + index;
-
-                      ncell.text = nText;
-                      this.hyperformula.setCellContents(
-                        {
-                          col: nci,
-                          row: nri,
-                          sheet: this.getDataProxy().getSheetId(),
-                        },
-                        [[nText]],
-                      );
-                    }
-                  }
-                }
                 this.setCell(nri, nci, ncell, what);
                 cb(nri, nci, ncell);
               }

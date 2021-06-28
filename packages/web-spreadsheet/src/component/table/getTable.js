@@ -134,14 +134,16 @@ export const getTable = (
     }
 
     const cell = data.getCell(nrindex, cindex);
-    if (cell === null) return;
+
     let frozen = false;
-    if ("editable" in cell && cell.editable === false) {
+
+    if (cell && "editable" in cell && cell.editable === false) {
       frozen = true;
     }
 
     const style = data.getCellStyleOrDefault(nrindex, cindex);
     const dbox = getTableDrawBox(data, rindex, cindex, yoffset);
+
     dbox.bgcolor = style.bgcolor;
     if (style.border !== undefined) {
       // bboxes.push({ ri: rindex, ci: cindex, box: dbox });
@@ -163,7 +165,8 @@ export const getTable = (
       let format = style.format;
 
       if (showAllFormulas) {
-        cellText = cell.text;
+        cellText = hyperformula.getCellSerialized(cellAddress);
+
         if (hyperformula.doesCellHaveFormula(cellAddress)) {
           format = "text";
         }
@@ -210,7 +213,7 @@ export const getTable = (
       if (frozen) {
         draw.frozen(dbox);
       }
-      if (cell.comment) {
+      if (cell?.comment) {
         draw.commentMarker(dbox);
       }
     });

@@ -3,7 +3,13 @@ import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { h } from "../element";
 import { getEditableInput } from "./getEditableInput";
 
-export const getFormulaBar = (getOptions, getData, formulas, eventEmitter) => {
+export const getFormulaBar = (
+  getOptions,
+  getData,
+  formulas,
+  eventEmitter,
+  hyperformula,
+) => {
   const el = h("div", `${cssPrefix}-formula-bar`);
 
   const editableInput = getEditableInput(
@@ -12,6 +18,7 @@ export const getFormulaBar = (getOptions, getData, formulas, eventEmitter) => {
     formulas,
     eventEmitter,
     el,
+    hyperformula,
     "formulaBar",
   );
   const fxIcon = h("div", `${cssPrefix}-icon-fx`);

@@ -214,22 +214,20 @@ export const makeGetDataProxy = (
     if (unsortedRowMap.has(ri)) {
       nri = unsortedRowMap.get(ri);
     }
-    const oldCell = rows.getCell(nri, ci);
-    const oldText = oldCell ? oldCell.text : "";
+    // const oldCell = rows.getCell(nri, ci);
+    // const oldText = oldCell ? oldCell.text : "";
 
     setCellText(nri, ci, text, state);
-    // replace filter.value
+
     if (autoFilter.active()) {
       const filter = autoFilter.getFilter(ci);
       if (filter) {
-        const vIndex = filter.value.findIndex((v) => v === oldText);
-        if (vIndex >= 0) {
-          filter.value.splice(vIndex, 1, text);
-        }
-        // console.log('filter:', filter, oldCell);
+        // const vIndex = filter.value.findIndex((v) => v === oldText);
+        // if (vIndex >= 0) {
+        //   filter.value.splice(vIndex, 1, text);
+        // }
       }
     }
-    // resetAutoFilter();
   };
 
   const getSelectedCell = () => {
@@ -1038,6 +1036,8 @@ export const makeGetDataProxy = (
 
   const getSheetId = () => {
     const sheetId = hyperformula.getSheetId(name);
+
+    if (sheetId === undefined) throw new Error("sheetId cannot be undefined");
 
     return sheetId;
   };

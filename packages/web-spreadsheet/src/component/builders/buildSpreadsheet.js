@@ -19,7 +19,6 @@ import getClipboard from "../../core/getClipboard";
 import { getFormulaBar } from "../editor/getFormulaBar";
 import { getFormulaSuggestions } from "../../shared/getFormulaSuggestions";
 import Manager from "undo-redo-manager";
-import mapDatasheetToSheetContent from "../../shared/mapDatasheetToSheetContent";
 import { bind } from "../event";
 
 export const buildSpreadsheet = (
@@ -110,9 +109,7 @@ export const buildSpreadsheet = (
     currentData = currentSheet.getData().getData();
     currentSheet.getData().setData(parsedData);
 
-    // TODO: Remove later
-    const sheetContent = mapDatasheetToSheetContent(parsedData);
-    hyperformula.setSheetContent(parsedData.name, sheetContent);
+    hyperformula.setSheetContent(parsedData.name, parsedData.serializedValues);
 
     currentSheet.sheetReset();
     sheet.sheetReset();
@@ -137,6 +134,7 @@ export const buildSpreadsheet = (
     getFocusedData,
     getFormulaSuggestions(),
     globalEventEmitter,
+    hyperformula,
   );
 
   const sheetBuilder = buildSheet(
@@ -145,6 +143,7 @@ export const buildSpreadsheet = (
     rangeSelector,
     eventEmitter,
     getViewWidthHeight,
+    hyperformula,
   );
 
   const dataProxyBuilder = buildDataProxy(

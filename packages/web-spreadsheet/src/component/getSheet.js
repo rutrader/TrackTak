@@ -6,7 +6,6 @@ import spreadsheetEvents from "../core/spreadsheetEvents";
 import setTextFormat from "../shared/setTextFormat";
 import getFormatFromCell from "../shared/getFormatFromCell";
 import getTouchElementOffset from "../shared/getTouchElementOffset";
-import mapDatasheetToSheetContent from "../shared/mapDatasheetToSheetContent";
 
 /**
  * @desc throttle fn
@@ -304,29 +303,24 @@ export const getSheet = (
 
       datas.push(data);
 
+      if (hyperformula.isItPossibleToAddSheet(name)) {
+        hyperformula.addSheet(name);
+
+        switchData(datas[0]);
+      }
+
       return data;
     };
 
     if (!dataSheets.length) {
       // Add dummy data for now until dataProxy is refactored
       addDataProxy("sheet1");
-      switchData(datas[0]);
     }
 
     dataSheets.forEach((dataSheet, i) => {
       let data;
 
-      if (hyperformula.isItPossibleToAddSheet(dataSheet.name)) {
-        data = addDataProxy(dataSheet.name);
-
-        hyperformula.addSheet(dataSheet.name);
-
-        if (i === 0) {
-          switchData(data);
-        }
-      } else {
-        data = addDataProxy(dataSheet.name);
-      }
+      data = addDataProxy(dataSheet.name);
       data.setData(dataSheet);
     });
 
@@ -336,9 +330,10 @@ export const getSheet = (
     dataSheets
       .sort((x) => x.calculationOrder)
       .forEach((dataSheet) => {
-        const sheetContent = mapDatasheetToSheetContent(dataSheet);
-
-        hyperformula.setSheetContent(dataSheet.name, sheetContent);
+        hyperformula.setSheetContent(
+          dataSheet.name,
+          dataSheet.serializedValues,
+        );
 
         if (getOptions().debugMode) {
           const sheetId = hyperformula.getSheetId(dataSheet.name);
@@ -821,7 +816,7 @@ export const getSheet = (
     const sOffset = getData().getSelectedRect();
     const tOffset = table.getOffset();
     let sPosition = "top";
-    // console.log('sOffset:', sOffset, ':', tOffset);
+
     if (sOffset.top > tOffset.height / 2) {
       sPosition = "bottom";
     }
@@ -833,6 +828,7 @@ export const getSheet = (
 
     editorSetOffset();
     editor.setCell(
+      rangeSelector.getIndexes(),
       getData().getSelectedCell(),
       getData().getSelectedValidator(),
     );
