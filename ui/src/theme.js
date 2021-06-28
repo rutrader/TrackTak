@@ -1,4 +1,4 @@
-  import {
+import {
   alpha,
   createMuiTheme,
   responsiveFontSizes,
