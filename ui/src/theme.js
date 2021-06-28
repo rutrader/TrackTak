@@ -1,4 +1,4 @@
-import {
+  import {
   alpha,
   createMuiTheme,
   responsiveFontSizes,
@@ -32,6 +32,7 @@ let theme = createMuiTheme({
       dark: "#41407d",
       contrastText: "#fff",
     },
+    alert: "#ff5151"
   },
   components: {
     MuiButton: {

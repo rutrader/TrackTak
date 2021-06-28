@@ -7,10 +7,12 @@ import {
   TableHead,
   TableRow,
   Box,
-  useTheme,
   ListItemIcon,
+  IconButton,
 } from "@material-ui/core";
 import GridOnIcon from "@material-ui/icons/GridOn";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { useTheme } from "@material-ui/styles";
 
 const SpreadsheetTable = () => {
   const theme = useTheme();
@@ -49,6 +51,7 @@ const SpreadsheetTable = () => {
             <TableCell style={cellHeaderStyle} align="right">
               Last Modified
             </TableCell>
+            <TableCell style={cellHeaderStyle} align="right" />
           </TableRow>
         </TableHead>
         <TableBody>
@@ -68,6 +71,16 @@ const SpreadsheetTable = () => {
                 </Box>
               </TableCell>
               <TableCell align="right">{row.lastModifiedTime}</TableCell>
+              <TableCell align="right">
+                <IconButton
+                  sx={{
+                    borderRadius: '2px',
+                    color: theme.palette.alert,
+                  }}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
