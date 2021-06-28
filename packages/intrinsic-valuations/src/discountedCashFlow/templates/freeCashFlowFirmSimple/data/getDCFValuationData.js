@@ -1,3 +1,4 @@
+/* eslint-disable no-sparse-arrays */
 const getDCFValuationData = (isOnMobile) => {
   let desktopData;
 
@@ -489,741 +490,777 @@ const getDCFValuationData = (isOnMobile) => {
       },
     ],
     merges: [],
-    rows: {
-      0: {
-        cells: {
-          2: {
+    rows: [
+      {
+        cells: [
+          ,
+          ,
+          {
             style: 4,
           },
-          3: {
+          {
             style: 4,
           },
-          4: {
+          {
             style: 4,
           },
-          5: {
+          {
             style: 4,
           },
-          6: {
+          {
             style: 4,
           },
-          7: {
+          {
             style: 4,
           },
-          8: {
+          {
             style: 4,
           },
-          9: {
+          {
             style: 4,
           },
-          10: {
+          {
             style: 4,
           },
-          11: {
+          {
             style: 4,
           },
-        },
+        ],
       },
-      1: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-          2: {
+          {
             style: 3,
           },
-          3: {
+          {
             style: 3,
           },
-          4: {
+          {
             style: 3,
           },
-          5: {
+          {
             style: 3,
           },
-          6: {
+          {
             style: 3,
           },
-          7: {
+          {
             style: 3,
           },
-          8: {
+          {
             style: 3,
           },
-          9: {
+          {
             style: 3,
           },
-          10: {
+          {
             style: 3,
           },
-          11: {
+          {
             style: 3,
           },
-          12: {
+          {
             style: 3,
           },
-        },
+        ],
       },
-      2: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 0,
           },
-          2: {
+          {
             style: 0,
           },
-          3: {
+          {
             style: 0,
           },
-          4: {
+          {
             style: 0,
           },
-          5: {
+          {
             style: 0,
           },
-          6: {
+          {
             style: 0,
           },
-          7: {
+          {
             style: 0,
           },
-          8: {
+          {
             style: 0,
           },
-          9: {
+          {
             style: 0,
           },
-          10: {
+          {
             style: 0,
           },
-          11: {
+          {
             style: 0,
           },
-          12: {
+          {
             style: 0,
           },
-        },
+        ],
       },
-      3: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-          2: {
+          {
             style: 3,
           },
-          3: {
+          {
             style: 3,
           },
-          4: {
+          {
             style: 3,
           },
-          5: {
+          {
             style: 3,
           },
-          6: {
+          {
             style: 3,
           },
-          7: {
+          {
             style: 3,
           },
-          8: {
+          {
             style: 3,
           },
-          9: {
+          {
             style: 3,
           },
-          10: {
+          {
             style: 3,
           },
-          11: {
+          {
             style: 3,
           },
-          12: {
+          {
             style: 3,
           },
-        },
+        ],
       },
-      4: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 0,
           },
-          2: {
+          {
             style: 0,
           },
-          3: {
+          {
             style: 0,
           },
-          4: {
+          {
             style: 0,
           },
-          5: {
+          {
             style: 0,
           },
-          6: {
+          {
             style: 0,
           },
-          7: {
+          {
             style: 0,
           },
-          8: {
+          {
             style: 0,
           },
-          9: {
+          {
             style: 0,
           },
-          10: {
+          {
             style: 0,
           },
-          11: {
+          {
             style: 0,
           },
-          12: {
+          {
             style: 0,
           },
-        },
+        ],
       },
-      5: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-          2: {
+          {
             style: 3,
           },
-          3: {
+          {
             style: 3,
           },
-          4: {
+          {
             style: 3,
           },
-          5: {
+          {
             style: 3,
           },
-          6: {
+          {
             style: 3,
           },
-          7: {
+          {
             style: 3,
           },
-          8: {
+          {
             style: 3,
           },
-          9: {
+          {
             style: 3,
           },
-          10: {
+          {
             style: 3,
           },
-          11: {
+          {
             style: 3,
           },
-          12: {
+          {
             style: 3,
           },
-        },
+        ],
       },
-      6: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-          2: {
+          {
             style: 3,
           },
-          3: {
+          {
             style: 3,
           },
-          4: {
+          {
             style: 3,
           },
-          5: {
+          {
             style: 3,
           },
-          6: {
+          {
             style: 3,
           },
-          7: {
+          {
             style: 3,
           },
-          8: {
+          {
             style: 3,
           },
-          9: {
+          {
             style: 3,
           },
-          10: {
+          {
             style: 3,
           },
-          11: {
+          {
             style: 3,
           },
-          12: {
+          {
             style: 3,
           },
-        },
+        ],
       },
-      7: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-          2: {
+          {
             style: 3,
           },
-          3: {
+          {
             style: 3,
           },
-          4: {
+          {
             style: 3,
           },
-          5: {
+          {
             style: 3,
           },
-          6: {
+          {
             style: 3,
           },
-          7: {
+          {
             style: 3,
           },
-          8: {
+          {
             style: 3,
           },
-          9: {
+          {
             style: 3,
           },
-          10: {
+          {
             style: 3,
           },
-          11: {
+          {
             style: 3,
           },
-          12: {
+          {
             style: 3,
           },
-        },
+        ],
       },
-      8: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-          2: {
+          {
             style: 3,
           },
-          3: {
+          {
             style: 3,
           },
-          4: {
+          {
             style: 3,
           },
-          5: {
+          {
             style: 3,
           },
-          6: {
+          {
             style: 3,
           },
-          7: {
+          {
             style: 3,
           },
-          8: {
+          {
             style: 3,
           },
-          9: {
+          {
             style: 3,
           },
-          10: {
+          {
             style: 3,
           },
-          11: {
+          {
             style: 3,
           },
-          12: {
+          {
             style: 3,
           },
-        },
+        ],
       },
-      10: {
-        cells: {
-          1: {
+      ,
+      {
+        cells: [
+          ,
+          {
             style: 0,
           },
-          2: {
+          {
             style: 0,
           },
-          3: {
+          {
             style: 0,
           },
-          4: {
+          {
             style: 0,
           },
-          5: {
+          {
             style: 0,
           },
-          6: {
+          {
             style: 0,
           },
-          7: {
+          {
             style: 0,
           },
-          8: {
+          {
             style: 0,
           },
-          9: {
+          {
             style: 0,
           },
-          10: {
+          {
             style: 0,
           },
-          11: {
+          {
             style: 0,
           },
-          12: {
+          {
             style: 0,
           },
-        },
+        ],
       },
-      11: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 4,
           },
-          2: {
+          {
             style: 4,
           },
-          3: {
+          {
             style: 4,
           },
-          4: {
+          {
             style: 4,
           },
-          5: {
+          {
             style: 4,
           },
-          6: {
+          {
             style: 4,
           },
-          7: {
+          {
             style: 4,
           },
-          8: {
+          {
             style: 4,
           },
-          9: {
+          {
             style: 4,
           },
-          10: {
+          {
             style: 4,
           },
-          11: {
+          {
             style: 4,
           },
-          12: {
+          {
             style: 4,
           },
-        },
+        ],
       },
-      12: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-          2: {
+          {
             style: 3,
           },
-          3: {
+          {
             style: 3,
           },
-          4: {
+          {
             style: 3,
           },
-          5: {
+          {
             style: 3,
           },
-          6: {
+          {
             style: 3,
           },
-          7: {
+          {
             style: 3,
           },
-          8: {
+          {
             style: 3,
           },
-          9: {
+          {
             style: 3,
           },
-          10: {
+          {
             style: 3,
           },
-          11: {
+          {
             style: 3,
           },
-          12: {
+          {
             style: 3,
           },
-        },
+        ],
       },
-      14: {
-        cells: {
-          1: {
+      ,
+      {
+        cells: [
+          ,
+          {
             style: 4,
           },
-          2: {
+          {
             style: 4,
           },
-          3: {
+          {
             style: 4,
           },
-          4: {
+          {
             style: 4,
           },
-          5: {
+          {
             style: 4,
           },
-          6: {
+          {
             style: 4,
           },
-          7: {
+          {
             style: 4,
           },
-          8: {
+          {
             style: 4,
           },
-          9: {
+          {
             style: 4,
           },
-          10: {
+          {
             style: 4,
           },
-          11: {
+          {
             style: 4,
           },
-          12: {
+          {
             style: 4,
           },
-        },
+        ],
       },
-      15: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-          2: {
+          {
             style: 3,
           },
-          3: {
+          {
             style: 3,
           },
-          4: {
+          {
             style: 3,
           },
-          5: {
+          {
             style: 3,
           },
-          6: {
+          {
             style: 3,
           },
-          7: {
+          {
             style: 3,
           },
-          8: {
+          {
             style: 3,
           },
-          9: {
+          {
             style: 3,
           },
-          10: {
+          {
             style: 3,
           },
-          11: {
+          {
             style: 3,
           },
-          12: {
+          {
             style: 3,
           },
-        },
+        ],
       },
-      16: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 0,
           },
-          2: {
+          {
             style: 0,
           },
-          3: {
+          {
             style: 0,
           },
-          4: {
+          {
             style: 0,
           },
-          5: {
+          {
             style: 0,
           },
-          6: {
+          {
             style: 0,
           },
-          7: {
+          {
             style: 0,
           },
-          8: {
+          {
             style: 0,
           },
-          9: {
+          {
             style: 0,
           },
-          10: {
+          {
             style: 0,
           },
-          11: {
+          {
             style: 0,
           },
-          12: {
+          {
             style: 0,
           },
-        },
+        ],
       },
-      18: {
-        cells: {
-          1: {
+      ,
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-        },
+        ],
       },
-      19: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 0,
           },
-        },
+        ],
       },
-      20: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-        },
+        ],
       },
-      21: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-        },
+        ],
       },
-      22: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-        },
+        ],
       },
-      23: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-        },
+        ],
       },
-      24: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 0,
           },
-        },
+        ],
       },
-      25: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-        },
+        ],
       },
-      26: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-        },
+        ],
       },
-      27: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-        },
+        ],
       },
-      28: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-        },
+        ],
       },
-      29: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-        },
+        ],
       },
-      30: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-        },
+        ],
       },
-      31: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-        },
+        ],
       },
-      32: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-        },
+        ],
       },
-      33: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-        },
+        ],
       },
-      34: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-        },
+        ],
       },
-      35: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 5,
           },
-        },
+        ],
       },
-      36: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 0,
           },
-        },
+        ],
       },
-      len: 100,
-    },
+    ],
     cols: {
       0: {
         width: 170,
       },
-      len: 26,
     },
     validations: [],
     autofilter: {},

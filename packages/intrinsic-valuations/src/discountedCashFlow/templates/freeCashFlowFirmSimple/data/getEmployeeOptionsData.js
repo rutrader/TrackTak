@@ -1,3 +1,4 @@
+/* eslint-disable no-sparse-arrays */
 const getEmployeeOptionsData = () => {
   return {
     calculationOrder: 0,
@@ -49,82 +50,92 @@ const getEmployeeOptionsData = () => {
       },
     ],
     merges: ["A1:B1"],
-    rows: {
-      0: {
-        cells: {
-          0: {
+    rows: [
+      {
+        cells: [
+          {
             merge: [0, 1],
             style: 5,
             comment:
               "Calculated from the inputs you entered in the Employee Options section. We use the Black Scholes methodology to work out the estimated market price per employee option. We then minus this from the 'Equity' cell in the Valuation Output (cell B34).",
           },
-        },
+        ],
       },
-      1: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 4,
           },
-        },
+        ],
       },
-      2: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-        },
+        ],
       },
-      3: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 4,
           },
-        },
+        ],
       },
-      4: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 0,
           },
-        },
+        ],
       },
-      5: {
-        cells: {
-          1: {
+      {
+        cells: [
+          {
             style: 0,
           },
-        },
+        ],
       },
-      6: {
-        cells: {
-          1: {
+      {
+        cells: [
+          {
             style: 4,
           },
-        },
+        ],
       },
-      7: {
-        cells: {
-          1: {
+      {
+        cells: [
+          {
             style: 3,
           },
-        },
+        ],
       },
-      15: {
-        cells: {
-          1: {
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      ,
+      {
+        cells: [
+          {
             style: 3,
           },
-        },
+        ],
       },
-      16: {
-        cells: {
-          1: {
+      {
+        cells: [
+          {
             style: 3,
           },
-        },
+        ],
       },
-      len: 100,
-    },
+    ],
     cols: {
       0: {
         width: 260,
@@ -132,10 +143,7 @@ const getEmployeeOptionsData = () => {
       1: {
         width: 165,
       },
-      len: 26,
     },
-    validations: [],
-    autofilter: {},
   };
 };
 

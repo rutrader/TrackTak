@@ -3,7 +3,7 @@ import convertIndexesToAmount from "../shared/convertIndexesToAmount";
 
 class Rows {
   constructor(getRow, getDataProxy, hyperformula) {
-    this._ = {};
+    this.rows = [];
     this.len = getRow().len;
     this.getDataProxy = getDataProxy;
     // default row height
@@ -65,12 +65,13 @@ class Rows {
   }
 
   get(ri) {
-    return this._[ri];
+    return { ...this.rows[ri] };
   }
 
   getOrNew(ri) {
-    this._[ri] = this._[ri] || { cells: {} };
-    return this._[ri];
+    this.rows[ri] = this.rows[ri] || { cells: [] };
+
+    return { ...this.rows[ri] };
   }
 
   getCell(ri, ci) {
@@ -80,9 +81,10 @@ class Rows {
       row.cells !== undefined &&
       row.cells[ci] !== undefined
     ) {
-      return row.cells[ci];
+      return { ...row.cells[ci] };
     }
-    return null;
+
+    return undefined;
   }
 
   getCellMerge(ri, ci) {
@@ -93,8 +95,9 @@ class Rows {
 
   getCellOrNew(ri, ci) {
     const row = this.getOrNew(ri);
-    row.cells[ci] = row.cells[ci] || {};
-    return row.cells[ci];
+    row.cells[ci] = row.cells[ci] || [];
+
+    return { ...row.cells[ci] };
   }
 
   // what: all | text | format
@@ -115,7 +118,7 @@ class Rows {
     } else if (what === "text") {
       paste();
     } else if (what === "format") {
-      row.cells[ci] = row.cells[ci] || {};
+      row.cells[ci] = row.cells[ci] || [];
       row.cells[ci].style = cell.style;
 
       if (cell.merge) {
@@ -158,14 +161,15 @@ class Rows {
       else dn = dcn;
     }
     for (let i = sri; i <= eri; i += 1) {
-      if (this._[i]) {
+      if (this.rows[i]) {
         for (let j = sci; j <= eci; j += 1) {
-          if (this._[i].cells && this._[i].cells[j]) {
+          if (this.rows[i].cells && this.rows[i].cells[j]) {
             for (let ii = dsri; ii <= deri; ii += rn) {
               for (let jj = dsci; jj <= deci; jj += cn) {
                 const nri = ii + (i - sri);
                 const nci = jj + (j - sci);
-                const ncell = helper.cloneDeep(this._[i].cells[j]);
+                const ncell = helper.cloneDeep(this.rows[i].cells[j]);
+
                 this.setCell(nri, nci, ncell, what);
                 cb(nri, nci, ncell);
               }
@@ -177,7 +181,7 @@ class Rows {
   }
 
   cutPaste(srcCellRange, dstCellRange) {
-    const ncellmm = {};
+    const ncellmm = [];
     this.each((ri) => {
       this.eachCells(ri, (ci) => {
         let nri = parseInt(ri, 10);
@@ -192,11 +196,11 @@ class Rows {
             sheet: this.getDataProxy().getSheetId(),
           });
         }
-        ncellmm[nri] = ncellmm[nri] || { cells: {} };
-        ncellmm[nri].cells[nci] = this._[ri].cells[ci];
+        ncellmm[nri] = ncellmm[nri] || { cells: [] };
+        ncellmm[nri].cells[nci] = this.rows[ri].cells[ci];
       });
     });
-    this._ = ncellmm;
+    this.rows = ncellmm;
   }
 
   // src: Array<Array<String>>
@@ -260,9 +264,9 @@ class Rows {
   // what: all | text | format | merge
   deleteCell(ri, ci, what = "all") {
     const row = this.get(ri);
-    if (row !== null) {
+    if (row) {
       const cell = this.getCell(ri, ci);
-      if (cell !== null) {
+      if (cell) {
         if (what === "all") {
           delete row.cells[ci];
         } else if (what === "text") {
@@ -286,9 +290,8 @@ class Rows {
   }
 
   maxCell() {
-    const keys = Object.keys(this._);
-    const ri = keys[keys.length - 1];
-    const col = this._[ri];
+    const ri = this.rows[this.rows.length - 1];
+    const col = this.rows[ri];
     if (col) {
       const { cells } = col;
       const ks = Object.keys(cells);
@@ -299,30 +302,41 @@ class Rows {
   }
 
   each(cb) {
-    Object.entries(this._).forEach(([ri, row]) => {
+    this.rows.forEach(([ri, row]) => {
       cb(ri, row);
     });
   }
 
   eachCells(ri, cb) {
-    if (this._[ri] && this._[ri].cells) {
-      Object.entries(this._[ri].cells).forEach(([ci, cell]) => {
+    if (this.rows[ri] && this.rows[ri].cells) {
+      this.rows[ri].cells.forEach(([ci, cell]) => {
         cb(ci, cell);
       });
     }
   }
 
-  setData(d) {
-    if (d.len) {
-      this.len = d.len;
-      delete d.len;
-    }
-    this._ = d;
+  setData(rows) {
+    // Rows is a sparse array, so this is to
+    // essentially clone the element while preserving empty records
+    // this.rows = new Array(rows.length);
+
+    // rows.forEach((row, ri) => {
+    //   const newCells = new Array(row.cells.length);
+
+    //   row.cells.forEach((cell, ci) => {
+    //     newCells[ci] = { ...cell };
+    //   });
+
+    //   this.rows[ri] = {
+    //     ...rows[ri],
+    //     cells: newCells,
+    //   };
+    // });
+    this.rows = helper.cloneDeep(rows);
   }
 
   getData() {
-    const { len } = this;
-    return Object.assign({ len }, this._);
+    return [...this.rows];
   }
 }
 

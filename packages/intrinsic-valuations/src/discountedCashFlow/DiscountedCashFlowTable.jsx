@@ -52,7 +52,6 @@ import selectYearlyCashFlowStatements from "../selectors/fundamentalSelectors/se
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
-const columnAWidth = 170;
 const defaultColWidth = 110;
 
 const getDataSheets = (isOnMobile) => {
@@ -80,27 +79,6 @@ export const getFormats = (currencySymbol) => {
   };
 
   return formats;
-};
-
-const getDatasheetsColWidths = (colWidth, isOnMobile) => {
-  const dataSheets = getDataSheets(isOnMobile);
-  const newDataSheets = dataSheets.map((dataSheet, datasheetIndex) => {
-    const newCols = {};
-
-    Object.values(dataSheet.rows[0].cells).forEach((_, columnIndex) => {
-      newCols[columnIndex] = {
-        width:
-          datasheetIndex === 0 && columnIndex === 0 ? columnAWidth : colWidth,
-      };
-    });
-
-    return {
-      ...dataSheet,
-      cols: newCols,
-    };
-  });
-
-  return newDataSheets;
 };
 
 const DiscountedCashFlowTable = ({

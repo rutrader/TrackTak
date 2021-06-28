@@ -1,3 +1,4 @@
+/* eslint-disable no-sparse-arrays */
 const getCostOfCapitalData = () => {
   return {
     calculationOrder: 1,
@@ -195,216 +196,228 @@ const getCostOfCapitalData = () => {
       },
     ],
     merges: ["A1:B1"],
-    rows: {
-      0: {
-        cells: {
-          0: {
+    rows: [
+      {
+        cells: [
+          {
             merge: [0, 1],
             style: 5,
           },
-        },
+        ],
       },
-      1: {
-        cells: {
-          0: {
+      {
+        cells: [
+          {
             style: 7,
           },
-        },
+        ],
       },
-      2: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 4,
           },
-        },
+        ],
       },
-      3: {
-        cells: {
-          1: {
+      {
+        cells: [
+          {
             style: 3,
           },
-        },
+        ],
       },
-      4: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 4,
             comment:
               "Is a measure of the market risk of the company relative to it's peers in the same industry without the impact of debt. This determines how much risk comes with owning a stock.",
           },
-        },
+        ],
       },
-      5: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 0,
             comment:
               "Refers to the theoretical rate of return of an investment with zero risk.",
           },
-        },
+        ],
       },
-      6: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 0,
           },
-        },
+        ],
       },
-      8: {
-        cells: {
-          0: {
+      ,
+      {
+        cells: [
+          {
             style: 7,
           },
-        },
+        ],
       },
-      9: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-          2: {
+          {
             style: 7,
           },
-        },
+        ],
       },
-      10: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
 
-          3: {
+          ,
+          {
             style: 3,
           },
-        },
+        ],
       },
-      11: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 4,
           },
-          3: {
+          ,
+          {
             style: 3,
           },
-        },
+        ],
       },
-      12: {
-        cells: {
-          3: {
+      {
+        cells: [
+          ,
+          ,
+          ,
+          {
             style: 3,
           },
-        },
+        ],
       },
-      13: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 0,
             comment:
               "By default this is the synthetic credit rating pre-tax cost of debt that we have automatically calculated for you which is fine for most cases. If you manually input a cost of debt in the Normal Debt input field then it will overwrite this synthetic cost of debt.",
           },
-          3: {
+          ,
+          {
             style: 4,
             comment:
               "Is a measure of market risk of the company relative to it's peers in the same industry including the impact of debt on the company. This determines how much risk comes with owning a stock.",
           },
-        },
+        ],
       },
-      14: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 0,
           },
-          2: {
+          {
             style: 13,
           },
-          3: {
+          {
             style: 16,
           },
-          4: {
+          {
             style: 16,
           },
-          5: {
+          {
             style: 16,
           },
-          6: {
+          {
             style: 18,
           },
-        },
+        ],
       },
-      15: {
-        cells: {
-          2: {
+      {
+        cells: [
+          ,
+          ,
+          {
             style: 16,
           },
-          3: {
+          {
             style: 13,
           },
-          4: {
+          {
             style: 13,
           },
-          5: {
+          {
             style: 13,
           },
-          6: {
+          {
             style: 14,
           },
-        },
+        ],
       },
-      16: {
-        cells: {
-          0: {
+      {
+        cells: [
+          {
             style: 7,
           },
-          2: {
+          ,
+          {
             style: 16,
           },
-          3: {
+          {
             style: 20,
           },
-          4: {
+          {
             style: 20,
           },
-          5: {
+          {
             style: 20,
           },
-          6: {
+          {
             style: 21,
           },
-        },
+        ],
       },
-      17: {
-        cells: {
-          1: {
+      {
+        cells: [
+          ,
+          {
             style: 3,
           },
-          2: {
+          {
             style: 17,
           },
-          3: {
+          {
             style: 15,
           },
-          4: {
+          {
             style: 15,
           },
-          5: {
+          {
             style: 15,
           },
-          6: {
+          {
             style: 19,
             comment:
               "The total cost of raising capital (cash) for the company, weighted by equity and debt.",
           },
-        },
+        ],
       },
-      25: {
-        cells: {
-          0: {
-            style: 7,
-          },
-        },
-      },
-      len: 102,
-    },
+    ],
     cols: {
       0: {
         width: 280,
@@ -415,10 +428,7 @@ const getCostOfCapitalData = () => {
       2: {
         width: 281,
       },
-      len: 26,
     },
-    validations: [],
-    autofilter: {},
   };
 };
 

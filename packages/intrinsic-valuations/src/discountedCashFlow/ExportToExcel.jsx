@@ -128,16 +128,9 @@ const xtos = async (
 
     let minCoord, maxCoord;
 
-    const rowArray = Object.values(dataSheet.rows);
-
-    rowArray.pop();
-
-    dataSheet.serializedValues.forEach((row, ri) => {
-      const cellsArray = Object.values(rowArray[ri].cells);
-
-      row.forEach((value, ci) => {
-        const cell = cellsArray[ci];
-        let newValue = value;
+    dataSheet.rows.forEach((row, ri) => {
+      row.cells.forEach((cell, ci) => {
+        let newValue = dataSheet.serializedValues[ri][ci];
 
         const format = getFormatFromCell(cell, dataSheet.styles);
 

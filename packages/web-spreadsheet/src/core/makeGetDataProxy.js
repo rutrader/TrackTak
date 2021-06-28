@@ -524,7 +524,7 @@ export const makeGetDataProxy = (
     const cell = rows.getCell(ri, ci);
     let width = cols.getWidth(ci);
     let height = rows.getHeight(ri);
-    if (cell !== null) {
+    if (cell) {
       if (cell.merge) {
         const [rn, cn] = cell.merge;
         // console.log('cell.merge:', cell.merge);

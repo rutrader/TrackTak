@@ -2,7 +2,7 @@ import helper from "./helper";
 
 class Cols {
   constructor(getCol) {
-    this._ = {};
+    this.cols = {};
     this.len = getCol().len;
     this.width = getCol().width;
     this.indexWidth = getCol().indexWidth;
@@ -11,21 +11,16 @@ class Cols {
   }
 
   setData(d) {
-    if (d.len) {
-      this.len = d.len;
-      delete d.len;
-    }
-    this._ = d;
+    this.cols = { ...d };
   }
 
   getData() {
-    const { len } = this;
-    return Object.assign({ len }, this._);
+    return { ...this.cols };
   }
 
   getWidth(i) {
     if (this.isHide(i)) return 0;
-    const col = this._[i];
+    const col = this.cols[i];
     if (col && col.width) {
       return col.width;
     }
@@ -33,8 +28,8 @@ class Cols {
   }
 
   getOrNew(ci) {
-    this._[ci] = this._[ci] || {};
-    return this._[ci];
+    this.cols[ci] = this.cols[ci] || {};
+    return this.cols[ci];
   }
 
   setWidth(ci, width) {
@@ -53,7 +48,7 @@ class Cols {
   }
 
   isHide(ci) {
-    const col = this._[ci];
+    const col = this.cols[ci];
     return col && col.hide;
   }
 
@@ -77,5 +72,4 @@ class Cols {
   }
 }
 
-export default {};
 export { Cols };
