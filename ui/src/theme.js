@@ -12,6 +12,9 @@ let theme = createMuiTheme({
     },
     fontSize2: "18px",
     fontSize3: "25px",
+    table: {
+      header: "13px"
+    }
   },
   palette: {
     tableBackground: alpha("#51509c", 0.04),
