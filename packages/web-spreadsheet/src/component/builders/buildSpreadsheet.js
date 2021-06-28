@@ -243,6 +243,7 @@ export const buildSpreadsheet = (
     rootEl,
     setDatasheets,
     getDatas,
+    getData,
     setOptions,
     hyperformula,
     eventEmitter,

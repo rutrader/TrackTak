@@ -125,41 +125,40 @@ const xtos = async (
     var ws = {
       "!cols": [],
     };
-    let rowobj = dataSheet.rows;
+
     let minCoord, maxCoord;
 
-    for (var ri = 0; ri < rowobj.len; ++ri) {
-      var row = rowobj[ri];
-      if (!row) continue;
+    const rowArray = Object.values(dataSheet.rows);
 
-      // eslint-disable-next-line no-loop-func
-      Object.keys(row.cells).forEach(function (k) {
-        var idx = +k;
-        if (isNaN(idx)) return;
+    rowArray.pop();
 
-        const cell = row.cells[k];
+    dataSheet.serializedValues.forEach((row, ri) => {
+      const cellsArray = Object.values(rowArray[ri].cells);
+
+      row.forEach((value, ci) => {
+        const cell = cellsArray[ci];
+        let newValue = value;
+
         const format = getFormatFromCell(cell, dataSheet.styles);
 
-        let cellText = cell.text;
-
-        var lastRef = coordinateToReference(ri + 1, idx + 1);
+        var lastRef = coordinateToReference(ri + 1, ci + 1);
         if (minCoord === undefined) {
           minCoord = {
             r: ri,
-            c: idx,
+            c: ci,
           };
         } else {
           if (ri < minCoord.r) minCoord.r = ri;
-          if (idx < minCoord.c) minCoord.c = idx;
+          if (ci < minCoord.c) minCoord.c = ci;
         }
         if (maxCoord === undefined) {
           maxCoord = {
             r: ri,
-            c: idx,
+            c: ci,
           };
         } else {
           if (ri > maxCoord.r) maxCoord.r = ri;
-          if (idx > maxCoord.c) maxCoord.c = idx;
+          if (ci > maxCoord.c) maxCoord.c = ci;
         }
 
         let pattern = formats[format]?.pattern;
@@ -169,19 +168,19 @@ const xtos = async (
           z: pattern,
         };
 
-        if (isNil(cellText) || cellText === "") {
+        if (isNil(newValue) || newValue === "") {
           excelFormat.t = "z";
         }
 
         // Already formatted to %
-        if (numfmt.isPercent(cellText)) {
-          cellText = parseFloat(cellText) / 100;
+        if (numfmt.isPercent(newValue)) {
+          newValue = parseFloat(newValue) / 100;
         }
 
         let formula;
 
-        if (keepFormulas && cellText?.[0] === "=") {
-          formula = cellText.slice(1);
+        if (keepFormulas && newValue?.[0] === "=") {
+          formula = newValue.slice(1);
 
           scopeArray.forEach((key) => {
             const cellRow = scopeIndexes[key] + 1;
@@ -198,11 +197,11 @@ const xtos = async (
 
         ws[lastRef] = {
           ...excelFormat,
-          v: cellText,
+          v: newValue,
           f: formula,
         };
 
-        if (keepMerges && cell.merge !== undefined) {
+        if (keepMerges && cell?.merge !== undefined) {
           if (ws["!merges"] === undefined) {
             ws["!merges"] = [];
           }
@@ -210,21 +209,21 @@ const xtos = async (
           ws["!merges"].push({
             s: {
               r: ri,
-              c: idx,
+              c: ci,
             },
             e: {
               r: ri + cell.merge[0],
-              c: idx + cell.merge[1],
+              c: ci + cell.merge[1],
             },
           });
         }
       });
+    });
 
-      ws["!ref"] =
-        coordinateToReference(minCoord.r + 1, minCoord.c + 1) +
-        ":" +
-        coordinateToReference(maxCoord.r + 1, maxCoord.c + 1);
-    }
+    ws["!ref"] =
+      coordinateToReference(minCoord.r + 1, minCoord.c + 1) +
+      ":" +
+      coordinateToReference(maxCoord.r + 1, maxCoord.c + 1);
 
     // Set col widths
     for (let index = 0; index <= maxCoord.c; index++) {

@@ -33,6 +33,7 @@ const getSpreadsheet = (
     variablesSpreadsheet,
     setDatasheets,
     getDatas,
+    getData,
     setOptions,
     eventEmitter,
   } = buildSpreadsheet(
@@ -57,6 +58,7 @@ const getSpreadsheet = (
     spreadsheetEventEmitter,
     setDatasheets,
     getDatas,
+    getData,
     eventEmitter,
   };
 };

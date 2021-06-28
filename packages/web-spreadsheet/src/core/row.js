@@ -1,5 +1,4 @@
 import helper from "./helper";
-import { expr2expr, REGEX_EXPR_GLOBAL } from "./alphabet";
 import convertIndexesToAmount from "../shared/convertIndexesToAmount";
 
 class Rows {
@@ -126,9 +125,11 @@ class Rows {
   }
 
   _setCellText = (ri, ci, text) => {
+    let newText = text;
+
     this.hyperformula.setCellContents(
       { col: ci, row: ri, sheet: this.getDataProxy().getSheetId() },
-      [[text]],
+      [[newText]],
     );
   };
 

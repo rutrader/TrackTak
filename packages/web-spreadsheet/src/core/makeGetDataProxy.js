@@ -811,6 +811,7 @@ export const makeGetDataProxy = (
       cols: cols.getData(),
       validations: validations.getData(),
       autofilter: autoFilter.getData(),
+      serializedValues: hyperformula.getSheetSerialized(getSheetId()),
     };
   };
 

@@ -232,7 +232,7 @@ export const getEditableInput = (
   const setCell = (indexes, cell, validator) => {
     if (cell && cell.editable === false) return;
 
-    const value = hyperformula.getCellValue({
+    const value = hyperformula.getCellSerialized({
       row: indexes.ri,
       col: indexes.ci,
       sheet: getData().getSheetId(),

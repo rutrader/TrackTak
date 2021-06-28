@@ -317,7 +317,7 @@ export const getSheet = (
       addDataProxy("sheet1");
     }
 
-    dataSheets.forEach((dataSheet, i) => {
+    dataSheets.forEach((dataSheet) => {
       let data;
 
       data = addDataProxy(dataSheet.name);
@@ -886,12 +886,7 @@ export const getSheet = (
       sheet: getData().getSheetId(),
     };
 
-    let value = hyperformula.getCellValue(cellAddress);
-
-    // Temporary
-    if (format === "percent") {
-      value = hyperformula.getCellSerialized(cellAddress);
-    }
+    let value = hyperformula.getCellSerialized(cellAddress);
 
     const param = {
       cell,
