@@ -6,7 +6,6 @@ import spreadsheetEvents from "../core/spreadsheetEvents";
 import setTextFormat from "../shared/setTextFormat";
 import getFormatFromCell from "../shared/getFormatFromCell";
 import getTouchElementOffset from "../shared/getTouchElementOffset";
-import mapDatasheetToSheetContent from "../shared/mapDatasheetToSheetContent";
 
 /**
  * @desc throttle fn
@@ -304,29 +303,24 @@ export const getSheet = (
 
       datas.push(data);
 
+      if (hyperformula.isItPossibleToAddSheet(name)) {
+        hyperformula.addSheet(name);
+
+        switchData(datas[0]);
+      }
+
       return data;
     };
 
     if (!dataSheets.length) {
       // Add dummy data for now until dataProxy is refactored
       addDataProxy("sheet1");
-      switchData(datas[0]);
     }
 
-    dataSheets.forEach((dataSheet, i) => {
+    dataSheets.forEach((dataSheet) => {
       let data;
 
-      if (hyperformula.isItPossibleToAddSheet(dataSheet.name)) {
-        data = addDataProxy(dataSheet.name);
-
-        hyperformula.addSheet(dataSheet.name);
-
-        if (i === 0) {
-          switchData(data);
-        }
-      } else {
-        data = addDataProxy(dataSheet.name);
-      }
+      data = addDataProxy(dataSheet.name);
       data.setData(dataSheet);
     });
 
@@ -336,9 +330,10 @@ export const getSheet = (
     dataSheets
       .sort((x) => x.calculationOrder)
       .forEach((dataSheet) => {
-        const sheetContent = mapDatasheetToSheetContent(dataSheet);
-
-        hyperformula.setSheetContent(dataSheet.name, sheetContent);
+        hyperformula.setSheetContent(
+          dataSheet.name,
+          dataSheet.serializedValues,
+        );
 
         if (getOptions().debugMode) {
           const sheetId = hyperformula.getSheetId(dataSheet.name);
@@ -386,14 +381,13 @@ export const getSheet = (
   };
 
   const undo = () => {
-    // TODO: add back later
-    // hyperformula.undo();
+    hyperformula.undo();
     history.undo();
     toolbar.reset();
   };
 
   const redo = () => {
-    // hyperformula.redo();
+    hyperformula.redo();
     history.redo();
     toolbar.reset();
   };
@@ -470,10 +464,22 @@ export const getSheet = (
         selector.range,
       );
     } else {
+      const value = hyperformula.getCellValue({
+        row: ri,
+        col: ci,
+        sheet: getData().getSheetId(),
+      });
+
       // Blur the content editable to fix safari bug
       editor.textEl.el.blur();
       selector.set(ri, ci, indexesUpdated);
-      eventEmitter.emit(spreadsheetEvents.sheet.cellSelected, cell, ri, ci);
+      eventEmitter.emit(
+        spreadsheetEvents.sheet.cellSelected,
+        cell,
+        value,
+        ri,
+        ci,
+      );
     }
   }
 
@@ -821,18 +827,27 @@ export const getSheet = (
     const sOffset = getData().getSelectedRect();
     const tOffset = table.getOffset();
     let sPosition = "top";
-    // console.log('sOffset:', sOffset, ':', tOffset);
+
     if (sOffset.top > tOffset.height / 2) {
       sPosition = "bottom";
     }
     editor.setOffset(sOffset, sPosition);
   }
 
-  function editorSet() {
+  function editorSet(cellText) {
     if (getOptions().mode === "read") return;
+
+    const indexes = rangeSelector.getIndexes();
+
+    const value = hyperformula.getCellSerialized({
+      row: indexes.ri,
+      col: indexes.ci,
+      sheet: getData().getSheetId(),
+    });
 
     editorSetOffset();
     editor.setCell(
+      cellText ?? value,
       getData().getSelectedCell(),
       getData().getSelectedValidator(),
     );
@@ -890,26 +905,21 @@ export const getSheet = (
       sheet: getData().getSheetId(),
     };
 
-    let value = hyperformula.getCellValue(cellAddress);
-
-    // Temporary
-    if (format === "percent") {
-      value = hyperformula.getCellSerialized(cellAddress);
-    }
-
     const param = {
       cell,
       cellAddress,
       format,
-      value,
+      value: newText,
     };
 
     if (state === "finished") {
+      table.render();
       eventEmitter.emit(spreadsheetEvents.sheet.cellEdited, param);
     } else {
       eventEmitter.emit(spreadsheetEvents.sheet.cellEdit, param);
-      table.render();
     }
+
+    return newText;
   }
 
   function sortFilterChange(ci, order, operator, value) {
@@ -1196,8 +1206,9 @@ export const getSheet = (
           evt.key === "." ||
           evt.key === "-"
         ) {
-          dataSetCellText(evt.key, "startInput");
-          editorSet();
+          const cellText = dataSetCellText(evt.key, "startInput");
+
+          editorSet(cellText);
         } else if (keyCode === 113) {
           // F2
           editorSet();

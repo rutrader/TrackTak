@@ -22,6 +22,7 @@ export const sharedOptions = {
   showGrid: true,
   showContextmenu: true,
   showAllFormulas: false,
+  showYOYGrowth: false,
   row: {
     len: 100,
     indexHeight: 20,

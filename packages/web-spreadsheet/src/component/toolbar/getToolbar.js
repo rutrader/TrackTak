@@ -89,7 +89,7 @@ export const getToolbar = (
   const items = [
     [formatEl],
     buildDivider(),
-    [undoEl, redoEl],
+    // [undoEl, redoEl],
     // [undoEl, redoEl, printEl, paintformatEl, clearformatEl],
     // buildDivider(),
     // [fontEl, fontSizeEl],

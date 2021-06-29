@@ -1,4 +1,4 @@
-import { CellRange } from './cell_range';
+import { CellRange } from "./cell_range";
 // operator: all|eq|neq|gt|gte|lt|lte|in|be
 // value:
 //   in => []
@@ -17,10 +17,10 @@ class Filter {
 
   includes(v) {
     const { operator, value } = this;
-    if (operator === 'all') {
+    if (operator === "all") {
       return true;
     }
-    if (operator === 'in') {
+    if (operator === "in") {
       return value.includes(v);
     }
     return false;
@@ -28,7 +28,7 @@ class Filter {
 
   vlength() {
     const { operator, value } = this;
-    if (operator === 'in') {
+    if (operator === "in") {
       return value.length;
     }
     return 0;
@@ -47,11 +47,11 @@ class Sort {
   }
 
   asc() {
-    return this.order === 'asc';
+    return this.order === "asc";
   }
 
   desc() {
-    return this.order === 'desc';
+    return this.order === "desc";
   }
 }
 
@@ -65,7 +65,9 @@ export default class AutoFilter {
   setData({ ref, filters, sort }) {
     if (ref != null) {
       this.ref = ref;
-      this.filters = filters.map(it => new Filter(it.ci, it.operator, it.value));
+      this.filters = filters.map(
+        (it) => new Filter(it.ci, it.operator, it.value),
+      );
       if (sort) {
         this.sort = new Sort(sort.ci, sort.order);
       }
@@ -75,7 +77,7 @@ export default class AutoFilter {
   getData() {
     if (this.active()) {
       const { ref, filters, sort } = this;
-      return { ref, filters: filters.map(it => it.getData()), sort };
+      return { ref, filters: filters.map((it) => it.getData()), sort };
     }
     return {};
   }
@@ -130,13 +132,13 @@ export default class AutoFilter {
         for (let i = 0; i < filters.length; i += 1) {
           const filter = filters[i];
           const cell = getCell(ri, filter.ci);
-          const ctext = cell ? cell.text : '';
-          if (!filter.includes(ctext)) {
-            rset.add(ri);
-            break;
-          } else {
-            fset.add(ri);
-          }
+          // const ctext = cell ? cell.text : "";
+          // if (!filter.includes(ctext)) {
+          //   rset.add(ri);
+          //   break;
+          // } else {
+          //   fset.add(ri);
+          // }
         }
       }
     }
@@ -149,13 +151,13 @@ export default class AutoFilter {
       const { sri, eri } = this.range();
       for (let ri = sri + 1; ri <= eri; ri += 1) {
         const cell = getCell(ri, ci);
-        if (cell !== null && !/^\s*$/.test(cell.text)) {
-          const key = cell.text;
-          const cnt = (m[key] || 0) + 1;
-          m[key] = cnt;
-        } else {
-          m[''] = (m[''] || 0) + 1;
-        }
+        // if (cell && !/^\s*$/.test(cell.text)) {
+        //   const key = cell.text;
+        //   const cnt = (m[key] || 0) + 1;
+        //   m[key] = cnt;
+        // } else {
+        //   m[''] = (m[''] || 0) + 1;
+        // }
       }
     }
     return m;

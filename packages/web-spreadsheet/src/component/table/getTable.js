@@ -134,14 +134,16 @@ export const getTable = (
     }
 
     const cell = data.getCell(nrindex, cindex);
-    if (cell === null) return;
+
     let frozen = false;
-    if ("editable" in cell && cell.editable === false) {
+
+    if (cell && "editable" in cell && cell.editable === false) {
       frozen = true;
     }
 
     const style = data.getCellStyleOrDefault(nrindex, cindex);
     const dbox = getTableDrawBox(data, rindex, cindex, yoffset);
+
     dbox.bgcolor = style.bgcolor;
     if (style.border !== undefined) {
       // bboxes.push({ ri: rindex, ci: cindex, box: dbox });
@@ -154,35 +156,56 @@ export const getTable = (
       sheet: getData().getSheetId(),
     };
 
+    const previousColCellAddress = {
+      col: cindex - 1,
+      row: rindex,
+      sheet: getData().getSheetId(),
+    };
+
     draw.rect(dbox, () => {
       const showAllFormulas = getOptions().showAllFormulas;
+      const showYOYGrowth = getOptions().showYOYGrowth;
       const formats = getOptions().formats;
 
-      // render text
-      let cellText = "";
+      let value = hyperformula.getCellValue(cellAddress);
       let format = style.format;
 
       if (showAllFormulas) {
-        cellText = cell.text;
+        value = hyperformula.getCellSerialized(cellAddress);
+
         if (hyperformula.doesCellHaveFormula(cellAddress)) {
           format = "text";
         }
-      } else {
-        cellText = hyperformula.getCellValue(cellAddress);
       }
 
-      if (cellText?.value) {
-        const error = cellText;
+      if (
+        showYOYGrowth &&
+        hyperformula.getCellValueType(previousColCellAddress) === "NUMBER" &&
+        hyperformula.getCellValueType(cellAddress) === "NUMBER"
+      ) {
+        const previousValue = hyperformula.getCellValue(previousColCellAddress);
+        let yoyGrowth = 0;
 
-        cellText = error.value;
+        if (value !== 0) {
+          yoyGrowth = (value - previousValue) / value;
+        }
+        value = yoyGrowth;
+
+        format = "percent";
+      }
+
+      if (value?.value) {
+        const error = value;
+
+        value = error.value;
 
         console.error("hyperformula error", error);
       } else {
-        cellText = numfmt(formats[format].pattern)(cellText);
+        value = numfmt(formats[format].pattern)(value);
 
         // Remove trailing dot that formatting leaves if ends in .##
-        if (cellText && cellText.charAt(cellText.length - 1) === ".") {
-          cellText = cellText.slice(0, cellText.length - 1);
+        if (value && value.charAt(value.length - 1) === ".") {
+          value = value.slice(0, value.length - 1);
         }
       }
 
@@ -190,7 +213,7 @@ export const getTable = (
       font.size = getFontSizePxByPt(font.size);
 
       draw.text(
-        cellText,
+        value,
         dbox,
         {
           align: style.align,
@@ -210,7 +233,7 @@ export const getTable = (
       if (frozen) {
         draw.frozen(dbox);
       }
-      if (cell.comment) {
+      if (cell?.comment) {
         draw.commentMarker(dbox);
       }
     });

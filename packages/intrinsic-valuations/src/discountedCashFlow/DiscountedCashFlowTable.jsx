@@ -14,7 +14,6 @@ import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFil
 import { AnchorLink, navigate } from "../shared/gatsby";
 import { useLocation } from "@reach/router";
 import selectThreeAverageYearsEffectiveTaxRate from "../selectors/fundamentalSelectors/selectThreeAverageYearsEffectiveTaxRate";
-import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
 import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
 import selectScope from "../selectors/dcfSelectors/selectScope";
 import {
@@ -53,18 +52,7 @@ import selectYearlyCashFlowStatements from "../selectors/fundamentalSelectors/se
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
-const columnAWidth = 170;
 const defaultColWidth = 110;
-
-const getDataSheets = (isOnMobile) => {
-  const dataSheets = [
-    getDCFValuationData(isOnMobile),
-    getCostOfCapitalData(),
-    getEmployeeOptionsData(),
-  ];
-
-  return dataSheets;
-};
 
 // Temporary until patterns are in the cell
 // instead of formats
@@ -83,80 +71,6 @@ export const getFormats = (currencySymbol) => {
   return formats;
 };
 
-const getDatasheetsColWidths = (colWidth, isOnMobile) => {
-  const dataSheets = getDataSheets(isOnMobile);
-  const newDataSheets = dataSheets.map((dataSheet, datasheetIndex) => {
-    const newCols = {};
-
-    Object.values(dataSheet.rows[0].cells).forEach((_, columnIndex) => {
-      newCols[columnIndex] = {
-        width:
-          datasheetIndex === 0 && columnIndex === 0 ? columnAWidth : colWidth,
-      };
-    });
-
-    return {
-      ...dataSheet,
-      cols: newCols,
-    };
-  });
-
-  return newDataSheets;
-};
-
-const getYOYDataSheets = (spreadsheet, isOnMobile) => {
-  const dcfValuationDataSheet = getDCFValuationData(isOnMobile);
-  const dataSheetsValues = spreadsheet?.hyperformula?.getAllSheetsValues();
-
-  const formulaSheet = dataSheetsValues[dcfValuationDataSheet.name];
-  const newRows = {};
-
-  Object.keys(dcfValuationDataSheet.rows).forEach((rowKey) => {
-    const cells = dcfValuationDataSheet.rows[rowKey].cells;
-    const formulaRow = formulaSheet[rowKey];
-    if (typeof cells === "object") {
-      newRows[rowKey] = {
-        ...dcfValuationDataSheet.rows[rowKey],
-        cells: Object.values(cells).map((cell, i) => {
-          const previousFormulaValue = formulaRow[i - 1]
-            ? formulaRow[i - 1]
-            : null;
-          let currentFormulaValue = formulaRow[i];
-
-          if (
-            typeof previousFormulaValue === "number" &&
-            typeof currentFormulaValue === "number" &&
-            rowKey !== "0"
-          ) {
-            return {
-              ...cell,
-              text:
-                (currentFormulaValue - previousFormulaValue) /
-                currentFormulaValue,
-              style: 0,
-            };
-          }
-
-          return {
-            ...cell,
-            text: currentFormulaValue,
-          };
-        }),
-      };
-    }
-  });
-
-  const newDCFValuationDataSheet = {
-    ...dcfValuationDataSheet,
-    rows: newRows,
-  };
-
-  const dataSheets = getDataSheets(isOnMobile);
-
-  dataSheets[0] = newDCFValuationDataSheet;
-
-  return dataSheets;
-};
 const DiscountedCashFlowTable = ({
   showFormulas,
   showYOYGrowth,
@@ -360,24 +274,45 @@ const DiscountedCashFlowTable = ({
   }, [isOnMobile, spreadsheet]);
 
   useEffect(() => {
+    if (spreadsheet) {
+      const { datas } = spreadsheet.getDatas();
+
+      // Temporary
+      if (!datas.length) {
+        spreadsheet.variablesSpreadsheet.setVariableDatasheets([
+          getRequiredInputsData(inputQueryParams),
+          getOptionalInputsData(inputQueryParams),
+        ]);
+      }
+
+      if (
+        hasAllRequiredInputsFilledIn &&
+        (!datas.length || datas.length === 1)
+      ) {
+        spreadsheet.setDatasheets([
+          getDCFValuationData(isOnMobile),
+          getCostOfCapitalData(),
+          getEmployeeOptionsData(),
+        ]);
+
+        spreadsheet.sheet.switchData(spreadsheet.sheet.getDatas()[0]);
+      }
+    }
+  }, [spreadsheet, isOnMobile, inputQueryParams, hasAllRequiredInputsFilledIn]);
+
+  useEffect(() => {
     if (!hasAllRequiredInputsFilledIn && spreadsheet) {
+      const { datas } = spreadsheet.getDatas();
+
+      datas.forEach((sheet) => {
+        spreadsheet.hyperformula.clearSheet(sheet.name);
+      });
       spreadsheet.setDatasheets([]);
     }
   }, [hasAllRequiredInputsFilledIn, spreadsheet, isOnMobile]);
-  useEffect(() => {
-    if (spreadsheet) {
-      spreadsheet.variablesSpreadsheet.setVariableDatasheets([
-        getRequiredInputsData(inputQueryParams),
-        getOptionalInputsData(inputQueryParams),
-      ]);
-    }
-  }, [inputQueryParams, spreadsheet]);
+
   useEffect(() => {
     if (spreadsheet && hasAllRequiredInputsFilledIn && scope) {
-      const dataSheets = getDataSheets(isOnMobile);
-
-      spreadsheet.setDatasheets(dataSheets);
-
       const sheetName = "DCF Valuation";
       const dataSheetFormulas = spreadsheet.hyperformula.getAllSheetsFormulas();
       const dataSheetValues = spreadsheet.hyperformula.getAllSheetsValues();
@@ -412,20 +347,25 @@ const DiscountedCashFlowTable = ({
   useEffect(() => {
     if (spreadsheet && hasAllRequiredInputsFilledIn && scope) {
       if (showYOYGrowth) {
-        spreadsheet.setDatasheets(getYOYDataSheets(spreadsheet, isOnMobile));
-      } else if (showFormulas) {
-        spreadsheet.setOptions({
-          showAllFormulas: true,
-        });
-        spreadsheet.setDatasheets(getDatasheetsColWidths(200, isOnMobile));
-      } else {
         spreadsheet.setOptions({
           showAllFormulas: false,
+          showYOYGrowth: true,
         });
-        spreadsheet.setDatasheets(getDataSheets(isOnMobile));
+        return;
       }
-      // TODO: refactor this cause it's terrible
-      spreadsheet.sheet.switchData(spreadsheet.sheet.getDatas()[0]);
+
+      if (showFormulas) {
+        spreadsheet.setOptions({
+          showAllFormulas: true,
+          showYOYGrowth: false,
+        });
+        return;
+      }
+
+      spreadsheet.setOptions({
+        showAllFormulas: false,
+        showYOYGrowth: false,
+      });
     }
   }, [
     showYOYGrowth,

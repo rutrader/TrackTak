@@ -8,7 +8,6 @@ import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { dateFormat } from "../../shared/dateFormat";
 import getFormatFromCell from "../../shared/getFormatFromCell";
 import setTextFormat from "../../shared/setTextFormat";
-import { isNil } from "lodash-es";
 import getCaretPositionIndex from "../../shared/getCaretPositionIndex";
 
 export const getEditableInput = (
@@ -17,6 +16,7 @@ export const getEditableInput = (
   formulas,
   eventEmitter,
   el,
+  hyperformula,
   eventType,
 ) => {
   function insertText({ target }, itxt) {
@@ -51,8 +51,8 @@ export const getEditableInput = (
   }
 
   const resetCellText = () => {
-    setCell(initialCell);
-    setInputText(initialCell.text);
+    setCell(initialText, initialCell);
+    setInputText(initialText);
     clear();
   };
 
@@ -166,6 +166,8 @@ export const getEditableInput = (
   const freeze = { w: 0, h: 0 };
   let _cell = null;
   let initialCell = null;
+  let _indexes = null;
+  let initialText = null;
   let inputText = "";
 
   const getInputText = () => inputText;
@@ -227,15 +229,14 @@ export const getEditableInput = (
     }
   };
 
-  const setCell = (cell, validator) => {
+  const setCell = (cellText, cell, validator) => {
     if (cell && cell.editable === false) return;
 
     _cell = cell;
     initialCell = { ...cell };
+    initialText = cellText;
 
-    let text = !isNil(_cell?.text) ? cell.text : "";
-
-    setText(text);
+    setText(cellText);
 
     const format = getFormatFromCell(_cell, getData().getData().styles);
 
@@ -251,8 +252,8 @@ export const getEditableInput = (
       const { type } = _validator;
       if (type === "date") {
         datepicker.show();
-        if (!/^\s*$/.test(text)) {
-          datepicker.setValue(text);
+        if (!/^\s*$/.test(cellText)) {
+          datepicker.setValue(cellText);
         }
       }
       if (type === "list") {
