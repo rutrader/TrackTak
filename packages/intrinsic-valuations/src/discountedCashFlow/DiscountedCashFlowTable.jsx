@@ -54,16 +54,6 @@ const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
 const defaultColWidth = 110;
 
-const getDataSheets = (isOnMobile) => {
-  const dataSheets = [
-    getDCFValuationData(isOnMobile),
-    getCostOfCapitalData(),
-    getEmployeeOptionsData(),
-  ];
-
-  return dataSheets;
-};
-
 // Temporary until patterns are in the cell
 // instead of formats
 export const getFormats = (currencySymbol) => {
@@ -284,24 +274,45 @@ const DiscountedCashFlowTable = ({
   }, [isOnMobile, spreadsheet]);
 
   useEffect(() => {
+    if (spreadsheet) {
+      const { datas } = spreadsheet.getDatas();
+
+      // Temporary
+      if (!datas.length) {
+        spreadsheet.variablesSpreadsheet.setVariableDatasheets([
+          getRequiredInputsData(inputQueryParams),
+          getOptionalInputsData(inputQueryParams),
+        ]);
+      }
+
+      if (
+        hasAllRequiredInputsFilledIn &&
+        (!datas.length || datas.length === 1)
+      ) {
+        spreadsheet.setDatasheets([
+          getDCFValuationData(isOnMobile),
+          getCostOfCapitalData(),
+          getEmployeeOptionsData(),
+        ]);
+
+        spreadsheet.sheet.switchData(spreadsheet.sheet.getDatas()[0]);
+      }
+    }
+  }, [spreadsheet, isOnMobile, inputQueryParams, hasAllRequiredInputsFilledIn]);
+
+  useEffect(() => {
     if (!hasAllRequiredInputsFilledIn && spreadsheet) {
+      const { datas } = spreadsheet.getDatas();
+
+      datas.forEach((sheet) => {
+        spreadsheet.hyperformula.clearSheet(sheet.name);
+      });
       spreadsheet.setDatasheets([]);
     }
   }, [hasAllRequiredInputsFilledIn, spreadsheet, isOnMobile]);
-  useEffect(() => {
-    if (spreadsheet) {
-      spreadsheet.variablesSpreadsheet.setVariableDatasheets([
-        getRequiredInputsData(inputQueryParams),
-        getOptionalInputsData(inputQueryParams),
-      ]);
-    }
-  }, [inputQueryParams, spreadsheet]);
+
   useEffect(() => {
     if (spreadsheet && hasAllRequiredInputsFilledIn && scope) {
-      const dataSheets = getDataSheets(isOnMobile);
-
-      spreadsheet.setDatasheets(dataSheets);
-
       const sheetName = "DCF Valuation";
       const dataSheetFormulas = spreadsheet.hyperformula.getAllSheetsFormulas();
       const dataSheetValues = spreadsheet.hyperformula.getAllSheetsValues();

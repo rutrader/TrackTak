@@ -102,21 +102,18 @@ export const buildSpreadsheet = (
   );
 
   const history = new Manager(({ type, data }) => {
-    const parsedData = JSON.parse(data);
     let currentData;
     let currentSheet = type === "main" ? sheet : variablesSpreadsheet.sheet;
 
     currentData = currentSheet.getData().getData();
-    currentSheet.getData().setData(parsedData);
-
-    hyperformula.setSheetContent(parsedData.name, parsedData.serializedValues);
+    currentSheet.getData().setData(data);
 
     currentSheet.sheetReset();
     sheet.sheetReset();
 
     return {
       type,
-      data: JSON.stringify(currentData),
+      data: currentData,
     };
   }, 20);
   const toolbar = getToolbar(

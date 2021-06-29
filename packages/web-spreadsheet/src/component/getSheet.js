@@ -381,14 +381,13 @@ export const getSheet = (
   };
 
   const undo = () => {
-    // TODO: add back later
-    // hyperformula.undo();
+    hyperformula.undo();
     history.undo();
     toolbar.reset();
   };
 
   const redo = () => {
-    // hyperformula.redo();
+    hyperformula.redo();
     history.redo();
     toolbar.reset();
   };
@@ -465,10 +464,22 @@ export const getSheet = (
         selector.range,
       );
     } else {
+      const value = hyperformula.getCellValue({
+        row: ri,
+        col: ci,
+        sheet: getData().getSheetId(),
+      });
+
       // Blur the content editable to fix safari bug
       editor.textEl.el.blur();
       selector.set(ri, ci, indexesUpdated);
-      eventEmitter.emit(spreadsheetEvents.sheet.cellSelected, cell, ri, ci);
+      eventEmitter.emit(
+        spreadsheetEvents.sheet.cellSelected,
+        cell,
+        value,
+        ri,
+        ci,
+      );
     }
   }
 
@@ -823,12 +834,20 @@ export const getSheet = (
     editor.setOffset(sOffset, sPosition);
   }
 
-  function editorSet() {
+  function editorSet(cellText) {
     if (getOptions().mode === "read") return;
+
+    const indexes = rangeSelector.getIndexes();
+
+    const value = hyperformula.getCellSerialized({
+      row: indexes.ri,
+      col: indexes.ci,
+      sheet: getData().getSheetId(),
+    });
 
     editorSetOffset();
     editor.setCell(
-      rangeSelector.getIndexes(),
+      cellText ?? value,
       getData().getSelectedCell(),
       getData().getSelectedValidator(),
     );
@@ -886,21 +905,21 @@ export const getSheet = (
       sheet: getData().getSheetId(),
     };
 
-    let value = hyperformula.getCellSerialized(cellAddress);
-
     const param = {
       cell,
       cellAddress,
       format,
-      value,
+      value: newText,
     };
 
     if (state === "finished") {
+      table.render();
       eventEmitter.emit(spreadsheetEvents.sheet.cellEdited, param);
     } else {
       eventEmitter.emit(spreadsheetEvents.sheet.cellEdit, param);
-      table.render();
     }
+
+    return newText;
   }
 
   function sortFilterChange(ci, order, operator, value) {
@@ -1187,8 +1206,9 @@ export const getSheet = (
           evt.key === "." ||
           evt.key === "-"
         ) {
-          dataSetCellText(evt.key, "startInput");
-          editorSet();
+          const cellText = dataSetCellText(evt.key, "startInput");
+
+          editorSet(cellText);
         } else if (keyCode === 113) {
           // F2
           editorSet();

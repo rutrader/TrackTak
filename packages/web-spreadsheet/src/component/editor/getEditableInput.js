@@ -51,7 +51,7 @@ export const getEditableInput = (
   }
 
   const resetCellText = () => {
-    setCell(_indexes, initialCell);
+    setCell(initialText, initialCell);
     setInputText(initialText);
     clear();
   };
@@ -229,21 +229,14 @@ export const getEditableInput = (
     }
   };
 
-  const setCell = (indexes, cell, validator) => {
+  const setCell = (cellText, cell, validator) => {
     if (cell && cell.editable === false) return;
 
-    const value = hyperformula.getCellSerialized({
-      row: indexes.ri,
-      col: indexes.ci,
-      sheet: getData().getSheetId(),
-    });
-
-    _indexes = indexes;
     _cell = cell;
     initialCell = { ...cell };
-    initialText = value;
+    initialText = cellText;
 
-    setText(value);
+    setText(cellText);
 
     const format = getFormatFromCell(_cell, getData().getData().styles);
 
@@ -259,8 +252,8 @@ export const getEditableInput = (
       const { type } = _validator;
       if (type === "date") {
         datepicker.show();
-        if (!/^\s*$/.test(value)) {
-          datepicker.setValue(value);
+        if (!/^\s*$/.test(cellText)) {
+          datepicker.setValue(cellText);
         }
       }
       if (type === "list") {

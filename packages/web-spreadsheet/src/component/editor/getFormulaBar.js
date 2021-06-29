@@ -34,8 +34,8 @@ export const getFormulaBar = (
     editableInput.datepicker.el,
   );
 
-  eventEmitter.on(spreadsheetEvents.sheet.cellSelected, (cell) => {
-    editableInput.setText(cell?.text);
+  eventEmitter.on(spreadsheetEvents.sheet.cellSelected, (_, value) => {
+    editableInput.setText(value);
   });
 
   eventEmitter.on(spreadsheetEvents.editor.change, (_, text) => {

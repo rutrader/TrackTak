@@ -599,9 +599,8 @@ export const makeGetDataProxy = (
       stopEditing();
     } else {
       if (hasStartedEditing(ri, ci)) {
-        history.push({ type, data: JSON.stringify(getData()) });
+        history.push({ type, data: getData() });
       }
-      rows.setCellText(ri, ci, text);
       eventEmitter.emit(spreadsheetEvents.data.change, getData());
     }
 
@@ -760,7 +759,7 @@ export const makeGetDataProxy = (
   };
 
   const changeData = (cb) => {
-    history.push({ type, data: JSON.stringify(getData()) });
+    history.push({ type, data: getData() });
     cb();
     eventEmitter.emit(spreadsheetEvents.data.change, getData());
   };
