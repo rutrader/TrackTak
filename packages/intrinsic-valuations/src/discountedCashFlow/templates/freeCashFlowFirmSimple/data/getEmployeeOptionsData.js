@@ -95,6 +95,7 @@ const getEmployeeOptionsData = () => {
       },
       {
         cells: [
+          ,
           {
             style: 0,
           },
@@ -102,6 +103,7 @@ const getEmployeeOptionsData = () => {
       },
       {
         cells: [
+          ,
           {
             style: 4,
           },
@@ -109,6 +111,7 @@ const getEmployeeOptionsData = () => {
       },
       {
         cells: [
+          ,
           {
             style: 3,
           },

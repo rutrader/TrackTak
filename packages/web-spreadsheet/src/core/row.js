@@ -23,7 +23,7 @@ class Rows {
   }
 
   setHeight(ri, v) {
-    const row = this.getOrNew(ri);
+    const row = this.get(ri);
     row.height = v;
   }
 
@@ -43,13 +43,13 @@ class Rows {
   }
 
   setHide(ri, v) {
-    const row = this.getOrNew(ri);
+    const row = this.get(ri);
     if (v === true) row.hide = true;
     else delete row.hide;
   }
 
   setStyle(ri, style) {
-    const row = this.getOrNew(ri);
+    const row = this.get(ri);
     row.style = style;
   }
 
@@ -65,26 +65,24 @@ class Rows {
   }
 
   get(ri) {
-    return { ...this.rows[ri] };
-  }
+    const row = this.rows[ri] || { cells: [] };
 
-  getOrNew(ri) {
-    this.rows[ri] = this.rows[ri] || { cells: [] };
-
-    return { ...this.rows[ri] };
+    return {
+      ...row,
+    };
   }
 
   getCell(ri, ci) {
     const row = this.get(ri);
     if (
       row !== undefined &&
-      row.cells !== undefined &&
+      row?.cells !== undefined &&
       row.cells[ci] !== undefined
     ) {
       return { ...row.cells[ci] };
     }
 
-    return undefined;
+    return null;
   }
 
   getCellMerge(ri, ci) {
@@ -94,15 +92,15 @@ class Rows {
   }
 
   getCellOrNew(ri, ci) {
-    const row = this.getOrNew(ri);
-    row.cells[ci] = row.cells[ci] || [];
+    const row = this.get(ri);
+    const cell = row.cells[ci] || {};
 
-    return { ...row.cells[ci] };
+    return cell;
   }
 
   // what: all | text | format
   setCell(ri, ci, cell, what = "all") {
-    const row = this.getOrNew(ri);
+    const row = this.get(ri);
 
     const paste = () => {
       this.hyperformula.paste({
@@ -316,27 +314,18 @@ class Rows {
   }
 
   setData(rows) {
-    // Rows is a sparse array, so this is to
-    // essentially clone the element while preserving empty records
-    // this.rows = new Array(rows.length);
+    // Rows & cells is a sparse array, so this is to
+    // essentially copying the top level element which preserves the
+    // empty records. Shallow copying does not preserve empty records
+    this.rows = new Array(rows.length);
 
-    // rows.forEach((row, ri) => {
-    //   const newCells = new Array(row.cells.length);
-
-    //   row.cells.forEach((cell, ci) => {
-    //     newCells[ci] = { ...cell };
-    //   });
-
-    //   this.rows[ri] = {
-    //     ...rows[ri],
-    //     cells: newCells,
-    //   };
-    // });
-    this.rows = helper.cloneDeep(rows);
+    rows.forEach((row, ri) => {
+      this.rows[ri] = { ...row };
+    });
   }
 
   getData() {
-    return [...this.rows];
+    return this.rows;
   }
 }
 

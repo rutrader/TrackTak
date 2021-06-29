@@ -75,7 +75,6 @@ const getCostOfCapitalData = () => {
         "=IF(ISERROR('Optional Inputs'!$F$4/'Optional Inputs'!$F$3), 0, 'Optional Inputs'!$F$4/'Optional Inputs'!$F$3)",
         "=D17*D18+E17*E18+F17*F18",
       ],
-      [""],
     ],
     styles: [
       {

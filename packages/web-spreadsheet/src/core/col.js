@@ -27,13 +27,14 @@ class Cols {
     return this.width;
   }
 
-  getOrNew(ci) {
-    this.cols[ci] = this.cols[ci] || {};
-    return this.cols[ci];
+  get(ci) {
+    const col = this.cols[ci] || {};
+
+    return { ...col };
   }
 
   setWidth(ci, width) {
-    const col = this.getOrNew(ci);
+    const col = this.get(ci);
     col.width = width;
   }
 
@@ -53,13 +54,13 @@ class Cols {
   }
 
   setHide(ci, v) {
-    const col = this.getOrNew(ci);
+    const col = this.get(ci);
     if (v === true) col.hide = true;
     else delete col.hide;
   }
 
   setStyle(ci, style) {
-    const col = this.getOrNew(ci);
+    const col = this.get(ci);
     col.style = style;
   }
 

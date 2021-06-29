@@ -128,9 +128,11 @@ const xtos = async (
 
     let minCoord, maxCoord;
 
-    dataSheet.rows.forEach((row, ri) => {
-      row.cells.forEach((cell, ci) => {
-        let newValue = dataSheet.serializedValues[ri][ci];
+    dataSheet.serializedValues.forEach((row, ri) => {
+      row.forEach((value, ci) => {
+        const cell = dataSheet.rows?.[ri]?.cells[ci];
+
+        let newValue = value;
 
         const format = getFormatFromCell(cell, dataSheet.styles);
 
