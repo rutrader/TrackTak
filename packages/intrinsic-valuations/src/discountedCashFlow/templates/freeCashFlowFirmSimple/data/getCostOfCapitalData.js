@@ -221,6 +221,7 @@ const getCostOfCapitalData = () => {
       },
       {
         cells: [
+          ,
           {
             style: 3,
           },

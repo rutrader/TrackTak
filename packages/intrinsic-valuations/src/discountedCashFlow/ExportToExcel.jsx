@@ -132,7 +132,7 @@ const xtos = async (
       row.forEach((value, ci) => {
         const cell = dataSheet.rows?.[ri]?.cells[ci];
 
-        let newValue = value;
+        let newValue = value ?? "";
 
         const format = getFormatFromCell(cell, dataSheet.styles);
 
@@ -163,7 +163,7 @@ const xtos = async (
           z: pattern,
         };
 
-        if (isNil(newValue) || newValue === "") {
+        if (isNil(newValue) || (newValue === "" && !format)) {
           excelFormat.t = "z";
         }
 
