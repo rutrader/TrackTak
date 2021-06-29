@@ -173,7 +173,7 @@ const getSyntheticCreditRatingData = () => {
             text: "Interest Coverage",
           },
           1: {
-            text: "=IF(D3=0,100000,IF(D2<0,-100000,D2/D3))",
+            text: "=IF(D3=0,Infinity,IF(D2<0,-Infinity,D2/D3))",
           },
           2: {
             text: "Interest Expense",
@@ -189,7 +189,8 @@ const getSyntheticCreditRatingData = () => {
             text: "Estimated Bond Rating",
           },
           1: {
-            text: '=IF(B2="Large",VLOOKUP(B3,A12:B26,2,TRUE),0)',
+            text:
+              '=IF(B2="Large",VLOOKUP(B3,A12:F26,5),IF(B2="Small", VLOOKUP(B3,C12:F26,3), 0))',
           },
           2: {
             text: "Market Capitalization",
@@ -295,154 +296,154 @@ const getSyntheticCreditRatingData = () => {
       11: {
         cells: {
           0: {
-            text: "8.5",
+            text: "-Infinity",
           },
           1: {
-            text: "100000",
+            text: "0.2",
           },
           2: {
-            text: "12.5",
+            text: "-Infinity",
           },
           3: {
-            text: "Infinity",
+            text: "0.5",
           },
           4: {
-            text: "Aaa/AAA",
+            text: "D2/D",
           },
           5: {
-            text: "0.76%",
+            text: "21.66%",
           },
         },
       },
       12: {
         cells: {
           0: {
-            text: "6.5",
+            text: "0.2",
           },
           1: {
-            text: "8.5",
+            text: "0.65",
           },
           2: {
-            text: "9.5",
+            text: "0.5",
           },
           3: {
-            text: "12.5",
+            text: "0.8",
           },
           4: {
-            text: "Aa2/AA",
+            text: "C2/C",
           },
           5: {
-            text: "0.86%",
+            text: "16.25%",
           },
         },
       },
       13: {
         cells: {
           0: {
-            text: "5.5",
+            text: "0.65",
           },
           1: {
-            text: "6.5",
+            text: "0.8",
           },
           2: {
-            text: "7.5",
+            text: "0.8",
           },
           3: {
-            text: "9.5",
+            text: "1.25",
           },
           4: {
-            text: "A1/A+",
+            text: "Ca2/CC",
           },
           5: {
-            text: "1.08%",
+            text: "12.38%",
           },
         },
       },
       14: {
         cells: {
           0: {
-            text: "4.25",
+            text: "0.8",
           },
           1: {
-            text: "5.5",
+            text: "1.25",
           },
           2: {
-            text: "6",
+            text: "1.25",
           },
           3: {
-            text: "7.5",
+            text: "1.5",
           },
           4: {
-            text: "A2/A",
+            text: "Caa/CCC",
           },
           5: {
-            text: "1.19%",
+            text: "11.75%",
           },
         },
       },
       15: {
         cells: {
           0: {
-            text: "3",
+            text: "1.25",
           },
           1: {
-            text: "4.25",
+            text: "1.5",
           },
           2: {
-            text: "4.5",
+            text: "1.5",
           },
           3: {
-            text: "6",
+            text: "2",
           },
           4: {
-            text: "A3/A-",
+            text: "B3/B-",
           },
           5: {
-            text: "1.34%",
+            text: "10.08%",
           },
         },
       },
       16: {
         cells: {
           0: {
-            text: "2.5",
+            text: "1.5",
           },
           1: {
-            text: "3",
+            text: "1.75",
           },
           2: {
-            text: "4",
+            text: "2",
           },
           3: {
-            text: "4.5",
+            text: "2.5",
           },
           4: {
-            text: "Baa2/BBB",
+            text: "B2/B",
           },
           5: {
-            text: "1.81%",
+            text: "8.25%",
           },
         },
       },
       17: {
         cells: {
           0: {
-            text: "2.25",
+            text: "1.75",
           },
           1: {
-            text: "2.5",
+            text: "2",
           },
           2: {
-            text: "3.5",
+            text: "2.5",
           },
           3: {
-            text: "4",
+            text: "3",
           },
           4: {
-            text: "Ba1/BB+",
+            text: "B1/B+",
           },
           5: {
-            text: "2.32%",
+            text: "4.31%",
           },
         },
       },
@@ -471,154 +472,154 @@ const getSyntheticCreditRatingData = () => {
       19: {
         cells: {
           0: {
-            text: "1.75",
+            text: "2.25",
           },
           1: {
-            text: "2",
-          },
-          2: {
             text: "2.5",
           },
+          2: {
+            text: "3.5",
+          },
           3: {
-            text: "3",
+            text: "4",
           },
           4: {
-            text: "B1/B+",
+            text: "Ba1/BB+",
           },
           5: {
-            text: "4.31%",
+            text: "2.32%",
           },
         },
       },
       20: {
         cells: {
           0: {
-            text: "1.5",
-          },
-          1: {
-            text: "1.75",
-          },
-          2: {
-            text: "2",
-          },
-          3: {
             text: "2.5",
           },
+          1: {
+            text: "3",
+          },
+          2: {
+            text: "4",
+          },
+          3: {
+            text: "4.5",
+          },
           4: {
-            text: "B2/B",
+            text: "Baa2/BBB",
           },
           5: {
-            text: "8.25%",
+            text: "1.81%",
           },
         },
       },
       21: {
         cells: {
           0: {
-            text: "1.25",
+            text: "3",
           },
           1: {
-            text: "1.5",
+            text: "4.25",
           },
           2: {
-            text: "1.5",
+            text: "4.5",
           },
           3: {
-            text: "2",
+            text: "6",
           },
           4: {
-            text: "B3/B-",
+            text: "A3/A-",
           },
           5: {
-            text: "10.08%",
+            text: "1.34%",
           },
         },
       },
       22: {
         cells: {
           0: {
-            text: "0.8",
+            text: "4.25",
           },
           1: {
-            text: "1.25",
+            text: "5.5",
           },
           2: {
-            text: "1.25",
+            text: "6",
           },
           3: {
-            text: "1.5",
+            text: "7.5",
           },
           4: {
-            text: "Caa/CCC",
+            text: "A2/A",
           },
           5: {
-            text: "11.75%",
+            text: "1.19%",
           },
         },
       },
       23: {
         cells: {
           0: {
-            text: "0.65",
+            text: "5.5",
           },
           1: {
-            text: "0.8",
+            text: "6.5",
           },
           2: {
-            text: "0.8",
+            text: "7.5",
           },
           3: {
-            text: "1.25",
+            text: "9.5",
           },
           4: {
-            text: "Ca2/CC",
+            text: "A1/A+",
           },
           5: {
-            text: "12.38%",
+            text: "1.08%",
           },
         },
       },
       24: {
         cells: {
           0: {
-            text: "0.2",
+            text: "6.5",
           },
           1: {
-            text: "0.65",
+            text: "8.5",
           },
           2: {
-            text: "0.5",
+            text: "9.5",
           },
           3: {
-            text: "0.8",
+            text: "12.5",
           },
           4: {
-            text: "C2/C",
+            text: "Aa2/AA",
           },
           5: {
-            text: "16.25%",
+            text: "0.86%",
           },
         },
       },
       25: {
         cells: {
           0: {
-            text: "-100000",
+            text: "8.5",
           },
           1: {
-            text: "0.2",
+            text: "Infinity",
           },
           2: {
-            text: "-Infinity",
+            text: "12.5",
           },
           3: {
-            text: "0.5",
+            text: "Infinity",
           },
           4: {
-            text: "D2/D",
+            text: "Aaa/AAA",
           },
           5: {
-            text: "21.66%",
+            text: "0.76%",
           },
         },
       },
@@ -635,7 +636,7 @@ const getSyntheticCreditRatingData = () => {
         width: 252,
       },
       3: {
-        width: 149,
+        width: 238,
       },
       len: 26,
     },
