@@ -34,6 +34,7 @@ export const buildSheet = (
   rangeSelector,
   eventEmitter,
   getViewWidthHeight,
+  hyperformula,
 ) => {
   const rowResizer = getResizer(
     eventEmitter,
@@ -53,6 +54,7 @@ export const buildSheet = (
     getOptions,
     getFormulaSuggestions(),
     eventEmitter,
+    hyperformula,
   );
   const selector = new Selector(eventEmitter, getData, rangeSelector);
   const overlayerCEl = h("div", `${cssPrefix}-overlayer-content`).children(

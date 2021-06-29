@@ -80,6 +80,7 @@ export const buildVariablesSpreadsheet = (
     rangeSelector,
     eventEmitter,
     getViewWidthHeight,
+    hyperformula,
   );
 
   const dataProxyBuilder = buildDataProxy(

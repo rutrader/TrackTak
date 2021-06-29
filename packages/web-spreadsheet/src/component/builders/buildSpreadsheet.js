@@ -19,7 +19,6 @@ import getClipboard from "../../core/getClipboard";
 import { getFormulaBar } from "../editor/getFormulaBar";
 import { getFormulaSuggestions } from "../../shared/getFormulaSuggestions";
 import Manager from "undo-redo-manager";
-import mapDatasheetToSheetContent from "../../shared/mapDatasheetToSheetContent";
 import { bind } from "../event";
 
 export const buildSpreadsheet = (
@@ -103,23 +102,18 @@ export const buildSpreadsheet = (
   );
 
   const history = new Manager(({ type, data }) => {
-    const parsedData = JSON.parse(data);
     let currentData;
     let currentSheet = type === "main" ? sheet : variablesSpreadsheet.sheet;
 
     currentData = currentSheet.getData().getData();
-    currentSheet.getData().setData(parsedData);
-
-    // TODO: Remove later
-    const sheetContent = mapDatasheetToSheetContent(parsedData);
-    hyperformula.setSheetContent(parsedData.name, sheetContent);
+    currentSheet.getData().setData(data);
 
     currentSheet.sheetReset();
     sheet.sheetReset();
 
     return {
       type,
-      data: JSON.stringify(currentData),
+      data: currentData,
     };
   }, 20);
   const toolbar = getToolbar(
@@ -137,6 +131,7 @@ export const buildSpreadsheet = (
     getFocusedData,
     getFormulaSuggestions(),
     globalEventEmitter,
+    hyperformula,
   );
 
   const sheetBuilder = buildSheet(
@@ -145,6 +140,7 @@ export const buildSpreadsheet = (
     rangeSelector,
     eventEmitter,
     getViewWidthHeight,
+    hyperformula,
   );
 
   const dataProxyBuilder = buildDataProxy(
@@ -244,6 +240,7 @@ export const buildSpreadsheet = (
     rootEl,
     setDatasheets,
     getDatas,
+    getData,
     setOptions,
     hyperformula,
     eventEmitter,

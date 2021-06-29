@@ -1,10 +1,9 @@
 import helper from "./helper";
-import { expr2expr, REGEX_EXPR_GLOBAL } from "./alphabet";
 import convertIndexesToAmount from "../shared/convertIndexesToAmount";
 
 class Rows {
   constructor(getRow, getDataProxy, hyperformula) {
-    this._ = {};
+    this.rows = [];
     this.len = getRow().len;
     this.getDataProxy = getDataProxy;
     // default row height
@@ -24,7 +23,7 @@ class Rows {
   }
 
   setHeight(ri, v) {
-    const row = this.getOrNew(ri);
+    const row = this.get(ri);
     row.height = v;
   }
 
@@ -44,13 +43,13 @@ class Rows {
   }
 
   setHide(ri, v) {
-    const row = this.getOrNew(ri);
+    const row = this.get(ri);
     if (v === true) row.hide = true;
     else delete row.hide;
   }
 
   setStyle(ri, style) {
-    const row = this.getOrNew(ri);
+    const row = this.get(ri);
     row.style = style;
   }
 
@@ -66,23 +65,23 @@ class Rows {
   }
 
   get(ri) {
-    return this._[ri];
-  }
+    const row = this.rows[ri] || { cells: [] };
 
-  getOrNew(ri) {
-    this._[ri] = this._[ri] || { cells: {} };
-    return this._[ri];
+    return {
+      ...row,
+    };
   }
 
   getCell(ri, ci) {
     const row = this.get(ri);
     if (
       row !== undefined &&
-      row.cells !== undefined &&
+      row?.cells !== undefined &&
       row.cells[ci] !== undefined
     ) {
-      return row.cells[ci];
+      return { ...row.cells[ci] };
     }
+
     return null;
   }
 
@@ -93,21 +92,17 @@ class Rows {
   }
 
   getCellOrNew(ri, ci) {
-    const row = this.getOrNew(ri);
-    row.cells[ci] = row.cells[ci] || {};
-    return row.cells[ci];
+    const row = this.get(ri);
+    const cell = row.cells[ci] || {};
+
+    return cell;
   }
 
   // what: all | text | format
   setCell(ri, ci, cell, what = "all") {
-    const row = this.getOrNew(ri);
+    const row = this.get(ri);
 
     const paste = () => {
-      const newCell = this.getCellOrNew(ri, ci);
-
-      // TODO: Remove later
-      newCell.text = cell.text;
-
       this.hyperformula.paste({
         col: ci,
         row: ri,
@@ -121,7 +116,7 @@ class Rows {
     } else if (what === "text") {
       paste();
     } else if (what === "format") {
-      row.cells[ci] = row.cells[ci] || {};
+      row.cells[ci] = row.cells[ci] || [];
       row.cells[ci].style = cell.style;
 
       if (cell.merge) {
@@ -131,14 +126,11 @@ class Rows {
   }
 
   _setCellText = (ri, ci, text) => {
-    const cell = this.getCellOrNew(ri, ci);
-
-    // TODO: Remove later
-    cell.text = text;
+    let newText = text;
 
     this.hyperformula.setCellContents(
       { col: ci, row: ri, sheet: this.getDataProxy().getSheetId() },
-      [[text]],
+      [[newText]],
     );
   };
 
@@ -167,69 +159,15 @@ class Rows {
       else dn = dcn;
     }
     for (let i = sri; i <= eri; i += 1) {
-      if (this._[i]) {
+      if (this.rows[i]) {
         for (let j = sci; j <= eci; j += 1) {
-          if (this._[i].cells && this._[i].cells[j]) {
+          if (this.rows[i].cells && this.rows[i].cells[j]) {
             for (let ii = dsri; ii <= deri; ii += rn) {
               for (let jj = dsci; jj <= deci; jj += cn) {
                 const nri = ii + (i - sri);
                 const nci = jj + (j - sci);
-                const ncell = helper.cloneDeep(this._[i].cells[j]);
-                // ncell.text
-                if (autofill && ncell && ncell.text && ncell.text.length > 0) {
-                  const { text } = ncell;
-                  let n = jj - dsci + (ii - dsri) + 2;
-                  if (!isAdd) {
-                    n -= dn + 1;
-                  }
-                  if (text[0] === "=") {
-                    const nText = text.replace(REGEX_EXPR_GLOBAL, (word) => {
-                      let [xn, yn] = [0, 0];
-                      if (sri === dsri) {
-                        xn = n - 1;
-                        // if (isAdd) xn -= 1;
-                      } else {
-                        yn = n - 1;
-                      }
-                      if (/^\d+$/.test(word)) return word;
+                const ncell = helper.cloneDeep(this.rows[i].cells[j]);
 
-                      // Set expr2expr to not perform translation on axes with an
-                      // absolute reference
-                      return expr2expr(word, xn, yn, false);
-                    });
-
-                    ncell.text = nText;
-                    this.hyperformula.setCellContents(
-                      {
-                        col: nci,
-                        row: nri,
-                        sheet: this.getDataProxy().getSheetId(),
-                      },
-                      [[nText]],
-                    );
-                  } else if (
-                    (rn <= 1 && cn > 1 && (dsri > eri || deri < sri)) ||
-                    (cn <= 1 && rn > 1 && (dsci > eci || deci < sci)) ||
-                    (rn <= 1 && cn <= 1)
-                  ) {
-                    const result = /[\\.\d]+$/.exec(text);
-                    // console.log('result:', result);
-                    if (result !== null) {
-                      const index = Number(result[0]) + n - 1;
-                      const nText = text.substring(0, result.index) + index;
-
-                      ncell.text = nText;
-                      this.hyperformula.setCellContents(
-                        {
-                          col: nci,
-                          row: nri,
-                          sheet: this.getDataProxy().getSheetId(),
-                        },
-                        [[nText]],
-                      );
-                    }
-                  }
-                }
                 this.setCell(nri, nci, ncell, what);
                 cb(nri, nci, ncell);
               }
@@ -241,7 +179,7 @@ class Rows {
   }
 
   cutPaste(srcCellRange, dstCellRange) {
-    const ncellmm = {};
+    const ncellmm = [];
     this.each((ri) => {
       this.eachCells(ri, (ci) => {
         let nri = parseInt(ri, 10);
@@ -256,11 +194,11 @@ class Rows {
             sheet: this.getDataProxy().getSheetId(),
           });
         }
-        ncellmm[nri] = ncellmm[nri] || { cells: {} };
-        ncellmm[nri].cells[nci] = this._[ri].cells[ci];
+        ncellmm[nri] = ncellmm[nri] || { cells: [] };
+        ncellmm[nri].cells[nci] = this.rows[ri].cells[ci];
       });
     });
-    this._ = ncellmm;
+    this.rows = ncellmm;
   }
 
   // src: Array<Array<String>>
@@ -324,9 +262,9 @@ class Rows {
   // what: all | text | format | merge
   deleteCell(ri, ci, what = "all") {
     const row = this.get(ri);
-    if (row !== null) {
+    if (row) {
       const cell = this.getCell(ri, ci);
-      if (cell !== null) {
+      if (cell) {
         if (what === "all") {
           delete row.cells[ci];
         } else if (what === "text") {
@@ -350,9 +288,8 @@ class Rows {
   }
 
   maxCell() {
-    const keys = Object.keys(this._);
-    const ri = keys[keys.length - 1];
-    const col = this._[ri];
+    const ri = this.rows[this.rows.length - 1];
+    const col = this.rows[ri];
     if (col) {
       const { cells } = col;
       const ks = Object.keys(cells);
@@ -363,30 +300,32 @@ class Rows {
   }
 
   each(cb) {
-    Object.entries(this._).forEach(([ri, row]) => {
+    this.rows.forEach(([ri, row]) => {
       cb(ri, row);
     });
   }
 
   eachCells(ri, cb) {
-    if (this._[ri] && this._[ri].cells) {
-      Object.entries(this._[ri].cells).forEach(([ci, cell]) => {
+    if (this.rows[ri] && this.rows[ri].cells) {
+      this.rows[ri].cells.forEach(([ci, cell]) => {
         cb(ci, cell);
       });
     }
   }
 
-  setData(d) {
-    if (d.len) {
-      this.len = d.len;
-      delete d.len;
-    }
-    this._ = d;
+  setData(rows) {
+    // Rows & cells is a sparse array, so this is to
+    // essentially copying the top level element which preserves the
+    // empty records. Shallow copying does not preserve empty records
+    this.rows = new Array(rows.length);
+
+    rows.forEach((row, ri) => {
+      this.rows[ri] = { ...row };
+    });
   }
 
   getData() {
-    const { len } = this;
-    return Object.assign({ len }, this._);
+    return this.rows;
   }
 }
 

@@ -2,7 +2,7 @@ import helper from "./helper";
 
 class Cols {
   constructor(getCol) {
-    this._ = {};
+    this.cols = {};
     this.len = getCol().len;
     this.width = getCol().width;
     this.indexWidth = getCol().indexWidth;
@@ -11,34 +11,30 @@ class Cols {
   }
 
   setData(d) {
-    if (d.len) {
-      this.len = d.len;
-      delete d.len;
-    }
-    this._ = d;
+    this.cols = { ...d };
   }
 
   getData() {
-    const { len } = this;
-    return Object.assign({ len }, this._);
+    return { ...this.cols };
   }
 
   getWidth(i) {
     if (this.isHide(i)) return 0;
-    const col = this._[i];
+    const col = this.cols[i];
     if (col && col.width) {
       return col.width;
     }
     return this.width;
   }
 
-  getOrNew(ci) {
-    this._[ci] = this._[ci] || {};
-    return this._[ci];
+  get(ci) {
+    const col = this.cols[ci] || {};
+
+    return { ...col };
   }
 
   setWidth(ci, width) {
-    const col = this.getOrNew(ci);
+    const col = this.get(ci);
     col.width = width;
   }
 
@@ -53,18 +49,18 @@ class Cols {
   }
 
   isHide(ci) {
-    const col = this._[ci];
+    const col = this.cols[ci];
     return col && col.hide;
   }
 
   setHide(ci, v) {
-    const col = this.getOrNew(ci);
+    const col = this.get(ci);
     if (v === true) col.hide = true;
     else delete col.hide;
   }
 
   setStyle(ci, style) {
-    const col = this.getOrNew(ci);
+    const col = this.get(ci);
     col.style = style;
   }
 
@@ -77,5 +73,4 @@ class Cols {
   }
 }
 
-export default {};
 export { Cols };

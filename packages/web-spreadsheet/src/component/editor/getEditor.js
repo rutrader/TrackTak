@@ -3,7 +3,13 @@ import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { h } from "../element";
 import { getEditableInput } from "./getEditableInput";
 
-export const getEditor = (getData, getOptions, formulas, eventEmitter) => {
+export const getEditor = (
+  getData,
+  getOptions,
+  formulas,
+  eventEmitter,
+  hyperformula,
+) => {
   const el = h("div", `${cssPrefix}-editor`).hide();
 
   const editableInput = getEditableInput(
@@ -12,6 +18,7 @@ export const getEditor = (getData, getOptions, formulas, eventEmitter) => {
     formulas,
     eventEmitter,
     el,
+    hyperformula,
     "editor",
   );
 
