@@ -3,6 +3,66 @@ const getSyntheticCreditRatingData = () => {
   return {
     name: "Synthetic Credit Rating",
     freeze: "A1",
+    serializedValues: [
+      ["Synthetic Credit Rating"],
+      [
+        "Company Size",
+        "Large",
+        "Operating Income",
+        '=FIN("operatingIncome")',
+        null,
+        null,
+        "",
+      ],
+      [
+        "Interest Coverage",
+        "=IF(D3=0,Infinity,IF(D2<0,-Infinity,D2/D3))",
+        "Interest Expense",
+        '=ABS(FIN("interestExpense"))',
+      ],
+      [
+        "Estimated Bond Rating",
+        '=IF(B2="Large",VLOOKUP(B3,A12:F26,5),IF(B2="Small", VLOOKUP(B3,C12:F26,3), 0))',
+        "Market Capitalization",
+        '=FIN("marketCapitalization")',
+      ],
+      [
+        "Estimated Company Default Spread",
+        '=IF(B2="Large",VLOOKUP(B3,A12:F26,6),IF(B2="Small", VLOOKUP(B3,C12:F26,4), 0))',
+      ],
+      ["Estimated Country Default Spread", '=FIN("adjDefaultSpread")'],
+      ["Estimated Pre-tax Cost of Debt", '=FIN("riskFreeRate")+B5+B6'],
+      [""],
+      [""],
+      [
+        "Large Companies (< $5,000m Market Cap)",
+        null,
+        "Smaller & Riskier Companies (< $5,000m Market Cap)",
+      ],
+      [
+        "Interest Coverage From",
+        "Interest Coverage To",
+        "Interest Coverage From",
+        "Interest Coverage To",
+        "Rating",
+        "Spread",
+      ],
+      ["-Infinity", "0.2", "-Infinity", "0.5", "D2/D", "21.66%"],
+      ["0.2", "0.65", "0.5", "0.8", "C2/C", "16.25%"],
+      ["0.65", "0.8", "0.8", "1.25", "Ca2/CC", "12.38%"],
+      ["0.8", "1.25", "1.25", "1.5", "Caa/CCC", "11.75%"],
+      ["1.25", "1.5", "1.5", "2", "B3/B-", "10.08%"],
+      ["1.5", "1.75", "2", "2.5", "B2/B", "8.25%"],
+      ["1.75", "2", "2.5", "3", "B1/B+", "4.31%"],
+      ["2", "2.25", "3", "3.5", "Ba2/BB", "2.95%"],
+      ["2.25", "2.5", "3.5", "4", "Ba1/BB+", "2.32%"],
+      ["2.5", "3", "4", "4.5", "Baa2/BBB", "1.81%"],
+      ["3", "4.25", "4.5", "6", "A3/A-", "1.34%"],
+      ["4.25", "5.5", "6", "7.5", "A2/A", "1.19%"],
+      ["5.5", "6.5", "7.5", "9.5", "A1/A+", "1.08%"],
+      ["6.5", "8.5", "9.5", "12.5", "Aa2/AA", "0.86%"],
+      ["8.5", "Infinity", "12.5", "Infinity", "Aaa/AAA", "0.76%"],
+    ],
     styles: [
       {
         font: {
@@ -135,7 +195,6 @@ const getSyntheticCreditRatingData = () => {
       {
         cells: [
           {
-            text: "Synthetic Credit Rating",
             merge: [0, 1],
             style: 15,
           },
@@ -147,90 +206,70 @@ const getSyntheticCreditRatingData = () => {
       {
         cells: [
           {
-            text: "Company Size",
             style: 8,
           },
           {
             style: 8,
-            text: "Large",
-          },
-          {
-            text: "Operating Income",
-            style: 11,
+            comment:
+              "Large companies usually have stable earnings and less chance of defaulting on their debt. Smaller companies are usually risker, therefore they have higher costs of debts.",
           },
           {
             style: 11,
-            text: '=FIN("operatingIncome")',
+          },
+          {
+            style: 11,
           },
           ,
           ,
           {
-            text: "",
             style: 0,
           },
         ],
       },
       {
         cells: [
+          ,
           {
-            text: "Interest Coverage",
+            comment:
+              "How many times over a company can satisfy it's interest expenses with just it's operating income. A good interest coverage is usually above 5. Companies with volatile operating income can produce misleading interest coverages as they differ each year.",
           },
+        ],
+      },
+      {
+        cells: [
+          ,
           {
-            text: "=IF(D3=0,Infinity,IF(D2<0,-Infinity,D2/D3))",
+            comment:
+              "The estimated bond rating that we have worked out based on the companies interest coverage. It is similar to Moody's, S&P and Fitch's ratings. We use our own synthetic credit rating because a lot of companies do not have any rating assigned by these agencies.",
           },
+        ],
+      },
+      {
+        cells: [
+          ,
           {
-            text: "Interest Expense",
+            comment:
+              "The chance of a company defaulting on it's debts within a year.",
           },
+        ],
+      },
+      {
+        cells: [
+          ,
           {
-            text: '=ABS(FIN("interestExpense"))',
+            comment:
+              "The chance of a country defaulting on it's debts within a year.",
           },
         ],
       },
       {
         cells: [
           {
-            text: "Estimated Bond Rating",
-          },
-          {
-            text:
-              '=IF(B2="Large",VLOOKUP(B3,A12:F26,5),IF(B2="Small", VLOOKUP(B3,C12:F26,3), 0))',
-          },
-          {
-            text: "Market Capitalization",
-          },
-          {
-            text: '=FIN("marketCapitalization")',
-          },
-        ],
-      },
-      {
-        cells: [
-          {
-            text: "Estimated Country Default Spread",
-          },
-          {
-            text: "0.76%",
-          },
-        ],
-      },
-      {
-        cells: [
-          {
-            text: "Estimated Country Default Spread",
-          },
-          {
-            text: "0%",
-          },
-        ],
-      },
-      {
-        cells: [
-          {
-            text: "Estimated Pre-tax Cost of Debt",
             style: 19,
           },
           {
-            text: "2.28%",
+            comment:
+              "The Synthetic Credit Rating pre-tax cost of debt that we have automatically calculated for you. This is used to work out the cost of capital.",
           },
         ],
       },
@@ -239,7 +278,6 @@ const getSyntheticCreditRatingData = () => {
       {
         cells: [
           {
-            text: "Large Companies (< $5,000m Market Cap)",
             merge: [0, 1],
             style: 16,
           },
@@ -248,7 +286,6 @@ const getSyntheticCreditRatingData = () => {
           },
           {
             merge: [0, 1],
-            text: "Smaller & Riskier Companies (< $5,000m Market Cap)",
             style: 16,
           },
           {
@@ -259,358 +296,22 @@ const getSyntheticCreditRatingData = () => {
       {
         cells: [
           {
-            text: "Interest Coverage From",
             style: 18,
           },
           {
-            text: "Interest Coverage To",
             style: 18,
           },
           {
-            text: "Interest Coverage From",
             style: 18,
           },
           {
-            text: "Interest Coverage To",
             style: 18,
           },
           {
-            text: "Rating",
             style: 18,
           },
           {
-            text: "Spread",
             style: 18,
-          },
-        ],
-      },
-      {
-        cells: [
-          {
-            text: "-Infinity",
-          },
-          {
-            text: "0.2",
-          },
-          {
-            text: "-Infinity",
-          },
-          {
-            text: "0.5",
-          },
-          {
-            text: "D2/D",
-          },
-          {
-            text: "21.66%",
-          },
-        ],
-      },
-      {
-        cells: [
-          {
-            text: "0.2",
-          },
-          {
-            text: "0.65",
-          },
-          {
-            text: "0.5",
-          },
-          {
-            text: "0.8",
-          },
-          {
-            text: "C2/C",
-          },
-          {
-            text: "16.25%",
-          },
-        ],
-      },
-      {
-        cells: [
-          {
-            text: "0.65",
-          },
-          {
-            text: "0.8",
-          },
-          {
-            text: "0.8",
-          },
-          {
-            text: "1.25",
-          },
-          {
-            text: "Ca2/CC",
-          },
-          {
-            text: "12.38%",
-          },
-        ],
-      },
-      {
-        cells: [
-          {
-            text: "0.8",
-          },
-          {
-            text: "1.25",
-          },
-          {
-            text: "1.25",
-          },
-          {
-            text: "1.5",
-          },
-          {
-            text: "Caa/CCC",
-          },
-          {
-            text: "11.75%",
-          },
-        ],
-      },
-      {
-        cells: [
-          {
-            text: "1.25",
-          },
-          {
-            text: "1.5",
-          },
-          {
-            text: "1.5",
-          },
-          {
-            text: "2",
-          },
-          {
-            text: "B3/B-",
-          },
-          {
-            text: "10.08%",
-          },
-        ],
-      },
-      {
-        cells: [
-          {
-            text: "1.5",
-          },
-          {
-            text: "1.75",
-          },
-          {
-            text: "2",
-          },
-          {
-            text: "2.5",
-          },
-          {
-            text: "B2/B",
-          },
-          {
-            text: "8.25%",
-          },
-        ],
-      },
-      {
-        cells: [
-          {
-            text: "1.75",
-          },
-          {
-            text: "2",
-          },
-          {
-            text: "2.5",
-          },
-          {
-            text: "3",
-          },
-          {
-            text: "B1/B+",
-          },
-          {
-            text: "4.31%",
-          },
-        ],
-      },
-      {
-        cells: [
-          {
-            text: "2",
-          },
-          {
-            text: "2.25",
-          },
-          {
-            text: "3",
-          },
-          {
-            text: "3.5",
-          },
-          {
-            text: "Ba2/BB",
-          },
-          {
-            text: "2.95%",
-          },
-        ],
-      },
-      {
-        cells: [
-          {
-            text: "2.25",
-          },
-          {
-            text: "2.5",
-          },
-          {
-            text: "3.5",
-          },
-          {
-            text: "4",
-          },
-          {
-            text: "Ba1/BB+",
-          },
-          {
-            text: "2.32%",
-          },
-        ],
-      },
-      {
-        cells: [
-          {
-            text: "2.5",
-          },
-          {
-            text: "3",
-          },
-          {
-            text: "4",
-          },
-          {
-            text: "4.5",
-          },
-          {
-            text: "Baa2/BBB",
-          },
-          {
-            text: "1.81%",
-          },
-        ],
-      },
-      {
-        cells: [
-          {
-            text: "3",
-          },
-          {
-            text: "4.25",
-          },
-          {
-            text: "4.5",
-          },
-          {
-            text: "6",
-          },
-          {
-            text: "A3/A-",
-          },
-          {
-            text: "1.34%",
-          },
-        ],
-      },
-      {
-        cells: [
-          {
-            text: "4.25",
-          },
-          {
-            text: "5.5",
-          },
-          {
-            text: "6",
-          },
-          {
-            text: "7.5",
-          },
-          {
-            text: "A2/A",
-          },
-          {
-            text: "1.19%",
-          },
-        ],
-      },
-      {
-        cells: [
-          {
-            text: "5.5",
-          },
-          {
-            text: "6.5",
-          },
-          {
-            text: "7.5",
-          },
-          {
-            text: "9.5",
-          },
-          {
-            text: "A1/A+",
-          },
-          {
-            text: "1.08%",
-          },
-        ],
-      },
-      {
-        cells: [
-          {
-            text: "6.5",
-          },
-          {
-            text: "8.5",
-          },
-          {
-            text: "9.5",
-          },
-          {
-            text: "12.5",
-          },
-          {
-            text: "Aa2/AA",
-          },
-          {
-            text: "0.86%",
-          },
-        ],
-      },
-      {
-        cells: [
-          {
-            text: "8.5",
-          },
-          {
-            text: "Infinity",
-          },
-          {
-            text: "12.5",
-          },
-          {
-            text: "Infinity",
-          },
-          {
-            text: "Aaa/AAA",
-          },
-          {
-            text: "0.76%",
           },
         ],
       },

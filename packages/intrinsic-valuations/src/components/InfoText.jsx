@@ -53,44 +53,6 @@ export const InfoTextCostOfCapital = () => {
   );
 };
 
-export const InfoSyntheticRating = () => {
-  return (
-    <React.Fragment>
-      <Box>
-        <b>Large/Small Company</b> - Large companies usually have stable
-        earnings and less chance of defaulting on their debt. Smaller companies
-        are usually risker, therefore they have higher costs of debts.
-      </Box>
-      <Box>
-        <b>Interest Coverage</b> - How many times over a company can satisfy
-        it's interest expenses with just it's operating income. A good interest
-        coverage is usually above 5. Companies with volatile operating income
-        can produce misleading interest coverages as they differ each year.
-      </Box>
-      <Box>
-        <b>Estimated Bond Rating</b> - The estimated bond rating that we have
-        worked out based on the companies interest coverage. It is similar to
-        Moody's, S&amp;P and Fitch's ratings. We use our own synthetic credit
-        rating because a lot of companies do not have any rating assigned by
-        these agencies.
-      </Box>
-      <Box>
-        <b>Estimated Company Default Spread</b> - The chance of a company
-        defaulting on it's debts within a year.
-      </Box>
-      <Box>
-        <b>Estimated Country Default Spread</b> - The chance of a country
-        defaulting on it's debts within a year.
-      </Box>
-      <Box>
-        <b>Estimated Pre-tax Cost of Debt</b> - The Synthetic Credit Rating
-        pre-tax cost of debt that we have automatically calculated for you. This
-        is used to work out the cost of capital.
-      </Box>
-    </React.Fragment>
-  );
-};
-
 export const InfoTextBlackScholes = () => {
   return (
     <Box>

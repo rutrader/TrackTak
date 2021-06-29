@@ -8,7 +8,6 @@ import { useTicker } from "@tracktak/intrinsic-valuations";
 const stockPaths = [
   "/discounted-cash-flow",
   "/financial-statements",
-  "/synthetic-credit-rating",
   "/industry-averages",
 ];
 
