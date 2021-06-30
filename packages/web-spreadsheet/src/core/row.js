@@ -91,7 +91,17 @@ class Rows {
     return cell;
   }
 
+  createNewRow(ri) {
+    this.rows[ri] = { cells: {} };
+
+    return this.rows[ri];
+  }
+
   setCell(ri, ci, newCell) {
+    if (!this.rows[ri]) {
+      this.createNewRow(ri);
+    }
+
     this.rows[ri].cells[ci] = {
       ...this.rows[ri].cells[ci],
       ...newCell,

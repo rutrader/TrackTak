@@ -176,7 +176,7 @@ export const makeGetDataProxy = (
             cstyle = helper.cloneDeep(styles[cell.style]);
           }
           if (property === "format") {
-            cstyle.format = value;
+            cstyle.format = value.key;
             addStyle(ri, ci, cstyle);
           } else if (
             property === "font-bold" ||
@@ -754,7 +754,13 @@ export const makeGetDataProxy = (
   const addStyle = (ri, ci, nstyle) => {
     for (let i = 0; i < styles.length; i += 1) {
       const style = styles[i];
-      if (helper.equals(style, nstyle)) return i;
+
+      if (helper.equals(style, nstyle)) {
+        rows.setCell(ri, ci, {
+          style: i,
+        });
+        return;
+      }
     }
 
     styles.push(nstyle);
