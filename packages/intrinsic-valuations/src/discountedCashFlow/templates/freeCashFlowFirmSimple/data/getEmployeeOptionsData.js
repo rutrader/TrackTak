@@ -1,4 +1,3 @@
-/* eslint-disable no-sparse-arrays */
 const getEmployeeOptionsData = () => {
   return {
     calculationOrder: 0,
@@ -50,97 +49,81 @@ const getEmployeeOptionsData = () => {
       },
     ],
     merges: ["A1:B1"],
-    rows: [
-      {
-        cells: [
-          {
+    rows: {
+      0: {
+        cells: {
+          0: {
             merge: [0, 1],
             style: 5,
             comment:
               "Calculated from the inputs you entered in the Employee Options section. We use the Black Scholes methodology to work out the estimated market price per employee option. We then minus this from the 'Equity' cell in the Valuation Output (cell B34).",
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      1: {
+        cells: {
+          1: {
             style: 4,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      2: {
+        cells: {
+          1: {
             style: 3,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      3: {
+        cells: {
+          1: {
             style: 4,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      4: {
+        cells: {
+          1: {
             style: 0,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      5: {
+        cells: {
+          1: {
             style: 0,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      6: {
+        cells: {
+          1: {
             style: 4,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      7: {
+        cells: {
+          1: {
             style: 3,
           },
-        ],
+        },
       },
-      ,
-      ,
-      ,
-      ,
-      ,
-      ,
-      ,
-      {
-        cells: [
-          ,
-          {
+      15: {
+        cells: {
+          1: {
             style: 3,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      16: {
+        cells: {
+          1: {
             style: 3,
           },
-        ],
+        },
       },
-    ],
+    },
     cols: {
       0: {
         width: 260,

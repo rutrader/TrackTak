@@ -1,4 +1,3 @@
-/* eslint-disable no-sparse-arrays */
 const getDCFValuationData = (isOnMobile) => {
   let desktopData;
 
@@ -490,773 +489,735 @@ const getDCFValuationData = (isOnMobile) => {
       },
     ],
     merges: [],
-    rows: [
-      {
-        cells: [
-          ,
-          ,
-          {
+    rows: {
+      0: {
+        cells: {
+          2: {
             style: 4,
           },
-          {
+          3: {
             style: 4,
           },
-          {
+          4: {
             style: 4,
           },
-          {
+          5: {
             style: 4,
           },
-          {
+          6: {
             style: 4,
           },
-          {
+          7: {
             style: 4,
           },
-          {
+          8: {
             style: 4,
           },
-          {
+          9: {
             style: 4,
           },
-          {
+          10: {
             style: 4,
           },
-          {
+          11: {
             style: 4,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      1: {
+        cells: {
+          1: {
             style: 3,
           },
-          {
+          2: {
             style: 3,
           },
-          {
+          3: {
             style: 3,
           },
-          {
+          4: {
             style: 3,
           },
-          {
+          5: {
             style: 3,
           },
-          {
+          6: {
             style: 3,
           },
-          {
+          7: {
             style: 3,
           },
-          {
+          8: {
             style: 3,
           },
-          {
+          9: {
             style: 3,
           },
-          {
+          10: {
             style: 3,
           },
-          {
+          11: {
             style: 3,
           },
-          {
+          12: {
             style: 3,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      2: {
+        cells: {
+          1: {
             style: 0,
           },
-          {
+          2: {
             style: 0,
           },
-          {
+          3: {
             style: 0,
           },
-          {
+          4: {
             style: 0,
           },
-          {
+          5: {
             style: 0,
           },
-          {
+          6: {
             style: 0,
           },
-          {
+          7: {
             style: 0,
           },
-          {
+          8: {
             style: 0,
           },
-          {
+          9: {
             style: 0,
           },
-          {
+          10: {
             style: 0,
           },
-          {
+          11: {
             style: 0,
           },
-          {
+          12: {
             style: 0,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      3: {
+        cells: {
+          1: {
             style: 3,
           },
-          {
+          2: {
             style: 3,
           },
-          {
+          3: {
             style: 3,
           },
-          {
+          4: {
             style: 3,
           },
-          {
+          5: {
             style: 3,
           },
-          {
+          6: {
             style: 3,
           },
-          {
+          7: {
             style: 3,
           },
-          {
+          8: {
             style: 3,
           },
-          {
+          9: {
             style: 3,
           },
-          {
+          10: {
             style: 3,
           },
-          {
+          11: {
             style: 3,
           },
-          {
+          12: {
             style: 3,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      4: {
+        cells: {
+          1: {
             style: 0,
           },
-          {
+          2: {
             style: 0,
           },
-          {
+          3: {
             style: 0,
           },
-          {
+          4: {
             style: 0,
           },
-          {
+          5: {
             style: 0,
           },
-          {
+          6: {
             style: 0,
           },
-          {
+          7: {
             style: 0,
           },
-          {
+          8: {
             style: 0,
           },
-          {
+          9: {
             style: 0,
           },
-          {
+          10: {
             style: 0,
           },
-          {
+          11: {
             style: 0,
           },
-          {
+          12: {
             style: 0,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      5: {
+        cells: {
+          1: {
             style: 3,
           },
-          {
+          2: {
             style: 3,
           },
-          {
+          3: {
             style: 3,
           },
-          {
+          4: {
             style: 3,
           },
-          {
+          5: {
             style: 3,
           },
-          {
+          6: {
             style: 3,
           },
-          {
+          7: {
             style: 3,
           },
-          {
+          8: {
             style: 3,
           },
-          {
+          9: {
             style: 3,
           },
-          {
+          10: {
             style: 3,
           },
-          {
+          11: {
             style: 3,
           },
-          {
+          12: {
             style: 3,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      6: {
+        cells: {
+          1: {
             style: 3,
           },
-          {
+          2: {
             style: 3,
           },
-          {
+          3: {
             style: 3,
           },
-          {
+          4: {
             style: 3,
           },
-          {
+          5: {
             style: 3,
           },
-          {
+          6: {
             style: 3,
           },
-          {
+          7: {
             style: 3,
           },
-          {
+          8: {
             style: 3,
           },
-          {
+          9: {
             style: 3,
           },
-          {
+          10: {
             style: 3,
           },
-          {
+          11: {
             style: 3,
           },
-          {
+          12: {
             style: 3,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      7: {
+        cells: {
+          1: {
             style: 3,
           },
-          {
+          2: {
             style: 3,
           },
-          {
+          3: {
             style: 3,
           },
-          {
+          4: {
             style: 3,
           },
-          {
+          5: {
             style: 3,
           },
-          {
+          6: {
             style: 3,
           },
-          {
+          7: {
             style: 3,
           },
-          {
+          8: {
             style: 3,
           },
-          {
+          9: {
             style: 3,
           },
-          {
+          10: {
             style: 3,
           },
-          {
+          11: {
             style: 3,
           },
-          {
+          12: {
             style: 3,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      8: {
+        cells: {
+          1: {
             style: 3,
           },
-          {
+          2: {
             style: 3,
           },
-          {
+          3: {
             style: 3,
           },
-          {
+          4: {
             style: 3,
           },
-          {
+          5: {
             style: 3,
           },
-          {
+          6: {
             style: 3,
           },
-          {
+          7: {
             style: 3,
           },
-          {
+          8: {
             style: 3,
           },
-          {
+          9: {
             style: 3,
           },
-          {
+          10: {
             style: 3,
           },
-          {
+          11: {
             style: 3,
           },
-          {
+          12: {
             style: 3,
           },
-        ],
+        },
       },
-      ,
-      {
-        cells: [
-          ,
-          {
+      10: {
+        cells: {
+          1: {
             style: 0,
           },
-          {
+          2: {
             style: 0,
           },
-          {
+          3: {
             style: 0,
           },
-          {
+          4: {
             style: 0,
           },
-          {
+          5: {
             style: 0,
           },
-          {
+          6: {
             style: 0,
           },
-          {
+          7: {
             style: 0,
           },
-          {
+          8: {
             style: 0,
           },
-          {
+          9: {
             style: 0,
           },
-          {
+          10: {
             style: 0,
           },
-          {
+          11: {
             style: 0,
           },
-          {
+          12: {
             style: 0,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      11: {
+        cells: {
+          1: {
             style: 4,
           },
-          {
+          2: {
             style: 4,
           },
-          {
+          3: {
             style: 4,
           },
-          {
+          4: {
             style: 4,
           },
-          {
+          5: {
             style: 4,
           },
-          {
+          6: {
             style: 4,
           },
-          {
+          7: {
             style: 4,
           },
-          {
+          8: {
             style: 4,
           },
-          {
+          9: {
             style: 4,
           },
-          {
+          10: {
             style: 4,
           },
-          {
+          11: {
             style: 4,
           },
-          {
+          12: {
             style: 4,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      12: {
+        cells: {
+          1: {
             style: 3,
           },
-          {
+          2: {
             style: 3,
           },
-          {
+          3: {
             style: 3,
           },
-          {
+          4: {
             style: 3,
           },
-          {
+          5: {
             style: 3,
           },
-          {
+          6: {
             style: 3,
           },
-          {
+          7: {
             style: 3,
           },
-          {
+          8: {
             style: 3,
           },
-          {
+          9: {
             style: 3,
           },
-          {
+          10: {
             style: 3,
           },
-          {
+          11: {
             style: 3,
           },
-          {
+          12: {
             style: 3,
           },
-        ],
+        },
       },
-      ,
-      {
-        cells: [
-          ,
-          {
+      14: {
+        cells: {
+          1: {
             style: 4,
           },
-          {
+          2: {
             style: 4,
           },
-          {
+          3: {
             style: 4,
           },
-          {
+          4: {
             style: 4,
           },
-          {
+          5: {
             style: 4,
           },
-          {
+          6: {
             style: 4,
           },
-          {
+          7: {
             style: 4,
           },
-          {
+          8: {
             style: 4,
           },
-          {
+          9: {
             style: 4,
           },
-          {
+          10: {
             style: 4,
           },
-          {
+          11: {
             style: 4,
           },
-          {
+          12: {
             style: 4,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      15: {
+        cells: {
+          1: {
             style: 3,
           },
-          {
+          2: {
             style: 3,
           },
-          {
+          3: {
             style: 3,
           },
-          {
+          4: {
             style: 3,
           },
-          {
+          5: {
             style: 3,
           },
-          {
+          6: {
             style: 3,
           },
-          {
+          7: {
             style: 3,
           },
-          {
+          8: {
             style: 3,
           },
-          {
+          9: {
             style: 3,
           },
-          {
+          10: {
             style: 3,
           },
-          {
+          11: {
             style: 3,
           },
-          {
+          12: {
             style: 3,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      16: {
+        cells: {
+          1: {
             style: 0,
           },
-          {
+          2: {
             style: 0,
           },
-          {
+          3: {
             style: 0,
           },
-          {
+          4: {
             style: 0,
           },
-          {
+          5: {
             style: 0,
           },
-          {
+          6: {
             style: 0,
           },
-          {
+          7: {
             style: 0,
           },
-          {
+          8: {
             style: 0,
           },
-          {
+          9: {
             style: 0,
           },
-          {
+          10: {
             style: 0,
           },
-          {
+          11: {
             style: 0,
           },
-          {
+          12: {
             style: 0,
           },
-        ],
+        },
       },
-      ,
-      {
-        cells: [
-          ,
-          {
+      18: {
+        cells: {
+          1: {
             style: 3,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      19: {
+        cells: {
+          1: {
             style: 0,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      20: {
+        cells: {
+          1: {
             style: 3,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      21: {
+        cells: {
+          1: {
             style: 3,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      22: {
+        cells: {
+          1: {
             style: 3,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      23: {
+        cells: {
+          1: {
             style: 3,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      24: {
+        cells: {
+          1: {
             style: 0,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      25: {
+        cells: {
+          1: {
             style: 3,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      26: {
+        cells: {
+          1: {
             style: 3,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      27: {
+        cells: {
+          1: {
             style: 3,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      28: {
+        cells: {
+          1: {
             style: 3,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      29: {
+        cells: {
+          1: {
             style: 3,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      30: {
+        cells: {
+          1: {
             style: 3,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      31: {
+        cells: {
+          1: {
             style: 3,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      32: {
+        cells: {
+          1: {
             style: 3,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      33: {
+        cells: {
+          1: {
             style: 3,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      34: {
+        cells: {
+          1: {
             style: 3,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      35: {
+        cells: {
+          1: {
             style: 5,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      36: {
+        cells: {
+          1: {
             style: 0,
           },
-        ],
+        },
       },
-    ],
+    },
     cols: {
       0: {
         width: 170,

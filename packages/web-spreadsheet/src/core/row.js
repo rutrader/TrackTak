@@ -3,7 +3,7 @@ import convertIndexesToAmount from "../shared/convertIndexesToAmount";
 
 class Rows {
   constructor(getRow, getDataProxy, hyperformula) {
-    this.rows = [];
+    this.rows = {};
     this.len = getRow().len;
     this.getDataProxy = getDataProxy;
     // default row height
@@ -48,11 +48,6 @@ class Rows {
     else delete row.hide;
   }
 
-  setStyle(ri, style) {
-    const row = this.get(ri);
-    row.style = style;
-  }
-
   sumHeight(min, max, exceptSet) {
     return helper.rangeSum(min, max, (i) => {
       if (exceptSet && exceptSet.has(i)) return 0;
@@ -65,21 +60,19 @@ class Rows {
   }
 
   get(ri) {
-    const row = this.rows[ri] || { cells: [] };
+    const row = this.rows[ri] || { cells: {} };
 
-    return {
-      ...row,
-    };
+    return row;
   }
 
   getCell(ri, ci) {
     const row = this.get(ri);
     if (
       row !== undefined &&
-      row?.cells !== undefined &&
+      row.cells !== undefined &&
       row.cells[ci] !== undefined
     ) {
-      return { ...row.cells[ci] };
+      return row.cells[ci];
     }
 
     return null;
@@ -98,8 +91,15 @@ class Rows {
     return cell;
   }
 
+  setCell(ri, ci, newCell) {
+    this.rows[ri].cells[ci] = {
+      ...this.rows[ri].cells[ci],
+      ...newCell,
+    };
+  }
+
   // what: all | text | format
-  setCell(ri, ci, cell, what = "all") {
+  pasteCell(ri, ci, cell, what = "all") {
     const row = this.get(ri);
 
     const paste = () => {
@@ -116,7 +116,7 @@ class Rows {
     } else if (what === "text") {
       paste();
     } else if (what === "format") {
-      row.cells[ci] = row.cells[ci] || [];
+      row.cells[ci] = row.cells[ci] || {};
       row.cells[ci].style = cell.style;
 
       if (cell.merge) {
@@ -168,7 +168,7 @@ class Rows {
                 const nci = jj + (j - sci);
                 const ncell = helper.cloneDeep(this.rows[i].cells[j]);
 
-                this.setCell(nri, nci, ncell, what);
+                this.pasteCell(nri, nci, ncell, what);
                 cb(nri, nci, ncell);
               }
             }
@@ -194,7 +194,7 @@ class Rows {
             sheet: this.getDataProxy().getSheetId(),
           });
         }
-        ncellmm[nri] = ncellmm[nri] || { cells: [] };
+        ncellmm[nri] = ncellmm[nri] || { cells: {} };
         ncellmm[nri].cells[nci] = this.rows[ri].cells[ci];
       });
     });
@@ -288,7 +288,7 @@ class Rows {
   }
 
   maxCell() {
-    const ri = this.rows[this.rows.length - 1];
+    const ri = this.rows[Object.keys(this.rows.length).length - 1];
     const col = this.rows[ri];
     if (col) {
       const { cells } = col;
@@ -300,32 +300,25 @@ class Rows {
   }
 
   each(cb) {
-    this.rows.forEach(([ri, row]) => {
+    Object.keys(this.rows).forEach(([ri, row]) => {
       cb(ri, row);
     });
   }
 
   eachCells(ri, cb) {
     if (this.rows[ri] && this.rows[ri].cells) {
-      this.rows[ri].cells.forEach(([ci, cell]) => {
+      Object.keys(this.rows[ri].cells).forEach(([ci, cell]) => {
         cb(ci, cell);
       });
     }
   }
 
   setData(rows) {
-    // Rows & cells is a sparse array, so this is to
-    // essentially copying the top level element which preserves the
-    // empty records. Shallow copying does not preserve empty records
-    this.rows = new Array(rows.length);
-
-    rows.forEach((row, ri) => {
-      this.rows[ri] = { ...row };
-    });
+    this.rows = helper.cloneDeep(rows);
   }
 
   getData() {
-    return this.rows;
+    return helper.cloneDeep(this.rows);
   }
 }
 

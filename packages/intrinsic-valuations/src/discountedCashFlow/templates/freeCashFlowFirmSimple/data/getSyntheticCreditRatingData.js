@@ -191,131 +191,123 @@ const getSyntheticCreditRatingData = () => {
       },
     ],
     merges: ["A1:B1", "A10:B10", "C10:D10"],
-    rows: [
-      {
-        cells: [
-          {
+    rows: {
+      0: {
+        cells: {
+          0: {
             merge: [0, 1],
             style: 15,
           },
-          {
+          1: {
             style: 15,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          {
+      1: {
+        cells: {
+          0: {
             style: 8,
           },
-          {
+          1: {
             style: 8,
             comment:
               "Large companies usually have stable earnings and less chance of defaulting on their debt. Smaller companies are usually risker, therefore they have higher costs of debts.",
           },
-          {
+          2: {
             style: 11,
           },
-          {
+          3: {
             style: 11,
           },
-          ,
-          ,
-          {
+          6: {
             style: 0,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      2: {
+        cells: {
+          1: {
             comment:
               "How many times over a company can satisfy it's interest expenses with just it's operating income. A good interest coverage is usually above 5. Companies with volatile operating income can produce misleading interest coverages as they differ each year.",
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      3: {
+        cells: {
+          1: {
             comment:
               "The estimated bond rating that we have worked out based on the companies interest coverage. It is similar to Moody's, S&P and Fitch's ratings. We use our own synthetic credit rating because a lot of companies do not have any rating assigned by these agencies.",
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      4: {
+        cells: {
+          1: {
             comment:
               "The chance of a company defaulting on it's debts within a year.",
           },
-        ],
+        },
       },
-      {
-        cells: [
-          ,
-          {
+      5: {
+        cells: {
+          1: {
             comment:
               "The chance of a country defaulting on it's debts within a year.",
           },
-        ],
+        },
       },
-      {
-        cells: [
-          {
+      6: {
+        cells: {
+          0: {
             style: 19,
           },
-          {
+          1: {
             comment:
               "The Synthetic Credit Rating pre-tax cost of debt that we have automatically calculated for you. This is used to work out the cost of capital.",
           },
-        ],
+        },
       },
-      ,
-      ,
-      {
-        cells: [
-          {
+      9: {
+        cells: {
+          0: {
             merge: [0, 1],
             style: 16,
           },
-          {
+          1: {
             style: 16,
           },
-          {
+          2: {
             merge: [0, 1],
             style: 16,
           },
-          {
+          3: {
             style: 16,
           },
-        ],
+        },
       },
-      {
-        cells: [
-          {
+      10: {
+        cells: {
+          0: {
             style: 18,
           },
-          {
+          1: {
             style: 18,
           },
-          {
+          2: {
             style: 18,
           },
-          {
+          3: {
             style: 18,
           },
-          {
+          4: {
             style: 18,
           },
-          {
+          5: {
             style: 18,
           },
-        ],
+        },
       },
-    ],
+    },
     cols: {
       0: {
         width: 283,
