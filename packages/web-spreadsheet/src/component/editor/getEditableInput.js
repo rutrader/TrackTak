@@ -69,7 +69,7 @@ export const getEditableInput = (
       }
     } else {
       const start = inputText.lastIndexOf("=");
-      if (start !== -1) {
+      if (start !== -1 && inputText.length >= 2) {
         suggest.search(inputText.substring(start + 1));
       } else {
         suggest.hide();
