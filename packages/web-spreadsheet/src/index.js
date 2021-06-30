@@ -21,6 +21,7 @@ const getSpreadsheet = (
     licenseKey: hyperformulaLicenseKey,
     // https://github.com/handsontable/hyperformula/issues/686
     matrixDetection: false,
+    binarySearchThreshold: 1,
     ...hyperformulaConfig,
   });
 

@@ -4,9 +4,11 @@ import { Provider as ReactReduxProvider } from "react-redux";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import dayjs from "dayjs";
 import minMax from "dayjs/plugin/minMax";
+import isBetween from "dayjs/plugin/isBetween";
 
 dayjs.extend(minMax);
 dayjs.extend(advancedFormat);
+dayjs.extend(isBetween);
 
 const Provider = ({ children, store, theme = {} }) => {
   return (

@@ -176,8 +176,8 @@ export const makeGetDataProxy = (
             cstyle = helper.cloneDeep(styles[cell.style]);
           }
           if (property === "format") {
-            cstyle.format = value;
-            cell.style = addStyle(cstyle);
+            cstyle.format = value.key;
+            addStyle(ri, ci, cstyle);
           } else if (
             property === "font-bold" ||
             property === "font-italic" ||
@@ -187,7 +187,7 @@ export const makeGetDataProxy = (
             const nfont = {};
             nfont[property.split("-")[1]] = value;
             cstyle.font = Object.assign(cstyle.font || {}, nfont);
-            cell.style = addStyle(cstyle);
+            addStyle(ri, ci, cstyle);
           } else if (
             property === "strike" ||
             property === "textwrap" ||
@@ -198,9 +198,11 @@ export const makeGetDataProxy = (
             property === "bgcolor"
           ) {
             cstyle[property] = value;
-            cell.style = addStyle(cstyle);
+            addStyle(ri, ci, cstyle);
           } else {
-            cell[property] = value;
+            rows.setCell(ri, ci, {
+              [property]: value,
+            });
           }
         });
       }
@@ -351,13 +353,16 @@ export const makeGetDataProxy = (
     if (rn > 1 || cn > 1) {
       const { sri, sci } = rangeSelector.range;
       changeData(() => {
-        const cell = rows.getCellOrNew(sri, sci);
-        cell.merge = [rn - 1, cn - 1];
+        const newCell = {
+          merge: [rn - 1, cn - 1],
+        };
+
+        rows.setCell(sri, sci, newCell);
         merges.add(rangeSelector.range);
         // delete merge cells
         rows.deleteCells(rangeSelector.range);
-        // console.log('cell:', cell, d);
-        rows.setCell(sri, sci, cell);
+
+        rows.setCell(sri, sci, newCell);
       });
     }
   };
@@ -749,13 +754,23 @@ export const makeGetDataProxy = (
     }
   };
 
-  const addStyle = (nstyle) => {
+  const addStyle = (ri, ci, nstyle) => {
     for (let i = 0; i < styles.length; i += 1) {
       const style = styles[i];
-      if (helper.equals(style, nstyle)) return i;
+
+      if (helper.equals(style, nstyle)) {
+        rows.setCell(ri, ci, {
+          style: i,
+        });
+        return;
+      }
     }
+
     styles.push(nstyle);
-    return styles.length - 1;
+
+    rows.setCell(ri, ci, {
+      style: styles.length - 1,
+    });
   };
 
   const changeData = (cb) => {
@@ -792,7 +807,7 @@ export const makeGetDataProxy = (
     }
 
     if (d.styles !== undefined) {
-      styles = d.styles;
+      styles = [...d.styles];
     }
   };
 
@@ -804,7 +819,7 @@ export const makeGetDataProxy = (
     return {
       name,
       freeze: xy2expr(freeze[1], freeze[0]),
-      styles,
+      styles: [...styles],
       merges: merges.getData(),
       rows: rows.getData(),
       cols: cols.getData(),
@@ -872,7 +887,7 @@ export const makeGetDataProxy = (
       cstyle = helper.cloneDeep(styles[cell.style]);
     }
     cstyle = helper.merge(cstyle, { border: bss });
-    cell.style = addStyle(cstyle);
+    addStyle(cstyle);
   }
 
   function setStyleBorders({ mode, style, color }) {
@@ -895,11 +910,10 @@ export const makeGetDataProxy = (
         const cell = rows.getCell(ri, ci);
         if (cell && cell.style !== undefined) {
           const ns = helper.cloneDeep(styles[cell.style]);
+
           delete ns.border;
-          // ['bottom', 'top', 'left', 'right'].forEach((prop) => {
-          //   if (ns[prop]) delete ns[prop];
-          // });
-          cell.style = addStyle(ns);
+
+          addStyle(ns);
         }
       });
     } else if (
