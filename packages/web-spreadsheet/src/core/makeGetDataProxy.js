@@ -353,13 +353,16 @@ export const makeGetDataProxy = (
     if (rn > 1 || cn > 1) {
       const { sri, sci } = rangeSelector.range;
       changeData(() => {
-        const cell = rows.getCellOrNew(sri, sci);
-        cell.merge = [rn - 1, cn - 1];
+        const newCell = {
+          merge: [rn - 1, cn - 1],
+        };
+
+        rows.setCell(sri, sci, newCell);
         merges.add(rangeSelector.range);
         // delete merge cells
         rows.deleteCells(rangeSelector.range);
-        // console.log('cell:', cell, d);
-        rows.pasteCell(sri, sci, cell);
+
+        rows.setCell(sri, sci, newCell);
       });
     }
   };
@@ -907,11 +910,10 @@ export const makeGetDataProxy = (
         const cell = rows.getCell(ri, ci);
         if (cell && cell.style !== undefined) {
           const ns = helper.cloneDeep(styles[cell.style]);
+
           delete ns.border;
-          // ['bottom', 'top', 'left', 'right'].forEach((prop) => {
-          //   if (ns[prop]) delete ns[prop];
-          // });
-          cell.style = addStyle(ns);
+
+          addStyle(ns);
         }
       });
     } else if (
