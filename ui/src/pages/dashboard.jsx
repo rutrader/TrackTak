@@ -1,15 +1,24 @@
-import { Alert, Box, Typography, useTheme } from "@material-ui/core";
-import React from "react";
+import {
+  Alert,
+  Box,
+} from "@material-ui/core";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { useAuth } from "../hooks/useAuth";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
-import SpreadsheetTable from "../components/SpreadsheetTable";
-import SidePanel from "../components/SidePanel/SidePanel";
+import SpreadsheetTable from "../components/SavedSpreadsheets";
+import SidePanel from "../components/SidePanel";
+
+const tabs = [{
+  title: "My Valuations",
+  to: '/dashboard',
+  content: <SpreadsheetTable />,
+}];
 
 const Dashboard = () => {
   const { isAuthenticated } = useAuth();
-  const theme = useTheme();
+  const [selectedTab, setSeletedTab] = useState(0);
 
   return (
     <>
@@ -24,18 +33,13 @@ const Dashboard = () => {
             display: "flex",
           }}
         >
-          <SidePanel />
-          <Box
-            sx={{
-              flexGrow: 1,
-              padding: theme.spacing(1),
-            }}
+          <SidePanel
+            tabs={tabs}
+            selectedTab={selectedTab}
+            setSeletedTab={setSeletedTab}
           >
-            <Typography variant="h5" gutterBottom>
-              My Spreadsheets
-            </Typography>
-            <SpreadsheetTable />
-          </Box>
+            {tabs[selectedTab].content}
+          </SidePanel>
         </Box>
       )}
       {!isAuthenticated && (
