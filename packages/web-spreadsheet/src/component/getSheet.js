@@ -464,22 +464,10 @@ export const getSheet = (
         selector.range,
       );
     } else {
-      const value = hyperformula.getCellValue({
-        row: ri,
-        col: ci,
-        sheet: getData().getSheetId(),
-      });
-
       // Blur the content editable to fix safari bug
       editor.textEl.el.blur();
       selector.set(ri, ci, indexesUpdated);
-      eventEmitter.emit(
-        spreadsheetEvents.sheet.cellSelected,
-        cell,
-        value,
-        ri,
-        ci,
-      );
+      eventEmitter.emit(spreadsheetEvents.sheet.cellSelected, cell, ri, ci);
     }
   }
 
