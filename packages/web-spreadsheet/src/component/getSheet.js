@@ -559,6 +559,7 @@ export const getSheet = (
     const { left } = horizontalScrollbar.scroll();
     const { rows, cols } = getData();
     const ri = getData().scroll.ri + 1;
+    const mwheelScrollSpeed = getOptions().mwheelScrollSpeed;
     const scrollEl = verticalScrollbar.el.el;
     // https://stackoverflow.com/questions/876115/how-can-i-determine-if-a-div-is-scrolled-to-the-bottom
     const isAtBottom =
@@ -588,14 +589,16 @@ export const getSheet = (
         const newRi = ri - 1;
 
         if (!isAtTop) {
-          const rh = loopValue(newRi, (i) => rows.getHeight(i));
+          const rh =
+            loopValue(newRi, (i) => rows.getHeight(i)) * mwheelScrollSpeed;
           verticalScrollbar.move({ top: newRi === 0 ? 0 : top - rh });
         }
       } else {
         const newRi = ri + 1;
 
         if (!isAtBottom) {
-          const rh = loopValue(newRi, (i) => rows.getHeight(i));
+          const rh =
+            loopValue(newRi, (i) => rows.getHeight(i)) * mwheelScrollSpeed;
           verticalScrollbar.move({ top: top + rh - 1 });
         }
       }
@@ -606,13 +609,13 @@ export const getSheet = (
       if (horizontal > 0) {
         const ci = getData().scroll.ci + 1;
         if (ci < cols.len) {
-          const cw = loopValue(ci, (i) => cols.getWidth(i));
+          const cw = loopValue(ci, (i) => cols.getWidth(i)) * mwheelScrollSpeed;
           horizontalScrollbar.move({ left: left + cw - 1 });
         }
       } else {
         const ci = getData().scroll.ci - 1;
         if (ci >= 0) {
-          const cw = loopValue(ci, (i) => cols.getWidth(i));
+          const cw = loopValue(ci, (i) => cols.getWidth(i)) * mwheelScrollSpeed;
           horizontalScrollbar.move({ left: ci === 0 ? 0 : left - cw });
         }
       }

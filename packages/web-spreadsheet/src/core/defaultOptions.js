@@ -23,6 +23,7 @@ export const sharedOptions = {
   showContextmenu: true,
   showAllFormulas: false,
   showYOYGrowth: false,
+  mwheelScrollSpeed: 3,
   row: {
     len: 100,
     indexHeight: 20,
