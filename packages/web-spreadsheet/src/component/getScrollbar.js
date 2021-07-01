@@ -38,13 +38,6 @@ export const getScrollbar = (eventEmitter, vertical) => {
       contentEl
         .css(vertical ? "width" : "height", "1px")
         .css(cssKey, `${contentDistance}px`);
-
-      // TODO: Add back when vertical scrolling is fixed properly for freeze & mouse wheel
-      if (vertical) {
-        el.hide();
-      } else {
-        el.show();
-      }
     } else {
       el.hide();
     }
