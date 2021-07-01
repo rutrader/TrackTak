@@ -154,7 +154,7 @@ const DiscountedCashFlowTable = ({
       },
       formats: getFormats(currencySymbol),
       view: {
-        height: () => 1210,
+        height: () => 700,
         width,
       },
     };
