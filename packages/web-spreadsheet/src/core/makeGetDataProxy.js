@@ -3,6 +3,8 @@ import { expr2xy, xy2expr } from "./alphabet";
 import { t } from "../locale/locale";
 import spreadsheetEvents from "./spreadsheetEvents";
 import helper from "./helper";
+import getDefaultFormatFromText from "../shared/getDefaultFormatFromText";
+import { isNil } from "lodash-es";
 
 export const makeGetDataProxy = (
   type,
@@ -610,8 +612,19 @@ export const makeGetDataProxy = (
 
   const getCellStyleOrDefault = (ri, ci) => {
     const cell = rows.getCell(ri, ci);
-    const cellStyle =
-      cell && cell.style !== undefined ? styles[cell.style] : {};
+    const format = getDefaultFormatFromText(
+      hyperformula.getCellSerialized({
+        row: ri,
+        col: ci,
+        sheet: getSheetId(),
+      }),
+    );
+
+    let cellStyle = !isNil(cell?.style) ? { ...styles[cell.style] } : {};
+
+    if (format && !cellStyle.format) {
+      cellStyle.format = format;
+    }
     return helper.merge(getOptions().style, cellStyle);
   };
 

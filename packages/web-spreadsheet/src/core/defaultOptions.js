@@ -1,16 +1,7 @@
 import { tf } from "../locale/locale";
 import { merge } from "lodash-es";
 import numfmt from "numfmt";
-
-const patterns = {
-  percent: {
-    edit: "0.##%",
-    render: "0.00%",
-  },
-  number: {
-    render: "#,##0.##",
-  },
-};
+import patterns from "../shared/patterns";
 
 export const sharedOptions = {
   mode: "edit", // edit | read
