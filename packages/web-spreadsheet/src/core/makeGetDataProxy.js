@@ -80,11 +80,17 @@ export const makeGetDataProxy = (
     return true;
   };
 
-  const pasteFromSystemClipboard = (evt) => {
-    const textData = evt.clipboardData.getData("text/plain");
+  const pasteFromSystemClipboard = async () => {
+    const data = await navigator.clipboard.read();
 
-    const content = parseClipboardContent(textData);
+    // TODO: Add html formatting later
+    // Google sheets is doing a best guess for layout based on
+    // HTML elements such as span, div etc
+    // const htmlData = await data[0].getType("text/html");
+    const plainTextBlob = await data[0].getType("text/plain");
+    const plainText = await plainTextBlob.text();
 
+    const content = parseClipboardContent(plainText);
     const { ri, ci } = rangeSelector.getIndexes();
 
     let startRow = ri;

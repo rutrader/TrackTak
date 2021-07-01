@@ -694,10 +694,10 @@ export const getSheet = (
     selector.showClipboard();
   }
 
-  function paste(what, evt) {
+  async function paste(what, evt) {
     if (getOptions().mode === "read") return;
     if (clipboard.isClear()) {
-      getData().pasteFromSystemClipboard(evt);
+      await getData().pasteFromSystemClipboard();
 
       sheetReset();
     } else if (getData().paste(what, (msg) => xtoast("Tip", msg))) {
