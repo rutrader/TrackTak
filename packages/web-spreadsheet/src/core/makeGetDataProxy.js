@@ -705,7 +705,6 @@ export const makeGetDataProxy = (
   };
 
   const viewRange = () => {
-    // console.log('scroll:', scroll, ', freeze:', freeze)
     let { ri, ci } = scroll;
     if (ri <= 0) [ri] = freeze;
     if (ci <= 0) [, ci] = freeze;
@@ -724,7 +723,7 @@ export const makeGetDataProxy = (
       eci = j;
       if (x > getViewWidthHeight().width) break;
     }
-    // console.log(ri, ci, eri, eci, x, y);
+
     return new CellRange(ri, ci, eri, eci, x, y);
   };
 
