@@ -10,12 +10,18 @@ class Cols {
     this.minWidth = getCol().minWidth;
   }
 
-  setData(d) {
-    this.cols = { ...d };
+  setData(cols) {
+    this.cols = helper.cloneDeep(cols);
   }
 
   getData() {
-    return { ...this.cols };
+    return helper.cloneDeep(this.cols);
+  }
+
+  createNewCol(ci) {
+    this.cols[ci] = {};
+
+    return this.cols[ci];
   }
 
   getWidth(i) {
@@ -28,9 +34,13 @@ class Cols {
   }
 
   get(ci) {
-    const col = this.cols[ci] || {};
+    let col = this.cols[ci];
 
-    return { ...col };
+    if (!col) {
+      col = this.createNewCol(ci);
+    }
+
+    return col;
   }
 
   setWidth(ci, width) {
