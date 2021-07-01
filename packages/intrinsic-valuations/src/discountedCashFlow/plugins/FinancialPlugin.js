@@ -1,14 +1,24 @@
 import { FunctionPlugin, InvalidArgumentsError } from "hyperformula";
 import matureMarketEquityRiskPremium from "../../shared/matureMarketEquityRiskPremium";
+import dayjs from "dayjs";
 
-export const makeFinancialPlugin = ({
-  incomeStatements,
-  balanceSheets,
-  cashFlowStatements,
-  currentEquityRiskPremium,
-  currentIndustry,
-  ...financialData
-}) => {
+export const makeFinancialPlugin = (data) => {
+  const {
+    incomeStatements,
+    balanceSheets,
+    cashFlowStatements,
+    currentEquityRiskPremium,
+    currentIndustry,
+    general,
+    highlights,
+    exchangeRates,
+    ...financialData
+  } = data;
+
+  const lastExchangeRate = exchangeRates
+    ? Object.values(exchangeRates)[0].close
+    : 1;
+
   const ttmData = {
     ...financialData,
     ...incomeStatements.ttm,
@@ -16,16 +26,38 @@ export const makeFinancialPlugin = ({
     ...cashFlowStatements.ttm,
     ...currentEquityRiskPremium,
     ...currentIndustry,
+    ...general,
+    ...highlights,
+    lastExchangeRate,
     matureMarketEquityRiskPremium,
   };
 
-  const getPropertyFromOneOfStatements = (attribute, date) => {
-    return (
-      incomeStatements.yearly[date][attribute] ||
-      balanceSheets.yearly[date][attribute] ||
-      cashFlowStatements.yearly[date][attribute] ||
-      0
-    );
+  const historicalDataArrays = {
+    incomeStatements: {
+      yearly: Object.values(incomeStatements.yearly),
+    },
+    balanceSheets: {
+      yearly: Object.values(balanceSheets.yearly),
+    },
+    cashFlowStatements: {
+      yearly: Object.values(cashFlowStatements.yearly),
+    },
+  };
+
+  const getTypeOfStatementToUse = (attribute) => {
+    if (incomeStatements.ttm[attribute]) {
+      return "incomeStatements";
+    }
+
+    if (balanceSheets.ttm[attribute]) {
+      return "balanceSheets";
+    }
+
+    if (cashFlowStatements.ttm[attribute]) {
+      return "cashFlowStatements";
+    }
+
+    return null;
   };
 
   class FinancialPlugin extends FunctionPlugin {
@@ -42,9 +74,29 @@ export const makeFinancialPlugin = ({
       }
 
       const startDate = args[1].value;
+      const statementType = getTypeOfStatementToUse(attribute);
 
       if (args.length === 2) {
-        return getPropertyFromOneOfStatements(attribute, startDate);
+        return data[statementType].yearly[startDate][attribute] || 0;
+      }
+
+      const endDate = args[2].value;
+
+      if (args.length === 3) {
+        const startDateDayjs = dayjs(startDate);
+        const endDateDayjs = dayjs(endDate);
+
+        // TODO: Waiting on matrixes in new hyperformula release
+        return historicalDataArrays[statementType].yearly
+          .filter(({ date }) => {
+            return dayjs(date).isBetween(
+              startDateDayjs,
+              endDateDayjs,
+              "day",
+              "[]",
+            );
+          })
+          .map((datum) => datum[attribute]);
       }
     }
   }
