@@ -3,7 +3,7 @@ const getDCFValuationData = (isOnMobile) => {
 
   if (!isOnMobile) {
     desktopData = {
-      freeze: "B38",
+      freeze: "B2",
     };
   }
 

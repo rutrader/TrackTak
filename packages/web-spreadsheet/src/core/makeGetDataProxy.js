@@ -80,6 +80,47 @@ export const makeGetDataProxy = (
     return true;
   };
 
+  const pasteFromSystemClipboard = async () => {
+    const data = await navigator.clipboard.read();
+
+    // TODO: Add html formatting later
+    // Google sheets is doing a best guess for layout based on
+    // HTML elements such as span, div etc
+    // const htmlData = await data[0].getType("text/html");
+    const plainTextBlob = await data[0].getType("text/plain");
+    const plainText = await plainTextBlob.text();
+
+    const content = parseClipboardContent(plainText);
+    const { ri, ci } = rangeSelector.getIndexes();
+
+    let startRow = ri;
+
+    content.forEach((row) => {
+      let startColumn = ci;
+
+      row.forEach((cellContent) => {
+        setCellText(startRow, startColumn, cellContent, "finished");
+        startColumn += 1;
+      });
+      startRow += 1;
+    });
+  };
+
+  const parseClipboardContent = (clipboardContent) => {
+    const parsedData = [];
+
+    // first we need to figure out how many rows we need to paste
+    const rows = clipboardContent.split("\n");
+
+    // for each row parse cell data
+    let i = 0;
+    rows.forEach((row) => {
+      parsedData[i] = row.split("\t");
+      i += 1;
+    });
+    return parsedData;
+  };
+
   const pasteFromText = (txt) => {
     const lines = txt
       .split("\r\n")
@@ -1082,6 +1123,8 @@ export const makeGetDataProxy = (
     copy,
     cut,
     paste,
+    parseClipboardContent,
+    pasteFromSystemClipboard,
     pasteFromText,
     hideRowsOrCols,
     unhideRowsOrCols,

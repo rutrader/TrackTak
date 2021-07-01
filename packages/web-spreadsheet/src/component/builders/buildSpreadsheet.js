@@ -166,6 +166,7 @@ export const buildSpreadsheet = (
   const { sheet } = getSheet(
     toolbar,
     rangeSelector,
+    clipboard,
     history,
     print,
     sheetBuilder,

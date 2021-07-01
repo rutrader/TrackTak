@@ -75,8 +75,7 @@ export function bindTouch(target, { move, end, touchstart }) {
       startx = pageX;
       starty = pageY;
     }
-    // TODO: Add back when vertical scrolling is fixed properly for freeze & mouse wheel
-    // evt.preventDefault();
+    evt.preventDefault();
   });
   bind(target, "touchend", (evt) => {
     if (!end) return;

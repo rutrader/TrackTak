@@ -29,6 +29,7 @@ function throttle(func, wait) {
 export const getSheet = (
   toolbar,
   rangeSelector,
+  clipboard,
   history,
   print,
   builder,
@@ -693,9 +694,13 @@ export const getSheet = (
     selector.showClipboard();
   }
 
-  function paste(what, evt) {
+  async function paste(what, evt) {
     if (getOptions().mode === "read") return;
-    if (getData().paste(what, (msg) => xtoast("Tip", msg))) {
+    if (clipboard.isClear()) {
+      await getData().pasteFromSystemClipboard();
+
+      sheetReset();
+    } else if (getData().paste(what, (msg) => xtoast("Tip", msg))) {
       sheetReset();
     } else if (evt) {
       const cdata = evt.clipboardData.getData("text/plain");
