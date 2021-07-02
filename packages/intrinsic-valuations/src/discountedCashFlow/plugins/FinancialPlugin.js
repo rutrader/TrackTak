@@ -34,13 +34,13 @@ export const makeFinancialPlugin = (data) => {
 
   const historicalDataArrays = {
     incomeStatements: {
-      yearly: Object.values(incomeStatements.yearly),
+      yearly: Object.values(incomeStatements.yearly || {}),
     },
     balanceSheets: {
-      yearly: Object.values(balanceSheets.yearly),
+      yearly: Object.values(balanceSheets.yearly || {}),
     },
     cashFlowStatements: {
-      yearly: Object.values(cashFlowStatements.yearly),
+      yearly: Object.values(cashFlowStatements.yearly || {}),
     },
   };
 

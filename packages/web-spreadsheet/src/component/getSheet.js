@@ -468,7 +468,20 @@ export const getSheet = (
       // Blur the content editable to fix safari bug
       editor.textEl.el.blur();
       selector.set(ri, ci, indexesUpdated);
-      eventEmitter.emit(spreadsheetEvents.sheet.cellSelected, cell, ri, ci);
+
+      const cellText = hyperformula.getCellSerialized({
+        row: ri,
+        col: ci,
+        sheet: getData().getSheetId(),
+      });
+
+      eventEmitter.emit(
+        spreadsheetEvents.sheet.cellSelected,
+        cell,
+        cellText,
+        ri,
+        ci,
+      );
     }
   }
 
@@ -893,7 +906,7 @@ export const getSheet = (
     if (getOptions().mode === "read") return;
     const cell = getData().getSelectedCell();
     const styles = getData().getData().styles;
-    const format = getFormatFromCell(cell, styles);
+    const format = getFormatFromCell(text, cell, styles);
 
     let newText = setTextFormat(text, format, getOptions().formats, state);
     getData().setSelectedCellText(newText, state);

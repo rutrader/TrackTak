@@ -23,8 +23,12 @@ export const makeDropdownFormat = (getOptions, getData, eventEmitter) => (
     dropdown.hide();
   };
 
-  eventEmitter.on(spreadsheetEvents.sheet.cellSelected, (cell) => {
-    const format = getFormatFromCell(cell, getData().getData().styles);
+  eventEmitter.on(spreadsheetEvents.sheet.cellSelected, (cell, cellText) => {
+    const format = getFormatFromCell(
+      cellText,
+      cell,
+      getData().getData().styles,
+    );
 
     if (format) {
       setTitle(format);

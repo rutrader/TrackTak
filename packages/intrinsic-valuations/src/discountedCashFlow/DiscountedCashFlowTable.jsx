@@ -53,6 +53,8 @@ import getSyntheticCreditRatingData from "./templates/freeCashFlowFirmSimple/dat
 import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
 import selectHighlights from "../selectors/fundamentalSelectors/selectHighlights";
 import selectExchangeRates from "../selectors/fundamentalSelectors/selectExchangeRates";
+import getIndustryAveragesUSData from "./templates/freeCashFlowFirmSimple/data/getIndustryAveragesUSData";
+import getIndustryAveragesGlobalData from "./templates/freeCashFlowFirmSimple/data/getIndustryAveragesGlobalData";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
@@ -307,6 +309,8 @@ const DiscountedCashFlowTable = ({
           getCostOfCapitalData(),
           getEmployeeOptionsData(),
           getSyntheticCreditRatingData(),
+          getIndustryAveragesUSData(),
+          getIndustryAveragesGlobalData(),
         ]);
 
         spreadsheet.sheet.switchData(spreadsheet.sheet.getDatas()[0]);
@@ -397,16 +401,11 @@ const DiscountedCashFlowTable = ({
         setScope({
           incomeStatements: {
             ttm: ttmIncomeStatement,
-            yearly: yearlyIncomeStatements,
           },
           balanceSheets: {
             ttm: ttmBalanceSheet,
-            yearly: yearlyBalanceSheets,
           },
-          cashFlowStatements: {
-            ttm: ttmCashFlowStatement,
-            yearly: yearlyCashFlowStatements,
-          },
+          cashFlowStatements: {},
           riskFreeRate,
           currentEquityRiskPremium,
           currentIndustry,

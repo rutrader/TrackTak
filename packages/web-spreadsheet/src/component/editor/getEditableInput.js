@@ -57,7 +57,7 @@ export const getEditableInput = (
   };
 
   const setInputText = (text) => {
-    const format = getFormatFromCell(_cell, getData().getData().styles);
+    const format = getFormatFromCell(text, _cell, getData().getData().styles);
 
     inputText = setTextFormat(text, format, getOptions().formats, "input");
 
@@ -166,7 +166,6 @@ export const getEditableInput = (
   const freeze = { w: 0, h: 0 };
   let _cell = null;
   let initialCell = null;
-  let _indexes = null;
   let initialText = null;
   let inputText = "";
 
@@ -238,7 +237,11 @@ export const getEditableInput = (
 
     setText(cellText);
 
-    const format = getFormatFromCell(_cell, getData().getData().styles);
+    const format = getFormatFromCell(
+      cellText,
+      _cell,
+      getData().getData().styles,
+    );
 
     setTimeout(() => {
       setCaretPosition(
@@ -264,7 +267,7 @@ export const getEditableInput = (
   };
 
   const setText = (text) => {
-    const format = getFormatFromCell(_cell, getData().getData().styles);
+    const format = getFormatFromCell(text, _cell, getData().getData().styles);
     inputText = setTextFormat(text, format, getOptions().formats, "start");
 
     eventEmitter.emit(spreadsheetEvents[eventType].setText, inputText, format);

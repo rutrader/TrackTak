@@ -5,6 +5,7 @@ import { cssPrefix } from "../../config";
 import { h } from "../element";
 import { getFontSizePxByPt } from "../../core/font";
 import numfmt from "numfmt";
+import getDefaultFormatFromText from "../../shared/getDefaultFormatFromText";
 
 const tableFixedHeaderCleanStyle = { fillStyle: "#f4f5f8" };
 const cellPaddingWidth = 5;

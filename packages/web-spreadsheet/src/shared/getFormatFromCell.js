@@ -1,6 +1,7 @@
 import { isNil } from "lodash-es";
+import getDefaultFormatFromText from "./getDefaultFormatFromText";
 
-const getFormatFromCell = (cell, styles) => {
+const getFormatFromCell = (text, cell, styles) => {
   const styleKey = cell?.style;
 
   if (!isNil(styleKey) && styles.length) {
@@ -8,7 +9,10 @@ const getFormatFromCell = (cell, styles) => {
 
     return formatKey;
   }
-  return null;
+
+  if (!text) return null;
+
+  return getDefaultFormatFromText(text);
 };
 
 export default getFormatFromCell;
