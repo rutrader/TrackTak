@@ -34,6 +34,10 @@ export const getFormulaBar = (
     editableInput.datepicker.el,
   );
 
+  editableInput.textEl.on("click", () => {
+    eventEmitter.emit(spreadsheetEvents.formulaBar.click);
+  });
+
   eventEmitter.on(spreadsheetEvents.sheet.cellSelected, (_, ri, ci) => {
     const cellAddress = {
       row: ri,
@@ -49,7 +53,7 @@ export const getFormulaBar = (
     editableInput.setText(value);
   });
 
-  eventEmitter.on(spreadsheetEvents.editor.change, (_, text) => {
+  eventEmitter.on(spreadsheetEvents.editor.setText, (_, text) => {
     if (text !== editableInput.textEl.el.textContent) {
       editableInput.setText(text);
     }

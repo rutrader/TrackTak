@@ -468,6 +468,7 @@ export const getSheet = (
       // Blur the content editable to fix safari bug
       editor.textEl.el.blur();
       selector.set(ri, ci, indexesUpdated);
+      editorSetOffset();
       eventEmitter.emit(spreadsheetEvents.sheet.cellSelected, cell, ri, ci);
     }
   }
@@ -838,7 +839,6 @@ export const getSheet = (
       sheet: getData().getSheetId(),
     });
 
-    editorSetOffset();
     editor.setCell(
       cellText ?? value,
       getData().getSelectedCell(),

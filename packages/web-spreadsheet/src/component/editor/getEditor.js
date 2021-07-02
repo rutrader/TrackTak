@@ -45,6 +45,10 @@ export const getEditor = (
     editableInput.setInputText(text);
   });
 
+  eventEmitter.on(spreadsheetEvents.formulaBar.click, () => {
+    el.show();
+  });
+
   return {
     ...editableInput,
   };
