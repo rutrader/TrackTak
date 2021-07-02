@@ -96,9 +96,12 @@ const xtos = async (
       scope.currentIndustry.standardDeviationInStockPrices,
     equityRiskPremium: scope.currentEquityRiskPremium.equityRiskPremium,
     marginalTaxRate: scope.currentEquityRiskPremium.marginalTaxRate,
+    adjDefaultSpread: scope.currentEquityRiskPremium.adjDefaultSpread,
     matureMarketEquityRiskPremium,
+    marketCapitalization: scope.highlights.marketCapitalization,
   };
 
+  delete newScope.highlights;
   delete newScope.incomeStatements;
   delete newScope.balanceSheets;
   delete newScope.cashFlowStatements;
@@ -134,7 +137,7 @@ const xtos = async (
 
         let newValue = value ?? "";
 
-        const format = getFormatFromCell(cell, dataSheet.styles);
+        const format = getFormatFromCell(value, cell, dataSheet.styles);
 
         var lastRef = coordinateToReference(ri + 1, ci + 1);
         if (minCoord === undefined) {
