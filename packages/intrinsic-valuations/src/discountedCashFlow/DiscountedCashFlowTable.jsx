@@ -401,16 +401,11 @@ const DiscountedCashFlowTable = ({
         setScope({
           incomeStatements: {
             ttm: ttmIncomeStatement,
-            yearly: yearlyIncomeStatements,
           },
           balanceSheets: {
             ttm: ttmBalanceSheet,
-            yearly: yearlyBalanceSheets,
           },
-          cashFlowStatements: {
-            ttm: ttmCashFlowStatement,
-            yearly: yearlyCashFlowStatements,
-          },
+          cashFlowStatements: {},
           riskFreeRate,
           currentEquityRiskPremium,
           currentIndustry,
