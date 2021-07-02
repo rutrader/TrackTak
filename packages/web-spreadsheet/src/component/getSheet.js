@@ -468,8 +468,22 @@ export const getSheet = (
       // Blur the content editable to fix safari bug
       editor.textEl.el.blur();
       selector.set(ri, ci, indexesUpdated);
+
       editorSetOffset();
-      eventEmitter.emit(spreadsheetEvents.sheet.cellSelected, cell, ri, ci);
+
+      const cellText = hyperformula.getCellSerialized({
+        row: ri,
+        col: ci,
+        sheet: getData().getSheetId(),
+      });
+
+      eventEmitter.emit(
+        spreadsheetEvents.sheet.cellSelected,
+        cell,
+        cellText,
+        ri,
+        ci,
+      );
     }
   }
 
@@ -553,17 +567,28 @@ export const getSheet = (
   }
 
   function overlayerMousescroll(evt) {
-    // TODO: Fix for upper/lower bounds scroll
-    // evt.preventDefault();
+    // deltaY for vertical delta
+    const { deltaY, deltaX } = evt;
 
     const { top } = verticalScrollbar.scroll();
     const { left } = horizontalScrollbar.scroll();
-    // console.log('evt:::', evt.wheelDelta, evt.detail * 40);
-
     const { rows, cols } = getData();
+    const ri = getData().scroll.ri + 1;
+    const mwheelScrollSpeed = getOptions().mwheelScrollSpeed;
+    const scrollEl = verticalScrollbar.el.el;
+    // https://stackoverflow.com/questions/876115/how-can-i-determine-if-a-div-is-scrolled-to-the-bottom
+    const isAtBottom =
+      Math.ceil(scrollEl.scrollHeight - scrollEl.scrollTop) ===
+      scrollEl.clientHeight;
+    const isAtTop = scrollEl.scrollTop === 0;
 
-    // deltaY for vertical delta
-    const { deltaY, deltaX } = evt;
+    const isMouseWheelUp = deltaY < 0;
+
+    if ((isAtTop && isMouseWheelUp) || (isAtBottom && !isMouseWheelUp)) {
+    } else {
+      evt.preventDefault();
+    }
+
     const loopValue = (ii, vFunc) => {
       let i = ii;
       let v = 0;
@@ -573,22 +598,23 @@ export const getSheet = (
       } while (v <= 0);
       return v;
     };
-    // console.log('deltaX', deltaX, 'evt.detail', evt.detail);
-    // if (evt.detail) deltaY = evt.detail * 40;
-    const moveY = (vertical) => {
-      if (vertical > 0) {
-        // up
-        const ri = getData().scroll.ri + 1;
-        if (ri < rows.len) {
-          const rh = loopValue(ri, (i) => rows.getHeight(i));
-          verticalScrollbar.move({ top: top + rh - 1 });
+
+    const moveY = () => {
+      if (isMouseWheelUp) {
+        const newRi = ri - 1;
+
+        if (!isAtTop) {
+          const rh =
+            loopValue(newRi, (i) => rows.getHeight(i)) * mwheelScrollSpeed;
+          verticalScrollbar.move({ top: newRi === 0 ? 0 : top - rh });
         }
       } else {
-        // down
-        const ri = getData().scroll.ri - 1;
-        if (ri >= 0) {
-          const rh = loopValue(ri, (i) => rows.getHeight(i));
-          verticalScrollbar.move({ top: ri === 0 ? 0 : top - rh });
+        const newRi = ri + 1;
+
+        if (!isAtBottom) {
+          const rh =
+            loopValue(newRi, (i) => rows.getHeight(i)) * mwheelScrollSpeed;
+          verticalScrollbar.move({ top: top + rh - 1 });
         }
       }
     };
@@ -596,17 +622,15 @@ export const getSheet = (
     // deltaX for Mac horizontal scroll
     const moveX = (horizontal) => {
       if (horizontal > 0) {
-        // left
         const ci = getData().scroll.ci + 1;
         if (ci < cols.len) {
-          const cw = loopValue(ci, (i) => cols.getWidth(i));
+          const cw = loopValue(ci, (i) => cols.getWidth(i)) * mwheelScrollSpeed;
           horizontalScrollbar.move({ left: left + cw - 1 });
         }
       } else {
-        // right
         const ci = getData().scroll.ci - 1;
         if (ci >= 0) {
-          const cw = loopValue(ci, (i) => cols.getWidth(i));
+          const cw = loopValue(ci, (i) => cols.getWidth(i)) * mwheelScrollSpeed;
           horizontalScrollbar.move({ left: ci === 0 ? 0 : left - cw });
         }
       }
@@ -614,10 +638,7 @@ export const getSheet = (
     const tempY = Math.abs(deltaY);
     const tempX = Math.abs(deltaX);
     const temp = Math.max(tempY, tempX);
-    // console.log('event:', evt);
-    // detail for windows/mac firefox vertical scroll
-    if (/Firefox/i.test(window.navigator.userAgent))
-      throttle(moveY(evt.detail), 50);
+
     if (temp === tempX) throttle(moveX(deltaX), 50);
     if (temp === tempY) throttle(moveY(deltaY), 50);
   }
@@ -886,7 +907,7 @@ export const getSheet = (
     if (getOptions().mode === "read") return;
     const cell = getData().getSelectedCell();
     const styles = getData().getData().styles;
-    const format = getFormatFromCell(cell, styles);
+    const format = getFormatFromCell(text, cell, styles);
 
     let newText = setTextFormat(text, format, getOptions().formats, state);
     getData().setSelectedCellText(newText, state);
@@ -997,10 +1018,10 @@ export const getSheet = (
           mouseDownOverlayerCellOffset(evt);
         }
       })
-      .on("mousewheel.stop", (evt) => {
+      .on("wheel.stop", (evt) => {
         if (getIsInTouchMode()) return;
 
-        // overlayerMousescroll(evt);
+        overlayerMousescroll(evt);
       })
       .on("mouseout", (evt) => {
         if (getIsInTouchMode()) return;

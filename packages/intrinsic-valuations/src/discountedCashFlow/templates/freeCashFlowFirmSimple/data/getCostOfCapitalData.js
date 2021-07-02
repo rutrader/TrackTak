@@ -16,7 +16,7 @@ const getCostOfCapitalData = () => {
       ["Book Value", '=FIN("bookValueOfDebt") / 1000000', "Output"],
       [
         "Interest Expense",
-        '=FIN("interestExpense") / 1000000',
+        '=ABS(FIN("interestExpense"))/1000000',
         "Estimated Market Value of Normal Debt",
         "=B11*(1-(1+B14)^(-B12))/B14+B10/(1+B14)^B12",
       ],

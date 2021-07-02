@@ -60,18 +60,18 @@ class Rows {
   }
 
   get(ri) {
-    const row = this.rows[ri] || { cells: {} };
+    let row = this.rows[ri];
+
+    if (!row) {
+      row = this.createNewRow(ri);
+    }
 
     return row;
   }
 
   getCell(ri, ci) {
     const row = this.get(ri);
-    if (
-      row !== undefined &&
-      row.cells !== undefined &&
-      row.cells[ci] !== undefined
-    ) {
+    if (row?.cells !== undefined && row.cells[ci] !== undefined) {
       return row.cells[ci];
     }
 

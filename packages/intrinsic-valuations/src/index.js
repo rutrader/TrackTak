@@ -8,7 +8,6 @@ export { default as TracktakProvider } from "./Provider";
 export { default as createStore } from "./redux/createStore";
 
 export { default as DiscountedCashFlowSheet } from "./discountedCashFlow/DiscountedCashFlowSheet";
-export { default as IndustryAverages } from "./discountedCashFlow/IndustryAverages";
 export { allInputNameTypeMappings } from "./discountedCashFlow/scopeNameTypeMapping";
 
 export { default as IndustryAveragesResults } from "./components/IndustryAveragesResults";

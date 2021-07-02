@@ -38,19 +38,8 @@ export const getFormulaBar = (
     eventEmitter.emit(spreadsheetEvents.formulaBar.click);
   });
 
-  eventEmitter.on(spreadsheetEvents.sheet.cellSelected, (_, ri, ci) => {
-    const cellAddress = {
-      row: ri,
-      col: ci,
-      sheet: getData().getSheetId(),
-    };
-    let value = hyperformula.getCellFormula(cellAddress);
-
-    if (!value) {
-      value = hyperformula.getCellValue(cellAddress);
-    }
-
-    editableInput.setText(value);
+  eventEmitter.on(spreadsheetEvents.sheet.cellSelected, (_, cellText) => {
+    editableInput.setText(cellText);
   });
 
   eventEmitter.on(spreadsheetEvents.editor.setText, (_, text) => {

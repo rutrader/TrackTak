@@ -80,6 +80,7 @@ export const miscTypeMappings = {
   price: "currency",
   riskFreeRate: "percent",
   valueOfAllOptionsOutstanding: "million-currency",
+  marketCapitalization: "million-currency",
 };
 
 export const marketValueNameTypeMapping = {};
