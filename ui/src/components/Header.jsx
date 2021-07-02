@@ -120,6 +120,15 @@ const Header = ({ hideSearch }) => {
         My Account
       </MenuItem>
       <MenuItem
+        key="dashboard"
+        to="/dashboard"
+        component={Link}
+        onClick={handleAccountMenuClose}
+        sx={buttonStyle}
+      >
+        Dashboard
+      </MenuItem>
+      <MenuItem
         key="sign-out"
         to="/"
         component={Link}
