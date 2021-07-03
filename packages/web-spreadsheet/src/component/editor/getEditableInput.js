@@ -16,7 +16,6 @@ export const getEditableInput = (
   formulas,
   eventEmitter,
   el,
-  hyperformula,
   eventType,
 ) => {
   function insertText({ target }, itxt) {

@@ -131,7 +131,6 @@ export const buildSpreadsheet = (
     getFocusedData,
     getFormulaSuggestions(),
     globalEventEmitter,
-    hyperformula,
   );
 
   const sheetBuilder = buildSheet(

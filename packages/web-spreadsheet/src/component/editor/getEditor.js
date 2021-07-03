@@ -3,13 +3,7 @@ import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { h } from "../element";
 import { getEditableInput } from "./getEditableInput";
 
-export const getEditor = (
-  getData,
-  getOptions,
-  formulas,
-  eventEmitter,
-  hyperformula,
-) => {
+export const getEditor = (getData, getOptions, formulas, eventEmitter) => {
   const el = h("div", `${cssPrefix}-editor`).hide();
 
   const editableInput = getEditableInput(
@@ -18,7 +12,6 @@ export const getEditor = (
     formulas,
     eventEmitter,
     el,
-    hyperformula,
     "editor",
   );
 
@@ -33,17 +26,17 @@ export const getEditor = (
     el.hide();
   });
 
-  eventEmitter.on(spreadsheetEvents.sheet.clickOutside, () => {
-    el.hide();
-  });
-
   eventEmitter.on(spreadsheetEvents.editor.setText, () => {
     el.show();
   });
 
-  eventEmitter.on(spreadsheetEvents.formulaBar.change, (_, text) => {
-    editableInput.setInputText(text);
-  });
+  // eventEmitter.on(spreadsheetEvents.formulaBar.change, (_, text) => {
+  //   editableInput.setInputText(text);
+  // });
+
+  // eventEmitter.on(spreadsheetEvents.formulaBar.click, () => {
+  //   el.show();
+  // });
 
   return {
     ...editableInput,

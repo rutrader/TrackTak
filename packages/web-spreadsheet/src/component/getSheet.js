@@ -469,6 +469,8 @@ export const getSheet = (
       editor.textEl.el.blur();
       selector.set(ri, ci, indexesUpdated);
 
+      editorSetOffset();
+
       const cellText = hyperformula.getCellSerialized({
         row: ri,
         col: ci,
@@ -858,9 +860,8 @@ export const getSheet = (
       sheet: getData().getSheetId(),
     });
 
-    editorSetOffset();
     editor.setCell(
-      cellText ?? value,
+      cellText ?? value.toString(),
       getData().getSelectedCell(),
       getData().getSelectedValidator(),
     );
@@ -1000,6 +1001,7 @@ export const getSheet = (
         }
 
         editor.clear();
+
         contextMenu.hide();
         // the left mouse button: mousedown → mouseup → click
         // the right mouse button: mousedown → contenxtmenu → mouseup

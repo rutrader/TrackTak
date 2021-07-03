@@ -30,6 +30,7 @@ const spreadsheetEvents = {
     change: "fb-change",
     clear: "fb-clear",
     setText: "fb-setText",
+    click: "fb-click",
   },
   rowResizer: {
     finished: "rr-finished",

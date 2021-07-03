@@ -240,10 +240,12 @@ const DiscountedCashFlowTable = ({
         console.log("datas: ", spreadsheet.getDatas());
       }
 
-      let label = spreadsheet.hyperformula.getCellValue({
-        ...cellAddress,
-        col: cellAddress.col - 1,
-      });
+      let label = spreadsheet.hyperformula
+        .getCellValue({
+          ...cellAddress,
+          col: cellAddress.col - 1,
+        })
+        .toString();
 
       // TODO: Remove later
       if (label) {

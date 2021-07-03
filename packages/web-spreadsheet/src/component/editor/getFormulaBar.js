@@ -3,13 +3,7 @@ import spreadsheetEvents from "../../core/spreadsheetEvents";
 import { h } from "../element";
 import { getEditableInput } from "./getEditableInput";
 
-export const getFormulaBar = (
-  getOptions,
-  getData,
-  formulas,
-  eventEmitter,
-  hyperformula,
-) => {
+export const getFormulaBar = (getOptions, getData, formulas, eventEmitter) => {
   const el = h("div", `${cssPrefix}-formula-bar`);
 
   const editableInput = getEditableInput(
@@ -18,7 +12,6 @@ export const getFormulaBar = (
     formulas,
     eventEmitter,
     el,
-    hyperformula,
     "formulaBar",
   );
   const fxIcon = h("div", `${cssPrefix}-icon-fx`);
@@ -34,13 +27,17 @@ export const getFormulaBar = (
     editableInput.datepicker.el,
   );
 
+  editableInput.textEl.on("click", () => {
+    eventEmitter.emit(spreadsheetEvents.formulaBar.click);
+  });
+
   eventEmitter.on(spreadsheetEvents.sheet.cellSelected, (_, cellText) => {
     editableInput.setText(cellText);
   });
 
-  eventEmitter.on(spreadsheetEvents.editor.change, (_, text) => {
-    if (text !== editableInput.textEl.el.textContent) {
-      editableInput.setText(text);
+  eventEmitter.on(spreadsheetEvents.sheet.cellEdit, ({ value }) => {
+    if (value !== editableInput.textEl.el.textContent) {
+      editableInput.setText(value);
     }
   });
 
