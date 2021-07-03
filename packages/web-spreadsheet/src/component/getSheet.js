@@ -861,7 +861,7 @@ export const getSheet = (
     });
 
     editor.setCell(
-      cellText ?? value,
+      cellText ?? value.toString(),
       getData().getSelectedCell(),
       getData().getSelectedValidator(),
     );
@@ -1001,6 +1001,7 @@ export const getSheet = (
         }
 
         editor.clear();
+
         contextMenu.hide();
         // the left mouse button: mousedown → mouseup → click
         // the right mouse button: mousedown → contenxtmenu → mouseup

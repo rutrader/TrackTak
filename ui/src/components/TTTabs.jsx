@@ -5,11 +5,7 @@ import { Link } from "gatsby";
 import { sentenceCase } from "change-case";
 import { useTicker } from "@tracktak/intrinsic-valuations";
 
-const stockPaths = [
-  "/discounted-cash-flow",
-  "/financial-statements",
-  "/industry-averages",
-];
+const stockPaths = ["/discounted-cash-flow", "/financial-statements"];
 
 const TTTabs = () => {
   const location = useLocation();
