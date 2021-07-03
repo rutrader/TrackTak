@@ -331,14 +331,11 @@ export const getSheet = (
     dataSheets
       .sort((x) => x.calculationOrder)
       .forEach((dataSheet) => {
-        hyperformula.setSheetContent(
-          dataSheet.name,
-          dataSheet.serializedValues,
-        );
+        const sheetId = hyperformula.getSheetId(dataSheet.name);
+
+        hyperformula.setSheetContent(sheetId, dataSheet.serializedValues);
 
         if (getOptions().debugMode) {
-          const sheetId = hyperformula.getSheetId(dataSheet.name);
-
           console.log(
             `registered sheet content: ${dataSheet.name} (sheet id: ${sheetId})`,
             hyperformula.getSheetFormulas(sheetId),
@@ -861,7 +858,7 @@ export const getSheet = (
     });
 
     editor.setCell(
-      cellText ?? value.toString(),
+      cellText ?? value?.toString(),
       getData().getSelectedCell(),
       getData().getSelectedValidator(),
     );

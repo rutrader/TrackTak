@@ -70,6 +70,10 @@ export const makeFinancialPlugin = (data) => {
 
       // TODO: Add proper error checking here later
       if (args.length === 1) {
+        if (attribute === "incomeStatement") {
+          return incomeStatements.yearly;
+        }
+
         return ttmData[attribute] || 0;
       }
 
@@ -86,7 +90,6 @@ export const makeFinancialPlugin = (data) => {
         const startDateDayjs = dayjs(startDate);
         const endDateDayjs = dayjs(endDate);
 
-        // TODO: Waiting on matrixes in new hyperformula release
         return historicalDataArrays[statementType].yearly
           .filter(({ date }) => {
             return dayjs(date).isBetween(
