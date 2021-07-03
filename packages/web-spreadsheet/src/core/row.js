@@ -189,20 +189,21 @@ class Rows {
   }
 
   cutPaste(srcCellRange, dstCellRange) {
-    const ncellmm = [];
-    this.each((ri) => {
-      this.eachCells(ri, (ci) => {
+    this.hyperformula.paste({
+      col: dstCellRange.sci,
+      row: dstCellRange.sri,
+      sheet: this.getDataProxy().getSheetId(),
+    });
+
+    const ncellmm = {};
+
+    Object.keys(this.rows ?? {}).forEach((ri) => {
+      Object.keys(this.rows[ri]?.cells ?? {}).forEach((ci) => {
         let nri = parseInt(ri, 10);
         let nci = parseInt(ci, 10);
         if (srcCellRange.includes(ri, ci)) {
           nri = dstCellRange.sri + (nri - srcCellRange.sri);
           nci = dstCellRange.sci + (nci - srcCellRange.sci);
-
-          this.hyperformula.paste({
-            col: nci,
-            row: nri,
-            sheet: this.getDataProxy().getSheetId(),
-          });
         }
         ncellmm[nri] = ncellmm[nri] || { cells: {} };
         ncellmm[nri].cells[nci] = this.rows[ri].cells[ci];
@@ -307,20 +308,6 @@ class Rows {
       return [parseInt(ri, 10), parseInt(ci, 10)];
     }
     return [0, 0];
-  }
-
-  each(cb) {
-    Object.keys(this.rows).forEach(([ri, row]) => {
-      cb(ri, row);
-    });
-  }
-
-  eachCells(ri, cb) {
-    if (this.rows[ri] && this.rows[ri].cells) {
-      Object.keys(this.rows[ri].cells).forEach(([ci, cell]) => {
-        cb(ci, cell);
-      });
-    }
   }
 
   setData(rows) {
