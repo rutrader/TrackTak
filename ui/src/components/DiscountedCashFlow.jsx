@@ -7,9 +7,7 @@ import {
   useTheme,
 } from "@material-ui/core";
 import {
-  CompanyOverviewStats,
   DiscountedCashFlowSheet,
-  IndustryAveragesResults,
   FinancialsSummary,
   Section,
   SubSection,
@@ -47,7 +45,6 @@ const DiscountedCashFlow = () => {
 
   return (
     <React.Fragment>
-      <CompanyOverviewStats useDescriptionShowMore />
       <Section>
         <FinancialsSummary />
         <Box sx={{ mt: 1 }}>
@@ -62,11 +59,6 @@ const DiscountedCashFlow = () => {
             &nbsp;tab for the full financials.
           </Typography>
         </Box>
-      </Section>
-      <Section sx={{ display: "flex", gridColumnGap: 20, flexWrap: "wrap" }}>
-        <SubSection>
-          <IndustryAveragesResults />
-        </SubSection>
       </Section>
       <Section>
         <DiscountedCashFlowSheet SubscribeCover={SubscribeCover} />

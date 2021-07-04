@@ -55,6 +55,7 @@ import selectHighlights from "../selectors/fundamentalSelectors/selectHighlights
 import selectExchangeRates from "../selectors/fundamentalSelectors/selectExchangeRates";
 import getIndustryAveragesUSData from "./templates/freeCashFlowFirmSimple/data/getIndustryAveragesUSData";
 import getIndustryAveragesGlobalData from "./templates/freeCashFlowFirmSimple/data/getIndustryAveragesGlobalData";
+import getFinancialStatementsData from "./templates/freeCashFlowFirmSimple/data/getFinancialStatementsData";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
@@ -307,7 +308,8 @@ const DiscountedCashFlowTable = ({
         (!datas.length || datas.length === 1)
       ) {
         spreadsheet.setDatasheets([
-          getDCFValuationData(isOnMobile),
+          getDCFValuationData(),
+          getFinancialStatementsData(),
           getCostOfCapitalData(),
           getEmployeeOptionsData(),
           getSyntheticCreditRatingData(),
@@ -318,7 +320,7 @@ const DiscountedCashFlowTable = ({
         spreadsheet.sheet.switchData(spreadsheet.sheet.getDatas()[0]);
       }
     }
-  }, [spreadsheet, isOnMobile, inputQueryParams, hasAllRequiredInputsFilledIn]);
+  }, [spreadsheet, inputQueryParams, hasAllRequiredInputsFilledIn]);
 
   useEffect(() => {
     if (!hasAllRequiredInputsFilledIn && spreadsheet) {
@@ -407,7 +409,8 @@ const DiscountedCashFlowTable = ({
           balanceSheets: {
             ttm: ttmBalanceSheet,
           },
-          cashFlowStatements: {},
+          general,
+          exchangeRates,
           highlights,
           riskFreeRate,
           currentEquityRiskPremium,

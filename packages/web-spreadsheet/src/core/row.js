@@ -71,11 +71,12 @@ class Rows {
 
   getCell(ri, ci) {
     const row = this.get(ri);
-    if (row?.cells !== undefined && row.cells[ci] !== undefined) {
-      return row.cells[ci];
+
+    if (!row.cells[ci]) {
+      row.cells[ci] = {};
     }
 
-    return null;
+    return row.cells[ci];
   }
 
   getCellMerge(ri, ci) {

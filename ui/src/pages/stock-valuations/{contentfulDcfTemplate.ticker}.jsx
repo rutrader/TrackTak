@@ -7,14 +7,12 @@ import YouTube from "react-youtube";
 import { graphql, Link as RouterLink } from "gatsby";
 import { Box, Link, Typography } from "@material-ui/core";
 import {
-  CompanyOverviewStats,
   Section,
   FormatRawNumberToPercent,
   FormatRawNumberToYear,
   FormatRawNumber,
   FormatRawNumberToCurrency,
   DiscountedCashFlowSheet,
-  IndustryAveragesResults,
   selectPrice,
   selectCells,
 } from "@tracktak/intrinsic-valuations";
@@ -297,15 +295,17 @@ const Valuation = ({ data }) => {
             This valuation was done on the {dateOfValuation}
           </Typography>
         )}
-        <CompanyOverviewStats
-          extraDescription={
-            extraBusinessDescription && (
-              <Typography component="div" paragraph>
-                {renderField(extraBusinessDescription)}
-              </Typography>
-            )
-          }
-        />
+        <Box>
+          <Typography variant="h5" gutterBottom>
+            Business Description
+          </Typography>
+          <Typography component="div" paragraph>
+            {general.description}
+          </Typography>
+          <Typography component="div" paragraph>
+            {renderField(extraBusinessDescription)}
+          </Typography>
+        </Box>
       </Box>
       <Section>
         <Typography variant="h5" gutterBottom>
@@ -355,9 +355,6 @@ const Valuation = ({ data }) => {
           </Typography>
         </Section>
       )}
-      <Section>
-        <IndustryAveragesResults />
-      </Section>
       <Section>
         <Typography variant="h5" gutterBottom>
           The input values I chose for the DCF
