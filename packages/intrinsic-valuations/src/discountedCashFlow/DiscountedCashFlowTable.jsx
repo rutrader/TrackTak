@@ -65,6 +65,14 @@ const defaultColWidth = 110;
 // instead of formats
 export const getFormats = (currencySymbol) => {
   const formats = {
+    "million-currency": {
+      key: "million-currency",
+      title: () => "Million Currency",
+      type: "number",
+      format: "million-currency",
+      label: `${currencySymbol}1,000,000`,
+      pattern: `"${currencySymbol}"#,###.##,,`,
+    },
     currency: {
       key: "currency",
       title: () => "Currency",
@@ -78,11 +86,7 @@ export const getFormats = (currencySymbol) => {
   return formats;
 };
 
-const DiscountedCashFlowTable = ({
-  showFormulas,
-  showYOYGrowth,
-  SubscribeCover,
-}) => {
+const DiscountedCashFlowTable = ({ showFormulas, showYOYGrowth }) => {
   const containerRef = useRef();
   const [spreadsheet, setSpreadsheet] = useState();
   const theme = useTheme();
@@ -155,7 +159,7 @@ const DiscountedCashFlowTable = ({
       },
       formats: getFormats(currencySymbol),
       view: {
-        height: () => 700,
+        height: () => 1200,
         width,
       },
     };
@@ -307,9 +311,24 @@ const DiscountedCashFlowTable = ({
         hasAllRequiredInputsFilledIn &&
         (!datas.length || datas.length === 1)
       ) {
+        // Temp
+        const financialStatements = {
+          incomeStatements: {
+            ttm: ttmIncomeStatement,
+            yearly: yearlyIncomeStatements,
+          },
+          balanceSheets: {
+            ttm: ttmBalanceSheet,
+            yearly: yearlyBalanceSheets,
+          },
+          cashFlowStatements: {
+            ttm: ttmCashFlowStatement,
+            yearly: yearlyCashFlowStatements,
+          },
+        };
         spreadsheet.setDatasheets([
-          getDCFValuationData(),
-          getFinancialStatementsData(),
+          getDCFValuationData(financialStatements),
+          getFinancialStatementsData(financialStatements),
           getCostOfCapitalData(),
           getEmployeeOptionsData(),
           getSyntheticCreditRatingData(),
@@ -320,7 +339,17 @@ const DiscountedCashFlowTable = ({
         spreadsheet.sheet.switchData(spreadsheet.sheet.getDatas()[0]);
       }
     }
-  }, [spreadsheet, inputQueryParams, hasAllRequiredInputsFilledIn]);
+  }, [
+    spreadsheet,
+    inputQueryParams,
+    hasAllRequiredInputsFilledIn,
+    ttmIncomeStatement,
+    yearlyIncomeStatements,
+    ttmBalanceSheet,
+    yearlyBalanceSheets,
+    ttmCashFlowStatement,
+    yearlyCashFlowStatements,
+  ]);
 
   useEffect(() => {
     if (!hasAllRequiredInputsFilledIn && spreadsheet) {
@@ -438,6 +467,8 @@ const DiscountedCashFlowTable = ({
     currentIndustry,
     dispatch,
     estimatedCostOfDebt,
+    exchangeRates,
+    general,
     hasAllRequiredInputsFilledIn,
     highlights,
     inputQueryParams,
@@ -473,13 +504,6 @@ const DiscountedCashFlowTable = ({
       ref={containerRef}
     >
       <Box id={dcfValuationId} />
-      {SubscribeCover ? (
-        <SubscribeCover
-          sx={{
-            zIndex,
-          }}
-        />
-      ) : null}
       {!hasAllRequiredInputsFilledIn && (
         <Alert
           severity="warning"

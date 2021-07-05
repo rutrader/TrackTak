@@ -1,24 +1,11 @@
 import React, { useEffect } from "react";
-import {
-  Box,
-  Link,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@material-ui/core";
+import { useMediaQuery, useTheme } from "@material-ui/core";
 import {
   DiscountedCashFlowSheet,
-  FinancialsSummary,
-  Section,
-  SubSection,
   withFundamentalsLoaded,
-  useTicker,
 } from "@tracktak/intrinsic-valuations";
-import { Link as RouterLink } from "gatsby";
 import { useDispatch } from "react-redux";
 import { setMessage } from "../redux/actions/snackbarActions";
-import { useLocation } from "@reach/router";
-import SubscribeCover from "./SubscribeCover";
 import useLocalStorageState from "use-local-storage-state";
 
 const DiscountedCashFlow = () => {
@@ -28,8 +15,6 @@ const DiscountedCashFlow = () => {
   const theme = useTheme();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const dispatch = useDispatch();
-  const ticker = useTicker();
-  const location = useLocation();
 
   useEffect(() => {
     if (!rotateSnackbarShown && isOnMobile) {
@@ -45,24 +30,7 @@ const DiscountedCashFlow = () => {
 
   return (
     <React.Fragment>
-      <Section>
-        <FinancialsSummary />
-        <Box sx={{ mt: 1 }}>
-          <Typography>
-            See the&nbsp;
-            <Link
-              component={RouterLink}
-              to={`/stock/${ticker}/financial-statements${location.search}`}
-            >
-              Financial Statements
-            </Link>
-            &nbsp;tab for the full financials.
-          </Typography>
-        </Box>
-      </Section>
-      <Section>
-        <DiscountedCashFlowSheet SubscribeCover={SubscribeCover} />
-      </Section>
+      <DiscountedCashFlowSheet />
     </React.Fragment>
   );
 };

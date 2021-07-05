@@ -10,8 +10,6 @@ export { default as createStore } from "./redux/createStore";
 export { default as DiscountedCashFlowSheet } from "./discountedCashFlow/DiscountedCashFlowSheet";
 export { allInputNameTypeMappings } from "./discountedCashFlow/scopeNameTypeMapping";
 
-export { default as FinancialStatements } from "./components/FinancialStatements";
-export { default as FinancialsSummary } from "./components/FinancialsSummary";
 export { default as SensitivityAnalysis } from "./components/SensitivityAnalysis";
 
 export { default as FormatInputToPercent } from "./components/FormatInputToPercent";

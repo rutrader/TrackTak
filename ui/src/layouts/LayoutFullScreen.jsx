@@ -2,7 +2,6 @@ import { Container, useTheme } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../components/Header";
-import TTTabs from "../components/TTTabs";
 import {
   getFundamentalsThunk,
   getLastPriceCloseThunk,
@@ -48,7 +47,6 @@ const LayoutFullScreen = ({ children, ticker }) => {
     >
       <Header />
       {children}
-      <TTTabs />
     </Container>
   ) : null;
 };
