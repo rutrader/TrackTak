@@ -45,7 +45,7 @@ const LayoutFullScreen = ({ children, ticker }) => {
       }}
       maxWidth={false}
     >
-      <Header />
+      <Header position="relative" />
       {children}
     </Container>
   ) : null;

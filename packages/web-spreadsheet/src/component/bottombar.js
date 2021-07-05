@@ -77,7 +77,12 @@ const getContextMenu = (eventEmitter) => {
   };
 };
 
-export const getBottombar = (eventEmitter, getDataValues, getDataValue) => {
+export const getBottombar = (
+  type,
+  eventEmitter,
+  getDataValues,
+  getDataValue,
+) => {
   const getSheetNames = () => getDataValues().map((x) => x.name);
 
   let items = [];
@@ -176,7 +181,7 @@ export const getBottombar = (eventEmitter, getDataValues, getDataValue) => {
     h("span", "").child(moreEl.dropdown.el),
   );
 
-  const el = h("div", `${cssPrefix}-bottombar`).children(
+  const el = h("div", `${cssPrefix}-bottombar ${type}`).children(
     contextMenu.el,
     actionsEl,
     menuEl,
