@@ -397,8 +397,6 @@ const DiscountedCashFlowTable = ({ showFormulas, showYOYGrowth }) => {
           balanceSheets: {
             ttm: ttmBalanceSheet,
           },
-          general,
-          exchangeRates,
           highlights,
           riskFreeRate,
           currentEquityRiskPremium,
