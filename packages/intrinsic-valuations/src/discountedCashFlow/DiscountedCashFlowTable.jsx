@@ -135,37 +135,97 @@ const DiscountedCashFlowTable = ({ showFormulas, showYOYGrowth }) => {
   }, []);
 
   useEffect(() => {
-    let FinancialPlugin = makeFinancialPlugin({
-      incomeStatements: {
-        ttm: ttmIncomeStatement,
-        yearly: yearlyIncomeStatements,
-      },
-      balanceSheets: {
-        ttm: ttmBalanceSheet,
-        yearly: yearlyBalanceSheets,
-      },
-      cashFlowStatements: {
-        ttm: ttmCashFlowStatement,
-        yearly: yearlyCashFlowStatements,
-      },
-      exchangeRates,
-      general,
-      highlights,
-      riskFreeRate,
-      currentEquityRiskPremium,
-      currentIndustry,
-      estimatedCostOfDebt,
-      pastThreeYearsAverageEffectiveTaxRate,
-      price,
-      sharesOutstanding,
-    });
+    let spreadsheet;
+    let FinancialPlugin;
 
-    HyperFormula.registerFunctionPlugin(FinancialPlugin, finTranslations);
+    // Temporary
+    if (!isNil(riskFreeRate) && !isNil(price) && !isNil(ttmIncomeStatement)) {
+      const dcfValuationElement = document.getElementById(`${dcfValuationId}`);
+
+      const width = () => {
+        if (containerRef?.current) {
+          const containerStyle = getComputedStyle(containerRef.current);
+          const paddingX =
+            parseFloat(containerStyle.paddingLeft) +
+            parseFloat(containerStyle.paddingRight);
+          const borderX =
+            parseFloat(containerStyle.borderLeftWidth) +
+            parseFloat(containerStyle.borderRightWidth);
+          const elementWidth =
+            containerRef.current.offsetWidth - paddingX - borderX;
+
+          return elementWidth;
+        }
+      };
+      const debugMode = process.env.NODE_ENV === "development";
+
+      const options = {
+        debugMode,
+        col: {
+          width: defaultColWidth,
+        },
+        formats: getFormats(currencySymbol),
+        view: {
+          height: () => 1200,
+          width,
+        },
+      };
+
+      const variablesSpreadsheetOptions = {
+        debugMode,
+        formats: getFormats(currencySymbol),
+        view: {
+          width,
+        },
+      };
+
+      FinancialPlugin = makeFinancialPlugin({
+        incomeStatements: {
+          ttm: ttmIncomeStatement,
+          yearly: yearlyIncomeStatements,
+        },
+        balanceSheets: {
+          ttm: ttmBalanceSheet,
+          yearly: yearlyBalanceSheets,
+        },
+        cashFlowStatements: {
+          ttm: ttmCashFlowStatement,
+          yearly: yearlyCashFlowStatements,
+        },
+        exchangeRates,
+        general,
+        highlights,
+        riskFreeRate,
+        currentEquityRiskPremium,
+        currentIndustry,
+        estimatedCostOfDebt,
+        pastThreeYearsAverageEffectiveTaxRate,
+        price,
+        sharesOutstanding,
+      });
+
+      HyperFormula.registerFunctionPlugin(FinancialPlugin, finTranslations);
+
+      spreadsheet = getSpreadsheet(
+        dcfValuationElement,
+        options,
+        variablesSpreadsheetOptions,
+        {
+          currencySymbol: Object.values(currencySymbolMap),
+        },
+      );
+
+      spreadsheet.variablesSpreadsheet.sheet.el.el.id = requiredInputsId;
+
+      setSpreadsheet(spreadsheet);
+    }
 
     return () => {
+      spreadsheet?.destroy();
       HyperFormula.unregisterFunctionPlugin(FinancialPlugin);
     };
   }, [
+    currencySymbol,
     currentEquityRiskPremium,
     currentIndustry,
     estimatedCostOfDebt,
@@ -183,66 +243,6 @@ const DiscountedCashFlowTable = ({ showFormulas, showYOYGrowth }) => {
     yearlyCashFlowStatements,
     yearlyIncomeStatements,
   ]);
-
-  useEffect(() => {
-    let spreadsheet;
-
-    const dcfValuationElement = document.getElementById(`${dcfValuationId}`);
-
-    const width = () => {
-      if (containerRef?.current) {
-        const containerStyle = getComputedStyle(containerRef.current);
-        const paddingX =
-          parseFloat(containerStyle.paddingLeft) +
-          parseFloat(containerStyle.paddingRight);
-        const borderX =
-          parseFloat(containerStyle.borderLeftWidth) +
-          parseFloat(containerStyle.borderRightWidth);
-        const elementWidth =
-          containerRef.current.offsetWidth - paddingX - borderX;
-
-        return elementWidth;
-      }
-    };
-    const debugMode = process.env.NODE_ENV === "development";
-
-    const options = {
-      debugMode,
-      col: {
-        width: defaultColWidth,
-      },
-      formats: getFormats(currencySymbol),
-      view: {
-        height: () => 1200,
-        width,
-      },
-    };
-
-    const variablesSpreadsheetOptions = {
-      debugMode,
-      formats: getFormats(currencySymbol),
-      view: {
-        width,
-      },
-    };
-
-    spreadsheet = getSpreadsheet(
-      dcfValuationElement,
-      options,
-      variablesSpreadsheetOptions,
-      {
-        currencySymbol: Object.values(currencySymbolMap),
-      },
-    );
-
-    spreadsheet.variablesSpreadsheet.sheet.el.el.id = requiredInputsId;
-
-    setSpreadsheet(spreadsheet);
-
-    return () => {
-      spreadsheet?.destroy();
-    };
-  }, [currencySymbol]);
 
   useEffect(() => {
     const cellEditedCallback = ({ cellAddress, value }) => {

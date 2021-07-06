@@ -215,7 +215,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
         bgcolor: "#ffffff",
       },
     ],
-    merges: ["A1:B1", "A6:B6", "A2:B2", "A3:B3", "D2:E2", "D8:E8", "D3:T6"],
+    merges: ["A1:B1", "A6:B6", "A2:B2", "A3:B3", "D2:E2", "D8:E8", "D3:W6"],
     rows: {
       0: {
         cells: {
@@ -310,7 +310,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
           },
           2: {},
           3: {
-            merge: [3, 16],
+            merge: [3, 19],
             style: 19,
           },
           4: {
@@ -361,9 +361,15 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
           19: {
             style: 19,
           },
-          20: {},
-          21: {},
-          22: {},
+          20: {
+            style: 19,
+          },
+          21: {
+            style: 19,
+          },
+          22: {
+            style: 19,
+          },
           23: {},
           24: {},
           25: {},
@@ -433,9 +439,15 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
           19: {
             style: 19,
           },
-          20: {},
-          21: {},
-          22: {},
+          20: {
+            style: 19,
+          },
+          21: {
+            style: 19,
+          },
+          22: {
+            style: 19,
+          },
           23: {},
           24: {},
           25: {},
@@ -499,9 +511,15 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
           19: {
             style: 19,
           },
-          20: {},
-          21: {},
-          22: {},
+          20: {
+            style: 19,
+          },
+          21: {
+            style: 19,
+          },
+          22: {
+            style: 19,
+          },
           23: {},
           24: {},
           25: {},
@@ -570,9 +588,15 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
           19: {
             style: 19,
           },
-          20: {},
-          21: {},
-          22: {},
+          20: {
+            style: 19,
+          },
+          21: {
+            style: 19,
+          },
+          22: {
+            style: 19,
+          },
           23: {},
           24: {},
           25: {},
@@ -1360,34 +1384,34 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
             style: 6,
           },
           2: {
-            style: 6,
+            style: 20,
           },
           3: {
-            style: 6,
+            style: 20,
           },
           4: {
-            style: 6,
+            style: 20,
           },
           5: {
-            style: 6,
+            style: 20,
           },
           6: {
-            style: 6,
+            style: 20,
           },
           7: {
-            style: 6,
+            style: 20,
           },
           8: {
-            style: 6,
+            style: 20,
           },
           9: {
-            style: 6,
+            style: 20,
           },
           10: {
-            style: 6,
+            style: 20,
           },
           11: {
-            style: 6,
+            style: 20,
           },
           12: {
             style: 6,
@@ -4084,10 +4108,32 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
         },
       },
       93: {
-        cells: {},
+        cells: {
+          0: {},
+          1: {},
+          2: {},
+          3: {},
+          4: {},
+          5: {},
+          6: {},
+          7: {},
+          8: {},
+          9: {},
+        },
       },
       94: {
-        cells: {},
+        cells: {
+          0: {},
+          1: {},
+          2: {},
+          3: {},
+          4: {},
+          5: {},
+          6: {},
+          7: {},
+          8: {},
+          9: {},
+        },
       },
       95: {
         cells: {},

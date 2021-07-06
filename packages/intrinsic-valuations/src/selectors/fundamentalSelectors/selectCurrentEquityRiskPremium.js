@@ -1,14 +1,12 @@
 import { createSelector } from "@reduxjs/toolkit";
 import selectGeneral from "./selectGeneral";
 import equityRiskPremiumCountriesJson from "../../data/equityRiskPremiumCountries.json";
-import selectPriceLastClose from "./selectPriceLastClose";
 import getCountryFromCountryISO from "../../shared/getCountryFromCountryISO";
 
 const convertToPercent = (value) => parseFloat(value) / 100;
 
 const selectCurrentEquityRiskPremium = createSelector(
   selectGeneral,
-  selectPriceLastClose,
   (general) => {
     const {
       corporateTaxRate: marginalTaxRate,
