@@ -81,6 +81,7 @@ const DiscountedCashFlowTable = ({
   showFormulas,
   showYOYGrowth,
   SubscribeCover,
+  onSaveEvent,
 }) => {
   const containerRef = useRef();
   const [spreadsheet, setSpreadsheet] = useState();
@@ -268,6 +269,11 @@ const DiscountedCashFlowTable = ({
         spreadsheetEvents.sheet.cellEdited,
         cellEditedCallback,
       );
+
+      spreadsheet.variablesSpreadsheet.eventEmitter.on(
+        spreadsheetEvents.save,
+        onSaveEvent,
+      );
     }
 
     return () => {
@@ -276,9 +282,14 @@ const DiscountedCashFlowTable = ({
           spreadsheetEvents.sheet.cellEdited,
           cellEditedCallback,
         );
+
+        spreadsheet.variablesSpreadsheet.eventEmitter.off(
+          spreadsheetEvents.save,
+          onSaveEvent,
+        );
       }
     };
-  }, [setURLInput, spreadsheet]);
+  }, [setURLInput, spreadsheet, onSaveEvent]);
 
   useEffect(() => {
     if (spreadsheet) {

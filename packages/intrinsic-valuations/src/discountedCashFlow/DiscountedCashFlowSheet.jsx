@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import {
   Box,
   Typography,
@@ -7,16 +7,21 @@ import {
   Link,
 } from "@material-ui/core";
 import ExportToExcel, { DCFControlTypography } from "./ExportToExcel";
+import SaveDCF from "./SaveDCF";
+import SaveStatus from "./SaveStatus";
 import DiscountedCashFlowTable from "./DiscountedCashFlowTable";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import withFundamentalsLoaded from "../hoc/withFundamentalsLoaded";
 import SensitivityAnalysis from "../components/SensitivityAnalysis";
 import Section from "../components/Section";
-import { Fragment } from "react";
 
 const DiscountedCashFlowSheet = ({
   SubscribeCover,
   hideSensitivityAnalysis,
+  showSaveButton,
+  onSaveClick,
+  isSaving,
+  onSaveEvent
 }) => {
   const [showFormulas, setShowFormulas] = useState(false);
   const [showYOYGrowth, setShowYOYGrowth] = useState(false);
@@ -93,12 +98,15 @@ const DiscountedCashFlowSheet = ({
             label={<DCFControlTypography>%YOY Growth</DCFControlTypography>}
           />
           <ExportToExcel />
+          {showSaveButton && <SaveDCF onClick={onSaveClick} /> }
+          {!showSaveButton && <SaveStatus isSaving={isSaving} />}
         </Box>
       </Box>
       <DiscountedCashFlowTable
         showFormulas={showFormulas}
         showYOYGrowth={showYOYGrowth}
         SubscribeCover={SubscribeCover}
+        onSaveEvent={onSaveEvent}
       />
       {!hideSensitivityAnalysis && (
         <Section>

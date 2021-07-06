@@ -3,6 +3,8 @@ import express from "express";
 import cors from "cors";
 import "express-async-errors";
 import api from "./api";
+import decodeVerifyJwt from "./security/decodeVerifyJwt";
+import auth from "./middleware/auth";
 
 const hostname = "127.0.0.1";
 const port = process.env.NODE_ENV === "development" ? 3001 : process.env.PORT;
@@ -95,6 +97,21 @@ app.get("/api/v1/autocomplete-query/:queryString", async (req, res) => {
 
 app.get("/", (_, res) => {
   res.sendStatus(200);
+});
+
+app.put("/api/v1/valuation", auth, async (req, res) => {
+  const document = await api.saveDCFValuation(req.body, req.user.username);
+  res.send(document);
+});
+
+app.get("/api/v1/valuation", auth, async (req, res) => {
+  const valuations = await api.getDCFValuations(req.user.username);
+  res.send({ valuations });
+});
+
+app.delete("/api/v1/valuation/:id", auth, async (req, res) => {
+  await api.deleteDCFValuation(req.params.id, req.user.username);
+  res.send({ id: req.params.id });
 });
 
 app.listen(port, async () => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -13,36 +13,52 @@ import {
 import GridOnIcon from "@material-ui/icons/GridOn";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useTheme } from "@material-ui/styles";
-import ConfirmationDialog from './ConfirmationDialog';
+import ConfirmationDialog from "./ConfirmationDialog";
+import { useAuth } from "../hooks/useAuth";
+import { deleteValuation, getValuations } from "../api/api";
 
 const SavedSpreadsheets = () => {
   const theme = useTheme();
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
+  const { session } = useAuth();
+  const [valuations, setValuations] = useState([]);
+  const [selectedValuation, setSelectedValuation] = useState();
 
-  const createData = (id, name, lastModifiedTime) => ({
-    id,
-    name,
-    lastModifiedTime,
-  });
+  useEffect(() => {
+    async function fetchData() {
+      const response = await getValuations(session?.getAccessToken()?.jwtToken);
+      setValuations(response.data.valuations);
+    }
+    fetchData();
+  }, [session]);
 
-  const rows = [
-    createData(0, "Apple", "28/06/21 22:30"),
-    createData(1, "Facebook", "26/06/21 15:22"),
-    createData(2, "BP", "26/06/21 15:10"),
-    createData(3, "AMD", "25/06/21 18:00"),
-  ];
-
-  const handleRowClick = () => {
-    console.log("Clicked row!");
+  const handleRowClick = (valuation) => {
+    console.log("Clicked row!", valuation);
   };
 
-  const handleDelete = () => {
+  const handleDelete = (valuation) => {
+    setSelectedValuation(valuation);
     setShowConfirmationDialog(true);
-  }
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (selectedValuation) {
+      const response = await deleteValuation(
+        selectedValuation._id,
+        session?.getAccessToken()?.jwtToken,
+      );
+      if (response.status === 200) {
+        const updatedValuations = valuations.filter(
+          (valuation) => valuation._id !== selectedValuation._id,
+        );
+        setValuations(updatedValuations);
+      }
+    }
+  };
 
   const handleConfirmationDialogClose = () => {
     setShowConfirmationDialog(false);
-  }
+  };
 
   const cellHeaderStyle = {
     fontSize: theme.typography.table.header,
@@ -51,57 +67,67 @@ const SavedSpreadsheets = () => {
 
   return (
     <>
-    <ConfirmationDialog open={showConfirmationDialog} onClose={handleConfirmationDialogClose}>
-      Are you sure you want to delete this valuation?
-    </ConfirmationDialog>
-    <TableContainer
-      sx={{
-        marginTop: "20px",
-      }}
-    >
-      <Table aria-label="spreadsheet table">
-        <TableHead>
-          <TableRow>
-            <TableCell style={cellHeaderStyle}>Name</TableCell>
-            <TableCell style={cellHeaderStyle} align="right">
-              Last Modified
-            </TableCell>
-            <TableCell style={cellHeaderStyle} align="right" />
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows?.map((row) => (
-            <TableRow key={row.id} hover onClick={handleRowClick}>
-              <TableCell component="th" scope="row">
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <ListItemIcon>
-                    <GridOnIcon />
-                  </ListItemIcon>
-                  {row.name}
-                </Box>
+      <ConfirmationDialog
+        open={showConfirmationDialog}
+        onClose={handleConfirmationDialogClose}
+        onConfirm={handleDeleteConfirm}
+      >
+        Are you sure you want to delete this valuation?
+      </ConfirmationDialog>
+      <TableContainer
+        sx={{
+          marginTop: "20px",
+        }}
+      >
+        <Table aria-label="spreadsheet table">
+          <TableHead>
+            <TableRow>
+              <TableCell style={cellHeaderStyle}>Name</TableCell>
+              <TableCell style={cellHeaderStyle} align="right">
+                Last Modified
               </TableCell>
-              <TableCell align="right">{row.lastModifiedTime}</TableCell>
-              <TableCell align="right">
-                <IconButton
-                  sx={{
-                    borderRadius: '2px',
-                    color: theme.palette.alert,
-                  }}
-                  onClick={handleDelete}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </TableCell>
+              <TableCell style={cellHeaderStyle} align="right" />
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {valuations?.map((valuation) => (
+              <TableRow
+                key={valuation._id}
+                hover
+                onClick={() => handleRowClick(valuation)}
+              >
+                <TableCell component="th" scope="row">
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <ListItemIcon>
+                      <GridOnIcon />
+                    </ListItemIcon>
+                    {valuation.sheetData.name}
+                  </Box>
+                </TableCell>
+                <TableCell align="right">
+                  {valuation.lastModifiedTime}
+                </TableCell>
+                <TableCell align="right">
+                  <IconButton
+                    sx={{
+                      borderRadius: "2px",
+                      color: theme.palette.alert,
+                    }}
+                    onClick={() => handleDelete(valuation)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 };
