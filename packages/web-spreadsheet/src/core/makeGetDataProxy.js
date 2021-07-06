@@ -82,29 +82,31 @@ export const makeGetDataProxy = (
     return true;
   };
 
-  const pasteFromSystemClipboard = async () => {
-    const data = await navigator.clipboard.read();
-
+  const pasteFromSystemClipboard = () => {
     // TODO: Add html formatting later
     // Google sheets is doing a best guess for layout based on
     // HTML elements such as span, div etc
     // const htmlData = await data[0].getType("text/html");
-    const plainTextBlob = await data[0].getType("text/plain");
-    const plainText = await plainTextBlob.text();
 
-    const content = parseClipboardContent(plainText);
-    const { ri, ci } = rangeSelector.getIndexes();
+    return navigator.clipboard.read().then((data) => {
+      return data[0].getType("text/plain").then((plainTextBlob) => {
+        return plainTextBlob.text().then((plainText) => {
+          const content = parseClipboardContent(plainText);
+          const { ri, ci } = rangeSelector.getIndexes();
 
-    let startRow = ri;
+          let startRow = ri;
 
-    content.forEach((row) => {
-      let startColumn = ci;
+          content.forEach((row) => {
+            let startColumn = ci;
 
-      row.forEach((cellContent) => {
-        setCellText(startRow, startColumn, cellContent, "finished");
-        startColumn += 1;
+            row.forEach((cellContent) => {
+              setCellText(startRow, startColumn, cellContent, "finished");
+              startColumn += 1;
+            });
+            startRow += 1;
+          });
+        });
       });
-      startRow += 1;
     });
   };
 

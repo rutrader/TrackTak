@@ -713,12 +713,14 @@ export const getSheet = (
     selector.showClipboard();
   }
 
-  async function paste(what, evt) {
+  function paste(what, evt) {
     if (getOptions().mode === "read") return;
     if (clipboard.isClear()) {
-      await getData().pasteFromSystemClipboard();
-
-      sheetReset();
+      getData()
+        .pasteFromSystemClipboard()
+        .then(() => {
+          sheetReset();
+        });
     } else if (getData().paste(what, (msg) => xtoast("Tip", msg))) {
       sheetReset();
     } else if (evt) {
