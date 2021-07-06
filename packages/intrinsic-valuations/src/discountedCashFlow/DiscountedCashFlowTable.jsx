@@ -364,7 +364,9 @@ const DiscountedCashFlowTable = ({ showFormulas, showYOYGrowth }) => {
       const { datas } = spreadsheet.getDatas();
 
       datas.forEach((sheet) => {
-        spreadsheet.hyperformula.clearSheet(sheet.name);
+        const sheetId = spreadsheet.hyperformula.getSheetId(sheet.name);
+
+        spreadsheet.hyperformula.clearSheet(sheetId);
       });
       spreadsheet.setDatasheets([]);
     }
