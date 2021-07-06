@@ -169,6 +169,7 @@ export const getTable = (
       const formats = getOptions().formats;
 
       let value = hyperformula.getCellValue(cellAddress);
+
       let format = style.format;
 
       if (showAllFormulas) {

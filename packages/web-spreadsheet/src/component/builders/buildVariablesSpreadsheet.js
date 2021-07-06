@@ -11,6 +11,7 @@ import { getTable } from "../table/getTable";
 import { makeGetVariablesSheetViewWidthHeight } from "../makeGetVariablesSheetViewWidthHeight";
 import getDraw from "../../canvas/draw";
 import { cssPrefix } from "../../config";
+import { h } from "../element";
 
 export const buildVariablesSpreadsheet = (
   eventEmitter,
@@ -127,12 +128,19 @@ export const buildVariablesSpreadsheet = (
 
   const setVariableDatasheets = sheet.makeSetDatasheets(getDataProxy);
 
-  const bottombar = getBottombar(eventEmitter, sheet.getDataValues, () =>
-    getData().getData(),
+  const bottombar = getBottombar(
+    "variables",
+    eventEmitter,
+    sheet.getDataValues,
+    () => getData().getData(),
   );
 
-  mainSheet.el.before(toolbar.el);
-  mainSheet.el.before(formulaBar.el);
+  const stickyContainerEl = h(
+    "div",
+    `${cssPrefix}-top-sticky-container`,
+  ).children(toolbar.el, formulaBar.el);
+
+  mainSheet.el.before(stickyContainerEl);
   mainSheet.el.before(sheet.el);
   mainSheet.el.before(bottombar.el);
 

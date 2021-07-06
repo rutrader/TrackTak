@@ -7,16 +7,13 @@ import YouTube from "react-youtube";
 import { graphql, Link as RouterLink } from "gatsby";
 import { Box, Link, Typography } from "@material-ui/core";
 import {
-  CompanyOverviewStats,
   Section,
   FormatRawNumberToPercent,
   FormatRawNumberToYear,
   FormatRawNumber,
   FormatRawNumberToCurrency,
   DiscountedCashFlowSheet,
-  IndustryAveragesResults,
   selectPrice,
-  selectCells,
 } from "@tracktak/intrinsic-valuations";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
 import * as styles from "./valuation.module.css";
@@ -35,6 +32,7 @@ import SubscribeCover from "../../components/SubscribeCover";
 import selectValuationCurrencyCode from "../../../../packages/intrinsic-valuations/src/selectors/fundamentalSelectors/selectValuationCurrencyCode";
 import selectGeneral from "../../../../packages/intrinsic-valuations/src/selectors/fundamentalSelectors/selectGeneral";
 import { labels } from "../../../../packages/intrinsic-valuations/src/discountedCashFlow/templates/freeCashFlowFirmSimple/inputQueryNames";
+import selectSheetsValues from "../../../../packages/intrinsic-valuations/src/selectors/dcfSelectors/selectSheetsValues";
 
 export const query = graphql`
   fragment ValuationInformation on ContentfulDcfTemplate {
@@ -204,9 +202,7 @@ const Valuation = ({ data }) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const price = useSelector(selectPrice);
-  const estimatedValuePerShare = useSelector(
-    (state) => selectCells(state).B36.value,
-  );
+  const sheetsValues = useSelector(selectSheetsValues);
   const incomeStatement = useSelector(
     (state) => state.fundamentals.incomeStatement,
   );
@@ -271,9 +267,19 @@ const Valuation = ({ data }) => {
     general.countryISO,
   ]);
 
-  const marginOfSafety = estimatedValuePerShare?.type
-    ? undefined
-    : (estimatedValuePerShare - price) / estimatedValuePerShare;
+  const dcfValuationValues = sheetsValues
+    ? sheetsValues["DCF Valuation"]
+    : null;
+
+  const estimatedValuePerShare =
+    typeof dcfValuationValues?.[53]?.[1] === "number"
+      ? dcfValuationValues[53][1]
+      : 0;
+  const marginOfSafety =
+    typeof dcfValuationValues?.[54]?.[1] === "number"
+      ? dcfValuationValues[54][1]
+      : 0;
+
   const formattedDateOfValuation = dayjs(dateOfValuation).format(
     "Do MMM. YYYY",
   );
@@ -297,15 +303,19 @@ const Valuation = ({ data }) => {
             This valuation was done on the {dateOfValuation}
           </Typography>
         )}
-        <CompanyOverviewStats
-          extraDescription={
-            extraBusinessDescription && (
-              <Typography component="div" paragraph>
-                {renderField(extraBusinessDescription)}
-              </Typography>
-            )
-          }
-        />
+        <Box>
+          <Typography variant="h5" gutterBottom>
+            Business Description
+          </Typography>
+          <Typography component="div" paragraph>
+            {general.description}
+          </Typography>
+          {extraBusinessDescription && (
+            <Typography component="div" paragraph>
+              {renderField(extraBusinessDescription)}
+            </Typography>
+          )}
+        </Box>
       </Box>
       <Section>
         <Typography variant="h5" gutterBottom>
@@ -355,9 +365,6 @@ const Valuation = ({ data }) => {
           </Typography>
         </Section>
       )}
-      <Section>
-        <IndustryAveragesResults />
-      </Section>
       <Section>
         <Typography variant="h5" gutterBottom>
           The input values I chose for the DCF
@@ -453,9 +460,7 @@ const Valuation = ({ data }) => {
           I have estimated the shares to have a share price of
           <b>
             &nbsp;
-            <FormatRawNumberToCurrency
-              value={estimatedValuePerShare?.type ? 0 : estimatedValuePerShare}
-            />
+            <FormatRawNumberToCurrency value={estimatedValuePerShare} />
           </b>
           &nbsp;per share.
         </Typography>

@@ -331,14 +331,11 @@ export const getSheet = (
     dataSheets
       .sort((x) => x.calculationOrder)
       .forEach((dataSheet) => {
-        hyperformula.setSheetContent(
-          dataSheet.name,
-          dataSheet.serializedValues,
-        );
+        const sheetId = hyperformula.getSheetId(dataSheet.name);
+
+        hyperformula.setSheetContent(sheetId, dataSheet.serializedValues);
 
         if (getOptions().debugMode) {
-          const sheetId = hyperformula.getSheetId(dataSheet.name);
-
           console.log(
             `registered sheet content: ${dataSheet.name} (sheet id: ${sheetId})`,
             hyperformula.getSheetFormulas(sheetId),
@@ -716,12 +713,14 @@ export const getSheet = (
     selector.showClipboard();
   }
 
-  async function paste(what, evt) {
+  function paste(what, evt) {
     if (getOptions().mode === "read") return;
     if (clipboard.isClear()) {
-      await getData().pasteFromSystemClipboard();
-
-      sheetReset();
+      getData()
+        .pasteFromSystemClipboard()
+        .then(() => {
+          sheetReset();
+        });
     } else if (getData().paste(what, (msg) => xtoast("Tip", msg))) {
       sheetReset();
     } else if (evt) {
@@ -861,7 +860,7 @@ export const getSheet = (
     });
 
     editor.setCell(
-      cellText ?? value.toString(),
+      cellText ?? value?.toString(),
       getData().getSelectedCell(),
       getData().getSelectedValidator(),
     );

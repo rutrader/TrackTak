@@ -1,12 +1,22 @@
 import { FunctionPlugin, InvalidArgumentsError } from "hyperformula";
 import matureMarketEquityRiskPremium from "../../shared/matureMarketEquityRiskPremium";
 import dayjs from "dayjs";
+import convertSubCurrencyToCurrency from "../../shared/convertSubCurrencyToCurrency";
 
 export const makeFinancialPlugin = (data) => {
   const {
-    incomeStatements,
-    balanceSheets,
-    cashFlowStatements,
+    incomeStatements = {
+      ttm: {},
+      yearly: {},
+    },
+    balanceSheets = {
+      ttm: {},
+      yearly: {},
+    },
+    cashFlowStatements = {
+      ttm: {},
+      yearly: {},
+    },
     currentEquityRiskPremium,
     currentIndustry,
     general,
@@ -70,14 +80,24 @@ export const makeFinancialPlugin = (data) => {
 
       // TODO: Add proper error checking here later
       if (args.length === 1) {
-        return ttmData[attribute] || 0;
+        if (attribute === "currencyCode") {
+          const currencyCode = ttmData[attribute];
+
+          return convertSubCurrencyToCurrency(currencyCode);
+        }
+
+        return ttmData[attribute] || "";
       }
 
       const startDate = args[1].value;
       const statementType = getTypeOfStatementToUse(attribute);
 
       if (args.length === 2) {
-        return data[statementType].yearly[startDate][attribute] || 0;
+        if (attribute === "description") {
+          return ttmData[attribute];
+        }
+
+        return data[statementType].yearly[startDate][attribute] || "";
       }
 
       const endDate = args[2].value;
@@ -86,7 +106,6 @@ export const makeFinancialPlugin = (data) => {
         const startDateDayjs = dayjs(startDate);
         const endDateDayjs = dayjs(endDate);
 
-        // TODO: Waiting on matrixes in new hyperformula release
         return historicalDataArrays[statementType].yearly
           .filter(({ date }) => {
             return dayjs(date).isBetween(
