@@ -65,7 +65,7 @@ const wikiContent = [
           1, 2, 3... 10 stands for the subsequent yearly data. For example if
           you are valuing a company on the 21st November 2020 and the most
           recent TTM data was last released on the 20th October 2020 then next
-          year, base year will be from 21st November 2020 to 21st November 2021
+          year (base year) will be from 21st November 2020 to 21st November 2021
           and the same for the next years after that. So the years represent the
           subsequent years <b>after</b> the most recent financial results were
           released and not when you are doing the DCF.
@@ -104,7 +104,7 @@ const wikiContent = [
           This is to safe guard you against putting in an unreasonably large
           revenue growth rate. It's also more realistic in most cases due to
           companies growth slowing as their revenue becomes bigger and the
-          company matures. The terminal growth (year) is then set to be equal to
+          company matures. The terminal growth year is then set to be equal to
           year 10's growth rate.
         </Typography>
       </>
@@ -120,12 +120,12 @@ const wikiContent = [
           'Required Inputs'!$B2.
         </Typography>
         <Typography paragraph>
-          We use operating margin input in Years 1-10 and set the terminal year
-          to be equal to year 10. To figure out what to put in this input you
-          need to check the companies current Operating margin, the industries
-          average Operating margin and also your thoughts on what type of margin
-          the company can achieve by year 10. This will differ greatly depending
-          on how much of a&nbsp;
+          We use the operating margin input in Years 1-10 and set the terminal
+          year to be equal to year 10. To figure out what to put in this input
+          you need to check the companies current Operating margin, the
+          industries average Operating margin and also your thoughts on what
+          type of margin the company can achieve by year 10. This will differ
+          greatly depending on how much of a&nbsp;
           <a
             rel="noreferrer"
             target="_blank"

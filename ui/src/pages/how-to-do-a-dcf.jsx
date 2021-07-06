@@ -20,9 +20,9 @@ const Docs = () => {
       return {
         title,
         to: `/how-to-do-a-dcf#${removeNonHashableChars(title)}`,
-      }
-    })
-  }
+      };
+    });
+  };
 
   return (
     <>
@@ -35,7 +35,7 @@ const Docs = () => {
         />
       </Helmet>
       <SidePanel tabs={getSidePanelTabs()}>
-        {wikiContent.map(({ title, text, cellsText = "" }, i) => {
+        {wikiContent.map(({ title, text }, i) => {
           return (
             <Box key={i}>
               <Typography
@@ -43,7 +43,7 @@ const Docs = () => {
                 gutterBottom
                 id={removeNonHashableChars(title)}
               >
-                {cellsText ? title.concat(` - Cells: ${cellsText}`) : title}
+                {title}
               </Typography>
               <Typography component="div" paragraph>
                 {text}
