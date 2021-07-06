@@ -73,6 +73,14 @@ export const getFormats = (currencySymbol) => {
       label: `${currencySymbol}1,000,000`,
       pattern: `"${currencySymbol}"#,###.##,,`,
     },
+    million: {
+      key: "million",
+      title: () => "Million",
+      type: "number",
+      format: "million",
+      label: `1,000,000`,
+      pattern: `#,###.##,,`,
+    },
     currency: {
       key: "currency",
       title: () => "Currency",

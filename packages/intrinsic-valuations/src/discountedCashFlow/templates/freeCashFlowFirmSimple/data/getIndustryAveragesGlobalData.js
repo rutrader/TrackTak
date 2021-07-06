@@ -311,7 +311,7 @@ const getIndustryAveragesGlobalData = () => {
     },
     cols: {
       0: {
-        width: 276,
+        width: 263,
       },
     },
     validations: [],

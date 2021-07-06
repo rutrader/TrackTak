@@ -21,6 +21,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
   const overview = [dates, ...incomeStatementOverview, ...balanceSheetOverview];
 
   const data = {
+    calculationOrder: 2,
     name: "DCF Valuation",
     freeze: "A1",
     styles: [
@@ -206,6 +207,9 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
         format: "currency",
         color: "#00b04e",
       },
+      {
+        format: "million",
+      },
     ],
     merges: [
       "A1:B1",
@@ -363,7 +367,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
             style: 23,
           },
           1: {
-            style: 4,
+            style: 41,
             comment:
               "Refers to a company's total stock currently held by public investors, including share blocks held by institutional investors and restricted shares owned by the company’s officers and insiders.",
           },
@@ -1354,40 +1358,40 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
             style: 6,
           },
           1: {
-            style: 3,
+            style: 31,
           },
           2: {
-            style: 3,
+            style: 31,
           },
           3: {
-            style: 3,
+            style: 31,
           },
           4: {
-            style: 3,
+            style: 31,
           },
           5: {
-            style: 3,
+            style: 31,
           },
           6: {
-            style: 3,
+            style: 31,
           },
           7: {
-            style: 3,
+            style: 31,
           },
           8: {
-            style: 3,
+            style: 31,
           },
           9: {
-            style: 3,
+            style: 31,
           },
           10: {
-            style: 3,
+            style: 31,
           },
           11: {
-            style: 3,
+            style: 31,
           },
           12: {
-            style: 3,
+            style: 31,
           },
           13: {},
           14: {},
@@ -1469,40 +1473,40 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
             style: 6,
           },
           1: {
-            style: 3,
+            style: 31,
           },
           2: {
-            style: 3,
+            style: 31,
           },
           3: {
-            style: 3,
+            style: 31,
           },
           4: {
-            style: 3,
+            style: 31,
           },
           5: {
-            style: 3,
+            style: 31,
           },
           6: {
-            style: 3,
+            style: 31,
           },
           7: {
-            style: 3,
+            style: 31,
           },
           8: {
-            style: 3,
+            style: 31,
           },
           9: {
-            style: 3,
+            style: 31,
           },
           10: {
-            style: 3,
+            style: 31,
           },
           11: {
-            style: 3,
+            style: 31,
           },
           12: {
-            style: 3,
+            style: 31,
           },
           13: {},
           14: {},
@@ -1575,40 +1579,40 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
             style: 6,
           },
           1: {
-            style: 3,
+            style: 31,
           },
           2: {
-            style: 3,
+            style: 31,
           },
           3: {
-            style: 3,
+            style: 31,
           },
           4: {
-            style: 3,
+            style: 31,
           },
           5: {
-            style: 3,
+            style: 31,
           },
           6: {
-            style: 3,
+            style: 31,
           },
           7: {
-            style: 3,
+            style: 31,
           },
           8: {
-            style: 3,
+            style: 31,
           },
           9: {
-            style: 3,
+            style: 31,
           },
           10: {
-            style: 3,
+            style: 31,
           },
           11: {
-            style: 3,
+            style: 31,
           },
           12: {
-            style: 3,
+            style: 31,
           },
           13: {},
           14: {},
@@ -1624,40 +1628,40 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
             style: 6,
           },
           1: {
-            style: 3,
+            style: 31,
           },
           2: {
-            style: 3,
+            style: 31,
           },
           3: {
-            style: 3,
+            style: 31,
           },
           4: {
-            style: 3,
+            style: 31,
           },
           5: {
-            style: 3,
+            style: 31,
           },
           6: {
-            style: 3,
+            style: 31,
           },
           7: {
-            style: 3,
+            style: 31,
           },
           8: {
-            style: 3,
+            style: 31,
           },
           9: {
-            style: 3,
+            style: 31,
           },
           10: {
-            style: 3,
+            style: 31,
           },
           11: {
-            style: 3,
+            style: 31,
           },
           12: {
-            style: 3,
+            style: 31,
           },
           13: {},
           14: {},
@@ -1673,40 +1677,40 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
             style: 6,
           },
           1: {
-            style: 3,
+            style: 31,
           },
           2: {
-            style: 3,
+            style: 31,
           },
           3: {
-            style: 3,
+            style: 31,
           },
           4: {
-            style: 3,
+            style: 31,
           },
           5: {
-            style: 3,
+            style: 31,
           },
           6: {
-            style: 3,
+            style: 31,
           },
           7: {
-            style: 3,
+            style: 31,
           },
           8: {
-            style: 3,
+            style: 31,
           },
           9: {
-            style: 3,
+            style: 31,
           },
           10: {
-            style: 3,
+            style: 31,
           },
           11: {
-            style: 3,
+            style: 31,
           },
           12: {
-            style: 3,
+            style: 31,
           },
           13: {},
           14: {},
@@ -1722,40 +1726,40 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
             style: 6,
           },
           1: {
-            style: 3,
+            style: 31,
           },
           2: {
-            style: 3,
+            style: 31,
           },
           3: {
-            style: 3,
+            style: 31,
           },
           4: {
-            style: 3,
+            style: 31,
           },
           5: {
-            style: 3,
+            style: 31,
           },
           6: {
-            style: 3,
+            style: 31,
           },
           7: {
-            style: 3,
+            style: 31,
           },
           8: {
-            style: 3,
+            style: 31,
           },
           9: {
-            style: 3,
+            style: 31,
           },
           10: {
-            style: 3,
+            style: 31,
           },
           11: {
-            style: 3,
+            style: 31,
           },
           12: {
-            style: 3,
+            style: 31,
           },
           13: {},
           14: {},
@@ -1893,40 +1897,40 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
             style: 6,
           },
           1: {
-            style: 3,
+            style: 31,
           },
           2: {
-            style: 3,
+            style: 31,
           },
           3: {
-            style: 3,
+            style: 31,
           },
           4: {
-            style: 3,
+            style: 31,
           },
           5: {
-            style: 3,
+            style: 31,
           },
           6: {
-            style: 3,
+            style: 31,
           },
           7: {
-            style: 3,
+            style: 31,
           },
           8: {
-            style: 3,
+            style: 31,
           },
           9: {
-            style: 3,
+            style: 31,
           },
           10: {
-            style: 3,
+            style: 31,
           },
           11: {
-            style: 3,
+            style: 31,
           },
           12: {
-            style: 3,
+            style: 31,
           },
           13: {},
           14: {},
@@ -2031,40 +2035,40 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
             style: 6,
           },
           1: {
-            style: 3,
+            style: 31,
           },
           2: {
-            style: 3,
+            style: 31,
           },
           3: {
-            style: 3,
+            style: 31,
           },
           4: {
-            style: 3,
+            style: 31,
           },
           5: {
-            style: 3,
+            style: 31,
           },
           6: {
-            style: 3,
+            style: 31,
           },
           7: {
-            style: 3,
+            style: 31,
           },
           8: {
-            style: 3,
+            style: 31,
           },
           9: {
-            style: 3,
+            style: 31,
           },
           10: {
-            style: 3,
+            style: 31,
           },
           11: {
-            style: 3,
+            style: 31,
           },
           12: {
-            style: 3,
+            style: 31,
           },
           13: {},
           14: {},
@@ -2172,7 +2176,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
             style: 6,
           },
           1: {
-            style: 3,
+            style: 31,
           },
           2: {
             style: 32,
@@ -2266,7 +2270,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
             style: 6,
           },
           1: {
-            style: 3,
+            style: 31,
           },
           2: {
             style: 32,
@@ -2313,7 +2317,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
             style: 6,
           },
           1: {
-            style: 3,
+            style: 31,
           },
           2: {
             style: 32,
@@ -2360,7 +2364,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
             style: 6,
           },
           1: {
-            style: 3,
+            style: 31,
           },
           2: {
             style: 32,
@@ -2407,7 +2411,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
             style: 6,
           },
           1: {
-            style: 3,
+            style: 31,
           },
           2: {
             style: 32,
@@ -2501,7 +2505,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
             style: 6,
           },
           1: {
-            style: 3,
+            style: 31,
           },
           2: {
             style: 32,
@@ -2548,7 +2552,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
             style: 6,
           },
           1: {
-            style: 3,
+            style: 31,
           },
           2: {
             style: 32,
@@ -2595,7 +2599,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
             style: 6,
           },
           1: {
-            style: 3,
+            style: 31,
           },
           2: {
             style: 32,
@@ -2642,7 +2646,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
             style: 6,
           },
           1: {
-            style: 3,
+            style: 31,
           },
           2: {
             style: 32,
@@ -2689,7 +2693,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
             style: 6,
           },
           1: {
-            style: 3,
+            style: 31,
           },
           2: {
             style: 32,
@@ -2736,7 +2740,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
             style: 6,
           },
           1: {
-            style: 3,
+            style: 31,
           },
           2: {
             style: 32,
@@ -2783,7 +2787,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
             style: 6,
           },
           1: {
-            style: 3,
+            style: 31,
           },
           2: {
             style: 32,
@@ -2830,7 +2834,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
             style: 6,
           },
           1: {
-            style: 3,
+            style: 31,
           },
           2: {
             style: 32,
@@ -2877,7 +2881,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
             style: 6,
           },
           1: {
-            style: 3,
+            style: 31,
           },
           2: {
             style: 32,
@@ -3961,7 +3965,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
       ["", "Base Year", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "Terminal Year"],
       [
         "Revenues",
-        '=FIN("revenue") / 1000000',
+        '=FIN("revenue")',
         "=B20*(1+'Required Inputs'!$B$1)",
         "=C20*(1+'Required Inputs'!$B$1)",
         "=D20*(1+'Required Inputs'!$B$1)",
@@ -3991,7 +3995,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
       ],
       [
         "Operating Income",
-        '=IFERROR(FIN("operatingIncome") / 1000000, 0)',
+        '=IFERROR(FIN("operatingIncome"), 0)',
         "=C21*C20",
         "=D21*D20",
         "=E21*E20",
@@ -4143,7 +4147,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
       ],
       [
         "Invested Capital",
-        '=IFERROR(FIN("investedCapital") / 1000000, 0)',
+        '=IFERROR(FIN("investedCapital"), 0)',
         "=B34+C25",
         "=C34+D25",
         "=D34+E25",
@@ -4265,7 +4269,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
       ],
       [
         "Proceeds if the Firm Fails",
-        '=((FIN("bookValueOfEquity")/1000000)+(FIN("bookValueOfDebt")/1000000))*\'Optional Inputs\'!J5',
+        '=((FIN("bookValueOfEquity"))+(FIN("bookValueOfDebt")))*\'Optional Inputs\'!J5',
         "",
         "",
         "",
@@ -4295,7 +4299,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
       ],
       [
         "- Debt",
-        '=IFERROR(FIN("bookValueOfDebt") / 1000000, 0)',
+        '=IFERROR(FIN("bookValueOfDebt"), 0)',
         "",
         "",
         "",
@@ -4310,7 +4314,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
       ],
       [
         "- Minority Interests",
-        '=IFERROR(FIN("minorityInterest")  / 1000000, 0)',
+        '=IFERROR(FIN("minorityInterest") , 0)',
         "",
         "",
         "",
@@ -4325,7 +4329,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
       ],
       [
         "+ Cash",
-        '=IFERROR(FIN("cashAndShortTermInvestments") / 1000000, 0)',
+        '=IFERROR(FIN("cashAndShortTermInvestments"), 0)',
         "",
         "",
         "",
@@ -4415,7 +4419,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
       ],
       [
         "Estimated Value Per Share",
-        '=IF(B52/FIN("sharesOutstanding") < 0, 0, B52/(FIN("sharesOutstanding") / 1000000))',
+        '=IF(B52/FIN("sharesOutstanding") < 0, 0, B52/(FIN("sharesOutstanding")))',
         "",
         "",
         "",
