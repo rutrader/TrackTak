@@ -10,6 +10,11 @@ import {
 } from "../../../packages/intrinsic-valuations/src/discountedCashFlow/plugins/FinancialPlugin";
 
 const getHyperformulaInstance = (existingScope, sheetsSerializedValues) => {
+  HyperFormula.registerFunctionPlugin(
+    makeFinancialPlugin(existingScope),
+    finTranslations,
+  );
+
   const hyperformula = HyperFormula.buildFromSheets(sheetsSerializedValues, {
     licenseKey: "05054-b528f-a10c4-53f2a-04b57",
     currencySymbol: Object.values(currencySymbolMap),
@@ -17,13 +22,9 @@ const getHyperformulaInstance = (existingScope, sheetsSerializedValues) => {
     // https://github.com/handsontable/hyperformula/issues/686
     matrixDetection: false,
   });
+
   hyperformula.addNamedExpression("TRUE", "=TRUE()");
   hyperformula.addNamedExpression("FALSE", "=FALSE()");
-
-  HyperFormula.registerFunctionPlugin(
-    makeFinancialPlugin(existingScope),
-    finTranslations,
-  );
 
   return hyperformula;
 };
@@ -43,7 +44,8 @@ const sensitivityAnalysisWorker = {
         ...existingScope,
         ...currentScope,
       });
-      const estimatedPricePerShare = model[35][1];
+
+      const estimatedPricePerShare = model[53][1];
 
       return estimatedPricePerShare;
     });

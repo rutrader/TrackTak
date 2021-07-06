@@ -51,18 +51,6 @@ const calculateDCFModel = (hyperformula, scope) => {
     );
   }
 
-  Object.keys(scope).forEach((key) => {
-    const value = scope[key] || 0;
-
-    if (hyperformula.isItPossibleToChangeNamedExpression(key, value)) {
-      hyperformula.changeNamedExpression(key, value);
-    }
-
-    if (hyperformula.isItPossibleToAddNamedExpression(key, value)) {
-      hyperformula.addNamedExpression(key, value);
-    }
-  });
-
   // TODO: Make generic later on
   const sheetId = hyperformula.getSheetId("DCF Valuation");
 
