@@ -26,6 +26,7 @@ export const buildVariablesSpreadsheet = (
   rootEl,
   options,
   hyperformula,
+  getDatas,
 ) => {
   let newData;
   let newOptions;
@@ -47,6 +48,7 @@ export const buildVariablesSpreadsheet = (
     eventEmitter,
     getOptions().debugMode,
     "variablesSpreadsheet",
+    getDatas,
   );
 
   const getViewWidthHeight = makeGetVariablesSheetViewWidthHeight(getOptions);

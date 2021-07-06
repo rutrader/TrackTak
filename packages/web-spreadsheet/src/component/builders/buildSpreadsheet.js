@@ -73,7 +73,19 @@ export const buildSpreadsheet = (
 
   setOptions(options);
 
-  modifyEventEmitter(eventEmitter, getOptions().debugMode, "spreadsheet");
+  const getDatas = () => {
+    return {
+      datas: sheet.getDataValues(),
+      variablesDatas: variablesSpreadsheet.sheet.getDataValues(),
+    };
+  };
+
+  modifyEventEmitter(
+    eventEmitter,
+    getOptions().debugMode,
+    "spreadsheet",
+    getDatas,
+  );
 
   eventEmitter.on(spreadsheetEvents.sheet.switchData, (data) => {
     newData = data;
@@ -195,6 +207,7 @@ export const buildSpreadsheet = (
     rootEl,
     variablesSpreadsheetOptions,
     hyperformula,
+    getDatas,
   );
 
   const draw = getDraw(
@@ -206,13 +219,6 @@ export const buildSpreadsheet = (
   table.setDraw(draw);
 
   const setDatasheets = sheet.makeSetDatasheets(getDataProxy);
-
-  const getDatas = () => {
-    return {
-      datas: sheet.getDataValues(),
-      variablesDatas: variablesSpreadsheet.sheet.getDataValues(),
-    };
-  };
 
   const bottombar = getBottombar(
     "sheet",
