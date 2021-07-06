@@ -81,6 +81,21 @@ const xtos = async (
   // TEMP
   const newScope = {
     ...scope,
+    name: scope.general.name,
+    description: scope.general.description,
+    currencyCode: scope.general.currencyCode,
+    industryName: scope.currentIndustry.industryName,
+    code: scope.general.code,
+    exchange: scope.general.exchange,
+    annualAverageCAGRLastFiveYears:
+      scope.currentIndustry.annualAverageCAGRLastFiveYears,
+    preTaxOperatingMarginUnadjusted:
+      scope.currentIndustry.preTaxOperatingMarginUnadjusted,
+    afterTaxROIC: scope.currentIndustry.afterTaxROIC,
+    "sales/Capital": scope.currentIndustry["sales/Capital"],
+    costOfCapital: scope.currentIndustry.costOfCapital,
+    unleveredBeta: scope.currentIndustry.unleveredBeta,
+    equityLeveredBeta: scope.currentIndustry.equityLeveredBeta,
     revenue: scope.incomeStatements.ttm.revenue,
     interestExpense: scope.incomeStatements.ttm.interestExpense,
     operatingIncome: scope.incomeStatements.ttm.operatingIncome,
@@ -91,7 +106,6 @@ const xtos = async (
       scope.balanceSheets.ttm.cashAndShortTermInvestments,
     minorityInterest: scope.balanceSheets.ttm.minorityInterest,
     capitalLeaseObligations: scope.balanceSheets.ttm.capitalLeaseObligations,
-    unleveredBeta: scope.currentIndustry.unleveredBeta,
     standardDeviationInStockPrices:
       scope.currentIndustry.standardDeviationInStockPrices,
     equityRiskPremium: scope.currentEquityRiskPremium.equityRiskPremium,
@@ -101,6 +115,7 @@ const xtos = async (
     marketCapitalization: scope.highlights.marketCapitalization,
   };
 
+  delete newScope.general;
   delete newScope.highlights;
   delete newScope.incomeStatements;
   delete newScope.balanceSheets;

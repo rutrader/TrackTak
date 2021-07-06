@@ -220,8 +220,11 @@ export const buildSpreadsheet = (
 
   const setDatasheets = sheet.makeSetDatasheets(getDataProxy);
 
-  const bottombar = getBottombar(eventEmitter, sheet.getDataValues, () =>
-    getData().getData(),
+  const bottombar = getBottombar(
+    "sheet",
+    eventEmitter,
+    sheet.getDataValues,
+    () => getData().getData(),
   );
 
   sheet.el.after(bottombar.el);

@@ -76,7 +76,7 @@ const HeaderLink = ({ to, text, style, isSignOut = false }) => {
   );
 };
 
-const Header = ({ hideSearch }) => {
+const Header = ({ hideSearch, position = "fixed" }) => {
   const theme = useTheme();
   const extraPadding = 20;
   const paddingBottom = `${theme.mixins.toolbar.minHeight + extraPadding}px`;
@@ -166,9 +166,10 @@ const Header = ({ hideSearch }) => {
 
   return (
     <>
-      <Box sx={{ paddingBottom }}>
+      <Box sx={{ paddingBottom: position === "fixed" ? paddingBottom : 2 }}>
         <AppBar
           sx={{
+            position,
             py: 1,
             px: 3,
             background: "#fff",

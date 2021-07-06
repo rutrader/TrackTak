@@ -53,7 +53,6 @@ const wikiContent = [
   },
   {
     title: "Base Year, Years 1-10 & Terminal Year",
-    cellsText: "B1-M1",
     text: (
       <>
         <Typography paragraph>
@@ -66,8 +65,8 @@ const wikiContent = [
           1, 2, 3... 10 stands for the subsequent yearly data. For example if
           you are valuing a company on the 21st November 2020 and the most
           recent TTM data was last released on the 20th October 2020 then next
-          year (B1) will be from 21st November 2020 to 21st November 2021 and
-          the same for the next years after that. So the years represent the
+          year (base year) will be from 21st November 2020 to 21st November 2021
+          and the same for the next years after that. So the years represent the
           subsequent years <b>after</b> the most recent financial results were
           released and not when you are doing the DCF.
         </Typography>
@@ -84,7 +83,6 @@ const wikiContent = [
   },
   {
     title: "Revenue",
-    cellsText: "C2-M2",
     text: (
       <>
         <Typography paragraph>
@@ -95,18 +93,18 @@ const wikiContent = [
         </Typography>
         <Typography paragraph>
           Compound Annual Growth Rate (CAGR) is the average growth rate that you
-          think will happen for the company from year 1-5 (B2-G2). We then use
+          think will happen for the company from year 1-5 revenues. We then use
           this as the revenue growth for years 1-5. To figure out what to put in
           this input you need to check the companies previous revenue growth
           rates, the industry average compared to year 10 revenue growth and
           also your thoughts on the future of the company.
         </Typography>
         <Typography paragraph>
-          From years 6-10 (H2-L2) we slightly reduce the growth rate each year.
+          From years 6-10 revenues we slightly reduce the growth rate each year.
           This is to safe guard you against putting in an unreasonably large
           revenue growth rate. It's also more realistic in most cases due to
           companies growth slowing as their revenue becomes bigger and the
-          company matures. The terminal growth (M2) is then set to be equal to
+          company matures. The terminal growth year is then set to be equal to
           year 10's growth rate.
         </Typography>
       </>
@@ -114,7 +112,6 @@ const wikiContent = [
   },
   {
     title: "Operating Margin",
-    cellsText: "B3-M3",
     text: (
       <>
         <Typography paragraph>
@@ -123,12 +120,12 @@ const wikiContent = [
           'Required Inputs'!$B2.
         </Typography>
         <Typography paragraph>
-          We use this input in Years 1-10 (B3-L3) and set the terminal year to
-          be equal to year 10 (L3). To figure out what to put in this input you
-          need to check the companies current Operating margin, the industries
-          average Operating margin and also your thoughts on what type of margin
-          the company can achieve by year 10. This will differ greatly depending
-          on how much of a&nbsp;
+          We use the operating margin input in Years 1-10 and set the terminal
+          year to be equal to year 10. To figure out what to put in this input
+          you need to check the companies current Operating margin, the
+          industries average Operating margin and also your thoughts on what
+          type of margin the company can achieve by year 10. This will differ
+          greatly depending on how much of a&nbsp;
           <a
             rel="noreferrer"
             target="_blank"
@@ -147,22 +144,20 @@ const wikiContent = [
         </Typography>
         <Typography paragraph>
           The Operating Margin will slowly converge from the base years margin
-          (B3) to your Operating margin in year 10 (L3). The speed at which this
-          happens depends on the Year of Convergence that you type in to this
-          input.
+          to your Operating margin in year 10. The speed at which this happens
+          depends on the Year of Convergence that you type in to this input.
         </Typography>
       </>
     ),
   },
   {
     title: "Tax Rate",
-    cellsText: "B5-M5",
     text: (
       <>
         The tax rate in the base year is set to be the effective tax rate for
         your company. This tax rate then converges to the marginal tax rate
-        after year 5 (H5). The reason we converge from the effective tax rate to
-        the marginal is because a company cannot defer it's taxes forever,
+        after year 5. The reason we converge from the effective tax rate to the
+        marginal is because a company cannot defer it's taxes forever,
         eventually the company has to pay the countries marginal corporation tax
         rate.
       </>
@@ -170,7 +165,6 @@ const wikiContent = [
   },
   {
     title: "NOPAT",
-    cellsText: "B6-M6",
     text: (
       <>
         This is essentially the Earnings Before Interest. The difference between
@@ -180,7 +174,6 @@ const wikiContent = [
   },
   {
     title: "Reinvestment",
-    cellsText: "C7-M7",
     text: (
       <>
         The sales to capital ratio one is that input that is used in these cells
@@ -195,7 +188,6 @@ const wikiContent = [
   },
   {
     title: "FCFF",
-    cellsText: "C8-M8",
     text: (
       <>
         Free Cash Flow to the Firm (FCFF) is the amount of money the company has
@@ -206,7 +198,6 @@ const wikiContent = [
   },
   {
     title: "NOL",
-    cellsText: "B9-M9",
     text: (
       <>
         The inputs for this are the sections in 'Optional Inputs'!$J2. Net
@@ -219,16 +210,17 @@ const wikiContent = [
   },
   {
     title: "Cost of Capital",
-    cellsText: "C11-M11",
     text: (
       <>
         <Typography paragraph>
-          The inputs for this are the sections in 'Optional Inputs'!$A1:$E1.
-          Weighted Cost of Capital (WACC) has multiple elements that go in to
-          calculating it. There are also different techniques to working out the
-          WACC. We use Aswath Damodaran's bottom-up beta instead of the CAPM
-          model. We believe this is a much better representation of risk. The
-          elements that go into a companies WACC are:
+          The inputs for this are the sections in 'Optional Inputs'!$A1:$E1
+          which are Pre-tax Cost of Debt, Book Value of Convertible Debt and
+          Number of Preferred Shares. Weighted Cost of Capital (WACC) has
+          multiple elements that go in to calculating it. There are also
+          different techniques to working out the WACC. We use Aswath
+          Damodaran's bottom-up beta instead of the CAPM model. We believe this
+          is a much better representation of risk. The elements that go into a
+          companies WACC are:
         </Typography>
         <List disablePadding>
           <ListItem>
@@ -624,7 +616,6 @@ const wikiContent = [
   },
   {
     title: "Cumulated Discount Factor",
-    cellsText: "C12-L12",
     text: (
       <>
         This is the opposite of the Cost of Capital in decimal form. We take the
@@ -634,7 +625,6 @@ const wikiContent = [
   },
   {
     title: "PV (FCFF)",
-    cellsText: "C13-L13",
     text: (
       <>
         Present Value of Free Cash Flow to the Firm (PV (FCFF)) is the FCFF
@@ -647,24 +637,20 @@ const wikiContent = [
   },
   {
     title: "Terminal Cash Flow",
-    cellsText: "B19",
     text: (
       <>The cash flows that the company generates each year after year 10.</>
     ),
   },
   {
     title: "Terminal Cost of Capital",
-    cellsText: "B20",
     text: <>The cost of capital for the company each year after year 10.</>,
   },
   {
     title: "Terminal Value",
-    cellsText: "B21",
     text: <>The total value of the cash flows after year 10.</>,
   },
   {
     title: "PV (Terminal Value)",
-    cellsText: "B22",
     text: (
       <>
         The total value of the cash flows after year 10 discounted to today's
@@ -674,7 +660,6 @@ const wikiContent = [
   },
   {
     title: "PV (CF Over Next 10 Years)",
-    cellsText: "B23",
     text: (
       <>
         The total value of the cash flows in the next 10 years discounted to
@@ -684,12 +669,10 @@ const wikiContent = [
   },
   {
     title: "Sum of PV",
-    cellsText: "B24",
     text: <>The total sum of the present values of the previous two fields.</>,
   },
   {
     title: "Probability of Failure",
-    cellsText: "B25",
     text: (
       <>
         The input for this is in 'Optional Inputs'!$J4. Many young, growth
@@ -703,7 +686,6 @@ const wikiContent = [
   },
   {
     title: "Proceeds if the Firm Fails",
-    cellsText: "B26",
     text: (
       <>
         The input for this is in 'Optional Inputs'!$J5. If the company fails
@@ -719,7 +701,6 @@ const wikiContent = [
   },
   {
     title: "Operating Assets",
-    cellsText: "B27",
     text: (
       <>
         We take the Sum of the Present Value and modify it. We minus debt and
@@ -731,7 +712,6 @@ const wikiContent = [
   },
   {
     title: "Equity",
-    cellsText: "B32",
     text: (
       <>
         This is the sum of the above calculations after Operating Assets has
@@ -741,19 +721,18 @@ const wikiContent = [
   },
   {
     title: "Options",
-    cellsText: "B33",
     text: (
       <>
-        The inputs for this are in 'Optional Inputs'!$H2:$H4. We minus Employee
-        Options from Equity due to the company having to pay cash to these
-        employees when they exercise them. Thus there is less cash attributable
-        to shareholders.
+        The inputs for this are in 'Optional Inputs'!$H2:$H4 which are Employee
+        Options Outstanding, Average Strike Price and Average Maturity. We minus
+        Employee Options from Equity due to the company having to pay cash to
+        these employees when they exercise them. Thus there is less cash
+        attributable to shareholders.
       </>
     ),
   },
   {
     title: "Common Stock Equity",
-    cellsText: "B34",
     text: (
       <>
         This is Equity with the employee options taken away. This is the final
@@ -764,7 +743,6 @@ const wikiContent = [
   },
   {
     title: "Estimated Value Per Share",
-    cellsText: "B36",
     text: (
       <>
         The intrinsic value per share that the share price should be trading at
@@ -775,7 +753,6 @@ const wikiContent = [
   },
   {
     title: "Margin of Safety",
-    cellsText: "B37",
     text: (
       <>
         How undervalued or overvalued the current price of the stock, if it is

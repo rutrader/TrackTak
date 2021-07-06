@@ -81,6 +81,18 @@ export const miscTypeMappings = {
   riskFreeRate: "percent",
   valueOfAllOptionsOutstanding: "million-currency",
   marketCapitalization: "million-currency",
+  name: "text",
+  description: "text",
+  code: "text",
+  exchange: "text",
+  currencyCode: "text",
+  industryName: "text",
+  annualAverageCAGRLastFiveYears: "percent",
+  preTaxOperatingMarginUnadjusted: "percent",
+  afterTaxROIC: "percent",
+  "sales/Capital": "number",
+  costOfCapital: "percent",
+  equityLeveredBeta: "number",
 };
 
 export const marketValueNameTypeMapping = {};

@@ -1,6 +1,6 @@
 {
   "name": "@tracktak/intrinsic-valuations",
-  "version": "6.0.2",
+  "version": "7.0.2",
   "description": "A react package that allows external websites to use our intrinsic valuations for https://tracktak.com",
   "author": "tracktak",
   "license": "SEE LICENSE IN README.MD",
@@ -42,7 +42,7 @@
     "currency-symbol-map": "^4.0.4",
     "dayjs": "^1.9.7",
     "eventemitter3": "^4.0.7",
-    "hyperformula": "^0.6.2",
+    "hyperformula": "TrackTak/hyperformula#develop",
     "iso-3166-1-alpha-2": "^1.0.0",
     "less": "^4.1.1",
     "lodash-es": "^4.17.20",

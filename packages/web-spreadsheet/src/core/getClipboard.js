@@ -1,5 +1,3 @@
-import convertIndexesToAmount from "../shared/convertIndexesToAmount";
-
 const getClipboard = (hyperformula, getData) => {
   let range = null;
   let state = "clear";
@@ -10,29 +8,35 @@ const getClipboard = (hyperformula, getData) => {
   const copy = (cellRange) => {
     range = cellRange;
     state = "copy";
-    hyperformula.copy(
-      {
+    hyperformula.copy({
+      start: {
         sheet: getData().getSheetId(),
         col: cellRange.sci,
         row: cellRange.sri,
       },
-      convertIndexesToAmount(cellRange.sci, cellRange.eci),
-      convertIndexesToAmount(cellRange.sri, cellRange.eri),
-    );
+      end: {
+        sheet: getData().getSheetId(),
+        col: cellRange.eci,
+        row: cellRange.eri,
+      },
+    });
   };
 
   const cut = (cellRange) => {
     range = cellRange;
     state = "cut";
-    hyperformula.cut(
-      {
+    hyperformula.cut({
+      start: {
         sheet: getData().getSheetId(),
         col: cellRange.sci,
         row: cellRange.sri,
       },
-      convertIndexesToAmount(cellRange.sci, cellRange.eci),
-      convertIndexesToAmount(cellRange.sri, cellRange.eri),
-    );
+      end: {
+        sheet: getData().getSheetId(),
+        col: cellRange.eci,
+        row: cellRange.eri,
+      },
+    });
   };
 
   const isCopy = () => {

@@ -16,7 +16,6 @@ import SensitivityAnalysis from "../components/SensitivityAnalysis";
 import Section from "../components/Section";
 
 const DiscountedCashFlowSheet = ({
-  SubscribeCover,
   hideSensitivityAnalysis,
   showSaveButton,
   onSaveClick,
@@ -36,7 +35,6 @@ const DiscountedCashFlowSheet = ({
     setShowFormulas(false);
   };
 
-  // TODO: Add an expand button to see it full screen
   return (
     <Fragment>
       <Box
@@ -49,9 +47,6 @@ const DiscountedCashFlowSheet = ({
         }}
       >
         <Box>
-          <Typography variant="h5" gutterBottom>
-            DCF Valuation
-          </Typography>
           <Typography gutterBottom>
             Need help? Check out the DCF docs&nbsp;
             <Link
@@ -61,9 +56,6 @@ const DiscountedCashFlowSheet = ({
             >
               here.
             </Link>
-          </Typography>
-          <Typography gutterBottom>
-            <b>in (millions), except per share amounts</b>
           </Typography>
         </Box>
         <Box
@@ -105,7 +97,6 @@ const DiscountedCashFlowSheet = ({
       <DiscountedCashFlowTable
         showFormulas={showFormulas}
         showYOYGrowth={showYOYGrowth}
-        SubscribeCover={SubscribeCover}
         onSaveEvent={onSaveEvent}
       />
       {!hideSensitivityAnalysis && (
