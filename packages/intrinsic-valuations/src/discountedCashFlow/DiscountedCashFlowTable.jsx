@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { Alert, Box, useMediaQuery, useTheme, Link } from "@material-ui/core";
+import { Box, useMediaQuery, useTheme } from "@material-ui/core";
 import useInputQueryParams from "../hooks/useInputQueryParams";
 import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
@@ -11,20 +11,17 @@ import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
-import { AnchorLink, navigate } from "../shared/gatsby";
 import { useLocation } from "@reach/router";
 import selectThreeAverageYearsEffectiveTaxRate from "../selectors/fundamentalSelectors/selectThreeAverageYearsEffectiveTaxRate";
 import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
 import selectScope from "../selectors/dcfSelectors/selectScope";
 import {
-  setCells,
   setScope,
   setSheetsDatas,
   setSheetsSerializedValues,
   setSheetsValues,
 } from "../redux/actions/dcfActions";
 import { isNil } from "lodash-es";
-import { convertFromCellIndexToLabel } from "../../../web-spreadsheet/src/core/helper";
 import getSpreadsheet, {
   spreadsheetEvents,
 } from "../../../web-spreadsheet/src";
@@ -34,7 +31,6 @@ import { allInputNameTypeMappings } from "./scopeNameTypeMapping";
 import { queryNames } from "./templates/freeCashFlowFirmSimple/inputQueryNames";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 import { currencySymbolMap } from "currency-symbol-map";
-import { requiredInputsSheetName } from "./templates/freeCashFlowFirmSimple/expressionCalculations";
 import getRequiredInputsData from "./templates/freeCashFlowFirmSimple/data/getRequiredInputsData";
 import getEmployeeOptionsData from "./templates/freeCashFlowFirmSimple/data/getEmployeeOptionsData";
 import getDCFValuationData from "./templates/freeCashFlowFirmSimple/data/getDCFValuationData";
@@ -139,6 +135,56 @@ const DiscountedCashFlowTable = ({ showFormulas, showYOYGrowth }) => {
   }, []);
 
   useEffect(() => {
+    let FinancialPlugin = makeFinancialPlugin({
+      incomeStatements: {
+        ttm: ttmIncomeStatement,
+        yearly: yearlyIncomeStatements,
+      },
+      balanceSheets: {
+        ttm: ttmBalanceSheet,
+        yearly: yearlyBalanceSheets,
+      },
+      cashFlowStatements: {
+        ttm: ttmCashFlowStatement,
+        yearly: yearlyCashFlowStatements,
+      },
+      exchangeRates,
+      general,
+      highlights,
+      riskFreeRate,
+      currentEquityRiskPremium,
+      currentIndustry,
+      estimatedCostOfDebt,
+      pastThreeYearsAverageEffectiveTaxRate,
+      price,
+      sharesOutstanding,
+    });
+
+    HyperFormula.registerFunctionPlugin(FinancialPlugin, finTranslations);
+
+    return () => {
+      HyperFormula.unregisterFunctionPlugin(FinancialPlugin);
+    };
+  }, [
+    currentEquityRiskPremium,
+    currentIndustry,
+    estimatedCostOfDebt,
+    exchangeRates,
+    general,
+    highlights,
+    pastThreeYearsAverageEffectiveTaxRate,
+    price,
+    riskFreeRate,
+    sharesOutstanding,
+    ttmBalanceSheet,
+    ttmCashFlowStatement,
+    ttmIncomeStatement,
+    yearlyBalanceSheets,
+    yearlyCashFlowStatements,
+    yearlyIncomeStatements,
+  ]);
+
+  useEffect(() => {
     let spreadsheet;
 
     const dcfValuationElement = document.getElementById(`${dcfValuationId}`);
@@ -180,33 +226,6 @@ const DiscountedCashFlowTable = ({ showFormulas, showYOYGrowth }) => {
       },
     };
 
-    let FinancialPlugin = makeFinancialPlugin({
-      incomeStatements: {
-        ttm: ttmIncomeStatement,
-        yearly: yearlyIncomeStatements,
-      },
-      balanceSheets: {
-        ttm: ttmBalanceSheet,
-        yearly: yearlyBalanceSheets,
-      },
-      cashFlowStatements: {
-        ttm: ttmCashFlowStatement,
-        yearly: yearlyCashFlowStatements,
-      },
-      exchangeRates,
-      general,
-      highlights,
-      riskFreeRate,
-      currentEquityRiskPremium,
-      currentIndustry,
-      estimatedCostOfDebt,
-      pastThreeYearsAverageEffectiveTaxRate,
-      price,
-      sharesOutstanding,
-    });
-
-    HyperFormula.registerFunctionPlugin(FinancialPlugin, finTranslations);
-
     spreadsheet = getSpreadsheet(
       dcfValuationElement,
       options,
@@ -222,27 +241,8 @@ const DiscountedCashFlowTable = ({ showFormulas, showYOYGrowth }) => {
 
     return () => {
       spreadsheet?.destroy();
-      HyperFormula.unregisterFunctionPlugin(FinancialPlugin);
     };
-  }, [
-    currencySymbol,
-    currentEquityRiskPremium,
-    currentIndustry,
-    estimatedCostOfDebt,
-    exchangeRates,
-    general,
-    highlights,
-    pastThreeYearsAverageEffectiveTaxRate,
-    price,
-    riskFreeRate,
-    sharesOutstanding,
-    ttmBalanceSheet,
-    ttmCashFlowStatement,
-    ttmIncomeStatement,
-    yearlyBalanceSheets,
-    yearlyCashFlowStatements,
-    yearlyIncomeStatements,
-  ]);
+  }, [currencySymbol]);
 
   useEffect(() => {
     const cellEditedCallback = ({ cellAddress, value }) => {
@@ -253,15 +253,15 @@ const DiscountedCashFlowTable = ({ showFormulas, showYOYGrowth }) => {
         console.log("datas: ", spreadsheet.getDatas());
       }
 
-      let label = spreadsheet.hyperformula
-        .getCellValue({
-          ...cellAddress,
-          col: cellAddress.col - 1,
-        })
-        .toString();
+      let label = spreadsheet.hyperformula.getCellValue({
+        ...cellAddress,
+        col: cellAddress.col - 1,
+      });
 
       // TODO: Remove later
       if (label) {
+        label = label.toString();
+
         if (label.includes("Operating Target Margin")) {
           label = "EBIT Target Margin in Year 10";
         }
@@ -307,7 +307,6 @@ const DiscountedCashFlowTable = ({ showFormulas, showYOYGrowth }) => {
     if (spreadsheet) {
       const { datas } = spreadsheet.getDatas();
 
-      // Temporary
       if (!datas.length) {
         spreadsheet.variablesSpreadsheet.setVariableDatasheets([
           getRequiredInputsData(inputQueryParams),
@@ -315,10 +314,7 @@ const DiscountedCashFlowTable = ({ showFormulas, showYOYGrowth }) => {
         ]);
       }
 
-      if (
-        hasAllRequiredInputsFilledIn &&
-        (!datas.length || datas.length === 1)
-      ) {
+      if (!datas.length || datas.length === 1) {
         // Temp
         const financialStatements = {
           incomeStatements: {
@@ -350,7 +346,6 @@ const DiscountedCashFlowTable = ({ showFormulas, showYOYGrowth }) => {
   }, [
     spreadsheet,
     inputQueryParams,
-    hasAllRequiredInputsFilledIn,
     ttmIncomeStatement,
     yearlyIncomeStatements,
     ttmBalanceSheet,
@@ -360,53 +355,7 @@ const DiscountedCashFlowTable = ({ showFormulas, showYOYGrowth }) => {
   ]);
 
   useEffect(() => {
-    if (!hasAllRequiredInputsFilledIn && spreadsheet) {
-      const { datas } = spreadsheet.getDatas();
-
-      datas.forEach((sheet) => {
-        const sheetId = spreadsheet.hyperformula.getSheetId(sheet.name);
-
-        spreadsheet.hyperformula.clearSheet(sheetId);
-      });
-      spreadsheet.setDatasheets([]);
-    }
-  }, [hasAllRequiredInputsFilledIn, spreadsheet, isOnMobile]);
-
-  useEffect(() => {
-    if (spreadsheet && hasAllRequiredInputsFilledIn && scope) {
-      const sheetName = "DCF Valuation";
-      const dataSheetFormulas = spreadsheet.hyperformula.getAllSheetsFormulas();
-      const dataSheetValues = spreadsheet.hyperformula.getAllSheetsValues();
-      const cells = {};
-
-      dataSheetValues[sheetName].forEach((columns, rowIndex) => {
-        columns.forEach((_, columnIndex) => {
-          const label = convertFromCellIndexToLabel(columnIndex, rowIndex + 1);
-          const expr = dataSheetFormulas[sheetName][rowIndex][columnIndex];
-          let value = dataSheetValues[sheetName][rowIndex][columnIndex];
-
-          cells[label] = {
-            ...cells[label],
-            value,
-            expr,
-          };
-        });
-      });
-
-      // TODO: Remove setCells and consolidate the others in a better place
-      dispatch(setCells(cells));
-      dispatch(
-        setSheetsSerializedValues(
-          spreadsheet.hyperformula.getAllSheetsSerialized(),
-        ),
-      );
-      dispatch(setSheetsValues(spreadsheet.hyperformula.getAllSheetsValues()));
-      dispatch(setSheetsDatas(spreadsheet.getDatas()));
-    }
-  }, [hasAllRequiredInputsFilledIn, isOnMobile, spreadsheet, dispatch, scope]);
-
-  useEffect(() => {
-    if (spreadsheet && hasAllRequiredInputsFilledIn && scope) {
+    if (spreadsheet && scope) {
       if (showYOYGrowth) {
         spreadsheet.setOptions({
           showAllFormulas: false,
@@ -428,18 +377,18 @@ const DiscountedCashFlowTable = ({ showFormulas, showYOYGrowth }) => {
         showYOYGrowth: false,
       });
     }
-  }, [
-    showYOYGrowth,
-    spreadsheet,
-    isOnMobile,
-    hasAllRequiredInputsFilledIn,
-    showFormulas,
-    scope,
-  ]);
+  }, [showYOYGrowth, spreadsheet, isOnMobile, showFormulas, scope]);
 
   useEffect(() => {
     // Dispatch only when we have all the data from the API
-    if (hasAllRequiredInputsFilledIn && !isNil(price)) {
+    if (hasAllRequiredInputsFilledIn && !isNil(price) && spreadsheet) {
+      dispatch(
+        setSheetsSerializedValues(
+          spreadsheet.hyperformula.getAllSheetsSerialized(),
+        ),
+      );
+      dispatch(setSheetsValues(spreadsheet.hyperformula.getAllSheetsValues()));
+      dispatch(setSheetsDatas(spreadsheet.getDatas()));
       dispatch(
         setScope({
           incomeStatements: {
@@ -486,6 +435,7 @@ const DiscountedCashFlowTable = ({ showFormulas, showYOYGrowth }) => {
     price,
     riskFreeRate,
     sharesOutstanding,
+    spreadsheet,
     ttmBalanceSheet,
     ttmCashFlowStatement,
     ttmIncomeStatement,
@@ -493,9 +443,6 @@ const DiscountedCashFlowTable = ({ showFormulas, showYOYGrowth }) => {
     yearlyCashFlowStatements,
     yearlyIncomeStatements,
   ]);
-
-  const to = `${location.pathname}#${requiredInputsId}`;
-  const zIndex = 100;
 
   return (
     <Box
@@ -514,36 +461,6 @@ const DiscountedCashFlowTable = ({ showFormulas, showYOYGrowth }) => {
       ref={containerRef}
     >
       <Box id={dcfValuationId} />
-      {!hasAllRequiredInputsFilledIn && (
-        <Alert
-          severity="warning"
-          sx={{
-            position: "absolute",
-            left: "50%",
-            top: "50%",
-            zIndex,
-            transform: "translate(-50%, -50%)",
-            "& .MuiAlert-icon": {
-              alignItems: "center",
-            },
-            "& .MuiAlert-message": {
-              fontSize: 18,
-            },
-          }}
-        >
-          The&nbsp;
-          <Link
-            component={AnchorLink}
-            to={to}
-            onAnchorLinkClick={() => {
-              navigate(to);
-            }}
-          >
-            {requiredInputsSheetName.slice(0, -1)}
-          </Link>
-          &nbsp;cells above need to be filled out first to generate your DCF.
-        </Alert>
-      )}
     </Box>
   );
 };
