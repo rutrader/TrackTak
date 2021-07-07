@@ -6,7 +6,7 @@ import {
   setSheetsDatas,
 } from "../actions/dcfActions";
 import { createReducer } from "@reduxjs/toolkit";
-import cells from "../../discountedCashFlow/cells";
+import cells from "../../spreadsheet/cells";
 
 const initialState = {
   cells,

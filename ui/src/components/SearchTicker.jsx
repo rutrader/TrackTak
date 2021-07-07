@@ -9,8 +9,8 @@ import {
 import { navigate } from "gatsby";
 import SearchIcon from "@material-ui/icons/Search";
 import { useDebouncedCallback } from "@tracktak/intrinsic-valuations";
-import { getAutocompleteQuery } from "../api/api";
 import TTRoundInput from "./TTRoundInput";
+import { getAutocompleteQuery } from "../../../packages/intrinsic-valuations/src";
 
 const SearchTicker = ({ isSmallSearch }) => {
   const theme = useTheme();

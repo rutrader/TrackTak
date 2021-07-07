@@ -1,7 +1,15 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { Box, useMediaQuery, useTheme } from "@material-ui/core";
+import {
+  Box,
+  useMediaQuery,
+  useTheme,
+  Typography,
+  FormControlLabel,
+  Switch,
+  Link,
+} from "@material-ui/core";
 import useInputQueryParams from "../hooks/useInputQueryParams";
 import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
@@ -52,10 +60,23 @@ import selectExchangeRates from "../selectors/fundamentalSelectors/selectExchang
 import getIndustryAveragesUSData from "./templates/freeCashFlowFirmSimple/data/getIndustryAveragesUSData";
 import getIndustryAveragesGlobalData from "./templates/freeCashFlowFirmSimple/data/getIndustryAveragesGlobalData";
 import getFinancialStatementsData from "./templates/freeCashFlowFirmSimple/data/getFinancialStatementsData";
+import ExportToExcel, { DCFControlTypography } from "./ExportToExcel";
+import SensitivityAnalysis from "../components/SensitivityAnalysis";
+import Section from "../components/Section";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
 const defaultColWidth = 110;
+
+const SpreadsheetLabel = (props) => (
+  <FormControlLabel
+    {...props}
+    sx={{
+      marginLeft: 0,
+      marginRight: 0,
+    }}
+  />
+);
 
 // Temporary until patterns are in the cell
 // instead of formats
@@ -90,7 +111,7 @@ export const getFormats = (currencySymbol) => {
   return formats;
 };
 
-const DiscountedCashFlowTable = ({ showFormulas, showYOYGrowth }) => {
+const Spreadsheet = ({ hideSensitivityAnalysis }) => {
   const containerRef = useRef();
   const [spreadsheet, setSpreadsheet] = useState();
   const theme = useTheme();
@@ -110,7 +131,6 @@ const DiscountedCashFlowTable = ({ showFormulas, showYOYGrowth }) => {
   const price = useSelector(selectPrice);
   const riskFreeRate = useSelector(selectRiskFreeRate);
   const sharesOutstanding = useSelector(selectSharesOutstanding);
-  const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
   const pastThreeYearsAverageEffectiveTaxRate = useSelector(
     selectThreeAverageYearsEffectiveTaxRate,
   );
@@ -123,6 +143,18 @@ const DiscountedCashFlowTable = ({ showFormulas, showYOYGrowth }) => {
   const general = useSelector(selectGeneral);
   const highlights = useSelector(selectHighlights);
   const exchangeRates = useSelector(selectExchangeRates);
+  const [showFormulas, setShowFormulas] = useState(false);
+  const [showYOYGrowth, setShowYOYGrowth] = useState(false);
+  const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
+
+  const showFormulasToggledOnChange = () => {
+    setShowFormulas(!showFormulas);
+    setShowYOYGrowth(false);
+  };
+  const showYOYGrowthToggledOnChange = () => {
+    setShowYOYGrowth(!showYOYGrowth);
+    setShowFormulas(false);
+  };
 
   useEffect(() => {
     if (isNil(inputQueryParams[queryNames.salesToCapitalRatio])) {
@@ -444,24 +476,85 @@ const DiscountedCashFlowTable = ({ showFormulas, showYOYGrowth }) => {
   ]);
 
   return (
-    <Box
-      sx={{
-        position: "relative",
-        "& .x-spreadsheet-comment": {
-          fontFamily: theme.typography.fontFamily,
-        },
-        "& .x-spreadsheet-variables-sheet": isFocusedOnValueDrivingInputs
-          ? {
-              boxShadow: `0 0 5px ${theme.palette.primary.main}`,
-              border: `1px solid ${theme.palette.primary.main}`,
+    <Fragment>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          mb: 0.5,
+        }}
+      >
+        <Box>
+          <Typography gutterBottom>
+            Need help? Check out the DCF docs&nbsp;
+            <Link
+              href="https://tracktak.com/how-to-do-a-dcf"
+              rel="noreferrer"
+              target="_blank"
+            >
+              here.
+            </Link>
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            flexWrap: "wrap",
+            rowGap: 1.2,
+            columnGap: 2.5,
+          }}
+        >
+          <SpreadsheetLabel
+            control={
+              <Switch
+                checked={showFormulas}
+                onChange={showFormulasToggledOnChange}
+                color="primary"
+              />
             }
-          : {},
-      }}
-      ref={containerRef}
-    >
-      <Box id={dcfValuationId} />
-    </Box>
+            label={<DCFControlTypography>Formulas</DCFControlTypography>}
+          />
+          <SpreadsheetLabel
+            control={
+              <Switch
+                checked={showYOYGrowth}
+                onChange={showYOYGrowthToggledOnChange}
+                color="primary"
+              />
+            }
+            label={<DCFControlTypography>%YOY Growth</DCFControlTypography>}
+          />
+          <ExportToExcel />
+        </Box>
+      </Box>
+
+      <Box
+        sx={{
+          position: "relative",
+          "& .x-spreadsheet-comment": {
+            fontFamily: theme.typography.fontFamily,
+          },
+          "& .x-spreadsheet-variables-sheet": isFocusedOnValueDrivingInputs
+            ? {
+                boxShadow: `0 0 5px ${theme.palette.primary.main}`,
+                border: `1px solid ${theme.palette.primary.main}`,
+              }
+            : {},
+        }}
+        ref={containerRef}
+      >
+        <Box id={dcfValuationId} />
+      </Box>
+      {!hideSensitivityAnalysis && (
+        <Section>
+          <SensitivityAnalysis />
+        </Section>
+      )}
+    </Fragment>
   );
 };
 
-export default DiscountedCashFlowTable;
+export default Spreadsheet;

@@ -21,8 +21,8 @@ import getChunksOfArray from "../shared/getChunksOfArray";
 import { Fragment } from "react";
 import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import { computeSensitivityAnalysis } from "../api/api";
-import { allInputNameTypeMappings } from "../discountedCashFlow/scopeNameTypeMapping";
-import { queryNames } from "../discountedCashFlow/templates/freeCashFlowFirmSimple/inputQueryNames";
+import { allInputNameTypeMappings } from "../spreadsheet/scopeNameTypeMapping";
+import { queryNames } from "../spreadsheet/templates/freeCashFlowFirmSimple/inputQueryNames";
 import selectSheetsSerializedValues from "../selectors/dcfSelectors/selectSheetsSerializedValues";
 import selectSheetsValues from "../selectors/dcfSelectors/selectSheetsValues";
 

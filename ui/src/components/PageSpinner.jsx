@@ -1,7 +1,7 @@
 import { Box, CircularProgress, useTheme } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
-import selectFundamentalsIsLoaded from "../selectors/selectIsFundamentalsLoaded";
+import selectFundamentalsIsLoaded from "../../../packages/intrinsic-valuations/src/selectors/fundamentalSelectors/selectIsFundamentalsLoaded";
 
 const PageSpinner = () => {
   const theme = useTheme();

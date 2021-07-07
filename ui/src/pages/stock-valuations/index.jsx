@@ -60,7 +60,7 @@ const Valuations = ({ data }) => {
               node: {
                 ticker,
                 dateOfValuation,
-                data: { General: general },
+                fundamentalsData: { General: general },
                 ...fields
               },
             }) => {

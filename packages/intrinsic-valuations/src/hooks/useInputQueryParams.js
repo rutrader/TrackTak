@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { allInputNameTypeMappings } from "../discountedCashFlow/scopeNameTypeMapping";
+import { allInputNameTypeMappings } from "../spreadsheet/scopeNameTypeMapping";
 import useQueryParams from "./useQueryParams";
 
 const getInputQueryParams = (query) => {

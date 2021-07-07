@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { isNil } from "lodash-es";
-import { queryNames } from "../../discountedCashFlow/templates/freeCashFlowFirmSimple/inputQueryNames";
+import { queryNames } from "../../spreadsheet/templates/freeCashFlowFirmSimple/inputQueryNames";
 import selectEstimatedCostOfDebt from "./selectEstimatedCostOfDebt";
 
 const selectPretaxCostOfDebt = (inputQueryParams) =>

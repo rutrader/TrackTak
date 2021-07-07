@@ -3,7 +3,7 @@ import LayoutHome from "./LayoutHome";
 import React, { useEffect } from "react";
 import LayoutFullScreen from "./LayoutFullScreen";
 import TTSnackbar from "../components/TTSnackbar";
-import { queryNames } from "../../../packages/intrinsic-valuations/src/discountedCashFlow/templates/freeCashFlowFirmSimple/inputQueryNames";
+import { queryNames } from "../../../packages/intrinsic-valuations/src/spreadsheet/templates/freeCashFlowFirmSimple/inputQueryNames";
 
 const oldQueryPath = /cagrYearOneToFive=[0-9]+|ebitTargetMarginInYearTen=[0-9]+/g;
 
