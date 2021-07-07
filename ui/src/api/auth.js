@@ -74,7 +74,7 @@ export const signUp = (
       onCognitoFailure(err, onFailure);
       return;
     }
-    onSuccess(result);
+    onSuccess(result, email, password);
   });
 };
 

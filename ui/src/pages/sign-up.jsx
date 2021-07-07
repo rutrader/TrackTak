@@ -18,10 +18,6 @@ const SignUp = ({ location }) => {
     }
   }, [isAuthenticated]);
 
-  const handleSuccess = () => {
-    navigate("/sign-in");
-  };
-
   return (
     <>
       <Helmet>
@@ -33,7 +29,6 @@ const SignUp = ({ location }) => {
         <Grid item>
           <Authentication
             initialState={AUTHENTICATION_FORM_STATE.SIGN_UP}
-            onSuccess={handleSuccess}
             location={location}
           />
         </Grid>
