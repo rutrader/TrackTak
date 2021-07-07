@@ -3,11 +3,9 @@ import {
   TracktakProvider,
   createStore,
   setFundamentals,
-  fundamentalsReducer,
   convertFundamentals,
 } from "@tracktak/intrinsic-valuations";
 import { LocationProvider, globalHistory } from "@reach/router";
-import { extendedFundamentalsReducer } from "./src/redux/reducers/extendedFundamentalsReducer";
 import "@fontsource/nunito/400.css";
 import "@fontsource/nunito/700.css";
 import theme from "./src/theme";
@@ -16,11 +14,14 @@ import PageSpinner from "./src/components/PageSpinner";
 import setURLSearchQuery from "./src/shared/setURLSearchQuery";
 import { ProvideAuth } from "./src/hooks/useAuth";
 import TTCookieBanner from "./src/components/TTCookieBanner";
+import {
+  setExchangeRates,
+  setLastPriceClose,
+  setTenYearGovernmentBondLastClose,
+} from "../packages/intrinsic-valuations/src/redux/actions/fundamentalsActions";
 
 const store = createStore(undefined, {
   snackbar: snackbarReducer,
-  fundamentals: (state, action) =>
-    extendedFundamentalsReducer(fundamentalsReducer(state, action), action),
 });
 
 export const wrapRootElement = ({ element }) => {
@@ -39,14 +40,28 @@ export const wrapRootElement = ({ element }) => {
 
 export const wrapPageElement = ({ element, props: { data, location } }) => {
   if (data && data.contentfulDcfTemplate) {
-    const parsedFinancialData = JSON.parse(
-      data.contentfulDcfTemplate.data.internal.content,
-    );
+    const {
+      fundamentalsData,
+      exchangeRates,
+      price,
+      tenYearGovernmentBondYield,
+    } = data.contentfulDcfTemplate;
+    const { dispatch } = store;
+
+    const parsedFinancialData = JSON.parse(fundamentalsData.internal.content);
+    const parsedExchangeRates = exchangeRates
+      ? JSON.parse(exchangeRates.internal.content)
+      : null;
 
     const searchParams = setURLSearchQuery(data.contentfulDcfTemplate);
     const search = `?${searchParams.toString()}`;
 
-    store.dispatch(setFundamentals(convertFundamentals(parsedFinancialData)));
+    dispatch(setFundamentals(convertFundamentals(parsedFinancialData)));
+    if (parsedExchangeRates) {
+      dispatch(setExchangeRates(parsedExchangeRates));
+    }
+    dispatch(setLastPriceClose(price));
+    dispatch(setTenYearGovernmentBondLastClose(tenYearGovernmentBondYield));
 
     // Provide our own LocationProvider to preserve the query string params
     // because gatsby removes them

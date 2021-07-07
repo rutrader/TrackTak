@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useLocation } from "@reach/router";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { renderRichText } from "gatsby-source-contentful/rich-text";
 import { BLOCKS } from "@contentful/rich-text-types";
 import YouTube from "react-youtube";
@@ -12,7 +12,6 @@ import {
   FormatRawNumberToYear,
   FormatRawNumber,
   FormatRawNumberToCurrency,
-  DiscountedCashFlowSheet,
   selectPrice,
 } from "@tracktak/intrinsic-valuations";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
@@ -23,16 +22,10 @@ import getTitle from "../../shared/getTitle";
 import resourceName from "../../shared/resourceName";
 import Img from "gatsby-image";
 import ReactMarkdown from "react-markdown";
-import {
-  getExchangeRatesThunk,
-  getLastPriceCloseThunk,
-  getTenYearGovernmentBondLastCloseThunk,
-} from "../../redux/thunks/fundamentalsThunks";
-import SubscribeCover from "../../components/SubscribeCover";
-import selectValuationCurrencyCode from "../../../../packages/intrinsic-valuations/src/selectors/fundamentalSelectors/selectValuationCurrencyCode";
 import selectGeneral from "../../../../packages/intrinsic-valuations/src/selectors/fundamentalSelectors/selectGeneral";
-import { labels } from "../../../../packages/intrinsic-valuations/src/discountedCashFlow/templates/freeCashFlowFirmSimple/inputQueryNames";
+import { labels } from "../../../../packages/intrinsic-valuations/src/spreadsheet/templates/freeCashFlowFirmSimple/inputQueryNames";
 import selectSheetsValues from "../../../../packages/intrinsic-valuations/src/selectors/dcfSelectors/selectSheetsValues";
+import Spreadsheet from "../../../../packages/intrinsic-valuations/src/spreadsheet/Spreadsheet";
 
 export const query = graphql`
   fragment ValuationInformation on ContentfulDcfTemplate {
@@ -44,7 +37,7 @@ export const query = graphql`
     yearOfConvergence
     probabilityOfFailure
     proceedsAsAPercentageOfBookValue
-    data {
+    fundamentalsData {
       General {
         Name
         Description
@@ -58,11 +51,18 @@ export const query = graphql`
   query ValuationQuery($ticker: String) {
     contentfulDcfTemplate(ticker: { eq: $ticker }) {
       ...ValuationInformation
-      data {
+      fundamentalsData {
         internal {
           content
         }
       }
+      exchangeRates {
+        internal {
+          content
+        }
+      }
+      price
+      tenYearGovernmentBondYield
       dateOfValuation
       extraBusinessDescription {
         raw
@@ -200,14 +200,8 @@ const renderField = (field) => {
 
 const Valuation = ({ data }) => {
   const location = useLocation();
-  const dispatch = useDispatch();
   const price = useSelector(selectPrice);
   const sheetsValues = useSelector(selectSheetsValues);
-  const incomeStatement = useSelector(
-    (state) => state.fundamentals.incomeStatement,
-  );
-  const balanceSheet = useSelector((state) => state.fundamentals.balanceSheet);
-  const currencyCode = useSelector(selectValuationCurrencyCode);
   const general = useSelector(selectGeneral);
 
   const {
@@ -230,42 +224,6 @@ const Valuation = ({ data }) => {
     probabilityOfFailureDescription,
     percentageOfBookValueDescription,
   } = data.contentfulDcfTemplate;
-
-  useEffect(() => {
-    dispatch(
-      getTenYearGovernmentBondLastCloseThunk({
-        countryISO: general.countryISO,
-        params: {
-          to: dateOfValuation,
-        },
-      }),
-    );
-
-    dispatch(
-      getExchangeRatesThunk({
-        currencyCode,
-        incomeStatement,
-        balanceSheet,
-      }),
-    );
-
-    dispatch(
-      getLastPriceCloseThunk({
-        ticker,
-        params: {
-          to: dateOfValuation,
-        },
-      }),
-    );
-  }, [
-    dateOfValuation,
-    dispatch,
-    ticker,
-    incomeStatement,
-    balanceSheet,
-    currencyCode,
-    general.countryISO,
-  ]);
 
   const dcfValuationValues = sheetsValues
     ? sheetsValues["DCF Valuation"]
@@ -447,10 +405,7 @@ const Valuation = ({ data }) => {
         </Typography>
       </Section>
       <Section>
-        <DiscountedCashFlowSheet
-          hideSensitivityAnalysis
-          SubscribeCover={SubscribeCover}
-        />
+        <Spreadsheet hideSensitivityAnalysis />
       </Section>
       <Section>
         <Typography variant="h5" gutterBottom>

@@ -7,7 +7,7 @@ import calculateDCFModel from "../dcfModel/calculateDCFModel";
 import {
   finTranslations,
   makeFinancialPlugin,
-} from "../../../packages/intrinsic-valuations/src/discountedCashFlow/plugins/FinancialPlugin";
+} from "../../../packages/intrinsic-valuations/src/spreadsheet/plugins/FinancialPlugin";
 
 const getHyperformulaInstance = (existingScope, sheetsSerializedValues) => {
   HyperFormula.registerFunctionPlugin(

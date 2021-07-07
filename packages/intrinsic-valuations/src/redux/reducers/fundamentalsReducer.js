@@ -5,6 +5,7 @@ import {
   setExchangeRates,
   setTenYearGovernmentBondLastClose,
 } from "../actions/fundamentalsActions";
+import { getFundamentalsThunk } from "../thunks/fundamentalsThunks";
 
 const initialState = {
   governmentBondTenYearYield: null,
@@ -16,6 +17,7 @@ const initialState = {
   balanceSheet: null,
   incomeStatement: null,
   cashFlowStatement: null,
+  isLoaded: null,
 };
 
 const setFundamentalsReducer = (state, action) => {
@@ -67,4 +69,13 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
     setGovernmentBondTenYearLastCloseReducer,
   );
   builder.addCase(setExchangeRates, setExchangeRateReducer);
+  builder.addCase(getFundamentalsThunk.pending, (state) => {
+    state.isLoaded = false;
+  });
+  builder.addCase(getFundamentalsThunk.fulfilled, (state) => {
+    state.isLoaded = true;
+  });
+  builder.addCase(getFundamentalsThunk.rejected, (state) => {
+    state.isLoaded = false;
+  });
 });

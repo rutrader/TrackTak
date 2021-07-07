@@ -1,12 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import {
-  getExchangeRate,
-  getFundamentals,
-  getGovernmentBond,
-  getPrices,
-} from "../../api/api";
-import {
   convertSubCurrencyToCurrency,
   setExchangeRates,
   setLastPriceClose,
@@ -15,6 +9,12 @@ import {
   convertFundamentals,
 } from "@tracktak/intrinsic-valuations";
 import dayjs from "dayjs";
+import {
+  getExchangeRate,
+  getFundamentals,
+  getGovernmentBond,
+  getPrices,
+} from "../../api/api";
 import convertHyphenTickerToDot from "../../shared/convertHyphenTickerToDot";
 import getMinimumHistoricalDateFromFinancialStatements from "../../shared/getMinimumHistoricalDateFromFinancialStatements";
 

@@ -1,34 +1,11 @@
 import { Container, useTheme } from "@material-ui/core";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import Header from "../components/Header";
-import {
-  getFundamentalsThunk,
-  getLastPriceCloseThunk,
-} from "../redux/thunks/fundamentalsThunks";
-import selectFundamentalsIsLoaded from "../selectors/selectIsFundamentalsLoaded";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
-const LayoutFullScreen = ({ children, ticker }) => {
+const LayoutFullScreen = ({ children }) => {
   const theme = useTheme();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const dispatch = useDispatch();
-  const isLoaded = useSelector(selectFundamentalsIsLoaded);
-
-  useEffect(() => {
-    dispatch(
-      getFundamentalsThunk({
-        ticker,
-      }),
-    );
-
-    dispatch(
-      getLastPriceCloseThunk({
-        ticker,
-      }),
-    );
-  }, [dispatch, ticker]);
-
   let padding;
 
   if (isOnMobile) {
@@ -38,7 +15,7 @@ const LayoutFullScreen = ({ children, ticker }) => {
     };
   }
 
-  return isLoaded ? (
+  return (
     <Container
       sx={{
         ...padding,
@@ -48,7 +25,7 @@ const LayoutFullScreen = ({ children, ticker }) => {
       <Header position="relative" />
       {children}
     </Container>
-  ) : null;
+  );
 };
 
 export default LayoutFullScreen;

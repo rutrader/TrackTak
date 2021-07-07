@@ -2,11 +2,11 @@ import { isNil } from "lodash-es";
 import { useEffect, useState } from "react";
 import FormatRawNumberToPercent from "../components/FormatRawNumberToPercent";
 import { TableNumberFormatter } from "../components/TableFormatters";
-import { allInputNameTypeMappings } from "../discountedCashFlow/scopeNameTypeMapping";
+import { allInputNameTypeMappings } from "../spreadsheet/scopeNameTypeMapping";
 import {
   labels,
   queryNames,
-} from "../discountedCashFlow/templates/freeCashFlowFirmSimple/inputQueryNames";
+} from "../spreadsheet/templates/freeCashFlowFirmSimple/inputQueryNames";
 import roundDecimal from "../shared/roundDecimal";
 import useInputQueryParams from "./useInputQueryParams";
 

@@ -1,5 +1,5 @@
-import { getCellsForRowsBetween } from "../../discountedCashFlow/utils";
-import { columns } from "../../discountedCashFlow/cells";
+import { getCellsForRowsBetween } from "../../spreadsheet/utils";
+import { columns } from "../../spreadsheet/cells";
 import selectCells from "./selectCells";
 
 const makeCellKeysSelector = (startColumn, endColumn, rows) => {

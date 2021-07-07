@@ -5,14 +5,13 @@ import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
 import selectScope from "../selectors/dcfSelectors/selectScope";
 import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
-import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import scopeNameTypeMapping from "./scopeNameTypeMapping";
 import selectSheetsDatas from "../selectors/dcfSelectors/selectSheetsDatas";
 import replaceAll from "../shared/replaceAll";
 import { sharedOptions } from "../../../web-spreadsheet/src/core/defaultOptions";
 import formatToExcelType from "./formatToExcelType";
 import { isNil } from "lodash-es";
-import { getFormats } from "./DiscountedCashFlowTable";
+import { getFormats } from "./Spreadsheet";
 import getFormatFromCell from "../../../web-spreadsheet/src/shared/getFormatFromCell";
 import numfmt from "numfmt";
 import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
@@ -21,12 +20,9 @@ import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremi
 const apiVariablesWorksheetName = "API Variables";
 
 export const DCFControlTypography = (props) => {
-  const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
-
   return (
     <Typography
       variant="body2"
-      color={hasAllRequiredInputsFilledIn ? "textPrimary" : "textSecondary"}
       whiteSpace="nowrap"
       sx={{
         cursor: "default",
@@ -314,7 +310,6 @@ const ExportToExcel = () => {
   const general = useSelector(selectGeneral);
   const scope = useSelector(selectScope);
   const valuationCurrencySymbol = useSelector(selectValuationCurrencySymbol);
-  const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
   const sheetsDatas = useSelector(selectSheetsDatas);
 
   const exportToExcel = async () => {
@@ -332,11 +327,7 @@ const ExportToExcel = () => {
 
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
-      <IconButton
-        variant="outlined"
-        onClick={exportToExcel}
-        disabled={!hasAllRequiredInputsFilledIn}
-      >
+      <IconButton variant="outlined" onClick={exportToExcel}>
         <CloudDownloadIcon />
       </IconButton>
       <DCFControlTypography>Excel</DCFControlTypography>
