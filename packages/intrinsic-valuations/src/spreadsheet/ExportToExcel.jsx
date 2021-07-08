@@ -11,10 +11,10 @@ import replaceAll from "../shared/replaceAll";
 import { sharedOptions } from "../../../web-spreadsheet/src/core/defaultOptions";
 import formatToExcelType from "./formatToExcelType";
 import { isNil } from "lodash-es";
-import { getFormats } from "./Spreadsheet";
 import getFormatFromCell from "../../../web-spreadsheet/src/shared/getFormatFromCell";
 import numfmt from "numfmt";
 import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
+import getFormats from "./getFormats";
 
 // TODO: Once we put in variables sheet then remove this
 const apiVariablesWorksheetName = "API Variables";

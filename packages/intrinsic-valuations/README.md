@@ -24,21 +24,39 @@ Once you have the token, edit your .npmrc file and add these two lines:
 npm install --save @tracktak/intrinsic-valuations
 ```
 
-## Components
+## Exports
 
-- `<Provider store={reduxStore} theme?={materialUITheme} />`
-- `<SensitivtyAnalysis />`
-- `<Spreadsheet />`
+- `<TracktakProvider store={TracktakStore} theme?={materialUITheme} />`
+- `<Spreadsheet ticker={String} />`
+- `createStore()`
 
-Provider is the only required component and can be added at the root of your app with your other providers. This component injects the redux store and material ui theme for the components. If you provide your own theme then it needs to come from material ui's createMuiTheme.
+- Provider is the only required component and can be added at the root of your app with your other providers. `store` needs to be the returned store from `createStore`. If you provide your own theme then it needs to come from material ui's createMuiTheme.
 
 See here for the default theme: https://material-ui.com/customization/default-theme/
 
 Any questions, please contact me at: martin@tracktak.com
 
+### Spreadsheet props
+
+- `ticker`: We only accept public stocks. We use EODHistoricalData.com internally for the API call so the ticker has to exist in their API to work.
+
+If EodHistoricalData adds a ticker or an exchange then it will immediately work in our spreadsheet.
+
+Here is a list of exchanges they support: https://eodhistoricaldata.com/financial-apis/exchanges-api-list-of-tickers-and-trading-hours/
+Also see here for the ticker format: https://eodhistoricaldata.com/financial-apis/stock-etfs-fundamental-data-feeds
+
+The ticker must be in dot notation, so for example: AAPL.US, RDW.LSE, PTL.AU etc
+
 ## API calls
 
 The package has a couple of API calls to our backend, this is due to the spreadsheet having an api built into it, i.e =FIN().
+
+## To Note
+
+- Later on we will be removing the React dependency and making this a pure javascript library.
+- The spreadsheet will add the input props to the url so that it can be deep linked into, i.e this part of the url: `?cagrInYears_1_5=11%25&ebitTargetMarginInYear_10=11%25&salesToCapitalRatio=1.71&yearOfConvergence=2`.
+
+Apologies is this isn't what you want, we are removing it soon and switching to user accounts with unique hash id's like Google Sheets. If this is a big problem in using this library then we can remove it immediately for you.
 
 ## License
 

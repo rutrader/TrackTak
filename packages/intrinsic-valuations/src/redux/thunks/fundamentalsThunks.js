@@ -1,13 +1,4 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-
-import {
-  convertSubCurrencyToCurrency,
-  setExchangeRates,
-  setLastPriceClose,
-  setTenYearGovernmentBondLastClose,
-  setFundamentals,
-  convertFundamentals,
-} from "@tracktak/intrinsic-valuations";
 import dayjs from "dayjs";
 import {
   getExchangeRate,
@@ -15,7 +6,15 @@ import {
   getGovernmentBond,
   getPrices,
 } from "../../api/api";
+import {
+  setExchangeRates,
+  setFundamentals,
+  setLastPriceClose,
+  setTenYearGovernmentBondLastClose,
+} from "../actions/fundamentalsActions";
+import convertSubCurrencyToCurrency from "../../shared/convertSubCurrencyToCurrency";
 import convertHyphenTickerToDot from "../../shared/convertHyphenTickerToDot";
+import convertFundamentals from "../../shared/convertFundamentals";
 import getMinimumHistoricalDateFromFinancialStatements from "../../shared/getMinimumHistoricalDateFromFinancialStatements";
 
 const yearMonthDateFormat = "YYYY-MM";
