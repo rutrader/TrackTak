@@ -16,7 +16,7 @@ export const sharedOptions = {
   showYOYGrowth: false,
   mwheelScrollSpeed: 3,
   row: {
-    len: 100,
+    len: 103,
     indexHeight: 20,
     height: 25,
   },

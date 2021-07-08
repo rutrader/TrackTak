@@ -34,6 +34,7 @@ export const incomeStatement = [
   "ebit",
   "depreciationAndAmortization",
   "nonRecurring",
+  "reconciledDepreciation",
   "otherItems",
   "ebitda",
 ];
@@ -84,6 +85,7 @@ export const cashFlowStatement = [
   "changeReceivables",
   "changeToInventory",
   "changeToLiabilities",
+  "changeInWorkingCapital",
   "totalCashFromOperatingActivities",
   "investments",
   "otherCashflowsFromInvestingActivities",
@@ -97,6 +99,7 @@ export const cashFlowStatement = [
   "endPeriodCashFlow",
   "changeInCash",
   "capitalExpenditures",
+  "freeCashFlow",
 ];
 
 export const getStatements = (statements, statementKeys) => {
