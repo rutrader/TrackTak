@@ -13,7 +13,6 @@ import {
   setTenYearGovernmentBondLastClose,
 } from "../actions/fundamentalsActions";
 import convertSubCurrencyToCurrency from "../../shared/convertSubCurrencyToCurrency";
-import convertHyphenTickerToDot from "../../shared/convertHyphenTickerToDot";
 import convertFundamentals from "../../shared/convertFundamentals";
 import getMinimumHistoricalDateFromFinancialStatements from "../../shared/getMinimumHistoricalDateFromFinancialStatements";
 
@@ -72,9 +71,7 @@ export const getTenYearGovernmentBondLastCloseThunk = createAsyncThunk(
 export const getLastPriceCloseThunk = createAsyncThunk(
   "fundamentals/getLastPriceClose",
   async ({ ticker, params }, { dispatch }) => {
-    const convertedTicker = convertHyphenTickerToDot(ticker);
-
-    const { data } = await getPrices(convertedTicker, {
+    const { data } = await getPrices(ticker, {
       ...params,
       filter: "last_close",
     });
@@ -88,8 +85,7 @@ export const getLastPriceCloseThunk = createAsyncThunk(
 export const getFundamentalsThunk = createAsyncThunk(
   "fundamentals/getFundamentals",
   async ({ ticker }, { dispatch }) => {
-    const convertedTicker = convertHyphenTickerToDot(ticker);
-    const { data } = await getFundamentals(convertedTicker, {
+    const { data } = await getFundamentals(ticker, {
       filter: fundamentalsFilter,
     });
     const fundamentals = convertFundamentals(data.value);
