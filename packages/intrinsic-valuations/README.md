@@ -58,6 +58,10 @@ The package has a couple of API calls to our backend, this is due to the spreads
 
 Apologies is this isn't what you want, we are removing it soon and switching to user accounts with unique hash id's like Google Sheets. If this is a big problem in using this library then we can remove it immediately for you.
 
+## Branding
+
+Please insert 'powered by tracktak.com' or similar somewhere near the spreadsheet.
+
 ## License
 
 You cannot use this package in a production environment unless you have signed the 'SOFTWARE VAR AGREEMENT' contract we have provided you (or will provide) or a similar license agreement with us.
