@@ -5,6 +5,7 @@ import {
   getLastPriceCloseThunk,
 } from "../redux/thunks/fundamentalsThunks";
 import selectFundamentalsIsLoaded from "../selectors/fundamentalSelectors/selectIsFundamentalsLoaded";
+import convertHyphenTickerToDot from "../shared/convertHyphenTickerToDot";
 import Spreadsheet from "./Spreadsheet";
 
 const SpreadsheetContainer = ({ ticker }) => {
@@ -12,15 +13,17 @@ const SpreadsheetContainer = ({ ticker }) => {
   const isLoaded = useSelector(selectFundamentalsIsLoaded);
 
   useEffect(() => {
+    const convertedTicker = convertHyphenTickerToDot(ticker);
+
     dispatch(
       getFundamentalsThunk({
-        ticker,
+        ticker: convertedTicker,
       }),
     );
 
     dispatch(
       getLastPriceCloseThunk({
-        ticker,
+        ticker: convertedTicker,
       }),
     );
   }, [dispatch, ticker]);
