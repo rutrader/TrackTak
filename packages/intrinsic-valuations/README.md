@@ -60,7 +60,7 @@ Apologies is this isn't what you want, we are removing it soon and switching to 
 
 ## Branding
 
-Please insert 'powered by tracktak.com' or similar somewhere near the spreadsheet.
+Please insert 'powered by tracktak.com' with tracktak.com being a link or similar linked text somewhere near the spreadsheet.
 
 ## License
 
