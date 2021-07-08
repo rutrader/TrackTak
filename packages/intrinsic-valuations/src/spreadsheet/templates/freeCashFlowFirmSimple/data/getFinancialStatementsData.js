@@ -29,7 +29,7 @@ const getFinancialStatementsData = ({
 
   return {
     name: "Financial Statements",
-    freeze: "A2",
+    freeze: "B2",
     styles: [
       {
         font: {

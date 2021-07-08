@@ -64,13 +64,17 @@ const Authentication = ({
     navigate("/forgot-password/");
   };
 
+  const onSignUpSuccess = (result, email, password) => {
+    signIn(email, password, onSuccess, onError);
+  }
+
   const handleSignUpSubmit = (event, payload) => {
     event.preventDefault();
     signUp(
       payload.email,
       payload.password,
       [{ Name: "name", Value: payload.name }],
-      onSuccess,
+      onSignUpSuccess,
       onError,
     );
   };

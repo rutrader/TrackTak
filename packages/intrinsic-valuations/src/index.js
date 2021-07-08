@@ -7,8 +7,8 @@ export { default as axios } from "./api/axios";
 export { default as TracktakProvider } from "./Provider";
 export { default as createStore } from "./redux/createStore";
 
-export { default as DiscountedCashFlowSheet } from "./discountedCashFlow/DiscountedCashFlowSheet";
-export { allInputNameTypeMappings } from "./discountedCashFlow/scopeNameTypeMapping";
+export { default as Spreadsheet } from "./spreadsheet/SpreadsheetContainer";
+export { allInputNameTypeMappings } from "./spreadsheet/scopeNameTypeMapping";
 
 export { default as SensitivityAnalysis } from "./components/SensitivityAnalysis";
 
@@ -41,5 +41,3 @@ export { default as useInputQueryParams } from "./hooks/useInputQueryParams";
 export { default as selectPrice } from "./selectors/fundamentalSelectors/selectPrice";
 export { default as selectCells } from "./selectors/dcfSelectors/selectCells";
 export { default as selectGeneral } from "./selectors/fundamentalSelectors/selectGeneral";
-
-export { default as withFundamentalsLoaded } from "./hoc/withFundamentalsLoaded";

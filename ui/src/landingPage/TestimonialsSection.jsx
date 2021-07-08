@@ -14,6 +14,7 @@ import Testimonials from "../components/Testimonials";
 
 const robbertSmitTestimonial = (
   <Testimonials
+    key={0}
     testimonialName="Robbert Smit"
     testimonialMessage="This tool is absolutely awesome. Please continue the great work! I
       am definitely going to share this tool with my network who are all
@@ -24,6 +25,7 @@ const robbertSmitTestimonial = (
 
 const stefanTestimonial = (
   <Testimonials
+    key={1}
     testimonialName="Stefan"
     testimonialMessage="I'm a regular user, I enjoy your site a lot and the tools you offer
 there."
@@ -31,6 +33,7 @@ there."
 );
 const oliverTestimonial = (
   <Testimonials
+    key={2}
     testimonialName="Oliver Djursing"
     testimonialMessage="It’s mind bugling how nice it all is, finance data is hard to find easily and reliably without paying a big premium or having to searched the whole internet. I whole-heartedly believe this could be the new go-to source for private investors!"
   />
@@ -38,6 +41,7 @@ const oliverTestimonial = (
 
 const redditTestimonialOne = (
   <Testimonials
+    key={3}
     testimonialName="This website is amazing!"
     testimonialMessage={
       <>
@@ -62,6 +66,7 @@ const redditTestimonialOne = (
 
 const redditTestimonialTwo = (
   <Testimonials
+    key={4}
     testimonialName="Wonderful Idea!"
     testimonialMessage={
       <>
@@ -85,6 +90,7 @@ const redditTestimonialTwo = (
 
 const redditTestimonialThree = (
   <Testimonials
+    key={5}
     testimonialName="Amazing!!!"
     testimonialMessage={
       <>

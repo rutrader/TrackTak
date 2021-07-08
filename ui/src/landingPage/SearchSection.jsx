@@ -33,7 +33,7 @@ const twelve50 = 1250;
 const SearchSection = () => {
   const data = useStaticQuery(graphql`
     query {
-      laptop: file(relativePath: { eq: "laptop.png" }) {
+      laptop: file(relativePath: { eq: "laptop-template.png" }) {
         childImageSharp {
           fluid(maxWidth: 820) {
             ...GatsbyImageSharpFluid_withWebp
