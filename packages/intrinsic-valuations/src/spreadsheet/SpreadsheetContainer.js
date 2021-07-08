@@ -7,7 +7,7 @@ import {
 import selectFundamentalsIsLoaded from "../selectors/fundamentalSelectors/selectIsFundamentalsLoaded";
 import Spreadsheet from "./Spreadsheet";
 
-const SpreadsheetContainer = ({ ticker }) => {
+const SpreadsheetContainer = ({ ticker, isSaving, onSaveEvent }) => {
   const dispatch = useDispatch();
   const isLoaded = useSelector(selectFundamentalsIsLoaded);
 
@@ -25,7 +25,9 @@ const SpreadsheetContainer = ({ ticker }) => {
     );
   }, [dispatch, ticker]);
 
-  return isLoaded ? <Spreadsheet /> : null;
+  return isLoaded ? (
+    <Spreadsheet isSaving={isSaving} onSaveEvent={onSaveEvent} />
+  ) : null;
 };
 
 export default SpreadsheetContainer;

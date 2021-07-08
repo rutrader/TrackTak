@@ -3,7 +3,6 @@ import express from "express";
 import cors from "cors";
 import "express-async-errors";
 import api from "./api";
-import decodeVerifyJwt from "./security/decodeVerifyJwt";
 import auth from "./middleware/auth";
 
 const hostname = "127.0.0.1";
@@ -11,7 +10,7 @@ const port = process.env.NODE_ENV === "development" ? 3001 : process.env.PORT;
 const app = express();
 
 app.use(express.static("public"));
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
 
 const publicRoutes = ["/api/v1/compute-sensitivity-analysis"];
 

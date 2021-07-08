@@ -319,10 +319,12 @@ const Spreadsheet = ({
         cellEditedCallback,
       );
 
-      spreadsheet.variablesSpreadsheet.eventEmitter.on(
-        spreadsheetEvents.save,
-        onSaveEvent,
-      );
+      if (onSaveEvent) {
+        spreadsheet.variablesSpreadsheet.eventEmitter.on(
+          spreadsheetEvents.save,
+          onSaveEvent,
+        );
+      }
     }
 
     return () => {
@@ -332,10 +334,12 @@ const Spreadsheet = ({
           cellEditedCallback,
         );
 
-        spreadsheet.variablesSpreadsheet.eventEmitter.off(
-          spreadsheetEvents.save,
-          onSaveEvent,
-        );
+        if (onSaveEvent) {
+          spreadsheet.variablesSpreadsheet.eventEmitter.off(
+            spreadsheetEvents.save,
+            onSaveEvent,
+          );
+        }
       }
     };
   }, [setURLInput, spreadsheet, onSaveEvent]);
@@ -544,7 +548,7 @@ const Spreadsheet = ({
           />
           <ExportToExcel />
           {/* {showSaveButton && <SaveDCF onClick={onSaveClick} /> } */}
-          <SaveStatus isSaving={isSaving} />
+          {onSaveEvent && <SaveStatus isSaving={isSaving} />}
         </Box>
       </Box>
 

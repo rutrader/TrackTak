@@ -51,7 +51,7 @@ const DiscountedCashFlowPage = ({ ticker }) => {
       setIsSaving(true);
       persistSpreadsheetData();
     }
-  }, [isAuthenticated, session, spreadsheetDataToSave, ticker]);
+  }, [spreadsheetDataToSave]);
 
   // const onSignInSuccess = () => {
   //   setShowAuthenticationDialog(false);
