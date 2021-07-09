@@ -155,6 +155,7 @@ const api = {
               return tenYearGovernmentBondYield;
             }
           }
+
           throw error;
         }
       },
