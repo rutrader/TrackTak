@@ -85,7 +85,6 @@ const Spreadsheet = ({ hideSensitivityAnalysis }) => {
   const theme = useTheme();
   const location = useLocation();
   const currencySymbol = useSelector(selectValuationCurrencySymbol);
-  const scope = useSelector(selectScope);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const dispatch = useDispatch();
   const inputQueryParams = useInputQueryParams();
@@ -355,7 +354,7 @@ const Spreadsheet = ({ hideSensitivityAnalysis }) => {
   ]);
 
   useEffect(() => {
-    if (spreadsheet && scope) {
+    if (spreadsheet) {
       if (showYOYGrowth) {
         spreadsheet.setOptions({
           showAllFormulas: false,
@@ -377,11 +376,11 @@ const Spreadsheet = ({ hideSensitivityAnalysis }) => {
         showYOYGrowth: false,
       });
     }
-  }, [showYOYGrowth, spreadsheet, isOnMobile, showFormulas, scope]);
+  }, [showYOYGrowth, spreadsheet, isOnMobile, showFormulas]);
 
   useEffect(() => {
     // Dispatch only when we have all the data from the API
-    if (hasAllRequiredInputsFilledIn && !isNil(price) && spreadsheet) {
+    if (!isNil(price) && spreadsheet) {
       dispatch(
         setSheetsSerializedValues(
           spreadsheet.hyperformula.getAllSheetsSerialized(),

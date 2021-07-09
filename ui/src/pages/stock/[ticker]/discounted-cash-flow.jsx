@@ -52,7 +52,7 @@ const DiscountedCashFlowPage = ({ ticker }) => {
           />
         </Helmet>
       )}
-      <Spreadsheet ticker={convertHyphenTickerToDot(ticker)} />
+      <Spreadsheet ticker={ticker ? convertHyphenTickerToDot(ticker) : null} />
       {isLoaded && (
         <Section sx={{ display: "flex", mt: 2 }}>
           <Box
