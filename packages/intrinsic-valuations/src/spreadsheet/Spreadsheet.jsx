@@ -306,12 +306,10 @@ const Spreadsheet = ({ hideSensitivityAnalysis }) => {
     if (spreadsheet) {
       const { datas } = spreadsheet.getDatas();
 
-      if (!datas.length) {
-        spreadsheet.variablesSpreadsheet.setVariableDatasheets([
-          getRequiredInputsData(inputQueryParams),
-          getOptionalInputsData(inputQueryParams),
-        ]);
-      }
+      spreadsheet.variablesSpreadsheet.setVariableDatasheets([
+        getRequiredInputsData(inputQueryParams),
+        getOptionalInputsData(inputQueryParams),
+      ]);
 
       if (!datas.length || datas.length === 1) {
         // Temp
@@ -338,9 +336,9 @@ const Spreadsheet = ({ hideSensitivityAnalysis }) => {
           getIndustryAveragesUSData(),
           getIndustryAveragesGlobalData(),
         ]);
-
-        spreadsheet.sheet.switchData(spreadsheet.sheet.getDatas()[0]);
       }
+
+      spreadsheet.sheet.switchData(spreadsheet.sheet.getDatas()[0]);
     }
   }, [
     spreadsheet,
