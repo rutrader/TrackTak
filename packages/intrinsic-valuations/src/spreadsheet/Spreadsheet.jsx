@@ -501,10 +501,10 @@ const Spreadsheet = ({ hideSensitivityAnalysis }) => {
       <Box
         sx={{
           position: "relative",
-          "& .x-spreadsheet-comment": {
+          "& .powersheet-comment": {
             fontFamily: theme.typography.fontFamily,
           },
-          "& .x-spreadsheet-variables-sheet": isFocusedOnValueDrivingInputs
+          "& .powersheet-variables-sheet": isFocusedOnValueDrivingInputs
             ? {
                 boxShadow: `0 0 5px ${theme.palette.primary.main}`,
                 border: `1px solid ${theme.palette.primary.main}`,
