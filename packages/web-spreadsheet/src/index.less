@@ -671,6 +671,7 @@
 
   .@{css-prefix}-toolbar-btns {
     display: inline-flex;
+    flex: 1;
   }
 
   .@{css-prefix}-toolbar-more {
@@ -692,6 +693,10 @@
     padding: 0;
     text-align: center;
     border-radius: 2px;
+
+    &.align-right {
+      margin-left: auto;
+    }
 
     &.disabled {
       pointer-events: none;
@@ -1104,14 +1109,6 @@ form fieldset {
   }
 }
 
-.@{css-prefix}-icon-fx {
-  background-image: url("./assets/fx.svg");
-  width: 18px;
-  height: 18px;
-  opacity: 0.56;
-  margin-right: 5px;
-}
-
 .@{css-prefix}-icon {
   cursor: pointer;
   width: 18px;
@@ -1211,7 +1208,7 @@ form fieldset {
       left: -5 * @icon-size;
       top: -1 * @icon-size;
     }
-    &.formula {
+    &.function {
       left: -6 * @icon-size;
       top: -1 * @icon-size;
     }
@@ -1309,6 +1306,18 @@ form fieldset {
     }
     &.chevron-right {
       left: -3 * @icon-size;
+      top: -3 * @icon-size;
+    }
+    &.yoyGrowth {
+      left: -6 * @icon-size;
+      top: -3 * @icon-size;
+    }
+    &.export {
+      left: -7 * @icon-size;
+      top: -3 * @icon-size;
+    }
+    &.formula {
+      left: -8 * @icon-size;
       top: -3 * @icon-size;
     }
   }

@@ -1,4 +1,4 @@
-export default {
+const en = {
   toolbar: {
     undo: "Undo",
     redo: "Redo",
@@ -21,7 +21,10 @@ export default {
     textwrap: "Text wrapping",
     freeze: "Freeze cell",
     autofilter: "Filter",
-    formula: "Functions",
+    function: "Functions",
+    formula: "Formulas",
+    yoyGrowth: "YOY Growth",
+    export: "Export",
     more: "More",
   },
   comment: {
@@ -145,3 +148,5 @@ export default {
     },
   },
 };
+
+export default en;

@@ -38,6 +38,7 @@ export const getSheet = (
   eventEmitter,
   hyperformula,
   getOptions,
+  setOptions,
   getData,
   getDataProxy,
   getViewWidthHeight,
@@ -274,6 +275,12 @@ export const getSheet = (
     } else if (type === "autofilter") {
       // filter
       autofilter();
+    } else if (type === "formulas") {
+      getData().changeData(() => {
+        setOptions({
+          showAllFormulas: !getOptions().showAllFormulas,
+        });
+      });
     } else if (type === "freeze") {
       if (value) {
         const { ri, ci } = rangeSelector.getIndexes();

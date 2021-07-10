@@ -186,6 +186,7 @@ export const buildSpreadsheet = (
     eventEmitter,
     hyperformula,
     getOptions,
+    setOptions,
     getData,
     getDataProxy,
     getViewWidthHeight,

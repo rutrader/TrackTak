@@ -9,7 +9,7 @@ import { makeDropdownBorder } from "../makeDropdownBorder";
 import { makeDropdownColor } from "../makeDropdownColor";
 import { makeDropdownFontSize } from "../makeDropdownFontSize";
 import { makeDropdownFont } from "../makeDropdownFont";
-import { makeDropdownFormula } from "../makeDropdownFormula";
+import { makeDropdownFunction } from "../makeDropdownFunction";
 import { makeDropdownAlign } from "../makeDropdownAlign";
 import { buildDivider } from "./buildDivider";
 import { buildUndo } from "./buildUndo";
@@ -81,15 +81,20 @@ export const getToolbar = (
   const textwrapEl = getToggleItem("textwrap");
   const freezeEl = getToggleItem("freeze");
   const autofilterEl = getToggleItem("autofilter");
-  const formulaEl = getDropdownItem(
-    "formula",
-    makeDropdownFormula(eventEmitter),
+  const functionsEl = getDropdownItem(
+    "function",
+    makeDropdownFunction(eventEmitter),
   );
+  const percentIncreaseEl = getToggleItem("yoyGrowth");
+  const formulasEl = getToggleItem("formula");
+  const exportEl = getIconItem("export");
   const moreEl = getMore();
-  const items = [
+
+  formulasEl.item.el.addClass("align-right");
+
+  const leftItems = [
     [formatEl],
     buildDivider(),
-    // [undoEl, redoEl],
     [undoEl, redoEl, printEl, paintformatEl, clearformatEl],
     buildDivider(),
     [fontEl, fontSizeEl],
@@ -100,21 +105,25 @@ export const getToolbar = (
     buildDivider(),
     [alignEl, valignEl, textwrapEl],
     buildDivider(),
-    [freezeEl, autofilterEl, formulaEl, moreEl],
-    // [moreEl],
+    [freezeEl, autofilterEl, functionsEl],
+    [formulasEl, percentIncreaseEl, exportEl, moreEl],
   ];
 
+  // const rightItems = [[formulasEl, percentIncreaseEl, exportEl]];
+
   const el = h("div", `${cssPrefix}-toolbar`);
-  const buttonsEl = h("div", `${cssPrefix}-toolbar-btns`);
+  const leftButtonsEl = h("div", `${cssPrefix}-toolbar-btns left`);
+  // const rightButtonsEl = h("div", `${cssPrefix}-toolbar-btns right`);
 
-  buildItems(items, buttonsEl);
+  buildItems(leftItems, leftButtonsEl);
+  // buildItems(rightItems, rightButtonsEl);
 
-  el.child(buttonsEl);
+  el.children(leftButtonsEl);
 
   eventEmitter.on(spreadsheetEvents.sheet.switchData, () => {
     reset();
 
-    resize(hideFn(), items, reset, el, buttonsEl, moreEl, widthFn);
+    resize(hideFn(), leftItems, reset, el, leftButtonsEl, moreEl, widthFn);
   });
 
   eventEmitter.on(spreadsheetEvents.sheet.cellSelected, () => {
@@ -180,6 +189,8 @@ export const getToolbar = (
     fontEl.dropdown.dropdown.setTitle(font.name);
     fontSizeEl.dropdown.dropdown.setTitle(font.size);
     boldEl.toggleItem.setActive(font.bold);
+    percentIncreaseEl.toggleItem.setActive(getOptions().showYOYGrowth);
+    formulasEl.toggleItem.setActive(getOptions().showAllFormulas);
     italicEl.toggleItem.setActive(font.italic);
     underlineEl.toggleItem.setActive(style.underline);
     strikeEl.toggleItem.setActive(style.strike);
