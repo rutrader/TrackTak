@@ -10,6 +10,8 @@ export const initializeButtons = (items) => {
 
         let width = rect.width + parseInt(marginRight, 10);
 
+        // Don't add the marginLeft for the alignRight icon
+        // as it doesn't affect space for resizing
         if (!newEl.el.classList.contains("align-right")) {
           width += parseInt(marginLeft, 10);
         }

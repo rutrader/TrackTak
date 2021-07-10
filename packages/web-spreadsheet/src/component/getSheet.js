@@ -275,10 +275,16 @@ export const getSheet = (
     } else if (type === "autofilter") {
       // filter
       autofilter();
-    } else if (type === "formulas") {
+    } else if (type === "formula") {
       getData().changeData(() => {
         setOptions({
-          showAllFormulas: !getOptions().showAllFormulas,
+          showAllFormulas: value,
+        });
+      });
+    } else if (type === "yoyGrowth") {
+      getData().changeData(() => {
+        setOptions({
+          showYOYGrowth: value,
         });
       });
     } else if (type === "freeze") {

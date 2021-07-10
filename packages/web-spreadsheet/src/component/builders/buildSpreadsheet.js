@@ -39,6 +39,20 @@ export const buildSpreadsheet = (
       variablesEventEmitter.on(...args);
     },
     emit: (...args) => {
+      if (
+        args[0] === spreadsheetEvents.toolbar.toggleItem ||
+        args[0] === spreadsheetEvents.toolbar.clickIcon
+      ) {
+        if (args[1] === "formula" || args[1] === "export") {
+          eventEmitter.emit(...args);
+          variablesEventEmitter.emit(...args);
+        }
+
+        if (args[1] === "yoyGrowth") {
+          eventEmitter.emit(...args);
+        }
+      }
+
       if (sheet?.getLastFocused()) {
         eventEmitter.emit(...args);
 

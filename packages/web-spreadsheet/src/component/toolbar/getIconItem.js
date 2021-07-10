@@ -11,7 +11,7 @@ export const getIconItem = (tag, eventEmitter) => {
   };
 
   item.el.child(icon).on("click", () => {
-    eventEmitter.emit(spreadsheetEvents.toolbar.toggleItem, tag);
+    eventEmitter.emit(spreadsheetEvents.toolbar.clickIcon, tag);
   });
 
   return {

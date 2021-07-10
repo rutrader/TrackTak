@@ -1126,6 +1126,7 @@ export const makeGetDataProxy = (
     getSelectedRect,
     getClipboardRect,
     calSelectedRangeByStart,
+    changeData,
     setData,
     setFreeze,
     getCell,

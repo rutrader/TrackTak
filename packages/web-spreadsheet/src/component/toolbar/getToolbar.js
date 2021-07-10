@@ -109,14 +109,10 @@ export const getToolbar = (
     [formulasEl, percentIncreaseEl, exportEl, moreEl],
   ];
 
-  // const rightItems = [[formulasEl, percentIncreaseEl, exportEl]];
-
   const el = h("div", `${cssPrefix}-toolbar`);
   const leftButtonsEl = h("div", `${cssPrefix}-toolbar-btns left`);
-  // const rightButtonsEl = h("div", `${cssPrefix}-toolbar-btns right`);
 
   buildItems(leftItems, leftButtonsEl);
-  // buildItems(rightItems, rightButtonsEl);
 
   el.children(leftButtonsEl);
 
