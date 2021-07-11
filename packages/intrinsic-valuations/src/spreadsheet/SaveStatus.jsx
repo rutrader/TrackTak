@@ -1,14 +1,14 @@
-import { Box, IconButton } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import React from "react";
-import { DCFControlTypography } from "./ExportToExcel";
-import CachedIcon from '@material-ui/icons/Cached';
-import CloudDoneIcon from '@material-ui/icons/CloudDone';
+import { DCFControlTypography } from "./exportToExcel";
+import CachedIcon from "@material-ui/icons/Cached";
+import CloudDoneIcon from "@material-ui/icons/CloudDone";
 
 const SaveStatus = ({ isSaving }) => {
-  const status = isSaving ? 'Saving...' : 'Saved';
+  const status = isSaving ? "Saving..." : "Saved";
   const Icon = isSaving ? CachedIcon : CloudDoneIcon;
   const iconStyle = {
-    marginRight: theme => theme.spacing(0.5),
+    marginRight: (theme) => theme.spacing(0.5),
   };
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
