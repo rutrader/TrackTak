@@ -116,6 +116,7 @@ export const buildVariablesSpreadsheet = (
     eventEmitter,
     hyperformula,
     getOptions,
+    setOptions,
     getData,
     getDataProxy,
     getViewWidthHeight,

@@ -7,10 +7,16 @@ export const initializeButtons = (items) => {
         let newEl = el ? el : item.el;
         const rect = newEl.box();
         const { marginLeft, marginRight } = newEl.computedStyle();
-        buttons.push([
-          newEl,
-          rect.width + parseInt(marginLeft, 10) + parseInt(marginRight, 10),
-        ]);
+
+        let width = rect.width + parseInt(marginRight, 10);
+
+        // Don't add the marginLeft for the alignRight icon
+        // as it doesn't affect space for resizing
+        if (!newEl.el.classList.contains("align-right")) {
+          width += parseInt(marginLeft, 10);
+        }
+
+        buttons.push([newEl, width]);
       });
     } else {
       const rect = it.box();

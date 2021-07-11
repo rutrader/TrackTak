@@ -6,8 +6,6 @@ import {
   useMediaQuery,
   useTheme,
   Typography,
-  FormControlLabel,
-  Switch,
   Link,
 } from "@material-ui/core";
 import useInputQueryParams from "../hooks/useInputQueryParams";
@@ -60,24 +58,14 @@ import selectExchangeRates from "../selectors/fundamentalSelectors/selectExchang
 import getIndustryAveragesUSData from "./templates/freeCashFlowFirmSimple/data/getIndustryAveragesUSData";
 import getIndustryAveragesGlobalData from "./templates/freeCashFlowFirmSimple/data/getIndustryAveragesGlobalData";
 import getFinancialStatementsData from "./templates/freeCashFlowFirmSimple/data/getFinancialStatementsData";
-import ExportToExcel, { DCFControlTypography } from "./ExportToExcel";
 import SensitivityAnalysis from "../components/SensitivityAnalysis";
 import Section from "../components/Section";
 import getFormats from "./getFormats";
+import exportToExcel from "./ExportToExcel";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
 const defaultColWidth = 110;
-
-const SpreadsheetLabel = (props) => (
-  <FormControlLabel
-    {...props}
-    sx={{
-      marginLeft: 0,
-      marginRight: 0,
-    }}
-  />
-);
 
 const Spreadsheet = ({ hideSensitivityAnalysis }) => {
   const containerRef = useRef();
@@ -110,18 +98,9 @@ const Spreadsheet = ({ hideSensitivityAnalysis }) => {
   const general = useSelector(selectGeneral);
   const highlights = useSelector(selectHighlights);
   const exchangeRates = useSelector(selectExchangeRates);
-  const [showFormulas, setShowFormulas] = useState(false);
-  const [showYOYGrowth, setShowYOYGrowth] = useState(false);
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
-
-  const showFormulasToggledOnChange = () => {
-    setShowFormulas(!showFormulas);
-    setShowYOYGrowth(false);
-  };
-  const showYOYGrowthToggledOnChange = () => {
-    setShowYOYGrowth(!showYOYGrowth);
-    setShowFormulas(false);
-  };
+  const scope = useSelector(selectScope);
+  const valuationCurrencySymbol = useSelector(selectValuationCurrencySymbol);
 
   useEffect(() => {
     if (isNil(inputQueryParams[queryNames.salesToCapitalRatio])) {
@@ -132,6 +111,42 @@ const Spreadsheet = ({ hideSensitivityAnalysis }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Move to spreadsheet later
+  useEffect(() => {
+    const exportClickCallback = (type) => {
+      if (type === "export") {
+        exportToExcel(
+          `${general.code}.${general.exchange}_DCF.xlsx`,
+          spreadsheet.getDatas(),
+          scope,
+          valuationCurrencySymbol,
+        );
+      }
+    };
+
+    if (spreadsheet) {
+      spreadsheet.eventEmitter.on(
+        spreadsheetEvents.toolbar.clickIcon,
+        exportClickCallback,
+      );
+    }
+
+    return () => {
+      if (spreadsheet) {
+        spreadsheet.eventEmitter.off(
+          spreadsheetEvents.toolbar.clickIcon,
+          exportClickCallback,
+        );
+      }
+    };
+  }, [
+    general.code,
+    general.exchange,
+    scope,
+    spreadsheet,
+    valuationCurrencySymbol,
+  ]);
 
   useEffect(() => {
     let spreadsheet;
@@ -352,31 +367,6 @@ const Spreadsheet = ({ hideSensitivityAnalysis }) => {
   ]);
 
   useEffect(() => {
-    if (spreadsheet) {
-      if (showYOYGrowth) {
-        spreadsheet.setOptions({
-          showAllFormulas: false,
-          showYOYGrowth: true,
-        });
-        return;
-      }
-
-      if (showFormulas) {
-        spreadsheet.setOptions({
-          showAllFormulas: true,
-          showYOYGrowth: false,
-        });
-        return;
-      }
-
-      spreadsheet.setOptions({
-        showAllFormulas: false,
-        showYOYGrowth: false,
-      });
-    }
-  }, [showYOYGrowth, spreadsheet, isOnMobile, showFormulas]);
-
-  useEffect(() => {
     // Dispatch only when we have all the data from the API
     if (!isNil(price) && spreadsheet) {
       dispatch(
@@ -462,37 +452,6 @@ const Spreadsheet = ({ hideSensitivityAnalysis }) => {
               here.
             </Link>
           </Typography>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            flexWrap: "wrap",
-            rowGap: 1.2,
-            columnGap: 2.5,
-          }}
-        >
-          <SpreadsheetLabel
-            control={
-              <Switch
-                checked={showFormulas}
-                onChange={showFormulasToggledOnChange}
-                color="primary"
-              />
-            }
-            label={<DCFControlTypography>Formulas</DCFControlTypography>}
-          />
-          <SpreadsheetLabel
-            control={
-              <Switch
-                checked={showYOYGrowth}
-                onChange={showYOYGrowthToggledOnChange}
-                color="primary"
-              />
-            }
-            label={<DCFControlTypography>%YOY Growth</DCFControlTypography>}
-          />
-          <ExportToExcel />
         </Box>
       </Box>
 

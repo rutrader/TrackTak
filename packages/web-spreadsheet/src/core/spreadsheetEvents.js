@@ -43,7 +43,7 @@ export const saveEvents = {
     fontChange: "tb-fontChange",
     fontSizeChange: "tb-fontSizeChange",
     formatChange: "tb-formatChange",
-    formulaSet: "tb-formulaSet",
+    functionSet: "tb-functionSet",
   },
 };
 
