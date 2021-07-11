@@ -6,24 +6,24 @@ import { HyperFormula } from "hyperformula";
 import getIcon from "./getIcon";
 import spreadsheetEvents from "../core/spreadsheetEvents";
 
-export const makeDropdownFormula = (eventEmitter) => (tag) => {
-  const nformulas = HyperFormula.getRegisteredFunctionNames("enGB").map((it) =>
+export const makeDropdownFunction = (eventEmitter) => (tag) => {
+  const functions = HyperFormula.getRegisteredFunctionNames("enGB").map((it) =>
     h("div", `${cssPrefix}-item`)
       .on("click", () => {
         dropdown.hide();
 
-        eventEmitter.emit(spreadsheetEvents.toolbar.formulaSet, tag, it);
+        eventEmitter.emit(spreadsheetEvents.toolbar.functionSet, tag, it);
       })
       .child(it),
   );
-  const icon = getIcon("formula");
+  const icon = getIcon("function");
 
   const dropdown = getDropdown(
     icon,
     "180px",
     true,
     "bottom-left",
-    ...nformulas,
+    ...functions,
   );
 
   return {

@@ -38,6 +38,7 @@ export const getSheet = (
   eventEmitter,
   hyperformula,
   getOptions,
+  setOptions,
   getData,
   getDataProxy,
   getViewWidthHeight,
@@ -274,6 +275,26 @@ export const getSheet = (
     } else if (type === "autofilter") {
       // filter
       autofilter();
+    } else if (type === "formula") {
+      getData().changeData(() => {
+        setOptions({
+          showAllFormulas: value,
+          showYOYGrowth: getOptions().showYOYGrowth
+            ? false
+            : getOptions().showYOYGrowth,
+        });
+        toolbar.reset();
+      });
+    } else if (type === "yoyGrowth") {
+      getData().changeData(() => {
+        setOptions({
+          showYOYGrowth: value,
+          showAllFormulas: getOptions().showAllFormulas
+            ? false
+            : getOptions().showAllFormulas,
+        });
+        toolbar.reset();
+      });
     } else if (type === "freeze") {
       if (value) {
         const { ri, ci } = rangeSelector.getIndexes();

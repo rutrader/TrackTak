@@ -1,13 +1,4 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-
-import {
-  convertSubCurrencyToCurrency,
-  setExchangeRates,
-  setLastPriceClose,
-  setTenYearGovernmentBondLastClose,
-  setFundamentals,
-  convertFundamentals,
-} from "@tracktak/intrinsic-valuations";
 import dayjs from "dayjs";
 import {
   getExchangeRate,
@@ -15,7 +6,14 @@ import {
   getGovernmentBond,
   getPrices,
 } from "../../api/api";
-import convertHyphenTickerToDot from "../../shared/convertHyphenTickerToDot";
+import {
+  setExchangeRates,
+  setFundamentals,
+  setLastPriceClose,
+  setTenYearGovernmentBondLastClose,
+} from "../actions/fundamentalsActions";
+import convertSubCurrencyToCurrency from "../../shared/convertSubCurrencyToCurrency";
+import convertFundamentals from "../../shared/convertFundamentals";
 import getMinimumHistoricalDateFromFinancialStatements from "../../shared/getMinimumHistoricalDateFromFinancialStatements";
 
 const yearMonthDateFormat = "YYYY-MM";
@@ -73,9 +71,7 @@ export const getTenYearGovernmentBondLastCloseThunk = createAsyncThunk(
 export const getLastPriceCloseThunk = createAsyncThunk(
   "fundamentals/getLastPriceClose",
   async ({ ticker, params }, { dispatch }) => {
-    const convertedTicker = convertHyphenTickerToDot(ticker);
-
-    const { data } = await getPrices(convertedTicker, {
+    const { data } = await getPrices(ticker, {
       ...params,
       filter: "last_close",
     });
@@ -89,8 +85,7 @@ export const getLastPriceCloseThunk = createAsyncThunk(
 export const getFundamentalsThunk = createAsyncThunk(
   "fundamentals/getFundamentals",
   async ({ ticker }, { dispatch }) => {
-    const convertedTicker = convertHyphenTickerToDot(ticker);
-    const { data } = await getFundamentals(convertedTicker, {
+    const { data } = await getFundamentals(ticker, {
       filter: fundamentalsFilter,
     });
     const fundamentals = convertFundamentals(data.value);

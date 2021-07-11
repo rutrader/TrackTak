@@ -6,8 +6,6 @@ import {
   useMediaQuery,
   useTheme,
   Typography,
-  FormControlLabel,
-  Switch,
   Link,
 } from "@material-ui/core";
 import useInputQueryParams from "../hooks/useInputQueryParams";
@@ -60,71 +58,28 @@ import selectExchangeRates from "../selectors/fundamentalSelectors/selectExchang
 import getIndustryAveragesUSData from "./templates/freeCashFlowFirmSimple/data/getIndustryAveragesUSData";
 import getIndustryAveragesGlobalData from "./templates/freeCashFlowFirmSimple/data/getIndustryAveragesGlobalData";
 import getFinancialStatementsData from "./templates/freeCashFlowFirmSimple/data/getFinancialStatementsData";
-import ExportToExcel, { DCFControlTypography } from "./ExportToExcel";
 import SensitivityAnalysis from "../components/SensitivityAnalysis";
 import Section from "../components/Section";
+import getFormats from "./getFormats";
+import exportToExcel from "./ExportToExcel";
 import SaveStatus from "./SaveStatus";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
 const defaultColWidth = 110;
 
-const SpreadsheetLabel = (props) => (
-  <FormControlLabel
-    {...props}
-    sx={{
-      marginLeft: 0,
-      marginRight: 0,
-    }}
-  />
-);
-
-// Temporary until patterns are in the cell
-// instead of formats
-export const getFormats = (currencySymbol) => {
-  const formats = {
-    "million-currency": {
-      key: "million-currency",
-      title: () => "Million Currency",
-      type: "number",
-      format: "million-currency",
-      label: `${currencySymbol}1,000,000`,
-      pattern: `"${currencySymbol}"#,###.##,,`,
-    },
-    million: {
-      key: "million",
-      title: () => "Million",
-      type: "number",
-      format: "million",
-      label: `1,000,000`,
-      pattern: `#,###.##,,`,
-    },
-    currency: {
-      key: "currency",
-      title: () => "Currency",
-      type: "number",
-      format: "currency",
-      label: `${currencySymbol}10.00`,
-      pattern: `"${currencySymbol}"#,##0.##`,
-    },
-  };
-
-  return formats;
-};
-
 const Spreadsheet = ({
-  hideSensitivityAnalysis,
   isSaving,
   onSaveEvent,
   spreadsheetToRestore,
   disableSetQueryParams = false,
+  hideSensitivityAnalysis,
 }) => {
   const containerRef = useRef();
   const [spreadsheet, setSpreadsheet] = useState();
   const theme = useTheme();
   const location = useLocation();
   const currencySymbol = useSelector(selectValuationCurrencySymbol);
-  const scope = useSelector(selectScope);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const dispatch = useDispatch();
   const inputQueryParams = useInputQueryParams();
@@ -150,28 +105,25 @@ const Spreadsheet = ({
   const general = useSelector(selectGeneral);
   const highlights = useSelector(selectHighlights);
   const exchangeRates = useSelector(selectExchangeRates);
-  const [showFormulas, setShowFormulas] = useState(false);
-  const [showYOYGrowth, setShowYOYGrowth] = useState(false);
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
-
-  const showFormulasToggledOnChange = () => {
-    setShowFormulas(!showFormulas);
-    setShowYOYGrowth(false);
-  };
-  const showYOYGrowthToggledOnChange = () => {
-    setShowYOYGrowth(!showYOYGrowth);
-    setShowFormulas(false);
-  };
+  const scope = useSelector(selectScope);
+  const valuationCurrencySymbol = useSelector(selectValuationCurrencySymbol);
 
   useEffect(() => {
-    if (spreadsheet && spreadsheetToRestore && !isEmpty(spreadsheetToRestore.sheetData.data?.datas)) {
+    if (
+      spreadsheet &&
+      spreadsheetToRestore &&
+      !isEmpty(spreadsheetToRestore.sheetData.data?.datas)
+    ) {
       const dcfValuationData = spreadsheetToRestore.sheetData.data.datas[0];
       const financialStatements = spreadsheetToRestore.sheetData.data.datas[1];
       const costOfCapital = spreadsheetToRestore.sheetData.data.datas[2];
       const employeeOptions = spreadsheetToRestore.sheetData.data.datas[3];
-      const syntheticCreditRating = spreadsheetToRestore.sheetData.data.datas[4];
+      const syntheticCreditRating =
+        spreadsheetToRestore.sheetData.data.datas[4];
       const industryAveragesUS = spreadsheetToRestore.sheetData.data.datas[5];
-      const industryAveragesGlobal = spreadsheetToRestore.sheetData.data.datas[6];
+      const industryAveragesGlobal =
+        spreadsheetToRestore.sheetData.data.datas[6];
 
       spreadsheet.setDatasheets([
         dcfValuationData,
@@ -183,18 +135,23 @@ const Spreadsheet = ({
         industryAveragesGlobal,
       ]);
 
-      const requiredInputs = spreadsheetToRestore.sheetData.data.variablesDatas[0];
-      const optionalInputs = spreadsheetToRestore.sheetData.data.variablesDatas[1];
+      const requiredInputs =
+        spreadsheetToRestore.sheetData.data.variablesDatas[0];
+      const optionalInputs =
+        spreadsheetToRestore.sheetData.data.variablesDatas[1];
 
       spreadsheet.variablesSpreadsheet.setVariableDatasheets([
         requiredInputs,
         optionalInputs,
       ]);
     }
-  }, [spreadsheetToRestore, spreadsheet])
+  }, [spreadsheetToRestore, spreadsheet]);
 
   useEffect(() => {
-    if (!disableSetQueryParams && isNil(inputQueryParams[queryNames.salesToCapitalRatio])) {
+    if (
+      !disableSetQueryParams &&
+      isNil(inputQueryParams[queryNames.salesToCapitalRatio])
+    ) {
       setURLInput(
         queryNames.salesToCapitalRatio,
         currentIndustry["sales/Capital"],
@@ -202,6 +159,42 @@ const Spreadsheet = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Move to spreadsheet later
+  useEffect(() => {
+    const exportClickCallback = (type) => {
+      if (type === "export") {
+        exportToExcel(
+          `${general.code}.${general.exchange}_DCF.xlsx`,
+          spreadsheet.getDatas(),
+          scope,
+          valuationCurrencySymbol,
+        );
+      }
+    };
+
+    if (spreadsheet) {
+      spreadsheet.eventEmitter.on(
+        spreadsheetEvents.toolbar.clickIcon,
+        exportClickCallback,
+      );
+    }
+
+    return () => {
+      if (spreadsheet) {
+        spreadsheet.eventEmitter.off(
+          spreadsheetEvents.toolbar.clickIcon,
+          exportClickCallback,
+        );
+      }
+    };
+  }, [
+    general.code,
+    general.exchange,
+    scope,
+    spreadsheet,
+    valuationCurrencySymbol,
+  ]);
 
   useEffect(() => {
     let spreadsheet;
@@ -374,7 +367,7 @@ const Spreadsheet = ({
         }
       }
     };
-  }, [setURLInput, spreadsheet, onSaveEvent]);
+  }, [setURLInput, spreadsheet, onSaveEvent, disableSetQueryParams]);
 
   useEffect(() => {
     if (spreadsheet) {
@@ -390,12 +383,10 @@ const Spreadsheet = ({
     if (spreadsheet) {
       const { datas } = spreadsheet.getDatas();
 
-      if (!datas.length) {
-        spreadsheet.variablesSpreadsheet.setVariableDatasheets([
-          getRequiredInputsData(inputQueryParams),
-          getOptionalInputsData(inputQueryParams),
-        ]);
-      }
+      spreadsheet.variablesSpreadsheet.setVariableDatasheets([
+        getRequiredInputsData(inputQueryParams),
+        getOptionalInputsData(inputQueryParams),
+      ]);
 
       if (!datas.length || datas.length === 1) {
         // Temp
@@ -422,9 +413,9 @@ const Spreadsheet = ({
           getIndustryAveragesUSData(),
           getIndustryAveragesGlobalData(),
         ]);
-
-        spreadsheet.sheet.switchData(spreadsheet.sheet.getDatas()[0]);
       }
+
+      spreadsheet.sheet.switchData(spreadsheet.sheet.getDatas()[0]);
     }
   }, [
     spreadsheet,
@@ -438,33 +429,8 @@ const Spreadsheet = ({
   ]);
 
   useEffect(() => {
-    if (spreadsheet && scope) {
-      if (showYOYGrowth) {
-        spreadsheet.setOptions({
-          showAllFormulas: false,
-          showYOYGrowth: true,
-        });
-        return;
-      }
-
-      if (showFormulas) {
-        spreadsheet.setOptions({
-          showAllFormulas: true,
-          showYOYGrowth: false,
-        });
-        return;
-      }
-
-      spreadsheet.setOptions({
-        showAllFormulas: false,
-        showYOYGrowth: false,
-      });
-    }
-  }, [showYOYGrowth, spreadsheet, isOnMobile, showFormulas, scope]);
-
-  useEffect(() => {
     // Dispatch only when we have all the data from the API
-    if (hasAllRequiredInputsFilledIn && !isNil(price) && spreadsheet) {
+    if (!isNil(price) && spreadsheet) {
       dispatch(
         setSheetsSerializedValues(
           spreadsheet.hyperformula.getAllSheetsSerialized(),
@@ -549,48 +515,16 @@ const Spreadsheet = ({
             </Link>
           </Typography>
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            flexWrap: "wrap",
-            rowGap: 1.2,
-            columnGap: 2.5,
-          }}
-        >
-          <SpreadsheetLabel
-            control={
-              <Switch
-                checked={showFormulas}
-                onChange={showFormulasToggledOnChange}
-                color="primary"
-              />
-            }
-            label={<DCFControlTypography>Formulas</DCFControlTypography>}
-          />
-          <SpreadsheetLabel
-            control={
-              <Switch
-                checked={showYOYGrowth}
-                onChange={showYOYGrowthToggledOnChange}
-                color="primary"
-              />
-            }
-            label={<DCFControlTypography>%YOY Growth</DCFControlTypography>}
-          />
-          <ExportToExcel />
-          {/* {showSaveButton && <SaveDCF onClick={onSaveClick} /> } */}
-          {onSaveEvent && <SaveStatus isSaving={isSaving} />}
-        </Box>
       </Box>
+      {onSaveEvent && <SaveStatus isSaving={isSaving} />}
 
       <Box
         sx={{
           position: "relative",
-          "& .x-spreadsheet-comment": {
+          "& .powersheet-comment": {
             fontFamily: theme.typography.fontFamily,
           },
-          "& .x-spreadsheet-variables-sheet": isFocusedOnValueDrivingInputs
+          "& .powersheet-variables-sheet": isFocusedOnValueDrivingInputs
             ? {
                 boxShadow: `0 0 5px ${theme.palette.primary.main}`,
                 border: `1px solid ${theme.palette.primary.main}`,

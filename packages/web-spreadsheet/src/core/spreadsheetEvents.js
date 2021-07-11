@@ -1,5 +1,5 @@
 import { merge } from "lodash-es";
-import { menuItems } from "../component/getContextmenu";
+import menuItems from "../component/menuItems";
 
 export const saveEvents = {
   bottombar: {
@@ -43,7 +43,7 @@ export const saveEvents = {
     fontChange: "tb-fontChange",
     fontSizeChange: "tb-fontSizeChange",
     formatChange: "tb-formatChange",
-    formulaSet: "tb-formulaSet",
+    functionSet: "tb-functionSet",
   },
 };
 

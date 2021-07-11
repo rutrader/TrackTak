@@ -11,6 +11,7 @@ import useLocalStorageState from "use-local-storage-state";
 import { setMessage } from "../../../redux/actions/snackbarActions";
 import Spreadsheet from "../../../../../packages/intrinsic-valuations/src/spreadsheet/SpreadsheetContainer";
 import selectFundamentalsIsLoaded from "../../../../../packages/intrinsic-valuations/src/selectors/fundamentalSelectors/selectIsFundamentalsLoaded";
+import convertHyphenTickerToDot from "../../../shared/convertHyphenTickerToDot";
 
 const DiscountedCashFlowPage = ({ ticker }) => {
   const general = useSelector(selectGeneral);
@@ -51,7 +52,7 @@ const DiscountedCashFlowPage = ({ ticker }) => {
           />
         </Helmet>
       )}
-      <Spreadsheet ticker={ticker} />
+      <Spreadsheet ticker={ticker ? convertHyphenTickerToDot(ticker) : null} />
       {isLoaded && (
         <Section sx={{ display: "flex", mt: 2 }}>
           <Box

@@ -1,20 +1,14 @@
-import { Box, IconButton, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import React from "react";
-import { useSelector } from "react-redux";
-import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
-import selectScope from "../selectors/dcfSelectors/selectScope";
-import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
-import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import scopeNameTypeMapping from "./scopeNameTypeMapping";
-import selectSheetsDatas from "../selectors/dcfSelectors/selectSheetsDatas";
 import replaceAll from "../shared/replaceAll";
 import { sharedOptions } from "../../../web-spreadsheet/src/core/defaultOptions";
 import formatToExcelType from "./formatToExcelType";
 import { isNil } from "lodash-es";
-import { getFormats } from "./Spreadsheet";
 import getFormatFromCell from "../../../web-spreadsheet/src/shared/getFormatFromCell";
 import numfmt from "numfmt";
 import matureMarketEquityRiskPremium from "../shared/matureMarketEquityRiskPremium";
+import getFormats from "./getFormats";
 
 // TODO: Once we put in variables sheet then remove this
 const apiVariablesWorksheetName = "API Variables";
@@ -306,33 +300,22 @@ const xtos = async (
   return workbook;
 };
 
-const ExportToExcel = () => {
-  const general = useSelector(selectGeneral);
-  const scope = useSelector(selectScope);
-  const valuationCurrencySymbol = useSelector(selectValuationCurrencySymbol);
-  const sheetsDatas = useSelector(selectSheetsDatas);
-
-  const exportToExcel = async () => {
-    const { writeFile } = await import("xlsx/xlsx.mini");
-    const workbook = await xtos(
-      sheetsDatas,
-      scope,
-      valuationCurrencySymbol,
-      true,
-      true,
-    );
-
-    writeFile(workbook, `${general.code}.${general.exchange}_DCF.xlsx`);
-  };
-
-  return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
-      <IconButton variant="outlined" onClick={exportToExcel}>
-        <CloudDownloadIcon />
-      </IconButton>
-      <DCFControlTypography>Excel</DCFControlTypography>
-    </Box>
+const exportToExcel = async (
+  workbookName,
+  datas,
+  scope,
+  valuationCurrencySymbol,
+) => {
+  const { writeFile } = await import("xlsx/xlsx.mini");
+  const workbook = await xtos(
+    datas,
+    scope,
+    valuationCurrencySymbol,
+    true,
+    true,
   );
+
+  writeFile(workbook, workbookName);
 };
 
-export default ExportToExcel;
+export default exportToExcel;
