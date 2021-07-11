@@ -287,18 +287,15 @@ const api = {
     return data;
   },
 
-  saveDCFValuation: async (
-    sheetData,
-    userId,
-  ) => {
+  saveDCFValuation: async (sheetData, userId) => {
     const document = {
       userId,
       sheetData,
       lastModifiedTime: new Date(),
-    }
+    };
     const query = {
-      'sheetData.name': sheetData.name,
-    }
+      "sheetData.name": sheetData.name,
+    };
     return database.replace(Collections.DCF_VALUATION, query, document);
   },
 
@@ -308,9 +305,13 @@ const api = {
     });
   },
 
+  getDCFValuation: async (userId, id) => {
+    return database.findOne(Collections.DCF_VALUATION, id, userId);
+  },
+
   deleteDCFValuation: async (id, userId) => {
     return database.deleteOne(Collections.DCF_VALUATION, id, userId);
-  }
+  },
 };
 
 export default api;

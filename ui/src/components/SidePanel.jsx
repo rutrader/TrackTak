@@ -20,7 +20,7 @@ import { noop } from "../shared/utils";
 
 const drawerWidth = 240;
 
-const SidePanel = ({ children, tabs, selectedTab, setSeletedTab = noop }) => {
+const SidePanel = ({ children, tabs, titleMenuButtons, selectedTab, setSeletedTab = noop }) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -113,9 +113,17 @@ const SidePanel = ({ children, tabs, selectedTab, setSeletedTab = noop }) => {
       </Hidden>
       <Box component="main" sx={{ width: "100%" }}>
         <Box>
-          {tabs[selectedTab]?.title && <Typography variant="h5" gutterBottom>
-            {tabs[selectedTab].title}
-          </Typography>}
+          <Box sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}>
+            {tabs[selectedTab]?.title && (
+              <Typography variant="h5" gutterBottom>
+                {tabs[selectedTab].title}
+              </Typography>
+            )}
+            {titleMenuButtons}
+          </Box>
           {children}
         </Box>
       </Box>

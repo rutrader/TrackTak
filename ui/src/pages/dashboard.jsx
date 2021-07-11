@@ -1,7 +1,4 @@
-import {
-  Alert,
-  Box,
-} from "@material-ui/core";
+import { Alert, Box, IconButton } from "@material-ui/core";
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { useAuth } from "../hooks/useAuth";
@@ -9,16 +6,39 @@ import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
 import SpreadsheetTable from "../components/SavedSpreadsheets";
 import SidePanel from "../components/SidePanel";
+import AddIcon from "@material-ui/icons/Add";
+import { saveValuation } from "../api/api";
+import { navigate } from "gatsby";
+import SearchTickerDialog from "../components/SearchTickerDialog";
 
-const tabs = [{
-  title: "My Valuations",
-  to: '/dashboard',
-  content: <SpreadsheetTable />,
-}];
+const tabs = (handleShowSearchTickerDialog) => [
+  {
+    title: "My Valuations",
+    to: "/dashboard",
+    content: <SpreadsheetTable onNewValuationClick={handleShowSearchTickerDialog} />,
+  },
+];
 
 const Dashboard = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, session, userData } = useAuth();
   const [selectedTab, setSeletedTab] = useState(0);
+  const [showSearchTickerDialog, setShowSearchTickerDialog] = useState(false);
+
+  const handleSearchClick = async (ticker) => {
+    const response = await saveValuation(
+      { name: ticker, data: {} },
+      session?.getAccessToken()?.jwtToken,
+    );
+    navigate(`/${userData.sub}/my-spreadsheets/${response.data._id}`)
+  }
+
+  const handleShowSearchTickerDialog = () => {
+    setShowSearchTickerDialog(true);
+  };
+
+  const handleCloseSearchTickerDialog = () => {
+    setShowSearchTickerDialog(false);
+  };
 
   return (
     <>
@@ -27,6 +47,11 @@ const Dashboard = () => {
         <link rel="canonical" href={`${resourceName}/dashboard`} />
         <meta name="description" content="Dashboard." />
       </Helmet>
+      <SearchTickerDialog
+        open={showSearchTickerDialog}
+        onSearchResultClick={handleSearchClick}
+        onClose={handleCloseSearchTickerDialog}
+      />
       {isAuthenticated && (
         <Box
           sx={{
@@ -34,11 +59,27 @@ const Dashboard = () => {
           }}
         >
           <SidePanel
-            tabs={tabs}
+            tabs={tabs(handleShowSearchTickerDialog)}
             selectedTab={selectedTab}
             setSeletedTab={setSeletedTab}
+            titleMenuButtons={
+              <IconButton
+                sx={{
+                  padding: 0,
+                  backgroundColor: (theme) => theme.palette.primary.light,
+                  width: '40px',
+                  height: '40px',
+                  '&:hover': {
+                    backgroundColor: (theme) => theme.palette.primary.dark,
+                  }
+                }}
+                onClick={handleShowSearchTickerDialog}
+              >
+                <AddIcon fontSize="large" />
+              </IconButton>
+            }
           >
-            {tabs[selectedTab].content}
+            {tabs(handleShowSearchTickerDialog)[selectedTab].content}
           </SidePanel>
         </Box>
       )}

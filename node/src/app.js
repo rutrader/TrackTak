@@ -108,6 +108,11 @@ app.get("/api/v1/valuation", auth, async (req, res) => {
   res.send({ valuations });
 });
 
+app.get("/api/v1/valuation/:id", auth, async (req, res) => {
+  const valuation = await api.getDCFValuation(req.user.username, req.params.id);
+  res.send({ valuation });
+});
+
 app.delete("/api/v1/valuation/:id", auth, async (req, res) => {
   await api.deleteDCFValuation(req.params.id, req.user.username);
   res.send({ id: req.params.id });

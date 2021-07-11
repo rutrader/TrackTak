@@ -29,7 +29,7 @@ import {
   setSheetsSerializedValues,
   setSheetsValues,
 } from "../redux/actions/dcfActions";
-import { isNil } from "lodash-es";
+import { isEmpty, isNil } from "lodash-es";
 import getSpreadsheet, {
   spreadsheetEvents,
 } from "../../../web-spreadsheet/src";
@@ -115,7 +115,9 @@ export const getFormats = (currencySymbol) => {
 const Spreadsheet = ({
   hideSensitivityAnalysis,
   isSaving,
-  onSaveEvent
+  onSaveEvent,
+  spreadsheetToRestore,
+  disableSetQueryParams = false,
 }) => {
   const containerRef = useRef();
   const [spreadsheet, setSpreadsheet] = useState();
@@ -162,7 +164,37 @@ const Spreadsheet = ({
   };
 
   useEffect(() => {
-    if (isNil(inputQueryParams[queryNames.salesToCapitalRatio])) {
+    if (spreadsheet && spreadsheetToRestore && !isEmpty(spreadsheetToRestore.sheetData.data?.datas)) {
+      const dcfValuationData = spreadsheetToRestore.sheetData.data.datas[0];
+      const financialStatements = spreadsheetToRestore.sheetData.data.datas[1];
+      const costOfCapital = spreadsheetToRestore.sheetData.data.datas[2];
+      const employeeOptions = spreadsheetToRestore.sheetData.data.datas[3];
+      const syntheticCreditRating = spreadsheetToRestore.sheetData.data.datas[4];
+      const industryAveragesUS = spreadsheetToRestore.sheetData.data.datas[5];
+      const industryAveragesGlobal = spreadsheetToRestore.sheetData.data.datas[6];
+
+      spreadsheet.setDatasheets([
+        dcfValuationData,
+        financialStatements,
+        costOfCapital,
+        employeeOptions,
+        syntheticCreditRating,
+        industryAveragesUS,
+        industryAveragesGlobal,
+      ]);
+
+      const requiredInputs = spreadsheetToRestore.sheetData.data.variablesDatas[0];
+      const optionalInputs = spreadsheetToRestore.sheetData.data.variablesDatas[1];
+
+      spreadsheet.variablesSpreadsheet.setVariableDatasheets([
+        requiredInputs,
+        optionalInputs,
+      ]);
+    }
+  }, [spreadsheetToRestore, spreadsheet])
+
+  useEffect(() => {
+    if (!disableSetQueryParams && isNil(inputQueryParams[queryNames.salesToCapitalRatio])) {
       setURLInput(
         queryNames.salesToCapitalRatio,
         currentIndustry["sales/Capital"],
@@ -305,7 +337,7 @@ const Spreadsheet = ({
 
         const urlName = camelCase(label);
 
-        if (allInputNameTypeMappings[urlName]) {
+        if (allInputNameTypeMappings[urlName] && !disableSetQueryParams) {
           let newValue = value;
 
           setURLInput(camelCase(label), newValue);

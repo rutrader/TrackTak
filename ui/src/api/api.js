@@ -12,6 +12,12 @@ export const getValuations = async (accessToken) => {
   });
 }
 
+export const getValuation = async (accessToken, id) => {
+  return axios.get(`/api/v1/valuation/${id}`, {
+    headers: { 'Authorization': `Bearer ${accessToken}` }
+  });
+}
+
 export const deleteValuation = async (id, accessToken) => {
   return axios.delete(`/api/v1/valuation/${id}`, {
     headers: { 'Authorization': `Bearer ${accessToken}` }

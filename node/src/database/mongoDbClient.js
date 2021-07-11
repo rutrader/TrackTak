@@ -42,12 +42,19 @@ export const insert = async (collection, document) => {
 
 export const replace = async (collection, query, document) => {
   const database = client.db(DATABASE_NAME);
+  const id = document.sheetData.sheetId
+    ? new MongoDb.ObjectId(document.sheetData.sheetId)
+    : new MongoDb.ObjectId();
+  const documentWithId = {
+    ...document,
+    _id: id,
+  };
   const response = await database
     .collection(collection)
-    .replaceOne(query, document, { upsert: true });
+    .replaceOne(query, documentWithId, { upsert: true });
 
   if (response.result.ok) {
-    return response.ops[0];
+    return documentWithId;
   } else {
     throw Error("Error replacing document");
   }
@@ -56,6 +63,14 @@ export const replace = async (collection, query, document) => {
 export const find = async (collection, query = {}) => {
   const database = client.db(DATABASE_NAME);
   return database.collection(collection).find(query).toArray();
+};
+
+export const findOne = async (collection, id, userId) => {
+  const database = client.db(DATABASE_NAME);
+  return database.collection(collection).findOne({
+    _id: new MongoDb.ObjectId(id),
+    userId,
+  });
 };
 
 export const deleteOne = async (collection, id, userId) => {

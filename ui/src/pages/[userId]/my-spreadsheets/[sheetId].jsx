@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Typography, useMediaQuery, useTheme } from "@material-ui/core";
-import SubscribeMailingList from "../../../components/SubscribeMailingList";
 import { Helmet } from "react-helmet";
 import getTitle from "../../../shared/getTitle";
 import resourceName from "../../../shared/resourceName";
@@ -8,11 +7,14 @@ import { Section, selectGeneral } from "@tracktak/intrinsic-valuations";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import useLocalStorageState from "use-local-storage-state";
-import { setMessage } from "../../../redux/actions/snackbarActions";
 import Spreadsheet from "../../../../../packages/intrinsic-valuations/src/spreadsheet/SpreadsheetContainer";
 import selectFundamentalsIsLoaded from "../../../../../packages/intrinsic-valuations/src/selectors/fundamentalSelectors/selectIsFundamentalsLoaded";
+import useFetchSpreadsheet from "../../../hooks/useFetchSpreadsheet";
+import usePersistSpreadsheet from "../../../hooks/usePersistSpreadsheet";
+import SubscribeMailingList from "../../../components/SubscribeMailingList";
+import { setMessage } from "../../../redux/actions/snackbarActions";
 
-const DiscountedCashFlowPage = ({ ticker }) => {
+const SavedValuations = ({ userId, sheetId }) => {
   const general = useSelector(selectGeneral);
   const [rotateSnackbarShown, setRotateSnackbarShown] = useLocalStorageState(
     "rotateSnackbarShown",
@@ -21,6 +23,13 @@ const DiscountedCashFlowPage = ({ ticker }) => {
   const theme = useTheme();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const dispatch = useDispatch();
+  const [spreadsheetDataToSave, setSpreadsheetDataToSave] = useState();
+  const [spreadsheetData] = useFetchSpreadsheet(sheetId);
+  const [isSaving] = usePersistSpreadsheet(spreadsheetData?.sheetData?.name, spreadsheetDataToSave, sheetId);
+
+  const handleSave = (data) => {
+    setSpreadsheetDataToSave(data);
+  };
 
   useEffect(() => {
     if (!rotateSnackbarShown && isOnMobile) {
@@ -43,7 +52,7 @@ const DiscountedCashFlowPage = ({ ticker }) => {
           </title>
           <link
             rel="canonical"
-            href={`${resourceName}/discounted-cash-flow/${ticker}`}
+            href={`${resourceName}/${userId}/my-spreadsheets/${sheetId}`}
           />
           <meta
             name="description"
@@ -51,7 +60,13 @@ const DiscountedCashFlowPage = ({ ticker }) => {
           />
         </Helmet>
       )}
-      <Spreadsheet ticker={ticker} />
+      <Spreadsheet
+        ticker={spreadsheetData?.sheetData?.name}
+        isSaving={isSaving}
+        onSaveEvent={handleSave}
+        spreadsheetToRestore={spreadsheetData}
+        disableSetQueryParams={true}
+      />
       {isLoaded && (
         <Section sx={{ display: "flex", mt: 2 }}>
           <Box
@@ -79,4 +94,4 @@ const DiscountedCashFlowPage = ({ ticker }) => {
   );
 };
 
-export default DiscountedCashFlowPage;
+export default SavedValuations;
