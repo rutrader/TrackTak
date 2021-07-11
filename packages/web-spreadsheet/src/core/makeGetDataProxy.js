@@ -19,6 +19,7 @@ export const makeGetDataProxy = (
 ) => (name) => {
   let freeze = [0, 0];
   let styles = []; // Array<Style>
+  let calculationOrder;
 
   const { merges, rows, cols, validations, scroll, autoFilter } = builder();
 
@@ -864,6 +865,8 @@ export const makeGetDataProxy = (
     if (d.styles !== undefined) {
       styles = [...d.styles];
     }
+
+    calculationOrder = d.calculationOrder;
   };
 
   const getFreeze = () => {
@@ -873,6 +876,7 @@ export const makeGetDataProxy = (
   const getData = () => {
     return {
       name,
+      calculationOrder,
       freeze: xy2expr(freeze[1], freeze[0]),
       styles: [...styles],
       merges: merges.getData(),

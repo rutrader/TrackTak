@@ -4184,7 +4184,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
         '=FIN("description")',
       ],
       ["Shares Outstanding", '=FIN("sharesOutstanding")'],
-      [],
+      [""],
       ["Industry Averages Overview"],
       ["Category", '=FIN("industryName")'],
       [
@@ -4202,9 +4202,9 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
       ["WACC", '=FIN("costOfCapital")'],
       ["Unlevered Beta", '=FIN("unleveredBeta")'],
       ["Levered Beta", '=FIN("equityLeveredBeta")'],
-      [],
-      [],
-      [],
+      [""],
+      [""],
+      [""],
       ["DCF Valuaton"],
       ["", "Base Year", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "Terminal Year"],
       [

@@ -108,7 +108,7 @@ export const getStatements = (statements, statementKeys) => {
   };
 
   const values = statementKeys.map((key) => {
-    if (!key) return [];
+    if (!key) return [""];
 
     const formattedKey = sentenceCase(key);
     const values = [];
