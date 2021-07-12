@@ -296,6 +296,7 @@ const api = {
     };
     const query = {
       "sheetData.name": sheetData.name,
+      userId
     };
     return database.replace(Collections.DCF_VALUATION, query, document);
   },

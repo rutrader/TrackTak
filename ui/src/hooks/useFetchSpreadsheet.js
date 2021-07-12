@@ -3,13 +3,14 @@ import { getValuation } from "../api/api";
 import { useAuth } from "./useAuth";
 
 const useFetchSpreadsheet = (sheetId) => {
-  const { session, isAuthenticated } = useAuth();
+  const { getAccessToken, isAuthenticated } = useAuth();
   const [spreadsheetData, setSpreadsheetData] = useState();
 
   useEffect(() => {
     async function fetchData() {
+      const token = await getAccessToken();
       const response = await getValuation(
-        session?.getAccessToken()?.jwtToken,
+        token?.jwtToken,
         sheetId,
       );
       setSpreadsheetData(response.data.valuation);
@@ -17,7 +18,7 @@ const useFetchSpreadsheet = (sheetId) => {
     if (isAuthenticated) {
       fetchData();
     }
-  }, [session, isAuthenticated, sheetId]);
+  }, [getAccessToken, isAuthenticated, sheetId]);
 
   return [spreadsheetData];
 };

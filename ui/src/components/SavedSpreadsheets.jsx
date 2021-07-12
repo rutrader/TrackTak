@@ -24,17 +24,18 @@ import RoundButton from "./RoundButton";
 const SavedSpreadsheets = ({ onNewValuationClick }) => {
   const theme = useTheme();
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
-  const { session, userData } = useAuth();
+  const { getAccessToken, userData } = useAuth();
   const [valuations, setValuations] = useState([]);
   const [selectedValuation, setSelectedValuation] = useState();
 
   useEffect(() => {
     async function fetchData() {
-      const response = await getValuations(session?.getAccessToken()?.jwtToken);
+      const token = await getAccessToken();
+      const response = await getValuations(token?.jwtToken);
       setValuations(response.data.valuations);
     }
     fetchData();
-  }, [session]);
+  }, [getAccessToken]);
 
   const handleRowClick = (valuation) => {
     navigate(`/${userData.sub}/my-spreadsheets/${valuation._id}`);

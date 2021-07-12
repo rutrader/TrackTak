@@ -125,7 +125,7 @@ const Spreadsheet = ({
       const industryAveragesGlobal =
         spreadsheetToRestore.sheetData.data.datas[6];
 
-      spreadsheet.setDatasheets([
+        spreadsheet.setDatasheets([
         dcfValuationData,
         financialStatements,
         costOfCapital,
@@ -380,7 +380,7 @@ const Spreadsheet = ({
   }, [isOnMobile, spreadsheet]);
 
   useEffect(() => {
-    if (spreadsheet) {
+    if (spreadsheet && !spreadsheetToRestore) {
       const { datas } = spreadsheet.getDatas();
 
       spreadsheet.variablesSpreadsheet.setVariableDatasheets([

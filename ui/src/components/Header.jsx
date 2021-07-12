@@ -45,10 +45,10 @@ const buttonStyle = {
 };
 
 const HeaderLink = ({ to, text, style, isSignOut = false }) => {
-  const { session, signOut } = useAuth();
+  const { getAccessToken, signOut } = useAuth();
 
-  const handleOnSignOut = () => {
-    if (session) {
+  const handleOnSignOut = async () => {
+    if (await getAccessToken()) {
       signOut();
       navigate("/");
     }
@@ -82,10 +82,10 @@ const Header = ({ hideSearch, position = "fixed" }) => {
   const paddingBottom = `${theme.mixins.toolbar.minHeight + extraPadding}px`;
   const [anchorEl, setAnchorEl] = useState(null);
   const [userMenuAnchorEl, setUserMenuAnchorEl] = useState(null);
-  const { isAuthenticated, session, signOut } = useAuth();
+  const { isAuthenticated, getAccessToken, signOut } = useAuth();
 
-  const handleOnSignOut = () => {
-    if (session) {
+  const handleOnSignOut = async () => {
+    if (await getAccessToken()) {
       signOut();
       navigate("/");
     }

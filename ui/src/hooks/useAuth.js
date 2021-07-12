@@ -32,7 +32,6 @@ export const ProvideAuth = (props) => {
  * Hook for managing authentication
  */
 const useProvideAuth = () => {
-  const [session, setSession] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [userData, setUserData] = useState();
@@ -40,19 +39,21 @@ const useProvideAuth = () => {
   useEffect(() => {
     const handleGetUserData = (_, updatedUserDataArray) => {
       if (updatedUserDataArray) {
-        const updatedUserData = updatedUserDataArray.reduce((attributes, current) => ({
-          ...attributes,
-          [current.Name]: current.Value,
-        }), {});
+        const updatedUserData = updatedUserDataArray.reduce(
+          (attributes, current) => ({
+            ...attributes,
+            [current.Name]: current.Value,
+          }),
+          {},
+        );
         setUserData(updatedUserData);
-        setIsEmailVerified(updatedUserData?.email_verified === 'true')
+        setIsEmailVerified(updatedUserData?.email_verified === "true");
       }
-    }
+    };
     const currentUser = getCurrentUser();
     if (currentUser) {
       currentUser.getSession((error, session) => {
         if (!error && session) {
-          setSession(session);
           setIsAuthenticated(true);
           getUserData(handleGetUserData);
         }
@@ -72,7 +73,6 @@ const useProvideAuth = () => {
 
   const signIn = (username, password, onSuccess, onFailure) => {
     const onCognitoSuccess = (session) => {
-      setSession(session);
       setIsAuthenticated(true);
       onSuccess(session);
     };
@@ -83,7 +83,6 @@ const useProvideAuth = () => {
   const signOut = () => {
     userSignOut();
     setIsAuthenticated(false);
-    setSession(null);
     setUserData(null);
   };
 
@@ -97,7 +96,10 @@ const useProvideAuth = () => {
 
   const updateContactDetails = (updatedAttributes, onSuccess, onFailure) => {
     const onUpdateSuccess = () => {
-      if (updatedAttributes.email && updatedAttributes.email !== userData.email) {
+      if (
+        updatedAttributes.email &&
+        updatedAttributes.email !== userData.email
+      ) {
         setIsEmailVerified(false);
       }
       onSuccess();
@@ -105,10 +107,26 @@ const useProvideAuth = () => {
     userUpdateContactDetails(updatedAttributes, onUpdateSuccess, onFailure);
   };
 
+  const getAccessToken = async () => {
+    const session = await new Promise(function (resolve, reject) {
+      const currentUser = getCurrentUser();
+      if (currentUser) {
+        currentUser.getSession((error, session) => {
+          if (!error && session) {
+            resolve(session);
+          } else {
+            reject(error);
+          }
+        });
+      }
+    });
+    return session.accessToken;
+  };
+
   return {
     isAuthenticated,
     userData,
-    session,
+    getAccessToken,
     signUp,
     signIn,
     signOut,

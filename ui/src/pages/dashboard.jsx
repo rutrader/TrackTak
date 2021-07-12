@@ -20,14 +20,15 @@ const tabs = (handleShowSearchTickerDialog) => [
 ];
 
 const Dashboard = () => {
-  const { isAuthenticated, session, userData } = useAuth();
+  const { isAuthenticated, getAccessToken, userData } = useAuth();
   const [selectedTab, setSeletedTab] = useState(0);
   const [showSearchTickerDialog, setShowSearchTickerDialog] = useState(false);
 
   const handleSearchClick = async (ticker) => {
+    const token = await getAccessToken();
     const response = await saveValuation(
       { name: ticker, data: {} },
-      session?.getAccessToken()?.jwtToken,
+      token?.jwtToken,
     );
     navigate(`/${userData.sub}/my-spreadsheets/${response.data._id}`)
   }
