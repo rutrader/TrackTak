@@ -8,7 +8,6 @@ const VideoSection = () => {
   return (
     <Box
       sx={{
-        flex: "1 1 300px",
         position: "relative",
       }}
     >
