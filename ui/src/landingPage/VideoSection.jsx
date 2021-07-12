@@ -5,7 +5,7 @@ import YouTube from "react-youtube";
 import * as styles from "../pages/stock-valuations/valuation.module.css";
 
 const VideoSection = () => {
-  return process.env.NODE_ENV === "development" ? (
+  return (
     <Box
       sx={{
         position: "relative",
@@ -32,7 +32,7 @@ const VideoSection = () => {
         </Hidden>
       </Box>
     </Box>
-  ) : null;
+  );
 };
 
 export default VideoSection;

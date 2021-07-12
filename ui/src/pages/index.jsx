@@ -39,9 +39,11 @@ const Home = () => {
         <SearchSection />
       </Section>
       <Container maxWidth="lg">
-        <Section>
-          <VideoSection />
-        </Section>
+        {process.env.NODE_ENV === "development" ? (
+          <Section>
+            <VideoSection />
+          </Section>
+        ) : null}
         <Section>
           <FeaturesSection />
         </Section>
