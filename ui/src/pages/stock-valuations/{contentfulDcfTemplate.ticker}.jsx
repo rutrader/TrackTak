@@ -15,7 +15,7 @@ import {
   selectPrice,
 } from "@tracktak/intrinsic-valuations";
 import SubscribeMailingList from "../../components/SubscribeMailingList";
-import * as styles from "./valuation.module.css";
+import * as styles from "../../shared/video.module.css";
 import dayjs from "dayjs";
 import { Helmet } from "react-helmet";
 import getTitle from "../../shared/getTitle";
@@ -151,7 +151,7 @@ const options = {
                 const videoId = data.uri.split("v=")[1];
 
                 return (
-                  <Box key={i} sx={{ mt: 2 }}>
+                  <Box key={i} sx={{ mt: 2, pb: 3 }}>
                     <YouTube
                       containerClassName={styles.videoWrapper}
                       videoId={videoId}
