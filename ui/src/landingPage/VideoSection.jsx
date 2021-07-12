@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Hidden } from "@material-ui/core";
 import GridDots from "../icons/grid-dots-purple.svg";
 import YouTube from "react-youtube";
-import * as styles from "../pages/stock-valuations/valuation.module.css";
+import * as styles from "../shared/video.module.css";
 
 const VideoSection = () => {
   return (
