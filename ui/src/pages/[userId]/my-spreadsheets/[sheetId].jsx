@@ -13,6 +13,7 @@ import useFetchSpreadsheet from "../../../hooks/useFetchSpreadsheet";
 import usePersistSpreadsheet from "../../../hooks/usePersistSpreadsheet";
 import SubscribeMailingList from "../../../components/SubscribeMailingList";
 import { setMessage } from "../../../redux/actions/snackbarActions";
+import convertHyphenTickerToDot from "../../../shared/convertHyphenTickerToDot";
 
 const SavedValuations = ({ userId, sheetId }) => {
   const general = useSelector(selectGeneral);
@@ -60,13 +61,13 @@ const SavedValuations = ({ userId, sheetId }) => {
           />
         </Helmet>
       )}
-      <Spreadsheet
-        ticker={spreadsheetData?.sheetData?.name}
+      {spreadsheetData?.sheetData?.name && <Spreadsheet
+        ticker={convertHyphenTickerToDot(spreadsheetData?.sheetData?.name)}
         isSaving={isSaving}
         onSaveEvent={handleSave}
         spreadsheetToRestore={spreadsheetData}
         disableSetQueryParams={true}
-      />
+      />}
       {isLoaded && (
         <Section sx={{ display: "flex", mt: 2 }}>
           <Box
