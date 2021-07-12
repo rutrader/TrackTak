@@ -10,6 +10,7 @@ import { Box, Container } from "@material-ui/core";
 import Footer from "../landingPage/Footer";
 import TestimonialsSection from "../landingPage/TestimonialsSection";
 import OurTeamSection from "../landingPage/OurTeamSection";
+import VideoSection from "../landingPage/VideoSection";
 
 const Section = ({ sx, ...props }) => {
   return (
@@ -38,6 +39,9 @@ const Home = () => {
         <SearchSection />
       </Section>
       <Container maxWidth="lg">
+        <Section>
+          <VideoSection />
+        </Section>
         <Section>
           <FeaturesSection />
         </Section>
