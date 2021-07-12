@@ -2,8 +2,12 @@ import { Container, useTheme } from "@material-ui/core";
 import React from "react";
 import Header from "../components/Header";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useAuth } from "../hooks/useAuth";
+import { getHeaderLinks } from "../shared/getHeaderLinks";
 
 const LayoutFullScreen = ({ children }) => {
+  const { isAuthenticated } = useAuth();
+  const links = getHeaderLinks(isAuthenticated);
   const theme = useTheme();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   let padding;
@@ -22,7 +26,7 @@ const LayoutFullScreen = ({ children }) => {
       }}
       maxWidth={false}
     >
-      <Header position="relative" />
+      <Header position="relative" links={links} />
       {children}
     </Container>
   );

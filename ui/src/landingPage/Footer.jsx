@@ -4,6 +4,8 @@ import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import RedditIcon from "@material-ui/icons/Reddit";
 import dayjs from "dayjs";
 import TracktakLogoSvg from "../icons/tracktak-purple.svg";
+import { landingPageLinks } from "../shared/getHeaderLinks";
+import { Link as RouterLink } from "gatsby";
 
 const iconStyles = { width: "45px", height: "45px" };
 
@@ -69,6 +71,17 @@ const Footer = () => {
           <Typography>
             <Link href="/cookie-policy">Cookie Policy</Link>
           </Typography>
+          {landingPageLinks.map((link, i) => (
+            <Typography key={link.to}>
+              <Link
+                component={RouterLink}
+                to={link.to}
+                sx={{ m: i === 0 ? 2 : 0 }}
+              >
+                {link.text}
+              </Link>
+            </Typography>
+          ))}
         </Box>
       </Box>
     </>
