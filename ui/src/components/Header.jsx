@@ -16,28 +16,6 @@ import TracktakLogo from "./TracktakLogo";
 import { useAuth } from "../hooks/useAuth";
 import featureToggle from "../shared/featureToggle";
 
-const getRightLinks = (isAuthenticated) => {
-  const links = [
-    { to: "/how-to-do-a-dcf", text: "Documentation" },
-    { to: "/blogs", text: "Blogs" },
-    { to: "/stock-valuations", text: "Valuations" },
-    { to: "/contact-us", text: "Contact" },
-    {
-      to: "/about-us",
-      text: "About us",
-    },
-  ];
-
-  if (featureToggle.AUTHENTICATION && !isAuthenticated) {
-    links.push({
-      to: "/sign-in",
-      text: "Sign in",
-    });
-  }
-
-  return links;
-};
-
 const buttonStyle = {
   textTransform: "none",
   fontWeight: "bold",
@@ -76,7 +54,7 @@ const HeaderLink = ({ to, text, style, isSignOut = false }) => {
   );
 };
 
-const Header = ({ hideSearch, position = "fixed" }) => {
+const Header = ({ hideSearch, position = "fixed", links }) => {
   const theme = useTheme();
   const extraPadding = 20;
   const paddingBottom = `${theme.mixins.toolbar.minHeight + extraPadding}px`;
@@ -199,7 +177,7 @@ const Header = ({ hideSearch, position = "fixed" }) => {
             </Box>
             <Hidden mdDown implementation="css">
               <Box sx={{ display: "flex" }}>
-                {getRightLinks(isAuthenticated).map((link, i) => (
+                {links.map((link, i) => (
                   <HeaderLink
                     key={link.to}
                     sx={{ ml: i === 0 ? 2 : 0 }}
@@ -237,7 +215,7 @@ const Header = ({ hideSearch, position = "fixed" }) => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  {getRightLinks(isAuthenticated).map((link) => (
+                  {links.map((link) => (
                     <MenuItem
                       key={link.to}
                       to={link.to}
