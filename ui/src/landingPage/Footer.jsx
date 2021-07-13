@@ -65,6 +65,7 @@ const Footer = () => {
           sx={{
             display: "flex",
             justifyContent: "center",
+            gap: "20px",
             mt: 2,
             flexWrap: "wrap",
           }}
@@ -72,13 +73,9 @@ const Footer = () => {
           <Typography>
             <Link href="/cookie-policy">Cookie Policy</Link>
           </Typography>
-          {landingPageLinks.map((link, i) => (
+          {landingPageLinks.map((link) => (
             <Typography key={link.to}>
-              <Link
-                component={RouterLink}
-                to={link.to}
-                sx={{ m: i === 0 ? 2 : 0 }}
-              >
+              <Link component={RouterLink} to={link.to}>
                 {link.text}
               </Link>
             </Typography>
