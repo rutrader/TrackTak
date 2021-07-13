@@ -171,7 +171,9 @@ export const getSheet = (
   };
 
   const deleteCellText = () => {
-    handleInsertDeleting(() => getData().deleteCell("text"))();
+    handleInsertDeleting(() =>
+      getData().deleteCell(getData().rows.deleteCellsText),
+    )();
 
     const cell = getData().getSelectedCell();
     const { ri, ci } = rangeSelector.getIndexes();
@@ -189,7 +191,9 @@ export const getSheet = (
   };
 
   const deleteCellFormat = () => {
-    handleInsertDeleting(() => getData().deleteCell("format"))();
+    handleInsertDeleting(() =>
+      getData().deleteCell(getData().rows.deleteCellsFormat),
+    )();
   };
 
   eventEmitter.on(

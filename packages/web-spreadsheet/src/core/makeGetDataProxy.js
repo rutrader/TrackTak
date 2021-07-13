@@ -390,21 +390,11 @@ export const makeGetDataProxy = (
   const merge = () => {
     if (isSingleSelected()) return;
     const [rn, cn] = rangeSelector.range.size();
-    // console.log('merge:', rn, cn);
+
     if (rn > 1 || cn > 1) {
       const { sri, sci } = rangeSelector.range;
       changeData(() => {
-        const newCell = rows.rows[sri].cells[sci];
-
-        rows.setCell(sri, sci, newCell);
-
-        newCell.merge = [rn - 1, cn - 1];
-
-        merges.add(rangeSelector.range);
-
-        rows.deleteCells(rangeSelector.range);
-
-        rows.setCell(sri, sci, newCell);
+        rows.merge(sri, sci, rn, cn);
       });
     }
   };
@@ -464,12 +454,9 @@ export const makeGetDataProxy = (
     });
   };
 
-  const deleteCell = (what = "all") => {
+  const deleteCell = (deleteFunc) => {
     changeData(() => {
-      rows.deleteCells(rangeSelector.range, what);
-      if (what === "all" || what === "format") {
-        merges.deleteWithin(rangeSelector.range);
-      }
+      deleteFunc(rangeSelector.range);
     });
   };
 
