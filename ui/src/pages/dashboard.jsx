@@ -76,7 +76,7 @@ const Dashboard = () => {
                 }}
                 onClick={handleShowSearchTickerDialog}
               >
-                <AddIcon fontSize="large" />
+                <AddIcon style={{ color: "white" }} fontSize="large" />
               </IconButton>
             }
           >

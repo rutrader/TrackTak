@@ -48,9 +48,10 @@ const SavedSpreadsheets = ({ onNewValuationClick }) => {
 
   const handleDeleteConfirm = async () => {
     if (selectedValuation) {
+      const token = await getAccessToken();
       const response = await deleteValuation(
         selectedValuation._id,
-        session?.getAccessToken()?.jwtToken,
+        token?.jwtToken,
       );
       if (response.status === 200) {
         const updatedValuations = valuations.filter(
