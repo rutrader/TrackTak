@@ -380,7 +380,7 @@ const Spreadsheet = ({
   }, [isOnMobile, spreadsheet]);
 
   useEffect(() => {
-    if (spreadsheet && !spreadsheetToRestore) {
+    if (spreadsheet && isEmpty(spreadsheetToRestore.sheetData.data)) {
       const { datas } = spreadsheet.getDatas();
 
       spreadsheet.variablesSpreadsheet.setVariableDatasheets([
