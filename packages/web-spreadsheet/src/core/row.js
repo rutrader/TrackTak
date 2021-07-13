@@ -1,15 +1,16 @@
 import helper from "./helper";
 import convertIndexesToAmount from "../shared/convertIndexesToAmount";
+import CellRange from "./cell_range";
 
 class Rows {
-  constructor(getRow, getDataProxy, hyperformula) {
+  constructor(merges, rangeSelector, getRow, getDataProxy, hyperformula) {
+    this.merges = merges;
+    this.rangeSelector = rangeSelector;
     this.rows = {};
     this.len = getRow().len;
     this.getDataProxy = getDataProxy;
-    // default row height
     this.height = getRow().height;
     this.indexHeight = getRow().indexHeight;
-
     this.hyperformula = hyperformula;
   }
 
@@ -109,85 +110,128 @@ class Rows {
     };
   }
 
-  // what: all | text | format
-  pasteCell(ri, ci, cell, what = "all") {
-    const row = this.get(ri);
+  setCellText(ri, ci, text) {
+    const cell = this.getCellOrNew(ri, ci);
 
-    const paste = () => {
-      this.hyperformula.paste({
-        col: ci,
-        row: ri,
-        sheet: this.getDataProxy().getSheetId(),
-      });
-    };
+    if (cell.editable === false) return;
 
-    if (what === "all") {
-      row.cells[ci] = cell;
-      paste();
-    } else if (what === "text") {
-      paste();
-    } else if (what === "format") {
-      row.cells[ci] = row.cells[ci] || {};
-      row.cells[ci].style = cell.style;
-
-      if (cell.merge) {
-        row.cells[ci].merge = cell.merge;
-      }
-    }
-  }
-
-  _setCellText = (ri, ci, text) => {
     let newText = text;
 
     this.hyperformula.setCellContents(
       { col: ci, row: ri, sheet: this.getDataProxy().getSheetId() },
       [[newText]],
     );
-  };
-
-  setCellText(ri, ci, text) {
-    const cell = this.getCellOrNew(ri, ci);
-    if (cell.editable === false) return;
-
-    this._setCellText(ri, ci, text);
   }
 
-  // what: all | format | text
-  copyPaste(srcCellRange, dstCellRange, what, autofill = false, cb = () => {}) {
-    const { sri, sci, eri, eci } = srcCellRange;
-    const dsri = dstCellRange.sri;
-    const dsci = dstCellRange.sci;
-    const deri = dstCellRange.eri;
-    const deci = dstCellRange.eci;
+  loopThroughCellsInSrcDstRange = (srcCellRange, dstCellRange, callback) => {
     const [rn, cn] = srcCellRange.size();
-    const [drn, dcn] = dstCellRange.size();
 
-    let isAdd = true;
-    let dn = 0;
-    if (deri < sri || deci < sci) {
-      isAdd = false;
-      if (deri < sri) dn = drn;
-      else dn = dcn;
-    }
-    for (let i = sri; i <= eri; i += 1) {
-      if (this.rows[i]) {
-        for (let j = sci; j <= eci; j += 1) {
-          if (this.rows[i].cells && this.rows[i].cells[j]) {
-            for (let ii = dsri; ii <= deri; ii += rn) {
-              for (let jj = dsci; jj <= deci; jj += cn) {
-                const nri = ii + (i - sri);
-                const nci = jj + (j - sci);
-                const ncell = helper.cloneDeep(this.rows[i].cells[j]);
-
-                this.pasteCell(nri, nci, ncell, what);
-                cb(nri, nci, ncell);
-              }
-            }
+    for (let ssri = srcCellRange.sri; ssri <= srcCellRange.eri; ssri++) {
+      for (let ssci = srcCellRange.sci; ssci <= srcCellRange.eci; ssci++) {
+        for (
+          let dsri = dstCellRange.sri;
+          dsri <= dstCellRange.eri;
+          dsri += rn
+        ) {
+          for (
+            let dsci = dstCellRange.sci;
+            dsci <= dstCellRange.eci;
+            dsci += cn
+          ) {
+            callback({
+              newRi: dsri + (ssri - srcCellRange.sri),
+              newCi: dsci + (ssci - srcCellRange.sci),
+              sri: ssri,
+              sci: ssci,
+            });
           }
         }
       }
     }
-  }
+  };
+
+  addMergesToCell = (sri, sci, newRi, newCi) => {
+    const sourceCell = this.rows[sri].cells[sci];
+    const destCell = this.rows[newRi].cells[newCi];
+
+    if (sourceCell.merge) {
+      destCell.merge = sourceCell.merge;
+
+      const [rn, cn] = destCell.merge;
+
+      if (rn <= 0 && cn <= 0) return;
+
+      this.merges.add(new CellRange(newRi, newCi, newRi + rn, newCi + cn));
+    }
+  };
+
+  copyPasteAll = (srcCellRange, dstCellRange) => {
+    // TODO: Paste range not supported yet
+    // https://github.com/handsontable/hyperformula/discussions/763
+    this.copyPasteText(srcCellRange, dstCellRange);
+    this.deleteCells(dstCellRange, "all");
+    this.merges.deleteWithin(dstCellRange);
+
+    this.loopThroughCellsInSrcDstRange(
+      srcCellRange,
+      dstCellRange,
+      ({ sri, sci, newRi, newCi }) => {
+        this.rows[newRi].cells[newCi] = this.rows[sri].cells[sci];
+
+        this.addMergesToCell(sri, sci, newRi, newCi);
+      },
+    );
+  };
+
+  copyPasteFormat = (srcCellRange, dstCellRange) => {
+    this.merges.deleteWithin(dstCellRange);
+    this.deleteCells(dstCellRange, "format");
+
+    this.loopThroughCellsInSrcDstRange(
+      srcCellRange,
+      dstCellRange,
+      ({ sri, sci, newRi, newCi }) => {
+        const sourceCell = this.rows[sri].cells[sci];
+        const destCell = this.rows[newRi].cells[newCi];
+
+        destCell.style = sourceCell.style;
+
+        this.addMergesToCell(sri, sci, newRi, newCi);
+      },
+    );
+  };
+
+  copyPasteText = (srcCellRange, dstCellRange) => {
+    const source = {
+      start: {
+        row: srcCellRange.sri,
+        col: srcCellRange.sci,
+        sheet: this.getDataProxy().getSheetId(),
+      },
+      end: {
+        row: srcCellRange.eri,
+        col: srcCellRange.eci,
+        sheet: this.getDataProxy().getSheetId(),
+      },
+    };
+
+    const target = {
+      start: {
+        row: dstCellRange.sri,
+        col: dstCellRange.sci,
+        sheet: this.getDataProxy().getSheetId(),
+      },
+      end: {
+        row: dstCellRange.eri,
+        col: dstCellRange.eci,
+        sheet: this.getDataProxy().getSheetId(),
+      },
+    };
+
+    const data = this.hyperformula.getFillRangeData(source, target);
+
+    this.hyperformula.setCellContents(target.start, data);
+  };
 
   cutPaste(srcCellRange, dstCellRange) {
     this.hyperformula.paste({
@@ -196,34 +240,15 @@ class Rows {
       sheet: this.getDataProxy().getSheetId(),
     });
 
-    const ncellmm = {};
+    this.loopThroughCellsInSrcDstRange(
+      srcCellRange,
+      dstCellRange,
+      ({ sri, sci, newRi, newCi }) => {
+        this.rows[newRi].cells[newCi] = this.rows[sri].cells[sci];
 
-    Object.keys(this.rows ?? {}).forEach((ri) => {
-      Object.keys(this.rows[ri]?.cells ?? {}).forEach((ci) => {
-        let nri = parseInt(ri, 10);
-        let nci = parseInt(ci, 10);
-        if (srcCellRange.includes(ri, ci)) {
-          nri = dstCellRange.sri + (nri - srcCellRange.sri);
-          nci = dstCellRange.sci + (nci - srcCellRange.sci);
-        }
-        ncellmm[nri] = ncellmm[nri] || { cells: {} };
-        ncellmm[nri].cells[nci] = this.rows[ri].cells[ci];
-      });
-    });
-    this.rows = ncellmm;
-  }
-
-  // src: Array<Array<String>>
-  paste(src, dstCellRange) {
-    if (src.length <= 0) return;
-    const { sri, sci } = dstCellRange;
-    src.forEach((row, i) => {
-      const ri = sri + i;
-      row.forEach((cell, j) => {
-        const ci = sci + j;
-        this.setCellText(ri, ci, cell);
-      });
-    });
+        delete this.rows[sri].cells[sci];
+      },
+    );
   }
 
   insert(sri, n = 1) {
@@ -264,14 +289,18 @@ class Rows {
     ]);
   }
 
-  // what: all | text | format | merge
+  unmerge = (ri, ci) => {
+    delete this.rows[ri].cells[ci].merge;
+
+    this.merges.deleteWithin(this.rangeSelector.range);
+  };
+
   deleteCells(cellRange, what = "all") {
     cellRange.each((i, j) => {
       this.deleteCell(i, j, what);
     });
   }
 
-  // what: all | text | format | merge
   deleteCell(ri, ci, what = "all") {
     const row = this.get(ri);
     if (row) {

@@ -169,6 +169,7 @@ export const buildSpreadsheet = (
   );
 
   const dataProxyBuilder = buildDataProxy(
+    rangeSelector,
     getOptions,
     getFocusedData,
     hyperformula,
@@ -248,13 +249,15 @@ export const buildSpreadsheet = (
   bind(window, "paste", (evt) => {
     evt.preventDefault();
 
+    const paste = getFocusedData().rows.copyPasteAll;
+
     if (sheet?.getLastFocused()) {
-      sheet.paste("all", evt);
+      sheet.paste(paste);
 
       return;
     }
 
-    variablesSpreadsheet.sheet.paste("all", evt);
+    variablesSpreadsheet.sheet.paste(paste);
   });
 
   return {

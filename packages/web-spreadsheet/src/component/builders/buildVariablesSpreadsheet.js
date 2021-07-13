@@ -87,6 +87,7 @@ export const buildVariablesSpreadsheet = (
   );
 
   const dataProxyBuilder = buildDataProxy(
+    rangeSelector,
     getOptions,
     getFocusedData,
     hyperformula,

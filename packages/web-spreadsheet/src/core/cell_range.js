@@ -34,6 +34,14 @@ class CellRange {
     return sri <= ri && ri <= eri && sci <= ci && ci <= eci;
   }
 
+  loopWithinRange(callback) {
+    for (let ri = this.sri; ri <= this.eri; ri++) {
+      for (let ci = this.sci; ci <= this.eci; ci++) {
+        callback(ri, ci);
+      }
+    }
+  }
+
   each(cb, rowFilter = () => true) {
     const { sri, sci, eri, eci } = this;
     for (let i = sri; i <= eri; i += 1) {

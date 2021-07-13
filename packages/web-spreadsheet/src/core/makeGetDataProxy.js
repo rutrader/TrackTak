@@ -66,21 +66,16 @@ export const makeGetDataProxy = (
     clipboard.cut(rangeSelector.range);
   };
 
-  // what: all | text | format
-  const paste = (what = "all", error = () => {}) => {
-    // console.log('sIndexes:', sIndexes);
-    if (clipboard.isClear()) return false;
-    if (!canPaste(clipboard.getRange(), rangeSelector.range, error))
-      return false;
+  const paste = (copyPasteFunc) => {
+    if (clipboard.isClear()) return;
 
     changeData(() => {
       if (clipboard.isCopy()) {
-        copyPaste(clipboard.getRange(), rangeSelector.range, what);
+        copyPasteFunc(clipboard.getRange(), rangeSelector.range);
       } else if (clipboard.isCut()) {
         cutPaste(clipboard.getRange(), rangeSelector.range);
       }
     });
-    return true;
   };
 
   const pasteFromSystemClipboard = () => {
@@ -140,7 +135,7 @@ export const makeGetDataProxy = (
     const srcRange = rangeSelector.range;
     if (!canPaste(srcRange, cellRange, error)) return false;
     changeData(() => {
-      copyPaste(srcRange, cellRange, what, true);
+      // copyPaste(srcRange, cellRange, what, true);
     });
     return true;
   };
@@ -372,7 +367,7 @@ export const makeGetDataProxy = (
     };
   };
 
-  const isSignleSelected = () => {
+  const isSingleSelected = () => {
     const { sri, sci, eri, eci } = rangeSelector.range;
     const cell = getCell(sri, sci);
     if (cell && cell.merge) {
@@ -393,19 +388,20 @@ export const makeGetDataProxy = (
   };
 
   const merge = () => {
-    if (isSignleSelected()) return;
+    if (isSingleSelected()) return;
     const [rn, cn] = rangeSelector.range.size();
     // console.log('merge:', rn, cn);
     if (rn > 1 || cn > 1) {
       const { sri, sci } = rangeSelector.range;
       changeData(() => {
-        const newCell = {
-          merge: [rn - 1, cn - 1],
-        };
+        const newCell = rows.rows[sri].cells[sci];
 
         rows.setCell(sri, sci, newCell);
+
+        newCell.merge = [rn - 1, cn - 1];
+
         merges.add(rangeSelector.range);
-        // delete merge cells
+
         rows.deleteCells(rangeSelector.range);
 
         rows.setCell(sri, sci, newCell);
@@ -414,11 +410,10 @@ export const makeGetDataProxy = (
   };
 
   const unmerge = () => {
-    if (!isSignleSelected()) return;
+    if (!isSingleSelected()) return;
     const { sri, sci } = rangeSelector.range;
     changeData(() => {
-      rows.deleteCell(sri, sci, "merge");
-      merges.deleteWithin(rangeSelector.range);
+      rows.unmerge(sri, sci);
     });
   };
 
@@ -906,27 +901,6 @@ export const makeGetDataProxy = (
     }
     return true;
   }
-  function copyPaste(srcCellRange, dstCellRange, what, autofill = false) {
-    // delete dest merge
-    if (what === "all" || what === "format") {
-      rows.deleteCells(dstCellRange, what);
-      merges.deleteWithin(dstCellRange);
-    }
-    rows.copyPaste(
-      srcCellRange,
-      dstCellRange,
-      what,
-      autofill,
-      (ri, ci, cell) => {
-        if (cell && cell.merge) {
-          // console.log('cell:', ri, ci, cell);
-          const [rn, cn] = cell.merge;
-          if (rn <= 0 && cn <= 0) return;
-          merges.add(new CellRange(ri, ci, ri + rn, ci + cn));
-        }
-      },
-    );
-  }
 
   function cutPaste(srcCellRange, dstCellRange) {
     rows.cutPaste(srcCellRange, dstCellRange);
@@ -951,7 +925,7 @@ export const makeGetDataProxy = (
 
   function setStyleBorders({ mode, style, color }) {
     const { sri, sci, eri, eci } = rangeSelector.range;
-    const multiple = !isSignleSelected();
+    const multiple = !isSingleSelected();
     if (!multiple) {
       if (mode === "inside" || mode === "horizontal" || mode === "vertical") {
         return;
@@ -1141,7 +1115,6 @@ export const makeGetDataProxy = (
     clearClipboard,
     copy,
     cut,
-    paste,
     parseClipboardContent,
     pasteFromSystemClipboard,
     pasteFromText,
@@ -1159,6 +1132,7 @@ export const makeGetDataProxy = (
     deleteData,
     deleteCell,
     setSelectedCellAttr,
+    paste,
     setAutoFilter,
     xyInSelectedRect,
     addValidation,

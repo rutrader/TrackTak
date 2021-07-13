@@ -4714,12 +4714,10 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
     ...data.serializedValues[14],
     null,
     null,
-    null,
     ...overview[6],
   ];
   data.serializedValues[15] = [
     ...data.serializedValues[15],
-    null,
     null,
     null,
     ...overview[7],

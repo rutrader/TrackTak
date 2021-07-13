@@ -140,20 +140,26 @@ export const getSheet = (
   });
 
   eventEmitter.on(spreadsheetEvents.rightClickMenu.paste, () => {
-    paste("all");
+    paste(getData().rows.copyPaste);
   });
 
   eventEmitter.on(spreadsheetEvents.rightClickMenu.pasteValue, () => {
-    paste("text");
+    paste(getData().rows.copyPasteText);
   });
 
   eventEmitter.on(spreadsheetEvents.rightClickMenu.pasteFormat, () => {
-    paste("format");
+    paste(getData().rows.copyPasteFormat);
   });
 
   eventEmitter.on(spreadsheetEvents.rightClickMenu.hide, () => {
     hideRowsOrCols();
   });
+
+  const paste = (copyPasteFunc) => {
+    getData().paste(copyPasteFunc);
+
+    sheetReset();
+  };
 
   const handleInsertDeleting = (callback) => () => {
     if (getOptions().mode === "read") return;
@@ -247,7 +253,7 @@ export const getSheet = (
 
   const toolbarChangePaintformatPaste = () => {
     if (toolbar.paintformatActive()) {
-      paste("format");
+      // paste("format");
       clearClipboard();
       toolbar.paintformatToggle();
     }
@@ -734,22 +740,22 @@ export const getSheet = (
     selector.showClipboard();
   }
 
-  function paste(what, evt) {
-    if (getOptions().mode === "read") return;
-    if (clipboard.isClear()) {
-      getData()
-        .pasteFromSystemClipboard()
-        .then(() => {
-          sheetReset();
-        });
-    } else if (getData().paste(what, (msg) => xtoast("Tip", msg))) {
-      sheetReset();
-    } else if (evt) {
-      const cdata = evt.clipboardData.getData("text/plain");
-      getData().pasteFromText(cdata);
-      sheetReset();
-    }
-  }
+  // function paste(what, evt) {
+  //   if (getOptions().mode === "read") return;
+  //   if (clipboard.isClear()) {
+  //     getData()
+  //       .pasteFromSystemClipboard()
+  //       .then(() => {
+  //         sheetReset();
+  //       });
+  //   } else if (getData().paste(what, (msg) => xtoast("Tip", msg))) {
+  //     sheetReset();
+  //   } else if (evt) {
+  //     const cdata = evt.clipboardData.getData("text/plain");
+  //     getData().pasteFromText(cdata);
+  //     sheetReset();
+  //   }
+  // }
 
   function hideRowsOrCols() {
     getData().hideRowsOrCols();
@@ -1108,17 +1114,12 @@ export const getSheet = (
       clickWindow(evt);
     });
 
-    // for selector
     bind(window, "keydown", (evt) => {
       if (!focusing) return;
       const keyCode = evt.keyCode || evt.which;
-      const { key, ctrlKey, shiftKey, metaKey } = evt;
-      // console.log('keydown.evt: ', keyCode);
+      const { key, ctrlKey, shiftKey, metaKey, altKey } = evt;
+
       if (ctrlKey || metaKey) {
-        // const { sIndexes, eIndexes } = selector;
-        // let what = 'all';
-        // if (shiftKey) what = 'text';
-        // if (altKey) what = 'format';
         switch (keyCode) {
           case 90:
             // undo: ctrl + z
@@ -1147,8 +1148,15 @@ export const getSheet = (
             break;
           case 86:
             // ctrl + v
-            // => paste
-            // evt.preventDefault();
+            if (shiftKey) {
+              paste(getData().rows.copyPasteText);
+            } else if (altKey) {
+              paste(getData().rows.copyPasteFormat);
+            } else {
+              paste(getData().rows.copyPasteAll);
+            }
+
+            evt.preventDefault();
             break;
           case 37:
             // ctrl + left
