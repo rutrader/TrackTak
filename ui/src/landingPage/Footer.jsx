@@ -66,6 +66,7 @@ const Footer = () => {
             display: "flex",
             justifyContent: "center",
             mt: 2,
+            flexWrap: "wrap",
           }}
         >
           <Typography>
