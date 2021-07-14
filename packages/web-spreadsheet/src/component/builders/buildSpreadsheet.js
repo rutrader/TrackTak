@@ -20,6 +20,7 @@ import { getFormulaBar } from "../editor/getFormulaBar";
 import { getFormulaSuggestions } from "../../shared/getFormulaSuggestions";
 import Manager from "undo-redo-manager";
 import { bind } from "../event";
+import Save from "../save/Save";
 
 export const buildSpreadsheet = (
   rootEl,
@@ -94,12 +95,23 @@ export const buildSpreadsheet = (
     };
   };
 
-  modifyEventEmitter(
-    eventEmitter,
-    getOptions().debugMode,
-    "spreadsheet",
-    getDatas,
-  );
+  const history = new Manager(({ type, name, data }) => {
+    let currentData;
+    let currentSheet = type === "main" ? sheet : variablesSpreadsheet.sheet;
+
+    currentData = currentSheet.getData().getData();
+    currentSheet.getData().setData(data);
+
+    return {
+      type,
+      name,
+      data: currentData,
+    };
+  }, 20);
+
+  const save = new Save(history, globalEventEmitter, getDatas);
+
+  modifyEventEmitter(eventEmitter, getOptions().debugMode, "spreadsheet");
 
   eventEmitter.on(spreadsheetEvents.sheet.switchData, (data) => {
     newData = data;
@@ -127,21 +139,6 @@ export const buildSpreadsheet = (
     getViewWidthHeight,
   );
 
-  const history = new Manager(({ type, data }) => {
-    let currentData;
-    let currentSheet = type === "main" ? sheet : variablesSpreadsheet.sheet;
-
-    currentData = currentSheet.getData().getData();
-    currentSheet.getData().setData(data);
-
-    currentSheet.sheetReset();
-    sheet.sheetReset();
-
-    return {
-      type,
-      data: currentData,
-    };
-  }, 20);
   const toolbar = getToolbar(
     getOptions,
     getFocusedData,
@@ -159,13 +156,16 @@ export const buildSpreadsheet = (
     globalEventEmitter,
   );
 
+  const mainSheetType = "main";
+
   const sheetBuilder = buildSheet(
+    mainSheetType,
+    save,
     getOptions,
     getData,
     rangeSelector,
     eventEmitter,
     getViewWidthHeight,
-    hyperformula,
   );
 
   const dataProxyBuilder = buildDataProxy(
@@ -176,7 +176,8 @@ export const buildSpreadsheet = (
   );
 
   const getDataProxy = makeGetDataProxy(
-    "main",
+    mainSheetType,
+    save,
     rangeSelector,
     clipboard,
     dataProxyBuilder,
@@ -190,7 +191,9 @@ export const buildSpreadsheet = (
   const print = getPrint(rootEl, getData);
 
   const { sheet } = getSheet(
+    mainSheetType,
     toolbar,
+    save,
     rangeSelector,
     clipboard,
     history,
@@ -212,6 +215,7 @@ export const buildSpreadsheet = (
 
   const variablesSpreadsheet = buildVariablesSpreadsheet(
     variablesEventEmitter,
+    save,
     getFocusedData,
     toolbar,
     rangeSelector,
@@ -223,7 +227,6 @@ export const buildSpreadsheet = (
     rootEl,
     variablesSpreadsheetOptions,
     hyperformula,
-    getDatas,
   );
 
   const draw = getDraw(

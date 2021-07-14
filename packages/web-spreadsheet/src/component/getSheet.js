@@ -27,7 +27,9 @@ function throttle(func, wait) {
 }
 
 export const getSheet = (
+  sheetType,
   toolbar,
+  save,
   rangeSelector,
   clipboard,
   history,
@@ -59,6 +61,14 @@ export const getSheet = (
     overlayerEl,
   } = builder();
   let datas = [];
+
+  const persistDataChange = (callback) =>
+    save.persistDataChange(
+      sheetType,
+      getData().name,
+      getData().getData(),
+      callback,
+    );
 
   const getDatas = () => {
     return datas;
@@ -156,9 +166,20 @@ export const getSheet = (
   });
 
   const paste = (copyPasteFunc) => {
-    getData().paste(copyPasteFunc);
+    if (getOptions().mode === "read") return;
 
-    sheetReset();
+    if (clipboard.isClear()) {
+      getData()
+        .pasteFromSystemClipboard()
+        .then(() => {
+          sheetReset();
+        });
+    } else {
+      getData().paste(copyPasteFunc);
+
+      sheetReset();
+    }
+    clearClipboard();
   };
 
   const handleInsertDeleting = (callback) => () => {
@@ -286,7 +307,7 @@ export const getSheet = (
       // filter
       autofilter();
     } else if (type === "formula") {
-      getData().changeData(() => {
+      persistDataChange(() => {
         setOptions({
           showAllFormulas: value,
           showYOYGrowth: getOptions().showYOYGrowth
@@ -296,7 +317,7 @@ export const getSheet = (
         toolbar.reset();
       });
     } else if (type === "yoyGrowth") {
-      getData().changeData(() => {
+      persistDataChange(() => {
         setOptions({
           showYOYGrowth: value,
           showAllFormulas: getOptions().showAllFormulas
@@ -349,29 +370,16 @@ export const getSheet = (
       addDataProxy("sheet1");
     }
 
-    dataSheets.forEach((dataSheet) => {
-      let data;
-
-      data = addDataProxy(dataSheet.name);
-      data.setData(dataSheet);
-    });
-
     // Some sheets have to be added before others for hyperformula
     // if they are depended on. Can also use rebuildAndRecalculate()
     // but that has a performance hit.
     dataSheets
       .sort((x) => x.calculationOrder)
       .forEach((dataSheet) => {
-        const sheetId = hyperformula.getSheetId(dataSheet.name);
+        let data;
 
-        hyperformula.setSheetContent(sheetId, dataSheet.serializedValues);
-
-        if (getOptions().debugMode) {
-          console.log(
-            `registered sheet content: ${dataSheet.name} (sheet id: ${sheetId})`,
-            hyperformula.getSheetFormulas(sheetId),
-          );
-        }
+        data = addDataProxy(dataSheet.name);
+        data.setData(dataSheet);
       });
 
     eventEmitter.emit(spreadsheetEvents.sheet.setDatasheets, dataSheets);
@@ -409,15 +417,23 @@ export const getSheet = (
     sheetReset();
   };
 
+  // TODO: Cannot use hyperformula undo/redo due to syncing issues
+  // Raise this with them
   const undo = () => {
-    hyperformula.undo();
+    if (!history.canUndo) return;
+
     history.undo();
+
+    sheetReset();
     toolbar.reset();
   };
 
   const redo = () => {
-    hyperformula.redo();
+    if (!history.canRedo) return;
+
     history.redo();
+
+    sheetReset();
     toolbar.reset();
   };
 
@@ -726,7 +742,7 @@ export const getSheet = (
   }
 
   function clearClipboard() {
-    getData().clearClipboard();
+    clipboard.clear();
     selector.hideClipboard();
   }
 
@@ -743,23 +759,6 @@ export const getSheet = (
     getData().cut();
     selector.showClipboard();
   }
-
-  // function paste(what, evt) {
-  //   if (getOptions().mode === "read") return;
-  //   if (clipboard.isClear()) {
-  //     getData()
-  //       .pasteFromSystemClipboard()
-  //       .then(() => {
-  //         sheetReset();
-  //       });
-  //   } else if (getData().paste(what, (msg) => xtoast("Tip", msg))) {
-  //     sheetReset();
-  //   } else if (evt) {
-  //     const cdata = evt.clipboardData.getData("text/plain");
-  //     getData().pasteFromText(cdata);
-  //     sheetReset();
-  //   }
-  // }
 
   function hideRowsOrCols() {
     getData().hideRowsOrCols();

@@ -20,6 +20,8 @@ const getSpreadsheet = (
   const hyperformula = HyperFormula.buildEmpty({
     licenseKey: hyperformulaLicenseKey,
     binarySearchThreshold: 1,
+    // We use our own undo/redo instead
+    undoLimit: 0,
     ...hyperformulaConfig,
   });
 

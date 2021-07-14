@@ -15,6 +15,7 @@ import { h } from "../element";
 
 export const buildVariablesSpreadsheet = (
   eventEmitter,
+  save,
   getFocusedData,
   toolbar,
   rangeSelector,
@@ -26,7 +27,6 @@ export const buildVariablesSpreadsheet = (
   rootEl,
   options,
   hyperformula,
-  getDatas,
 ) => {
   let newData;
   let newOptions;
@@ -48,7 +48,6 @@ export const buildVariablesSpreadsheet = (
     eventEmitter,
     getOptions().debugMode,
     "variablesSpreadsheet",
-    getDatas,
   );
 
   const getViewWidthHeight = makeGetVariablesSheetViewWidthHeight(getOptions);
@@ -77,7 +76,11 @@ export const buildVariablesSpreadsheet = (
 
   table.setDraw(draw);
 
+  const variablesSheetType = "variables";
+
   const sheetBuilder = buildSheet(
+    variablesSheetType,
+    save,
     getOptions,
     getData,
     rangeSelector,
@@ -94,7 +97,8 @@ export const buildVariablesSpreadsheet = (
   );
 
   const getDataProxy = makeGetDataProxy(
-    "variables",
+    variablesSheetType,
+    save,
     rangeSelector,
     clipboard,
     dataProxyBuilder,
@@ -106,7 +110,9 @@ export const buildVariablesSpreadsheet = (
   );
 
   const { sheet } = getSheet(
+    variablesSheetType,
     toolbar,
+    save,
     rangeSelector,
     clipboard,
     history,
