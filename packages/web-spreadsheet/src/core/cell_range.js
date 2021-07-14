@@ -21,6 +21,23 @@ class CellRange {
     return this.eri - this.sri > 0 || this.eci - this.sci > 0;
   }
 
+  toHyperformulaFormat(sheet) {
+    const format = {
+      start: {
+        row: this.sri,
+        col: this.sci,
+        sheet,
+      },
+      end: {
+        row: this.eri,
+        col: this.eci,
+        sheet,
+      },
+    };
+
+    return format;
+  }
+
   // cell-index: ri, ci
   // cell-ref: A10
   includes(...args) {
@@ -32,6 +49,19 @@ class CellRange {
     }
     const { sri, sci, eri, eci } = this;
     return sri <= ri && ri <= eri && sci <= ci && ci <= eci;
+  }
+
+  loopWithinRange(callback) {
+    for (let ri = this.sri; ri <= this.eri; ri++) {
+      for (let ci = this.sci; ci <= this.eci; ci++) {
+        callback({
+          sri: this.sri,
+          sci: this.sci,
+          ri,
+          ci,
+        });
+      }
+    }
   }
 
   each(cb, rowFilter = () => true) {

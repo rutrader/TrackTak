@@ -6,13 +6,20 @@ import { Cols } from "../../core/col";
 import { Validations } from "../../core/validation";
 
 export const buildDataProxy = (
+  rangeSelector,
   getOptions,
   getFocusedData,
   hyperformula,
 ) => () => {
   // save object
   const merges = new Merges(); // [CellRange, ...]
-  const rows = new Rows(() => getOptions().row, getFocusedData, hyperformula);
+  const rows = new Rows(
+    merges,
+    rangeSelector,
+    () => getOptions().row,
+    getFocusedData,
+    hyperformula,
+  );
   const cols = new Cols(() => getOptions().col);
   const validations = new Validations();
 

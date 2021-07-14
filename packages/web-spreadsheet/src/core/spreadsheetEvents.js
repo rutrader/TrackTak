@@ -1,12 +1,6 @@
-import { merge } from "lodash-es";
 import menuItems from "../component/menuItems";
 
-export const saveEvents = {
-  bottombar: {
-    addSheet: "bb-addSheet",
-    updateSheet: "bb-updateSheet",
-    deleteSheet: "bb-deleteSheet",
-  },
+const spreadsheetEvents = {
   editor: {
     change: "e-change",
     clear: "e-clear",
@@ -16,6 +10,7 @@ export const saveEvents = {
     change: "fb-change",
     clear: "fb-clear",
     setText: "fb-setText",
+    click: "fb-click",
   },
   rowResizer: {
     finished: "rr-finished",
@@ -25,15 +20,19 @@ export const saveEvents = {
     finished: "cr-finished",
     unhide: "cr-unhide",
   },
-  data: {
-    change: "d-change",
-  },
   sheet: {
     cellEdited: "s-cellEdited",
     sheetReset: "s-sheetReset",
     addData: "s-addData",
     deleteData: "s-deleteData",
     setDatasheets: "s-setDatasheets",
+    cellSelected: "s-cellSelected",
+    cellsSelected: "s-cellsSelected",
+    mouseMoveUp: "s-mouseMoveUp",
+    ctrlKeyDown: "s-ctrlKeyDown",
+    clickOutside: "s-clickOutside",
+    switchData: "s-switchData",
+    cellEdit: "s-cellEdit",
   },
   toolbar: {
     alignChange: "tb-alignChange",
@@ -44,22 +43,16 @@ export const saveEvents = {
     fontSizeChange: "tb-fontSizeChange",
     formatChange: "tb-formatChange",
     functionSet: "tb-functionSet",
+    toggleItem: "tb-toggleItem",
+    clickIcon: "tb-clickIcon",
   },
-};
-
-export const saveEventsArray = Object.keys(saveEvents).flatMap((key) => {
-  const value = saveEvents[key];
-
-  const eventStrings = Object.values(value).map((x) => x);
-
-  return eventStrings;
-});
-
-const spreadsheetEvents = merge({}, saveEvents, {
   bottombar: {
     selectSheet: "bb-selectSheet",
     clickDropdownMore: "bb-clickDropdownMore",
     clickContextMenu: "bb-clickContextMenu",
+    addSheet: "bb-addSheet",
+    updateSheet: "bb-updateSheet",
+    deleteSheet: "bb-deleteSheet",
   },
   rightClickMenu: {
     ...menuItems.reduce((prev, curr) => {
@@ -73,29 +66,15 @@ const spreadsheetEvents = merge({}, saveEvents, {
       };
     }, {}),
   },
-  formulaBar: {
-    click: "fb-click",
-  },
   verticalScrollbar: {
     move: "vsb-move",
   },
   horizontalScrollbar: {
     move: "hsb-move",
   },
-  sheet: {
-    cellSelected: "s-cellSelected",
-    cellsSelected: "s-cellsSelected",
-    mouseMoveUp: "s-mouseMoveUp",
-    ctrlKeyDown: "s-ctrlKeyDown",
-    clickOutside: "s-clickOutside",
-    switchData: "s-switchData",
-    cellEdit: "s-cellEdit",
+  save: {
+    persistDataChange: "s-persist-data-change",
   },
-  toolbar: {
-    toggleItem: "tb-toggleItem",
-    clickIcon: "tb-clickIcon",
-  },
-  save: "saveSpreadsheet",
-});
+};
 
 export default spreadsheetEvents;

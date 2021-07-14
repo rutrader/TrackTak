@@ -21,7 +21,6 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
   const overview = [dates, ...incomeStatementOverview, ...balanceSheetOverview];
 
   const data = {
-    calculationOrder: 2,
     name: "DCF Valuation",
     freeze: "A1",
     styles: [
@@ -4184,7 +4183,7 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
         '=FIN("description")',
       ],
       ["Shares Outstanding", '=FIN("sharesOutstanding")'],
-      [],
+      [""],
       ["Industry Averages Overview"],
       ["Category", '=FIN("industryName")'],
       [
@@ -4202,9 +4201,9 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
       ["WACC", '=FIN("costOfCapital")'],
       ["Unlevered Beta", '=FIN("unleveredBeta")'],
       ["Levered Beta", '=FIN("equityLeveredBeta")'],
-      [],
-      [],
-      [],
+      [""],
+      [""],
+      [""],
       ["DCF Valuaton"],
       ["", "Base Year", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "Terminal Year"],
       [
@@ -4714,12 +4713,10 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
     ...data.serializedValues[14],
     null,
     null,
-    null,
     ...overview[6],
   ];
   data.serializedValues[15] = [
     ...data.serializedValues[15],
-    null,
     null,
     null,
     ...overview[7],

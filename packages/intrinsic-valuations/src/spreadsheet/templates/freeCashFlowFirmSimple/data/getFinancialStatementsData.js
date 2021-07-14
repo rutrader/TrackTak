@@ -19,10 +19,10 @@ const getFinancialStatementsData = ({
     dates,
     ["Income Statement"],
     ...getStatements(incomeStatements, incomeStatement),
-    [],
+    [""],
     ["Balance Sheet"],
     ...getStatements(balanceSheets, balanceSheet),
-    [],
+    [""],
     ["Cash Flow Statement"],
     ...getStatements(cashFlowStatements, cashFlowStatement),
   ];

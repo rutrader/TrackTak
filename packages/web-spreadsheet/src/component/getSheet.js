@@ -27,7 +27,9 @@ function throttle(func, wait) {
 }
 
 export const getSheet = (
+  sheetType,
   toolbar,
+  save,
   rangeSelector,
   clipboard,
   history,
@@ -59,6 +61,14 @@ export const getSheet = (
     overlayerEl,
   } = builder();
   let datas = [];
+
+  const persistDataChange = (callback) =>
+    save.persistDataChange(
+      sheetType,
+      getData().name,
+      getData().getData(),
+      callback,
+    );
 
   const getDatas = () => {
     return datas;
@@ -140,20 +150,37 @@ export const getSheet = (
   });
 
   eventEmitter.on(spreadsheetEvents.rightClickMenu.paste, () => {
-    paste("all");
+    paste(getData().rows.copyPaste);
   });
 
   eventEmitter.on(spreadsheetEvents.rightClickMenu.pasteValue, () => {
-    paste("text");
+    paste(getData().rows.copyPasteText);
   });
 
   eventEmitter.on(spreadsheetEvents.rightClickMenu.pasteFormat, () => {
-    paste("format");
+    paste(getData().rows.copyPasteFormat);
   });
 
   eventEmitter.on(spreadsheetEvents.rightClickMenu.hide, () => {
     hideRowsOrCols();
   });
+
+  const paste = (copyPasteFunc) => {
+    if (getOptions().mode === "read") return;
+
+    if (clipboard.isClear()) {
+      getData()
+        .pasteFromSystemClipboard()
+        .then(() => {
+          sheetReset();
+        });
+    } else {
+      getData().paste(copyPasteFunc);
+
+      sheetReset();
+    }
+    clearClipboard();
+  };
 
   const handleInsertDeleting = (callback) => () => {
     if (getOptions().mode === "read") return;
@@ -165,7 +192,9 @@ export const getSheet = (
   };
 
   const deleteCellText = () => {
-    handleInsertDeleting(() => getData().deleteCell("text"))();
+    handleInsertDeleting(() =>
+      getData().deleteCell(getData().rows.deleteCellsText),
+    )();
 
     const cell = getData().getSelectedCell();
     const { ri, ci } = rangeSelector.getIndexes();
@@ -183,7 +212,9 @@ export const getSheet = (
   };
 
   const deleteCellFormat = () => {
-    handleInsertDeleting(() => getData().deleteCell("format"))();
+    handleInsertDeleting(() =>
+      getData().deleteCell(getData().rows.deleteCellsFormat),
+    )();
   };
 
   eventEmitter.on(
@@ -247,7 +278,7 @@ export const getSheet = (
 
   const toolbarChangePaintformatPaste = () => {
     if (toolbar.paintformatActive()) {
-      paste("format");
+      // paste("format");
       clearClipboard();
       toolbar.paintformatToggle();
     }
@@ -276,7 +307,7 @@ export const getSheet = (
       // filter
       autofilter();
     } else if (type === "formula") {
-      getData().changeData(() => {
+      persistDataChange(() => {
         setOptions({
           showAllFormulas: value,
           showYOYGrowth: getOptions().showYOYGrowth
@@ -286,7 +317,7 @@ export const getSheet = (
         toolbar.reset();
       });
     } else if (type === "yoyGrowth") {
-      getData().changeData(() => {
+      persistDataChange(() => {
         setOptions({
           showYOYGrowth: value,
           showAllFormulas: getOptions().showAllFormulas
@@ -339,6 +370,9 @@ export const getSheet = (
       addDataProxy("sheet1");
     }
 
+    // Some sheets have to be added before others for hyperformula
+    // if they are depended on. Can also use rebuildAndRecalculate()
+    // but that has a performance hit.
     dataSheets.forEach((dataSheet) => {
       let data;
 
@@ -346,23 +380,7 @@ export const getSheet = (
       data.setData(dataSheet);
     });
 
-    // Some sheets have to be added before others for hyperformula
-    // if they are depended on. Can also use rebuildAndRecalculate()
-    // but that has a performance hit.
-    dataSheets
-      .sort((x) => x.calculationOrder)
-      .forEach((dataSheet) => {
-        const sheetId = hyperformula.getSheetId(dataSheet.name);
-
-        hyperformula.setSheetContent(sheetId, dataSheet.serializedValues);
-
-        if (getOptions().debugMode) {
-          console.log(
-            `registered sheet content: ${dataSheet.name} (sheet id: ${sheetId})`,
-            hyperformula.getSheetFormulas(sheetId),
-          );
-        }
-      });
+    hyperformula.rebuildAndRecalculate();
 
     eventEmitter.emit(spreadsheetEvents.sheet.setDatasheets, dataSheets);
 
@@ -399,15 +417,23 @@ export const getSheet = (
     sheetReset();
   };
 
+  // TODO: Cannot use hyperformula undo/redo due to syncing issues
+  // Raise this with them
   const undo = () => {
-    hyperformula.undo();
+    if (!history.canUndo) return;
+
     history.undo();
+
+    sheetReset();
     toolbar.reset();
   };
 
   const redo = () => {
-    hyperformula.redo();
+    if (!history.canRedo) return;
+
     history.redo();
+
+    sheetReset();
     toolbar.reset();
   };
 
@@ -716,7 +742,7 @@ export const getSheet = (
   }
 
   function clearClipboard() {
-    getData().clearClipboard();
+    clipboard.clear();
     selector.hideClipboard();
   }
 
@@ -732,23 +758,6 @@ export const getSheet = (
   function cut() {
     getData().cut();
     selector.showClipboard();
-  }
-
-  function paste(what, evt) {
-    if (getOptions().mode === "read") return;
-    if (clipboard.isClear()) {
-      getData()
-        .pasteFromSystemClipboard()
-        .then(() => {
-          sheetReset();
-        });
-    } else if (getData().paste(what, (msg) => xtoast("Tip", msg))) {
-      sheetReset();
-    } else if (evt) {
-      const cdata = evt.clipboardData.getData("text/plain");
-      getData().pasteFromText(cdata);
-      sheetReset();
-    }
   }
 
   function hideRowsOrCols() {
@@ -1108,17 +1117,12 @@ export const getSheet = (
       clickWindow(evt);
     });
 
-    // for selector
     bind(window, "keydown", (evt) => {
       if (!focusing) return;
       const keyCode = evt.keyCode || evt.which;
-      const { key, ctrlKey, shiftKey, metaKey } = evt;
-      // console.log('keydown.evt: ', keyCode);
+      const { key, ctrlKey, shiftKey, metaKey, altKey } = evt;
+
       if (ctrlKey || metaKey) {
-        // const { sIndexes, eIndexes } = selector;
-        // let what = 'all';
-        // if (shiftKey) what = 'text';
-        // if (altKey) what = 'format';
         switch (keyCode) {
           case 90:
             // undo: ctrl + z
@@ -1147,8 +1151,15 @@ export const getSheet = (
             break;
           case 86:
             // ctrl + v
-            // => paste
-            // evt.preventDefault();
+            if (shiftKey) {
+              paste(getData().rows.copyPasteText);
+            } else if (altKey) {
+              paste(getData().rows.copyPasteFormat);
+            } else {
+              paste(getData().rows.copyPasteAll);
+            }
+
+            evt.preventDefault();
             break;
           case 37:
             // ctrl + left
