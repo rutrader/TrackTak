@@ -5,12 +5,12 @@ import resourceName from "../shared/resourceName";
 import SubscribeSection from "../landingPage/SubscribeSection";
 import SearchSection from "../landingPage/SearchSection";
 import FeaturesSection from "../landingPage/FeaturesSection";
-// import ProcessSection from "../landingPage/ProcessSection";
 import { Box, Container } from "@material-ui/core";
 import Footer from "../landingPage/Footer";
 import TestimonialsSection from "../landingPage/TestimonialsSection";
 import OurTeamSection from "../landingPage/OurTeamSection";
 import VideoSection from "../landingPage/VideoSection";
+import ProcessSection from "../landingPage/ProcessSection";
 
 const Section = ({ sx, ...props }) => {
   return (
@@ -39,6 +39,9 @@ const Home = () => {
         <SearchSection />
       </Section>
       <Container maxWidth="lg">
+        <Section>
+          <ProcessSection />
+        </Section>
         {process.env.NODE_ENV === "development" ? (
           <Section>
             <VideoSection />
@@ -53,7 +56,6 @@ const Home = () => {
         <Section>
           <TestimonialsSection />
         </Section>
-        {/* <ProcessSection /> */}
         <Section>
           <SubscribeSection />
         </Section>

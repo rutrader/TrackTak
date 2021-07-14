@@ -1,346 +1,197 @@
-// import React from "react";
-// import {
-//   Accordion,
-//   AccordionDetails,
-//   AccordionSummary,
-//   Box,
-//   Typography,
-//   useMediaQuery,
-//   useTheme,
-//   withStyles,
-// } from "@material-ui/core";
-// import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-// import styled from "styled-components";
+import { Box, Typography } from "@material-ui/core";
+import React from "react";
+import Img from "gatsby-image";
+import { graphql, useStaticQuery } from "gatsby";
 
-// const CustomBox = ({ style, ...props }) => {
-//   return (
-//     <Box
-//       style={{
-//         position: "relative",
-//         zIndex: 1,
-//         paddingBottom: "150px",
-//         // paddingTop: "150px",
-//         ...style,
-//       }}
-//       {...props}
-//     />
-//   );
-// };
+const StyledImage = ({ sx, ...props }) => {
+  return (
+    <Box
+      component={Img}
+      sx={{
+        borderRadius: "10px",
+        width: "100%",
+        flex: "1 1 100%",
+      }}
+      {...props}
+    />
+  );
+};
 
-// const BoxRowWrapper = ({ style, ...props }) => {
-//   return (
-//     <Box
-//       style={{
-//         display: "flex",
-//         flex: "1 0 100%",
-//         flexWrap: "wrap",
-//         ...style,
-//       }}
-//       {...props}
-//     />
-//   );
-// };
+export const BoxColumnWrapper = ({ sx, ...props }) => {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "space-evenly",
+        flex: "1 1 100%",
+        width: "100%",
+        textAlign: "center",
+        ...sx,
+      }}
+      {...props}
+    />
+  );
+};
 
-// const TypographyHeader = withStyles({
-//   root: {
-//     visibility: "visible",
-//     animationDelay: "0.4s",
-//     animationName: "fadeInUp",
-//     fontWeight: "bold",
-//     color: "#313450",
-//     marginBottom: "15px",
-//   },
-// })(Typography);
+const BoxIcon = ({ sx, ...props }) => {
+  return (
+    <Box
+      sx={{
+        width: "100%",
+        visibility: "visible",
+        animationDuration: "1.3s",
+        animationDelay: "0.8s",
+        animationName: "fadeInUp",
+        ...sx,
+      }}
+      {...props}
+    />
+  );
+};
 
-// const TypographySubHeader = withStyles({
-//   root: {
-//     fontSize: "25px",
-//     fontWeight: "bold",
-//     display: "block",
-//     color: "#43cea2",
-//     marginBottom: "12px",
-//     visibility: "visible",
-//     animationDelay: "0.2s",
-//     animationName: "fadeInDown",
-//   },
-// })(Typography);
+const FeatureHeader = (props) => (
+  <Typography
+    {...props}
+    sx={{
+      whiteSpace: "nowrap",
+      visibility: "visible",
+      animationDelay: "0.4s",
+      animationName: "fadeInUp",
+      fontSize: "25px",
+      color: "#313450",
+      fontWeight: "bold",
+      marginBottom: (theme) => theme.spacing(2),
+    }}
+  />
+);
 
-// const TypographyText = withStyles({
-//   root: {
-//     fontSize: "18px",
-//     fontWeight: 400,
-//     lineHeight: "28px",
-//     color: "#6B6F92",
-//   },
-// })(Typography);
+const FeatureText = (props) => (
+  <Typography
+    {...props}
+    sx={{
+      fontSize: "18px",
+      visibility: "visible",
+      animationDelay: "0.6s",
+      animationName: "fadeInUp",
+    }}
+    color="textSecondary"
+  />
+);
 
-// const TypographyStepHeader = withStyles({
-//   root: {
-//     fontSize: "25px",
-//     fontWeight: "bold",
-//     color: "#313450",
-//     display: "block",
-//     paddingTop: "10px",
-//     flex: 1,
-//   },
-// })(Typography);
+function ProcessSection() {
+  const data = useStaticQuery(graphql`
+    query {
+      templates: file(relativePath: { eq: "templates.PNG" }) {
+        childImageSharp {
+          fluid(maxWidth: 900) {
+            ...GatsbyImageSharpFluid_withWebp
+          }
+        }
+      }
+      finPlugin: file(relativePath: { eq: "fin-plugin.png" }) {
+        childImageSharp {
+          fluid(maxWidth: 700) {
+            ...GatsbyImageSharpFluid_withWebp
+          }
+        }
+      }
+      formulas: file(relativePath: { eq: "formulas.png" }) {
+        childImageSharp {
+          fluid(maxWidth: 700) {
+            ...GatsbyImageSharpFluid_withWebp
+          }
+        }
+      }
+    }
+  `);
 
-// const TypographyNumber = withStyles({
-//   root: {
-//     fontSize: "25px",
-//     fontWeight: "bold",
-//     color: "#fff",
-//   },
-// })(Typography);
+  return (
+    <Box>
+      <Box
+        style={{
+          marginLeft: "auto",
+          marginRight: "auto",
+          marginBottom: "55px",
+          textAlign: "center",
+        }}
+      >
+        <Typography
+          sx={{
+            visibility: "visible",
+            animationDelay: "0.2s",
+            animationName: "fadeInDown",
+          }}
+          color="primary"
+          fontSize={25}
+          fontWeight="bold"
+          gutterBottom
+        >
+          We Offering
+        </Typography>
+        <Typography
+          sx={{
+            visibility: "visible",
+            animationDelay: "0.4s",
+            animationName: "fadeInUp",
+            fontWeight: "bold",
+            color: "#313450",
+            marginBottom: (theme) => theme.spacing(2),
+          }}
+          variant="h3"
+        >
+          Spreadsheet Solution
+        </Typography>
+        <Typography variant="h6" color="textSecondary">
+          Finding a companies true value just got a whole lot easier with our
+          free intrinsic value calculator.
+        </Typography>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          gap: 6.2,
+        }}
+      >
+        <BoxColumnWrapper>
+          <BoxIcon>
+            <FeatureHeader variant="h4">Templates</FeatureHeader>
+            <Box sx={{ display: "flex" }}>
+              <StyledImage fluid={data.templates.childImageSharp.fluid} />
+              <FeatureText>
+                Based on Aswath Damodaran's models showing you each formula.
+              </FeatureText>
+            </Box>
+          </BoxIcon>
+        </BoxColumnWrapper>
+        <BoxColumnWrapper>
+          <BoxIcon>
+            <FeatureHeader variant="h4">Financial plugin</FeatureHeader>
+            <Box sx={{ display: "flex" }}>
+              <StyledImage fluid={data.finPlugin.childImageSharp.fluid} />
+              <FeatureText>
+                Calculates your DCF inputs based on historical and current data.
+              </FeatureText>
+            </Box>
+          </BoxIcon>
+        </BoxColumnWrapper>
+        <BoxColumnWrapper>
+          <BoxIcon>
+            <FeatureHeader variant="h4">Formulas</FeatureHeader>
+            <Box sx={{ display: "flex" }}>
+              <StyledImage fluid={data.formulas.childImageSharp.fluid} />
+              <FeatureText>
+                Immediately shows you the different estimated price of various
+                inputs.
+              </FeatureText>
+            </Box>
+          </BoxIcon>
+        </BoxColumnWrapper>
+      </Box>
+    </Box>
+  );
+}
 
-// const AccordionCustom = withStyles({
-//   root: {
-//     marginBottom: "15px",
-//     borderRadius: "4px",
-//     padding: "13px",
-//     alignItems: "center",
-//     "&.MuiAccordion-root:before": {
-//       backgroundColor: "white",
-//     },
-//   },
-// })(Accordion);
-
-// const BoxGradientIconTransparent = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   position: relative;
-//   width: 59px;
-//   height: 59px;
-//   line-height: 75px;
-//   border-radius: 50%;
-//   color: #fff;
-//   font-size: 28xp;
-//   z-index: 1;
-//   background-image: linear-gradient(#6240c8 0%, #a145fe 100%);
-//   margin-right: 24px;
-//   &::after {
-//     content: "";
-//     position: absolute;
-//     width: 100%;
-//     height: 100%;
-//     border-radius: 50%;
-//     background-image: inherit;
-//     opacity: 0.15;
-//     z-index: -1;
-//     left: 0;
-//     top: 0;
-//     transform: scale(1.3);
-//     transition: all 0.3s ease-out 0s;
-//   }
-// `;
-
-// const BoxGradientIconAuto = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   position: relative;
-//   width: 59px;
-//   height: 59px;
-//   line-height: 75px;
-//   border-radius: 50%;
-//   color: #fff;
-//   font-size: 28xp;
-//   z-index: 1;
-//   background-image: linear-gradient(#b548f2 0%, #d283fd 100%);
-//   margin-right: 24px;
-//   &::after {
-//     content: "";
-//     position: absolute;
-//     width: 100%;
-//     height: 100%;
-//     border-radius: 50%;
-//     background-image: inherit;
-//     opacity: 0.15;
-//     z-index: -1;
-//     left: 0;
-//     top: 0;
-//     transform: scale(1.3);
-//     transition: all 0.3s ease-out 0s;
-//   }
-// `;
-
-// const BoxGradientIconTime = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   position: relative;
-//   width: 59px;
-//   height: 59px;
-//   line-height: 75px;
-//   border-radius: 50%;
-//   color: #fff;
-//   z-index: 1;
-//   background-image: linear-gradient(#e44e83 0%, #ffb8d1 100%);
-//   margin-right: 24px;
-//   &::after {
-//     content: "";
-//     position: absolute;
-//     width: 100%;
-//     height: 100%;
-//     border-radius: 50%;
-//     background-image: inherit;
-//     opacity: 0.15;
-//     z-index: -1;
-//     left: 0;
-//     top: 0;
-//     transform: scale(1.3);
-//     transition: all 0.3s ease-out 0s;
-//   }
-// `;
-
-// const images = [
-//   {
-//     label: "San Francisco – Oakland Bay Bridge, United States",
-//     imgPath:
-//       "https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60",
-//   },
-//   {
-//     label: "Bird",
-//     imgPath:
-//       "https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=400&h=250&q=60",
-//   },
-//   {
-//     label: "Bali, Indonesia",
-//     imgPath:
-//       "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250&q=80",
-//   },
-// ];
-
-// const ProcessSection = () => {
-//   const theme = useTheme();
-
-//   const [expandedIndex, setExpandedIndex] = React.useState(0);
-//   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
-//   const imageIndex = expandedIndex ?? 0;
-
-//   const handleChange = (panel) => (_, isExpanded) => {
-//     setExpandedIndex(isExpanded ? panel : null);
-//   };
-
-//   return (
-//     <CustomBox style={{ paddingTop: isOnMobile ? "50px" : "150px" }}>
-//       <BoxRowWrapper>
-//         <Box
-//           style={{
-//             display: "flex",
-//             flexDirection: "column",
-//             flex: 1,
-//             minWidth: "300px",
-//             paddingLeft: "10px",
-//             paddingRight: "10px",
-//           }}
-//         >
-//           <Box style={{ marginBottom: "50px" }}>
-//             <TypographySubHeader variant="h4">Easy to Use</TypographySubHeader>
-//             <TypographyHeader variant="h3">How it Works</TypographyHeader>
-//             <TypographyText>
-//               Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-//               seddinonumy eirmod tempor invidunt ut labore.Smratseo is a brand
-//               of digital agency. Competen.
-//             </TypographyText>
-//           </Box>
-//           <Box
-//             sx={{
-//               width: "100%",
-//               textAlign: "left",
-//               position: "relative",
-//             }}
-//           >
-//             <AccordionCustom
-//               expanded={expandedIndex === 0}
-//               onChange={handleChange(0)}
-//             >
-//               <AccordionSummary
-//                 expandIcon={<ExpandMoreIcon />}
-//                 aria-controls="panel1a-content"
-//                 id="panel1a-header"
-//               >
-//                 <BoxGradientIconTransparent>
-//                   <TypographyNumber>1</TypographyNumber>
-//                 </BoxGradientIconTransparent>
-//                 <TypographyStepHeader>Search for stock</TypographyStepHeader>
-//               </AccordionSummary>
-//               <AccordionDetails>
-//                 <TypographyText>
-//                   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-//                   Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-//                   eget.
-//                 </TypographyText>
-//               </AccordionDetails>
-//             </AccordionCustom>
-//             <AccordionCustom
-//               expanded={expandedIndex === 1}
-//               onChange={handleChange(1)}
-//             >
-//               <AccordionSummary
-//                 expandIcon={<ExpandMoreIcon />}
-//                 aria-controls="panel1a-content"
-//                 id="panel1a-header"
-//               >
-//                 <BoxGradientIconAuto>
-//                   <TypographyNumber>2</TypographyNumber>
-//                 </BoxGradientIconAuto>
-//                 <TypographyStepHeader>Fill in inputs</TypographyStepHeader>
-//               </AccordionSummary>
-//               <AccordionDetails>
-//                 <TypographyText>
-//                   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-//                   Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-//                   eget.
-//                 </TypographyText>
-//               </AccordionDetails>
-//             </AccordionCustom>
-//             <AccordionCustom
-//               expanded={expandedIndex === 2}
-//               onChange={handleChange(2)}
-//             >
-//               <AccordionSummary
-//                 expandIcon={<ExpandMoreIcon />}
-//                 aria-controls="panel1a-content"
-//                 id="panel1a-header"
-//               >
-//                 <BoxGradientIconTime>
-//                   <TypographyNumber>3</TypographyNumber>
-//                 </BoxGradientIconTime>
-//                 <TypographyStepHeader>View the output</TypographyStepHeader>
-//               </AccordionSummary>
-//               <AccordionDetails>
-//                 <TypographyText>
-//                   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-//                   Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-//                   eget.
-//                 </TypographyText>
-//               </AccordionDetails>
-//             </AccordionCustom>
-//           </Box>
-//         </Box>
-//         <Box
-//           sx={{
-//             maxWidth: 688,
-//             flexGrow: 1,
-//           }}
-//         >
-//           <img
-//             style={{
-//               height: 255,
-//               display: "block",
-//               maxWidth: 340,
-//               overflow: "hidden",
-//               width: "100%",
-//             }}
-//             src={images[imageIndex].imgPath}
-//             alt={images[imageIndex].label}
-//           />
-//         </Box>
-//       </BoxRowWrapper>
-//     </CustomBox>
-//   );
-// };
-
-// export default ProcessSection;
+export default ProcessSection;
