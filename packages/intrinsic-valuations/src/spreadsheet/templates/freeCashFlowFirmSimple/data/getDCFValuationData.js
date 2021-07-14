@@ -21,7 +21,6 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
   const overview = [dates, ...incomeStatementOverview, ...balanceSheetOverview];
 
   const data = {
-    calculationOrder: 2,
     name: "DCF Valuation",
     freeze: "A1",
     styles: [

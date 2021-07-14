@@ -19,9 +19,9 @@ const getSpreadsheet = (
 
   const hyperformula = HyperFormula.buildEmpty({
     licenseKey: hyperformulaLicenseKey,
+    // For vlookup to match Excel
     binarySearchThreshold: 1,
     // We use our own undo/redo instead
-    undoLimit: 0,
     ...hyperformulaConfig,
   });
 

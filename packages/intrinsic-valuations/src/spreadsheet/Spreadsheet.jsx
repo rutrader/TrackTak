@@ -61,7 +61,7 @@ import getFinancialStatementsData from "./templates/freeCashFlowFirmSimple/data/
 import SensitivityAnalysis from "../components/SensitivityAnalysis";
 import Section from "../components/Section";
 import getFormats from "./getFormats";
-import exportToExcel from "./ExportToExcel";
+import exportToExcel from "./exportToExcel";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";

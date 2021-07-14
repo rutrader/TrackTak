@@ -373,14 +373,14 @@ export const getSheet = (
     // Some sheets have to be added before others for hyperformula
     // if they are depended on. Can also use rebuildAndRecalculate()
     // but that has a performance hit.
-    dataSheets
-      .sort((x) => x.calculationOrder)
-      .forEach((dataSheet) => {
-        let data;
+    dataSheets.forEach((dataSheet) => {
+      let data;
 
-        data = addDataProxy(dataSheet.name);
-        data.setData(dataSheet);
-      });
+      data = addDataProxy(dataSheet.name);
+      data.setData(dataSheet);
+    });
+
+    hyperformula.rebuildAndRecalculate();
 
     eventEmitter.emit(spreadsheetEvents.sheet.setDatasheets, dataSheets);
 
