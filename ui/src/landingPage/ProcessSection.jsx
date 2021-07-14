@@ -11,6 +11,7 @@ const StyledImage = ({ sx, ...props }) => {
         borderRadius: "10px",
         width: "100%",
         flex: "1 1 100%",
+        boxShadow: "4px 4px 10px #ccc",
       }}
       {...props}
     />
@@ -25,7 +26,6 @@ export const BoxColumnWrapper = ({ sx, ...props }) => {
         justifyContent: "space-evenly",
         flex: "1 1 100%",
         width: "100%",
-        textAlign: "center",
         ...sx,
       }}
       {...props}
@@ -70,6 +70,7 @@ const FeatureText = (props) => (
     {...props}
     sx={{
       fontSize: "18px",
+      ml: 2,
       visibility: "visible",
       animationDelay: "0.6s",
       animationName: "fadeInUp",
@@ -90,14 +91,14 @@ function ProcessSection() {
       }
       finPlugin: file(relativePath: { eq: "fin-plugin.png" }) {
         childImageSharp {
-          fluid(maxWidth: 700) {
+          fluid(maxWidth: 900) {
             ...GatsbyImageSharpFluid_withWebp
           }
         }
       }
       formulas: file(relativePath: { eq: "formulas.png" }) {
         childImageSharp {
-          fluid(maxWidth: 700) {
+          fluid(maxWidth: 900) {
             ...GatsbyImageSharpFluid_withWebp
           }
         }
@@ -161,7 +162,9 @@ function ProcessSection() {
             <Box sx={{ display: "flex" }}>
               <StyledImage fluid={data.templates.childImageSharp.fluid} />
               <FeatureText>
-                Based on Aswath Damodaran's models showing you each formula.
+                No data prep needed! Simply connect your spreadsheet, create a
+                dynamic, interactive web document and then communicate! Present,
+                share or even embed your brilliant work.
               </FeatureText>
             </Box>
           </BoxIcon>
@@ -172,7 +175,9 @@ function ProcessSection() {
             <Box sx={{ display: "flex" }}>
               <StyledImage fluid={data.finPlugin.childImageSharp.fluid} />
               <FeatureText>
-                Calculates your DCF inputs based on historical and current data.
+                No data prep needed! Simply connect your spreadsheet, create a
+                dynamic, interactive web document and then communicate! Present,
+                share or even embed your brilliant work.
               </FeatureText>
             </Box>
           </BoxIcon>
@@ -183,8 +188,9 @@ function ProcessSection() {
             <Box sx={{ display: "flex" }}>
               <StyledImage fluid={data.formulas.childImageSharp.fluid} />
               <FeatureText>
-                Immediately shows you the different estimated price of various
-                inputs.
+                No data prep needed! Simply connect your spreadsheet, create a
+                dynamic, interactive web document and then communicate! Present,
+                share or even embed your brilliant work.
               </FeatureText>
             </Box>
           </BoxIcon>
