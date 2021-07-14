@@ -127,7 +127,7 @@ function ProcessSection() {
           fontWeight="bold"
           gutterBottom
         >
-          We Offering
+          Our Offering
         </Typography>
         <Typography
           sx={{
@@ -143,8 +143,7 @@ function ProcessSection() {
           Spreadsheet Solution
         </Typography>
         <Typography variant="h6" color="textSecondary">
-          Finding a companies true value just got a whole lot easier with our
-          free intrinsic value calculator.
+          Specifically for financial modelling with no learning curve.
         </Typography>
       </Box>
       <Box
@@ -162,9 +161,8 @@ function ProcessSection() {
             <Box sx={{ display: "flex" }}>
               <StyledImage fluid={data.templates.childImageSharp.fluid} />
               <FeatureText>
-                No data prep needed! Simply connect your spreadsheet, create a
-                dynamic, interactive web document and then communicate! Present,
-                share or even embed your brilliant work.
+                Choose from multiple templates that does all the heavy work for
+                you and stores all your work directly in the cloud.
               </FeatureText>
             </Box>
           </BoxIcon>
@@ -175,9 +173,8 @@ function ProcessSection() {
             <Box sx={{ display: "flex" }}>
               <StyledImage fluid={data.finPlugin.childImageSharp.fluid} />
               <FeatureText>
-                No data prep needed! Simply connect your spreadsheet, create a
-                dynamic, interactive web document and then communicate! Present,
-                share or even embed your brilliant work.
+                No more third-party API intergrations! Simply type `=𝗙𝗜𝗡()`
+                directly into your spreadsheet.
               </FeatureText>
             </Box>
           </BoxIcon>
@@ -188,9 +185,8 @@ function ProcessSection() {
             <Box sx={{ display: "flex" }}>
               <StyledImage fluid={data.formulas.childImageSharp.fluid} />
               <FeatureText>
-                No data prep needed! Simply connect your spreadsheet, create a
-                dynamic, interactive web document and then communicate! Present,
-                share or even embed your brilliant work.
+                Enables you to be more productive from day one with over 400+
+                formulas matching Excel.
               </FeatureText>
             </Box>
           </BoxIcon>
