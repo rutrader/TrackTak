@@ -123,27 +123,57 @@ class Rows {
     );
   }
 
+  getNewDstCellRange = (srcCellRange, dstCellRange) => {
+    const srcRowNum = srcCellRange.eri - srcCellRange.sri;
+    const srcColNum = srcCellRange.eci - srcCellRange.sci;
+
+    const dstRowNum = dstCellRange.eri - dstCellRange.sri;
+    const dstColNum = dstCellRange.eci - dstCellRange.sci;
+
+    const eri =
+      srcRowNum > dstRowNum ? dstCellRange.eri + srcRowNum : dstCellRange.eri;
+
+    const eci =
+      srcColNum > dstColNum ? dstCellRange.eci + srcColNum : dstCellRange.eci;
+
+    const newDstCellRange = new CellRange(
+      dstCellRange.sri,
+      dstCellRange.sci,
+      eri,
+      eci,
+    );
+
+    return newDstCellRange;
+  };
+
   loopThroughCellsInSrcDstRange = (srcCellRange, dstCellRange, callback) => {
+    const newDstCellRange = this.getNewDstCellRange(srcCellRange, dstCellRange);
+
     const [rn, cn] = srcCellRange.size();
 
     for (let ssri = srcCellRange.sri; ssri <= srcCellRange.eri; ssri++) {
       for (let ssci = srcCellRange.sci; ssci <= srcCellRange.eci; ssci++) {
         for (
-          let dsri = dstCellRange.sri;
-          dsri <= dstCellRange.eri;
+          let dsri = newDstCellRange.sri;
+          dsri <= newDstCellRange.eri;
           dsri += rn
         ) {
           for (
-            let dsci = dstCellRange.sci;
-            dsci <= dstCellRange.eci;
+            let dsci = newDstCellRange.sci;
+            dsci <= newDstCellRange.eci;
             dsci += cn
           ) {
-            callback({
-              ri: dsri + (ssri - srcCellRange.sri),
-              ci: dsci + (ssci - srcCellRange.sci),
-              sri: ssri,
-              sci: ssci,
-            });
+            const ri = dsri + (ssri - srcCellRange.sri);
+            const ci = dsci + (ssci - srcCellRange.sci);
+
+            if (ri <= newDstCellRange.eri && ci <= newDstCellRange.eci) {
+              callback({
+                ri,
+                ci,
+                sri: ssri,
+                sci: ssci,
+              });
+            }
           }
         }
       }
@@ -198,20 +228,17 @@ class Rows {
   };
 
   copyPasteText = (srcCellRange, dstCellRange) => {
-    // https://github.com/handsontable/hyperformula/discussions/763
-    // add back when fixed
-
     const sheet = this.getDataProxy().getSheetId();
-    // const target = dstCellRange.toHyperformulaFormat(sheet);
-    // const source = srcCellRange.toHyperformulaFormat(sheet);
-    // const data = this.hyperformula.getFillRangeData(source, target);
 
-    // this.hyperformula.setCellContents(target.start, data);
-    this.hyperformula.paste({
-      col: dstCellRange.sci,
-      row: dstCellRange.sri,
-      sheet,
-    });
+    const source = srcCellRange.toHyperformulaFormat(sheet);
+    const target = this.getNewDstCellRange(
+      srcCellRange,
+      dstCellRange,
+    ).toHyperformulaFormat(sheet);
+
+    const data = this.hyperformula.getFillRangeData(source, target, true);
+
+    this.hyperformula.setCellContents(target.start, data);
   };
 
   cutPaste(srcCellRange, dstCellRange) {
