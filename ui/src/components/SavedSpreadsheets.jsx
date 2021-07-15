@@ -109,6 +109,9 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
         <TableContainer
           sx={{
             marginTop: "20px",
+            "& .MuiTableRow-root": {
+              cursor: "pointer",
+            },
           }}
         >
           <Table aria-label="spreadsheet table">
@@ -142,7 +145,6 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
                     </Box>
                   </TableCell>
                   <TableCell align="right">
-                    {/* MM first as most users are American */}
                     {dayjs(spreadsheet.lastModifiedTime).format("DD MMM YY")}
                   </TableCell>
                   <TableCell align="right">
