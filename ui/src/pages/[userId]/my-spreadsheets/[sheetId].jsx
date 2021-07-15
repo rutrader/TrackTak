@@ -14,6 +14,7 @@ import usePersistSpreadsheet from "../../../hooks/usePersistSpreadsheet";
 import SubscribeMailingList from "../../../components/SubscribeMailingList";
 import { setMessage } from "../../../redux/actions/snackbarActions";
 import convertHyphenTickerToDot from "../../../shared/convertHyphenTickerToDot";
+import withAuthentication from "../../../hocs/withAuthentication";
 
 const SpreadsheetPage = ({ userId, sheetId }) => {
   const general = useSelector(selectGeneral);
@@ -101,4 +102,4 @@ const SpreadsheetPage = ({ userId, sheetId }) => {
   );
 };
 
-export default SpreadsheetPage;
+export default withAuthentication(SpreadsheetPage);
