@@ -15,7 +15,7 @@ import SubscribeMailingList from "../../../components/SubscribeMailingList";
 import { setMessage } from "../../../redux/actions/snackbarActions";
 import convertHyphenTickerToDot from "../../../shared/convertHyphenTickerToDot";
 
-const SavedValuations = ({ userId, sheetId }) => {
+const SpreadsheetPage = ({ userId, sheetId }) => {
   const general = useSelector(selectGeneral);
   const [rotateSnackbarShown, setRotateSnackbarShown] = useLocalStorageState(
     "rotateSnackbarShown",
@@ -26,7 +26,11 @@ const SavedValuations = ({ userId, sheetId }) => {
   const dispatch = useDispatch();
   const [spreadsheetDataToSave, setSpreadsheetDataToSave] = useState();
   const [spreadsheetData] = useFetchSpreadsheet(sheetId);
-  const [isSaving] = usePersistSpreadsheet(spreadsheetData?.sheetData?.name, spreadsheetDataToSave, sheetId);
+  const [isSaving] = usePersistSpreadsheet(
+    spreadsheetData?.sheetData?.name,
+    spreadsheetDataToSave,
+    sheetId,
+  );
 
   const handleSave = (data) => {
     setSpreadsheetDataToSave(data);
@@ -61,13 +65,15 @@ const SavedValuations = ({ userId, sheetId }) => {
           />
         </Helmet>
       )}
-      {spreadsheetData?.sheetData?.name && <Spreadsheet
-        ticker={convertHyphenTickerToDot(spreadsheetData?.sheetData?.name)}
-        isSaving={isSaving}
-        onSaveEvent={handleSave}
-        spreadsheetToRestore={spreadsheetData}
-        disableSetQueryParams={true}
-      />}
+      {spreadsheetData?.sheetData?.name && (
+        <Spreadsheet
+          ticker={convertHyphenTickerToDot(spreadsheetData?.sheetData?.name)}
+          isSaving={isSaving}
+          onSaveEvent={handleSave}
+          spreadsheetToRestore={spreadsheetData}
+          disableSetQueryParams={true}
+        />
+      )}
       {isLoaded && (
         <Section sx={{ display: "flex", mt: 2 }}>
           <Box
@@ -95,4 +101,4 @@ const SavedValuations = ({ userId, sheetId }) => {
   );
 };
 
-export default SavedValuations;
+export default SpreadsheetPage;
