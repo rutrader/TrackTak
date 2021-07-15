@@ -6,6 +6,8 @@ import iso3311a2 from "iso-3166-1-alpha-2";
 import { wrap } from "comlink";
 import nodeEndpoint from "comlink/dist/umd/node-adapter";
 import { getSensitivityAnalysisWorker } from "./workers";
+import * as database from "./database/mongoDbClient";
+import { Collections } from "./database/collections";
 
 const baseUrl = "https://eodhistoricaldata.com/api";
 const fundamentalsUrl = `${baseUrl}/fundamentals`;
@@ -14,6 +16,8 @@ const eodUrl = `${baseUrl}/eod`;
 const searchUrl = `${baseUrl}/search`;
 const exchangeSymbolListUrl = `${baseUrl}/exchange-symbol-list`;
 const bulkFundamentalsUrl = `${baseUrl}/bulk-fundamentals`;
+
+database.connect();
 
 const globalParams = {
   api_token: process.env.EOD_HISTORICAL_DATA_API_KEY,
@@ -282,6 +286,33 @@ const api = {
     );
 
     return data;
+  },
+
+  saveSpreadsheet: async (sheetData, userId) => {
+    const document = {
+      userId,
+      sheetData,
+      lastModifiedTime: new Date(),
+    };
+    const query = {
+      "sheetData.name": sheetData.name,
+      userId,
+    };
+    return database.replace(Collections.SPREADSHEET, query, document);
+  },
+
+  getSpreadsheets: async (userId) => {
+    return database.find(Collections.SPREADSHEET, {
+      userId,
+    });
+  },
+
+  getSpreadsheet: async (userId, id) => {
+    return database.findOne(Collections.SPREADSHEET, id, userId);
+  },
+
+  deleteSpreadsheet: async (id, userId) => {
+    return database.deleteOne(Collections.SPREADSHEET, id, userId);
   },
 };
 

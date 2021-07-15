@@ -27,7 +27,7 @@ import {
   setSheetsSerializedValues,
   setSheetsValues,
 } from "../redux/actions/dcfActions";
-import { isNil } from "lodash-es";
+import { isEmpty, isNil } from "lodash-es";
 import getSpreadsheet, {
   spreadsheetEvents,
 } from "../../../web-spreadsheet/src";
@@ -62,12 +62,19 @@ import SensitivityAnalysis from "../components/SensitivityAnalysis";
 import Section from "../components/Section";
 import getFormats from "./getFormats";
 import exportToExcel from "./exportToExcel";
+import SaveStatus from "./SaveStatus";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
 const defaultColWidth = 110;
 
-const Spreadsheet = ({ hideSensitivityAnalysis }) => {
+const Spreadsheet = ({
+  isSaving,
+  onSaveEvent,
+  spreadsheetToRestore,
+  disableSetQueryParams = false,
+  hideSensitivityAnalysis,
+}) => {
   const containerRef = useRef();
   const [spreadsheet, setSpreadsheet] = useState();
   const theme = useTheme();
@@ -103,7 +110,47 @@ const Spreadsheet = ({ hideSensitivityAnalysis }) => {
   const valuationCurrencySymbol = useSelector(selectValuationCurrencySymbol);
 
   useEffect(() => {
-    if (isNil(inputQueryParams[queryNames.salesToCapitalRatio])) {
+    if (
+      spreadsheet &&
+      !isEmpty(spreadsheetToRestore?.sheetData.data?.datas ?? true)
+    ) {
+      const dcfValuationData = spreadsheetToRestore.sheetData.data.datas[0];
+      const financialStatements = spreadsheetToRestore.sheetData.data.datas[1];
+      const costOfCapital = spreadsheetToRestore.sheetData.data.datas[2];
+      const employeeOptions = spreadsheetToRestore.sheetData.data.datas[3];
+      const syntheticCreditRating =
+        spreadsheetToRestore.sheetData.data.datas[4];
+      const industryAveragesUS = spreadsheetToRestore.sheetData.data.datas[5];
+      const industryAveragesGlobal =
+        spreadsheetToRestore.sheetData.data.datas[6];
+
+      spreadsheet.setDatasheets([
+        dcfValuationData,
+        financialStatements,
+        costOfCapital,
+        employeeOptions,
+        syntheticCreditRating,
+        industryAveragesUS,
+        industryAveragesGlobal,
+      ]);
+
+      const requiredInputs =
+        spreadsheetToRestore.sheetData.data.variablesDatas[0];
+      const optionalInputs =
+        spreadsheetToRestore.sheetData.data.variablesDatas[1];
+
+      spreadsheet.variablesSpreadsheet.setVariableDatasheets([
+        requiredInputs,
+        optionalInputs,
+      ]);
+    }
+  }, [spreadsheetToRestore, spreadsheet]);
+
+  useEffect(() => {
+    if (
+      !disableSetQueryParams &&
+      isNil(inputQueryParams[queryNames.salesToCapitalRatio])
+    ) {
       setURLInput(
         queryNames.salesToCapitalRatio,
         currentIndustry["sales/Capital"],
@@ -282,7 +329,7 @@ const Spreadsheet = ({ hideSensitivityAnalysis }) => {
 
         const urlName = camelCase(label);
 
-        if (allInputNameTypeMappings[urlName]) {
+        if (allInputNameTypeMappings[urlName] && !disableSetQueryParams) {
           let newValue = value;
 
           setURLInput(camelCase(label), newValue);
@@ -295,6 +342,13 @@ const Spreadsheet = ({ hideSensitivityAnalysis }) => {
         spreadsheetEvents.sheet.cellEdited,
         cellEditedCallback,
       );
+
+      if (onSaveEvent) {
+        spreadsheet.variablesSpreadsheet.eventEmitter.on(
+          spreadsheetEvents.save.persistDataChange,
+          onSaveEvent,
+        );
+      }
     }
 
     return () => {
@@ -303,9 +357,16 @@ const Spreadsheet = ({ hideSensitivityAnalysis }) => {
           spreadsheetEvents.sheet.cellEdited,
           cellEditedCallback,
         );
+
+        if (onSaveEvent) {
+          spreadsheet.variablesSpreadsheet.eventEmitter.off(
+            spreadsheetEvents.save.persistDataChange,
+            onSaveEvent,
+          );
+        }
       }
     };
-  }, [setURLInput, spreadsheet]);
+  }, [setURLInput, spreadsheet, onSaveEvent, disableSetQueryParams]);
 
   useEffect(() => {
     if (spreadsheet) {
@@ -318,7 +379,7 @@ const Spreadsheet = ({ hideSensitivityAnalysis }) => {
   }, [isOnMobile, spreadsheet]);
 
   useEffect(() => {
-    if (spreadsheet) {
+    if (spreadsheet && isEmpty(spreadsheetToRestore?.sheetData?.data ?? true)) {
       const { datas } = spreadsheet.getDatas();
 
       spreadsheet.variablesSpreadsheet.setVariableDatasheets([
@@ -364,6 +425,7 @@ const Spreadsheet = ({ hideSensitivityAnalysis }) => {
     yearlyBalanceSheets,
     ttmCashFlowStatement,
     yearlyCashFlowStatements,
+    spreadsheetToRestore,
   ]);
 
   useEffect(() => {
@@ -454,6 +516,7 @@ const Spreadsheet = ({ hideSensitivityAnalysis }) => {
           </Typography>
         </Box>
       </Box>
+      {onSaveEvent && <SaveStatus isSaving={isSaving} />}
 
       <Box
         sx={{

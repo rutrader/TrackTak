@@ -30,7 +30,7 @@ const Search = () => {
 const sixteen50 = 1650;
 const twelve50 = 1250;
 
-const SearchSection = () => {
+const AboveTheFoldSection = () => {
   const data = useStaticQuery(graphql`
     query {
       laptop: file(relativePath: { eq: "laptop-template.png" }) {
@@ -241,4 +241,4 @@ const SearchSection = () => {
   );
 };
 
-export default SearchSection;
+export default AboveTheFoldSection;

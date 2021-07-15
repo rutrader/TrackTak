@@ -15,7 +15,7 @@ export const connect = async () => {
   try {
     await client.connect();
     await client.db("admin").command({ ping: 1 });
-    console.log("Connected successfully to server");
+    console.log("Connected successfully to MongoDB server");
   } catch (err) {
     throw err;
   }
@@ -29,18 +29,64 @@ export const createCollection = (collection) => {
   });
 };
 
-export const insert = (collection, document) => {
+export const insert = async (collection, document) => {
   const database = client.db(DATABASE_NAME);
-  database.collection(collection).insertOne(document, function (err, res) {
-    if (err) throw err;
-    console.log(`1 document inserted into collection ${collection}`);
-  });
+  const response = await database.collection(collection).insertOne(document);
+
+  if (response.result.ok) {
+    return response.ops[0];
+  } else {
+    throw Error("Error inserting document");
+  }
+};
+
+export const replace = async (collection, query, document) => {
+  const database = client.db(DATABASE_NAME);
+  const id = document.sheetData.sheetId
+    ? new MongoDb.ObjectId(document.sheetData.sheetId)
+    : new MongoDb.ObjectId();
+  const documentWithId = {
+    ...document,
+    _id: id,
+  };
+  const queryWithId = {
+    ...query,
+    _id: id,
+  }
+  const response = await database
+    .collection(collection)
+    .replaceOne(queryWithId, documentWithId, { upsert: true });
+
+  if (response.result.ok) {
+    return documentWithId;
+  } else {
+    throw Error("Error replacing document");
+  }
 };
 
 export const find = async (collection, query = {}) => {
   const database = client.db(DATABASE_NAME);
-  database.collection(collection).findOne(query, function (err, result) {
-    if (err) throw err;
-    console.log(result);
+  return database.collection(collection).find(query).toArray();
+};
+
+export const findOne = async (collection, id, userId) => {
+  const database = client.db(DATABASE_NAME);
+  return database.collection(collection).findOne({
+    _id: new MongoDb.ObjectId(id),
+    userId,
   });
+};
+
+export const deleteOne = async (collection, id, userId) => {
+  const database = client.db(DATABASE_NAME);
+  const response = await database.collection(collection).deleteOne({
+    _id: new MongoDb.ObjectId(id),
+    userId,
+  });
+
+  if (response.result.ok) {
+    return response.deletedCount;
+  } else {
+    throw Error(`Error deleting document ${id}`);
+  }
 };

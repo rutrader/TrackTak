@@ -278,7 +278,7 @@ export const getSheet = (
 
   const toolbarChangePaintformatPaste = () => {
     if (toolbar.paintformatActive()) {
-      // paste("format");
+      getData().paste(getData().rows.copyPasteFormat);
       clearClipboard();
       toolbar.paintformatToggle();
     }
@@ -1158,7 +1158,6 @@ export const getSheet = (
             } else {
               paste(getData().rows.copyPasteAll);
             }
-
             evt.preventDefault();
             break;
           case 37:

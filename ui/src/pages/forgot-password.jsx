@@ -9,7 +9,7 @@ import Authentication, {
 import { navigate } from "gatsby";
 import { useAuth } from "../hooks/useAuth";
 
-const SignIn = ({ location }) => {
+const ForgotPassword = ({ location }) => {
   const { isAuthenticated } = useAuth();
 
   useEffect(() => {
@@ -25,8 +25,8 @@ const SignIn = ({ location }) => {
   return (
     <>
       <Helmet>
-        <title>{getTitle("Sign in")}</title>
-        <link rel="canonical" href={`${resourceName}/sign-up`} />
+        <title>{getTitle("Forgot Password")}</title>
+        <link rel="canonical" href={`${resourceName}/forgot-password`} />
         <meta name="description" content="Tracktak password recovery." />
       </Helmet>
       <Grid container justifyContent="center">
@@ -42,4 +42,4 @@ const SignIn = ({ location }) => {
   );
 };
 
-export default SignIn;
+export default ForgotPassword;

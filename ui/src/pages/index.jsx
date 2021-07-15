@@ -3,7 +3,6 @@ import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
 import SubscribeSection from "../landingPage/SubscribeSection";
-import SearchSection from "../landingPage/SearchSection";
 import FeaturesSection from "../landingPage/FeaturesSection";
 // import ProcessSection from "../landingPage/ProcessSection";
 import { Box, Container } from "@material-ui/core";
@@ -11,6 +10,7 @@ import Footer from "../landingPage/Footer";
 import TestimonialsSection from "../landingPage/TestimonialsSection";
 import OurTeamSection from "../landingPage/OurTeamSection";
 import VideoSection from "../landingPage/VideoSection";
+import AboveTheFoldSection from "../landingPage/AboveTheFoldSection";
 
 const Section = ({ sx, ...props }) => {
   return (
@@ -36,7 +36,7 @@ const Home = () => {
         />
       </Helmet>
       <Section>
-        <SearchSection />
+        <AboveTheFoldSection />
       </Section>
       <Container maxWidth="lg">
         {process.env.NODE_ENV === "development" ? (
