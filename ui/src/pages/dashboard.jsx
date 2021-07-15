@@ -1,29 +1,17 @@
-import { Alert, Box, IconButton } from "@material-ui/core";
+import { Alert, Box, IconButton, Typography } from "@material-ui/core";
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { useAuth } from "../hooks/useAuth";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
 import SavedSpreadsheets from "../components/SavedSpreadsheets";
-import SidePanel from "../components/SidePanel";
-import AddIcon from "@material-ui/icons/Add";
 import { saveSpreadsheet } from "../api/api";
 import { navigate } from "gatsby";
 import SearchTickerDialog from "../components/SearchTickerDialog";
-
-const tabs = (handleShowSearchTickerDialog) => [
-  {
-    title: "My Valuations",
-    to: "/dashboard",
-    content: (
-      <SavedSpreadsheets onNewSpreadsheetClick={handleShowSearchTickerDialog} />
-    ),
-  },
-];
+import AddIcon from "@material-ui/icons/Add";
 
 const Dashboard = () => {
   const { isAuthenticated, getAccessToken, userData } = useAuth();
-  const [selectedTab, setSeletedTab] = useState(0);
   const [showSearchTickerDialog, setShowSearchTickerDialog] = useState(false);
 
   const handleSearchClick = async (ticker) => {
@@ -55,37 +43,32 @@ const Dashboard = () => {
         onSearchResultClick={handleSearchClick}
         onClose={handleCloseSearchTickerDialog}
       />
-      {isAuthenticated && (
-        <Box
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h5" gutterBottom>
+          My Valuations
+        </Typography>
+        <IconButton
           sx={{
-            display: "flex",
+            ml: "auto",
+            padding: 0,
+            backgroundColor: (theme) => theme.palette.primary.light,
+            width: "40px",
+            height: "40px",
+            "&:hover": {
+              backgroundColor: (theme) => theme.palette.primary.dark,
+            },
           }}
+          onClick={handleShowSearchTickerDialog}
         >
-          <SidePanel
-            tabs={tabs(handleShowSearchTickerDialog)}
-            selectedTab={selectedTab}
-            setSeletedTab={setSeletedTab}
-            titleMenuButtons={
-              <IconButton
-                sx={{
-                  padding: 0,
-                  backgroundColor: (theme) => theme.palette.primary.light,
-                  width: "40px",
-                  height: "40px",
-                  "&:hover": {
-                    backgroundColor: (theme) => theme.palette.primary.dark,
-                  },
-                }}
-                onClick={handleShowSearchTickerDialog}
-              >
-                <AddIcon style={{ color: "white" }} fontSize="large" />
-              </IconButton>
-            }
-          >
-            {tabs(handleShowSearchTickerDialog)[selectedTab].content}
-          </SidePanel>
-        </Box>
-      )}
+          <AddIcon style={{ color: "white" }} fontSize="large" />
+        </IconButton>
+      </Box>
+      <SavedSpreadsheets onNewSpreadsheetClick={handleShowSearchTickerDialog} />
       {!isAuthenticated && (
         <Alert severity="info">Sign in to view your dashboard</Alert>
       )}
