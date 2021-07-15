@@ -10,7 +10,7 @@ const usePersistSpreadsheet = (ticker, spreadsheetDataToSave, sheetId) => {
     async function persistSpreadsheetData() {
       const token = await getAccessToken();
       await saveSpreadsheet(
-        { name: ticker, data: spreadsheetDataToSave, sheetId },
+        { name: ticker, data: spreadsheetDataToSave, sheetId, type: "DCF" },
         token?.jwtToken,
       );
       setIsSaving(false);

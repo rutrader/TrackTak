@@ -10,7 +10,7 @@ const useFetchSpreadsheet = (sheetId) => {
     async function fetchData() {
       const token = await getAccessToken();
       const response = await getSpreadsheet(token?.jwtToken, sheetId);
-      setSpreadsheetData(response.data.valuation);
+      setSpreadsheetData(response.data.spreadsheet);
     }
     if (isAuthenticated) {
       fetchData();

@@ -21,43 +21,43 @@ import { isEmpty } from "lodash-es";
 import { navigate } from "gatsby";
 import RoundButton from "./RoundButton";
 
-const SavedSpreadsheets = ({ onNewValuationClick }) => {
+const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
   const theme = useTheme();
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
   const { getAccessToken, userData } = useAuth();
-  const [valuations, setValuations] = useState([]);
-  const [selectedValuation, setSelectedValuation] = useState();
+  const [spreadsheets, setSpreadsheets] = useState([]);
+  const [selectedSpreadsheet, setSelectedSpreadsheet] = useState();
 
   useEffect(() => {
     async function fetchData() {
       const token = await getAccessToken();
       const response = await getSpreadsheets(token?.jwtToken);
-      setValuations(response.data.valuations);
+      setSpreadsheets(response.data.spreadsheets);
     }
     fetchData();
   }, [getAccessToken]);
 
-  const handleRowClick = (valuation) => {
-    navigate(`/${userData.sub}/my-spreadsheets/${valuation._id}`);
+  const handleRowClick = (spreadsheet) => {
+    navigate(`/${userData.sub}/my-spreadsheets/${spreadsheet._id}`);
   };
 
-  const handleDelete = (valuation) => {
-    setSelectedValuation(valuation);
+  const handleDelete = (spreadsheet) => {
+    setSelectedSpreadsheet(spreadsheet);
     setShowConfirmationDialog(true);
   };
 
   const handleDeleteConfirm = async () => {
-    if (selectedValuation) {
+    if (selectedSpreadsheet) {
       const token = await getAccessToken();
       const response = await deleteSpreadsheet(
-        selectedValuation._id,
+        selectedSpreadsheet._id,
         token?.jwtToken,
       );
       if (response.status === 200) {
-        const updatedValuations = valuations.filter(
-          (valuation) => valuation._id !== selectedValuation._id,
+        const updatedSpreadsheets = spreadsheets.filter(
+          (spreadsheet) => spreadsheet._id !== selectedSpreadsheet._id,
         );
-        setValuations(updatedValuations);
+        setSpreadsheets(updatedSpreadsheets);
       }
     }
   };
@@ -80,7 +80,7 @@ const SavedSpreadsheets = ({ onNewValuationClick }) => {
       >
         Are you sure you want to delete this valuation?
       </ConfirmationDialog>
-      {isEmpty(valuations) && (
+      {isEmpty(spreadsheets) && (
         <Box
           sx={{
             marginTop: (theme) => theme.spacing(2),
@@ -93,7 +93,7 @@ const SavedSpreadsheets = ({ onNewValuationClick }) => {
           <RoundButton
             variant="contained"
             color="primary"
-            onClick={onNewValuationClick}
+            onClick={onNewSpreadsheetClick}
             type="button"
             sx={{
               textTransform: "none",
@@ -103,7 +103,7 @@ const SavedSpreadsheets = ({ onNewValuationClick }) => {
           </RoundButton>
         </Box>
       )}
-      {!isEmpty(valuations) && (
+      {!isEmpty(spreadsheets) && (
         <TableContainer
           sx={{
             marginTop: "20px",
@@ -120,11 +120,11 @@ const SavedSpreadsheets = ({ onNewValuationClick }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {valuations?.map((valuation) => (
+              {spreadsheets?.map((spreadsheet) => (
                 <TableRow
-                  key={valuation._id}
+                  key={spreadsheet._id}
                   hover
-                  onClick={() => handleRowClick(valuation)}
+                  onClick={() => handleRowClick(spreadsheet)}
                 >
                   <TableCell component="th" scope="row">
                     <Box
@@ -136,11 +136,11 @@ const SavedSpreadsheets = ({ onNewValuationClick }) => {
                       <ListItemIcon>
                         <GridOnIcon />
                       </ListItemIcon>
-                      {valuation.sheetData.name}
+                      {spreadsheet.sheetData.name}
                     </Box>
                   </TableCell>
                   <TableCell align="right">
-                    {valuation.lastModifiedTime}
+                    {spreadsheet.lastModifiedTime}
                   </TableCell>
                   <TableCell align="right">
                     <IconButton
@@ -150,7 +150,7 @@ const SavedSpreadsheets = ({ onNewValuationClick }) => {
                       }}
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleDelete(valuation);
+                        handleDelete(spreadsheet);
                       }}
                       type="button"
                     >

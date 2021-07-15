@@ -1,7 +1,7 @@
 import { axios } from "@tracktak/intrinsic-valuations";
 
-export const saveSpreadsheet = async (valuation, accessToken) => {
-  return axios.put("/api/v1/spreadsheet", valuation, {
+export const saveSpreadsheet = async (spreadsheet, accessToken) => {
+  return axios.put("/api/v1/spreadsheet", spreadsheet, {
     headers: { Authorization: `Bearer ${accessToken}` },
   });
 };

@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 import { useAuth } from "../hooks/useAuth";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
-import SpreadsheetTable from "../components/SavedSpreadsheets";
+import SavedSpreadsheets from "../components/SavedSpreadsheets";
 import SidePanel from "../components/SidePanel";
 import AddIcon from "@material-ui/icons/Add";
 import { saveSpreadsheet } from "../api/api";
@@ -16,7 +16,7 @@ const tabs = (handleShowSearchTickerDialog) => [
     title: "My Valuations",
     to: "/dashboard",
     content: (
-      <SpreadsheetTable onNewValuationClick={handleShowSearchTickerDialog} />
+      <SavedSpreadsheets onNewSpreadsheetClick={handleShowSearchTickerDialog} />
     ),
   },
 ];
@@ -29,7 +29,7 @@ const Dashboard = () => {
   const handleSearchClick = async (ticker) => {
     const token = await getAccessToken();
     const response = await saveSpreadsheet(
-      { name: ticker, data: {} },
+      { name: ticker, data: {}, type: "DCF" },
       token?.jwtToken,
     );
     navigate(`/${userData.sub}/my-spreadsheets/${response.data._id}`);
