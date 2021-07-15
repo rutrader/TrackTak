@@ -35,7 +35,9 @@ const Home = () => {
           content="Value a company within minutes using our DCF calculator based on Aswath Damodaran's excel spreadsheets."
         />
       </Helmet>
-      <AboveTheFoldSection />
+      <Section>
+        <AboveTheFoldSection />
+      </Section>
       <Container maxWidth="lg">
         {process.env.NODE_ENV === "development" ? (
           <Section>

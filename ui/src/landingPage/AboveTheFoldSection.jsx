@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core";
 import GridDots from "../icons/grid-dots.svg";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import SearchTicker from "../components/SearchTicker";
 import { AnchorLink } from "gatsby-plugin-anchor-links";
 import { graphql, useStaticQuery } from "gatsby";
 import Img from "gatsby-image";
@@ -15,7 +16,19 @@ import RoundButton from "../components/RoundButton";
 import BackgroundImage from "gatsby-background-image";
 import { useEffect } from "react";
 
+const Search = () => {
+  return (
+    <>
+      <Typography variant="h4" align="center" gutterBottom color="white">
+        Search for a company to begin.
+      </Typography>
+      <SearchTicker />
+    </>
+  );
+};
+
 const sixteen50 = 1650;
+const twelve50 = 1250;
 
 const AboveTheFoldSection = () => {
   const data = useStaticQuery(graphql`
@@ -29,7 +42,7 @@ const AboveTheFoldSection = () => {
       }
       background: file(relativePath: { eq: "purple-background.png" }) {
         childImageSharp {
-          fluid(quality: 70, maxWidth: 1920) {
+          fluid(quality: 90, maxWidth: 1920) {
             ...GatsbyImageSharpFluid_withWebp
           }
         }
@@ -66,7 +79,7 @@ const AboveTheFoldSection = () => {
   return (
     <Box
       sx={{
-        mt: 6,
+        height: "853px",
         [theme.breakpoints.up(sixteen50)]: {
           mx: 25,
         },
@@ -79,7 +92,8 @@ const AboveTheFoldSection = () => {
         fluid={data.background.childImageSharp.fluid}
         style={{
           width: "100%",
-          height: 930,
+          height: "100%",
+          minHeight: "937px",
           backgroundPosition: "center center",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
@@ -112,6 +126,9 @@ const AboveTheFoldSection = () => {
             <Box>
               tracktak enables you to do quick DCF models based on prof. Aswath
               Damodaran's techniques directly in the cloud.
+              <br />
+              <br />
+              Free while in beta.
             </Box>
           </Typography>
           <Box
@@ -126,15 +143,26 @@ const AboveTheFoldSection = () => {
           >
             <Box
               sx={{
-                mt: 4,
-                mb: 2,
+                [theme.breakpoints.up(twelve50)]: {
+                  display: "none",
+                },
+              }}
+            >
+              <Search />
+            </Box>
+            <Box
+              sx={{
+                mt: 2,
+                [theme.breakpoints.down(twelve50)]: {
+                  display: "none",
+                },
               }}
             >
               <RoundButton
                 component={forwardRef((props, ref) => (
                   <AnchorLink {...props} gatsbyLinkProps={{ ref }} />
                 ))}
-                to="#get-started"
+                to="#features"
                 variant="contained"
                 color="primary"
               >
@@ -142,7 +170,7 @@ const AboveTheFoldSection = () => {
                   fontSize={20}
                   sx={{ textTransform: "none", color: "white" }}
                 >
-                  Get started for Free
+                  Explore Features
                 </Typography>
               </RoundButton>
             </Box>
@@ -153,6 +181,9 @@ const AboveTheFoldSection = () => {
             flex: "1 1 820px",
             maxWidth: 820,
             position: "relative",
+            [theme.breakpoints.up(sixteen50)]: {
+              mr: -16.25,
+            },
           }}
         >
           <Img
@@ -170,6 +201,15 @@ const AboveTheFoldSection = () => {
             />
           </Hidden>
         </Box>
+      </Box>
+      <Box
+        sx={{
+          [theme.breakpoints.down(twelve50)]: {
+            display: "none",
+          },
+        }}
+      >
+        <Search />
       </Box>
       {showScroll && (
         <IconButton
