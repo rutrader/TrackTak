@@ -1,7 +1,8 @@
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography, useTheme } from "@material-ui/core";
 import React from "react";
 import Img from "gatsby-image";
 import { graphql, useStaticQuery } from "gatsby";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const StyledImage = ({ sx, ...props }) => {
   return (
@@ -64,14 +65,26 @@ const FeatureText = (props) => (
     {...props}
     sx={{
       fontSize: "18px",
-      alignSelf: "center",
+      alignItems: "center",
       ml: 2,
+      maxWidth: "700px",
     }}
     color="textSecondary"
   />
 );
 
-function ProcessSection() {
+const ProcessSection = () => {
+  const theme = useTheme();
+  const isOnMobile = useMediaQuery(theme.breakpoints.down("lg"));
+
+  let flexDirectionStyles;
+
+  if (isOnMobile) {
+    flexDirectionStyles = {
+      flexDirection: "column",
+    };
+  }
+
   const data = useStaticQuery(graphql`
     query {
       templates: file(relativePath: { eq: "templates.png" }) {
@@ -145,14 +158,21 @@ function ProcessSection() {
         sx={{
           display: "flex",
           flexWrap: "wrap",
-          flexDirection: "column",
-          alignItems: "flex-start",
           gap: 6.2,
         }}
       >
         <BoxColumnWrapper>
           <BoxImage>
-            <Box sx={{ display: "flex", gap: "20px" }}>
+            <Box
+              sx={{
+                display: "flex",
+                gap: "20px",
+                flexDirection: "row-reverse",
+                alignItems: "center",
+                ...flexDirectionStyles,
+              }}
+            >
+              <StyledImage fluid={data.templates.childImageSharp.fluid} />
               <FeatureText>
                 <Box>
                   <FeatureHeader variant="h4">Templates</FeatureHeader>
@@ -160,13 +180,19 @@ function ProcessSection() {
                 Choose from multiple templates that does all the heavy work for
                 you and stores directly in the cloud.
               </FeatureText>
-              <StyledImage fluid={data.templates.childImageSharp.fluid} />
             </Box>
           </BoxImage>
         </BoxColumnWrapper>
         <BoxColumnWrapper>
           <BoxImage>
-            <Box sx={{ display: "flex", gap: "20px" }}>
+            <Box
+              sx={{
+                display: "flex",
+                gap: "20px",
+                alignItems: "center",
+                ...flexDirectionStyles,
+              }}
+            >
               <StyledImage fluid={data.finPlugin.childImageSharp.fluid} />
               <FeatureText>
                 <Box>
@@ -180,7 +206,16 @@ function ProcessSection() {
         </BoxColumnWrapper>
         <BoxColumnWrapper>
           <BoxImage>
-            <Box sx={{ display: "flex", gap: "20px" }}>
+            <Box
+              sx={{
+                display: "flex",
+                gap: "20px",
+                flexDirection: "row-reverse",
+                alignItems: "center",
+                ...flexDirectionStyles,
+              }}
+            >
+              <StyledImage fluid={data.formulas.childImageSharp.fluid} />
               <FeatureText>
                 <Box>
                   <FeatureHeader variant="h4">Formulas</FeatureHeader>
@@ -188,13 +223,12 @@ function ProcessSection() {
                 Enables you to be more productive from day one with over 400+
                 formulas matching Excel.
               </FeatureText>
-              <StyledImage fluid={data.formulas.childImageSharp.fluid} />
             </Box>
           </BoxImage>
         </BoxColumnWrapper>
       </Box>
     </Box>
   );
-}
+};
 
 export default ProcessSection;
