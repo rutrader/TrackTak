@@ -18,7 +18,7 @@ const Dashboard = () => {
   const handleSearchClick = async (ticker) => {
     const token = await getAccessToken();
     const response = await saveSpreadsheet(
-      { name: ticker, data: {}, type: "DCF" },
+      { name: ticker, data: {} },
       token?.jwtToken,
     );
     navigate(`/${userData.sub}/my-spreadsheets/${response.data._id}`);
