@@ -346,7 +346,7 @@ const Spreadsheet = ({
 
       if (onSaveEvent) {
         spreadsheet.variablesSpreadsheet.eventEmitter.on(
-          spreadsheetEvents.save,
+          spreadsheetEvents.save.persistDataChange,
           onSaveEvent,
         );
       }
@@ -361,7 +361,7 @@ const Spreadsheet = ({
 
         if (onSaveEvent) {
           spreadsheet.variablesSpreadsheet.eventEmitter.off(
-            spreadsheetEvents.save,
+            spreadsheetEvents.save.persistDataChange,
             onSaveEvent,
           );
         }
