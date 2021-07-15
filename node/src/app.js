@@ -10,7 +10,7 @@ const port = process.env.NODE_ENV === "development" ? 3001 : process.env.PORT;
 const app = express();
 
 app.use(express.static("public"));
-app.use(express.json({ limit: "50mb" }));
+app.use(express.json({ limit: "16mb" }));
 
 const publicRoutes = ["/api/v1/compute-sensitivity-analysis"];
 
