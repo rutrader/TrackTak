@@ -112,8 +112,7 @@ const Spreadsheet = ({
   useEffect(() => {
     if (
       spreadsheet &&
-      spreadsheetToRestore &&
-      !isEmpty(spreadsheetToRestore.sheetData.data?.datas)
+      !isEmpty(spreadsheetToRestore?.sheetData.data?.datas ?? true)
     ) {
       const dcfValuationData = spreadsheetToRestore.sheetData.data.datas[0];
       const financialStatements = spreadsheetToRestore.sheetData.data.datas[1];
@@ -426,7 +425,7 @@ const Spreadsheet = ({
     yearlyBalanceSheets,
     ttmCashFlowStatement,
     yearlyCashFlowStatements,
-    spreadsheetToRestore.sheetData.data,
+    spreadsheetToRestore,
   ]);
 
   useEffect(() => {
