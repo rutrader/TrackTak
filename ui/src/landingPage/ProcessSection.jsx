@@ -33,15 +33,11 @@ export const BoxColumnWrapper = ({ sx, ...props }) => {
   );
 };
 
-const BoxIcon = ({ sx, ...props }) => {
+const BoxImage = ({ sx, ...props }) => {
   return (
     <Box
       sx={{
         width: "100%",
-        visibility: "visible",
-        animationDuration: "1.3s",
-        animationDelay: "0.8s",
-        animationName: "fadeInUp",
         ...sx,
       }}
       {...props}
@@ -54,12 +50,10 @@ const FeatureHeader = (props) => (
     {...props}
     sx={{
       whiteSpace: "nowrap",
-      visibility: "visible",
-      animationDelay: "0.4s",
-      animationName: "fadeInUp",
       fontSize: "25px",
       color: "#313450",
       fontWeight: "bold",
+
       marginBottom: (theme) => theme.spacing(2),
     }}
   />
@@ -70,10 +64,8 @@ const FeatureText = (props) => (
     {...props}
     sx={{
       fontSize: "18px",
+      alignSelf: "center",
       ml: 2,
-      visibility: "visible",
-      animationDelay: "0.6s",
-      animationName: "fadeInUp",
     }}
     color="textSecondary"
   />
@@ -82,24 +74,27 @@ const FeatureText = (props) => (
 function ProcessSection() {
   const data = useStaticQuery(graphql`
     query {
-      templates: file(relativePath: { eq: "templates.PNG" }) {
+      templates: file(relativePath: { eq: "templates.png" }) {
         childImageSharp {
-          fluid(maxWidth: 900) {
-            ...GatsbyImageSharpFluid_withWebp
+          fluid(maxWidth: 900, quality: 100) {
+            ...GatsbyImageSharpFluid
+            ...GatsbyImageSharpFluidLimitPresentationSize
           }
         }
       }
       finPlugin: file(relativePath: { eq: "fin-plugin.png" }) {
         childImageSharp {
-          fluid(maxWidth: 900) {
-            ...GatsbyImageSharpFluid_withWebp
+          fluid(maxWidth: 900, quality: 100) {
+            ...GatsbyImageSharpFluid
+            ...GatsbyImageSharpFluidLimitPresentationSize
           }
         }
       }
       formulas: file(relativePath: { eq: "formulas.png" }) {
         childImageSharp {
-          fluid(maxWidth: 900) {
-            ...GatsbyImageSharpFluid_withWebp
+          fluid(maxWidth: 900, quality: 100) {
+            ...GatsbyImageSharpFluid
+            ...GatsbyImageSharpFluidLimitPresentationSize
           }
         }
       }
@@ -156,40 +151,46 @@ function ProcessSection() {
         }}
       >
         <BoxColumnWrapper>
-          <BoxIcon>
-            <FeatureHeader variant="h4">Templates</FeatureHeader>
-            <Box sx={{ display: "flex" }}>
-              <StyledImage fluid={data.templates.childImageSharp.fluid} />
+          <BoxImage>
+            <Box sx={{ display: "flex", gap: "20px" }}>
               <FeatureText>
+                <Box>
+                  <FeatureHeader variant="h4">Templates</FeatureHeader>
+                </Box>
                 Choose from multiple templates that does all the heavy work for
-                you and stores all your work directly in the cloud.
+                you and stores directly in the cloud.
               </FeatureText>
+              <StyledImage fluid={data.templates.childImageSharp.fluid} />
             </Box>
-          </BoxIcon>
+          </BoxImage>
         </BoxColumnWrapper>
         <BoxColumnWrapper>
-          <BoxIcon>
-            <FeatureHeader variant="h4">Financial plugin</FeatureHeader>
-            <Box sx={{ display: "flex" }}>
+          <BoxImage>
+            <Box sx={{ display: "flex", gap: "20px" }}>
               <StyledImage fluid={data.finPlugin.childImageSharp.fluid} />
               <FeatureText>
+                <Box>
+                  <FeatureHeader variant="h4">Financial plugin</FeatureHeader>
+                </Box>
                 No more third-party API intergrations! Simply type `=𝗙𝗜𝗡()`
                 directly into your spreadsheet.
               </FeatureText>
             </Box>
-          </BoxIcon>
+          </BoxImage>
         </BoxColumnWrapper>
         <BoxColumnWrapper>
-          <BoxIcon>
-            <FeatureHeader variant="h4">Formulas</FeatureHeader>
-            <Box sx={{ display: "flex" }}>
-              <StyledImage fluid={data.formulas.childImageSharp.fluid} />
+          <BoxImage>
+            <Box sx={{ display: "flex", gap: "20px" }}>
               <FeatureText>
+                <Box>
+                  <FeatureHeader variant="h4">Formulas</FeatureHeader>
+                </Box>
                 Enables you to be more productive from day one with over 400+
                 formulas matching Excel.
               </FeatureText>
+              <StyledImage fluid={data.formulas.childImageSharp.fluid} />
             </Box>
-          </BoxIcon>
+          </BoxImage>
         </BoxColumnWrapper>
       </Box>
     </Box>
