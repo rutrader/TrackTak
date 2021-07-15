@@ -278,7 +278,7 @@ export const getSheet = (
 
   const toolbarChangePaintformatPaste = () => {
     if (toolbar.paintformatActive()) {
-      // paste("format");
+      getData().paste(getData().rows.copyPasteFormat);
       clearClipboard();
       toolbar.paintformatToggle();
     }
@@ -1159,78 +1159,6 @@ export const getSheet = (
               paste(getData().rows.copyPasteAll);
             }
 
-            evt.preventDefault();
-            break;
-          case 37:
-            // ctrl + left
-            selectorMove(shiftKey, "row-first");
-            evt.preventDefault();
-            break;
-          case 38:
-            // ctrl + up
-            selectorMove(shiftKey, "col-first");
-            evt.preventDefault();
-            break;
-          case 39:
-            // ctrl + right
-            selectorMove(shiftKey, "row-last");
-            evt.preventDefault();
-            break;
-          case 40:
-            // ctrl + down
-            selectorMove(shiftKey, "col-last");
-            evt.preventDefault();
-            break;
-          case 32:
-            // ctrl + space, all cells in col
-            selectorSet(false, -1, rangeSelector.getIndexes().ci, false);
-            evt.preventDefault();
-            break;
-          default:
-            break;
-        }
-        eventEmitter.emit(spreadsheetEvents.sheet.ctrlKeyDown, evt, keyCode);
-      } else {
-        // console.log('evt.keyCode:', evt.keyCode);
-        switch (keyCode) {
-          case 32:
-            if (shiftKey) {
-              // shift + space, all cells in row
-              selectorSet(false, rangeSelector.getIndexes().ri, -1, false);
-            }
-            break;
-          case 27: // esc
-            contextMenu.hide();
-            clearClipboard();
-            break;
-          case 37: // left
-            selectorMove(shiftKey, "left");
-            evt.preventDefault();
-            break;
-          case 38: // up
-            selectorMove(shiftKey, "up");
-            evt.preventDefault();
-            break;
-          case 39: // right
-            selectorMove(shiftKey, "right");
-            evt.preventDefault();
-            break;
-          case 40: // down
-            selectorMove(shiftKey, "down");
-            evt.preventDefault();
-            break;
-          case 9: // tab
-            editor.clear();
-            // shift + tab => move left
-            // tab => move right
-            selectorMove(false, shiftKey ? "left" : "right");
-            evt.preventDefault();
-            break;
-          case 13: // enter
-            editor.clear();
-            // shift + enter => move up
-            // enter => move down
-            selectorMove(false, shiftKey ? "up" : "down");
             evt.preventDefault();
             break;
           case 8: // backspace
