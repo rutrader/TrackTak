@@ -89,15 +89,6 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
   const getUserAccountMenuItems = () => (
     <>
       <MenuItem
-        key="account-settings"
-        to="/account-settings"
-        component={Link}
-        onClick={handleAccountMenuClose}
-        sx={buttonStyle}
-      >
-        My Account
-      </MenuItem>
-      <MenuItem
         key="dashboard"
         to="/dashboard"
         component={Link}
@@ -105,6 +96,15 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
         sx={buttonStyle}
       >
         Dashboard
+      </MenuItem>
+      <MenuItem
+        key="account-settings"
+        to="/account-settings"
+        component={Link}
+        onClick={handleAccountMenuClose}
+        sx={buttonStyle}
+      >
+        Settings
       </MenuItem>
       <MenuItem
         key="sign-out"
@@ -215,6 +215,9 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
+                  {featureToggle.AUTHENTICATION &&
+                    isAuthenticated &&
+                    getUserAccountMenuItems()}
                   {links.map((link) => (
                     <MenuItem
                       key={link.to}
@@ -225,9 +228,6 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
                       {link.text}
                     </MenuItem>
                   ))}
-                  {featureToggle.AUTHENTICATION &&
-                    isAuthenticated &&
-                    getUserAccountMenuItems()}
                 </Menu>
               </Box>
             </Hidden>

@@ -20,6 +20,7 @@ import { deleteSpreadsheet, getSpreadsheets } from "../api/api";
 import { isEmpty } from "lodash-es";
 import { navigate } from "gatsby";
 import RoundButton from "./RoundButton";
+import dayjs from "dayjs";
 
 const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
   const theme = useTheme();
@@ -83,12 +84,12 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
       {isEmpty(spreadsheets) && (
         <Box
           sx={{
-            marginTop: (theme) => theme.spacing(2),
+            marginTop: (theme) => theme.spacing(10),
           }}
           textAlign={"center"}
         >
-          <Typography gutterBottom variant="h6">
-            Create your first valuation!
+          <Typography gutterBottom variant="h5">
+            Start by creating your first valuation!
           </Typography>
           <RoundButton
             variant="contained"
@@ -96,10 +97,11 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
             onClick={onNewSpreadsheetClick}
             type="button"
             sx={{
+              mt: 2,
               textTransform: "none",
             }}
           >
-            New Valuation
+            Create Valuation
           </RoundButton>
         </Box>
       )}
@@ -140,7 +142,8 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
                     </Box>
                   </TableCell>
                   <TableCell align="right">
-                    {spreadsheet.lastModifiedTime}
+                    {/* MM first as most users are American */}
+                    {dayjs(spreadsheet.lastModifiedTime).format("DD MMM YY")}
                   </TableCell>
                   <TableCell align="right">
                     <IconButton

@@ -16,7 +16,6 @@ import BackgroundImage from "gatsby-background-image";
 import { useEffect } from "react";
 
 const sixteen50 = 1650;
-const twelve50 = 1250;
 
 const AboveTheFoldSection = () => {
   const data = useStaticQuery(graphql`
