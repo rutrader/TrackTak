@@ -39,6 +39,9 @@ const BoxImage = ({ sx, ...props }) => {
     <Box
       sx={{
         width: "100%",
+        display: "flex",
+        gap: "20px",
+        alignItems: "center",
         ...sx,
       }}
       {...props}
@@ -162,68 +165,53 @@ const ProcessSection = () => {
         }}
       >
         <BoxColumnWrapper>
-          <BoxImage>
-            <Box
-              sx={{
-                display: "flex",
-                gap: "20px",
-                flexDirection: "row-reverse",
-                alignItems: "center",
-                ...flexDirectionStyles,
-              }}
-            >
-              <StyledImage fluid={data.templates.childImageSharp.fluid} />
-              <FeatureText>
-                <Box>
-                  <FeatureHeader variant="h4">Templates</FeatureHeader>
-                </Box>
-                Choose from multiple templates that does all the heavy work for
-                you and stores directly in the cloud.
-              </FeatureText>
-            </Box>
+          <BoxImage
+            sx={{
+              flexDirection: "row-reverse",
+              ...flexDirectionStyles,
+            }}
+          >
+            <StyledImage fluid={data.templates.childImageSharp.fluid} />
+            <FeatureText>
+              <Box>
+                <FeatureHeader variant="h4">Templates</FeatureHeader>
+              </Box>
+              Choose from multiple templates that does all the heavy work for
+              you and stores directly in the cloud.
+            </FeatureText>
           </BoxImage>
         </BoxColumnWrapper>
         <BoxColumnWrapper>
-          <BoxImage>
-            <Box
-              sx={{
-                display: "flex",
-                gap: "20px",
-                alignItems: "center",
-                ...flexDirectionStyles,
-              }}
-            >
-              <StyledImage fluid={data.finPlugin.childImageSharp.fluid} />
-              <FeatureText>
-                <Box>
-                  <FeatureHeader variant="h4">Financial plugin</FeatureHeader>
-                </Box>
-                No more third-party API intergrations! Simply type `=𝗙𝗜𝗡()`
-                directly into your spreadsheet.
-              </FeatureText>
-            </Box>
+          <BoxImage
+            sx={{
+              ...flexDirectionStyles,
+            }}
+          >
+            <StyledImage fluid={data.finPlugin.childImageSharp.fluid} />
+            <FeatureText>
+              <Box>
+                <FeatureHeader variant="h4">Financial plugin</FeatureHeader>
+              </Box>
+              No more third-party API intergrations! Simply type `=𝗙𝗜𝗡()`
+              directly into your spreadsheet.
+            </FeatureText>
           </BoxImage>
         </BoxColumnWrapper>
         <BoxColumnWrapper>
-          <BoxImage>
-            <Box
-              sx={{
-                display: "flex",
-                gap: "20px",
-                flexDirection: "row-reverse",
-                alignItems: "center",
-                ...flexDirectionStyles,
-              }}
-            >
-              <StyledImage fluid={data.formulas.childImageSharp.fluid} />
-              <FeatureText>
-                <Box>
-                  <FeatureHeader variant="h4">Formulas</FeatureHeader>
-                </Box>
-                Enables you to be more productive from day one with over 400+
-                formulas matching Excel.
-              </FeatureText>
-            </Box>
+          <BoxImage
+            sx={{
+              flexDirection: "row-reverse",
+              ...flexDirectionStyles,
+            }}
+          >
+            <StyledImage fluid={data.formulas.childImageSharp.fluid} />
+            <FeatureText>
+              <Box>
+                <FeatureHeader variant="h4">Formulas</FeatureHeader>
+              </Box>
+              Enables you to be more productive from day one with over 400+
+              formulas matching Excel.
+            </FeatureText>
           </BoxImage>
         </BoxColumnWrapper>
       </Box>
