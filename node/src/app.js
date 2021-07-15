@@ -94,28 +94,31 @@ app.get("/api/v1/autocomplete-query/:queryString", async (req, res) => {
   res.send({ value });
 });
 
+app.put("/api/v1/spreadsheet", auth, async (req, res) => {
+  const spreadsheet = await api.saveSpreadsheet(req.body, req.user.username);
+  res.send(spreadsheet);
+});
+
+app.get("/api/v1/spreadsheet", auth, async (req, res) => {
+  const spreadsheets = await api.getSpreadsheets(req.user.username);
+  res.send({ spreadsheets });
+});
+
+app.get("/api/v1/spreadsheet/:id", auth, async (req, res) => {
+  const spreadsheet = await api.getSpreadsheet(
+    req.user.username,
+    req.params.id,
+  );
+  res.send({ spreadsheet });
+});
+
+app.delete("/api/v1/spreadsheet/:id", auth, async (req, res) => {
+  await api.deleteSpreadsheet(req.params.id, req.user.username);
+  res.send({ id: req.params.id });
+});
+
 app.get("/", (_, res) => {
   res.sendStatus(200);
-});
-
-app.put("/api/v1/valuation", auth, async (req, res) => {
-  const document = await api.saveDCFValuation(req.body, req.user.username);
-  res.send(document);
-});
-
-app.get("/api/v1/valuation", auth, async (req, res) => {
-  const valuations = await api.getDCFValuations(req.user.username);
-  res.send({ valuations });
-});
-
-app.get("/api/v1/valuation/:id", auth, async (req, res) => {
-  const valuation = await api.getDCFValuation(req.user.username, req.params.id);
-  res.send({ valuation });
-});
-
-app.delete("/api/v1/valuation/:id", auth, async (req, res) => {
-  await api.deleteDCFValuation(req.params.id, req.user.username);
-  res.send({ id: req.params.id });
 });
 
 app.listen(port, async () => {

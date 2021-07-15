@@ -7,7 +7,7 @@ import resourceName from "../shared/resourceName";
 import SpreadsheetTable from "../components/SavedSpreadsheets";
 import SidePanel from "../components/SidePanel";
 import AddIcon from "@material-ui/icons/Add";
-import { saveValuation } from "../api/api";
+import { saveSpreadsheet } from "../api/api";
 import { navigate } from "gatsby";
 import SearchTickerDialog from "../components/SearchTickerDialog";
 
@@ -15,7 +15,9 @@ const tabs = (handleShowSearchTickerDialog) => [
   {
     title: "My Valuations",
     to: "/dashboard",
-    content: <SpreadsheetTable onNewValuationClick={handleShowSearchTickerDialog} />,
+    content: (
+      <SpreadsheetTable onNewValuationClick={handleShowSearchTickerDialog} />
+    ),
   },
 ];
 
@@ -26,12 +28,12 @@ const Dashboard = () => {
 
   const handleSearchClick = async (ticker) => {
     const token = await getAccessToken();
-    const response = await saveValuation(
+    const response = await saveSpreadsheet(
       { name: ticker, data: {} },
       token?.jwtToken,
     );
-    navigate(`/${userData.sub}/my-spreadsheets/${response.data._id}`)
-  }
+    navigate(`/${userData.sub}/my-spreadsheets/${response.data._id}`);
+  };
 
   const handleShowSearchTickerDialog = () => {
     setShowSearchTickerDialog(true);
@@ -68,11 +70,11 @@ const Dashboard = () => {
                 sx={{
                   padding: 0,
                   backgroundColor: (theme) => theme.palette.primary.light,
-                  width: '40px',
-                  height: '40px',
-                  '&:hover': {
+                  width: "40px",
+                  height: "40px",
+                  "&:hover": {
                     backgroundColor: (theme) => theme.palette.primary.dark,
-                  }
+                  },
                 }}
                 onClick={handleShowSearchTickerDialog}
               >

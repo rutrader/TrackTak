@@ -1,25 +1,25 @@
 import { axios } from "@tracktak/intrinsic-valuations";
 
-export const saveValuation = async (valuation, accessToken) => {
-  return axios.put('/api/v1/valuation', valuation, {
-    headers: { 'Authorization': `Bearer ${accessToken}` }
+export const saveSpreadsheet = async (valuation, accessToken) => {
+  return axios.put("/api/v1/spreadsheet", valuation, {
+    headers: { Authorization: `Bearer ${accessToken}` },
   });
-}
+};
 
-export const getValuations = async (accessToken) => {
-  return axios.get('/api/v1/valuation', {
-    headers: { 'Authorization': `Bearer ${accessToken}` }
+export const getSpreadsheets = async (accessToken) => {
+  return axios.get("/api/v1/spreadsheet", {
+    headers: { Authorization: `Bearer ${accessToken}` },
   });
-}
+};
 
-export const getValuation = async (accessToken, id) => {
-  return axios.get(`/api/v1/valuation/${id}`, {
-    headers: { 'Authorization': `Bearer ${accessToken}` }
+export const getSpreadsheet = async (accessToken, id) => {
+  return axios.get(`/api/v1/spreadsheet/${id}`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
   });
-}
+};
 
-export const deleteValuation = async (id, accessToken) => {
-  return axios.delete(`/api/v1/valuation/${id}`, {
-    headers: { 'Authorization': `Bearer ${accessToken}` }
+export const deleteSpreadsheet = async (id, accessToken) => {
+  return axios.delete(`/api/v1/spreadsheet/${id}`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
   });
-}
+};

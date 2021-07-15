@@ -288,7 +288,7 @@ const api = {
     return data;
   },
 
-  saveDCFValuation: async (sheetData, userId) => {
+  saveSpreadsheet: async (sheetData, userId) => {
     const document = {
       userId,
       sheetData,
@@ -296,23 +296,23 @@ const api = {
     };
     const query = {
       "sheetData.name": sheetData.name,
-      userId
+      userId,
     };
-    return database.replace(Collections.DCF_VALUATION, query, document);
+    return database.replace(Collections.SPREADSHEET, query, document);
   },
 
-  getDCFValuations: async (userId) => {
-    return database.find(Collections.DCF_VALUATION, {
+  getSpreadsheets: async (userId) => {
+    return database.find(Collections.SPREADSHEET, {
       userId,
     });
   },
 
-  getDCFValuation: async (userId, id) => {
-    return database.findOne(Collections.DCF_VALUATION, id, userId);
+  getSpreadsheet: async (userId, id) => {
+    return database.findOne(Collections.SPREADSHEET, id, userId);
   },
 
-  deleteDCFValuation: async (id, userId) => {
-    return database.deleteOne(Collections.DCF_VALUATION, id, userId);
+  deleteSpreadsheet: async (id, userId) => {
+    return database.deleteOne(Collections.SPREADSHEET, id, userId);
   },
 };
 

@@ -16,7 +16,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { useTheme } from "@material-ui/styles";
 import ConfirmationDialog from "./ConfirmationDialog";
 import { useAuth } from "../hooks/useAuth";
-import { deleteValuation, getValuations } from "../api/api";
+import { deleteSpreadsheet, getSpreadsheets } from "../api/api";
 import { isEmpty } from "lodash-es";
 import { navigate } from "gatsby";
 import RoundButton from "./RoundButton";
@@ -31,7 +31,7 @@ const SavedSpreadsheets = ({ onNewValuationClick }) => {
   useEffect(() => {
     async function fetchData() {
       const token = await getAccessToken();
-      const response = await getValuations(token?.jwtToken);
+      const response = await getSpreadsheets(token?.jwtToken);
       setValuations(response.data.valuations);
     }
     fetchData();
@@ -49,7 +49,7 @@ const SavedSpreadsheets = ({ onNewValuationClick }) => {
   const handleDeleteConfirm = async () => {
     if (selectedValuation) {
       const token = await getAccessToken();
-      const response = await deleteValuation(
+      const response = await deleteSpreadsheet(
         selectedValuation._id,
         token?.jwtToken,
       );

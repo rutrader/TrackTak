@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { saveValuation } from "../api/api";
+import { saveSpreadsheet } from "../api/api";
 import { useAuth } from "./useAuth";
 
 const usePersistSpreadsheet = (ticker, spreadsheetDataToSave, sheetId) => {
@@ -9,7 +9,7 @@ const usePersistSpreadsheet = (ticker, spreadsheetDataToSave, sheetId) => {
   useEffect(() => {
     async function persistSpreadsheetData() {
       const token = await getAccessToken();
-      await saveValuation(
+      await saveSpreadsheet(
         { name: ticker, data: spreadsheetDataToSave, sheetId },
         token?.jwtToken,
       );
@@ -19,9 +19,9 @@ const usePersistSpreadsheet = (ticker, spreadsheetDataToSave, sheetId) => {
       setIsSaving(true);
       persistSpreadsheetData();
     }
-  }, [getAccessToken, spreadsheetDataToSave, ticker]);
+  }, [getAccessToken, isAuthenticated, sheetId, spreadsheetDataToSave, ticker]);
 
-  return [ isSaving ];
+  return [isSaving];
 };
 
 export default usePersistSpreadsheet;

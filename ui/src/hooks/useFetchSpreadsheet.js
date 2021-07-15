@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getValuation } from "../api/api";
+import { getSpreadsheet } from "../api/api";
 import { useAuth } from "./useAuth";
 
 const useFetchSpreadsheet = (sheetId) => {
@@ -9,10 +9,7 @@ const useFetchSpreadsheet = (sheetId) => {
   useEffect(() => {
     async function fetchData() {
       const token = await getAccessToken();
-      const response = await getValuation(
-        token?.jwtToken,
-        sheetId,
-      );
+      const response = await getSpreadsheet(token?.jwtToken, sheetId);
       setSpreadsheetData(response.data.valuation);
     }
     if (isAuthenticated) {
