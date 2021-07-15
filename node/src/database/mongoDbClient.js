@@ -49,9 +49,13 @@ export const replace = async (collection, query, document) => {
     ...document,
     _id: id,
   };
+  const queryWithId = {
+    ...query,
+    _id: id,
+  }
   const response = await database
     .collection(collection)
-    .replaceOne(query, documentWithId, { upsert: true });
+    .replaceOne(queryWithId, documentWithId, { upsert: true });
 
   if (response.result.ok) {
     return documentWithId;
