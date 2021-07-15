@@ -125,45 +125,52 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {spreadsheets?.map((spreadsheet) => (
-                <TableRow
-                  key={spreadsheet._id}
-                  hover
-                  onClick={() => handleRowClick(spreadsheet)}
-                >
-                  <TableCell component="th" scope="row">
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <ListItemIcon>
-                        <GridOnIcon />
-                      </ListItemIcon>
-                      {spreadsheet.sheetData.name}
-                    </Box>
-                  </TableCell>
-                  <TableCell align="right">
-                    {dayjs(spreadsheet.lastModifiedTime).format("DD MMM YY")}
-                  </TableCell>
-                  <TableCell align="right">
-                    <IconButton
-                      sx={{
-                        borderRadius: "2px",
-                        color: theme.palette.alert,
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDelete(spreadsheet);
-                      }}
-                      type="button"
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {spreadsheets
+                .sort(
+                  (a, b) =>
+                    new Date(b.lastModifiedTime) - new Date(a.lastModifiedTime),
+                )
+                .map((spreadsheet) => (
+                  <TableRow
+                    key={spreadsheet._id}
+                    hover
+                    onClick={() => handleRowClick(spreadsheet)}
+                  >
+                    <TableCell component="th" scope="row">
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <ListItemIcon>
+                          <GridOnIcon />
+                        </ListItemIcon>
+                        {spreadsheet.sheetData.name}
+                      </Box>
+                    </TableCell>
+                    <TableCell align="right">
+                      {dayjs(spreadsheet.lastModifiedTime).format(
+                        "DD MMM YY HH:mm",
+                      )}
+                    </TableCell>
+                    <TableCell align="right">
+                      <IconButton
+                        sx={{
+                          borderRadius: "2px",
+                          color: theme.palette.alert,
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(spreadsheet);
+                        }}
+                        type="button"
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
