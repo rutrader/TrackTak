@@ -1,4 +1,4 @@
-import { Alert, Box, IconButton, Typography } from "@material-ui/core";
+import { Box, IconButton, Typography } from "@material-ui/core";
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { useAuth } from "../hooks/useAuth";
@@ -9,9 +9,10 @@ import { saveSpreadsheet } from "../api/api";
 import { navigate } from "gatsby";
 import SearchTickerDialog from "../components/SearchTickerDialog";
 import AddIcon from "@material-ui/icons/Add";
+import withAuthentication from "../hocs/withAuthentication";
 
 const Dashboard = () => {
-  const { isAuthenticated, getAccessToken, userData } = useAuth();
+  const { getAccessToken, userData } = useAuth();
   const [showSearchTickerDialog, setShowSearchTickerDialog] = useState(false);
 
   const handleSearchClick = async (ticker) => {
@@ -66,14 +67,12 @@ const Dashboard = () => {
           onClick={handleShowSearchTickerDialog}
         >
           <AddIcon style={{ color: "white" }} fontSize="large" />
+          sd
         </IconButton>
       </Box>
       <SavedSpreadsheets onNewSpreadsheetClick={handleShowSearchTickerDialog} />
-      {!isAuthenticated && (
-        <Alert severity="info">Sign in to view your dashboard</Alert>
-      )}
     </>
   );
 };
 
-export default Dashboard;
+export default withAuthentication(Dashboard);
