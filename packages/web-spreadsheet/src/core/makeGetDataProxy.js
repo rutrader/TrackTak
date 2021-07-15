@@ -1,13 +1,13 @@
 import { CellRange } from "./cell_range";
 import { expr2xy, xy2expr } from "./alphabet";
 import { t } from "../locale/locale";
-import spreadsheetEvents from "./spreadsheetEvents";
 import helper from "./helper";
 import getDefaultFormatFromText from "../shared/getDefaultFormatFromText";
 import { isNil } from "lodash-es";
 
 export const makeGetDataProxy = (
   type,
+  save,
   rangeSelector,
   clipboard,
   builder,
@@ -26,15 +26,19 @@ export const makeGetDataProxy = (
   let sortedRowMap = new Map();
   let unsortedRowMap = new Map();
 
+  const persistDataChange = (callback) => {
+    save.persistDataChange(type, name, getData(), callback);
+  };
+
   const addValidation = (mode, ref, validator) => {
-    changeData(() => {
+    persistDataChange(() => {
       validations.add(mode, ref, validator);
     });
   };
 
   const removeValidation = () => {
     const { range } = rangeSelector;
-    changeData(() => {
+    persistDataChange(() => {
       validations.remove(range);
     });
   };
@@ -65,21 +69,14 @@ export const makeGetDataProxy = (
     clipboard.cut(rangeSelector.range);
   };
 
-  // what: all | text | format
-  const paste = (what = "all", error = () => {}) => {
-    // console.log('sIndexes:', sIndexes);
-    if (clipboard.isClear()) return false;
-    if (!canPaste(clipboard.getRange(), rangeSelector.range, error))
-      return false;
-
-    changeData(() => {
+  const paste = (copyPasteFunc) => {
+    persistDataChange(() => {
       if (clipboard.isCopy()) {
-        copyPaste(clipboard.getRange(), rangeSelector.range, what);
+        copyPasteFunc(clipboard.getRange(), rangeSelector.range);
       } else if (clipboard.isCut()) {
         cutPaste(clipboard.getRange(), rangeSelector.range);
       }
     });
-    return true;
   };
 
   const pasteFromSystemClipboard = () => {
@@ -91,19 +88,21 @@ export const makeGetDataProxy = (
     return navigator.clipboard.read().then((data) => {
       return data[0].getType("text/plain").then((plainTextBlob) => {
         return plainTextBlob.text().then((plainText) => {
-          const content = parseClipboardContent(plainText);
-          const { ri, ci } = rangeSelector.getIndexes();
+          persistDataChange(() => {
+            const content = parseClipboardContent(plainText);
+            const { ri, ci } = rangeSelector.getIndexes();
 
-          let startRow = ri;
+            let startRow = ri;
 
-          content.forEach((row) => {
-            let startColumn = ci;
+            content.forEach((row) => {
+              let startColumn = ci;
 
-            row.forEach((cellContent) => {
-              setCellText(startRow, startColumn, cellContent, "finished");
-              startColumn += 1;
+              row.forEach((cellContent) => {
+                setCellText(startRow, startColumn, cellContent, "finished");
+                startColumn += 1;
+              });
+              startRow += 1;
             });
-            startRow += 1;
           });
         });
       });
@@ -130,7 +129,7 @@ export const makeGetDataProxy = (
       .split("\r\n")
       .map((it) => it.replace(/"/g, "").split("\t"));
     if (lines.length > 0) lines.length -= 1;
-    changeData(() => {
+    persistDataChange(() => {
       rows.paste(lines, rangeSelector.range);
     });
   };
@@ -138,14 +137,10 @@ export const makeGetDataProxy = (
   const autofill = (cellRange, what, error = () => {}) => {
     const srcRange = rangeSelector.range;
     if (!canPaste(srcRange, cellRange, error)) return false;
-    changeData(() => {
-      copyPaste(srcRange, cellRange, what, true);
+    persistDataChange(() => {
+      // copyPaste(srcRange, cellRange, what, true);
     });
     return true;
-  };
-
-  const clearClipboard = () => {
-    clipboard.clear();
   };
 
   const calSelectedRangeByEnd = (ri, ci) => {
@@ -183,7 +178,7 @@ export const makeGetDataProxy = (
   };
 
   const setSelectedCellAttr = (property, value) => {
-    changeData(() => {
+    persistDataChange(() => {
       if (property === "merge") {
         if (value) merge();
         else unmerge();
@@ -371,7 +366,7 @@ export const makeGetDataProxy = (
     };
   };
 
-  const isSignleSelected = () => {
+  const isSingleSelected = () => {
     const { sri, sci, eri, eci } = rangeSelector.range;
     const cell = getCell(sri, sci);
     if (cell && cell.merge) {
@@ -392,32 +387,22 @@ export const makeGetDataProxy = (
   };
 
   const merge = () => {
-    if (isSignleSelected()) return;
+    if (isSingleSelected()) return;
     const [rn, cn] = rangeSelector.range.size();
-    // console.log('merge:', rn, cn);
+
     if (rn > 1 || cn > 1) {
       const { sri, sci } = rangeSelector.range;
-      changeData(() => {
-        const newCell = {
-          merge: [rn - 1, cn - 1],
-        };
-
-        rows.setCell(sri, sci, newCell);
-        merges.add(rangeSelector.range);
-        // delete merge cells
-        rows.deleteCells(rangeSelector.range);
-
-        rows.setCell(sri, sci, newCell);
+      persistDataChange(() => {
+        rows.merge(sri, sci, rn, cn);
       });
     }
   };
 
   const unmerge = () => {
-    if (!isSignleSelected()) return;
+    if (!isSingleSelected()) return;
     const { sri, sci } = rangeSelector.range;
-    changeData(() => {
-      rows.deleteCell(sri, sci, "merge");
-      merges.deleteWithin(rangeSelector.range);
+    persistDataChange(() => {
+      rows.unmerge(sri, sci);
     });
   };
 
@@ -426,7 +411,7 @@ export const makeGetDataProxy = (
   };
 
   const changeAutofilter = () => {
-    changeData(() => {
+    persistDataChange(() => {
       if (autoFilter.active()) {
         autoFilter.clear();
         exceptRowSet = new Set();
@@ -468,18 +453,15 @@ export const makeGetDataProxy = (
     });
   };
 
-  const deleteCell = (what = "all") => {
-    changeData(() => {
-      rows.deleteCells(rangeSelector.range, what);
-      if (what === "all" || what === "format") {
-        merges.deleteWithin(rangeSelector.range);
-      }
+  const deleteCell = (deleteFunc) => {
+    persistDataChange(() => {
+      deleteFunc(rangeSelector.range);
     });
   };
 
   // type: row | column
   const insert = (type, n = 1) => {
-    changeData(() => {
+    persistDataChange(() => {
       const { sri, sci } = rangeSelector.range;
       let si = sri;
       if (type === "row") {
@@ -499,7 +481,7 @@ export const makeGetDataProxy = (
 
   // type: row | column
   const deleteData = (type) => {
-    changeData(() => {
+    persistDataChange(() => {
       const { range } = rangeSelector;
       const { sri, sci, eri, eci } = rangeSelector.range;
       const [rsize, csize] = rangeSelector.range.size();
@@ -635,36 +617,13 @@ export const makeGetDataProxy = (
     return getCellStyleOrDefault(ri, ci);
   };
 
-  let editingCellAddress;
-
-  const hasStartedEditing = (row, col) => {
-    if (!editingCellAddress) {
-      editingCellAddress = {
-        row,
-        col,
-      };
-
-      return true;
-    }
-    return false;
-  };
-
-  const stopEditing = () => {
-    editingCellAddress = null;
-  };
-
   // state: input | finished
   const setCellText = (ri, ci, text, state) => {
     if (state === "finished") {
-      rows.setCellText(ri, ci, text);
-      stopEditing();
-    } else {
-      if (hasStartedEditing(ri, ci)) {
-        history.push({ type, data: getData() });
-      }
-      eventEmitter.emit(spreadsheetEvents.data.change, getData());
+      persistDataChange(() => {
+        rows.setCellText(ri, ci, text);
+      });
     }
-
     // validator
     validations.validate(ri, ci, text);
   };
@@ -675,7 +634,7 @@ export const makeGetDataProxy = (
   };
 
   const setFreeze = (ri, ci) => {
-    changeData(() => {
+    persistDataChange(() => {
       freeze = [ri, ci];
     });
   };
@@ -828,12 +787,6 @@ export const makeGetDataProxy = (
     });
   };
 
-  const changeData = (cb) => {
-    history.push({ type, data: getData() });
-    cb();
-    eventEmitter.emit(spreadsheetEvents.data.change, getData());
-  };
-
   const setData = (d) => {
     Object.keys(d).forEach((property) => {
       if (property === "merges") {
@@ -863,6 +816,17 @@ export const makeGetDataProxy = (
 
     if (d.styles !== undefined) {
       styles = [...d.styles];
+    }
+
+    const sheetId = hyperformula.getSheetId(name);
+
+    hyperformula.setSheetContent(sheetId, d.serializedValues);
+
+    if (getOptions().debugMode) {
+      console.log(
+        `registered sheet content: ${name} (sheet id: ${sheetId})`,
+        hyperformula.getSheetFormulas(sheetId),
+      );
     }
   };
 
@@ -902,27 +866,6 @@ export const makeGetDataProxy = (
     }
     return true;
   }
-  function copyPaste(srcCellRange, dstCellRange, what, autofill = false) {
-    // delete dest merge
-    if (what === "all" || what === "format") {
-      rows.deleteCells(dstCellRange, what);
-      merges.deleteWithin(dstCellRange);
-    }
-    rows.copyPaste(
-      srcCellRange,
-      dstCellRange,
-      what,
-      autofill,
-      (ri, ci, cell) => {
-        if (cell && cell.merge) {
-          // console.log('cell:', ri, ci, cell);
-          const [rn, cn] = cell.merge;
-          if (rn <= 0 && cn <= 0) return;
-          merges.add(new CellRange(ri, ci, ri + rn, ci + cn));
-        }
-      },
-    );
-  }
 
   function cutPaste(srcCellRange, dstCellRange) {
     rows.cutPaste(srcCellRange, dstCellRange);
@@ -947,7 +890,7 @@ export const makeGetDataProxy = (
 
   function setStyleBorders({ mode, style, color }) {
     const { sri, sci, eri, eci } = rangeSelector.range;
-    const multiple = !isSignleSelected();
+    const multiple = !isSingleSelected();
     if (!multiple) {
       if (mode === "inside" || mode === "horizontal" || mode === "vertical") {
         return;
@@ -1126,7 +1069,7 @@ export const makeGetDataProxy = (
     getSelectedRect,
     getClipboardRect,
     calSelectedRangeByStart,
-    changeData,
+    persistDataChange,
     setData,
     setFreeze,
     getCell,
@@ -1134,10 +1077,8 @@ export const makeGetDataProxy = (
     scroll,
     exceptRowTotalHeight,
     freeze,
-    clearClipboard,
     copy,
     cut,
-    paste,
     parseClipboardContent,
     pasteFromSystemClipboard,
     pasteFromText,
@@ -1155,6 +1096,7 @@ export const makeGetDataProxy = (
     deleteData,
     deleteCell,
     setSelectedCellAttr,
+    paste,
     setAutoFilter,
     xyInSelectedRect,
     addValidation,

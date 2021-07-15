@@ -29,19 +29,26 @@ const getFormulaSuggestions = () => {
 };
 
 export const buildSheet = (
+  sheetType,
+  save,
   getOptions,
   getData,
   rangeSelector,
   eventEmitter,
   getViewWidthHeight,
-  hyperformula,
 ) => {
   const rowResizer = getResizer(
+    sheetType,
+    save,
+    getData,
     eventEmitter,
     spreadsheetEvents.rowResizer,
     () => getOptions().row.height,
   );
   const colResizer = getResizer(
+    sheetType,
+    save,
+    getData,
     eventEmitter,
     spreadsheetEvents.colResizer,
     () => getOptions().col.minWidth,

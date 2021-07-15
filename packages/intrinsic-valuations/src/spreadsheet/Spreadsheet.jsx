@@ -426,6 +426,7 @@ const Spreadsheet = ({
     yearlyBalanceSheets,
     ttmCashFlowStatement,
     yearlyCashFlowStatements,
+    spreadsheetToRestore.sheetData.data,
   ]);
 
   useEffect(() => {
