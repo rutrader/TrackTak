@@ -1,4 +1,4 @@
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography, useTheme } from "@material-ui/core";
 import React from "react";
 import { ImCogs } from "react-icons/im";
 import { RiTimerLine } from "react-icons/ri";
@@ -56,10 +56,6 @@ const BoxIcon = ({ sx, ...props }) => {
     <Box
       sx={{
         textAlign: "center",
-        visibility: "visible",
-        animationDuration: "1.3s",
-        animationDelay: "0.8s",
-        animationName: "fadeInUp",
         ...sx,
       }}
       {...props}
@@ -72,11 +68,8 @@ const FeatureHeader = (props) => (
     {...props}
     sx={{
       whiteSpace: "nowrap",
-      visibility: "visible",
-      animationDelay: "0.4s",
-      animationName: "fadeInUp",
-      fontSize: "25px",
-      color: "#313450",
+      fontSize: (theme) => theme.typography.fontSize3,
+      color: (theme) => theme.palette.primary.mainTextColor,
       fontWeight: "bold",
       marginBottom: (theme) => theme.spacing(2),
     }}
@@ -87,32 +80,25 @@ const FeatureText = (props) => (
   <Typography
     {...props}
     sx={{
-      fontSize: "18px",
-      visibility: "visible",
-      animationDelay: "0.6s",
-      animationName: "fadeInUp",
+      fontSize: (theme) => theme.typography.fontSize2,
     }}
     color="textSecondary"
   />
 );
 
 const FeaturesSection = () => {
+  const theme = useTheme();
   return (
     <Box id="features">
       <Box
-        style={{
+        sx={{
           marginLeft: "auto",
           marginRight: "auto",
-          marginBottom: "55px",
+          marginBottom: theme.spacing(7),
           textAlign: "center",
         }}
       >
         <Typography
-          sx={{
-            visibility: "visible",
-            animationDelay: "0.2s",
-            animationName: "fadeInDown",
-          }}
           color="primary"
           fontSize={25}
           fontWeight="bold"
@@ -122,12 +108,9 @@ const FeaturesSection = () => {
         </Typography>
         <Typography
           sx={{
-            visibility: "visible",
-            animationDelay: "0.4s",
-            animationName: "fadeInUp",
             fontWeight: "bold",
-            color: "#313450",
-            marginBottom: (theme) => theme.spacing(2),
+            color: theme.palette.primary.mainTextColor,
+            marginBottom: theme.spacing(2),
           }}
           variant="h3"
         >

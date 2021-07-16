@@ -40,7 +40,7 @@ const BoxImage = ({ sx, ...props }) => {
       sx={{
         width: "100%",
         display: "flex",
-        gap: "20px",
+        gap: "45px",
         alignItems: "center",
         ...sx,
       }}
@@ -54,10 +54,9 @@ const FeatureHeader = (props) => (
     {...props}
     sx={{
       whiteSpace: "nowrap",
-      fontSize: "25px",
-      color: "#313450",
+      fontSize: (theme) => theme.typography.fontSize3,
+      color: (theme) => theme.palette.primary.mainTextColor,
       fontWeight: "bold",
-
       marginBottom: (theme) => theme.spacing(2),
     }}
   />
@@ -67,23 +66,27 @@ const FeatureText = (props) => (
   <Typography
     {...props}
     sx={{
-      fontSize: "18px",
+      fontSize: (theme) => theme.typography.fontSize2,
       alignItems: "center",
-      ml: 2,
+      flex: "1 1 100px",
       maxWidth: "700px",
     }}
     color="textSecondary"
   />
 );
 
+const FunctionText = (props) => {
+  return <Typography {...props} component="code" fontWeight="bold" />;
+};
+
 const ProcessSection = () => {
   const theme = useTheme();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("lg"));
 
-  let flexDirectionStyles;
+  let boxImageStyles;
 
   if (isOnMobile) {
-    flexDirectionStyles = {
+    boxImageStyles = {
       flexDirection: "column",
     };
   }
@@ -117,22 +120,55 @@ const ProcessSection = () => {
     }
   `);
 
+  const arrayTexts = [
+    {
+      header: "Templates",
+      image: data.templates.childImageSharp.fluid,
+      text: (
+        <>
+          Choose from multiple accredited spreadsheet templates that does all
+          the heavy work for you. Theres no need to build your own models,
+          simply plug in your inputs and get the models output.
+        </>
+      ),
+    },
+    {
+      header: "Financial plugin",
+      image: data.finPlugin.childImageSharp.fluid,
+      text: (
+        <>
+          No need to keep paying for third-party plugins in Excel. Simply type{" "}
+          <FunctionText>=FIN([attribute])</FunctionText> directly into your
+          spreadsheet to fill in stock data automatically from 100's of possible
+          attributes.
+        </>
+      ),
+    },
+    {
+      header: "Formulas",
+      image: data.formulas.childImageSharp.fluid,
+      text: (
+        <>
+          We match Excel with over 300+ formulas such as{" "}
+          <FunctionText>VLOOKUP</FunctionText>, <FunctionText>IF</FunctionText>,{" "}
+          <FunctionText>SUM</FunctionText> just to name a few and all of the
+          same keyboard shortcuts allowing you to be productive from day one.
+        </>
+      ),
+    },
+  ];
+
   return (
-    <Box>
+    <>
       <Box
-        style={{
+        sx={{
           marginLeft: "auto",
           marginRight: "auto",
-          marginBottom: "55px",
+          marginBottom: theme.spacing(7),
           textAlign: "center",
         }}
       >
         <Typography
-          sx={{
-            visibility: "visible",
-            animationDelay: "0.2s",
-            animationName: "fadeInDown",
-          }}
           color="primary"
           fontSize={25}
           fontWeight="bold"
@@ -142,12 +178,9 @@ const ProcessSection = () => {
         </Typography>
         <Typography
           sx={{
-            visibility: "visible",
-            animationDelay: "0.4s",
-            animationName: "fadeInUp",
             fontWeight: "bold",
-            color: "#313450",
-            marginBottom: (theme) => theme.spacing(2),
+            color: theme.palette.primary.mainTextColor,
+            marginBottom: theme.spacing(2),
           }}
           variant="h3"
         >
@@ -164,58 +197,31 @@ const ProcessSection = () => {
           gap: 6.2,
         }}
       >
-        <BoxColumnWrapper>
-          <BoxImage
-            sx={{
-              flexDirection: "row-reverse",
-              ...flexDirectionStyles,
-            }}
-          >
-            <StyledImage fluid={data.templates.childImageSharp.fluid} />
-            <FeatureText>
-              <Box>
-                <FeatureHeader variant="h4">Templates</FeatureHeader>
-              </Box>
-              Choose from multiple templates that does all the heavy work for
-              you and stores directly in the cloud.
-            </FeatureText>
-          </BoxImage>
-        </BoxColumnWrapper>
-        <BoxColumnWrapper>
-          <BoxImage
-            sx={{
-              ...flexDirectionStyles,
-            }}
-          >
-            <StyledImage fluid={data.finPlugin.childImageSharp.fluid} />
-            <FeatureText>
-              <Box>
-                <FeatureHeader variant="h4">Financial plugin</FeatureHeader>
-              </Box>
-              No more third-party API intergrations! Simply type `=𝗙𝗜𝗡()`
-              directly into your spreadsheet.
-            </FeatureText>
-          </BoxImage>
-        </BoxColumnWrapper>
-        <BoxColumnWrapper>
-          <BoxImage
-            sx={{
-              flexDirection: "row-reverse",
-              ...flexDirectionStyles,
-            }}
-          >
-            <StyledImage fluid={data.formulas.childImageSharp.fluid} />
-            <FeatureText>
-              <Box>
-                <FeatureHeader variant="h4">Formulas</FeatureHeader>
-              </Box>
-              Enables you to be more productive from day one with over 400+
-              formulas matching Excel.
-            </FeatureText>
-          </BoxImage>
-        </BoxColumnWrapper>
+        {arrayTexts.map((arrayText, i) => {
+          const isEven = i % 2 === 0;
+          return (
+            <BoxColumnWrapper>
+              <BoxImage
+                sx={{
+                  flexDirection: isEven ? "row-reverse" : null,
+                  ...boxImageStyles,
+                }}
+              >
+                <StyledImage fluid={arrayText.image} />
+                <FeatureText>
+                  <Box>
+                    <FeatureHeader variant="h4">
+                      {arrayText.header}
+                    </FeatureHeader>
+                  </Box>
+                  {arrayText.text}
+                </FeatureText>
+              </BoxImage>
+            </BoxColumnWrapper>
+          );
+        })}
       </Box>
-    </Box>
+    </>
   );
 };
 
