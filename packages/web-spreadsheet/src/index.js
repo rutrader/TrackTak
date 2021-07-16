@@ -19,9 +19,9 @@ const getSpreadsheet = (
 
   const hyperformula = HyperFormula.buildEmpty({
     licenseKey: hyperformulaLicenseKey,
-    // https://github.com/handsontable/hyperformula/issues/686
-    matrixDetection: false,
+    // For vlookup to match Excel
     binarySearchThreshold: 1,
+    // We use our own undo/redo instead
     ...hyperformulaConfig,
   });
 

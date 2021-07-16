@@ -3,6 +3,9 @@ import { mouseMoveUp } from "./event";
 import { cssPrefix } from "../config";
 
 export const getResizer = (
+  sheetType,
+  save,
+  getData,
   eventEmitter,
   eventResizeType,
   getMinDistance,
@@ -10,6 +13,14 @@ export const getResizer = (
 ) => {
   let moving = false;
   let unhideIndex;
+
+  const persistDataChange = (callback) =>
+    save.persistDataChange(
+      sheetType,
+      getData().name,
+      getData().getData(),
+      callback,
+    );
 
   const unhideHoverEl = h("div", `${cssPrefix}-resizer-hover`)
     .on("dblclick.stop", (evt) => mousedblclickHandler(evt))
@@ -90,7 +101,6 @@ export const getResizer = (
       (e) => {
         moving = true;
         if (startEvt !== null && e.buttons === 1) {
-          // console.log('top:', top, ', left:', top, ', cRect:', cRect);
           if (vertical) {
             distance += e.movementX;
             if (distance > minDistance) {
@@ -106,14 +116,16 @@ export const getResizer = (
         }
       },
       () => {
-        startEvt = null;
-        lineEl.hide();
-        moving = false;
-        hide();
-        if (distance < minDistance) {
-          distance = minDistance;
-        }
-        eventEmitter.emit(eventResizeType.finished, cRect, distance);
+        persistDataChange(() => {
+          startEvt = null;
+          lineEl.hide();
+          moving = false;
+          hide();
+          if (distance < minDistance) {
+            distance = minDistance;
+          }
+          eventEmitter.emit(eventResizeType.finished, cRect, distance);
+        });
       },
     );
   };

@@ -12,7 +12,7 @@ import { useDebouncedCallback } from "@tracktak/intrinsic-valuations";
 import TTRoundInput from "./TTRoundInput";
 import { getAutocompleteQuery } from "../../../packages/intrinsic-valuations/src";
 
-const SearchTicker = ({ isSmallSearch }) => {
+const SearchTicker = ({ isSmallSearch, onSearchResultClick }) => {
   const theme = useTheme();
   const [autoComplete, setAutoComplete] = useState([]);
   const [isLoadingAutocomplete, setIsLoadingAutocomplete] = useState(false);
@@ -29,6 +29,10 @@ const SearchTicker = ({ isSmallSearch }) => {
     if (value?.code && value?.exchange) {
       const ticker = `${value.code}-${value.exchange}`.toLowerCase();
 
+      if (onSearchResultClick) {
+        onSearchResultClick(ticker);
+        return;
+      }
       navigate(`/stock/${ticker}/discounted-cash-flow`);
     }
   };

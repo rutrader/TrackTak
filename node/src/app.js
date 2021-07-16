@@ -3,13 +3,14 @@ import express from "express";
 import cors from "cors";
 import "express-async-errors";
 import api from "./api";
+import auth from "./middleware/auth";
 
 const hostname = "127.0.0.1";
 const port = process.env.NODE_ENV === "development" ? 3001 : process.env.PORT;
 const app = express();
 
 app.use(express.static("public"));
-app.use(express.json());
+app.use(express.json({ limit: "16mb" }));
 
 const publicRoutes = ["/api/v1/compute-sensitivity-analysis"];
 
@@ -91,6 +92,29 @@ app.get("/api/v1/autocomplete-query/:queryString", async (req, res) => {
     req.query,
   );
   res.send({ value });
+});
+
+app.put("/api/v1/spreadsheet", auth, async (req, res) => {
+  const spreadsheet = await api.saveSpreadsheet(req.body, req.user.username);
+  res.send(spreadsheet);
+});
+
+app.get("/api/v1/spreadsheet", auth, async (req, res) => {
+  const spreadsheets = await api.getSpreadsheets(req.user.username);
+  res.send({ spreadsheets });
+});
+
+app.get("/api/v1/spreadsheet/:id", auth, async (req, res) => {
+  const spreadsheet = await api.getSpreadsheet(
+    req.user.username,
+    req.params.id,
+  );
+  res.send({ spreadsheet });
+});
+
+app.delete("/api/v1/spreadsheet/:id", auth, async (req, res) => {
+  await api.deleteSpreadsheet(req.params.id, req.user.username);
+  res.send({ id: req.params.id });
 });
 
 app.get("/", (_, res) => {

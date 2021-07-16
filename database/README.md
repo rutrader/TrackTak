@@ -9,17 +9,4 @@ cd database
 docker-compose up
 ```
 
-Connect to MongoDB Docker container then execute:
-
-```bash
-mongo -u <DATABASE_ROOT_USER> -p <DATABASE_ROOT_PASSWORD> --authenticationDatabase admin
-
- db.createUser({
-  "user": "<DATABASE_USER>",
-  "pwd": "<DATABASE_PASSWORD>",
-  "roles": [{
-    "role": "readWrite",
-    "db": "<DATABASE_NAME>"
-  }]
-})
-```
+You can view your DB using Mongo Express on http://localhost:8081. If asked for basic auth credentials use: admin:pass

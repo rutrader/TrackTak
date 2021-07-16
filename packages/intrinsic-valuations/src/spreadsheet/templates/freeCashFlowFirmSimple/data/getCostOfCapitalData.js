@@ -1,6 +1,5 @@
 const getCostOfCapitalData = () => {
   return {
-    calculationOrder: 1,
     name: "Cost of Capital",
     freeze: "A1",
     styles: [
