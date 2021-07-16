@@ -517,7 +517,6 @@ const Spreadsheet = ({
         </Box>
       </Box>
       {onSaveEvent && <SaveStatus isSaving={isSaving} />}
-
       <Box
         sx={{
           position: "relative",

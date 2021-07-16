@@ -1,6 +1,6 @@
 {
   "name": "@tracktak/intrinsic-valuations",
-  "version": "8.1.1",
+  "version": "8.1.2",
   "description": "A react package that allows external websites to use our financial spreadsheet for https://tracktak.com",
   "author": "tracktak",
   "license": "SEE LICENSE IN README.MD",
@@ -42,7 +42,7 @@
     "currency-symbol-map": "^4.0.4",
     "dayjs": "^1.9.7",
     "eventemitter3": "^4.0.7",
-    "hyperformula": "TrackTak/hyperformula#develop",
+    "hyperformula": "1.0.0",
     "iso-3166-1-alpha-2": "^1.0.0",
     "less": "^4.1.1",
     "lodash-es": "^4.17.20",

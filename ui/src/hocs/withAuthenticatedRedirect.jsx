@@ -3,13 +3,13 @@ import React, { useEffect } from "react";
 import { navigate } from "gatsby";
 import PageSpinner from "../components/PageSpinner";
 
-const withAuthentication = (Component) => {
+const withAuthenticatedRedirect = (Component) => {
   const Container = (props) => {
     const { isAuthenticated, hasLoadedAuthDetails } = useAuth();
 
     useEffect(() => {
-      if (!isAuthenticated && hasLoadedAuthDetails) {
-        navigate("/sign-in");
+      if (isAuthenticated && hasLoadedAuthDetails) {
+        navigate("/dashboard");
       }
     }, [hasLoadedAuthDetails, isAuthenticated]);
 
@@ -17,10 +17,10 @@ const withAuthentication = (Component) => {
       return <PageSpinner />;
     }
 
-    return isAuthenticated && <Component {...props} />;
+    return !isAuthenticated && <Component {...props} />;
   };
 
   return Container;
 };
 
-export default withAuthentication;
+export default withAuthenticatedRedirect;

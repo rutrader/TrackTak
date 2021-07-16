@@ -1,13 +1,10 @@
 import { Box, CircularProgress, useTheme } from "@material-ui/core";
 import React from "react";
-import { useSelector } from "react-redux";
-import selectFundamentalsIsLoaded from "../../../packages/intrinsic-valuations/src/selectors/fundamentalSelectors/selectIsFundamentalsLoaded";
 
 const PageSpinner = () => {
   const theme = useTheme();
-  const fundamentalsIsLoaded = useSelector(selectFundamentalsIsLoaded);
 
-  return fundamentalsIsLoaded === false ? (
+  return (
     <Box
       sx={{
         position: "fixed",
@@ -26,7 +23,7 @@ const PageSpinner = () => {
     >
       <CircularProgress />
     </Box>
-  ) : null;
+  );
 };
 
 export default PageSpinner;

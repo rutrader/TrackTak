@@ -4,12 +4,11 @@ import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { useAuth } from "../hooks/useAuth";
-import { Link } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { setMessage } from "../redux/actions/snackbarActions";
 
-const ContactDetailsForm = ({ onVerificationCodeDialogOpen }) => {
-  const { userData, isEmailVerified, updateContactDetails, getEmailVerificationCode } = useAuth();
+const ContactDetailsForm = () => {
+  const { userData, updateContactDetails } = useAuth();
   const [name, setName] = useState(userData?.name);
   const [email, setEmail] = useState(userData?.email);
   const [isDirty, setIsDirty] = useState(false);
@@ -28,7 +27,7 @@ const ContactDetailsForm = ({ onVerificationCodeDialogOpen }) => {
   }, [name, email, userData]);
 
   useEffect(() => {
-    if(userData) {
+    if (userData) {
       setName(userData.name);
       setEmail(userData.email);
     }
@@ -61,20 +60,6 @@ const ContactDetailsForm = ({ onVerificationCodeDialogOpen }) => {
     );
   };
 
-  const handleVerificationCodeError = (err) => {
-    dispatch(
-      setMessage({
-        message: "Failed to send verification code",
-        severity: "error",
-      }),
-    );
-  };
-
-  const handleClickVerifyEmail = () => {
-    onVerificationCodeDialogOpen();
-    getEmailVerificationCode(handleVerificationCodeError);
-  }
-
   return (
     <>
       <Typography variant="h6" gutterBottom>
@@ -84,7 +69,7 @@ const ContactDetailsForm = ({ onVerificationCodeDialogOpen }) => {
         <Grid container justifyContent="space-between" gap={3}>
           <Grid item xs={12} sm={4}>
             <TextField
-              value={name || ''}
+              value={name || ""}
               onChange={(e) => handleFieldChange(e, setName)}
               variant="outlined"
               required
@@ -98,7 +83,7 @@ const ContactDetailsForm = ({ onVerificationCodeDialogOpen }) => {
           </Grid>
           <Grid item xs={12} sm={4}>
             <TextField
-              value={email || ''}
+              value={email || ""}
               onChange={(e) => handleFieldChange(e, setEmail)}
               variant="outlined"
               required
@@ -110,19 +95,6 @@ const ContactDetailsForm = ({ onVerificationCodeDialogOpen }) => {
               autoComplete="email"
               size="small"
             />
-            {!isEmailVerified && (
-              <Link
-                component="button"
-                variant="caption"
-                onClick={handleClickVerifyEmail}
-                sx={{
-                  color: (theme) => theme.palette.warning.main,
-                }}
-                type="button"
-              >
-                Click here to verify your email
-              </Link>
-            )}
           </Grid>
           <Grid item xs={12} sm={2}>
             <Button

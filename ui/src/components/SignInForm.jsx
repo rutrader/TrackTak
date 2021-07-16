@@ -62,7 +62,7 @@ const SignInForm = ({
                 name="email"
                 autoComplete="email"
                 sx={{
-                  display: 'flex',
+                  display: "flex",
                 }}
               />
             </Grid>
@@ -77,13 +77,13 @@ const SignInForm = ({
                 id="password"
                 autoComplete="current-password"
                 sx={{
-                  display: 'flex',
+                  display: "flex",
                 }}
               />
             </Grid>
           </Grid>
           <RoundButton
-            type="button"
+            type="submit"
             fullWidth
             variant="contained"
             color="primary"
@@ -91,7 +91,6 @@ const SignInForm = ({
               margin: theme.spacing(3, 0, 2),
               textTransform: "none",
             }}
-            onClick={handleSubmit}
           >
             Sign In
           </RoundButton>

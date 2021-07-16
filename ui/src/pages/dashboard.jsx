@@ -21,7 +21,7 @@ const Dashboard = () => {
       { name: ticker, data: {} },
       token?.jwtToken,
     );
-    navigate(`/${userData.sub}/my-spreadsheets/${response.data._id}`);
+    navigate(`/${userData.name}/my-spreadsheets/${response.data._id}`);
   };
 
   const handleShowSearchTickerDialog = () => {
@@ -67,7 +67,6 @@ const Dashboard = () => {
           onClick={handleShowSearchTickerDialog}
         >
           <AddIcon style={{ color: "white" }} fontSize="large" />
-          sd
         </IconButton>
       </Box>
       <SavedSpreadsheets onNewSpreadsheetClick={handleShowSearchTickerDialog} />

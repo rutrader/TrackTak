@@ -17,7 +17,6 @@ import { useTheme } from "@material-ui/styles";
 import ConfirmationDialog from "./ConfirmationDialog";
 import { useAuth } from "../hooks/useAuth";
 import { deleteSpreadsheet, getSpreadsheets } from "../api/api";
-import { isEmpty } from "lodash-es";
 import { navigate } from "gatsby";
 import RoundButton from "./RoundButton";
 import dayjs from "dayjs";
@@ -26,20 +25,21 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
   const theme = useTheme();
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
   const { getAccessToken, userData } = useAuth();
-  const [spreadsheets, setSpreadsheets] = useState([]);
+  const [spreadsheets, setSpreadsheets] = useState(null);
   const [selectedSpreadsheet, setSelectedSpreadsheet] = useState();
 
   useEffect(() => {
     async function fetchData() {
       const token = await getAccessToken();
       const response = await getSpreadsheets(token?.jwtToken);
+
       setSpreadsheets(response.data.spreadsheets);
     }
     fetchData();
   }, [getAccessToken]);
 
   const handleRowClick = (spreadsheet) => {
-    navigate(`/${userData.sub}/my-spreadsheets/${spreadsheet._id}`);
+    navigate(`/${userData.name}/my-spreadsheets/${spreadsheet._id}`);
   };
 
   const handleDelete = (spreadsheet) => {
@@ -81,7 +81,8 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
       >
         Are you sure you want to delete this valuation?
       </ConfirmationDialog>
-      {isEmpty(spreadsheets) && (
+      {/* No falsy check because null means the data hasn't loaded yet */}
+      {spreadsheets?.length === 0 && (
         <Box
           sx={{
             marginTop: (theme) => theme.spacing(10),
@@ -105,7 +106,7 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
           </RoundButton>
         </Box>
       )}
-      {!isEmpty(spreadsheets) && (
+      {spreadsheets?.length > 0 && (
         <TableContainer
           sx={{
             marginTop: "20px",

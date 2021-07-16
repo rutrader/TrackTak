@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
@@ -6,18 +6,9 @@ import { Grid } from "@material-ui/core";
 import Authentication, {
   AUTHENTICATION_FORM_STATE,
 } from "../components/Authentication";
-import { navigate } from "gatsby-link";
-import { useAuth } from "../hooks/useAuth";
+import withAuthenticatedRedirect from "../hocs/withAuthenticatedRedirect";
 
 const SignUp = ({ location }) => {
-  const { isAuthenticated } = useAuth();
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/");
-    }
-  }, [isAuthenticated]);
-
   return (
     <>
       <Helmet>
@@ -37,4 +28,4 @@ const SignUp = ({ location }) => {
   );
 };
 
-export default SignUp;
+export default withAuthenticatedRedirect(SignUp);
