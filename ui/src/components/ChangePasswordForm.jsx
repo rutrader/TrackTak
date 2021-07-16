@@ -5,11 +5,10 @@ import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { useAuth } from "../hooks/useAuth";
-import { Link } from "@material-ui/core";
 import { setMessage } from "../redux/actions/snackbarActions";
 
-const ChangePasswordForm = ({ onVerificationCodeDialogOpen }) => {
-  const { isEmailVerified, getEmailVerificationCode, changePassword } = useAuth();
+const ChangePasswordForm = () => {
+  const { isEmailVerified, changePassword } = useAuth();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const dispatch = useDispatch();
@@ -39,24 +38,10 @@ const ChangePasswordForm = ({ onVerificationCodeDialogOpen }) => {
     );
   };
 
-  const handleVerificationCodeError = (err) => {
-    dispatch(
-      setMessage({
-        message: "Failed to send verification code",
-        severity: "error",
-      }),
-    );
-  };
-
-  const handleClickVerifyEmail = () => {
-    onVerificationCodeDialogOpen();
-    getEmailVerificationCode(handleVerificationCodeError);
-  }
-  
   const handleSubmit = (e) => {
     e.preventDefault();
     changePassword(oldPassword, newPassword, handleSuccess, handleError);
-  }
+  };
 
   const isButtonDisabled = !oldPassword || !newPassword || !isEmailVerified;
 
@@ -110,19 +95,6 @@ const ChangePasswordForm = ({ onVerificationCodeDialogOpen }) => {
             >
               Change
             </Button>
-            {!isEmailVerified && (
-              <Link
-                component="button"
-                variant="caption"
-                onClick={handleClickVerifyEmail}
-                sx={{
-                  color: (theme) => theme.palette.warning.main,
-                  textAlign: "left",
-                }}
-              >
-                Verify your account before changing password
-              </Link>
-            )}
           </Grid>
         </Grid>
       </form>

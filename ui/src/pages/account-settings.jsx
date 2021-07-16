@@ -7,6 +7,7 @@ import ContactDetailsForm from "../components/ContactDetailsForm";
 import ChangePasswordForm from "../components/ChangePasswordForm";
 import VerificationCodeDialog from "../components/VerificationCodeDialog";
 import withAuthentication from "../hocs/withAuthentication";
+import VerifyEmailLink from "../components/VerifyEmailLink";
 
 const AccountSettings = () => {
   const [showVerificationCodeDialog, setShowVerificationCodeDialog] = useState(
@@ -40,14 +41,17 @@ const AccountSettings = () => {
         <Typography variant="h5" gutterBottom>
           Account Settings
         </Typography>
-        <Divider light sx={dividerStyle} />
-        <ContactDetailsForm
+        <VerifyEmailLink
+          sx={{
+            mt: 3,
+          }}
           onVerificationCodeDialogOpen={handleOpenVerificationCodeDialog}
+          text="You must verify your account before you can change any details"
         />
         <Divider light sx={dividerStyle} />
-        <ChangePasswordForm
-          onVerificationCodeDialogOpen={handleOpenVerificationCodeDialog}
-        />
+        <ContactDetailsForm />
+        <Divider light sx={dividerStyle} />
+        <ChangePasswordForm />
         <VerificationCodeDialog
           open={showVerificationCodeDialog}
           onClose={handleCloseVerificationCodeDialog}
