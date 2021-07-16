@@ -67,7 +67,6 @@ const Dashboard = () => {
           onClick={handleShowSearchTickerDialog}
         >
           <AddIcon style={{ color: "white" }} fontSize="large" />
-          sd
         </IconButton>
       </Box>
       <SavedSpreadsheets onNewSpreadsheetClick={handleShowSearchTickerDialog} />
