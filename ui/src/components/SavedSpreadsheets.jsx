@@ -39,7 +39,7 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
   }, [getAccessToken]);
 
   const handleRowClick = (spreadsheet) => {
-    navigate(`/${userData.sub}/my-spreadsheets/${spreadsheet._id}`);
+    navigate(`/${userData.name}/my-spreadsheets/${spreadsheet._id}`);
   };
 
   const handleDelete = (spreadsheet) => {

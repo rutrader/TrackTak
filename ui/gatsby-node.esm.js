@@ -50,15 +50,20 @@ export const onCreatePage = ({ page, actions }) => {
     page.context.layout = "home";
     createPage(page);
   }
-
-  if (page.path.match(/stock\//)) {
+  debugger;
+  console.log("hi");
+  if (page.path.match(/stock\/|my-spreadsheets/)) {
+    console.log("fullscr");
     page.context.layout = "fullscreen";
 
     createPage(page);
   }
 
-  if (!featureToggle.AUTHENTICATION && page.path.match(/sign-in\/|sign-up\/|forgot-password\//)) {
-    deletePage(page)
+  if (
+    !featureToggle.AUTHENTICATION &&
+    page.path.match(/sign-in\/|sign-up\/|forgot-password\//)
+  ) {
+    deletePage(page);
   }
 };
 

@@ -34,6 +34,7 @@ export const ProvideAuth = (props) => {
 const useProvideAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [hasLoadedAuthDetails, setHasLoadedAuthDetails] = useState(false);
   const [userData, setUserData] = useState();
 
   useEffect(() => {
@@ -56,8 +57,11 @@ const useProvideAuth = () => {
         if (!error && session) {
           setIsAuthenticated(true);
           getUserData(handleGetUserData);
+          setHasLoadedAuthDetails(true);
         }
       });
+    } else {
+      setHasLoadedAuthDetails(true);
     }
   }, [isAuthenticated]);
 
@@ -125,6 +129,7 @@ const useProvideAuth = () => {
 
   return {
     isAuthenticated,
+    hasLoadedAuthDetails,
     userData,
     getAccessToken,
     signUp,
