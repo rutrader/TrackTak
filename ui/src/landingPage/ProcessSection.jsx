@@ -93,7 +93,7 @@ const ProcessSection = () => {
 
   const data = useStaticQuery(graphql`
     query {
-      templates: file(relativePath: { eq: "templates.png" }) {
+      templates: file(relativePath: { eq: "templates.PNG" }) {
         childImageSharp {
           fluid(maxWidth: 900, quality: 100) {
             ...GatsbyImageSharpFluid
