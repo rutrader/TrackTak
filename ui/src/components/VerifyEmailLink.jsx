@@ -1,11 +1,15 @@
-import React from "react";
-import { Box, Button, Typography } from "@material-ui/core";
+import React, { useState } from "react";
+import { Box, Link } from "@material-ui/core";
 import { useAuth } from "../hooks/useAuth";
 import { useDispatch } from "react-redux";
 import { setMessage } from "../redux/actions/snackbarActions";
+import VerificationCodeDialog from "./VerificationCodeDialog";
 
-const VerifyEmailLink = ({ onVerificationCodeDialogOpen, text, ...props }) => {
+const VerifyEmailLink = ({ text, ...props }) => {
   const { getEmailVerificationCode, isEmailVerified } = useAuth();
+  const [showVerificationCodeDialog, setShowVerificationCodeDialog] = useState(
+    false,
+  );
   const dispatch = useDispatch();
 
   const handleVerificationCodeError = (err) => {
@@ -17,38 +21,54 @@ const VerifyEmailLink = ({ onVerificationCodeDialogOpen, text, ...props }) => {
     );
   };
 
+  const handleCloseVerificationCodeDialog = () =>
+    setShowVerificationCodeDialog(false);
+
+  const handleOpenVerificationCodeDialog = () => {
+    dispatch(
+      setMessage({
+        message: "A verification code has been sent to your email.",
+      }),
+    );
+    setShowVerificationCodeDialog(true);
+  };
+
   const handleClickVerifyEmail = () => {
-    onVerificationCodeDialogOpen();
+    handleOpenVerificationCodeDialog();
     getEmailVerificationCode(handleVerificationCodeError);
   };
 
   return isEmailVerified ? null : (
-    <Box
-      {...props}
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "column",
-        ...props.sx,
-      }}
-    >
-      <Typography
-        variant="h6"
+    <>
+      <Box
+        {...props}
         sx={{
-          color: (theme) => theme.palette.warning.main,
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column",
+          ...props.sx,
         }}
       >
-        {text}
-      </Typography>
-      <Button
-        type="button"
-        variant="contained"
-        color="primary"
-        onClick={handleClickVerifyEmail}
-      >
-        Verify My Email
-      </Button>
-    </Box>
+        <Link
+          component="button"
+          type="button"
+          underline="always"
+          variant="caption"
+          onClick={handleClickVerifyEmail}
+          sx={{
+            color: (theme) => theme.palette.warning.main,
+            fontSize: (theme) => theme.typography.button.fontSize,
+            textAlign: "left",
+          }}
+        >
+          {text}
+        </Link>
+      </Box>
+      <VerificationCodeDialog
+        open={showVerificationCodeDialog}
+        onClose={handleCloseVerificationCodeDialog}
+      />
+    </>
   );
 };
 

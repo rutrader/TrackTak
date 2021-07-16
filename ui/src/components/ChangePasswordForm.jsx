@@ -6,8 +6,9 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { useAuth } from "../hooks/useAuth";
 import { setMessage } from "../redux/actions/snackbarActions";
+import VerifyEmailLink from "./VerifyEmailLink";
 
-const ChangePasswordForm = () => {
+const ChangePasswordForm = ({ onVerificationCodeDialogOpen }) => {
   const { isEmailVerified, changePassword } = useAuth();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -95,6 +96,13 @@ const ChangePasswordForm = () => {
             >
               Change
             </Button>
+            <VerifyEmailLink
+              sx={{
+                mt: 3,
+              }}
+              onVerificationCodeDialogOpen={onVerificationCodeDialogOpen}
+              text="You must verify your account before changing your password"
+            />
           </Grid>
         </Grid>
       </form>
