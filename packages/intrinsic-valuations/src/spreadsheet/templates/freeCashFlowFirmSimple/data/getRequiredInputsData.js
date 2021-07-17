@@ -1,6 +1,4 @@
-import { queryNames } from "../inputQueryNames";
-
-const getRequiredInputsData = (inputQueryParams) => {
+const getRequiredInputsData = () => {
   return {
     name: "Required Inputs",
     freeze: "A1",
@@ -32,21 +30,18 @@ const getRequiredInputsData = (inputQueryParams) => {
     serializedValues: [
       [
         "CAGR in Years 1-5 *",
-        inputQueryParams[queryNames.cagrInYears_1_5],
+        null,
         null,
         "Fill out the green input cells to generate your DCF",
       ],
       [
         "Operating Target Margin in\nYear 10 *",
-        inputQueryParams[queryNames.ebitTargetMarginInYear_10],
+        null,
         null,
         "Numbers are in millions, expect per share amounts",
       ],
-      ["Year of Convergence *", inputQueryParams[queryNames.yearOfConvergence]],
-      [
-        "Sales to Capital Ratio *",
-        inputQueryParams[queryNames.salesToCapitalRatio],
-      ],
+      ["Year of Convergence *"],
+      ["Sales to Capital Ratio *"],
     ],
     rows: {
       0: {

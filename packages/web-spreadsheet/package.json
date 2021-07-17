@@ -60,7 +60,7 @@
   "dependencies": {
     "@babel/runtime": "^7.14.6",
     "eventemitter3": "^4.0.7",
-    "hyperformula": "1.0.0",
+    "hyperformula": "TrackTak/hyperformula#develop",
     "lodash-es": "^4.17.20",
     "numfmt": "^1.0.0",
     "undo-redo-manager": "^1.0.0"
