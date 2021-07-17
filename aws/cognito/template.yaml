@@ -47,7 +47,7 @@ Resources:
             Action:
             - cognito-identity:*
             - cognito-idp:*
-            Resource: "*"        
+            Resource: "*"
 
   DefineAuthChallenge:
     Type: AWS::Serverless::Function
@@ -141,8 +141,12 @@ Resources:
         - Name: name
           AttributeDataType: String
           Mutable: true
-          Required: false
+          Required: true
         - Name: email
+          AttributeDataType: String
+          Mutable: true
+          Required: true
+        - Name: phone_number
           AttributeDataType: String
           Mutable: true
           Required: true
