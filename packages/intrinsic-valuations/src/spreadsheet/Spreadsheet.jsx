@@ -1,13 +1,7 @@
 import React, { useRef, useState, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import {
-  Box,
-  useMediaQuery,
-  useTheme,
-  Typography,
-  Link,
-} from "@material-ui/core";
+import { Box, useMediaQuery, useTheme } from "@material-ui/core";
 import useInputQueryParams from "../hooks/useInputQueryParams";
 import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
@@ -60,16 +54,20 @@ import Section from "../components/Section";
 import getFormats from "./getFormats";
 import exportToExcel from "./exportToExcel";
 import SaveStatus from "./SaveStatus";
+import {
+  getFundamentalsThunk,
+  getLastPriceCloseThunk,
+} from "../redux/thunks/fundamentalsThunks";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
 const defaultColWidth = 110;
 
 const Spreadsheet = ({
+  ticker,
   isSaving,
-  onSaveEvent,
+  onSave = () => {},
   spreadsheetToRestore,
-  disableSetQueryParams = false,
   hideSensitivityAnalysis,
 }) => {
   const containerRef = useRef();
@@ -104,6 +102,19 @@ const Spreadsheet = ({
   const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
   const scope = useSelector(selectScope);
   const valuationCurrencySymbol = useSelector(selectValuationCurrencySymbol);
+
+  useEffect(() => {
+    dispatch(
+      getFundamentalsThunk({
+        ticker,
+      }),
+    );
+    dispatch(
+      getLastPriceCloseThunk({
+        ticker,
+      }),
+    );
+  }, [dispatch, ticker]);
 
   useEffect(() => {
     if (
@@ -304,12 +315,10 @@ const Spreadsheet = ({
         cellEditedCallback,
       );
 
-      if (onSaveEvent) {
-        spreadsheet.variablesSpreadsheet.eventEmitter.on(
-          spreadsheetEvents.save.persistDataChange,
-          onSaveEvent,
-        );
-      }
+      spreadsheet.variablesSpreadsheet.eventEmitter.on(
+        spreadsheetEvents.save.persistDataChange,
+        onSave,
+      );
     }
 
     return () => {
@@ -319,15 +328,13 @@ const Spreadsheet = ({
           cellEditedCallback,
         );
 
-        if (onSaveEvent) {
-          spreadsheet.variablesSpreadsheet.eventEmitter.off(
-            spreadsheetEvents.save.persistDataChange,
-            onSaveEvent,
-          );
-        }
+        spreadsheet.variablesSpreadsheet.eventEmitter.off(
+          spreadsheetEvents.save.persistDataChange,
+          onSave,
+        );
       }
     };
-  }, [spreadsheet, onSaveEvent, disableSetQueryParams]);
+  }, [spreadsheet, onSave]);
 
   useEffect(() => {
     if (spreadsheet) {
@@ -389,69 +396,69 @@ const Spreadsheet = ({
     spreadsheetToRestore,
   ]);
 
-  useEffect(() => {
-    // Dispatch only when we have all the data from the API
-    if (!isNil(price) && spreadsheet) {
-      dispatch(
-        setSheetsSerializedValues(
-          spreadsheet.hyperformula.getAllSheetsSerialized(),
-        ),
-      );
-      dispatch(setSheetsValues(spreadsheet.hyperformula.getAllSheetsValues()));
-      dispatch(setSheetsDatas(spreadsheet.getDatas()));
-      dispatch(
-        setScope({
-          incomeStatements: {
-            ttm: ttmIncomeStatement,
-          },
-          balanceSheets: {
-            ttm: ttmBalanceSheet,
-          },
-          general,
-          highlights,
-          riskFreeRate,
-          currentEquityRiskPremium,
-          currentIndustry,
-          estimatedCostOfDebt,
-          pastThreeYearsAverageEffectiveTaxRate,
-          price,
-          sharesOutstanding,
-          cagrInYears_1_5: inputQueryParams[queryNames.cagrInYears_1_5],
-          yearOfConvergence: inputQueryParams[queryNames.yearOfConvergence],
-          ebitTargetMarginInYear_10:
-            inputQueryParams[queryNames.ebitTargetMarginInYear_10],
-          salesToCapitalRatio: inputQueryParams[queryNames.salesToCapitalRatio],
-          nonOperatingAssets: inputQueryParams[queryNames.nonOperatingAssets],
-          netOperatingLoss: inputQueryParams[queryNames.netOperatingLoss],
-          probabilityOfFailure:
-            inputQueryParams[queryNames.probabilityOfFailure],
-          proceedsAsAPercentageOfBookValue:
-            inputQueryParams[queryNames.proceedsAsAPercentageOfBookValue],
-        }),
-      );
-    }
-  }, [
-    currentEquityRiskPremium,
-    currentIndustry,
-    dispatch,
-    estimatedCostOfDebt,
-    exchangeRates,
-    general,
-    hasAllRequiredInputsFilledIn,
-    highlights,
-    inputQueryParams,
-    pastThreeYearsAverageEffectiveTaxRate,
-    price,
-    riskFreeRate,
-    sharesOutstanding,
-    spreadsheet,
-    ttmBalanceSheet,
-    ttmCashFlowStatement,
-    ttmIncomeStatement,
-    yearlyBalanceSheets,
-    yearlyCashFlowStatements,
-    yearlyIncomeStatements,
-  ]);
+  // useEffect(() => {
+  //   // Dispatch only when we have all the data from the API
+  //   if (!isNil(price) && spreadsheet) {
+  //     dispatch(
+  //       setSheetsSerializedValues(
+  //         spreadsheet.hyperformula.getAllSheetsSerialized(),
+  //       ),
+  //     );
+  //     dispatch(setSheetsValues(spreadsheet.hyperformula.getAllSheetsValues()));
+  //     dispatch(setSheetsDatas(spreadsheet.getDatas()));
+  //     dispatch(
+  //       setScope({
+  //         incomeStatements: {
+  //           ttm: ttmIncomeStatement,
+  //         },
+  //         balanceSheets: {
+  //           ttm: ttmBalanceSheet,
+  //         },
+  //         general,
+  //         highlights,
+  //         riskFreeRate,
+  //         currentEquityRiskPremium,
+  //         currentIndustry,
+  //         estimatedCostOfDebt,
+  //         pastThreeYearsAverageEffectiveTaxRate,
+  //         price,
+  //         sharesOutstanding,
+  //         cagrInYears_1_5: inputQueryParams[queryNames.cagrInYears_1_5],
+  //         yearOfConvergence: inputQueryParams[queryNames.yearOfConvergence],
+  //         ebitTargetMarginInYear_10:
+  //           inputQueryParams[queryNames.ebitTargetMarginInYear_10],
+  //         salesToCapitalRatio: inputQueryParams[queryNames.salesToCapitalRatio],
+  //         nonOperatingAssets: inputQueryParams[queryNames.nonOperatingAssets],
+  //         netOperatingLoss: inputQueryParams[queryNames.netOperatingLoss],
+  //         probabilityOfFailure:
+  //           inputQueryParams[queryNames.probabilityOfFailure],
+  //         proceedsAsAPercentageOfBookValue:
+  //           inputQueryParams[queryNames.proceedsAsAPercentageOfBookValue],
+  //       }),
+  //     );
+  //   }
+  // }, [
+  //   currentEquityRiskPremium,
+  //   currentIndustry,
+  //   dispatch,
+  //   estimatedCostOfDebt,
+  //   exchangeRates,
+  //   general,
+  //   hasAllRequiredInputsFilledIn,
+  //   highlights,
+  //   inputQueryParams,
+  //   pastThreeYearsAverageEffectiveTaxRate,
+  //   price,
+  //   riskFreeRate,
+  //   sharesOutstanding,
+  //   spreadsheet,
+  //   ttmBalanceSheet,
+  //   ttmCashFlowStatement,
+  //   ttmIncomeStatement,
+  //   yearlyBalanceSheets,
+  //   yearlyCashFlowStatements,
+  //   yearlyIncomeStatements,
+  // ]);
 
   return (
     <Fragment>

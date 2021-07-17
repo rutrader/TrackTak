@@ -43,10 +43,7 @@ const getRequiredInputsData = (inputQueryParams) => {
         "Numbers are in millions, expect per share amounts",
       ],
       ["Year of Convergence *", inputQueryParams[queryNames.yearOfConvergence]],
-      [
-        "Sales to Capital Ratio *",
-        inputQueryParams[queryNames.salesToCapitalRatio],
-      ],
+      ["Sales to Capital Ratio *", `=FIN("sales/Capital")`],
     ],
     rows: {
       0: {
