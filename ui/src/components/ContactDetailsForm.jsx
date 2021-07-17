@@ -4,18 +4,12 @@ import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { useAuth } from "../hooks/useAuth";
-import { Link } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { setMessage } from "../redux/actions/snackbarActions";
 import PhoneField from "./PhoneField";
 
-const ContactDetailsForm = ({ onVerificationCodeDialogOpen }) => {
-  const {
-    userData,
-    isEmailVerified,
-    updateContactDetails,
-    getEmailVerificationCode,
-  } = useAuth();
+const ContactDetailsForm = () => {
+  const { userData, updateContactDetails } = useAuth();
   const [name, setName] = useState(userData?.name);
   const [phone, setPhone] = useState(userData?.phone_number);
   const [email, setEmail] = useState(userData?.email);
@@ -77,20 +71,6 @@ const ContactDetailsForm = ({ onVerificationCodeDialogOpen }) => {
     );
   };
 
-  const handleVerificationCodeError = (err) => {
-    dispatch(
-      setMessage({
-        message: "Failed to send verification code",
-        severity: "error",
-      }),
-    );
-  };
-
-  const handleClickVerifyEmail = () => {
-    onVerificationCodeDialogOpen();
-    getEmailVerificationCode(handleVerificationCodeError);
-  };
-
   return (
     <>
       <Typography variant="h6" gutterBottom>
@@ -136,19 +116,6 @@ const ContactDetailsForm = ({ onVerificationCodeDialogOpen }) => {
               autoComplete="email"
               size="small"
             />
-            {!isEmailVerified && (
-              <Link
-                component="button"
-                variant="caption"
-                onClick={handleClickVerifyEmail}
-                sx={{
-                  color: (theme) => theme.palette.warning.main,
-                }}
-                type="button"
-              >
-                Click here to verify your email
-              </Link>
-            )}
           </Grid>
           <Grid item xs={12} sm={1}>
             <Button

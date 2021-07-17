@@ -17,13 +17,27 @@ const VerificationCodeDialog = ({ open, onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    submitEmailVerificationCode(challengeCode, onClose, handlVerificationFailure); 
+    submitEmailVerificationCode(
+      challengeCode,
+      handleVerificationSuccess,
+      handlVerificationFailure,
+    );
+  };
+
+  const handleVerificationSuccess = () => {
+    onClose();
+    dispatch(
+      setMessage({
+        message: "Successfully verified your email",
+        severity: "success",
+      }),
+    );
   };
 
   const handlVerificationFailure = (err) => {
     dispatch(
       setMessage({
-        message: 'Incorrect code entered',
+        message: "Incorrect code entered",
         severity: "error",
       }),
     );
@@ -50,7 +64,11 @@ const VerificationCodeDialog = ({ open, onClose }) => {
         <Button onClick={onClose} color="primary">
           Cancel
         </Button>
-        <Button color="primary" onClick={handleSubmit} disabled={!challengeCode}>
+        <Button
+          color="primary"
+          onClick={handleSubmit}
+          disabled={!challengeCode}
+        >
           Submit
         </Button>
       </DialogActions>

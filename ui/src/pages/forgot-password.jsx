@@ -7,19 +7,11 @@ import Authentication, {
   AUTHENTICATION_FORM_STATE,
 } from "../components/Authentication";
 import { navigate } from "gatsby";
-import { useAuth } from "../hooks/useAuth";
+import withAuthenticatedRedirect from "../hocs/withAuthenticatedRedirect";
 
 const ForgotPassword = ({ location }) => {
-  const { isAuthenticated } = useAuth();
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/");
-    }
-  }, [isAuthenticated]);
-
   const handleSuccess = () => {
-    navigate("/");
+    navigate("/dashboard");
   };
 
   return (
@@ -42,4 +34,4 @@ const ForgotPassword = ({ location }) => {
   );
 };
 
-export default ForgotPassword;
+export default withAuthenticatedRedirect(ForgotPassword);

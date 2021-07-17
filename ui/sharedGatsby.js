@@ -10,7 +10,6 @@ import "@fontsource/nunito/400.css";
 import "@fontsource/nunito/700.css";
 import theme from "./src/theme";
 import { snackbarReducer } from "./src/redux/reducers/snackbarReducer";
-import PageSpinner from "./src/components/PageSpinner";
 import setURLSearchQuery from "./src/shared/setURLSearchQuery";
 import { ProvideAuth } from "./src/hooks/useAuth";
 import TTCookieBanner from "./src/components/TTCookieBanner";
@@ -19,6 +18,7 @@ import {
   setLastPriceClose,
   setTenYearGovernmentBondLastClose,
 } from "../packages/intrinsic-valuations/src/redux/actions/fundamentalsActions";
+import FundamentalsSpinner from "./src/components/FundamentalsSpinner";
 
 const store = createStore(undefined, {
   snackbar: snackbarReducer,
@@ -30,7 +30,7 @@ export const wrapRootElement = ({ element }) => {
   return (
     <TracktakProvider store={store} theme={theme}>
       <ProvideAuth>
-        <PageSpinner />
+        <FundamentalsSpinner />
         {element}
         <TTCookieBanner />
       </ProvideAuth>

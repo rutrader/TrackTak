@@ -16,7 +16,7 @@ import { setMessage } from "../../../redux/actions/snackbarActions";
 import convertHyphenTickerToDot from "../../../shared/convertHyphenTickerToDot";
 import withAuthentication from "../../../hocs/withAuthentication";
 
-const SpreadsheetPage = ({ userId, sheetId }) => {
+const SpreadsheetPage = ({ name, sheetId }) => {
   const general = useSelector(selectGeneral);
   const [rotateSnackbarShown, setRotateSnackbarShown] = useLocalStorageState(
     "rotateSnackbarShown",
@@ -58,7 +58,7 @@ const SpreadsheetPage = ({ userId, sheetId }) => {
           </title>
           <link
             rel="canonical"
-            href={`${resourceName}/${userId}/my-spreadsheets/${sheetId}`}
+            href={`${resourceName}/${name}/my-spreadsheets/${sheetId}`}
           />
           <meta
             name="description"
