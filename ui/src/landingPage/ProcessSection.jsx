@@ -65,6 +65,7 @@ const FeatureHeader = (props) => (
 const FeatureText = (props) => (
   <Typography
     {...props}
+    component="div"
     sx={{
       fontSize: (theme) => theme.typography.fontSize2,
       alignItems: "center",
@@ -200,7 +201,7 @@ const ProcessSection = () => {
         {arrayTexts.map((arrayText, i) => {
           const isEven = i % 2 === 0;
           return (
-            <BoxColumnWrapper>
+            <BoxColumnWrapper key={i}>
               <BoxImage
                 sx={{
                   flexDirection: isEven ? "row-reverse" : null,
@@ -208,14 +209,10 @@ const ProcessSection = () => {
                 }}
               >
                 <StyledImage fluid={arrayText.image} />
-                <FeatureText>
-                  <Box>
-                    <FeatureHeader variant="h4">
-                      {arrayText.header}
-                    </FeatureHeader>
-                  </Box>
-                  {arrayText.text}
-                </FeatureText>
+                <Box>
+                  <FeatureHeader variant="h4">{arrayText.header}</FeatureHeader>
+                  <FeatureText>{arrayText.text}</FeatureText>
+                </Box>
               </BoxImage>
             </BoxColumnWrapper>
           );
