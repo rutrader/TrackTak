@@ -108,7 +108,7 @@ const ForgotPasswordForm = ({ onSuccess, onCancelClick }) => {
                   disabled={verificationEmailSent}
                   onChange={(e) => setEmail(e.target.value)}
                   sx={{
-                    display: 'flex',
+                    display: "flex",
                   }}
                 />
               </Grid>
@@ -123,7 +123,7 @@ const ForgotPasswordForm = ({ onSuccess, onCancelClick }) => {
                       name="challengeCode"
                       onChange={(e) => setChallengeCode(e.target.value)}
                       sx={{
-                        display: 'flex',
+                        display: "flex",
                       }}
                     />
                   </Grid>
@@ -133,12 +133,12 @@ const ForgotPasswordForm = ({ onSuccess, onCancelClick }) => {
                       variant="outlined"
                       required
                       name="password"
-                      label="Password"
+                      label="New Password"
                       type="password"
                       id="password"
                       InputProps={{ inputProps: { minLength: 8 } }}
                       sx={{
-                        display: 'flex',
+                        display: "flex",
                       }}
                     />
                   </Grid>
@@ -156,7 +156,9 @@ const ForgotPasswordForm = ({ onSuccess, onCancelClick }) => {
                 textTransform: "none",
               }}
             >
-              {verificationEmailSent ? "Submit" : "Send Verification Code"}
+              {verificationEmailSent
+                ? "Change Password"
+                : "Send Verification Code"}
             </RoundButton>
             <RoundButton
               fullWidth

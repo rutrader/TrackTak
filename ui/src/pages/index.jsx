@@ -2,7 +2,7 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
-import SubscribeSection from "../landingPage/SubscribeSection";
+import UseNowSection from "../landingPage/UseNowSection";
 import FeaturesSection from "../landingPage/FeaturesSection";
 // import ProcessSection from "../landingPage/ProcessSection";
 import { Box, Container } from "@material-ui/core";
@@ -56,7 +56,7 @@ const Home = () => {
         </Section>
         {/* <ProcessSection /> */}
         <Section>
-          <SubscribeSection />
+          <UseNowSection />
         </Section>
         <Footer />
       </Container>

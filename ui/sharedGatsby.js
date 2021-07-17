@@ -15,6 +15,7 @@ import {
 } from "../packages/intrinsic-valuations/src/redux/actions/fundamentalsActions";
 import FundamentalsSpinner from "./src/components/FundamentalsSpinner";
 import convertFundamentals from "../packages/intrinsic-valuations/src/shared/convertFundamentals";
+import { CssBaseline } from "@material-ui/core";
 
 const store = createStore(undefined, {
   snackbar: snackbarReducer,
@@ -25,6 +26,7 @@ export const wrapRootElement = ({ element }) => {
   // due to a gatsby/mui bug
   return (
     <TracktakProvider store={store} theme={theme}>
+      <CssBaseline />
       <ProvideAuth>
         <FundamentalsSpinner />
         {element}
