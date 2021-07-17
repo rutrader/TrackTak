@@ -14,7 +14,7 @@ import { useAuth } from "../hooks/useAuth";
 import { saveSpreadsheet } from "../api/api";
 import { navigate } from "gatsby";
 
-const SearchTicker = ({ isSmallSearch }) => {
+const SearchTicker = ({ isSmallSearch, sx }) => {
   const theme = useTheme();
   const [autoComplete, setAutoComplete] = useState([]);
   const [isLoadingAutocomplete, setIsLoadingAutocomplete] = useState(false);
@@ -64,7 +64,7 @@ const SearchTicker = ({ isSmallSearch }) => {
   }, [text]);
 
   return (
-    <Box sx={{ display: "flex", position: "relative" }}>
+    <Box sx={{ display: "flex", position: "relative", ...sx }}>
       <Autocomplete
         style={{ flex: 1 }}
         open={text.length > 0}

@@ -461,23 +461,26 @@ const Spreadsheet = ({
           alignItems: "center",
           justifyContent: "space-between",
           flexWrap: "wrap",
-          mb: 0.5,
+          my: 0.75,
         }}
       >
-        <Box>
-          <Typography gutterBottom>
-            Need help? Check out the DCF docs&nbsp;
-            <Link
-              href="https://tracktak.com/how-to-do-a-dcf"
-              rel="noreferrer"
-              target="_blank"
-            >
-              here.
-            </Link>
-          </Typography>
+        <Box
+          sx={{
+            px: "30px",
+            display: "flex",
+            alignItems: "center",
+            flex: 1,
+          }}
+        >
+          <Box
+            sx={{
+              ml: "auto",
+            }}
+          >
+            <SaveStatus isSaving={isSaving} />
+          </Box>
         </Box>
       </Box>
-      {onSaveEvent && <SaveStatus isSaving={isSaving} />}
       <Box
         sx={{
           position: "relative",

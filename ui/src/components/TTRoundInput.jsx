@@ -10,7 +10,7 @@ const TTRoundInput = ({ isSmallInput, color, sx, ...props }) => {
       sx={{
         ...sx,
         "& .MuiInputBase-root": {
-          height: isSmallInput ? "40px" : "62px",
+          height: isSmallInput ? "35px" : "62px",
           borderRadius: "33px",
           color: isSecondary ? "#fff" : "#000",
           transition: "all 0.3s ease-out 0s",

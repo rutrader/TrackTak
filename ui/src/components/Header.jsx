@@ -143,11 +143,11 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
 
   return (
     <>
-      <Box sx={{ paddingBottom: position === "fixed" ? paddingBottom : 2 }}>
+      <Box sx={{ paddingBottom: position === "fixed" ? paddingBottom : 0 }}>
         <AppBar
           sx={{
             position,
-            py: 1,
+            py: 0.5,
             px: 3,
             background: "#fff",
             boxShadow:
@@ -170,9 +170,18 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
                 minWidth: "130px",
                 width: "100%",
                 marginRight: "auto",
+                display: "flex",
               }}
             >
-              {!hideSearch && <SearchTicker isSmallSearch />}
+              {!hideSearch && (
+                <SearchTicker
+                  isSmallSearch
+                  sx={{
+                    flex: 1,
+                    alignSelf: "center",
+                  }}
+                />
+              )}
             </Box>
             <Hidden mdDown implementation="css">
               <Box sx={{ display: "flex" }}>
