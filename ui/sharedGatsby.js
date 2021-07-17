@@ -1,24 +1,20 @@
 import React from "react";
-import {
-  TracktakProvider,
-  createStore,
-  setFundamentals,
-  convertFundamentals,
-} from "@tracktak/intrinsic-valuations";
+import { TracktakProvider, createStore } from "@tracktak/intrinsic-valuations";
 import { LocationProvider, globalHistory } from "@reach/router";
 import "@fontsource/nunito/400.css";
 import "@fontsource/nunito/700.css";
 import theme from "./src/theme";
 import { snackbarReducer } from "./src/redux/reducers/snackbarReducer";
-import setURLSearchQuery from "./src/shared/setURLSearchQuery";
 import { ProvideAuth } from "./src/hooks/useAuth";
 import TTCookieBanner from "./src/components/TTCookieBanner";
 import {
   setExchangeRates,
+  setFundamentals,
   setLastPriceClose,
   setTenYearGovernmentBondLastClose,
 } from "../packages/intrinsic-valuations/src/redux/actions/fundamentalsActions";
 import FundamentalsSpinner from "./src/components/FundamentalsSpinner";
+import convertFundamentals from "../packages/intrinsic-valuations/src/shared/convertFundamentals";
 
 const store = createStore(undefined, {
   snackbar: snackbarReducer,
@@ -53,21 +49,12 @@ export const wrapPageElement = ({ element, props: { data, location } }) => {
       ? JSON.parse(exchangeRates.internal.content)
       : null;
 
-    const searchParams = setURLSearchQuery(data.contentfulDcfTemplate);
-    const search = `?${searchParams.toString()}`;
-
     dispatch(setFundamentals(convertFundamentals(parsedFinancialData)));
     if (parsedExchangeRates) {
       dispatch(setExchangeRates(parsedExchangeRates));
     }
     dispatch(setLastPriceClose(price));
     dispatch(setTenYearGovernmentBondLastClose(tenYearGovernmentBondYield));
-
-    // Provide our own LocationProvider to preserve the query string params
-    // because gatsby removes them
-    if (!location.search) {
-      globalHistory.location.search = search;
-    }
 
     return (
       <LocationProvider history={globalHistory}>{element}</LocationProvider>

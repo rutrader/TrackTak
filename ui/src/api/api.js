@@ -1,4 +1,4 @@
-import { axios } from "@tracktak/intrinsic-valuations";
+import axios from "../../../packages/intrinsic-valuations/src/api/axios";
 
 export const saveSpreadsheet = async (spreadsheet, accessToken) => {
   return axios.put("/api/v1/spreadsheet", spreadsheet, {

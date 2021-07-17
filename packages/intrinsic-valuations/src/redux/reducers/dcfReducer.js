@@ -1,15 +1,12 @@
 import {
-  setCells,
   setScope,
   setSheetsValues,
   setSheetsSerializedValues,
   setSheetsDatas,
 } from "../actions/dcfActions";
 import { createReducer } from "@reduxjs/toolkit";
-import cells from "../../spreadsheet/cells";
 
 const initialState = {
-  cells,
   sheetsSerializedValues: null,
   sheetsValues: null,
   sheetsDatas: null,
@@ -31,12 +28,6 @@ export const dcfReducer = createReducer(initialState, (builder) => {
   builder.addCase(setSheetsSerializedValues, (state, { payload }) => {
     state.sheetsSerializedValues = {
       ...state.sheetsSerializedValues,
-      ...payload,
-    };
-  });
-  builder.addCase(setCells, (state, { payload }) => {
-    state.cells = {
-      ...state.cells,
       ...payload,
     };
   });

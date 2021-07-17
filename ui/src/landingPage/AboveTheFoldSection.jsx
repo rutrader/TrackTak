@@ -8,7 +8,6 @@ import {
 } from "@material-ui/core";
 import GridDots from "../icons/grid-dots.svg";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import SearchTicker from "../components/SearchTicker";
 import { AnchorLink } from "gatsby-plugin-anchor-links";
 import { graphql, useStaticQuery } from "gatsby";
 import Img from "gatsby-image";
@@ -22,7 +21,6 @@ const Search = () => {
       <Typography variant="h4" align="center" gutterBottom color="white">
         Search for a company to begin.
       </Typography>
-      <SearchTicker />
     </>
   );
 };

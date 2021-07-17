@@ -14,7 +14,6 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SearchTicker from "./SearchTicker";
 import TracktakLogo from "./TracktakLogo";
 import { useAuth } from "../hooks/useAuth";
-import featureToggle from "../shared/featureToggle";
 
 const buttonStyle = {
   textTransform: "none",
@@ -184,9 +183,7 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
                     {...link}
                   />
                 ))}
-                {featureToggle.AUTHENTICATION &&
-                  isAuthenticated &&
-                  renderUserMenu()}
+                {isAuthenticated && renderUserMenu()}
               </Box>
             </Hidden>
             <Hidden mdUp implementation="css">
@@ -215,9 +212,7 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  {featureToggle.AUTHENTICATION &&
-                    isAuthenticated &&
-                    getUserAccountMenuItems()}
+                  {isAuthenticated && getUserAccountMenuItems()}
                   {links.map((link) => (
                     <MenuItem
                       key={link.to}

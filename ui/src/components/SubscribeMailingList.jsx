@@ -1,5 +1,5 @@
 import { Box, Typography } from "@material-ui/core";
-import { axios } from "@tracktak/intrinsic-valuations";
+import axios from "../../../packages/intrinsic-valuations/src/api/axios";
 import jsonAdapter from "axios-jsonp";
 import React, { useState } from "react";
 import RoundButton from "./RoundButton";
@@ -7,7 +7,6 @@ import TTRoundInput from "./TTRoundInput";
 import queryString from "query-string";
 import { useDispatch } from "react-redux";
 import { setMessage } from "../redux/actions/snackbarActions";
-import subscribePopupShownHook from "../hooks/subscribePopupShownHook";
 
 const SubscribeMailingList = ({
   subscribeText = "Subscribe",
@@ -17,7 +16,6 @@ const SubscribeMailingList = ({
   cancelButton,
   formSx,
 }) => {
-  const [, setSubscribePopupShown] = subscribePopupShownHook();
   const [email, setEmail] = useState("");
   const dispatch = useDispatch();
 
@@ -45,7 +43,6 @@ const SubscribeMailingList = ({
           const isSuccess = result === "success";
 
           if (isSuccess) {
-            setSubscribePopupShown(true);
             setEmail("");
 
             dispatch(

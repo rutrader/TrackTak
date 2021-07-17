@@ -31,9 +31,6 @@ import { isEmpty, isNil } from "lodash-es";
 import getSpreadsheet, {
   spreadsheetEvents,
 } from "../../../web-spreadsheet/src";
-import useSetURLInput from "../hooks/useSetURLInput";
-import { camelCase } from "change-case";
-import { allInputNameTypeMappings } from "./scopeNameTypeMapping";
 import { queryNames } from "./templates/freeCashFlowFirmSimple/inputQueryNames";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 import { currencySymbolMap } from "currency-symbol-map";
@@ -96,7 +93,6 @@ const Spreadsheet = ({
   const pastThreeYearsAverageEffectiveTaxRate = useSelector(
     selectThreeAverageYearsEffectiveTaxRate,
   );
-  const setURLInput = useSetURLInput();
   const isFocusedOnValueDrivingInputs = location.hash?.includes(
     requiredInputsId,
   );
@@ -145,19 +141,6 @@ const Spreadsheet = ({
       ]);
     }
   }, [spreadsheetToRestore, spreadsheet]);
-
-  useEffect(() => {
-    if (
-      !disableSetQueryParams &&
-      isNil(inputQueryParams[queryNames.salesToCapitalRatio])
-    ) {
-      setURLInput(
-        queryNames.salesToCapitalRatio,
-        currentIndustry["sales/Capital"],
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // Move to spreadsheet later
   useEffect(() => {
@@ -306,34 +289,12 @@ const Spreadsheet = ({
   ]);
 
   useEffect(() => {
-    const cellEditedCallback = ({ cellAddress, value }) => {
+    const cellEditedCallback = () => {
       // We will use this later to allow users to save their
       // sheets. For now it's to make it easier for us to create
       // our templates.
       if (process.env.NODE_ENV === "development") {
         console.log("datas: ", spreadsheet.getDatas());
-      }
-
-      let label = spreadsheet.hyperformula.getCellValue({
-        ...cellAddress,
-        col: cellAddress.col - 1,
-      });
-
-      // TODO: Remove later
-      if (label) {
-        label = label.toString();
-
-        if (label.includes("Operating Target Margin")) {
-          label = "EBIT Target Margin in Year 10";
-        }
-
-        const urlName = camelCase(label);
-
-        if (allInputNameTypeMappings[urlName] && !disableSetQueryParams) {
-          let newValue = value;
-
-          setURLInput(camelCase(label), newValue);
-        }
       }
     };
 
@@ -366,7 +327,7 @@ const Spreadsheet = ({
         }
       }
     };
-  }, [setURLInput, spreadsheet, onSaveEvent, disableSetQueryParams]);
+  }, [spreadsheet, onSaveEvent, disableSetQueryParams]);
 
   useEffect(() => {
     if (spreadsheet) {

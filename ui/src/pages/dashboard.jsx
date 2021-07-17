@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { useAuth } from "../hooks/useAuth";
 import getTitle from "../shared/getTitle";
-import resourceName from "../shared/resourceName";
 import SavedSpreadsheets from "../components/SavedSpreadsheets";
 import { saveSpreadsheet } from "../api/api";
 import { navigate } from "gatsby";
@@ -15,7 +14,7 @@ const Dashboard = () => {
   const { getAccessToken, userData } = useAuth();
   const [showSearchTickerDialog, setShowSearchTickerDialog] = useState(false);
 
-  const handleSearchClick = async (ticker) => {
+  const onSearchChange = async (ticker) => {
     const token = await getAccessToken();
     const response = await saveSpreadsheet(
       { name: ticker, data: {} },
@@ -36,12 +35,10 @@ const Dashboard = () => {
     <>
       <Helmet>
         <title>{getTitle("Dashboard")}</title>
-        <link rel="canonical" href={`${resourceName}/dashboard`} />
-        <meta name="description" content="Dashboard." />
       </Helmet>
       <SearchTickerDialog
         open={showSearchTickerDialog}
-        onSearchResultClick={handleSearchClick}
+        onSearchChange={onSearchChange}
         onClose={handleCloseSearchTickerDialog}
       />
       <Box

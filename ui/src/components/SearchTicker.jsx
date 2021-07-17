@@ -6,13 +6,12 @@ import {
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
-import { navigate } from "gatsby";
 import SearchIcon from "@material-ui/icons/Search";
-import { useDebouncedCallback } from "@tracktak/intrinsic-valuations";
+import useDebouncedCallback from "../../../packages/intrinsic-valuations/src/hooks/useDebouncedCallback";
 import TTRoundInput from "./TTRoundInput";
-import { getAutocompleteQuery } from "../../../packages/intrinsic-valuations/src";
+import { getAutocompleteQuery } from "../../../packages/intrinsic-valuations/src/api/api";
 
-const SearchTicker = ({ isSmallSearch, onSearchResultClick }) => {
+const SearchTicker = ({ isSmallSearch, onChange }) => {
   const theme = useTheme();
   const [autoComplete, setAutoComplete] = useState([]);
   const [isLoadingAutocomplete, setIsLoadingAutocomplete] = useState(false);
@@ -27,13 +26,9 @@ const SearchTicker = ({ isSmallSearch, onSearchResultClick }) => {
 
   const handleOnChangeAutoComplete = (_, value) => {
     if (value?.code && value?.exchange) {
-      const ticker = `${value.code}-${value.exchange}`.toLowerCase();
+      const ticker = `${value.code}.${value.exchange}`;
 
-      if (onSearchResultClick) {
-        onSearchResultClick(ticker);
-        return;
-      }
-      navigate(`/stock/${ticker}/discounted-cash-flow`);
+      onChange(ticker);
     }
   };
 

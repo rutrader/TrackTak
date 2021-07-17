@@ -6,15 +6,6 @@ import { BLOCKS } from "@contentful/rich-text-types";
 import YouTube from "react-youtube";
 import { graphql, Link as RouterLink } from "gatsby";
 import { Box, Link, Typography } from "@material-ui/core";
-import {
-  Section,
-  FormatRawNumberToPercent,
-  FormatRawNumberToYear,
-  FormatRawNumber,
-  FormatRawNumberToCurrency,
-  selectPrice,
-} from "@tracktak/intrinsic-valuations";
-import SubscribeMailingList from "../../components/SubscribeMailingList";
 import * as styles from "../../shared/video.module.css";
 import dayjs from "dayjs";
 import { Helmet } from "react-helmet";
@@ -26,6 +17,12 @@ import selectGeneral from "../../../../packages/intrinsic-valuations/src/selecto
 import { labels } from "../../../../packages/intrinsic-valuations/src/spreadsheet/templates/freeCashFlowFirmSimple/inputQueryNames";
 import selectSheetsValues from "../../../../packages/intrinsic-valuations/src/selectors/dcfSelectors/selectSheetsValues";
 import Spreadsheet from "../../../../packages/intrinsic-valuations/src/spreadsheet/Spreadsheet";
+import selectPrice from "../../../../packages/intrinsic-valuations/src/selectors/fundamentalSelectors/selectPrice";
+import Section from "../../../../packages/intrinsic-valuations/src/components/Section";
+import FormatRawNumberToPercent from "../../../../packages/intrinsic-valuations/src/components/FormatRawNumberToPercent";
+import FormatRawNumber from "../../../../packages/intrinsic-valuations/src/components/FormatRawNumber";
+import FormatRawNumberToCurrency from "../../../../packages/intrinsic-valuations/src/components/FormatRawNumberToCurrency";
+import FormatRawNumberToYear from "../../../../packages/intrinsic-valuations/src/components/FormatRawNumberToYear";
 
 export const query = graphql`
   fragment ValuationInformation on ContentfulDcfTemplate {
@@ -282,26 +279,6 @@ const Valuation = ({ data }) => {
         <Typography component="div" paragraph>
           {renderField(competitors)}
         </Typography>
-      </Section>
-      <Section sx={{ display: "flex" }}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            margin: "0 auto",
-          }}
-        >
-          <Typography variant="h6" gutterBottom>
-            Get notified immediately when we post a valuation.
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <b>Free</b>&nbsp;forever.
-            </Box>
-          </Typography>
-          <SubscribeMailingList
-            subscribeText="Join"
-            locationSignup="Valuation"
-          />
-        </Box>
       </Section>
       {lookingForward && (
         <Section>

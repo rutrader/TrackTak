@@ -1,5 +1,3 @@
-import featureToggle from "./featureToggle";
-
 export const landingPageLinks = [
   { to: "/contact-us", text: "Contact" },
   {
@@ -16,7 +14,7 @@ export const getHeaderLinks = (isAuthenticated) => {
     ...landingPageLinks,
   ];
 
-  if (featureToggle.AUTHENTICATION && !isAuthenticated) {
+  if (!isAuthenticated) {
     links.push(signInLink);
   }
 

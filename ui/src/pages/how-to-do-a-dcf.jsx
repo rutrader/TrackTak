@@ -2,7 +2,7 @@ import React from "react";
 import Typography from "@material-ui/core/Typography";
 import { Box } from "@material-ui/core";
 import wikiContent from "../data/wikiContent";
-import { replaceSpaceWithHyphen } from "@tracktak/intrinsic-valuations";
+import replaceSpaceWithHyphen from "../shared/replaceSpaceWithHyphen";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
