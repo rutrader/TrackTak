@@ -11,6 +11,7 @@ import TestimonialsSection from "../landingPage/TestimonialsSection";
 import OurTeamSection from "../landingPage/OurTeamSection";
 import VideoSection from "../landingPage/VideoSection";
 import AboveTheFoldSection from "../landingPage/AboveTheFoldSection";
+import withAuthenticatedRedirect from "../hocs/withAuthenticatedRedirect";
 
 const Section = ({ sx, ...props }) => {
   return (
@@ -63,4 +64,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default withAuthenticatedRedirect(Home);

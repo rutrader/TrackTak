@@ -9,7 +9,7 @@ const Layout = ({ children }) => {
   const links = getHeaderLinks(isAuthenticated);
   return (
     <Container maxWidth="md">
-      <Header links={links} />
+      <Header hideSearch links={links} />
       <Box sx={{ mb: 10 }}>{children}</Box>
     </Container>
   );
