@@ -19,7 +19,6 @@ import useSensitivityAnalysisDataTable, {
 import useInputQueryParams from "../hooks/useInputQueryParams";
 import getChunksOfArray from "../shared/getChunksOfArray";
 import { Fragment } from "react";
-import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import { computeSensitivityAnalysis } from "../api/api";
 import { allInputNameTypeMappings } from "../spreadsheet/scopeNameTypeMapping";
 import { queryNames } from "../spreadsheet/templates/freeCashFlowFirmSimple/inputQueryNames";
@@ -109,7 +108,6 @@ const SensitivityAnalysis = () => {
   const [estimatedValues, setEstimatedValues] = useState([]);
   const [data, setData] = useState([]);
   const [dataTable, setDataTable] = useSensitivityAnalysisDataTable();
-  const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
   const inputQueryParams = useInputQueryParams();
   const [isLoading, setIsLoading] = useState(false);
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
@@ -230,8 +228,8 @@ const SensitivityAnalysis = () => {
               <CheckboxSlider
                 {...datum}
                 key={name}
-                disabledSlider={isLoading || !hasAllRequiredInputsFilledIn}
-                disabled={disabled || !hasAllRequiredInputsFilledIn}
+                disabledSlider={isLoading}
+                disabled={disabled}
                 checked={
                   checkedItems.find((x) => x.name === name)?.value ?? false
                 }
@@ -243,7 +241,7 @@ const SensitivityAnalysis = () => {
             );
           })}
         </FormGroup>
-        {xElement && yElement && hasAllRequiredInputsFilledIn && (
+        {xElement && yElement && (
           <Box sx={{ flex: 1, minWidth: "288px", overflow: "auto" }}>
             {smDown && (
               <Box sx={{ mb: 2 }}>
