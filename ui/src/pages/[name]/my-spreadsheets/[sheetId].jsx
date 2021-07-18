@@ -17,12 +17,8 @@ const SpreadsheetPage = ({ sheetId }) => {
   const theme = useTheme();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const dispatch = useDispatch();
-  const [spreadsheetData] = useFetchSpreadsheet(sheetId);
-  const { isSaving, persistSpreadsheetData } = usePersistSpreadsheet(sheetId);
-
-  const handleSave = (data) => {
-    persistSpreadsheetData(spreadsheetData.sheetData.name, data);
-  };
+  const [spreadsheet] = useFetchSpreadsheet(sheetId);
+  const saveSheetData = usePersistSpreadsheet(sheetId);
 
   useEffect(() => {
     if (!rotateSnackbarShown && isOnMobile) {
@@ -38,18 +34,14 @@ const SpreadsheetPage = ({ sheetId }) => {
 
   return (
     <>
-      {spreadsheetData?.sheetData?.name && (
+      {spreadsheet?.sheetData.name && (
         <Helmet>
-          <title>
-            {getTitle(`${spreadsheetData.sheetData.name} Spreadsheet`)}
-          </title>
+          <title>{getTitle(`${spreadsheet.sheetData.name} Spreadsheet`)}</title>
         </Helmet>
       )}
       <Spreadsheet
-        ticker={spreadsheetData?.sheetData?.name}
-        isSaving={isSaving}
-        onSave={handleSave}
-        spreadsheetToRestore={spreadsheetData}
+        saveSheetData={saveSheetData}
+        spreadsheetToRestore={spreadsheet?.sheetData}
       />
     </>
   );

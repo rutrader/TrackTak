@@ -28,13 +28,7 @@ const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
 const defaultColWidth = 110;
 
-const Spreadsheet = ({
-  ticker,
-  isSaving,
-  onSave = () => {},
-  spreadsheetToRestore,
-  hideSensitivityAnalysis,
-}) => {
+const Spreadsheet = ({ sheetData, saveSheetData, hideSensitivityAnalysis }) => {
   const containerRef = useRef();
   const [spreadsheet, setSpreadsheet] = useState();
   const theme = useTheme();
@@ -48,10 +42,13 @@ const Spreadsheet = ({
   const general = useSelector(selectGeneral);
   const scope = useSelector(selectScope);
   const valuationCurrencySymbol = useSelector(selectValuationCurrencySymbol);
+  const [isSaving, setIsSaving] = useState(false);
 
   useFinancialPlugin(spreadsheet);
 
   useEffect(() => {
+    const ticker = sheetData?.name;
+
     if (ticker) {
       dispatch(
         getFundamentalsThunk({
@@ -64,44 +61,7 @@ const Spreadsheet = ({
         }),
       );
     }
-  }, [dispatch, ticker]);
-
-  // useEffect(() => {
-  //   if (
-  //     spreadsheet &&
-  //     !isEmpty(spreadsheetToRestore?.sheetData.data?.datas ?? true)
-  //   ) {
-  //     const dcfValuationData = spreadsheetToRestore.sheetData.data.datas[0];
-  //     const financialStatements = spreadsheetToRestore.sheetData.data.datas[1];
-  //     const costOfCapital = spreadsheetToRestore.sheetData.data.datas[2];
-  //     const employeeOptions = spreadsheetToRestore.sheetData.data.datas[3];
-  //     const syntheticCreditRating =
-  //       spreadsheetToRestore.sheetData.data.datas[4];
-  //     const industryAveragesUS = spreadsheetToRestore.sheetData.data.datas[5];
-  //     const industryAveragesGlobal =
-  //       spreadsheetToRestore.sheetData.data.datas[6];
-
-  //     spreadsheet.setDatasheets([
-  //       dcfValuationData,
-  //       financialStatements,
-  //       costOfCapital,
-  //       employeeOptions,
-  //       syntheticCreditRating,
-  //       industryAveragesUS,
-  //       industryAveragesGlobal,
-  //     ]);
-
-  //     const requiredInputs =
-  //       spreadsheetToRestore.sheetData.data.variablesDatas[0];
-  //     const optionalInputs =
-  //       spreadsheetToRestore.sheetData.data.variablesDatas[1];
-
-  //     spreadsheet.variablesSpreadsheet.setVariableDatasheets([
-  //       requiredInputs,
-  //       optionalInputs,
-  //     ]);
-  //   }
-  // }, [spreadsheetToRestore, spreadsheet]);
+  }, [dispatch, sheetData]);
 
   // Move to spreadsheet later
   useEffect(() => {
@@ -194,10 +154,16 @@ const Spreadsheet = ({
   }, [currencySymbol]);
 
   useEffect(() => {
+    const handleSave = async (data) => {
+      setIsSaving(true);
+      await saveSheetData(sheetData.name, data);
+      setIsSaving(false);
+    };
+
     if (spreadsheet) {
       spreadsheet.variablesSpreadsheet.eventEmitter.on(
         spreadsheetEvents.save.persistDataChange,
-        onSave,
+        handleSave,
       );
     }
 
@@ -205,11 +171,11 @@ const Spreadsheet = ({
       if (spreadsheet) {
         spreadsheet.variablesSpreadsheet.eventEmitter.off(
           spreadsheetEvents.save.persistDataChange,
-          onSave,
+          handleSave,
         );
       }
     };
-  }, [spreadsheet, onSave]);
+  }, [spreadsheet, saveSheetData, sheetData]);
 
   useEffect(() => {
     if (spreadsheet) {
