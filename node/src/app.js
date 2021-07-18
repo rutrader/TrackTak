@@ -6,7 +6,7 @@ import api from "./api";
 import auth from "./middleware/auth";
 
 const hostname = "127.0.0.1";
-const port = process.env.NODE_ENV === "development" ? 3001 : process.env.PORT;
+const port = 3001;
 const app = express();
 
 app.use(express.static("public"));
