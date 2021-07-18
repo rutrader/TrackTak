@@ -34,7 +34,7 @@ npm install --save @tracktak/intrinsic-valuations
 
 See here for the default theme: https://material-ui.com/customization/default-theme/
 
-Any questions, please contact me at: martin@tracktak.com
+Any questions please contact me at: martin@tracktak.com
 
 ### Spreadsheet props
 

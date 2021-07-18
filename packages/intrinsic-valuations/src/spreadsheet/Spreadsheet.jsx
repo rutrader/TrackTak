@@ -2,7 +2,6 @@ import React, { useRef, useState, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { Box, useMediaQuery, useTheme } from "@material-ui/core";
-import useInputQueryParams from "../hooks/useInputQueryParams";
 import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
 import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
 import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
@@ -10,7 +9,6 @@ import selectRecentCashFlowStatement from "../selectors/fundamentalSelectors/sel
 import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
 import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
 import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
-import useHasAllRequiredInputsFilledIn from "../hooks/useHasAllRequiredInputsFilledIn";
 import { useLocation } from "@reach/router";
 import selectThreeAverageYearsEffectiveTaxRate from "../selectors/fundamentalSelectors/selectThreeAverageYearsEffectiveTaxRate";
 import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
@@ -25,14 +23,8 @@ import { isEmpty, isNil } from "lodash-es";
 import getSpreadsheet, {
   spreadsheetEvents,
 } from "../../../web-spreadsheet/src";
-import { queryNames } from "./templates/freeCashFlowFirmSimple/inputQueryNames";
 import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 import { currencySymbolMap } from "currency-symbol-map";
-import getRequiredInputsData from "./templates/freeCashFlowFirmSimple/data/getRequiredInputsData";
-import getEmployeeOptionsData from "./templates/freeCashFlowFirmSimple/data/getEmployeeOptionsData";
-import getDCFValuationData from "./templates/freeCashFlowFirmSimple/data/getDCFValuationData";
-import getCostOfCapitalData from "./templates/freeCashFlowFirmSimple/data/getCostOfCapitalData";
-import getOptionalInputsData from "./templates/freeCashFlowFirmSimple/data/getOptionalInputsData";
 import selectEstimatedCostOfDebt from "../selectors/fundamentalSelectors/selectEstimatedCostOfDebt";
 import {
   finTranslations,
@@ -42,13 +34,9 @@ import HyperFormula from "hyperformula";
 import selectYearlyIncomeStatements from "../selectors/fundamentalSelectors/selectYearlyIncomeStatements";
 import selectYearlyBalanceSheets from "../selectors/fundamentalSelectors/selectYearlyBalanceSheets";
 import selectYearlyCashFlowStatements from "../selectors/fundamentalSelectors/selectYearlyCashFlowStatements";
-import getSyntheticCreditRatingData from "./templates/freeCashFlowFirmSimple/data/getSyntheticCreditRatingData";
 import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
 import selectHighlights from "../selectors/fundamentalSelectors/selectHighlights";
 import selectExchangeRates from "../selectors/fundamentalSelectors/selectExchangeRates";
-import getIndustryAveragesUSData from "./templates/freeCashFlowFirmSimple/data/getIndustryAveragesUSData";
-import getIndustryAveragesGlobalData from "./templates/freeCashFlowFirmSimple/data/getIndustryAveragesGlobalData";
-import getFinancialStatementsData from "./templates/freeCashFlowFirmSimple/data/getFinancialStatementsData";
 import SensitivityAnalysis from "../components/SensitivityAnalysis";
 import Section from "../components/Section";
 import getFormats from "./getFormats";
@@ -58,6 +46,9 @@ import {
   getFundamentalsThunk,
   getLastPriceCloseThunk,
 } from "../redux/thunks/fundamentalsThunks";
+import freeCashFlowToFirmData, {
+  freeCashFlowToFirmVariablesData,
+} from "./templates/freeCashFlowFirmSimple/data";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
@@ -77,7 +68,6 @@ const Spreadsheet = ({
   const currencySymbol = useSelector(selectValuationCurrencySymbol);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const dispatch = useDispatch();
-  const inputQueryParams = useInputQueryParams();
   const ttmIncomeStatement = useSelector(selectRecentIncomeStatement);
   const ttmBalanceSheet = useSelector(selectRecentBalanceSheet);
   const ttmCashFlowStatement = useSelector(selectRecentCashFlowStatement);
@@ -99,7 +89,6 @@ const Spreadsheet = ({
   const general = useSelector(selectGeneral);
   const highlights = useSelector(selectHighlights);
   const exchangeRates = useSelector(selectExchangeRates);
-  const hasAllRequiredInputsFilledIn = useHasAllRequiredInputsFilledIn();
   const scope = useSelector(selectScope);
   const valuationCurrencySymbol = useSelector(selectValuationCurrencySymbol);
 
@@ -347,54 +336,14 @@ const Spreadsheet = ({
   }, [isOnMobile, spreadsheet]);
 
   useEffect(() => {
-    if (spreadsheet && isEmpty(spreadsheetToRestore?.sheetData?.data ?? true)) {
-      const { datas } = spreadsheet.getDatas();
-
-      spreadsheet.variablesSpreadsheet.setVariableDatasheets([
-        getRequiredInputsData(inputQueryParams),
-        getOptionalInputsData(inputQueryParams),
-      ]);
-
-      if (!datas.length || datas.length === 1) {
-        // Temp
-        const financialStatements = {
-          incomeStatements: {
-            ttm: ttmIncomeStatement,
-            yearly: yearlyIncomeStatements,
-          },
-          balanceSheets: {
-            ttm: ttmBalanceSheet,
-            yearly: yearlyBalanceSheets,
-          },
-          cashFlowStatements: {
-            ttm: ttmCashFlowStatement,
-            yearly: yearlyCashFlowStatements,
-          },
-        };
-        spreadsheet.setDatasheets([
-          getDCFValuationData(financialStatements),
-          getFinancialStatementsData(financialStatements),
-          getCostOfCapitalData(),
-          getEmployeeOptionsData(),
-          getSyntheticCreditRatingData(),
-          getIndustryAveragesUSData(),
-          getIndustryAveragesGlobalData(),
-        ]);
-      }
-
+    if (spreadsheet) {
+      spreadsheet.variablesSpreadsheet.setVariableDatasheets(
+        freeCashFlowToFirmVariablesData,
+      );
+      spreadsheet.setDatasheets(freeCashFlowToFirmData);
       spreadsheet.sheet.switchData(spreadsheet.sheet.getDatas()[0]);
     }
-  }, [
-    spreadsheet,
-    inputQueryParams,
-    ttmIncomeStatement,
-    yearlyIncomeStatements,
-    ttmBalanceSheet,
-    yearlyBalanceSheets,
-    ttmCashFlowStatement,
-    yearlyCashFlowStatements,
-    spreadsheetToRestore,
-  ]);
+  }, [spreadsheet]);
 
   // useEffect(() => {
   //   // Dispatch only when we have all the data from the API

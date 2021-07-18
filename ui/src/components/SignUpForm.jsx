@@ -7,16 +7,19 @@ import RoundButton from "./RoundButton";
 import { useTheme } from "@material-ui/styles";
 import { Box } from "@material-ui/core";
 import TracktakLogoSvg from "../icons/tracktak-purple.svg";
+import PhoneField from "./PhoneField";
 
 const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
   const theme = useTheme();
   const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
     onSubmit(e, {
       name,
+      phone,
       email,
       password,
     });
@@ -55,12 +58,19 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
                 autoComplete="name"
                 name="name"
                 variant="outlined"
+                required
                 id="name"
                 label="Name"
                 autoFocus
                 sx={{
-                  display: 'flex',
+                  display: "flex",
                 }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <PhoneField
+                onChange={(number) => setPhone(number)}
+                value={phone}
               />
             </Grid>
             <Grid item xs={12}>
@@ -73,7 +83,7 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
                 name="email"
                 autoComplete="email"
                 sx={{
-                  display: 'flex',
+                  display: "flex",
                 }}
               />
             </Grid>
@@ -89,7 +99,7 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
                 autoComplete="current-password"
                 InputProps={{ inputProps: { minLength: 8 } }}
                 sx={{
-                  display: 'flex',
+                  display: "flex",
                 }}
               />
             </Grid>

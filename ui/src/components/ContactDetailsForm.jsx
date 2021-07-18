@@ -6,10 +6,12 @@ import Typography from "@material-ui/core/Typography";
 import { useAuth } from "../hooks/useAuth";
 import { useDispatch } from "react-redux";
 import { setMessage } from "../redux/actions/snackbarActions";
+import PhoneField from "./PhoneField";
 
 const ContactDetailsForm = () => {
   const { userData, updateContactDetails } = useAuth();
   const [name, setName] = useState(userData?.name);
+  const [phone, setPhone] = useState(userData?.phone_number);
   const [email, setEmail] = useState(userData?.email);
   const [isDirty, setIsDirty] = useState(false);
   const dispatch = useDispatch();
@@ -21,15 +23,20 @@ const ContactDetailsForm = () => {
   };
 
   useEffect(() => {
-    if (name === userData?.name && email === userData?.email) {
+    if (
+      name === userData?.name &&
+      email === userData?.email &&
+      phone === userData?.phone_number
+    ) {
       setIsDirty(false);
     }
-  }, [name, email, userData]);
+  }, [name, email, userData, phone]);
 
   useEffect(() => {
     if (userData) {
       setName(userData.name);
       setEmail(userData.email);
+      setPhone(userData.phone_number);
     }
   }, [userData]);
 
@@ -54,7 +61,11 @@ const ContactDetailsForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     updateContactDetails(
-      { name: name ?? userData?.name, email: email ?? userData.email },
+      {
+        name: name ?? userData?.name,
+        email: email ?? userData.email,
+        phone_number: phone ?? userData.phone_number,
+      },
       handleSuccess,
       handleError,
     );
@@ -67,7 +78,7 @@ const ContactDetailsForm = () => {
       </Typography>
       <form style={{ width: "100%" }} onSubmit={handleSubmit}>
         <Grid container justifyContent="space-between" gap={3}>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={3}>
             <TextField
               value={name || ""}
               onChange={(e) => handleFieldChange(e, setName)}
@@ -81,7 +92,17 @@ const ContactDetailsForm = () => {
               size="small"
             />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={3}>
+            <PhoneField
+              onChange={(number) => {
+                setIsDirty(true);
+                setPhone(number)
+              }}
+              value={phone}
+              size="small"
+            />
+          </Grid>
+          <Grid item xs={12} sm={3}>
             <TextField
               value={email || ""}
               onChange={(e) => handleFieldChange(e, setEmail)}
@@ -96,7 +117,7 @@ const ContactDetailsForm = () => {
               size="small"
             />
           </Grid>
-          <Grid item xs={12} sm={2}>
+          <Grid item xs={12} sm={1}>
             <Button
               type="submit"
               fullWidth
