@@ -19,7 +19,6 @@
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.2",
     "@testing-library/user-event": "^12.2.2",
-    "undo-redo-manager": "^1.0.0",
     "amazon-cognito-identity-js": "^4.6.0",
     "axios": "^0.21.0",
     "axios-jsonp": "^1.0.4",
@@ -77,6 +76,7 @@
     "react-lazyload": "^3.2.0",
     "react-lines-ellipsis": "^0.14.1",
     "react-markdown": "^5.0.3",
+    "react-phone-input-2": "^2.14.0",
     "react-redux": "^7.2.2",
     "react-scripts": "4.0.0",
     "react-scrollspy": "^3.4.0",
@@ -84,6 +84,7 @@
     "redux": "^4.0.5",
     "sharp": "^0.27.1",
     "styled-components": "^5.2.1",
+    "undo-redo-manager": "^1.0.0",
     "use-local-storage-state": "^9.0.2",
     "web-vitals": "^0.2.4"
   },
