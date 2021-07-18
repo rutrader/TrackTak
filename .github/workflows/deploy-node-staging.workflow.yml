@@ -11,6 +11,13 @@ jobs:
     defaults:
       run:
         working-directory: ./node
+    env:
+      DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+      DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+      DATABASE_USER: ${{ secrets.DATABASE_USER }}
+      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+      COGNITO_POOL_ID: ${{ secrets.COGNITO_POOL_ID }}
+      COGNITO_ISSUER_URI: ${{ secrets.COGNITO_ISSUER_URI }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
