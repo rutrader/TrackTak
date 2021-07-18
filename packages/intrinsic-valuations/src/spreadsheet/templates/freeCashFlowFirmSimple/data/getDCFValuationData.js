@@ -1,25 +1,4 @@
-import {
-  getDatesFromStatement,
-  getStatements,
-} from "../../financialStatements";
-
-const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
-  const dates = getDatesFromStatement(incomeStatements);
-
-  const incomeStatementOverview = getStatements(incomeStatements, [
-    "revenue",
-    "operatingIncome",
-    "operatingMargin",
-  ]);
-  const balanceSheetOverview = getStatements(balanceSheets, [
-    "bookValueOfEquity",
-    "bookValueOfDebt",
-    "investedCapital",
-    "salesToCapitalRatio",
-  ]);
-
-  const overview = [dates, ...incomeStatementOverview, ...balanceSheetOverview];
-
+const getDCFValuationData = () => {
   const data = {
     name: "DCF Valuation",
     freeze: "A1",
@@ -4195,14 +4174,67 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
       [
         "Pre-tax Operating Margin (TTM)",
         '=FIN("preTaxOperatingMarginUnadjusted")',
+        null,
+        null,
+        "TTM",
+        `=FIN("date",,"01/01/2000")`,
       ],
-      ["ROIC (TTM)", '=FIN("afterTaxROIC")'],
-      ["Sales to Capital Ratio", '=FIN("sales/Capital")'],
-      ["WACC", '=FIN("costOfCapital")'],
-      ["Unlevered Beta", '=FIN("unleveredBeta")'],
-      ["Levered Beta", '=FIN("equityLeveredBeta")'],
-      [""],
-      [""],
+      [
+        "ROIC (TTM)",
+        '=FIN("afterTaxROIC")',
+        null,
+        "Revenue",
+        `=FIN("revenue")`,
+        `=FIN("revenue",,"01/01/2000")`,
+      ],
+      [
+        "Sales to Capital Ratio",
+        '=FIN("sales/Capital")',
+        null,
+        "Operating Income",
+        `=FIN("operatingIncome")`,
+        `=FIN("operatingIncome",,"01/01/2000")`,
+      ],
+      [
+        "WACC",
+        '=FIN("costOfCapital")',
+        null,
+        "Operating Margin",
+        `=FIN("operatingMargin")`,
+        `=FIN("operatingMargin",,"01/01/2000")`,
+      ],
+      [
+        "Unlevered Beta",
+        '=FIN("unleveredBeta")',
+        null,
+        "Book Value of Equity",
+        `=FIN("bookValueOfEquity")`,
+        `=FIN("bookValueOfEquity",,"01/01/2000")`,
+      ],
+      [
+        "Levered Beta",
+        '=FIN("equityLeveredBeta")',
+        null,
+        "Book Value of Debt",
+        `=FIN("bookValueOfDebt")`,
+        `=FIN("bookValueOfDebt",,"01/01/2000")`,
+      ],
+      [
+        "",
+        null,
+        null,
+        "Invested Capital",
+        `=FIN("investedCapital")`,
+        `=FIN("investedCapital",,"01/01/2000")`,
+      ],
+      [
+        "",
+        null,
+        null,
+        "Sales to Capital Ratio",
+        `=FIN("salesToCapitalRatio")`,
+        `=FIN("salesToCapitalRatio",,"01/01/2000")`,
+      ],
       [""],
       ["DCF Valuaton"],
       ["", "Base Year", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "Terminal Year"],
@@ -4678,49 +4710,6 @@ const getDCFValuationData = ({ incomeStatements, balanceSheets }) => {
       ["Margin of Safety", "=IFERROR((B54-B53)/B54, 0)"],
     ],
   };
-
-  data.serializedValues[8] = [
-    ...data.serializedValues[8],
-    null,
-    ...overview[0],
-  ];
-  data.serializedValues[9] = [
-    ...data.serializedValues[9],
-    null,
-    ...overview[1],
-  ];
-  data.serializedValues[10] = [
-    ...data.serializedValues[10],
-    null,
-    ...overview[2],
-  ];
-  data.serializedValues[11] = [
-    ...data.serializedValues[11],
-    null,
-    ...overview[3],
-  ];
-  data.serializedValues[12] = [
-    ...data.serializedValues[12],
-    null,
-    ...overview[4],
-  ];
-  data.serializedValues[13] = [
-    ...data.serializedValues[13],
-    null,
-    ...overview[5],
-  ];
-  data.serializedValues[14] = [
-    ...data.serializedValues[14],
-    null,
-    null,
-    ...overview[6],
-  ];
-  data.serializedValues[15] = [
-    ...data.serializedValues[15],
-    null,
-    null,
-    ...overview[7],
-  ];
 
   return data;
 };

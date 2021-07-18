@@ -1,32 +1,4 @@
-import {
-  balanceSheet,
-  cashFlowStatement,
-  getDatesFromStatement,
-  getStatements,
-  incomeStatement,
-} from "../../financialStatements";
-
-const getFinancialStatementsData = ({
-  incomeStatements,
-  balanceSheets,
-  cashFlowStatements,
-}) => {
-  let serializedValues = [];
-
-  const dates = getDatesFromStatement(incomeStatements);
-
-  serializedValues = [
-    dates,
-    ["Income Statement"],
-    ...getStatements(incomeStatements, incomeStatement),
-    [""],
-    ["Balance Sheet"],
-    ...getStatements(balanceSheets, balanceSheet),
-    [""],
-    ["Cash Flow Statement"],
-    ...getStatements(cashFlowStatements, cashFlowStatement),
-  ];
-
+const getFinancialStatementsData = () => {
   return {
     name: "Financial Statements",
     freeze: "B2",
@@ -8953,7 +8925,7 @@ const getFinancialStatementsData = ({
     },
     validations: [],
     autofilter: {},
-    serializedValues,
+    serializedValues: [[`=FIN("financialStatements")`]],
   };
 };
 

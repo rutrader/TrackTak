@@ -127,13 +127,14 @@ export const getStatements = (statements, statementKeys) => {
   return values;
 };
 
-export const getDatesFromStatement = (statement) => {
+export const dateFormat = "MMM YY";
+
+export const getDatesFromStatements = (statement) => {
   const dates = Object.keys(statement.yearly).map((date) =>
-    dayjs(date).format("MMM YY"),
+    dayjs(date).format(dateFormat),
   );
 
   dates.unshift("TTM");
-  dates.unshift(null);
 
   return dates;
 };
