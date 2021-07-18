@@ -1,5 +1,5 @@
 const selectPriceLastClose = (state) => {
-  return state.fundamentals.priceLastClose;
+  return state.stock.priceLastClose;
 };
 
 export default selectPriceLastClose;

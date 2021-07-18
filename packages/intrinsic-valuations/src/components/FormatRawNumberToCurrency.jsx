@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
+import selectValuationCurrencySymbol from "../selectors/stockSelectors/selectValuationCurrencySymbol";
 import FormatRawNumber from "./FormatRawNumber";
 
 const FormatRawNumberToCurrency = ({ value, ...props }) => {

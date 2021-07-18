@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
-import selectIsInUS from "../selectors/fundamentalSelectors/selectIsInUS";
+import selectIsInUS from "../selectors/stockSelectors/selectIsInUS";
 
 const useFinancialStatementColumns = (yearlyStatements, useTTM) => {
   const isInUS = useSelector(selectIsInUS);

@@ -71,12 +71,12 @@ const xtos = async (
   // TEMP
   const newScope = {
     ...scope,
-    name: scope.general.name,
-    description: scope.general.description,
-    currencyCode: scope.general.currencyCode,
+    name: scope.stock.fundamentals.general.name,
+    description: scope.stock.fundamentals.general.description,
+    currencyCode: scope.stock.fundamentals.general.currencyCode,
     industryName: scope.currentIndustry.industryName,
-    code: scope.general.code,
-    exchange: scope.general.exchange,
+    code: scope.stock.fundamentals.general.code,
+    exchange: scope.stock.fundamentals.general.exchange,
     annualAverageCAGRLastFiveYears:
       scope.currentIndustry.annualAverageCAGRLastFiveYears,
     preTaxOperatingMarginUnadjusted:
@@ -86,30 +86,32 @@ const xtos = async (
     costOfCapital: scope.currentIndustry.costOfCapital,
     unleveredBeta: scope.currentIndustry.unleveredBeta,
     equityLeveredBeta: scope.currentIndustry.equityLeveredBeta,
-    revenue: scope.incomeStatements.ttm.revenue,
-    interestExpense: scope.incomeStatements.ttm.interestExpense,
-    operatingIncome: scope.incomeStatements.ttm.operatingIncome,
-    investedCapital: scope.balanceSheets.ttm.investedCapital,
-    bookValueOfDebt: scope.balanceSheets.ttm.bookValueOfDebt,
-    bookValueOfEquity: scope.balanceSheets.ttm.bookValueOfEquity,
+    revenue: scope.stock.fundamentals.incomeStatements.ttm.revenue,
+    interestExpense:
+      scope.stock.fundamentals.incomeStatements.ttm.interestExpense,
+    operatingIncome:
+      scope.stock.fundamentals.incomeStatements.ttm.operatingIncome,
+    investedCapital: scope.stock.fundamentals.balanceSheets.ttm.investedCapital,
+    bookValueOfDebt: scope.stock.fundamentals.balanceSheets.ttm.bookValueOfDebt,
+    bookValueOfEquity:
+      scope.stock.fundamentals.balanceSheets.ttm.bookValueOfEquity,
     cashAndShortTermInvestments:
-      scope.balanceSheets.ttm.cashAndShortTermInvestments,
-    minorityInterest: scope.balanceSheets.ttm.minorityInterest,
-    capitalLeaseObligations: scope.balanceSheets.ttm.capitalLeaseObligations,
+      scope.stock.fundamentals.balanceSheets.ttm.cashAndShortTermInvestments,
+    minorityInterest:
+      scope.stock.fundamentals.balanceSheets.ttm.minorityInterest,
+    capitalLeaseObligations:
+      scope.stock.fundamentals.balanceSheets.ttm.capitalLeaseObligations,
     standardDeviationInStockPrices:
       scope.currentIndustry.standardDeviationInStockPrices,
     equityRiskPremium: scope.currentEquityRiskPremium.equityRiskPremium,
     marginalTaxRate: scope.currentEquityRiskPremium.marginalTaxRate,
     adjDefaultSpread: scope.currentEquityRiskPremium.adjDefaultSpread,
     matureMarketEquityRiskPremium,
-    marketCapitalization: scope.highlights.marketCapitalization,
+    marketCapitalization:
+      scope.stock.fundamentals.highlights.marketCapitalization,
   };
 
-  delete newScope.general;
-  delete newScope.highlights;
-  delete newScope.incomeStatements;
-  delete newScope.balanceSheets;
-  delete newScope.cashFlowStatements;
+  delete newScope.stock.fundamentals;
   delete newScope.currentIndustry;
   delete newScope.currentEquityRiskPremium;
 

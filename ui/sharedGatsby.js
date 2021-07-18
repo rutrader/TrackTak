@@ -12,7 +12,7 @@ import {
   setFundamentals,
   setLastPriceClose,
   setTenYearGovernmentBondLastClose,
-} from "../packages/intrinsic-valuations/src/redux/actions/fundamentalsActions";
+} from "../packages/intrinsic-valuations/src/redux/actions/stockActions";
 import FundamentalsSpinner from "./src/components/FundamentalsSpinner";
 import convertFundamentals from "../packages/intrinsic-valuations/src/shared/convertFundamentals";
 import { CssBaseline } from "@material-ui/core";
@@ -28,7 +28,7 @@ export const wrapRootElement = ({ element }) => {
     <TracktakProvider store={store} theme={theme}>
       <CssBaseline />
       <ProvideAuth>
-        <FundamentalsSpinner />
+        {/* <FundamentalsSpinner /> */}
         {element}
         <TTCookieBanner />
       </ProvideAuth>
@@ -49,12 +49,10 @@ export const wrapPageElement = ({ element, props: { data } }) => {
     const parsedFinancialData = JSON.parse(fundamentalsData.internal.content);
     const parsedExchangeRates = exchangeRates
       ? JSON.parse(exchangeRates.internal.content)
-      : null;
+      : undefined;
 
     dispatch(setFundamentals(convertFundamentals(parsedFinancialData)));
-    if (parsedExchangeRates) {
-      dispatch(setExchangeRates(parsedExchangeRates));
-    }
+    dispatch(setExchangeRates(parsedExchangeRates));
     dispatch(setLastPriceClose(price));
     dispatch(setTenYearGovernmentBondLastClose(tenYearGovernmentBondYield));
 

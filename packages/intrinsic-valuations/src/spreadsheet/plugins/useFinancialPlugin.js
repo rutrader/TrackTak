@@ -3,6 +3,7 @@ import {
   InvalidArgumentsError,
   SimpleRangeValue,
   ArraySize,
+  HyperFormula,
 } from "hyperformula";
 import matureMarketEquityRiskPremium from "../../shared/matureMarketEquityRiskPremium";
 import dayjs from "dayjs";
@@ -15,32 +16,43 @@ import {
   getStatements,
   incomeStatement,
 } from "../templates/financialStatements";
+import { useSelector } from "react-redux";
+import selectCashFlowStatements from "../../selectors/stockSelectors/selectCashFlowStatements";
+import selectIncomeStatements from "../../selectors/stockSelectors/selectIncomeStatements";
+import selectBalanceSheets from "../../selectors/stockSelectors/selectBalanceSheets";
+import selectCurrentEquityRiskPremium from "../../selectors/stockSelectors/selectCurrentEquityRiskPremium";
+import selectPrice from "../../selectors/stockSelectors/selectPrice";
+import selectRiskFreeRate from "../../selectors/stockSelectors/selectRiskFreeRate";
+import selectSharesOutstanding from "../../selectors/stockSelectors/selectSharesOutstanding";
+import selectThreeAverageYearsEffectiveTaxRate from "../../selectors/stockSelectors/selectThreeAverageYearsEffectiveTaxRate";
+import selectCurrentIndustry from "../../selectors/stockSelectors/selectCurrentIndustry";
+import selectEstimatedCostOfDebt from "../../selectors/stockSelectors/selectEstimatedCostOfDebt";
+import selectGeneral from "../../selectors/stockSelectors/selectGeneral";
+import selectHighlights from "../../selectors/stockSelectors/selectHighlights";
+import selectExchangeRates from "../../selectors/stockSelectors/selectExchangeRates";
+import selectIsStockLoaded from "../../selectors/stockSelectors/selectisStockLoaded";
+import { useEffect } from "react";
 
-export const makeFinancialPlugin = (data) => {
-  const {
-    incomeStatements = {
-      ttm: {},
-      yearly: {},
-    },
-    balanceSheets = {
-      ttm: {},
-      yearly: {},
-    },
-    cashFlowStatements = {
-      ttm: {},
-      yearly: {},
-    },
-    currentEquityRiskPremium,
-    currentIndustry,
-    general,
-    highlights,
-    exchangeRates,
-    ...financialData
-  } = data;
+export const useFinancialPlugin = () => {
+  const isStockLoaded = useSelector(selectIsStockLoaded);
+  const incomeStatements = useSelector(selectIncomeStatements);
+  const balanceSheets = useSelector(selectBalanceSheets);
+  const cashFlowStatements = useSelector(selectCashFlowStatements);
+  const currentEquityRiskPremium = useSelector(selectCurrentEquityRiskPremium);
+  const price = useSelector(selectPrice);
+  const riskFreeRate = useSelector(selectRiskFreeRate);
+  const sharesOutstanding = useSelector(selectSharesOutstanding);
+  const pastThreeYearsAverageEffectiveTaxRate = useSelector(
+    selectThreeAverageYearsEffectiveTaxRate,
+  );
+  const currentIndustry = useSelector(selectCurrentIndustry);
+  const estimatedCostOfDebt = useSelector(selectEstimatedCostOfDebt);
+  const general = useSelector(selectGeneral);
+  const highlights = useSelector(selectHighlights);
+  const exchangeRates = useSelector(selectExchangeRates);
 
-  const lastExchangeRate = exchangeRates
-    ? Object.values(exchangeRates)[0].close
-    : 1;
+  const lastExchangeRate =
+    exchangeRates && exchangeRates[0] ? exchangeRates[0].close : 1;
 
   const dates = getDatesFromStatements(incomeStatements);
 
@@ -57,7 +69,6 @@ export const makeFinancialPlugin = (data) => {
   ];
 
   const ttmData = {
-    ...financialData,
     ...incomeStatements.ttm,
     ...balanceSheets.ttm,
     ...cashFlowStatements.ttm,
@@ -65,6 +76,11 @@ export const makeFinancialPlugin = (data) => {
     ...currentIndustry,
     ...general,
     ...highlights,
+    riskFreeRate,
+    estimatedCostOfDebt,
+    pastThreeYearsAverageEffectiveTaxRate,
+    price,
+    sharesOutstanding,
     lastExchangeRate,
     matureMarketEquityRiskPremium,
   };
@@ -82,7 +98,7 @@ export const makeFinancialPlugin = (data) => {
   };
 
   const getTypeOfStatementToUse = (attribute) => {
-    if (incomeStatements.ttm[attribute]) {
+    if (incomeStatement.ttm[attribute]) {
       return "incomeStatements";
     }
 
@@ -93,8 +109,6 @@ export const makeFinancialPlugin = (data) => {
     if (cashFlowStatements.ttm[attribute]) {
       return "cashFlowStatements";
     }
-
-    return null;
   };
 
   const getYearlyValues = (attribute, statementType, startDate, endDate) => {
@@ -122,6 +136,10 @@ export const makeFinancialPlugin = (data) => {
         return new InvalidArgumentsError(1);
       }
 
+      if (!isStockLoaded) {
+        return "Loading...";
+      }
+
       const attribute = args[0].value;
 
       // TODO: Add proper error checking here later
@@ -147,25 +165,30 @@ export const makeFinancialPlugin = (data) => {
           return ttmData[attribute];
         }
 
-        return data[statementType].yearly[startDate][attribute] || "";
+        //  return data[statementType].yearly[startDate][attribute] || "";
       }
 
       const endDate = args[2].value;
 
       if (args.length === 3) {
+        debugger;
         return SimpleRangeValue.onlyValues([
           getYearlyValues(attribute, statementType, startDate, endDate),
         ]);
       }
     }
     financialSize({ args }) {
+      if (!isStockLoaded) {
+        return ArraySize.scalar();
+      }
+
       const attribute = args[0].value;
       const statementType = getTypeOfStatementToUse(attribute);
       const startDate = args[1] ? args[1].value : null;
       const endDate = args[2] ? args[2].value : null;
 
       if (attribute === "financialStatements") {
-        return new ArraySize(statements[0].length, statements.length);
+        return ArraySize.fromArray(statements);
       }
 
       if (args.length === 3) {
@@ -176,7 +199,7 @@ export const makeFinancialPlugin = (data) => {
           endDate,
         );
 
-        return new ArraySize(yearlyValues.length, 1);
+        return ArraySize.fromArray(yearlyValues);
       }
 
       return ArraySize.scalar();
@@ -193,6 +216,14 @@ export const makeFinancialPlugin = (data) => {
   FinancialPlugin.aliases = {
     FIN: "FINANCIAL",
   };
+
+  useEffect(() => {
+    HyperFormula.registerFunctionPlugin(FinancialPlugin, finTranslations);
+
+    return () => {
+      HyperFormula.unregisterFunctionPlugin(FinancialPlugin);
+    };
+  }, [FinancialPlugin]);
 
   return FinancialPlugin;
 };

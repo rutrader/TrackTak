@@ -4,19 +4,13 @@ import {
   setFundamentals,
   setExchangeRates,
   setTenYearGovernmentBondLastClose,
-} from "../actions/fundamentalsActions";
-import { getFundamentalsThunk } from "../thunks/fundamentalsThunks";
+} from "../actions/stockActions";
 
 const initialState = {
   governmentBondTenYearYield: null,
   priceLastClose: null,
-  general: null,
-  highlights: null,
-  sharesStats: null,
+  fundamentals: null,
   exchangeRates: null,
-  balanceSheet: null,
-  incomeStatement: null,
-  cashFlowStatement: null,
   isLoaded: null,
 };
 
@@ -30,12 +24,14 @@ const setFundamentalsReducer = (state, action) => {
     cashFlowStatement,
   } = action.payload;
 
-  state.general = general;
-  state.highlights = highlights;
-  state.sharesStats = sharesStats;
-  state.incomeStatement = incomeStatement;
-  state.balanceSheet = balanceSheet;
-  state.cashFlowStatement = cashFlowStatement;
+  state.fundamentals = {
+    general,
+    highlights,
+    sharesStats,
+    incomeStatement,
+    balanceSheet,
+    cashFlowStatement,
+  };
 };
 
 const setLastPriceCloseReducer = (state, action) => {
@@ -52,16 +48,10 @@ const setGovernmentBondTenYearLastCloseReducer = (
 };
 
 const setExchangeRateReducer = (state, { payload = {} }) => {
-  const values = Object.values(payload);
-
-  if (values.length) {
-    state.exchangeRates = payload;
-  } else {
-    state.exchangeRates = null;
-  }
+  state.exchangeRates = Object.values(payload);
 };
 
-export const fundamentalsReducer = createReducer(initialState, (builder) => {
+export const stockReducer = createReducer(initialState, (builder) => {
   builder.addCase(setLastPriceClose, setLastPriceCloseReducer);
   builder.addCase(setFundamentals, setFundamentalsReducer);
   builder.addCase(
@@ -69,13 +59,17 @@ export const fundamentalsReducer = createReducer(initialState, (builder) => {
     setGovernmentBondTenYearLastCloseReducer,
   );
   builder.addCase(setExchangeRates, setExchangeRateReducer);
-  builder.addCase(getFundamentalsThunk.pending, (state) => {
-    state.isLoaded = false;
-  });
-  builder.addCase(getFundamentalsThunk.fulfilled, (state) => {
-    state.isLoaded = true;
-  });
-  builder.addCase(getFundamentalsThunk.rejected, (state) => {
-    state.isLoaded = false;
-  });
+  builder.addMatcher(
+    () => true,
+    (state) => {
+      if (
+        state.fundamentals !== null &&
+        state.governmentBondTenYearYield !== null &&
+        state.exchangeRates !== null &&
+        state.priceLastClose !== null
+      ) {
+        state.isLoaded = true;
+      }
+    },
+  );
 });

@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
+import selectGeneral from "../selectors/stockSelectors/selectGeneral";
 import useVirtualExchange from "./useVirtualExchange";
 
 const useTicker = () => {

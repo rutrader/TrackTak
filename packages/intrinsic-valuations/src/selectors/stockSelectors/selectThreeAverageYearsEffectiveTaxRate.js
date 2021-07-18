@@ -4,7 +4,7 @@ import selectIsInUS from "./selectIsInUS";
 import {
   selectSortedQuarterlyIncomeStatements,
   selectSortedYearlyIncomeStatements,
-} from "./selectYearlyIncomeStatements";
+} from "./selectIncomeStatements";
 
 const pastPeriodsToGet = 3;
 const quarters = 4;

@@ -1,4 +1,4 @@
 const selectGovernmentBondTenYearYield = (state) =>
-  state.fundamentals.governmentBondTenYearYield;
+  state.stock.governmentBondTenYearYield;
 
 export default selectGovernmentBondTenYearYield;

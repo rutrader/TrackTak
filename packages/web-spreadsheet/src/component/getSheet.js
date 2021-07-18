@@ -208,6 +208,10 @@ export const getSheet = (
       cellAddress,
     };
 
+    if (getOptions().debugMode) {
+      console.log("datas: ", getData().getData());
+    }
+
     eventEmitter.emit(spreadsheetEvents.sheet.cellEdited, param);
   };
 

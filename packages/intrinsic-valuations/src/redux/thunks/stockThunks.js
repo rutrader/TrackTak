@@ -11,7 +11,7 @@ import {
   setFundamentals,
   setLastPriceClose,
   setTenYearGovernmentBondLastClose,
-} from "../actions/fundamentalsActions";
+} from "../actions/stockActions";
 import convertSubCurrencyToCurrency from "../../shared/convertSubCurrencyToCurrency";
 import convertFundamentals from "../../shared/convertFundamentals";
 import getMinimumHistoricalDateFromFinancialStatements from "../../shared/getMinimumHistoricalDateFromFinancialStatements";

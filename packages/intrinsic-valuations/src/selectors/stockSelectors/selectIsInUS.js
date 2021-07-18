@@ -1,5 +1,5 @@
 const selectIsInUS = (state) => {
-  return state.fundamentals.general?.countryISO === "US";
+  return state.stock.fundamentals?.general?.countryISO === "US";
 };
 
 export default selectIsInUS;

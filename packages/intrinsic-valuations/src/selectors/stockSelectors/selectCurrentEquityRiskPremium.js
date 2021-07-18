@@ -8,6 +8,8 @@ const convertToPercent = (value) => parseFloat(value) / 100;
 const selectCurrentEquityRiskPremium = createSelector(
   selectGeneral,
   (general) => {
+    if (!general) return null;
+
     const {
       corporateTaxRate: marginalTaxRate,
       countryRiskPremium,

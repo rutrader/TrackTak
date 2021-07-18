@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
-import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
-import selectIsInUS from "../selectors/fundamentalSelectors/selectIsInUS";
+import selectGeneral from "../selectors/stockSelectors/selectGeneral";
+import selectIsInUS from "../selectors/stockSelectors/selectIsInUS";
 
 const useVirtualExchange = () => {
   const isInUS = useSelector(selectIsInUS);

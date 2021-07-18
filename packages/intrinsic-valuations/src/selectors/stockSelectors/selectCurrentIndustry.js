@@ -9,7 +9,11 @@ import { isNil } from "lodash-es";
 const selectCurrentIndustry = createSelector(
   selectGeneral,
   selectIsInUS,
-  ({ gicSubIndustry, industry }, isInUS) => {
+  (general, isInUS) => {
+    if (!general || !isInUS) return null;
+
+    const { gicSubIndustry, industry } = general;
+
     let mappedCurrentIndustry;
 
     if (!isNil(gicSubIndustry)) {

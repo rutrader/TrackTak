@@ -8,10 +8,17 @@ const selectEstimatedCostOfDebt = createSelector(
   selectInterestSpread,
   selectCurrentEquityRiskPremium,
   (riskFreeRate, interestSpread, currentEquityRiskPremium) => {
+    if (
+      riskFreeRate === null ||
+      interestSpread === null ||
+      !currentEquityRiskPremium
+    )
+      return null;
+
     const value =
       riskFreeRate +
-      interestSpread?.spread +
-      currentEquityRiskPremium?.adjDefaultSpread;
+      interestSpread.spread +
+      currentEquityRiskPremium.adjDefaultSpread;
 
     return value;
   },

@@ -2,41 +2,14 @@ import React, { useRef, useState, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { Box, useMediaQuery, useTheme } from "@material-ui/core";
-import selectRiskFreeRate from "../selectors/fundamentalSelectors/selectRiskFreeRate";
-import selectRecentIncomeStatement from "../selectors/fundamentalSelectors/selectRecentIncomeStatement";
-import selectRecentBalanceSheet from "../selectors/fundamentalSelectors/selectRecentBalanceSheet";
-import selectRecentCashFlowStatement from "../selectors/fundamentalSelectors/selectRecentCashFlowStatement";
-import selectPrice from "../selectors/fundamentalSelectors/selectPrice";
-import selectCurrentEquityRiskPremium from "../selectors/fundamentalSelectors/selectCurrentEquityRiskPremium";
-import selectSharesOutstanding from "../selectors/fundamentalSelectors/selectSharesOutstanding";
 import { useLocation } from "@reach/router";
-import selectThreeAverageYearsEffectiveTaxRate from "../selectors/fundamentalSelectors/selectThreeAverageYearsEffectiveTaxRate";
-import selectValuationCurrencySymbol from "../selectors/fundamentalSelectors/selectValuationCurrencySymbol";
+import selectValuationCurrencySymbol from "../selectors/stockSelectors/selectValuationCurrencySymbol";
 import selectScope from "../selectors/dcfSelectors/selectScope";
-import {
-  setScope,
-  setSheetsDatas,
-  setSheetsSerializedValues,
-  setSheetsValues,
-} from "../redux/actions/dcfActions";
-import { isEmpty, isNil } from "lodash-es";
 import getSpreadsheet, {
   spreadsheetEvents,
 } from "../../../web-spreadsheet/src";
-import selectCurrentIndustry from "../selectors/fundamentalSelectors/selectCurrentIndustry";
 import { currencySymbolMap } from "currency-symbol-map";
-import selectEstimatedCostOfDebt from "../selectors/fundamentalSelectors/selectEstimatedCostOfDebt";
-import {
-  finTranslations,
-  makeFinancialPlugin,
-} from "./plugins/FinancialPlugin";
-import HyperFormula from "hyperformula";
-import selectYearlyIncomeStatements from "../selectors/fundamentalSelectors/selectYearlyIncomeStatements";
-import selectYearlyBalanceSheets from "../selectors/fundamentalSelectors/selectYearlyBalanceSheets";
-import selectYearlyCashFlowStatements from "../selectors/fundamentalSelectors/selectYearlyCashFlowStatements";
-import selectGeneral from "../selectors/fundamentalSelectors/selectGeneral";
-import selectHighlights from "../selectors/fundamentalSelectors/selectHighlights";
-import selectExchangeRates from "../selectors/fundamentalSelectors/selectExchangeRates";
+import selectGeneral from "../selectors/stockSelectors/selectGeneral";
 import SensitivityAnalysis from "../components/SensitivityAnalysis";
 import Section from "../components/Section";
 import getFormats from "./getFormats";
@@ -45,10 +18,15 @@ import SaveStatus from "./SaveStatus";
 import {
   getFundamentalsThunk,
   getLastPriceCloseThunk,
-} from "../redux/thunks/fundamentalsThunks";
+} from "../redux/thunks/stockThunks";
 import freeCashFlowToFirmData, {
   freeCashFlowToFirmVariablesData,
 } from "./templates/freeCashFlowFirmSimple/data";
+import {
+  finTranslations,
+  useFinancialPlugin,
+} from "./plugins/useFinancialPlugin";
+import { HyperFormula } from "hyperformula";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
@@ -68,29 +46,13 @@ const Spreadsheet = ({
   const currencySymbol = useSelector(selectValuationCurrencySymbol);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const dispatch = useDispatch();
-  const ttmIncomeStatement = useSelector(selectRecentIncomeStatement);
-  const ttmBalanceSheet = useSelector(selectRecentBalanceSheet);
-  const ttmCashFlowStatement = useSelector(selectRecentCashFlowStatement);
-  const yearlyIncomeStatements = useSelector(selectYearlyIncomeStatements);
-  const yearlyBalanceSheets = useSelector(selectYearlyBalanceSheets);
-  const yearlyCashFlowStatements = useSelector(selectYearlyCashFlowStatements);
-  const currentEquityRiskPremium = useSelector(selectCurrentEquityRiskPremium);
-  const price = useSelector(selectPrice);
-  const riskFreeRate = useSelector(selectRiskFreeRate);
-  const sharesOutstanding = useSelector(selectSharesOutstanding);
-  const pastThreeYearsAverageEffectiveTaxRate = useSelector(
-    selectThreeAverageYearsEffectiveTaxRate,
-  );
   const isFocusedOnValueDrivingInputs = location.hash?.includes(
     requiredInputsId,
   );
-  const currentIndustry = useSelector(selectCurrentIndustry);
-  const estimatedCostOfDebt = useSelector(selectEstimatedCostOfDebt);
   const general = useSelector(selectGeneral);
-  const highlights = useSelector(selectHighlights);
-  const exchangeRates = useSelector(selectExchangeRates);
   const scope = useSelector(selectScope);
   const valuationCurrencySymbol = useSelector(selectValuationCurrencySymbol);
+  const FinancialPlugin = useFinancialPlugin();
 
   useEffect(() => {
     dispatch(
@@ -105,42 +67,42 @@ const Spreadsheet = ({
     );
   }, [dispatch, ticker]);
 
-  useEffect(() => {
-    if (
-      spreadsheet &&
-      !isEmpty(spreadsheetToRestore?.sheetData.data?.datas ?? true)
-    ) {
-      const dcfValuationData = spreadsheetToRestore.sheetData.data.datas[0];
-      const financialStatements = spreadsheetToRestore.sheetData.data.datas[1];
-      const costOfCapital = spreadsheetToRestore.sheetData.data.datas[2];
-      const employeeOptions = spreadsheetToRestore.sheetData.data.datas[3];
-      const syntheticCreditRating =
-        spreadsheetToRestore.sheetData.data.datas[4];
-      const industryAveragesUS = spreadsheetToRestore.sheetData.data.datas[5];
-      const industryAveragesGlobal =
-        spreadsheetToRestore.sheetData.data.datas[6];
+  // useEffect(() => {
+  //   if (
+  //     spreadsheet &&
+  //     !isEmpty(spreadsheetToRestore?.sheetData.data?.datas ?? true)
+  //   ) {
+  //     const dcfValuationData = spreadsheetToRestore.sheetData.data.datas[0];
+  //     const financialStatements = spreadsheetToRestore.sheetData.data.datas[1];
+  //     const costOfCapital = spreadsheetToRestore.sheetData.data.datas[2];
+  //     const employeeOptions = spreadsheetToRestore.sheetData.data.datas[3];
+  //     const syntheticCreditRating =
+  //       spreadsheetToRestore.sheetData.data.datas[4];
+  //     const industryAveragesUS = spreadsheetToRestore.sheetData.data.datas[5];
+  //     const industryAveragesGlobal =
+  //       spreadsheetToRestore.sheetData.data.datas[6];
 
-      spreadsheet.setDatasheets([
-        dcfValuationData,
-        financialStatements,
-        costOfCapital,
-        employeeOptions,
-        syntheticCreditRating,
-        industryAveragesUS,
-        industryAveragesGlobal,
-      ]);
+  //     spreadsheet.setDatasheets([
+  //       dcfValuationData,
+  //       financialStatements,
+  //       costOfCapital,
+  //       employeeOptions,
+  //       syntheticCreditRating,
+  //       industryAveragesUS,
+  //       industryAveragesGlobal,
+  //     ]);
 
-      const requiredInputs =
-        spreadsheetToRestore.sheetData.data.variablesDatas[0];
-      const optionalInputs =
-        spreadsheetToRestore.sheetData.data.variablesDatas[1];
+  //     const requiredInputs =
+  //       spreadsheetToRestore.sheetData.data.variablesDatas[0];
+  //     const optionalInputs =
+  //       spreadsheetToRestore.sheetData.data.variablesDatas[1];
 
-      spreadsheet.variablesSpreadsheet.setVariableDatasheets([
-        requiredInputs,
-        optionalInputs,
-      ]);
-    }
-  }, [spreadsheetToRestore, spreadsheet]);
+  //     spreadsheet.variablesSpreadsheet.setVariableDatasheets([
+  //       requiredInputs,
+  //       optionalInputs,
+  //     ]);
+  //   }
+  // }, [spreadsheetToRestore, spreadsheet]);
 
   // Move to spreadsheet later
   useEffect(() => {
@@ -170,140 +132,70 @@ const Spreadsheet = ({
         );
       }
     };
-  }, [
-    general.code,
-    general.exchange,
-    scope,
-    spreadsheet,
-    valuationCurrencySymbol,
-  ]);
+  }, [general, scope, spreadsheet, valuationCurrencySymbol]);
 
   useEffect(() => {
     let spreadsheet;
-    let FinancialPlugin;
 
-    // Temporary
-    if (!isNil(riskFreeRate) && !isNil(price) && !isNil(ttmIncomeStatement)) {
-      const dcfValuationElement = document.getElementById(`${dcfValuationId}`);
+    const dcfValuationElement = document.getElementById(`${dcfValuationId}`);
 
-      const width = () => {
-        if (containerRef?.current) {
-          const containerStyle = getComputedStyle(containerRef.current);
-          const paddingX =
-            parseFloat(containerStyle.paddingLeft) +
-            parseFloat(containerStyle.paddingRight);
-          const borderX =
-            parseFloat(containerStyle.borderLeftWidth) +
-            parseFloat(containerStyle.borderRightWidth);
-          const elementWidth =
-            containerRef.current.offsetWidth - paddingX - borderX;
+    const width = () => {
+      if (containerRef?.current) {
+        const containerStyle = getComputedStyle(containerRef.current);
+        const paddingX =
+          parseFloat(containerStyle.paddingLeft) +
+          parseFloat(containerStyle.paddingRight);
+        const borderX =
+          parseFloat(containerStyle.borderLeftWidth) +
+          parseFloat(containerStyle.borderRightWidth);
+        const elementWidth =
+          containerRef.current.offsetWidth - paddingX - borderX;
 
-          return elementWidth;
-        }
-      };
-      const debugMode = process.env.NODE_ENV === "development";
+        return elementWidth;
+      }
+    };
+    const debugMode = process.env.NODE_ENV === "development";
 
-      const options = {
-        debugMode,
-        col: {
-          width: defaultColWidth,
-        },
-        formats: getFormats(currencySymbol),
-        view: {
-          height: () => 1200,
-          width,
-        },
-      };
+    const options = {
+      debugMode,
+      col: {
+        width: defaultColWidth,
+      },
+      formats: getFormats(currencySymbol),
+      view: {
+        height: () => 1200,
+        width,
+      },
+    };
 
-      const variablesSpreadsheetOptions = {
-        debugMode,
-        formats: getFormats(currencySymbol),
-        view: {
-          width,
-        },
-      };
+    const variablesSpreadsheetOptions = {
+      debugMode,
+      formats: getFormats(currencySymbol),
+      view: {
+        width,
+      },
+    };
 
-      FinancialPlugin = makeFinancialPlugin({
-        incomeStatements: {
-          ttm: ttmIncomeStatement,
-          yearly: yearlyIncomeStatements,
-        },
-        balanceSheets: {
-          ttm: ttmBalanceSheet,
-          yearly: yearlyBalanceSheets,
-        },
-        cashFlowStatements: {
-          ttm: ttmCashFlowStatement,
-          yearly: yearlyCashFlowStatements,
-        },
-        exchangeRates,
-        general,
-        highlights,
-        riskFreeRate,
-        currentEquityRiskPremium,
-        currentIndustry,
-        estimatedCostOfDebt,
-        pastThreeYearsAverageEffectiveTaxRate,
-        price,
-        sharesOutstanding,
-      });
+    spreadsheet = getSpreadsheet(
+      dcfValuationElement,
+      options,
+      variablesSpreadsheetOptions,
+      {
+        currencySymbol: Object.values(currencySymbolMap),
+      },
+    );
 
-      HyperFormula.registerFunctionPlugin(FinancialPlugin, finTranslations);
+    spreadsheet.variablesSpreadsheet.sheet.el.el.id = requiredInputsId;
 
-      spreadsheet = getSpreadsheet(
-        dcfValuationElement,
-        options,
-        variablesSpreadsheetOptions,
-        {
-          currencySymbol: Object.values(currencySymbolMap),
-        },
-      );
-
-      spreadsheet.variablesSpreadsheet.sheet.el.el.id = requiredInputsId;
-
-      setSpreadsheet(spreadsheet);
-    }
+    setSpreadsheet(spreadsheet);
 
     return () => {
       spreadsheet?.destroy();
-      HyperFormula.unregisterFunctionPlugin(FinancialPlugin);
     };
-  }, [
-    currencySymbol,
-    currentEquityRiskPremium,
-    currentIndustry,
-    estimatedCostOfDebt,
-    exchangeRates,
-    general,
-    highlights,
-    pastThreeYearsAverageEffectiveTaxRate,
-    price,
-    riskFreeRate,
-    sharesOutstanding,
-    ttmBalanceSheet,
-    ttmCashFlowStatement,
-    ttmIncomeStatement,
-    yearlyBalanceSheets,
-    yearlyCashFlowStatements,
-    yearlyIncomeStatements,
-  ]);
+  }, [currencySymbol]);
 
   useEffect(() => {
-    const cellEditedCallback = () => {
-      // We will use this later to allow users to save their
-      // sheets. For now it's to make it easier for us to create
-      // our templates.
-      if (process.env.NODE_ENV === "development") {
-        console.log("datas: ", spreadsheet.getDatas());
-      }
-    };
-
     if (spreadsheet) {
-      spreadsheet.variablesSpreadsheet.eventEmitter.on(
-        spreadsheetEvents.sheet.cellEdited,
-        cellEditedCallback,
-      );
-
       spreadsheet.variablesSpreadsheet.eventEmitter.on(
         spreadsheetEvents.save.persistDataChange,
         onSave,
@@ -312,11 +204,6 @@ const Spreadsheet = ({
 
     return () => {
       if (spreadsheet) {
-        spreadsheet.variablesSpreadsheet.eventEmitter.off(
-          spreadsheetEvents.sheet.cellEdited,
-          cellEditedCallback,
-        );
-
         spreadsheet.variablesSpreadsheet.eventEmitter.off(
           spreadsheetEvents.save.persistDataChange,
           onSave,
