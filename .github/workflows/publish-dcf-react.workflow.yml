@@ -12,7 +12,7 @@ jobs:
       run:
         working-directory: ./packages/intrinsic-valuations
     env:
-      NODE_AUTH_TOKEN: ${{ secrets.DCF_REACT_ACCESS_TOKEN }}
+      NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
