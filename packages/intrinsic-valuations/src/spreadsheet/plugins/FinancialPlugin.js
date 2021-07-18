@@ -161,8 +161,8 @@ export const makeFinancialPlugin = (data) => {
     financialSize({ args }) {
       const attribute = args[0].value;
       const statementType = getTypeOfStatementToUse(attribute);
-      const startDate = args[1]?.value;
-      const endDate = args[2]?.value;
+      const startDate = args[1] ? args[1].value : null;
+      const endDate = args[2] ? args[2].value : null;
 
       if (attribute === "financialStatements") {
         return new ArraySize(statements[0].length, statements.length);
