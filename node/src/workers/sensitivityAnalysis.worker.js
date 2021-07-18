@@ -4,16 +4,9 @@ import { parentPort } from "worker_threads";
 import nodeEndpoint from "comlink/dist/umd/node-adapter";
 import { expose } from "comlink";
 import calculateDCFModel from "../dcfModel/calculateDCFModel";
-import {
-  finTranslations,
-  makeFinancialPlugin,
-} from "../../../packages/intrinsic-valuations/src/spreadsheet/plugins/FinancialPlugin";
 
 const getHyperformulaInstance = (existingScope, sheetsSerializedValues) => {
-  HyperFormula.registerFunctionPlugin(
-    makeFinancialPlugin(existingScope),
-    finTranslations,
-  );
+  //  HyperFormula.registerFunctionPlugin(FinancialPlugin, finTranslations);
 
   const hyperformula = HyperFormula.buildFromSheets(sheetsSerializedValues, {
     licenseKey: "05054-b528f-a10c4-53f2a-04b57",

@@ -7,7 +7,8 @@ const convertCurrency = (exchangeRates) => (
   datePeriodsToConvertAt,
   valueToConvert,
 ) => {
-  if (!isFinite(valueToConvert) || !exchangeRates) return valueToConvert;
+  if (!isFinite(valueToConvert) || !exchangeRates?.length)
+    return valueToConvert;
 
   // TODO: Make this exact day later
   const sumOfExchangeRateCloses = datePeriodsToConvertAt.reduce(

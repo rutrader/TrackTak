@@ -47,7 +47,7 @@ export const wrapPageElement = ({ element, props: { data } }) => {
     const { dispatch } = store;
 
     const parsedFinancialData = JSON.parse(fundamentalsData.internal.content);
-    const parsedExchangeRates = exchangeRates
+    const parsedExchangeRates = exchangeRates?.length
       ? JSON.parse(exchangeRates.internal.content)
       : undefined;
 

@@ -374,9 +374,6 @@ export const getSheet = (
       addDataProxy("sheet1");
     }
 
-    // Some sheets have to be added before others for hyperformula
-    // if they are depended on. Can also use rebuildAndRecalculate()
-    // but that has a performance hit.
     dataSheets.forEach((dataSheet) => {
       let data;
 

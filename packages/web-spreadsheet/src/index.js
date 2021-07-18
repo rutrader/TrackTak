@@ -29,9 +29,9 @@ const getSpreadsheet = (
   hyperformula.addNamedExpression("FALSE", "=FALSE()");
 
   const {
-    sheet,
-    spreadsheetEventEmitter,
+    spreadsheet,
     variablesSpreadsheet,
+    spreadsheetEventEmitter,
     setDatasheets,
     getDatas,
     getData,
@@ -44,6 +44,11 @@ const getSpreadsheet = (
     variablesSpreadsheetOptions,
   );
 
+  const reset = () => {
+    spreadsheet.sheet.sheetReset();
+    variablesSpreadsheet.sheet.sheetReset();
+  };
+
   element.appendChild(rootEl.el);
 
   const destroy = () => {
@@ -51,10 +56,11 @@ const getSpreadsheet = (
   };
 
   return {
-    sheet,
+    spreadsheet,
     variablesSpreadsheet,
     setOptions,
     destroy,
+    reset,
     hyperformula,
     spreadsheetEventEmitter,
     setDatasheets,

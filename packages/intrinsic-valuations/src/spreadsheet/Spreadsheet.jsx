@@ -22,11 +22,7 @@ import {
 import freeCashFlowToFirmData, {
   freeCashFlowToFirmVariablesData,
 } from "./templates/freeCashFlowFirmSimple/data";
-import {
-  finTranslations,
-  useFinancialPlugin,
-} from "./plugins/useFinancialPlugin";
-import { HyperFormula } from "hyperformula";
+import { useFinancialPlugin } from "./plugins/useFinancialPlugin";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
@@ -52,19 +48,22 @@ const Spreadsheet = ({
   const general = useSelector(selectGeneral);
   const scope = useSelector(selectScope);
   const valuationCurrencySymbol = useSelector(selectValuationCurrencySymbol);
-  const FinancialPlugin = useFinancialPlugin();
+
+  useFinancialPlugin(spreadsheet);
 
   useEffect(() => {
-    dispatch(
-      getFundamentalsThunk({
-        ticker,
-      }),
-    );
-    dispatch(
-      getLastPriceCloseThunk({
-        ticker,
-      }),
-    );
+    if (ticker) {
+      dispatch(
+        getFundamentalsThunk({
+          ticker,
+        }),
+      );
+      dispatch(
+        getLastPriceCloseThunk({
+          ticker,
+        }),
+      );
+    }
   }, [dispatch, ticker]);
 
   // useEffect(() => {
@@ -228,7 +227,9 @@ const Spreadsheet = ({
         freeCashFlowToFirmVariablesData,
       );
       spreadsheet.setDatasheets(freeCashFlowToFirmData);
-      spreadsheet.sheet.switchData(spreadsheet.sheet.getDatas()[0]);
+      spreadsheet.spreadsheet.sheet.switchData(
+        spreadsheet.spreadsheet.sheet.getDatas()[0],
+      );
     }
   }, [spreadsheet]);
 
