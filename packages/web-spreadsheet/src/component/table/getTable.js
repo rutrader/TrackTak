@@ -6,6 +6,7 @@ import { h } from "../element";
 import { getFontSizePxByPt } from "../../core/font";
 import numfmt from "numfmt";
 import getDefaultFormatFromText from "../../shared/getDefaultFormatFromText";
+import { isNil } from "lodash-es";
 
 const tableFixedHeaderCleanStyle = { fillStyle: "#f4f5f8" };
 const cellPaddingWidth = 5;
@@ -151,16 +152,18 @@ export const getTable = (
       draw.strokeBorders(style.border, dbox);
     }
 
+    const sheet = getData().getSheetId();
+
     const cellAddress = {
       col: cindex,
       row: rindex,
-      sheet: getData().getSheetId(),
+      sheet,
     };
 
     const previousColCellAddress = {
       col: cindex - 1,
       row: rindex,
-      sheet: getData().getSheetId(),
+      sheet,
     };
 
     draw.rect(dbox, () => {
@@ -168,32 +171,37 @@ export const getTable = (
       const showYOYGrowth = getOptions().showYOYGrowth;
       const formats = getOptions().formats;
 
-      let value = hyperformula.getCellValue(cellAddress);
-
+      let value = "";
       let format = style.format;
 
-      if (showAllFormulas) {
-        value = hyperformula.getCellSerialized(cellAddress);
+      if (!isNil(sheet)) {
+        value = hyperformula.getCellValue(cellAddress);
 
-        if (hyperformula.doesCellHaveFormula(cellAddress)) {
-          format = "text";
+        if (showAllFormulas) {
+          value = hyperformula.getCellSerialized(cellAddress);
+
+          if (hyperformula.doesCellHaveFormula(cellAddress)) {
+            format = "text";
+          }
         }
-      }
 
-      if (
-        showYOYGrowth &&
-        hyperformula.getCellValueType(previousColCellAddress) === "NUMBER" &&
-        hyperformula.getCellValueType(cellAddress) === "NUMBER"
-      ) {
-        const previousValue = hyperformula.getCellValue(previousColCellAddress);
-        let yoyGrowth = 0;
+        if (
+          showYOYGrowth &&
+          hyperformula.getCellValueType(previousColCellAddress) === "NUMBER" &&
+          hyperformula.getCellValueType(cellAddress) === "NUMBER"
+        ) {
+          const previousValue = hyperformula.getCellValue(
+            previousColCellAddress,
+          );
+          let yoyGrowth = 0;
 
-        if (value !== 0) {
-          yoyGrowth = (value - previousValue) / value;
+          if (value !== 0) {
+            yoyGrowth = (value - previousValue) / value;
+          }
+          value = yoyGrowth;
+
+          format = "percent";
         }
-        value = yoyGrowth;
-
-        format = "percent";
       }
 
       if (value?.value) {

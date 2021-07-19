@@ -14,7 +14,6 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SearchTicker from "./SearchTicker";
 import TracktakLogo from "./TracktakLogo";
 import { useAuth } from "../hooks/useAuth";
-import featureToggle from "../shared/featureToggle";
 
 const buttonStyle = {
   textTransform: "none",
@@ -60,10 +59,10 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
   const paddingBottom = `${theme.mixins.toolbar.minHeight + extraPadding}px`;
   const [anchorEl, setAnchorEl] = useState(null);
   const [userMenuAnchorEl, setUserMenuAnchorEl] = useState(null);
-  const { isAuthenticated, getAccessToken, signOut } = useAuth();
+  const { isAuthenticated, accessToken, signOut } = useAuth();
 
   const handleOnSignOut = async () => {
-    if (await getAccessToken()) {
+    if (accessToken) {
       signOut();
       navigate("/");
     }
@@ -144,11 +143,11 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
 
   return (
     <>
-      <Box sx={{ paddingBottom: position === "fixed" ? paddingBottom : 2 }}>
+      <Box sx={{ paddingBottom: position === "fixed" ? paddingBottom : 0 }}>
         <AppBar
           sx={{
             position,
-            py: 1,
+            py: 0.5,
             px: 3,
             background: "#fff",
             boxShadow:
@@ -171,9 +170,18 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
                 minWidth: "130px",
                 width: "100%",
                 marginRight: "auto",
+                display: "flex",
               }}
             >
-              {!hideSearch && <SearchTicker isSmallSearch />}
+              {!hideSearch && (
+                <SearchTicker
+                  isSmallSearch
+                  sx={{
+                    flex: 1,
+                    alignSelf: "center",
+                  }}
+                />
+              )}
             </Box>
             <Hidden mdDown implementation="css">
               <Box sx={{ display: "flex" }}>
@@ -184,9 +192,7 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
                     {...link}
                   />
                 ))}
-                {featureToggle.AUTHENTICATION &&
-                  isAuthenticated &&
-                  renderUserMenu()}
+                {isAuthenticated && renderUserMenu()}
               </Box>
             </Hidden>
             <Hidden mdUp implementation="css">
@@ -215,9 +221,7 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  {featureToggle.AUTHENTICATION &&
-                    isAuthenticated &&
-                    getUserAccountMenuItems()}
+                  {isAuthenticated && getUserAccountMenuItems()}
                   {links.map((link) => (
                     <MenuItem
                       key={link.to}

@@ -1,31 +1,9 @@
 import { HyperFormula } from "hyperformula";
-import { currencySymbolMap } from "currency-symbol-map";
 import { parentPort } from "worker_threads";
 import nodeEndpoint from "comlink/dist/umd/node-adapter";
 import { expose } from "comlink";
 import calculateDCFModel from "../dcfModel/calculateDCFModel";
-import {
-  finTranslations,
-  makeFinancialPlugin,
-} from "../../../packages/intrinsic-valuations/src/spreadsheet/plugins/FinancialPlugin";
-
-const getHyperformulaInstance = (existingScope, sheetsSerializedValues) => {
-  HyperFormula.registerFunctionPlugin(
-    makeFinancialPlugin(existingScope),
-    finTranslations,
-  );
-
-  const hyperformula = HyperFormula.buildFromSheets(sheetsSerializedValues, {
-    licenseKey: "05054-b528f-a10c4-53f2a-04b57",
-    currencySymbol: Object.values(currencySymbolMap),
-    binarySearchThreshold: 1,
-  });
-
-  hyperformula.addNamedExpression("TRUE", "=TRUE()");
-  hyperformula.addNamedExpression("FALSE", "=FALSE()");
-
-  return hyperformula;
-};
+// import hyperformulaConfig from "../../../packages/intrinsic-valuations/src/spreadsheet/hyperformulaConfig";
 
 const sensitivityAnalysisWorker = {
   computeSensitivityAnalysis: (
@@ -33,10 +11,11 @@ const sensitivityAnalysisWorker = {
     existingScope,
     currentScopes,
   ) => {
-    const hyperformula = getHyperformulaInstance(
-      existingScope,
+    const hyperformula = HyperFormula.buildFromSheets(
       sheetsSerializedValues,
+      //   hyperformulaConfig,
     );
+
     const values = currentScopes.map((currentScope) => {
       const model = calculateDCFModel(hyperformula, {
         ...existingScope,

@@ -15,7 +15,6 @@ import { Helmet } from "react-helmet";
 import getTitle from "../../shared/getTitle";
 import resourceName from "../../shared/resourceName";
 import LinesEllipsis from "react-lines-ellipsis";
-import setURLSearchQuery from "../../shared/setURLSearchQuery";
 
 const EOD_URL = "https://eodhistoricaldata.com";
 
@@ -61,11 +60,9 @@ const Valuations = ({ data }) => {
                 ticker,
                 dateOfValuation,
                 fundamentalsData: { General: general },
-                ...fields
               },
             }) => {
-              const searchParams = setURLSearchQuery(fields);
-              const valuationUrl = `/stock-valuations/${ticker}/?${searchParams.toString()}`;
+              const valuationUrl = `/stock-valuations/${ticker}/`;
 
               return (
                 <ListItem key={ticker}>

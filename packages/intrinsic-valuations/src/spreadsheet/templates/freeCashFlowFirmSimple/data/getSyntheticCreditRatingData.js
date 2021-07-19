@@ -1233,7 +1233,7 @@ const getSyntheticCreditRatingData = () => {
       ],
       [
         "Interest Coverage",
-        "=IF(D3=0,Infinity,IF(D2<0,-Infinity,D2/D3))",
+        `=IF(D3=0,100,IF(D2<0,0,D2/D3))`,
         "Interest Expense",
         '=ABS(FIN("interestExpense"))',
       ],
@@ -1264,7 +1264,7 @@ const getSyntheticCreditRatingData = () => {
         "Rating",
         "Spread",
       ],
-      ["-Infinity", "0.2", "-Infinity", "0.5", "D2/D", "17.44%\r"],
+      ["0", "0.2", "0", "0.5", "D2/D", "17.44%\r"],
       ["0.2", "0.65", "0.5", "0.8", "C2/C", "13.09%\r"],
       ["0.65", "0.8", "0.8", "1.25", "Ca2/CC", "9.97%\r"],
       ["0.8", "1.25", "1.25", "1.5", "Caa/CCC", "9.46%\r"],
@@ -1278,7 +1278,7 @@ const getSyntheticCreditRatingData = () => {
       ["4.25", "5.5", "6", "7.5", "A2/A", "1.18%\r"],
       ["5.5", "6.5", "7.5", "9.5", "A1/A+", "1.07%\r"],
       ["6.5", "8.5", "9.5", "12.5", "Aa2/AA", "0.85%\r"],
-      ["8.5", "Infinity", "12.5", "Infinity", "Aaa/AAA", "0.69%\r"],
+      ["8.5", "100", "12.5", "100", "Aaa/AAA", "0.69%\r"],
       [null, null, null, null, null, ""],
     ],
   };

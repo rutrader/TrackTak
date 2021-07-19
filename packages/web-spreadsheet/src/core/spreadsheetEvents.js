@@ -72,6 +72,9 @@ const spreadsheetEvents = {
   horizontalScrollbar: {
     move: "hsb-move",
   },
+  export: {
+    exportSheets: "e-export-sheets",
+  },
   save: {
     persistDataChange: "s-persist-data-change",
   },

@@ -2,7 +2,7 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
-import SubscribeSection from "../landingPage/SubscribeSection";
+import UseNowSection from "../landingPage/UseNowSection";
 import FeaturesSection from "../landingPage/FeaturesSection";
 import { Box, Container } from "@material-ui/core";
 import Footer from "../landingPage/Footer";
@@ -11,6 +11,7 @@ import OurTeamSection from "../landingPage/OurTeamSection";
 import VideoSection from "../landingPage/VideoSection";
 import ProcessSection from "../landingPage/ProcessSection";
 import AboveTheFoldSection from "../landingPage/AboveTheFoldSection";
+import withAuthenticatedRedirect from "../hocs/withAuthenticatedRedirect";
 
 const Section = ({ sx, ...props }) => {
   return (
@@ -57,7 +58,7 @@ const Home = () => {
           <TestimonialsSection />
         </Section>
         <Section>
-          <SubscribeSection />
+          <UseNowSection />
         </Section>
         <Footer />
       </Container>
@@ -65,4 +66,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default withAuthenticatedRedirect(Home);

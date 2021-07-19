@@ -1,19 +1,31 @@
-import { Box } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import React from "react";
-import { DCFControlTypography } from "./exportToExcel";
 import CachedIcon from "@material-ui/icons/Cached";
 import CloudDoneIcon from "@material-ui/icons/CloudDone";
 
 const SaveStatus = ({ isSaving }) => {
   const status = isSaving ? "Saving..." : "Saved";
   const Icon = isSaving ? CachedIcon : CloudDoneIcon;
-  const iconStyle = {
-    marginRight: (theme) => theme.spacing(0.5),
-  };
+
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
-      <Icon color="action" sx={iconStyle} />
-      <DCFControlTypography>{status}</DCFControlTypography>
+      <Icon
+        fontSize="small"
+        color="action"
+        sx={{
+          mr: (theme) => theme.spacing(0.5),
+        }}
+      />
+      <Typography
+        variant="body2"
+        whiteSpace="nowrap"
+        fontSize="small"
+        sx={{
+          cursor: "default",
+        }}
+      >
+        {status}
+      </Typography>
     </Box>
   );
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, List, ListItem, Typography } from "@material-ui/core";
-import { Formula } from "@tracktak/intrinsic-valuations";
+import Formula from "../components/Formula";
 
 const wikiContent = [
   {

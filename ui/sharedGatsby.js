@@ -1,24 +1,24 @@
 import React from "react";
-import {
-  TracktakProvider,
-  createStore,
-  setFundamentals,
-  convertFundamentals,
-} from "@tracktak/intrinsic-valuations";
+import { TracktakProvider, createStore } from "@tracktak/intrinsic-valuations";
 import { LocationProvider, globalHistory } from "@reach/router";
 import "@fontsource/nunito/400.css";
 import "@fontsource/nunito/700.css";
 import theme from "./src/theme";
 import { snackbarReducer } from "./src/redux/reducers/snackbarReducer";
-import setURLSearchQuery from "./src/shared/setURLSearchQuery";
 import { ProvideAuth } from "./src/hooks/useAuth";
 import TTCookieBanner from "./src/components/TTCookieBanner";
 import {
   setExchangeRates,
+  setFundamentals,
   setLastPriceClose,
   setTenYearGovernmentBondLastClose,
-} from "../packages/intrinsic-valuations/src/redux/actions/fundamentalsActions";
+} from "../packages/intrinsic-valuations/src/redux/actions/stockActions";
 import FundamentalsSpinner from "./src/components/FundamentalsSpinner";
+import convertFundamentals from "../packages/intrinsic-valuations/src/shared/convertFundamentals";
+import { CssBaseline } from "@material-ui/core";
+import { setUseWhatChange } from "@simbathesailor/use-what-changed";
+
+setUseWhatChange(process.env.NODE_ENV === "development");
 
 const store = createStore(undefined, {
   snackbar: snackbarReducer,
@@ -29,8 +29,9 @@ export const wrapRootElement = ({ element }) => {
   // due to a gatsby/mui bug
   return (
     <TracktakProvider store={store} theme={theme}>
+      <CssBaseline />
       <ProvideAuth>
-        <FundamentalsSpinner />
+        {/* <FundamentalsSpinner /> */}
         {element}
         <TTCookieBanner />
       </ProvideAuth>
@@ -38,7 +39,7 @@ export const wrapRootElement = ({ element }) => {
   );
 };
 
-export const wrapPageElement = ({ element, props: { data, location } }) => {
+export const wrapPageElement = ({ element, props: { data } }) => {
   if (data && data.contentfulDcfTemplate) {
     const {
       fundamentalsData,
@@ -49,25 +50,14 @@ export const wrapPageElement = ({ element, props: { data, location } }) => {
     const { dispatch } = store;
 
     const parsedFinancialData = JSON.parse(fundamentalsData.internal.content);
-    const parsedExchangeRates = exchangeRates
+    const parsedExchangeRates = exchangeRates?.length
       ? JSON.parse(exchangeRates.internal.content)
-      : null;
-
-    const searchParams = setURLSearchQuery(data.contentfulDcfTemplate);
-    const search = `?${searchParams.toString()}`;
+      : undefined;
 
     dispatch(setFundamentals(convertFundamentals(parsedFinancialData)));
-    if (parsedExchangeRates) {
-      dispatch(setExchangeRates(parsedExchangeRates));
-    }
+    dispatch(setExchangeRates(parsedExchangeRates));
     dispatch(setLastPriceClose(price));
     dispatch(setTenYearGovernmentBondLastClose(tenYearGovernmentBondYield));
-
-    // Provide our own LocationProvider to preserve the query string params
-    // because gatsby removes them
-    if (!location.search) {
-      globalHistory.location.search = search;
-    }
 
     return (
       <LocationProvider history={globalHistory}>{element}</LocationProvider>

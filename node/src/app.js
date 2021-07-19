@@ -94,17 +94,18 @@ app.get("/api/v1/autocomplete-query/:queryString", async (req, res) => {
   res.send({ value });
 });
 
-app.put("/api/v1/spreadsheet", auth, async (req, res) => {
+app.put("/api/v1/spreadsheets", auth, async (req, res) => {
   const spreadsheet = await api.saveSpreadsheet(req.body, req.user.username);
   res.send(spreadsheet);
 });
 
-app.get("/api/v1/spreadsheet", auth, async (req, res) => {
+app.get("/api/v1/spreadsheets", auth, async (req, res) => {
   const spreadsheets = await api.getSpreadsheets(req.user.username);
   res.send({ spreadsheets });
 });
 
-app.get("/api/v1/spreadsheet/:id", auth, async (req, res) => {
+app.get("/api/v1/spreadsheets/:id", auth, async (req, res) => {
+  console.log(req.user);
   const spreadsheet = await api.getSpreadsheet(
     req.user.username,
     req.params.id,
@@ -112,7 +113,7 @@ app.get("/api/v1/spreadsheet/:id", auth, async (req, res) => {
   res.send({ spreadsheet });
 });
 
-app.delete("/api/v1/spreadsheet/:id", auth, async (req, res) => {
+app.delete("/api/v1/spreadsheets/:id", auth, async (req, res) => {
   await api.deleteSpreadsheet(req.params.id, req.user.username);
   res.send({ id: req.params.id });
 });

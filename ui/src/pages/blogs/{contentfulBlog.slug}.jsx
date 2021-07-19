@@ -5,8 +5,6 @@ import resourceName from "../../shared/resourceName";
 import { Helmet } from "react-helmet";
 import getTitle from "../../shared/getTitle";
 import { renderRichText } from "gatsby-source-contentful/rich-text";
-import { Section } from "@tracktak/intrinsic-valuations";
-import SubscribeMailingList from "../../components/SubscribeMailingList";
 import { INLINES, BLOCKS } from "@contentful/rich-text-types";
 import Img from "gatsby-image";
 
@@ -103,23 +101,6 @@ const Blog = ({ data }) => {
       <Typography component="div" paragraph>
         {renderField(blogContent)}
       </Typography>
-      <Section sx={{ display: "flex" }}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            margin: "0 auto",
-          }}
-        >
-          <Typography variant="h6" gutterBottom>
-            Get notified immediately when we post a blog.
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <b>Free</b>&nbsp;forever.
-            </Box>
-          </Typography>
-          <SubscribeMailingList subscribeText="Join" locationSignup="Blog" />
-        </Box>
-      </Section>
     </>
   );
 };

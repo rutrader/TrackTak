@@ -3,21 +3,31 @@ import { getSpreadsheet } from "../api/api";
 import { useAuth } from "./useAuth";
 
 const useFetchSpreadsheet = (sheetId) => {
-  const { getAccessToken, isAuthenticated } = useAuth();
-  const [spreadsheetData, setSpreadsheetData] = useState();
+  const { getAccessToken } = useAuth();
+  const [spreadsheet, setSpreadsheet] = useState();
+  const [accessToken, setAccessToken] = useState();
+  const jwtToken = accessToken?.jwtToken;
+
+  useEffect(() => {
+    async function fetchToken() {
+      const token = await getAccessToken();
+
+      setAccessToken(token);
+    }
+    fetchToken();
+  }, [getAccessToken]);
 
   useEffect(() => {
     async function fetchData() {
-      const token = await getAccessToken();
-      const response = await getSpreadsheet(token?.jwtToken, sheetId);
-      setSpreadsheetData(response.data.spreadsheet);
-    }
-    if (isAuthenticated) {
-      fetchData();
-    }
-  }, [getAccessToken, isAuthenticated, sheetId]);
+      const response = await getSpreadsheet(jwtToken, sheetId);
 
-  return [spreadsheetData];
+      setSpreadsheet(response.data.spreadsheet);
+    }
+
+    fetchData();
+  }, [jwtToken, sheetId]);
+
+  return spreadsheet;
 };
 
 export default useFetchSpreadsheet;

@@ -41,7 +41,7 @@ const getRequiredInputsData = () => {
         "Numbers are in millions, expect per share amounts",
       ],
       ["Year of Convergence *"],
-      ["Sales to Capital Ratio *"],
+      ["Sales to Capital Ratio *", `=FIN("sales/Capital")`],
     ],
     rows: {
       0: {
