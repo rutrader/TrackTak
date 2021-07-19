@@ -231,8 +231,9 @@ export const useFinancialPlugin = (spreadsheet) => {
     if (isStockLoaded && spreadsheet) {
       if (spreadsheet.hyperformula.getSheetNames().length > 0) {
         spreadsheet.hyperformula.rebuildAndRecalculate();
+
+        spreadsheet.reset();
       }
-      spreadsheet.reset();
     }
 
     return () => {

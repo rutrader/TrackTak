@@ -596,13 +596,19 @@ export const makeGetDataProxy = (
 
   const getCellStyleOrDefault = (ri, ci) => {
     const cell = rows.getCell(ri, ci);
-    const format = getDefaultFormatFromText(
-      hyperformula.getCellSerialized({
+    const sheet = getSheetId();
+
+    let text = null;
+
+    if (!isNil(sheet)) {
+      text = hyperformula.getCellSerialized({
         row: ri,
         col: ci,
-        sheet: getSheetId(),
-      }),
-    );
+        sheet,
+      });
+    }
+
+    const format = getDefaultFormatFromText(text);
 
     let cellStyle = !isNil(cell?.style) ? { ...styles[cell.style] } : {};
 
@@ -1048,8 +1054,6 @@ export const makeGetDataProxy = (
 
   const getSheetId = () => {
     const sheetId = hyperformula.getSheetId(name);
-
-    if (sheetId === undefined) throw new Error("sheetId cannot be undefined");
 
     return sheetId;
   };

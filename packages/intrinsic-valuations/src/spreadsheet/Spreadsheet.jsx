@@ -23,7 +23,6 @@ import freeCashFlowToFirmData, {
   freeCashFlowToFirmVariablesData,
 } from "./templates/freeCashFlowFirmSimple/data";
 import { useFinancialPlugin } from "./plugins/useFinancialPlugin";
-import { HyperFormula } from "hyperformula";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";

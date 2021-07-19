@@ -6,6 +6,7 @@ import spreadsheetEvents from "../core/spreadsheetEvents";
 import setTextFormat from "../shared/setTextFormat";
 import getFormatFromCell from "../shared/getFormatFromCell";
 import getTouchElementOffset from "../shared/getTouchElementOffset";
+import { isNil } from "lodash-es";
 
 /**
  * @desc throttle fn
@@ -352,6 +353,8 @@ export const getSheet = (
 
   const makeSetDatasheets = (getDataProxy) => (dataSheets) => {
     datas = [];
+    const defaultSheetName = "sheet1";
+    const defaultSheetId = hyperformula.getSheetId(defaultSheetName);
 
     const addDataProxy = (name) => {
       totalDatasAdded += 1;
@@ -371,7 +374,14 @@ export const getSheet = (
 
     if (!dataSheets.length) {
       // Add dummy data for now until dataProxy is refactored
-      addDataProxy("sheet1");
+      addDataProxy(defaultSheetName);
+    } else {
+      if (
+        !isNil(defaultSheetId) &&
+        hyperformula.isItPossibleToRemoveSheet(defaultSheetId)
+      ) {
+        hyperformula.removeSheet(defaultSheetId);
+      }
     }
 
     dataSheets.forEach((dataSheet) => {
@@ -959,7 +969,6 @@ export const getSheet = (
     };
 
     if (state === "finished") {
-      table.render();
       eventEmitter.emit(spreadsheetEvents.sheet.cellEdited, param);
     } else {
       eventEmitter.emit(spreadsheetEvents.sheet.cellEdit, param);

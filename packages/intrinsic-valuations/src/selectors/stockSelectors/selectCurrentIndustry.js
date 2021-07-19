@@ -10,7 +10,7 @@ const selectCurrentIndustry = createSelector(
   selectGeneral,
   selectIsInUS,
   (general, isInUS) => {
-    if (!general || !isInUS) return null;
+    if (!general) return null;
 
     const { gicSubIndustry, industry } = general;
 

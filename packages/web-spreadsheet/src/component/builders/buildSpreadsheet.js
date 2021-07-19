@@ -100,6 +100,11 @@ export const buildSpreadsheet = (
     };
   };
 
+  const tableReset = () => {
+    spreadsheet.sheet.table.render();
+    variablesSpreadsheet.sheet.table.render();
+  };
+
   const history = new Manager(({ type, name, data }) => {
     let currentData;
     let currentSheet =
@@ -129,6 +134,10 @@ export const buildSpreadsheet = (
 
   variablesEventEmitter.on(spreadsheetEvents.sheet.cellSelected, () => {
     spreadsheet.sheet.selector.el.hide();
+  });
+
+  globalEventEmitter.on(spreadsheetEvents.sheet.cellEdited, () => {
+    tableReset();
   });
 
   const getViewWidthHeight = makeGetViewWidthHeight(getOptions, () => {

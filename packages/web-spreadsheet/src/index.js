@@ -53,6 +53,15 @@ const getSpreadsheet = (
 
   const destroy = () => {
     rootEl.destroy();
+
+    if (hyperformula.isItPossibleToRemoveNamedExpression("TRUE")) {
+      hyperformula.removeNamedExpression("TRUE");
+    }
+
+    if (hyperformula.isItPossibleToRemoveNamedExpression("FALSE")) {
+      hyperformula.removeNamedExpression("FALSE");
+    }
+
     hyperformula.destroy();
   };
 
