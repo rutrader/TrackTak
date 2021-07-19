@@ -17,7 +17,7 @@ const SpreadsheetPage = ({ sheetId }) => {
   const theme = useTheme();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const dispatch = useDispatch();
-  const [spreadsheet] = useFetchSpreadsheet(sheetId);
+  const spreadsheet = useFetchSpreadsheet(sheetId);
   const saveSheetData = usePersistSpreadsheet(sheetId);
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const SpreadsheetPage = ({ sheetId }) => {
       )}
       <Spreadsheet
         saveSheetData={saveSheetData}
-        spreadsheetToRestore={spreadsheet?.sheetData}
+        sheetData={spreadsheet?.sheetData}
       />
     </>
   );

@@ -31,7 +31,7 @@ import selectGeneral from "../../selectors/stockSelectors/selectGeneral";
 import selectHighlights from "../../selectors/stockSelectors/selectHighlights";
 import selectExchangeRates from "../../selectors/stockSelectors/selectExchangeRates";
 import selectIsStockLoaded from "../../selectors/stockSelectors/selectisStockLoaded";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { isNil } from "lodash-es";
 
 export const useFinancialPlugin = (spreadsheet) => {
@@ -52,7 +52,7 @@ export const useFinancialPlugin = (spreadsheet) => {
   const highlights = useSelector(selectHighlights);
   const exchangeRates = useSelector(selectExchangeRates);
 
-  const FinancialPlugin = useMemo(() => {
+  useEffect(() => {
     const lastExchangeRate =
       exchangeRates && exchangeRates[0] ? exchangeRates[0].close : 1;
 
@@ -137,7 +137,7 @@ export const useFinancialPlugin = (spreadsheet) => {
         });
     };
 
-    class FinancialPluginClass extends FunctionPlugin {
+    class FinancialPlugin extends FunctionPlugin {
       financial({ args }) {
         if (!args.length) {
           return new InvalidArgumentsError(1);
@@ -215,18 +215,30 @@ export const useFinancialPlugin = (spreadsheet) => {
       }
     }
 
-    FinancialPluginClass.implementedFunctions = {
+    FinancialPlugin.implementedFunctions = {
       FINANCIAL: {
         method: "financial",
         arraySizeMethod: "financialSize",
       },
     };
 
-    FinancialPluginClass.aliases = {
+    FinancialPlugin.aliases = {
       FIN: "FINANCIAL",
     };
 
-    return FinancialPluginClass;
+    HyperFormula.registerFunctionPlugin(FinancialPlugin, finTranslations);
+
+    if (isStockLoaded && spreadsheet) {
+      if (spreadsheet.hyperformula.getSheetNames().length > 0) {
+        spreadsheet.hyperformula.rebuildAndRecalculate();
+      }
+      spreadsheet.reset();
+    }
+
+    return () => {
+      // TODO: Causing SPILL error I think https://github.com/handsontable/hyperformula/issues/775
+      HyperFormula.unregisterFunctionPlugin(FinancialPlugin);
+    };
   }, [
     balanceSheets,
     cashFlowStatements,
@@ -242,26 +254,8 @@ export const useFinancialPlugin = (spreadsheet) => {
     price,
     riskFreeRate,
     sharesOutstanding,
+    spreadsheet,
   ]);
-
-  useEffect(() => {
-    HyperFormula.registerFunctionPlugin(FinancialPlugin, finTranslations);
-
-    if (isStockLoaded && spreadsheet) {
-      spreadsheet.hyperformula.rebuildAndRecalculate();
-
-      // Fix this immediately in the spreadsheet so this isn't needed
-      if (spreadsheet.getData()) {
-        spreadsheet.reset();
-      }
-    }
-
-    return () => {
-      HyperFormula.unregisterFunctionPlugin(FinancialPlugin);
-    };
-  }, [spreadsheet, FinancialPlugin, isStockLoaded]);
-
-  return FinancialPlugin;
 };
 
 const finTranslations = {

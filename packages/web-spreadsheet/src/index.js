@@ -53,6 +53,7 @@ const getSpreadsheet = (
 
   const destroy = () => {
     rootEl.destroy();
+    hyperformula.destroy();
   };
 
   return {

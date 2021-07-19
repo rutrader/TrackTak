@@ -737,9 +737,11 @@ export const getSheet = (
   };
 
   function sheetReset() {
-    render();
-    eventEmitter.emit(spreadsheetEvents.sheet.sheetReset);
-    selector.reset();
+    if (getData()) {
+      render();
+      eventEmitter.emit(spreadsheetEvents.sheet.sheetReset);
+      selector.reset();
+    }
   }
 
   function clearClipboard() {

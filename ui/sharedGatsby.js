@@ -16,6 +16,9 @@ import {
 import FundamentalsSpinner from "./src/components/FundamentalsSpinner";
 import convertFundamentals from "../packages/intrinsic-valuations/src/shared/convertFundamentals";
 import { CssBaseline } from "@material-ui/core";
+import { setUseWhatChange } from "@simbathesailor/use-what-changed";
+
+setUseWhatChange(process.env.NODE_ENV === "development");
 
 const store = createStore(undefined, {
   snackbar: snackbarReducer,
