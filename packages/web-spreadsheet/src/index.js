@@ -3,7 +3,6 @@ import { cssPrefix } from "./config";
 import { locale } from "./locale/locale";
 import "./index.less";
 import { buildSpreadsheet } from "./component/builders/buildSpreadsheet";
-import HyperFormula from "hyperformula";
 import { hyperformulaLicenseKey } from "./shared/hyperformulaLicenseKey";
 import spreadsheetEvents from "./core/spreadsheetEvents";
 
@@ -11,22 +10,22 @@ const getSpreadsheet = (
   element,
   options,
   variablesSpreadsheetOptions,
-  hyperformulaConfig,
+  hyperformula,
 ) => {
   const rootEl = h("div", `${cssPrefix}`).on("contextmenu", (evt) =>
     evt.preventDefault(),
   );
 
-  const hyperformula = HyperFormula.buildEmpty({
-    licenseKey: hyperformulaLicenseKey,
-    // For vlookup to match Excel
-    binarySearchThreshold: 1,
-    // We use our own undo/redo instead
-    ...hyperformulaConfig,
-  });
+  const trueArgs = ["TRUE", "=TRUE()"];
+  const falseArgs = ["FALSE", "=FALSE()"];
 
-  hyperformula.addNamedExpression("TRUE", "=TRUE()");
-  hyperformula.addNamedExpression("FALSE", "=FALSE()");
+  if (hyperformula.isItPossibleToAddNamedExpression(...trueArgs)) {
+    hyperformula.addNamedExpression(...trueArgs);
+  }
+
+  if (hyperformula.isItPossibleToAddNamedExpression(...falseArgs)) {
+    hyperformula.addNamedExpression(...falseArgs);
+  }
 
   const {
     spreadsheet,
@@ -71,14 +70,14 @@ const getSpreadsheet = (
     setOptions,
     destroy,
     reset,
-    hyperformula,
     spreadsheetEventEmitter,
     setDatasheets,
     getDatas,
     getData,
     eventEmitter,
+    hyperformula,
   };
 };
 
 export default getSpreadsheet;
-export { locale, spreadsheetEvents };
+export { locale, spreadsheetEvents, hyperformulaLicenseKey };

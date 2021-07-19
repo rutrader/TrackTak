@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { Box, useMediaQuery, useTheme } from "@material-ui/core";
 import { useLocation } from "@reach/router";
+import { HyperFormula } from "hyperformula";
 import selectValuationCurrencySymbol from "../selectors/stockSelectors/selectValuationCurrencySymbol";
 import selectScope from "../selectors/dcfSelectors/selectScope";
 import getSpreadsheet, {
   spreadsheetEvents,
 } from "../../../web-spreadsheet/src";
-import { currencySymbolMap } from "currency-symbol-map";
 import selectGeneral from "../selectors/stockSelectors/selectGeneral";
 import SensitivityAnalysis from "../components/SensitivityAnalysis";
 import Section from "../components/Section";
@@ -23,6 +23,7 @@ import freeCashFlowToFirmData, {
   freeCashFlowToFirmVariablesData,
 } from "./templates/freeCashFlowFirmSimple/data";
 import { useFinancialPlugin } from "./plugins/useFinancialPlugin";
+import hyperformulaConfig from "./hyperformulaConfig";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
@@ -135,13 +136,13 @@ const Spreadsheet = ({ sheetData, saveSheetData, hideSensitivityAnalysis }) => {
       },
     };
 
+    const hyperformula = HyperFormula.buildEmpty(hyperformulaConfig);
+
     spreadsheet = getSpreadsheet(
       dcfValuationElement,
       options,
       variablesSpreadsheetOptions,
-      {
-        currencySymbol: Object.values(currencySymbolMap),
-      },
+      hyperformula,
     );
 
     spreadsheet.variablesSpreadsheet.sheet.el.el.id = requiredInputsId;
