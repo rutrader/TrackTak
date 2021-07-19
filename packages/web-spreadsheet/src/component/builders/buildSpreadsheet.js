@@ -21,6 +21,7 @@ import { getFormulaSuggestions } from "../../shared/getFormulaSuggestions";
 import Manager from "undo-redo-manager";
 import { bind } from "../event";
 import Save from "../save/Save";
+import makeExportToExcel from "../export/makeExportToExcel";
 
 export const buildSpreadsheet = (
   rootEl,
@@ -134,6 +135,14 @@ export const buildSpreadsheet = (
 
   variablesEventEmitter.on(spreadsheetEvents.sheet.cellSelected, () => {
     spreadsheet.sheet.selector.el.hide();
+  });
+
+  eventEmitter.on(spreadsheetEvents.toolbar.clickIcon, (type) => {
+    if (type === "export") {
+      const exportToExcel = makeExportToExcel(hyperformula, getDatas());
+
+      eventEmitter.emit(spreadsheetEvents.export.exportSheets, exportToExcel);
+    }
   });
 
   globalEventEmitter.on(spreadsheetEvents.sheet.cellEdited, () => {

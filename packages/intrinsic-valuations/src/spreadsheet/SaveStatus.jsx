@@ -1,6 +1,5 @@
-import { Box } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import React from "react";
-import { DCFControlTypography } from "./exportToExcel";
 import CachedIcon from "@material-ui/icons/Cached";
 import CloudDoneIcon from "@material-ui/icons/CloudDone";
 
@@ -17,7 +16,16 @@ const SaveStatus = ({ isSaving }) => {
           mr: (theme) => theme.spacing(0.5),
         }}
       />
-      <DCFControlTypography fontSize="small">{status}</DCFControlTypography>
+      <Typography
+        variant="body2"
+        whiteSpace="nowrap"
+        fontSize="small"
+        sx={{
+          cursor: "default",
+        }}
+      >
+        {status}
+      </Typography>
     </Box>
   );
 };

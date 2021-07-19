@@ -7,6 +7,7 @@ import setTextFormat from "../shared/setTextFormat";
 import getFormatFromCell from "../shared/getFormatFromCell";
 import getTouchElementOffset from "../shared/getTouchElementOffset";
 import { isNil } from "lodash-es";
+import makeExportToExcel from "./export/makeExportToExcel";
 
 /**
  * @desc throttle fn

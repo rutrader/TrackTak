@@ -53,8 +53,7 @@ export const useFinancialPlugin = (spreadsheet) => {
   const exchangeRates = useSelector(selectExchangeRates);
 
   useEffect(() => {
-    const lastExchangeRate =
-      exchangeRates && exchangeRates[0] ? exchangeRates[0].close : 1;
+    const lastExchangeRate = exchangeRates?.[0]?.close ?? 1;
 
     const dates = getDatesFromStatements(incomeStatements);
 
@@ -89,13 +88,13 @@ export const useFinancialPlugin = (spreadsheet) => {
 
     const historicalDataArrays = {
       incomeStatements: {
-        yearly: Object.values(incomeStatements.yearly || {}),
+        yearly: Object.values(incomeStatements.yearly ?? {}),
       },
       balanceSheets: {
-        yearly: Object.values(balanceSheets.yearly || {}),
+        yearly: Object.values(balanceSheets.yearly ?? {}),
       },
       cashFlowStatements: {
-        yearly: Object.values(cashFlowStatements.yearly || {}),
+        yearly: Object.values(cashFlowStatements.yearly ?? {}),
       },
     };
 
@@ -161,7 +160,7 @@ export const useFinancialPlugin = (spreadsheet) => {
             return SimpleRangeValue.onlyValues(statements);
           }
 
-          return ttmData[attribute] || "";
+          return ttmData[attribute] ?? "";
         }
 
         const startDate = args[1].value;
@@ -173,7 +172,7 @@ export const useFinancialPlugin = (spreadsheet) => {
           }
 
           return (
-            historicalDataArrays[statementType].yearly[startDate][attribute] ||
+            historicalDataArrays[statementType].yearly[startDate][attribute] ??
             ""
           );
         }
