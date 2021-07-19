@@ -8,7 +8,7 @@ import getTitle from "../shared/getTitle";
 
 export const query = graphql`
   query TermsAndConditionsQuery {
-    contentfulTermsAndConditionsDescription {
+    contentfulTermsAndConditions {
       termsAndConditionsDescription {
         childMarkdownRemark {
           html
@@ -23,11 +23,11 @@ const renderHtml = (html) => {
 };
 
 const TermsAndConditions = ({ data }) => {
-  const { termsAndConditionsDescription } = data.termsAndConditionsDescription;
+  const { termsAndConditionsDescription } = data.contentfulTermsAndConditions;
   return (
     <>
       <Helmet>
-        <title>{getTitle("Privacy Policy")}</title>
+        <title>{getTitle("Terms & Conditions")}</title>
         <link rel="canonical" href={`${resourceName}/terms-and-conditions`} />
         <meta name="description" content="Our terms and conditions" />
       </Helmet>
