@@ -7,9 +7,9 @@ import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 
 export const query = graphql`
-  query CookieDescriptionQuery {
-    contentfulCookiePolicy {
-      cookieDescription {
+  query TermsAndConditionsQuery {
+    contentfulTermsAndConditionsDescription {
+      termsAndConditionsDescription {
         childMarkdownRemark {
           html
         }
@@ -22,21 +22,20 @@ const renderHtml = (html) => {
   return <ReactMarkdown allowDangerousHtml>{html}</ReactMarkdown>;
 };
 
-const CookiePolicy = ({ data }) => {
-  const { cookieDescription } = data.contentfulCookiePolicy;
-
+const TermsAndConditions = ({ data }) => {
+  const { termsAndConditionsDescription } = data.termsAndConditionsDescription;
   return (
     <>
       <Helmet>
-        <title>{getTitle("Cookie Policy")}</title>
-        <link rel="canonical" href={`${resourceName}/cookie-policy`} />
-        <meta name="description" content="Our cookie policy" />
+        <title>{getTitle("Privacy Policy")}</title>
+        <link rel="canonical" href={`${resourceName}/terms-and-conditions`} />
+        <meta name="description" content="Our terms and conditions" />
       </Helmet>
       <Typography component="div" paragraph>
-        {renderHtml(cookieDescription.childMarkdownRemark.html)}
+        {renderHtml(termsAndConditionsDescription.childMarkdownRemark.html)}
       </Typography>
     </>
   );
 };
 
-export default CookiePolicy;
+export default TermsAndConditions;

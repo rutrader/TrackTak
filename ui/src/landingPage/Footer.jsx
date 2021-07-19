@@ -73,6 +73,12 @@ const Footer = () => {
           <Typography>
             <Link href="/cookie-policy">Cookie Policy</Link>
           </Typography>
+          <Typography>
+            <Link href="/privacy-policy">Privacy Policy</Link>
+          </Typography>
+          <Typography>
+            <Link href="/terms-and-conditions">Terms &amp; Conditions</Link>
+          </Typography>
           {landingPageLinks.map((link) => (
             <Typography key={link.to}>
               <Link component={RouterLink} to={link.to}>
