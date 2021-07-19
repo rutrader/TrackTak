@@ -21,6 +21,7 @@ import { getFormulaSuggestions } from "../../shared/getFormulaSuggestions";
 import Manager from "undo-redo-manager";
 import { bind } from "../event";
 import Save from "../save/Save";
+import makeExportToExcel from "../export/makeExportToExcel";
 
 export const buildSpreadsheet = (
   rootEl,
@@ -54,7 +55,7 @@ export const buildSpreadsheet = (
         }
       }
 
-      if (sheet?.getLastFocused()) {
+      if (spreadsheet.sheet?.getLastFocused()) {
         eventEmitter.emit(...args);
 
         return;
@@ -73,7 +74,7 @@ export const buildSpreadsheet = (
   };
 
   const getFocusedData = () => {
-    if (sheet?.getLastFocused()) {
+    if (spreadsheet.sheet?.getLastFocused()) {
       return getData();
     }
 
@@ -83,21 +84,32 @@ export const buildSpreadsheet = (
   const getOptions = () => newOptions;
 
   const setOptions = (options) => {
-    newOptions = getNewOptions(options, defaultOptions, newData, sheet);
+    newOptions = getNewOptions(
+      options,
+      defaultOptions,
+      newData,
+      spreadsheet?.sheet,
+    );
   };
 
   setOptions(options);
 
   const getDatas = () => {
     return {
-      datas: sheet.getDataValues(),
+      datas: spreadsheet.sheet.getDataValues(),
       variablesDatas: variablesSpreadsheet.sheet.getDataValues(),
     };
   };
 
+  const tableReset = () => {
+    spreadsheet.sheet.table.render();
+    variablesSpreadsheet.sheet.table.render();
+  };
+
   const history = new Manager(({ type, name, data }) => {
     let currentData;
-    let currentSheet = type === "main" ? sheet : variablesSpreadsheet.sheet;
+    let currentSheet =
+      type === "main" ? spreadsheet.sheet : variablesSpreadsheet.sheet;
 
     currentData = currentSheet.getData().getData();
     currentSheet.getData().setData(data);
@@ -122,7 +134,19 @@ export const buildSpreadsheet = (
   });
 
   variablesEventEmitter.on(spreadsheetEvents.sheet.cellSelected, () => {
-    sheet.selector.el.hide();
+    spreadsheet.sheet.selector.el.hide();
+  });
+
+  eventEmitter.on(spreadsheetEvents.toolbar.clickIcon, (type) => {
+    if (type === "export") {
+      const exportToExcel = makeExportToExcel(hyperformula, getDatas());
+
+      eventEmitter.emit(spreadsheetEvents.export.exportSheets, exportToExcel);
+    }
+  });
+
+  globalEventEmitter.on(spreadsheetEvents.sheet.cellEdited, () => {
+    tableReset();
   });
 
   const getViewWidthHeight = makeGetViewWidthHeight(getOptions, () => {
@@ -190,7 +214,7 @@ export const buildSpreadsheet = (
 
   const print = getPrint(rootEl, getData);
 
-  const { sheet } = getSheet(
+  const spreadsheet = getSheet(
     mainSheetType,
     toolbar,
     save,
@@ -223,7 +247,7 @@ export const buildSpreadsheet = (
     history,
     formulaBar,
     print,
-    sheet,
+    spreadsheet.sheet,
     rootEl,
     variablesSpreadsheetOptions,
     hyperformula,
@@ -237,16 +261,16 @@ export const buildSpreadsheet = (
 
   table.setDraw(draw);
 
-  const setDatasheets = sheet.makeSetDatasheets(getDataProxy);
+  const setDatasheets = spreadsheet.sheet.makeSetDatasheets(getDataProxy);
 
   const bottombar = getBottombar(
     "sheet",
     eventEmitter,
-    sheet.getDataValues,
+    spreadsheet.sheet.getDataValues,
     () => getData().getData(),
   );
 
-  sheet.el.after(bottombar.el);
+  spreadsheet.sheet.el.after(bottombar.el);
   rootEl.children(print.el);
 
   bind(window, "paste", (evt) => {
@@ -254,8 +278,8 @@ export const buildSpreadsheet = (
 
     const paste = getFocusedData().rows.copyPasteAll;
 
-    if (sheet?.getLastFocused()) {
-      sheet.paste(paste);
+    if (spreadsheet.sheet?.getLastFocused()) {
+      spreadsheet.sheet.paste(paste);
 
       return;
     }
@@ -264,8 +288,8 @@ export const buildSpreadsheet = (
   });
 
   return {
-    sheet,
     toolbar,
+    spreadsheet,
     variablesSpreadsheet,
     rootEl,
     setDatasheets,

@@ -53,7 +53,7 @@ const getOptionalInputsData = () => {
       [
         "",
         "",
-        "Market Value of Convertible Bond",
+        "Market Value of Convertible Debt",
         null,
         "",
         "",
@@ -232,7 +232,8 @@ const getOptionalInputsData = () => {
           2: {},
           3: {
             style: 6,
-            comment: "This is the equity part of the convertible bond.",
+            comment:
+              "This is the equity part of the convertible debt. If the debt is publicly traded you can find it's market value on cbonds.com or similar. If it's not then we recommend just using the Book Value of Convertible Debt from cell D2 here as well.",
           },
           4: {},
           5: {},

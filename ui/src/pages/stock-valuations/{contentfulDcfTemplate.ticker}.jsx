@@ -6,15 +6,6 @@ import { BLOCKS } from "@contentful/rich-text-types";
 import YouTube from "react-youtube";
 import { graphql, Link as RouterLink } from "gatsby";
 import { Box, Link, Typography } from "@material-ui/core";
-import {
-  Section,
-  FormatRawNumberToPercent,
-  FormatRawNumberToYear,
-  FormatRawNumber,
-  FormatRawNumberToCurrency,
-  selectPrice,
-} from "@tracktak/intrinsic-valuations";
-import SubscribeMailingList from "../../components/SubscribeMailingList";
 import * as styles from "../../shared/video.module.css";
 import dayjs from "dayjs";
 import { Helmet } from "react-helmet";
@@ -22,10 +13,15 @@ import getTitle from "../../shared/getTitle";
 import resourceName from "../../shared/resourceName";
 import Img from "gatsby-image";
 import ReactMarkdown from "react-markdown";
-import selectGeneral from "../../../../packages/intrinsic-valuations/src/selectors/fundamentalSelectors/selectGeneral";
+import selectGeneral from "../../../../packages/intrinsic-valuations/src/selectors/stockSelectors/selectGeneral";
 import { labels } from "../../../../packages/intrinsic-valuations/src/spreadsheet/templates/freeCashFlowFirmSimple/inputQueryNames";
-import selectSheetsValues from "../../../../packages/intrinsic-valuations/src/selectors/dcfSelectors/selectSheetsValues";
 import Spreadsheet from "../../../../packages/intrinsic-valuations/src/spreadsheet/Spreadsheet";
+import selectPrice from "../../../../packages/intrinsic-valuations/src/selectors/stockSelectors/selectPrice";
+import Section from "../../../../packages/intrinsic-valuations/src/components/Section";
+import FormatRawNumberToPercent from "../../../../packages/intrinsic-valuations/src/components/FormatRawNumberToPercent";
+import FormatRawNumber from "../../../../packages/intrinsic-valuations/src/components/FormatRawNumber";
+import FormatRawNumberToCurrency from "../../../../packages/intrinsic-valuations/src/components/FormatRawNumberToCurrency";
+import FormatRawNumberToYear from "../../../../packages/intrinsic-valuations/src/components/FormatRawNumberToYear";
 
 export const query = graphql`
   fragment ValuationInformation on ContentfulDcfTemplate {
@@ -201,7 +197,6 @@ const renderField = (field) => {
 const Valuation = ({ data }) => {
   const location = useLocation();
   const price = useSelector(selectPrice);
-  const sheetsValues = useSelector(selectSheetsValues);
   const general = useSelector(selectGeneral);
 
   const {
@@ -225,18 +220,18 @@ const Valuation = ({ data }) => {
     percentageOfBookValueDescription,
   } = data.contentfulDcfTemplate;
 
-  const dcfValuationValues = sheetsValues
-    ? sheetsValues["DCF Valuation"]
-    : null;
+  // const dcfValuationValues = sheetsValues
+  //   ? sheetsValues["DCF Valuation"]
+  //   : null;
 
-  const estimatedValuePerShare =
-    typeof dcfValuationValues?.[53]?.[1] === "number"
-      ? dcfValuationValues[53][1]
-      : 0;
-  const marginOfSafety =
-    typeof dcfValuationValues?.[54]?.[1] === "number"
-      ? dcfValuationValues[54][1]
-      : 0;
+  // const estimatedValuePerShare =
+  //   typeof dcfValuationValues?.[53]?.[1] === "number"
+  //     ? dcfValuationValues[53][1]
+  //     : 0;
+  // const marginOfSafety =
+  //   typeof dcfValuationValues?.[54]?.[1] === "number"
+  //     ? dcfValuationValues[54][1]
+  //     : 0;
 
   const formattedDateOfValuation = dayjs(dateOfValuation).format(
     "Do MMM. YYYY",
@@ -282,26 +277,6 @@ const Valuation = ({ data }) => {
         <Typography component="div" paragraph>
           {renderField(competitors)}
         </Typography>
-      </Section>
-      <Section sx={{ display: "flex" }}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            margin: "0 auto",
-          }}
-        >
-          <Typography variant="h6" gutterBottom>
-            Get notified immediately when we post a valuation.
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <b>Free</b>&nbsp;forever.
-            </Box>
-          </Typography>
-          <SubscribeMailingList
-            subscribeText="Join"
-            locationSignup="Valuation"
-          />
-        </Box>
       </Section>
       {lookingForward && (
         <Section>
@@ -405,7 +380,7 @@ const Valuation = ({ data }) => {
         </Typography>
       </Section>
       <Section>
-        <Spreadsheet hideSensitivityAnalysis />
+        <Spreadsheet />
       </Section>
       <Section>
         <Typography variant="h5" gutterBottom>
@@ -415,7 +390,7 @@ const Valuation = ({ data }) => {
           I have estimated the shares to have a share price of
           <b>
             &nbsp;
-            <FormatRawNumberToCurrency value={estimatedValuePerShare} />
+            {/* <FormatRawNumberToCurrency value={estimatedValuePerShare} /> */}
           </b>
           &nbsp;per share.
         </Typography>
@@ -425,10 +400,7 @@ const Valuation = ({ data }) => {
             <FormatRawNumberToCurrency value={price} />
           </b>
           &nbsp;a share which gives a margin of safety of&nbsp;
-          <b>
-            <FormatRawNumberToPercent value={marginOfSafety} />
-          </b>
-          .
+          <b>{/* <FormatRawNumberToPercent value={marginOfSafety} /> */}</b>.
         </Typography>
         <Typography>
           <Link

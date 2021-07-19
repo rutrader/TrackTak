@@ -6,6 +6,8 @@ import spreadsheetEvents from "../core/spreadsheetEvents";
 import setTextFormat from "../shared/setTextFormat";
 import getFormatFromCell from "../shared/getFormatFromCell";
 import getTouchElementOffset from "../shared/getTouchElementOffset";
+import { isNil } from "lodash-es";
+import makeExportToExcel from "./export/makeExportToExcel";
 
 /**
  * @desc throttle fn
@@ -208,6 +210,10 @@ export const getSheet = (
       cellAddress,
     };
 
+    if (getOptions().debugMode) {
+      console.log("datas: ", getData().getData());
+    }
+
     eventEmitter.emit(spreadsheetEvents.sheet.cellEdited, param);
   };
 
@@ -348,6 +354,8 @@ export const getSheet = (
 
   const makeSetDatasheets = (getDataProxy) => (dataSheets) => {
     datas = [];
+    const defaultSheetName = "sheet1";
+    const defaultSheetId = hyperformula.getSheetId(defaultSheetName);
 
     const addDataProxy = (name) => {
       totalDatasAdded += 1;
@@ -367,12 +375,16 @@ export const getSheet = (
 
     if (!dataSheets.length) {
       // Add dummy data for now until dataProxy is refactored
-      addDataProxy("sheet1");
+      addDataProxy(defaultSheetName);
+    } else {
+      if (
+        !isNil(defaultSheetId) &&
+        hyperformula.isItPossibleToRemoveSheet(defaultSheetId)
+      ) {
+        hyperformula.removeSheet(defaultSheetId);
+      }
     }
 
-    // Some sheets have to be added before others for hyperformula
-    // if they are depended on. Can also use rebuildAndRecalculate()
-    // but that has a performance hit.
     dataSheets.forEach((dataSheet) => {
       let data;
 
@@ -736,9 +748,11 @@ export const getSheet = (
   };
 
   function sheetReset() {
-    render();
-    eventEmitter.emit(spreadsheetEvents.sheet.sheetReset);
-    selector.reset();
+    if (getData()) {
+      render();
+      eventEmitter.emit(spreadsheetEvents.sheet.sheetReset);
+      selector.reset();
+    }
   }
 
   function clearClipboard() {
@@ -956,7 +970,6 @@ export const getSheet = (
     };
 
     if (state === "finished") {
-      table.render();
       eventEmitter.emit(spreadsheetEvents.sheet.cellEdited, param);
     } else {
       eventEmitter.emit(spreadsheetEvents.sheet.cellEdit, param);

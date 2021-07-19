@@ -6,18 +6,31 @@ import {
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
-import { navigate } from "gatsby";
 import SearchIcon from "@material-ui/icons/Search";
-import { useDebouncedCallback } from "@tracktak/intrinsic-valuations";
+import useDebouncedCallback from "../../../packages/intrinsic-valuations/src/hooks/useDebouncedCallback";
 import TTRoundInput from "./TTRoundInput";
-import { getAutocompleteQuery } from "../../../packages/intrinsic-valuations/src";
+import { getAutocompleteQuery } from "../../../packages/intrinsic-valuations/src/api/api";
+import { useAuth } from "../hooks/useAuth";
+import { saveSpreadsheet } from "../api/api";
+import { navigate } from "gatsby";
 
-const SearchTicker = ({ isSmallSearch, onSearchResultClick }) => {
+const SearchTicker = ({ isSmallSearch, sx }) => {
   const theme = useTheme();
   const [autoComplete, setAutoComplete] = useState([]);
   const [isLoadingAutocomplete, setIsLoadingAutocomplete] = useState(false);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [text, setText] = useState("");
+  const { getAccessToken, userData } = useAuth();
+
+  const searchStock = async (ticker) => {
+    const token = await getAccessToken();
+    const response = await saveSpreadsheet(
+      { name: ticker, data: {} },
+      token?.jwtToken,
+    );
+    navigate(`/${userData.name}/my-spreadsheets/${response.data._id}`);
+  };
+
   const getAutoCompleteDebounced = useDebouncedCallback(async (value) => {
     const { data } = await getAutocompleteQuery(`${value}?limit=9&type=stock`);
 
@@ -27,13 +40,9 @@ const SearchTicker = ({ isSmallSearch, onSearchResultClick }) => {
 
   const handleOnChangeAutoComplete = (_, value) => {
     if (value?.code && value?.exchange) {
-      const ticker = `${value.code}-${value.exchange}`.toLowerCase();
+      const ticker = `${value.code}.${value.exchange}`;
 
-      if (onSearchResultClick) {
-        onSearchResultClick(ticker);
-        return;
-      }
-      navigate(`/stock/${ticker}/discounted-cash-flow`);
+      searchStock(ticker);
     }
   };
 
@@ -55,7 +64,7 @@ const SearchTicker = ({ isSmallSearch, onSearchResultClick }) => {
   }, [text]);
 
   return (
-    <Box sx={{ display: "flex", position: "relative" }}>
+    <Box sx={{ display: "flex", position: "relative", ...sx }}>
       <Autocomplete
         style={{ flex: 1 }}
         open={text.length > 0}

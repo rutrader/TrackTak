@@ -1,13 +1,11 @@
 import { combineReducers } from "redux";
-import { fundamentalsReducer } from "./reducers/fundamentalsReducer";
+import { stockReducer } from "./reducers/stockReducer";
 import { configureStore } from "@reduxjs/toolkit";
-import { dcfReducer } from "./reducers/dcfReducer";
 
 const createStore = (preloadedState, reducers) => {
   return configureStore({
     reducer: combineReducers({
-      fundamentals: fundamentalsReducer,
-      dcf: dcfReducer,
+      stock: stockReducer,
       ...reducers,
     }),
     preloadedState,
