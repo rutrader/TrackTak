@@ -28,6 +28,7 @@ npm install --save @tracktak/intrinsic-valuations
 
 - `<TracktakProvider store={TracktakStore} theme?={materialUITheme} />`
 - `<Spreadsheet ticker={String} />`
+- `createStore()`
 
 - Provider is the only required component and can be added at the root of your app with your other providers. `store` needs to be the returned store from `createStore`. If you provide your own theme then it needs to come from material ui's createMuiTheme.
 

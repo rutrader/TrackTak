@@ -26,46 +26,48 @@ import {
   getTenYearGovernmentBondLastCloseThunk,
 } from "../../redux/thunks/stockThunks";
 import { setFinancials } from "../../redux/actions/stockActions";
-import selectFinancialsIsLoading from "../../selectors/stockSelectors/selectFinancialsIsLoading";
 import selectFinancials from "../../selectors/stockSelectors/selectFinancials";
 
 export const useFinancialPlugin = (spreadsheet, ticker) => {
-  const isLoading = useSelector(selectFinancialsIsLoading);
   const financials = useSelector(selectFinancials);
+  const hasLoaded = !!financials;
   const dispatch = useDispatch();
-  const {
-    exchangeRates,
-    financialStatements,
-    currentEquityRiskPremium,
-    currentIndustry,
-    general,
-    highlights,
-    ...data
-  } = financials;
-  const {
-    incomeStatements,
-    balanceSheets,
-    cashFlowStatements,
-  } = financialStatements;
 
   useEffect(() => {
     const params = {
-      to: "2019-07-20",
+      to: "2012-07-20",
     };
 
     const fetchData = async (ticker) => {
-      debugger;
-      const fundamentals = await dispatch(
+      const { payload: fundamentals } = await dispatch(
         getFundamentalsThunk({ ticker, params }),
       );
 
       const values = await Promise.all([
-        dispatch(getExchangeRatesThunk(fundamentals, params)),
-        dispatch(getTenYearGovernmentBondLastCloseThunk(fundamentals, params)),
-        dispatch(getLastPriceCloseThunk(ticker, params)),
+        dispatch(
+          getExchangeRatesThunk({
+            currencyCode: fundamentals.general.currencyCode,
+            incomeStatement: fundamentals.incomeStatement,
+            balanceSheet: fundamentals.balanceSheet,
+            params,
+          }),
+        ),
+        dispatch(
+          getTenYearGovernmentBondLastCloseThunk({
+            countryISO: fundamentals.general.countryISO,
+            params,
+          }),
+        ),
+        dispatch(getLastPriceCloseThunk({ ticker, params })),
       ]);
 
-      const financials = convertStockAPIData(...[fundamentals, ...values]);
+      const financials = convertStockAPIData(
+        fundamentals,
+        params.to,
+        values[0].payload,
+        values[1].payload,
+        values[2].payload,
+      );
 
       dispatch(setFinancials(financials));
     };
@@ -76,6 +78,22 @@ export const useFinancialPlugin = (spreadsheet, ticker) => {
   }, [dispatch, ticker]);
 
   useEffect(() => {
+    const defaultStatement = { ttm: {}, yearly: {} };
+    const {
+      exchangeRates,
+      financialStatements = {},
+      currentEquityRiskPremium,
+      currentIndustry,
+      general,
+      highlights,
+      ...data
+    } = financials ?? {};
+    const {
+      incomeStatements = defaultStatement,
+      balanceSheets = defaultStatement,
+      cashFlowStatements = defaultStatement,
+    } = financialStatements;
+
     const dates = getDatesFromStatements(incomeStatements);
 
     const statements = [
@@ -157,7 +175,7 @@ export const useFinancialPlugin = (spreadsheet, ticker) => {
           return new InvalidArgumentsError(1);
         }
 
-        if (isLoading) {
+        if (!hasLoaded) {
           return "Loading...";
         }
 
@@ -201,7 +219,7 @@ export const useFinancialPlugin = (spreadsheet, ticker) => {
         }
       }
       financialSize({ args }) {
-        if (isLoading) {
+        if (!hasLoaded) {
           return ArraySize.scalar();
         }
 
@@ -242,7 +260,7 @@ export const useFinancialPlugin = (spreadsheet, ticker) => {
 
     HyperFormula.registerFunctionPlugin(FinancialPlugin, finTranslations);
 
-    if (isLoading && spreadsheet) {
+    if (!hasLoaded && spreadsheet) {
       if (spreadsheet.hyperformula.getSheetNames().length > 0) {
         spreadsheet.hyperformula.rebuildAndRecalculate();
 
@@ -254,18 +272,7 @@ export const useFinancialPlugin = (spreadsheet, ticker) => {
       // TODO: Causing SPILL error I think https://github.com/handsontable/hyperformula/issues/775
       HyperFormula.unregisterFunctionPlugin(FinancialPlugin);
     };
-  }, [
-    balanceSheets,
-    cashFlowStatements,
-    currentEquityRiskPremium,
-    currentIndustry,
-    data,
-    general,
-    highlights,
-    incomeStatements,
-    isLoading,
-    spreadsheet,
-  ]);
+  }, [financials, hasLoaded, spreadsheet]);
 };
 
 const finTranslations = {

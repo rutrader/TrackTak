@@ -15,7 +15,6 @@ import Img from "gatsby-image";
 import ReactMarkdown from "react-markdown";
 import { labels } from "../../../../packages/intrinsic-valuations/src/spreadsheet/templates/freeCashFlowFirmSimple/inputQueryNames";
 import Spreadsheet from "../../../../packages/intrinsic-valuations/src/spreadsheet/Spreadsheet";
-import selectPrice from "../../../../packages/intrinsic-valuations/src/selectors/stockSelectors/selectPrice";
 import Section from "../../../../packages/intrinsic-valuations/src/components/Section";
 import FormatRawNumberToPercent from "../../../../packages/intrinsic-valuations/src/components/FormatRawNumberToPercent";
 import FormatRawNumber from "../../../../packages/intrinsic-valuations/src/components/FormatRawNumber";

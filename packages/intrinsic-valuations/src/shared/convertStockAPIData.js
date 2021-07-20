@@ -15,6 +15,7 @@ import matureMarketEquityRiskPremium from "./matureMarketEquityRiskPremium";
 
 const convertStockAPIData = (
   fundamentals,
+  to,
   exchangeRates,
   governmentBondTenYearYield,
   priceLastClose,
@@ -36,8 +37,11 @@ const convertStockAPIData = (
     fundamentals,
   );
   const currentEquityRiskPremium = getCurrentEquityRiskPremium(fundamentals);
-  const riskFreeRate = getRiskFreeRate(governmentBondTenYearYield);
-  const currentIndustry = getCurrentIndustry;
+  const riskFreeRate = getRiskFreeRate(
+    governmentBondTenYearYield,
+    currentEquityRiskPremium,
+  );
+  const currentIndustry = getCurrentIndustry(fundamentals);
   const interestCoverage = getInterestCoverage(incomeStatements);
   const lastExchangeRate = exchangeRates?.[0]?.close ?? 1;
   const interestSpread = getInterestSpread(

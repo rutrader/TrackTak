@@ -1,5 +1,5 @@
 import React from "react";
-import { TracktakProvider } from "@tracktak/intrinsic-valuations";
+import { TracktakProvider, createStore } from "@tracktak/intrinsic-valuations";
 import { LocationProvider, globalHistory } from "@reach/router";
 import "@fontsource/nunito/400.css";
 import "@fontsource/nunito/700.css";
@@ -9,15 +9,11 @@ import { ProvideAuth } from "./src/hooks/useAuth";
 import TTCookieBanner from "./src/components/TTCookieBanner";
 import { CssBaseline } from "@material-ui/core";
 import { setUseWhatChange } from "@simbathesailor/use-what-changed";
-import { combineReducers } from "redux";
-import { configureStore } from "@reduxjs/toolkit";
 
 setUseWhatChange(process.env.NODE_ENV === "development");
 
-const store = configureStore({
-  reducer: combineReducers({
-    snackbar: snackbarReducer,
-  }),
+const store = createStore(undefined, {
+  snackbar: snackbarReducer,
 });
 
 export const wrapRootElement = ({ element }) => {
