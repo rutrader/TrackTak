@@ -8,7 +8,6 @@ import selectValuationCurrencySymbol from "../selectors/stockSelectors/selectVal
 import getSpreadsheet, {
   spreadsheetEvents,
 } from "../../../web-spreadsheet/src";
-import selectGeneral from "../selectors/stockSelectors/selectGeneral";
 import getFormats from "./getFormats";
 import SaveStatus from "./SaveStatus";
 import { useFinancialPlugin } from "./plugins/useFinancialPlugin";
@@ -28,16 +27,16 @@ const Spreadsheet = ({ sheetData, saveSheetData }) => {
   const isFocusedOnValueDrivingInputs = location.hash?.includes(
     requiredInputsId,
   );
-  const general = useSelector(selectGeneral);
   const [isSaving, setIsSaving] = useState(false);
+  const sheetName = sheetData?.name;
 
-  useFinancialPlugin(spreadsheet);
+  useFinancialPlugin(spreadsheet, sheetName);
 
   useEffect(() => {
     const exportToExcel = (exportFn) => {
       const formats = getFormats(currencySymbol);
 
-      exportFn(`${general.code}.${general.exchange}.xlsx`, formats, ["FIN"]);
+      exportFn(`${sheetName}.xlsx`, formats, ["FIN"]);
     };
 
     if (spreadsheet) {
@@ -55,7 +54,7 @@ const Spreadsheet = ({ sheetData, saveSheetData }) => {
         );
       }
     };
-  }, [currencySymbol, general, spreadsheet]);
+  }, [currencySymbol, sheetName, spreadsheet]);
 
   useEffect(() => {
     let spreadsheet;

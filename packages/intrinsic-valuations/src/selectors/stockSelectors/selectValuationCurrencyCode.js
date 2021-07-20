@@ -1,9 +1,11 @@
 import { createSelector } from "@reduxjs/toolkit";
 import convertSubCurrencyToCurrency from "../../shared/convertSubCurrencyToCurrency";
-import selectGeneral from "./selectGeneral";
+import selectFinancials from "./selectFinancials";
 
-const selectValuationCurrencyCode = createSelector(selectGeneral, (general) =>
-  convertSubCurrencyToCurrency(general?.currencyCode),
+const selectValuationCurrencyCode = createSelector(
+  selectFinancials,
+  (financials) =>
+    convertSubCurrencyToCurrency(financials?.general.currencyCode),
 );
 
 export default selectValuationCurrencyCode;

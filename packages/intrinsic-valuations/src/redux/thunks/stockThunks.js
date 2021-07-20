@@ -6,14 +6,7 @@ import {
   getGovernmentBond,
   getPrices,
 } from "../../api/api";
-import {
-  setExchangeRates,
-  setFundamentals,
-  setLastPriceClose,
-  setTenYearGovernmentBondLastClose,
-} from "../actions/stockActions";
 import convertSubCurrencyToCurrency from "../../shared/convertSubCurrencyToCurrency";
-import convertFundamentals from "../../shared/convertFundamentals";
 import getMinimumHistoricalDateFromFinancialStatements from "../../shared/getMinimumHistoricalDateFromFinancialStatements";
 
 const yearMonthDateFormat = "YYYY-MM";
@@ -22,10 +15,7 @@ const fundamentalsFilter =
 
 export const getExchangeRatesThunk = createAsyncThunk(
   "fundamentals/getExchangeRates",
-  async (
-    { currencyCode, incomeStatement, balanceSheet, params },
-    { dispatch },
-  ) => {
+  async ({ currencyCode, incomeStatement, balanceSheet, params }) => {
     const baseCurrency = balanceSheet.currencyCode;
     const quoteCurrency = currencyCode;
     // UK stocks are quoted in pence so we convert it to GBP for ease of use
@@ -49,38 +39,31 @@ export const getExchangeRatesThunk = createAsyncThunk(
         },
       );
 
-      dispatch(setExchangeRates(data.value));
-
       return data.value;
     }
-
-    dispatch(setExchangeRates());
+    return {};
   },
 );
 
 export const getTenYearGovernmentBondLastCloseThunk = createAsyncThunk(
   "fundamentals/getTenYearGovernmentBondLastCloseThunk",
-  async ({ countryISO, params }, { dispatch }) => {
+  async ({ countryISO, params }) => {
     const { data } = await getGovernmentBond(`${countryISO}10Y`, {
       ...params,
       filter: "last_close",
     });
 
-    dispatch(setTenYearGovernmentBondLastClose(data.value));
-
-    return data.value;
+    return data.value / 100;
   },
 );
 
 export const getLastPriceCloseThunk = createAsyncThunk(
   "fundamentals/getLastPriceClose",
-  async ({ ticker, params }, { dispatch }) => {
+  async ({ ticker, params }) => {
     const { data } = await getPrices(ticker, {
       ...params,
       filter: "last_close",
     });
-
-    dispatch(setLastPriceClose(data.value));
 
     return data.value;
   },
@@ -88,15 +71,12 @@ export const getLastPriceCloseThunk = createAsyncThunk(
 
 export const getFundamentalsThunk = createAsyncThunk(
   "fundamentals/getFundamentals",
-  async ({ ticker, params }, { dispatch }) => {
+  async ({ ticker, params }) => {
     const { data } = await getFundamentals(ticker, {
       ...params,
       filter: fundamentalsFilter,
     });
-    const fundamentals = convertFundamentals(data.value);
 
-    dispatch(setFundamentals(fundamentals));
-
-    return fundamentals;
+    return data.value;
   },
 );

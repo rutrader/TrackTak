@@ -8,6 +8,7 @@ import nodeEndpoint from "comlink/dist/umd/node-adapter";
 import { getSensitivityAnalysisWorker } from "./workers";
 import * as database from "./database/mongoDbClient";
 import { Collections } from "./database/collections";
+import convertFundamentalsFromAPI from "./shared/convertFundamentalsFromAPI";
 
 const baseUrl = "https://eodhistoricaldata.com/api";
 const fundamentalsUrl = `${baseUrl}/fundamentals`;
@@ -89,9 +90,11 @@ const api = {
           },
         });
 
-        return replaceDoubleColonWithObject(data);
+        const newObject = replaceDoubleColonWithObject(data);
+
+        return convertFundamentalsFromAPI(newObject);
       },
-      "fundamnetals",
+      "fundamentals",
       { ticker, query },
     );
 

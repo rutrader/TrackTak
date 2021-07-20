@@ -13,7 +13,6 @@ import getTitle from "../../shared/getTitle";
 import resourceName from "../../shared/resourceName";
 import Img from "gatsby-image";
 import ReactMarkdown from "react-markdown";
-import selectGeneral from "../../../../packages/intrinsic-valuations/src/selectors/stockSelectors/selectGeneral";
 import { labels } from "../../../../packages/intrinsic-valuations/src/spreadsheet/templates/freeCashFlowFirmSimple/inputQueryNames";
 import Spreadsheet from "../../../../packages/intrinsic-valuations/src/spreadsheet/Spreadsheet";
 import selectPrice from "../../../../packages/intrinsic-valuations/src/selectors/stockSelectors/selectPrice";
@@ -196,8 +195,6 @@ const renderField = (field) => {
 
 const Valuation = ({ data }) => {
   const location = useLocation();
-  const price = useSelector(selectPrice);
-  const general = useSelector(selectGeneral);
 
   const {
     ticker,
@@ -238,181 +235,182 @@ const Valuation = ({ data }) => {
   );
 
   return (
-    <React.Fragment>
-      <Helmet>
-        <title>{getTitle(`${general.name} Valuation`)}</title>
-        <link
-          rel="canonical"
-          href={`${resourceName}/stock-valuations/${ticker}${location.search}`}
-        />
-        <meta
-          name="description"
-          content={`Is ${general.name} undervalued? See the full intrinsic valuation here.`}
-        />
-      </Helmet>
-      <Box>
-        {dateOfValuation && (
-          <Typography textAlign="right" gutterBottom>
-            This valuation was done on the {dateOfValuation}
-          </Typography>
-        )}
-        <Box>
-          <Typography variant="h5" gutterBottom>
-            Business Description
-          </Typography>
-          <Typography component="div" paragraph>
-            {general.description}
-          </Typography>
-          {extraBusinessDescription && (
-            <Typography component="div" paragraph>
-              {renderField(extraBusinessDescription)}
-            </Typography>
-          )}
-        </Box>
-      </Box>
-      <Section>
-        <Typography variant="h5" gutterBottom>
-          Competitors
-        </Typography>
-        <Typography component="div" paragraph>
-          {renderField(competitors)}
-        </Typography>
-      </Section>
-      {lookingForward && (
-        <Section>
-          <Typography variant="h5" gutterBottom>
-            Looking Forward
-          </Typography>
-          <Typography component="div" paragraph>
-            {renderField(lookingForward)}
-          </Typography>
-        </Section>
-      )}
-      {relativeNumbers && (
-        <Section>
-          <Typography variant="h5" gutterBottom>
-            Relative Numbers
-          </Typography>
-          <Typography component="div" paragraph>
-            {renderField(relativeNumbers)}
-          </Typography>
-        </Section>
-      )}
-      <Section>
-        <Typography variant="h5" gutterBottom>
-          The input values I chose for the DCF
-        </Typography>
-        <Typography variant="h6" gutterBottom>
-          {labels.cagrInYears_1_5}
-        </Typography>
-        <Container>
-          <NumberSpan>
-            <FormatRawNumberToPercent value={cagrInYears_1_5} />
-          </NumberSpan>
-          {renderHtml(cagrInYears_1_5Description.childMarkdownRemark.html)}
-        </Container>
-        <Typography variant="h6" gutterBottom>
-          {labels.ebitTargetMarginInYear_10}
-        </Typography>
-        <Container>
-          <NumberSpan>
-            <FormatRawNumberToPercent value={ebitTargetMarginInYear_10} />
-          </NumberSpan>
-          {renderHtml(
-            ebitTargetMarginInYear_10Description.childMarkdownRemark.html,
-          )}
-        </Container>
-        <Typography variant="h6" gutterBottom>
-          {labels.yearOfConvergence}
-        </Typography>
-        <Container>
-          <NumberSpan>
-            <FormatRawNumberToYear value={yearOfConvergence} />
-          </NumberSpan>
-          {renderHtml(yearOfConvergenceDescription.childMarkdownRemark.html)}
-        </Container>
-        <Typography variant="h6" gutterBottom>
-          {labels.salesToCapitalRatio}
-        </Typography>
-        <Container>
-          <NumberSpan>
-            <FormatRawNumber decimalScale={2} value={salesToCapitalRatio} />
-          </NumberSpan>
-          {renderHtml(salesToCapitalRatioDescription.childMarkdownRemark.html)}
-        </Container>
-        {probabilityOfFailure && (
-          <Typography variant="h6" gutterBottom>
-            {labels.probabilityOfFailure}
-          </Typography>
-        )}
-        {probabilityOfFailure && probabilityOfFailureDescription && (
-          <Container>
-            <NumberSpan>
-              <FormatRawNumberToPercent value={probabilityOfFailure} />
-            </NumberSpan>
-            {renderHtml(
-              probabilityOfFailureDescription.childMarkdownRemark.html,
-            )}
-          </Container>
-        )}
-        {proceedsAsAPercentageOfBookValue && (
-          <Typography variant="h6" gutterBottom>
-            {labels.probabilityOfFailure}
-          </Typography>
-        )}
-        {proceedsAsAPercentageOfBookValue && percentageOfBookValueDescription && (
-          <Container>
-            <NumberSpan>
-              <FormatRawNumberToPercent
-                value={proceedsAsAPercentageOfBookValue}
-              />
-            </NumberSpan>
-            {renderHtml(
-              percentageOfBookValueDescription.childMarkdownRemark.html,
-            )}
-          </Container>
-        )}
-      </Section>
-      <Section>
-        <Typography paragraph>
-          <b>Hint:</b> Have a play with the below inputs yourself and see how
-          the valuation changes.
-        </Typography>
-      </Section>
-      <Section>
-        <Spreadsheet />
-      </Section>
-      <Section>
-        <Typography variant="h5" gutterBottom>
-          Conclusion
-        </Typography>
-        <Typography paragraph gutterBottom>
-          I have estimated the shares to have a share price of
-          <b>
-            &nbsp;
-            {/* <FormatRawNumberToCurrency value={estimatedValuePerShare} /> */}
-          </b>
-          &nbsp;per share.
-        </Typography>
-        <Typography paragraph gutterBottom>
-          On the <b>{formattedDateOfValuation}</b> they traded for&nbsp;
-          <b>
-            <FormatRawNumberToCurrency value={price} />
-          </b>
-          &nbsp;a share which gives a margin of safety of&nbsp;
-          <b>{/* <FormatRawNumberToPercent value={marginOfSafety} /> */}</b>.
-        </Typography>
-        <Typography>
-          <Link
-            component={RouterLink}
-            to={`/stock/${ticker}/discounted-cash-flow`}
-          >
-            <b>Click here&nbsp;</b>
-          </Link>
-          to do your own Automated DCF for any company you want.
-        </Typography>
-      </Section>
-    </React.Fragment>
+    <></>
+    // <>
+    //   <Helmet>
+    //     <title>{getTitle(`${general.name} Valuation`)}</title>
+    //     <link
+    //       rel="canonical"
+    //       href={`${resourceName}/stock-valuations/${ticker}${location.search}`}
+    //     />
+    //     <meta
+    //       name="description"
+    //       content={`Is ${general.name} undervalued? See the full intrinsic valuation here.`}
+    //     />
+    //   </Helmet>
+    //   <Box>
+    //     {dateOfValuation && (
+    //       <Typography textAlign="right" gutterBottom>
+    //         This valuation was done on the {dateOfValuation}
+    //       </Typography>
+    //     )}
+    //     <Box>
+    //       <Typography variant="h5" gutterBottom>
+    //         Business Description
+    //       </Typography>
+    //       <Typography component="div" paragraph>
+    //         {general.description}
+    //       </Typography>
+    //       {extraBusinessDescription && (
+    //         <Typography component="div" paragraph>
+    //           {renderField(extraBusinessDescription)}
+    //         </Typography>
+    //       )}
+    //     </Box>
+    //   </Box>
+    //   <Section>
+    //     <Typography variant="h5" gutterBottom>
+    //       Competitors
+    //     </Typography>
+    //     <Typography component="div" paragraph>
+    //       {renderField(competitors)}
+    //     </Typography>
+    //   </Section>
+    //   {lookingForward && (
+    //     <Section>
+    //       <Typography variant="h5" gutterBottom>
+    //         Looking Forward
+    //       </Typography>
+    //       <Typography component="div" paragraph>
+    //         {renderField(lookingForward)}
+    //       </Typography>
+    //     </Section>
+    //   )}
+    //   {relativeNumbers && (
+    //     <Section>
+    //       <Typography variant="h5" gutterBottom>
+    //         Relative Numbers
+    //       </Typography>
+    //       <Typography component="div" paragraph>
+    //         {renderField(relativeNumbers)}
+    //       </Typography>
+    //     </Section>
+    //   )}
+    //   <Section>
+    //     <Typography variant="h5" gutterBottom>
+    //       The input values I chose for the DCF
+    //     </Typography>
+    //     <Typography variant="h6" gutterBottom>
+    //       {labels.cagrInYears_1_5}
+    //     </Typography>
+    //     <Container>
+    //       <NumberSpan>
+    //         <FormatRawNumberToPercent value={cagrInYears_1_5} />
+    //       </NumberSpan>
+    //       {renderHtml(cagrInYears_1_5Description.childMarkdownRemark.html)}
+    //     </Container>
+    //     <Typography variant="h6" gutterBottom>
+    //       {labels.ebitTargetMarginInYear_10}
+    //     </Typography>
+    //     <Container>
+    //       <NumberSpan>
+    //         <FormatRawNumberToPercent value={ebitTargetMarginInYear_10} />
+    //       </NumberSpan>
+    //       {renderHtml(
+    //         ebitTargetMarginInYear_10Description.childMarkdownRemark.html,
+    //       )}
+    //     </Container>
+    //     <Typography variant="h6" gutterBottom>
+    //       {labels.yearOfConvergence}
+    //     </Typography>
+    //     <Container>
+    //       <NumberSpan>
+    //         <FormatRawNumberToYear value={yearOfConvergence} />
+    //       </NumberSpan>
+    //       {renderHtml(yearOfConvergenceDescription.childMarkdownRemark.html)}
+    //     </Container>
+    //     <Typography variant="h6" gutterBottom>
+    //       {labels.salesToCapitalRatio}
+    //     </Typography>
+    //     <Container>
+    //       <NumberSpan>
+    //         <FormatRawNumber decimalScale={2} value={salesToCapitalRatio} />
+    //       </NumberSpan>
+    //       {renderHtml(salesToCapitalRatioDescription.childMarkdownRemark.html)}
+    //     </Container>
+    //     {probabilityOfFailure && (
+    //       <Typography variant="h6" gutterBottom>
+    //         {labels.probabilityOfFailure}
+    //       </Typography>
+    //     )}
+    //     {probabilityOfFailure && probabilityOfFailureDescription && (
+    //       <Container>
+    //         <NumberSpan>
+    //           <FormatRawNumberToPercent value={probabilityOfFailure} />
+    //         </NumberSpan>
+    //         {renderHtml(
+    //           probabilityOfFailureDescription.childMarkdownRemark.html,
+    //         )}
+    //       </Container>
+    //     )}
+    //     {proceedsAsAPercentageOfBookValue && (
+    //       <Typography variant="h6" gutterBottom>
+    //         {labels.probabilityOfFailure}
+    //       </Typography>
+    //     )}
+    //     {proceedsAsAPercentageOfBookValue && percentageOfBookValueDescription && (
+    //       <Container>
+    //         <NumberSpan>
+    //           <FormatRawNumberToPercent
+    //             value={proceedsAsAPercentageOfBookValue}
+    //           />
+    //         </NumberSpan>
+    //         {renderHtml(
+    //           percentageOfBookValueDescription.childMarkdownRemark.html,
+    //         )}
+    //       </Container>
+    //     )}
+    //   </Section>
+    //   <Section>
+    //     <Typography paragraph>
+    //       <b>Hint:</b> Have a play with the below inputs yourself and see how
+    //       the valuation changes.
+    //     </Typography>
+    //   </Section>
+    //   <Section>
+    //     <Spreadsheet />
+    //   </Section>
+    //   <Section>
+    //     <Typography variant="h5" gutterBottom>
+    //       Conclusion
+    //     </Typography>
+    //     <Typography paragraph gutterBottom>
+    //       I have estimated the shares to have a share price of
+    //       <b>
+    //         &nbsp;
+    //         {/* <FormatRawNumberToCurrency value={estimatedValuePerShare} /> */}
+    //       </b>
+    //       &nbsp;per share.
+    //     </Typography>
+    //     <Typography paragraph gutterBottom>
+    //       On the <b>{formattedDateOfValuation}</b> they traded for&nbsp;
+    //       <b>
+    //         <FormatRawNumberToCurrency value={price} />
+    //       </b>
+    //       &nbsp;a share which gives a margin of safety of&nbsp;
+    //       <b>{/* <FormatRawNumberToPercent value={marginOfSafety} /> */}</b>.
+    //     </Typography>
+    //     <Typography>
+    //       <Link
+    //         component={RouterLink}
+    //         to={`/stock/${ticker}/discounted-cash-flow`}
+    //       >
+    //         <b>Click here&nbsp;</b>
+    //       </Link>
+    //       to do your own Automated DCF for any company you want.
+    //     </Typography>
+    //   </Section>
+    // </>
   );
 };
 

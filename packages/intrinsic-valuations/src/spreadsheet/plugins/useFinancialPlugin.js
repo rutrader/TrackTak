@@ -5,7 +5,6 @@ import {
   ArraySize,
   HyperFormula,
 } from "hyperformula";
-import matureMarketEquityRiskPremium from "../../shared/matureMarketEquityRiskPremium";
 import dayjs from "dayjs";
 import convertSubCurrencyToCurrency from "../../shared/convertSubCurrencyToCurrency";
 import {
@@ -16,45 +15,67 @@ import {
   getStatements,
   incomeStatement,
 } from "../templates/financialStatements";
-import { useSelector } from "react-redux";
-import selectCashFlowStatements from "../../selectors/stockSelectors/selectCashFlowStatements";
-import selectIncomeStatements from "../../selectors/stockSelectors/selectIncomeStatements";
-import selectBalanceSheets from "../../selectors/stockSelectors/selectBalanceSheets";
-import selectCurrentEquityRiskPremium from "../../selectors/stockSelectors/selectCurrentEquityRiskPremium";
-import selectPrice from "../../selectors/stockSelectors/selectPrice";
-import selectRiskFreeRate from "../../selectors/stockSelectors/selectRiskFreeRate";
-import selectSharesOutstanding from "../../selectors/stockSelectors/selectSharesOutstanding";
-import selectThreeAverageYearsEffectiveTaxRate from "../../selectors/stockSelectors/selectThreeAverageYearsEffectiveTaxRate";
-import selectCurrentIndustry from "../../selectors/stockSelectors/selectCurrentIndustry";
-import selectEstimatedCostOfDebt from "../../selectors/stockSelectors/selectEstimatedCostOfDebt";
-import selectGeneral from "../../selectors/stockSelectors/selectGeneral";
-import selectHighlights from "../../selectors/stockSelectors/selectHighlights";
-import selectExchangeRates from "../../selectors/stockSelectors/selectExchangeRates";
-import selectIsStockLoaded from "../../selectors/stockSelectors/selectisStockLoaded";
 import { useEffect } from "react";
 import { isNil } from "lodash-es";
+import convertStockAPIData from "../../shared/convertStockAPIData";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getExchangeRatesThunk,
+  getFundamentalsThunk,
+  getLastPriceCloseThunk,
+  getTenYearGovernmentBondLastCloseThunk,
+} from "../../redux/thunks/stockThunks";
+import { setFinancials } from "../../redux/actions/stockActions";
+import selectFinancialsIsLoading from "../../selectors/stockSelectors/selectFinancialsIsLoading";
+import selectFinancials from "../../selectors/stockSelectors/selectFinancials";
 
-export const useFinancialPlugin = (spreadsheet) => {
-  const isStockLoaded = useSelector(selectIsStockLoaded);
-  const incomeStatements = useSelector(selectIncomeStatements);
-  const balanceSheets = useSelector(selectBalanceSheets);
-  const cashFlowStatements = useSelector(selectCashFlowStatements);
-  const currentEquityRiskPremium = useSelector(selectCurrentEquityRiskPremium);
-  const price = useSelector(selectPrice);
-  const riskFreeRate = useSelector(selectRiskFreeRate);
-  const sharesOutstanding = useSelector(selectSharesOutstanding);
-  const pastThreeYearsAverageEffectiveTaxRate = useSelector(
-    selectThreeAverageYearsEffectiveTaxRate,
-  );
-  const currentIndustry = useSelector(selectCurrentIndustry);
-  const estimatedCostOfDebt = useSelector(selectEstimatedCostOfDebt);
-  const general = useSelector(selectGeneral);
-  const highlights = useSelector(selectHighlights);
-  const exchangeRates = useSelector(selectExchangeRates);
+export const useFinancialPlugin = (spreadsheet, ticker) => {
+  const isLoading = useSelector(selectFinancialsIsLoading);
+  const financials = useSelector(selectFinancials);
+  const dispatch = useDispatch();
+  const {
+    exchangeRates,
+    financialStatements,
+    currentEquityRiskPremium,
+    currentIndustry,
+    general,
+    highlights,
+    ...data
+  } = financials;
+  const {
+    incomeStatements,
+    balanceSheets,
+    cashFlowStatements,
+  } = financialStatements;
 
   useEffect(() => {
-    const lastExchangeRate = exchangeRates?.[0]?.close ?? 1;
+    const params = {
+      to: "2019-07-20",
+    };
 
+    const fetchData = async (ticker) => {
+      debugger;
+      const fundamentals = await dispatch(
+        getFundamentalsThunk({ ticker, params }),
+      );
+
+      const values = await Promise.all([
+        dispatch(getExchangeRatesThunk(fundamentals, params)),
+        dispatch(getTenYearGovernmentBondLastCloseThunk(fundamentals, params)),
+        dispatch(getLastPriceCloseThunk(ticker, params)),
+      ]);
+
+      const financials = convertStockAPIData(...[fundamentals, ...values]);
+
+      dispatch(setFinancials(financials));
+    };
+
+    if (ticker) {
+      fetchData(ticker);
+    }
+  }, [dispatch, ticker]);
+
+  useEffect(() => {
     const dates = getDatesFromStatements(incomeStatements);
 
     const statements = [
@@ -77,13 +98,7 @@ export const useFinancialPlugin = (spreadsheet) => {
       ...currentIndustry,
       ...general,
       ...highlights,
-      riskFreeRate,
-      estimatedCostOfDebt,
-      pastThreeYearsAverageEffectiveTaxRate,
-      price,
-      sharesOutstanding,
-      lastExchangeRate,
-      matureMarketEquityRiskPremium,
+      ...data,
     };
 
     const historicalDataArrays = {
@@ -142,7 +157,7 @@ export const useFinancialPlugin = (spreadsheet) => {
           return new InvalidArgumentsError(1);
         }
 
-        if (!isStockLoaded) {
+        if (isLoading) {
           return "Loading...";
         }
 
@@ -186,7 +201,7 @@ export const useFinancialPlugin = (spreadsheet) => {
         }
       }
       financialSize({ args }) {
-        if (!isStockLoaded) {
+        if (isLoading) {
           return ArraySize.scalar();
         }
 
@@ -227,7 +242,7 @@ export const useFinancialPlugin = (spreadsheet) => {
 
     HyperFormula.registerFunctionPlugin(FinancialPlugin, finTranslations);
 
-    if (isStockLoaded && spreadsheet) {
+    if (isLoading && spreadsheet) {
       if (spreadsheet.hyperformula.getSheetNames().length > 0) {
         spreadsheet.hyperformula.rebuildAndRecalculate();
 
@@ -244,16 +259,11 @@ export const useFinancialPlugin = (spreadsheet) => {
     cashFlowStatements,
     currentEquityRiskPremium,
     currentIndustry,
-    estimatedCostOfDebt,
-    exchangeRates,
+    data,
     general,
     highlights,
     incomeStatements,
-    isStockLoaded,
-    pastThreeYearsAverageEffectiveTaxRate,
-    price,
-    riskFreeRate,
-    sharesOutstanding,
+    isLoading,
     spreadsheet,
   ]);
 };
