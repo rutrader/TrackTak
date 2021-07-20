@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef, useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -13,7 +13,7 @@ import { graphql, useStaticQuery } from "gatsby";
 import Img from "gatsby-image";
 import RoundButton from "../components/RoundButton";
 import BackgroundImage from "gatsby-background-image";
-import { useEffect } from "react";
+import { styled } from "@material-ui/core/styles";
 
 const sixteen50 = 1650;
 
@@ -41,6 +41,19 @@ const AboveTheFoldSection = () => {
   const [showScroll, setShowScroll] = useState(false);
   const [showBackgroundColor, setShowBackgroundColor] = useState(true);
 
+  const StyledBackgroundBox = styled("div")(({ theme }) => ({
+    padding: theme.spacing(1),
+    [theme.breakpoints.down("md")]: {
+      height: 930,
+    },
+    [theme.breakpoints.up("md")]: {
+      height: 930,
+    },
+    [theme.breakpoints.up("lg")]: {
+      height: 930,
+    },
+  }));
+
   const checkScrollTop = () => {
     if (window.pageYOffset > 400) {
       setShowScroll(true);
@@ -64,140 +77,142 @@ const AboveTheFoldSection = () => {
   }, []);
 
   return (
-    <Box
-      sx={{
-        mt: 6,
-        [theme.breakpoints.up(sixteen50)]: {
-          mx: 25,
-        },
-      }}
-    >
-      <BackgroundImage
-        backgroundColor={
-          showBackgroundColor ? theme.palette.secondary.light : undefined
-        }
-        fluid={data.background.childImageSharp.fluid}
-        style={{
-          width: "100%",
-          height: 930,
-          backgroundPosition: "center center",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          zIndex: -1,
-          top: 0,
-          left: 0,
-          position: "absolute",
-        }}
-      />
+    <StyledBackgroundBox>
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          rowGap: "16px",
-          mb: 8,
+          mt: 6,
+          [theme.breakpoints.up(sixteen50)]: {
+            mx: 25,
+          },
         }}
       >
-        <Box sx={{ flex: "1 1 350px", color: "white" }}>
-          <Typography
-            variant="h3"
-            gutterBottom
-            fontWeight={800}
-            color="inherit"
-          >
-            Tired of complicated excel Discounted Cash Flow templates?
-          </Typography>
-          <Typography variant="h6" color="inherit" gutterBottom>
-            <Box>
-              tracktak enables you to do quick DCF models based on prof. Aswath
-              Damodaran's techniques directly in the cloud.
-            </Box>
-          </Typography>
-          <Box
-            sx={{
-              [theme.breakpoints.down("sm")]: {
-                my: 4,
-              },
-              [theme.breakpoints.up("sm")]: {
-                my: 0,
-              },
-            }}
-          >
-            <Box
-              sx={{
-                mt: 4,
-                mb: 2,
-              }}
-            >
-              <RoundButton
-                component={forwardRef((props, ref) => (
-                  <AnchorLink {...props} gatsbyLinkProps={{ ref }} />
-                ))}
-                to="#get-started"
-                variant="contained"
-                color="primary"
-              >
-                <Typography
-                  fontSize={20}
-                  sx={{ textTransform: "none", color: "white" }}
-                >
-                  USE FOR FREE
-                </Typography>
-              </RoundButton>
-            </Box>
-          </Box>
-        </Box>
+        <BackgroundImage
+          backgroundColor={
+            showBackgroundColor ? theme.palette.secondary.light : undefined
+          }
+          fluid={data.background.childImageSharp.fluid}
+          style={{
+            width: "100%",
+            height: 930,
+            backgroundPosition: "center center",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            zIndex: -1,
+            top: 0,
+            left: 0,
+            position: "absolute",
+          }}
+        />
         <Box
           sx={{
-            flex: "1 1 820px",
-            maxWidth: 820,
-            position: "relative",
-          }}
-        >
-          <Img
-            fluid={data.laptop.childImageSharp.fluid}
-            alt="Tracktak DCF Example"
-          />
-          <Hidden mdDown implementation="css">
-            <GridDots
-              style={{
-                zIndex: -1,
-                position: "absolute",
-                left: 0,
-                bottom: 0,
-              }}
-            />
-          </Hidden>
-        </Box>
-      </Box>
-      {showScroll && (
-        <IconButton
-          sx={{
-            "&:hover": {
-              background: (theme) => theme.palette.primary.dark,
-            },
-            width: "45px",
-            height: "45px",
-            background: (theme) => theme.palette.primary.main,
             display: "flex",
-            justifyContent: "center",
             alignItems: "center",
-            fontSize: "18px",
-            color: "white",
-            borderRadius: "5px",
-            position: "fixed",
-            bottom: "30px",
-            right: "30px",
-            transition: "all 0.3s ease-out 0s",
-            zIndex: (theme) => theme.zIndex.scrollTopButton,
+            flexWrap: "wrap",
+            justifyContent: "center",
+            rowGap: "16px",
+            mb: 8,
           }}
-          onClick={scrollTop}
         >
-          <KeyboardArrowUpIcon fontSize="large" />
-        </IconButton>
-      )}
-    </Box>
+          <Box sx={{ flex: "1 1 350px", color: "white" }}>
+            <Typography
+              variant="h3"
+              gutterBottom
+              fontWeight={800}
+              color="inherit"
+            >
+              Tired of complicated excel Discounted Cash Flow templates?
+            </Typography>
+            <Typography variant="h6" color="inherit" gutterBottom>
+              <Box>
+                tracktak enables you to do quick DCF models based on prof.
+                Aswath Damodaran's techniques directly in the cloud.
+              </Box>
+            </Typography>
+            <Box
+              sx={{
+                [theme.breakpoints.down("sm")]: {
+                  my: 4,
+                },
+                [theme.breakpoints.up("sm")]: {
+                  my: 0,
+                },
+              }}
+            >
+              <Box
+                sx={{
+                  mt: 4,
+                  mb: 2,
+                }}
+              >
+                <RoundButton
+                  component={forwardRef((props, ref) => (
+                    <AnchorLink {...props} gatsbyLinkProps={{ ref }} />
+                  ))}
+                  to="#get-started"
+                  variant="contained"
+                  color="primary"
+                >
+                  <Typography
+                    fontSize={20}
+                    sx={{ textTransform: "none", color: "white" }}
+                  >
+                    USE FOR FREE
+                  </Typography>
+                </RoundButton>
+              </Box>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              flex: "1 1 820px",
+              maxWidth: 820,
+              position: "relative",
+            }}
+          >
+            <Img
+              fluid={data.laptop.childImageSharp.fluid}
+              alt="Tracktak DCF Example"
+            />
+            <Hidden mdDown implementation="css">
+              <GridDots
+                style={{
+                  zIndex: -1,
+                  position: "absolute",
+                  left: 0,
+                  bottom: 0,
+                }}
+              />
+            </Hidden>
+          </Box>
+        </Box>
+        {showScroll && (
+          <IconButton
+            sx={{
+              "&:hover": {
+                background: (theme) => theme.palette.primary.dark,
+              },
+              width: "45px",
+              height: "45px",
+              background: (theme) => theme.palette.primary.main,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              fontSize: "18px",
+              color: "white",
+              borderRadius: "5px",
+              position: "fixed",
+              bottom: "30px",
+              right: "30px",
+              transition: "all 0.3s ease-out 0s",
+              zIndex: (theme) => theme.zIndex.scrollTopButton,
+            }}
+            onClick={scrollTop}
+          >
+            <KeyboardArrowUpIcon fontSize="large" />
+          </IconButton>
+        )}
+      </Box>
+    </StyledBackgroundBox>
   );
 };
 
