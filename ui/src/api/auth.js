@@ -1,7 +1,11 @@
 import {
   AuthenticationDetails,
+  CognitoAccessToken,
+  CognitoIdToken,
+  CognitoRefreshToken,
   CognitoUser,
   CognitoUserPool,
+  CognitoUserSession,
 } from "amazon-cognito-identity-js";
 import { noop } from "../shared/utils";
 
@@ -78,8 +82,42 @@ export const signUp = (
   });
 };
 
+const getUserFromHash = (hash) => {
+  const split = hash?.slice(1).split('&');
+  if (!split || split.length < 2) {
+    return null;
+  }
+  const values = split.map(val => val.split('=')[1]);
+
+  const token = {
+    idToken: values[0],
+    accessToken: values[1],
+  }
+
+  const IdToken = new CognitoIdToken({
+    IdToken: token.idToken,
+  });
+  const AccessToken = new CognitoAccessToken({
+    AccessToken: token.accessToken,
+  });
+  const RefreshToken = new CognitoRefreshToken({RefreshToken: '' });
+
+  const user = new CognitoUser({
+    Username: IdToken.payload['cognito:username'],
+    Pool: userPool,
+  });
+
+  user.setSignInUserSession(new CognitoUserSession({
+    IdToken,
+    AccessToken,
+    RefreshToken,
+  }));
+
+  return user;
+}
+
 export const getCurrentUser = () => {
-  const user = userPool.getCurrentUser();
+  const user = userPool.getCurrentUser() || getUserFromHash(window.location?.hash);;
   if (user) {
     user.getSession(noop);
   }
