@@ -43,6 +43,12 @@ const getSpreadsheet = (
     variablesSpreadsheetOptions,
   );
 
+  const setData = (data) => {
+    setDatasheets(data.datas);
+    variablesSpreadsheet.setDatasheets(data.variablesDatas);
+    spreadsheet.sheet.switchData(spreadsheet.sheet.getDatas()[0]);
+  };
+
   const reset = () => {
     spreadsheet.sheet.sheetReset();
     variablesSpreadsheet.sheet.sheetReset();
@@ -71,7 +77,7 @@ const getSpreadsheet = (
     destroy,
     reset,
     spreadsheetEventEmitter,
-    setDatasheets,
+    setData,
     getDatas,
     getData,
     eventEmitter,

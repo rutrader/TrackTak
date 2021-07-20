@@ -134,7 +134,7 @@ export const buildVariablesSpreadsheet = (
 
   sheet.el.addClass(`${cssPrefix}-variables-sheet`);
 
-  const setVariableDatasheets = sheet.makeSetDatasheets(getDataProxy);
+  const setDatasheets = sheet.makeSetDatasheets(getDataProxy);
 
   const bottombar = getBottombar(
     "variables",
@@ -156,7 +156,7 @@ export const buildVariablesSpreadsheet = (
     sheet,
     getDataProxy,
     rootEl,
-    setVariableDatasheets,
+    setDatasheets,
     setOptions,
     getOptions,
     eventEmitter,

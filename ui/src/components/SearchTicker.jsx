@@ -13,6 +13,16 @@ import { getAutocompleteQuery } from "../../../packages/intrinsic-valuations/src
 import { useAuth } from "../hooks/useAuth";
 import { saveSpreadsheet } from "../api/api";
 import { navigate } from "gatsby";
+import freeCashFlowToFirmData, {
+  freeCashFlowToFirmVariablesData,
+} from "../../../packages/intrinsic-valuations/src/spreadsheet/templates/freeCashFlowFirmSimple/data";
+import { useDispatch } from "react-redux";
+import {
+  getExchangeRatesThunk,
+  getFundamentalsThunk,
+  getLastPriceCloseThunk,
+  getTenYearGovernmentBondLastCloseThunk,
+} from "../../../packages/intrinsic-valuations/src/redux/thunks/stockThunks";
 
 const SearchTicker = ({ isSmallSearch, sx }) => {
   const theme = useTheme();
@@ -21,11 +31,44 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [text, setText] = useState("");
   const { getAccessToken, userData } = useAuth();
+  const dispatch = useDispatch();
 
-  const searchStock = async (ticker) => {
+  const fetchData = async (ticker) => {
+    dispatch(
+      getLastPriceCloseThunk({
+        ticker,
+      }),
+    );
+
+    const fundamentals = await dispatch(
+      getFundamentalsThunk({
+        ticker,
+      }),
+    );
+
+    dispatch(
+      getExchangeRatesThunk({
+        currencyCode: fundamentals.payload.general.currencyCode,
+        incomeStatement: fundamentals.payload.incomeStatement,
+        balanceSheet: fundamentals.payload.balanceSheet,
+      }),
+    );
+
+    dispatch(
+      getTenYearGovernmentBondLastCloseThunk({
+        countryISO: fundamentals.payload.general.countryISO,
+      }),
+    );
+  };
+
+  const createSpreadsheet = async (ticker) => {
     const token = await getAccessToken();
+    const data = {
+      datas: freeCashFlowToFirmData,
+      variablesDatas: freeCashFlowToFirmVariablesData,
+    };
     const response = await saveSpreadsheet(
-      { name: ticker, data: {} },
+      { name: ticker, data },
       token?.jwtToken,
     );
     navigate(`/${userData.name}/my-spreadsheets/${response.data._id}`);
@@ -42,7 +85,7 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
     if (value?.code && value?.exchange) {
       const ticker = `${value.code}.${value.exchange}`;
 
-      searchStock(ticker);
+      createSpreadsheet(ticker);
     }
   };
 

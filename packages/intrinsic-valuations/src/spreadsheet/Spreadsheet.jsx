@@ -1,5 +1,5 @@
 import React, { useRef, useState, Fragment } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { Box, useMediaQuery, useTheme } from "@material-ui/core";
 import { useLocation } from "@reach/router";
@@ -11,13 +11,6 @@ import getSpreadsheet, {
 import selectGeneral from "../selectors/stockSelectors/selectGeneral";
 import getFormats from "./getFormats";
 import SaveStatus from "./SaveStatus";
-import {
-  getFundamentalsThunk,
-  getLastPriceCloseThunk,
-} from "../redux/thunks/stockThunks";
-import freeCashFlowToFirmData, {
-  freeCashFlowToFirmVariablesData,
-} from "./templates/freeCashFlowFirmSimple/data";
 import { useFinancialPlugin } from "./plugins/useFinancialPlugin";
 import hyperformulaConfig from "./hyperformulaConfig";
 
@@ -32,7 +25,6 @@ const Spreadsheet = ({ sheetData, saveSheetData }) => {
   const location = useLocation();
   const currencySymbol = useSelector(selectValuationCurrencySymbol);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const dispatch = useDispatch();
   const isFocusedOnValueDrivingInputs = location.hash?.includes(
     requiredInputsId,
   );
@@ -40,23 +32,6 @@ const Spreadsheet = ({ sheetData, saveSheetData }) => {
   const [isSaving, setIsSaving] = useState(false);
 
   useFinancialPlugin(spreadsheet);
-
-  useEffect(() => {
-    const ticker = sheetData?.name;
-
-    if (ticker) {
-      dispatch(
-        getFundamentalsThunk({
-          ticker,
-        }),
-      );
-      dispatch(
-        getLastPriceCloseThunk({
-          ticker,
-        }),
-      );
-    }
-  }, [dispatch, sheetData]);
 
   useEffect(() => {
     const exportToExcel = (exportFn) => {
@@ -177,16 +152,10 @@ const Spreadsheet = ({ sheetData, saveSheetData }) => {
   }, [isOnMobile, spreadsheet]);
 
   useEffect(() => {
-    if (spreadsheet) {
-      spreadsheet.variablesSpreadsheet.setVariableDatasheets(
-        freeCashFlowToFirmVariablesData,
-      );
-      spreadsheet.setDatasheets(freeCashFlowToFirmData);
-      spreadsheet.spreadsheet.sheet.switchData(
-        spreadsheet.spreadsheet.sheet.getDatas()[0],
-      );
+    if (spreadsheet && sheetData) {
+      spreadsheet.setData(sheetData.data);
     }
-  }, [spreadsheet]);
+  }, [sheetData, spreadsheet]);
 
   return (
     <Fragment>
