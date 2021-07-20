@@ -291,6 +291,20 @@ const api = {
     return data;
   },
 
+  getFinancialDataForSpreadsheet: async (ticker, updatedAt) => {
+    return database.findOne(Collections.FINANCIAL_DATA, ticker, {
+      general: { updatedAt },
+    });
+  },
+
+  saveFinancialData: async (ticker, financialData) => {
+    const document = {
+      _id: ticker,
+      ...financialData,
+    };
+    return database.insert(Collections.FINANCIAL_DATA, document);
+  },
+
   saveSpreadsheet: async (sheetData, userId) => {
     const document = {
       userId,
@@ -301,7 +315,12 @@ const api = {
       "sheetData.name": sheetData.name,
       userId,
     };
-    return database.replace(Collections.SPREADSHEET, query, document);
+    return database.replace(
+      Collections.SPREADSHEET,
+      query,
+      document,
+      document.sheetData.sheetId,
+    );
   },
 
   getSpreadsheets: async (userId) => {
@@ -311,11 +330,11 @@ const api = {
   },
 
   getSpreadsheet: async (userId, id) => {
-    return database.findOne(Collections.SPREADSHEET, id, userId);
+    return database.findOne(Collections.SPREADSHEET, id, { userId });
   },
 
   deleteSpreadsheet: async (id, userId) => {
-    return database.deleteOne(Collections.SPREADSHEET, id, userId);
+    return database.deleteOne(Collections.SPREADSHEET, id, { userId });
   },
 };
 

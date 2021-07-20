@@ -16,6 +16,14 @@ import { navigate } from "gatsby";
 import freeCashFlowToFirmData, {
   freeCashFlowToFirmVariablesData,
 } from "../../../packages/intrinsic-valuations/src/spreadsheet/templates/freeCashFlowFirmSimple/data";
+import { useDispatch } from "react-redux";
+import {
+  getExchangeRatesThunk,
+  getFundamentalsThunk,
+  getLastPriceCloseThunk,
+  getTenYearGovernmentBondLastCloseThunk,
+} from "../../../packages/intrinsic-valuations/src/redux/thunks/stockThunks";
+import convertStockAPIData from "../../../packages/intrinsic-valuations/src/shared/convertStockAPIData";
 
 const SearchTicker = ({ isSmallSearch, sx }) => {
   const theme = useTheme();
@@ -24,18 +32,59 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [text, setText] = useState("");
   const { getAccessToken, userData } = useAuth();
+  const dispatch = useDispatch();
+
+  const fetchData = async (ticker) => {
+    const fundamentals = await dispatch(
+      getFundamentalsThunk({
+        ticker,
+      }),
+    );
+
+    const values = await Promise.all([
+      dispatch(
+        getExchangeRatesThunk({
+          currencyCode: fundamentals.payload.general.currencyCode,
+          incomeStatement: fundamentals.payload.incomeStatement,
+          balanceSheet: fundamentals.payload.balanceSheet,
+        }),
+      ),
+      dispatch(
+        getLastPriceCloseThunk({
+          ticker,
+        }),
+      ),
+
+      dispatch(
+        getTenYearGovernmentBondLastCloseThunk({
+          countryISO: fundamentals.payload.general.countryISO,
+        }),
+      ),
+    ]);
+
+    return convertStockAPIData(
+      fundamentals,
+      values[0].payload,
+      values[1].payload,
+      values[2].payload,
+    );
+  };
 
   const createSpreadsheet = async (ticker) => {
+    debugger;
+    const financialData = await fetchData();
     const token = await getAccessToken();
     const data = {
       datas: freeCashFlowToFirmData,
       variablesDatas: freeCashFlowToFirmVariablesData,
     };
     const response = await saveSpreadsheet(
-      { name: ticker, data },
+      { sheetData: { name: ticker, data }, financialData },
       token?.jwtToken,
     );
-    navigate(`/${userData.name}/my-spreadsheets/${response.data._id}`);
+    navigate(
+      `/${userData.name}/my-spreadsheets/${response.data.spreadsheet._id}`,
+    );
   };
 
   const getAutoCompleteDebounced = useDebouncedCallback(async (value) => {

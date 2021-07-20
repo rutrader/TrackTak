@@ -91,6 +91,7 @@ const convertFundamentalsFromAPI = (fundamentalsData) => {
     countryISO: General.CountryISO,
     industry: General.Industry,
     gicSubIndustry: General.GicSubIndustry,
+    updatedAt: General.UpdatedAt,
   };
 
   const highlights = {

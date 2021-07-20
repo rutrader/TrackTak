@@ -17,66 +17,8 @@ import {
 } from "../templates/financialStatements";
 import { useEffect } from "react";
 import { isNil } from "lodash-es";
-import convertStockAPIData from "../../shared/convertStockAPIData";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  getExchangeRatesThunk,
-  getFundamentalsThunk,
-  getLastPriceCloseThunk,
-  getTenYearGovernmentBondLastCloseThunk,
-} from "../../redux/thunks/stockThunks";
-import { setFinancials } from "../../redux/actions/stockActions";
-import selectFinancials from "../../selectors/stockSelectors/selectFinancials";
 
-export const useFinancialPlugin = (spreadsheet, ticker) => {
-  const financials = useSelector(selectFinancials);
-  const hasLoaded = !!financials;
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const params = {
-      to: "2012-07-20",
-    };
-
-    const fetchData = async (ticker) => {
-      const { payload: fundamentals } = await dispatch(
-        getFundamentalsThunk({ ticker, params }),
-      );
-
-      const values = await Promise.all([
-        dispatch(
-          getExchangeRatesThunk({
-            currencyCode: fundamentals.general.currencyCode,
-            incomeStatement: fundamentals.incomeStatement,
-            balanceSheet: fundamentals.balanceSheet,
-            params,
-          }),
-        ),
-        dispatch(
-          getTenYearGovernmentBondLastCloseThunk({
-            countryISO: fundamentals.general.countryISO,
-            params,
-          }),
-        ),
-        dispatch(getLastPriceCloseThunk({ ticker, params })),
-      ]);
-
-      const financials = convertStockAPIData(
-        fundamentals,
-        params.to,
-        values[0].payload,
-        values[1].payload,
-        values[2].payload,
-      );
-
-      dispatch(setFinancials(financials));
-    };
-
-    if (ticker) {
-      fetchData(ticker);
-    }
-  }, [dispatch, ticker]);
-
+export const useFinancialPlugin = (spreadsheet, financials) => {
   useEffect(() => {
     const defaultStatement = { ttm: {}, yearly: {} };
     const {

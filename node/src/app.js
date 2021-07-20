@@ -4,6 +4,7 @@ import cors from "cors";
 import "express-async-errors";
 import api from "./api";
 import auth from "./middleware/auth";
+import getTicker from "./shared/getTicker";
 
 const hostname = "127.0.0.1";
 const port = 3001;
@@ -95,8 +96,27 @@ app.get("/api/v1/autocomplete-query/:queryString", async (req, res) => {
 });
 
 app.put("/api/v1/spreadsheets", auth, async (req, res) => {
-  const spreadsheet = await api.saveSpreadsheet(req.body, req.user.username);
-  res.send(spreadsheet);
+  const financialData = req.body.financialData;
+  const updatedAt = financialData.general.updatedAt;
+  const ticker = getTicker(
+    financialData.general.code,
+    financialData.general.exchange,
+  );
+
+  let existingFinancialData = await api.getFinancialDataForSpreadsheet(
+    ticker,
+    updatedAt,
+  );
+
+  if (!existingFinancialData) {
+    api.saveFinancialData(ticker, financialData);
+  }
+
+  const spreadsheet = await api.saveSpreadsheet(
+    req.body.sheetData,
+    req.user.username,
+  );
+  res.send({ spreadsheet, financialData });
 });
 
 app.get("/api/v1/spreadsheets", auth, async (req, res) => {
@@ -105,12 +125,19 @@ app.get("/api/v1/spreadsheets", auth, async (req, res) => {
 });
 
 app.get("/api/v1/spreadsheets/:id", auth, async (req, res) => {
-  console.log(req.user);
+  const updatedAt = req.financialData.updatedAt;
+  const ticker = getTicker(req.financialData.code, req.financialData.exchange);
+
+  const financialData = await api.getFinancialDataForSpreadsheet(
+    ticker,
+    updatedAt,
+  );
+
   const spreadsheet = await api.getSpreadsheet(
     req.user.username,
     req.params.id,
   );
-  res.send({ spreadsheet });
+  res.send({ spreadsheet, financialData });
 });
 
 app.delete("/api/v1/spreadsheets/:id", auth, async (req, res) => {
