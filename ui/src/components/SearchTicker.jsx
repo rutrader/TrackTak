@@ -93,7 +93,7 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
         message: `${
           financialData?.general.name
         }'s financial data has been frozen to ${dayjs().format(
-          "DD MMM YY",
+          "DD MMM YYYY",
         )} for your valuation.`,
       }),
     );

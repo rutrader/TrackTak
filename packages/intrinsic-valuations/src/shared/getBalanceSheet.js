@@ -1,4 +1,5 @@
 import convertCalculationToZeroIfNaN from "./convertCalculationToZeroIfNaN";
+import defaultStatement from "./defaultStatement";
 import getIsStockInUS from "./getIsStockInUS";
 import getSortedStatements from "./getSortedStatements";
 
@@ -91,11 +92,7 @@ const getBalanceSheets = (fundamentals, incomeStatements, convertCurrency) => {
     fundamentals.balanceSheet.yearly,
   );
 
-  if (!yearlyBalanceSheets.length)
-    return {
-      ttm: {},
-      yearly: {},
-    };
+  if (!yearlyBalanceSheets.length) return defaultStatement;
 
   const ttm = getTTMBalanceSheet(
     fundamentals,

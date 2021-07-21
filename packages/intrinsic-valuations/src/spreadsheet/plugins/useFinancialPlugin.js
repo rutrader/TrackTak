@@ -17,11 +17,11 @@ import {
 } from "../templates/financialStatements";
 import { useEffect } from "react";
 import { isNil } from "lodash-es";
+import defaultStatement from "../../shared/defaultStatement";
 
 export const useFinancialPlugin = (spreadsheet, financialData) => {
   useEffect(() => {
     const hasLoaded = !!financialData;
-    const defaultStatement = { ttm: {}, yearly: {} };
     const {
       exchangeRates,
       financialStatements = {},

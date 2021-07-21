@@ -1,3 +1,4 @@
+import defaultStatement from "./defaultStatement";
 import getIsStockInUS from "./getIsStockInUS";
 import getNonUSFinancialData from "./getNonUSFinancialData";
 import getSortedStatements from "./getSortedStatements";
@@ -51,11 +52,7 @@ const getCashFlowStatements = (fundamentals, convertCurrency) => {
     fundamentals.incomeStatement.yearly,
   );
 
-  if (!yearlyCashFlowStatements.length)
-    return {
-      ttm: {},
-      yearly: {},
-    };
+  if (!yearlyCashFlowStatements.length) return defaultStatement;
 
   const ttm = getTTMCashFlowStatement(
     fundamentals,
