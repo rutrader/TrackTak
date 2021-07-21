@@ -10,6 +10,7 @@ import getFormats from "./getFormats";
 import SaveStatus from "./SaveStatus";
 import { useFinancialPlugin } from "./plugins/useFinancialPlugin";
 import hyperformulaConfig from "./hyperformulaConfig";
+import dayjs from "dayjs";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
@@ -174,7 +175,6 @@ const Spreadsheet = ({ spreadsheet: spreadsheetData, saveSheetData }) => {
             flex: 1,
           }}
         >
-          <Typography></Typography>
           <Box
             sx={{
               ml: "auto",

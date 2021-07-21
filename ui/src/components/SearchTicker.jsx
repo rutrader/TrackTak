@@ -6,6 +6,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
+import dayjs from "dayjs";
 import SearchIcon from "@material-ui/icons/Search";
 import useDebouncedCallback from "../../../packages/intrinsic-valuations/src/hooks/useDebouncedCallback";
 import TTRoundInput from "./TTRoundInput";
@@ -24,6 +25,7 @@ import {
   getTenYearGovernmentBondLastCloseThunk,
 } from "../../../packages/intrinsic-valuations/src/redux/thunks/stockThunks";
 import convertStockAPIData from "../../../packages/intrinsic-valuations/src/shared/convertStockAPIData";
+import { setMessage } from "../redux/actions/snackbarActions";
 
 const SearchTicker = ({ isSmallSearch, sx }) => {
   const theme = useTheme();
@@ -84,6 +86,16 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
     );
     navigate(
       `/${userData.name}/my-spreadsheets/${response.data.spreadsheet._id}`,
+    );
+    dispatch(
+      setMessage({
+        severity: "success",
+        message: `${
+          financialData?.general.name
+        }'s financial data has been frozen to ${dayjs().format(
+          "DD MMM YY",
+        )} for your valuation.`,
+      }),
     );
   };
 
