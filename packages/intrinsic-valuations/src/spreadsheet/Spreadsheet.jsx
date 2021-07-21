@@ -1,10 +1,8 @@
 import React, { useRef, useState, Fragment } from "react";
-import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { Box, useMediaQuery, useTheme } from "@material-ui/core";
 import { useLocation } from "@reach/router";
 import { HyperFormula } from "hyperformula";
-import selectValuationCurrencySymbol from "../selectors/stockSelectors/selectValuationCurrencySymbol";
 import getSpreadsheet, {
   spreadsheetEvents,
 } from "../../../web-spreadsheet/src";
@@ -17,20 +15,20 @@ const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
 const defaultColWidth = 110;
 
-const Spreadsheet = ({ sheetData, saveSheetData }) => {
+const Spreadsheet = ({ sheetData, financialData, saveSheetData }) => {
   const containerRef = useRef();
   const [spreadsheet, setSpreadsheet] = useState();
   const theme = useTheme();
   const location = useLocation();
-  const currencySymbol = useSelector(selectValuationCurrencySymbol);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isFocusedOnValueDrivingInputs = location.hash?.includes(
     requiredInputsId,
   );
   const [isSaving, setIsSaving] = useState(false);
   const sheetName = sheetData?.name;
+  const currencySymbol = financialData?.general?.currencySymbol;
 
-  useFinancialPlugin(spreadsheet, sheetName);
+  useFinancialPlugin(spreadsheet, financialData);
 
   useEffect(() => {
     const exportToExcel = (exportFn) => {

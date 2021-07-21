@@ -17,8 +17,11 @@ const SpreadsheetPage = ({ sheetId }) => {
   const theme = useTheme();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const dispatch = useDispatch();
-  const spreadsheet = useFetchSpreadsheet(sheetId);
-  const saveSheetData = usePersistSpreadsheet(sheetId);
+  const [spreadsheet] = useFetchSpreadsheet(sheetId);
+  const saveSheetData = usePersistSpreadsheet(
+    sheetId,
+    spreadsheet?.financialDataQuery,
+  );
 
   useEffect(() => {
     if (!rotateSnackbarShown && isOnMobile) {
@@ -42,6 +45,7 @@ const SpreadsheetPage = ({ sheetId }) => {
       <Spreadsheet
         saveSheetData={saveSheetData}
         sheetData={spreadsheet?.sheetData}
+        financialData={spreadsheet?.financialData}
       />
     </>
   );

@@ -18,8 +18,9 @@ import {
 import { useEffect } from "react";
 import { isNil } from "lodash-es";
 
-export const useFinancialPlugin = (spreadsheet, financials) => {
+export const useFinancialPlugin = (spreadsheet, financialData) => {
   useEffect(() => {
+    const hasLoaded = !!financialData;
     const defaultStatement = { ttm: {}, yearly: {} };
     const {
       exchangeRates,
@@ -29,7 +30,7 @@ export const useFinancialPlugin = (spreadsheet, financials) => {
       general,
       highlights,
       ...data
-    } = financials ?? {};
+    } = financialData ?? {};
     const {
       incomeStatements = defaultStatement,
       balanceSheets = defaultStatement,
@@ -202,7 +203,7 @@ export const useFinancialPlugin = (spreadsheet, financials) => {
 
     HyperFormula.registerFunctionPlugin(FinancialPlugin, finTranslations);
 
-    if (!hasLoaded && spreadsheet) {
+    if (hasLoaded && spreadsheet) {
       if (spreadsheet.hyperformula.getSheetNames().length > 0) {
         spreadsheet.hyperformula.rebuildAndRecalculate();
 
@@ -214,7 +215,7 @@ export const useFinancialPlugin = (spreadsheet, financials) => {
       // TODO: Causing SPILL error I think https://github.com/handsontable/hyperformula/issues/775
       HyperFormula.unregisterFunctionPlugin(FinancialPlugin);
     };
-  }, [financials, hasLoaded, spreadsheet]);
+  }, [financialData, spreadsheet]);
 };
 
 const finTranslations = {

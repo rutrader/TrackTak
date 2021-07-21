@@ -4,7 +4,6 @@ import cors from "cors";
 import "express-async-errors";
 import api from "./api";
 import auth from "./middleware/auth";
-import getTicker from "./shared/getTicker";
 
 const hostname = "127.0.0.1";
 const port = 3001;
@@ -95,28 +94,42 @@ app.get("/api/v1/autocomplete-query/:queryString", async (req, res) => {
   res.send({ value });
 });
 
-app.put("/api/v1/spreadsheets", auth, async (req, res) => {
-  const financialData = req.body.financialData;
-  const updatedAt = financialData.general.updatedAt;
-  const ticker = getTicker(
-    financialData.general.code,
-    financialData.general.exchange,
+app.post("/api/v1/spreadsheets", auth, async (req, res) => {
+  let financialData = req.body.financialData;
+
+  const financialDataQuery = {
+    code: financialData.general.code,
+    exchange: financialData.general.exchange,
+    updatedAt: financialData.general.updatedAt,
+  };
+
+  const existingFinancialData = await api.getFinancialDataForSpreadsheet(
+    financialDataQuery,
   );
 
-  let existingFinancialData = await api.getFinancialDataForSpreadsheet(
-    ticker,
-    updatedAt,
-  );
-
-  if (!existingFinancialData) {
-    api.saveFinancialData(ticker, financialData);
+  if (existingFinancialData) {
+    financialData = existingFinancialData;
+  } else {
+    financialData = await api.saveFinancialData(financialData);
   }
 
   const spreadsheet = await api.saveSpreadsheet(
     req.body.sheetData,
+    financialDataQuery,
     req.user.username,
   );
-  res.send({ spreadsheet, financialData });
+  res.send({ spreadsheet });
+});
+
+app.put("/api/v1/spreadsheets", auth, async (req, res) => {
+  let financialDataQuery = req.body.financialDataQuery;
+
+  const spreadsheet = await api.saveSpreadsheet(
+    req.body.sheetData,
+    financialDataQuery,
+    req.user.username,
+  );
+  res.send({ spreadsheet });
 });
 
 app.get("/api/v1/spreadsheets", auth, async (req, res) => {
@@ -125,18 +138,15 @@ app.get("/api/v1/spreadsheets", auth, async (req, res) => {
 });
 
 app.get("/api/v1/spreadsheets/:id", auth, async (req, res) => {
-  const updatedAt = req.financialData.updatedAt;
-  const ticker = getTicker(req.financialData.code, req.financialData.exchange);
-
-  const financialData = await api.getFinancialDataForSpreadsheet(
-    ticker,
-    updatedAt,
-  );
-
   const spreadsheet = await api.getSpreadsheet(
     req.user.username,
     req.params.id,
   );
+
+  const financialData = await api.getFinancialDataForSpreadsheet(
+    spreadsheet.financialDataQuery,
+  );
+
   res.send({ spreadsheet, financialData });
 });
 

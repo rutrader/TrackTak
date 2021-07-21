@@ -11,7 +11,7 @@ import useDebouncedCallback from "../../../packages/intrinsic-valuations/src/hoo
 import TTRoundInput from "./TTRoundInput";
 import { getAutocompleteQuery } from "../../../packages/intrinsic-valuations/src/api/api";
 import { useAuth } from "../hooks/useAuth";
-import { saveSpreadsheet } from "../api/api";
+import { createSpreadsheet } from "../api/api";
 import { navigate } from "gatsby";
 import freeCashFlowToFirmData, {
   freeCashFlowToFirmVariablesData,
@@ -35,7 +35,7 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
   const dispatch = useDispatch();
 
   const fetchData = async (ticker) => {
-    const fundamentals = await dispatch(
+    const { payload: fundamentals } = await dispatch(
       getFundamentalsThunk({
         ticker,
       }),
@@ -44,9 +44,9 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
     const values = await Promise.all([
       dispatch(
         getExchangeRatesThunk({
-          currencyCode: fundamentals.payload.general.currencyCode,
-          incomeStatement: fundamentals.payload.incomeStatement,
-          balanceSheet: fundamentals.payload.balanceSheet,
+          currencyCode: fundamentals.general.currencyCode,
+          incomeStatement: fundamentals.incomeStatement,
+          balanceSheet: fundamentals.balanceSheet,
         }),
       ),
       dispatch(
@@ -57,7 +57,7 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
 
       dispatch(
         getTenYearGovernmentBondLastCloseThunk({
-          countryISO: fundamentals.payload.general.countryISO,
+          countryISO: fundamentals.general.countryISO,
         }),
       ),
     ]);
@@ -70,16 +70,16 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
     );
   };
 
-  const createSpreadsheet = async (ticker) => {
-    debugger;
-    const financialData = await fetchData();
+  const createUserSpreadsheet = async (ticker) => {
+    const financialData = await fetchData(ticker);
     const token = await getAccessToken();
     const data = {
       datas: freeCashFlowToFirmData,
       variablesDatas: freeCashFlowToFirmVariablesData,
     };
-    const response = await saveSpreadsheet(
-      { sheetData: { name: ticker, data }, financialData },
+    const sheetData = { name: ticker, data };
+    const response = await createSpreadsheet(
+      { sheetData, financialData },
       token?.jwtToken,
     );
     navigate(
@@ -98,7 +98,7 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
     if (value?.code && value?.exchange) {
       const ticker = `${value.code}.${value.exchange}`;
 
-      createSpreadsheet(ticker);
+      createUserSpreadsheet(ticker);
     }
   };
 

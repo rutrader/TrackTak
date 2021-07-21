@@ -12,13 +12,14 @@ import getInterestCoverage from "./getInterestCoverage";
 import getInterestSpread from "./getInterestSpread";
 import getEstimatedCostOfDebt from "./getEstimatedCostOfDebt";
 import matureMarketEquityRiskPremium from "./matureMarketEquityRiskPremium";
+import convertSubCurrencyToCurrency from "./convertSubCurrencyToCurrency";
+import getSymbolFromCurrency from "currency-symbol-map";
 
 const convertStockAPIData = (
   fundamentals,
-  to,
   exchangeRates,
-  governmentBondTenYearYield,
   priceLastClose,
+  governmentBondTenYearYield,
 ) => {
   const convertCurrency = makeConvertCurrency(exchangeRates);
   const incomeStatements = getIncomeStatements(fundamentals, convertCurrency);
@@ -55,8 +56,17 @@ const convertStockAPIData = (
     currentEquityRiskPremium,
   );
 
+  const currencyCode = convertSubCurrencyToCurrency(
+    fundamentals.general.currencyCode,
+  );
+  const currencySymbol = getSymbolFromCurrency(currencyCode);
+
   return {
-    general: fundamentals.general,
+    general: {
+      ...fundamentals.general,
+      currencyCode,
+      currencySymbol,
+    },
     financialStatements: {
       incomeStatements,
       balanceSheets,

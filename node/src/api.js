@@ -9,6 +9,7 @@ import { getSensitivityAnalysisWorker } from "./workers";
 import * as database from "./database/mongoDbClient";
 import { Collections } from "./database/collections";
 import convertFundamentalsFromAPI from "./shared/convertFundamentalsFromAPI";
+import { default as MongoDb } from "mongodb";
 
 const baseUrl = "https://eodhistoricaldata.com/api";
 const fundamentalsUrl = `${baseUrl}/fundamentals`;
@@ -291,22 +292,25 @@ const api = {
     return data;
   },
 
-  getFinancialDataForSpreadsheet: async (ticker, updatedAt) => {
-    return database.findOne(Collections.FINANCIAL_DATA, ticker, {
-      general: { updatedAt },
+  getFinancialDataForSpreadsheet: async (financialDataQuery) => {
+    return database.findOne(Collections.FINANCIAL_DATA, {
+      "general.code": financialDataQuery.code,
+      "general.exchange": financialDataQuery.exchange,
+      "general.updatedAt": financialDataQuery.updatedAt,
     });
   },
 
-  saveFinancialData: async (ticker, financialData) => {
+  saveFinancialData: async (financialData) => {
     const document = {
-      _id: ticker,
+      _id: new MongoDb.ObjectId(),
       ...financialData,
     };
     return database.insert(Collections.FINANCIAL_DATA, document);
   },
 
-  saveSpreadsheet: async (sheetData, userId) => {
+  saveSpreadsheet: async (sheetData, financialDataQuery, userId) => {
     const document = {
+      financialDataQuery,
       userId,
       sheetData,
       lastModifiedTime: new Date(),
@@ -315,6 +319,7 @@ const api = {
       "sheetData.name": sheetData.name,
       userId,
     };
+
     return database.replace(
       Collections.SPREADSHEET,
       query,
@@ -330,11 +335,17 @@ const api = {
   },
 
   getSpreadsheet: async (userId, id) => {
-    return database.findOne(Collections.SPREADSHEET, id, { userId });
+    return database.findOne(Collections.SPREADSHEET, {
+      _id: new MongoDb.ObjectId(id),
+      userId,
+    });
   },
 
   deleteSpreadsheet: async (id, userId) => {
-    return database.deleteOne(Collections.SPREADSHEET, id, { userId });
+    return database.deleteOne(Collections.SPREADSHEET, {
+      _id: new MongoDb.ObjectId(id),
+      userId,
+    });
   },
 };
 

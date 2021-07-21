@@ -44,8 +44,8 @@ const getSpreadsheet = (
   );
 
   const setData = (data) => {
-    setDatasheets(data.datas);
     variablesSpreadsheet.setDatasheets(data.variablesDatas);
+    setDatasheets(data.datas);
     spreadsheet.sheet.switchData(spreadsheet.sheet.getDatas()[0]);
   };
 
