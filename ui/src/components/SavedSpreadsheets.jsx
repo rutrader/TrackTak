@@ -129,7 +129,8 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
               {spreadsheets
                 .sort(
                   (a, b) =>
-                    new Date(b.lastModifiedTime) - new Date(a.lastModifiedTime),
+                    new Date(b.lastModifiedTimestamp) -
+                    new Date(a.lastModifiedTimestamp),
                 )
                 .map((spreadsheet) => (
                   <TableRow
@@ -151,7 +152,7 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
                       </Box>
                     </TableCell>
                     <TableCell align="right">
-                      {dayjs(spreadsheet.lastModifiedTime).format(
+                      {dayjs(spreadsheet.lastModifiedTimestamp).format(
                         "DD MMM YY HH:mm",
                       )}
                     </TableCell>

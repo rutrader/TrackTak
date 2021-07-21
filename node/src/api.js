@@ -314,12 +314,18 @@ const api = {
     return database.insert(Collections.FINANCIAL_DATA, document);
   },
 
-  saveSpreadsheet: async (sheetData, financialDataId, userId) => {
+  saveSpreadsheet: async (
+    sheetData,
+    financialDataId,
+    userId,
+    createdTimestamp,
+  ) => {
     const document = {
       financialDataId,
       userId,
       sheetData,
-      lastModifiedTime: new Date(),
+      lastModifiedTimestamp: new Date(),
+      createdTimestamp,
     };
     const query = {
       "sheetData.name": sheetData.name,

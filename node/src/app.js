@@ -117,17 +117,20 @@ app.post("/api/v1/spreadsheets", auth, async (req, res) => {
     req.body.sheetData,
     financialData._id,
     req.user.username,
+    new Date(),
   );
   res.send({ spreadsheet });
 });
 
 app.put("/api/v1/spreadsheets", auth, async (req, res) => {
   let financialDataId = req.body.financialDataId;
+  const sheetData = req.body.sheetData;
 
   const spreadsheet = await api.saveSpreadsheet(
-    req.body.sheetData,
+    sheetData,
     financialDataId,
     req.user.username,
+    req.body.createdTimestamp,
   );
   res.send({ spreadsheet });
 });

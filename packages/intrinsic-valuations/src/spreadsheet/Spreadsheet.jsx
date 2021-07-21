@@ -1,6 +1,6 @@
 import React, { useRef, useState, Fragment } from "react";
 import { useEffect } from "react";
-import { Box, useMediaQuery, useTheme } from "@material-ui/core";
+import { Box, Typography, useMediaQuery, useTheme } from "@material-ui/core";
 import { useLocation } from "@reach/router";
 import { HyperFormula } from "hyperformula";
 import getSpreadsheet, {
@@ -15,7 +15,7 @@ const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
 const defaultColWidth = 110;
 
-const Spreadsheet = ({ sheetData, financialData, saveSheetData }) => {
+const Spreadsheet = ({ spreadsheet: spreadsheetData, saveSheetData }) => {
   const containerRef = useRef();
   const [spreadsheet, setSpreadsheet] = useState();
   const theme = useTheme();
@@ -25,10 +25,11 @@ const Spreadsheet = ({ sheetData, financialData, saveSheetData }) => {
     requiredInputsId,
   );
   const [isSaving, setIsSaving] = useState(false);
-  const sheetName = sheetData?.name;
-  const currencySymbol = financialData?.general?.currencySymbol;
+  const sheetName = spreadsheetData?.sheetData?.name;
+  const currencySymbol =
+    spreadsheetData?.financialData?.general?.currencySymbol;
 
-  useFinancialPlugin(spreadsheet, financialData);
+  useFinancialPlugin(spreadsheet, spreadsheetData?.financialData);
 
   useEffect(() => {
     const exportToExcel = (exportFn) => {
@@ -117,7 +118,7 @@ const Spreadsheet = ({ sheetData, financialData, saveSheetData }) => {
   useEffect(() => {
     const handleSave = async (data) => {
       setIsSaving(true);
-      await saveSheetData(sheetData.name, data);
+      await saveSheetData(data);
       setIsSaving(false);
     };
 
@@ -136,7 +137,7 @@ const Spreadsheet = ({ sheetData, financialData, saveSheetData }) => {
         );
       }
     };
-  }, [spreadsheet, saveSheetData, sheetData]);
+  }, [spreadsheet, saveSheetData, spreadsheetData]);
 
   useEffect(() => {
     if (spreadsheet) {
@@ -149,10 +150,10 @@ const Spreadsheet = ({ sheetData, financialData, saveSheetData }) => {
   }, [isOnMobile, spreadsheet]);
 
   useEffect(() => {
-    if (spreadsheet && sheetData) {
-      spreadsheet.setData(sheetData.data);
+    if (spreadsheet && spreadsheetData) {
+      spreadsheet.setData(spreadsheetData?.sheetData.data);
     }
-  }, [sheetData, spreadsheet]);
+  }, [spreadsheetData, spreadsheet]);
 
   return (
     <Fragment>
@@ -173,6 +174,7 @@ const Spreadsheet = ({ sheetData, financialData, saveSheetData }) => {
             flex: 1,
           }}
         >
+          <Typography></Typography>
           <Box
             sx={{
               ml: "auto",
