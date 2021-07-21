@@ -1,6 +1,5 @@
 import React from "react";
 import { TracktakProvider, createStore } from "@tracktak/intrinsic-valuations";
-import { LocationProvider, globalHistory } from "@reach/router";
 import "@fontsource/nunito/400.css";
 import "@fontsource/nunito/700.css";
 import theme from "./src/theme";
@@ -29,32 +28,4 @@ export const wrapRootElement = ({ element }) => {
       </ProvideAuth>
     </TracktakProvider>
   );
-};
-
-export const wrapPageElement = ({ element, props: { data } }) => {
-  if (data && data.contentfulDcfTemplate) {
-    // const {
-    //   fundamentalsData,
-    //   exchangeRates,
-    //   price,
-    //   tenYearGovernmentBondYield,
-    // } = data.contentfulDcfTemplate;
-    // const { dispatch } = store;
-
-    // const parsedFinancialData = JSON.parse(fundamentalsData.internal.content);
-    // const parsedExchangeRates = exchangeRates?.length
-    //   ? JSON.parse(exchangeRates.internal.content)
-    //   : undefined;
-
-    // dispatch(setFundamentals(convertFundamentals(parsedFinancialData)));
-    // dispatch(setExchangeRates(parsedExchangeRates));
-    // dispatch(setLastPriceClose(price));
-    // dispatch(setTenYearGovernmentBondLastClose(tenYearGovernmentBondYield));
-
-    return (
-      <LocationProvider history={globalHistory}>{element}</LocationProvider>
-    );
-  }
-
-  return element;
 };

@@ -1,6 +1,6 @@
 import React, { useRef, useState, Fragment } from "react";
 import { useEffect } from "react";
-import { Box, Typography, useMediaQuery, useTheme } from "@material-ui/core";
+import { Box, useMediaQuery, useTheme } from "@material-ui/core";
 import { useLocation } from "@reach/router";
 import { HyperFormula } from "hyperformula";
 import getSpreadsheet, {
@@ -10,13 +10,15 @@ import getFormats from "./getFormats";
 import SaveStatus from "./SaveStatus";
 import { useFinancialPlugin } from "./plugins/useFinancialPlugin";
 import hyperformulaConfig from "./hyperformulaConfig";
-import dayjs from "dayjs";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
 const defaultColWidth = 110;
 
-const Spreadsheet = ({ spreadsheet: spreadsheetData, saveSheetData }) => {
+const Spreadsheet = ({
+  spreadsheet: spreadsheetData,
+  saveSheetData = () => {},
+}) => {
   const containerRef = useRef();
   const [spreadsheet, setSpreadsheet] = useState();
   const theme = useTheme();
