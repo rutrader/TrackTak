@@ -115,18 +115,18 @@ app.post("/api/v1/spreadsheets", auth, async (req, res) => {
 
   const spreadsheet = await api.saveSpreadsheet(
     req.body.sheetData,
-    financialDataQuery,
+    financialData._id,
     req.user.username,
   );
   res.send({ spreadsheet });
 });
 
 app.put("/api/v1/spreadsheets", auth, async (req, res) => {
-  let financialDataQuery = req.body.financialDataQuery;
+  let financialDataId = req.body.financialDataId;
 
   const spreadsheet = await api.saveSpreadsheet(
     req.body.sheetData,
-    financialDataQuery,
+    financialDataId,
     req.user.username,
   );
   res.send({ spreadsheet });
@@ -143,8 +143,8 @@ app.get("/api/v1/spreadsheets/:id", auth, async (req, res) => {
     req.params.id,
   );
 
-  const financialData = await api.getFinancialDataForSpreadsheet(
-    spreadsheet.financialDataQuery,
+  const financialData = await api.getFinancialDataForSpreadsheetFromId(
+    spreadsheet.financialDataId,
   );
 
   res.send({ spreadsheet, financialData });
@@ -152,6 +152,7 @@ app.get("/api/v1/spreadsheets/:id", auth, async (req, res) => {
 
 app.delete("/api/v1/spreadsheets/:id", auth, async (req, res) => {
   await api.deleteSpreadsheet(req.params.id, req.user.username);
+
   res.send({ id: req.params.id });
 });
 

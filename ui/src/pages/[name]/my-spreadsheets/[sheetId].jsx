@@ -20,7 +20,7 @@ const SpreadsheetPage = ({ sheetId }) => {
   const [spreadsheet] = useFetchSpreadsheet(sheetId);
   const saveSheetData = usePersistSpreadsheet(
     sheetId,
-    spreadsheet?.financialDataQuery,
+    spreadsheet?.financialData?._id,
   );
 
   useEffect(() => {
