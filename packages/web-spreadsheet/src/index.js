@@ -30,12 +30,12 @@ const getSpreadsheet = (
   const {
     spreadsheet,
     variablesSpreadsheet,
-    spreadsheetEventEmitter,
     setDatasheets,
     getDatas,
     getData,
     setOptions,
     eventEmitter,
+    variablesEventEmitter,
   } = buildSpreadsheet(
     rootEl,
     options,
@@ -76,11 +76,11 @@ const getSpreadsheet = (
     setOptions,
     destroy,
     reset,
-    spreadsheetEventEmitter,
     setData,
     getDatas,
     getData,
     eventEmitter,
+    variablesEventEmitter,
     hyperformula,
   };
 };

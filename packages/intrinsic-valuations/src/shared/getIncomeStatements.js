@@ -52,12 +52,12 @@ const getTTMIncomeStatement = (
   const incomeStatement = getIsStockInUS(fundamentals)
     ? getUSFinancialData(
         getIncomeStatement,
-        yearlyIncomeStatements,
+        quarterlyIncomeStatements,
         convertCurrency,
       )
     : getNonUSFinancialData(
         getIncomeStatement,
-        quarterlyIncomeStatements,
+        yearlyIncomeStatements,
         convertCurrency,
       );
 

@@ -6,11 +6,14 @@ const usePersistSpreadsheet = (spreadsheet) => {
 
   const persistSpreadsheetData = async (newData) => {
     const token = await getAccessToken();
-    debugger;
+
     saveSpreadsheet(
       {
         ...spreadsheet,
-        sheetData: newData,
+        sheetData: {
+          ...spreadsheet.sheetData,
+          data: newData,
+        },
       },
       token?.jwtToken,
     );

@@ -298,5 +298,6 @@ export const buildSpreadsheet = (
     setOptions,
     hyperformula,
     eventEmitter,
+    variablesEventEmitter,
   };
 };

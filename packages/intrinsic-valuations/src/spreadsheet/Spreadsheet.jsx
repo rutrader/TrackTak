@@ -124,7 +124,12 @@ const Spreadsheet = ({ spreadsheet: spreadsheetData, saveSheetData }) => {
     };
 
     if (spreadsheet) {
-      spreadsheet.variablesSpreadsheet.eventEmitter.on(
+      spreadsheet.eventEmitter.on(
+        spreadsheetEvents.save.persistDataChange,
+        handleSave,
+      );
+
+      spreadsheet.variablesEventEmitter.on(
         spreadsheetEvents.save.persistDataChange,
         handleSave,
       );
@@ -132,7 +137,12 @@ const Spreadsheet = ({ spreadsheet: spreadsheetData, saveSheetData }) => {
 
     return () => {
       if (spreadsheet) {
-        spreadsheet.variablesSpreadsheet.eventEmitter.off(
+        spreadsheet.eventEmitter.off(
+          spreadsheetEvents.save.persistDataChange,
+          handleSave,
+        );
+
+        spreadsheet.variablesEventEmitter.off(
           spreadsheetEvents.save.persistDataChange,
           handleSave,
         );
