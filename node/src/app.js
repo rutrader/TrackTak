@@ -94,9 +94,45 @@ app.get("/api/v1/autocomplete-query/:queryString", async (req, res) => {
   res.send({ value });
 });
 
+app.post("/api/v1/spreadsheets", auth, async (req, res) => {
+  let financialData = req.body.financialData;
+
+  const financialDataQuery = {
+    code: financialData.general.code,
+    exchange: financialData.general.exchange,
+    updatedAt: financialData.general.updatedAt,
+  };
+
+  const existingFinancialData = await api.getFinancialDataForSpreadsheet(
+    financialDataQuery,
+  );
+
+  if (existingFinancialData) {
+    financialData = existingFinancialData;
+  } else {
+    financialData = await api.saveFinancialData(financialData);
+  }
+
+  const spreadsheet = await api.saveSpreadsheet(
+    req.body.sheetData,
+    financialData._id,
+    req.user.username,
+    new Date(),
+  );
+  res.send({ spreadsheet });
+});
+
 app.put("/api/v1/spreadsheets", auth, async (req, res) => {
-  const spreadsheet = await api.saveSpreadsheet(req.body, req.user.username);
-  res.send(spreadsheet);
+  let financialDataId = req.body.financialDataId;
+  const sheetData = req.body.sheetData;
+
+  const spreadsheet = await api.saveSpreadsheet(
+    sheetData,
+    financialDataId,
+    req.user.username,
+    req.body.createdTimestamp,
+  );
+  res.send({ spreadsheet });
 });
 
 app.get("/api/v1/spreadsheets", auth, async (req, res) => {
@@ -105,16 +141,21 @@ app.get("/api/v1/spreadsheets", auth, async (req, res) => {
 });
 
 app.get("/api/v1/spreadsheets/:id", auth, async (req, res) => {
-  console.log(req.user);
   const spreadsheet = await api.getSpreadsheet(
     req.user.username,
     req.params.id,
   );
-  res.send({ spreadsheet });
+
+  const financialData = await api.getFinancialDataForSpreadsheetFromId(
+    spreadsheet.financialDataId,
+  );
+
+  res.send({ spreadsheet, financialData });
 });
 
 app.delete("/api/v1/spreadsheets/:id", auth, async (req, res) => {
   await api.deleteSpreadsheet(req.params.id, req.user.username);
+
   res.send({ id: req.params.id });
 });
 

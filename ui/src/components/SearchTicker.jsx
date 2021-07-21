@@ -6,13 +6,26 @@ import {
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
+import dayjs from "dayjs";
 import SearchIcon from "@material-ui/icons/Search";
 import useDebouncedCallback from "../../../packages/intrinsic-valuations/src/hooks/useDebouncedCallback";
 import TTRoundInput from "./TTRoundInput";
 import { getAutocompleteQuery } from "../../../packages/intrinsic-valuations/src/api/api";
 import { useAuth } from "../hooks/useAuth";
-import { saveSpreadsheet } from "../api/api";
+import { createSpreadsheet } from "../api/api";
 import { navigate } from "gatsby";
+import freeCashFlowToFirmData, {
+  freeCashFlowToFirmVariablesData,
+} from "../../../packages/intrinsic-valuations/src/spreadsheet/templates/freeCashFlowFirmSimple/data";
+import { useDispatch } from "react-redux";
+import {
+  getExchangeRatesThunk,
+  getFundamentalsThunk,
+  getLastPriceCloseThunk,
+  getTenYearGovernmentBondLastCloseThunk,
+} from "../../../packages/intrinsic-valuations/src/redux/thunks/stockThunks";
+import convertStockAPIData from "../../../packages/intrinsic-valuations/src/shared/convertStockAPIData";
+import { setMessage } from "../redux/actions/snackbarActions";
 
 const SearchTicker = ({ isSmallSearch, sx }) => {
   const theme = useTheme();
@@ -21,14 +34,69 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [text, setText] = useState("");
   const { getAccessToken, userData } = useAuth();
+  const dispatch = useDispatch();
 
-  const searchStock = async (ticker) => {
+  const fetchData = async (ticker) => {
+    const { payload: fundamentals } = await dispatch(
+      getFundamentalsThunk({
+        ticker,
+      }),
+    );
+
+    const values = await Promise.all([
+      dispatch(
+        getExchangeRatesThunk({
+          currencyCode: fundamentals.general.currencyCode,
+          incomeStatement: fundamentals.incomeStatement,
+          balanceSheet: fundamentals.balanceSheet,
+        }),
+      ),
+      dispatch(
+        getLastPriceCloseThunk({
+          ticker,
+        }),
+      ),
+
+      dispatch(
+        getTenYearGovernmentBondLastCloseThunk({
+          countryISO: fundamentals.general.countryISO,
+        }),
+      ),
+    ]);
+
+    return convertStockAPIData(
+      fundamentals,
+      values[0].payload,
+      values[1].payload,
+      values[2].payload,
+    );
+  };
+
+  const createUserSpreadsheet = async (ticker) => {
+    const financialData = await fetchData(ticker);
     const token = await getAccessToken();
-    const response = await saveSpreadsheet(
-      { name: ticker, data: {} },
+    const data = {
+      datas: freeCashFlowToFirmData,
+      variablesDatas: freeCashFlowToFirmVariablesData,
+    };
+    const sheetData = { name: ticker, data };
+    const response = await createSpreadsheet(
+      { sheetData, financialData },
       token?.jwtToken,
     );
-    navigate(`/${userData.name}/my-spreadsheets/${response.data._id}`);
+    navigate(
+      `/${userData.name}/my-spreadsheets/${response.data.spreadsheet._id}`,
+    );
+    dispatch(
+      setMessage({
+        severity: "success",
+        message: `${
+          financialData?.general.name
+        }'s financial data has been frozen to ${dayjs().format(
+          "DD MMM YYYY",
+        )} for your valuation.`,
+      }),
+    );
   };
 
   const getAutoCompleteDebounced = useDebouncedCallback(async (value) => {
@@ -42,7 +110,7 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
     if (value?.code && value?.exchange) {
       const ticker = `${value.code}.${value.exchange}`;
 
-      searchStock(ticker);
+      createUserSpreadsheet(ticker);
     }
   };
 

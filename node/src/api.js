@@ -8,6 +8,8 @@ import nodeEndpoint from "comlink/dist/umd/node-adapter";
 import { getSensitivityAnalysisWorker } from "./workers";
 import * as database from "./database/mongoDbClient";
 import { Collections } from "./database/collections";
+import convertFundamentalsFromAPI from "./shared/convertFundamentalsFromAPI";
+import { default as MongoDb } from "mongodb";
 
 const baseUrl = "https://eodhistoricaldata.com/api";
 const fundamentalsUrl = `${baseUrl}/fundamentals`;
@@ -89,9 +91,11 @@ const api = {
           },
         });
 
-        return replaceDoubleColonWithObject(data);
+        const newObject = replaceDoubleColonWithObject(data);
+
+        return convertFundamentalsFromAPI(newObject);
       },
-      "fundamnetals",
+      "fundamentals",
       { ticker, query },
     );
 
@@ -288,17 +292,52 @@ const api = {
     return data;
   },
 
-  saveSpreadsheet: async (sheetData, userId) => {
+  getFinancialDataForSpreadsheet: async (financialDataQuery) => {
+    return database.findOne(Collections.FINANCIAL_DATA, {
+      "general.code": financialDataQuery.code,
+      "general.exchange": financialDataQuery.exchange,
+      "general.updatedAt": financialDataQuery.updatedAt,
+    });
+  },
+
+  getFinancialDataForSpreadsheetFromId: async (financialDataId) => {
+    return database.findOne(Collections.FINANCIAL_DATA, {
+      _id: financialDataId,
+    });
+  },
+
+  saveFinancialData: async (financialData) => {
     const document = {
+      _id: new MongoDb.ObjectId(),
+      ...financialData,
+    };
+    return database.insert(Collections.FINANCIAL_DATA, document);
+  },
+
+  saveSpreadsheet: async (
+    sheetData,
+    financialDataId,
+    userId,
+    createdTimestamp,
+  ) => {
+    const document = {
+      financialDataId,
       userId,
       sheetData,
-      lastModifiedTime: new Date(),
+      lastModifiedTimestamp: new Date(),
+      createdTimestamp,
     };
     const query = {
       "sheetData.name": sheetData.name,
       userId,
     };
-    return database.replace(Collections.SPREADSHEET, query, document);
+
+    return database.replace(
+      Collections.SPREADSHEET,
+      query,
+      document,
+      document.sheetData.sheetId,
+    );
   },
 
   getSpreadsheets: async (userId) => {
@@ -308,11 +347,17 @@ const api = {
   },
 
   getSpreadsheet: async (userId, id) => {
-    return database.findOne(Collections.SPREADSHEET, id, userId);
+    return database.findOne(Collections.SPREADSHEET, {
+      _id: new MongoDb.ObjectId(id),
+      userId,
+    });
   },
 
   deleteSpreadsheet: async (id, userId) => {
-    return database.deleteOne(Collections.SPREADSHEET, id, userId);
+    return database.deleteOne(Collections.SPREADSHEET, {
+      _id: new MongoDb.ObjectId(id),
+      userId,
+    });
   },
 };
 

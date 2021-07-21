@@ -1,5 +1,11 @@
 import axios from "../../../packages/intrinsic-valuations/src/api/axios";
 
+export const createSpreadsheet = async (spreadsheet, accessToken) => {
+  return axios.post("/api/v1/spreadsheets", spreadsheet, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+};
+
 export const saveSpreadsheet = async (spreadsheet, accessToken) => {
   return axios.put("/api/v1/spreadsheets", spreadsheet, {
     headers: { Authorization: `Bearer ${accessToken}` },

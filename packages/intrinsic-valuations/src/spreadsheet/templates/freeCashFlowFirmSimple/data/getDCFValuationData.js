@@ -1,5 +1,5 @@
 const getDCFValuationData = () => {
-  const data = {
+  return {
     name: "DCF Valuation",
     freeze: "A1",
     styles: [
@@ -4710,8 +4710,6 @@ const getDCFValuationData = () => {
       ["Margin of Safety", "=IFERROR((B54-B53)/B54, 0)"],
     ],
   };
-
-  return data;
 };
 
 export default getDCFValuationData;

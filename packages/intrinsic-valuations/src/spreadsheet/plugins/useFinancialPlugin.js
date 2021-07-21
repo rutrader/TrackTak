@@ -5,7 +5,6 @@ import {
   ArraySize,
   HyperFormula,
 } from "hyperformula";
-import matureMarketEquityRiskPremium from "../../shared/matureMarketEquityRiskPremium";
 import dayjs from "dayjs";
 import convertSubCurrencyToCurrency from "../../shared/convertSubCurrencyToCurrency";
 import {
@@ -16,44 +15,27 @@ import {
   getStatements,
   incomeStatement,
 } from "../templates/financialStatements";
-import { useSelector } from "react-redux";
-import selectCashFlowStatements from "../../selectors/stockSelectors/selectCashFlowStatements";
-import selectIncomeStatements from "../../selectors/stockSelectors/selectIncomeStatements";
-import selectBalanceSheets from "../../selectors/stockSelectors/selectBalanceSheets";
-import selectCurrentEquityRiskPremium from "../../selectors/stockSelectors/selectCurrentEquityRiskPremium";
-import selectPrice from "../../selectors/stockSelectors/selectPrice";
-import selectRiskFreeRate from "../../selectors/stockSelectors/selectRiskFreeRate";
-import selectSharesOutstanding from "../../selectors/stockSelectors/selectSharesOutstanding";
-import selectThreeAverageYearsEffectiveTaxRate from "../../selectors/stockSelectors/selectThreeAverageYearsEffectiveTaxRate";
-import selectCurrentIndustry from "../../selectors/stockSelectors/selectCurrentIndustry";
-import selectEstimatedCostOfDebt from "../../selectors/stockSelectors/selectEstimatedCostOfDebt";
-import selectGeneral from "../../selectors/stockSelectors/selectGeneral";
-import selectHighlights from "../../selectors/stockSelectors/selectHighlights";
-import selectExchangeRates from "../../selectors/stockSelectors/selectExchangeRates";
-import selectIsStockLoaded from "../../selectors/stockSelectors/selectisStockLoaded";
 import { useEffect } from "react";
 import { isNil } from "lodash-es";
+import defaultStatement from "../../shared/defaultStatement";
 
-export const useFinancialPlugin = (spreadsheet) => {
-  const isStockLoaded = useSelector(selectIsStockLoaded);
-  const incomeStatements = useSelector(selectIncomeStatements);
-  const balanceSheets = useSelector(selectBalanceSheets);
-  const cashFlowStatements = useSelector(selectCashFlowStatements);
-  const currentEquityRiskPremium = useSelector(selectCurrentEquityRiskPremium);
-  const price = useSelector(selectPrice);
-  const riskFreeRate = useSelector(selectRiskFreeRate);
-  const sharesOutstanding = useSelector(selectSharesOutstanding);
-  const pastThreeYearsAverageEffectiveTaxRate = useSelector(
-    selectThreeAverageYearsEffectiveTaxRate,
-  );
-  const currentIndustry = useSelector(selectCurrentIndustry);
-  const estimatedCostOfDebt = useSelector(selectEstimatedCostOfDebt);
-  const general = useSelector(selectGeneral);
-  const highlights = useSelector(selectHighlights);
-  const exchangeRates = useSelector(selectExchangeRates);
-
+export const useFinancialPlugin = (spreadsheet, financialData) => {
   useEffect(() => {
-    const lastExchangeRate = exchangeRates?.[0]?.close ?? 1;
+    const hasLoaded = !!financialData;
+    const {
+      exchangeRates,
+      financialStatements = {},
+      currentEquityRiskPremium,
+      currentIndustry,
+      general,
+      highlights,
+      ...data
+    } = financialData ?? {};
+    const {
+      incomeStatements = defaultStatement,
+      balanceSheets = defaultStatement,
+      cashFlowStatements = defaultStatement,
+    } = financialStatements;
 
     const dates = getDatesFromStatements(incomeStatements);
 
@@ -77,13 +59,7 @@ export const useFinancialPlugin = (spreadsheet) => {
       ...currentIndustry,
       ...general,
       ...highlights,
-      riskFreeRate,
-      estimatedCostOfDebt,
-      pastThreeYearsAverageEffectiveTaxRate,
-      price,
-      sharesOutstanding,
-      lastExchangeRate,
-      matureMarketEquityRiskPremium,
+      ...data,
     };
 
     const historicalDataArrays = {
@@ -142,7 +118,7 @@ export const useFinancialPlugin = (spreadsheet) => {
           return new InvalidArgumentsError(1);
         }
 
-        if (!isStockLoaded) {
+        if (!hasLoaded) {
           return "Loading...";
         }
 
@@ -186,7 +162,7 @@ export const useFinancialPlugin = (spreadsheet) => {
         }
       }
       financialSize({ args }) {
-        if (!isStockLoaded) {
+        if (!hasLoaded) {
           return ArraySize.scalar();
         }
 
@@ -227,7 +203,7 @@ export const useFinancialPlugin = (spreadsheet) => {
 
     HyperFormula.registerFunctionPlugin(FinancialPlugin, finTranslations);
 
-    if (isStockLoaded && spreadsheet) {
+    if (hasLoaded && spreadsheet) {
       if (spreadsheet.hyperformula.getSheetNames().length > 0) {
         spreadsheet.hyperformula.rebuildAndRecalculate();
 
@@ -239,23 +215,7 @@ export const useFinancialPlugin = (spreadsheet) => {
       // TODO: Causing SPILL error I think https://github.com/handsontable/hyperformula/issues/775
       HyperFormula.unregisterFunctionPlugin(FinancialPlugin);
     };
-  }, [
-    balanceSheets,
-    cashFlowStatements,
-    currentEquityRiskPremium,
-    currentIndustry,
-    estimatedCostOfDebt,
-    exchangeRates,
-    general,
-    highlights,
-    incomeStatements,
-    isStockLoaded,
-    pastThreeYearsAverageEffectiveTaxRate,
-    price,
-    riskFreeRate,
-    sharesOutstanding,
-    spreadsheet,
-  ]);
+  }, [financialData, spreadsheet]);
 };
 
 const finTranslations = {

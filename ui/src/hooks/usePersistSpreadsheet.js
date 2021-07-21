@@ -1,13 +1,22 @@
 import { saveSpreadsheet } from "../api/api";
 import { useAuth } from "./useAuth";
 
-const usePersistSpreadsheet = (sheetId) => {
+const usePersistSpreadsheet = (spreadsheet) => {
   const { getAccessToken } = useAuth();
 
-  const persistSpreadsheetData = async (name, data) => {
+  const persistSpreadsheetData = async (newData) => {
     const token = await getAccessToken();
 
-    saveSpreadsheet({ name, data, sheetId }, token?.jwtToken);
+    saveSpreadsheet(
+      {
+        ...spreadsheet,
+        sheetData: {
+          ...spreadsheet.sheetData,
+          data: newData,
+        },
+      },
+      token?.jwtToken,
+    );
   };
 
   return persistSpreadsheetData;

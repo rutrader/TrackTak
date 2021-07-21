@@ -21,13 +21,16 @@ const useFetchSpreadsheet = (sheetId) => {
     async function fetchData() {
       const response = await getSpreadsheet(jwtToken, sheetId);
 
-      setSpreadsheet(response.data.spreadsheet);
+      setSpreadsheet({
+        ...response.data.spreadsheet,
+        financialData: response.data.financialData,
+      });
     }
 
     fetchData();
   }, [jwtToken, sheetId]);
 
-  return spreadsheet;
+  return [spreadsheet];
 };
 
 export default useFetchSpreadsheet;
