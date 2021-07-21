@@ -89,7 +89,7 @@ const FeatureText = (props) => (
 const FeaturesSection = () => {
   const theme = useTheme();
   return (
-    <Box id="features">
+    <Box>
       <Box
         sx={{
           marginLeft: "auto",
