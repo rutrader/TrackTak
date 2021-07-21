@@ -1,4 +1,5 @@
-import { Box, Link, Typography } from "@material-ui/core";
+import { Box, Typography, Link } from "@material-ui/core";
+import { Link as RouterLink } from "gatsby";
 import React from "react";
 import RoundButton from "../components/RoundButton";
 import { useTheme } from "@material-ui/styles";
@@ -97,7 +98,13 @@ const UseNowSection = () => {
           .
         </Typography>
         <Box sx={{ display: "flex", flexDirection: "column", mt: 2.5 }}>
-          <RoundButton variant="contained" type="submit" sx={{ mb: 2.5 }}>
+          <RoundButton
+            variant="contained"
+            type="submit"
+            component={RouterLink}
+            to="/sign-up"
+            sx={{ mb: 2.5 }}
+          >
             <Typography fontSize={20} sx={{ textTransform: "none" }}>
               Sign up with email and password
             </Typography>
@@ -105,6 +112,8 @@ const UseNowSection = () => {
           <RoundButton
             variant="outlined"
             type="submit"
+            component={RouterLink}
+            to="/sign-in"
             sx={{
               mb: 2.5,
               "&:hover": {
