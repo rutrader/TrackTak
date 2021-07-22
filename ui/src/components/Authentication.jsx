@@ -8,6 +8,9 @@ import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
 import { Box } from "@material-ui/core";
 import { noop } from "../shared/utils";
+import queryString from "query-string";
+import jsonAdapter from "axios-jsonp";
+import axios from "../../../packages/intrinsic-valuations/src/api/axios";
 
 export const AUTHENTICATION_FORM_STATE = {
   SIGN_UP: "SIGN_UP",
@@ -20,7 +23,7 @@ const Authentication = ({
   onSuccess = noop,
   onFailure = noop,
   isModal = false,
-  location
+  location,
 }) => {
   const dispatch = useDispatch();
   const [formState, setFormState] = useState(initialState);
@@ -64,17 +67,40 @@ const Authentication = ({
     navigate("/forgot-password/");
   };
 
-  const onSignUpSuccess = (result, email, password) => {
+  const onSignUpSuccess = (_, email, password) => {
     signIn(email, password, onSuccess, onError);
-  }
+  };
 
-  const handleSignUpSubmit = (event, payload) => {
+  const handleSignUpSubmit = async (event, payload) => {
     event.preventDefault();
+
+    if (payload.checkedMailingList) {
+      const serializedData = queryString.stringify({
+        id: "81167d9c5b",
+        LOCATION: "Sign up",
+        MERGE0: payload.email,
+      });
+
+      const {
+        data: { result, msg: message },
+      } = await axios({
+        url: `https://tracktak.us18.list-manage.com/subscribe/post-json?u=77ebb5b550a15c12b38bd913e&${serializedData}`,
+        adapter: jsonAdapter,
+        callbackParamName: "c",
+      });
+
+      if (result !== "success") {
+        console.error(message);
+      }
+    }
+
     signUp(
       payload.email,
       payload.password,
-      [{ Name: "name", Value: payload.name },
-      { Name: "phone_number", Value: payload.phone }],
+      [
+        { Name: "name", Value: payload.name },
+        { Name: "phone_number", Value: payload.phone },
+      ],
       onSignUpSuccess,
       onError,
     );
@@ -108,9 +134,11 @@ const Authentication = ({
   };
 
   return (
-    <Box sx={{
-      maxWidth: '400px'
-    }}>
+    <Box
+      sx={{
+        maxWidth: "400px",
+      }}
+    >
       {formState === AUTHENTICATION_FORM_STATE.SIGN_UP && (
         <SignUpForm
           onSubmit={handleSignUpSubmit}

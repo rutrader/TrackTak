@@ -5,10 +5,22 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import RoundButton from "./RoundButton";
 import { useTheme } from "@material-ui/styles";
-import { Box, Link } from "@material-ui/core";
+import { Box, FormControlLabel, Link } from "@material-ui/core";
 import TracktakLogoSvg from "../icons/tracktak-purple.svg";
 import PhoneField from "./PhoneField";
-import SubscribeMailingList from "./SubscribeMailingList";
+import Checkbox from "@material-ui/core/Checkbox";
+
+const BoxWrapper = ({ sx, ...props }) => {
+  return (
+    <Box
+      sx={{
+        mt: 2,
+        ...sx,
+      }}
+      {...props}
+    />
+  );
+};
 
 const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
   const theme = useTheme();
@@ -16,6 +28,7 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [checkedMailingList, setCheckedMailingList] = useState(false);
 
   const handleSubmit = (e) => {
     onSubmit(e, {
@@ -23,6 +36,7 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
       phone,
       email,
       password,
+      checkedMailingList,
     });
   };
 
@@ -105,8 +119,21 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
               />
             </Grid>
           </Grid>
-          <SubscribeMailingList />
-          <Box sx={{ mt: 2 }}>
+          <BoxWrapper>
+            <FormControlLabel
+              checked={checkedMailingList}
+              onChange={(e) => {
+                setCheckedMailingList(e.target.checked);
+              }}
+              control={<Checkbox color="primary" />}
+              label={
+                <Typography>
+                  Occasionally send me updates on new features
+                </Typography>
+              }
+            />
+          </BoxWrapper>
+          <BoxWrapper>
             <Typography variant="h7" color="textSecondary">
               By clicking Sign Up, you agree to our{" "}
               <Link
@@ -126,7 +153,7 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
               </Link>
               .
             </Typography>
-          </Box>
+          </BoxWrapper>
           <RoundButton
             type="submit"
             fullWidth
