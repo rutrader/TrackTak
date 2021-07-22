@@ -188,7 +188,7 @@ const ProcessSection = () => {
           Spreadsheet Solution
         </Typography>
         <Typography variant="h6" color="textSecondary">
-          Specifically for financial modelling with no learning curve.
+          No learning curve needed.
         </Typography>
       </Box>
       <Box
