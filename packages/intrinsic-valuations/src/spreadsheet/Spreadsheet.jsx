@@ -8,7 +8,7 @@ import getSpreadsheet, {
 } from "../../../web-spreadsheet/src";
 import getFormats from "./getFormats";
 import SaveStatus from "./SaveStatus";
-import { useFinancialPlugin } from "./plugins/useFinancialPlugin";
+import { useFinancialPlugin } from "../hooks/useFinancialPlugin";
 import hyperformulaConfig from "./hyperformulaConfig";
 
 const requiredInputsId = "required-inputs";
