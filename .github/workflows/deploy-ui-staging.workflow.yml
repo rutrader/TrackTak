@@ -21,6 +21,8 @@ jobs:
       GATSBY_API_BASE_URL: ${{ secrets.GATSBY_API_BASE_URL }}
       GATSBY_COGNITO_APP_CLIENT_ID: ${{ secrets.GATSBY_COGNITO_APP_CLIENT_ID }}
       GATSBY_COGNITO_USER_POOL_ID: ${{ secrets.GATSBY_COGNITO_USER_POOL_ID }}
+      GATSBY_SOCIAL_LOGIN_GOOGLE: ${{ secrets.GATSBY_SOCIAL_LOGIN_GOOGLE }}
+      GATSBY_SOCIAL_LOGIN_FACEBOOK: ${{ secrets.GATSBY_SOCIAL_LOGIN_FACEBOOK }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
