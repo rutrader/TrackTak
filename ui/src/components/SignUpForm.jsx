@@ -5,9 +5,10 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import RoundButton from "./RoundButton";
 import { useTheme } from "@material-ui/styles";
-import { Box } from "@material-ui/core";
+import { Box, Link } from "@material-ui/core";
 import TracktakLogoSvg from "../icons/tracktak-purple.svg";
 import PhoneField from "./PhoneField";
+import SubscribeMailingList from "./SubscribeMailingList";
 
 const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
   const theme = useTheme();
@@ -39,8 +40,8 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
       <Typography
         variant="h5"
         sx={{
-          mt: (theme) => theme.spacing(1),
-          color: (theme) => theme.palette.primary.mainTextColor,
+          mt: theme.spacing(1),
+          color: theme.palette.primary.mainTextColor,
         }}
       >
         Sign up
@@ -104,6 +105,28 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
               />
             </Grid>
           </Grid>
+          <SubscribeMailingList />
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="h7" color="textSecondary">
+              By clicking Sign Up, you agree to our{" "}
+              <Link
+                href="/terms-and-conditions"
+                rel="noreferrer"
+                target="_blank"
+              >
+                Terms
+              </Link>{" "}
+              and that you have read our{" "}
+              <Link href="/privacy-policy" rel="noreferrer" target="_blank">
+                Privacy Policy
+              </Link>
+              , including our{" "}
+              <Link href="/cookie-policy" rel="noreferrer" target="_blank">
+                Cookie Policy
+              </Link>
+              .
+            </Typography>
+          </Box>
           <RoundButton
             type="submit"
             fullWidth

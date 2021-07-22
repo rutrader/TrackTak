@@ -1,22 +1,14 @@
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography, FormControlLabel } from "@material-ui/core";
 import axios from "../../../packages/intrinsic-valuations/src/api/axios";
 import jsonAdapter from "axios-jsonp";
 import React, { useState } from "react";
-import RoundButton from "./RoundButton";
-import TTRoundInput from "./TTRoundInput";
 import queryString from "query-string";
 import { useDispatch } from "react-redux";
 import { setMessage } from "../redux/actions/snackbarActions";
+import Checkbox from "@material-ui/core/Checkbox";
 
-const SubscribeMailingList = ({
-  subscribeText = "Subscribe",
-  locationSignup,
-  inputColor,
-  onSubmit = () => {},
-  cancelButton,
-  formSx,
-}) => {
-  const [email, setEmail] = useState("");
+const SubscribeMailingList = ({ locationSignup, onSubmit = () => {} }) => {
+  const [checked, setChecked] = useState(false);
   const dispatch = useDispatch();
 
   return (
@@ -29,7 +21,7 @@ const SubscribeMailingList = ({
           const serializedData = queryString.stringify({
             id: "81167d9c5b",
             LOCATION: locationSignup,
-            MERGE0: email,
+            MERGE0: checked,
           });
 
           const {
@@ -43,7 +35,7 @@ const SubscribeMailingList = ({
           const isSuccess = result === "success";
 
           if (isSuccess) {
-            setEmail("");
+            setChecked(true);
 
             dispatch(
               setMessage({
@@ -63,42 +55,22 @@ const SubscribeMailingList = ({
           onSubmit(isSuccess);
         }}
         sx={{
-          flexWrap: "wrap",
-          display: "flex",
-          justifyContent: "center",
-          visibility: "visible",
-          animationDelay: "0.8s",
-          animationName: "fadeInUp",
-          maxWidth: "600px",
-          width: "100%",
-          gap: 1.5,
-          mt: 3,
-          ...formSx,
+          mt: 2,
         }}
       >
-        <TTRoundInput
-          type="email"
-          name="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email"
-          color={inputColor}
-          InputProps={{
-            color: "secondary",
+        <FormControlLabel
+          checked={checked}
+          onChange={(e) => {
+            setChecked(e.target.checked);
           }}
-          sx={{
-            flex: 1,
-            minWidth: "170px",
-          }}
-        />
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <RoundButton variant="contained" type="submit" sx={{ mb: 2.5 }}>
-            <Typography fontSize={20} sx={{ textTransform: "none" }}>
-              {subscribeText}
+          inputProps={{ "aria-label": "controlled" }}
+          control={<Checkbox color="primary" />}
+          label={
+            <Typography>
+              Occasionally send me updates on new features
             </Typography>
-          </RoundButton>
-          {cancelButton}
-        </Box>
+          }
+        />
       </Box>
     </>
   );
