@@ -30,18 +30,24 @@ const getSpreadsheet = (
   const {
     spreadsheet,
     variablesSpreadsheet,
-    spreadsheetEventEmitter,
     setDatasheets,
     getDatas,
     getData,
     setOptions,
     eventEmitter,
+    variablesEventEmitter,
   } = buildSpreadsheet(
     rootEl,
     options,
     hyperformula,
     variablesSpreadsheetOptions,
   );
+
+  const setData = (data) => {
+    variablesSpreadsheet.setDatasheets(data.variablesDatas);
+    setDatasheets(data.datas);
+    spreadsheet.sheet.switchData(spreadsheet.sheet.getDatas()[0]);
+  };
 
   const reset = () => {
     spreadsheet.sheet.sheetReset();
@@ -51,6 +57,9 @@ const getSpreadsheet = (
   element.appendChild(rootEl.el);
 
   const destroy = () => {
+    spreadsheet.sheet.unbindAll();
+    variablesSpreadsheet.sheet.unbindAll();
+
     rootEl.destroy();
 
     if (hyperformula.isItPossibleToRemoveNamedExpression("TRUE")) {
@@ -70,11 +79,11 @@ const getSpreadsheet = (
     setOptions,
     destroy,
     reset,
-    spreadsheetEventEmitter,
-    setDatasheets,
+    setData,
     getDatas,
     getData,
     eventEmitter,
+    variablesEventEmitter,
     hyperformula,
   };
 };

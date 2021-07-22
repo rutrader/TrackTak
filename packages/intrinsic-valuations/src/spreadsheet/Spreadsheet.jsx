@@ -1,68 +1,44 @@
 import React, { useRef, useState, Fragment } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { Box, useMediaQuery, useTheme } from "@material-ui/core";
 import { useLocation } from "@reach/router";
 import { HyperFormula } from "hyperformula";
-import selectValuationCurrencySymbol from "../selectors/stockSelectors/selectValuationCurrencySymbol";
 import getSpreadsheet, {
   spreadsheetEvents,
 } from "../../../web-spreadsheet/src";
-import selectGeneral from "../selectors/stockSelectors/selectGeneral";
 import getFormats from "./getFormats";
 import SaveStatus from "./SaveStatus";
-import {
-  getFundamentalsThunk,
-  getLastPriceCloseThunk,
-} from "../redux/thunks/stockThunks";
-import freeCashFlowToFirmData, {
-  freeCashFlowToFirmVariablesData,
-} from "./templates/freeCashFlowFirmSimple/data";
-import { useFinancialPlugin } from "./plugins/useFinancialPlugin";
+import { useFinancialPlugin } from "../hooks/useFinancialPlugin";
 import hyperformulaConfig from "./hyperformulaConfig";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";
 const defaultColWidth = 110;
 
-const Spreadsheet = ({ sheetData, saveSheetData }) => {
+const Spreadsheet = ({
+  spreadsheet: spreadsheetData,
+  financialData,
+  saveSheetData = () => {},
+}) => {
   const containerRef = useRef();
   const [spreadsheet, setSpreadsheet] = useState();
   const theme = useTheme();
   const location = useLocation();
-  const currencySymbol = useSelector(selectValuationCurrencySymbol);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const dispatch = useDispatch();
   const isFocusedOnValueDrivingInputs = location.hash?.includes(
     requiredInputsId,
   );
-  const general = useSelector(selectGeneral);
   const [isSaving, setIsSaving] = useState(false);
+  const sheetName = spreadsheetData?.sheetData?.name;
+  const currencySymbol = financialData?.general?.currencySymbol;
 
-  useFinancialPlugin(spreadsheet);
-
-  useEffect(() => {
-    const ticker = sheetData?.name;
-
-    if (ticker) {
-      dispatch(
-        getFundamentalsThunk({
-          ticker,
-        }),
-      );
-      dispatch(
-        getLastPriceCloseThunk({
-          ticker,
-        }),
-      );
-    }
-  }, [dispatch, sheetData]);
+  useFinancialPlugin(spreadsheet, financialData);
 
   useEffect(() => {
     const exportToExcel = (exportFn) => {
       const formats = getFormats(currencySymbol);
 
-      exportFn(`${general.code}.${general.exchange}.xlsx`, formats, ["FIN"]);
+      exportFn(`${sheetName}.xlsx`, formats, ["FIN"]);
     };
 
     if (spreadsheet) {
@@ -80,7 +56,7 @@ const Spreadsheet = ({ sheetData, saveSheetData }) => {
         );
       }
     };
-  }, [currencySymbol, general, spreadsheet]);
+  }, [currencySymbol, sheetName, spreadsheet]);
 
   useEffect(() => {
     let spreadsheet;
@@ -145,12 +121,17 @@ const Spreadsheet = ({ sheetData, saveSheetData }) => {
   useEffect(() => {
     const handleSave = async (data) => {
       setIsSaving(true);
-      await saveSheetData(sheetData.name, data);
+      await saveSheetData(data);
       setIsSaving(false);
     };
 
     if (spreadsheet) {
-      spreadsheet.variablesSpreadsheet.eventEmitter.on(
+      spreadsheet.eventEmitter.on(
+        spreadsheetEvents.save.persistDataChange,
+        handleSave,
+      );
+
+      spreadsheet.variablesEventEmitter.on(
         spreadsheetEvents.save.persistDataChange,
         handleSave,
       );
@@ -158,13 +139,18 @@ const Spreadsheet = ({ sheetData, saveSheetData }) => {
 
     return () => {
       if (spreadsheet) {
-        spreadsheet.variablesSpreadsheet.eventEmitter.off(
+        spreadsheet.eventEmitter.off(
+          spreadsheetEvents.save.persistDataChange,
+          handleSave,
+        );
+
+        spreadsheet.variablesEventEmitter.off(
           spreadsheetEvents.save.persistDataChange,
           handleSave,
         );
       }
     };
-  }, [spreadsheet, saveSheetData, sheetData]);
+  }, [spreadsheet, saveSheetData, spreadsheetData]);
 
   useEffect(() => {
     if (spreadsheet) {
@@ -177,16 +163,10 @@ const Spreadsheet = ({ sheetData, saveSheetData }) => {
   }, [isOnMobile, spreadsheet]);
 
   useEffect(() => {
-    if (spreadsheet) {
-      spreadsheet.variablesSpreadsheet.setVariableDatasheets(
-        freeCashFlowToFirmVariablesData,
-      );
-      spreadsheet.setDatasheets(freeCashFlowToFirmData);
-      spreadsheet.spreadsheet.sheet.switchData(
-        spreadsheet.spreadsheet.sheet.getDatas()[0],
-      );
+    if (spreadsheet && spreadsheetData) {
+      spreadsheet.setData(spreadsheetData?.sheetData.data);
     }
-  }, [spreadsheet]);
+  }, [spreadsheetData, spreadsheet]);
 
   return (
     <Fragment>

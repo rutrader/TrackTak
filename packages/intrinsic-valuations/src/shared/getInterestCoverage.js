@@ -1,8 +1,8 @@
-import { createSelector } from "@reduxjs/toolkit";
 import { isNil } from "lodash-es";
-import { selectTTMIncomeStatement } from "./selectIncomeStatements";
 
-const calculateInterestCoverage = ({ operatingIncome, interestExpense }) => {
+const getInterestCoverage = (incomeStatements) => {
+  const { operatingIncome, interestExpense } = incomeStatements.ttm;
+
   if (isNil(operatingIncome) || isNil(interestExpense)) return null;
   if (interestExpense === 0) return Infinity;
   if (operatingIncome < 0) return -Infinity;
@@ -13,9 +13,4 @@ const calculateInterestCoverage = ({ operatingIncome, interestExpense }) => {
   return operatingIncome / cappedInterestExpense;
 };
 
-const selectInterestCoverage = createSelector(
-  selectTTMIncomeStatement,
-  calculateInterestCoverage,
-);
-
-export default selectInterestCoverage;
+export default getInterestCoverage;

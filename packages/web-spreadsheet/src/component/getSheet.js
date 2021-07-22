@@ -1,5 +1,5 @@
 import { h } from "./element";
-import { bind, mouseMoveUp, bindTouch } from "./event";
+import { bind, mouseMoveUp, bindTouch, unbind } from "./event";
 import { xtoast } from "./message";
 import { cssPrefix } from "../config";
 import spreadsheetEvents from "../core/spreadsheetEvents";
@@ -7,7 +7,6 @@ import setTextFormat from "../shared/setTextFormat";
 import getFormatFromCell from "../shared/getFormatFromCell";
 import getTouchElementOffset from "../shared/getTouchElementOffset";
 import { isNil } from "lodash-es";
-import makeExportToExcel from "./export/makeExportToExcel";
 
 /**
  * @desc throttle fn
@@ -476,9 +475,315 @@ export const getSheet = (
     sortFilter.el,
     comment.el,
   );
-  sheetInitEvents();
 
   rootEl.child(el);
+
+  // Check if we are in chrome mobile simulation mode
+  let getIsInTouchMode = () => {
+    return (
+      getOptions().debugMode &&
+      window.navigator.userAgent.indexOf("Mobile") !== -1
+    );
+  };
+
+  // overlayer
+  overlayerEl
+    .on("mousemove", (evt) => {
+      if (getIsInTouchMode()) return;
+
+      overlayerMousemove(evt);
+    })
+    .on("mousedown", (evt) => {
+      if (getIsInTouchMode()) return;
+
+      overlayerClickCallback();
+      lastFocused = true;
+
+      // If a formula cell is being edited and a left click is made,
+      // set that formula cell to start at the selected sheet cell and set a
+      // temporary mousemove event handler that updates said formula cell to
+      // end at the sheet cell currently being hovered over.
+      if (
+        evt.buttons === 1 &&
+        evt.detail <= 1 &&
+        editor.formulaCellSelecting()
+      ) {
+        const { offsetX, offsetY } = evt;
+        const { ri, ci } = getData().getCellRectByXY(offsetX, offsetY);
+        editor.formulaSelectCell(ri, ci);
+
+        let lastCellRect = { ri: null, ci: null };
+        mouseMoveUp(
+          window,
+          (e) => {
+            const cellRect = getData().getCellRectByXY(e.offsetX, e.offsetY);
+
+            const hasRangeChanged =
+              cellRect.ri != lastCellRect.ri || cellRect.ci != lastCellRect.ci;
+            const isRangeValid = cellRect.ri >= 0 && cellRect.ci >= 0;
+
+            if (hasRangeChanged && isRangeValid) {
+              editor.formulaSelectCellRange(cellRect.ri, cellRect.ci);
+
+              lastCellRect.ri = cellRect.ri;
+              lastCellRect.ci = cellRect.ci;
+            }
+          },
+          () => {},
+        );
+
+        return;
+      }
+
+      editor.clear();
+
+      contextMenu.hide();
+      // the left mouse button: mousedown → mouseup → click
+      // the right mouse button: mousedown → contenxtmenu → mouseup
+      if (evt.buttons === 2) {
+        if (getData().xyInSelectedRect(evt.offsetX, evt.offsetY)) {
+          contextMenu.setPosition(evt.offsetX, evt.offsetY);
+        } else {
+          mouseDownOverlayerCellOffset(evt);
+          contextMenu.setPosition(evt.offsetX, evt.offsetY);
+        }
+        evt.stopPropagation();
+      } else if (evt.detail === 2) {
+        editorSet();
+      } else {
+        mouseDownOverlayerCellOffset(evt);
+      }
+    })
+    .on("wheel.stop", (evt) => {
+      if (getIsInTouchMode()) return;
+
+      overlayerMousescroll(evt);
+    })
+    .on("mouseout", (evt) => {
+      if (getIsInTouchMode()) return;
+
+      const { offsetX, offsetY } = evt;
+      if (offsetY <= 0) colResizer.hide();
+      if (offsetX <= 0) rowResizer.hide();
+    });
+
+  // slide on mobile
+  bindTouch(overlayerEl.el, {
+    move: (direction, d) => {
+      overlayerTouch(direction, d);
+    },
+    touchstart: (evt) => {
+      overlayerClickCallback();
+
+      lastFocused = true;
+
+      editor.clear();
+      contextMenu.hide();
+
+      touchStartOverlayer(evt);
+      editorSet();
+    },
+  });
+
+  const clickWindow = (evt) => {
+    focusing = overlayerEl.contains(evt.target);
+
+    if (!focusing) {
+      editor.clear();
+
+      eventEmitter.emit(spreadsheetEvents.sheet.clickOutside, evt);
+    }
+  };
+
+  bindTouch(window, {
+    touchstart: (evt) => {
+      clickWindow(evt);
+    },
+  });
+
+  // sort filter ok
+  sortFilter.ok = (ci, order, o, v) => sortFilterChange(ci, order, o, v);
+
+  // modal validation
+  modalValidation.change = (action, ...args) => {
+    if (action === "save") {
+      getData().addValidation(...args);
+    } else {
+      getData().removeValidation();
+    }
+  };
+
+  const pasteEvent = (evt) => {
+    evt.preventDefault();
+
+    const copyPasteAll = getData().rows.copyPasteAll;
+
+    paste(copyPasteAll);
+  };
+
+  const resizeEvent = () => reload();
+
+  const mousedownEvent = (evt) => {
+    if (getIsInTouchMode()) return;
+
+    clickWindow(evt);
+  };
+
+  const keydownEvent = (evt) => {
+    if (!focusing) return;
+    const keyCode = evt.keyCode || evt.which;
+    const { key, ctrlKey, shiftKey, metaKey, altKey } = evt;
+
+    if (ctrlKey || metaKey) {
+      switch (keyCode) {
+        case 90:
+          // undo: ctrl + z
+          undo();
+          evt.preventDefault();
+          break;
+        case 89:
+          // redo: ctrl + y
+          redo();
+          evt.preventDefault();
+          break;
+        case 67:
+          // ctrl + c
+          copy();
+          evt.preventDefault();
+          break;
+        case 77:
+          // ctrl + alt + m
+          showComment();
+          evt.preventDefault();
+          break;
+        case 88:
+          // ctrl + x
+          cut();
+          evt.preventDefault();
+          break;
+        case 86:
+          // ctrl + v
+          if (shiftKey) {
+            paste(getData().rows.copyPasteText);
+          } else if (altKey) {
+            paste(getData().rows.copyPasteFormat);
+          } else {
+            paste(getData().rows.copyPasteAll);
+          }
+          evt.preventDefault();
+          break;
+        case 37:
+          // ctrl + left
+          selectorMove(shiftKey, "row-first");
+          evt.preventDefault();
+          break;
+        case 38:
+          // ctrl + up
+          selectorMove(shiftKey, "col-first");
+          evt.preventDefault();
+          break;
+        case 39:
+          // ctrl + right
+          selectorMove(shiftKey, "row-last");
+          evt.preventDefault();
+          break;
+        case 40:
+          // ctrl + down
+          selectorMove(shiftKey, "col-last");
+          evt.preventDefault();
+          break;
+        case 32:
+          // ctrl + space, all cells in col
+          selectorSet(false, -1, rangeSelector.getIndexes().ci, false);
+          evt.preventDefault();
+          break;
+        default:
+          break;
+      }
+      eventEmitter.emit(spreadsheetEvents.sheet.ctrlKeyDown, evt, keyCode);
+    } else {
+      // console.log('evt.keyCode:', evt.keyCode);
+      switch (keyCode) {
+        case 32:
+          if (shiftKey) {
+            // shift + space, all cells in row
+            selectorSet(false, rangeSelector.getIndexes().ri, -1, false);
+          }
+          break;
+        case 27: // esc
+          contextMenu.hide();
+          clearClipboard();
+          break;
+        case 37: // left
+          selectorMove(shiftKey, "left");
+          evt.preventDefault();
+          break;
+        case 38: // up
+          selectorMove(shiftKey, "up");
+          evt.preventDefault();
+          break;
+        case 39: // right
+          selectorMove(shiftKey, "right");
+          evt.preventDefault();
+          break;
+        case 40: // down
+          selectorMove(shiftKey, "down");
+          evt.preventDefault();
+          break;
+        case 9: // tab
+          editor.clear();
+          // shift + tab => move left
+          // tab => move right
+          selectorMove(false, shiftKey ? "left" : "right");
+          evt.preventDefault();
+          break;
+        case 13: // enter
+          editor.clear();
+          // shift + enter => move up
+          // enter => move down
+          selectorMove(false, shiftKey ? "up" : "down");
+          evt.preventDefault();
+          break;
+        case 8: // backspace
+          deleteCellText();
+          evt.preventDefault();
+          break;
+        default:
+          break;
+      }
+
+      if (key === "Delete") {
+        deleteCellText();
+        evt.preventDefault();
+      } else if (
+        (keyCode >= 65 && keyCode <= 90) ||
+        (keyCode >= 48 && keyCode <= 57) ||
+        (keyCode >= 96 && keyCode <= 105) ||
+        evt.key === "=" ||
+        evt.key === "." ||
+        evt.key === "-"
+      ) {
+        const cellText = dataSetCellText(evt.key, "startInput");
+
+        editorSet(cellText);
+      } else if (keyCode === 113) {
+        // F2
+        editorSet();
+      }
+    }
+  };
+
+  const unbindAll = () => {
+    unbind(window, "paste", pasteEvent);
+    unbind(window, "resize", resizeEvent);
+    unbind(window, "mousedown", mousedownEvent);
+    unbind(window, "keydown", keydownEvent);
+  };
+
+  bind(window, "paste", pasteEvent);
+  bind(window, "resize", resizeEvent);
+  bind(window, "mousedown", mousedownEvent);
+  bind(window, "keydown", keydownEvent);
 
   function scrollbarMove() {
     const { l, t, left, top, width, height } = getData().getSelectedRect();
@@ -983,298 +1288,6 @@ export const getSheet = (
     sheetReset();
   }
 
-  function sheetInitEvents() {
-    // Check if we are in chrome mobile simulation mode
-    let getIsInTouchMode = () => {
-      return (
-        getOptions().debugMode &&
-        window.navigator.userAgent.indexOf("Mobile") !== -1
-      );
-    };
-
-    // overlayer
-    overlayerEl
-      .on("mousemove", (evt) => {
-        if (getIsInTouchMode()) return;
-
-        overlayerMousemove(evt);
-      })
-      .on("mousedown", (evt) => {
-        if (getIsInTouchMode()) return;
-
-        overlayerClickCallback();
-        lastFocused = true;
-
-        // If a formula cell is being edited and a left click is made,
-        // set that formula cell to start at the selected sheet cell and set a
-        // temporary mousemove event handler that updates said formula cell to
-        // end at the sheet cell currently being hovered over.
-        if (
-          evt.buttons === 1 &&
-          evt.detail <= 1 &&
-          editor.formulaCellSelecting()
-        ) {
-          const { offsetX, offsetY } = evt;
-          const { ri, ci } = getData().getCellRectByXY(offsetX, offsetY);
-          editor.formulaSelectCell(ri, ci);
-
-          let lastCellRect = { ri: null, ci: null };
-          mouseMoveUp(
-            window,
-            (e) => {
-              const cellRect = getData().getCellRectByXY(e.offsetX, e.offsetY);
-
-              const hasRangeChanged =
-                cellRect.ri != lastCellRect.ri ||
-                cellRect.ci != lastCellRect.ci;
-              const isRangeValid = cellRect.ri >= 0 && cellRect.ci >= 0;
-
-              if (hasRangeChanged && isRangeValid) {
-                editor.formulaSelectCellRange(cellRect.ri, cellRect.ci);
-
-                lastCellRect.ri = cellRect.ri;
-                lastCellRect.ci = cellRect.ci;
-              }
-            },
-            () => {},
-          );
-
-          return;
-        }
-
-        editor.clear();
-
-        contextMenu.hide();
-        // the left mouse button: mousedown → mouseup → click
-        // the right mouse button: mousedown → contenxtmenu → mouseup
-        if (evt.buttons === 2) {
-          if (getData().xyInSelectedRect(evt.offsetX, evt.offsetY)) {
-            contextMenu.setPosition(evt.offsetX, evt.offsetY);
-          } else {
-            mouseDownOverlayerCellOffset(evt);
-            contextMenu.setPosition(evt.offsetX, evt.offsetY);
-          }
-          evt.stopPropagation();
-        } else if (evt.detail === 2) {
-          editorSet();
-        } else {
-          mouseDownOverlayerCellOffset(evt);
-        }
-      })
-      .on("wheel.stop", (evt) => {
-        if (getIsInTouchMode()) return;
-
-        overlayerMousescroll(evt);
-      })
-      .on("mouseout", (evt) => {
-        if (getIsInTouchMode()) return;
-
-        const { offsetX, offsetY } = evt;
-        if (offsetY <= 0) colResizer.hide();
-        if (offsetX <= 0) rowResizer.hide();
-      });
-
-    // slide on mobile
-    bindTouch(overlayerEl.el, {
-      move: (direction, d) => {
-        overlayerTouch(direction, d);
-      },
-      touchstart: (evt) => {
-        overlayerClickCallback();
-
-        lastFocused = true;
-
-        editor.clear();
-        contextMenu.hide();
-
-        touchStartOverlayer(evt);
-        editorSet();
-      },
-    });
-
-    const clickWindow = (evt) => {
-      focusing = overlayerEl.contains(evt.target);
-
-      if (!focusing) {
-        editor.clear();
-
-        eventEmitter.emit(spreadsheetEvents.sheet.clickOutside, evt);
-      }
-    };
-
-    bindTouch(window, {
-      touchstart: (evt) => {
-        clickWindow(evt);
-      },
-    });
-
-    // sort filter ok
-    sortFilter.ok = (ci, order, o, v) => sortFilterChange(ci, order, o, v);
-
-    // modal validation
-    modalValidation.change = (action, ...args) => {
-      if (action === "save") {
-        getData().addValidation(...args);
-      } else {
-        getData().removeValidation();
-      }
-    };
-
-    bind(window, "resize", () => {
-      reload();
-    });
-
-    bind(window, "mousedown", (evt) => {
-      if (getIsInTouchMode()) return;
-
-      clickWindow(evt);
-    });
-
-    bind(window, "keydown", (evt) => {
-      if (!focusing) return;
-      const keyCode = evt.keyCode || evt.which;
-      const { key, ctrlKey, shiftKey, metaKey, altKey } = evt;
-
-      if (ctrlKey || metaKey) {
-        switch (keyCode) {
-          case 90:
-            // undo: ctrl + z
-            undo();
-            evt.preventDefault();
-            break;
-          case 89:
-            // redo: ctrl + y
-            redo();
-            evt.preventDefault();
-            break;
-          case 67:
-            // ctrl + c
-            copy();
-            evt.preventDefault();
-            break;
-          case 77:
-            // ctrl + alt + m
-            showComment();
-            evt.preventDefault();
-            break;
-          case 88:
-            // ctrl + x
-            cut();
-            evt.preventDefault();
-            break;
-          case 86:
-            // ctrl + v
-            if (shiftKey) {
-              paste(getData().rows.copyPasteText);
-            } else if (altKey) {
-              paste(getData().rows.copyPasteFormat);
-            } else {
-              paste(getData().rows.copyPasteAll);
-            }
-            evt.preventDefault();
-            break;
-          case 37:
-            // ctrl + left
-            selectorMove(shiftKey, "row-first");
-            evt.preventDefault();
-            break;
-          case 38:
-            // ctrl + up
-            selectorMove(shiftKey, "col-first");
-            evt.preventDefault();
-            break;
-          case 39:
-            // ctrl + right
-            selectorMove(shiftKey, "row-last");
-            evt.preventDefault();
-            break;
-          case 40:
-            // ctrl + down
-            selectorMove(shiftKey, "col-last");
-            evt.preventDefault();
-            break;
-          case 32:
-            // ctrl + space, all cells in col
-            selectorSet(false, -1, rangeSelector.getIndexes().ci, false);
-            evt.preventDefault();
-            break;
-          default:
-            break;
-        }
-        eventEmitter.emit(spreadsheetEvents.sheet.ctrlKeyDown, evt, keyCode);
-      } else {
-        // console.log('evt.keyCode:', evt.keyCode);
-        switch (keyCode) {
-          case 32:
-            if (shiftKey) {
-              // shift + space, all cells in row
-              selectorSet(false, rangeSelector.getIndexes().ri, -1, false);
-            }
-            break;
-          case 27: // esc
-            contextMenu.hide();
-            clearClipboard();
-            break;
-          case 37: // left
-            selectorMove(shiftKey, "left");
-            evt.preventDefault();
-            break;
-          case 38: // up
-            selectorMove(shiftKey, "up");
-            evt.preventDefault();
-            break;
-          case 39: // right
-            selectorMove(shiftKey, "right");
-            evt.preventDefault();
-            break;
-          case 40: // down
-            selectorMove(shiftKey, "down");
-            evt.preventDefault();
-            break;
-          case 9: // tab
-            editor.clear();
-            // shift + tab => move left
-            // tab => move right
-            selectorMove(false, shiftKey ? "left" : "right");
-            evt.preventDefault();
-            break;
-          case 13: // enter
-            editor.clear();
-            // shift + enter => move up
-            // enter => move down
-            selectorMove(false, shiftKey ? "up" : "down");
-            evt.preventDefault();
-            break;
-          case 8: // backspace
-            deleteCellText();
-            evt.preventDefault();
-            break;
-          default:
-            break;
-        }
-
-        if (key === "Delete") {
-          deleteCellText();
-          evt.preventDefault();
-        } else if (
-          (keyCode >= 65 && keyCode <= 90) ||
-          (keyCode >= 48 && keyCode <= 57) ||
-          (keyCode >= 96 && keyCode <= 105) ||
-          evt.key === "=" ||
-          evt.key === "." ||
-          evt.key === "-"
-        ) {
-          const cellText = dataSetCellText(evt.key, "startInput");
-
-          editorSet(cellText);
-        } else if (keyCode === 113) {
-          // F2
-          editorSet();
-        }
-      }
-    });
-  }
-
   return {
     sheet: {
       el,
@@ -1306,6 +1319,7 @@ export const getSheet = (
       setLastFocused,
       lastFocused,
       selector,
+      unbindAll,
     },
   };
 };
