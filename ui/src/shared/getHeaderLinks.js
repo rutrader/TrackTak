@@ -20,11 +20,6 @@ export const getHeaderLinks = (isAuthenticated) => {
   return links;
 };
 
-export const signOutButton = {
-  id: "sign-out",
-  text: "Sign out",
-};
-
 export const signInLink = {
   to: "/sign-in",
   text: "Sign in",
