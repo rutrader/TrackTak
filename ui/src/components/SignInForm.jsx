@@ -7,6 +7,8 @@ import RoundButton from "./RoundButton";
 import { useTheme } from "@material-ui/styles";
 import { Box } from "@material-ui/core";
 import TracktakLogoSvg from "../icons/tracktak-purple.svg";
+import GoogleIcon from "@material-ui/icons/Google";
+import FacebookIcon from "@material-ui/icons/Facebook";
 
 const SignInForm = ({
   onSubmit,
@@ -23,6 +25,14 @@ const SignInForm = ({
       email,
       password,
     });
+  };
+
+  const handleGoogleLogin = () => {
+    window.open(process.env.GATSBY_SOCIAL_LOGIN_GOOGLE);
+  };
+
+  const handleFacebookLogin = () => {
+    window.open(process.env.GATSBY_SOCIAL_LOGIN_FACEBOOK);
   };
 
   return (
@@ -94,6 +104,33 @@ const SignInForm = ({
           >
             Sign In
           </RoundButton>
+          <Grid container justifyContent="center">
+            <Grid item>
+              <Typography component="div" display="block">
+                Or sign in with
+              </Typography>
+            </Grid>
+            <Grid container justifyContent="center">
+              <Grid item onClick={handleGoogleLogin}>
+                <GoogleIcon
+                  fontSize="large"
+                  sx={{
+                    color: theme.palette.icons.google,
+                    cursor: "pointer",
+                  }}
+                />
+              </Grid>
+              <Grid item onClick={handleFacebookLogin}>
+                <FacebookIcon
+                  fontSize="large"
+                  sx={{
+                    color: theme.palette.icons.facebook,
+                    cursor: "pointer",
+                  }}
+                />
+              </Grid>
+            </Grid>
+          </Grid>
           <Grid container justifyContent="space-between">
             <Grid item>
               <Button

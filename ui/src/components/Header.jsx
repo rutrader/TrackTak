@@ -59,10 +59,10 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
   const paddingBottom = `${theme.mixins.toolbar.minHeight + extraPadding}px`;
   const [anchorEl, setAnchorEl] = useState(null);
   const [userMenuAnchorEl, setUserMenuAnchorEl] = useState(null);
-  const { isAuthenticated, accessToken, signOut } = useAuth();
+  const { isAuthenticated, signOut } = useAuth();
 
   const handleOnSignOut = async () => {
-    if (accessToken) {
+    if (isAuthenticated) {
       signOut();
       navigate("/");
     }

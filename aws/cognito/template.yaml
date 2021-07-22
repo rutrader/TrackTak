@@ -31,6 +31,46 @@ Parameters:
   SESSourceARN:
     Type: String
     Description: The SES Source ARN Cognito will use for sending emails
+  EnvType:
+    Description: Environment type.
+    Default: test
+    Type: String
+    AllowedValues:
+      - prod
+      - test
+    ConstraintDescription: Must specify prod or test.
+  GoogleClientId:
+    Type: String
+    Description: Google Social Media Sign In Client Id
+  GoogleClientSecret:
+    Type: String
+    Description: Google Social Media Sign In Client Secret
+  FacebookClientId:
+    Type: String
+    Description: Facebook Social Media Sign In Client Id
+  FacebookClientSecret:
+    Type: String
+    Description: Facebook Social Media Sign In Client Secret
+  UserPoolDomainCertARN:
+    Type: String
+    Description: ARN for user pool custom domain certificate
+
+Conditions:
+  CreateTestResources: !Equals
+    - !Ref EnvType
+    - test
+  CreateProdResources: !Equals
+    - !Ref EnvType
+    - prod
+
+Mappings:
+  EnvMap:
+    test:
+      CallbackURLs: https://staging.tracktak.com/dashboard
+      LogoutURLs: https://staging.tracktak.com/
+    prod:
+      CallbackURLs: https://tracktak.com/dashboard
+      LogoutURLs: https://tracktak.com/
 
 Resources:
   ChangePassword:
@@ -146,10 +186,6 @@ Resources:
           AttributeDataType: String
           Mutable: true
           Required: true
-        - Name: phone_number
-          AttributeDataType: String
-          Mutable: true
-          Required: true
       Policies:
         PasswordPolicy:
           MinimumLength: 8
@@ -177,6 +213,84 @@ Resources:
         From: no-reply@tracktak.com
         ReplyToEmailAddress: no-reply@tracktak.com
         SourceArn: !Ref SESSourceARN
+
+  UserPoolClient:
+    Type: "AWS::Cognito::UserPoolClient"
+    DependsOn:
+      - UserPoolIdentityProviderGoogle
+      - UserPoolIdentityProviderFacebook
+    Properties:
+      ClientName: email-auth-client
+      GenerateSecret: false
+      UserPoolId: !Ref UserPool
+      PreventUserExistenceErrors: ENABLED
+      ExplicitAuthFlows:
+        - ALLOW_USER_SRP_AUTH
+        - ALLOW_CUSTOM_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+      AllowedOAuthFlowsUserPoolClient: true
+      SupportedIdentityProviders:
+        - Google
+        - Facebook
+      CallbackURLs:
+        - !FindInMap [EnvMap, !Ref EnvType, CallbackURLs]
+      LogoutURLs:
+        - !FindInMap [EnvMap, !Ref EnvType, LogoutURLs]
+      AllowedOAuthFlows:
+        - implicit
+      AllowedOAuthScopes:
+        - phone
+        - email
+        - openid
+        - profile
+        - aws.cognito.signin.user.admin
+
+  UserPoolIdentityProviderGoogle:
+    Type: AWS::Cognito::UserPoolIdentityProvider
+    Properties:
+      AttributeMapping:
+        username: "sub"
+        email: "email"
+        email_verified: "email_verified"
+        name: "name"
+      ProviderDetails:
+        client_id: !Ref GoogleClientId
+        client_secret: !Ref GoogleClientSecret
+        authorize_scopes: "profile email openid"
+      ProviderName: "Google"
+      ProviderType: "Google"
+      UserPoolId: !Ref UserPool
+
+  UserPoolIdentityProviderFacebook:
+    Type: AWS::Cognito::UserPoolIdentityProvider
+    Properties:
+      AttributeMapping:
+        username: "id"
+        email: "email"
+        name: "name"
+      ProviderDetails:
+        client_id: !Ref FacebookClientId
+        client_secret: !Ref FacebookClientSecret
+        authorize_scopes: "public_profile,email,openid"
+      ProviderName: "Facebook"
+      ProviderType: "Facebook"
+      UserPoolId: !Ref UserPool
+
+  UserPoolDomainProd:
+    Type: AWS::Cognito::UserPoolDomain
+    Condition: CreateProdResources
+    Properties:
+      CustomDomainConfig:
+        CertificateArn: !Ref UserPoolDomainCertARN
+      Domain: registration.tracktak.com
+      UserPoolId: !Ref UserPool
+
+  UserPoolDomainTest:
+    Type: AWS::Cognito::UserPoolDomain
+    Condition: CreateTestResources
+    Properties:
+      Domain: tracktak-test
+      UserPoolId: !Ref UserPool
 
   DefineAuthChallengeInvocationPermission:
     Type: AWS::Lambda::Permission
@@ -213,18 +327,6 @@ Resources:
       FunctionName: !GetAtt PostAuthentication.Arn
       Principal: cognito-idp.amazonaws.com
       SourceArn: !GetAtt UserPool.Arn
-
-  UserPoolClient:
-    Type: "AWS::Cognito::UserPoolClient"
-    Properties:
-      ClientName: email-auth-client
-      GenerateSecret: false
-      UserPoolId: !Ref UserPool
-      PreventUserExistenceErrors: ENABLED
-      ExplicitAuthFlows:
-        - ALLOW_USER_SRP_AUTH
-        - ALLOW_CUSTOM_AUTH
-        - ALLOW_REFRESH_TOKEN_AUTH
 
 Outputs:
   UserPoolId:

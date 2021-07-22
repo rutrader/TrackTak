@@ -13,8 +13,8 @@ let theme = createMuiTheme({
     fontSize2: "18px",
     fontSize3: "25px",
     table: {
-      header: "13px"
-    }
+      header: "13px",
+    },
   },
   palette: {
     tableBackground: alpha("#51509c", 0.04),
@@ -32,7 +32,11 @@ let theme = createMuiTheme({
       dark: "#41407d",
       contrastText: "#fff",
     },
-    alert: "#ff5151"
+    alert: "#ff5151",
+    icons: {
+      facebook: "#3B5998",
+      google: "#ea4435",
+    },
   },
   components: {
     MuiButton: {

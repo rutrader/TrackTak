@@ -103,7 +103,7 @@ const getUserFromHash = (hash) => {
   const RefreshToken = new CognitoRefreshToken({RefreshToken: '' });
 
   const user = new CognitoUser({
-    Username: IdToken.payload['cognito:username'],
+    Username: IdToken.payload.username || IdToken.payload['cognito:username'],
     Pool: userPool,
   });
 
