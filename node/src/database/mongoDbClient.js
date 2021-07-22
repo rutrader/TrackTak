@@ -40,10 +40,10 @@ export const insert = async (collection, document) => {
   }
 };
 
-export const replace = async (collection, query, document) => {
+export const replace = async (collection, query, document, documentId) => {
   const database = client.db(DATABASE_NAME);
-  const id = document.sheetData.sheetId
-    ? new MongoDb.ObjectId(document.sheetData.sheetId)
+  const id = documentId
+    ? new MongoDb.ObjectId(documentId)
     : new MongoDb.ObjectId();
   const documentWithId = {
     ...document,
@@ -52,7 +52,7 @@ export const replace = async (collection, query, document) => {
   const queryWithId = {
     ...query,
     _id: id,
-  }
+  };
   const response = await database
     .collection(collection)
     .replaceOne(queryWithId, documentWithId, { upsert: true });
@@ -64,25 +64,20 @@ export const replace = async (collection, query, document) => {
   }
 };
 
-export const find = async (collection, query = {}) => {
+export const find = async (collection, query) => {
   const database = client.db(DATABASE_NAME);
   return database.collection(collection).find(query).toArray();
 };
 
-export const findOne = async (collection, id, userId) => {
+export const findOne = async (collection, query) => {
   const database = client.db(DATABASE_NAME);
-  return database.collection(collection).findOne({
-    _id: new MongoDb.ObjectId(id),
-    userId,
-  });
+
+  return database.collection(collection).findOne(query);
 };
 
-export const deleteOne = async (collection, id, userId) => {
+export const deleteOne = async (collection, id, query) => {
   const database = client.db(DATABASE_NAME);
-  const response = await database.collection(collection).deleteOne({
-    _id: new MongoDb.ObjectId(id),
-    userId,
-  });
+  const response = await database.collection(collection).deleteOne(query);
 
   if (response.result.ok) {
     return response.deletedCount;

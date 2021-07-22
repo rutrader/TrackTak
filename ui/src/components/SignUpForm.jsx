@@ -5,9 +5,22 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import RoundButton from "./RoundButton";
 import { useTheme } from "@material-ui/styles";
-import { Box } from "@material-ui/core";
+import { Box, FormControlLabel, Link } from "@material-ui/core";
 import TracktakLogoSvg from "../icons/tracktak-purple.svg";
 import PhoneField from "./PhoneField";
+import Checkbox from "@material-ui/core/Checkbox";
+
+const BoxWrapper = ({ sx, ...props }) => {
+  return (
+    <Box
+      sx={{
+        mt: 2,
+        ...sx,
+      }}
+      {...props}
+    />
+  );
+};
 
 const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
   const theme = useTheme();
@@ -15,6 +28,7 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [checkedMailingList, setCheckedMailingList] = useState(false);
 
   const handleSubmit = (e) => {
     onSubmit(e, {
@@ -22,6 +36,7 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
       phone,
       email,
       password,
+      checkedMailingList,
     });
   };
 
@@ -39,8 +54,8 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
       <Typography
         variant="h5"
         sx={{
-          mt: (theme) => theme.spacing(1),
-          color: (theme) => theme.palette.primary.mainTextColor,
+          mt: theme.spacing(1),
+          color: theme.palette.primary.mainTextColor,
         }}
       >
         Sign up
@@ -104,6 +119,41 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
               />
             </Grid>
           </Grid>
+          <BoxWrapper>
+            <FormControlLabel
+              checked={checkedMailingList}
+              onChange={(e) => {
+                setCheckedMailingList(e.target.checked);
+              }}
+              control={<Checkbox color="primary" />}
+              label={
+                <Typography>
+                  Occasionally send me updates on new features
+                </Typography>
+              }
+            />
+          </BoxWrapper>
+          <BoxWrapper>
+            <Typography variant="h7" color="textSecondary">
+              By clicking Sign Up, you agree to our{" "}
+              <Link
+                href="/terms-and-conditions"
+                rel="noreferrer"
+                target="_blank"
+              >
+                Terms
+              </Link>{" "}
+              and that you have read our{" "}
+              <Link href="/privacy-policy" rel="noreferrer" target="_blank">
+                Privacy Policy
+              </Link>
+              , including our{" "}
+              <Link href="/cookie-policy" rel="noreferrer" target="_blank">
+                Cookie Policy
+              </Link>
+              .
+            </Typography>
+          </BoxWrapper>
           <RoundButton
             type="submit"
             fullWidth

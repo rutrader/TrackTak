@@ -1,3 +1,9 @@
+import defaultStatement from "./defaultStatement";
+import getIsStockInUS from "./getIsStockInUS";
+import getNonUSFinancialData from "./getNonUSFinancialData";
+import getSortedStatements from "./getSortedStatements";
+import getUSFinancialData from "./getUSFinancialData";
+
 const getCashFlowStatement = (
   cashFlowStatement,
   convertCurrency,
@@ -15,4 +21,60 @@ const getCashFlowStatement = (
   return convertedCashFlowStatement;
 };
 
-export default getCashFlowStatement;
+const getTTMCashFlowStatement = (
+  fundamentals,
+  quarterlyCashFlowStatements,
+  yearlyCashFlowStatements,
+  convertCurrency,
+) => {
+  if (!yearlyCashFlowStatements.length) return {};
+
+  const cashFlowStatement = getIsStockInUS(fundamentals)
+    ? getUSFinancialData(
+        getCashFlowStatement,
+        quarterlyCashFlowStatements,
+        convertCurrency,
+      )
+    : getNonUSFinancialData(
+        getCashFlowStatement,
+        yearlyCashFlowStatements,
+        convertCurrency,
+      );
+
+  return cashFlowStatement;
+};
+
+const getCashFlowStatements = (fundamentals, convertCurrency) => {
+  const quarterlyCashFlowStatements = getSortedStatements(
+    fundamentals.incomeStatement.quarterly,
+  );
+  const yearlyCashFlowStatements = getSortedStatements(
+    fundamentals.incomeStatement.yearly,
+  );
+
+  if (!yearlyCashFlowStatements.length) return defaultStatement;
+
+  const ttm = getTTMCashFlowStatement(
+    fundamentals,
+    quarterlyCashFlowStatements,
+    yearlyCashFlowStatements,
+    convertCurrency,
+  );
+
+  const yearly = {};
+
+  yearlyCashFlowStatements.forEach((cashFlowStatement) => {
+    yearly[cashFlowStatement.date] = getCashFlowStatement(
+      cashFlowStatement,
+      convertCurrency,
+      cashFlowStatement.date,
+    );
+  });
+
+  return {
+    ttm,
+    yearly,
+  };
+};
+
+export default getCashFlowStatements;

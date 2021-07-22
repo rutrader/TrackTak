@@ -1,9 +1,6 @@
-import { createSelector } from "@reduxjs/toolkit";
 import dayjs from "dayjs";
-import selectExchangeRates from "./selectExchangeRates";
-import isFinite from "lodash/isFinite";
 
-const convertCurrency = (exchangeRates) => (
+const makeConvertCurrency = (exchangeRates) => (
   datePeriodsToConvertAt,
   valueToConvert,
 ) => {
@@ -28,9 +25,4 @@ const convertCurrency = (exchangeRates) => (
   return valueToConvert * averageOfExchangeRateCloses;
 };
 
-const selectConvertCurrency = createSelector(
-  selectExchangeRates,
-  convertCurrency,
-);
-
-export default selectConvertCurrency;
+export default makeConvertCurrency;

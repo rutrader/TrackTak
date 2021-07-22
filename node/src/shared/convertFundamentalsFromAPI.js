@@ -1,5 +1,5 @@
-import { isNil } from "lodash-es";
-import getValueFromString from "./getValueFromString";
+import isNil from "lodash/isNil";
+import getValueFromString from "../../../packages/intrinsic-valuations/src/shared/getValueFromString";
 
 const convertBalanceSheet = ({
   date,
@@ -72,7 +72,7 @@ const convertCashFlowStatement = ({
   return newCashFlowStatement;
 };
 
-const convertFundamentals = (fundamentalsData) => {
+const convertFundamentalsFromAPI = (fundamentalsData) => {
   const {
     General,
     Highlights,
@@ -91,6 +91,7 @@ const convertFundamentals = (fundamentalsData) => {
     countryISO: General.CountryISO,
     industry: General.Industry,
     gicSubIndustry: General.GicSubIndustry,
+    updatedAt: General.UpdatedAt,
   };
 
   const highlights = {
@@ -182,4 +183,4 @@ const convertFundamentals = (fundamentalsData) => {
   };
 };
 
-export default convertFundamentals;
+export default convertFundamentalsFromAPI;
