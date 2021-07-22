@@ -87,11 +87,12 @@ const getUserFromHash = (hash) => {
   if (!split || split.length < 2) {
     return null;
   }
+
   const values = split.map(val => val.split('=')[1]);
 
   const token = {
-    idToken: values[0],
-    accessToken: values[1],
+    accessToken: values[0],
+    idToken: values[1],
   }
 
   const IdToken = new CognitoIdToken({

@@ -70,6 +70,7 @@ const useProvideAuth = () => {
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [hasLoadedAuthDetails, setHasLoadedAuthDetails] = useState(false);
   const [userData, setUserData] = useState();
+  const [isExternalIdentityProvider, setIsExternalIdentityProvider] = useState(false);
 
   useEffect(() => {
     const handleGetUserData = (...args) => {
@@ -77,6 +78,10 @@ const useProvideAuth = () => {
 
       setUserData(updatedUserData);
       setIsEmailVerified(isEmailVerified);
+
+      if (updatedUserData.identities) {
+        setIsExternalIdentityProvider(true);
+      }
     };
 
     const currentUser = getCurrentUser();
@@ -117,6 +122,7 @@ const useProvideAuth = () => {
     userSignOut();
     setIsAuthenticated(false);
     setUserData(null);
+    setIsExternalIdentityProvider(false);
   };
 
   const submitEmailVerificationCode = (code, onSuccess, onFailure) => {
@@ -144,6 +150,7 @@ const useProvideAuth = () => {
     isAuthenticated,
     hasLoadedAuthDetails,
     userData,
+    isExternalIdentityProvider,
     signUp,
     signIn,
     signOut,

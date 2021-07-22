@@ -28,11 +28,11 @@ const SignInForm = ({
   };
 
   const handleGoogleLogin = () => {
-    window.open(process.env.GATSBY_SOCIAL_LOGIN_GOOGLE);
+    window.open(process.env.GATSBY_SOCIAL_LOGIN_GOOGLE, "_self");
   };
 
   const handleFacebookLogin = () => {
-    window.open(process.env.GATSBY_SOCIAL_LOGIN_FACEBOOK);
+    window.open(process.env.GATSBY_SOCIAL_LOGIN_FACEBOOK, "_self");
   };
 
   return (
