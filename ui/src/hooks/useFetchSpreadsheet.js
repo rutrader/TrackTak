@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { getSpreadsheet } from "../api/api";
-import { useAuth } from "./useAuth";
+import { getAccessToken } from "./useAuth";
 
 const useFetchSpreadsheet = (sheetId) => {
-  const { getAccessToken } = useAuth();
   const [spreadsheet, setSpreadsheet] = useState();
   const [accessToken, setAccessToken] = useState();
   const jwtToken = accessToken?.jwtToken;
@@ -15,7 +14,7 @@ const useFetchSpreadsheet = (sheetId) => {
       setAccessToken(token);
     }
     fetchToken();
-  }, [getAccessToken]);
+  }, []);
 
   useEffect(() => {
     async function fetchData() {
