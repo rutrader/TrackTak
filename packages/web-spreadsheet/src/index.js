@@ -57,6 +57,9 @@ const getSpreadsheet = (
   element.appendChild(rootEl.el);
 
   const destroy = () => {
+    spreadsheet.sheet.unbindAll();
+    variablesSpreadsheet.sheet.unbindAll();
+
     rootEl.destroy();
 
     if (hyperformula.isItPossibleToRemoveNamedExpression("TRUE")) {

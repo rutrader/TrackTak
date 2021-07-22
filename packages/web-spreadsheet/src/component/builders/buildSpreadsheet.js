@@ -19,7 +19,6 @@ import getClipboard from "../../core/getClipboard";
 import { getFormulaBar } from "../editor/getFormulaBar";
 import { getFormulaSuggestions } from "../../shared/getFormulaSuggestions";
 import Manager from "undo-redo-manager";
-import { bind } from "../event";
 import Save from "../save/Save";
 import makeExportToExcel from "../export/makeExportToExcel";
 
@@ -272,20 +271,6 @@ export const buildSpreadsheet = (
 
   spreadsheet.sheet.el.after(bottombar.el);
   rootEl.children(print.el);
-
-  bind(window, "paste", (evt) => {
-    evt.preventDefault();
-
-    const paste = getFocusedData().rows.copyPasteAll;
-
-    if (spreadsheet.sheet?.getLastFocused()) {
-      spreadsheet.sheet.paste(paste);
-
-      return;
-    }
-
-    variablesSpreadsheet.sheet.paste(paste);
-  });
 
   return {
     toolbar,

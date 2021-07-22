@@ -33,13 +33,13 @@ export default class Modal {
         this.hide();
       }
     };
-    bind(window, "keydown", window.xkeydownEsc);
+    // bind(window, "keydown", window.xkeydownEsc);
   }
 
   hide() {
     this.el.hide();
     document.body.removeChild(this.dimmer.el);
-    unbind(window, "keydown", window.xkeydownEsc);
+    // unbind(window, "keydown", window.xkeydownEsc);
     delete window.xkeydownEsc;
   }
 }

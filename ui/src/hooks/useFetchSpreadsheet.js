@@ -5,28 +5,18 @@ import { getAccessToken } from "./useAuth";
 const useFetchSpreadsheet = (sheetId) => {
   const [spreadsheet, setSpreadsheet] = useState();
   const [financialData, setFinancialData] = useState();
-  const [accessToken, setAccessToken] = useState();
-  const jwtToken = accessToken?.jwtToken;
-
-  useEffect(() => {
-    async function fetchToken() {
-      const token = await getAccessToken();
-
-      setAccessToken(token);
-    }
-    fetchToken();
-  }, []);
 
   useEffect(() => {
     async function fetchData() {
-      const response = await getSpreadsheet(jwtToken, sheetId);
+      const token = await getAccessToken();
+      const response = await getSpreadsheet(token?.jwtToken, sheetId);
 
       setFinancialData(response.data.financialData);
       setSpreadsheet(response.data.spreadsheet);
     }
 
     fetchData();
-  }, [jwtToken, sheetId]);
+  }, [sheetId]);
 
   return [spreadsheet, financialData];
 };
