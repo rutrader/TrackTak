@@ -7,7 +7,7 @@ export const onClientEntry = () => {
   reportWebVitals();
 };
 
-export { wrapPageElement, wrapRootElement } from "./sharedGatsby";
+export { wrapRootElement } from "./sharedGatsby";
 
 export const shouldUpdateScroll = ({ prevRouterProps, routerProps }) => {
   if (prevRouterProps?.location.pathname !== routerProps.location.pathname) {
@@ -18,6 +18,6 @@ export const shouldUpdateScroll = ({ prevRouterProps, routerProps }) => {
 
 export const onRouteUpdate = ({ location, prevLocation }) => {
   if (location && location.state) {
-    location.state.referrer = prevLocation ? prevLocation.pathname : null
+    location.state.referrer = prevLocation ? prevLocation.pathname : null;
   }
-}
+};

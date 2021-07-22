@@ -27,6 +27,40 @@ export const ProvideAuth = (props) => {
   );
 };
 
+export const getAccessToken = async () => {
+  const session = await new Promise((resolve, reject) => {
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+      currentUser.getSession((error, session) => {
+        if (!error && session) {
+          resolve(session);
+        } else {
+          reject(error);
+        }
+      });
+    }
+  });
+
+  return session.accessToken;
+};
+
+const getUpdatedUserDetails = (_, updatedUserDataArray) => {
+  if (updatedUserDataArray) {
+    const updatedUserData = updatedUserDataArray.reduce(
+      (attributes, current) => ({
+        ...attributes,
+        [current.Name]: current.Value,
+      }),
+      {},
+    );
+    const isEmailVerified = updatedUserData?.email_verified === "true";
+
+    return [updatedUserData, isEmailVerified];
+  }
+
+  return [];
+};
+
 /**
  *
  * Hook for managing authentication
@@ -38,20 +72,15 @@ const useProvideAuth = () => {
   const [userData, setUserData] = useState();
 
   useEffect(() => {
-    const handleGetUserData = (_, updatedUserDataArray) => {
-      if (updatedUserDataArray) {
-        const updatedUserData = updatedUserDataArray.reduce(
-          (attributes, current) => ({
-            ...attributes,
-            [current.Name]: current.Value,
-          }),
-          {},
-        );
-        setUserData(updatedUserData);
-        setIsEmailVerified(updatedUserData?.email_verified === "true");
-      }
+    const handleGetUserData = (...args) => {
+      const [updatedUserData, isEmailVerified] = getUpdatedUserDetails(...args);
+
+      setUserData(updatedUserData);
+      setIsEmailVerified(isEmailVerified);
     };
+
     const currentUser = getCurrentUser();
+
     if (currentUser) {
       currentUser.getSession((error, session) => {
         if (!error && session) {
@@ -111,27 +140,10 @@ const useProvideAuth = () => {
     userUpdateContactDetails(updatedAttributes, onUpdateSuccess, onFailure);
   };
 
-  const getAccessToken = async () => {
-    const session = await new Promise(function (resolve, reject) {
-      const currentUser = getCurrentUser();
-      if (currentUser) {
-        currentUser.getSession((error, session) => {
-          if (!error && session) {
-            resolve(session);
-          } else {
-            reject(error);
-          }
-        });
-      }
-    });
-    return session.accessToken;
-  };
-
   return {
     isAuthenticated,
     hasLoadedAuthDetails,
     userData,
-    getAccessToken,
     signUp,
     signIn,
     signOut,

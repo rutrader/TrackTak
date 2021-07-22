@@ -13,24 +13,41 @@ import { Link, navigate } from "gatsby";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchTicker from "./SearchTicker";
 import TracktakLogo from "./TracktakLogo";
-import { useAuth } from "../hooks/useAuth";
+import { getAccessToken, useAuth } from "../hooks/useAuth";
 
-const buttonStyle = {
-  textTransform: "none",
-  fontWeight: "bold",
-  color: (theme) => theme.palette.primary.mainTextColor,
+const LinkButton = (props) => {
+  return (
+    <Button
+      sx={{
+        px: 2,
+        width: "100%",
+        textTransform: "none",
+        fontWeight: "bold",
+        color: (theme) => theme.palette.primary.mainTextColor,
+      }}
+      {...props}
+    />
+  );
 };
 
-const HeaderLink = ({ to, text, style, isSignOut = false }) => {
-  const { getAccessToken, signOut } = useAuth();
+const MenuItemLink = (props) => {
+  return <MenuItem sx={{ "&.MuiMenuItem-root": { padding: 0 } }} {...props} />;
+};
 
-  const handleOnSignOut = async () => {
-    if (await getAccessToken()) {
-      signOut();
-      navigate("/");
-    }
-  };
+const SignOutButton = ({ handleOnSignOut, ...props }) => {
+  return (
+    <LinkButton
+      onClick={() => {
+        handleOnSignOut();
+      }}
+      {...props}
+    >
+      Sign Out
+    </LinkButton>
+  );
+};
 
+const HeaderLink = ({ to, text, style }) => {
   return (
     <Box
       sx={{
@@ -40,15 +57,9 @@ const HeaderLink = ({ to, text, style, isSignOut = false }) => {
         ...style,
       }}
     >
-      {isSignOut ? (
-        <Button sx={buttonStyle} onClick={handleOnSignOut}>
-          Sign Out
-        </Button>
-      ) : (
-        <Button sx={buttonStyle} to={to} component={Link}>
-          {text}
-        </Button>
-      )}
+      <LinkButton to={to} component={Link}>
+        {text}
+      </LinkButton>
     </Box>
   );
 };
@@ -62,7 +73,9 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
   const { isAuthenticated, signOut } = useAuth();
 
   const handleOnSignOut = async () => {
-    if (isAuthenticated) {
+    const token = await getAccessToken();
+
+    if (token) {
       signOut();
       navigate("/");
     }
@@ -85,61 +98,31 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
     handleClose();
   };
 
-  const getUserAccountMenuItems = () => (
-    <>
-      <MenuItem
-        key="dashboard"
-        to="/dashboard"
-        component={Link}
-        onClick={handleAccountMenuClose}
-        sx={buttonStyle}
+  const getUserAccountMenuItems = () => [
+    <MenuItemLink key="dashboard">
+      <LinkButton
+        onClick={() => {
+          navigate("/dashboard");
+          handleAccountMenuClose();
+        }}
       >
         Dashboard
-      </MenuItem>
-      <MenuItem
-        key="account-settings"
-        to="/account-settings"
-        component={Link}
-        onClick={handleAccountMenuClose}
-        sx={buttonStyle}
+      </LinkButton>
+    </MenuItemLink>,
+    <MenuItemLink key="account-settings">
+      <LinkButton
+        onClick={() => {
+          navigate("/account-settings");
+          handleAccountMenuClose();
+        }}
       >
         Settings
-      </MenuItem>
-      <MenuItem
-        key="sign-out"
-        to="/"
-        component={Link}
-        onClick={handleOnSignOut}
-        sx={buttonStyle}
-      >
-        Sign Out
-      </MenuItem>
-    </>
-  );
-
-  const renderUserMenu = () => {
-    return (
-      <>
-        <Button
-          sx={buttonStyle}
-          onClick={handleAccountMenuClick}
-          aria-controls="account-menu-button"
-          aria-haspopup="true"
-        >
-          Account
-        </Button>
-        <Menu
-          id="account-menu"
-          anchorEl={userMenuAnchorEl}
-          keepMounted
-          open={Boolean(userMenuAnchorEl)}
-          onClose={handleAccountMenuClose}
-        >
-          {getUserAccountMenuItems()}
-        </Menu>
-      </>
-    );
-  };
+      </LinkButton>
+    </MenuItemLink>,
+    <MenuItemLink key="sign-out">
+      <SignOutButton key="sign-out" handleOnSignOut={handleOnSignOut} />
+    </MenuItemLink>,
+  ];
 
   return (
     <>
@@ -185,14 +168,44 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
             </Box>
             <Hidden mdDown implementation="css">
               <Box sx={{ display: "flex" }}>
-                {links.map((link, i) => (
-                  <HeaderLink
-                    key={link.to}
-                    sx={{ ml: i === 0 ? 2 : 0 }}
-                    {...link}
-                  />
-                ))}
-                {isAuthenticated && renderUserMenu()}
+                {links.map((link, i) => {
+                  if (link.id === "sign-out") {
+                    return (
+                      <SignOutButton
+                        key={link.id}
+                        handleOnSignOut={handleOnSignOut}
+                      />
+                    );
+                  }
+
+                  return (
+                    <HeaderLink
+                      key={link.to}
+                      sx={{ ml: i === 0 ? 2 : 0 }}
+                      {...link}
+                    />
+                  );
+                })}
+                {isAuthenticated && (
+                  <>
+                    <LinkButton
+                      onClick={handleAccountMenuClick}
+                      aria-controls="account-menu-button"
+                      aria-haspopup="true"
+                    >
+                      Account
+                    </LinkButton>
+                    <Menu
+                      id="account-menu"
+                      anchorEl={userMenuAnchorEl}
+                      keepMounted
+                      open={Boolean(userMenuAnchorEl)}
+                      onClose={handleAccountMenuClose}
+                    >
+                      {getUserAccountMenuItems()}
+                    </Menu>
+                  </>
+                )}
               </Box>
             </Hidden>
             <Hidden mdUp implementation="css">
@@ -223,14 +236,15 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
                 >
                   {isAuthenticated && getUserAccountMenuItems()}
                   {links.map((link) => (
-                    <MenuItem
-                      key={link.to}
-                      to={link.to}
-                      component={Link}
-                      onClick={handleClose}
-                    >
-                      {link.text}
-                    </MenuItem>
+                    <MenuItemLink key={link.to}>
+                      <LinkButton
+                        component={Link}
+                        onClick={handleClose}
+                        to={link.to}
+                      >
+                        {link.text}
+                      </LinkButton>
+                    </MenuItemLink>
                   ))}
                 </Menu>
               </Box>
