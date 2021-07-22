@@ -116,7 +116,7 @@ const AboveTheFoldSection = () => {
             <Box>
               tracktak enables investors and financial modellers looking for a
               faster, automated and more accurate way to value companies and
-              projects.
+              projects. Free while in beta.
             </Box>
           </Typography>
           <Box
