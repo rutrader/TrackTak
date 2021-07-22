@@ -15,7 +15,7 @@ import GridOnIcon from "@material-ui/icons/GridOn";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useTheme } from "@material-ui/styles";
 import ConfirmationDialog from "./ConfirmationDialog";
-import { useAuth } from "../hooks/useAuth";
+import { getAccessToken, useAuth } from "../hooks/useAuth";
 import { deleteSpreadsheet, getSpreadsheets } from "../api/api";
 import { navigate } from "gatsby";
 import RoundButton from "./RoundButton";
@@ -24,7 +24,7 @@ import dayjs from "dayjs";
 const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
   const theme = useTheme();
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
-  const { getAccessToken, userData } = useAuth();
+  const { userData } = useAuth();
   const [spreadsheets, setSpreadsheets] = useState(null);
   const [selectedSpreadsheet, setSelectedSpreadsheet] = useState();
 
@@ -36,7 +36,7 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
       setSpreadsheets(response.data.spreadsheets);
     }
     fetchData();
-  }, [getAccessToken]);
+  }, []);
 
   const handleRowClick = (spreadsheet) => {
     navigate(`/${userData.name}/my-spreadsheets/${spreadsheet._id}`);
