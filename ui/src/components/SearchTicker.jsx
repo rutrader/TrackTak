@@ -11,7 +11,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import useDebouncedCallback from "../../../packages/intrinsic-valuations/src/hooks/useDebouncedCallback";
 import TTRoundInput from "./TTRoundInput";
 import { getAutocompleteQuery } from "../../../packages/intrinsic-valuations/src/api/api";
-import { useAuth } from "../hooks/useAuth";
+import { getAccessToken, useAuth } from "../hooks/useAuth";
 import { createSpreadsheet } from "../api/api";
 import { navigate } from "gatsby";
 import freeCashFlowToFirmData, {
@@ -33,7 +33,7 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
   const [isLoadingAutocomplete, setIsLoadingAutocomplete] = useState(false);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [text, setText] = useState("");
-  const { getAccessToken, userData } = useAuth();
+  const { userData } = useAuth();
   const dispatch = useDispatch();
 
   const fetchData = async (ticker) => {
