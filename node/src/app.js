@@ -115,21 +115,18 @@ app.post("/api/v1/spreadsheets", auth, async (req, res) => {
 
   const spreadsheet = await api.saveSpreadsheet(
     req.body.sheetData,
-    financialData._id,
     req.user.username,
-    new Date(),
+    financialData._id,
   );
   res.send({ spreadsheet });
 });
 
 app.put("/api/v1/spreadsheets", auth, async (req, res) => {
-  let financialDataId = req.body.financialDataId;
-  const sheetData = req.body.sheetData;
-
   const spreadsheet = await api.saveSpreadsheet(
-    sheetData,
-    financialDataId,
+    req.body.sheetData,
     req.user.username,
+    req.body.financialDataId,
+    req.body._id,
     req.body.createdTimestamp,
   );
   res.send({ spreadsheet });
