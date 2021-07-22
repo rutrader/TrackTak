@@ -17,6 +17,7 @@ const defaultColWidth = 110;
 
 const Spreadsheet = ({
   spreadsheet: spreadsheetData,
+  financialData,
   saveSheetData = () => {},
 }) => {
   const containerRef = useRef();
@@ -29,10 +30,9 @@ const Spreadsheet = ({
   );
   const [isSaving, setIsSaving] = useState(false);
   const sheetName = spreadsheetData?.sheetData?.name;
-  const currencySymbol =
-    spreadsheetData?.financialData?.general?.currencySymbol;
+  const currencySymbol = financialData?.general?.currencySymbol;
 
-  useFinancialPlugin(spreadsheet, spreadsheetData?.financialData);
+  useFinancialPlugin(spreadsheet, financialData);
 
   useEffect(() => {
     const exportToExcel = (exportFn) => {

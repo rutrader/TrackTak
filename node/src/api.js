@@ -302,23 +302,20 @@ const api = {
 
   getFinancialDataForSpreadsheetFromId: async (financialDataId) => {
     return database.findOne(Collections.FINANCIAL_DATA, {
-      _id: financialDataId,
+      _id: new MongoDb.ObjectId(financialDataId),
     });
   },
 
   saveFinancialData: async (financialData) => {
-    const document = {
-      _id: new MongoDb.ObjectId(),
-      ...financialData,
-    };
-    return database.insert(Collections.FINANCIAL_DATA, document);
+    return database.insert(Collections.FINANCIAL_DATA, financialData);
   },
 
   saveSpreadsheet: async (
     sheetData,
-    financialDataId,
     userId,
-    createdTimestamp,
+    financialDataId,
+    spreadsheetId,
+    createdTimestamp = new Date(),
   ) => {
     const document = {
       financialDataId,
@@ -336,7 +333,7 @@ const api = {
       Collections.SPREADSHEET,
       query,
       document,
-      document.sheetData.sheetId,
+      spreadsheetId,
     );
   },
 

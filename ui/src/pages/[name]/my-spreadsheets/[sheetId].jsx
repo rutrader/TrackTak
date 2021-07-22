@@ -7,7 +7,7 @@ import withAuthentication from "../../../hocs/withAuthentication";
 import useSaveSpreadsheetData from "../../../hooks/useSaveSpreadsheetData";
 
 const SpreadsheetPage = ({ sheetId }) => {
-  const [spreadsheet] = useFetchSpreadsheet(sheetId);
+  const [spreadsheet, financialData] = useFetchSpreadsheet(sheetId);
   const saveSheetData = useSaveSpreadsheetData(spreadsheet);
 
   return (
@@ -17,7 +17,11 @@ const SpreadsheetPage = ({ sheetId }) => {
           <title>{getTitle(`${spreadsheet.sheetData.name} Spreadsheet`)}</title>
         </Helmet>
       )}
-      <Spreadsheet saveSheetData={saveSheetData} spreadsheet={spreadsheet} />
+      <Spreadsheet
+        saveSheetData={saveSheetData}
+        spreadsheet={spreadsheet}
+        financialData={financialData}
+      />
     </>
   );
 };
