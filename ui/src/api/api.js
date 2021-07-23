@@ -1,5 +1,23 @@
 import axios from "../../../packages/intrinsic-valuations/src/api/axios";
 
+export const getFinancialData = async (id) => {
+  return axios.get(`/api/v1/financial-data/${id}`);
+};
+
+export const createFinancialData = async (
+  financialData,
+  accessToken,
+  spreadsheetId,
+) => {
+  return axios.post(
+    `/api/v1/financial-data/`,
+    { financialData, spreadsheetId },
+    {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    },
+  );
+};
+
 export const createSpreadsheet = async (spreadsheet, accessToken) => {
   return axios.post("/api/v1/spreadsheets", spreadsheet, {
     headers: { Authorization: `Bearer ${accessToken}` },
@@ -18,7 +36,7 @@ export const getSpreadsheets = async (accessToken) => {
   });
 };
 
-export const getSpreadsheet = async (accessToken, id) => {
+export const getSpreadsheet = async (id, accessToken) => {
   return axios.get(`/api/v1/spreadsheets/${id}`, {
     headers: { Authorization: `Bearer ${accessToken}` },
   });

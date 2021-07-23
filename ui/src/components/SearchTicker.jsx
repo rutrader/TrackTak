@@ -18,13 +18,6 @@ import freeCashFlowToFirmData, {
   freeCashFlowToFirmVariablesData,
 } from "../../../packages/intrinsic-valuations/src/spreadsheet/templates/freeCashFlowFirmSimple/data";
 import { useDispatch } from "react-redux";
-import {
-  getExchangeRatesThunk,
-  getFundamentalsThunk,
-  getLastPriceCloseThunk,
-  getTenYearGovernmentBondLastCloseThunk,
-} from "../../../packages/intrinsic-valuations/src/redux/thunks/stockThunks";
-import convertStockAPIData from "../../../packages/intrinsic-valuations/src/shared/convertStockAPIData";
 import { setMessage } from "../redux/actions/snackbarActions";
 
 const SearchTicker = ({ isSmallSearch, sx }) => {
@@ -36,44 +29,7 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
   const { userData } = useAuth();
   const dispatch = useDispatch();
 
-  const fetchData = async (ticker) => {
-    const { payload: fundamentals } = await dispatch(
-      getFundamentalsThunk({
-        ticker,
-      }),
-    );
-
-    const values = await Promise.all([
-      dispatch(
-        getExchangeRatesThunk({
-          currencyCode: fundamentals.general.currencyCode,
-          incomeStatement: fundamentals.incomeStatement,
-          balanceSheet: fundamentals.balanceSheet,
-        }),
-      ),
-      dispatch(
-        getLastPriceCloseThunk({
-          ticker,
-        }),
-      ),
-
-      dispatch(
-        getTenYearGovernmentBondLastCloseThunk({
-          countryISO: fundamentals.general.countryISO,
-        }),
-      ),
-    ]);
-
-    return convertStockAPIData(
-      fundamentals,
-      values[0].payload,
-      values[1].payload,
-      values[2].payload,
-    );
-  };
-
   const createUserSpreadsheet = async (ticker) => {
-    const financialData = await fetchData(ticker);
     const token = await getAccessToken();
     const data = {
       datas: freeCashFlowToFirmData,
@@ -81,7 +37,7 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
     };
     const sheetData = { name: ticker, data };
     const response = await createSpreadsheet(
-      { sheetData, financialData },
+      { sheetData, ticker },
       token?.jwtToken,
     );
     navigate(
@@ -90,9 +46,7 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
     dispatch(
       setMessage({
         severity: "success",
-        message: `${
-          financialData?.general.name
-        }'s financial data has been frozen to ${dayjs().format(
+        message: `${ticker}'s financial data has been frozen to ${dayjs().format(
           "DD MMM YYYY",
         )} for your valuation.`,
       }),

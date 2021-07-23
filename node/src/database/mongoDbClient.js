@@ -64,6 +64,11 @@ export const replace = async (collection, query, document, documentId) => {
   }
 };
 
+export const updateOne = async (collection, query, update) => {
+  const database = client.db(DATABASE_NAME);
+  return database.collection(collection).updateOne(query, update);
+};
+
 export const find = async (collection, query) => {
   const database = client.db(DATABASE_NAME);
   return database.collection(collection).find(query).toArray();

@@ -4,21 +4,19 @@ import { getAccessToken } from "./useAuth";
 
 const useFetchSpreadsheet = (sheetId) => {
   const [spreadsheet, setSpreadsheet] = useState();
-  const [financialData, setFinancialData] = useState();
 
   useEffect(() => {
     async function fetchData() {
       const token = await getAccessToken();
-      const response = await getSpreadsheet(token?.jwtToken, sheetId);
+      const response = await getSpreadsheet(sheetId, token?.jwtToken);
 
-      setFinancialData(response.data.financialData);
       setSpreadsheet(response.data.spreadsheet);
     }
 
     fetchData();
   }, [sheetId]);
 
-  return [spreadsheet, financialData];
+  return spreadsheet;
 };
 
 export default useFetchSpreadsheet;

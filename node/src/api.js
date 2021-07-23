@@ -292,7 +292,7 @@ const api = {
     return data;
   },
 
-  getFinancialDataForSpreadsheet: async (financialDataQuery) => {
+  getFinancialDataByQuery: async (financialDataQuery) => {
     return database.findOne(Collections.FINANCIAL_DATA, {
       "general.code": financialDataQuery.code,
       "general.exchange": financialDataQuery.exchange,
@@ -300,25 +300,38 @@ const api = {
     });
   },
 
-  getFinancialDataForSpreadsheetFromId: async (financialDataId) => {
+  getFinancialData: async (id) => {
     return database.findOne(Collections.FINANCIAL_DATA, {
-      _id: new MongoDb.ObjectId(financialDataId),
+      _id: new MongoDb.ObjectId(id),
     });
   },
 
-  saveFinancialData: async (financialData) => {
+  createFinancialData: async (financialData) => {
     return database.insert(Collections.FINANCIAL_DATA, financialData);
+  },
+
+  updateSpreadsheet: async (id, financialDataId, userId) => {
+    return database.updateOne(
+      Collections.SPREADSHEET,
+      {
+        _id: new MongoDb.ObjectId(id),
+        userId,
+      },
+      {
+        $set: { "financialData.id": financialDataId },
+      },
+    );
   },
 
   saveSpreadsheet: async (
     sheetData,
     userId,
-    financialDataId,
+    financialData,
     spreadsheetId,
     createdTimestamp = new Date(),
   ) => {
     const document = {
-      financialDataId,
+      financialData,
       userId,
       sheetData,
       lastModifiedTimestamp: new Date(),

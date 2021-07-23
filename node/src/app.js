@@ -94,7 +94,13 @@ app.get("/api/v1/autocomplete-query/:queryString", async (req, res) => {
   res.send({ value });
 });
 
-app.post("/api/v1/spreadsheets", auth, async (req, res) => {
+app.get("/api/v1/financial-data/:id", async (req, res) => {
+  const financialData = await api.getFinancialData(req.params.id);
+
+  res.send({ financialData });
+});
+
+app.post("/api/v1/financial-data", auth, async (req, res) => {
   let financialData = req.body.financialData;
 
   const financialDataQuery = {
@@ -103,20 +109,35 @@ app.post("/api/v1/spreadsheets", auth, async (req, res) => {
     updatedAt: financialData.general.updatedAt,
   };
 
-  const existingFinancialData = await api.getFinancialDataForSpreadsheet(
+  const existingFinancialData = await api.getFinancialDataByQuery(
     financialDataQuery,
   );
 
   if (existingFinancialData) {
     financialData = existingFinancialData;
   } else {
-    financialData = await api.saveFinancialData(financialData);
+    financialData = await api.createFinancialData(financialData);
   }
 
+  if (req.body.spreadsheetId) {
+    await api.updateSpreadsheet(
+      req.body.spreadsheetId,
+      financialData._id,
+      req.user.username,
+    );
+  }
+
+  res.send({ financialData });
+});
+
+app.post("/api/v1/spreadsheets", auth, async (req, res) => {
+  const financialData = {
+    ticker: req.body.ticker,
+  };
   const spreadsheet = await api.saveSpreadsheet(
     req.body.sheetData,
     req.user.username,
-    financialData._id,
+    financialData,
   );
   res.send({ spreadsheet });
 });
@@ -125,7 +146,7 @@ app.put("/api/v1/spreadsheets", auth, async (req, res) => {
   const spreadsheet = await api.saveSpreadsheet(
     req.body.sheetData,
     req.user.username,
-    req.body.financialDataId,
+    req.body.financialData,
     req.body._id,
     req.body.createdTimestamp,
   );
@@ -143,11 +164,7 @@ app.get("/api/v1/spreadsheets/:id", auth, async (req, res) => {
     req.params.id,
   );
 
-  const financialData = await api.getFinancialDataForSpreadsheetFromId(
-    spreadsheet.financialDataId,
-  );
-
-  res.send({ spreadsheet, financialData });
+  res.send({ spreadsheet });
 });
 
 app.delete("/api/v1/spreadsheets/:id", auth, async (req, res) => {
