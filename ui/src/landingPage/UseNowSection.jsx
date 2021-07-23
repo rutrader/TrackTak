@@ -89,37 +89,31 @@ const UseNowSection = () => {
         >
           <RoundButton
             variant="contained"
-            type="submit"
             component={RouterLink}
             to="/sign-up"
             sx={{
               mb: 2.5,
               width: "70%",
               p: theme.spacing(1.5),
+              fontSize: 20,
             }}
           >
-            <Typography fontSize={20}>Sign up</Typography>
+            Sign up
           </RoundButton>
           <RoundButton
-            type="submit"
             component={RouterLink}
             to="/sign-in"
             sx={{
               mb: 2.5,
               width: "70%",
               p: theme.spacing(1.5),
+              textTransform: "none",
+              color: theme.palette.primary.mainTextColor,
+              textDecoration: "underline",
+              fontSize: 20,
             }}
           >
-            <Typography
-              fontSize={20}
-              sx={{
-                textTransform: "none",
-                color: theme.palette.primary.mainTextColor,
-                textDecoration: "underline",
-              }}
-            >
-              Already have an account? Log in
-            </Typography>
+            Already have an account? Log in
           </RoundButton>
         </Box>
         <Divider sx={{ mb: 2 }} variant="middle" />
