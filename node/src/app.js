@@ -109,7 +109,7 @@ app.post("/api/v1/financial-data", auth, async (req, res) => {
     updatedAt: financialData.general.updatedAt,
   };
 
-  const existingFinancialData = await api.getFinancialDataForSpreadsheet(
+  const existingFinancialData = await api.getFinancialDataByQuery(
     financialDataQuery,
   );
 
@@ -120,7 +120,11 @@ app.post("/api/v1/financial-data", auth, async (req, res) => {
   }
 
   if (req.body.spreadsheetId) {
-    await api.updateSpreadsheet(req.body.spreadsheetId, financialData._id);
+    await api.updateSpreadsheet(
+      req.body.spreadsheetId,
+      financialData._id,
+      req.user.username,
+    );
   }
 
   res.send({ financialData });

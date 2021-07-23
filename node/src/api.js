@@ -292,7 +292,7 @@ const api = {
     return data;
   },
 
-  getFinancialDataForSpreadsheet: async (financialDataQuery) => {
+  getFinancialDataByQuery: async (financialDataQuery) => {
     return database.findOne(Collections.FINANCIAL_DATA, {
       "general.code": financialDataQuery.code,
       "general.exchange": financialDataQuery.exchange,
@@ -310,11 +310,12 @@ const api = {
     return database.insert(Collections.FINANCIAL_DATA, financialData);
   },
 
-  updateSpreadsheet: async (id, financialDataId) => {
+  updateSpreadsheet: async (id, financialDataId, userId) => {
     return database.updateOne(
       Collections.SPREADSHEET,
       {
         _id: new MongoDb.ObjectId(id),
+        userId,
       },
       {
         $set: { "financialData.id": financialDataId },
