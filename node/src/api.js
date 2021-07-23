@@ -300,25 +300,37 @@ const api = {
     });
   },
 
-  getFinancialDataForSpreadsheetFromId: async (financialDataId) => {
+  getFinancialData: async (id) => {
     return database.findOne(Collections.FINANCIAL_DATA, {
-      _id: new MongoDb.ObjectId(financialDataId),
+      _id: new MongoDb.ObjectId(id),
     });
   },
 
-  saveFinancialData: async (financialData) => {
+  createFinancialData: async (financialData) => {
     return database.insert(Collections.FINANCIAL_DATA, financialData);
+  },
+
+  updateSpreadsheet: async (id, financialDataId) => {
+    return database.updateOne(
+      Collections.SPREADSHEET,
+      {
+        _id: new MongoDb.ObjectId(id),
+      },
+      {
+        $set: { "financialData.id": financialDataId },
+      },
+    );
   },
 
   saveSpreadsheet: async (
     sheetData,
     userId,
-    financialDataId,
+    financialData,
     spreadsheetId,
     createdTimestamp = new Date(),
   ) => {
     const document = {
-      financialDataId,
+      financialData,
       userId,
       sheetData,
       lastModifiedTimestamp: new Date(),

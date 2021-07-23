@@ -85,6 +85,7 @@ export const buildSpreadsheet = (
   const setOptions = (options) => {
     newOptions = getNewOptions(
       options,
+      newOptions,
       defaultOptions,
       newData,
       spreadsheet?.sheet,

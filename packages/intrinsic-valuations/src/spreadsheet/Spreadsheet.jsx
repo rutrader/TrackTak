@@ -8,7 +8,6 @@ import getSpreadsheet, {
 } from "../../../web-spreadsheet/src";
 import getFormats from "./getFormats";
 import SaveStatus from "./SaveStatus";
-import { useFinancialPlugin } from "../hooks/useFinancialPlugin";
 import hyperformulaConfig from "./hyperformulaConfig";
 
 const requiredInputsId = "required-inputs";
@@ -16,12 +15,13 @@ const dcfValuationId = "dcf-valuation";
 const defaultColWidth = 110;
 
 const Spreadsheet = ({
-  spreadsheet: spreadsheetData,
+  spreadsheetData,
   financialData,
+  setSpreadsheet,
+  spreadsheet,
   saveSheetData = () => {},
 }) => {
   const containerRef = useRef();
-  const [spreadsheet, setSpreadsheet] = useState();
   const theme = useTheme();
   const location = useLocation();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -31,8 +31,6 @@ const Spreadsheet = ({
   const [isSaving, setIsSaving] = useState(false);
   const sheetName = spreadsheetData?.sheetData?.name;
   const currencySymbol = financialData?.general?.currencySymbol;
-
-  useFinancialPlugin(spreadsheet, financialData);
 
   useEffect(() => {
     const exportToExcel = (exportFn) => {
@@ -85,7 +83,6 @@ const Spreadsheet = ({
       col: {
         width: defaultColWidth,
       },
-      formats: getFormats(currencySymbol),
       view: {
         height: () => 1200,
         width,
@@ -94,7 +91,6 @@ const Spreadsheet = ({
 
     const variablesSpreadsheetOptions = {
       debugMode,
-      formats: getFormats(currencySymbol),
       view: {
         width,
       },
@@ -116,7 +112,7 @@ const Spreadsheet = ({
     return () => {
       spreadsheet?.destroy();
     };
-  }, [currencySymbol]);
+  }, [setSpreadsheet]);
 
   useEffect(() => {
     const handleSave = async (data) => {
@@ -151,6 +147,17 @@ const Spreadsheet = ({
       }
     };
   }, [spreadsheet, saveSheetData, spreadsheetData]);
+
+  useEffect(() => {
+    if (spreadsheet) {
+      const options = {
+        formats: getFormats(currencySymbol),
+      };
+
+      spreadsheet.setOptions(options);
+      spreadsheet.variablesSpreadsheet.setOptions(options);
+    }
+  }, [currencySymbol, spreadsheet]);
 
   useEffect(() => {
     if (spreadsheet) {
