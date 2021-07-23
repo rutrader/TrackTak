@@ -13,8 +13,8 @@ let theme = createMuiTheme({
     fontSize2: "18px",
     fontSize3: "25px",
     table: {
-      header: "13px"
-    }
+      header: "13px",
+    },
   },
   palette: {
     tableBackground: alpha("#51509c", 0.04),
@@ -23,6 +23,7 @@ let theme = createMuiTheme({
       light: "#2fdbab",
       main: "#43cea2",
       dark: "#38ab87",
+      purple: "#6240C8",
       contrastText: "#fff",
       mainTextColor: "#313450",
     },
@@ -32,7 +33,11 @@ let theme = createMuiTheme({
       dark: "#41407d",
       contrastText: "#fff",
     },
-    alert: "#ff5151"
+    alert: "#ff5151",
+    icons: {
+      facebook: "#3B5998",
+      google: "#ea4435",
+    },
   },
   components: {
     MuiButton: {

@@ -8,8 +8,7 @@ const RoundButton = ({ sx, ...props }) => {
     <Button
       sx={{
         borderRadius: 50,
-        padding: `${theme.spacing(2)} ${theme.spacing(5)}`,
-        transition: "all .4s ease-in-out",
+        p: `${theme.spacing(2)} ${theme.spacing(5)}`,
         ...sx,
       }}
       {...props}

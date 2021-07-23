@@ -1,8 +1,11 @@
-import { Box, Typography, Link, Paper } from "@material-ui/core";
+import { Box, Typography, Link, Paper, Divider } from "@material-ui/core";
 import { Link as RouterLink } from "gatsby";
 import React from "react";
 import RoundButton from "../components/RoundButton";
 import { useTheme } from "@material-ui/styles";
+import FacebookIcon from "@material-ui/icons/Facebook";
+import GoogleIcon from "@material-ui/icons/Google";
+import SocialMediaButton from "../components/SocialMediaButton";
 
 const HeaderText = (props) => (
   <Typography
@@ -21,7 +24,6 @@ const UseNowSection = () => {
   const theme = useTheme();
   return (
     <Paper
-      id="get-started"
       elevation={6}
       sx={{
         boxShadow: "0 1px 10px 0 rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 6%)",
@@ -33,55 +35,113 @@ const UseNowSection = () => {
         display: "flex",
       }}
     >
-      <HeaderText variant="h3" gutterBottom>
-        Get Started Now
-      </HeaderText>
-      <Box sx={{ display: "flex", flexDirection: "column", mt: 2.5 }}>
-        <RoundButton
-          variant="contained"
-          type="submit"
-          component={RouterLink}
-          to="/sign-up"
-          sx={{ mb: 2.5 }}
+      <Box sx={{ maxWidth: "500px" }}>
+        <HeaderText variant="h3" gutterBottom>
+          Get Started Now
+        </HeaderText>
+        <Typography
+          color="textSecondary"
+          gutterBottom
+          sx={{ fontSize: theme.typography.fontSize2 }}
         >
-          <Typography fontSize={20}>Sign up</Typography>
-        </RoundButton>
-        <RoundButton
-          type="submit"
-          component={RouterLink}
-          to="/sign-in"
+          Sign up with your social media account or email address.
+        </Typography>
+        <Box
           sx={{
-            mb: 2.5,
+            mt: 2.5,
+            display: "flex",
+            flexWrap: "wrap",
+            flexDirection: "row",
+            justifyContent: "center",
+            gap: 2,
           }}
         >
-          <Typography
-            fontSize={20}
+          <SocialMediaButton
             sx={{
-              textTransform: "none",
-              color: theme.palette.primary.mainTextColor,
+              backgroundColor: theme.palette.icons.facebook,
+            }}
+            startIcon={<FacebookIcon sx={{ width: 25, height: 25 }} />}
+            text="Facebook"
+          />
+          <SocialMediaButton
+            sx={{
+              backgroundColor: theme.palette.icons.google,
+            }}
+            startIcon={<GoogleIcon sx={{ width: 25, height: 25 }} />}
+            text="Google"
+          />
+        </Box>
+        <Typography
+          component="div"
+          display="block"
+          sx={{ mt: 2 }}
+          fontSize={20}
+        >
+          Or
+        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            mt: 2.5,
+          }}
+        >
+          <RoundButton
+            variant="contained"
+            type="submit"
+            component={RouterLink}
+            to="/sign-up"
+            sx={{
+              mb: 2.5,
+              width: "70%",
+              p: theme.spacing(1.5),
             }}
           >
-            Already have an account? Log in
-          </Typography>
-        </RoundButton>
+            <Typography fontSize={20}>Sign up</Typography>
+          </RoundButton>
+          <RoundButton
+            type="submit"
+            component={RouterLink}
+            to="/sign-in"
+            sx={{
+              mb: 2.5,
+              width: "70%",
+              p: theme.spacing(1.5),
+            }}
+          >
+            <Typography
+              fontSize={20}
+              sx={{
+                textTransform: "none",
+                color: theme.palette.primary.mainTextColor,
+                textDecoration: "underline",
+              }}
+            >
+              Already have an account? Log in
+            </Typography>
+          </RoundButton>
+        </Box>
+        <Divider sx={{ mb: 2 }} variant="middle" />
+        <Typography color="textSecondary" variant="h7" gutterBottom>
+          By proceeding to create your account and use tracktak, you are
+          agreeing to our{" "}
+          <Link
+            href="/terms-and-conditions"
+            sx={{ color: theme.palette.primary.purple }}
+          >
+            <b>terms and conditions</b>
+          </Link>{" "}
+          and{" "}
+          <Link
+            href="/privacy-policy"
+            sx={{ color: theme.palette.primary.purple }}
+          >
+            <b>privacy policy</b>
+          </Link>
+          .
+        </Typography>
       </Box>
-      <Typography
-        color="textSecondary"
-        variant="h7"
-        gutterBottom
-        sx={{ maxWidth: "500px" }}
-      >
-        By proceeding to create your account and use tracktak, you are agreeing
-        to our{" "}
-        <Link href="/terms-and-conditions">
-          <b>terms and conditions</b>
-        </Link>{" "}
-        and{" "}
-        <Link href="/privacy-policy">
-          <b>privacy policy</b>
-        </Link>
-        .
-      </Typography>
     </Paper>
   );
 };
