@@ -10,8 +10,10 @@ const SocialMediaButton = ({ sx, text, ...props }) => {
         borderRadius: 50,
         textTransform: "none",
         padding: `${theme.spacing(1.5)} ${theme.spacing(5)}`,
+        width: 150,
         ...sx,
       }}
+      type="button"
       {...props}
     >
       {text}

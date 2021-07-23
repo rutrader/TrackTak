@@ -48,6 +48,7 @@ const SignInForm = ({
         Sign in
       </Typography>
       <ContinueToSpreadsheet />
+      <SocialLoginButtons />
       <Box
         sx={{
           marginTop: theme.spacing(3),
@@ -97,7 +98,6 @@ const SignInForm = ({
           >
             Sign In
           </RoundButton>
-          <SocialLoginButtons />
           <Grid container justifyContent="space-between">
             <Grid item>
               <Button

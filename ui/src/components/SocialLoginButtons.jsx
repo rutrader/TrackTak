@@ -3,6 +3,7 @@ import { Grid, Typography } from "@material-ui/core";
 import { useTheme } from "@material-ui/styles";
 import GoogleIcon from "@material-ui/icons/Google";
 import FacebookIcon from "@material-ui/icons/Facebook";
+import SocialMediaButton from "./SocialMediaButton";
 
 const SocialLoginButtons = () => {
   const theme = useTheme();
@@ -17,36 +18,39 @@ const SocialLoginButtons = () => {
 
   return (
     <Grid container justifyContent="center">
-      <Grid item>
-        <Typography component="div" display="block">
-          Or
-        </Typography>
-      </Grid>
       <Grid
         container
         justifyContent="center"
         sx={{
           gap: theme.spacing(2),
+          marginTop: theme.spacing(2),
+          marginBottom: theme.spacing(2),
         }}
       >
         <Grid item onClick={handleGoogleLogin}>
-          <GoogleIcon
-            fontSize="large"
+          <SocialMediaButton
             sx={{
-              color: theme.palette.icons.google,
-              cursor: "pointer",
+              backgroundColor: theme.palette.icons.google,
             }}
+            startIcon={<GoogleIcon sx={{ width: 25, height: 25 }} />}
+            text="Google"
+
           />
         </Grid>
         <Grid item onClick={handleFacebookLogin}>
-          <FacebookIcon
-            fontSize="large"
+        <SocialMediaButton
             sx={{
-              color: theme.palette.icons.facebook,
-              cursor: "pointer",
+              backgroundColor: theme.palette.icons.facebook,
             }}
+            startIcon={<FacebookIcon sx={{ width: 25, height: 25 }} />}
+            text="Facebook"
           />
         </Grid>
+      </Grid>
+      <Grid item>
+        <Typography component="div" display="block">
+          OR
+        </Typography>
       </Grid>
     </Grid>
   );

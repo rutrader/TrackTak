@@ -70,6 +70,7 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
         Sign up
       </Typography>
       <ContinueToSpreadsheet />
+      <SocialLoginButtons />
       <Box
         sx={{
           marginTop: theme.spacing(3),
@@ -177,7 +178,6 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
           >
             Sign Up
           </RoundButton>
-          <SocialLoginButtons />
           <Grid container justify="flex-end">
             <Grid item>
               <Button
