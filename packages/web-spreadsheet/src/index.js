@@ -76,12 +76,12 @@ const getSpreadsheet = (
   return {
     spreadsheet,
     variablesSpreadsheet,
-    setOptions,
     destroy,
     reset,
     setData,
     getDatas,
     getData,
+    setOptions,
     eventEmitter,
     variablesEventEmitter,
     hyperformula,

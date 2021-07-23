@@ -77,7 +77,7 @@ const OurTeamSection = () => {
         }}
       >
         <TeamMember
-          memberInfo="Kristina is a founding partner of tracktak and a value investor.
+          memberInfo="Kristina is a value investor and programmer.
             Kristina &amp; Martin are jointly responsible for the direction of the
             business. She is involved in helping users, partnerships,
             building the application and the company's financial health."
@@ -94,8 +94,8 @@ const OurTeamSection = () => {
           fluid={data.memberTwo.childImageSharp.fluid}
         />
         <TeamMember
-          memberInfo="Sam joined us on April 2021. He is managing the company's
-            technological projects and plans. Sam is responsible for
+          memberInfo="Sam is managing the company's
+            technological projects and plans. He is responsible for
             backend, front-end application, scaling and cloud development."
           memberTitle="Co-founder"
           memberName="Sam Rose"

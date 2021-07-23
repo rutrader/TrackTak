@@ -23,6 +23,14 @@ const BoxWrapper = ({ sx, ...props }) => {
   );
 };
 
+export const ContinueToSpreadsheet = () => {
+  return (
+    <Typography variant="h6" color="textSecondary">
+      Continue to your Spreadsheet
+    </Typography>
+  );
+};
+
 const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
   const theme = useTheme();
   const [name, setName] = useState("");
@@ -55,12 +63,13 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
       <Typography
         variant="h5"
         sx={{
-          mt: theme.spacing(1),
+          mt: theme.spacing(2),
           color: theme.palette.primary.mainTextColor,
         }}
       >
         Sign up
       </Typography>
+      <ContinueToSpreadsheet />
       <Box
         sx={{
           marginTop: theme.spacing(3),

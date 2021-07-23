@@ -36,6 +36,7 @@ export const buildVariablesSpreadsheet = (
   const setOptions = (options) => {
     newOptions = getNewOptions(
       options,
+      newOptions,
       defaultVariablesSpreadsheetOptions,
       newData,
       sheet,

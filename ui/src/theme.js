@@ -23,6 +23,7 @@ let theme = createMuiTheme({
       light: "#2fdbab",
       main: "#43cea2",
       dark: "#38ab87",
+      purple: "#6240C8",
       contrastText: "#fff",
       mainTextColor: "#313450",
     },
