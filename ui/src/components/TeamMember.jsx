@@ -1,7 +1,20 @@
 import React from "react";
-import { BoxColumnWrapper } from "../landingPage/FeaturesSection";
 import Img from "gatsby-image";
 import { Box, Typography } from "@material-ui/core";
+
+const BoxColumnWrapper = ({ sx, ...props }) => {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "space-evenly",
+        flex: "1 1 234px",
+        ...sx,
+      }}
+      {...props}
+    />
+  );
+};
 
 const StyledImage = ({ sx, ...props }) => {
   return (
