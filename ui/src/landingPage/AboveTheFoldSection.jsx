@@ -114,7 +114,7 @@ const AboveTheFoldSection = () => {
           </Typography>
           <Typography variant="h6" color="inherit" gutterBottom>
             <Box>
-              tracktak enables investors and financial modellers looking for a
+              Tracktak enables investors and financial modellers looking for a
               faster, automated and more accurate way to value companies and
               projects. Free while in beta.
             </Box>

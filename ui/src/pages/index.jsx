@@ -36,7 +36,7 @@ const Home = () => {
         <link rel="canonical" href={`${resourceName}`} />
         <meta
           name="description"
-          content="tracktak is a financial modeling tool that makes it easy for financial modellers and investors to value projects and companies."
+          content="Tracktak is a financial modeling tool that makes it easy for financial modellers and investors to value projects and companies."
         />
       </Helmet>
       <Box
