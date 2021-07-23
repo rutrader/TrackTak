@@ -6,8 +6,10 @@ import { Divider, Paper, Typography } from "@material-ui/core";
 import ContactDetailsForm from "../components/ContactDetailsForm";
 import ChangePasswordForm from "../components/ChangePasswordForm";
 import withAuthentication from "../hocs/withAuthentication";
+import { useAuth } from "../hooks/useAuth";
 
 const AccountSettings = () => {
+  const { isExternalIdentityProvider } = useAuth();
   const dividerStyle = {
     marginTop: (theme) => `${theme.spacing(4)}`,
     marginBottom: (theme) => `${theme.spacing(4)}`,
@@ -33,8 +35,12 @@ const AccountSettings = () => {
         </Typography>
         <Divider light sx={dividerStyle} />
         <ContactDetailsForm />
-        <Divider light sx={dividerStyle} />
-        <ChangePasswordForm />
+        {!isExternalIdentityProvider && (
+          <>
+            <Divider light sx={dividerStyle} />
+            <ChangePasswordForm />
+          </>
+        )}
       </Paper>
     </>
   );

@@ -9,7 +9,7 @@ import { setMessage } from "../redux/actions/snackbarActions";
 import PhoneField from "./PhoneField";
 
 const ContactDetailsForm = () => {
-  const { userData, updateContactDetails } = useAuth();
+  const { userData, updateContactDetails, isExternalIdentityProvider } = useAuth();
   const [name, setName] = useState(userData?.name);
   const [phone, setPhone] = useState(userData?.phone_number);
   const [email, setEmail] = useState(userData?.email);
@@ -90,6 +90,7 @@ const ContactDetailsForm = () => {
               name="name"
               autoComplete="name"
               size="small"
+              disabled={isExternalIdentityProvider}
             />
           </Grid>
           <Grid item xs={12} sm={3}>
@@ -115,6 +116,7 @@ const ContactDetailsForm = () => {
               id="email"
               autoComplete="email"
               size="small"
+              disabled={isExternalIdentityProvider}
             />
           </Grid>
           <Grid item xs={12} sm={1}>

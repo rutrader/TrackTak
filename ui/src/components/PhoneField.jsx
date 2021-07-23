@@ -5,6 +5,7 @@ import "react-phone-input-2/lib/material.css";
 
 const PhoneField = ({
   value,
+  label = "Phone",
   defaultCountry = "us",
   onChange,
   includePrefix = true,
@@ -66,10 +67,9 @@ const PhoneField = ({
         onChange={handleChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
-        specialLabel="Phone *"
+        specialLabel={label}
         inputProps={{
           name: "phone",
-          required: true,
         }}
         inputClass={size === "small" ? "small" : undefined}
         containerClass={isFocussed ? "specialLabelFocus" : undefined}

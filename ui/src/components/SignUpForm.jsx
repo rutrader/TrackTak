@@ -9,6 +9,7 @@ import { Box, FormControlLabel, Link } from "@material-ui/core";
 import TracktakLogoSvg from "../icons/tracktak-purple.svg";
 import PhoneField from "./PhoneField";
 import Checkbox from "@material-ui/core/Checkbox";
+import SocialLoginButtons from "./SocialLoginButtons";
 
 const BoxWrapper = ({ sx, ...props }) => {
   return (
@@ -69,6 +70,7 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
         Sign up
       </Typography>
       <ContinueToSpreadsheet />
+      <SocialLoginButtons />
       <Box
         sx={{
           marginTop: theme.spacing(3),
@@ -95,6 +97,7 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
               <PhoneField
                 onChange={(number) => setPhone(number)}
                 value={phone}
+                label="Phone (optional)"
               />
             </Grid>
             <Grid item xs={12}>
