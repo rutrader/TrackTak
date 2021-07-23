@@ -18,7 +18,7 @@ const userPool = new CognitoUserPool(POOL_CONFIG);
 
 const AwsException = {
   NOT_AUTHORIZED_EXCEPTION: "NotAuthorizedException",
-  USERNAME_EXISTS_EXCEPTION: "UsernameExistsException"
+  USERNAME_EXISTS_EXCEPTION: "UsernameExistsException",
 };
 
 const onCognitoFailure = (err, onError) => {
@@ -83,17 +83,17 @@ export const signUp = (
 };
 
 const getUserFromHash = (hash) => {
-  const split = hash?.slice(1).split('&');
+  const split = hash?.slice(1).split("&");
   if (!split || split.length < 2) {
     return null;
   }
 
-  const values = split.map(val => val.split('=')[1]);
+  const values = split.map((val) => val.split("=")[1]);
 
   const token = {
     accessToken: values[0],
     idToken: values[1],
-  }
+  };
 
   const IdToken = new CognitoIdToken({
     IdToken: token.idToken,
@@ -101,24 +101,28 @@ const getUserFromHash = (hash) => {
   const AccessToken = new CognitoAccessToken({
     AccessToken: token.accessToken,
   });
-  const RefreshToken = new CognitoRefreshToken({RefreshToken: '' });
+  const RefreshToken = new CognitoRefreshToken({ RefreshToken: "" });
 
   const user = new CognitoUser({
-    Username: IdToken.payload.username || IdToken.payload['cognito:username'],
+    Username: IdToken.payload.username || IdToken.payload["cognito:username"],
     Pool: userPool,
   });
 
-  user.setSignInUserSession(new CognitoUserSession({
-    IdToken,
-    AccessToken,
-    RefreshToken,
-  }));
+  user.setSignInUserSession(
+    new CognitoUserSession({
+      IdToken,
+      AccessToken,
+      RefreshToken,
+    }),
+  );
 
   return user;
-}
+};
 
 export const getCurrentUser = () => {
-  const user = userPool.getCurrentUser() || getUserFromHash(window.location?.hash);;
+  const user = window.location.hash
+    ? getUserFromHash(window.location?.hash)
+    : userPool.getCurrentUser();
   if (user) {
     user.getSession(noop);
   }
@@ -184,7 +188,7 @@ export const forgotPasswordFlow = () => {
 export const getUserData = (handleGetUserData) => {
   const user = getCurrentUser();
   return user.getUserAttributes(handleGetUserData);
-}
+};
 
 export const changePassword = (
   oldPassword,
@@ -234,5 +238,5 @@ export const submitEmailVerificationCode = (code, onSuccess, onError) => {
   user.verifyAttribute("email", code, {
     onSuccess,
     onFailure: (err) => onCognitoFailure(err, onError),
-  })
-}
+  });
+};

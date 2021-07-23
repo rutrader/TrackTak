@@ -88,10 +88,10 @@ const useProvideAuth = () => {
 
     if (currentUser) {
       currentUser.getSession((error, session) => {
+        setHasLoadedAuthDetails(true);
         if (!error && session) {
           setIsAuthenticated(true);
           getUserData(handleGetUserData);
-          setHasLoadedAuthDetails(true);
         }
       });
     } else {

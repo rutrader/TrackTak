@@ -19,7 +19,7 @@ const SocialLoginButtons = () => {
     <Grid container justifyContent="center">
       <Grid item>
         <Typography component="div" display="block">
-          Or sign in with
+          Or
         </Typography>
       </Grid>
       <Grid

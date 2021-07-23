@@ -87,6 +87,7 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
               <PhoneField
                 onChange={(number) => setPhone(number)}
                 value={phone}
+                label="Phone (optional)"
               />
             </Grid>
             <Grid item xs={12}>
