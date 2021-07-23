@@ -3,8 +3,7 @@ import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
 import UseNowSection from "../landingPage/UseNowSection";
-import FeaturesSection from "../landingPage/FeaturesSection";
-import { Box, Container } from "@material-ui/core";
+import { Box, Container, useTheme } from "@material-ui/core";
 import Footer from "../landingPage/Footer";
 import TestimonialsSection from "../landingPage/TestimonialsSection";
 import OurTeamSection from "../landingPage/OurTeamSection";
@@ -17,7 +16,7 @@ const Section = ({ sx, ...props }) => {
   return (
     <Box
       sx={{
-        paddingBottom: 8.75,
+        pb: 8.75,
         ...sx,
       }}
       {...props}
@@ -26,19 +25,26 @@ const Section = ({ sx, ...props }) => {
 };
 
 const Home = () => {
+  const theme = useTheme();
+
   return (
     <>
       <Helmet>
-        <title>{getTitle("Discounted Cash Flow (DCF) Calculator")}</title>
+        <title>Tracktak | The spreadsheet for financial modelling</title>
         <link rel="canonical" href={`${resourceName}`} />
         <meta
           name="description"
-          content="Value a company within minutes using our DCF calculator based on Aswath Damodaran's excel spreadsheets."
+          content="Tracktak is a financial modeling tool that makes it easy for financial modellers and investors to value projects and companies."
         />
       </Helmet>
-      <Section>
+      <Box
+        sx={{
+          [theme.breakpoints.down("sm")]: { pb: 14 },
+          [theme.breakpoints.up(1235)]: { pb: 21 },
+        }}
+      >
         <AboveTheFoldSection />
-      </Section>
+      </Box>
       <Container maxWidth="lg">
         <Section>
           <ProcessSection />
@@ -48,9 +54,6 @@ const Home = () => {
             <VideoSection />
           </Section>
         ) : null}
-        <Section>
-          <FeaturesSection />
-        </Section>
         <Section>
           <OurTeamSection />
         </Section>

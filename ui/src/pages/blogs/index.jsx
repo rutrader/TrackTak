@@ -36,7 +36,7 @@ const Blogs = ({ data }) => {
       <Helmet>
         <title>{getTitle("Blogs")}</title>
         <link rel="canonical" href={`${resourceName}/blogs`} />
-        <meta name="description" content="tracktak blogs" />
+        <meta name="description" content="Tracktak blogs" />
       </Helmet>
       <Typography variant="h5" gutterBottom>
         Blogs

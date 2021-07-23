@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -8,14 +8,10 @@ import {
 } from "@material-ui/core";
 import GridDots from "../icons/grid-dots.svg";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import { AnchorLink } from "gatsby-plugin-anchor-links";
-import { graphql, useStaticQuery } from "gatsby";
+import { graphql, useStaticQuery, Link } from "gatsby";
 import Img from "gatsby-image";
 import RoundButton from "../components/RoundButton";
 import BackgroundImage from "gatsby-background-image";
-import { useEffect } from "react";
-
-const sixteen50 = 1650;
 
 const AboveTheFoldSection = () => {
   const data = useStaticQuery(graphql`
@@ -67,28 +63,35 @@ const AboveTheFoldSection = () => {
     <Box
       sx={{
         mt: 6,
-        [theme.breakpoints.up(sixteen50)]: {
+        [theme.breakpoints.up(1650)]: {
           mx: 25,
         },
       }}
     >
-      <BackgroundImage
-        backgroundColor={
-          showBackgroundColor ? theme.palette.secondary.light : undefined
-        }
-        fluid={data.background.childImageSharp.fluid}
-        style={{
-          width: "100%",
-          height: 930,
-          backgroundPosition: "center center",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          zIndex: -1,
-          top: 0,
-          left: 0,
-          position: "absolute",
+      <Box
+        sx={{
+          "> div": {
+            height: 830,
+          },
         }}
-      />
+      >
+        <BackgroundImage
+          backgroundColor={
+            showBackgroundColor ? theme.palette.secondary.light : undefined
+          }
+          fluid={data.background.childImageSharp.fluid}
+          style={{
+            width: "100%",
+            backgroundPosition: "center center",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            zIndex: -1,
+            top: 0,
+            left: 0,
+            position: "absolute",
+          }}
+        />
+      </Box>
       <Box
         sx={{
           display: "flex",
@@ -106,13 +109,11 @@ const AboveTheFoldSection = () => {
             fontWeight={800}
             color="inherit"
           >
-            Tired of complicated excel Discounted Cash Flow templates?
+            Financial modelling made easy
           </Typography>
           <Typography variant="h6" color="inherit" gutterBottom>
-            <Box>
-              tracktak enables you to do quick DCF models based on prof. Aswath
-              Damodaran's techniques directly in the cloud.
-            </Box>
+            A new, faster way for investors to value projects and companies in a
+            spreadsheet with their favorite formulas. Free in beta.
           </Typography>
           <Box
             sx={{
@@ -126,15 +127,17 @@ const AboveTheFoldSection = () => {
           >
             <Box
               sx={{
+                display: "flex",
                 mt: 4,
                 mb: 2,
+                [theme.breakpoints.down("sm")]: {
+                  justifyContent: "center",
+                },
               }}
             >
               <RoundButton
-                component={forwardRef((props, ref) => (
-                  <AnchorLink {...props} gatsbyLinkProps={{ ref }} />
-                ))}
-                to="#get-started"
+                component={Link}
+                to="/sign-up"
                 variant="contained"
                 color="primary"
               >
@@ -142,7 +145,7 @@ const AboveTheFoldSection = () => {
                   fontSize={20}
                   sx={{ textTransform: "none", color: "white" }}
                 >
-                  USE FOR FREE
+                  Go to Spreadsheet
                 </Typography>
               </RoundButton>
             </Box>
