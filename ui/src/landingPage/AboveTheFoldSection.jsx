@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -8,8 +8,7 @@ import {
 } from "@material-ui/core";
 import GridDots from "../icons/grid-dots.svg";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import { AnchorLink } from "gatsby-plugin-anchor-links";
-import { graphql, useStaticQuery } from "gatsby";
+import { graphql, useStaticQuery, Link } from "gatsby";
 import Img from "gatsby-image";
 import RoundButton from "../components/RoundButton";
 import BackgroundImage from "gatsby-background-image";
@@ -113,11 +112,8 @@ const AboveTheFoldSection = () => {
             Financial modelling made easy
           </Typography>
           <Typography variant="h6" color="inherit" gutterBottom>
-            <Box>
-              Tracktak enables investors and financial modellers looking for a
-              faster, automated and more accurate way to value companies and
-              projects. Free while in beta.
-            </Box>
+            A new, faster way for investors to value projects and companies in a
+            spreadsheet with their favorite formulas. Free in beta.
           </Typography>
           <Box
             sx={{
@@ -140,10 +136,8 @@ const AboveTheFoldSection = () => {
               }}
             >
               <RoundButton
-                component={forwardRef((props, ref) => (
-                  <AnchorLink {...props} gatsbyLinkProps={{ ref }} />
-                ))}
-                to="#get-started"
+                component={Link}
+                to="/sign-up"
                 variant="contained"
                 color="primary"
               >
@@ -151,7 +145,7 @@ const AboveTheFoldSection = () => {
                   fontSize={20}
                   sx={{ textTransform: "none", color: "white" }}
                 >
-                  Use for <b>Free</b>
+                  Go to Spreadsheet
                 </Typography>
               </RoundButton>
             </Box>

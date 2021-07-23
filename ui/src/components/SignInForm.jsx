@@ -7,6 +7,7 @@ import RoundButton from "./RoundButton";
 import { useTheme } from "@material-ui/styles";
 import { Box } from "@material-ui/core";
 import TracktakLogoSvg from "../icons/tracktak-purple.svg";
+import { ContinueToSpreadsheet } from "./SignUpForm";
 
 const SignInForm = ({
   onSubmit,
@@ -39,12 +40,13 @@ const SignInForm = ({
       <Typography
         variant="h5"
         sx={{
-          mt: (theme) => theme.spacing(1),
+          mt: theme.spacing(2),
           color: (theme) => theme.palette.primary.mainTextColor,
         }}
       >
         Sign in
       </Typography>
+      <ContinueToSpreadsheet />
       <Box
         sx={{
           marginTop: theme.spacing(3),

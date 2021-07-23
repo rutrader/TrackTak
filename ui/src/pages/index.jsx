@@ -30,9 +30,7 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>
-          {getTitle("Automated Financial Modelling Made Easy - tracktak")}
-        </title>
+        <title>Tracktak | The spreadsheet for financial modelling</title>
         <link rel="canonical" href={`${resourceName}`} />
         <meta
           name="description"
