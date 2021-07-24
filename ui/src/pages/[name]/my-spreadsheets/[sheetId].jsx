@@ -5,13 +5,13 @@ import Spreadsheet from "../../../../../packages/intrinsic-valuations/src/spread
 import useFetchSpreadsheet from "../../../hooks/useFetchSpreadsheet";
 import withAuthentication from "../../../hocs/withAuthentication";
 import useSaveSpreadsheetData from "../../../hooks/useSaveSpreadsheetData";
-import { useFinancialPlugin } from "../../../../../packages/intrinsic-valuations/src/hooks/useFinancialPlugin";
+import { useTTFinancialPlugin } from "../../../../../packages/intrinsic-valuations/src/hooks/useTTFinancialPlugin";
 
 const SpreadsheetPage = ({ sheetId }) => {
   const [spreadsheet, setSpreadsheet] = useState();
   const spreadsheetData = useFetchSpreadsheet(sheetId);
   const saveSheetData = useSaveSpreadsheetData(spreadsheetData);
-  const financialData = useFinancialPlugin(spreadsheet, spreadsheetData);
+  const financialData = useTTFinancialPlugin(spreadsheet, spreadsheetData);
 
   return (
     <>

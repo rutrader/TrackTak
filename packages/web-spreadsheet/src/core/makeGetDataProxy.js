@@ -841,6 +841,29 @@ export const makeGetDataProxy = (
   };
 
   const getData = () => {
+    const sheet = getSheetId();
+    // https://github.com/handsontable/hyperformula/discussions/761
+    const addressMapping = hyperformula.dependencyGraph.addressMapping.mapping;
+
+    const serializedValues = [];
+
+    const currentSheetMapping = addressMapping.get(sheet);
+
+    currentSheetMapping.mapping.forEach((col, colKey) => {
+      col.forEach((_, rowKey) => {
+        const cellAddress = { sheet, col: colKey, row: rowKey };
+        const serializedValue = hyperformula.getCellSerialized(cellAddress);
+
+        if (!isNil(serializedValue) && serializedValue !== "") {
+          if (!serializedValues[rowKey]) {
+            serializedValues[rowKey] = [];
+          }
+
+          serializedValues[rowKey][colKey] = serializedValue;
+        }
+      });
+    });
+
     return {
       name,
       freeze: xy2expr(freeze[1], freeze[0]),
@@ -850,7 +873,7 @@ export const makeGetDataProxy = (
       cols: cols.getData(),
       validations: validations.getData(),
       autofilter: autoFilter.getData(),
-      serializedValues: hyperformula.getSheetSerialized(getSheetId()),
+      serializedValues,
     };
   };
 
