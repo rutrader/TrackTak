@@ -31,76 +31,104 @@ const getEmployeeOptionsData = () => {
     merges: ["A1:B1"],
     rows: {
       0: {
-        0: {
-          merge: [0, 1],
-          style: 5,
-          comment:
-            "Calculated from the inputs you entered in the Employee Options section. We use the Black Scholes methodology to work out the estimated market price per employee option. We then minus this from the 'Equity' cell in the Valuation Output (cell B34).",
+        cells: {
+          0: {
+            merge: [0, 1],
+            style: 5,
+            comment:
+              "Calculated from the inputs you entered in the Employee Options section. We use the Black Scholes methodology to work out the estimated market price per employee option. We then minus this from the 'Equity' cell in the Valuation Output (cell B34).",
+          },
         },
       },
       1: {
-        1: {
-          style: 6,
+        cells: {
+          1: {
+            style: 6,
+          },
         },
       },
       2: {
-        1: {
-          style: 3,
+        cells: {
+          1: {
+            style: 3,
+          },
         },
       },
       3: {
-        1: {
-          style: 4,
+        cells: {
+          1: {
+            style: 4,
+          },
         },
       },
       4: {
-        1: {
-          style: 0,
+        cells: {
+          1: {
+            style: 0,
+          },
         },
       },
       5: {
-        1: {
-          style: 0,
+        cells: {
+          1: {
+            style: 0,
+          },
         },
       },
       6: {
-        1: {
-          style: 6,
+        cells: {
+          1: {
+            style: 6,
+          },
         },
       },
       7: {
-        1: {
-          style: 3,
+        cells: {
+          1: {
+            style: 3,
+          },
         },
       },
       9: {
-        1: {
-          style: 4,
+        cells: {
+          1: {
+            style: 4,
+          },
         },
       },
       10: {
-        1: {
-          style: 4,
+        cells: {
+          1: {
+            style: 4,
+          },
         },
       },
       12: {
-        1: {
-          style: 4,
+        cells: {
+          1: {
+            style: 4,
+          },
         },
       },
       13: {
-        1: {
-          style: 4,
+        cells: {
+          1: {
+            style: 4,
+          },
         },
       },
       15: {
-        1: {
-          style: 3,
+        cells: {
+          1: {
+            style: 3,
+          },
         },
       },
       16: {
-        1: {
-          style: 7,
+        cells: {
+          1: {
+            style: 7,
+          },
         },
       },
     },

@@ -142,173 +142,209 @@ const getCostOfCapitalData = () => {
     merges: ["A1:B1"],
     rows: {
       0: {
-        0: {
-          merge: [0, 1],
-          style: 5,
+        cells: {
+          0: {
+            merge: [0, 1],
+            style: 5,
+          },
         },
       },
       1: {
-        0: {
-          style: 7,
+        cells: {
+          0: {
+            style: 7,
+          },
         },
       },
       2: {
-        1: {
-          style: 22,
+        cells: {
+          1: {
+            style: 22,
+          },
         },
       },
       3: {
-        1: {
-          style: 3,
+        cells: {
+          1: {
+            style: 3,
+          },
         },
       },
       4: {
-        1: {
-          style: 4,
-          comment:
-            "Is a measure of the market risk of the company relative to it's peers in the same industry without the impact of debt. This determines how much risk comes with owning a stock.",
+        cells: {
+          1: {
+            style: 4,
+            comment:
+              "Is a measure of the market risk of the company relative to it's peers in the same industry without the impact of debt. This determines how much risk comes with owning a stock.",
+          },
         },
       },
       5: {
-        1: {
-          style: 0,
-          comment:
-            "Refers to the theoretical rate of return of an investment with zero risk.",
+        cells: {
+          1: {
+            style: 0,
+            comment:
+              "Refers to the theoretical rate of return of an investment with zero risk.",
+          },
         },
       },
       6: {
-        1: {
-          style: 0,
+        cells: {
+          1: {
+            style: 0,
+          },
         },
       },
       8: {
-        0: {
-          style: 7,
+        cells: {
+          0: {
+            style: 7,
+          },
         },
       },
       9: {
-        1: {
-          style: 23,
-        },
-        2: {
-          style: 7,
+        cells: {
+          1: {
+            style: 23,
+          },
+          2: {
+            style: 7,
+          },
         },
       },
       10: {
-        1: {
-          style: 23,
-        },
-        3: {
-          style: 23,
+        cells: {
+          1: {
+            style: 23,
+          },
+          3: {
+            style: 23,
+          },
         },
       },
       11: {
-        1: {
-          style: 4,
-        },
-        3: {
-          style: 23,
+        cells: {
+          1: {
+            style: 4,
+          },
+          3: {
+            style: 23,
+          },
         },
       },
       12: {
-        3: {
-          style: 23,
+        cells: {
+          3: {
+            style: 23,
+          },
         },
       },
       13: {
-        1: {
-          style: 0,
-          comment:
-            "By default this is the synthetic credit rating pre-tax cost of debt that we have automatically calculated for you which is fine for most cases. If you manually input a cost of debt in the Normal Debt input field then it will overwrite this synthetic cost of debt.",
-        },
-        3: {
-          style: 4,
-          comment:
-            "Is a measure of market risk of the company relative to it's peers in the same industry including the impact of debt on the company. This determines how much risk comes with owning a stock.",
+        cells: {
+          1: {
+            style: 0,
+            comment:
+              "By default this is the synthetic credit rating pre-tax cost of debt that we have automatically calculated for you which is fine for most cases. If you manually input a cost of debt in the Normal Debt input field then it will overwrite this synthetic cost of debt.",
+          },
+          3: {
+            style: 4,
+            comment:
+              "Is a measure of market risk of the company relative to it's peers in the same industry including the impact of debt on the company. This determines how much risk comes with owning a stock.",
+          },
         },
       },
       14: {
-        1: {
-          style: 0,
-        },
-        2: {
-          style: 13,
-        },
-        3: {
-          style: 16,
-        },
-        4: {
-          style: 16,
-        },
-        5: {
-          style: 16,
-        },
-        6: {
-          style: 18,
+        cells: {
+          1: {
+            style: 0,
+          },
+          2: {
+            style: 13,
+          },
+          3: {
+            style: 16,
+          },
+          4: {
+            style: 16,
+          },
+          5: {
+            style: 16,
+          },
+          6: {
+            style: 18,
+          },
         },
       },
       15: {
-        2: {
-          style: 16,
-        },
-        3: {
-          style: 24,
-        },
-        4: {
-          style: 24,
-        },
-        5: {
-          style: 24,
-        },
-        6: {
-          style: 25,
+        cells: {
+          2: {
+            style: 16,
+          },
+          3: {
+            style: 24,
+          },
+          4: {
+            style: 24,
+          },
+          5: {
+            style: 24,
+          },
+          6: {
+            style: 25,
+          },
         },
       },
       16: {
-        0: {
-          style: 7,
-        },
-        2: {
-          style: 16,
-        },
-        3: {
-          style: 20,
-        },
-        4: {
-          style: 20,
-        },
-        5: {
-          style: 20,
-        },
-        6: {
-          style: 21,
+        cells: {
+          0: {
+            style: 7,
+          },
+          2: {
+            style: 16,
+          },
+          3: {
+            style: 20,
+          },
+          4: {
+            style: 20,
+          },
+          5: {
+            style: 20,
+          },
+          6: {
+            style: 21,
+          },
         },
       },
       17: {
-        1: {
-          style: 23,
-        },
-        2: {
-          style: 17,
-        },
-        3: {
-          style: 15,
-        },
-        4: {
-          style: 15,
-        },
-        5: {
-          style: 15,
-        },
-        6: {
-          style: 19,
-          comment:
-            "The total cost of raising capital (cash) for the company, weighted by equity and debt.",
+        cells: {
+          1: {
+            style: 23,
+          },
+          2: {
+            style: 17,
+          },
+          3: {
+            style: 15,
+          },
+          4: {
+            style: 15,
+          },
+          5: {
+            style: 15,
+          },
+          6: {
+            style: 19,
+            comment:
+              "The total cost of raising capital (cash) for the company, weighted by equity and debt.",
+          },
         },
       },
       25: {
-        0: {
-          style: 7,
+        cells: {
+          0: {
+            style: 7,
+          },
         },
       },
     },

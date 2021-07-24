@@ -158,353 +158,401 @@ const getSyntheticCreditRatingData = () => {
     merges: ["A1:B1", "A10:B10", "C10:D10"],
     rows: {
       0: {
-        0: {
-          merge: [0, 1],
-          style: 15,
-        },
-        1: {
-          style: 15,
+        cells: {
+          0: {
+            merge: [0, 1],
+            style: 15,
+          },
+          1: {
+            style: 15,
+          },
         },
       },
       1: {
-        0: {
-          style: 8,
-        },
-        1: {
-          style: 8,
-          comment:
-            "Large companies usually have stable earnings and less chance of defaulting on their debt. Smaller companies are usually risker, therefore they have higher costs of debts.",
-        },
-        2: {
-          style: 11,
-        },
-        3: {
-          style: 24,
-        },
-        6: {
-          style: 0,
+        cells: {
+          0: {
+            style: 8,
+          },
+          1: {
+            style: 8,
+            comment:
+              "Large companies usually have stable earnings and less chance of defaulting on their debt. Smaller companies are usually risker, therefore they have higher costs of debts.",
+          },
+          2: {
+            style: 11,
+          },
+          3: {
+            style: 24,
+          },
+          6: {
+            style: 0,
+          },
         },
       },
       2: {
-        1: {
-          comment:
-            "How many times over a company can satisfy it's interest expenses with just it's operating income. A good interest coverage is usually above 5. Companies with volatile operating income can produce misleading interest coverages as they differ each year.",
-          style: 23,
-        },
-        3: {
-          style: 25,
+        cells: {
+          1: {
+            comment:
+              "How many times over a company can satisfy it's interest expenses with just it's operating income. A good interest coverage is usually above 5. Companies with volatile operating income can produce misleading interest coverages as they differ each year.",
+            style: 23,
+          },
+          3: {
+            style: 25,
+          },
         },
       },
       3: {
-        1: {
-          comment:
-            "The estimated bond rating that we have worked out based on the companies interest coverage. It is similar to Moody's, S&P and Fitch's ratings. We use our own synthetic credit rating because a lot of companies do not have any rating assigned by these agencies.",
-        },
-        3: {
-          style: 25,
+        cells: {
+          1: {
+            comment:
+              "The estimated bond rating that we have worked out based on the companies interest coverage. It is similar to Moody's, S&P and Fitch's ratings. We use our own synthetic credit rating because a lot of companies do not have any rating assigned by these agencies.",
+          },
+          3: {
+            style: 25,
+          },
         },
       },
       4: {
-        1: {
-          comment:
-            "The chance of a company defaulting on it's debts within a year.",
-          style: 22,
+        cells: {
+          1: {
+            comment:
+              "The chance of a company defaulting on it's debts within a year.",
+            style: 22,
+          },
         },
       },
       5: {
-        1: {
-          comment:
-            "The chance of a country defaulting on it's debts within a year.",
-          style: 22,
+        cells: {
+          1: {
+            comment:
+              "The chance of a country defaulting on it's debts within a year.",
+            style: 22,
+          },
         },
       },
       6: {
-        0: {
-          style: 19,
-        },
-        1: {
-          comment:
-            "The Synthetic Credit Rating pre-tax cost of debt that we have automatically calculated for you. This is used to work out the cost of capital.",
-          style: 22,
+        cells: {
+          0: {
+            style: 19,
+          },
+          1: {
+            comment:
+              "The Synthetic Credit Rating pre-tax cost of debt that we have automatically calculated for you. This is used to work out the cost of capital.",
+            style: 22,
+          },
         },
       },
       9: {
-        0: {
-          merge: [0, 1],
-          style: 16,
-        },
-        1: {
-          style: 16,
-        },
-        2: {
-          merge: [0, 1],
-          style: 16,
-        },
-        3: {
-          style: 16,
+        cells: {
+          0: {
+            merge: [0, 1],
+            style: 16,
+          },
+          1: {
+            style: 16,
+          },
+          2: {
+            merge: [0, 1],
+            style: 16,
+          },
+          3: {
+            style: 16,
+          },
         },
       },
       10: {
-        0: {
-          style: 18,
-        },
-        1: {
-          style: 18,
-        },
-        2: {
-          style: 18,
-        },
-        3: {
-          style: 18,
-        },
-        4: {
-          style: 18,
-        },
-        5: {
-          style: 18,
+        cells: {
+          0: {
+            style: 18,
+          },
+          1: {
+            style: 18,
+          },
+          2: {
+            style: 18,
+          },
+          3: {
+            style: 18,
+          },
+          4: {
+            style: 18,
+          },
+          5: {
+            style: 18,
+          },
         },
       },
       11: {
-        1: {
-          style: 23,
-        },
-        3: {
-          style: 23,
-        },
-        5: {
-          style: 22,
+        cells: {
+          1: {
+            style: 23,
+          },
+          3: {
+            style: 23,
+          },
+          5: {
+            style: 22,
+          },
         },
       },
       12: {
-        0: {
-          style: 23,
-        },
-        1: {
-          style: 23,
-        },
-        2: {
-          style: 23,
-        },
-        3: {
-          style: 23,
-        },
-        5: {
-          style: 22,
+        cells: {
+          0: {
+            style: 23,
+          },
+          1: {
+            style: 23,
+          },
+          2: {
+            style: 23,
+          },
+          3: {
+            style: 23,
+          },
+          5: {
+            style: 22,
+          },
         },
       },
       13: {
-        0: {
-          style: 23,
-        },
-        1: {
-          style: 23,
-        },
-        2: {
-          style: 23,
-        },
-        3: {
-          style: 23,
-        },
-        5: {
-          style: 22,
+        cells: {
+          0: {
+            style: 23,
+          },
+          1: {
+            style: 23,
+          },
+          2: {
+            style: 23,
+          },
+          3: {
+            style: 23,
+          },
+          5: {
+            style: 22,
+          },
         },
       },
       14: {
-        0: {
-          style: 23,
-        },
-        1: {
-          style: 23,
-        },
-        2: {
-          style: 23,
-        },
-        3: {
-          style: 23,
-        },
-        5: {
-          style: 22,
+        cells: {
+          0: {
+            style: 23,
+          },
+          1: {
+            style: 23,
+          },
+          2: {
+            style: 23,
+          },
+          3: {
+            style: 23,
+          },
+          5: {
+            style: 22,
+          },
         },
       },
       15: {
-        0: {
-          style: 23,
-        },
-        1: {
-          style: 23,
-        },
-        2: {
-          style: 23,
-        },
-        3: {
-          style: 23,
-        },
-        5: {
-          style: 22,
+        cells: {
+          0: {
+            style: 23,
+          },
+          1: {
+            style: 23,
+          },
+          2: {
+            style: 23,
+          },
+          3: {
+            style: 23,
+          },
+          5: {
+            style: 22,
+          },
         },
       },
       16: {
-        0: {
-          style: 23,
-        },
-        1: {
-          style: 23,
-        },
-        2: {
-          style: 23,
-        },
-        3: {
-          style: 23,
-        },
-        5: {
-          style: 22,
+        cells: {
+          0: {
+            style: 23,
+          },
+          1: {
+            style: 23,
+          },
+          2: {
+            style: 23,
+          },
+          3: {
+            style: 23,
+          },
+          5: {
+            style: 22,
+          },
         },
       },
       17: {
-        0: {
-          style: 23,
-        },
-        1: {
-          style: 23,
-        },
-        2: {
-          style: 23,
-        },
-        3: {
-          style: 23,
-        },
-        5: {
-          style: 22,
+        cells: {
+          0: {
+            style: 23,
+          },
+          1: {
+            style: 23,
+          },
+          2: {
+            style: 23,
+          },
+          3: {
+            style: 23,
+          },
+          5: {
+            style: 22,
+          },
         },
       },
       18: {
-        0: {
-          style: 23,
-        },
-        1: {
-          style: 23,
-        },
-        2: {
-          style: 23,
-        },
-        3: {
-          style: 23,
-        },
-        5: {
-          style: 22,
+        cells: {
+          0: {
+            style: 23,
+          },
+          1: {
+            style: 23,
+          },
+          2: {
+            style: 23,
+          },
+          3: {
+            style: 23,
+          },
+          5: {
+            style: 22,
+          },
         },
       },
       19: {
-        0: {
-          style: 23,
-        },
-        1: {
-          style: 23,
-        },
-        2: {
-          style: 23,
-        },
-        3: {
-          style: 23,
-        },
-        5: {
-          style: 22,
+        cells: {
+          0: {
+            style: 23,
+          },
+          1: {
+            style: 23,
+          },
+          2: {
+            style: 23,
+          },
+          3: {
+            style: 23,
+          },
+          5: {
+            style: 22,
+          },
         },
       },
       20: {
-        0: {
-          style: 23,
-        },
-        1: {
-          style: 23,
-        },
-        2: {
-          style: 23,
-        },
-        3: {
-          style: 23,
-        },
-        5: {
-          style: 22,
+        cells: {
+          0: {
+            style: 23,
+          },
+          1: {
+            style: 23,
+          },
+          2: {
+            style: 23,
+          },
+          3: {
+            style: 23,
+          },
+          5: {
+            style: 22,
+          },
         },
       },
       21: {
-        0: {
-          style: 23,
-        },
-        1: {
-          style: 23,
-        },
-        2: {
-          style: 23,
-        },
-        3: {
-          style: 23,
-        },
-        5: {
-          style: 22,
+        cells: {
+          0: {
+            style: 23,
+          },
+          1: {
+            style: 23,
+          },
+          2: {
+            style: 23,
+          },
+          3: {
+            style: 23,
+          },
+          5: {
+            style: 22,
+          },
         },
       },
       22: {
-        0: {
-          style: 23,
-        },
-        1: {
-          style: 23,
-        },
-        2: {
-          style: 23,
-        },
-        3: {
-          style: 23,
-        },
-        5: {
-          style: 22,
+        cells: {
+          0: {
+            style: 23,
+          },
+          1: {
+            style: 23,
+          },
+          2: {
+            style: 23,
+          },
+          3: {
+            style: 23,
+          },
+          5: {
+            style: 22,
+          },
         },
       },
       23: {
-        0: {
-          style: 23,
-        },
-        1: {
-          style: 23,
-        },
-        2: {
-          style: 23,
-        },
-        3: {
-          style: 23,
-        },
-        5: {
-          style: 22,
+        cells: {
+          0: {
+            style: 23,
+          },
+          1: {
+            style: 23,
+          },
+          2: {
+            style: 23,
+          },
+          3: {
+            style: 23,
+          },
+          5: {
+            style: 22,
+          },
         },
       },
       24: {
-        0: {
-          style: 23,
-        },
-        1: {
-          style: 23,
-        },
-        2: {
-          style: 23,
-        },
-        3: {
-          style: 23,
-        },
-        5: {
-          style: 22,
+        cells: {
+          0: {
+            style: 23,
+          },
+          1: {
+            style: 23,
+          },
+          2: {
+            style: 23,
+          },
+          3: {
+            style: 23,
+          },
+          5: {
+            style: 22,
+          },
         },
       },
       25: {
-        0: {
-          style: 23,
-        },
-        2: {
-          style: 23,
-        },
-        5: {
-          style: 22,
+        cells: {
+          0: {
+            style: 23,
+          },
+          2: {
+            style: 23,
+          },
+          5: {
+            style: 22,
+          },
         },
       },
     },

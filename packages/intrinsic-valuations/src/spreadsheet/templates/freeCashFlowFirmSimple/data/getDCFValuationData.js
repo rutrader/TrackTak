@@ -196,2502 +196,2642 @@ const getDCFValuationData = () => {
     merges: ["A1:B1", "A6:B6", "A2:B2", "A3:B3", "D2:E2", "D8:E8", "D3:W6"],
     rows: {
       0: {
-        0: {
-          merge: [0, 1],
-          style: 8,
-        },
-        1: {
-          style: 8,
-        },
-        2: {
-          style: 42,
-        },
-        3: {
-          style: 42,
-        },
-        4: {
-          style: 42,
+        cells: {
+          0: {
+            merge: [0, 1],
+            style: 8,
+          },
+          1: {
+            style: 8,
+          },
+          2: {
+            style: 42,
+          },
+          3: {
+            style: 42,
+          },
+          4: {
+            style: 42,
+          },
         },
       },
       1: {
-        0: {
-          merge: [0, 1],
-          style: 27,
-        },
-        1: {
-          style: 27,
-        },
-        3: {
-          merge: [0, 1],
-          style: 16,
-        },
-        4: {
-          style: 16,
+        cells: {
+          0: {
+            merge: [0, 1],
+            style: 27,
+          },
+          1: {
+            style: 27,
+          },
+          3: {
+            merge: [0, 1],
+            style: 16,
+          },
+          4: {
+            style: 16,
+          },
         },
       },
       2: {
-        0: {
-          merge: [0, 1],
-          style: 27,
-        },
-        1: {
-          style: 27,
-        },
-        3: {
-          merge: [3, 19],
-          style: 19,
-        },
-        4: {
-          style: 19,
-        },
-        5: {
-          style: 19,
-        },
-        6: {
-          style: 19,
-        },
-        7: {
-          style: 19,
-        },
-        8: {
-          style: 19,
-        },
-        9: {
-          style: 19,
-        },
-        10: {
-          style: 19,
-        },
-        11: {
-          style: 19,
-        },
-        12: {
-          style: 19,
-        },
-        13: {
-          style: 19,
-        },
-        14: {
-          style: 19,
-        },
-        15: {
-          style: 19,
-        },
-        16: {
-          style: 19,
-        },
-        17: {
-          style: 19,
-        },
-        18: {
-          style: 19,
-        },
-        19: {
-          style: 19,
-        },
-        20: {
-          style: 19,
-        },
-        21: {
-          style: 19,
-        },
-        22: {
-          style: 19,
+        cells: {
+          0: {
+            merge: [0, 1],
+            style: 27,
+          },
+          1: {
+            style: 27,
+          },
+          3: {
+            merge: [3, 19],
+            style: 19,
+          },
+          4: {
+            style: 19,
+          },
+          5: {
+            style: 19,
+          },
+          6: {
+            style: 19,
+          },
+          7: {
+            style: 19,
+          },
+          8: {
+            style: 19,
+          },
+          9: {
+            style: 19,
+          },
+          10: {
+            style: 19,
+          },
+          11: {
+            style: 19,
+          },
+          12: {
+            style: 19,
+          },
+          13: {
+            style: 19,
+          },
+          14: {
+            style: 19,
+          },
+          15: {
+            style: 19,
+          },
+          16: {
+            style: 19,
+          },
+          17: {
+            style: 19,
+          },
+          18: {
+            style: 19,
+          },
+          19: {
+            style: 19,
+          },
+          20: {
+            style: 19,
+          },
+          21: {
+            style: 19,
+          },
+          22: {
+            style: 19,
+          },
         },
       },
       3: {
-        0: {
-          style: 23,
-        },
-        1: {
-          style: 41,
-          comment:
-            "Refers to a company's total stock currently held by public investors, including share blocks held by institutional investors and restricted shares owned by the company’s officers and insiders.",
-        },
-        2: {
-          style: 29,
-        },
-        3: {
-          style: 19,
-        },
-        4: {
-          style: 19,
-        },
-        5: {
-          style: 19,
-        },
-        6: {
-          style: 19,
-        },
-        7: {
-          style: 19,
-        },
-        8: {
-          style: 19,
-        },
-        9: {
-          style: 19,
-        },
-        10: {
-          style: 19,
-        },
-        11: {
-          style: 19,
-        },
-        12: {
-          style: 19,
-        },
-        13: {
-          style: 19,
-        },
-        14: {
-          style: 19,
-        },
-        15: {
-          style: 19,
-        },
-        16: {
-          style: 19,
-        },
-        17: {
-          style: 19,
-        },
-        18: {
-          style: 19,
-        },
-        19: {
-          style: 19,
-        },
-        20: {
-          style: 19,
-        },
-        21: {
-          style: 19,
-        },
-        22: {
-          style: 19,
+        cells: {
+          0: {
+            style: 23,
+          },
+          1: {
+            style: 41,
+            comment:
+              "Refers to a company's total stock currently held by public investors, including share blocks held by institutional investors and restricted shares owned by the company’s officers and insiders.",
+          },
+          2: {
+            style: 29,
+          },
+          3: {
+            style: 19,
+          },
+          4: {
+            style: 19,
+          },
+          5: {
+            style: 19,
+          },
+          6: {
+            style: 19,
+          },
+          7: {
+            style: 19,
+          },
+          8: {
+            style: 19,
+          },
+          9: {
+            style: 19,
+          },
+          10: {
+            style: 19,
+          },
+          11: {
+            style: 19,
+          },
+          12: {
+            style: 19,
+          },
+          13: {
+            style: 19,
+          },
+          14: {
+            style: 19,
+          },
+          15: {
+            style: 19,
+          },
+          16: {
+            style: 19,
+          },
+          17: {
+            style: 19,
+          },
+          18: {
+            style: 19,
+          },
+          19: {
+            style: 19,
+          },
+          20: {
+            style: 19,
+          },
+          21: {
+            style: 19,
+          },
+          22: {
+            style: 19,
+          },
         },
       },
       4: {
-        2: {
-          style: 29,
-        },
-        3: {
-          style: 19,
-        },
-        4: {
-          style: 19,
-        },
-        5: {
-          style: 19,
-        },
-        6: {
-          style: 19,
-        },
-        7: {
-          style: 19,
-        },
-        8: {
-          style: 19,
-        },
-        9: {
-          style: 19,
-        },
-        10: {
-          style: 19,
-        },
-        11: {
-          style: 19,
-        },
-        12: {
-          style: 19,
-        },
-        13: {
-          style: 19,
-        },
-        14: {
-          style: 19,
-        },
-        15: {
-          style: 19,
-        },
-        16: {
-          style: 19,
-        },
-        17: {
-          style: 19,
-        },
-        18: {
-          style: 19,
-        },
-        19: {
-          style: 19,
-        },
-        20: {
-          style: 19,
-        },
-        21: {
-          style: 19,
-        },
-        22: {
-          style: 19,
+        cells: {
+          2: {
+            style: 29,
+          },
+          3: {
+            style: 19,
+          },
+          4: {
+            style: 19,
+          },
+          5: {
+            style: 19,
+          },
+          6: {
+            style: 19,
+          },
+          7: {
+            style: 19,
+          },
+          8: {
+            style: 19,
+          },
+          9: {
+            style: 19,
+          },
+          10: {
+            style: 19,
+          },
+          11: {
+            style: 19,
+          },
+          12: {
+            style: 19,
+          },
+          13: {
+            style: 19,
+          },
+          14: {
+            style: 19,
+          },
+          15: {
+            style: 19,
+          },
+          16: {
+            style: 19,
+          },
+          17: {
+            style: 19,
+          },
+          18: {
+            style: 19,
+          },
+          19: {
+            style: 19,
+          },
+          20: {
+            style: 19,
+          },
+          21: {
+            style: 19,
+          },
+          22: {
+            style: 19,
+          },
         },
       },
       5: {
-        0: {
-          merge: [0, 1],
-          style: 26,
-        },
-        1: {
-          style: 26,
-        },
-        2: {
-          style: 29,
-        },
-        3: {
-          style: 19,
-        },
-        4: {
-          style: 19,
-        },
-        5: {
-          style: 19,
-        },
-        6: {
-          style: 19,
-        },
-        7: {
-          style: 19,
-        },
-        8: {
-          style: 19,
-        },
-        9: {
-          style: 19,
-        },
-        10: {
-          style: 19,
-        },
-        11: {
-          style: 19,
-        },
-        12: {
-          style: 19,
-        },
-        13: {
-          style: 19,
-        },
-        14: {
-          style: 19,
-        },
-        15: {
-          style: 19,
-        },
-        16: {
-          style: 19,
-        },
-        17: {
-          style: 19,
-        },
-        18: {
-          style: 19,
-        },
-        19: {
-          style: 19,
-        },
-        20: {
-          style: 19,
-        },
-        21: {
-          style: 19,
-        },
-        22: {
-          style: 19,
+        cells: {
+          0: {
+            merge: [0, 1],
+            style: 26,
+          },
+          1: {
+            style: 26,
+          },
+          2: {
+            style: 29,
+          },
+          3: {
+            style: 19,
+          },
+          4: {
+            style: 19,
+          },
+          5: {
+            style: 19,
+          },
+          6: {
+            style: 19,
+          },
+          7: {
+            style: 19,
+          },
+          8: {
+            style: 19,
+          },
+          9: {
+            style: 19,
+          },
+          10: {
+            style: 19,
+          },
+          11: {
+            style: 19,
+          },
+          12: {
+            style: 19,
+          },
+          13: {
+            style: 19,
+          },
+          14: {
+            style: 19,
+          },
+          15: {
+            style: 19,
+          },
+          16: {
+            style: 19,
+          },
+          17: {
+            style: 19,
+          },
+          18: {
+            style: 19,
+          },
+          19: {
+            style: 19,
+          },
+          20: {
+            style: 19,
+          },
+          21: {
+            style: 19,
+          },
+          22: {
+            style: 19,
+          },
         },
       },
       6: {
-        3: {
-          style: 19,
-        },
-        4: {
-          style: 19,
-        },
-        5: {
-          style: 19,
-        },
-        6: {
-          style: 19,
-        },
-        7: {
-          style: 19,
-        },
-        8: {
-          style: 19,
-        },
-        9: {
-          style: 19,
-        },
-        10: {
-          style: 19,
-        },
-        11: {
-          style: 19,
-        },
-        12: {
-          style: 19,
+        cells: {
+          3: {
+            style: 19,
+          },
+          4: {
+            style: 19,
+          },
+          5: {
+            style: 19,
+          },
+          6: {
+            style: 19,
+          },
+          7: {
+            style: 19,
+          },
+          8: {
+            style: 19,
+          },
+          9: {
+            style: 19,
+          },
+          10: {
+            style: 19,
+          },
+          11: {
+            style: 19,
+          },
+          12: {
+            style: 19,
+          },
         },
       },
       7: {
-        1: {
-          style: 0,
-        },
-        3: {
-          merge: [0, 1],
-          style: 16,
-        },
-        4: {
-          style: 16,
+        cells: {
+          1: {
+            style: 0,
+          },
+          3: {
+            merge: [0, 1],
+            style: 16,
+          },
+          4: {
+            style: 16,
+          },
         },
       },
       8: {
-        1: {
-          style: 0,
-        },
-        4: {
-          style: 6,
-        },
-        5: {
-          style: 6,
-        },
-        6: {
-          style: 6,
-        },
-        7: {
-          style: 6,
-        },
-        8: {
-          style: 6,
-        },
-        9: {
-          style: 6,
-        },
-        10: {
-          style: 6,
-        },
-        11: {
-          style: 6,
-        },
-        12: {
-          style: 6,
-        },
-        13: {
-          style: 6,
-        },
-        14: {
-          style: 6,
-        },
-        15: {
-          style: 6,
-        },
-        16: {
-          style: 6,
-        },
-        17: {
-          style: 6,
-        },
-        18: {
-          style: 6,
-        },
-        19: {
-          style: 6,
-        },
-        20: {
-          style: 6,
-        },
-        21: {
-          style: 6,
-        },
-        22: {
-          style: 6,
-        },
-        23: {
-          style: 6,
-        },
-        24: {
-          style: 6,
-        },
-        25: {
-          style: 6,
+        cells: {
+          1: {
+            style: 0,
+          },
+          4: {
+            style: 6,
+          },
+          5: {
+            style: 6,
+          },
+          6: {
+            style: 6,
+          },
+          7: {
+            style: 6,
+          },
+          8: {
+            style: 6,
+          },
+          9: {
+            style: 6,
+          },
+          10: {
+            style: 6,
+          },
+          11: {
+            style: 6,
+          },
+          12: {
+            style: 6,
+          },
+          13: {
+            style: 6,
+          },
+          14: {
+            style: 6,
+          },
+          15: {
+            style: 6,
+          },
+          16: {
+            style: 6,
+          },
+          17: {
+            style: 6,
+          },
+          18: {
+            style: 6,
+          },
+          19: {
+            style: 6,
+          },
+          20: {
+            style: 6,
+          },
+          21: {
+            style: 6,
+          },
+          22: {
+            style: 6,
+          },
+          23: {
+            style: 6,
+          },
+          24: {
+            style: 6,
+          },
+          25: {
+            style: 6,
+          },
         },
       },
       9: {
-        1: {
-          style: 0,
-        },
-        3: {
-          style: 6,
-        },
-        4: {
-          style: 31,
-        },
-        5: {
-          style: 31,
-        },
-        6: {
-          style: 31,
-        },
-        7: {
-          style: 31,
-        },
-        8: {
-          style: 31,
-        },
-        9: {
-          style: 31,
-        },
-        10: {
-          style: 31,
-        },
-        11: {
-          style: 31,
-        },
-        12: {
-          style: 31,
-        },
-        13: {
-          style: 31,
-        },
-        14: {
-          style: 31,
-        },
-        15: {
-          style: 31,
-        },
-        16: {
-          style: 31,
-        },
-        17: {
-          style: 31,
-        },
-        18: {
-          style: 31,
-        },
-        19: {
-          style: 31,
-        },
-        20: {
-          style: 31,
-        },
-        21: {
-          style: 31,
-        },
-        22: {
-          style: 31,
-        },
-        23: {
-          style: 31,
-        },
-        24: {
-          style: 31,
-        },
-        25: {
-          style: 31,
+        cells: {
+          1: {
+            style: 0,
+          },
+          3: {
+            style: 6,
+          },
+          4: {
+            style: 31,
+          },
+          5: {
+            style: 31,
+          },
+          6: {
+            style: 31,
+          },
+          7: {
+            style: 31,
+          },
+          8: {
+            style: 31,
+          },
+          9: {
+            style: 31,
+          },
+          10: {
+            style: 31,
+          },
+          11: {
+            style: 31,
+          },
+          12: {
+            style: 31,
+          },
+          13: {
+            style: 31,
+          },
+          14: {
+            style: 31,
+          },
+          15: {
+            style: 31,
+          },
+          16: {
+            style: 31,
+          },
+          17: {
+            style: 31,
+          },
+          18: {
+            style: 31,
+          },
+          19: {
+            style: 31,
+          },
+          20: {
+            style: 31,
+          },
+          21: {
+            style: 31,
+          },
+          22: {
+            style: 31,
+          },
+          23: {
+            style: 31,
+          },
+          24: {
+            style: 31,
+          },
+          25: {
+            style: 31,
+          },
         },
       },
       10: {
-        1: {
-          style: 4,
-        },
-        3: {
-          style: 6,
-        },
-        4: {
-          style: 31,
-        },
-        5: {
-          style: 31,
-        },
-        6: {
-          style: 31,
-        },
-        7: {
-          style: 31,
-        },
-        8: {
-          style: 31,
-        },
-        9: {
-          style: 31,
-        },
-        10: {
-          style: 31,
-        },
-        11: {
-          style: 31,
-        },
-        12: {
-          style: 31,
-        },
-        13: {
-          style: 31,
-        },
-        14: {
-          style: 31,
-        },
-        15: {
-          style: 31,
-        },
-        16: {
-          style: 31,
-        },
-        17: {
-          style: 31,
-        },
-        18: {
-          style: 31,
-        },
-        19: {
-          style: 31,
-        },
-        20: {
-          style: 31,
-        },
-        21: {
-          style: 31,
-        },
-        22: {
-          style: 31,
-        },
-        23: {
-          style: 31,
-        },
-        24: {
-          style: 31,
-        },
-        25: {
-          style: 31,
+        cells: {
+          1: {
+            style: 4,
+          },
+          3: {
+            style: 6,
+          },
+          4: {
+            style: 31,
+          },
+          5: {
+            style: 31,
+          },
+          6: {
+            style: 31,
+          },
+          7: {
+            style: 31,
+          },
+          8: {
+            style: 31,
+          },
+          9: {
+            style: 31,
+          },
+          10: {
+            style: 31,
+          },
+          11: {
+            style: 31,
+          },
+          12: {
+            style: 31,
+          },
+          13: {
+            style: 31,
+          },
+          14: {
+            style: 31,
+          },
+          15: {
+            style: 31,
+          },
+          16: {
+            style: 31,
+          },
+          17: {
+            style: 31,
+          },
+          18: {
+            style: 31,
+          },
+          19: {
+            style: 31,
+          },
+          20: {
+            style: 31,
+          },
+          21: {
+            style: 31,
+          },
+          22: {
+            style: 31,
+          },
+          23: {
+            style: 31,
+          },
+          24: {
+            style: 31,
+          },
+          25: {
+            style: 31,
+          },
         },
       },
       11: {
-        1: {
-          style: 0,
-        },
-        3: {
-          style: 6,
-        },
-        4: {
-          style: 0,
-        },
-        5: {
-          style: 0,
-        },
-        6: {
-          style: 0,
-        },
-        7: {
-          style: 0,
-        },
-        8: {
-          style: 0,
-        },
-        9: {
-          style: 0,
-        },
-        10: {
-          style: 0,
-        },
-        11: {
-          style: 0,
-        },
-        12: {
-          style: 0,
-        },
-        13: {
-          style: 0,
-        },
-        14: {
-          style: 0,
-        },
-        15: {
-          style: 0,
-        },
-        16: {
-          style: 0,
-        },
-        17: {
-          style: 0,
-        },
-        18: {
-          style: 0,
-        },
-        19: {
-          style: 0,
-        },
-        20: {
-          style: 0,
-        },
-        21: {
-          style: 0,
-        },
-        22: {
-          style: 0,
-        },
-        23: {
-          style: 0,
-        },
-        24: {
-          style: 0,
-        },
-        25: {
-          style: 0,
+        cells: {
+          1: {
+            style: 0,
+          },
+          3: {
+            style: 6,
+          },
+          4: {
+            style: 0,
+          },
+          5: {
+            style: 0,
+          },
+          6: {
+            style: 0,
+          },
+          7: {
+            style: 0,
+          },
+          8: {
+            style: 0,
+          },
+          9: {
+            style: 0,
+          },
+          10: {
+            style: 0,
+          },
+          11: {
+            style: 0,
+          },
+          12: {
+            style: 0,
+          },
+          13: {
+            style: 0,
+          },
+          14: {
+            style: 0,
+          },
+          15: {
+            style: 0,
+          },
+          16: {
+            style: 0,
+          },
+          17: {
+            style: 0,
+          },
+          18: {
+            style: 0,
+          },
+          19: {
+            style: 0,
+          },
+          20: {
+            style: 0,
+          },
+          21: {
+            style: 0,
+          },
+          22: {
+            style: 0,
+          },
+          23: {
+            style: 0,
+          },
+          24: {
+            style: 0,
+          },
+          25: {
+            style: 0,
+          },
         },
       },
       12: {
-        1: {
-          style: 4,
-        },
-        3: {
-          style: 6,
-          comment:
-            "Also known as Total Stock Holder Equity. The amount of assets remaining after all of it's liabilities have been paid. This is because Assets = Liabilities + Equity.",
-        },
-        4: {
-          style: 31,
-        },
-        5: {
-          style: 31,
-        },
-        6: {
-          style: 31,
-        },
-        7: {
-          style: 31,
-        },
-        8: {
-          style: 31,
-        },
-        9: {
-          style: 31,
-        },
-        10: {
-          style: 31,
-        },
-        11: {
-          style: 31,
-        },
-        12: {
-          style: 31,
-        },
-        13: {
-          style: 31,
-        },
-        14: {
-          style: 31,
-        },
-        15: {
-          style: 31,
-        },
-        16: {
-          style: 31,
-        },
-        17: {
-          style: 31,
-        },
-        18: {
-          style: 31,
-        },
-        19: {
-          style: 31,
-        },
-        20: {
-          style: 31,
-        },
-        21: {
-          style: 31,
-        },
-        22: {
-          style: 31,
-        },
-        23: {
-          style: 31,
-        },
-        24: {
-          style: 31,
-        },
-        25: {
-          style: 31,
+        cells: {
+          1: {
+            style: 4,
+          },
+          3: {
+            style: 6,
+            comment:
+              "Also known as Total Stock Holder Equity. The amount of assets remaining after all of it's liabilities have been paid. This is because Assets = Liabilities + Equity.",
+          },
+          4: {
+            style: 31,
+          },
+          5: {
+            style: 31,
+          },
+          6: {
+            style: 31,
+          },
+          7: {
+            style: 31,
+          },
+          8: {
+            style: 31,
+          },
+          9: {
+            style: 31,
+          },
+          10: {
+            style: 31,
+          },
+          11: {
+            style: 31,
+          },
+          12: {
+            style: 31,
+          },
+          13: {
+            style: 31,
+          },
+          14: {
+            style: 31,
+          },
+          15: {
+            style: 31,
+          },
+          16: {
+            style: 31,
+          },
+          17: {
+            style: 31,
+          },
+          18: {
+            style: 31,
+          },
+          19: {
+            style: 31,
+          },
+          20: {
+            style: 31,
+          },
+          21: {
+            style: 31,
+          },
+          22: {
+            style: 31,
+          },
+          23: {
+            style: 31,
+          },
+          24: {
+            style: 31,
+          },
+          25: {
+            style: 31,
+          },
         },
       },
       13: {
-        1: {
-          style: 4,
-        },
-        3: {
-          style: 6,
-          comment:
-            "The total amount of debt the company owes which is recorded in the books of the company. We include capital lease obligations in this number as lease obligations are a form of debt.",
-        },
-        4: {
-          style: 31,
-        },
-        5: {
-          style: 31,
-        },
-        6: {
-          style: 31,
-        },
-        7: {
-          style: 31,
-        },
-        8: {
-          style: 31,
-        },
-        9: {
-          style: 31,
-        },
-        10: {
-          style: 31,
-        },
-        11: {
-          style: 31,
-        },
-        12: {
-          style: 31,
-        },
-        13: {
-          style: 31,
-        },
-        14: {
-          style: 31,
-        },
-        15: {
-          style: 31,
-        },
-        16: {
-          style: 31,
-        },
-        17: {
-          style: 31,
-        },
-        18: {
-          style: 31,
-        },
-        19: {
-          style: 31,
-        },
-        20: {
-          style: 31,
-        },
-        21: {
-          style: 31,
-        },
-        22: {
-          style: 31,
-        },
-        23: {
-          style: 31,
-        },
-        24: {
-          style: 31,
-        },
-        25: {
-          style: 31,
+        cells: {
+          1: {
+            style: 4,
+          },
+          3: {
+            style: 6,
+            comment:
+              "The total amount of debt the company owes which is recorded in the books of the company. We include capital lease obligations in this number as lease obligations are a form of debt.",
+          },
+          4: {
+            style: 31,
+          },
+          5: {
+            style: 31,
+          },
+          6: {
+            style: 31,
+          },
+          7: {
+            style: 31,
+          },
+          8: {
+            style: 31,
+          },
+          9: {
+            style: 31,
+          },
+          10: {
+            style: 31,
+          },
+          11: {
+            style: 31,
+          },
+          12: {
+            style: 31,
+          },
+          13: {
+            style: 31,
+          },
+          14: {
+            style: 31,
+          },
+          15: {
+            style: 31,
+          },
+          16: {
+            style: 31,
+          },
+          17: {
+            style: 31,
+          },
+          18: {
+            style: 31,
+          },
+          19: {
+            style: 31,
+          },
+          20: {
+            style: 31,
+          },
+          21: {
+            style: 31,
+          },
+          22: {
+            style: 31,
+          },
+          23: {
+            style: 31,
+          },
+          24: {
+            style: 31,
+          },
+          25: {
+            style: 31,
+          },
         },
       },
       14: {
-        3: {
-          style: 6,
-          comment:
-            "The amount of capital that has been invested into the business. The formula is (Book Value of Equity + Book Value of Debt) - Cash & Short Term Investments. We minus the cash out because cash is not an investment as it returns nothing.",
-        },
-        4: {
-          style: 31,
-        },
-        5: {
-          style: 31,
-        },
-        6: {
-          style: 31,
-        },
-        7: {
-          style: 31,
-        },
-        8: {
-          style: 31,
-        },
-        9: {
-          style: 31,
-        },
-        10: {
-          style: 31,
-        },
-        11: {
-          style: 31,
-        },
-        12: {
-          style: 31,
-        },
-        13: {
-          style: 31,
-        },
-        14: {
-          style: 31,
-        },
-        15: {
-          style: 31,
-        },
-        16: {
-          style: 31,
-        },
-        17: {
-          style: 31,
-        },
-        18: {
-          style: 31,
-        },
-        19: {
-          style: 31,
-        },
-        20: {
-          style: 31,
-        },
-        21: {
-          style: 31,
-        },
-        22: {
-          style: 31,
-        },
-        23: {
-          style: 31,
-        },
-        24: {
-          style: 31,
-        },
-        25: {
-          style: 31,
+        cells: {
+          3: {
+            style: 6,
+            comment:
+              "The amount of capital that has been invested into the business. The formula is (Book Value of Equity + Book Value of Debt) - Cash & Short Term Investments. We minus the cash out because cash is not an investment as it returns nothing.",
+          },
+          4: {
+            style: 31,
+          },
+          5: {
+            style: 31,
+          },
+          6: {
+            style: 31,
+          },
+          7: {
+            style: 31,
+          },
+          8: {
+            style: 31,
+          },
+          9: {
+            style: 31,
+          },
+          10: {
+            style: 31,
+          },
+          11: {
+            style: 31,
+          },
+          12: {
+            style: 31,
+          },
+          13: {
+            style: 31,
+          },
+          14: {
+            style: 31,
+          },
+          15: {
+            style: 31,
+          },
+          16: {
+            style: 31,
+          },
+          17: {
+            style: 31,
+          },
+          18: {
+            style: 31,
+          },
+          19: {
+            style: 31,
+          },
+          20: {
+            style: 31,
+          },
+          21: {
+            style: 31,
+          },
+          22: {
+            style: 31,
+          },
+          23: {
+            style: 31,
+          },
+          24: {
+            style: 31,
+          },
+          25: {
+            style: 31,
+          },
         },
       },
       15: {
-        3: {
-          style: 6,
-        },
-        4: {
-          style: 4,
-        },
-        5: {
-          style: 4,
-        },
-        6: {
-          style: 4,
-        },
-        7: {
-          style: 4,
-        },
-        8: {
-          style: 4,
-        },
-        9: {
-          style: 4,
-        },
-        10: {
-          style: 4,
-        },
-        11: {
-          style: 4,
-        },
-        12: {
-          style: 4,
-        },
-        13: {
-          style: 4,
-        },
-        14: {
-          style: 4,
-        },
-        15: {
-          style: 4,
-        },
-        16: {
-          style: 4,
-        },
-        17: {
-          style: 4,
-        },
-        18: {
-          style: 4,
-        },
-        19: {
-          style: 4,
-        },
-        20: {
-          style: 4,
-        },
-        21: {
-          style: 4,
-        },
-        22: {
-          style: 4,
-        },
-        23: {
-          style: 4,
-        },
-        24: {
-          style: 4,
-        },
-        25: {
-          style: 4,
+        cells: {
+          3: {
+            style: 6,
+          },
+          4: {
+            style: 4,
+          },
+          5: {
+            style: 4,
+          },
+          6: {
+            style: 4,
+          },
+          7: {
+            style: 4,
+          },
+          8: {
+            style: 4,
+          },
+          9: {
+            style: 4,
+          },
+          10: {
+            style: 4,
+          },
+          11: {
+            style: 4,
+          },
+          12: {
+            style: 4,
+          },
+          13: {
+            style: 4,
+          },
+          14: {
+            style: 4,
+          },
+          15: {
+            style: 4,
+          },
+          16: {
+            style: 4,
+          },
+          17: {
+            style: 4,
+          },
+          18: {
+            style: 4,
+          },
+          19: {
+            style: 4,
+          },
+          20: {
+            style: 4,
+          },
+          21: {
+            style: 4,
+          },
+          22: {
+            style: 4,
+          },
+          23: {
+            style: 4,
+          },
+          24: {
+            style: 4,
+          },
+          25: {
+            style: 4,
+          },
         },
       },
       17: {
-        0: {
-          style: 16,
+        cells: {
+          0: {
+            style: 16,
+          },
         },
       },
       18: {
-        1: {
-          style: 6,
-        },
-        2: {
-          style: 20,
-        },
-        3: {
-          style: 20,
-        },
-        4: {
-          style: 20,
-        },
-        5: {
-          style: 20,
-        },
-        6: {
-          style: 20,
-        },
-        7: {
-          style: 20,
-        },
-        8: {
-          style: 20,
-        },
-        9: {
-          style: 20,
-        },
-        10: {
-          style: 20,
-        },
-        11: {
-          style: 20,
-        },
-        12: {
-          style: 6,
+        cells: {
+          1: {
+            style: 6,
+          },
+          2: {
+            style: 20,
+          },
+          3: {
+            style: 20,
+          },
+          4: {
+            style: 20,
+          },
+          5: {
+            style: 20,
+          },
+          6: {
+            style: 20,
+          },
+          7: {
+            style: 20,
+          },
+          8: {
+            style: 20,
+          },
+          9: {
+            style: 20,
+          },
+          10: {
+            style: 20,
+          },
+          11: {
+            style: 20,
+          },
+          12: {
+            style: 6,
+          },
         },
       },
       19: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 31,
-        },
-        2: {
-          style: 31,
-        },
-        3: {
-          style: 31,
-        },
-        4: {
-          style: 31,
-        },
-        5: {
-          style: 31,
-        },
-        6: {
-          style: 31,
-        },
-        7: {
-          style: 31,
-        },
-        8: {
-          style: 31,
-        },
-        9: {
-          style: 31,
-        },
-        10: {
-          style: 31,
-        },
-        11: {
-          style: 31,
-        },
-        12: {
-          style: 31,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 31,
+          },
+          2: {
+            style: 31,
+          },
+          3: {
+            style: 31,
+          },
+          4: {
+            style: 31,
+          },
+          5: {
+            style: 31,
+          },
+          6: {
+            style: 31,
+          },
+          7: {
+            style: 31,
+          },
+          8: {
+            style: 31,
+          },
+          9: {
+            style: 31,
+          },
+          10: {
+            style: 31,
+          },
+          11: {
+            style: 31,
+          },
+          12: {
+            style: 31,
+          },
         },
       },
       20: {
-        0: {
-          style: 6,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 0,
+          },
+          2: {
+            style: 0,
+          },
+          3: {
+            style: 0,
+          },
+          4: {
+            style: 0,
+          },
+          5: {
+            style: 0,
+          },
+          6: {
+            style: 0,
+          },
+          7: {
+            style: 0,
+          },
+          8: {
+            style: 0,
+          },
+          9: {
+            style: 0,
+          },
+          10: {
+            style: 0,
+          },
+          11: {
+            style: 0,
+          },
+          12: {
+            style: 0,
+          },
         },
-        1: {
-          style: 0,
-        },
-        2: {
-          style: 0,
-        },
-        3: {
-          style: 0,
-        },
-        4: {
-          style: 0,
-        },
-        5: {
-          style: 0,
-        },
-        6: {
-          style: 0,
-        },
-        7: {
-          style: 0,
-        },
-        8: {
-          style: 0,
-        },
-        9: {
-          style: 0,
-        },
-        10: {
-          style: 0,
-        },
-        11: {
-          style: 0,
-        },
-        12: {
-          style: 0,
-        },
+        height: 25,
       },
       21: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 31,
-        },
-        2: {
-          style: 31,
-        },
-        3: {
-          style: 31,
-        },
-        4: {
-          style: 31,
-        },
-        5: {
-          style: 31,
-        },
-        6: {
-          style: 31,
-        },
-        7: {
-          style: 31,
-        },
-        8: {
-          style: 31,
-        },
-        9: {
-          style: 31,
-        },
-        10: {
-          style: 31,
-        },
-        11: {
-          style: 31,
-        },
-        12: {
-          style: 31,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 31,
+          },
+          2: {
+            style: 31,
+          },
+          3: {
+            style: 31,
+          },
+          4: {
+            style: 31,
+          },
+          5: {
+            style: 31,
+          },
+          6: {
+            style: 31,
+          },
+          7: {
+            style: 31,
+          },
+          8: {
+            style: 31,
+          },
+          9: {
+            style: 31,
+          },
+          10: {
+            style: 31,
+          },
+          11: {
+            style: 31,
+          },
+          12: {
+            style: 31,
+          },
         },
       },
       22: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 0,
-        },
-        2: {
-          style: 0,
-        },
-        3: {
-          style: 0,
-        },
-        4: {
-          style: 0,
-        },
-        5: {
-          style: 0,
-        },
-        6: {
-          style: 0,
-        },
-        7: {
-          style: 0,
-        },
-        8: {
-          style: 0,
-        },
-        9: {
-          style: 0,
-        },
-        10: {
-          style: 0,
-        },
-        11: {
-          style: 0,
-        },
-        12: {
-          style: 0,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 0,
+          },
+          2: {
+            style: 0,
+          },
+          3: {
+            style: 0,
+          },
+          4: {
+            style: 0,
+          },
+          5: {
+            style: 0,
+          },
+          6: {
+            style: 0,
+          },
+          7: {
+            style: 0,
+          },
+          8: {
+            style: 0,
+          },
+          9: {
+            style: 0,
+          },
+          10: {
+            style: 0,
+          },
+          11: {
+            style: 0,
+          },
+          12: {
+            style: 0,
+          },
         },
       },
       23: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 31,
-        },
-        2: {
-          style: 31,
-        },
-        3: {
-          style: 31,
-        },
-        4: {
-          style: 31,
-        },
-        5: {
-          style: 31,
-        },
-        6: {
-          style: 31,
-        },
-        7: {
-          style: 31,
-        },
-        8: {
-          style: 31,
-        },
-        9: {
-          style: 31,
-        },
-        10: {
-          style: 31,
-        },
-        11: {
-          style: 31,
-        },
-        12: {
-          style: 31,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 31,
+          },
+          2: {
+            style: 31,
+          },
+          3: {
+            style: 31,
+          },
+          4: {
+            style: 31,
+          },
+          5: {
+            style: 31,
+          },
+          6: {
+            style: 31,
+          },
+          7: {
+            style: 31,
+          },
+          8: {
+            style: 31,
+          },
+          9: {
+            style: 31,
+          },
+          10: {
+            style: 31,
+          },
+          11: {
+            style: 31,
+          },
+          12: {
+            style: 31,
+          },
         },
       },
       24: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 31,
-        },
-        2: {
-          style: 31,
-        },
-        3: {
-          style: 31,
-        },
-        4: {
-          style: 31,
-        },
-        5: {
-          style: 31,
-        },
-        6: {
-          style: 31,
-        },
-        7: {
-          style: 31,
-        },
-        8: {
-          style: 31,
-        },
-        9: {
-          style: 31,
-        },
-        10: {
-          style: 31,
-        },
-        11: {
-          style: 31,
-        },
-        12: {
-          style: 31,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 31,
+          },
+          2: {
+            style: 31,
+          },
+          3: {
+            style: 31,
+          },
+          4: {
+            style: 31,
+          },
+          5: {
+            style: 31,
+          },
+          6: {
+            style: 31,
+          },
+          7: {
+            style: 31,
+          },
+          8: {
+            style: 31,
+          },
+          9: {
+            style: 31,
+          },
+          10: {
+            style: 31,
+          },
+          11: {
+            style: 31,
+          },
+          12: {
+            style: 31,
+          },
         },
       },
       25: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 31,
-        },
-        2: {
-          style: 31,
-        },
-        3: {
-          style: 31,
-        },
-        4: {
-          style: 31,
-        },
-        5: {
-          style: 31,
-        },
-        6: {
-          style: 31,
-        },
-        7: {
-          style: 31,
-        },
-        8: {
-          style: 31,
-        },
-        9: {
-          style: 31,
-        },
-        10: {
-          style: 31,
-        },
-        11: {
-          style: 31,
-        },
-        12: {
-          style: 31,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 31,
+          },
+          2: {
+            style: 31,
+          },
+          3: {
+            style: 31,
+          },
+          4: {
+            style: 31,
+          },
+          5: {
+            style: 31,
+          },
+          6: {
+            style: 31,
+          },
+          7: {
+            style: 31,
+          },
+          8: {
+            style: 31,
+          },
+          9: {
+            style: 31,
+          },
+          10: {
+            style: 31,
+          },
+          11: {
+            style: 31,
+          },
+          12: {
+            style: 31,
+          },
         },
       },
       26: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 31,
-        },
-        2: {
-          style: 31,
-        },
-        3: {
-          style: 31,
-        },
-        4: {
-          style: 31,
-        },
-        5: {
-          style: 31,
-        },
-        6: {
-          style: 31,
-        },
-        7: {
-          style: 31,
-        },
-        8: {
-          style: 31,
-        },
-        9: {
-          style: 31,
-        },
-        10: {
-          style: 31,
-        },
-        11: {
-          style: 31,
-        },
-        12: {
-          style: 31,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 31,
+          },
+          2: {
+            style: 31,
+          },
+          3: {
+            style: 31,
+          },
+          4: {
+            style: 31,
+          },
+          5: {
+            style: 31,
+          },
+          6: {
+            style: 31,
+          },
+          7: {
+            style: 31,
+          },
+          8: {
+            style: 31,
+          },
+          9: {
+            style: 31,
+          },
+          10: {
+            style: 31,
+          },
+          11: {
+            style: 31,
+          },
+          12: {
+            style: 31,
+          },
         },
       },
       27: {
-        0: {
-          style: 6,
+        cells: {
+          0: {
+            style: 6,
+          },
         },
       },
       28: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 0,
-        },
-        2: {
-          style: 0,
-        },
-        3: {
-          style: 0,
-        },
-        4: {
-          style: 0,
-        },
-        5: {
-          style: 0,
-        },
-        6: {
-          style: 0,
-        },
-        7: {
-          style: 0,
-        },
-        8: {
-          style: 0,
-        },
-        9: {
-          style: 0,
-        },
-        10: {
-          style: 0,
-        },
-        11: {
-          style: 0,
-        },
-        12: {
-          style: 0,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 0,
+          },
+          2: {
+            style: 0,
+          },
+          3: {
+            style: 0,
+          },
+          4: {
+            style: 0,
+          },
+          5: {
+            style: 0,
+          },
+          6: {
+            style: 0,
+          },
+          7: {
+            style: 0,
+          },
+          8: {
+            style: 0,
+          },
+          9: {
+            style: 0,
+          },
+          10: {
+            style: 0,
+          },
+          11: {
+            style: 0,
+          },
+          12: {
+            style: 0,
+          },
         },
       },
       29: {
-        0: {
-          style: 6,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 4,
+          },
+          2: {
+            style: 4,
+          },
+          3: {
+            style: 4,
+          },
+          4: {
+            style: 4,
+          },
+          5: {
+            style: 4,
+          },
+          6: {
+            style: 4,
+          },
+          7: {
+            style: 4,
+          },
+          8: {
+            style: 4,
+          },
+          9: {
+            style: 4,
+          },
+          10: {
+            style: 4,
+          },
+          11: {
+            style: 4,
+          },
+          12: {
+            style: 4,
+          },
         },
-        1: {
-          style: 4,
-        },
-        2: {
-          style: 4,
-        },
-        3: {
-          style: 4,
-        },
-        4: {
-          style: 4,
-        },
-        5: {
-          style: 4,
-        },
-        6: {
-          style: 4,
-        },
-        7: {
-          style: 4,
-        },
-        8: {
-          style: 4,
-        },
-        9: {
-          style: 4,
-        },
-        10: {
-          style: 4,
-        },
-        11: {
-          style: 4,
-        },
-        12: {
-          style: 4,
-        },
+        height: 25,
       },
       30: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 31,
-        },
-        2: {
-          style: 31,
-        },
-        3: {
-          style: 31,
-        },
-        4: {
-          style: 31,
-        },
-        5: {
-          style: 31,
-        },
-        6: {
-          style: 31,
-        },
-        7: {
-          style: 31,
-        },
-        8: {
-          style: 31,
-        },
-        9: {
-          style: 31,
-        },
-        10: {
-          style: 31,
-        },
-        11: {
-          style: 31,
-        },
-        12: {
-          style: 31,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 31,
+          },
+          2: {
+            style: 31,
+          },
+          3: {
+            style: 31,
+          },
+          4: {
+            style: 31,
+          },
+          5: {
+            style: 31,
+          },
+          6: {
+            style: 31,
+          },
+          7: {
+            style: 31,
+          },
+          8: {
+            style: 31,
+          },
+          9: {
+            style: 31,
+          },
+          10: {
+            style: 31,
+          },
+          11: {
+            style: 31,
+          },
+          12: {
+            style: 31,
+          },
         },
       },
       31: {
-        0: {
-          style: 6,
-        },
-        2: {
-          style: 4,
-        },
-        3: {
-          style: 4,
-        },
-        4: {
-          style: 4,
-        },
-        5: {
-          style: 4,
-        },
-        6: {
-          style: 4,
-        },
-        7: {
-          style: 4,
-        },
-        8: {
-          style: 4,
-        },
-        9: {
-          style: 4,
-        },
-        10: {
-          style: 4,
-        },
-        11: {
-          style: 4,
+        cells: {
+          0: {
+            style: 6,
+          },
+          2: {
+            style: 4,
+          },
+          3: {
+            style: 4,
+          },
+          4: {
+            style: 4,
+          },
+          5: {
+            style: 4,
+          },
+          6: {
+            style: 4,
+          },
+          7: {
+            style: 4,
+          },
+          8: {
+            style: 4,
+          },
+          9: {
+            style: 4,
+          },
+          10: {
+            style: 4,
+          },
+          11: {
+            style: 4,
+          },
         },
       },
       32: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 4,
-        },
-        2: {
-          style: 4,
-        },
-        3: {
-          style: 4,
-        },
-        4: {
-          style: 4,
-        },
-        5: {
-          style: 4,
-        },
-        6: {
-          style: 4,
-        },
-        7: {
-          style: 4,
-        },
-        8: {
-          style: 4,
-        },
-        9: {
-          style: 4,
-        },
-        10: {
-          style: 4,
-        },
-        11: {
-          style: 4,
-        },
-        12: {
-          style: 4,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 4,
+          },
+          2: {
+            style: 4,
+          },
+          3: {
+            style: 4,
+          },
+          4: {
+            style: 4,
+          },
+          5: {
+            style: 4,
+          },
+          6: {
+            style: 4,
+          },
+          7: {
+            style: 4,
+          },
+          8: {
+            style: 4,
+          },
+          9: {
+            style: 4,
+          },
+          10: {
+            style: 4,
+          },
+          11: {
+            style: 4,
+          },
+          12: {
+            style: 4,
+          },
         },
       },
       33: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 31,
-        },
-        2: {
-          style: 31,
-        },
-        3: {
-          style: 31,
-        },
-        4: {
-          style: 31,
-        },
-        5: {
-          style: 31,
-        },
-        6: {
-          style: 31,
-        },
-        7: {
-          style: 31,
-        },
-        8: {
-          style: 31,
-        },
-        9: {
-          style: 31,
-        },
-        10: {
-          style: 31,
-        },
-        11: {
-          style: 31,
-        },
-        12: {
-          style: 31,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 31,
+          },
+          2: {
+            style: 31,
+          },
+          3: {
+            style: 31,
+          },
+          4: {
+            style: 31,
+          },
+          5: {
+            style: 31,
+          },
+          6: {
+            style: 31,
+          },
+          7: {
+            style: 31,
+          },
+          8: {
+            style: 31,
+          },
+          9: {
+            style: 31,
+          },
+          10: {
+            style: 31,
+          },
+          11: {
+            style: 31,
+          },
+          12: {
+            style: 31,
+          },
         },
       },
       34: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 0,
-        },
-        2: {
-          style: 0,
-        },
-        3: {
-          style: 0,
-        },
-        4: {
-          style: 0,
-        },
-        5: {
-          style: 0,
-        },
-        6: {
-          style: 0,
-        },
-        7: {
-          style: 0,
-        },
-        8: {
-          style: 0,
-        },
-        9: {
-          style: 0,
-        },
-        10: {
-          style: 0,
-        },
-        11: {
-          style: 0,
-        },
-        12: {
-          style: 0,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 0,
+          },
+          2: {
+            style: 0,
+          },
+          3: {
+            style: 0,
+          },
+          4: {
+            style: 0,
+          },
+          5: {
+            style: 0,
+          },
+          6: {
+            style: 0,
+          },
+          7: {
+            style: 0,
+          },
+          8: {
+            style: 0,
+          },
+          9: {
+            style: 0,
+          },
+          10: {
+            style: 0,
+          },
+          11: {
+            style: 0,
+          },
+          12: {
+            style: 0,
+          },
         },
       },
       35: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 0,
-        },
-        2: {
-          style: 32,
-        },
-        3: {
-          style: 32,
-        },
-        4: {
-          style: 32,
-        },
-        5: {
-          style: 32,
-        },
-        6: {
-          style: 32,
-        },
-        7: {
-          style: 32,
-        },
-        8: {
-          style: 32,
-        },
-        9: {
-          style: 32,
-        },
-        10: {
-          style: 32,
-        },
-        11: {
-          style: 32,
-        },
-        12: {
-          style: 32,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 0,
+          },
+          2: {
+            style: 32,
+          },
+          3: {
+            style: 32,
+          },
+          4: {
+            style: 32,
+          },
+          5: {
+            style: 32,
+          },
+          6: {
+            style: 32,
+          },
+          7: {
+            style: 32,
+          },
+          8: {
+            style: 32,
+          },
+          9: {
+            style: 32,
+          },
+          10: {
+            style: 32,
+          },
+          11: {
+            style: 32,
+          },
+          12: {
+            style: 32,
+          },
         },
       },
       36: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 31,
-        },
-        2: {
-          style: 32,
-        },
-        3: {
-          style: 32,
-        },
-        4: {
-          style: 32,
-        },
-        5: {
-          style: 32,
-        },
-        6: {
-          style: 32,
-        },
-        7: {
-          style: 32,
-        },
-        8: {
-          style: 32,
-        },
-        9: {
-          style: 32,
-        },
-        10: {
-          style: 32,
-        },
-        11: {
-          style: 32,
-        },
-        12: {
-          style: 32,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 31,
+          },
+          2: {
+            style: 32,
+          },
+          3: {
+            style: 32,
+          },
+          4: {
+            style: 32,
+          },
+          5: {
+            style: 32,
+          },
+          6: {
+            style: 32,
+          },
+          7: {
+            style: 32,
+          },
+          8: {
+            style: 32,
+          },
+          9: {
+            style: 32,
+          },
+          10: {
+            style: 32,
+          },
+          11: {
+            style: 32,
+          },
+          12: {
+            style: 32,
+          },
         },
       },
       37: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 0,
-        },
-        2: {
-          style: 32,
-        },
-        3: {
-          style: 32,
-        },
-        4: {
-          style: 32,
-        },
-        5: {
-          style: 32,
-        },
-        6: {
-          style: 32,
-        },
-        7: {
-          style: 32,
-        },
-        8: {
-          style: 32,
-        },
-        9: {
-          style: 32,
-        },
-        10: {
-          style: 32,
-        },
-        11: {
-          style: 32,
-        },
-        12: {
-          style: 32,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 0,
+          },
+          2: {
+            style: 32,
+          },
+          3: {
+            style: 32,
+          },
+          4: {
+            style: 32,
+          },
+          5: {
+            style: 32,
+          },
+          6: {
+            style: 32,
+          },
+          7: {
+            style: 32,
+          },
+          8: {
+            style: 32,
+          },
+          9: {
+            style: 32,
+          },
+          10: {
+            style: 32,
+          },
+          11: {
+            style: 32,
+          },
+          12: {
+            style: 32,
+          },
         },
       },
       38: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 31,
-        },
-        2: {
-          style: 32,
-        },
-        3: {
-          style: 32,
-        },
-        4: {
-          style: 32,
-        },
-        5: {
-          style: 32,
-        },
-        6: {
-          style: 32,
-        },
-        7: {
-          style: 32,
-        },
-        8: {
-          style: 32,
-        },
-        9: {
-          style: 32,
-        },
-        10: {
-          style: 32,
-        },
-        11: {
-          style: 32,
-        },
-        12: {
-          style: 32,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 31,
+          },
+          2: {
+            style: 32,
+          },
+          3: {
+            style: 32,
+          },
+          4: {
+            style: 32,
+          },
+          5: {
+            style: 32,
+          },
+          6: {
+            style: 32,
+          },
+          7: {
+            style: 32,
+          },
+          8: {
+            style: 32,
+          },
+          9: {
+            style: 32,
+          },
+          10: {
+            style: 32,
+          },
+          11: {
+            style: 32,
+          },
+          12: {
+            style: 32,
+          },
         },
       },
       39: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 31,
-        },
-        2: {
-          style: 32,
-        },
-        3: {
-          style: 32,
-        },
-        4: {
-          style: 32,
-        },
-        5: {
-          style: 32,
-        },
-        6: {
-          style: 32,
-        },
-        7: {
-          style: 32,
-        },
-        8: {
-          style: 32,
-        },
-        9: {
-          style: 32,
-        },
-        10: {
-          style: 32,
-        },
-        11: {
-          style: 32,
-        },
-        12: {
-          style: 32,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 31,
+          },
+          2: {
+            style: 32,
+          },
+          3: {
+            style: 32,
+          },
+          4: {
+            style: 32,
+          },
+          5: {
+            style: 32,
+          },
+          6: {
+            style: 32,
+          },
+          7: {
+            style: 32,
+          },
+          8: {
+            style: 32,
+          },
+          9: {
+            style: 32,
+          },
+          10: {
+            style: 32,
+          },
+          11: {
+            style: 32,
+          },
+          12: {
+            style: 32,
+          },
         },
       },
       40: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 31,
-        },
-        2: {
-          style: 32,
-        },
-        3: {
-          style: 32,
-        },
-        4: {
-          style: 32,
-        },
-        5: {
-          style: 32,
-        },
-        6: {
-          style: 32,
-        },
-        7: {
-          style: 32,
-        },
-        8: {
-          style: 32,
-        },
-        9: {
-          style: 32,
-        },
-        10: {
-          style: 32,
-        },
-        11: {
-          style: 32,
-        },
-        12: {
-          style: 32,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 31,
+          },
+          2: {
+            style: 32,
+          },
+          3: {
+            style: 32,
+          },
+          4: {
+            style: 32,
+          },
+          5: {
+            style: 32,
+          },
+          6: {
+            style: 32,
+          },
+          7: {
+            style: 32,
+          },
+          8: {
+            style: 32,
+          },
+          9: {
+            style: 32,
+          },
+          10: {
+            style: 32,
+          },
+          11: {
+            style: 32,
+          },
+          12: {
+            style: 32,
+          },
         },
       },
       41: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 31,
-        },
-        2: {
-          style: 32,
-        },
-        3: {
-          style: 32,
-        },
-        4: {
-          style: 32,
-        },
-        5: {
-          style: 32,
-        },
-        6: {
-          style: 32,
-        },
-        7: {
-          style: 32,
-        },
-        8: {
-          style: 32,
-        },
-        9: {
-          style: 32,
-        },
-        10: {
-          style: 32,
-        },
-        11: {
-          style: 32,
-        },
-        12: {
-          style: 32,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 31,
+          },
+          2: {
+            style: 32,
+          },
+          3: {
+            style: 32,
+          },
+          4: {
+            style: 32,
+          },
+          5: {
+            style: 32,
+          },
+          6: {
+            style: 32,
+          },
+          7: {
+            style: 32,
+          },
+          8: {
+            style: 32,
+          },
+          9: {
+            style: 32,
+          },
+          10: {
+            style: 32,
+          },
+          11: {
+            style: 32,
+          },
+          12: {
+            style: 32,
+          },
         },
       },
       42: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 0,
-        },
-        2: {
-          style: 32,
-        },
-        3: {
-          style: 32,
-        },
-        4: {
-          style: 32,
-        },
-        5: {
-          style: 32,
-        },
-        6: {
-          style: 32,
-        },
-        7: {
-          style: 32,
-        },
-        8: {
-          style: 32,
-        },
-        9: {
-          style: 32,
-        },
-        10: {
-          style: 32,
-        },
-        11: {
-          style: 32,
-        },
-        12: {
-          style: 32,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 0,
+          },
+          2: {
+            style: 32,
+          },
+          3: {
+            style: 32,
+          },
+          4: {
+            style: 32,
+          },
+          5: {
+            style: 32,
+          },
+          6: {
+            style: 32,
+          },
+          7: {
+            style: 32,
+          },
+          8: {
+            style: 32,
+          },
+          9: {
+            style: 32,
+          },
+          10: {
+            style: 32,
+          },
+          11: {
+            style: 32,
+          },
+          12: {
+            style: 32,
+          },
         },
       },
       43: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 31,
-        },
-        2: {
-          style: 32,
-        },
-        3: {
-          style: 32,
-        },
-        4: {
-          style: 32,
-        },
-        5: {
-          style: 32,
-        },
-        6: {
-          style: 32,
-        },
-        7: {
-          style: 32,
-        },
-        8: {
-          style: 32,
-        },
-        9: {
-          style: 32,
-        },
-        10: {
-          style: 32,
-        },
-        11: {
-          style: 32,
-        },
-        12: {
-          style: 32,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 31,
+          },
+          2: {
+            style: 32,
+          },
+          3: {
+            style: 32,
+          },
+          4: {
+            style: 32,
+          },
+          5: {
+            style: 32,
+          },
+          6: {
+            style: 32,
+          },
+          7: {
+            style: 32,
+          },
+          8: {
+            style: 32,
+          },
+          9: {
+            style: 32,
+          },
+          10: {
+            style: 32,
+          },
+          11: {
+            style: 32,
+          },
+          12: {
+            style: 32,
+          },
         },
       },
       44: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 31,
-        },
-        2: {
-          style: 32,
-        },
-        3: {
-          style: 32,
-        },
-        4: {
-          style: 32,
-        },
-        5: {
-          style: 32,
-        },
-        6: {
-          style: 32,
-        },
-        7: {
-          style: 32,
-        },
-        8: {
-          style: 32,
-        },
-        9: {
-          style: 32,
-        },
-        10: {
-          style: 32,
-        },
-        11: {
-          style: 32,
-        },
-        12: {
-          style: 32,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 31,
+          },
+          2: {
+            style: 32,
+          },
+          3: {
+            style: 32,
+          },
+          4: {
+            style: 32,
+          },
+          5: {
+            style: 32,
+          },
+          6: {
+            style: 32,
+          },
+          7: {
+            style: 32,
+          },
+          8: {
+            style: 32,
+          },
+          9: {
+            style: 32,
+          },
+          10: {
+            style: 32,
+          },
+          11: {
+            style: 32,
+          },
+          12: {
+            style: 32,
+          },
         },
       },
       45: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 31,
-        },
-        2: {
-          style: 32,
-        },
-        3: {
-          style: 32,
-        },
-        4: {
-          style: 32,
-        },
-        5: {
-          style: 32,
-        },
-        6: {
-          style: 32,
-        },
-        7: {
-          style: 32,
-        },
-        8: {
-          style: 32,
-        },
-        9: {
-          style: 32,
-        },
-        10: {
-          style: 32,
-        },
-        11: {
-          style: 32,
-        },
-        12: {
-          style: 32,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 31,
+          },
+          2: {
+            style: 32,
+          },
+          3: {
+            style: 32,
+          },
+          4: {
+            style: 32,
+          },
+          5: {
+            style: 32,
+          },
+          6: {
+            style: 32,
+          },
+          7: {
+            style: 32,
+          },
+          8: {
+            style: 32,
+          },
+          9: {
+            style: 32,
+          },
+          10: {
+            style: 32,
+          },
+          11: {
+            style: 32,
+          },
+          12: {
+            style: 32,
+          },
         },
       },
       46: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 31,
-        },
-        2: {
-          style: 32,
-        },
-        3: {
-          style: 32,
-        },
-        4: {
-          style: 32,
-        },
-        5: {
-          style: 32,
-        },
-        6: {
-          style: 32,
-        },
-        7: {
-          style: 32,
-        },
-        8: {
-          style: 32,
-        },
-        9: {
-          style: 32,
-        },
-        10: {
-          style: 32,
-        },
-        11: {
-          style: 32,
-        },
-        12: {
-          style: 32,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 31,
+          },
+          2: {
+            style: 32,
+          },
+          3: {
+            style: 32,
+          },
+          4: {
+            style: 32,
+          },
+          5: {
+            style: 32,
+          },
+          6: {
+            style: 32,
+          },
+          7: {
+            style: 32,
+          },
+          8: {
+            style: 32,
+          },
+          9: {
+            style: 32,
+          },
+          10: {
+            style: 32,
+          },
+          11: {
+            style: 32,
+          },
+          12: {
+            style: 32,
+          },
         },
       },
       47: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 31,
-        },
-        2: {
-          style: 32,
-        },
-        3: {
-          style: 32,
-        },
-        4: {
-          style: 32,
-        },
-        5: {
-          style: 32,
-        },
-        6: {
-          style: 32,
-        },
-        7: {
-          style: 32,
-        },
-        8: {
-          style: 32,
-        },
-        9: {
-          style: 32,
-        },
-        10: {
-          style: 32,
-        },
-        11: {
-          style: 32,
-        },
-        12: {
-          style: 32,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 31,
+          },
+          2: {
+            style: 32,
+          },
+          3: {
+            style: 32,
+          },
+          4: {
+            style: 32,
+          },
+          5: {
+            style: 32,
+          },
+          6: {
+            style: 32,
+          },
+          7: {
+            style: 32,
+          },
+          8: {
+            style: 32,
+          },
+          9: {
+            style: 32,
+          },
+          10: {
+            style: 32,
+          },
+          11: {
+            style: 32,
+          },
+          12: {
+            style: 32,
+          },
         },
       },
       48: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 31,
-        },
-        2: {
-          style: 32,
-        },
-        3: {
-          style: 32,
-        },
-        4: {
-          style: 32,
-        },
-        5: {
-          style: 32,
-        },
-        6: {
-          style: 32,
-        },
-        7: {
-          style: 32,
-        },
-        8: {
-          style: 32,
-        },
-        9: {
-          style: 32,
-        },
-        10: {
-          style: 32,
-        },
-        11: {
-          style: 32,
-        },
-        12: {
-          style: 32,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 31,
+          },
+          2: {
+            style: 32,
+          },
+          3: {
+            style: 32,
+          },
+          4: {
+            style: 32,
+          },
+          5: {
+            style: 32,
+          },
+          6: {
+            style: 32,
+          },
+          7: {
+            style: 32,
+          },
+          8: {
+            style: 32,
+          },
+          9: {
+            style: 32,
+          },
+          10: {
+            style: 32,
+          },
+          11: {
+            style: 32,
+          },
+          12: {
+            style: 32,
+          },
         },
       },
       49: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 31,
-        },
-        2: {
-          style: 32,
-        },
-        3: {
-          style: 32,
-        },
-        4: {
-          style: 32,
-        },
-        5: {
-          style: 32,
-        },
-        6: {
-          style: 32,
-        },
-        7: {
-          style: 32,
-        },
-        8: {
-          style: 32,
-        },
-        9: {
-          style: 32,
-        },
-        10: {
-          style: 32,
-        },
-        11: {
-          style: 32,
-        },
-        12: {
-          style: 32,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 31,
+          },
+          2: {
+            style: 32,
+          },
+          3: {
+            style: 32,
+          },
+          4: {
+            style: 32,
+          },
+          5: {
+            style: 32,
+          },
+          6: {
+            style: 32,
+          },
+          7: {
+            style: 32,
+          },
+          8: {
+            style: 32,
+          },
+          9: {
+            style: 32,
+          },
+          10: {
+            style: 32,
+          },
+          11: {
+            style: 32,
+          },
+          12: {
+            style: 32,
+          },
         },
       },
       50: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 31,
-        },
-        2: {
-          style: 32,
-        },
-        3: {
-          style: 32,
-        },
-        4: {
-          style: 32,
-        },
-        5: {
-          style: 32,
-        },
-        6: {
-          style: 32,
-        },
-        7: {
-          style: 32,
-        },
-        8: {
-          style: 32,
-        },
-        9: {
-          style: 32,
-        },
-        10: {
-          style: 32,
-        },
-        11: {
-          style: 32,
-        },
-        12: {
-          style: 32,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 31,
+          },
+          2: {
+            style: 32,
+          },
+          3: {
+            style: 32,
+          },
+          4: {
+            style: 32,
+          },
+          5: {
+            style: 32,
+          },
+          6: {
+            style: 32,
+          },
+          7: {
+            style: 32,
+          },
+          8: {
+            style: 32,
+          },
+          9: {
+            style: 32,
+          },
+          10: {
+            style: 32,
+          },
+          11: {
+            style: 32,
+          },
+          12: {
+            style: 32,
+          },
         },
       },
       51: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 31,
-        },
-        2: {
-          style: 32,
-        },
-        3: {
-          style: 32,
-        },
-        4: {
-          style: 32,
-        },
-        5: {
-          style: 32,
-        },
-        6: {
-          style: 32,
-        },
-        7: {
-          style: 32,
-        },
-        8: {
-          style: 32,
-        },
-        9: {
-          style: 32,
-        },
-        10: {
-          style: 32,
-        },
-        11: {
-          style: 32,
-        },
-        12: {
-          style: 32,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 31,
+          },
+          2: {
+            style: 32,
+          },
+          3: {
+            style: 32,
+          },
+          4: {
+            style: 32,
+          },
+          5: {
+            style: 32,
+          },
+          6: {
+            style: 32,
+          },
+          7: {
+            style: 32,
+          },
+          8: {
+            style: 32,
+          },
+          9: {
+            style: 32,
+          },
+          10: {
+            style: 32,
+          },
+          11: {
+            style: 32,
+          },
+          12: {
+            style: 32,
+          },
         },
       },
       52: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 3,
-        },
-        2: {
-          style: 32,
-        },
-        3: {
-          style: 32,
-        },
-        4: {
-          style: 32,
-        },
-        5: {
-          style: 32,
-        },
-        6: {
-          style: 32,
-        },
-        7: {
-          style: 32,
-        },
-        8: {
-          style: 32,
-        },
-        9: {
-          style: 32,
-        },
-        10: {
-          style: 32,
-        },
-        11: {
-          style: 32,
-        },
-        12: {
-          style: 32,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 3,
+          },
+          2: {
+            style: 32,
+          },
+          3: {
+            style: 32,
+          },
+          4: {
+            style: 32,
+          },
+          5: {
+            style: 32,
+          },
+          6: {
+            style: 32,
+          },
+          7: {
+            style: 32,
+          },
+          8: {
+            style: 32,
+          },
+          9: {
+            style: 32,
+          },
+          10: {
+            style: 32,
+          },
+          11: {
+            style: 32,
+          },
+          12: {
+            style: 32,
+          },
         },
       },
       53: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 40,
-        },
-        2: {
-          style: 32,
-        },
-        3: {
-          style: 32,
-        },
-        4: {
-          style: 32,
-        },
-        5: {
-          style: 32,
-        },
-        6: {
-          style: 32,
-        },
-        7: {
-          style: 32,
-        },
-        8: {
-          style: 32,
-        },
-        9: {
-          style: 32,
-        },
-        10: {
-          style: 32,
-        },
-        11: {
-          style: 32,
-        },
-        12: {
-          style: 32,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 40,
+          },
+          2: {
+            style: 32,
+          },
+          3: {
+            style: 32,
+          },
+          4: {
+            style: 32,
+          },
+          5: {
+            style: 32,
+          },
+          6: {
+            style: 32,
+          },
+          7: {
+            style: 32,
+          },
+          8: {
+            style: 32,
+          },
+          9: {
+            style: 32,
+          },
+          10: {
+            style: 32,
+          },
+          11: {
+            style: 32,
+          },
+          12: {
+            style: 32,
+          },
         },
       },
       54: {
-        0: {
-          style: 6,
-        },
-        1: {
-          style: 0,
-        },
-        2: {
-          style: 32,
-        },
-        3: {
-          style: 32,
-        },
-        4: {
-          style: 32,
-        },
-        5: {
-          style: 32,
-        },
-        6: {
-          style: 32,
-        },
-        7: {
-          style: 32,
-        },
-        8: {
-          style: 32,
-        },
-        9: {
-          style: 32,
-        },
-        10: {
-          style: 32,
-        },
-        11: {
-          style: 32,
-        },
-        12: {
-          style: 32,
+        cells: {
+          0: {
+            style: 6,
+          },
+          1: {
+            style: 0,
+          },
+          2: {
+            style: 32,
+          },
+          3: {
+            style: 32,
+          },
+          4: {
+            style: 32,
+          },
+          5: {
+            style: 32,
+          },
+          6: {
+            style: 32,
+          },
+          7: {
+            style: 32,
+          },
+          8: {
+            style: 32,
+          },
+          9: {
+            style: 32,
+          },
+          10: {
+            style: 32,
+          },
+          11: {
+            style: 32,
+          },
+          12: {
+            style: 32,
+          },
         },
       },
       55: {
-        1: {
-          style: 32,
+        cells: {
+          1: {
+            style: 32,
+          },
         },
       },
       56: {
-        1: {
-          style: 32,
+        cells: {
+          1: {
+            style: 32,
+          },
         },
       },
       57: {
-        1: {
-          style: 32,
+        cells: {
+          1: {
+            style: 32,
+          },
         },
       },
       58: {
-        1: {
-          style: 32,
+        cells: {
+          1: {
+            style: 32,
+          },
         },
       },
       59: {
-        1: {
-          style: 32,
+        cells: {
+          1: {
+            style: 32,
+          },
         },
       },
       60: {
-        1: {
-          style: 32,
+        cells: {
+          1: {
+            style: 32,
+          },
         },
       },
       61: {
-        1: {
-          style: 32,
+        cells: {
+          1: {
+            style: 32,
+          },
         },
       },
       62: {
-        1: {
-          style: 32,
+        cells: {
+          1: {
+            style: 32,
+          },
         },
       },
       63: {
-        1: {
-          style: 32,
+        cells: {
+          1: {
+            style: 32,
+          },
         },
       },
       64: {
-        1: {
-          style: 32,
+        cells: {
+          1: {
+            style: 32,
+          },
         },
       },
       65: {
-        1: {
-          style: 32,
+        cells: {
+          1: {
+            style: 32,
+          },
         },
       },
       66: {
-        1: {
-          style: 33,
+        cells: {
+          1: {
+            style: 33,
+          },
         },
       },
       67: {
-        1: {
-          style: 32,
+        cells: {
+          1: {
+            style: 32,
+          },
         },
       },
       68: {
-        1: {
-          style: 32,
+        cells: {
+          1: {
+            style: 32,
+          },
         },
       },
       69: {
-        1: {
-          style: 32,
+        cells: {
+          1: {
+            style: 32,
+          },
         },
       },
     },

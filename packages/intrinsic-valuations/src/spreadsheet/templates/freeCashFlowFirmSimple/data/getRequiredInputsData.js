@@ -44,7 +44,7 @@ const getRequiredInputsData = () => {
       ["Sales to Capital Ratio *", `=FIN("sales/Capital")`],
     ],
     rows: {
-      0: {
+      cells: {
         1: {
           style: 5,
           comment:
@@ -52,30 +52,6 @@ const getRequiredInputsData = () => {
         },
         3: {
           style: 7,
-        },
-      },
-      1: {
-        1: {
-          style: 5,
-          comment:
-            "Start by looking at your company's current pre-tax operating margin but also look at the average for your industry.",
-        },
-        3: {
-          style: 7,
-        },
-      },
-      2: {
-        1: {
-          style: 6,
-          comment:
-            "The forecast year in which the companies current Operating margin will converge on the target Operating margin.",
-        },
-      },
-      3: {
-        1: {
-          style: 6,
-          comment:
-            "The efficiency of how much the company has to reinvest the business to grow. The formula is Revenue / Invested Capital. The higher the number the more efficient the company is. The default value is set to the industry average as this is usually a good starting point. You should also look at the previous years sales to capital ratio's in the above table to fine tune this value. In the DCF output we compute how much the company is going to reinvest to keep the business growing in future years. The higher you set this number, the more efficiently the business is growing and the higher the value of your growth.",
         },
       },
     },

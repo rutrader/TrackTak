@@ -73,7 +73,7 @@ class Rows {
   getCell(ri, ci) {
     const row = this.get(ri);
 
-    if (!row.cells[ci]) {
+    if (!row.cells?.[ci]) {
       row.cells[ci] = {};
     }
 
@@ -349,7 +349,7 @@ class Rows {
   };
 
   maxCell() {
-    const ri = this.rows[Object.keys(this.rows.length).length - 1];
+    const ri = this.rows[this.len - 1];
     const col = this.rows[ri];
     if (col) {
       const { cells } = col;
