@@ -31,16 +31,21 @@ const SocialLoginButtons = () => {
           <SocialMediaButton
             sx={{
               backgroundColor: theme.palette.icons.google,
+              "&:hover": {
+                backgroundColor: "#dd2c00",
+              },
             }}
             startIcon={<GoogleIcon sx={{ width: 25, height: 25 }} />}
             text="Google"
-
           />
         </Grid>
         <Grid item onClick={handleFacebookLogin}>
-        <SocialMediaButton
+          <SocialMediaButton
             sx={{
               backgroundColor: theme.palette.icons.facebook,
+              "&:hover": {
+                backgroundColor: "#2f60b2",
+              },
             }}
             startIcon={<FacebookIcon sx={{ width: 25, height: 25 }} />}
             text="Facebook"

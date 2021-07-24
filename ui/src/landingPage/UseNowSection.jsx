@@ -3,9 +3,7 @@ import { Link as RouterLink } from "gatsby";
 import React from "react";
 import RoundButton from "../components/RoundButton";
 import { useTheme } from "@material-ui/styles";
-import FacebookIcon from "@material-ui/icons/Facebook";
-import GoogleIcon from "@material-ui/icons/Google";
-import SocialMediaButton from "../components/SocialMediaButton";
+import SocialLoginButtons from "../components/SocialLoginButtons";
 
 const HeaderText = (props) => (
   <Typography
@@ -46,39 +44,7 @@ const UseNowSection = () => {
         >
           Sign up with your social media account or email address.
         </Typography>
-        <Box
-          sx={{
-            mt: 2.5,
-            display: "flex",
-            flexWrap: "wrap",
-            flexDirection: "row",
-            justifyContent: "center",
-            gap: 2,
-          }}
-        >
-          <SocialMediaButton
-            sx={{
-              backgroundColor: theme.palette.icons.facebook,
-            }}
-            startIcon={<FacebookIcon sx={{ width: 25, height: 25 }} />}
-            text="Facebook"
-          />
-          <SocialMediaButton
-            sx={{
-              backgroundColor: theme.palette.icons.google,
-            }}
-            startIcon={<GoogleIcon sx={{ width: 25, height: 25 }} />}
-            text="Google"
-          />
-        </Box>
-        <Typography
-          component="div"
-          display="block"
-          sx={{ mt: 2 }}
-          fontSize={20}
-        >
-          Or
-        </Typography>
+        <SocialLoginButtons />
         <Box
           sx={{
             display: "flex",
