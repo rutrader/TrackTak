@@ -55,8 +55,14 @@ const xtos = async (
 
     let minCoord, maxCoord;
 
-    dataSheet.serializedValues.forEach((row, ri) => {
-      row.forEach((value, ci) => {
+    Object.keys(dataSheet.cellValues).forEach((rowKey) => {
+      const row = dataSheet.cellValues[rowKey];
+      const ri = parseInt(rowKey, 10);
+
+      Object.keys(row).forEach((colKey) => {
+        const value = row[colKey];
+        const ci = parseInt(colKey, 10);
+
         const cellAddress = {
           sheet,
           row: ri,

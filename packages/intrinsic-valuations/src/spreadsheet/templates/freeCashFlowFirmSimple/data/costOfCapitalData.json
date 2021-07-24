@@ -1,0 +1,450 @@
+{
+  "name": "Cost of Capital",
+  "freeze": "A1",
+  "styles": [
+    {
+      "format": "percent"
+    },
+    {},
+    {},
+    {
+      "format": "currency"
+    },
+    {
+      "format": "number"
+    },
+    {
+      "align": "center",
+      "underline": true,
+      "font": {
+        "bold": true
+      }
+    },
+    {
+      "font": {
+        "bold": true
+      }
+    },
+    {
+      "font": {
+        "bold": true
+      },
+      "underline": true
+    },
+    {
+      "font": {
+        "bold": false
+      }
+    },
+    {
+      "font": {
+        "bold": false
+      },
+      "underline": true
+    },
+    {
+      "font": {
+        "bold": false
+      },
+      "underline": false
+    },
+    {
+      "font": {
+        "bold": true
+      },
+      "underline": false
+    },
+    {
+      "underline": true
+    },
+    {
+      "border": {
+        "right": ["thin", "#000"],
+        "bottom": ["thin", "#000"]
+      },
+      "format": "currency"
+    },
+    {
+      "border": {
+        "bottom": ["thin", "#000"]
+      },
+      "format": "currency"
+    },
+    {
+      "border": {
+        "right": ["thin", "#000"]
+      },
+      "format": "percent"
+    },
+    {
+      "border": {
+        "right": ["thin", "#000"],
+        "bottom": ["thin", "#000"]
+      },
+      "font": {
+        "bold": true
+      }
+    },
+    {
+      "border": {
+        "right": ["thin", "#000"]
+      },
+      "font": {
+        "bold": true
+      }
+    },
+    {
+      "border": {
+        "bottom": ["thin", "#000"]
+      },
+      "font": {
+        "bold": true
+      }
+    },
+    {
+      "bgcolor": "rgba(120, 73, 191, 0.4)",
+      "format": "percent"
+    },
+    {
+      "border": {
+        "right": ["thin", "#000"],
+        "bottom": ["thin", "#000"]
+      },
+      "format": "percent"
+    },
+    {
+      "border": {
+        "bottom": ["thin", "#000"]
+      },
+      "format": "percent"
+    },
+    {
+      "format": "million"
+    },
+    {
+      "format": "million-currency"
+    },
+    {
+      "border": {
+        "right": ["thin", "#000"],
+        "bottom": ["thin", "#000"]
+      },
+      "format": "million-currency"
+    },
+    {
+      "border": {
+        "bottom": ["thin", "#000"]
+      },
+      "format": "million-currency"
+    }
+  ],
+  "merges": ["A1:B1"],
+  "rows": {
+    "0": {
+      "cells": {
+        "0": {
+          "merge": [0, 1],
+          "style": 5
+        }
+      }
+    },
+    "1": {
+      "cells": {
+        "0": {
+          "style": 7
+        }
+      }
+    },
+    "2": {
+      "cells": {
+        "1": {
+          "style": 22
+        }
+      }
+    },
+    "3": {
+      "cells": {
+        "1": {
+          "style": 3
+        }
+      }
+    },
+    "4": {
+      "cells": {
+        "1": {
+          "style": 4,
+          "comment": "Is a measure of the market risk of the company relative to it's peers in the same industry without the impact of debt. This determines how much risk comes with owning a stock."
+        }
+      }
+    },
+    "5": {
+      "cells": {
+        "1": {
+          "style": 0,
+          "comment": "Refers to the theoretical rate of return of an investment with zero risk."
+        }
+      }
+    },
+    "6": {
+      "cells": {
+        "1": {
+          "style": 0
+        }
+      }
+    },
+    "8": {
+      "cells": {
+        "0": {
+          "style": 7
+        }
+      }
+    },
+    "9": {
+      "cells": {
+        "1": {
+          "style": 23
+        },
+        "2": {
+          "style": 7
+        }
+      }
+    },
+    "10": {
+      "cells": {
+        "1": {
+          "style": 23
+        },
+        "3": {
+          "style": 23
+        }
+      }
+    },
+    "11": {
+      "cells": {
+        "1": {
+          "style": 4
+        },
+        "3": {
+          "style": 23
+        }
+      }
+    },
+    "12": {
+      "cells": {
+        "3": {
+          "style": 23
+        }
+      }
+    },
+    "13": {
+      "cells": {
+        "1": {
+          "style": 0,
+          "comment": "By default this is the synthetic credit rating pre-tax cost of debt that we have automatically calculated for you which is fine for most cases. If you manually input a cost of debt in the Normal Debt input field then it will overwrite this synthetic cost of debt."
+        },
+        "3": {
+          "style": 4,
+          "comment": "Is a measure of market risk of the company relative to it's peers in the same industry including the impact of debt on the company. This determines how much risk comes with owning a stock."
+        }
+      }
+    },
+    "14": {
+      "cells": {
+        "1": {
+          "style": 0
+        },
+        "2": {
+          "style": 13
+        },
+        "3": {
+          "style": 16
+        },
+        "4": {
+          "style": 16
+        },
+        "5": {
+          "style": 16
+        },
+        "6": {
+          "style": 18
+        }
+      }
+    },
+    "15": {
+      "cells": {
+        "2": {
+          "style": 16
+        },
+        "3": {
+          "style": 24
+        },
+        "4": {
+          "style": 24
+        },
+        "5": {
+          "style": 24
+        },
+        "6": {
+          "style": 25
+        }
+      }
+    },
+    "16": {
+      "cells": {
+        "0": {
+          "style": 7
+        },
+        "2": {
+          "style": 16
+        },
+        "3": {
+          "style": 20
+        },
+        "4": {
+          "style": 20
+        },
+        "5": {
+          "style": 20
+        },
+        "6": {
+          "style": 21
+        }
+      }
+    },
+    "17": {
+      "cells": {
+        "1": {
+          "style": 23
+        },
+        "2": {
+          "style": 17
+        },
+        "3": {
+          "style": 15
+        },
+        "4": {
+          "style": 15
+        },
+        "5": {
+          "style": 15
+        },
+        "6": {
+          "style": 19,
+          "comment": "The total cost of raising capital (cash) for the company, weighted by equity and debt."
+        }
+      }
+    },
+    "25": {
+      "cells": {
+        "0": {
+          "style": 7
+        }
+      }
+    }
+  },
+  "cols": {
+    "0": {
+      "width": 280
+    },
+    "1": {
+      "width": 150
+    },
+    "2": {
+      "width": 281
+    }
+  },
+  "validations": [],
+  "autofilter": {},
+  "cellValues": {
+    "0": {
+      "0": "Estimated Cost of Capital"
+    },
+    "1": {
+      "0": "Equity"
+    },
+    "2": {
+      "0": "Number of Shares Outstanding",
+      "1": "=FIN(\"sharesOutstanding\")"
+    },
+    "3": {
+      "0": "Market Price per Share",
+      "1": "=FIN(\"price\")"
+    },
+    "4": {
+      "0": "Unlevered Beta",
+      "1": "=FIN(\"unleveredBeta\")"
+    },
+    "5": {
+      "0": "Riskfree Rate",
+      "1": "=FIN(\"riskFreeRate\")"
+    },
+    "6": {
+      "0": "Equity Risk Premium",
+      "1": "=FIN(\"equityRiskPremium\")"
+    },
+    "8": {
+      "0": "Normal Debt"
+    },
+    "9": {
+      "0": "Book Value",
+      "1": "=FIN(\"bookValueOfDebt\")",
+      "2": "Output"
+    },
+    "10": {
+      "0": "Interest Expense",
+      "1": "=ABS(FIN(\"interestExpense\"))",
+      "2": "Estimated Market Value of Normal Debt",
+      "3": "=B11*(1-(1+B14)^(-B12))/B14+B10/(1+B14)^B12"
+    },
+    "11": {
+      "0": "Average Maturity",
+      "1": "='Optional Inputs'!$B$3",
+      "2": "Estimated Value of Normal Debt in Convertible",
+      "3": "='Optional Inputs'!$D$3*(1-(1+B14)^(-'Optional Inputs'!$D$4))/B14+'Optional Inputs'!$D$2/(1+B14)^'Optional Inputs'!$D$4"
+    },
+    "12": {
+      "0": "Method of Calculating Pre-tax Cost of Debt",
+      "1": "=IF('Optional Inputs'!$B$2=\"\", \"Synthetic Credit Rating\", \"Manual Input\")",
+      "2": "Estimated Value of Equity in Convertible",
+      "3": "='Optional Inputs'!$D$5-D12"
+    },
+    "13": {
+      "0": "=\"Pre-tax Cost of Debt\"&\" (\"&B13&\")\"",
+      "1": "=IF('Optional Inputs'!$B$2=\"\", FIN(\"estimatedCostOfDebt\"), 'Optional Inputs'!$B$2)",
+      "2": "Levered Beta for Equity",
+      "3": "=B5*(1+(1-B15)*(E16/D16))"
+    },
+    "14": {
+      "0": "Marginal Tax Rate",
+      "1": "=FIN(\"marginalTaxRate\")",
+      "3": "Equity",
+      "4": "Debt",
+      "5": "Preferred Stock",
+      "6": "Capital"
+    },
+    "15": {
+      "2": "Market Value",
+      "3": "=B3*B4+D13",
+      "4": "=D11+D12+B18",
+      "5": "='Optional Inputs'!$F$2*'Optional Inputs'!$F$3",
+      "6": "=SUM(D16:F16)"
+    },
+    "16": {
+      "0": "Operating Leases",
+      "2": "Weight in Cost of Capital",
+      "3": "=D16/G16",
+      "4": "=E16/G16",
+      "5": "=F16/G16",
+      "6": "=SUM(D17:F17)"
+    },
+    "17": {
+      "0": "Operating Leases Value",
+      "1": "=FIN(\"capitalLeaseObligations\")",
+      "2": "Cost of Component",
+      "3": "=B6+D14*B7",
+      "4": "=B14*(1-B15)",
+      "5": "=IF(ISERROR('Optional Inputs'!$F$4/'Optional Inputs'!$F$3), 0, 'Optional Inputs'!$F$4/'Optional Inputs'!$F$3)",
+      "6": "=D17*D18+E17*E18+F17*F18"
+    }
+  }
+}

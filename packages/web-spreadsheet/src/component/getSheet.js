@@ -391,8 +391,6 @@ export const getSheet = (
       data.setData(dataSheet);
     });
 
-    hyperformula.rebuildAndRecalculate();
-
     eventEmitter.emit(spreadsheetEvents.sheet.setDatasheets, dataSheets);
 
     sheetReset();
