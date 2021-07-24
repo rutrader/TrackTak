@@ -433,7 +433,6 @@ export const getSheet = (
 
     history.undo();
 
-    sheetReset();
     toolbar.reset();
   };
 
@@ -442,7 +441,6 @@ export const getSheet = (
 
     history.redo();
 
-    sheetReset();
     toolbar.reset();
   };
 

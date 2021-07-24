@@ -827,6 +827,10 @@ export const makeGetDataProxy = (
 
     const sheet = hyperformula.getSheetId(name);
 
+    if (hyperformula.isItPossibleToClearSheet(sheet)) {
+      hyperformula.clearSheet(sheet);
+    }
+
     hyperformula.suspendEvaluation();
 
     // TODO: https://github.com/handsontable/hyperformula/discussions/761
