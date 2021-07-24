@@ -63,21 +63,13 @@ class Rows {
   get(ri) {
     let row = this.rows[ri];
 
-    if (!row) {
-      row = this.createNewRow(ri);
-    }
-
     return row;
   }
 
   getCell(ri, ci) {
     const row = this.get(ri);
 
-    if (!row.cells?.[ci]) {
-      row.cells[ci] = {};
-    }
-
-    return row.cells[ci];
+    return row?.cells[ci];
   }
 
   getCellMerge(ri, ci) {
@@ -88,7 +80,7 @@ class Rows {
 
   getCellOrNew(ri, ci) {
     const row = this.get(ri);
-    const cell = row.cells[ci] || {};
+    const cell = row?.cells[ci] || {};
 
     return cell;
   }
@@ -181,10 +173,10 @@ class Rows {
   };
 
   addMergesToCell = (sri, sci, ri, ci) => {
-    const sourceCell = this.rows[sri].cells[sci];
-    const destCell = this.rows[ri].cells[ci];
+    const sourceCell = this.getCell(sri, sci);
+    const destCell = this.getCell(ri, ci);
 
-    if (sourceCell.merge) {
+    if (sourceCell?.merge) {
       destCell.merge = sourceCell.merge;
 
       const [rn, cn] = destCell.merge;
@@ -203,8 +195,9 @@ class Rows {
       srcCellRange,
       dstCellRange,
       ({ sri, sci, ri, ci }) => {
-        this.rows[ri].cells[ci] = this.rows[sri].cells[sci];
+        const newCell = this.getCell(sri, sci);
 
+        this.setCell(ri, ci, newCell);
         this.addMergesToCell(sri, sci, ri, ci);
       },
     );
@@ -217,8 +210,8 @@ class Rows {
       srcCellRange,
       dstCellRange,
       ({ sri, sci, ri, ci }) => {
-        const sourceCell = this.rows[sri].cells[sci];
-        const destCell = this.rows[ri].cells[ci];
+        const sourceCell = this.getCell(sri, sci);
+        const destCell = this.getCell(ri, ci);
 
         destCell.style = sourceCell.style;
 
@@ -252,7 +245,7 @@ class Rows {
       srcCellRange,
       dstCellRange,
       ({ sri, sci, ri, ci }) => {
-        this.rows[ri].cells[ci] = this.rows[sri].cells[sci];
+        this.rows[ri].cells[ci] = this.getCell(sri, sci);
 
         delete this.rows[sri].cells[sci];
       },
@@ -298,7 +291,7 @@ class Rows {
   }
 
   merge = (ri, ci, rn, cn) => {
-    const newCell = this.rows[ri].cells[ci];
+    const newCell = this.getCellOrNew(ri, ci);
 
     this.setCell(ri, ci, newCell);
 
@@ -335,15 +328,19 @@ class Rows {
 
   deleteCellsFormat = (cellRange) => {
     cellRange.loopWithinRange(({ ri, ci }) => {
-      delete this.rows[ri].cells[ci].style;
-      delete this.rows[ri].cells[ci].merge;
+      if (this.getCell(ri, ci)) {
+        delete this.rows[ri].cells[ci].style;
+        delete this.rows[ri].cells[ci].merge;
+      }
     });
     this.merges.deleteWithin(cellRange);
   };
 
   deleteCells = (cellRange) => {
     cellRange.loopWithinRange(({ ri, ci }) => {
-      delete this.rows[ri].cells[ci];
+      if (this.getCell(ri, ci)) {
+        delete this.rows[ri].cells[ci];
+      }
     });
     this.merges.deleteWithin(cellRange);
   };

@@ -278,7 +278,8 @@ export const makeGetDataProxy = (
     if (unsortedRowMap.has(ri)) {
       nri = unsortedRowMap.get(ri);
     }
-    return rows.getCell(nri, ci);
+
+    return rows.getCellOrNew(nri, ci);
   };
 
   const xyInSelectedRect = (x, y) => {
