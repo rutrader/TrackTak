@@ -278,7 +278,8 @@ export const makeGetDataProxy = (
     if (unsortedRowMap.has(ri)) {
       nri = unsortedRowMap.get(ri);
     }
-    return rows.getCell(nri, ci);
+
+    return rows.getCellOrNew(nri, ci);
   };
 
   const xyInSelectedRect = (x, y) => {
@@ -824,14 +825,37 @@ export const makeGetDataProxy = (
       styles = [...d.styles];
     }
 
-    const sheetId = hyperformula.getSheetId(name);
+    const sheet = hyperformula.getSheetId(name);
 
-    hyperformula.setSheetContent(sheetId, d.serializedValues);
+    if (hyperformula.isItPossibleToClearSheet(sheet)) {
+      hyperformula.clearSheet(sheet);
+    }
+
+    hyperformula.suspendEvaluation();
+
+    // TODO: https://github.com/handsontable/hyperformula/discussions/761
+    // setSheetContent should work but doesn't
+    Object.keys(d.cellValues).forEach((rowKey) => {
+      const row = d.cellValues[rowKey];
+
+      Object.keys(row).forEach((colKey) => {
+        const cellAddress = {
+          sheet,
+          row: parseInt(rowKey, 10),
+          col: parseInt(colKey, 10),
+        };
+        const value = row[colKey];
+
+        hyperformula.setCellContents(cellAddress, value);
+      });
+    });
+
+    hyperformula.resumeEvaluation();
 
     if (getOptions().debugMode) {
       console.log(
-        `registered sheet content: ${name} (sheet id: ${sheetId})`,
-        hyperformula.getSheetFormulas(sheetId),
+        `registered sheet content: ${name} (sheet id: ${sheet})`,
+        hyperformula.getSheetFormulas(sheet),
       );
     }
   };
@@ -841,6 +865,48 @@ export const makeGetDataProxy = (
   };
 
   const getData = () => {
+    const sheet = getSheetId();
+    // https://github.com/handsontable/hyperformula/discussions/761
+    const addressMapping = hyperformula.dependencyGraph.addressMapping.mapping;
+    const cellValues = {};
+    const currentSheetMapping = addressMapping.get(sheet);
+
+    const setCellValue = (row, col, value) => {
+      cellValues[row] = {
+        ...cellValues[row],
+        [col]: value,
+      };
+    };
+
+    currentSheetMapping.mapping.forEach((col, colKey) => {
+      col.forEach((cell, rowKey) => {
+        const cellAddress = { sheet, col: colKey, row: rowKey };
+        const cellType = hyperformula.getCellType(cellAddress);
+        const serializedValue = hyperformula.getCellSerialized(cellAddress);
+
+        if (!isNil(serializedValue) && serializedValue !== "") {
+          if (cellType === "ARRAY") {
+            const addressString = hyperformula.simpleCellAddressToString(
+              cellAddress,
+              sheet,
+            );
+            const leftCornerAddressString = hyperformula.simpleCellAddressToString(
+              cell.leftCorner,
+              sheet,
+            );
+
+            // TODO: Raise this issue with hyperformula. Causing SPILL issues if we don't just take
+            // the top left corner of array cells
+            if (addressString === leftCornerAddressString) {
+              setCellValue(rowKey, colKey, serializedValue);
+            }
+          } else {
+            setCellValue(rowKey, colKey, serializedValue);
+          }
+        }
+      });
+    });
+
     return {
       name,
       freeze: xy2expr(freeze[1], freeze[0]),
@@ -850,7 +916,7 @@ export const makeGetDataProxy = (
       cols: cols.getData(),
       validations: validations.getData(),
       autofilter: autoFilter.getData(),
-      serializedValues: hyperformula.getSheetSerialized(getSheetId()),
+      cellValues,
     };
   };
 

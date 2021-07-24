@@ -13,9 +13,9 @@ import {
   getTenYearGovernmentBondLastCloseThunk,
 } from "../redux/thunks/stockThunks";
 import convertStockAPIData from "../shared/convertStockAPIData";
-import { getFinancialPlugin } from "../spreadsheet/plugins/getFinancialPlugin";
+import { getTTFinancialPlugin } from "../spreadsheet/plugins/getTTFinancialPlugin";
 
-export const useFinancialPlugin = (spreadsheet, spreadsheetData) => {
+export const useTTFinancialPlugin = (spreadsheet, spreadsheetData) => {
   const [financialData, setFinancialData] = useState();
   const dispatch = useDispatch();
 
@@ -83,18 +83,16 @@ export const useFinancialPlugin = (spreadsheet, spreadsheetData) => {
   }, [dispatch, spreadsheetData]);
 
   useEffect(() => {
-    const FinancialPlugin = getFinancialPlugin(financialData);
+    const FinancialPlugin = getTTFinancialPlugin(financialData);
 
     if (financialData && spreadsheet) {
       if (spreadsheet.hyperformula.getSheetNames().length > 0) {
         spreadsheet.hyperformula.rebuildAndRecalculate();
-
         spreadsheet.reset();
       }
     }
 
     return () => {
-      // TODO: Causing SPILL error I think https://github.com/handsontable/hyperformula/issues/775
       HyperFormula.unregisterFunctionPlugin(FinancialPlugin);
     };
   }, [financialData, spreadsheet]);

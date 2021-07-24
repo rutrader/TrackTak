@@ -1,26 +1,26 @@
-import getCostOfCapitalData from "./getCostOfCapitalData";
-import getDCFValuationData from "./getDCFValuationData";
-import getEmployeeOptionsData from "./getEmployeeOptionsData";
-import getFinancialStatementsData from "./getFinancialStatementsData";
-import getIndustryAveragesGlobalData from "./getIndustryAveragesGlobalData";
-import getIndustryAveragesUSData from "./getIndustryAveragesUSData";
-import getOptionalInputsData from "./getOptionalInputsData";
-import getRequiredInputsData from "./getRequiredInputsData";
-import getSyntheticCreditRatingData from "./getSyntheticCreditRatingData";
+import costOfCapitalData from "./costOfCapitalData.json";
+import dcfValuationData from "./dcfValuationData.json";
+import employeeOptionsData from "./employeeOptionsData.json";
+import financialStatementsData from "./financialStatementsData.json";
+import industryAveragesGlobalData from "./industryAveragesGlobalData.json";
+import industryAveragesUSData from "./industryAveragesUSData.json";
+import optionalInputsData from "./optionalInputsData.json";
+import requiredInputsData from "./requiredInputsData.json";
+import syntheticCreditRatingData from "./syntheticCreditRatingData.json";
 
 export const freeCashFlowToFirmData = [
-  getDCFValuationData(),
-  getFinancialStatementsData(),
-  getCostOfCapitalData(),
-  getEmployeeOptionsData(),
-  getSyntheticCreditRatingData(),
-  getIndustryAveragesUSData(),
-  getIndustryAveragesGlobalData(),
+  dcfValuationData,
+  financialStatementsData,
+  costOfCapitalData,
+  employeeOptionsData,
+  syntheticCreditRatingData,
+  industryAveragesUSData,
+  industryAveragesGlobalData,
 ];
 
 export const freeCashFlowToFirmVariablesData = [
-  getRequiredInputsData(),
-  getOptionalInputsData(),
+  requiredInputsData,
+  optionalInputsData,
 ];
 
 export default freeCashFlowToFirmData;

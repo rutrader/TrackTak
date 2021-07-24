@@ -18,7 +18,7 @@ import {
 import { isNil } from "lodash-es";
 import defaultStatement from "../../shared/defaultStatement";
 
-export const getFinancialPlugin = (financialData) => {
+export const getTTFinancialPlugin = (financialData) => {
   const hasLoaded = !!financialData;
   const {
     exchangeRates,
@@ -105,7 +105,9 @@ export const getFinancialPlugin = (financialData) => {
       });
   };
 
-  class FinancialPlugin extends FunctionPlugin {
+  // Pre-fixed with TT due to there already being a FinancialPlugin
+  // in hyperformula
+  class TTFinancialPlugin extends FunctionPlugin {
     financial({ args }) {
       if (!args.length) {
         return new InvalidArgumentsError(1);
@@ -182,18 +184,20 @@ export const getFinancialPlugin = (financialData) => {
     }
   }
 
-  FinancialPlugin.implementedFunctions = {
+  TTFinancialPlugin.implementedFunctions = {
     FINANCIAL: {
       method: "financial",
       arraySizeMethod: "financialSize",
     },
   };
 
-  FinancialPlugin.aliases = {
+  TTFinancialPlugin.aliases = {
     FIN: "FINANCIAL",
   };
 
-  HyperFormula.registerFunctionPlugin(FinancialPlugin, finTranslations);
+  HyperFormula.registerFunctionPlugin(TTFinancialPlugin, finTranslations);
+
+  return TTFinancialPlugin;
 };
 
 const finTranslations = {

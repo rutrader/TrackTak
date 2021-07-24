@@ -114,6 +114,9 @@ export const buildSpreadsheet = (
     currentData = currentSheet.getData().getData();
     currentSheet.getData().setData(data);
 
+    spreadsheet.sheet.sheetReset();
+    variablesSpreadsheet.sheet.sheetReset();
+
     return {
       type,
       name,
