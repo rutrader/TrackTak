@@ -11,7 +11,7 @@
   },
   "validations": [],
   "autofilter": {},
-  "cellValues": {
+  "cellsSerialized": {
     "0": {
       "0": "Industry Name",
       "1": "Number of firms",

@@ -4,6 +4,7 @@ import { t } from "../locale/locale";
 import helper from "./helper";
 import getDefaultFormatFromText from "../shared/getDefaultFormatFromText";
 import { isNil } from "lodash-es";
+import { getHyperformulaValuesSerializedWithoutArrayAsAMap } from "../component/hyperformulaHelpers";
 
 export const makeGetDataProxy = (
   type,
@@ -834,9 +835,9 @@ export const makeGetDataProxy = (
     hyperformula.suspendEvaluation();
 
     // TODO: https://github.com/handsontable/hyperformula/discussions/761
-    // setSheetContent should work but doesn't
-    Object.keys(d.cellValues).forEach((rowKey) => {
-      const row = d.cellValues[rowKey];
+    // setSheetContent should work but doesn't with sparse arrays
+    Object.keys(d.cellsSerialized).forEach((rowKey) => {
+      const row = d.cellsSerialized[rowKey];
 
       Object.keys(row).forEach((colKey) => {
         const cellAddress = {
@@ -865,48 +866,6 @@ export const makeGetDataProxy = (
   };
 
   const getData = () => {
-    const sheet = getSheetId();
-    // https://github.com/handsontable/hyperformula/discussions/761
-    const addressMapping = hyperformula.dependencyGraph.addressMapping.mapping;
-    const cellValues = {};
-    const currentSheetMapping = addressMapping.get(sheet);
-
-    const setCellValue = (row, col, value) => {
-      cellValues[row] = {
-        ...cellValues[row],
-        [col]: value,
-      };
-    };
-
-    currentSheetMapping.mapping.forEach((col, colKey) => {
-      col.forEach((cell, rowKey) => {
-        const cellAddress = { sheet, col: colKey, row: rowKey };
-        const cellType = hyperformula.getCellType(cellAddress);
-        const serializedValue = hyperformula.getCellSerialized(cellAddress);
-
-        if (!isNil(serializedValue) && serializedValue !== "") {
-          if (cellType === "ARRAY") {
-            const addressString = hyperformula.simpleCellAddressToString(
-              cellAddress,
-              sheet,
-            );
-            const leftCornerAddressString = hyperformula.simpleCellAddressToString(
-              cell.leftCorner,
-              sheet,
-            );
-
-            // TODO: Raise this issue with hyperformula. Causing SPILL issues if we don't just take
-            // the top left corner of array cells
-            if (addressString === leftCornerAddressString) {
-              setCellValue(rowKey, colKey, serializedValue);
-            }
-          } else {
-            setCellValue(rowKey, colKey, serializedValue);
-          }
-        }
-      });
-    });
-
     return {
       name,
       freeze: xy2expr(freeze[1], freeze[0]),
@@ -916,7 +875,10 @@ export const makeGetDataProxy = (
       cols: cols.getData(),
       validations: validations.getData(),
       autofilter: autoFilter.getData(),
-      cellValues,
+      cellsSerialized: getHyperformulaValuesSerializedWithoutArrayAsAMap(
+        hyperformula,
+        getSheetId(),
+      ),
     };
   };
 

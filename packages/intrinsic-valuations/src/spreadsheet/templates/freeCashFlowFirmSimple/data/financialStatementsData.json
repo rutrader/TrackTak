@@ -8798,7 +8798,7 @@
   },
   "validations": [],
   "autofilter": {},
-  "cellValues": {
+  "cellsSerialized": {
     "0": {
       "0": "=FIN(\"financialStatements\")"
     }

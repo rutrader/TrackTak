@@ -19,6 +19,7 @@ import freeCashFlowToFirmData, {
 } from "../../../packages/intrinsic-valuations/src/spreadsheet/templates/freeCashFlowFirmSimple/data";
 import { useDispatch } from "react-redux";
 import { setMessage } from "../redux/actions/snackbarActions";
+import { useSpreadsheet } from "../hooks/useSpreadsheet";
 
 const SearchTicker = ({ isSmallSearch, sx }) => {
   const theme = useTheme();
@@ -28,6 +29,7 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
   const [text, setText] = useState("");
   const { userData } = useAuth();
   const dispatch = useDispatch();
+  const ad = useSpreadsheet();
 
   const createUserSpreadsheet = async (ticker) => {
     const token = await getAccessToken();
@@ -40,6 +42,21 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
       { sheetData, ticker },
       token?.jwtToken,
     );
+    if (ad?.spreadsheet) {
+      const { spreadsheet } = ad;
+      const { hyperformula } = spreadsheet;
+
+      hyperformula.batch(() => {
+        const sheetNames = hyperformula.getSheetNames();
+
+        sheetNames.forEach((sheetName) => {
+          const sheetId = hyperformula.getSheetId(sheetName);
+
+          hyperformula.clearSheet(sheetId);
+          hyperformula.removeSheet(sheetId);
+        });
+      });
+    }
     navigate(
       `/${userData.name}/my-spreadsheets/${response.data.spreadsheet._id}`,
     );

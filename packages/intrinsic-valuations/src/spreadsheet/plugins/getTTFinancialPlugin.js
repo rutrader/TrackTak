@@ -3,7 +3,6 @@ import {
   InvalidArgumentsError,
   SimpleRangeValue,
   ArraySize,
-  HyperFormula,
 } from "hyperformula";
 import dayjs from "dayjs";
 import convertSubCurrencyToCurrency from "../../shared/convertSubCurrencyToCurrency";
@@ -18,8 +17,7 @@ import {
 import { isNil } from "lodash-es";
 import defaultStatement from "../../shared/defaultStatement";
 
-export const getTTFinancialPlugin = (financialData) => {
-  const hasLoaded = !!financialData;
+export const getTTFinancialPlugin = (financialData, hasFinancialsLoaded) => {
   const {
     exchangeRates,
     financialStatements = {},
@@ -113,7 +111,7 @@ export const getTTFinancialPlugin = (financialData) => {
         return new InvalidArgumentsError(1);
       }
 
-      if (!hasLoaded) {
+      if (!hasFinancialsLoaded) {
         return "Loading...";
       }
 
@@ -156,7 +154,7 @@ export const getTTFinancialPlugin = (financialData) => {
       }
     }
     financialSize({ args }) {
-      if (!hasLoaded) {
+      if (!hasFinancialsLoaded) {
         return ArraySize.scalar();
       }
 
@@ -195,12 +193,10 @@ export const getTTFinancialPlugin = (financialData) => {
     FIN: "FINANCIAL",
   };
 
-  HyperFormula.registerFunctionPlugin(TTFinancialPlugin, finTranslations);
-
   return TTFinancialPlugin;
 };
 
-const finTranslations = {
+export const finTranslations = {
   enGB: {
     FIN: "FIN",
   },
