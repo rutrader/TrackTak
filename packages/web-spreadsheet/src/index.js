@@ -27,65 +27,16 @@ const getSpreadsheet = (
     hyperformula.addNamedExpression(...falseArgs);
   }
 
-  const {
-    spreadsheet,
-    variablesSpreadsheet,
-    setDatasheets,
-    getDatas,
-    getData,
-    setOptions,
-    eventEmitter,
-    variablesEventEmitter,
-  } = buildSpreadsheet(
+  let masterSpreadsheet = buildSpreadsheet(
     rootEl,
     options,
     hyperformula,
     variablesSpreadsheetOptions,
   );
 
-  const setData = (data) => {
-    variablesSpreadsheet.setDatasheets(data.variablesDatas);
-    setDatasheets(data.datas);
-    spreadsheet.sheet.switchData(spreadsheet.sheet.getDatas()[0]);
-  };
-
-  const reset = () => {
-    spreadsheet.sheet.sheetReset();
-    variablesSpreadsheet.sheet.sheetReset();
-  };
-
   element.appendChild(rootEl.el);
 
-  const destroy = () => {
-    spreadsheet.sheet.unbindAll();
-    variablesSpreadsheet.sheet.unbindAll();
-
-    rootEl.destroy();
-
-    if (hyperformula.isItPossibleToRemoveNamedExpression("TRUE")) {
-      hyperformula.removeNamedExpression("TRUE");
-    }
-
-    if (hyperformula.isItPossibleToRemoveNamedExpression("FALSE")) {
-      hyperformula.removeNamedExpression("FALSE");
-    }
-
-    hyperformula.destroy();
-  };
-
-  return {
-    spreadsheet,
-    variablesSpreadsheet,
-    destroy,
-    reset,
-    setData,
-    getDatas,
-    getData,
-    setOptions,
-    eventEmitter,
-    variablesEventEmitter,
-    hyperformula,
-  };
+  return masterSpreadsheet;
 };
 
 export default getSpreadsheet;

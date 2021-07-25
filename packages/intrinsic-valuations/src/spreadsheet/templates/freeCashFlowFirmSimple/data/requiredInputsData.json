@@ -80,7 +80,7 @@
   },
   "validations": [],
   "autofilter": {},
-  "cellValues": {
+  "cellsSerialized": {
     "0": {
       "0": "CAGR in Years 1-5 *",
       "3": "Fill out the green input cells to generate your DCF"

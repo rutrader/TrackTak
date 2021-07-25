@@ -19,6 +19,8 @@ import freeCashFlowToFirmData, {
 } from "../../../packages/intrinsic-valuations/src/spreadsheet/templates/freeCashFlowFirmSimple/data";
 import { useDispatch } from "react-redux";
 import { setMessage } from "../redux/actions/snackbarActions";
+import { useSpreadsheet } from "../hooks/useSpreadsheet";
+import { HyperFormula } from "hyperformula";
 
 const SearchTicker = ({ isSmallSearch, sx }) => {
   const theme = useTheme();
@@ -28,6 +30,7 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
   const [text, setText] = useState("");
   const { userData } = useAuth();
   const dispatch = useDispatch();
+  const spreadsheetContext = useSpreadsheet();
 
   const createUserSpreadsheet = async (ticker) => {
     const token = await getAccessToken();
@@ -40,6 +43,15 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
       { sheetData, ticker },
       token?.jwtToken,
     );
+    if (spreadsheetContext?.spreadsheet) {
+      const {
+        spreadsheet: { hyperformula },
+      } = spreadsheetContext;
+
+      const registeredPluginClass = HyperFormula.getFunctionPlugin("FINANCIAL");
+      HyperFormula.unregisterFunctionPlugin(registeredPluginClass);
+      hyperformula.rebuildAndRecalculate();
+    }
     navigate(
       `/${userData.name}/my-spreadsheets/${response.data.spreadsheet._id}`,
     );

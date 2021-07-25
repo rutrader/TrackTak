@@ -30,6 +30,7 @@ export const buildSpreadsheet = (
 ) => {
   let newData;
   let newOptions;
+  let isDestroying;
 
   const eventEmitter = new EventEmitter();
   const variablesEventEmitter = new EventEmitter();
@@ -83,6 +84,8 @@ export const buildSpreadsheet = (
   const getOptions = () => newOptions;
 
   const setOptions = (options) => {
+    if (isDestroying) return;
+
     newOptions = getNewOptions(
       options,
       newOptions,
@@ -155,6 +158,42 @@ export const buildSpreadsheet = (
   const getViewWidthHeight = makeGetViewWidthHeight(getOptions, () => {
     return variablesSpreadsheet.getOptions();
   });
+
+  const setData = (data) => {
+    if (isDestroying) return;
+
+    variablesSpreadsheet.setDatasheets(data.variablesDatas);
+    setDatasheets(data.datas);
+    spreadsheet.sheet.switchData(spreadsheet.sheet.getDatas()[0]);
+  };
+
+  const reset = () => {
+    if (isDestroying) return;
+
+    spreadsheet.sheet.sheetReset();
+    variablesSpreadsheet.sheet.sheetReset();
+  };
+
+  const destroy = () => {
+    isDestroying = true;
+
+    spreadsheet.sheet.unbindAll();
+    variablesSpreadsheet.sheet.unbindAll();
+
+    rootEl.destroy();
+
+    hyperformula.suspendEvaluation();
+
+    if (hyperformula.isItPossibleToRemoveNamedExpression("TRUE")) {
+      hyperformula.removeNamedExpression("TRUE");
+    }
+
+    if (hyperformula.isItPossibleToRemoveNamedExpression("FALSE")) {
+      hyperformula.removeNamedExpression("FALSE");
+    }
+
+    hyperformula.destroy();
+  };
 
   const rangeSelector = getRangeSelector();
 
@@ -282,7 +321,10 @@ export const buildSpreadsheet = (
     variablesSpreadsheet,
     rootEl,
     setDatasheets,
+    setData,
     getDatas,
+    destroy,
+    reset,
     getData,
     setOptions,
     hyperformula,

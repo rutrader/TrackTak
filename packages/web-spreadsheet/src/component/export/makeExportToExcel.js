@@ -2,6 +2,7 @@ import { isNil } from "lodash-es";
 import numfmt from "numfmt";
 import { sharedOptions } from "../../core/defaultOptions";
 import getFormatFromCell from "../../shared/getFormatFromCell";
+import { getHyperformulaValuesSerializedAsAMap } from "../hyperformulaHelpers";
 import formatToExcelType from "./formatToExcelType";
 
 /**
@@ -55,14 +56,18 @@ const xtos = async (
 
     let minCoord, maxCoord;
 
-    Object.keys(dataSheet.cellValues).forEach((rowKey) => {
-      const row = dataSheet.cellValues[rowKey];
+    const serializedValues = getHyperformulaValuesSerializedAsAMap(
+      hyperformula,
+      sheet,
+    );
+
+    Object.keys(serializedValues).forEach((rowKey) => {
+      const row = serializedValues[rowKey];
       const ri = parseInt(rowKey, 10);
 
       Object.keys(row).forEach((colKey) => {
         const value = row[colKey];
         const ci = parseInt(colKey, 10);
-
         const cellAddress = {
           sheet,
           row: ri,
@@ -112,6 +117,8 @@ const xtos = async (
 
         let formula;
 
+        // TODO: https://github.com/handsontable/hyperformula/issues/781
+        // bug with doesCellHaveFormula() for array types
         if (hyperformula.doesCellHaveFormula(cellAddress)) {
           formula = newValue.slice(1);
 
