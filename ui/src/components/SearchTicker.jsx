@@ -20,6 +20,7 @@ import freeCashFlowToFirmData, {
 import { useDispatch } from "react-redux";
 import { setMessage } from "../redux/actions/snackbarActions";
 import { useSpreadsheet } from "../hooks/useSpreadsheet";
+import { HyperFormula } from "hyperformula";
 
 const SearchTicker = ({ isSmallSearch, sx }) => {
   const theme = useTheme();
@@ -29,7 +30,7 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
   const [text, setText] = useState("");
   const { userData } = useAuth();
   const dispatch = useDispatch();
-  const ad = useSpreadsheet();
+  const spreadsheetContext = useSpreadsheet();
 
   const createUserSpreadsheet = async (ticker) => {
     const token = await getAccessToken();
@@ -42,20 +43,14 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
       { sheetData, ticker },
       token?.jwtToken,
     );
-    if (ad?.spreadsheet) {
-      const { spreadsheet } = ad;
-      const { hyperformula } = spreadsheet;
+    if (spreadsheetContext?.spreadsheet) {
+      const {
+        spreadsheet: { hyperformula },
+      } = spreadsheetContext;
 
-      hyperformula.batch(() => {
-        const sheetNames = hyperformula.getSheetNames();
-
-        sheetNames.forEach((sheetName) => {
-          const sheetId = hyperformula.getSheetId(sheetName);
-
-          hyperformula.clearSheet(sheetId);
-          hyperformula.removeSheet(sheetId);
-        });
-      });
+      const registeredPluginClass = HyperFormula.getFunctionPlugin("FINANCIAL");
+      HyperFormula.unregisterFunctionPlugin(registeredPluginClass);
+      hyperformula.rebuildAndRecalculate();
     }
     navigate(
       `/${userData.name}/my-spreadsheets/${response.data.spreadsheet._id}`,
