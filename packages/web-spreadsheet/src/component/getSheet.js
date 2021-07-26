@@ -63,8 +63,8 @@ export const getSheet = (
   } = builder();
   let datas = [];
 
-  const persistDataChange = (callback) =>
-    save.persistDataChange(
+  const persistDataChangeWithHistory = (callback) =>
+    save.persistDataChangeWithHistory(
       sheetType,
       getData().name,
       getData().getData(),
@@ -312,7 +312,7 @@ export const getSheet = (
       // filter
       autofilter();
     } else if (type === "formula") {
-      persistDataChange(() => {
+      persistDataChangeWithHistory(() => {
         setOptions({
           showAllFormulas: value,
           showYOYGrowth: getOptions().showYOYGrowth
@@ -322,7 +322,7 @@ export const getSheet = (
         toolbar.reset();
       });
     } else if (type === "yoyGrowth") {
-      persistDataChange(() => {
+      persistDataChangeWithHistory(() => {
         setOptions({
           showYOYGrowth: value,
           showAllFormulas: getOptions().showAllFormulas
@@ -432,6 +432,7 @@ export const getSheet = (
     if (!history.canUndo) return;
 
     history.undo();
+    save.persistDataChange();
 
     toolbar.reset();
   };
@@ -440,6 +441,7 @@ export const getSheet = (
     if (!history.canRedo) return;
 
     history.redo();
+    save.persistDataChange();
 
     toolbar.reset();
   };

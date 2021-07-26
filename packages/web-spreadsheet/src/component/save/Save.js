@@ -7,13 +7,17 @@ class Save {
     this.getDatas = getDatas;
   }
 
-  persistDataChange = (type, name, data, callback) => {
-    this.history.push({ type, name, data });
-    callback();
+  persistDataChange = () => {
     this.eventEmitter.emit(
       spreadsheetEvents.save.persistDataChange,
       this.getDatas(),
     );
+  };
+
+  persistDataChangeWithHistory = (type, name, data, callback) => {
+    this.history.push({ type, name, data });
+    callback();
+    this.persistDataChange(type, name, data, callback);
   };
 }
 

@@ -27,19 +27,19 @@ export const makeGetDataProxy = (
   let sortedRowMap = new Map();
   let unsortedRowMap = new Map();
 
-  const persistDataChange = (callback) => {
-    save.persistDataChange(type, name, getData(), callback);
+  const persistDataChangeWithHistory = (callback) => {
+    save.persistDataChangeWithHistory(type, name, getData(), callback);
   };
 
   const addValidation = (mode, ref, validator) => {
-    persistDataChange(() => {
+    persistDataChangeWithHistory(() => {
       validations.add(mode, ref, validator);
     });
   };
 
   const removeValidation = () => {
     const { range } = rangeSelector;
-    persistDataChange(() => {
+    persistDataChangeWithHistory(() => {
       validations.remove(range);
     });
   };
@@ -71,7 +71,7 @@ export const makeGetDataProxy = (
   };
 
   const paste = (copyPasteFunc) => {
-    persistDataChange(() => {
+    persistDataChangeWithHistory(() => {
       if (clipboard.isCopy()) {
         copyPasteFunc(clipboard.getRange(), rangeSelector.range);
       } else if (clipboard.isCut()) {
@@ -89,7 +89,7 @@ export const makeGetDataProxy = (
     return navigator.clipboard.read().then((data) => {
       return data[0].getType("text/plain").then((plainTextBlob) => {
         return plainTextBlob.text().then((plainText) => {
-          persistDataChange(() => {
+          persistDataChangeWithHistory(() => {
             const content = parseClipboardContent(plainText);
             const { ri, ci } = rangeSelector.getIndexes();
 
@@ -130,7 +130,7 @@ export const makeGetDataProxy = (
       .split("\r\n")
       .map((it) => it.replace(/"/g, "").split("\t"));
     if (lines.length > 0) lines.length -= 1;
-    persistDataChange(() => {
+    persistDataChangeWithHistory(() => {
       rows.paste(lines, rangeSelector.range);
     });
   };
@@ -138,7 +138,7 @@ export const makeGetDataProxy = (
   const autofill = (cellRange, what, error = () => {}) => {
     const srcRange = rangeSelector.range;
     if (!canPaste(srcRange, cellRange, error)) return false;
-    persistDataChange(() => {
+    persistDataChangeWithHistory(() => {
       // copyPaste(srcRange, cellRange, what, true);
     });
     return true;
@@ -179,7 +179,7 @@ export const makeGetDataProxy = (
   };
 
   const setSelectedCellAttr = (property, value) => {
-    persistDataChange(() => {
+    persistDataChangeWithHistory(() => {
       if (property === "merge") {
         if (value) merge();
         else unmerge();
@@ -394,7 +394,7 @@ export const makeGetDataProxy = (
 
     if (rn > 1 || cn > 1) {
       const { sri, sci } = rangeSelector.range;
-      persistDataChange(() => {
+      persistDataChangeWithHistory(() => {
         rows.merge(sri, sci, rn, cn);
       });
     }
@@ -403,7 +403,7 @@ export const makeGetDataProxy = (
   const unmerge = () => {
     if (!isSingleSelected()) return;
     const { sri, sci } = rangeSelector.range;
-    persistDataChange(() => {
+    persistDataChangeWithHistory(() => {
       rows.unmerge(sri, sci);
     });
   };
@@ -413,7 +413,7 @@ export const makeGetDataProxy = (
   };
 
   const changeAutofilter = () => {
-    persistDataChange(() => {
+    persistDataChangeWithHistory(() => {
       if (autoFilter.active()) {
         autoFilter.clear();
         exceptRowSet = new Set();
@@ -456,14 +456,14 @@ export const makeGetDataProxy = (
   };
 
   const deleteCell = (deleteFunc) => {
-    persistDataChange(() => {
+    persistDataChangeWithHistory(() => {
       deleteFunc(rangeSelector.range);
     });
   };
 
   // type: row | column
   const insert = (type, n = 1) => {
-    persistDataChange(() => {
+    persistDataChangeWithHistory(() => {
       const { sri, sci } = rangeSelector.range;
       let si = sri;
       if (type === "row") {
@@ -483,7 +483,7 @@ export const makeGetDataProxy = (
 
   // type: row | column
   const deleteData = (type) => {
-    persistDataChange(() => {
+    persistDataChangeWithHistory(() => {
       const { range } = rangeSelector;
       const { sri, sci, eri, eci } = rangeSelector.range;
       const [rsize, csize] = rangeSelector.range.size();
@@ -628,7 +628,7 @@ export const makeGetDataProxy = (
   // state: input | finished
   const setCellText = (ri, ci, text, state) => {
     if (state === "finished") {
-      persistDataChange(() => {
+      persistDataChangeWithHistory(() => {
         rows.setCellText(ri, ci, text);
       });
     }
@@ -642,7 +642,7 @@ export const makeGetDataProxy = (
   };
 
   const setFreeze = (ri, ci) => {
-    persistDataChange(() => {
+    persistDataChangeWithHistory(() => {
       freeze = [ri, ci];
     });
   };
@@ -1101,7 +1101,7 @@ export const makeGetDataProxy = (
     getSelectedRect,
     getClipboardRect,
     calSelectedRangeByStart,
-    persistDataChange,
+    persistDataChangeWithHistory,
     setData,
     setFreeze,
     getCell,
