@@ -19,7 +19,7 @@ const Spreadsheet = ({
   financialData,
   setSpreadsheet,
   spreadsheet,
-  saveSheetData = () => {},
+  saveSheetData,
 }) => {
   const containerRef = useRef();
   const theme = useTheme();
@@ -116,9 +116,11 @@ const Spreadsheet = ({
 
   useEffect(() => {
     const handleSave = async (data) => {
-      setIsSaving(true);
-      await saveSheetData(data);
-      setIsSaving(false);
+      if (saveSheetData) {
+        setIsSaving(true);
+        await saveSheetData(data);
+        setIsSaving(false);
+      }
     };
 
     if (spreadsheet) {
@@ -199,7 +201,7 @@ const Spreadsheet = ({
               ml: "auto",
             }}
           >
-            <SaveStatus isSaving={isSaving} />
+            {saveSheetData && <SaveStatus isSaving={isSaving} />}
           </Box>
         </Box>
       </Box>
