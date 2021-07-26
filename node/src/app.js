@@ -12,23 +12,23 @@ const app = express();
 app.use(express.static("public"));
 app.use(express.json({ limit: "16mb" }));
 
-const publicRoutes = ["/api/v1/compute-sensitivity-analysis"];
+// const publicRoutes = ["/api/v1/compute-sensitivity-analysis"];
 
 app.use(cors());
 
-app.options(publicRoutes[0], cors());
+// app.options(publicRoutes[0], cors());
 
-// These routes are public so they have cors turned off
-app.post(publicRoutes[0], cors(), async (req, res) => {
-  const { sheetsSerializedValues, existingScope, currentScopes } = req.body;
-  const values = await api.computeSensitivityAnalysis(
-    sheetsSerializedValues,
-    existingScope,
-    currentScopes,
-  );
+// // These routes are public so they have cors turned off
+// app.post(publicRoutes[0], cors(), async (req, res) => {
+//   const { sheetsSerializedValues, existingScope, currentScopes } = req.body;
+//   const values = await api.computeSensitivityAnalysis(
+//     sheetsSerializedValues,
+//     existingScope,
+//     currentScopes,
+//   );
 
-  res.send(values);
-});
+//   res.send(values);
+// });
 
 app.use(
   cors({
