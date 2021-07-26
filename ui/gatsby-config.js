@@ -33,6 +33,7 @@ const duplicatePackageModules = [
   "eventemitter3",
   "numfmt",
   "undo-redo-manager",
+  "xlsx",
 ];
 
 const alias = {
