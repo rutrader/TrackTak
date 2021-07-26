@@ -14,8 +14,8 @@ export const getResizer = (
   let moving = false;
   let unhideIndex;
 
-  const persistDataChange = (callback) =>
-    save.persistDataChange(
+  const persistDataChangeWithHistory = (callback) =>
+    save.persistDataChangeWithHistory(
       sheetType,
       getData().name,
       getData().getData(),
@@ -116,7 +116,7 @@ export const getResizer = (
         }
       },
       () => {
-        persistDataChange(() => {
+        persistDataChangeWithHistory(() => {
           startEvt = null;
           lineEl.hide();
           moving = false;
