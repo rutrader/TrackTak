@@ -37,14 +37,13 @@ function coordinateToReference(row, col) {
 }
 
 // Source: https://github.com/myliang/x-spreadsheet/issues/419
-const xtos = async (
+const xtos = (
   hyperformula,
+  utils,
   sheetsDatas,
   formats,
   customFunctionNames,
 ) => {
-  const { utils } = await import("xlsx/xlsx.mini");
-
   var workbook = utils.book_new();
 
   const appendWorksheet = (dataSheet) => {
@@ -190,8 +189,6 @@ const xtos = async (
     utils.book_append_sheet(workbook, ws, dataSheet.name);
   };
 
-  // hyperformula.suspendEvaluation();
-
   sheetsDatas.variablesDatas.forEach((sheetData) => {
     appendWorksheet(sheetData);
   });
@@ -200,14 +197,12 @@ const xtos = async (
     appendWorksheet(sheetData);
   });
 
-  // hyperformula.resumeEvaluation();
-
   utils.book_append_sheet(workbook);
 
   return workbook;
 };
 
-const makeExportToExcel = (hyperformula, datas) => async (
+const makeExportToExcel = (hyperformula, datas) => (
   workbookName,
   formats,
   customFunctionNames,
@@ -216,15 +211,17 @@ const makeExportToExcel = (hyperformula, datas) => async (
     ...sharedOptions.formats,
     ...formats,
   };
-  const { writeFile } = await import("xlsx/xlsx.mini");
-  const workbook = await xtos(
-    hyperformula,
-    datas,
-    newFormats,
-    customFunctionNames,
-  );
+  import("xlsx/xlsx.mini").then(({ writeFile, utils }) => {
+    const workbook = xtos(
+      hyperformula,
+      utils,
+      datas,
+      newFormats,
+      customFunctionNames,
+    );
 
-  writeFile(workbook, workbookName);
+    writeFile(workbook, workbookName);
+  });
 };
 
 export default makeExportToExcel;

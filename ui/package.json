@@ -86,7 +86,8 @@
     "styled-components": "^5.2.1",
     "undo-redo-manager": "^1.0.0",
     "use-local-storage-state": "^9.0.2",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^0.2.4",
+    "xlsx": "^0.17.0"
   },
   "scripts": {
     "preinstall": "cd ../packages/intrinsic-valuations && npm install",
@@ -116,8 +117,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@simbathesailor/use-what-changed": "^2.0.0"
   }
 }

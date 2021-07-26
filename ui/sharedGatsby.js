@@ -7,9 +7,6 @@ import { snackbarReducer } from "./src/redux/reducers/snackbarReducer";
 import { ProvideAuth } from "./src/hooks/useAuth";
 import TTCookieBanner from "./src/components/TTCookieBanner";
 import { CssBaseline } from "@material-ui/core";
-import { setUseWhatChange } from "@simbathesailor/use-what-changed";
-
-setUseWhatChange(process.env.NODE_ENV === "development");
 
 const store = createStore(undefined, {
   snackbar: snackbarReducer,
