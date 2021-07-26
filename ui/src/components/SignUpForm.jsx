@@ -7,7 +7,6 @@ import RoundButton from "./RoundButton";
 import { useTheme } from "@material-ui/styles";
 import { Box, FormControlLabel, Link } from "@material-ui/core";
 import TracktakLogoSvg from "../icons/tracktak-purple.svg";
-import PhoneField from "./PhoneField";
 import Checkbox from "@material-ui/core/Checkbox";
 import SocialLoginButtons from "./SocialLoginButtons";
 
@@ -34,7 +33,6 @@ export const ContinueToSpreadsheet = () => {
 const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
   const theme = useTheme();
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [checkedMailingList, setCheckedMailingList] = useState(false);
@@ -42,7 +40,6 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
   const handleSubmit = (e) => {
     onSubmit(e, {
       name,
-      phone,
       email,
       password,
       checkedMailingList,
@@ -91,13 +88,6 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
                 sx={{
                   display: "flex",
                 }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <PhoneField
-                onChange={(number) => setPhone(number)}
-                value={phone}
-                label="Phone (optional)"
               />
             </Grid>
             <Grid item xs={12}>

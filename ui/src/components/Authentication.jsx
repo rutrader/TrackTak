@@ -97,10 +97,7 @@ const Authentication = ({
     signUp(
       payload.email,
       payload.password,
-      [
-        { Name: "name", Value: payload.name },
-        { Name: "phone_number", Value: payload.phone },
-      ],
+      [{ Name: "name", Value: payload.name }],
       onSignUpSuccess,
       onError,
     );
