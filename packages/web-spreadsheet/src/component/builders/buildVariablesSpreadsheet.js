@@ -27,6 +27,7 @@ export const buildVariablesSpreadsheet = (
   rootEl,
   options,
   hyperformula,
+  getIsDestroying,
 ) => {
   let newData;
   let newOptions;
@@ -34,13 +35,24 @@ export const buildVariablesSpreadsheet = (
   const getOptions = () => newOptions;
 
   const setOptions = (options) => {
+    if (getIsDestroying()) return;
+
     newOptions = getNewOptions(
       options,
       newOptions,
       defaultVariablesSpreadsheetOptions,
       newData,
       sheet,
+      toolbar,
     );
+
+    if (toolbar) {
+      toolbar.createItems();
+    }
+
+    if (newData) {
+      sheet.sheetReset();
+    }
   };
 
   setOptions(options);

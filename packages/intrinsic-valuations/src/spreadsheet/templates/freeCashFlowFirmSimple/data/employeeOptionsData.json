@@ -41,7 +41,7 @@
     "1": {
       "cells": {
         "1": {
-          "style": 6
+          "style": 4
         }
       }
     },
@@ -76,7 +76,7 @@
     "6": {
       "cells": {
         "1": {
-          "style": 6
+          "style": 4
         }
       }
     },
@@ -166,7 +166,7 @@
     },
     "6": {
       "0": "Shares outstanding",
-      "1": "=FIN(\"sharesOutstanding\")"
+      "1": "='API Millions Data'!$B$6"
     },
     "7": {
       "0": "Share price",

@@ -180,7 +180,7 @@
           "style": 11
         },
         "3": {
-          "style": 24
+          "style": 20
         },
         "6": {
           "style": 0
@@ -194,7 +194,7 @@
           "style": 23
         },
         "3": {
-          "style": 25
+          "style": 21
         }
       }
     },
@@ -204,7 +204,7 @@
           "comment": "The estimated bond rating that we have worked out based on the companies interest coverage. It is similar to Moody's, S&P and Fitch's ratings. We use our own synthetic credit rating because a lot of companies do not have any rating assigned by these agencies."
         },
         "3": {
-          "style": 25
+          "style": 21
         }
       }
     },
@@ -573,19 +573,19 @@
       "0": "Company Size",
       "1": "Large",
       "2": "Operating Income",
-      "3": "=FIN(\"operatingIncome\")"
+      "3": "='API Millions Data'!$B$2"
     },
     "2": {
       "0": "Interest Coverage",
       "1": "=IF(D3=0,100,IF(D2<0,0,D2/D3))",
       "2": "Interest Expense",
-      "3": "=ABS(FIN(\"interestExpense\"))"
+      "3": "=ABS('API Millions Data'!$B$9)"
     },
     "3": {
       "0": "Estimated Bond Rating",
       "1": "=IF(B2=\"Large\",VLOOKUP(B3,A12:F26,5),IF(B2=\"Small\", VLOOKUP(B3,C12:F26,3), 0))",
       "2": "Market Capitalization",
-      "3": "=FIN(\"marketCapitalization\")"
+      "3": "='API Millions Data'!$B$11"
     },
     "4": {
       "0": "Estimated Company Default Spread",

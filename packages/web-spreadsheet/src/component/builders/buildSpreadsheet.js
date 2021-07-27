@@ -32,6 +32,7 @@ export const buildSpreadsheet = (
   let newOptions;
   let isDestroying;
 
+  const getIsDestroying = () => isDestroying;
   const eventEmitter = new EventEmitter();
   const variablesEventEmitter = new EventEmitter();
 
@@ -86,13 +87,15 @@ export const buildSpreadsheet = (
   const setOptions = (options) => {
     if (isDestroying) return;
 
-    newOptions = getNewOptions(
-      options,
-      newOptions,
-      defaultOptions,
-      newData,
-      spreadsheet?.sheet,
-    );
+    newOptions = getNewOptions(options, newOptions, defaultOptions);
+
+    if (toolbar) {
+      toolbar.createItems();
+    }
+
+    if (newData && spreadsheet) {
+      spreadsheet.sheet.sheetReset();
+    }
   };
 
   setOptions(options);
@@ -293,6 +296,7 @@ export const buildSpreadsheet = (
     rootEl,
     variablesSpreadsheetOptions,
     hyperformula,
+    getIsDestroying,
   );
 
   const draw = getDraw(

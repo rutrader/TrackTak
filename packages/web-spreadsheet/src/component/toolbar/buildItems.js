@@ -1,15 +1,15 @@
-export const buildItems = (items, buttonsEl) => {
-  items.forEach((it) => {
+export const buildItems = (items) => {
+  return items.flatMap((it) => {
     if (Array.isArray(it)) {
-      it.forEach(({ el, item }) => {
-        const newEl = el ? el : item.el;
+      return it.map(({ el, item }) => {
+        const newEl = el ? el : item.el.el;
 
-        buttonsEl.child(newEl);
+        return newEl;
       });
     } else {
-      const itEl = it.el ? it.el : it.item.el;
+      const itEl = it.el ? it.el : it.item.el.el;
 
-      buttonsEl.child(itEl);
+      return itEl;
     }
   });
 };
