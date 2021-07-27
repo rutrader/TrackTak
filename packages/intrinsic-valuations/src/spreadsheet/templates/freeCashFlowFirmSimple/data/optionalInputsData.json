@@ -60,19 +60,19 @@
           "comment": "If you don't enter an input we will use a synthetic pre-tax cost of debt. You can override this by entering your own calculated pre-tax cost of debt here if you want."
         },
         "3": {
-          "style": 6,
+          "style": 3,
           "comment": "Debt which is convertible to equity at some point in time. This is found in the financial statements"
         },
         "5": {
-          "style": 7,
+          "style": 4,
           "comment": "Shares of a company’s stock with dividends that are paid out to shareholders before common stock dividends are issued, i.e they have priority. This is found in the financial statements."
         },
         "7": {
-          "style": 7,
+          "style": 4,
           "comment": "The same as shares outstanding but specifically for the employees options outstanding instead. If the company does have employee options outstanding, enter the total number here, vested and non vested, in the money and out of the money. This is found in the financial statements."
         },
         "9": {
-          "style": 6,
+          "style": 3,
           "comment": "Any losses from the previous years that the company is carrying over to this year. It allows the company to reduce it's taxable income for the current year. This is found in the financial statements."
         }
       }
@@ -84,7 +84,7 @@
           "comment": "Years until all of the companies outstanding debt matures on average. Generally found in the footnotes to the financial statements."
         },
         "3": {
-          "style": 6,
+          "style": 3,
           "comment": "The same as normal interest expense but for Convertible Debt. This is found in the financial statements."
         },
         "5": {
@@ -96,7 +96,7 @@
           "comment": "Enter the weighted average strike price of the employee options outstanding. This is found in the financial statements."
         },
         "9": {
-          "style": 6,
+          "style": 3,
           "comment": "Also known as 'cross holdings in other companies'. This is the earnings that don't (and will never) show up as part of the operating income. The most common non-operating assets are minority cross-holdings in other companies (which are not consolidated). You can find the book value of these holdings on the balance sheet, but best practice is to convert it to the market value. (Apply a price to book ratio, based on the sector that the company is in to the book value)."
         }
       }
@@ -124,7 +124,7 @@
     "4": {
       "cells": {
         "3": {
-          "style": 6,
+          "style": 3,
           "comment": "This is the equity part of the convertible debt. If the debt is publicly traded you can find it's market value on cbonds.com or similar. If it's not then we recommend just using the Book Value of Convertible Debt from cell D2 here as well."
         },
         "9": {
