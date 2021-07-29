@@ -80,13 +80,13 @@ export const findOne = async (collection, query) => {
   return database.collection(collection).findOne(query);
 };
 
-export const deleteOne = async (collection, id, query) => {
+export const deleteOne = async (collection, query) => {
   const database = client.db(DATABASE_NAME);
   const response = await database.collection(collection).deleteOne(query);
 
   if (response.result.ok) {
     return response.deletedCount;
   } else {
-    throw Error(`Error deleting document ${id}`);
+    throw Error(`Error deleting document with query ${query}`);
   }
 };
