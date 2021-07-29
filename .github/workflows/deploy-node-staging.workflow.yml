@@ -24,6 +24,6 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: node-express-env-staging
           environment_name: Tracktak-Staging
-          version_label: 5.0.14
+          version_label: 5.0.15
           region: eu-west-2
           deployment_package: ./node/build.zip
