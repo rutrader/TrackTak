@@ -39,6 +39,7 @@ export GOOGLE_CLIENT_ID="<GetFromSecretFile>";
 export GOOGLE_CLIENT_SECRET="<GetFromSecretFile>";
 export FACEBOOK_CLIENT_ID="<GetFromSecretFile>";
 export FACEBOOK_CLIENT_SECRET="<GetFromSecretFile>";
+export USER_POOL_DOMAIN_CERT_ARN="null"
 ```
 
 Run

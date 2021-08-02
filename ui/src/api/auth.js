@@ -129,11 +129,26 @@ export const getCurrentUser = () => {
   return user;
 };
 
-export const forgotPasswordFlow = () => {
-  let user = {};
+export const verificationFlow = (onVerificationSuccess, onVerificationFailure) => {
+  const customChallengeSessionKey = "customChallengeSession";
+  const customChallengeUsernameKey = "customChallengeUsername";
+  const customChallengeNewPasswordKey = "customChallengeNewPassword";
+
+  const clearCustomChallengeStorage = () => {
+    localStorage.removeItem(customChallengeSessionKey);
+    localStorage.removeItem(customChallengeUsernameKey);
+    localStorage.removeItem(customChallengeNewPasswordKey);
+  };
+
   return {
-    sendEmailVerification: (username, onChallenge, onSuccess, onFailure) => {
-      user = new CognitoUser({
+    sendEmailVerification: (
+      username,
+      onChallenge,
+      onSuccess,
+      onFailure,
+      newPassword,
+    ) => {
+      const user = new CognitoUser({
         Username: username,
         Pool: userPool,
       });
@@ -143,12 +158,17 @@ export const forgotPasswordFlow = () => {
         }),
         {
           onSuccess: (session) => {
+            onVerificationSuccess();
             onSuccess(session);
           },
           onFailure: (err) => {
+            onVerificationFailure();
             onCognitoFailure(err, onFailure);
           },
           customChallenge: (params) => {
+            localStorage.setItem(customChallengeSessionKey, user.Session);
+            localStorage.setItem(customChallengeUsernameKey, username);
+            localStorage.setItem(customChallengeNewPasswordKey, newPassword);
             onChallenge(params);
           },
         },
@@ -156,31 +176,46 @@ export const forgotPasswordFlow = () => {
     },
     sendChallengeAnswer: (
       challengeAnswer,
-      newPassword,
       onSuccess,
       onFailure,
       onChallengeFailure,
     ) => {
-      if (!user) {
-        throw Error("Send verification email to user first!");
+      try {
+        const user = new CognitoUser({
+          Username: localStorage.getItem(customChallengeUsernameKey),
+          Pool: userPool,
+        });
+        user.Session = localStorage.getItem(customChallengeSessionKey);
+        const newPassword = localStorage.getItem(customChallengeNewPasswordKey);
+        user.sendCustomChallengeAnswer(
+          challengeAnswer,
+          {
+            onSuccess: (session, userConfirmationNecessary) => {
+              clearCustomChallengeStorage();
+              onVerificationSuccess();
+              onSuccess(session, userConfirmationNecessary);
+            },
+            onFailure: (err) => {
+              clearCustomChallengeStorage();
+              onVerificationFailure();
+              onCognitoFailure(err, onFailure);
+            },
+            customChallenge: (params) => {
+              onVerificationFailure();
+              onChallengeFailure(params);
+            },
+          },
+          {
+            ...(newPassword && {
+              newPassword,
+            }),
+          },
+        );
+      } catch (e) {
+        clearCustomChallengeStorage();
+        onVerificationFailure();
+        onFailure(e);
       }
-      user.sendCustomChallengeAnswer(
-        challengeAnswer,
-        {
-          onSuccess: (session, userConfirmationNecessary) => {
-            onSuccess(session, userConfirmationNecessary);
-          },
-          onFailure: (err) => {
-            onCognitoFailure(err, onFailure);
-          },
-          customChallenge: (params) => {
-            onChallengeFailure(params);
-          },
-        },
-        {
-          newPassword: newPassword,
-        },
-      );
     },
   };
 };
@@ -221,22 +256,5 @@ export const updateContactDetails = (contactDetails, onSuccess, onError) => {
     }
 
     onSuccess(result);
-  });
-};
-
-export const getEmailVerificationCode = (onError) => {
-  const user = getCurrentUser();
-  user.getAttributeVerificationCode("email", {
-    onSuccess: noop,
-    onFailure: (err) => onCognitoFailure(err, onError),
-    inputVerificationCode: noop,
-  });
-};
-
-export const submitEmailVerificationCode = (code, onSuccess, onError) => {
-  const user = getCurrentUser();
-  user.verifyAttribute("email", code, {
-    onSuccess,
-    onFailure: (err) => onCognitoFailure(err, onError),
   });
 };

@@ -1,17 +1,22 @@
-import React, { useState, useContext, createContext, useEffect } from "react";
+import React, {
+  useState,
+  useContext,
+  createContext,
+  useEffect,
+  useCallback,
+} from "react";
 import {
   signUp as userSignUp,
   signIn as userSignIn,
   signOut as userSignOut,
   getCurrentUser,
-  forgotPasswordFlow,
+  verificationFlow as userVerificationFlow,
   getUserData,
   changePassword,
   updateContactDetails as userUpdateContactDetails,
-  getEmailVerificationCode,
-  submitEmailVerificationCode as userSubmitEmailVerificationCode,
+  signOut,
 } from "../api/auth";
-import { noop } from "../shared/utils";
+import { noop, removeQueryParams } from "../shared/utils";
 
 const AuthContext = createContext();
 
@@ -36,6 +41,7 @@ export const getAccessToken = async () => {
           resolve(session);
         } else {
           reject(error);
+          signOut();
         }
       });
     }
@@ -61,6 +67,14 @@ const getUpdatedUserDetails = (_, updatedUserDataArray) => {
   return [];
 };
 
+export const getUrlAuthParameters = () => {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
+  return {
+    code,
+  };
+};
+
 /**
  *
  * Hook for managing authentication
@@ -70,9 +84,11 @@ const useProvideAuth = () => {
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [hasLoadedAuthDetails, setHasLoadedAuthDetails] = useState(false);
   const [userData, setUserData] = useState();
-  const [isExternalIdentityProvider, setIsExternalIdentityProvider] = useState(false);
+  const [isExternalIdentityProvider, setIsExternalIdentityProvider] = useState(
+    false,
+  );
 
-  useEffect(() => {
+  const signInWithSession = useCallback(() => {
     const handleGetUserData = (...args) => {
       const [updatedUserData, isEmailVerified] = getUpdatedUserDetails(...args);
 
@@ -83,7 +99,6 @@ const useProvideAuth = () => {
         setIsExternalIdentityProvider(true);
       }
     };
-
     const currentUser = getCurrentUser();
 
     if (currentUser) {
@@ -95,9 +110,23 @@ const useProvideAuth = () => {
         }
       });
     } else {
-      setHasLoadedAuthDetails(true);
+      const isVerifyingAuthParameter = !!getUrlAuthParameters().code;
+      setHasLoadedAuthDetails(!isVerifyingAuthParameter);
     }
-  }, [isAuthenticated]);
+  }, []);
+
+  useEffect(() => {
+    signInWithSession();
+  }, [isAuthenticated, signInWithSession]);
+
+  const signIn = (username, password, onSuccess, onFailure) => {
+    const onCognitoSuccess = (session) => {
+      setIsAuthenticated(true);
+      onSuccess(session);
+    };
+
+    userSignIn(username, password, onCognitoSuccess, onFailure, noop);
+  };
 
   const signUp = (
     email,
@@ -109,28 +138,11 @@ const useProvideAuth = () => {
     userSignUp(email, password, onSuccess, onFailure, userAttributes);
   };
 
-  const signIn = (username, password, onSuccess, onFailure) => {
-    const onCognitoSuccess = (session) => {
-      setIsAuthenticated(true);
-      onSuccess(session);
-    };
-
-    userSignIn(username, password, onCognitoSuccess, onFailure, noop);
-  };
-
   const signOut = () => {
     userSignOut();
     setIsAuthenticated(false);
     setUserData(null);
     setIsExternalIdentityProvider(false);
-  };
-
-  const submitEmailVerificationCode = (code, onSuccess, onFailure) => {
-    const onVerificationSuccess = () => {
-      setIsEmailVerified(true);
-      onSuccess();
-    };
-    userSubmitEmailVerificationCode(code, onVerificationSuccess, onFailure);
   };
 
   const updateContactDetails = (updatedAttributes, onSuccess, onFailure) => {
@@ -146,6 +158,19 @@ const useProvideAuth = () => {
     userUpdateContactDetails(updatedAttributes, onUpdateSuccess, onFailure);
   };
 
+  const verificationFlow = () => {
+    const handleVerificationSuccess = () => {
+      signInWithSession();
+      removeQueryParams();
+    };
+    const handleVerificationFailure = () => {
+      removeQueryParams();
+    };
+    return userVerificationFlow(
+      handleVerificationSuccess,
+      handleVerificationFailure,
+    );
+  };
   return {
     isAuthenticated,
     hasLoadedAuthDetails,
@@ -155,11 +180,9 @@ const useProvideAuth = () => {
     signIn,
     signOut,
     isEmailVerified,
-    forgotPasswordFlow: forgotPasswordFlow(),
+    verificationFlow: verificationFlow(),
     changePassword,
     updateContactDetails,
-    getEmailVerificationCode,
-    submitEmailVerificationCode,
   };
 };
 

@@ -1,41 +1,38 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Link } from "@material-ui/core";
 import { useAuth } from "../hooks/useAuth";
 import { useDispatch } from "react-redux";
 import { setMessage } from "../redux/actions/snackbarActions";
-import VerificationCodeDialog from "./VerificationCodeDialog";
+import { noop } from "../shared/utils";
 
 const VerifyEmailLink = ({ text, ...props }) => {
-  const { getEmailVerificationCode, isEmailVerified } = useAuth();
-  const [showVerificationCodeDialog, setShowVerificationCodeDialog] = useState(
-    false,
-  );
+  const { verificationFlow, isEmailVerified, userData } = useAuth();
   const dispatch = useDispatch();
 
   const handleVerificationCodeError = (err) => {
     dispatch(
       setMessage({
-        message: "Failed to send verification code",
+        message: "Failed to send verification link",
         severity: "error",
       }),
     );
   };
 
-  const handleCloseVerificationCodeDialog = () =>
-    setShowVerificationCodeDialog(false);
-
-  const handleOpenVerificationCodeDialog = () => {
+  const handleVerificationEmailSent = () => {
     dispatch(
       setMessage({
-        message: "A verification code has been sent to your email.",
+        message: "A verification link has been sent to your email.",
       }),
     );
-    setShowVerificationCodeDialog(true);
   };
 
   const handleClickVerifyEmail = () => {
-    handleOpenVerificationCodeDialog();
-    getEmailVerificationCode(handleVerificationCodeError);
+    verificationFlow.sendEmailVerification(
+      userData.email,
+      handleVerificationEmailSent,
+      noop,
+      handleVerificationCodeError,
+    );
   };
 
   return isEmailVerified ? null : (
@@ -64,10 +61,6 @@ const VerifyEmailLink = ({ text, ...props }) => {
           {text}
         </Link>
       </Box>
-      <VerificationCodeDialog
-        open={showVerificationCodeDialog}
-        onClose={handleCloseVerificationCodeDialog}
-      />
     </>
   );
 };

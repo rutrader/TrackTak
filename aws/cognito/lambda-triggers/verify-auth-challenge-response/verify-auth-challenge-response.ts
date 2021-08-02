@@ -3,14 +3,20 @@
 
 import { VerifyAuthChallengeResponseTriggerHandler } from 'aws-lambda';
 import AWS from 'aws-sdk';
+import { CognitoIdentityProviderClient, AdminUpdateUserAttributesCommand } from "@aws-sdk/client-cognito-identity-provider";
 
 const CHANGE_PASSWORD_FUNCTION = 'ChangePassword';
 
 export const handler: VerifyAuthChallengeResponseTriggerHandler = async (event) => {
-    const expectedAnswer = event.request.privateChallengeParameters!.secretLoginCode; 
+    const expectedAnswer = event.request.privateChallengeParameters!.secretLoginCode;
+    const isChangePasswordFlow = !!event.request?.clientMetadata?.newPassword;
     if (event.request.challengeAnswer === expectedAnswer) {
         event.response.answerCorrect = true;
-        return changePassword(event);
+        if (isChangePasswordFlow) {
+          return changePassword(event);
+        } else {
+          return verifyEmail(event);
+        }
     } else {
         event.response.answerCorrect = false;
     }
@@ -43,3 +49,19 @@ const changePassword = async (event) => {
     });
     return promise;
 };
+
+//@ts-ignore
+const verifyEmail = async (event) => {
+  const client = new CognitoIdentityProviderClient({});
+  const command = new AdminUpdateUserAttributesCommand({
+      UserPoolId: event.userPoolId,
+      Username: event.username,
+      UserAttributes: [{
+        Name: 'email_verified',
+        Value: 'true'
+      }],
+
+  });
+
+  return await client.send(command);
+}
