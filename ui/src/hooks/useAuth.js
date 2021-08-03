@@ -88,17 +88,18 @@ const useProvideAuth = () => {
     false,
   );
 
-  const signInWithSession = useCallback(() => {
-    const handleGetUserData = (...args) => {
-      const [updatedUserData, isEmailVerified] = getUpdatedUserDetails(...args);
+  const handleGetUserData = useCallback((...args) => {
+    const [updatedUserData, isEmailVerified] = getUpdatedUserDetails(...args);
 
-      setUserData(updatedUserData);
-      setIsEmailVerified(isEmailVerified);
+    setUserData(updatedUserData);
+    setIsEmailVerified(isEmailVerified);
 
-      if (updatedUserData.identities) {
-        setIsExternalIdentityProvider(true);
-      }
-    };
+    if (updatedUserData.identities) {
+      setIsExternalIdentityProvider(true);
+    }
+  }, []);
+
+  const resumeSession = useCallback(() => {
     const currentUser = getCurrentUser();
 
     if (currentUser) {
@@ -113,54 +114,59 @@ const useProvideAuth = () => {
       const isVerifyingAuthParameter = !!getUrlAuthParameters().code;
       setHasLoadedAuthDetails(!isVerifyingAuthParameter);
     }
-  }, []);
+  }, [handleGetUserData]);
 
   useEffect(() => {
-    signInWithSession();
-  }, [isAuthenticated, signInWithSession]);
+      resumeSession();
+  }, [resumeSession]);
 
-  const signIn = (username, password, onSuccess, onFailure) => {
-    const onCognitoSuccess = (session) => {
-      setIsAuthenticated(true);
-      onSuccess(session);
-    };
+  const signIn = useCallback(
+    (username, password, onSuccess, onFailure) => {
+      const onCognitoSuccess = (session) => {
+        setIsAuthenticated(true);
+        setHasLoadedAuthDetails(true);
+        getUserData(handleGetUserData);
+        onSuccess(session);
+      };
 
-    userSignIn(username, password, onCognitoSuccess, onFailure, noop);
-  };
+      userSignIn(username, password, onCognitoSuccess, onFailure, noop);
+    },
+    [handleGetUserData],
+  );
 
-  const signUp = (
-    email,
-    password,
-    userAttributes = [],
-    onSuccess,
-    onFailure,
-  ) => {
-    userSignUp(email, password, onSuccess, onFailure, userAttributes);
-  };
+  const signUp = useCallback(
+    (email, password, userAttributes = [], onSuccess, onFailure) => {
+      userSignUp(email, password, onSuccess, onFailure, userAttributes);
+    },
+    [],
+  );
 
-  const signOut = () => {
+  const signOut = useCallback(() => {
     userSignOut();
     setIsAuthenticated(false);
     setUserData(null);
     setIsExternalIdentityProvider(false);
-  };
+  }, []);
 
-  const updateContactDetails = (updatedAttributes, onSuccess, onFailure) => {
-    const onUpdateSuccess = () => {
-      if (
-        updatedAttributes.email &&
-        updatedAttributes.email !== userData.email
-      ) {
-        setIsEmailVerified(false);
-      }
-      onSuccess();
-    };
-    userUpdateContactDetails(updatedAttributes, onUpdateSuccess, onFailure);
-  };
+  const updateContactDetails = useCallback(
+    (updatedAttributes, onSuccess, onFailure) => {
+      const onUpdateSuccess = () => {
+        if (
+          updatedAttributes.email &&
+          updatedAttributes.email !== userData.email
+        ) {
+          setIsEmailVerified(false);
+        }
+        onSuccess();
+      };
+      userUpdateContactDetails(updatedAttributes, onUpdateSuccess, onFailure);
+    },
+    [userData],
+  );
 
-  const verificationFlow = () => {
+  const verificationFlow = useCallback(() => {
     const handleVerificationSuccess = () => {
-      signInWithSession();
+      resumeSession();
       removeQueryParams();
     };
     const handleVerificationFailure = () => {
@@ -170,7 +176,8 @@ const useProvideAuth = () => {
       handleVerificationSuccess,
       handleVerificationFailure,
     );
-  };
+  }, [resumeSession]);
+
   return {
     isAuthenticated,
     hasLoadedAuthDetails,

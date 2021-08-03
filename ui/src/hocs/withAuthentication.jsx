@@ -1,5 +1,5 @@
 import { getUrlAuthParameters, useAuth } from "../hooks/useAuth";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { navigate } from "gatsby";
 import PageSpinner from "../components/PageSpinner";
 import { setMessage } from "../redux/actions/snackbarActions";
@@ -14,23 +14,23 @@ const withAuthentication = (Component) => {
     } = useAuth();
     const dispatch = useDispatch();
 
-    const handleVerificationFailure = () => {
+    const handleVerificationFailure = useCallback(() => {
       dispatch(
         setMessage({
           message: "Failed to update your details",
           severity: "error",
         }),
       );
-    };
+    }, [dispatch]);
 
-    const handleVerificationSuccess = () => {
+    const handleVerificationSuccess = useCallback(() => {
       dispatch(
         setMessage({
           message: "Successfully updated your details",
           severity: "success",
         }),
       );
-    };
+    }, [dispatch]);
 
     useEffect(() => {
       if (!isAuthenticated && hasLoadedAuthDetails) {
@@ -53,8 +53,11 @@ const withAuthentication = (Component) => {
           handleVerificationFailure,
         );
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [
+      handleVerificationFailure,
+      handleVerificationSuccess,
+      verificationFlow,
+    ]);
 
     if (!hasLoadedAuthDetails) {
       return <PageSpinner />;

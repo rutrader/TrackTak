@@ -51,7 +51,7 @@ async function sendEmail(emailAddress: string, secretLoginCode: string) {
                 },
                 Text: {
                     Charset: 'UTF-8',
-                    Data: `Reset link: ${confirmationURL}`
+                    Data: `Link: ${confirmationURL}`
                 }
             },
             Subject: {

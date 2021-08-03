@@ -1,13 +1,18 @@
 // Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { VerifyAuthChallengeResponseTriggerHandler } from 'aws-lambda';
+import { Handler, VerifyAuthChallengeResponseTriggerEvent, VerifyAuthChallengeResponseTriggerHandler } from 'aws-lambda';
 import AWS from 'aws-sdk';
 import { CognitoIdentityProviderClient, AdminUpdateUserAttributesCommand } from "@aws-sdk/client-cognito-identity-provider";
 
 const CHANGE_PASSWORD_FUNCTION = 'ChangePassword';
 
-export const handler: VerifyAuthChallengeResponseTriggerHandler = async (event) => {
+interface VerifyCustomAuthChallengeResponseTriggerEvent extends VerifyAuthChallengeResponseTriggerEvent {
+  username: string;
+}
+type VerifyCustomAuthChallengeResponseTriggerHandler = Handler<VerifyCustomAuthChallengeResponseTriggerEvent>;
+
+export const handler: VerifyCustomAuthChallengeResponseTriggerHandler = async (event: VerifyCustomAuthChallengeResponseTriggerEvent) => {
     const expectedAnswer = event.request.privateChallengeParameters!.secretLoginCode;
     const isChangePasswordFlow = !!event.request?.clientMetadata?.newPassword;
     if (event.request.challengeAnswer === expectedAnswer) {
@@ -23,8 +28,7 @@ export const handler: VerifyAuthChallengeResponseTriggerHandler = async (event) 
     return event;
 };
 
-//@ts-ignore
-const changePassword = async (event) => {
+const changePassword = async (event: VerifyCustomAuthChallengeResponseTriggerEvent) => {
     const lambda = new AWS.Lambda();
     const params = {
         FunctionName: CHANGE_PASSWORD_FUNCTION,
@@ -50,8 +54,7 @@ const changePassword = async (event) => {
     return promise;
 };
 
-//@ts-ignore
-const verifyEmail = async (event) => {
+const verifyEmail = async (event: VerifyCustomAuthChallengeResponseTriggerEvent) => {
   const client = new CognitoIdentityProviderClient({});
   const command = new AdminUpdateUserAttributesCommand({
       UserPoolId: event.userPoolId,

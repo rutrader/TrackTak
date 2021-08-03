@@ -48,7 +48,7 @@ const ForgotPasswordForm = ({ onCancelClick }) => {
     <>
       {verificationEmailSent && (
         <Alert severity="info">
-          Please check your email for the verification link
+          Please check your email for the Forgot Password link
         </Alert>
       )}
       <Box
