@@ -130,6 +130,11 @@ Resources:
               Action:
                 - lambda:InvokeFunction
               Resource: "arn:aws:lambda:*:*:*:*"
+            - Effect: Allow
+              Action:
+              - cognito-identity:*
+              - cognito-idp:*
+              Resource: "*"
 
   PreSignUp:
     Type: AWS::Serverless::Function

@@ -10,7 +10,7 @@ const withAuthentication = (Component) => {
     const {
       isAuthenticated,
       hasLoadedAuthDetails,
-      verificationFlow,
+      sendChallengeAnswer,
     } = useAuth();
     const dispatch = useDispatch();
 
@@ -37,7 +37,6 @@ const withAuthentication = (Component) => {
         navigate("/sign-in");
       }
     }, [
-      verificationFlow,
       hasLoadedAuthDetails,
       isAuthenticated,
       props.location.search,
@@ -46,7 +45,7 @@ const withAuthentication = (Component) => {
     useEffect(() => {
       const authParameters = getUrlAuthParameters();
       if (authParameters.code) {
-        verificationFlow.sendChallengeAnswer(
+        sendChallengeAnswer(
           authParameters.code,
           handleVerificationSuccess,
           handleVerificationFailure,
@@ -56,7 +55,7 @@ const withAuthentication = (Component) => {
     }, [
       handleVerificationFailure,
       handleVerificationSuccess,
-      verificationFlow,
+      sendChallengeAnswer,
     ]);
 
     if (!hasLoadedAuthDetails) {

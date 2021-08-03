@@ -35,10 +35,10 @@ export USER_POOL_NAME=TracktakTest;
 export AWS_DEFAULT_REGION=eu-west-1;
 export SES_SOURCE_ARN=arn:aws:ses:eu-west-1:326973209868:identity/tracktak.com;
 export CLOUDFORMATION_ENV=test;
-export GOOGLE_CLIENT_ID="<GetFromSecretFile>";
-export GOOGLE_CLIENT_SECRET="<GetFromSecretFile>";
-export FACEBOOK_CLIENT_ID="<GetFromSecretFile>";
-export FACEBOOK_CLIENT_SECRET="<GetFromSecretFile>";
+export GOOGLE_CLIENT_ID="721560500321-ksine4ogd8n1b6v65pkqk3l932udkiek.apps.googleusercontent.com"
+export GOOGLE_CLIENT_SECRET="ZLdIX17bLDRoUDROxhfgwYfj"
+export FACEBOOK_CLIENT_ID="1579075108961264"
+export FACEBOOK_CLIENT_SECRET="1c303933fb88efc37047e3545fda8a5f"
 export USER_POOL_DOMAIN_CERT_ARN="null"
 ```
 

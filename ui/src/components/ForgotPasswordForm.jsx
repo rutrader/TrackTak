@@ -15,7 +15,7 @@ import RoundButton from "./RoundButton";
 const ForgotPasswordForm = ({ onCancelClick }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const { verificationFlow } = useAuth();
+  const { sendEmailVerification } = useAuth();
   const [verificationEmailSent, setVerificationEmailSent] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,7 +35,7 @@ const ForgotPasswordForm = ({ onCancelClick }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    verificationFlow.sendEmailVerification(
+    sendEmailVerification(
       email,
       handleVerificationEmailSent,
       noop,

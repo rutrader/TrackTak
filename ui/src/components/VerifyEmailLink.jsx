@@ -6,7 +6,7 @@ import { setMessage } from "../redux/actions/snackbarActions";
 import { noop } from "../shared/utils";
 
 const VerifyEmailLink = ({ text, ...props }) => {
-  const { verificationFlow, isEmailVerified, userData } = useAuth();
+  const { sendEmailVerification, isEmailVerified, userData } = useAuth();
   const dispatch = useDispatch();
 
   const handleVerificationCodeError = (err) => {
@@ -27,7 +27,7 @@ const VerifyEmailLink = ({ text, ...props }) => {
   };
 
   const handleClickVerifyEmail = () => {
-    verificationFlow.sendEmailVerification(
+    sendEmailVerification(
       userData.email,
       handleVerificationEmailSent,
       noop,

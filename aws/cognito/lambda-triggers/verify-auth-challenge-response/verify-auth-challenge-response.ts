@@ -1,18 +1,13 @@
 // Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Handler, VerifyAuthChallengeResponseTriggerEvent, VerifyAuthChallengeResponseTriggerHandler } from 'aws-lambda';
-import AWS from 'aws-sdk';
-import { CognitoIdentityProviderClient, AdminUpdateUserAttributesCommand } from "@aws-sdk/client-cognito-identity-provider";
+import { VerifyAuthChallengeResponseTriggerEvent, VerifyAuthChallengeResponseTriggerHandler } from 'aws-lambda';
+import AWS, { CognitoIdentityServiceProvider } from 'aws-sdk';
 
 const CHANGE_PASSWORD_FUNCTION = 'ChangePassword';
+const cup = new CognitoIdentityServiceProvider();
 
-interface VerifyCustomAuthChallengeResponseTriggerEvent extends VerifyAuthChallengeResponseTriggerEvent {
-  username: string;
-}
-type VerifyCustomAuthChallengeResponseTriggerHandler = Handler<VerifyCustomAuthChallengeResponseTriggerEvent>;
-
-export const handler: VerifyCustomAuthChallengeResponseTriggerHandler = async (event: VerifyCustomAuthChallengeResponseTriggerEvent) => {
+export const handler: VerifyAuthChallengeResponseTriggerHandler = async (event: VerifyAuthChallengeResponseTriggerEvent) => {
     const expectedAnswer = event.request.privateChallengeParameters!.secretLoginCode;
     const isChangePasswordFlow = !!event.request?.clientMetadata?.newPassword;
     if (event.request.challengeAnswer === expectedAnswer) {
@@ -28,7 +23,7 @@ export const handler: VerifyCustomAuthChallengeResponseTriggerHandler = async (e
     return event;
 };
 
-const changePassword = async (event: VerifyCustomAuthChallengeResponseTriggerEvent) => {
+const changePassword = async (event: VerifyAuthChallengeResponseTriggerEvent) => {
     const lambda = new AWS.Lambda();
     const params = {
         FunctionName: CHANGE_PASSWORD_FUNCTION,
@@ -54,17 +49,16 @@ const changePassword = async (event: VerifyCustomAuthChallengeResponseTriggerEve
     return promise;
 };
 
-const verifyEmail = async (event: VerifyCustomAuthChallengeResponseTriggerEvent) => {
-  const client = new CognitoIdentityProviderClient({});
-  const command = new AdminUpdateUserAttributesCommand({
-      UserPoolId: event.userPoolId,
-      Username: event.username,
-      UserAttributes: [{
+const verifyEmail = async (event: VerifyAuthChallengeResponseTriggerEvent) => {
+  const params: CognitoIdentityServiceProvider.AdminUpdateUserAttributesRequest = {
+    UserPoolId: event.userPoolId,
+    UserAttributes: [{
         Name: 'email_verified',
-        Value: 'true'
-      }],
+        Value: 'true',
+    }],
+    Username: event.request.userAttributes.email,
+  };
+  await cup.adminUpdateUserAttributes(params).promise();
 
-  });
-
-  return await client.send(command);
+  return event;
 }

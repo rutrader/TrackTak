@@ -10,7 +10,8 @@ import {
   signIn as userSignIn,
   signOut as userSignOut,
   getCurrentUser,
-  verificationFlow as userVerificationFlow,
+  sendEmailVerification,
+  sendChallengeAnswer as userSendChallengeAnswer,
   getUserData,
   changePassword,
   updateContactDetails as userUpdateContactDetails,
@@ -117,7 +118,7 @@ const useProvideAuth = () => {
   }, [handleGetUserData]);
 
   useEffect(() => {
-      resumeSession();
+    resumeSession();
   }, [resumeSession]);
 
   const signIn = useCallback(
@@ -164,19 +165,26 @@ const useProvideAuth = () => {
     [userData],
   );
 
-  const verificationFlow = useCallback(() => {
-    const handleVerificationSuccess = () => {
-      resumeSession();
-      removeQueryParams();
-    };
-    const handleVerificationFailure = () => {
-      removeQueryParams();
-    };
-    return userVerificationFlow(
-      handleVerificationSuccess,
-      handleVerificationFailure,
-    );
-  }, [resumeSession]);
+  const sendChallengeAnswer = useCallback(
+    (challengeAnswer, onSuccess, onFailure, onChallengeFailure) => {
+      const handleVerificationSuccess = () => {
+        resumeSession();
+        removeQueryParams();
+        onSuccess();
+      };
+      const handleVerificationFailure = () => {
+        removeQueryParams();
+        onFailure();
+      };
+      userSendChallengeAnswer(
+        challengeAnswer,
+        handleVerificationSuccess,
+        handleVerificationFailure,
+        onChallengeFailure,
+      );
+    },
+    [resumeSession],
+  );
 
   return {
     isAuthenticated,
@@ -187,7 +195,8 @@ const useProvideAuth = () => {
     signIn,
     signOut,
     isEmailVerified,
-    verificationFlow: verificationFlow(),
+    sendEmailVerification,
+    sendChallengeAnswer,
     changePassword,
     updateContactDetails,
   };
