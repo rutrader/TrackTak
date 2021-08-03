@@ -149,7 +149,7 @@ module.exports = {
         icon: "src/icons/tracktak-logo-small.svg",
       },
     },
-    // "gatsby-plugin-offline",
+    //"gatsby-plugin-offline",
     "gatsby-plugin-mdx",
     "gatsby-plugin-image",
     {
