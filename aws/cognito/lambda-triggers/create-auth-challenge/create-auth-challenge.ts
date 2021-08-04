@@ -8,7 +8,6 @@ import { SES } from 'aws-sdk';
 const ses = new SES();
 
 export const handler: CreateAuthChallengeTriggerHandler = async event => {
-
     let secretLoginCode: string;
     if (!event.request.session || !event.request.session.length) {
 
@@ -21,7 +20,7 @@ export const handler: CreateAuthChallengeTriggerHandler = async event => {
         // There's an existing session. Don't generate new digits but
         // re-use the code from the current session. This allows the user to
         // make a mistake when keying in the code and to then retry, rather
-        // then needing to e-mail the user an all new code again.    
+        // then needing to e-mail the user an all new code again.
         const previousChallenge = event.request.session.slice(-1)[0];
         secretLoginCode = previousChallenge.challengeMetadata!.match(/CODE-(\d*)/)![1];
     }
@@ -40,23 +39,24 @@ export const handler: CreateAuthChallengeTriggerHandler = async event => {
 };
 
 async function sendEmail(emailAddress: string, secretLoginCode: string) {
+    const confirmationURL = `${process.env.CONFIRMATION_URL}?code=${secretLoginCode}`;
     const params: SES.SendEmailRequest = {
         Destination: { ToAddresses: [emailAddress] },
         Message: {
             Body: {
                 Html: {
                     Charset: 'UTF-8',
-                    Data: `<html><body><p>This is your secret login code:</p>
-                           <h3>${secretLoginCode}</h3></body></html>`
+                    Data: `<html><body><p>Please click this link to complete your requested action:</p>
+                           <h3>${confirmationURL}</h3></body></html>`
                 },
                 Text: {
                     Charset: 'UTF-8',
-                    Data: `Your secret login code: ${secretLoginCode}`
+                    Data: `Link: ${confirmationURL}`
                 }
             },
             Subject: {
                 Charset: 'UTF-8',
-                Data: 'Your secret login code'
+                Data: 'Tracktak Authentication'
             }
         },
         Source: process.env.SES_FROM_ADDRESS!

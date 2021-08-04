@@ -1,17 +1,23 @@
-import React, { useState, useContext, createContext, useEffect } from "react";
+import React, {
+  useState,
+  useContext,
+  createContext,
+  useEffect,
+  useCallback,
+} from "react";
 import {
   signUp as userSignUp,
   signIn as userSignIn,
   signOut as userSignOut,
   getCurrentUser,
-  forgotPasswordFlow,
+  sendEmailVerification,
+  sendChallengeAnswer as userSendChallengeAnswer,
   getUserData,
   changePassword,
   updateContactDetails as userUpdateContactDetails,
-  getEmailVerificationCode,
-  submitEmailVerificationCode as userSubmitEmailVerificationCode,
+  signOut,
 } from "../api/auth";
-import { noop } from "../shared/utils";
+import { noop, removeQueryParams } from "../shared/utils";
 
 const AuthContext = createContext();
 
@@ -36,6 +42,7 @@ export const getAccessToken = async () => {
           resolve(session);
         } else {
           reject(error);
+          signOut();
         }
       });
     }
@@ -61,6 +68,14 @@ const getUpdatedUserDetails = (_, updatedUserDataArray) => {
   return [];
 };
 
+export const getUrlAuthParameters = () => {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
+  return {
+    code,
+  };
+};
+
 /**
  *
  * Hook for managing authentication
@@ -70,20 +85,22 @@ const useProvideAuth = () => {
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [hasLoadedAuthDetails, setHasLoadedAuthDetails] = useState(false);
   const [userData, setUserData] = useState();
-  const [isExternalIdentityProvider, setIsExternalIdentityProvider] = useState(false);
+  const [isExternalIdentityProvider, setIsExternalIdentityProvider] = useState(
+    false,
+  );
 
-  useEffect(() => {
-    const handleGetUserData = (...args) => {
-      const [updatedUserData, isEmailVerified] = getUpdatedUserDetails(...args);
+  const handleGetUserData = useCallback((...args) => {
+    const [updatedUserData, isEmailVerified] = getUpdatedUserDetails(...args);
 
-      setUserData(updatedUserData);
-      setIsEmailVerified(isEmailVerified);
+    setUserData(updatedUserData);
+    setIsEmailVerified(isEmailVerified);
 
-      if (updatedUserData.identities) {
-        setIsExternalIdentityProvider(true);
-      }
-    };
+    if (updatedUserData.identities) {
+      setIsExternalIdentityProvider(true);
+    }
+  }, []);
 
+  const resumeSession = useCallback(() => {
     const currentUser = getCurrentUser();
 
     if (currentUser) {
@@ -95,56 +112,79 @@ const useProvideAuth = () => {
         }
       });
     } else {
-      setHasLoadedAuthDetails(true);
+      const isVerifyingAuthParameter = !!getUrlAuthParameters().code;
+      setHasLoadedAuthDetails(!isVerifyingAuthParameter);
     }
-  }, [isAuthenticated]);
+  }, [handleGetUserData]);
 
-  const signUp = (
-    email,
-    password,
-    userAttributes = [],
-    onSuccess,
-    onFailure,
-  ) => {
-    userSignUp(email, password, onSuccess, onFailure, userAttributes);
-  };
+  useEffect(() => {
+    resumeSession();
+  }, [resumeSession]);
 
-  const signIn = (username, password, onSuccess, onFailure) => {
-    const onCognitoSuccess = (session) => {
-      setIsAuthenticated(true);
-      onSuccess(session);
-    };
+  const signIn = useCallback(
+    (username, password, onSuccess, onFailure) => {
+      const onCognitoSuccess = (session) => {
+        setIsAuthenticated(true);
+        setHasLoadedAuthDetails(true);
+        getUserData(handleGetUserData);
+        onSuccess(session);
+      };
 
-    userSignIn(username, password, onCognitoSuccess, onFailure, noop);
-  };
+      userSignIn(username, password, onCognitoSuccess, onFailure, noop);
+    },
+    [handleGetUserData],
+  );
 
-  const signOut = () => {
+  const signUp = useCallback(
+    (email, password, userAttributes = [], onSuccess, onFailure) => {
+      userSignUp(email, password, onSuccess, onFailure, userAttributes);
+    },
+    [],
+  );
+
+  const signOut = useCallback(() => {
     userSignOut();
     setIsAuthenticated(false);
     setUserData(null);
     setIsExternalIdentityProvider(false);
-  };
+  }, []);
 
-  const submitEmailVerificationCode = (code, onSuccess, onFailure) => {
-    const onVerificationSuccess = () => {
-      setIsEmailVerified(true);
-      onSuccess();
-    };
-    userSubmitEmailVerificationCode(code, onVerificationSuccess, onFailure);
-  };
+  const updateContactDetails = useCallback(
+    (updatedAttributes, onSuccess, onFailure) => {
+      const onUpdateSuccess = () => {
+        if (
+          updatedAttributes.email &&
+          updatedAttributes.email !== userData.email
+        ) {
+          setIsEmailVerified(false);
+        }
+        onSuccess();
+      };
+      userUpdateContactDetails(updatedAttributes, onUpdateSuccess, onFailure);
+    },
+    [userData],
+  );
 
-  const updateContactDetails = (updatedAttributes, onSuccess, onFailure) => {
-    const onUpdateSuccess = () => {
-      if (
-        updatedAttributes.email &&
-        updatedAttributes.email !== userData.email
-      ) {
-        setIsEmailVerified(false);
-      }
-      onSuccess();
-    };
-    userUpdateContactDetails(updatedAttributes, onUpdateSuccess, onFailure);
-  };
+  const sendChallengeAnswer = useCallback(
+    (challengeAnswer, onSuccess, onFailure, onChallengeFailure) => {
+      const handleVerificationSuccess = () => {
+        resumeSession();
+        removeQueryParams();
+        onSuccess();
+      };
+      const handleVerificationFailure = () => {
+        removeQueryParams();
+        onFailure();
+      };
+      userSendChallengeAnswer(
+        challengeAnswer,
+        handleVerificationSuccess,
+        handleVerificationFailure,
+        onChallengeFailure,
+      );
+    },
+    [resumeSession],
+  );
 
   return {
     isAuthenticated,
@@ -155,11 +195,10 @@ const useProvideAuth = () => {
     signIn,
     signOut,
     isEmailVerified,
-    forgotPasswordFlow: forgotPasswordFlow(),
+    sendEmailVerification,
+    sendChallengeAnswer,
     changePassword,
     updateContactDetails,
-    getEmailVerificationCode,
-    submitEmailVerificationCode,
   };
 };
 

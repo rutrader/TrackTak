@@ -73,9 +73,7 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
   const { isAuthenticated, signOut } = useAuth();
 
   const handleOnSignOut = async () => {
-    const token = await getAccessToken();
-
-    if (token) {
+    if (isAuthenticated) {
       signOut();
       navigate("/");
     }
