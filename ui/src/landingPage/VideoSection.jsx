@@ -12,7 +12,7 @@ const VideoSection = () => {
       }}
     >
       <YouTube
-        videoId="ZHHIDK7WfN4"
+        videoId="uQOG6k8A-zc"
         containerClassName={styles.videoWrapper}
         opts={{
           width: 1500,

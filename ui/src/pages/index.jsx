@@ -49,11 +49,9 @@ const Home = () => {
         <Section>
           <ProcessSection />
         </Section>
-        {process.env.NODE_ENV === "development" ? (
-          <Section>
-            <VideoSection />
-          </Section>
-        ) : null}
+        <Section>
+          <VideoSection />
+        </Section>
         <Section>
           <OurTeamSection />
         </Section>
