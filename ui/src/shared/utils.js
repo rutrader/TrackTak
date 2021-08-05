@@ -1,5 +1,7 @@
 export const noop = () => {};
 
+export const trackingFormatDate = "DD/MM/YYYY HH:mm";
+
 export const removeQueryParams = () => {
   window.history.replaceState(
     null,

@@ -21,6 +21,8 @@ import { useDispatch } from "react-redux";
 import { setMessage } from "../redux/actions/snackbarActions";
 import { useSpreadsheet } from "../hooks/useSpreadsheet";
 import { HyperFormula } from "hyperformula";
+import { trackCustomEvent } from "gatsby-plugin-google-analytics";
+import { trackingFormatDate } from "../shared/utils";
 
 const SearchTicker = ({ isSmallSearch, sx }) => {
   const theme = useTheme();
@@ -75,6 +77,12 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
   const handleOnChangeAutoComplete = (_, value) => {
     if (value?.code && value?.exchange) {
       const ticker = `${value.code}.${value.exchange}`;
+
+      trackCustomEvent({
+        category: "Valuation",
+        action: `Create ${ticker} valuation`,
+        value: dayjs().format(trackingFormatDate),
+      });
 
       createUserSpreadsheet(ticker);
     }

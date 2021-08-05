@@ -20,6 +20,8 @@ import { deleteSpreadsheet, getSpreadsheets } from "../api/api";
 import { navigate } from "gatsby";
 import RoundButton from "./RoundButton";
 import dayjs from "dayjs";
+import { trackCustomEvent } from "gatsby-plugin-google-analytics";
+import { trackingFormatDate } from "../shared/utils";
 
 const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
   const theme = useTheme();
@@ -40,6 +42,12 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
 
   const handleRowClick = (spreadsheet) => {
     navigate(`/${userData.name}/my-spreadsheets/${spreadsheet._id}`);
+    trackCustomEvent({
+      category: "Valuation",
+      action: "Modify",
+      label: `Modified ${spreadsheet.sheetData.name}`,
+      value: dayjs().format(trackingFormatDate),
+    });
   };
 
   const handleDelete = (spreadsheet) => {
