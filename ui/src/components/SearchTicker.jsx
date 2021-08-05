@@ -81,7 +81,7 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
       trackCustomEvent({
         category: "Valuation",
         action: `Create ${ticker} valuation`,
-        value: dayjs(trackingFormatDate),
+        value: dayjs().format(trackingFormatDate),
       });
 
       createUserSpreadsheet(ticker);

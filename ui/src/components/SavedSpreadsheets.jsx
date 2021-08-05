@@ -46,7 +46,7 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
       category: "Valuation",
       action: "Modify",
       label: `Modified ${spreadsheet.sheetData.name}`,
-      value: dayjs(trackingFormatDate),
+      value: dayjs().format(trackingFormatDate),
     });
   };
 
