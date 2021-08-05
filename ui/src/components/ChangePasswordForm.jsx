@@ -8,7 +8,7 @@ import { useAuth } from "../hooks/useAuth";
 import { setMessage } from "../redux/actions/snackbarActions";
 import VerifyEmailLink from "./VerifyEmailLink";
 
-const ChangePasswordForm = ({ onVerificationCodeDialogOpen }) => {
+const ChangePasswordForm = () => {
   const { isEmailVerified, changePassword } = useAuth();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -100,7 +100,6 @@ const ChangePasswordForm = ({ onVerificationCodeDialogOpen }) => {
               sx={{
                 mt: 3,
               }}
-              onVerificationCodeDialogOpen={onVerificationCodeDialogOpen}
               text="You must verify your account before changing your password"
             />
           </Grid>

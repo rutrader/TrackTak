@@ -108,15 +108,6 @@ const Authentication = ({
     signIn(payload.email, payload.password, onSuccess, onError);
   };
 
-  const handleForgotPasswordSuccess = () => {
-    if (isModal) {
-      setFormState(AUTHENTICATION_FORM_STATE.SIGN_IN);
-      return;
-    }
-
-    navigate("/sign-in/");
-  };
-
   const handleForgotPasswordCancelClick = () => {
     if (isModal) {
       setFormState(AUTHENTICATION_FORM_STATE.SIGN_IN);
@@ -150,10 +141,7 @@ const Authentication = ({
         />
       )}
       {formState === AUTHENTICATION_FORM_STATE.FORGOTTEN_PASSWORD && (
-        <ForgotPasswordForm
-          onSuccess={handleForgotPasswordSuccess}
-          onCancelClick={handleForgotPasswordCancelClick}
-        />
+        <ForgotPasswordForm onCancelClick={handleForgotPasswordCancelClick} />
       )}
     </Box>
   );
