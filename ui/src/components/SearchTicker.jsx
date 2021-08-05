@@ -22,7 +22,7 @@ import { setMessage } from "../redux/actions/snackbarActions";
 import { useSpreadsheet } from "../hooks/useSpreadsheet";
 import { HyperFormula } from "hyperformula";
 import { trackCustomEvent } from "gatsby-plugin-google-analytics";
-import { customEventDate } from "../shared/utils";
+import { trackingFormatDate } from "../shared/utils";
 
 const SearchTicker = ({ isSmallSearch, sx }) => {
   const theme = useTheme();
@@ -81,7 +81,7 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
       trackCustomEvent({
         category: "Valuation",
         action: `Create ${ticker} valuation`,
-        value: customEventDate,
+        value: dayjs(trackingFormatDate),
       });
 
       createUserSpreadsheet(ticker);
