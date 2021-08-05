@@ -6,14 +6,14 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  useTheme,
 } from "@material-ui/core";
 import React, { useState } from "react";
 import { Link, navigate } from "gatsby";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchTicker from "./SearchTicker";
 import TracktakLogo from "./TracktakLogo";
-import { getAccessToken, useAuth } from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
+import { useTheme } from "@material-ui/core/styles";
 
 const LinkButton = (props) => {
   return (

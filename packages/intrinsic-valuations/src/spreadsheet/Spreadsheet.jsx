@@ -1,6 +1,6 @@
 import React, { useRef, useState, Fragment } from "react";
 import { useEffect } from "react";
-import { Box, useMediaQuery, useTheme } from "@material-ui/core";
+import { Box, useMediaQuery } from "@material-ui/core";
 import { useLocation } from "@reach/router";
 import { HyperFormula } from "hyperformula";
 import getSpreadsheet, {
@@ -9,6 +9,7 @@ import getSpreadsheet, {
 import getFormats from "./getFormats";
 import SaveStatus from "./SaveStatus";
 import hyperformulaConfig from "./hyperformulaConfig";
+import { useTheme } from "@material-ui/core/styles";
 
 const requiredInputsId = "required-inputs";
 const dcfValuationId = "dcf-valuation";

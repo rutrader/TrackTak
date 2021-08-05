@@ -14,6 +14,7 @@ export const getHeaderLinks = (isAuthenticated) => {
   ];
 
   if (!isAuthenticated) {
+    links.push(pricingLink);
     links.push(signInLink);
   }
 
@@ -23,4 +24,9 @@ export const getHeaderLinks = (isAuthenticated) => {
 export const signInLink = {
   to: "/sign-in",
   text: "Sign in",
+};
+
+export const pricingLink = {
+  to: "/pricing",
+  text: "Pricing",
 };

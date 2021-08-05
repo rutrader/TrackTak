@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 import GridOnIcon from "@material-ui/icons/GridOn";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { useTheme } from "@material-ui/styles";
+import { useTheme } from "@material-ui/core/styles";
 import ConfirmationDialog from "./ConfirmationDialog";
 import { getAccessToken, useAuth } from "../hooks/useAuth";
 import { deleteSpreadsheet, getSpreadsheets } from "../api/api";

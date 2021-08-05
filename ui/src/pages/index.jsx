@@ -1,9 +1,9 @@
 import React from "react";
 import { Helmet } from "react-helmet";
-import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
 import UseNowSection from "../landingPage/UseNowSection";
-import { Box, Container, useTheme } from "@material-ui/core";
+import { Box, Container } from "@material-ui/core";
+import { useTheme } from "@material-ui/core/styles";
 import Footer from "../landingPage/Footer";
 import TestimonialsSection from "../landingPage/TestimonialsSection";
 import OurTeamSection from "../landingPage/OurTeamSection";

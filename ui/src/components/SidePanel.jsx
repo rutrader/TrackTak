@@ -2,7 +2,6 @@ import React, { forwardRef, useEffect, useState } from "react";
 import {
   Box,
   Drawer,
-  useTheme,
   useMediaQuery,
   Divider,
   Hidden,
@@ -17,10 +16,17 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import { navigate } from "gatsby";
 import { AnchorLink } from "gatsby-plugin-anchor-links";
 import { noop } from "../shared/utils";
+import { useTheme } from "@material-ui/core/styles";
 
 const drawerWidth = 240;
 
-const SidePanel = ({ children, tabs, titleMenuButtons, selectedTab, setSeletedTab = noop }) => {
+const SidePanel = ({
+  children,
+  tabs,
+  titleMenuButtons,
+  selectedTab,
+  setSeletedTab = noop,
+}) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -113,10 +119,12 @@ const SidePanel = ({ children, tabs, titleMenuButtons, selectedTab, setSeletedTa
       </Hidden>
       <Box component="main" sx={{ width: "100%" }}>
         <Box>
-          <Box sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-          }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
             {tabs[selectedTab]?.title && (
               <Typography variant="h5" gutterBottom>
                 {tabs[selectedTab].title}

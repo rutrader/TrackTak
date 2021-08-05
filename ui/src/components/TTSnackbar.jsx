@@ -1,20 +1,25 @@
 import React from "react";
-import { Snackbar, Alert, makeStyles } from "@material-ui/core";
+import { Snackbar, Alert, Box } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import selectSnackbar from "../selectors/selectSnackbar";
 import { clearMessage } from "../redux/actions/snackbarActions";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    top: `${theme.mixins.toolbar.minHeight + 4}px`,
-    "& .MuiSnackbarContent-message": {
-      margin: "0 auto",
-    },
-  },
-}));
+const StyledSnackbar = ({ sx, ...props }) => {
+  return (
+    <Box
+      component={Snackbar}
+      sx={{
+        top: (theme) => `${theme.mixins.toolbar.minHeight + 4}px`,
+        "& .MuiSnackbarContent-message": {
+          margin: "0 auto",
+        },
+      }}
+      {...props}
+    />
+  );
+};
 
 const TTSnackbar = () => {
-  const classes = useStyles();
   const snackbar = useSelector(selectSnackbar);
   const dispatch = useDispatch();
 
@@ -25,8 +30,7 @@ const TTSnackbar = () => {
   };
 
   return (
-    <Snackbar
-      classes={{ root: classes.root }}
+    <StyledSnackbar
       autoHideDuration={6000}
       anchorOrigin={{ vertical: "top", horizontal: "center" }}
       open={!!snackbar.message}
@@ -35,7 +39,7 @@ const TTSnackbar = () => {
       {snackbar.message && (
         <Alert severity={snackbar.severity}>{snackbar.message}</Alert>
       )}
-    </Snackbar>
+    </StyledSnackbar>
   );
 };
 

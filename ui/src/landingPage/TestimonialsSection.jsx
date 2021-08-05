@@ -5,12 +5,12 @@ import {
   Link,
   Typography,
   useMediaQuery,
-  useTheme,
 } from "@material-ui/core";
 import MobileStepper from "@material-ui/core/MobileStepper";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import Testimonials from "../components/Testimonials";
+import { useTheme } from "@material-ui/core/styles";
 
 const robbertSmitTestimonial = (
   <Testimonials

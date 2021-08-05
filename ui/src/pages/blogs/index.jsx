@@ -8,13 +8,13 @@ import {
   List,
   ListItem,
   Typography,
-  useTheme,
 } from "@material-ui/core";
 import { navigate, graphql, Link } from "gatsby";
 import { Helmet } from "react-helmet";
 import getTitle from "../../shared/getTitle";
 import resourceName from "../../shared/resourceName";
 import Img from "gatsby-image";
+import { useTheme } from "@material-ui/core/styles";
 
 export const query = graphql`
   query BlogsQuery {

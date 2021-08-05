@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Typography,
-  IconButton,
-  Hidden,
-  useTheme,
-} from "@material-ui/core";
+import { Box, Typography, IconButton, Hidden } from "@material-ui/core";
 import GridDots from "../icons/grid-dots.svg";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import { graphql, useStaticQuery, Link } from "gatsby";
 import Img from "gatsby-image";
 import RoundButton from "../components/RoundButton";
 import BackgroundImage from "gatsby-background-image";
+import { useTheme } from "@material-ui/core/styles";
 
 const AboveTheFoldSection = () => {
   const data = useStaticQuery(graphql`

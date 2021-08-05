@@ -2,7 +2,7 @@ import { Box, Typography, Link, Paper, Divider } from "@material-ui/core";
 import { Link as RouterLink } from "gatsby";
 import React from "react";
 import RoundButton from "../components/RoundButton";
-import { useTheme } from "@material-ui/styles";
+import { useTheme } from "@material-ui/core/styles";
 import SocialLoginButtons from "../components/SocialLoginButtons";
 
 const HeaderText = (props) => (
