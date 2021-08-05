@@ -1,8 +1,7 @@
 import React from "react";
 import { Box, Hidden } from "@material-ui/core";
 import GridDots from "../icons/grid-dots-purple.svg";
-import YouTube from "react-youtube";
-import * as styles from "../shared/video.module.css";
+import YoutubeTutorial from "../components/YoutubeTutorial";
 
 const VideoSection = () => {
   return (
@@ -11,14 +10,7 @@ const VideoSection = () => {
         position: "relative",
       }}
     >
-      <YouTube
-        videoId="uQOG6k8A-zc"
-        containerClassName={styles.videoWrapper}
-        opts={{
-          width: 1500,
-          height: 600,
-        }}
-      ></YouTube>
+      <YoutubeTutorial />
       <Box>
         <Hidden mdDown implementation="css">
           <GridDots
