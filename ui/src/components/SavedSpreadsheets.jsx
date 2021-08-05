@@ -21,6 +21,7 @@ import { navigate } from "gatsby";
 import RoundButton from "./RoundButton";
 import dayjs from "dayjs";
 import { trackCustomEvent } from "gatsby-plugin-google-analytics";
+import { customEventDate } from "../shared/utils";
 
 const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
   const theme = useTheme();
@@ -45,7 +46,7 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
       category: "Valuation",
       action: "Modify",
       label: `Number of times user modified ${spreadsheet.sheetData.name}`,
-      value: dayjs().format("DD/MM/YYYY HH:mm"),
+      value: customEventDate,
     });
   };
 
