@@ -54,7 +54,7 @@
       "cells": {
         "1": {
           "style": 6,
-          "comment": "The forecast year in which the companies current Operating margin will converge on the target Operating margin."
+          "comment": "The forecasted number of years until the company’s current Operating Margin will converge on the target Operating Margin. For example, if today's year is 2021 and the year of convergence is 5 then it will converge in year 2026."
         }
       }
     },
