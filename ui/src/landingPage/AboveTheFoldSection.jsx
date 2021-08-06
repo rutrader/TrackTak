@@ -58,8 +58,8 @@ const AboveTheFoldSection = () => {
     <Box
       sx={{
         mt: 6,
-        [theme.breakpoints.up(1650)]: {
-          mx: 25,
+        [theme.breakpoints.up(1679)]: {
+          ml: 10,
         },
       }}
     >
