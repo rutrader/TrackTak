@@ -20,7 +20,13 @@ import { noop } from "../shared/utils";
 
 const drawerWidth = 240;
 
-const SidePanel = ({ children, tabs, titleMenuButtons, selectedTab, setSeletedTab = noop }) => {
+const SidePanel = ({
+  children,
+  tabs,
+  titleMenuButtons,
+  selectedTab,
+  setSeletedTab = noop,
+}) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -89,7 +95,7 @@ const SidePanel = ({ children, tabs, titleMenuButtons, selectedTab, setSeletedTa
           <Hidden smUp implementation="css">
             <Box>
               <IconButton onClick={handleDrawerClose}>
-                <ChevronLeftIcon />
+                <ChevronLeftIcon color="primary" />
               </IconButton>
             </Box>
             <Divider />
@@ -108,15 +114,17 @@ const SidePanel = ({ children, tabs, titleMenuButtons, selectedTab, setSeletedTa
             top: (theme) => theme.mixins.toolbar.minHeight + 10,
           }}
         >
-          <ChevronRightIcon />
+          <ChevronRightIcon color="primary" />
         </IconButton>
       </Hidden>
       <Box component="main" sx={{ width: "100%" }}>
         <Box>
-          <Box sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-          }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
             {tabs[selectedTab]?.title && (
               <Typography variant="h5" gutterBottom>
                 {tabs[selectedTab].title}
