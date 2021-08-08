@@ -15,7 +15,7 @@ import CheckIcon from "@material-ui/icons/Check";
 import RoundButton from "../components/RoundButton";
 
 function generate(element) {
-  return [0, 1, 2].map((value) =>
+  return [0, 1, 2, 3].map((value) =>
     React.cloneElement(element, {
       key: value,
     }),
@@ -35,6 +35,42 @@ const CustomPaper = (props) => (
       display: "flex",
     }}
   />
+);
+
+const HeaderText = (props) => (
+  <Typography
+    {...props}
+    sx={{
+      color: (theme) => theme.palette.primary.purple,
+      fontWeight: "bold",
+    }}
+    variant="h4"
+    gutterBottom
+  />
+);
+
+const PriceText = (props) => (
+  <Typography
+    {...props}
+    sx={{
+      color: (theme) => theme.palette.primary.mainTextColor,
+      marginBottom: (theme) => theme.spacing(2),
+      fontWeight: "bold",
+    }}
+    variant="h4"
+  />
+);
+
+const PriceBox = (props) => (
+  <Box
+    {...props}
+    sx={{
+      fontSize: (theme) => theme.typography.fontSize2,
+      color: "#7B8A98",
+    }}
+  >
+    /mo
+  </Box>
 );
 
 const Pricing = () => {
@@ -98,35 +134,14 @@ const Pricing = () => {
         }}
       >
         <CustomPaper>
-          <Typography
-            color={theme.palette.primary.purple}
-            fontWeight="bold"
-            variant="h4"
-            gutterBottom
-          >
-            Professional Investor
-          </Typography>
+          <HeaderText>Professional Investor</HeaderText>
           <Box>
             Starting from
             <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <Typography
-                sx={{
-                  color: theme.palette.primary.mainTextColor,
-                  marginBottom: theme.spacing(2),
-                }}
-                variant="h4"
-                fontWeight="bold"
-              >
-                $59.99{" "}
-                <Box
-                  sx={{
-                    fontSize: theme.typography.fontSize2,
-                    color: "#7B8A98",
-                  }}
-                >
-                  /mo
-                </Box>
-              </Typography>
+              <PriceText>
+                $59.99
+                <PriceBox />
+              </PriceText>
             </Box>
             <Grid item xs={12}>
               <List>
@@ -135,85 +150,67 @@ const Pricing = () => {
                     <ListItemIcon sx={{ minWidth: "33px" }}>
                       <CheckIcon color="primary" />
                     </ListItemIcon>
-                    <ListItemText primary="Single-line item" />
+                    <ListItemText primary="Priority email modelling support" />
                   </ListItem>,
                 )}
               </List>
             </Grid>
-            <RoundButton
-              variant="contained"
-              sx={{
-                textTransform: "none",
-              }}
-            >
-              Get Started
-            </RoundButton>
           </Box>
+          <RoundButton
+            variant="contained"
+            sx={{
+              textTransform: "none",
+            }}
+          >
+            Get Started
+          </RoundButton>
         </CustomPaper>
         <CustomPaper>
-          <Typography
-            color={theme.palette.primary.purple}
-            fontWeight="bold"
-            variant="h4"
-            gutterBottom
-          >
-            Active Investor
-          </Typography>
+          <HeaderText>Active Investor</HeaderText>
           <Box>
             Starting from
-            <Box sx={{ display: "flex" }}>
-              <Typography
-                sx={{
-                  color: theme.palette.primary.mainTextColor,
-                  marginBottom: theme.spacing(2),
-                }}
-                variant="h4"
-                fontWeight="bold"
-              >
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <PriceText>
                 $34.99
-                <Box
-                  sx={{
-                    fontSize: theme.typography.fontSize2,
-                    color: "#7B8A98",
-                  }}
-                >
-                  /mo
-                </Box>
-              </Typography>
+                <PriceBox />
+              </PriceText>
             </Box>
+            <Grid item xs={12}>
+              <List>
+                {generate(
+                  <ListItem>
+                    <ListItemIcon sx={{ minWidth: "33px" }}>
+                      <CheckIcon color="primary" />
+                    </ListItemIcon>
+                    <ListItemText primary="Priority email modelling support" />
+                  </ListItem>,
+                )}
+              </List>
+            </Grid>
           </Box>
         </CustomPaper>
         <CustomPaper>
-          <Typography
-            color={theme.palette.primary.purple}
-            fontWeight="bold"
-            variant="h4"
-            gutterBottom
-          >
-            Non-Active Investor
-          </Typography>
+          <HeaderText>Non-Active Investor</HeaderText>
           <Box>
             Starting from
-            <Box sx={{ display: "flex" }}>
-              <Typography
-                sx={{
-                  color: theme.palette.primary.mainTextColor,
-                  marginBottom: theme.spacing(2),
-                }}
-                variant="h4"
-                fontWeight="bold"
-              >
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <PriceText>
                 $19.99
-                <Box
-                  sx={{
-                    fontSize: theme.typography.fontSize2,
-                    color: "#7B8A98",
-                  }}
-                >
-                  /mo
-                </Box>
-              </Typography>
+                <PriceBox />
+              </PriceText>
             </Box>
+            <Grid item xs={12}>
+              <List>
+                {generate(
+                  <ListItem>
+                    <ListItemIcon sx={{ minWidth: "33px" }}>
+                      <CheckIcon color="primary" />
+                    </ListItemIcon>
+                    <ListItemText primary="Priority email modelling support" />
+                  </ListItem>,
+                )}
+              </List>
+            </Grid>
           </Box>
         </CustomPaper>
       </Box>
