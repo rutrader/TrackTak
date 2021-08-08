@@ -8,13 +8,16 @@ export const landingPageLinks = [
 
 export const getHeaderLinks = (isAuthenticated) => {
   const links = [
+    {
+      to: "/pricing",
+      text: "Pricing",
+    },
     { to: "/how-to-do-a-dcf", text: "Documentation" },
     { to: "/blogs", text: "Blogs" },
     ...landingPageLinks,
   ];
 
   if (!isAuthenticated) {
-    links.push(pricingLink);
     links.push(signInLink);
   }
 
@@ -24,9 +27,4 @@ export const getHeaderLinks = (isAuthenticated) => {
 export const signInLink = {
   to: "/sign-in",
   text: "Sign in",
-};
-
-export const pricingLink = {
-  to: "/pricing",
-  text: "Pricing",
 };

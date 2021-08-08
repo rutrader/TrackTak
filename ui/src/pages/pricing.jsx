@@ -1,13 +1,26 @@
-import { Box, Paper, Typography } from "@material-ui/core";
+import { Box, ListItem, Paper, Typography } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import React from "react";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
 import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import { Stack } from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
+import List from "@material-ui/core/List";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import CheckIcon from "@material-ui/icons/Check";
+import RoundButton from "../components/RoundButton";
+
+function generate(element) {
+  return [0, 1, 2].map((value) =>
+    React.cloneElement(element, {
+      key: value,
+    }),
+  );
+}
 
 const CustomPaper = (props) => (
   <Paper
@@ -35,8 +48,7 @@ const Pricing = () => {
       </Helmet>
       <Box sx={{ textAlign: "center" }}>
         <Typography
-          color="primary"
-          fontSize={25}
+          color={theme.palette.primary.purple}
           fontWeight="bold"
           variant="h3"
           gutterBottom
@@ -45,7 +57,6 @@ const Pricing = () => {
         </Typography>
         <Typography
           sx={{
-            fontWeight: "bold",
             color: theme.palette.primary.mainTextColor,
             marginBottom: theme.spacing(2),
           }}
@@ -54,30 +65,157 @@ const Pricing = () => {
           Choose your plan. Try it free for 7 days.
         </Typography>
         <FormGroup>
-          <Stack direction="row" spacing={1} alignItems="center">
-            <Typography>Monthly</Typography>
+          <Stack
+            direction="row"
+            spacing={1}
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Typography sx={{ fontSize: theme.typography.fontSize2 }}>
+              Monthly
+            </Typography>
             <Switch
               defaultChecked
               inputProps={{ "aria-label": "ant design" }}
             />
-            <Typography>Yearly</Typography>
+            <Typography sx={{ fontSize: theme.typography.fontSize2 }}>
+              Yearly
+            </Typography>
           </Stack>
         </FormGroup>
       </Box>
       <Box
         sx={{
+          mt: 2,
           display: "flex",
           alignItems: "center",
           "& > :not(style)": {
             m: 1,
-            width: 300,
-            height: 300,
+            width: 500,
+            height: 500,
+            padding: `${theme.spacing(4)}  ${theme.spacing(4)} `,
           },
         }}
       >
-        <CustomPaper />
-        <CustomPaper />
-        <CustomPaper />
+        <CustomPaper>
+          <Typography
+            color={theme.palette.primary.purple}
+            fontWeight="bold"
+            variant="h4"
+            gutterBottom
+          >
+            Professional Investor
+          </Typography>
+          <Box>
+            Starting from
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <Typography
+                sx={{
+                  color: theme.palette.primary.mainTextColor,
+                  marginBottom: theme.spacing(2),
+                }}
+                variant="h4"
+                fontWeight="bold"
+              >
+                $59.99{" "}
+                <Box
+                  sx={{
+                    fontSize: theme.typography.fontSize2,
+                    color: "#7B8A98",
+                  }}
+                >
+                  /mo
+                </Box>
+              </Typography>
+            </Box>
+            <Grid item xs={12}>
+              <List>
+                {generate(
+                  <ListItem>
+                    <ListItemIcon sx={{ minWidth: "33px" }}>
+                      <CheckIcon color="primary" />
+                    </ListItemIcon>
+                    <ListItemText primary="Single-line item" />
+                  </ListItem>,
+                )}
+              </List>
+            </Grid>
+            <RoundButton
+              variant="contained"
+              sx={{
+                textTransform: "none",
+              }}
+            >
+              Get Started
+            </RoundButton>
+          </Box>
+        </CustomPaper>
+        <CustomPaper>
+          <Typography
+            color={theme.palette.primary.purple}
+            fontWeight="bold"
+            variant="h4"
+            gutterBottom
+          >
+            Active Investor
+          </Typography>
+          <Box>
+            Starting from
+            <Box sx={{ display: "flex" }}>
+              <Typography
+                sx={{
+                  color: theme.palette.primary.mainTextColor,
+                  marginBottom: theme.spacing(2),
+                }}
+                variant="h4"
+                fontWeight="bold"
+              >
+                $34.99
+                <Box
+                  sx={{
+                    fontSize: theme.typography.fontSize2,
+                    color: "#7B8A98",
+                  }}
+                >
+                  /mo
+                </Box>
+              </Typography>
+            </Box>
+          </Box>
+        </CustomPaper>
+        <CustomPaper>
+          <Typography
+            color={theme.palette.primary.purple}
+            fontWeight="bold"
+            variant="h4"
+            gutterBottom
+          >
+            Non-Active Investor
+          </Typography>
+          <Box>
+            Starting from
+            <Box sx={{ display: "flex" }}>
+              <Typography
+                sx={{
+                  color: theme.palette.primary.mainTextColor,
+                  marginBottom: theme.spacing(2),
+                }}
+                variant="h4"
+                fontWeight="bold"
+              >
+                $19.99
+                <Box
+                  sx={{
+                    fontSize: theme.typography.fontSize2,
+                    color: "#7B8A98",
+                  }}
+                >
+                  /mo
+                </Box>
+              </Typography>
+            </Box>
+          </Box>
+        </CustomPaper>
       </Box>
     </>
   );

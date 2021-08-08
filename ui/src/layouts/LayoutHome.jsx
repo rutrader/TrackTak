@@ -2,14 +2,13 @@ import { Container } from "@material-ui/core";
 import React from "react";
 import Header from "../components/Header";
 import { useAuth } from "../hooks/useAuth";
-import { pricingLink, signInLink } from "../shared/getHeaderLinks";
+import { signInLink } from "../shared/getHeaderLinks";
 
 const LayoutHome = ({ children }) => {
   const { isAuthenticated } = useAuth();
   const links = [];
 
   if (!isAuthenticated) {
-    links.push(pricingLink);
     links.push(signInLink);
   }
 
