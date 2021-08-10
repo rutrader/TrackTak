@@ -39,7 +39,7 @@ export const handler: CreateAuthChallengeTriggerHandler = async event => {
 };
 
 async function sendEmail(emailAddress: string, secretLoginCode: string) {
-    const confirmationURL = `${process.env.CONFIRMATION_URL}?code=${secretLoginCode}`;
+    const confirmationURL = `${process.env.CONFIRMATION_URL}?challengeCode=${secretLoginCode}`;
     const params: SES.SendEmailRequest = {
         Destination: { ToAddresses: [emailAddress] },
         Message: {

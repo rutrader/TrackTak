@@ -15,7 +15,7 @@ import {
   getUserData,
   changePassword,
   updateContactDetails as userUpdateContactDetails,
-  signOut,
+  getUserFromCode,
 } from "../api/auth";
 import { noop, removeQueryParams } from "../shared/utils";
 
@@ -31,24 +31,6 @@ export const ProvideAuth = (props) => {
   return (
     <AuthContext.Provider value={auth}>{props.children}</AuthContext.Provider>
   );
-};
-
-export const getAccessToken = async () => {
-  const session = await new Promise((resolve, reject) => {
-    const currentUser = getCurrentUser();
-    if (currentUser) {
-      currentUser.getSession((error, session) => {
-        if (!error && session) {
-          resolve(session);
-        } else {
-          reject(error);
-          signOut();
-        }
-      });
-    }
-  });
-
-  return session.accessToken;
 };
 
 const getUpdatedUserDetails = (_, updatedUserDataArray) => {
@@ -70,8 +52,10 @@ const getUpdatedUserDetails = (_, updatedUserDataArray) => {
 
 export const getUrlAuthParameters = () => {
   const params = new URLSearchParams(window.location.search);
-  const code = params.get("code");
+  const challengeCode = params.get("challengeCode");
+  const code = params.get("code"); // This is for Federated Login e.g. with Google/Facebook.
   return {
+    challengeCode,
     code,
   };
 };
@@ -100,39 +84,38 @@ const useProvideAuth = () => {
     }
   }, []);
 
+  const handleLoginSuccess = useCallback(() => {
+    setIsAuthenticated(true);
+    getUserData(handleGetUserData);
+    setHasLoadedAuthDetails(true);
+  }, [handleGetUserData]);
+
   const resumeSession = useCallback(() => {
     const currentUser = getCurrentUser();
 
     if (currentUser) {
       currentUser.getSession((error, session) => {
-        setHasLoadedAuthDetails(true);
         if (!error && session) {
-          setIsAuthenticated(true);
-          getUserData(handleGetUserData);
+          handleLoginSuccess();
         }
       });
     } else {
-      const isVerifyingAuthParameter = !!getUrlAuthParameters().code;
-      setHasLoadedAuthDetails(!isVerifyingAuthParameter);
+      const hasAuthParameter =
+        !!getUrlAuthParameters().challengeCode || !!getUrlAuthParameters().code;
+      setHasLoadedAuthDetails(!hasAuthParameter);
     }
-  }, [handleGetUserData]);
-
-  useEffect(() => {
-    resumeSession();
-  }, [resumeSession]);
+  }, [handleLoginSuccess]);
 
   const signIn = useCallback(
     (username, password, onSuccess, onFailure) => {
       const onCognitoSuccess = (session) => {
-        setIsAuthenticated(true);
-        setHasLoadedAuthDetails(true);
-        getUserData(handleGetUserData);
+        handleLoginSuccess();
         onSuccess(session);
       };
 
       userSignIn(username, password, onCognitoSuccess, onFailure, noop);
     },
-    [handleGetUserData],
+    [handleLoginSuccess],
   );
 
   const signUp = useCallback(
@@ -186,6 +169,45 @@ const useProvideAuth = () => {
     [resumeSession],
   );
 
+  const getAccessToken = useCallback(async () => {
+    const session = await new Promise((resolve, reject) => {
+      const currentUser = getCurrentUser();
+      if (currentUser) {
+        currentUser.getSession((error, session) => {
+          if (!error && session) {
+            resolve(session);
+          } else {
+            reject(error);
+            signOut();
+          }
+        });
+      } else {
+        signOut();
+      }
+    });
+
+    return session.accessToken;
+  }, [signOut]);
+
+  useEffect(() => {
+    const signInWithFederatedLoginCode = async (code) => {
+      await getUserFromCode(code);
+      handleLoginSuccess();
+      removeQueryParams();
+    };
+
+    try {
+      const code = getUrlAuthParameters()?.code;
+      if (code) {
+        signInWithFederatedLoginCode(code);
+      } else {
+        resumeSession();
+      }
+    } catch (e) {
+      signOut();
+    }
+  }, [handleLoginSuccess, resumeSession, signOut]);
+
   return {
     isAuthenticated,
     hasLoadedAuthDetails,
@@ -199,6 +221,7 @@ const useProvideAuth = () => {
     sendChallengeAnswer,
     changePassword,
     updateContactDetails,
+    getAccessToken,
   };
 };
 

@@ -1,10 +1,8 @@
 import { useCallback } from "react";
 import { saveSpreadsheet } from "../api/api";
-import { getAccessToken } from "./useAuth";
+import { useAuth } from "./useAuth";
 
-const saveSpreadsheetData = async (spreadsheet, newData) => {
-  const token = await getAccessToken();
-
+const saveSpreadsheetData = async (spreadsheet, newData, token) => {
   await saveSpreadsheet(
     {
       ...spreadsheet,
@@ -18,11 +16,14 @@ const saveSpreadsheetData = async (spreadsheet, newData) => {
 };
 
 const useSaveSpreadsheetData = (spreadsheet) => {
+  const { getAccessToken } = useAuth();
+
   const saveSheetData = useCallback(
     async (newData) => {
-      return saveSpreadsheetData(spreadsheet, newData);
+      const token = await getAccessToken();
+      return saveSpreadsheetData(spreadsheet, newData, token);
     },
-    [spreadsheet],
+    [getAccessToken, spreadsheet],
   );
 
   return saveSheetData;

@@ -8,6 +8,7 @@ import {
   CognitoUserSession,
 } from "amazon-cognito-identity-js";
 import { noop } from "../shared/utils";
+import axios from "axios";
 
 const POOL_CONFIG = {
   UserPoolId: process.env.GATSBY_COGNITO_USER_POOL_ID,
@@ -86,26 +87,35 @@ export const signUp = (
   });
 };
 
-const getUserFromHash = (hash) => {
-  const split = hash?.slice(1).split("&");
-  if (!split || split.length < 2) {
-    return null;
-  }
+export const getUserFromCode = async (code) => {
+  const params = new URLSearchParams();
+  params.append("grant_type", "authorization_code");
+  params.append("client_id", process.env.GATSBY_COGNITO_APP_CLIENT_ID);
+  params.append("code", code);
+  params.append("redirect_uri", process.env.GATSBY_SOCIAL_LOGIN_REDIRECT_URL);
 
-  const values = split.map((val) => val.split("=")[1]);
-
-  const token = {
-    accessToken: values[0],
-    idToken: values[1],
+  const config = {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
   };
 
+  const response = await axios.post(
+    process.env.GATSBY_COGNITO_TOKEN_ENDPOINT,
+    params,
+    config,
+  );
+  const token = response.data;
+
   const IdToken = new CognitoIdToken({
-    IdToken: token.idToken,
+    IdToken: token.id_token,
   });
   const AccessToken = new CognitoAccessToken({
-    AccessToken: token.accessToken,
+    AccessToken: token.access_token,
   });
-  const RefreshToken = new CognitoRefreshToken({ RefreshToken: "" });
+  const RefreshToken = new CognitoRefreshToken({
+    RefreshToken: token.refresh_token,
+  });
 
   const user = new CognitoUser({
     Username: IdToken.payload.username || IdToken.payload["cognito:username"],
@@ -124,9 +134,7 @@ const getUserFromHash = (hash) => {
 };
 
 export const getCurrentUser = () => {
-  const user = window.location.hash
-    ? getUserFromHash(window.location?.hash)
-    : userPool.getCurrentUser();
+  const user = userPool.getCurrentUser();
   if (user) {
     user.getSession(noop);
   }
