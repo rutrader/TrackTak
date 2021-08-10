@@ -75,7 +75,6 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
   const handleOnSignOut = async () => {
     if (isAuthenticated) {
       signOut();
-      navigate("/");
     }
   };
 

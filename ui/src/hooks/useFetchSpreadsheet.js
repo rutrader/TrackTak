@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { getSpreadsheet } from "../api/api";
-import { getAccessToken } from "./useAuth";
+import { useAuth } from "./useAuth";
 
 const useFetchSpreadsheet = (sheetId) => {
   const [spreadsheet, setSpreadsheet] = useState();
+  const { getAccessToken } = useAuth();
 
   useEffect(() => {
     async function fetchData() {
@@ -14,7 +15,7 @@ const useFetchSpreadsheet = (sheetId) => {
     }
 
     fetchData();
-  }, [sheetId]);
+  }, [getAccessToken, sheetId]);
 
   return spreadsheet;
 };

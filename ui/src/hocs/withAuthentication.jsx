@@ -44,9 +44,9 @@ const withAuthentication = (Component) => {
 
     useEffect(() => {
       const authParameters = getUrlAuthParameters();
-      if (authParameters.code) {
+      if (authParameters.challengeCode) {
         sendChallengeAnswer(
-          authParameters.code,
+          authParameters.challengeCode,
           handleVerificationSuccess,
           handleVerificationFailure,
           handleVerificationFailure,
