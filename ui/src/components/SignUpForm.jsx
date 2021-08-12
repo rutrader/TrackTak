@@ -6,7 +6,6 @@ import Typography from "@material-ui/core/Typography";
 import RoundButton from "./RoundButton";
 import { useTheme } from "@material-ui/styles";
 import { Box, FormControlLabel, Link } from "@material-ui/core";
-import TracktakLogoSvg from "../icons/tracktak-purple.svg";
 import Checkbox from "@material-ui/core/Checkbox";
 import SocialLoginButtons from "./SocialLoginButtons";
 
@@ -24,7 +23,7 @@ const BoxWrapper = ({ sx, ...props }) => {
 
 export const ContinueToSpreadsheet = () => {
   return (
-    <Typography variant="h6" color="textSecondary">
+    <Typography variant="h7" color="textSecondary" gutterBottom>
       Continue to your Spreadsheet
     </Typography>
   );
@@ -56,15 +55,16 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
         alignItems: "center",
       }}
     >
-      <TracktakLogoSvg />
       <Typography
-        variant="h5"
+        variant="h4"
         sx={{
           mt: theme.spacing(2),
           color: theme.palette.primary.mainTextColor,
+          fontWeight: "bold",
         }}
+        gutterBottom
       >
-        Sign up
+        Create your Account
       </Typography>
       <ContinueToSpreadsheet />
       <SocialLoginButtons />
@@ -136,7 +136,11 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
             />
           </BoxWrapper>
           <BoxWrapper>
-            <Typography variant="h7" color="textSecondary">
+            <Typography
+              variant="h7"
+              color="textSecondary"
+              sx={{ fontSize: "14px" }}
+            >
               By clicking Sign Up, you agree to our{" "}
               <Link
                 href="/terms-and-conditions"
@@ -163,10 +167,10 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
             color="primary"
             sx={{
               margin: theme.spacing(3, 0, 2),
-              textTransform: "none",
+              fontWeight: "bold",
             }}
           >
-            Sign Up
+            Create account
           </RoundButton>
           <Grid container justify="flex-end">
             <Grid item>
@@ -175,6 +179,7 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
                 disableRipple
                 sx={{
                   textTransform: "none",
+                  fontWeight: "bold",
                 }}
                 onClick={onSwitchToSignInClick}
                 type="button"
