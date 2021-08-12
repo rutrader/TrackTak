@@ -13,7 +13,7 @@ import { Link, navigate } from "gatsby";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchTicker from "./SearchTicker";
 import TracktakLogo from "./TracktakLogo";
-import { getAccessToken, useAuth } from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 
 const LinkButton = (props) => {
   return (
@@ -24,6 +24,29 @@ const LinkButton = (props) => {
         textTransform: "none",
         fontWeight: "bold",
         color: (theme) => theme.palette.primary.mainTextColor,
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0,
+        borderBottomLeftRadius: 0,
+        height: "48px",
+      }}
+      {...props}
+    />
+  );
+};
+
+const ActionButton = (props) => {
+  return (
+    <Button
+      variant="contained"
+      sx={{
+        textTransform: "none",
+        fontWeight: "bold",
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0,
+        borderBottomLeftRadius: 0,
+        height: "48px",
       }}
       {...props}
     />
@@ -164,7 +187,14 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
               )}
             </Box>
             <Hidden mdDown implementation="css">
-              <Box sx={{ display: "flex" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  marginRight: "-24px",
+                  marginTop: "-4px",
+                  marginBottom: "-4px",
+                }}
+              >
                 {links.map((link, i) => {
                   if (link.id === "sign-out") {
                     return (
@@ -183,6 +213,9 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
                     />
                   );
                 })}
+                {!isAuthenticated && (
+                  <ActionButton>Go to Spreadsheet</ActionButton>
+                )}
                 {isAuthenticated && (
                   <>
                     <LinkButton

@@ -14,13 +14,13 @@ export const getHeaderLinks = (isAuthenticated) => {
   ];
 
   if (!isAuthenticated) {
-    links.push(signInLink);
+    links.push(goToSpreadsheetLink);
   }
 
   return links;
 };
 
-export const signInLink = {
-  to: "/sign-in",
+export const goToSpreadsheetLink = {
+  to: "/sign-up",
   text: "Sign in",
 };
