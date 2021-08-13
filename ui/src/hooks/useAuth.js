@@ -90,22 +90,6 @@ const useProvideAuth = () => {
     setHasLoadedAuthDetails(true);
   }, [handleGetUserData]);
 
-  const resumeSession = useCallback(() => {
-    const currentUser = getCurrentUser();
-
-    if (currentUser) {
-      currentUser.getSession((error, session) => {
-        if (!error && session) {
-          handleLoginSuccess();
-        }
-      });
-    } else {
-      const hasAuthParameter =
-        !!getUrlAuthParameters().challengeCode || !!getUrlAuthParameters().code;
-      setHasLoadedAuthDetails(!hasAuthParameter);
-    }
-  }, [handleLoginSuccess]);
-
   const signIn = useCallback(
     (username, password, onSuccess, onFailure) => {
       const onCognitoSuccess = (session) => {
@@ -131,6 +115,25 @@ const useProvideAuth = () => {
     setUserData(null);
     setIsExternalIdentityProvider(false);
   }, []);
+
+  const resumeSession = useCallback(() => {
+    const currentUser = getCurrentUser();
+
+    if (currentUser) {
+      currentUser.getSession((error, session) => {
+        if (!error && session) {
+          handleLoginSuccess();
+        } else {
+          signOut();
+          setHasLoadedAuthDetails(true);
+        }
+      });
+    } else {
+      const hasAuthParameter =
+        !!getUrlAuthParameters().challengeCode || !!getUrlAuthParameters().code;
+      setHasLoadedAuthDetails(!hasAuthParameter);
+    }
+  }, [handleLoginSuccess, signOut]);
 
   const updateContactDetails = useCallback(
     (updatedAttributes, onSuccess, onFailure) => {
