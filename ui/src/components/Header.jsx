@@ -1,5 +1,6 @@
 import {
   AppBar,
+  Avatar,
   Box,
   Button,
   Hidden,
@@ -13,6 +14,7 @@ import { Link, navigate } from "gatsby";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchTicker from "./SearchTicker";
 import TracktakLogo from "./TracktakLogo";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { useAuth } from "../hooks/useAuth";
 
 export const LinkButton = ({ sx, ...props }) => {
@@ -196,7 +198,7 @@ const Header = ({ hideSearch, position = "fixed", links = [], children }) => {
                       aria-controls="account-menu-button"
                       aria-haspopup="true"
                     >
-                      Account
+                      <Avatar sx={{ width: "32px", height: "32px" }} />
                     </LinkButton>
                     <Menu
                       id="account-menu"

@@ -3,9 +3,18 @@ import { Box, Container } from "@material-ui/core";
 import { Link } from "gatsby";
 import React from "react";
 import Header, { LinkButton } from "../components/Header";
+import { signInLink } from "../shared/getHeaderLinks";
+import { useAuth } from "../hooks/useAuth";
 
 const LayoutHome = ({ children }) => {
   const theme = useTheme();
+
+  const { isAuthenticated } = useAuth();
+  const links = [];
+
+  if (!isAuthenticated) {
+    links.push(signInLink);
+  }
 
   return (
     <Container maxWidth="xl">
