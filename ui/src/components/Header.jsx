@@ -14,7 +14,6 @@ import { Link, navigate } from "gatsby";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchTicker from "./SearchTicker";
 import TracktakLogo from "./TracktakLogo";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { useAuth } from "../hooks/useAuth";
 
 export const LinkButton = ({ sx, ...props }) => {
