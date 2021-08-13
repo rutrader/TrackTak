@@ -15,7 +15,7 @@ import SearchTicker from "./SearchTicker";
 import TracktakLogo from "./TracktakLogo";
 import { useAuth } from "../hooks/useAuth";
 
-const LinkButton = (props) => {
+export const LinkButton = ({ sx, ...props }) => {
   return (
     <Button
       sx={{
@@ -29,24 +29,8 @@ const LinkButton = (props) => {
         borderBottomRightRadius: 0,
         borderBottomLeftRadius: 0,
         height: "48px",
-      }}
-      {...props}
-    />
-  );
-};
-
-const ActionButton = (props) => {
-  return (
-    <Button
-      variant="contained"
-      sx={{
-        textTransform: "none",
-        fontWeight: "bold",
-        borderTopLeftRadius: 0,
-        borderTopRightRadius: 0,
-        borderBottomRightRadius: 0,
-        borderBottomLeftRadius: 0,
-        height: "48px",
+        whiteSpace: "nowrap",
+        ...sx,
       }}
       {...props}
     />
@@ -87,7 +71,7 @@ const HeaderLink = ({ to, text, style }) => {
   );
 };
 
-const Header = ({ hideSearch, position = "fixed", links }) => {
+const Header = ({ hideSearch, position = "fixed", links = [], children }) => {
   const theme = useTheme();
   const extraPadding = 20;
   const paddingBottom = `${theme.mixins.toolbar.minHeight + extraPadding}px`;
@@ -146,7 +130,11 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
 
   return (
     <>
-      <Box sx={{ paddingBottom: position === "fixed" ? paddingBottom : 0 }}>
+      <Box
+        sx={{
+          paddingBottom: position === "fixed" ? paddingBottom : 0,
+        }}
+      >
         <AppBar
           sx={{
             position,
@@ -170,7 +158,6 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
             <Box
               sx={{
                 maxWidth: "800px",
-                minWidth: "130px",
                 width: "100%",
                 marginRight: "auto",
                 display: "flex",
@@ -190,21 +177,9 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
               <Box
                 sx={{
                   display: "flex",
-                  marginRight: "-24px",
-                  marginTop: "-4px",
-                  marginBottom: "-4px",
                 }}
               >
                 {links.map((link, i) => {
-                  if (link.id === "sign-out") {
-                    return (
-                      <SignOutButton
-                        key={link.id}
-                        handleOnSignOut={handleOnSignOut}
-                      />
-                    );
-                  }
-
                   return (
                     <HeaderLink
                       key={link.to}
@@ -213,9 +188,7 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
                     />
                   );
                 })}
-                {!isAuthenticated && (
-                  <ActionButton>Go to Spreadsheet</ActionButton>
-                )}
+                {children}
                 {isAuthenticated && (
                   <>
                     <LinkButton
@@ -239,45 +212,49 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
               </Box>
             </Hidden>
             <Hidden mdUp implementation="css">
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  ml: 2.5,
-                  height: "100%",
-                }}
-              >
-                <IconButton
+              {children ? (
+                children
+              ) : (
+                <Box
                   sx={{
-                    padding: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    ml: 2.5,
+                    height: "100%",
                   }}
-                  aria-controls="simple-menu"
-                  aria-haspopup="true"
-                  onClick={handleClick}
                 >
-                  <MenuIcon color="primary" />
-                </IconButton>
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  keepMounted
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  {isAuthenticated && getUserAccountMenuItems()}
-                  {links.map((link) => (
-                    <MenuItemLink key={link.to}>
-                      <LinkButton
-                        component={Link}
-                        onClick={handleClose}
-                        to={link.to}
-                      >
-                        {link.text}
-                      </LinkButton>
-                    </MenuItemLink>
-                  ))}
-                </Menu>
-              </Box>
+                  <IconButton
+                    sx={{
+                      padding: 0,
+                    }}
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    onClick={handleClick}
+                  >
+                    <MenuIcon color="primary" />
+                  </IconButton>
+                  <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    {isAuthenticated && getUserAccountMenuItems()}
+                    {links.map((link) => (
+                      <MenuItemLink key={link.to}>
+                        <LinkButton
+                          component={Link}
+                          onClick={handleClose}
+                          to={link.to}
+                        >
+                          {link.text}
+                        </LinkButton>
+                      </MenuItemLink>
+                    ))}
+                  </Menu>
+                </Box>
+              )}
             </Hidden>
           </Box>
         </AppBar>
