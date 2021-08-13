@@ -1,5 +1,6 @@
 import {
   AppBar,
+  Avatar,
   Box,
   Button,
   Hidden,
@@ -13,9 +14,9 @@ import { Link, navigate } from "gatsby";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchTicker from "./SearchTicker";
 import TracktakLogo from "./TracktakLogo";
-import { getAccessToken, useAuth } from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 
-const LinkButton = (props) => {
+export const LinkButton = ({ sx, ...props }) => {
   return (
     <Button
       sx={{
@@ -24,6 +25,13 @@ const LinkButton = (props) => {
         textTransform: "none",
         fontWeight: "bold",
         color: (theme) => theme.palette.primary.mainTextColor,
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0,
+        borderBottomLeftRadius: 0,
+        height: "48px",
+        whiteSpace: "nowrap",
+        ...sx,
       }}
       {...props}
     />
@@ -64,7 +72,7 @@ const HeaderLink = ({ to, text, style }) => {
   );
 };
 
-const Header = ({ hideSearch, position = "fixed", links }) => {
+const Header = ({ hideSearch, position = "fixed", links = [], children }) => {
   const theme = useTheme();
   const extraPadding = 20;
   const paddingBottom = `${theme.mixins.toolbar.minHeight + extraPadding}px`;
@@ -123,7 +131,11 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
 
   return (
     <>
-      <Box sx={{ paddingBottom: position === "fixed" ? paddingBottom : 0 }}>
+      <Box
+        sx={{
+          paddingBottom: position === "fixed" ? paddingBottom : 0,
+        }}
+      >
         <AppBar
           sx={{
             position,
@@ -147,7 +159,6 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
             <Box
               sx={{
                 maxWidth: "800px",
-                minWidth: "130px",
                 width: "100%",
                 marginRight: "auto",
                 display: "flex",
@@ -164,17 +175,12 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
               )}
             </Box>
             <Hidden mdDown implementation="css">
-              <Box sx={{ display: "flex" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                }}
+              >
                 {links.map((link, i) => {
-                  if (link.id === "sign-out") {
-                    return (
-                      <SignOutButton
-                        key={link.id}
-                        handleOnSignOut={handleOnSignOut}
-                      />
-                    );
-                  }
-
                   return (
                     <HeaderLink
                       key={link.to}
@@ -183,6 +189,7 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
                     />
                   );
                 })}
+                {children}
                 {isAuthenticated && (
                   <>
                     <LinkButton
@@ -190,7 +197,7 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
                       aria-controls="account-menu-button"
                       aria-haspopup="true"
                     >
-                      Account
+                      <Avatar sx={{ width: "32px", height: "32px" }} />
                     </LinkButton>
                     <Menu
                       id="account-menu"
@@ -206,45 +213,49 @@ const Header = ({ hideSearch, position = "fixed", links }) => {
               </Box>
             </Hidden>
             <Hidden mdUp implementation="css">
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  ml: 2.5,
-                  height: "100%",
-                }}
-              >
-                <IconButton
+              {children ? (
+                children
+              ) : (
+                <Box
                   sx={{
-                    padding: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    ml: 2.5,
+                    height: "100%",
                   }}
-                  aria-controls="simple-menu"
-                  aria-haspopup="true"
-                  onClick={handleClick}
                 >
-                  <MenuIcon color="primary" />
-                </IconButton>
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  keepMounted
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  {isAuthenticated && getUserAccountMenuItems()}
-                  {links.map((link) => (
-                    <MenuItemLink key={link.to}>
-                      <LinkButton
-                        component={Link}
-                        onClick={handleClose}
-                        to={link.to}
-                      >
-                        {link.text}
-                      </LinkButton>
-                    </MenuItemLink>
-                  ))}
-                </Menu>
-              </Box>
+                  <IconButton
+                    sx={{
+                      padding: 0,
+                    }}
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    onClick={handleClick}
+                  >
+                    <MenuIcon color="primary" />
+                  </IconButton>
+                  <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    {isAuthenticated && getUserAccountMenuItems()}
+                    {links.map((link) => (
+                      <MenuItemLink key={link.to}>
+                        <LinkButton
+                          component={Link}
+                          onClick={handleClose}
+                          to={link.to}
+                        >
+                          {link.text}
+                        </LinkButton>
+                      </MenuItemLink>
+                    ))}
+                  </Menu>
+                </Box>
+              )}
             </Hidden>
           </Box>
         </AppBar>

@@ -62,11 +62,12 @@ const ForgotPasswordForm = ({ onCancelClick }) => {
       >
         <TracktakLogoSvg />
         <Typography
-          variant="h5"
+          variant="h4"
           sx={{
-            mt: (theme) => theme.spacing(1),
-            color: (theme) => theme.palette.primary.mainTextColor,
+            mt: theme.spacing(2),
+            color: theme.palette.primary.mainTextColor,
           }}
+          gutterBottom
         >
           Forgot password
         </Typography>
