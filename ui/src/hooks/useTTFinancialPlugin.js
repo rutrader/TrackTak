@@ -87,7 +87,7 @@ export const useTTFinancialPlugin = (spreadsheet, spreadsheetData) => {
 
       fetchData(fetchCreateNewFinancials);
     }
-  }, [dispatch, spreadsheetData]);
+  }, [dispatch, getAccessToken, spreadsheetData]);
 
   useEffect(() => {
     const FinancialPlugin = getTTFinancialPlugin(
