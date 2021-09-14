@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { createFinancialData, getFinancialData } from "../api/api";
-import { getAccessToken } from "./useAuth";
 import convertStockAPIData from "../../../packages/intrinsic-valuations/src/shared/convertStockAPIData";
 import {
   finTranslations,
@@ -14,11 +13,13 @@ import {
   getTenYearGovernmentBondLastCloseThunk,
 } from "../../../packages/intrinsic-valuations/src/redux/thunks/stockThunks";
 import { HyperFormula } from "hyperformula";
+import { useAuth } from "./useAuth";
 
 export const useTTFinancialPlugin = (spreadsheet, spreadsheetData) => {
   const [financialData, setFinancialData] = useState();
   const [hasLoadedFinancialData, setHasLoadedFinancialData] = useState();
   const dispatch = useDispatch();
+  const { getAccessToken } = useAuth();
 
   useEffect(() => {
     const { id, ticker } = spreadsheetData?.financialData ?? {};
@@ -86,7 +87,7 @@ export const useTTFinancialPlugin = (spreadsheet, spreadsheetData) => {
 
       fetchData(fetchCreateNewFinancials);
     }
-  }, [dispatch, spreadsheetData]);
+  }, [dispatch, getAccessToken, spreadsheetData]);
 
   useEffect(() => {
     const FinancialPlugin = getTTFinancialPlugin(

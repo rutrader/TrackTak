@@ -12,9 +12,11 @@ export const handler: CreateAuthChallengeTriggerHandler = async event => {
     if (!event.request.session || !event.request.session.length) {
 
         // This is a new auth session
-        // Generate a new secret login code and mail it to the user
+        // Generate a new secret login code and mail it to the user if user exists
         secretLoginCode = randomDigits(6).join('');
-        await sendEmail(event.request.userAttributes.email, secretLoginCode);
+        if (!event.request.userNotFound) {
+          await sendEmail(event.request.userAttributes.email, secretLoginCode);
+        }
     } else {
 
         // There's an existing session. Don't generate new digits but
@@ -39,7 +41,7 @@ export const handler: CreateAuthChallengeTriggerHandler = async event => {
 };
 
 async function sendEmail(emailAddress: string, secretLoginCode: string) {
-    const confirmationURL = `${process.env.CONFIRMATION_URL}?code=${secretLoginCode}`;
+    const confirmationURL = `${process.env.CONFIRMATION_URL}?challengeCode=${secretLoginCode}`;
     const params: SES.SendEmailRequest = {
         Destination: { ToAddresses: [emailAddress] },
         Message: {

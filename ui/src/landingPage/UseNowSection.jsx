@@ -64,7 +64,7 @@ const UseNowSection = () => {
               fontSize: 20,
             }}
           >
-            Sign up
+            Create account
           </RoundButton>
           <RoundButton
             component={RouterLink}

@@ -1,12 +1,22 @@
 import React from "react";
 import { Box, List, ListItem, Typography } from "@material-ui/core";
 import Formula from "../components/Formula";
+import YoutubeTutorial from "../components/YoutubeTutorial";
 
 const wikiContent = [
   {
     title: "What is a DCF?",
-    text: `A Discounted Cash Flow (DCF) is a tool that helps investors find the intrinsic value of a cash flow producing asset.
-      In simple terms it's there to help you find if a stocks current price is undervalued based on the real value of the stock.`,
+    text: (
+      <>
+        A Discounted Cash Flow (DCF) is a tool that helps investors find the
+        intrinsic value of a cash flow producing asset. In simple terms it's
+        there to help you find if a stocks current price is undervalued based on
+        the real value of the stock.
+        <Box sx={{ m: 2 }}>
+          <YoutubeTutorial />
+        </Box>
+      </>
+    ),
   },
   {
     title: "Where does your data come from?",

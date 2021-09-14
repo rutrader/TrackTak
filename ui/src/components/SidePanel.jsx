@@ -95,7 +95,7 @@ const SidePanel = ({
           <Hidden smUp implementation="css">
             <Box>
               <IconButton onClick={handleDrawerClose}>
-                <ChevronLeftIcon />
+                <ChevronLeftIcon color="primary" />
               </IconButton>
             </Box>
             <Divider />
@@ -114,7 +114,7 @@ const SidePanel = ({
             top: (theme) => theme.mixins.toolbar.minHeight + 10,
           }}
         >
-          <ChevronRightIcon />
+          <ChevronRightIcon color="primary" />
         </IconButton>
       </Hidden>
       <Box component="main" sx={{ width: "100%" }}>

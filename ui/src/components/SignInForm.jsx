@@ -6,7 +6,6 @@ import Typography from "@material-ui/core/Typography";
 import RoundButton from "./RoundButton";
 import { useTheme } from "@material-ui/core/styles";
 import { Box } from "@material-ui/core";
-import TracktakLogoSvg from "../icons/tracktak-purple.svg";
 import SocialLoginButtons from "./SocialLoginButtons";
 import { ContinueToSpreadsheet } from "./SignUpForm";
 
@@ -37,13 +36,14 @@ const SignInForm = ({
         alignItems: "center",
       }}
     >
-      <TracktakLogoSvg />
       <Typography
-        variant="h5"
+        variant="h4"
         sx={{
           mt: theme.spacing(2),
-          color: (theme) => theme.palette.primary.mainTextColor,
+          color: theme.palette.primary.mainTextColor,
+          fontWeight: "bold",
         }}
+        gutterBottom
       >
         Sign in
       </Typography>
@@ -79,9 +79,25 @@ const SignInForm = ({
                 label="Password"
                 type="password"
                 id="password"
+                helperText={
+                  <Button
+                    color="primary"
+                    disableRipple
+                    sx={{
+                      textTransform: "none",
+                    }}
+                    onClick={onSwitchToForgotPasswordClick}
+                    type="button"
+                  >
+                    Forgot Password?
+                  </Button>
+                }
                 autoComplete="current-password"
                 sx={{
                   display: "flex",
+                  "& .MuiFormHelperText-root": {
+                    marginLeft: 0,
+                  },
                 }}
               />
             </Grid>
@@ -92,32 +108,20 @@ const SignInForm = ({
             variant="contained"
             color="primary"
             sx={{
-              margin: theme.spacing(3, 0, 2),
-              textTransform: "none",
+              margin: theme.spacing(1, 0, 2),
+              fontWeight: "bold",
             }}
           >
             Sign In
           </RoundButton>
-          <Grid container justifyContent="space-between">
+          <Grid container justify="flex-end">
             <Grid item>
               <Button
                 color="primary"
                 disableRipple
                 sx={{
                   textTransform: "none",
-                }}
-                onClick={onSwitchToForgotPasswordClick}
-                type="button"
-              >
-                Forgot Password
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                color="primary"
-                disableRipple
-                sx={{
-                  textTransform: "none",
+                  fontWeight: "bold",
                 }}
                 onClick={onSwitchToSignUpClick}
                 type="button"

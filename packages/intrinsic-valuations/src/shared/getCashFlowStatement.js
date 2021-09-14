@@ -46,10 +46,10 @@ const getTTMCashFlowStatement = (
 
 const getCashFlowStatements = (fundamentals, convertCurrency) => {
   const quarterlyCashFlowStatements = getSortedStatements(
-    fundamentals.incomeStatement.quarterly,
+    fundamentals.cashFlowStatement.quarterly,
   );
   const yearlyCashFlowStatements = getSortedStatements(
-    fundamentals.incomeStatement.yearly,
+    fundamentals.cashFlowStatement.yearly,
   );
 
   if (!yearlyCashFlowStatements.length) return defaultStatement;

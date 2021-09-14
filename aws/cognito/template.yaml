@@ -66,13 +66,13 @@ Conditions:
 Mappings:
   EnvMap:
     test:
-      CallbackURLs: https://staging.tracktak.com/dashboard
+      CallbackURLs: https://staging.tracktak.com/dashboard/
       LogoutURLs: https://staging.tracktak.com/
-      ConfirmationURL: https://staging.tracktak.com/dashboard
+      ConfirmationURL: https://staging.tracktak.com/dashboard/
     prod:
-      CallbackURLs: https://tracktak.com/dashboard
+      CallbackURLs: https://tracktak.com/dashboard/
       LogoutURLs: https://tracktak.com/
-      ConfirmationURL: https://tracktak.com/dashboard
+      ConfirmationURL: https://tracktak.com/dashboard/
 
 Resources:
   ChangePassword:
@@ -206,13 +206,18 @@ Resources:
       LogoutURLs:
         - !FindInMap [EnvMap, !Ref EnvType, LogoutURLs]
       AllowedOAuthFlows:
-        - implicit
+        - code
       AllowedOAuthScopes:
         - phone
         - email
         - openid
         - profile
         - aws.cognito.signin.user.admin
+      # There is an odd CloudFormation/Cognito bug where below value units change from days to minutes
+      # If an error is reported or values are incorrect change below to minutes
+      AccessTokenValidity: 1 # Day (1440 minutes)
+      IdTokenValidity: 1 # Day (1440 minutes)
+      RefreshTokenValidity: 3650 # Days (5256000 minutes)
 
   UserPoolIdentityProviderGoogle:
     Type: AWS::Cognito::UserPoolIdentityProvider
