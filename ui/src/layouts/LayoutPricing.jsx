@@ -9,7 +9,7 @@ const LayoutPricing = ({ children }) => {
   const links = getHeaderLinks(isAuthenticated);
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="xl">
       <Header hideSearch links={links} />
       {children}
     </Container>
