@@ -47,7 +47,6 @@ export const CustomBox = (props) => (
       flexDirection: "row",
       justifyContent: "center",
       flexWrap: "wrap",
-      gap: 3,
       "& > :not(style)": {
         m: 1,
         padding: (theme) => `${theme.spacing(5)}  ${theme.spacing(3)} `,
@@ -94,9 +93,7 @@ export const PriceBox = (props) => (
       marginLeft: "4px",
       paddingTop: "8px",
     }}
-  >
-    /mo
-  </Box>
+  />
 );
 
 export const CustomRoundButton = (props) => (
@@ -113,7 +110,7 @@ export const CustomRoundButton = (props) => (
   </RoundButton>
 );
 
-const PricingPlan = ({ header, price, text }) => {
+const PricingPlan = ({ header, price, text, toggle }) => {
   return (
     <CustomBox>
       <CustomPaper>
@@ -123,7 +120,7 @@ const PricingPlan = ({ header, price, text }) => {
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <PriceText>
               {price}
-              <PriceBox />
+              {toggle ? <PriceBox>/year</PriceBox> : <PriceBox>/mo</PriceBox>}
             </PriceText>
           </Box>
           <Grid item xs={12}>

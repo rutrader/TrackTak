@@ -1,6 +1,6 @@
 import { Box, ListItem, Paper, Typography } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
-import React from "react";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
@@ -49,6 +49,12 @@ const CustomPaperLarge = (props) => (
 
 const Pricing = () => {
   const theme = useTheme();
+  const [toggle, setToggle] = useState(false);
+
+  const handleOnChangeToggle = (e) => {
+    setToggle(e.target.checked);
+  };
+
   return (
     <>
       <Helmet>
@@ -87,6 +93,8 @@ const Pricing = () => {
             <Switch
               defaultChecked
               inputProps={{ "aria-label": "ant design" }}
+              onChange={handleOnChangeToggle}
+              checked={toggle}
             />
             <Typography sx={{ fontSize: theme.typography.fontSize2 }}>
               Yearly
@@ -99,6 +107,7 @@ const Pricing = () => {
           header="Professional Investor"
           price="$59.99"
           text="Priority email modelling support"
+          toggle={toggle}
         />
         <CustomPaperLarge>
           <Chip
@@ -120,7 +129,7 @@ const Pricing = () => {
             <Box sx={{ display: "flex", justifyContent: "center" }}>
               <PriceText>
                 $34.99
-                <PriceBox />
+                {toggle ? <PriceBox>/year</PriceBox> : <PriceBox>/mo</PriceBox>}
               </PriceText>
             </Box>
             <Grid item xs={12}>
@@ -142,9 +151,10 @@ const Pricing = () => {
           header="Non-Active Investor"
           price=" $19.99"
           text="Priority email modelling support"
+          toggle={toggle}
         />
       </CustomBox>
-      <SelectAPIRegion />
+      <SelectAPIRegion toggle={toggle} />
     </>
   );
 };

@@ -26,7 +26,7 @@ const ListAPIRegion = ({ iconSvg, regionName, price }) => {
       <Grid item xs={12}>
         <List>
           <ListItem disablePadding>
-            <ListItemButton>
+            <ListItemButton sx={{ paddingTop: 0, paddingBottom: 0 }}>
               <CustomListItemIcon>{iconSvg}</CustomListItemIcon>
               <ListItemText primary={regionName} />
               <FormControlLabel

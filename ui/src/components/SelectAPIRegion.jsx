@@ -1,13 +1,14 @@
 import React from "react";
 import RoundButton from "../components/RoundButton";
 import PaymentIcon from "@mui/icons-material/Payment";
-import { Divider, Paper, ListItemButton } from "@material-ui/core";
+import { Divider, Paper } from "@material-ui/core";
 import { Box, useTheme } from "@material-ui/system";
 import USAIconSvg from "../icons/united-states.svg";
 import GlobeIconSvg from "../icons/globe.svg";
 import ChinaIconSvg from "../icons/china.svg";
 import EuropeIconSvg from "../icons/europe.svg";
 import UKIconSvg from "../icons/united-kingdom.svg";
+import WalletIconSvg from "../icons/wallet.svg";
 import ListAPIRegion from "../components/ListAPIRegion";
 import { Header } from "./PricingPlan";
 
@@ -41,7 +42,7 @@ const CustomPaperAPIRegion = (props) => (
   />
 );
 
-const SelectAPIRegion = () => {
+const SelectAPIRegion = ({ toggle }) => {
   const theme = useTheme();
 
   return (
@@ -54,7 +55,6 @@ const SelectAPIRegion = () => {
         flexDirection: "column",
         justifyContent: "center",
         flexWrap: "wrap",
-        gap: 3,
         "& > :not(style)": {
           m: 1,
           height: "100%",
@@ -91,11 +91,38 @@ const SelectAPIRegion = () => {
             iconSvg={<UKIconSvg alt="uk" />}
           />
           <Divider sx={{ mt: 3 }} />
-          <ListItemButton component={Box} sx={{ transform: "none" }}>
-            <PaymentIcon alt="payment" />
-            <Box> Total billed monthly/yearly:</Box>
-            <Box>$50.99</Box>
-          </ListItemButton>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              paddingTop: "8px",
+              paddingBottom: "8px",
+              paddingLeft: "16px",
+              paddingRight: "16px",
+            }}
+          >
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Box
+                alt="wallet"
+                component={WalletIconSvg}
+                sx={{ marginRight: "26px", height: "30px" }}
+              />
+              {toggle ? (
+                <Box>Total billed yearly:</Box>
+              ) : (
+                <Box>Total billed monthly:</Box>
+              )}
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                marginRight: "18px",
+              }}
+            >
+              $50.99
+            </Box>
+          </Box>
         </Box>
         <CustomRoundButton />
       </CustomPaperAPIRegion>
