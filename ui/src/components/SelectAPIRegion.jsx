@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import RoundButton from "../components/RoundButton";
-import PaymentIcon from "@mui/icons-material/Payment";
 import { Divider, Paper } from "@material-ui/core";
 import { Box, useTheme } from "@material-ui/system";
 import USAIconSvg from "../icons/united-states.svg";
@@ -22,7 +21,7 @@ const CustomRoundButton = (props) => (
       marginTop: "15px",
     }}
   >
-    Start Trial
+    Purchase
   </RoundButton>
 );
 
@@ -31,7 +30,7 @@ const CustomPaperAPIRegion = (props) => (
     elevation={6}
     {...props}
     sx={{
-      boxShadow: "0 1px 10px 0 rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 20%)",
+      boxShadow: "0 1px 10px 0 rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 6%)",
       borderRadius: "10px",
       alignItems: "center",
       textAlign: "center",
@@ -42,91 +41,129 @@ const CustomPaperAPIRegion = (props) => (
   />
 );
 
-const SelectAPIRegion = ({ toggle }) => {
+const listAPIregions = [
+  {
+    regionName: "All Worldwide Regions",
+    price: "$47.96",
+    iconSvg: <GlobeIconSvg alt="globe" />,
+  },
+  {
+    regionName: "United States & Latin America",
+    price: "$14.99",
+    iconSvg: <USAIconSvg alt="usa" />,
+  },
+  {
+    regionName: "Asia",
+    price: "$12.99",
+    iconSvg: <ChinaIconSvg alt="china" />,
+  },
+  {
+    regionName: "Europe, Middle East & Africa",
+    price: "$9.99",
+    iconSvg: <EuropeIconSvg alt="europe" />,
+  },
+  {
+    regionName: "Canada, Australia, UK & Ireland",
+    price: "$9.99",
+    iconSvg: <UKIconSvg alt="uk" />,
+  },
+];
+
+const SelectAPIRegion = ({ toggle, disabled }) => {
   const theme = useTheme();
+  const [checked, setChecked] = useState([]);
+
+  const handleOnChangeChecked = (value) => () => {
+    const currentIndex = checked.indexOf(value);
+    const newChecked = [...checked];
+
+    if (currentIndex === -1) {
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+
+    setChecked(newChecked);
+  };
+  console.log(checked);
 
   return (
-    <Box
-      sx={{
-        mt: 2,
-        mb: 2,
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "column",
-        justifyContent: "center",
-        flexWrap: "wrap",
-        "& > :not(style)": {
-          m: 1,
-          height: "100%",
-          padding: `${theme.spacing(4)}  ${theme.spacing(4)} `,
-        },
-      }}
-    >
-      <CustomPaperAPIRegion>
-        <Header>Select API Regions</Header>
-        <Box>
-          <ListAPIRegion
-            regionName="All Worldwide Regions"
-            price="$12.99"
-            iconSvg={<GlobeIconSvg alt="globe" />}
-          />
-          <ListAPIRegion
-            regionName="United States &amp; Latin America"
-            price="$12.99"
-            iconSvg={<USAIconSvg alt="usa" />}
-          />
-          <ListAPIRegion
-            regionName="Asia"
-            price="$12.99"
-            iconSvg={<ChinaIconSvg alt="china" />}
-          />
-          <ListAPIRegion
-            regionName="Europe, Middle East &amp; Africa"
-            price="$12.99"
-            iconSvg={<EuropeIconSvg alt="europe" />}
-          />
-          <ListAPIRegion
-            regionName="Canada, Australia, UK &amp; Ireland"
-            price="$12.99"
-            iconSvg={<UKIconSvg alt="uk" />}
-          />
-          <Divider sx={{ mt: 3 }} />
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              paddingTop: "8px",
-              paddingBottom: "8px",
-              paddingLeft: "16px",
-              paddingRight: "16px",
-            }}
-          >
-            <Box sx={{ display: "flex", alignItems: "center" }}>
+    <>
+      {disabled ? (
+        <Box
+          sx={{
+            mt: 2,
+            mb: 2,
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "column",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            "& > :not(style)": {
+              m: 1,
+              height: "100%",
+              padding: `${theme.spacing(4)}  ${theme.spacing(4)} `,
+            },
+          }}
+        >
+          <CustomPaperAPIRegion>
+            <Header>Select API Regions</Header>
+            <Box>
+              {listAPIregions.map((listAPIRegion, i) => {
+                return (
+                  <ListAPIRegion
+                    key={i}
+                    handleOnChangeChecked={handleOnChangeChecked(i)}
+                    regionName={listAPIRegion.regionName}
+                    price={listAPIRegion.price}
+                    iconSvg={listAPIRegion.iconSvg}
+                    checked={
+                      checked.find((x) => x === i) === undefined ? false : true
+                    }
+                  />
+                );
+              })}
+              <Divider sx={{ mt: 3 }} />
               <Box
-                alt="wallet"
-                component={WalletIconSvg}
-                sx={{ marginRight: "26px", height: "30px" }}
-              />
-              {toggle ? (
-                <Box>Total billed yearly:</Box>
-              ) : (
-                <Box>Total billed monthly:</Box>
-              )}
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  paddingTop: "8px",
+                  paddingBottom: "8px",
+                  paddingLeft: "16px",
+                  paddingRight: "16px",
+                }}
+              >
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Box
+                    alt="wallet"
+                    component={WalletIconSvg}
+                    sx={{ marginRight: "26px", height: "30px" }}
+                  />
+                  {toggle ? (
+                    <Box>Total billed yearly:</Box>
+                  ) : (
+                    <Box>Total billed monthly:</Box>
+                  )}
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginRight: "18px",
+                  }}
+                >
+                  $50.99
+                </Box>
+              </Box>
             </Box>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                marginRight: "18px",
-              }}
-            >
-              $50.99
-            </Box>
-          </Box>
+            <CustomRoundButton disabled={checked.length === 0} />
+          </CustomPaperAPIRegion>
         </Box>
-        <CustomRoundButton />
-      </CustomPaperAPIRegion>
-    </Box>
+      ) : (
+        false
+      )}
+    </>
   );
 };
 

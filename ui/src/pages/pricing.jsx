@@ -50,9 +50,14 @@ const CustomPaperLarge = (props) => (
 const Pricing = () => {
   const theme = useTheme();
   const [toggle, setToggle] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
   const handleOnChangeToggle = (e) => {
     setToggle(e.target.checked);
+  };
+
+  const handleOnClickDisabled = () => {
+    setDisabled(true);
   };
 
   return (
@@ -108,6 +113,7 @@ const Pricing = () => {
           price="$59.99"
           text="Priority email modelling support"
           toggle={toggle}
+          handleOnClickDisabled={handleOnClickDisabled}
         />
         <CustomPaperLarge>
           <Chip
@@ -145,16 +151,17 @@ const Pricing = () => {
               </List>
             </Grid>
           </Box>
-          <CustomRoundButton />
+          <CustomRoundButton onClick={handleOnClickDisabled} />
         </CustomPaperLarge>
         <PricingPlan
           header="Non-Active Investor"
           price=" $19.99"
           text="Priority email modelling support"
           toggle={toggle}
+          handleOnClickDisabled={handleOnClickDisabled}
         />
       </CustomBox>
-      <SelectAPIRegion toggle={toggle} />
+      <SelectAPIRegion toggle={toggle} disabled={disabled} />
     </>
   );
 };

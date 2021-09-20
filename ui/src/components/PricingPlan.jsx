@@ -106,11 +106,17 @@ export const CustomRoundButton = (props) => (
       marginTop: "15px",
     }}
   >
-    Get Started
+    Select plan
   </RoundButton>
 );
 
-const PricingPlan = ({ header, price, text, toggle }) => {
+const PricingPlan = ({
+  header,
+  price,
+  text,
+  toggle,
+  handleOnClickDisabled,
+}) => {
   return (
     <CustomBox>
       <CustomPaper>
@@ -136,7 +142,7 @@ const PricingPlan = ({ header, price, text, toggle }) => {
             </List>
           </Grid>
         </Box>
-        <CustomRoundButton />
+        <CustomRoundButton onClick={handleOnClickDisabled} />
       </CustomPaper>
     </CustomBox>
   );

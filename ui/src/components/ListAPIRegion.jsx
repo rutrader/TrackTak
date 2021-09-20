@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Checkbox,
   Grid,
@@ -8,8 +8,8 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@material-ui/core";
-import { Box } from "@material-ui/system";
 import { FormControlLabel } from "@mui/material";
+import { Box } from "@material-ui/system";
 
 const CustomListItemIcon = (props) => (
   <ListItemIcon
@@ -20,19 +20,28 @@ const CustomListItemIcon = (props) => (
   />
 );
 
-const ListAPIRegion = ({ iconSvg, regionName, price }) => {
+const ListAPIRegion = ({
+  iconSvg,
+  regionName,
+  price,
+  checked,
+  handleOnChangeChecked,
+}) => {
   return (
     <Box>
       <Grid item xs={12}>
         <List>
           <ListItem disablePadding>
-            <ListItemButton sx={{ paddingTop: 0, paddingBottom: 0 }}>
+            <ListItemButton
+              sx={{ paddingTop: 0, paddingBottom: 0 }}
+              onClick={handleOnChangeChecked}
+            >
               <CustomListItemIcon>{iconSvg}</CustomListItemIcon>
               <ListItemText primary={regionName} />
               <FormControlLabel
                 labelPlacement="start"
                 label={price}
-                control={<Checkbox edge="end" />}
+                control={<Checkbox edge="end" checked={checked} />}
               />
             </ListItemButton>
           </ListItem>
