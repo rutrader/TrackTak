@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import CheckIcon from "@material-ui/icons/Check";
 import {
   Box,
@@ -11,6 +11,8 @@ import {
   Typography,
 } from "@material-ui/core";
 import RoundButton from "./RoundButton";
+import { navigate } from "gatsby";
+import { AnchorLink } from "gatsby-plugin-anchor-links";
 
 export const generate = (element) => {
   return [0, 1, 2, 3].map((value) =>
@@ -20,10 +22,10 @@ export const generate = (element) => {
   );
 };
 
-const CustomPaper = (props) => (
+const CustomPaper = ({ sx, ...props }) => (
   <Paper
-    elevation={6}
     {...props}
+    elevation={6}
     sx={{
       boxShadow: "0 1px 10px 0 rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 6%)",
       borderRadius: "10px",
@@ -32,6 +34,7 @@ const CustomPaper = (props) => (
       flexDirection: "column",
       display: "flex",
       flex: "0 1 auto",
+      ...sx,
     }}
   />
 );
@@ -48,7 +51,6 @@ export const CustomBox = (props) => (
       justifyContent: "center",
       flexWrap: "wrap",
       "& > :not(style)": {
-        m: 1,
         padding: (theme) => `${theme.spacing(5)}  ${theme.spacing(3)} `,
         position: "relative",
       },
@@ -110,16 +112,12 @@ export const CustomRoundButton = (props) => (
   </RoundButton>
 );
 
-const PricingPlan = ({
-  header,
-  price,
-  text,
-  toggle,
-  handleOnClickDisabled,
-}) => {
+export const apiRegionsHashLink = "#Select-API-Regions";
+
+const PricingPlan = ({ header, price, text, toggle, paperProps }) => {
   return (
     <CustomBox>
-      <CustomPaper>
+      <CustomPaper {...paperProps}>
         <Header>{header}</Header>
         <Box>
           Starting from
@@ -142,7 +140,15 @@ const PricingPlan = ({
             </List>
           </Grid>
         </Box>
-        <CustomRoundButton onClick={handleOnClickDisabled} />
+        <CustomRoundButton
+          component={forwardRef((props, ref) => (
+            <AnchorLink {...props} gatsbyLinkProps={{ ref }} />
+          ))}
+          to={`/pricing${apiRegionsHashLink}`}
+          onAnchorLinkClick={() => {
+            navigate(`/pricing${apiRegionsHashLink}`);
+          }}
+        />
       </CustomPaper>
     </CustomBox>
   );

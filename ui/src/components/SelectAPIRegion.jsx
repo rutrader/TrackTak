@@ -9,7 +9,8 @@ import EuropeIconSvg from "../icons/europe.svg";
 import UKIconSvg from "../icons/united-kingdom.svg";
 import WalletIconSvg from "../icons/wallet.svg";
 import ListAPIRegion from "../components/ListAPIRegion";
-import { Header } from "./PricingPlan";
+import { apiRegionsHashLink, Header } from "./PricingPlan";
+import { useLocation } from "@reach/router";
 
 const CustomRoundButton = (props) => (
   <RoundButton
@@ -44,33 +45,39 @@ const CustomPaperAPIRegion = (props) => (
 const listAPIregions = [
   {
     regionName: "All Worldwide Regions",
+    exchanges: "10 exchanges",
     price: "$47.96",
     iconSvg: <GlobeIconSvg alt="globe" />,
   },
   {
     regionName: "United States & Latin America",
+    exchanges: "10 exchanges",
     price: "$14.99",
     iconSvg: <USAIconSvg alt="usa" />,
   },
   {
     regionName: "Asia",
+    exchanges: "10 exchanges",
     price: "$12.99",
     iconSvg: <ChinaIconSvg alt="china" />,
   },
   {
     regionName: "Europe, Middle East & Africa",
+    exchanges: "10 exchanges",
     price: "$9.99",
     iconSvg: <EuropeIconSvg alt="europe" />,
   },
   {
     regionName: "Canada, Australia, UK & Ireland",
+    exchanges: "10 exchanges",
     price: "$9.99",
     iconSvg: <UKIconSvg alt="uk" />,
   },
 ];
 
-const SelectAPIRegion = ({ toggle, disabled }) => {
+const SelectAPIRegion = ({ toggle }) => {
   const theme = useTheme();
+  const location = useLocation();
   const [checked, setChecked] = useState([]);
 
   const handleOnChangeChecked = (value) => () => {
@@ -85,84 +92,81 @@ const SelectAPIRegion = ({ toggle, disabled }) => {
 
     setChecked(newChecked);
   };
-  console.log(checked);
 
   return (
     <>
-      {disabled ? (
-        <Box
-          sx={{
-            mt: 2,
-            mb: 2,
-            display: "flex",
-            alignItems: "center",
-            flexDirection: "column",
-            justifyContent: "center",
-            flexWrap: "wrap",
-            "& > :not(style)": {
-              m: 1,
-              height: "100%",
-              padding: `${theme.spacing(4)}  ${theme.spacing(4)} `,
-            },
-          }}
-        >
-          <CustomPaperAPIRegion>
-            <Header>Select API Regions</Header>
-            <Box>
-              {listAPIregions.map((listAPIRegion, i) => {
-                return (
-                  <ListAPIRegion
-                    key={i}
-                    handleOnChangeChecked={handleOnChangeChecked(i)}
-                    regionName={listAPIRegion.regionName}
-                    price={listAPIRegion.price}
-                    iconSvg={listAPIRegion.iconSvg}
-                    checked={
-                      checked.find((x) => x === i) === undefined ? false : true
-                    }
-                  />
-                );
-              })}
-              <Divider sx={{ mt: 3 }} />
+      <Box
+        id="Select-API-Regions"
+        sx={{
+          mt: 2,
+          mb: 2,
+          display: location.hash === apiRegionsHashLink ? "flex" : "none",
+          alignItems: "center",
+          flexDirection: "column",
+          justifyContent: "center",
+          flexWrap: "wrap",
+          "& > :not(style)": {
+            m: 1,
+            height: "100%",
+            padding: `${theme.spacing(4)}  ${theme.spacing(4)} `,
+          },
+        }}
+      >
+        <CustomPaperAPIRegion>
+          <Header>Select API Regions</Header>
+          <Box>
+            {listAPIregions.map((listAPIRegion, i) => {
+              return (
+                <ListAPIRegion
+                  key={i}
+                  handleOnChangeChecked={handleOnChangeChecked(i)}
+                  regionName={listAPIRegion.regionName}
+                  exchanges={listAPIRegion.exchanges}
+                  price={listAPIRegion.price}
+                  iconSvg={listAPIRegion.iconSvg}
+                  checked={
+                    checked.find((x) => x === i) === undefined ? false : true
+                  }
+                />
+              );
+            })}
+            <Divider sx={{ mt: 3 }} />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                paddingTop: "8px",
+                paddingBottom: "8px",
+                paddingLeft: "16px",
+                paddingRight: "16px",
+              }}
+            >
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Box
+                  alt="wallet"
+                  component={WalletIconSvg}
+                  sx={{ marginRight: "26px", height: "30px" }}
+                />
+                {toggle ? (
+                  <Box>Total billed yearly:</Box>
+                ) : (
+                  <Box>Total billed monthly:</Box>
+                )}
+              </Box>
               <Box
                 sx={{
                   display: "flex",
-                  justifyContent: "space-between",
-                  paddingTop: "8px",
-                  paddingBottom: "8px",
-                  paddingLeft: "16px",
-                  paddingRight: "16px",
+                  alignItems: "center",
+                  marginRight: "18px",
                 }}
               >
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Box
-                    alt="wallet"
-                    component={WalletIconSvg}
-                    sx={{ marginRight: "26px", height: "30px" }}
-                  />
-                  {toggle ? (
-                    <Box>Total billed yearly:</Box>
-                  ) : (
-                    <Box>Total billed monthly:</Box>
-                  )}
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    marginRight: "18px",
-                  }}
-                >
-                  $50.99
-                </Box>
+                $50.99
               </Box>
             </Box>
-            <CustomRoundButton disabled={checked.length === 0} />
-          </CustomPaperAPIRegion>
-        </Box>
-      ) : (
-        false
-      )}
+          </Box>
+          <CustomRoundButton disabled={checked.length === 0} />
+        </CustomPaperAPIRegion>
+      </Box>
     </>
   );
 };
