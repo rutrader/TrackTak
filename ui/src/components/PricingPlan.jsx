@@ -1,5 +1,6 @@
 import React, { forwardRef } from "react";
 import CheckIcon from "@material-ui/icons/Check";
+import ClearIcon from "@mui/icons-material/Clear";
 import {
   Box,
   Grid,
@@ -13,14 +14,7 @@ import {
 import RoundButton from "./RoundButton";
 import { navigate } from "gatsby";
 import { AnchorLink } from "gatsby-plugin-anchor-links";
-
-export const generate = (element) => {
-  return [0, 1, 2, 3].map((value) =>
-    React.cloneElement(element, {
-      key: value,
-    }),
-  );
-};
+import { grey, red } from "@material-ui/core/colors";
 
 const CustomPaper = ({ sx, ...props }) => (
   <Paper
@@ -51,7 +45,7 @@ export const CustomBox = (props) => (
       justifyContent: "center",
       flexWrap: "wrap",
       "& > :not(style)": {
-        padding: (theme) => `${theme.spacing(5)}  ${theme.spacing(3)} `,
+        padding: (theme) => `${theme.spacing(5)}  ${theme.spacing(2)} `,
         position: "relative",
       },
     }}
@@ -64,8 +58,8 @@ export const Header = (props) => (
     sx={{
       color: (theme) => theme.palette.primary.purple,
       fontWeight: "bold",
+      fontSize: "1.8rem",
     }}
-    variant="h4"
     gutterBottom
   />
 );
@@ -78,6 +72,7 @@ export const PriceText = (props) => (
       marginBottom: (theme) => theme.spacing(2),
       fontWeight: "bold",
       display: "flex",
+      fontSize: "1.8rem",
     }}
     variant="h4"
   />
@@ -114,7 +109,7 @@ export const CustomRoundButton = (props) => (
 
 export const apiRegionsHashLink = "#Select-API-Regions";
 
-const PricingPlan = ({ header, price, text, toggle, paperProps }) => {
+const PricingPlan = ({ header, price, toggle, paperProps, listOfFeatures }) => {
   return (
     <CustomBox>
       <CustomPaper {...paperProps}>
@@ -129,14 +124,25 @@ const PricingPlan = ({ header, price, text, toggle, paperProps }) => {
           </Box>
           <Grid item xs={12}>
             <List>
-              {generate(
-                <ListItem>
-                  <ListItemIcon sx={{ minWidth: "33px" }}>
-                    <CheckIcon color="primary" />
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItem>,
-              )}
+              {listOfFeatures.map((feature, index) => {
+                return (
+                  <ListItem sx={{ paddingTop: "0px" }} key={index}>
+                    <ListItemIcon sx={{ minWidth: "33px" }}>
+                      {feature.disabled ? (
+                        <ClearIcon sx={{ color: red[500] }} />
+                      ) : (
+                        <CheckIcon color="primary" />
+                      )}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={feature.feature}
+                      sx={{
+                        color: feature.disabled ? grey[500] : false,
+                      }}
+                    />
+                  </ListItem>
+                );
+              })}
             </List>
           </Grid>
         </Box>

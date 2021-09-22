@@ -11,6 +11,36 @@ import Chip from "@mui/material/Chip";
 import SelectAPIRegion from "../components/SelectAPIRegion";
 import PricingPlan, { CustomBox } from "../components/PricingPlan";
 
+const listOfFeaturesNonActive = [
+  { feature: "Automated financial models" },
+  { feature: "8 valuations per month" },
+  { feature: "Export valuations" },
+  { feature: "Full spreadsheet editing" },
+  { feature: "Priority email modelling support", disabled: true },
+  { feature: "API regions are not included", disabled: true },
+  { feature: "Freeze your plan", disabled: true },
+];
+
+const listOfFeaturesActive = [
+  { feature: "Automated financial models" },
+  { feature: "Unlimited valuations" },
+  { feature: "Export valuations" },
+  { feature: "Full spreadsheet editing" },
+  { feature: "Priority email modelling support" },
+  { feature: "API regions are not included", disabled: true },
+  { feature: "Freeze your plan", disabled: true },
+];
+
+const listOfFeaturesPro = [
+  { feature: "Automated financial models" },
+  { feature: "Unlimited valuations" },
+  { feature: "Export valuations" },
+  { feature: "Full spreadsheet editing" },
+  { feature: "Priority email modelling support" },
+  { feature: "All API regions included" },
+  { feature: "Freeze your plan" },
+];
+
 const Pricing = () => {
   const theme = useTheme();
   const [toggle, setToggle] = useState(false);
@@ -70,16 +100,15 @@ const Pricing = () => {
         <PricingPlan
           header="Professional Investor"
           price="$59.99"
-          text="Priority email modelling support"
+          listOfFeatures={listOfFeaturesPro}
           toggle={toggle}
         />
         <PricingPlan
           paperProps={{
             sx: {
               boxShadow:
-                "0 1px 10px 0 rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 20%)",
-              height: "526px",
-              width: "364px",
+                "0 1px 10px 0 rgb(0 0 0 / 12%), 0 1px 2px 0 rgb(0 0 0 / 20%)",
+              height: "615px",
             },
           }}
           header={
@@ -101,13 +130,13 @@ const Pricing = () => {
             </Box>
           }
           price="$34.99"
-          text="Priority email modelling support"
+          listOfFeatures={listOfFeaturesActive}
           toggle={toggle}
         />
         <PricingPlan
           header="Non-Active Investor"
           price=" $19.99"
-          text="Priority email modelling support"
+          listOfFeatures={listOfFeaturesNonActive}
           toggle={toggle}
         />
       </CustomBox>

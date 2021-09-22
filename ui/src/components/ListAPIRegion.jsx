@@ -23,7 +23,6 @@ const CustomListItemIcon = (props) => (
 const ListAPIRegion = ({
   iconSvg,
   regionName,
-  exchanges,
   price,
   checked,
   handleOnChangeChecked,
@@ -38,7 +37,7 @@ const ListAPIRegion = ({
               onClick={handleOnChangeChecked}
             >
               <CustomListItemIcon>{iconSvg}</CustomListItemIcon>
-              <ListItemText primary={regionName} secondary={exchanges} />
+              <ListItemText primary={regionName} />
               <FormControlLabel
                 labelPlacement="start"
                 label={price}
