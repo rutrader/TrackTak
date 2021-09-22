@@ -63,7 +63,7 @@ const Pricing = () => {
           variant="h3"
           gutterBottom
         >
-          Our Pricing Plan
+          Plans and Pricing
         </Typography>
         <Typography
           sx={{
@@ -72,7 +72,7 @@ const Pricing = () => {
           }}
           variant="h4"
         >
-          Choose your plan. Try it free for 7 days.
+          Choose your plan that works for you. Try it free for 7 days.
         </Typography>
         <FormGroup>
           <Stack
@@ -104,11 +104,13 @@ const Pricing = () => {
           toggle={toggle}
         />
         <PricingPlan
+          buttonProps={{
+            variant: "contained",
+          }}
           paperProps={{
             sx: {
-              boxShadow:
-                "0 1px 10px 0 rgb(0 0 0 / 12%), 0 1px 2px 0 rgb(0 0 0 / 20%)",
-              height: "615px",
+              border: "3px solid #6240c8b3;",
+              height: "610px",
             },
           }}
           header={

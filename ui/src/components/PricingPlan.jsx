@@ -3,6 +3,7 @@ import CheckIcon from "@material-ui/icons/Check";
 import ClearIcon from "@mui/icons-material/Clear";
 import {
   Box,
+  Divider,
   Grid,
   List,
   ListItem,
@@ -18,24 +19,24 @@ import { grey, red } from "@material-ui/core/colors";
 
 const CustomPaper = ({ sx, ...props }) => (
   <Paper
-    {...props}
     elevation={6}
     sx={{
-      boxShadow: "0 1px 10px 0 rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 6%)",
+      boxShadow: "0 1px 6px rgb(60 64 67 / 30%)",
       borderRadius: "10px",
       alignItems: "center",
       textAlign: "center",
       flexDirection: "column",
       display: "flex",
       flex: "0 1 auto",
+      padding: (theme) => `${theme.spacing(5)}  ${theme.spacing(2)} `,
       ...sx,
     }}
+    {...props}
   />
 );
 
 export const CustomBox = (props) => (
   <Box
-    {...props}
     sx={{
       mt: 2,
       mb: 2,
@@ -44,43 +45,40 @@ export const CustomBox = (props) => (
       flexDirection: "row",
       justifyContent: "center",
       flexWrap: "wrap",
-      "& > :not(style)": {
-        padding: (theme) => `${theme.spacing(5)}  ${theme.spacing(2)} `,
-        position: "relative",
-      },
+      position: "relative",
+      gap: "20px",
     }}
+    {...props}
   />
 );
 
 export const Header = (props) => (
   <Typography
-    {...props}
     sx={{
       color: (theme) => theme.palette.primary.purple,
       fontWeight: "bold",
-      fontSize: "1.8rem",
+      fontSize: "1.6rem",
     }}
+    {...props}
     gutterBottom
   />
 );
 
 export const PriceText = (props) => (
   <Typography
-    {...props}
     sx={{
       color: (theme) => theme.palette.primary.mainTextColor,
       marginBottom: (theme) => theme.spacing(2),
       fontWeight: "bold",
       display: "flex",
-      fontSize: "1.8rem",
     }}
+    {...props}
     variant="h4"
   />
 );
 
 export const PriceBox = (props) => (
   <Box
-    {...props}
     sx={{
       fontSize: (theme) => theme.typography.fontSize2,
       color: "#7B8A98",
@@ -90,18 +88,20 @@ export const PriceBox = (props) => (
       marginLeft: "4px",
       paddingTop: "8px",
     }}
+    {...props}
   />
 );
 
-export const CustomRoundButton = (props) => (
+export const CustomRoundButton = ({ sx, ...props }) => (
   <RoundButton
-    {...props}
-    variant="contained"
+    variant="outlined"
     sx={{
       lineHeight: 1,
       fontWeight: "bold",
       marginTop: "15px",
+      ...sx,
     }}
+    {...props}
   >
     Select plan
   </RoundButton>
@@ -109,7 +109,14 @@ export const CustomRoundButton = (props) => (
 
 export const apiRegionsHashLink = "#Select-API-Regions";
 
-const PricingPlan = ({ header, price, toggle, paperProps, listOfFeatures }) => {
+const PricingPlan = ({
+  header,
+  price,
+  toggle,
+  paperProps,
+  buttonProps,
+  listOfFeatures,
+}) => {
   return (
     <CustomBox>
       <CustomPaper {...paperProps}>
@@ -122,6 +129,7 @@ const PricingPlan = ({ header, price, toggle, paperProps, listOfFeatures }) => {
               {toggle ? <PriceBox>/year</PriceBox> : <PriceBox>/mo</PriceBox>}
             </PriceText>
           </Box>
+          <Divider />
           <Grid item xs={12}>
             <List>
               {listOfFeatures.map((feature, index) => {
@@ -147,6 +155,7 @@ const PricingPlan = ({ header, price, toggle, paperProps, listOfFeatures }) => {
           </Grid>
         </Box>
         <CustomRoundButton
+          {...buttonProps}
           component={forwardRef((props, ref) => (
             <AnchorLink {...props} gatsbyLinkProps={{ ref }} />
           ))}

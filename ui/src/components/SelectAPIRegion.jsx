@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import RoundButton from "../components/RoundButton";
 import { Divider, Paper } from "@material-ui/core";
-import { Box, useTheme } from "@material-ui/system";
+import { Box } from "@material-ui/system";
 import USAIconSvg from "../icons/united-states.svg";
 import GlobeIconSvg from "../icons/globe.svg";
 import ChinaIconSvg from "../icons/china.svg";
@@ -31,13 +31,16 @@ const CustomPaperAPIRegion = (props) => (
     elevation={6}
     {...props}
     sx={{
-      boxShadow: "0 1px 10px 0 rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 6%)",
+      boxShadow: "0 1px 6px rgb(60 64 67 / 30%)",
       borderRadius: "10px",
       alignItems: "center",
       textAlign: "center",
       flexDirection: "column",
       display: "flex",
       flex: "0 1 auto",
+      m: 1,
+      height: "100%",
+      padding: (theme) => `${theme.spacing(4)}  ${theme.spacing(4)} `,
     }}
   />
 );
@@ -71,7 +74,6 @@ const listAPIregions = [
 ];
 
 const SelectAPIRegion = ({ toggle }) => {
-  const theme = useTheme();
   const location = useLocation();
   const [checked, setChecked] = useState([]);
 
@@ -100,11 +102,6 @@ const SelectAPIRegion = ({ toggle }) => {
             flexDirection: "column",
             justifyContent: "center",
             flexWrap: "wrap",
-            "& > :not(style)": {
-              m: 1,
-              height: "100%",
-              padding: `${theme.spacing(4)}  ${theme.spacing(4)} `,
-            },
           }}
         >
           <CustomPaperAPIRegion>
