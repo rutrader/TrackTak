@@ -57,7 +57,7 @@ const listAPIregions = [
     iconSvg: <USAIconSvg alt="usa" />,
   },
   {
-    regionName: "Asia",
+    regionName: "China & Asia",
     price: "$12.99",
     iconSvg: <ChinaIconSvg alt="china" />,
   },

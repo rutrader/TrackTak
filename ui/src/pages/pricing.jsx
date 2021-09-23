@@ -11,34 +11,42 @@ import Chip from "@mui/material/Chip";
 import SelectAPIRegion from "../components/SelectAPIRegion";
 import PricingPlan, { CustomBox } from "../components/PricingPlan";
 
+const sharedFeatureOne = "Automated financial models";
+const sharedFeatureTwo = "Unlimited valuations";
+const sharedFeatureThree = "Export valuations";
+const sharedFeatureFour = "Full spreadsheet editing";
+const sharedFeatureFive = "Priority email modelling support";
+const sharedFeatureSix = "API regions are not included";
+const sharedFeatureSeven = "Freeze your plan";
+
 const listOfFeaturesNonActive = [
-  { feature: "Automated financial models" },
+  { feature: sharedFeatureOne },
   { feature: "8 valuations per month" },
-  { feature: "Export valuations" },
-  { feature: "Full spreadsheet editing" },
-  { feature: "Priority email modelling support", disabled: true },
-  { feature: "API regions are not included", disabled: true },
-  { feature: "Freeze your plan", disabled: true },
+  { feature: sharedFeatureThree },
+  { feature: sharedFeatureFour },
+  { feature: sharedFeatureFive, disabled: true },
+  { feature: sharedFeatureSix, disabled: true },
+  { feature: sharedFeatureSeven, disabled: true },
 ];
 
 const listOfFeaturesActive = [
-  { feature: "Automated financial models" },
-  { feature: "Unlimited valuations" },
-  { feature: "Export valuations" },
-  { feature: "Full spreadsheet editing" },
-  { feature: "Priority email modelling support" },
-  { feature: "API regions are not included", disabled: true },
-  { feature: "Freeze your plan", disabled: true },
+  { feature: sharedFeatureOne },
+  { feature: sharedFeatureTwo },
+  { feature: sharedFeatureThree },
+  { feature: sharedFeatureFour },
+  { feature: sharedFeatureFive },
+  { feature: sharedFeatureSix, disabled: true },
+  { feature: sharedFeatureSeven, disabled: true },
 ];
 
 const listOfFeaturesPro = [
-  { feature: "Automated financial models" },
-  { feature: "Unlimited valuations" },
-  { feature: "Export valuations" },
-  { feature: "Full spreadsheet editing" },
-  { feature: "Priority email modelling support" },
+  { feature: sharedFeatureOne },
+  { feature: sharedFeatureTwo },
+  { feature: sharedFeatureThree },
+  { feature: sharedFeatureFour },
+  { feature: sharedFeatureFive },
   { feature: "All API regions included" },
-  { feature: "Freeze your plan" },
+  { feature: "Freeze your plan up to 3 months" },
 ];
 
 const Pricing = () => {
