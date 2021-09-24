@@ -9,7 +9,7 @@ import Switch from "@material-ui/core/Switch";
 import { Stack } from "@material-ui/core";
 import Chip from "@mui/material/Chip";
 import SelectAPIRegion from "../components/SelectAPIRegion";
-import PricingPlan, { CustomBox } from "../components/PricingPlan";
+import PricingPlan, { BoxPricingPlan } from "../components/PricingPlan";
 
 const sharedFeatureOne = "Automated financial models";
 const sharedFeatureTwo = "Unlimited valuations";
@@ -80,7 +80,7 @@ const Pricing = () => {
           }}
           variant="h4"
         >
-          Choose your plan that works for you. Try it free for 7 days.
+          Choose a plan that works for you. Try it free for 7 days.
         </Typography>
         <FormGroup>
           <Stack
@@ -104,7 +104,7 @@ const Pricing = () => {
           </Stack>
         </FormGroup>
       </Box>
-      <CustomBox>
+      <BoxPricingPlan>
         <PricingPlan
           header="Professional Investor"
           price="$59.99"
@@ -149,7 +149,7 @@ const Pricing = () => {
           listOfFeatures={listOfFeaturesNonActive}
           toggle={toggle}
         />
-      </CustomBox>
+      </BoxPricingPlan>
       <SelectAPIRegion toggle={toggle} />
     </>
   );

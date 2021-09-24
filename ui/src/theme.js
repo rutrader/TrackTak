@@ -29,6 +29,7 @@ let theme = createTheme({
       main: "#51509C",
       dark: "#41407d",
       contrastText: "#fff",
+      grey: "#7B8A98",
     },
     alert: "#ff5151",
     icons: {

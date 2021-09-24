@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import RoundButton from "../components/RoundButton";
 import { Divider, Paper } from "@material-ui/core";
 import { Box } from "@material-ui/system";
 import USAIconSvg from "../icons/united-states.svg";
@@ -9,24 +8,10 @@ import EuropeIconSvg from "../icons/europe.svg";
 import UKIconSvg from "../icons/united-kingdom.svg";
 import WalletIconSvg from "../icons/wallet.svg";
 import ListAPIRegion from "../components/ListAPIRegion";
-import { apiRegionsHashLink, Header } from "./PricingPlan";
+import { apiRegionsHashLink, Header, SelectPlanButton } from "./PricingPlan";
 import { useLocation } from "@reach/router";
 
-const CustomRoundButton = (props) => (
-  <RoundButton
-    {...props}
-    variant="contained"
-    sx={{
-      lineHeight: 1,
-      fontWeight: "bold",
-      marginTop: "15px",
-    }}
-  >
-    Buy now
-  </RoundButton>
-);
-
-const CustomPaperAPIRegion = (props) => (
+const PaperAPIRegion = (props) => (
   <Paper
     elevation={6}
     {...props}
@@ -104,7 +89,7 @@ const SelectAPIRegion = ({ toggle }) => {
             flexWrap: "wrap",
           }}
         >
-          <CustomPaperAPIRegion>
+          <PaperAPIRegion>
             <Header>Select API Regions</Header>
             <Box>
               {listAPIregions.map((listAPIRegion, i) => {
@@ -159,8 +144,13 @@ const SelectAPIRegion = ({ toggle }) => {
                 </Box>
               </Box>
             </Box>
-            <CustomRoundButton disabled={checked.length === 0} />
-          </CustomPaperAPIRegion>
+            <SelectPlanButton
+              disabled={checked.length === 0}
+              variant="contained"
+            >
+              Buy now
+            </SelectPlanButton>
+          </PaperAPIRegion>
         </Box>
       )}
     </Box>

@@ -17,7 +17,7 @@ import { navigate } from "gatsby";
 import { AnchorLink } from "gatsby-plugin-anchor-links";
 import { grey, red } from "@material-ui/core/colors";
 
-const CustomPaper = ({ sx, ...props }) => (
+const PaperPricingPlan = ({ sx, ...props }) => (
   <Paper
     elevation={6}
     sx={{
@@ -35,7 +35,7 @@ const CustomPaper = ({ sx, ...props }) => (
   />
 );
 
-export const CustomBox = (props) => (
+export const BoxPricingPlan = (props) => (
   <Box
     sx={{
       mt: 2,
@@ -81,7 +81,7 @@ export const PriceBox = (props) => (
   <Box
     sx={{
       fontSize: (theme) => theme.typography.fontSize2,
-      color: "#7B8A98",
+      color: (theme) => theme.palette.secondary.grey,
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
@@ -92,7 +92,7 @@ export const PriceBox = (props) => (
   />
 );
 
-export const CustomRoundButton = ({ sx, ...props }) => (
+export const SelectPlanButton = ({ sx, children, ...props }) => (
   <RoundButton
     variant="outlined"
     sx={{
@@ -103,7 +103,7 @@ export const CustomRoundButton = ({ sx, ...props }) => (
     }}
     {...props}
   >
-    Select plan
+    {children}
   </RoundButton>
 );
 
@@ -118,8 +118,8 @@ const PricingPlan = ({
   listOfFeatures,
 }) => {
   return (
-    <CustomBox>
-      <CustomPaper {...paperProps}>
+    <BoxPricingPlan>
+      <PaperPricingPlan {...paperProps}>
         <Header>{header}</Header>
         <Box>
           Starting from
@@ -154,7 +154,7 @@ const PricingPlan = ({
             </List>
           </Grid>
         </Box>
-        <CustomRoundButton
+        <SelectPlanButton
           {...buttonProps}
           component={forwardRef((props, ref) => (
             <AnchorLink {...props} gatsbyLinkProps={{ ref }} />
@@ -163,9 +163,11 @@ const PricingPlan = ({
           onAnchorLinkClick={() => {
             navigate(`/pricing${apiRegionsHashLink}`);
           }}
-        />
-      </CustomPaper>
-    </CustomBox>
+        >
+          Select plan
+        </SelectPlanButton>
+      </PaperPricingPlan>
+    </BoxPricingPlan>
   );
 };
 

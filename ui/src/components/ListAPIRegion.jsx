@@ -12,15 +12,6 @@ import { Box } from "@material-ui/system";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@emotion/react";
 
-const CustomListItemIcon = (props) => (
-  <ListItemIcon
-    {...props}
-    sx={{
-      height: "30px",
-    }}
-  />
-);
-
 const ListAPIRegion = ({
   iconSvg,
   regionName,
@@ -52,7 +43,13 @@ const ListAPIRegion = ({
                   justifyContent: "center",
                 }}
               >
-                <CustomListItemIcon>{iconSvg}</CustomListItemIcon>
+                <ListItemIcon
+                  sx={{
+                    height: "30px",
+                  }}
+                >
+                  {iconSvg}
+                </ListItemIcon>
                 <ListItemText primary={regionName} />
               </Box>
               <Box
