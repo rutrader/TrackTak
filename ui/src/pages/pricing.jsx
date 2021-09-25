@@ -1,4 +1,4 @@
-import { Box, Typography } from "@material-ui/core";
+import { Box, Link, Typography } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
@@ -102,6 +102,14 @@ const Pricing = () => {
               Yearly
             </Typography>
           </Stack>
+          <Typography
+            sx={{ marginTop: theme.spacing(2) }}
+            color="textSecondary"
+          >
+            Enterprise plans are only available by contacting sales:{" "}
+            <Link href="mailto:support@tracktak.com">support@tracktak.com</Link>
+            .
+          </Typography>
         </FormGroup>
       </Box>
       <BoxPricingPlan>
