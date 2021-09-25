@@ -11,25 +11,6 @@ import ListAPIRegion from "../components/ListAPIRegion";
 import { apiRegionsHashLink, Header, SelectPlanButton } from "./PricingPlan";
 import { useLocation } from "@reach/router";
 
-const PaperAPIRegion = (props) => (
-  <Paper
-    elevation={6}
-    {...props}
-    sx={{
-      boxShadow: "0 1px 6px rgb(60 64 67 / 30%)",
-      borderRadius: "10px",
-      alignItems: "center",
-      textAlign: "center",
-      flexDirection: "column",
-      display: "flex",
-      flex: "0 1 auto",
-      m: 1,
-      height: "100%",
-      padding: (theme) => `${theme.spacing(4)}  ${theme.spacing(4)} `,
-    }}
-  />
-);
-
 const listAPIregions = [
   {
     regionName: "All Worldwide Regions",
@@ -89,7 +70,21 @@ const SelectAPIRegion = ({ toggle }) => {
             flexWrap: "wrap",
           }}
         >
-          <PaperAPIRegion>
+          <Paper
+            elevation={6}
+            sx={{
+              boxShadow: "0 1px 6px rgb(60 64 67 / 30%)",
+              borderRadius: "10px",
+              alignItems: "center",
+              textAlign: "center",
+              flexDirection: "column",
+              display: "flex",
+              flex: "0 1 auto",
+              m: 1,
+              height: "100%",
+              padding: (theme) => `${theme.spacing(4)}  ${theme.spacing(4)} `,
+            }}
+          >
             <Header>Select API Regions</Header>
             <Box>
               {listAPIregions.map((listAPIRegion, i) => {
@@ -150,7 +145,7 @@ const SelectAPIRegion = ({ toggle }) => {
             >
               Buy now
             </SelectPlanButton>
-          </PaperAPIRegion>
+          </Paper>
         </Box>
       )}
     </Box>

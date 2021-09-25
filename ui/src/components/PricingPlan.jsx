@@ -17,24 +17,6 @@ import { navigate } from "gatsby";
 import { AnchorLink } from "gatsby-plugin-anchor-links";
 import { grey, red } from "@material-ui/core/colors";
 
-const PaperPricingPlan = ({ sx, ...props }) => (
-  <Paper
-    elevation={6}
-    sx={{
-      boxShadow: "0 1px 6px rgb(60 64 67 / 30%)",
-      borderRadius: "10px",
-      alignItems: "center",
-      textAlign: "center",
-      flexDirection: "column",
-      display: "flex",
-      flex: "0 1 auto",
-      padding: (theme) => `${theme.spacing(5)}  ${theme.spacing(2)} `,
-      ...sx,
-    }}
-    {...props}
-  />
-);
-
 export const BoxPricingPlan = (props) => (
   <Box
     sx={{
@@ -120,15 +102,37 @@ const PricingPlan = ({
 }) => {
   return (
     <BoxPricingPlan>
-      <PaperPricingPlan {...paperProps}>
+      <Paper
+        elevation={6}
+        {...paperProps}
+        sx={{
+          boxShadow: "0 1px 6px rgb(60 64 67 / 30%)",
+          borderRadius: "10px",
+          alignItems: "center",
+          textAlign: "center",
+          flexDirection: "column",
+          display: "flex",
+          flex: "0 1 auto",
+          padding: (theme) => `${theme.spacing(5)}  ${theme.spacing(2)} `,
+          ...paperProps?.sx,
+        }}
+      >
         <Header>{header}</Header>
         <Box>
           {subText}
           <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <PriceText>
+            <Typography
+              sx={{
+                color: (theme) => theme.palette.primary.mainTextColor,
+                marginBottom: (theme) => theme.spacing(2),
+                fontWeight: "bold",
+                display: "flex",
+              }}
+              variant="h4"
+            >
               {price}
               {toggle ? <PriceBox>/year</PriceBox> : <PriceBox>/mo</PriceBox>}
-            </PriceText>
+            </Typography>
           </Box>
           <Divider />
           <Grid item xs={12}>
@@ -167,7 +171,7 @@ const PricingPlan = ({
         >
           Select plan
         </SelectPlanButton>
-      </PaperPricingPlan>
+      </Paper>
     </BoxPricingPlan>
   );
 };

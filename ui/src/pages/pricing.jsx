@@ -131,8 +131,9 @@ const Pricing = () => {
             },
           }}
           header={
-            <Box>
+            <Box component="span">
               <Chip
+                component="span"
                 label="Best value"
                 color="primary"
                 style={{

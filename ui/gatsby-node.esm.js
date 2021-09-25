@@ -51,7 +51,7 @@ export const onCreatePage = ({ page, actions }) => {
   }
 
   if (page.path === "/pricing/") {
-    page.context.layout = "pricingPlan";
+    page.context.layout = "pricing";
     createPage(page);
   }
 

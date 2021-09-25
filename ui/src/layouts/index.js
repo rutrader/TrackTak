@@ -9,7 +9,7 @@ const Root = ({ children, pageContext, params }) => {
   if (pageContext.layout === "home") {
     return <LayoutHome>{children}</LayoutHome>;
   }
-  if (pageContext.layout === "pricingPlan") {
+  if (pageContext.layout === "pricing") {
     return <LayoutPricing>{children}</LayoutPricing>;
   }
   if (pageContext.layout === "fullscreen") {
