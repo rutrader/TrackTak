@@ -110,6 +110,7 @@ export const SelectPlanButton = ({ sx, children, ...props }) => (
 export const apiRegionsHashLink = "#Select-API-Regions";
 
 const PricingPlan = ({
+  subText,
   header,
   price,
   toggle,
@@ -122,7 +123,7 @@ const PricingPlan = ({
       <PaperPricingPlan {...paperProps}>
         <Header>{header}</Header>
         <Box>
-          Starting from
+          {subText}
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <PriceText>
               {price}

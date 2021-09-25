@@ -31,7 +31,7 @@ const listOfFeaturesNonActive = [
 
 const listOfFeaturesActive = [
   { feature: sharedFeatureOne },
-  { feature: sharedFeatureTwo },
+  { feature: "18 valuations per month" },
   { feature: sharedFeatureThree },
   { feature: sharedFeatureFour },
   { feature: sharedFeatureFive },
@@ -44,7 +44,7 @@ const listOfFeaturesPro = [
   { feature: sharedFeatureTwo },
   { feature: sharedFeatureThree },
   { feature: sharedFeatureFour },
-  { feature: sharedFeatureFive },
+  { feature: "Priority email and call support" },
   { feature: "All API regions included" },
   { feature: "Freeze your plan up to 3 months" },
 ];
@@ -106,8 +106,9 @@ const Pricing = () => {
       </Box>
       <BoxPricingPlan>
         <PricingPlan
+          subText="Everything included"
           header="Professional Investor"
-          price="$59.99"
+          price="$69.99"
           listOfFeatures={listOfFeaturesPro}
           toggle={toggle}
         />
@@ -139,11 +140,13 @@ const Pricing = () => {
               Active Investor
             </Box>
           }
+          subText="Starting from"
           price="$34.99"
           listOfFeatures={listOfFeaturesActive}
           toggle={toggle}
         />
         <PricingPlan
+          subText="Starting from"
           header="Non-Active Investor"
           price=" $19.99"
           listOfFeatures={listOfFeaturesNonActive}
