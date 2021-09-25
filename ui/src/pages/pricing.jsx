@@ -106,7 +106,7 @@ const Pricing = () => {
             sx={{ marginTop: theme.spacing(2) }}
             color="textSecondary"
           >
-            Enterprise plans are only available by contacting sales:{" "}
+            For business plans are only available by contacting sales:{" "}
             <Link href="mailto:support@tracktak.com">support@tracktak.com</Link>
             .
           </Typography>
