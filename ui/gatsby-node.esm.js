@@ -50,6 +50,11 @@ export const onCreatePage = ({ page, actions }) => {
     createPage(page);
   }
 
+  if (page.path === "/pricing/") {
+    page.context.layout = "pricing";
+    createPage(page);
+  }
+
   if (page.path.match(/my-spreadsheets/)) {
     page.context.layout = "fullscreen";
 

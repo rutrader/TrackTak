@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { useTheme } from "@material-ui/styles";
+import { useTheme } from "@material-ui/core/styles";
 import { useAuth } from "../hooks/useAuth";
 import Alert from "@material-ui/core/Alert";
 import { setMessage } from "../redux/actions/snackbarActions";

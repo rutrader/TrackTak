@@ -3,10 +3,14 @@ import LayoutHome from "./LayoutHome";
 import React from "react";
 import LayoutFullScreen from "./LayoutFullScreen";
 import TTSnackbar from "../components/TTSnackbar";
+import LayoutPricing from "./LayoutPricing";
 
 const Root = ({ children, pageContext, params }) => {
   if (pageContext.layout === "home") {
     return <LayoutHome>{children}</LayoutHome>;
+  }
+  if (pageContext.layout === "pricing") {
+    return <LayoutPricing>{children}</LayoutPricing>;
   }
   if (pageContext.layout === "fullscreen") {
     return (

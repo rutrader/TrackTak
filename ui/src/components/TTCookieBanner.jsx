@@ -1,7 +1,8 @@
-import { Box, Typography, useTheme } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import CookieConsent from "react-cookie-consent";
 import RoundButton from "./RoundButton";
+import { useTheme } from "@material-ui/core/styles";
 
 function TTCookieBanner() {
   const theme = useTheme();

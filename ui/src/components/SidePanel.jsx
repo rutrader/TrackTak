@@ -2,7 +2,6 @@ import React, { forwardRef, useEffect, useState } from "react";
 import {
   Box,
   Drawer,
-  useTheme,
   useMediaQuery,
   Divider,
   Hidden,
@@ -17,6 +16,7 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import { navigate } from "gatsby";
 import { AnchorLink } from "gatsby-plugin-anchor-links";
 import { noop } from "../shared/utils";
+import { useTheme } from "@material-ui/core/styles";
 
 const drawerWidth = 240;
 

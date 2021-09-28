@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { useBlockLayout, useTable } from "react-table";
 import { FixedSizeList } from "react-window";
-import { useTheme } from "@material-ui/styles";
+import { useTheme } from "@material-ui/core/styles";
 
 const RenderTableRow = ({ prepareRow, row, index, ...props }) => {
   prepareRow(row);

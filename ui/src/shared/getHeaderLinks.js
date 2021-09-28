@@ -8,6 +8,10 @@ export const landingPageLinks = [
 
 export const getHeaderLinks = (isAuthenticated) => {
   const links = [
+    {
+      to: "/pricing",
+      text: "Pricing",
+    },
     { to: "/how-to-do-a-dcf", text: "Documentation" },
     { to: "/blogs", text: "Blogs" },
     ...landingPageLinks,

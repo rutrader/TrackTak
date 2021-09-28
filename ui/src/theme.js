@@ -1,10 +1,7 @@
-import {
-  alpha,
-  createMuiTheme,
-  responsiveFontSizes,
-} from "@material-ui/core/styles";
+import { alpha, responsiveFontSizes } from "@material-ui/core/styles";
+import { createTheme } from "@material-ui/core/styles";
 
-let theme = createMuiTheme({
+let theme = createTheme({
   typography: {
     fontFamily: "Nunito",
     button: {
@@ -32,6 +29,7 @@ let theme = createMuiTheme({
       main: "#51509C",
       dark: "#41407d",
       contrastText: "#fff",
+      grey: "#7B8A98",
     },
     alert: "#ff5151",
     icons: {

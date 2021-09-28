@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, useTheme } from "@material-ui/core";
+import { Button } from "@material-ui/core";
+import { useTheme } from "@material-ui/core/styles";
 
 const SocialMediaButton = ({ sx, text, ...props }) => {
   const theme = useTheme();

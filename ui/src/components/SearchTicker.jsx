@@ -4,7 +4,6 @@ import {
   IconButton,
   Autocomplete,
   useMediaQuery,
-  useTheme,
 } from "@material-ui/core";
 import dayjs from "dayjs";
 import SearchIcon from "@material-ui/icons/Search";
@@ -23,6 +22,7 @@ import { useSpreadsheet } from "../hooks/useSpreadsheet";
 import { HyperFormula } from "hyperformula";
 import { trackCustomEvent } from "gatsby-plugin-google-analytics";
 import { trackingFormatDate } from "../shared/utils";
+import { useTheme } from "@material-ui/core/styles";
 
 const SearchTicker = ({ isSmallSearch, sx }) => {
   const theme = useTheme();
