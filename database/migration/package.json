@@ -1,0 +1,14 @@
+{
+  "name": "db-migration",
+  "version": "1.0.0",
+  "description": "Migrate from Tracktak X-Spreadsheet format to Powersheet format",
+  "main": "index.js",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "mongodb": "^4.1.2"
+  }
+}
