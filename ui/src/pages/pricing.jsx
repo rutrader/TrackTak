@@ -35,7 +35,7 @@ const listOfFeaturesActive = [
   { feature: sharedFeatureThree },
   { feature: sharedFeatureFour },
   { feature: sharedFeatureFive },
-  { feature: "Freeze your plan up to 1 month" },
+  { feature: "Freeze your plan for up to 1 month" },
   { feature: sharedFeatureSix, disabled: true },
 ];
 
@@ -45,11 +45,11 @@ const listOfFeaturesPro = [
   { feature: sharedFeatureThree },
   { feature: sharedFeatureFour },
   { feature: "Priority email and call support" },
-  { feature: "Freeze your plan up to 3 months" },
+  { feature: "Freeze your plan for up to 3 months" },
   { feature: "All API regions included" },
 ];
 
-const listOfQuestionsAndAnswers = [
+const questionsAndAnswers = [
   {
     question: "What does X of valuations per month mean?",
     answer:
@@ -205,9 +205,7 @@ const Pricing = () => {
         />
       </BoxPricingPlan>
       <SelectAPIRegion toggle={toggle} />
-      <FrequentlyAskedQuestion
-        listOfQuestionsAndAnswers={listOfQuestionsAndAnswers}
-      />
+      <FrequentlyAskedQuestion questionsAndAnswers={questionsAndAnswers} />
     </>
   );
 };
