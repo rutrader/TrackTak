@@ -53,7 +53,7 @@ const questionsAndAnswers = [
   {
     question: "What does X of valuations per month mean?",
     answer:
-      "Refers to the number of valuations you can create in Tracktak each month. For Active and Non-Active plan all unused valuations in that month do not carry over the next month. If you exceed your number of valuations limit you can always upgrade your plan or wait until next month.",
+      "Refers to the number of valuations you can create in Tracktak each month. For Active and Non-Active plans all unused valuations in that month do not carry over to the next month. If you exceed your number of valuations limit you can always upgrade your plan or wait until next month.",
   },
   {
     question: "What does freezing your plan mean?",
@@ -78,7 +78,7 @@ const questionsAndAnswers = [
   {
     question: "What if I want to cancel my plan?",
     answer:
-      "We're sorry to see you go. Did you know you can freeze your plan? If you're a Professional or Active Investor, freezing is included as part of your membership! If you still decided to leave Tracktak, you can cancel or downgrade before your next billing period with a single click from your account settings or by sending an email request to support@tracktak.com.",
+      "We're sorry to see you go. Did you know you can freeze your plan? If you're a Professional or Active Investor, freezing is included as part of your membership! If you still decide to leave Tracktak, you can cancel or downgrade before your next billing period with a single click from your account settings or by sending an email request to support@tracktak.com.",
   },
   {
     question: "Which currency will I be charged in?",

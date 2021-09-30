@@ -26,22 +26,23 @@ const StyledAccordionSummary = (props) => (
   />
 );
 
-const AccordionComponent = ({ list }) => {
+const AccordionComponent = ({ question, answer }) => {
   const [expanded, setExpanded] = useState(false);
 
-  const handleChange = (panel) => (_, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
+  const handleChange = (_, isExpanded) => {
+    setExpanded(isExpanded);
   };
+
   return (
     <Accordion
       disableGutters
       elevation={0}
-      expanded={expanded === "panel1"}
-      onChange={handleChange("panel1")}
+      expanded={expanded}
+      onChange={handleChange}
     >
       <StyledAccordionSummary>
         <Typography sx={{ fontWeight: "bold", fontSize: "1.5rem" }}>
-          {list.question}
+          {question}
         </Typography>
       </StyledAccordionSummary>
       <AccordionDetails
@@ -50,14 +51,14 @@ const AccordionComponent = ({ list }) => {
         }}
       >
         <Typography color="textSecondary" sx={{ fontSize: "1.1rem" }}>
-          {list.answer}
+          {answer}
         </Typography>
       </AccordionDetails>
     </Accordion>
   );
 };
 
-const FrequentlyAskedQuestion = ({ listOfQuestionsAndAnswers }) => {
+const FrequentlyAskedQuestion = ({ questionsAndAnswers }) => {
   const theme = useTheme();
 
   return (
@@ -79,8 +80,14 @@ const FrequentlyAskedQuestion = ({ listOfQuestionsAndAnswers }) => {
         Questions you may have
       </Typography>
       <Box sx={{ display: "flex", flexDirection: "column", mt: 2 }}>
-        {listOfQuestionsAndAnswers.map((list, index) => {
-          return <AccordionComponent list={list} key={index} />;
+        {questionsAndAnswers.map(({ question, answer }, index) => {
+          return (
+            <AccordionComponent
+              question={question}
+              answer={answer}
+              key={index}
+            />
+          );
         })}
       </Box>
     </Box>
