@@ -135,8 +135,7 @@ const Pricing = () => {
               Monthly
             </Typography>
             <Switch
-              defaultChecked
-              inputProps={{ "aria-label": "ant design" }}
+              inputProps={{ "aria-label": "controlled" }}
               onChange={handleOnChangeToggle}
               checked={toggle}
             />

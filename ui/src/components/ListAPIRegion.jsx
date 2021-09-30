@@ -67,6 +67,7 @@ const ListAPIRegion = ({
                   edge="end"
                   checked={checked}
                   sx={{ marginRight: "-12px" }}
+                  inputProps={{ "aria-label": "controlled" }}
                 />
               </Box>
             </ListItemButton>
