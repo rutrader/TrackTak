@@ -65,7 +65,8 @@ const HeaderLink = ({ to, text, style }) => {
         ...style,
       }}
     >
-      <LinkButton to={to} component={Link}>
+      {/* aria-current due to @reach/router bug mismatch between server/client */}
+      <LinkButton aria-current={null} to={to} component={Link}>
         {text}
       </LinkButton>
     </Box>
