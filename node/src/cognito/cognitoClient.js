@@ -29,34 +29,45 @@ export const getCurrentPlan = async (username, accessToken) => {
     {},
   );
 
-  const plan = {
-    type: attributes["custom:account_type"],
-    expiration: Number(attributes["custom:plan_expiration"]),
-    isExpired: attributes["custom:plan_expired"] === "true",
-    addons: attributes["custom:account_addons"]
-      ? attributes["custom:account_addons"].split(",")
-      : [],
-  };
-
+  const plan = mapCognitoAttributesToPlan(attributes);
   return getUpdatedPlanIfExpired(username, plan);
 };
+
+export const startPlan = async (username, type, isAnnual, addons = []) => {
+  const expirationTime = isAnnual
+    ? new Date(new Date().setFullYear(new Date().getFullYear() + 1))
+    : new Date(new Date().setMonth(new Date().getMonth() + 1));
+  const newPlan = {
+    "custom:account_type": type,
+    "custom:plan_expiration": expirationTime.getTime().toString(),
+    "custom:plan_expired": "false",
+    "custom:account_addons": addons.join(","),
+  };
+
+  await setUserAccountAttributes(username, newPlan);
+
+  return mapCognitoAttributesToPlan(newPlan);
+};
+
+const mapCognitoAttributesToPlan = (attributes) => ({
+  type: attributes["custom:account_type"],
+  expiration: Number(attributes["custom:plan_expiration"]),
+  isExpired: attributes["custom:plan_expired"] === "true",
+  addons: attributes["custom:account_addons"]
+    ? attributes["custom:account_addons"].split(",")
+    : [],
+});
 
 const getUpdatedPlanIfExpired = async (username, plan) => {
   const now = new Date().getTime();
   if (!plan.isExpired && now > plan.expiration) {
     let type = plan.type;
-    const expiredParameters = [
-      {
-        Name: "custom:plan_expired",
-        Value: "true",
-      },
-    ];
+    const expiredParameters = {
+      "custom:plan_expired": "true",
+    };
+
     if (plan.type !== PLANS.ONE_HOUR_TRIAL) {
-      expiredParameters.push({
-        Name: "custom:account_type",
-        Value: PLANS.DEACTIVATED,
-      });
-      type = PLANS.DEACTIVATED;
+      expiredParameters["custom:account_type"] = PLANS.DEACTIVATED;
     }
 
     await setUserAccountAttributes(username, expiredParameters);
@@ -71,9 +82,13 @@ const getUpdatedPlanIfExpired = async (username, plan) => {
 };
 
 const setUserAccountAttributes = async (username, attributes) => {
+  const cognitoAttribute = attributes.reduce((all, current) => ({
+    ...all,
+    [current.Name]: current.Value,
+  }));
   const params = {
     UserPoolId: cognitoPoolId,
-    UserAttributes: attributes,
+    UserAttributes: cognitoAttribute,
     Username: username,
   };
 
