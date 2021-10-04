@@ -10,6 +10,7 @@ import * as database from "./database/mongoDbClient";
 import { Collections } from "./database/collections";
 import convertFundamentalsFromAPI from "./shared/convertFundamentalsFromAPI";
 import { default as MongoDb } from "mongodb";
+import { getCurrentPlan } from "./cognito/cognitoClient";
 
 const baseUrl = "https://eodhistoricaldata.com/api";
 const fundamentalsUrl = `${baseUrl}/fundamentals`;
@@ -368,6 +369,12 @@ const api = {
       _id: new MongoDb.ObjectId(id),
       userId,
     });
+  },
+
+  getCurrentPlan: async (username, token) => {
+    const plan = await getCurrentPlan(username, token);
+
+    return plan;
   },
 };
 

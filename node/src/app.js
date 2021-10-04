@@ -173,6 +173,15 @@ app.delete("/api/v1/spreadsheets/:id", auth, async (req, res) => {
   res.send({ id: req.params.id });
 });
 
+app.get("/api/v1/current-plan", auth, async (req, res) => {
+  const currentPlan = await api.getCurrentPlan(
+    req.user.username,
+    req.user.accessToken,
+  );
+
+  res.send(currentPlan);
+});
+
 app.get("/", (_, res) => {
   res.sendStatus(200);
 });
