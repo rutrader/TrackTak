@@ -4,10 +4,12 @@ import cors from "cors";
 import "express-async-errors";
 import api from "./api";
 import auth from "./middleware/auth";
+import Stripe from "stripe";
 
 const hostname = "127.0.0.1";
 const port = process.env.NODE_ENV === "development" ? 3001 : process.env.PORT;
 const app = express();
+const stripe = Stripe(process.env.STRIPE_AUTH_SECRET_KEY);
 
 app.use(express.static("public"));
 app.use(express.json({ limit: "16mb" }));
@@ -32,15 +34,7 @@ app.use(cors());
 
 app.use(
   cors({
-    origin:
-      process.env.NODE_ENV === "development"
-        ? [
-            "http://localhost:8000",
-            "http://localhost:9000",
-            "http://localhost:6006",
-            "http://192.168.1.101:8000",
-          ]
-        : [process.env.ORIGIN_URL],
+    origin: process.env.ORIGIN_URL,
     optionsSuccessStatus: 204,
   }),
 );
@@ -178,5 +172,70 @@ app.get("/", (_, res) => {
 });
 
 app.listen(port, async () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+  console.log(`Server running at ${hostname}:${port}/`);
 });
+
+app.post("/create-checkout-session", async (req, res) => {
+  const { priceId } = req.body;
+
+  try {
+    const session = await stripe.checkout.sessions.create({
+      mode: "subscription",
+      payment_method_types: ["card"],
+      line_items: [
+        {
+          price: priceId,
+          quantity: 1,
+        },
+      ],
+      success_url: `${process.env.ORIGIN_URL}/checkout-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.ORIGIN_URL}/checkout-cancel`,
+    });
+
+    return res.redirect(303, session.url);
+  } catch (e) {
+    res.status(400);
+    return res.send({
+      error: {
+        message: e.message,
+      },
+    });
+  }
+});
+
+app.get("/checkout-session", async (req, res) => {
+  const { sessionId } = req.query;
+  const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+  res.send(session);
+});
+
+app.post(
+  "/stripe-webhook",
+  express.raw({ type: "application/json" }),
+  async (req, res) => {
+    let event;
+    const signature = req.headers["stripe-signature"];
+
+    try {
+      event = stripe.webhooks.constructEvent(
+        req.body,
+        signature,
+        process.env.STRIPE_WEBHOOK_SECRET,
+      );
+    } catch (err) {
+      console.log(`⚠️  Webhook signature verification failed.`);
+      return res.sendStatus(400);
+    }
+
+    switch (event.type) {
+      case "invoice.payment_succeeded":
+        const invoice = event.data.object;
+        break;
+      default:
+        console.log(`Unhandled event type ${event.type}`);
+    }
+
+    res.sendStatus(200);
+  },
+);
