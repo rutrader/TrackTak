@@ -20,6 +20,8 @@ const searchUrl = `${baseUrl}/search`;
 const exchangeSymbolListUrl = `${baseUrl}/exchange-symbol-list`;
 const bulkFundamentalsUrl = `${baseUrl}/bulk-fundamentals`;
 
+const LARGE_CAP_PRICE_THRESHOLD = 30;
+
 database.connect();
 
 const globalParams = {
@@ -260,14 +262,22 @@ const api = {
           },
         });
 
-        const result = data.filter((datum) => {
-          return datum.Exchange !== "TSE";
-        });
+        const result = data
+          .filter((datum) => {
+            return datum.Exchange !== "TSE";
+          })
+          .map((datum) => ({
+            ...datum,
+            isUSLargeCap:
+              datum.previousClose > LARGE_CAP_PRICE_THRESHOLD &&
+              datum.Exchange === "US",
+          }));
         return result;
       },
       "autocompleteQuery",
       { queryString, query },
     );
+    console.log(data);
     return data;
   },
 

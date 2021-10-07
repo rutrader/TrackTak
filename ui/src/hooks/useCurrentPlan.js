@@ -2,6 +2,18 @@ import { useState, useEffect, useCallback } from "react";
 import { getCurrentPlan } from "../api/api";
 import { useAuth } from "./useAuth";
 
+export const Plans = {
+  ONE_HOUR_TRIAL: "1-hour-trial",
+  NON_ACTIVE: "non-active",
+  ACTIVE: "active",
+  PRO: "pro",
+  FROZEN: "frozen",
+  DEACTIVATED: "deactivated",
+};
+
+export const isStockDisabled = (currentPlan, stock) =>
+  currentPlan.type === Plans.ONE_HOUR_TRIAL && !stock.isUSLargeCap;
+
 const useCurrentPlan = () => {
   const { getAccessToken } = useAuth();
   const [currentPlan, setCurrentPlan] = useState();
