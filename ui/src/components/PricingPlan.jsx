@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import CheckIcon from "@material-ui/icons/Check";
 import ClearIcon from "@mui/icons-material/Clear";
 import {
@@ -13,9 +13,12 @@ import {
   Typography,
 } from "@material-ui/core";
 import RoundButton from "./RoundButton";
+import { grey, red } from "@material-ui/core/colors";
 import { navigate } from "gatsby";
 import { AnchorLink } from "gatsby-plugin-anchor-links";
-import { grey, red } from "@material-ui/core/colors";
+import { getPrice } from "../api/api";
+import { useAuth } from "../hooks/useAuth";
+import { formatPrice } from "../shared/utils";
 
 export const BoxPricingPlan = (props) => (
   <Box
@@ -94,12 +97,28 @@ export const apiRegionsHashLink = "#Select-API-Regions";
 const PricingPlan = ({
   subText,
   header,
-  price,
   toggle,
   paperProps,
   buttonProps,
   listOfFeatures,
+  priceId,
 }) => {
+  const { getAccessToken } = useAuth();
+  const [price, setPrice] = useState();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = await getAccessToken();
+      const {
+        data: { price },
+      } = await getPrice(priceId, token?.jwtToken);
+
+      setPrice(price);
+    };
+
+    fetchData();
+  }, [getAccessToken, priceId]);
+
   return (
     <BoxPricingPlan>
       <Paper
@@ -130,7 +149,11 @@ const PricingPlan = ({
               }}
               variant="h4"
             >
-              {price}
+              {price &&
+                formatPrice({
+                  unitAmount: price.unit_amount,
+                  currency: price.currency.toUpperCase(),
+                })}
               {toggle ? <PriceBox>/year</PriceBox> : <PriceBox>/mo</PriceBox>}
             </Typography>
           </Box>

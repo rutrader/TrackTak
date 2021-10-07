@@ -10,29 +10,36 @@ import WalletIconSvg from "../icons/wallet.svg";
 import ListAPIRegion from "../components/ListAPIRegion";
 import { apiRegionsHashLink, Header, SelectPlanButton } from "./PricingPlan";
 import { useLocation } from "@reach/router";
+import { createCheckoutSession } from "../api/api";
+import { useAuth } from "../hooks/useAuth";
 
 const listAPIregions = [
   {
+    priceId: "price_1JhdRhDOsUBI2OhCp8fpL3Ub",
     regionName: "All Worldwide Regions",
     price: "$47.96",
     iconSvg: <GlobeIconSvg alt="globe" />,
   },
   {
+    priceId: "price_1JhbNJDOsUBI2OhCLkVJ3qfh",
     regionName: "United States & Latin America",
     price: "$14.99",
     iconSvg: <USAIconSvg alt="usa" />,
   },
   {
+    priceId: "price_1JhdQPDOsUBI2OhCOkxiOM9Q",
     regionName: "China & Asia",
     price: "$12.99",
     iconSvg: <ChinaIconSvg alt="china" />,
   },
   {
+    priceId: "price_1JhdQpDOsUBI2OhCztCOuKki",
     regionName: "Europe, Middle East & Africa",
     price: "$9.99",
     iconSvg: <EuropeIconSvg alt="europe" />,
   },
   {
+    priceId: "price_1JhdRHDOsUBI2OhCVVGyzsZF",
     regionName: "Canada, Australia, UK & Ireland",
     price: "$9.99",
     iconSvg: <UKIconSvg alt="uk" />,
@@ -40,8 +47,18 @@ const listAPIregions = [
 ];
 
 const SelectAPIRegion = ({ toggle }) => {
+  const { getAccessToken } = useAuth();
   const location = useLocation();
   const [checked, setChecked] = useState([]);
+  const [apiRegion, setApiRegion] = useState([]);
+
+  // const handleOnClick = async () => {
+  //   const token = await getAccessToken();
+  //   const lineItems = [
+  //     { price: "price_1JhdPsDOsUBI2OhCBEfKPfhH", quantity: 1 },
+  //   ];
+  //   const res = await createCheckoutSession(lineItems, token?.jwtToken);
+  // };
 
   const handleOnChangeChecked = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -142,6 +159,7 @@ const SelectAPIRegion = ({ toggle }) => {
             <SelectPlanButton
               disabled={checked.length === 0}
               variant="contained"
+              // onClick={handleOnClick}
             >
               Buy now
             </SelectPlanButton>

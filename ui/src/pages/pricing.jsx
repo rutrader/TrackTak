@@ -155,9 +155,9 @@ const Pricing = () => {
       </Box>
       <BoxPricingPlan>
         <PricingPlan
+          priceId="price_1JgoBSDOsUBI2OhCAoYKX6gQ"
           subText="Everything included"
           header="Professional Investor"
-          price="$69.99"
           listOfFeatures={listOfFeaturesPro}
           toggle={toggle}
         />
@@ -190,15 +190,15 @@ const Pricing = () => {
               Active Investor
             </Box>
           }
+          priceId="price_1JgoDEDOsUBI2OhCmiU18JQg"
           subText="Starting from"
-          price="$34.99"
           listOfFeatures={listOfFeaturesActive}
           toggle={toggle}
         />
         <PricingPlan
+          priceId="price_1JhdPsDOsUBI2OhCBEfKPfhH"
           subText="Starting from"
           header="Non-Active Investor"
-          price=" $19.99"
           listOfFeatures={listOfFeaturesNonActive}
           toggle={toggle}
         />

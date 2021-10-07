@@ -167,27 +167,21 @@ app.delete("/api/v1/spreadsheets/:id", auth, async (req, res) => {
   res.send({ id: req.params.id });
 });
 
-app.get("/", (_, res) => {
-  res.sendStatus(200);
+app.get("/v1/prices/:id", auth, async (req, res) => {
+  const id = req.params.id;
+
+  const price = await stripe.prices.retrieve(id);
+  res.send({ price });
 });
 
-app.listen(port, async () => {
-  console.log(`Server running at ${hostname}:${port}/`);
-});
-
-app.post("/create-checkout-session", async (req, res) => {
-  const { priceId } = req.body;
+app.post("/api/v1/create-checkout-session", auth, async (req, res) => {
+  const { lineItems } = req.body;
 
   try {
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       payment_method_types: ["card"],
-      line_items: [
-        {
-          price: priceId,
-          quantity: 1,
-        },
-      ],
+      line_items: lineItems,
       success_url: `${process.env.ORIGIN_URL}/checkout-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.ORIGIN_URL}/checkout-cancel`,
     });
@@ -203,7 +197,7 @@ app.post("/create-checkout-session", async (req, res) => {
   }
 });
 
-app.get("/checkout-session", async (req, res) => {
+app.get("/api/v1/create-checkout-session", async (req, res) => {
   const { sessionId } = req.query;
   const session = await stripe.checkout.sessions.retrieve(sessionId);
 
@@ -211,7 +205,7 @@ app.get("/checkout-session", async (req, res) => {
 });
 
 app.post(
-  "/stripe-webhook",
+  "/api/v1/stripe-webhook",
   express.raw({ type: "application/json" }),
   async (req, res) => {
     let event;
@@ -239,3 +233,25 @@ app.post(
     res.sendStatus(200);
   },
 );
+
+app.post("/api/v1/customer-portal", async (req, res) => {
+  const { sessionId } = req.body;
+  const checkoutSession = await stripe.checkout.sessions.retrieve(sessionId);
+
+  const returnUrl = process.env.DOMAIN;
+
+  const portalSession = await stripe.billingPortal.sessions.create({
+    customer: checkoutSession.customer,
+    return_url: returnUrl,
+  });
+
+  res.redirect(303, portalSession.url);
+});
+
+app.get("/", (_, res) => {
+  res.sendStatus(200);
+});
+
+app.listen(port, async () => {
+  console.log(`Server running at ${hostname}:${port}/`);
+});
