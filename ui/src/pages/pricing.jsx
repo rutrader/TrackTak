@@ -135,13 +135,18 @@ const Pricing = () => {
   const { getAccessToken } = useAuth();
   const [checked, setChecked] = useState([listAPIRegions[0].priceId]);
 
-  const handleOnClick = async () => {
+  const handleOnClick = async (planPriceId) => {
     const token = await getAccessToken();
+    const apiRegionLineItems = checked.map((priceId) => {
+      return { price: priceId, quantity: 1 };
+    });
     const lineItems = [
-      { price: "price_1JhdPsDOsUBI2OhCBEfKPfhH", quantity: 1 },
+      { price: planPriceId, quantity: 1 },
+      ...apiRegionLineItems,
     ];
-    const res = await createCheckoutSession(lineItems, token?.jwtToken);
-    console.log(res);
+    const { data } = await createCheckoutSession(lineItems, token?.jwtToken);
+
+    window.location.href = data.url;
   };
 
   return (

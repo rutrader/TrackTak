@@ -182,11 +182,11 @@ app.post("/api/v1/create-checkout-session", auth, async (req, res) => {
       mode: "subscription",
       payment_method_types: ["card"],
       line_items: lineItems,
-      success_url: `${process.env.ORIGIN_URL}/checkout-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.ORIGIN_URL}/checkout-cancel`,
+      success_url: `${process.env.ORIGIN_URL}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.ORIGIN_URL}/pricing`,
     });
 
-    return res.redirect(303, session.url);
+    res.send({ url: session.url });
   } catch (e) {
     res.status(400);
     return res.send({

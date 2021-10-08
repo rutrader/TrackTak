@@ -178,7 +178,12 @@ const PricingPlan = ({
             </List>
           </Grid>
         </Box>
-        <SelectPlanButton {...buttonProps} onClick={handleOnClick}>
+        <SelectPlanButton
+          {...buttonProps}
+          onClick={() => {
+            handleOnClick(priceId);
+          }}
+        >
           Select plan
         </SelectPlanButton>
       </Paper>
