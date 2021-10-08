@@ -1,52 +1,60 @@
 import { Box, Link, Typography } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
-import React, { useState } from "react";
+import React, { forwardRef, useState } from "react";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
 import FormGroup from "@material-ui/core/FormGroup";
-import Switch from "@material-ui/core/Switch";
-import { Stack } from "@material-ui/core";
 import Chip from "@mui/material/Chip";
 import SelectAPIRegion from "../components/SelectAPIRegion";
 import PricingPlan, { BoxPricingPlan } from "../components/PricingPlan";
 import FrequentlyAskedQuestion from "../components/FrequentlyAskedQuestion";
+import { navigate } from "gatsby";
+import { AnchorLink } from "gatsby-plugin-anchor-links";
+import { createCheckoutSession } from "../api/api";
+import { useAuth } from "../hooks/useAuth";
+import USAIconSvg from "../icons/united-states.svg";
+import ChinaIconSvg from "../icons/china.svg";
+import LatinIconSvg from "../icons/brazil.svg";
+import EuropeIconSvg from "../icons/europe.svg";
+import UKIconSvg from "../icons/united-kingdom.svg";
 
 const sharedFeatureOne = "Automated financial models";
 const sharedFeatureTwo = "Unlimited valuations";
 const sharedFeatureThree = "Export valuations";
 const sharedFeatureFour = "Full spreadsheet editing";
-const sharedFeatureFive = "Priority email modelling support";
-const sharedFeatureSix = "API regions are not included";
+const sharedFeatureFive = "United States API region included";
+const sharedFeatureSix = "Priority email modelling support";
 
 const listOfFeaturesNonActive = [
   { feature: sharedFeatureOne },
-  { feature: "8 valuations per month" },
+  { feature: "12 valuations per month" },
+  { feature: sharedFeatureFive },
   { feature: sharedFeatureThree },
   { feature: sharedFeatureFour },
-  { feature: sharedFeatureFive, disabled: true },
-  { feature: "Freeze your plan", disabled: true },
   { feature: sharedFeatureSix, disabled: true },
+  { feature: "Freeze your plan", disabled: true },
 ];
 
 const listOfFeaturesActive = [
   { feature: sharedFeatureOne },
-  { feature: "18 valuations per month" },
+  { feature: "25 valuations per month" },
+  { feature: sharedFeatureFive },
   { feature: sharedFeatureThree },
   { feature: sharedFeatureFour },
-  { feature: sharedFeatureFive },
+
+  { feature: sharedFeatureSix },
   { feature: "Freeze your plan for up to 1 month" },
-  { feature: sharedFeatureSix, disabled: true },
 ];
 
 const listOfFeaturesPro = [
   { feature: sharedFeatureOne },
   { feature: sharedFeatureTwo },
+  { feature: "All API regions included" },
   { feature: sharedFeatureThree },
   { feature: sharedFeatureFour },
   { feature: "Priority email and call support" },
   { feature: "Freeze your plan for up to 3 months" },
-  { feature: "All API regions included" },
 ];
 
 const questionsAndAnswers = [
@@ -91,12 +99,49 @@ const questionsAndAnswers = [
   },
 ];
 
+const listAPIRegions = [
+  {
+    priceId: "price_1Ji1LUDOsUBI2OhCjqIwvFY9",
+    regionName: "United States",
+    iconSvg: <USAIconSvg alt="usa" />,
+    disabled: true,
+  },
+  {
+    priceId: "price_1JhdQPDOsUBI2OhCOkxiOM9Q",
+    regionName: "China & Asia",
+    iconSvg: <ChinaIconSvg alt="china" />,
+  },
+  {
+    priceId: "price_1Ji1WGDOsUBI2OhC1wdJ7FcD",
+    regionName: "Latin America, Middle East & Africa",
+    iconSvg: <LatinIconSvg alt="china" />,
+  },
+  {
+    priceId: "price_1JhdQpDOsUBI2OhCztCOuKki",
+    regionName: "Europe",
+    iconSvg: <EuropeIconSvg alt="europe" />,
+  },
+  {
+    priceId: "price_1JhdRHDOsUBI2OhCVVGyzsZF",
+    regionName: "Canada, Australia, UK & Ireland",
+    iconSvg: <UKIconSvg alt="uk" />,
+  },
+];
+
+export const apiRegionsHashLink = "#Select-API-Regions";
+
 const Pricing = () => {
   const theme = useTheme();
-  const [toggle, setToggle] = useState(false);
+  const { getAccessToken } = useAuth();
+  const [checked, setChecked] = useState([listAPIRegions[0].priceId]);
 
-  const handleOnChangeToggle = (e) => {
-    setToggle(e.target.checked);
+  const handleOnClick = async () => {
+    const token = await getAccessToken();
+    const lineItems = [
+      { price: "price_1JhdPsDOsUBI2OhCBEfKPfhH", quantity: 1 },
+    ];
+    const res = await createCheckoutSession(lineItems, token?.jwtToken);
+    console.log(res);
   };
 
   return (
@@ -125,24 +170,6 @@ const Pricing = () => {
           Choose a plan that works for you. Try it free for 7 days.
         </Typography>
         <FormGroup>
-          <Stack
-            direction="row"
-            spacing={1}
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Typography sx={{ fontSize: theme.typography.fontSize2 }}>
-              Monthly
-            </Typography>
-            <Switch
-              inputProps={{ "aria-label": "controlled" }}
-              onChange={handleOnChangeToggle}
-              checked={toggle}
-            />
-            <Typography sx={{ fontSize: theme.typography.fontSize2 }}>
-              Yearly
-            </Typography>
-          </Stack>
           <Typography
             sx={{ marginTop: theme.spacing(2) }}
             color="textSecondary"
@@ -159,7 +186,7 @@ const Pricing = () => {
           subText="Everything included"
           header="Professional Investor"
           listOfFeatures={listOfFeaturesPro}
-          toggle={toggle}
+          handleOnClick={handleOnClick}
         />
         <PricingPlan
           buttonProps={{
@@ -193,17 +220,38 @@ const Pricing = () => {
           priceId="price_1JgoDEDOsUBI2OhCmiU18JQg"
           subText="Starting from"
           listOfFeatures={listOfFeaturesActive}
-          toggle={toggle}
+          handleOnClick={handleOnClick}
         />
         <PricingPlan
-          priceId="price_1JhdPsDOsUBI2OhCBEfKPfhH"
+          priceId="price_1Ji19xDOsUBI2OhCXRa3Rtvk"
           subText="Starting from"
           header="Non-Active Investor"
           listOfFeatures={listOfFeaturesNonActive}
-          toggle={toggle}
+          handleOnClick={handleOnClick}
         />
       </BoxPricingPlan>
-      <SelectAPIRegion toggle={toggle} />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          fontSize: theme.typography.fontSize2,
+          color: theme.palette.primary.main,
+        }}
+        component={forwardRef((props, ref) => (
+          <AnchorLink {...props} gatsbyLinkProps={{ ref }} />
+        ))}
+        to={`/pricing${apiRegionsHashLink}`}
+        onAnchorLinkClick={() => {
+          navigate(`/pricing${apiRegionsHashLink}`);
+        }}
+      >
+        Want more API regions? Click here.
+      </Box>
+      <SelectAPIRegion
+        checked={checked}
+        setChecked={setChecked}
+        listAPIRegions={listAPIRegions}
+      />
       <FrequentlyAskedQuestion questionsAndAnswers={questionsAndAnswers} />
     </>
   );

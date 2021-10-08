@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import CheckIcon from "@material-ui/icons/Check";
 import ClearIcon from "@mui/icons-material/Clear";
 import {
@@ -14,8 +14,6 @@ import {
 } from "@material-ui/core";
 import RoundButton from "./RoundButton";
 import { grey, red } from "@material-ui/core/colors";
-import { navigate } from "gatsby";
-import { AnchorLink } from "gatsby-plugin-anchor-links";
 import { getPrice } from "../api/api";
 import { useAuth } from "../hooks/useAuth";
 import { formatPrice } from "../shared/utils";
@@ -92,16 +90,14 @@ export const SelectPlanButton = ({ sx, children, ...props }) => (
   </RoundButton>
 );
 
-export const apiRegionsHashLink = "#Select-API-Regions";
-
 const PricingPlan = ({
   subText,
   header,
-  toggle,
   paperProps,
   buttonProps,
   listOfFeatures,
   priceId,
+  handleOnClick,
 }) => {
   const { getAccessToken } = useAuth();
   const [price, setPrice] = useState();
@@ -154,7 +150,7 @@ const PricingPlan = ({
                   unitAmount: price.unit_amount,
                   currency: price.currency.toUpperCase(),
                 })}
-              {toggle ? <PriceBox>/year</PriceBox> : <PriceBox>/mo</PriceBox>}
+              <PriceBox>/{price?.recurring.interval}</PriceBox>
             </Typography>
           </Box>
           <Divider />
@@ -182,16 +178,7 @@ const PricingPlan = ({
             </List>
           </Grid>
         </Box>
-        <SelectPlanButton
-          {...buttonProps}
-          component={forwardRef((props, ref) => (
-            <AnchorLink {...props} gatsbyLinkProps={{ ref }} />
-          ))}
-          to={`/pricing${apiRegionsHashLink}`}
-          onAnchorLinkClick={() => {
-            navigate(`/pricing${apiRegionsHashLink}`);
-          }}
-        >
+        <SelectPlanButton {...buttonProps} onClick={handleOnClick}>
           Select plan
         </SelectPlanButton>
       </Paper>
