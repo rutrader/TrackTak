@@ -10,13 +10,13 @@ cup.config = new AWS.Config({
 });
 cup.endpoint = new AWS.Endpoint(cognitoIssuerUri);
 
-const PLANS = {
-  ONE_HOUR_TRIAL: "1-hour-trial",
-  NON_ACTIVE: "non-active",
-  ACTIVE: "active",
-  PRO: "pro",
-  FROZEN: "frozen",
-  DEACTIVATED: "deactivated",
+const Plans = {
+  ONE_HOUR_TRIAL: "One Hour Free Trial",
+  NON_ACTIVE: "Non-Active",
+  ACTIVE: "Active",
+  PRO: "Pro",
+  FROZEN: "Frozen",
+  DEACTIVATED: "Deactivated",
 };
 
 export const getCurrentPlan = async (username, accessToken) => {
@@ -66,8 +66,8 @@ const getUpdatedPlanIfExpired = async (username, plan) => {
       "custom:plan_expired": "true",
     };
 
-    if (plan.type !== PLANS.ONE_HOUR_TRIAL) {
-      expiredParameters["custom:account_type"] = PLANS.DEACTIVATED;
+    if (plan.type !== Plans.ONE_HOUR_TRIAL) {
+      expiredParameters["custom:account_type"] = Plans.DEACTIVATED;
     }
 
     await setUserAccountAttributes(username, expiredParameters);

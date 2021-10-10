@@ -2,13 +2,13 @@ import { useState, useEffect, useCallback } from "react";
 import { getCurrentPlan } from "../api/api";
 import { useAuth } from "./useAuth";
 
-export const Plans = {
-  ONE_HOUR_TRIAL: "1-hour-trial",
-  NON_ACTIVE: "non-active",
-  ACTIVE: "active",
-  PRO: "pro",
-  FROZEN: "frozen",
-  DEACTIVATED: "deactivated",
+const Plans = {
+  ONE_HOUR_TRIAL: "One Hour Free Trial",
+  NON_ACTIVE: "Non-Active",
+  ACTIVE: "Active",
+  PRO: "Pro",
+  FROZEN: "Frozen",
+  DEACTIVATED: "Deactivated",
 };
 
 export const isStockDisabled = (currentPlan, stock) =>

@@ -28,11 +28,11 @@ const setTrialAttributes = async (event: PostAuthenticationTriggerEvent) => {
     UserAttributes: [
       {
         Name: "custom:account_type",
-        Value: "1-hour-trial",
+        Value: "One Hour Free Trial",
       },
       {
         Name: "custom:account_addons",
-        Value: "",
+        Value: "usa",
       },
       {
         Name: "custom:plan_expiration",

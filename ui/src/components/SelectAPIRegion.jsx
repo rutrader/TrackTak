@@ -1,43 +1,11 @@
 import React, { useState } from "react";
 import { Divider, Paper } from "@material-ui/core";
 import { Box } from "@material-ui/system";
-import USAIconSvg from "../icons/united-states.svg";
-import GlobeIconSvg from "../icons/globe.svg";
-import ChinaIconSvg from "../icons/china.svg";
-import EuropeIconSvg from "../icons/europe.svg";
-import UKIconSvg from "../icons/united-kingdom.svg";
 import WalletIconSvg from "../icons/wallet.svg";
 import ListAPIRegion from "../components/ListAPIRegion";
 import { apiRegionsHashLink, Header, SelectPlanButton } from "./PricingPlan";
 import { useLocation } from "@reach/router";
-
-const listAPIregions = [
-  {
-    regionName: "All Worldwide Regions",
-    price: "$47.96",
-    iconSvg: <GlobeIconSvg alt="globe" />,
-  },
-  {
-    regionName: "United States & Latin America",
-    price: "$14.99",
-    iconSvg: <USAIconSvg alt="usa" />,
-  },
-  {
-    regionName: "China & Asia",
-    price: "$12.99",
-    iconSvg: <ChinaIconSvg alt="china" />,
-  },
-  {
-    regionName: "Europe, Middle East & Africa",
-    price: "$9.99",
-    iconSvg: <EuropeIconSvg alt="europe" />,
-  },
-  {
-    regionName: "Canada, Australia, UK & Ireland",
-    price: "$9.99",
-    iconSvg: <UKIconSvg alt="uk" />,
-  },
-];
+import { listAPIregions } from "../data/regions";
 
 const SelectAPIRegion = ({ toggle }) => {
   const location = useLocation();

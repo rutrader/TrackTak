@@ -9,6 +9,7 @@ let theme = createTheme({
     },
     fontSize2: "18px",
     fontSize3: "25px",
+    fontSize4: "14px",
     table: {
       header: "13px",
     },
