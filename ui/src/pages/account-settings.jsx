@@ -20,7 +20,7 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import LockIcon from "@mui/icons-material/Lock";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PaymentIcon from "@mui/icons-material/Payment";
-import useCurrentPlan from "../hooks/useCurrentPlan";
+import useCurrentPlan, { Plans } from "../hooks/useCurrentPlan";
 
 const AccountSettings = () => {
   const { isExternalIdentityProvider } = useAuth();
@@ -74,19 +74,21 @@ const AccountSettings = () => {
                 />
               }
             >
-              <Button
-                variant="contained"
-                color="primary"
-                sx={{
-                  textTransform: "none",
-                  position: "absolute",
-                  mt: (theme) => theme.spacing(4),
-                  right: (theme) => theme.spacing(-6),
-                  top: (theme) => theme.spacing(-3),
-                }}
-              >
-                Upgrade my plan
-              </Button>
+              {currentPlan?.type !== Plans.PRO && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{
+                    textTransform: "none",
+                    position: "absolute",
+                    mt: (theme) => theme.spacing(4),
+                    right: (theme) => theme.spacing(-6),
+                    top: (theme) => theme.spacing(-3),
+                  }}
+                >
+                  Upgrade my plan
+                </Button>
+              )}
               <Typography
                 sx={{
                   color: (theme) => theme.palette.secondary.grey,

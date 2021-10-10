@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { getCurrentPlan } from "../api/api";
 import { useAuth } from "./useAuth";
 
-const Plans = {
+export const Plans = {
   ONE_HOUR_TRIAL: "One Hour Free Trial",
   NON_ACTIVE: "Non-Active",
   ACTIVE: "Active",
