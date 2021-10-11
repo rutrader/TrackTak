@@ -1,25 +1,28 @@
 import { isEmpty } from "./util.js";
 
-const getFrozenCell = (xCell) => {
+const getFrozenCell = (xCell, id) => {
   const col = parseInt(xCell.charAt(0), 36) - 10;
   const row = xCell.charAt(1) - 1;
 
   return {
     row,
     col,
+    id,
   };
 };
 
-const getCellsData = (xSpreadsheetData) => {
+const getCellsData = (xSpreadsheetData, sheetId, sheet) => {
   const cellsData = Object.keys(xSpreadsheetData.cellsSerialized).reduce(
     (all, rowKey) => {
       const data = xSpreadsheetData.cellsSerialized[rowKey];
       const colData = Object.keys(data).reduce((cols, colKey) => {
-        const cellId = `${rowKey}_${colKey}`;
+        const cellId = `${sheetId}_${rowKey}_${colKey}`;
+        sheet.cells[cellId] = cellId;
         return {
           ...cols,
           [cellId]: {
             value: xSpreadsheetData.cellsSerialized[rowKey][colKey],
+            id: cellId,
           },
         };
       }, {});
@@ -31,12 +34,8 @@ const getCellsData = (xSpreadsheetData) => {
     {},
   );
   const mergedCells = {};
-  const row = {
-    sizes: {},
-  };
-  const col = {
-    sizes: {},
-  };
+  const row = {};
+  const col = {};
 
   const setComment = (source, cellId) => {
     const comment = source.comment;
@@ -54,10 +53,8 @@ const getCellsData = (xSpreadsheetData) => {
     const setStyle = (style) => {
       cellsData[cellId] = {
         ...cellsData[cellId],
-        style: {
-          ...(!!cellsData[cellId] && cellsData[cellId].style),
-          ...style,
-        },
+        ...(!!cellsData[cellId] && cellsData[cellId].style),
+        ...style,
       };
     };
     if (xStyles) {
@@ -178,21 +175,33 @@ const getCellsData = (xSpreadsheetData) => {
       mergedCells[cellId] = {
         col: { x: parseInt(colId), y: merge[1] },
         row: { x: parseInt(rowId), y: merge[0] },
+        id: cellId,
       };
     }
+    sheet.mergedCells[cellId] = cellId;
   };
 
   Object.keys(xSpreadsheetData.cols).forEach((colKey) => {
-    col.sizes[colKey] = xSpreadsheetData.cols[colKey].width;
+    const id = `${sheetId}_${colKey}`;
+    col[id] = {
+      size: xSpreadsheetData.cols[colKey].width,
+      id,
+    };
+    sheet.cols[id] = id;
   });
 
   Object.keys(xSpreadsheetData.rows).forEach((rowKey) => {
     const height = xSpreadsheetData.rows[rowKey].height;
+    const id = `${sheetId}_${rowKey}`;
     if (height) {
-      row.sizes[rowKey] = height;
+      row[id] = {
+        size: height,
+        id,
+      };
     }
+    sheet.rows[id] = id;
     Object.keys(xSpreadsheetData.rows[rowKey].cells).forEach((colId) => {
-      const cellId = `${rowKey}_${colId}`;
+      const cellId = `${sheetId}_${rowKey}_${colId}`;
       const data = xSpreadsheetData.rows[rowKey].cells[colId];
 
       setComment(data, cellId);
@@ -205,42 +214,78 @@ const getCellsData = (xSpreadsheetData) => {
   return { cellsData, mergedCells, row, col };
 };
 
-const getPowersheet = (xSpreadsheetData) => {
-  const powersheetData = {};
+const getPowersheet = (xSpreadsheets) => {
+  const powersheetData = {
+    sheets: {},
+  };
 
-  powersheetData.sheetName = xSpreadsheetData.name;
+  xSpreadsheets.forEach((xSpreadsheetData, sheetId) => {
+    const sheet = {
+      sheetName: xSpreadsheetData.name,
+      id: sheetId,
+      cells: {},
+      cols: {},
+      rows: {},
+      mergedCells: {},
+    };
 
-  if (!isEmpty(xSpreadsheetData.freeze)) {
-    powersheetData.frozenCells = getFrozenCell(xSpreadsheetData.freeze);
-  }
+    if (!isEmpty(xSpreadsheetData.freeze)) {
+      sheet.frozenCell = sheetId;
+      powersheetData.frozenCells = {
+        ...powersheetData.frozenCells,
+        [sheetId]: getFrozenCell(xSpreadsheetData.freeze, sheetId),
+      };
+    }
+    const { cellsData, mergedCells, row, col } = getCellsData(
+      xSpreadsheetData,
+      sheetId,
+      sheet,
+    );
 
-  const { cellsData, mergedCells, row, col } = getCellsData(xSpreadsheetData);
-  if (!isEmpty(cellsData)) {
-    powersheetData.cellsData = cellsData;
-  }
-  if (!isEmpty(mergedCells)) {
-    powersheetData.mergedCells = mergedCells;
-  }
-  if (!isEmpty(row.sizes)) {
-    powersheetData.row = row;
-  }
-  if (!isEmpty(col.sizes)) {
-    powersheetData.col = col;
-  }
+    if (!isEmpty(cellsData)) {
+      powersheetData.cells = {
+        ...powersheetData.cells,
+        ...cellsData,
+      };
+    }
+
+    if (!isEmpty(mergedCells)) {
+      powersheetData.mergedCells = {
+        ...powersheetData.mergedCells,
+        ...mergedCells,
+      };
+    }
+
+    if (!isEmpty(row)) {
+      powersheetData.row = row;
+      powersheetData.rows = {
+        ...powersheetData.rows,
+        ...row,
+      };
+    }
+    if (!isEmpty(col)) {
+      powersheetData.cols = col;
+      powersheetData.cols = {
+        ...powersheetData.cols,
+        ...col,
+      };
+    }
+
+    powersheetData.sheets[sheetId] = sheet;
+  });
 
   return powersheetData;
 };
 
 const mapper = (data) => {
   const xSpreadsheets = data.data.datas;
-  const powersheets = xSpreadsheets.map((xSpreadsheet) =>
-    getPowersheet(xSpreadsheet),
-  );
+
+  const powersheetData = getPowersheet(xSpreadsheets);
 
   return {
     ...data,
     data: {
-      datas: powersheets,
+      datas: powersheetData,
     },
   };
 };

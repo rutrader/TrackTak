@@ -1,6 +1,7 @@
 import mapper from "./mapper.js";
 import * as database from "./client/mongoDbClient.js";
 import { Collections } from "./client/collections.js";
+// import allData from "./testData/testData.js";
 
 (async function () {
   await database.connect();
