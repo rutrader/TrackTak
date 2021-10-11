@@ -18,7 +18,7 @@ const RegionStatus = ({ iconSvg, regionName, enabled }) => {
       <Box
         sx={{
           height: "33px",
-          width: "33px",
+          minWidth: "33px",
         }}
       >
         {iconSvg}

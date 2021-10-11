@@ -27,8 +27,8 @@ const AccountSettings = () => {
   const { currentPlan } = useCurrentPlan();
 
   const dividerStyle = {
-    marginTop: (theme) => `${theme.spacing(4)}`,
-    marginBottom: (theme) => `${theme.spacing(4)}`,
+    marginTop: 4,
+    marginBottom: 4,
   };
 
   const planExpiration = currentPlan?.expiration
@@ -79,7 +79,7 @@ const AccountSettings = () => {
                   fontSize="large"
                   color="action"
                   sx={{
-                    mr: (theme) => theme.spacing(0.5),
+                    mr: 0.5,
                     color: (theme) => theme.palette.primary.light,
                   }}
                 />
@@ -92,7 +92,7 @@ const AccountSettings = () => {
                   sx={{
                     textTransform: "none",
                     position: "absolute",
-                    mt: (theme) => theme.spacing(4),
+                    mt: 4,
                     right: (theme) => theme.spacing(-6),
                     top: (theme) => theme.spacing(-3),
                   }}
@@ -121,7 +121,7 @@ const AccountSettings = () => {
                   fontSize="large"
                   color="action"
                   sx={{
-                    mr: (theme) => theme.spacing(0.5),
+                    mr: 0.5,
                     color: (theme) => theme.palette.primary.light,
                   }}
                 />
@@ -131,7 +131,7 @@ const AccountSettings = () => {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  mt: (theme) => theme.spacing(3),
+                  mt: 3,
                 }}
               >
                 <Typography variant="h6" gutterBottom>
@@ -143,7 +143,7 @@ const AccountSettings = () => {
                   color="primary"
                   sx={{
                     textTransform: "none",
-                    mt: (theme) => theme.spacing(3),
+                    mt: 3,
                   }}
                 >
                   Update Details
@@ -165,7 +165,7 @@ const AccountSettings = () => {
                   fontSize="large"
                   color="action"
                   sx={{
-                    mr: (theme) => theme.spacing(0.5),
+                    mr: 0.5,
                     color: (theme) => theme.palette.primary.light,
                   }}
                 />
@@ -191,7 +191,7 @@ const AccountSettings = () => {
                       fontSize="large"
                       color="action"
                       sx={{
-                        mr: (theme) => theme.spacing(0.5),
+                        mr: 0.5,
                         color: (theme) => theme.palette.primary.light,
                       }}
                     />
