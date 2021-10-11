@@ -35,6 +35,17 @@ const AccountSettings = () => {
     ? new Date(currentPlan.expiration).toLocaleDateString()
     : "";
 
+  const getValuationsText = () => {
+    switch (currentPlan?.type) {
+      case Plans.ONE_HOUR_TRIAL:
+        return "Unlimited Valuations, US stocks large cap.";
+      case Plans.PRO:
+        return "Unlimited Valuations";
+      default:
+        return "Valuations used x/y";
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -59,7 +70,7 @@ const AccountSettings = () => {
             <SettingSection
               heading="Current Plan"
               subHeading={currentPlan?.type}
-              detailText="Valuations used x/y"
+              detailText={getValuationsText()}
               sx={{
                 position: "relative",
               }}
