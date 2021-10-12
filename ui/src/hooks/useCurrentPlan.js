@@ -3,7 +3,7 @@ import { getCurrentPlan } from "../api/api";
 import { useAuth } from "./useAuth";
 
 export const Plans = {
-  ONE_HOUR_TRIAL: "One Hour Free Trial",
+  ONE_HOUR_TRIAL: "1 Hour Free Trial",
   NON_ACTIVE: "Non-Active",
   ACTIVE: "Active",
   PRO: "Pro",

@@ -11,7 +11,7 @@ cup.config = new AWS.Config({
 cup.endpoint = new AWS.Endpoint(cognitoIssuerUri);
 
 const Plans = {
-  ONE_HOUR_TRIAL: "One Hour Free Trial",
+  ONE_HOUR_TRIAL: "1 Hour Free Trial",
   NON_ACTIVE: "Non-Active",
   ACTIVE: "Active",
   PRO: "Pro",
