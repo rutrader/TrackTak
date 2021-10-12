@@ -9,6 +9,7 @@ import {
   Box,
   Grid,
   Button,
+  useTheme,
 } from "@material-ui/core";
 import ContactDetailsForm from "../components/ContactDetailsForm";
 import SettingSection from "../components/SettingSection";
@@ -21,10 +22,13 @@ import LockIcon from "@mui/icons-material/Lock";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PaymentIcon from "@mui/icons-material/Payment";
 import useCurrentPlan, { Plans } from "../hooks/useCurrentPlan";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const AccountSettings = () => {
   const { isExternalIdentityProvider } = useAuth();
   const { currentPlan } = useCurrentPlan();
+  const theme = useTheme();
+  const isOnMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const dividerStyle = {
     marginTop: 4,
@@ -44,6 +48,13 @@ const AccountSettings = () => {
       default:
         return "Valuations used x/y";
     }
+  };
+
+  const buttonLargeScreenStyles = {
+    position: "absolute",
+    mt: 4,
+    right: (theme) => theme.spacing(-6),
+    top: (theme) => theme.spacing(-3),
   };
 
   return (
@@ -70,7 +81,6 @@ const AccountSettings = () => {
             <SettingSection
               heading="Current Plan"
               subHeading={currentPlan?.type}
-              detailText={getValuationsText()}
               sx={{
                 position: "relative",
               }}
@@ -91,15 +101,21 @@ const AccountSettings = () => {
                   color="primary"
                   sx={{
                     textTransform: "none",
-                    position: "absolute",
-                    mt: 4,
-                    right: (theme) => theme.spacing(-6),
-                    top: (theme) => theme.spacing(-3),
+                    ...(!isOnMobile ? buttonLargeScreenStyles : {}),
                   }}
                 >
                   Upgrade my plan
                 </Button>
               )}
+              <Typography
+                sx={{
+                  color: (theme) => theme.palette.secondary.grey,
+                }}
+                variant="h8"
+                gutterBottom
+              >
+                {getValuationsText()}
+              </Typography>
               <Typography
                 sx={{
                   color: (theme) => theme.palette.secondary.grey,

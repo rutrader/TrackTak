@@ -2,14 +2,7 @@ import React from "react";
 import { Box } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 
-const SettingSection = ({
-  children,
-  icon,
-  heading,
-  subHeading,
-  detailText,
-  sx,
-}) => {
+const SettingSection = ({ children, icon, heading, subHeading, sx }) => {
   return (
     <Box
       sx={{
@@ -30,17 +23,9 @@ const SettingSection = ({
             color: (theme) => theme.palette.primary.purple,
           }}
           variant="h6"
-        >
-          {subHeading}
-        </Typography>
-        <Typography
-          sx={{
-            color: (theme) => theme.palette.secondary.grey,
-          }}
-          variant="h8"
           gutterBottom
         >
-          {detailText}
+          {subHeading}
         </Typography>
         {children}
       </Box>
