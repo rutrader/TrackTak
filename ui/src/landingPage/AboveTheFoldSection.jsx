@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, IconButton, Hidden } from "@material-ui/core";
-import GridDots from "../icons/grid-dots.svg";
+import GridDots from "../assets/grid-dots.svg";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import { graphql, useStaticQuery, Link } from "gatsby";
 import Img from "gatsby-image";

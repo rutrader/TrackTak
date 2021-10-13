@@ -112,7 +112,7 @@ module.exports = {
       resolve: "gatsby-plugin-react-svg",
       options: {
         rule: {
-          include: /icons/,
+          include: /assets/,
         },
       },
     },
@@ -146,7 +146,7 @@ module.exports = {
     {
       resolve: "gatsby-plugin-manifest",
       options: {
-        icon: "src/icons/tracktak-logo-small.svg",
+        icon: "src/assets/tracktak-logo-small.svg",
       },
     },
     //"gatsby-plugin-offline",

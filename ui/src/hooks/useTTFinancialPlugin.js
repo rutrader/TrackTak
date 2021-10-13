@@ -15,7 +15,7 @@ import {
 import { HyperFormula } from "hyperformula";
 import { useAuth } from "./useAuth";
 
-export const useTTFinancialPlugin = (spreadsheet, spreadsheetData) => {
+export const useTTFinancialPlugin = (spreadsheetData) => {
   const [financialData, setFinancialData] = useState();
   const [hasLoadedFinancialData, setHasLoadedFinancialData] = useState();
   const dispatch = useDispatch();
@@ -97,15 +97,15 @@ export const useTTFinancialPlugin = (spreadsheet, spreadsheetData) => {
 
     HyperFormula.registerFunctionPlugin(FinancialPlugin, finTranslations);
 
-    if (spreadsheet) {
-      spreadsheet.hyperformula.rebuildAndRecalculate();
-      spreadsheet.reset();
-    }
+    // if (spreadsheet) {
+    //   spreadsheet.hyperformula.rebuildAndRecalculate();
+    //   spreadsheet.reset();
+    // }
 
     return () => {
       HyperFormula.unregisterFunctionPlugin(FinancialPlugin);
     };
-  }, [financialData, hasLoadedFinancialData, spreadsheet]);
+  }, [financialData, hasLoadedFinancialData]);
 
   return financialData;
 };

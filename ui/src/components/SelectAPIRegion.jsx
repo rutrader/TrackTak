@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Divider, Paper } from "@material-ui/core";
 import { Box } from "@material-ui/system";
-import USAIconSvg from "../icons/united-states.svg";
-import GlobeIconSvg from "../icons/globe.svg";
-import ChinaIconSvg from "../icons/china.svg";
-import EuropeIconSvg from "../icons/europe.svg";
-import UKIconSvg from "../icons/united-kingdom.svg";
-import WalletIconSvg from "../icons/wallet.svg";
+import USAIconSvg from "../assets/united-states.svg";
+import GlobeIconSvg from "../assets/globe.svg";
+import ChinaIconSvg from "../assets/china.svg";
+import EuropeIconSvg from "../assets/europe.svg";
+import UKIconSvg from "../assets/united-kingdom.svg";
+import WalletIconSvg from "../assets/wallet.svg";
 import ListAPIRegion from "../components/ListAPIRegion";
 import { apiRegionsHashLink, Header, SelectPlanButton } from "./PricingPlan";
 import { useLocation } from "@reach/router";

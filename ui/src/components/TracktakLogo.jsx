@@ -1,8 +1,8 @@
 import { Box, Hidden, Typography } from "@material-ui/core";
 import { Link } from "gatsby";
 import React from "react";
-import TracktakLogoSvg from "../icons/tracktak-purple.svg";
-import TracktakLogoSmallSvg from "../icons/tracktak-logo-small.svg";
+import TracktakLogoSvg from "../assets/tracktak-purple.svg";
+import TracktakLogoSmallSvg from "../assets/tracktak-logo-small.svg";
 import { useAuth } from "../hooks/useAuth";
 
 const TracktakLogo = ({ width, height, logoProps, ...props }) => {

@@ -3,7 +3,7 @@ import React from "react";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import RedditIcon from "@material-ui/icons/Reddit";
 import dayjs from "dayjs";
-import TracktakLogoSvg from "../icons/tracktak-purple.svg";
+import TracktakLogoSvg from "../assets/tracktak-purple.svg";
 import { landingPageLinks } from "../shared/getHeaderLinks";
 import { Link as RouterLink } from "gatsby";
 
@@ -20,7 +20,7 @@ const Footer = () => {
         }}
       >
         <Box sx={{ mb: 2 }}>
-          <TracktakLogoSvg src="icons/tracktak-black.svg" alt="Tracktak" />
+          <TracktakLogoSvg src="assets/tracktak-black.svg" alt="Tracktak" />
         </Box>
         <Box>
           <IconButton

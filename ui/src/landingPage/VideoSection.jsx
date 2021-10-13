@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Hidden } from "@material-ui/core";
-import GridDots from "../icons/grid-dots-purple.svg";
+import GridDots from "../assets/grid-dots-purple.svg";
 import YoutubeTutorial from "../components/YoutubeTutorial";
 
 const VideoSection = () => {

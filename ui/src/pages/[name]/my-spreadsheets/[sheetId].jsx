@@ -5,14 +5,12 @@ import Spreadsheet from "../../../../../packages/intrinsic-valuations/src/spread
 import useFetchSpreadsheet from "../../../hooks/useFetchSpreadsheet";
 import withAuthentication from "../../../hocs/withAuthentication";
 import useSaveSpreadsheetData from "../../../hooks/useSaveSpreadsheetData";
-import { useSpreadsheet } from "../../../hooks/useSpreadsheet";
 import { useTTFinancialPlugin } from "../../../hooks/useTTFinancialPlugin";
 
 const SpreadsheetPage = ({ sheetId }) => {
-  const { spreadsheet, setSpreadsheet } = useSpreadsheet();
   const spreadsheetData = useFetchSpreadsheet(sheetId);
   const saveSheetData = useSaveSpreadsheetData(spreadsheetData);
-  const financialData = useTTFinancialPlugin(spreadsheet, spreadsheetData);
+  const financialData = useTTFinancialPlugin(spreadsheetData);
 
   return (
     <>
@@ -24,8 +22,6 @@ const SpreadsheetPage = ({ sheetId }) => {
         </Helmet>
       )}
       <Spreadsheet
-        spreadsheet={spreadsheet}
-        setSpreadsheet={setSpreadsheet}
         saveSheetData={saveSheetData}
         spreadsheetData={spreadsheetData}
         financialData={financialData}
