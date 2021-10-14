@@ -269,14 +269,12 @@ const getPowersheet = (xSpreadsheets) => {
     }
 
     if (!isEmpty(row)) {
-      powersheetData.rows = row;
       powersheetData.rows = {
         ...powersheetData.rows,
         ...row,
       };
     }
     if (!isEmpty(col)) {
-      powersheetData.cols = col;
       powersheetData.cols = {
         ...powersheetData.cols,
         ...col,
