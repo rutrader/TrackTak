@@ -293,15 +293,14 @@ const getPowersheet = (xSpreadsheets) => {
   return powersheetData;
 };
 
-const mapper = (data) => {
+const mapper = (data, name) => {
   const xSpreadsheets = data.data.datas;
 
   const powersheetData = getPowersheet(xSpreadsheets);
 
   return {
-    data: {
-      ...powersheetData,
-    },
+    name,
+    data: powersheetData,
   };
 };
 
