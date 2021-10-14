@@ -25,9 +25,10 @@ import allData from "./testData/testData.js";
 
   const result = await database.find(Collections.POWERSHEET_SPREADSHEET);
 
-  console.log(
-    `Inserted ${result.length} records into collection: ${Collections.POWERSHEET_SPREADSHEET}`,
-  );
+  console.log(JSON.stringify(result));
+  // console.log(
+  //   `Inserted ${result.length} records into collection: ${Collections.POWERSHEET_SPREADSHEET}`,
+  // );
 
   process.exit(0);
 })();

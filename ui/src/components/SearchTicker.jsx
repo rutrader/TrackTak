@@ -13,9 +13,6 @@ import { getAutocompleteQuery } from "../../../packages/intrinsic-valuations/src
 import { useAuth } from "../hooks/useAuth";
 import { createSpreadsheet } from "../api/api";
 import { navigate } from "gatsby";
-import freeCashFlowToFirmData, {
-  freeCashFlowToFirmVariablesData,
-} from "../../../packages/intrinsic-valuations/src/spreadsheet/templates/freeCashFlowFirmSimple/data";
 import { useDispatch } from "react-redux";
 import { setMessage } from "../redux/actions/snackbarActions";
 import { HyperFormula } from "hyperformula";
@@ -34,11 +31,13 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
 
   const createUserSpreadsheet = async (ticker) => {
     const token = await getAccessToken();
-    const data = {
-      datas: freeCashFlowToFirmData,
-      variablesDatas: freeCashFlowToFirmVariablesData,
+    const freeCashFlowToFirmTemplateData = await import(
+      "../../../packages/intrinsic-valuations/src/spreadsheet/templates/freeCashFlowFirmSimple.json"
+    );
+    const sheetData = {
+      name: ticker,
+      data: freeCashFlowToFirmTemplateData.default,
     };
-    const sheetData = { name: ticker, data };
     const response = await createSpreadsheet(
       { sheetData, ticker },
       token?.jwtToken,
