@@ -15,14 +15,14 @@ import {
 import { HyperFormula } from "hyperformula";
 import { useAuth } from "./useAuth";
 
-export const useTTFinancialPlugin = (spreadsheetData) => {
+export const useTTFinancialPlugin = (spreadsheet) => {
   const [financialData, setFinancialData] = useState();
   const [hasLoadedFinancialData, setHasLoadedFinancialData] = useState();
   const dispatch = useDispatch();
   const { getAccessToken } = useAuth();
 
   useEffect(() => {
-    const { id, ticker } = spreadsheetData?.financialData ?? {};
+    const { id, ticker } = spreadsheet?.financialData ?? {};
 
     const fetchData = async (callback) => {
       setHasLoadedFinancialData(false);
@@ -81,13 +81,13 @@ export const useTTFinancialPlugin = (spreadsheetData) => {
         return await createFinancialData(
           financialData,
           token?.jwtToken,
-          spreadsheetData._id,
+          spreadsheet._id,
         );
       };
 
       fetchData(fetchCreateNewFinancials);
     }
-  }, [dispatch, getAccessToken, spreadsheetData]);
+  }, [dispatch, getAccessToken, spreadsheet]);
 
   useEffect(() => {
     const FinancialPlugin = getTTFinancialPlugin(

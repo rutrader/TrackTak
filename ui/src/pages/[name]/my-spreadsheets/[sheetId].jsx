@@ -8,23 +8,24 @@ import useSaveSpreadsheetData from "../../../hooks/useSaveSpreadsheetData";
 import { useTTFinancialPlugin } from "../../../hooks/useTTFinancialPlugin";
 
 const SpreadsheetPage = ({ sheetId }) => {
-  const spreadsheetData = useFetchSpreadsheet(sheetId);
-  const saveSheetData = useSaveSpreadsheetData(spreadsheetData);
-  const financialData = useTTFinancialPlugin(spreadsheetData);
+  const spreadsheet = useFetchSpreadsheet(sheetId);
+  const saveSheetData = useSaveSpreadsheetData(spreadsheet);
+  const financialData = useTTFinancialPlugin(spreadsheet);
 
   return (
     <>
-      {spreadsheetData?.sheetData.name && (
+      {spreadsheet?.sheetData.name && (
         <Helmet>
-          <title>
-            {getTitle(`${spreadsheetData.sheetData.name} Spreadsheet`)}
-          </title>
+          <title>{getTitle(`${spreadsheet.sheetData.name} Spreadsheet`)}</title>
         </Helmet>
       )}
       <Spreadsheet
         saveSheetData={saveSheetData}
-        spreadsheetData={spreadsheetData}
+        sheetData={spreadsheet?.sheetData}
         financialData={financialData}
+        sx={{
+          flex: 1,
+        }}
       />
     </>
   );

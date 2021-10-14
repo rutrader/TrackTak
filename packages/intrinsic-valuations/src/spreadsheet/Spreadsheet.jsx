@@ -42,10 +42,10 @@ const buildPowersheet = () => {
   return spreadsheet;
 };
 
-const Spreadsheet = ({ spreadsheetData, financialData, saveSheetData }) => {
+const Spreadsheet = ({ sheetData, financialData, saveSheetData, ...props }) => {
   const [spreadsheet, setSpreadsheet] = useState();
   const [containerEl, setContainerEl] = useState();
-  const sheetName = spreadsheetData?.sheetData?.name;
+  const sheetName = sheetData?.name;
   const currencySymbol = financialData?.general?.currencySymbol;
 
   useEffect(() => {
@@ -59,6 +59,26 @@ const Spreadsheet = ({ spreadsheetData, financialData, saveSheetData }) => {
   }, []);
 
   useEffect(() => {
+    if (sheetData) {
+      spreadsheet?.setData(sheetData.data);
+    }
+  }, [spreadsheet, sheetData]);
+
+  useEffect(() => {
+    const persistData = async (sheetData, done) => {
+      await saveSheetData(sheetData);
+
+      done();
+    };
+
+    spreadsheet?.eventEmitter.on("persistData", persistData);
+
+    return () => {
+      spreadsheet?.eventEmitter.off("persistData", persistData);
+    };
+  }, [saveSheetData, spreadsheet]);
+
+  useEffect(() => {
     if (containerEl && spreadsheet) {
       containerEl.appendChild(spreadsheet.spreadsheetEl);
       spreadsheet.initialize();
@@ -67,14 +87,7 @@ const Spreadsheet = ({ spreadsheetData, financialData, saveSheetData }) => {
 
   if (!spreadsheet) return null;
 
-  return (
-    <Box
-      sx={{
-        height: "100vh",
-      }}
-      ref={setContainerEl}
-    />
-  );
+  return <Box {...props} ref={setContainerEl} />;
 };
 
 export default Spreadsheet;

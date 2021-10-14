@@ -21,6 +21,7 @@ const useSaveSpreadsheetData = (spreadsheet) => {
   const saveSheetData = useCallback(
     async (newData) => {
       const token = await getAccessToken();
+
       return saveSpreadsheetData(spreadsheet, newData, token);
     },
     [getAccessToken, spreadsheet],
