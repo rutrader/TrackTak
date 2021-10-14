@@ -1,14 +1,23 @@
 import { isEmpty } from "./util.js";
 
 const getFrozenCell = (xCell, id) => {
-  const col = parseInt(xCell.charAt(0), 36) - 10;
-  const row = xCell.charAt(1) - 1;
-
-  return {
-    row,
-    col,
+  let frozenCell = {
     id,
   };
+  const col = parseInt(xCell.charAt(0), 36) - 11;
+  const row = xCell.charAt(1) - 2;
+  if (col >= 0) {
+    frozenCell.col = col;
+  }
+  if (row >= 0) {
+    frozenCell.row = row;
+  }
+
+  if (frozenCell.col === undefined && frozenCell.row === undefined) {
+    return null;
+  }
+
+  return frozenCell;
 };
 
 const getCellsData = (xSpreadsheetData, sheetId, sheet) => {
@@ -177,8 +186,8 @@ const getCellsData = (xSpreadsheetData, sheetId, sheet) => {
         row: { x: parseInt(rowId), y: merge[0] },
         id: cellId,
       };
+      sheet.mergedCells[cellId] = cellId;
     }
-    sheet.mergedCells[cellId] = cellId;
   };
 
   Object.keys(xSpreadsheetData.cols).forEach((colKey) => {
@@ -198,8 +207,8 @@ const getCellsData = (xSpreadsheetData, sheetId, sheet) => {
         size: height,
         id,
       };
+      sheet.rows[id] = id;
     }
-    sheet.rows[id] = id;
     Object.keys(xSpreadsheetData.rows[rowKey].cells).forEach((colId) => {
       const cellId = `${sheetId}_${rowKey}_${colId}`;
       const data = xSpreadsheetData.rows[rowKey].cells[colId];
@@ -230,11 +239,14 @@ const getPowersheet = (xSpreadsheets) => {
     };
 
     if (!isEmpty(xSpreadsheetData.freeze)) {
-      sheet.frozenCell = sheetId;
-      powersheetData.frozenCells = {
-        ...powersheetData.frozenCells,
-        [sheetId]: getFrozenCell(xSpreadsheetData.freeze, sheetId),
-      };
+      const frozenCell = getFrozenCell(xSpreadsheetData.freeze, sheetId);
+      if (frozenCell) {
+        sheet.frozenCell = sheetId;
+        powersheetData.frozenCells = {
+          ...powersheetData.frozenCells,
+          [sheetId]: frozenCell,
+        };
+      }
     }
     const { cellsData, mergedCells, row, col } = getCellsData(
       xSpreadsheetData,
@@ -257,7 +269,7 @@ const getPowersheet = (xSpreadsheets) => {
     }
 
     if (!isEmpty(row)) {
-      powersheetData.row = row;
+      powersheetData.rows = row;
       powersheetData.rows = {
         ...powersheetData.rows,
         ...row,
@@ -271,6 +283,12 @@ const getPowersheet = (xSpreadsheets) => {
       };
     }
 
+    Object.keys(sheet).forEach((key) => {
+      if (isEmpty(sheet[key])) {
+        delete sheet[key];
+      }
+    });
+
     powersheetData.sheets[sheetId] = sheet;
   });
 
@@ -283,9 +301,8 @@ const mapper = (data) => {
   const powersheetData = getPowersheet(xSpreadsheets);
 
   return {
-    ...data,
     data: {
-      datas: powersheetData,
+      ...powersheetData,
     },
   };
 };
