@@ -66,6 +66,7 @@ const getCellsData = (xSpreadsheetData, sheetId, sheet) => {
     const styleIndex = source.style;
     const xStyles = xSpreadsheetData.styles[styleIndex];
     const setStyle = (style) => {
+      sheet.cells[cellId] = cellId;
       cellsData[cellId] = {
         ...cellsData[cellId],
         ...(!!cellsData[cellId] && cellsData[cellId].style),
@@ -78,8 +79,9 @@ const getCellsData = (xSpreadsheetData, sheetId, sheet) => {
         switch (styleKey) {
           case "font": {
             if (xStyles.font.size) {
+              // + 2 to it because x-spreadsheets is 2 lower incorrectly
               setStyle({
-                fontSize: xStyles.font.size,
+                fontSize: xStyles.font.size + 2,
               });
             }
             if (xStyles.font.bold) {
@@ -188,9 +190,13 @@ const getCellsData = (xSpreadsheetData, sheetId, sheet) => {
   const setMergedCells = (source, cellId, rowId, colId) => {
     const merge = source.merge;
     if (merge && merge.length) {
+      // x-spreadsheet mergedCell y is the amount
+      // of subsequent rows/cols to merge. Not the index
+      // So we convert y to the index
+
       mergedCells[cellId] = {
-        col: { x: parseInt(colId), y: merge[1] },
-        row: { x: parseInt(rowId), y: merge[0] },
+        col: { x: parseInt(colId), y: parseInt(colId) + merge[1] },
+        row: { x: parseInt(rowId), y: parseInt(rowId) + merge[0] },
         id: cellId,
       };
       sheet.mergedCells[cellId] = cellId;
@@ -291,6 +297,27 @@ const getPowersheet = (xSpreadsheets) => {
         delete sheet[key];
       }
     });
+
+    if (powersheetData.mergedCells) {
+      // Delete any cell data for mergedCells that isn't
+      // top left cell as x-spreadsheet was duplicating it
+      Object.keys(powersheetData.mergedCells).forEach((key) => {
+        const value = powersheetData.mergedCells[key];
+
+        const sections = key.split("_");
+        const sheet = parseInt(sections[0], 10);
+
+        for (let ri = value.row.x; ri <= value.row.y; ri++) {
+          for (let ci = value.col.x; ci <= value.col.y; ci++) {
+            const associatedMergedCellId = `${sheet}_${ri}_${ci}`;
+
+            if (!powersheetData.mergedCells[associatedMergedCellId]) {
+              delete powersheetData.cells[associatedMergedCellId];
+            }
+          }
+        }
+      });
+    }
 
     powersheetData.sheets[sheetId] = {
       ...sheet,
