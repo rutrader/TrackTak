@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
@@ -23,12 +23,16 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PaymentIcon from "@mui/icons-material/Payment";
 import useCurrentPlan, { Plans } from "../hooks/useCurrentPlan";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import ConfirmationDialog from "../components/ConfirmationDialog";
+import FreezePlanForm from "../components/FreezePlanForm";
+import AcUnitIcon from "@mui/icons-material/AcUnit";
 
 const AccountSettings = () => {
   const { isExternalIdentityProvider } = useAuth();
   const { currentPlan } = useCurrentPlan();
   const theme = useTheme();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const [showFreezePlanDialog, setShowFreezePlanDialog] = useState(false);
 
   const dividerStyle = {
     marginTop: 4,
@@ -55,6 +59,18 @@ const AccountSettings = () => {
     mt: 4,
     right: (theme) => theme.spacing(-6),
     top: (theme) => theme.spacing(-3),
+  };
+
+  const handleFreezePlanButtonClick = () => {
+    setShowFreezePlanDialog(true);
+  };
+
+  const handleFreezePlanDialogClose = () => {
+    setShowFreezePlanDialog(false);
+  };
+
+  const handleFreezePlanDialogConfirm = () => {
+    setShowFreezePlanDialog(false);
   };
 
   return (
@@ -123,7 +139,11 @@ const AccountSettings = () => {
                 variant="h8"
                 gutterBottom
               >
-                $X/mo. Auto-renews on {planExpiration}
+                $X/mo.{" "}
+                {currentPlan?.type === Plans.ONE_HOUR_TRIAL
+                  ? "Expires on"
+                  : "Auto-renews on"}{" "}
+                {planExpiration}
               </Typography>
               <CurrentPlan />
             </SettingSection>
@@ -219,6 +239,33 @@ const AccountSettings = () => {
             </>
           )}
         </Grid>
+
+        <Divider light sx={dividerStyle} />
+
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{
+            textTransform: "none",
+          }}
+          onClick={handleFreezePlanButtonClick}
+        >
+          <AcUnitIcon
+            sx={{
+              mr: 0.5,
+            }}
+          />
+          Freeze Payment Plan
+        </Button>
+
+        <ConfirmationDialog
+          open={showFreezePlanDialog}
+          onClose={handleFreezePlanDialogClose}
+          onConfirm={handleFreezePlanDialogConfirm}
+          confirmText="Freeze My Plan"
+        >
+          <FreezePlanForm />
+        </ConfirmationDialog>
       </Paper>
     </>
   );

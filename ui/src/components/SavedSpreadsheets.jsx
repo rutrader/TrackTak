@@ -86,6 +86,8 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
         open={showConfirmationDialog}
         onClose={handleConfirmationDialogClose}
         onConfirm={handleDeleteConfirm}
+        confirmText="Delete"
+        titleText="Confirm"
       >
         Are you sure you want to delete this valuation?
       </ConfirmationDialog>

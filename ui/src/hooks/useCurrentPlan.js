@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { getCurrentPlan } from "../api/api";
 import { useAuth } from "./useAuth";
 
@@ -16,17 +16,21 @@ export const isStockDisabled = (currentPlan, stock) =>
 
 const useCurrentPlan = () => {
   const { getAccessToken } = useAuth();
+  const cache = useRef();
   const [currentPlan, setCurrentPlan] = useState();
 
   const fetchPlan = useCallback(async () => {
     const token = await getAccessToken();
     const response = await getCurrentPlan(token?.jwtToken);
+    cache.current = response.data;
     setCurrentPlan(response.data);
   }, [getAccessToken]);
 
   useEffect(() => {
-    if (!currentPlan) {
+    if (!currentPlan && !cache.current) {
       fetchPlan();
+    } else {
+      setCurrentPlan(cache.current);
     }
   }, [currentPlan, fetchPlan]);
 
