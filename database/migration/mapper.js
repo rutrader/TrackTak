@@ -27,10 +27,16 @@ const getCellsData = (xSpreadsheetData, sheetId, sheet) => {
       const colData = Object.keys(data).reduce((cols, colKey) => {
         const cellId = `${sheetId}_${rowKey}_${colKey}`;
         sheet.cells[cellId] = cellId;
+
+        const value = xSpreadsheetData.cellsSerialized[rowKey][colKey];
+
         return {
           ...cols,
           [cellId]: {
-            value: xSpreadsheetData.cellsSerialized[rowKey][colKey],
+            value:
+              value === null || value === undefined
+                ? undefined
+                : value.toString(),
             id: cellId,
           },
         };
@@ -64,6 +70,7 @@ const getCellsData = (xSpreadsheetData, sheetId, sheet) => {
         ...cellsData[cellId],
         ...(!!cellsData[cellId] && cellsData[cellId].style),
         ...style,
+        id: cellId,
       };
     };
     if (xStyles) {
@@ -230,8 +237,6 @@ const getPowersheet = (xSpreadsheets) => {
 
   xSpreadsheets.forEach((xSpreadsheetData, sheetId) => {
     const sheet = {
-      sheetName: xSpreadsheetData.name,
-      id: sheetId,
       cells: {},
       cols: {},
       rows: {},
@@ -287,7 +292,11 @@ const getPowersheet = (xSpreadsheets) => {
       }
     });
 
-    powersheetData.sheets[sheetId] = sheet;
+    powersheetData.sheets[sheetId] = {
+      ...sheet,
+      sheetName: xSpreadsheetData.name,
+      id: sheetId,
+    };
   });
 
   return powersheetData;
