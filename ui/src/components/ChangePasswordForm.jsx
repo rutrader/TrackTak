@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Button from "@material-ui/core/Button";
+import { Box } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 import { useAuth } from "../hooks/useAuth";
 import { setMessage } from "../redux/actions/snackbarActions";
 import VerifyEmailLink from "./VerifyEmailLink";
@@ -47,12 +47,18 @@ const ChangePasswordForm = () => {
   const isButtonDisabled = !oldPassword || !newPassword || !isEmailVerified;
 
   return (
-    <>
-      <Typography variant="h6" gutterBottom>
-        Change Password
-      </Typography>
+    <Box
+      sx={{
+        display: "flex",
+      }}
+    >
       <form style={{ width: "100%" }} onSubmit={handleSubmit}>
-        <Grid container justifyContent="space-between" gap={3}>
+        <Grid
+          container
+          direction="column"
+          justifyContent="space-between"
+          gap={3}
+        >
           <Grid item xs={12} sm={4}>
             <TextField
               onChange={(e) => setOldPassword(e.target.value)}
@@ -82,6 +88,13 @@ const ChangePasswordForm = () => {
               size="small"
               InputProps={{ inputProps: { minLength: 8 } }}
             />
+            <VerifyEmailLink
+              sx={{
+                mb: 1,
+                mt: 1,
+              }}
+              text="Verify account before changing password"
+            />
           </Grid>
           <Grid item xs={12} sm={2}>
             <Button
@@ -96,16 +109,10 @@ const ChangePasswordForm = () => {
             >
               Change
             </Button>
-            <VerifyEmailLink
-              sx={{
-                mt: 3,
-              }}
-              text="You must verify your account before changing your password"
-            />
           </Grid>
         </Grid>
       </form>
-    </>
+    </Box>
   );
 };
 

@@ -4,6 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useDispatch } from "react-redux";
 import { setMessage } from "../redux/actions/snackbarActions";
 import { noop } from "../shared/utils";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 
 const VerifyEmailLink = ({ text, ...props }) => {
   const { sendEmailVerification, isEmailVerified, userData } = useAuth();
@@ -42,10 +43,17 @@ const VerifyEmailLink = ({ text, ...props }) => {
         sx={{
           display: "flex",
           alignItems: "center",
-          flexDirection: "column",
           ...props.sx,
         }}
       >
+        <WarningAmberIcon
+          fontSize="small"
+          color="action"
+          sx={{
+            mr: (theme) => theme.spacing(0.5),
+            color: (theme) => theme.palette.warning.main,
+          }}
+        />
         <Link
           component="button"
           type="button"
@@ -54,7 +62,7 @@ const VerifyEmailLink = ({ text, ...props }) => {
           onClick={handleClickVerifyEmail}
           sx={{
             color: (theme) => theme.palette.warning.main,
-            fontSize: (theme) => theme.typography.button.fontSize,
+            fontSize: (theme) => theme.typography.button.fontSize4,
             textAlign: "left",
           }}
         >

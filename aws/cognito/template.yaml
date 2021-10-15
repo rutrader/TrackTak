@@ -83,13 +83,13 @@ Resources:
       Runtime: nodejs12.x
       FunctionName: ChangePassword
       Policies:
-        - Version: '2012-10-17'
+        - Version: "2012-10-17"
           Statement:
-          - Effect: Allow
-            Action:
-            - cognito-identity:*
-            - cognito-idp:*
-            Resource: "*"
+            - Effect: Allow
+              Action:
+                - cognito-identity:*
+                - cognito-idp:*
+              Resource: "*"
 
   DefineAuthChallenge:
     Type: AWS::Serverless::Function
@@ -132,8 +132,8 @@ Resources:
               Resource: "arn:aws:lambda:*:*:*:*"
             - Effect: Allow
               Action:
-              - cognito-identity:*
-              - cognito-idp:*
+                - cognito-identity:*
+                - cognito-idp:*
               Resource: "*"
 
   PreSignUp:
@@ -143,19 +143,50 @@ Resources:
       Handler: pre-sign-up.handler
       Runtime: nodejs12.x
 
+  PostAuthentication:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambda-triggers/post-authentication/
+      Handler: post-authentication.handler
+      Runtime: nodejs12.x
+      Policies:
+        - Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action:
+                - cognito-identity:*
+                - cognito-idp:*
+              Resource: "*"
+
   UserPool:
     Type: "AWS::Cognito::UserPool"
     Properties:
       UserPoolName: !Ref UserPoolName
       Schema:
-        - Name: name
+        - Name: account_type
           AttributeDataType: String
           Mutable: true
-          Required: true
-        - Name: email
+          StringAttributeConstraints:
+            MinLength: 1
+            MaxLength: 256
+        - Name: account_addons
           AttributeDataType: String
           Mutable: true
-          Required: true
+          StringAttributeConstraints:
+            MinLength: 1
+            MaxLength: 256
+        - Name: plan_expiration
+          AttributeDataType: String
+          Mutable: true
+          StringAttributeConstraints:
+            MinLength: 1
+            MaxLength: 256
+        - Name: plan_expired
+          AttributeDataType: String
+          Mutable: true
+          StringAttributeConstraints:
+            MinLength: 1
+            MaxLength: 256
       Policies:
         PasswordPolicy:
           MinimumLength: 8
@@ -177,6 +208,7 @@ Resources:
         DefineAuthChallenge: !GetAtt DefineAuthChallenge.Arn
         PreSignUp: !GetAtt PreSignUp.Arn
         VerifyAuthChallengeResponse: !GetAtt VerifyAuthChallengeResponse.Arn
+        PostAuthentication: !GetAtt PostAuthentication.Arn
       EmailConfiguration:
         EmailSendingAccount: DEVELOPER
         From: no-reply@tracktak.com
@@ -215,9 +247,9 @@ Resources:
         - aws.cognito.signin.user.admin
       # There is an odd CloudFormation/Cognito bug where below value units change from days to minutes
       # If an error is reported or values are incorrect change below to minutes
-      AccessTokenValidity: 1 # Day (1440 minutes)
-      IdTokenValidity: 1 # Day (1440 minutes)
-      RefreshTokenValidity: 3650 # Days (5256000 minutes)
+      AccessTokenValidity: 1 # Day (1440 minutes) / 1
+      IdTokenValidity: 1 # Day (1440 minutes) / 1
+      RefreshTokenValidity: 3650 # Days (5256000 minutes) / 3650
 
   UserPoolIdentityProviderGoogle:
     Type: AWS::Cognito::UserPoolIdentityProvider
@@ -292,6 +324,13 @@ Resources:
     Properties:
       Action: lambda:InvokeFunction
       FunctionName: !GetAtt PreSignUp.Arn
+      Principal: cognito-idp.amazonaws.com
+      SourceArn: !GetAtt UserPool.Arn
+  PostAuthenticationInvocationPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt PostAuthentication.Arn
       Principal: cognito-idp.amazonaws.com
       SourceArn: !GetAtt UserPool.Arn
 
