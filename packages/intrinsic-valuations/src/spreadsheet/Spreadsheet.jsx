@@ -45,7 +45,6 @@ const buildPowersheet = () => {
 const Spreadsheet = ({ sheetData, financialData, saveSheetData, ...props }) => {
   const [spreadsheet, setSpreadsheet] = useState();
   const [containerEl, setContainerEl] = useState();
-  const sheetName = sheetData?.name;
   const currencySymbol = financialData?.general?.currencySymbol;
 
   useEffect(() => {
@@ -57,12 +56,6 @@ const Spreadsheet = ({ sheetData, financialData, saveSheetData, ...props }) => {
       spreadsheet?.destroy();
     };
   }, []);
-
-  useEffect(() => {
-    if (sheetData) {
-      spreadsheet?.setData(sheetData.data);
-    }
-  }, [spreadsheet, sheetData]);
 
   useEffect(() => {
     const persistData = async (sheetData, done) => {
@@ -79,11 +72,17 @@ const Spreadsheet = ({ sheetData, financialData, saveSheetData, ...props }) => {
   }, [saveSheetData, spreadsheet]);
 
   useEffect(() => {
-    if (containerEl && spreadsheet) {
-      containerEl.appendChild(spreadsheet.spreadsheetEl);
-      spreadsheet.initialize();
+    if (spreadsheet && sheetData) {
+      if (containerEl) {
+        containerEl.appendChild(spreadsheet.spreadsheetEl);
+        spreadsheet.setData(sheetData.data);
+      }
+
+      spreadsheet?.setOptions({
+        exportSpreadsheetName: sheetData.name,
+      });
     }
-  }, [containerEl, spreadsheet]);
+  }, [containerEl, sheetData, spreadsheet]);
 
   if (!spreadsheet) return null;
 
