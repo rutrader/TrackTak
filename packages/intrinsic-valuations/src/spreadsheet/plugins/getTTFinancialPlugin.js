@@ -17,7 +17,8 @@ import {
 import { isNil } from "lodash-es";
 import defaultStatement from "../../shared/defaultStatement";
 
-export const getTTFinancialPlugin = (financialData, hasFinancialsLoaded) => {
+export const getTTFinancialPlugin = (financialData) => {
+  const hasFinancialsLoaded = !!financialData;
   const {
     exchangeRates,
     financialStatements = {},

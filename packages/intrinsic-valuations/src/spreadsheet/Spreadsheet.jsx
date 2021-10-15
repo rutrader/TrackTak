@@ -11,6 +11,10 @@ import {
   BottomBar,
 } from "@tracktak/powersheet";
 import { currencySymbolMap } from "currency-symbol-map";
+import {
+  finTranslations,
+  getTTFinancialPlugin,
+} from "./plugins/getTTFinancialPlugin";
 
 const buildPowersheet = () => {
   const hyperformula = HyperFormula.buildEmpty({
@@ -48,12 +52,26 @@ const Spreadsheet = ({ sheetData, financialData, saveSheetData, ...props }) => {
   const currencySymbol = financialData?.general?.currencySymbol;
 
   useEffect(() => {
+    const FinancialPlugin = getTTFinancialPlugin(financialData);
+
+    HyperFormula.registerFunctionPlugin(FinancialPlugin, finTranslations);
+
+    spreadsheet?.hyperformula.rebuildAndRecalculate();
+    spreadsheet?.updateViewport();
+
+    return () => {
+      HyperFormula.unregisterFunctionPlugin(FinancialPlugin);
+    };
+  }, [financialData, spreadsheet]);
+
+  useEffect(() => {
     const spreadsheet = buildPowersheet();
 
     setSpreadsheet(spreadsheet);
 
     return () => {
       spreadsheet?.destroy();
+      spreadsheet?.hyperformula.destroy();
     };
   }, []);
 
