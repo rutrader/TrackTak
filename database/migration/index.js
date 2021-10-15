@@ -9,7 +9,7 @@ import allData from "./testData/testData.js";
   //  const allData = await database.find(Collections.SPREADSHEET);
   const mappedData = allData.map((data) => ({
     ...data,
-    sheetData: mapper(data.sheetData),
+    sheetData: mapper(data.sheetData, data.financialData.ticker),
   }));
   console.log(
     `Mapped ${mappedData.length} records from collection: ${Collections.SPREADSHEET}`,
