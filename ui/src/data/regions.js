@@ -1,9 +1,9 @@
 import React from "react";
-import USAIconSvg from "../icons/united-states.svg";
-import ChinaIconSvg from "../icons/china.svg";
-import EuropeIconSvg from "../icons/europe.svg";
-import UKIconSvg from "../icons/united-kingdom.svg";
-import BrazilIconSvg from "../icons/brazil.svg";
+import USAIconSvg from "../assets/united-states.svg";
+import ChinaIconSvg from "../assets/china.svg";
+import EuropeIconSvg from "../assets/europe.svg";
+import UKIconSvg from "../assets/united-kingdom.svg";
+import BrazilIconSvg from "../assets/brazil.svg";
 
 export const listAPIregions = [
   {
