@@ -182,6 +182,11 @@ app.post("/api/v1/create-checkout-session", auth, async (req, res) => {
       mode: "subscription",
       payment_method_types: ["card"],
       line_items: lineItems,
+      allow_promotion_codes: true,
+      billing_address_collection: "required",
+      automatic_tax: {
+        enabled: true,
+      },
       success_url: `${process.env.ORIGIN_URL}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.ORIGIN_URL}/pricing`,
     });
