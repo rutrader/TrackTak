@@ -6,7 +6,7 @@ import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
 import FormGroup from "@material-ui/core/FormGroup";
 import Chip from "@mui/material/Chip";
-import SelectAPIRegion, { listAPIRegions } from "../components/SelectAPIRegion";
+import SelectAPIRegion from "../components/SelectAPIRegion";
 import PricingPlan, { BoxPricingPlan } from "../components/PricingPlan";
 import FrequentlyAskedQuestion from "../components/FrequentlyAskedQuestion";
 import { navigate } from "gatsby";
@@ -57,7 +57,7 @@ export const apiRegionsHashLink = "#Select-API-Regions";
 const Pricing = () => {
   const theme = useTheme();
   const { getAccessToken } = useAuth();
-  const [checked, setChecked] = useState([listAPIRegions[0].priceId]);
+  const [checked, setChecked] = useState([]);
 
   const handleOnClick = async (planPriceId) => {
     const token = await getAccessToken();
