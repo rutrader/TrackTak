@@ -19,6 +19,7 @@ import { HyperFormula } from "hyperformula";
 import { trackCustomEvent } from "gatsby-plugin-google-analytics";
 import { trackingFormatDate } from "../shared/utils";
 import { useTheme } from "@material-ui/core/styles";
+import useCurrentPlan, { isStockDisabled } from "../hooks/useCurrentPlan";
 
 const SearchTicker = ({ isSmallSearch, sx }) => {
   const theme = useTheme();
@@ -27,6 +28,7 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
   const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [text, setText] = useState("");
   const { userData, getAccessToken } = useAuth();
+  const { currentPlan } = useCurrentPlan();
   const dispatch = useDispatch();
 
   const createUserSpreadsheet = async (ticker) => {
@@ -62,12 +64,15 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
 
   const getAutoCompleteDebounced = useDebouncedCallback(async (value) => {
     const { data } = await getAutocompleteQuery(`${value}?limit=9&type=stock`);
-
     setIsLoadingAutocomplete(false);
     setAutoComplete(data.value);
   }, 300);
 
   const handleOnChangeAutoComplete = (_, value) => {
+    if (isStockDisabled(currentPlan, value)) {
+      return;
+    }
+
     if (value?.code && value?.exchange) {
       const ticker = `${value.code}.${value.exchange}`;
 
@@ -112,12 +117,14 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
             option.code === value.code && option.exchange === value.exchange
           );
         }}
+        getOptionDisabled={(option) => isStockDisabled(currentPlan, option)}
         autoComplete
         options={autoComplete.map((option) => {
           return {
             name: option.Name,
             code: option.Code,
             exchange: option.Exchange,
+            isUSLargeCap: option.isUSLargeCap,
           };
         })}
         autoHighlight

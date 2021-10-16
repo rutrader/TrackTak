@@ -1,4 +1,20 @@
 import axios from "../../../packages/intrinsic-valuations/src/api/axios";
+import { navigate } from "gatsby";
+
+const errorResponseHandler = (error) => {
+  if (
+    error.config.hasOwnProperty("errorHandle") &&
+    error.config.errorHandle === false
+  ) {
+    return Promise.reject(error);
+  }
+
+  if (error.response.data === "PLAN_EXPIRED") {
+    navigate("/pricing/");
+  }
+};
+
+axios.interceptors.response.use((response) => response, errorResponseHandler);
 
 export const getFinancialData = async (id) => {
   return axios.get(`/api/v1/financial-data/${id}`);
@@ -44,6 +60,12 @@ export const getSpreadsheet = async (id, accessToken) => {
 
 export const deleteSpreadsheet = async (id, accessToken) => {
   return axios.delete(`/api/v1/spreadsheets/${id}`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+};
+
+export const getCurrentPlan = async (accessToken) => {
+  return axios.get(`/api/v1/current-plan`, {
     headers: { Authorization: `Bearer ${accessToken}` },
   });
 };

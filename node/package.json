@@ -21,6 +21,7 @@
     "object-sizeof": "^1.6.1"
   },
   "dependencies": {
+    "aws-sdk": "^2.999.0",
     "axios": "^0.21.0",
     "bestzip": "^2.1.7",
     "comlink": "^4.3.0",

@@ -62,14 +62,16 @@ const handler = async (request) => {
     if (claim.token_use !== "access") {
       throw new Error("claim use is not access");
     }
+
     result = {
       username: claim.username,
       clientId: claim.client_id,
       isValid: true,
+      accessToken: token.raw,
     };
   } catch (error) {
     console.error("Error decoding JWT", error);
-    result = { username: "", clientId: "", error, isValid: false };
+    result = { username: "", clientId: "", error, isValid: false, token: "" };
   }
   return result;
 };
