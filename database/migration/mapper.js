@@ -298,6 +298,12 @@ const getPowersheet = (xSpreadsheets) => {
       }
     });
 
+    powersheetData.sheets[sheetId] = {
+      ...sheet,
+      sheetName: xSpreadsheetData.name,
+      id: sheetId,
+    };
+
     if (powersheetData.mergedCells) {
       // Delete any cell data for mergedCells that isn't
       // top left cell as x-spreadsheet was duplicating it
@@ -313,17 +319,12 @@ const getPowersheet = (xSpreadsheets) => {
 
             if (!powersheetData.mergedCells[associatedMergedCellId]) {
               delete powersheetData.cells[associatedMergedCellId];
+              delete powersheetData.sheets[sheet].cells[associatedMergedCellId];
             }
           }
         }
       });
     }
-
-    powersheetData.sheets[sheetId] = {
-      ...sheet,
-      sheetName: xSpreadsheetData.name,
-      id: sheetId,
-    };
   });
 
   return powersheetData;
