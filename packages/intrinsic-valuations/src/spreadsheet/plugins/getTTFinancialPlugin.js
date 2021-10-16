@@ -2,8 +2,8 @@ import {
   FunctionPlugin,
   InvalidArgumentsError,
   SimpleRangeValue,
-  ArraySize,
 } from "hyperformula";
+import { ArraySize } from "hyperformula/es/ArraySize";
 import dayjs from "dayjs";
 import convertSubCurrencyToCurrency from "../../shared/convertSubCurrencyToCurrency";
 import {
@@ -111,43 +111,32 @@ export const getTTFinancialPlugin = (financialData) => {
       if (!args.length) {
         return new InvalidArgumentsError(1);
       }
-
       if (!hasFinancialsLoaded) {
         return "Loading...";
       }
-
       const attribute = args[0].value;
-
       // TODO: Add proper error checking here later
       if (args.length === 1) {
         if (attribute === "currencyCode") {
           const currencyCode = ttmData[attribute];
-
           return convertSubCurrencyToCurrency(currencyCode);
         }
-
         if (attribute === "financialStatements") {
           return SimpleRangeValue.onlyValues(statements);
         }
-
         return ttmData[attribute] ?? "";
       }
-
       const startDate = args[1].value;
       const statementType = getTypeOfStatementToUse(attribute);
-
       if (args.length === 2) {
         if (attribute === "description") {
           return ttmData[attribute];
         }
-
         return (
           historicalDataArrays[statementType].yearly[startDate][attribute] ?? ""
         );
       }
-
       const endDate = args[2].value;
-
       if (args.length === 3) {
         return SimpleRangeValue.onlyValues([
           getYearlyValues(attribute, statementType, startDate, endDate),
