@@ -111,7 +111,7 @@ const Pricing = () => {
       </Box>
       <BoxPricingPlan>
         <PricingPlan
-          priceId="price_1JgoBSDOsUBI2OhCAoYKX6gQ"
+          priceId="price_1JlWlfDOsUBI2OhCHK3aGvFQ"
           subText="Everything included"
           header="Professional Investor"
           listOfFeatures={listOfFeaturesPro}

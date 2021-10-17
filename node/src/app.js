@@ -228,6 +228,12 @@ app.post(
     }
 
     switch (event.type) {
+      case "checkout.session.completed":
+        break;
+      case "invoice.paid":
+        break;
+      case "invoice.payment_failed":
+        break;
       case "invoice.payment_succeeded":
         const invoice = event.data.object;
         break;
