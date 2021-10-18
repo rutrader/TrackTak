@@ -5,6 +5,7 @@ import "express-async-errors";
 import api from "./api";
 import auth from "./middleware/auth";
 import Stripe from "stripe";
+import { CURRENT_PLAN_ENDPOINT } from "./shared/constants";
 
 const hostname = "127.0.0.1";
 const port = process.env.NODE_ENV === "development" ? 3001 : process.env.PORT;
@@ -165,6 +166,15 @@ app.delete("/api/v1/spreadsheets/:id", auth, async (req, res) => {
   await api.deleteSpreadsheet(req.params.id, req.user.username);
 
   res.send({ id: req.params.id });
+});
+
+app.get(CURRENT_PLAN_ENDPOINT, auth, async (req, res) => {
+  const currentPlan = await api.getCurrentPlan(
+    req.user.username,
+    req.user.accessToken,
+  );
+
+  res.send(currentPlan);
 });
 
 app.get("/v1/prices/:id", auth, async (req, res) => {

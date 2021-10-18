@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
+import { Box } from "@material-ui/core";
+
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 import { useAuth } from "../hooks/useAuth";
 import { useDispatch } from "react-redux";
 import { setMessage } from "../redux/actions/snackbarActions";
+import VerifyEmailLink from "./VerifyEmailLink";
 
 const ContactDetailsForm = () => {
   const {
@@ -68,12 +70,18 @@ const ContactDetailsForm = () => {
   };
 
   return (
-    <>
-      <Typography variant="h6" gutterBottom>
-        Contact Details
-      </Typography>
+    <Box
+      sx={{
+        display: "flex",
+      }}
+    >
       <form style={{ width: "100%" }} onSubmit={handleSubmit}>
-        <Grid container justifyContent="space-between" gap={3}>
+        <Grid
+          container
+          direction="column"
+          justifyContent="space-between"
+          gap={3}
+        >
           <Grid item xs={12} sm={4}>
             <TextField
               value={name || ""}
@@ -104,6 +112,13 @@ const ContactDetailsForm = () => {
               size="small"
               disabled={isExternalIdentityProvider}
             />
+            <VerifyEmailLink
+              sx={{
+                mb: 1,
+                mt: 1,
+              }}
+              text="Click here to verify your email!"
+            />
           </Grid>
           <Grid item xs={12} sm={2}>
             <Button
@@ -121,7 +136,7 @@ const ContactDetailsForm = () => {
           </Grid>
         </Grid>
       </form>
-    </>
+    </Box>
   );
 };
 

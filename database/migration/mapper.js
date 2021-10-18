@@ -1,25 +1,43 @@
 import { isEmpty } from "./util.js";
 
-const getFrozenCell = (xCell) => {
-  const col = parseInt(xCell.charAt(0), 36) - 10;
-  const row = xCell.charAt(1) - 1;
-
-  return {
-    row,
-    col,
+const getFrozenCell = (xCell, id) => {
+  let frozenCell = {
+    id,
   };
+  const col = parseInt(xCell.charAt(0), 36) - 11;
+  const row = xCell.charAt(1) - 2;
+  if (col >= 0) {
+    frozenCell.col = col;
+  }
+  if (row >= 0) {
+    frozenCell.row = row;
+  }
+
+  if (frozenCell.col === undefined && frozenCell.row === undefined) {
+    return null;
+  }
+
+  return frozenCell;
 };
 
-const getCellsData = (xSpreadsheetData) => {
+const getCellsData = (xSpreadsheetData, sheetId, sheet) => {
   const cellsData = Object.keys(xSpreadsheetData.cellsSerialized).reduce(
     (all, rowKey) => {
       const data = xSpreadsheetData.cellsSerialized[rowKey];
       const colData = Object.keys(data).reduce((cols, colKey) => {
-        const cellId = `${rowKey}_${colKey}`;
+        const cellId = `${sheetId}_${rowKey}_${colKey}`;
+        sheet.cells[cellId] = cellId;
+
+        const value = xSpreadsheetData.cellsSerialized[rowKey][colKey];
+
         return {
           ...cols,
           [cellId]: {
-            value: xSpreadsheetData.cellsSerialized[rowKey][colKey],
+            value:
+              value === null || value === undefined
+                ? undefined
+                : value.toString(),
+            id: cellId,
           },
         };
       }, {});
@@ -31,12 +49,8 @@ const getCellsData = (xSpreadsheetData) => {
     {},
   );
   const mergedCells = {};
-  const row = {
-    sizes: {},
-  };
-  const col = {
-    sizes: {},
-  };
+  const row = {};
+  const col = {};
 
   const setComment = (source, cellId) => {
     const comment = source.comment;
@@ -52,12 +66,12 @@ const getCellsData = (xSpreadsheetData) => {
     const styleIndex = source.style;
     const xStyles = xSpreadsheetData.styles[styleIndex];
     const setStyle = (style) => {
+      sheet.cells[cellId] = cellId;
       cellsData[cellId] = {
         ...cellsData[cellId],
-        style: {
-          ...(!!cellsData[cellId] && cellsData[cellId].style),
-          ...style,
-        },
+        ...(!!cellsData[cellId] && cellsData[cellId].style),
+        ...style,
+        id: cellId,
       };
     };
     if (xStyles) {
@@ -65,8 +79,9 @@ const getCellsData = (xSpreadsheetData) => {
         switch (styleKey) {
           case "font": {
             if (xStyles.font.size) {
+              // + 2 to it because x-spreadsheets is 2 lower incorrectly
               setStyle({
-                fontSize: xStyles.font.size,
+                fontSize: xStyles.font.size + 2,
               });
             }
             if (xStyles.font.bold) {
@@ -175,24 +190,40 @@ const getCellsData = (xSpreadsheetData) => {
   const setMergedCells = (source, cellId, rowId, colId) => {
     const merge = source.merge;
     if (merge && merge.length) {
+      // x-spreadsheet mergedCell y is the amount
+      // of subsequent rows/cols to merge. Not the index
+      // So we convert y to the index
+
       mergedCells[cellId] = {
-        col: { x: parseInt(colId), y: merge[1] },
-        row: { x: parseInt(rowId), y: merge[0] },
+        col: { x: parseInt(colId), y: parseInt(colId) + merge[1] },
+        row: { x: parseInt(rowId), y: parseInt(rowId) + merge[0] },
+        id: cellId,
       };
+      sheet.mergedCells[cellId] = cellId;
     }
   };
 
   Object.keys(xSpreadsheetData.cols).forEach((colKey) => {
-    col.sizes[colKey] = xSpreadsheetData.cols[colKey].width;
+    const id = `${sheetId}_${colKey}`;
+    col[id] = {
+      size: xSpreadsheetData.cols[colKey].width,
+      id,
+    };
+    sheet.cols[id] = id;
   });
 
   Object.keys(xSpreadsheetData.rows).forEach((rowKey) => {
     const height = xSpreadsheetData.rows[rowKey].height;
+    const id = `${sheetId}_${rowKey}`;
     if (height) {
-      row.sizes[rowKey] = height;
+      row[id] = {
+        size: height,
+        id,
+      };
+      sheet.rows[id] = id;
     }
     Object.keys(xSpreadsheetData.rows[rowKey].cells).forEach((colId) => {
-      const cellId = `${rowKey}_${colId}`;
+      const cellId = `${sheetId}_${rowKey}_${colId}`;
       const data = xSpreadsheetData.rows[rowKey].cells[colId];
 
       setComment(data, cellId);
@@ -205,43 +236,107 @@ const getCellsData = (xSpreadsheetData) => {
   return { cellsData, mergedCells, row, col };
 };
 
-const getPowersheet = (xSpreadsheetData) => {
-  const powersheetData = {};
+const getPowersheet = (xSpreadsheets) => {
+  const powersheetData = {
+    sheets: {},
+  };
 
-  powersheetData.sheetName = xSpreadsheetData.name;
+  xSpreadsheets.forEach((xSpreadsheetData, sheetId) => {
+    const sheet = {
+      cells: {},
+      cols: {},
+      rows: {},
+      mergedCells: {},
+    };
 
-  if (!isEmpty(xSpreadsheetData.freeze)) {
-    powersheetData.frozenCells = getFrozenCell(xSpreadsheetData.freeze);
-  }
+    if (!isEmpty(xSpreadsheetData.freeze)) {
+      const frozenCell = getFrozenCell(xSpreadsheetData.freeze, sheetId);
+      if (frozenCell) {
+        sheet.frozenCell = sheetId;
+        powersheetData.frozenCells = {
+          ...powersheetData.frozenCells,
+          [sheetId]: frozenCell,
+        };
+      }
+    }
+    const { cellsData, mergedCells, row, col } = getCellsData(
+      xSpreadsheetData,
+      sheetId,
+      sheet,
+    );
 
-  const { cellsData, mergedCells, row, col } = getCellsData(xSpreadsheetData);
-  if (!isEmpty(cellsData)) {
-    powersheetData.cellsData = cellsData;
-  }
-  if (!isEmpty(mergedCells)) {
-    powersheetData.mergedCells = mergedCells;
-  }
-  if (!isEmpty(row.sizes)) {
-    powersheetData.row = row;
-  }
-  if (!isEmpty(col.sizes)) {
-    powersheetData.col = col;
-  }
+    if (!isEmpty(cellsData)) {
+      powersheetData.cells = {
+        ...powersheetData.cells,
+        ...cellsData,
+      };
+    }
+
+    if (!isEmpty(mergedCells)) {
+      powersheetData.mergedCells = {
+        ...powersheetData.mergedCells,
+        ...mergedCells,
+      };
+    }
+
+    if (!isEmpty(row)) {
+      powersheetData.rows = {
+        ...powersheetData.rows,
+        ...row,
+      };
+    }
+    if (!isEmpty(col)) {
+      powersheetData.cols = {
+        ...powersheetData.cols,
+        ...col,
+      };
+    }
+
+    Object.keys(sheet).forEach((key) => {
+      if (isEmpty(sheet[key])) {
+        delete sheet[key];
+      }
+    });
+
+    if (powersheetData.mergedCells) {
+      // Delete any cell data for mergedCells that isn't
+      // top left cell as x-spreadsheet was duplicating it
+      Object.keys(powersheetData.mergedCells).forEach((key) => {
+        const value = powersheetData.mergedCells[key];
+
+        const sections = key.split("_");
+        const sheet = parseInt(sections[0], 10);
+
+        for (let ri = value.row.x; ri <= value.row.y; ri++) {
+          for (let ci = value.col.x; ci <= value.col.y; ci++) {
+            const associatedMergedCellId = `${sheet}_${ri}_${ci}`;
+
+            if (!powersheetData.mergedCells[associatedMergedCellId]) {
+              delete powersheetData.cells[associatedMergedCellId];
+            }
+          }
+        }
+      });
+    }
+
+    powersheetData.sheets[sheetId] = {
+      ...sheet,
+      sheetName: xSpreadsheetData.name,
+      id: sheetId,
+    };
+  });
 
   return powersheetData;
 };
 
-const mapper = (data) => {
+const mapper = (data, name) => {
   const xSpreadsheets = data.data.datas;
-  const powersheets = xSpreadsheets.map((xSpreadsheet) =>
-    getPowersheet(xSpreadsheet),
-  );
+
+  const powersheetData = getPowersheet(xSpreadsheets);
 
   return {
-    ...data,
-    data: {
-      datas: powersheets,
-    },
+    name,
+    data: powersheetData,
   };
 };
 

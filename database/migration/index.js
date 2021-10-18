@@ -1,6 +1,7 @@
 import mapper from "./mapper.js";
 import * as database from "./client/mongoDbClient.js";
 import { Collections } from "./client/collections.js";
+// import allData from "./testData/testData.js";
 
 (async function () {
   await database.connect();
@@ -8,7 +9,7 @@ import { Collections } from "./client/collections.js";
   const allData = await database.find(Collections.SPREADSHEET);
   const mappedData = allData.map((data) => ({
     ...data,
-    sheetData: mapper(data.sheetData),
+    sheetData: mapper(data.sheetData, data.financialData.ticker),
   }));
   console.log(
     `Mapped ${mappedData.length} records from collection: ${Collections.SPREADSHEET}`,
