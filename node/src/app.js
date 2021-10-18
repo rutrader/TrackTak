@@ -187,7 +187,7 @@ app.post("/api/v1/create-checkout-session", auth, async (req, res) => {
       automatic_tax: {
         enabled: true,
       },
-      success_url: `${process.env.ORIGIN_URL}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${process.env.ORIGIN_URL}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.ORIGIN_URL}/pricing`,
     });
 
@@ -229,13 +229,6 @@ app.post(
 
     switch (event.type) {
       case "checkout.session.completed":
-        break;
-      case "invoice.paid":
-        break;
-      case "invoice.payment_failed":
-        break;
-      case "invoice.payment_succeeded":
-        const invoice = event.data.object;
         break;
       default:
         console.log(`Unhandled event type ${event.type}`);
