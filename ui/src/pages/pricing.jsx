@@ -19,7 +19,7 @@ const sharedFeatureFour = "Full spreadsheet editing";
 const sharedFeatureFive = "Priority email modelling support";
 const sharedFeatureSix = "API regions are not included";
 
-const listOfFeaturesNonActive = [
+export const listOfFeaturesNonActive = [
   { feature: sharedFeatureOne },
   { feature: "8 valuations per month" },
   { feature: sharedFeatureThree },
@@ -29,7 +29,7 @@ const listOfFeaturesNonActive = [
   { feature: sharedFeatureSix, disabled: true },
 ];
 
-const listOfFeaturesActive = [
+export const listOfFeaturesActive = [
   { feature: sharedFeatureOne },
   { feature: "18 valuations per month" },
   { feature: sharedFeatureThree },
@@ -39,7 +39,7 @@ const listOfFeaturesActive = [
   { feature: sharedFeatureSix, disabled: true },
 ];
 
-const listOfFeaturesPro = [
+export const listOfFeaturesPro = [
   { feature: sharedFeatureOne },
   { feature: sharedFeatureTwo },
   { feature: sharedFeatureThree },

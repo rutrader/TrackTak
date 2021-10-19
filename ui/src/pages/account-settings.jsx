@@ -10,6 +10,7 @@ import {
   Grid,
   Button,
   useTheme,
+  Stack,
 } from "@material-ui/core";
 import ContactDetailsForm from "../components/ContactDetailsForm";
 import SettingSection from "../components/SettingSection";
@@ -26,6 +27,9 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import ConfirmationDialog from "../components/ConfirmationDialog";
 import FreezePlanForm from "../components/FreezePlanForm";
 import AcUnitIcon from "@mui/icons-material/AcUnit";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import ClearIcon from "@mui/icons-material/Clear";
+import { navigate } from "gatsby";
 
 const AccountSettings = () => {
   const { isExternalIdentityProvider } = useAuth();
@@ -113,6 +117,7 @@ const AccountSettings = () => {
             >
               {currentPlan?.type !== Plans.PRO && (
                 <Button
+                  startIcon={<AutoAwesomeIcon />}
                   variant="contained"
                   color="primary"
                   sx={{
@@ -239,25 +244,39 @@ const AccountSettings = () => {
             </>
           )}
         </Grid>
-
         <Divider light sx={dividerStyle} />
-
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{
-            textTransform: "none",
-          }}
-          onClick={handleFreezePlanButtonClick}
+        <Stack
+          spacing={2}
+          direction="row"
+          sx={{ justifyContent: "space-around" }}
         >
-          <AcUnitIcon
+          <Button
+            variant="contained"
+            color="primary"
             sx={{
-              mr: 0.5,
+              textTransform: "none",
             }}
-          />
-          Freeze Payment Plan
-        </Button>
-
+            onClick={handleFreezePlanButtonClick}
+          >
+            <AcUnitIcon
+              sx={{
+                mr: 0.5,
+              }}
+            />
+            Freeze Payment Plan
+          </Button>
+          <Button
+            startIcon={<ClearIcon />}
+            sx={{
+              textTransform: "none",
+            }}
+            onClick={() => {
+              navigate("/switching-plan");
+            }}
+          >
+            End Plan And Benefits
+          </Button>
+        </Stack>
         <ConfirmationDialog
           open={showFreezePlanDialog}
           onClose={handleFreezePlanDialogClose}
