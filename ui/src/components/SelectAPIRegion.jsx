@@ -91,20 +91,16 @@ const SelectAPIRegion = ({ checked, setChecked }) => {
               />
               {listAPIRegions.map((listAPIRegion) => {
                 return (
-                  <>
-                    <ListAPIRegion
-                      key={listAPIRegion.priceId}
-                      handleOnChangeChecked={() => {
-                        handleOnChangeChecked(listAPIRegion.priceId);
-                      }}
-                      regionName={listAPIRegion.regionName}
-                      priceId={listAPIRegion.priceId}
-                      iconSvg={listAPIRegion.iconSvg}
-                      checked={
-                        !!checked.find((x) => x === listAPIRegion.priceId)
-                      }
-                    />
-                  </>
+                  <ListAPIRegion
+                    key={listAPIRegion.priceId}
+                    handleOnChangeChecked={() => {
+                      handleOnChangeChecked(listAPIRegion.priceId);
+                    }}
+                    regionName={listAPIRegion.regionName}
+                    priceId={listAPIRegion.priceId}
+                    iconSvg={listAPIRegion.iconSvg}
+                    checked={!!checked.find((x) => x === listAPIRegion.priceId)}
+                  />
                 );
               })}
             </List>

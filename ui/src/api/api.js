@@ -80,6 +80,12 @@ export const createCheckoutSession = async (lineItems, accessToken) => {
   );
 };
 
+export const createCustomerPortal = async (accessToken) => {
+  return axios.post("/api/v1/customer-portal", {
+    headers: getAuthHeaders(accessToken),
+  });
+};
+
 export const getPrice = async (id, accessToken) => {
   return axios.get(`/v1/prices/${id}`, {
     headers: getAuthHeaders(accessToken),

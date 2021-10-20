@@ -1,9 +1,8 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import "express-async-errors";
 import api from "./api";
-import auth from "./middleware/auth";
+import auth, { excludeStripeWebhookJSON } from "./middleware/auth";
 import Stripe from "stripe";
 import { CURRENT_PLAN_ENDPOINT } from "./shared/constants";
 
@@ -13,7 +12,7 @@ const app = express();
 const stripe = Stripe(process.env.STRIPE_AUTH_SECRET_KEY);
 
 app.use(express.static("public"));
-app.use(express.json({ limit: "16mb" }));
+app.use(excludeStripeWebhookJSON(express.json({ limit: "16mb" })));
 
 // const publicRoutes = ["/api/v1/compute-sensitivity-analysis"];
 
@@ -200,7 +199,6 @@ app.post("/api/v1/create-checkout-session", auth, async (req, res) => {
       success_url: `${process.env.ORIGIN_URL}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.ORIGIN_URL}/pricing`,
     });
-
     res.send({ url: session.url });
   } catch (e) {
     res.status(400);
@@ -212,19 +210,15 @@ app.post("/api/v1/create-checkout-session", auth, async (req, res) => {
   }
 });
 
-app.get("/api/v1/create-checkout-session", async (req, res) => {
-  const { sessionId } = req.query;
-  const session = await stripe.checkout.sessions.retrieve(sessionId);
-
-  res.send(session);
-});
-
 app.post(
   "/api/v1/stripe-webhook",
+  // auth,
   express.raw({ type: "application/json" }),
   async (req, res) => {
     let event;
     const signature = req.headers["stripe-signature"];
+
+    console.log("test");
 
     try {
       event = stripe.webhooks.constructEvent(
@@ -233,22 +227,24 @@ app.post(
         process.env.STRIPE_WEBHOOK_SECRET,
       );
     } catch (err) {
-      console.log(`⚠️  Webhook signature verification failed.`);
+      console.error("Webhook signature verification failed.");
       return res.sendStatus(400);
     }
 
     switch (event.type) {
       case "checkout.session.completed":
+        console.log("checkout completed");
+        // Save customer id to the backend
         break;
       default:
-        console.log(`Unhandled event type ${event.type}`);
+        console.error(`Unhandled event type ${event.type}`);
     }
 
     res.sendStatus(200);
   },
 );
 
-app.post("/api/v1/customer-portal", async (req, res) => {
+app.post("/api/v1/customer-portal", auth, async (req, res) => {
   const { sessionId } = req.body;
   const checkoutSession = await stripe.checkout.sessions.retrieve(sessionId);
 
