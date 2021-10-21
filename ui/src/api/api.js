@@ -81,7 +81,7 @@ export const createCheckoutSession = async (lineItems, accessToken) => {
 };
 
 export const createCustomerPortal = async (accessToken) => {
-  return axios.post("/api/v1/customer-portal", {
+  return axios.post("/api/v1/create-customer-portal-session", undefined, {
     headers: getAuthHeaders(accessToken),
   });
 };

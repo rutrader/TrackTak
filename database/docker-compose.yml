@@ -26,8 +26,6 @@ services:
     volumes:
       - /data/mongo-express:/data/mongo-express
   stripe-cli:
-    ports:
-      - "3001:3001"
     image: stripe/stripe-cli
     container_name: stripe-cli
     command: listen --forward-to host.docker.internal:3001/api/v1/stripe-webhook

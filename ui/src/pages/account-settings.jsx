@@ -27,7 +27,6 @@ import { createCustomerPortal } from "../api/api";
 
 const AccountSettings = () => {
   const { getAccessToken } = useAuth();
-  const [session, setSession] = useState();
   const { isExternalIdentityProvider } = useAuth();
   const { currentPlan } = useCurrentPlan();
   const theme = useTheme();
@@ -53,11 +52,9 @@ const AccountSettings = () => {
     }
   };
 
-  //custoemr portal POST on handle click
   const handleOnClickCustomerPortal = async () => {
     const token = await getAccessToken();
     const { data } = await createCustomerPortal(token?.jwtToken);
-    setSession(session);
 
     window.location.href = data.url;
   };
