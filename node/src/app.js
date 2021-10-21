@@ -218,8 +218,6 @@ app.post(
     let event;
     const signature = req.headers["stripe-signature"];
 
-    console.log("test");
-
     try {
       event = stripe.webhooks.constructEvent(
         req.body,
@@ -233,7 +231,6 @@ app.post(
 
     switch (event.type) {
       case "checkout.session.completed":
-        console.log("checkout completed");
         // Save customer id to the backend
         break;
       default:
@@ -244,18 +241,15 @@ app.post(
   },
 );
 
-app.post("/api/v1/customer-portal", auth, async (req, res) => {
-  const { sessionId } = req.body;
-  const checkoutSession = await stripe.checkout.sessions.retrieve(sessionId);
-
-  const returnUrl = process.env.DOMAIN;
+app.post("/api/v1/create-customer-portal-session", auth, async (req, res) => {
+  const returnUrl = `${process.env.ORIGIN_URL}/account-settings`;
 
   const portalSession = await stripe.billingPortal.sessions.create({
-    customer: checkoutSession.customer,
+    customer: "cus_KRWrqkdz1yQ8L6",
     return_url: returnUrl,
   });
 
-  res.redirect(303, portalSession.url);
+  res.send({ url: portalSession.url });
 });
 
 app.get("/", (_, res) => {
