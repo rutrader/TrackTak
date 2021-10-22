@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
@@ -23,8 +23,10 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PaymentIcon from "@mui/icons-material/Payment";
 import useCurrentPlan, { Plans } from "../hooks/useCurrentPlan";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { createCustomerPortal } from "../api/api";
 
 const AccountSettings = () => {
+  const { getAccessToken } = useAuth();
   const { isExternalIdentityProvider } = useAuth();
   const { currentPlan } = useCurrentPlan();
   const theme = useTheme();
@@ -48,6 +50,13 @@ const AccountSettings = () => {
       default:
         return "Valuations used x/y";
     }
+  };
+
+  const handleOnClickCustomerPortal = async () => {
+    const token = await getAccessToken();
+    const { data } = await createCustomerPortal(token?.jwtToken);
+
+    window.location.href = data.url;
   };
 
   const buttonLargeScreenStyles = {
@@ -161,6 +170,7 @@ const AccountSettings = () => {
                     textTransform: "none",
                     mt: 3,
                   }}
+                  onClick={handleOnClickCustomerPortal}
                 >
                   Update Details
                 </Button>
