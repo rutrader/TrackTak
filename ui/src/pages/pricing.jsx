@@ -50,16 +50,16 @@ export const listOfFeaturesPro = [
 ];
 
 const questionsAndAnswers = [
-  {
-    question: "What does X of valuations per month mean?",
-    answer:
-      "Refers to the number of valuations you can create in Tracktak each month. For Active and Non-Active plans all unused valuations in that month do not carry over to the next month. If you exceed your number of valuations limit you can always upgrade your plan or wait until next month.",
-  },
-  {
-    question: "What does freezing your plan mean?",
-    answer:
-      "Need a break from investing? Active Investor and Professional plan lets you freeze your membership for up to 1 or 3 months at no extra cost during 12-month period. The freeze will be applied from your next payment date, please make sure it is added at least 3-4 working days before this date. If you wish to unfreeze your plan sooner, you can! Unfreezing before the original end date, means there is a small charge amount will be added on to your next payment to cover the days. After you have used your 1 or 3-month allowance you no longer can freeze you plan within 12-month period.",
-  },
+  // {
+  //   question: "What does X of valuations per month mean?",
+  //   answer:
+  //     "Refers to the number of valuations you can create in Tracktak each month. For Active and Non-Active plans all unused valuations in that month do not carry over to the next month. If you exceed your number of valuations limit you can always upgrade your plan or wait until next month.",
+  // },
+  // {
+  //   question: "What does freezing your plan mean?",
+  //   answer:
+  //     "Need a break from investing? Active Investor and Professional plan lets you freeze your membership for up to 1 or 3 months at no extra cost during 12-month period. The freeze will be applied from your next payment date, please make sure it is added at least 3-4 working days before this date. If you wish to unfreeze your plan sooner, you can! Unfreezing before the original end date, means there is a small charge amount will be added on to your next payment to cover the days. After you have used your 1 or 3-month allowance you no longer can freeze you plan within 12-month period.",
+  // },
   {
     question: "What happens at the end of my trial?",
     answer:
