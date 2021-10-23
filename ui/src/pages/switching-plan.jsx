@@ -7,9 +7,7 @@ import AcUnitIcon from "@mui/icons-material/AcUnit";
 import PersonIcon from "@mui/icons-material/Person";
 import { navigate } from "gatsby-link";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ListAPIRegion from "../components/ListAPIRegion";
 import GlobeIconSvg from "../icons/globe.svg";
-import SelectAPIRegion from "../components/SelectAPIRegion";
 
 const SwitchingPlan = () => {
   const theme = useTheme();
@@ -38,7 +36,7 @@ const SwitchingPlan = () => {
           fontWeight="bold"
           gutterBottom
         >
-          Before you go, consider switching to a Worldwide region.
+          Consider switching to a worldwide API region.
         </Typography>
         <Box
           sx={{
@@ -47,18 +45,28 @@ const SwitchingPlan = () => {
             alignItems: "center",
           }}
         >
-          <Typography gutterBottom variant="h6" fontWeight="bold">
-            Get all API regions for less
+          <GlobeIconSvg
+            style={{
+              height: "37px",
+            }}
+          />
+          <Typography
+            gutterBottom
+            variant="h5"
+            fontWeight="bold"
+            sx={{ mt: 2 }}
+          >
+            Get global API region benefits for less
           </Typography>
-          <Typography>
-            You will get all the benefits of Active Investor for only $35/month.
+          <Typography variant="h6">
+            You will get all regions for only $35/month.
           </Typography>
           <Button
             variant="contained"
             sx={{
               textTransform: "none",
               mt: 2,
-              mb: 4,
+              mb: 7,
               backgroundColor: theme.palette.primary.purple,
             }}
           >

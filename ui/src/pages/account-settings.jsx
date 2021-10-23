@@ -39,6 +39,7 @@ const AccountSettings = () => {
   const theme = useTheme();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [showFreezePlanDialog, setShowFreezePlanDialog] = useState(false);
+  const [endPlan, setEndPlan] = useState(false);
 
   const dividerStyle = {
     marginTop: 4,
@@ -281,7 +282,8 @@ const AccountSettings = () => {
               textTransform: "none",
             }}
             onClick={() => {
-              navigate("/switching-plan");
+              setShowFreezePlanDialog(true);
+              // navigate("/switching-plan")
             }}
           >
             End Plan And Benefits

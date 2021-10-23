@@ -63,7 +63,6 @@ const FreezePlanForm = () => {
             />
           }
         ></SettingSection>
-
         <FormControl component="fieldset">
           <FormLabel
             component="legend"
@@ -85,7 +84,6 @@ const FreezePlanForm = () => {
             <FormControlLabel value="3" control={<Radio />} label="3 months" />
           </RadioGroup>
         </FormControl>
-
         <Typography
           sx={{
             fontWeight: "bold",
@@ -99,7 +97,6 @@ const FreezePlanForm = () => {
           {currentPlan && new Date(currentPlan.expiration).toLocaleDateString()}{" "}
           and you won’t be charged.
         </Typography>
-
         <Typography
           sx={{
             fontWeight: "bold",
@@ -109,7 +106,6 @@ const FreezePlanForm = () => {
           Unfreezing your plan
         </Typography>
         <Typography>Unfreeze your membership at any time.</Typography>
-
         <Typography
           sx={{
             mt: 3,
