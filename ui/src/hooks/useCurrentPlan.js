@@ -13,11 +13,11 @@ const Addons = {
 };
 
 export const isStockDisabled = (currentPlan, stock) => {
-  if (stock.exchange === "US" && !stock.isUSLargeCap) {
+  if (stock.exchange === "US" && stock.isUSLargeCap) {
     return true;
   }
-  if (stock.isUSLargeCap) {
-    return currentPlan.addons.includes(Addons.US_LARGE_CAP);
+  if (stock.exchange === "US" && !stock.isUSLargeCap) {
+    return currentPlan.addons.includes(Addons.US_SMALL_CAP);
   }
   return currentPlan.addons.includes(stock.exchange); // TODO Might need a mapping to make this work
 };

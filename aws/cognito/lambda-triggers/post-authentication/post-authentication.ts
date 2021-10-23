@@ -32,7 +32,7 @@ const setInitialAccountAttributes = async (
       },
       {
         Name: "custom:account_addons",
-        Value: "us_small",
+        Value: "us_large",
       },
     ],
     Username: event.request.userAttributes.email,
