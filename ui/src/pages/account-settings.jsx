@@ -21,8 +21,11 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import LockIcon from "@mui/icons-material/Lock";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PaymentIcon from "@mui/icons-material/Payment";
-import useCurrentPlan, { Plans } from "../hooks/useCurrentPlan";
+import useCurrentPlan from "../hooks/useCurrentPlan";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import ConfirmationDialog from "../components/ConfirmationDialog";
+import FreezePlanForm from "../components/FreezePlanForm";
+import AcUnitIcon from "@mui/icons-material/AcUnit";
 import { createCustomerPortal } from "../api/api";
 
 const AccountSettings = () => {
@@ -31,33 +34,18 @@ const AccountSettings = () => {
   const { currentPlan } = useCurrentPlan();
   const theme = useTheme();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const [showFreezePlanDialog, setShowFreezePlanDialog] = useState(false);
+  const hasPaymentPlan = currentPlan?.addons?.length > 1;
 
   const dividerStyle = {
     marginTop: 4,
     marginBottom: 4,
   };
 
+  // TODO API call to get expiration?
   const planExpiration = currentPlan?.expiration
     ? new Date(currentPlan.expiration).toLocaleDateString()
     : "";
-
-  const getValuationsText = () => {
-    switch (currentPlan?.type) {
-      case Plans.ONE_HOUR_TRIAL:
-        return "Unlimited Valuations, US stocks large cap.";
-      case Plans.PRO:
-        return "Unlimited Valuations";
-      default:
-        return "Valuations used x/y";
-    }
-  };
-
-  const handleOnClickCustomerPortal = async () => {
-    const token = await getAccessToken();
-    const { data } = await createCustomerPortal(token?.jwtToken);
-
-    window.location.href = data.url;
-  };
 
   const buttonLargeScreenStyles = {
     position: "absolute",
@@ -66,6 +54,24 @@ const AccountSettings = () => {
     top: (theme) => theme.spacing(-3),
   };
 
+  const handleFreezePlanButtonClick = () => {
+    setShowFreezePlanDialog(true);
+  };
+
+  const handleFreezePlanDialogClose = () => {
+    setShowFreezePlanDialog(false);
+  };
+
+  const handleFreezePlanDialogConfirm = () => {
+    setShowFreezePlanDialog(false);
+  };
+
+  const handleOnClickCustomerPortal = async () => {
+    const token = await getAccessToken();
+    const { data } = await createCustomerPortal(token?.jwtToken);
+
+    window.location.href = data.url;
+  };
   return (
     <>
       <Helmet>
@@ -89,7 +95,6 @@ const AccountSettings = () => {
           <Grid item xs={12} sm={5}>
             <SettingSection
               heading="Current Plan"
-              subHeading={currentPlan?.type}
               sx={{
                 position: "relative",
               }}
@@ -104,36 +109,27 @@ const AccountSettings = () => {
                 />
               }
             >
-              {currentPlan?.type !== Plans.PRO && (
-                <Button
-                  variant="contained"
-                  color="primary"
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{
+                  textTransform: "none",
+                  ...(!isOnMobile ? buttonLargeScreenStyles : {}),
+                }}
+              >
+                Add Regions
+              </Button>
+              {hasPaymentPlan && (
+                <Typography
                   sx={{
-                    textTransform: "none",
-                    ...(!isOnMobile ? buttonLargeScreenStyles : {}),
+                    color: (theme) => theme.palette.secondary.grey,
                   }}
+                  variant="h8"
+                  gutterBottom
                 >
-                  Upgrade my plan
-                </Button>
+                  $X/mo. Auto-renews on {planExpiration}
+                </Typography>
               )}
-              <Typography
-                sx={{
-                  color: (theme) => theme.palette.secondary.grey,
-                }}
-                variant="h8"
-                gutterBottom
-              >
-                {getValuationsText()}
-              </Typography>
-              <Typography
-                sx={{
-                  color: (theme) => theme.palette.secondary.grey,
-                }}
-                variant="h8"
-                gutterBottom
-              >
-                $X/mo. Auto-renews on {planExpiration}
-              </Typography>
               <CurrentPlan />
             </SettingSection>
           </Grid>
@@ -178,9 +174,7 @@ const AccountSettings = () => {
             </SettingSection>
           </Grid>
         </Grid>
-
         <Divider light sx={dividerStyle} />
-
         <Grid container justifyContent="space-between">
           <Grid item xs={12} sm={5}>
             <SettingSection
@@ -229,6 +223,28 @@ const AccountSettings = () => {
             </>
           )}
         </Grid>
+        <Divider light sx={dividerStyle} />
+        {hasPaymentPlan && (
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{
+              textTransform: "none",
+            }}
+            onClick={handleFreezePlanButtonClick}
+            startIcon={<AcUnitIcon />}
+          >
+            Freeze Payment Plan
+          </Button>
+        )}
+        <ConfirmationDialog
+          open={showFreezePlanDialog}
+          onClose={handleFreezePlanDialogClose}
+          onConfirm={handleFreezePlanDialogConfirm}
+          confirmText="Freeze My Plan"
+        >
+          <FreezePlanForm />
+        </ConfirmationDialog>
       </Paper>
     </>
   );
