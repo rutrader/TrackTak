@@ -27,7 +27,13 @@ const ConfirmationDialog = ({
         <DialogTitle id="form-dialog-title">{titleText}</DialogTitle>
       )}
       <DialogContent>
-        <DialogContentText>{children}</DialogContentText>
+        <DialogContentText
+          sx={{
+            color: "black",
+          }}
+        >
+          {children}
+        </DialogContentText>
       </DialogContent>
       <DialogActions
         sx={{

@@ -33,26 +33,17 @@ const AccountSettings = () => {
   const theme = useTheme();
   const isOnMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [showFreezePlanDialog, setShowFreezePlanDialog] = useState(false);
+  const hasPaymentPlan = currentPlan?.addons?.length > 1;
 
   const dividerStyle = {
     marginTop: 4,
     marginBottom: 4,
   };
 
+  // TODO API call to get expiration?
   const planExpiration = currentPlan?.expiration
     ? new Date(currentPlan.expiration).toLocaleDateString()
     : "";
-
-  const getValuationsText = () => {
-    switch (currentPlan?.type) {
-      case Plans.ONE_HOUR_TRIAL:
-        return "Unlimited Valuations, US stocks large cap.";
-      case Plans.PRO:
-        return "Unlimited Valuations";
-      default:
-        return "Valuations used x/y";
-    }
-  };
 
   const buttonLargeScreenStyles = {
     position: "absolute",
@@ -96,7 +87,6 @@ const AccountSettings = () => {
           <Grid item xs={12} sm={5}>
             <SettingSection
               heading="Current Plan"
-              subHeading={currentPlan?.type}
               sx={{
                 position: "relative",
               }}
@@ -111,40 +101,27 @@ const AccountSettings = () => {
                 />
               }
             >
-              {currentPlan?.type !== Plans.PRO && (
-                <Button
-                  variant="contained"
-                  color="primary"
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{
+                  textTransform: "none",
+                  ...(!isOnMobile ? buttonLargeScreenStyles : {}),
+                }}
+              >
+                Add Regions
+              </Button>
+              {hasPaymentPlan && (
+                <Typography
                   sx={{
-                    textTransform: "none",
-                    ...(!isOnMobile ? buttonLargeScreenStyles : {}),
+                    color: (theme) => theme.palette.secondary.grey,
                   }}
+                  variant="h8"
+                  gutterBottom
                 >
-                  Upgrade my plan
-                </Button>
+                  $X/mo. Auto-renews on {planExpiration}
+                </Typography>
               )}
-              <Typography
-                sx={{
-                  color: (theme) => theme.palette.secondary.grey,
-                }}
-                variant="h8"
-                gutterBottom
-              >
-                {getValuationsText()}
-              </Typography>
-              <Typography
-                sx={{
-                  color: (theme) => theme.palette.secondary.grey,
-                }}
-                variant="h8"
-                gutterBottom
-              >
-                $X/mo.{" "}
-                {currentPlan?.type === Plans.ONE_HOUR_TRIAL
-                  ? "Expires on"
-                  : "Auto-renews on"}{" "}
-                {planExpiration}
-              </Typography>
               <CurrentPlan />
             </SettingSection>
           </Grid>
@@ -188,9 +165,7 @@ const AccountSettings = () => {
             </SettingSection>
           </Grid>
         </Grid>
-
         <Divider light sx={dividerStyle} />
-
         <Grid container justifyContent="space-between">
           <Grid item xs={12} sm={5}>
             <SettingSection
@@ -239,25 +214,20 @@ const AccountSettings = () => {
             </>
           )}
         </Grid>
-
         <Divider light sx={dividerStyle} />
-
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{
-            textTransform: "none",
-          }}
-          onClick={handleFreezePlanButtonClick}
-        >
-          <AcUnitIcon
+        {hasPaymentPlan && (
+          <Button
+            variant="contained"
+            color="primary"
             sx={{
-              mr: 0.5,
+              textTransform: "none",
             }}
-          />
-          Freeze Payment Plan
-        </Button>
-
+            onClick={handleFreezePlanButtonClick}
+            startIcon={<AcUnitIcon />}
+          >
+            Freeze Payment Plan
+          </Button>
+        )}
         <ConfirmationDialog
           open={showFreezePlanDialog}
           onClose={handleFreezePlanDialogClose}

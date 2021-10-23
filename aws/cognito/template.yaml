@@ -175,18 +175,6 @@ Resources:
           StringAttributeConstraints:
             MinLength: 1
             MaxLength: 256
-        - Name: plan_expiration
-          AttributeDataType: String
-          Mutable: true
-          StringAttributeConstraints:
-            MinLength: 1
-            MaxLength: 256
-        - Name: plan_expired
-          AttributeDataType: String
-          Mutable: true
-          StringAttributeConstraints:
-            MinLength: 1
-            MaxLength: 256
       Policies:
         PasswordPolicy:
           MinimumLength: 8

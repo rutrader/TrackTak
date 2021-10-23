@@ -9,7 +9,7 @@ const CurrentPlan = () => {
   return (
     <>
       <Typography variant="h8" fontWeight="bold" gutterBottom>
-        Enabled API Regions
+        Enabled Regions
       </Typography>
       {listAPIregions
         .filter((region) => region.id !== "all")
