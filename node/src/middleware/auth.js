@@ -12,3 +12,13 @@ const auth = async (req, res, next) => {
 };
 
 export default auth;
+
+export const excludeStripeWebhookJSON = (fn) => {
+  return (req, res, next) => {
+    if (req.path === "/api/v1/stripe-webhook" && req.method === "POST") {
+      next();
+    } else {
+      fn(req, res, next);
+    }
+  };
+};

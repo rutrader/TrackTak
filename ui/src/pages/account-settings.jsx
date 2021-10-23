@@ -21,13 +21,15 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import LockIcon from "@mui/icons-material/Lock";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PaymentIcon from "@mui/icons-material/Payment";
-import useCurrentPlan, { Plans } from "../hooks/useCurrentPlan";
+import useCurrentPlan from "../hooks/useCurrentPlan";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import ConfirmationDialog from "../components/ConfirmationDialog";
 import FreezePlanForm from "../components/FreezePlanForm";
 import AcUnitIcon from "@mui/icons-material/AcUnit";
+import { createCustomerPortal } from "../api/api";
 
 const AccountSettings = () => {
+  const { getAccessToken } = useAuth();
   const { isExternalIdentityProvider } = useAuth();
   const { currentPlan } = useCurrentPlan();
   const theme = useTheme();
@@ -64,6 +66,12 @@ const AccountSettings = () => {
     setShowFreezePlanDialog(false);
   };
 
+  const handleOnClickCustomerPortal = async () => {
+    const token = await getAccessToken();
+    const { data } = await createCustomerPortal(token?.jwtToken);
+
+    window.location.href = data.url;
+  };
   return (
     <>
       <Helmet>
@@ -158,6 +166,7 @@ const AccountSettings = () => {
                     textTransform: "none",
                     mt: 3,
                   }}
+                  onClick={handleOnClickCustomerPortal}
                 >
                   Update Details
                 </Button>

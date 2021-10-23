@@ -12,15 +12,15 @@ const commonIconProps = {
 
 export const listAPIregions = [
   {
-    id: "us_small",
-    regionName: "United States (small cap)",
-    price: "$0.00",
-    iconSvg: <USAIconSvg {...commonIconProps} alt="usa" />,
-  },
-  {
     id: "us_large",
     regionName: "United States (large cap)",
     price: "$9.99",
+    iconSvg: <USAIconSvg {...commonIconProps} alt="usa" />,
+  },
+  {
+    id: "us_small",
+    regionName: "United States (small cap)",
+    price: "$0.00",
     iconSvg: <USAIconSvg {...commonIconProps} alt="usa" />,
   },
   {

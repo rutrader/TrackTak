@@ -38,7 +38,7 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
       setSpreadsheets(response.data.spreadsheets);
     }
     fetchData();
-  }, []);
+  }, [getAccessToken]);
 
   const handleRowClick = (spreadsheet) => {
     navigate(`/${userData.name}/my-spreadsheets/${spreadsheet._id}`);
