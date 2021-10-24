@@ -3,16 +3,24 @@ import { getCurrentPlan } from "../api/api";
 import { useAuth } from "./useAuth";
 
 export const Plans = {
-  ONE_HOUR_TRIAL: "1 Hour Free Trial",
-  NON_ACTIVE: "Non-Active",
   ACTIVE: "Active",
-  PRO: "Pro",
   FROZEN: "Frozen",
-  DEACTIVATED: "Deactivated",
 };
 
-export const isStockDisabled = (currentPlan, stock) =>
-  currentPlan.type === Plans.ONE_HOUR_TRIAL && !stock.isUSLargeCap;
+const Addons = {
+  US_SMALL_CAP: "us_small",
+  US_LARGE_CAP: "us_large",
+};
+
+export const isStockDisabled = (currentPlan, stock) => {
+  if (stock.exchange === "US" && stock.isUSLargeCap) {
+    return true;
+  }
+  if (stock.exchange === "US" && !stock.isUSLargeCap) {
+    return currentPlan.addons.includes(Addons.US_SMALL_CAP);
+  }
+  return currentPlan.addons.includes(stock.exchange); // TODO Might need a mapping to make this work
+};
 
 const useCurrentPlan = () => {
   const { getAccessToken } = useAuth();

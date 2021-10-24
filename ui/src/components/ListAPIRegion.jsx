@@ -1,33 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { useAuth } from "../hooks/useAuth";
+import React from "react";
 import { formatPrice } from "../shared/utils";
-import { getPrice } from "../api/api";
 import ListRegion from "./ListRegion";
+import useFetchPrice from "../hooks/useFetchPrice";
 
 const ListAPIRegion = ({ priceId, ...props }) => {
-  const { getAccessToken } = useAuth();
-  const [price, setPrice] = useState();
+  const priceData = useFetchPrice(priceId);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const token = await getAccessToken();
-      const {
-        data: { price },
-      } = await getPrice(priceId, token?.jwtToken);
-
-      setPrice(price);
-    };
-
-    fetchData();
-  }, [getAccessToken, priceId]);
-
-  const formattedPrice = price ? (
+  const formattedPrice = priceData ? (
     <>
       {formatPrice({
-        unitAmount: price.unit_amount,
-        currency: price.currency.toUpperCase(),
+        unitAmount: priceData.unit_amount,
+        currency: priceData.currency.toUpperCase(),
       })}
-      /{price?.recurring.interval}
+      /{priceData?.recurring.interval}
     </>
   ) : null;
 

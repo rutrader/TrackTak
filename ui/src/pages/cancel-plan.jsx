@@ -1,25 +1,22 @@
 import { useTheme } from "@emotion/react";
 import {
-  Button,
   Grid,
   IconButton,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Stack,
   Typography,
 } from "@material-ui/core";
 import { Box } from "@material-ui/system";
 import React from "react";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
-import AcUnitIcon from "@mui/icons-material/AcUnit";
-import PersonIcon from "@mui/icons-material/Person";
 import CheckIcon from "@material-ui/icons/Check";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { navigate } from "gatsby-link";
+import MembershipButtons from "../components/MembershipButtons";
 
 const listOfFeatures = [
   { feature: "Small-cap United States API region access" },
@@ -100,38 +97,7 @@ const CancelPlan = () => {
             })}
           </List>
         </Grid>
-        <Stack
-          spacing={2}
-          direction="row"
-          sx={{ justifyContent: "space-around", flexWrap: "wrap", gap: 2 }}
-        >
-          <Button
-            variant="contained"
-            sx={{
-              textTransform: "none",
-            }}
-            startIcon={<PersonIcon />}
-          >
-            Keep My Benefits
-          </Button>
-          <Button
-            variant="contained"
-            sx={{
-              textTransform: "none",
-            }}
-            startIcon={<AcUnitIcon />}
-          >
-            Freeze Payment Plan
-          </Button>
-          <Button
-            variant="outlined"
-            sx={{
-              textTransform: "none",
-            }}
-          >
-            End My Membership
-          </Button>
-        </Stack>
+        <MembershipButtons />
       </Box>
     </>
   );

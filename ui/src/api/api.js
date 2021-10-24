@@ -1,5 +1,4 @@
 import axios from "../../../packages/intrinsic-valuations/src/api/axios";
-import { navigate } from "gatsby";
 
 const errorResponseHandler = (error) => {
   if (
@@ -7,10 +6,6 @@ const errorResponseHandler = (error) => {
     error.config.errorHandle === false
   ) {
     return Promise.reject(error);
-  }
-
-  if (error.response.data === "PLAN_EXPIRED") {
-    navigate("/pricing/");
   }
 };
 

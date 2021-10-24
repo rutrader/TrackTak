@@ -10,10 +10,11 @@ const ConfirmationDialog = ({
   children,
   open,
   onClose,
+  onCancel,
   onConfirm,
   titleText,
   confirmText = "Ok",
-  cancelText = "Cancel",
+  cancelText,
 }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,7 +28,13 @@ const ConfirmationDialog = ({
         <DialogTitle id="form-dialog-title">{titleText}</DialogTitle>
       )}
       <DialogContent>
-        <DialogContentText>{children}</DialogContentText>
+        <DialogContentText
+          sx={{
+            color: "black",
+          }}
+        >
+          {children}
+        </DialogContentText>
       </DialogContent>
       <DialogActions
         sx={{
@@ -39,7 +46,7 @@ const ConfirmationDialog = ({
         <Button variant="contained" color="primary" onClick={handleSubmit}>
           {confirmText}
         </Button>
-        <Button variant="outlined" onClick={onClose} color="primary">
+        <Button variant="outlined" onClick={onCancel} color="primary">
           {cancelText}
         </Button>
       </DialogActions>
