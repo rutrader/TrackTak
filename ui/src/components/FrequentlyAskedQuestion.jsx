@@ -6,27 +6,34 @@ import { useTheme } from "@emotion/react";
 import { Typography } from "@material-ui/core";
 import { Box } from "@material-ui/system";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
+import { Link } from "gatsby";
 
 const questionsAndAnswers = [
   {
-    question: "What does X of valuations per month mean?",
-    answer:
-      "Refers to the number of valuations you can create in Tracktak each month. For Active and Non-Active plans all unused valuations in that month do not carry over to the next month. If you exceed your number of valuations limit you can always upgrade your plan or wait until next month.",
+    question: "What list of exchanges do you support?",
+    answer: (
+      <>
+        We support more than 60 exchanges globally, for more information
+        visit&nbsp;
+        <Link
+          rel="noreferrer"
+          target="_blank"
+          href="https://eodhistoricaldata.com/financial-apis/list-supported-exchanges/"
+        >
+          here
+        </Link>
+      </>
+    ),
   },
   {
     question: "What does freezing your plan mean?",
     answer:
-      "Need a break from investing? Active Investor and Professional plan lets you freeze your membership for up to 1 or 3 months at no extra cost during 12-month period. The freeze will be applied from your next payment date, please make sure it is added at least 3-4 working days before this date. If you wish to unfreeze your plan sooner, you can! Unfreezing before the original end date, means there is a small charge amount will be added on to your next payment to cover the days. After you have used your 1 or 3-month allowance you no longer can freeze you plan within 12-month period.",
-  },
-  {
-    question: "What happens at the end of my trial?",
-    answer:
-      "When you start your trial, you get a full account, which gives you access to everything Tracktak has to offer except exporting your valuations to Excel. After 7 days, your subscription will renew based on the plan you select at checkout. We'll send you an email in 3-4 days before your trial expires to remind you. You can also cancel your subscription at any time and it will not renew after the current billing period.",
+      "Need a break from investing? Your plan lets you freeze your membership for up to 1 or 3 months at no extra cost during 12-month period. The freeze will be applied from your next payment date, please make sure it is added at least 3-4 working days before this date. If you wish to unfreeze your plan sooner, you can! Unfreezing before the original end date, means there is a small charge amount will be added on to your next payment to cover the days. After you have used your 1 or 3-month allowance you no longer can freeze you plan within 12-month period.",
   },
   {
     question: "Can I change my plan later?",
     answer:
-      "You can switch from the Non-Active and Active to the Professional plan at any time or downgrade you plan from Professional to Active and Non-Active. You can also change your billing frequency (monthly or yearly) at any time.",
+      "You can upgrade or downgrade your API regions at any time. You can also change your billing frequency (monthly or yearly) at any time.",
   },
   {
     question: "Can I get a refund?",
@@ -36,7 +43,7 @@ const questionsAndAnswers = [
   {
     question: "What if I want to cancel my plan?",
     answer:
-      "We're sorry to see you go. Did you know you can freeze your plan? If you're a Professional or Active Investor, freezing is included as part of your membership! If you still decide to leave Tracktak, you can cancel or downgrade before your next billing period with a single click from your account settings or by sending an email request to support@tracktak.com.",
+      "We're sorry to see you go. Did you know you can freeze your plan? Freezing is included as part of your membership! If you still decide to leave Tracktak, you can cancel or downgrade before your next billing period with a single click from your account settings or by sending an email request to support@tracktak.com.",
   },
   {
     question: "Which currency will I be charged in?",
