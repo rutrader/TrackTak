@@ -1,7 +1,6 @@
 import { useTheme } from "@emotion/react";
 import {
   Grid,
-  IconButton,
   List,
   ListItem,
   ListItemIcon,
@@ -10,13 +9,11 @@ import {
 } from "@material-ui/core";
 import { Box } from "@material-ui/system";
 import React from "react";
-import { Helmet } from "react-helmet";
-import getTitle from "../shared/getTitle";
 import CheckIcon from "@material-ui/icons/Check";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { navigate } from "gatsby-link";
 import MembershipButtons from "../components/MembershipButtons";
+import CancellationPlan from "../components/CancellationPlan";
 
 const listOfFeatures = [
   { feature: "Small-cap United States API region access" },
@@ -29,76 +26,60 @@ const CancelPlan = () => {
   const theme = useTheme();
   return (
     <>
-      <Helmet>
-        <title>{getTitle("Cancelling Plan")}</title>
-      </Helmet>
-      <Box>
-        <IconButton
-          color="primary"
-          onClick={() => {
-            navigate("/switching-plan");
-          }}
-        >
-          <ArrowBackIcon />
-        </IconButton>
-        <Typography
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            fontSize: "2.3rem",
-            mb: 4,
-          }}
-          color={theme.palette.primary.purple}
-          fontWeight="bold"
-          gutterBottom
-        >
-          We are sorry to see you go!
-        </Typography>
-        <Grid
-          item
-          xs={12}
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-            mb: 4,
-          }}
-        >
-          <Typography gutterBottom variant="h5" fontWeight="bold">
-            Please confirm the cancellation of your plan
-          </Typography>
-          <Box sx={{ display: "flex" }}>
-            <WarningAmberIcon sx={{ color: theme.palette.warning.main }} />
-            <Typography gutterBottom sx={{ color: theme.palette.warning.main }}>
-              Your benefits will remain active until your billing period ends on
-              Thur, 14 October 2021.
-            </Typography>
-          </Box>
-          <Typography
-            gutterBottom
-            variant="h6"
-            fontWeight="bold"
-            sx={{ mt: 4 }}
+      <CancellationPlan
+        route="/switching-plan"
+        iconArrow={<ArrowBackIcon />}
+        header="We are sorry to see you go!"
+        bodyText={
+          <Grid
+            item
+            xs={12}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+              mb: 4,
+            }}
           >
-            Benefits you will lose:
-          </Typography>
-          <List>
-            {listOfFeatures.map((feature, index) => {
-              return (
-                <ListItem sx={{ paddingTop: "0px" }} key={index}>
-                  <ListItemIcon sx={{ minWidth: "33px" }}>
-                    <CheckIcon color="primary" />
-                  </ListItemIcon>
-                  <ListItemText primary={feature.feature} />
-                </ListItem>
-              );
-            })}
-          </List>
-        </Grid>
-        <MembershipButtons />
-      </Box>
+            <Typography gutterBottom variant="h5" fontWeight="bold">
+              Please confirm the cancellation of your plan
+            </Typography>
+            <Box sx={{ display: "flex" }}>
+              <WarningAmberIcon sx={{ color: theme.palette.warning.main }} />
+              <Typography
+                gutterBottom
+                sx={{ color: theme.palette.warning.main }}
+              >
+                Your benefits will remain active until your billing period ends
+                on Thur, 14 October 2021.
+              </Typography>
+            </Box>
+            <Typography
+              gutterBottom
+              variant="h6"
+              fontWeight="bold"
+              sx={{ mt: 4 }}
+            >
+              Benefits you will lose:
+            </Typography>
+            <List>
+              {listOfFeatures.map((feature, index) => {
+                return (
+                  <ListItem sx={{ paddingTop: "0px" }} key={index}>
+                    <ListItemIcon sx={{ minWidth: "33px" }}>
+                      <CheckIcon color="primary" />
+                    </ListItemIcon>
+                    <ListItemText primary={feature.feature} />
+                  </ListItem>
+                );
+              })}
+            </List>
+          </Grid>
+        }
+      />
+      <MembershipButtons />
     </>
   );
 };

@@ -23,13 +23,12 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PaymentIcon from "@mui/icons-material/Payment";
 import useCurrentPlan from "../hooks/useCurrentPlan";
 import ConfirmationDialog from "../components/ConfirmationDialog";
-import FreezePlanForm from "../components/FreezePlanForm";
 import AcUnitIcon from "@mui/icons-material/AcUnit";
 import { createCustomerPortal } from "../api/api";
 import ClearIcon from "@mui/icons-material/Clear";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import { navigate } from "gatsby-link";
-import CancelPlanForm from "../components/CancelPlanForm";
+import FreezeModalForm from "../components/FreezeModalForm";
 
 const AccountSettings = () => {
   const { getAccessToken } = useAuth();
@@ -265,7 +264,20 @@ const AccountSettings = () => {
           confirmText="Freeze My Plan"
           cancelText="Continue to Cancel"
         >
-          <CancelPlanForm />
+          <FreezeModalForm
+            header="Before you cancel..."
+            subtext={
+              <Typography
+                variant="h6"
+                sx={{
+                  color: (theme) => theme.palette.primary.mainTextColor,
+                }}
+                gutterBottom
+              >
+                Did you know you can put your plan on hold?
+              </Typography>
+            }
+          />
         </ConfirmationDialog>
         <ConfirmationDialog
           open={showFreezePlanDialog}
@@ -275,7 +287,7 @@ const AccountSettings = () => {
           confirmText="Freeze My Plan"
           cancelText="Cancel"
         >
-          <FreezePlanForm />
+          <FreezeModalForm header="Need a break from investing?" />
         </ConfirmationDialog>
       </Paper>
     </>

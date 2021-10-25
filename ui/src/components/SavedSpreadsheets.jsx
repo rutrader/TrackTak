@@ -10,6 +10,7 @@ import {
   ListItemIcon,
   IconButton,
   Typography,
+  DialogContentText,
 } from "@material-ui/core";
 import GridOnIcon from "@material-ui/icons/GridOn";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -85,11 +86,19 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
       <ConfirmationDialog
         open={showConfirmationDialog}
         onClose={handleConfirmationDialogClose}
+        onCancel={handleConfirmationDialogClose}
         onConfirm={handleDeleteConfirm}
         confirmText="Delete"
+        cancelText="Cancel"
         titleText="Confirm"
       >
-        Are you sure you want to delete this valuation?
+        <DialogContentText
+          sx={{
+            color: "black",
+          }}
+        >
+          Are you sure you want to delete this valuation?
+        </DialogContentText>
       </ConfirmationDialog>
       {/* No falsy check because null means the data hasn't loaded yet */}
       {spreadsheets?.length === 0 && (
