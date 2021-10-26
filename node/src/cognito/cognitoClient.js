@@ -10,7 +10,7 @@ cup.config = new AWS.Config({
 });
 cup.endpoint = new AWS.Endpoint(cognitoIssuerUri);
 
-export const getCurrentPlan = async (username, accessToken) => {
+export const getCurrentPlan = async (accessToken) => {
   const user = await cup.getUser({ AccessToken: accessToken }).promise();
   const attributes = user.UserAttributes.reduce(
     (all, current) => ({
@@ -23,10 +23,14 @@ export const getCurrentPlan = async (username, accessToken) => {
   return mapCognitoAttributesToPlan(attributes);
 };
 
-export const updatePlan = async (username, type, addons = []) => {
+export const updatePlan = async (
+  username,
+  stripeCustomerId,
+  type = "Active",
+) => {
   const newPlan = {
     "custom:account_type": type,
-    "custom:account_addons": addons.join(","),
+    "custom:stripe_customer_id": stripeCustomerId,
   };
   await setUserAccountAttributes(username, newPlan);
   return mapCognitoAttributesToPlan(newPlan);
@@ -34,9 +38,7 @@ export const updatePlan = async (username, type, addons = []) => {
 
 const mapCognitoAttributesToPlan = (attributes) => ({
   type: attributes["custom:account_type"],
-  addons: attributes["custom:account_addons"]
-    ? attributes["custom:account_addons"].split(",")
-    : [],
+  stripeCustomerId: attributes["custom:stripe_customer_id"],
 });
 
 const setUserAccountAttributes = async (username, attributes) => {
