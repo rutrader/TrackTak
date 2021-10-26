@@ -5,6 +5,7 @@ import api from "./api";
 import auth, { excludeStripeWebhookJSON } from "./middleware/auth";
 import Stripe from "stripe";
 import { CURRENT_PLAN_ENDPOINT } from "./shared/constants";
+import { updatePlan } from "./cognito/cognitoClient";
 
 const hostname = "127.0.0.1";
 const port = process.env.NODE_ENV === "development" ? 3001 : process.env.PORT;
@@ -168,10 +169,7 @@ app.delete("/api/v1/spreadsheets/:id", auth, async (req, res) => {
 });
 
 app.get(CURRENT_PLAN_ENDPOINT, auth, async (req, res) => {
-  const currentPlan = await api.getCurrentPlan(
-    req.user.username,
-    req.user.accessToken,
-  );
+  const currentPlan = await api.getCurrentPlan(req.user.accessToken);
 
   res.send(currentPlan);
 });
@@ -198,6 +196,9 @@ app.post("/api/v1/create-checkout-session", auth, async (req, res) => {
       },
       success_url: `${process.env.ORIGIN_URL}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.ORIGIN_URL}/pricing`,
+      metadata: {
+        username: req.user.username,
+      },
     });
     res.send({ url: session.url });
   } catch (e) {
@@ -231,7 +232,8 @@ app.post(
 
     switch (event.type) {
       case "checkout.session.completed":
-        // Save customer id to the backend
+        const eventData = event.data.object;
+        updatePlan(eventData.metadata.username, eventData.customer);
         break;
       default:
         console.error(`Unhandled event type ${event.type}`);

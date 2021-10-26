@@ -169,7 +169,7 @@ Resources:
           StringAttributeConstraints:
             MinLength: 1
             MaxLength: 256
-        - Name: account_addons
+        - Name: stripe_customer_id
           AttributeDataType: String
           Mutable: true
           StringAttributeConstraints:
