@@ -9,7 +9,7 @@ import {
   Box,
   Grid,
   Button,
-  useTheme,
+  Stack,
 } from "@material-ui/core";
 import ContactDetailsForm from "../components/ContactDetailsForm";
 import SettingSection from "../components/SettingSection";
@@ -22,20 +22,20 @@ import LockIcon from "@mui/icons-material/Lock";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PaymentIcon from "@mui/icons-material/Payment";
 import useCurrentPlan from "../hooks/useCurrentPlan";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import ConfirmationDialog from "../components/ConfirmationDialog";
-import FreezePlanForm from "../components/FreezePlanForm";
 import AcUnitIcon from "@mui/icons-material/AcUnit";
 import { createCustomerPortal } from "../api/api";
+import ClearIcon from "@mui/icons-material/Clear";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import FreezeModalForm from "../components/FreezeModalForm";
 import { navigate } from "gatsby";
 
 const AccountSettings = () => {
   const { getAccessToken } = useAuth();
   const { isExternalIdentityProvider } = useAuth();
   const { currentPlan } = useCurrentPlan();
-  const theme = useTheme();
-  const isOnMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [showFreezePlanDialog, setShowFreezePlanDialog] = useState(false);
+  const [endPlanDialog, setEndPlanDialog] = useState(false);
   const hasPaymentPlan = currentPlan?.addons?.length > 1;
 
   const dividerStyle = {
@@ -48,13 +48,6 @@ const AccountSettings = () => {
     ? new Date(currentPlan.expiration).toLocaleDateString()
     : "";
 
-  const buttonLargeScreenStyles = {
-    position: "absolute",
-    mt: 4,
-    right: (theme) => theme.spacing(-6),
-    top: (theme) => theme.spacing(-3),
-  };
-
   const handleFreezePlanButtonClick = () => {
     setShowFreezePlanDialog(true);
   };
@@ -65,6 +58,14 @@ const AccountSettings = () => {
 
   const handleFreezePlanDialogConfirm = () => {
     setShowFreezePlanDialog(false);
+  };
+
+  const handleEndPlanDialogClose = () => {
+    setEndPlanDialog(false);
+  };
+
+  const handleEndPlanDialogConfirm = () => {
+    setEndPlanDialog(false);
   };
 
   const handleOnClickCustomerPortal = async () => {
@@ -120,11 +121,11 @@ const AccountSettings = () => {
                 color="primary"
                 sx={{
                   textTransform: "none",
-                  ...(!isOnMobile ? buttonLargeScreenStyles : {}),
                 }}
+                startIcon={<AutoAwesomeIcon />}
                 onClick={handleAddRegionsClick}
               >
-                Add Regions
+                Upgrade Regions
               </Button>
               {hasPaymentPlan && (
                 <Typography
@@ -231,26 +232,68 @@ const AccountSettings = () => {
           )}
         </Grid>
         <Divider light sx={dividerStyle} />
-        {hasPaymentPlan && (
+        <Stack
+          spacing={2}
+          direction="row"
+          sx={{ justifyContent: "space-around" }}
+        >
+          {hasPaymentPlan && (
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{
+                textTransform: "none",
+              }}
+              onClick={handleFreezePlanButtonClick}
+              startIcon={<AcUnitIcon />}
+            >
+              Freeze Payment Plan
+            </Button>
+          )}
           <Button
-            variant="contained"
-            color="primary"
+            startIcon={<ClearIcon />}
             sx={{
               textTransform: "none",
             }}
-            onClick={handleFreezePlanButtonClick}
-            startIcon={<AcUnitIcon />}
+            onClick={() => {
+              setEndPlanDialog(true);
+            }}
           >
-            Freeze Payment Plan
+            End Plan And Benefits
           </Button>
-        )}
+        </Stack>
+        <ConfirmationDialog
+          open={endPlanDialog}
+          onCancel={() => navigate("/switching-plan")}
+          onClose={handleEndPlanDialogClose}
+          onConfirm={handleEndPlanDialogConfirm}
+          confirmText="Freeze My Plan"
+          cancelText="Continue to Cancel"
+        >
+          <FreezeModalForm
+            header="Before you cancel..."
+            subtext={
+              <Typography
+                variant="h6"
+                sx={{
+                  color: (theme) => theme.palette.primary.mainTextColor,
+                }}
+                gutterBottom
+              >
+                Did you know you can put your plan on hold?
+              </Typography>
+            }
+          />
+        </ConfirmationDialog>
         <ConfirmationDialog
           open={showFreezePlanDialog}
           onClose={handleFreezePlanDialogClose}
+          onCancel={handleFreezePlanDialogClose}
           onConfirm={handleFreezePlanDialogConfirm}
           confirmText="Freeze My Plan"
+          cancelText="Cancel"
         >
-          <FreezePlanForm />
+          <FreezeModalForm header="Need a break from investing?" />
         </ConfirmationDialog>
       </Paper>
     </>

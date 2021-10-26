@@ -21,7 +21,7 @@ const sharedFeatureFour = "Full spreadsheet editing";
 const sharedFeatureFive = "United States API region included";
 const sharedFeatureSix = "Priority email modelling support";
 
-const listOfFeaturesNonActive = [
+export const listOfFeaturesNonActive = [
   { feature: sharedFeatureOne },
   { feature: "12 valuations per month" },
   { feature: sharedFeatureFive },
@@ -31,7 +31,7 @@ const listOfFeaturesNonActive = [
   { feature: "Freeze your plan", disabled: true },
 ];
 
-const listOfFeaturesActive = [
+export const listOfFeaturesActive = [
   { feature: sharedFeatureOne },
   { feature: "25 valuations per month" },
   { feature: sharedFeatureFive },
@@ -42,7 +42,7 @@ const listOfFeaturesActive = [
   { feature: "Freeze your plan for up to 1 month" },
 ];
 
-const listOfFeaturesPro = [
+export const listOfFeaturesPro = [
   { feature: sharedFeatureOne },
   { feature: sharedFeatureTwo },
   { feature: "All API regions included" },

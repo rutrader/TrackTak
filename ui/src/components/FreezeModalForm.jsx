@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Box,
   FormControl,
@@ -8,11 +9,10 @@ import {
 } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import React, { useState } from "react";
-import useCurrentPlan from "../hooks/useCurrentPlan";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import useCurrentPlan from "../hooks/useCurrentPlan";
 
-const FreezePlanForm = () => {
+const FreezeModalForm = ({ header, subtext }) => {
   const theme = useTheme();
   const { currentPlan } = useCurrentPlan();
   const [freezeOption, setFreezeOption] = useState("1");
@@ -41,8 +41,9 @@ const FreezePlanForm = () => {
         }}
         gutterBottom
       >
-        Need a break from investing?
+        {header}
       </Typography>
+      {subtext}
       <Box
         sx={{
           mt: 3,
@@ -107,4 +108,4 @@ const FreezePlanForm = () => {
   );
 };
 
-export default FreezePlanForm;
+export default FreezeModalForm;
