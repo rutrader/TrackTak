@@ -17,7 +17,6 @@ import CancellationPlan from "../components/CancellationPlan";
 
 const listOfFeatures = [
   { feature: "Small-cap United States API region access" },
-  { feature: "Mid-cap United States API region access" },
   { feature: "Access to Worldwide API region" },
   { feature: "Priority email and call support" },
 ];
