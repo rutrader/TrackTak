@@ -27,6 +27,7 @@ import ConfirmationDialog from "../components/ConfirmationDialog";
 import FreezePlanForm from "../components/FreezePlanForm";
 import AcUnitIcon from "@mui/icons-material/AcUnit";
 import { createCustomerPortal } from "../api/api";
+import { navigate } from "gatsby";
 
 const AccountSettings = () => {
   const { getAccessToken } = useAuth();
@@ -72,6 +73,11 @@ const AccountSettings = () => {
 
     window.location.href = data.url;
   };
+
+  const handleAddRegionsClick = async () => {
+    navigate("/pricing");
+  };
+
   return (
     <>
       <Helmet>
@@ -116,6 +122,7 @@ const AccountSettings = () => {
                   textTransform: "none",
                   ...(!isOnMobile ? buttonLargeScreenStyles : {}),
                 }}
+                onClick={handleAddRegionsClick}
               >
                 Add Regions
               </Button>
