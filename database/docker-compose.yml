@@ -30,7 +30,6 @@ services:
     container_name: stripe-cli
     command: listen --forward-to host.docker.internal:3001/api/v1/stripe-webhook
     environment:
-      - STRIPE_AUTH_SECRET_KEY=${STRIPE_AUTH_SECRET_KEY}
-      - STRIPE_AUTH_PUBLIC_KEY=${STRIPE_AUTH_PUBLIC_KEY}
       - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
       - STRIPE_DEVICE_NAME=${STRIPE_DEVICE_NAME}
+      - STRIPE_API_KEY=${STRIPE_AUTH_SECRET_KEY}

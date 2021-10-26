@@ -27,8 +27,8 @@ import AcUnitIcon from "@mui/icons-material/AcUnit";
 import { createCustomerPortal } from "../api/api";
 import ClearIcon from "@mui/icons-material/Clear";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
-import { navigate } from "gatsby-link";
 import FreezeModalForm from "../components/FreezeModalForm";
+import { navigate } from "gatsby";
 
 const AccountSettings = () => {
   const { getAccessToken } = useAuth();
@@ -74,6 +74,11 @@ const AccountSettings = () => {
 
     window.location.href = data.url;
   };
+
+  const handleAddRegionsClick = async () => {
+    navigate("/pricing");
+  };
+
   return (
     <>
       <Helmet>
@@ -118,6 +123,7 @@ const AccountSettings = () => {
                   textTransform: "none",
                 }}
                 startIcon={<AutoAwesomeIcon />}
+                onClick={handleAddRegionsClick}
               >
                 Upgrade Regions
               </Button>
