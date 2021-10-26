@@ -3,10 +3,9 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import { useTheme } from "@emotion/react";
-import { Typography } from "@material-ui/core";
+import { Link, Typography } from "@material-ui/core";
 import { Box } from "@material-ui/system";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
-import { Link } from "gatsby";
 
 const questionsAndAnswers = [
   {

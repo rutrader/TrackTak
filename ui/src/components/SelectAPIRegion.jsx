@@ -98,8 +98,8 @@ const SelectAPIRegion = ({ checked, setChecked, handleOnClick, priceId }) => {
               regionName="United States"
               price="$0.00/month"
               iconSvg={<USAIconSvg alt="usa" />}
-              checked={checked}
-              disabled={true}
+              checked
+              disabled
             />
             {listAPIRegions.map((listAPIRegion) => {
               return (

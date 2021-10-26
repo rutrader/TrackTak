@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Stack } from "@material-ui/core";
 import AcUnitIcon from "@mui/icons-material/AcUnit";
 import PersonIcon from "@mui/icons-material/Person";
-import { navigate } from "gatsby-link";
+import { navigate } from "gatsby";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 
