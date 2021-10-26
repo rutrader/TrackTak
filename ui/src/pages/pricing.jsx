@@ -15,7 +15,7 @@ const Pricing = () => {
   const { getAccessToken } = useAuth();
   const [checked, setChecked] = useState([]);
 
-  const handleOnClick = async (planPriceId) => {
+  const handleOnClick = async () => {
     const token = await getAccessToken();
     const apiRegionLineItems = checked.map((priceId) => {
       return { price: priceId, quantity: 1 };
