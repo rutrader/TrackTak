@@ -8,6 +8,8 @@ import {
 } from "@material-ui/core";
 import { Box } from "@material-ui/system";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { formatPrice } from "../shared/utils";
+import useFetchPrice from "../hooks/useFetchPrice";
 import { useTheme } from "@emotion/react";
 
 const ListRegion = ({
@@ -16,10 +18,21 @@ const ListRegion = ({
   checked,
   handleOnChangeChecked,
   disabled,
-  price,
+  priceId,
 }) => {
   const theme = useTheme();
+  const priceData = useFetchPrice(priceId);
   const isOnMobile = useMediaQuery(theme.breakpoints.up("sm"));
+
+  const formattedPrice = priceData ? (
+    <>
+      {formatPrice({
+        unitAmount: priceData.unit_amount,
+        currency: priceData.currency.toUpperCase(),
+      })}
+      /{priceData?.recurring.interval}
+    </>
+  ) : null;
 
   return (
     <ListItem>
@@ -30,7 +43,7 @@ const ListRegion = ({
           flexWrap: "wrap",
           justifyContent: "left",
         }}
-        onClick={handleOnChangeChecked}
+        onClick={disabled ? null : handleOnChangeChecked}
       >
         <Box
           sx={{
@@ -58,7 +71,7 @@ const ListRegion = ({
             alignItems: "center",
           }}
         >
-          {price}
+          {formattedPrice}
           <Checkbox
             edge="end"
             checked={checked}

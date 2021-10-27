@@ -10,41 +10,38 @@ const commonIconProps = {
   height: 30,
 };
 
+export const mediumCapUSPlusPriceId = "price_1JpAUvDOsUBI2OhCsE4GSzNk";
+
 export const listAPIregions = [
   {
-    id: "us_large",
-    regionName: "United States (large cap)",
-    price: "$9.99",
+    priceId: mediumCapUSPlusPriceId,
+    regionName: "United States (medium cap+)",
     iconSvg: <USAIconSvg {...commonIconProps} alt="usa" />,
+    disabled: true,
   },
   {
-    id: "us_small",
+    priceId: "price_1JoW4KDOsUBI2OhCHFgCSAVi",
     regionName: "United States (small cap)",
-    price: "$0.00",
     iconSvg: <USAIconSvg {...commonIconProps} alt="usa" />,
   },
   {
-    id: "apac",
+    priceId: "price_1JhdQPDOsUBI2OhCOkxiOM9Q",
     regionName: "China & Asia",
-    price: "$14.99",
     iconSvg: <ChinaIconSvg {...commonIconProps} alt="china" />,
   },
   {
-    id: "lamea",
+    priceId: "price_1Ji1WGDOsUBI2OhC1wdJ7FcD",
     regionName: "Latin America, Middle East & Africa",
-    price: "$12.99",
     iconSvg: <BrazilIconSvg {...commonIconProps} alt="brazil" />,
   },
   {
-    id: "eu",
+    priceId: "price_1JhdQpDOsUBI2OhCztCOuKki",
     regionName: "Europe",
-    price: "$9.99",
     iconSvg: <EuropeIconSvg {...commonIconProps} alt="europe" />,
   },
   {
-    id: "cauk",
+    priceId: "price_1JhdRHDOsUBI2OhCVVGyzsZF",
     regionName: "Canada, Australia, UK & Ireland",
-    price: "$9.99",
     iconSvg: <UKIconSvg {...commonIconProps} alt="uk" />,
   },
 ];

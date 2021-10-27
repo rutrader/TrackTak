@@ -11,20 +11,18 @@ const CurrentPlan = () => {
       <Typography variant="h8" fontWeight="bold" gutterBottom>
         Enabled Regions
       </Typography>
-      {listAPIregions
-        .filter((region) => region.id !== "all")
-        .map((listAPIRegion, i) => {
-          const enabled = currentPlan?.addons.includes(listAPIRegion.id);
+      {listAPIregions.map((listAPIRegion, i) => {
+        const enabled = currentPlan?.addons.includes(listAPIRegion.priceId);
 
-          return (
-            <RegionStatus
-              key={i}
-              regionName={listAPIRegion.regionName}
-              iconSvg={listAPIRegion.iconSvg}
-              enabled={enabled}
-            />
-          );
-        })}
+        return (
+          <RegionStatus
+            key={i}
+            regionName={listAPIRegion.regionName}
+            iconSvg={listAPIRegion.iconSvg}
+            enabled={enabled}
+          />
+        );
+      })}
     </>
   );
 };
