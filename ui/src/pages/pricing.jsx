@@ -9,17 +9,21 @@ import SelectAPIRegion from "../components/SelectAPIRegion";
 import FrequentlyAskedQuestion from "../components/FrequentlyAskedQuestion";
 import { createCheckoutSession } from "../api/api";
 import { useAuth } from "../hooks/useAuth";
+import withAuthentication from "../hocs/withAuthentication";
+import { mediumCapUSPlusPriceId } from "../data/regions";
 
 const Pricing = () => {
   const theme = useTheme();
   const { getAccessToken } = useAuth();
-  const [checked, setChecked] = useState([]);
+  const [checked, setChecked] = useState([mediumCapUSPlusPriceId]);
 
   const handleOnClick = async () => {
     const token = await getAccessToken();
-    const apiRegionLineItems = checked.map((priceId) => {
-      return { price: priceId, quantity: 1 };
-    });
+    const apiRegionLineItems = checked
+      .filter((priceId) => priceId !== mediumCapUSPlusPriceId)
+      .map((priceId) => {
+        return { price: priceId, quantity: 1 };
+      });
     const lineItems = [...apiRegionLineItems];
     const { data } = await createCheckoutSession(lineItems, token?.jwtToken);
 
@@ -72,4 +76,4 @@ const Pricing = () => {
   );
 };
 
-export default Pricing;
+export default withAuthentication(Pricing);
