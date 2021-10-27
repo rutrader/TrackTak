@@ -75,7 +75,7 @@ const SelectAPIRegion = ({ checked, setChecked, handleOnClick, priceId }) => {
             })}
           </List>
           <RoundButton
-            disabled={checked.length === 0}
+            disabled={checked.length === 1}
             onClick={() => {
               handleOnClick(priceId);
             }}
