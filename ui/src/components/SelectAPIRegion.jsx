@@ -5,11 +5,11 @@ import ListAPIRegion from "../components/ListAPIRegion";
 import { Header } from "./PricingPlan";
 import { useLocation } from "@reach/router";
 import { apiRegionsHashLink } from "../pages/pricing";
-import USAIconSvg from "../icons/united-states.svg";
-import ChinaIconSvg from "../icons/china.svg";
-import LatinIconSvg from "../icons/brazil.svg";
-import EuropeIconSvg from "../icons/europe.svg";
-import UKIconSvg from "../icons/united-kingdom.svg";
+import USAIconSvg from "../assets/united-states.svg";
+import ChinaIconSvg from "../assets/china.svg";
+import LatinIconSvg from "../assets/brazil.svg";
+import EuropeIconSvg from "../assets/europe.svg";
+import UKIconSvg from "../assets/united-kingdom.svg";
 import ListRegion from "./ListRegion";
 
 export const listAPIRegions = [
