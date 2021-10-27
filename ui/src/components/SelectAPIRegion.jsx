@@ -1,17 +1,44 @@
-import React, { useState } from "react";
-import { Divider, Paper } from "@material-ui/core";
+import React from "react";
+import { List, Paper } from "@material-ui/core";
 import { Box } from "@material-ui/system";
-import WalletIconSvg from "../assets/wallet.svg";
 import ListAPIRegion from "../components/ListAPIRegion";
-import { apiRegionsHashLink, Header, SelectPlanButton } from "./PricingPlan";
+import { Header } from "./PricingPlan";
 import { useLocation } from "@reach/router";
-import { listAPIregions } from "../data/regions";
+import { apiRegionsHashLink } from "../pages/pricing";
+import USAIconSvg from "../icons/united-states.svg";
+import ChinaIconSvg from "../icons/china.svg";
+import LatinIconSvg from "../icons/brazil.svg";
+import EuropeIconSvg from "../icons/europe.svg";
+import UKIconSvg from "../icons/united-kingdom.svg";
+import ListRegion from "./ListRegion";
 
-const SelectAPIRegion = ({ toggle }) => {
+export const listAPIRegions = [
+  {
+    priceId: "price_1JhdQPDOsUBI2OhCOkxiOM9Q",
+    regionName: "China & Asia",
+    iconSvg: <ChinaIconSvg alt="china" />,
+  },
+  {
+    priceId: "price_1Ji1WGDOsUBI2OhC1wdJ7FcD",
+    regionName: "Latin America, Middle East & Africa",
+    iconSvg: <LatinIconSvg alt="latin" />,
+  },
+  {
+    priceId: "price_1JhdQpDOsUBI2OhCztCOuKki",
+    regionName: "Europe",
+    iconSvg: <EuropeIconSvg alt="europe" />,
+  },
+  {
+    priceId: "price_1JhdRHDOsUBI2OhCVVGyzsZF",
+    regionName: "Canada, Australia, UK & Ireland",
+    iconSvg: <UKIconSvg alt="uk" />,
+  },
+];
+
+const SelectAPIRegion = ({ checked, setChecked }) => {
   const location = useLocation();
-  const [checked, setChecked] = useState([]);
 
-  const handleOnChangeChecked = (value) => () => {
+  const handleOnChangeChecked = (value) => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
@@ -54,65 +81,29 @@ const SelectAPIRegion = ({ toggle }) => {
             }}
           >
             <Header>Select API Regions</Header>
-            <Box>
-              {listAPIregions.map((listAPIRegion, i) => {
+            <List>
+              <ListRegion
+                regionName="United States"
+                price="$0.00/month"
+                iconSvg={<USAIconSvg alt="usa" />}
+                checked={checked}
+                disabled={true}
+              />
+              {listAPIRegions.map((listAPIRegion) => {
                 return (
                   <ListAPIRegion
-                    key={i}
-                    handleOnChangeChecked={handleOnChangeChecked(i)}
+                    key={listAPIRegion.priceId}
+                    handleOnChangeChecked={() => {
+                      handleOnChangeChecked(listAPIRegion.priceId);
+                    }}
                     regionName={listAPIRegion.regionName}
-                    price={
-                      toggle
-                        ? `${listAPIRegion.price}/y`
-                        : `${listAPIRegion.price}/mo`
-                    }
+                    priceId={listAPIRegion.priceId}
                     iconSvg={listAPIRegion.iconSvg}
-                    checked={
-                      checked.find((x) => x === i) === undefined ? false : true
-                    }
+                    checked={!!checked.find((x) => x === listAPIRegion.priceId)}
                   />
                 );
               })}
-              <Divider sx={{ mt: 3 }} />
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  paddingTop: "8px",
-                  paddingBottom: "8px",
-                  paddingLeft: "16px",
-                  paddingRight: "16px",
-                }}
-              >
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Box
-                    alt="wallet"
-                    component={WalletIconSvg}
-                    sx={{ marginRight: "26px", height: "30px" }}
-                  />
-                  {toggle ? (
-                    <Box>Total billed yearly:</Box>
-                  ) : (
-                    <Box>Total billed monthly:</Box>
-                  )}
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    marginRight: "18px",
-                  }}
-                >
-                  $50.99
-                </Box>
-              </Box>
-            </Box>
-            <SelectPlanButton
-              disabled={checked.length === 0}
-              variant="contained"
-            >
-              Buy now
-            </SelectPlanButton>
+            </List>
           </Paper>
         </Box>
       )}

@@ -169,19 +169,7 @@ Resources:
           StringAttributeConstraints:
             MinLength: 1
             MaxLength: 256
-        - Name: account_addons
-          AttributeDataType: String
-          Mutable: true
-          StringAttributeConstraints:
-            MinLength: 1
-            MaxLength: 256
-        - Name: plan_expiration
-          AttributeDataType: String
-          Mutable: true
-          StringAttributeConstraints:
-            MinLength: 1
-            MaxLength: 256
-        - Name: plan_expired
+        - Name: stripe_customer_id
           AttributeDataType: String
           Mutable: true
           StringAttributeConstraints:

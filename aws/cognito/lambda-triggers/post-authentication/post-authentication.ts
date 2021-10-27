@@ -8,39 +8,31 @@ import {
 import { CognitoIdentityServiceProvider } from "aws-sdk";
 
 const cup = new CognitoIdentityServiceProvider();
-const ONE_HOUR = 60 * 60 * 1000;
 
 export const handler: PostAuthenticationTriggerHandler = async (
   event: PostAuthenticationTriggerEvent,
 ) => {
   const userAttributes = event.request.userAttributes;
   if (!userAttributes["custom:account_type"]) {
-    await setTrialAttributes(event);
+    await setInitialAccountAttributes(event);
   }
 
   return event;
 };
 
-const setTrialAttributes = async (event: PostAuthenticationTriggerEvent) => {
-  const planExpiration = (new Date().getTime() + ONE_HOUR).toString();
+const setInitialAccountAttributes = async (
+  event: PostAuthenticationTriggerEvent,
+) => {
   const params: CognitoIdentityServiceProvider.AdminUpdateUserAttributesRequest = {
     UserPoolId: event.userPoolId,
     UserAttributes: [
       {
         Name: "custom:account_type",
-        Value: "1 Hour Free Trial",
+        Value: "Active",
       },
       {
         Name: "custom:account_addons",
-        Value: "usa",
-      },
-      {
-        Name: "custom:plan_expiration",
-        Value: planExpiration,
-      },
-      {
-        Name: "custom:plan_expired",
-        Value: "false",
+        Value: "us_large",
       },
     ],
     Username: event.request.userAttributes.email,

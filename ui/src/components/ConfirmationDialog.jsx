@@ -3,11 +3,18 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
-const ConfirmationDialog = ({ children, open, onClose, onConfirm }) => {
-
+const ConfirmationDialog = ({
+  children,
+  open,
+  onClose,
+  onCancel,
+  onConfirm,
+  titleText,
+  confirmText = "Ok",
+  cancelText,
+}) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     onConfirm();
@@ -16,18 +23,22 @@ const ConfirmationDialog = ({ children, open, onClose, onConfirm }) => {
 
   return (
     <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Confirm</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          {children}
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} color="primary">
-          Cancel
+      {titleText && (
+        <DialogTitle id="form-dialog-title">{titleText}</DialogTitle>
+      )}
+      <DialogContent>{children}</DialogContent>
+      <DialogActions
+        sx={{
+          justifyContent: "center",
+          gap: 1,
+          mb: 2,
+        }}
+      >
+        <Button variant="contained" color="primary" onClick={handleSubmit}>
+          {confirmText}
         </Button>
-        <Button color="primary" onClick={handleSubmit}>
-          Delete
+        <Button variant="outlined" onClick={onCancel} color="primary">
+          {cancelText}
         </Button>
       </DialogActions>
     </Dialog>

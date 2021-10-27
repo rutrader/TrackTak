@@ -381,8 +381,8 @@ const api = {
     });
   },
 
-  getCurrentPlan: async (username, token) => {
-    const plan = await getCurrentPlan(username, token);
+  getCurrentPlan: async (token) => {
+    const plan = await getCurrentPlan(token);
 
     return plan;
   },

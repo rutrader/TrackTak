@@ -41,6 +41,7 @@
     "memory-cache": "^0.2.0",
     "mongodb": "^3.6.9",
     "piscina": "^2.2.0",
+    "stripe": "^8.178.0",
     "webpack": "^5.33.2",
     "webpack-cli": "^4.2.0",
     "webpack-node-externals": "^2.5.2"

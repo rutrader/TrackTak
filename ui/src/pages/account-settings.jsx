@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
@@ -9,7 +9,7 @@ import {
   Box,
   Grid,
   Button,
-  useTheme,
+  Stack,
 } from "@material-ui/core";
 import ContactDetailsForm from "../components/ContactDetailsForm";
 import SettingSection from "../components/SettingSection";
@@ -21,40 +21,62 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import LockIcon from "@mui/icons-material/Lock";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PaymentIcon from "@mui/icons-material/Payment";
-import useCurrentPlan, { Plans } from "../hooks/useCurrentPlan";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import useCurrentPlan from "../hooks/useCurrentPlan";
+import ConfirmationDialog from "../components/ConfirmationDialog";
+import AcUnitIcon from "@mui/icons-material/AcUnit";
+import { createCustomerPortal } from "../api/api";
+import ClearIcon from "@mui/icons-material/Clear";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import FreezeModalForm from "../components/FreezeModalForm";
+import { navigate } from "gatsby";
 
 const AccountSettings = () => {
+  const { getAccessToken } = useAuth();
   const { isExternalIdentityProvider } = useAuth();
   const { currentPlan } = useCurrentPlan();
-  const theme = useTheme();
-  const isOnMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const [showFreezePlanDialog, setShowFreezePlanDialog] = useState(false);
+  const [endPlanDialog, setEndPlanDialog] = useState(false);
+  const hasPaymentPlan = currentPlan?.addons?.length > 1;
 
   const dividerStyle = {
     marginTop: 4,
     marginBottom: 4,
   };
 
+  // TODO API call to get expiration?
   const planExpiration = currentPlan?.expiration
     ? new Date(currentPlan.expiration).toLocaleDateString()
     : "";
 
-  const getValuationsText = () => {
-    switch (currentPlan?.type) {
-      case Plans.ONE_HOUR_TRIAL:
-        return "Unlimited Valuations, US stocks large cap.";
-      case Plans.PRO:
-        return "Unlimited Valuations";
-      default:
-        return "Valuations used x/y";
-    }
+  const handleFreezePlanButtonClick = () => {
+    setShowFreezePlanDialog(true);
   };
 
-  const buttonLargeScreenStyles = {
-    position: "absolute",
-    mt: 4,
-    right: (theme) => theme.spacing(-6),
-    top: (theme) => theme.spacing(-3),
+  const handleFreezePlanDialogClose = () => {
+    setShowFreezePlanDialog(false);
+  };
+
+  const handleFreezePlanDialogConfirm = () => {
+    setShowFreezePlanDialog(false);
+  };
+
+  const handleEndPlanDialogClose = () => {
+    setEndPlanDialog(false);
+  };
+
+  const handleEndPlanDialogConfirm = () => {
+    setEndPlanDialog(false);
+  };
+
+  const handleOnClickCustomerPortal = async () => {
+    const token = await getAccessToken();
+    const { data } = await createCustomerPortal(token?.jwtToken);
+
+    window.location.href = data.url;
+  };
+
+  const handleAddRegionsClick = async () => {
+    navigate("/pricing");
   };
 
   return (
@@ -80,7 +102,6 @@ const AccountSettings = () => {
           <Grid item xs={12} sm={5}>
             <SettingSection
               heading="Current Plan"
-              subHeading={currentPlan?.type}
               sx={{
                 position: "relative",
               }}
@@ -95,36 +116,28 @@ const AccountSettings = () => {
                 />
               }
             >
-              {currentPlan?.type !== Plans.PRO && (
-                <Button
-                  variant="contained"
-                  color="primary"
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{
+                  textTransform: "none",
+                }}
+                startIcon={<AutoAwesomeIcon />}
+                onClick={handleAddRegionsClick}
+              >
+                Upgrade Regions
+              </Button>
+              {hasPaymentPlan && (
+                <Typography
                   sx={{
-                    textTransform: "none",
-                    ...(!isOnMobile ? buttonLargeScreenStyles : {}),
+                    color: (theme) => theme.palette.secondary.grey,
                   }}
+                  variant="h8"
+                  gutterBottom
                 >
-                  Upgrade my plan
-                </Button>
+                  $X/mo. Auto-renews on {planExpiration}
+                </Typography>
               )}
-              <Typography
-                sx={{
-                  color: (theme) => theme.palette.secondary.grey,
-                }}
-                variant="h8"
-                gutterBottom
-              >
-                {getValuationsText()}
-              </Typography>
-              <Typography
-                sx={{
-                  color: (theme) => theme.palette.secondary.grey,
-                }}
-                variant="h8"
-                gutterBottom
-              >
-                $X/mo. Auto-renews on {planExpiration}
-              </Typography>
               <CurrentPlan />
             </SettingSection>
           </Grid>
@@ -161,6 +174,7 @@ const AccountSettings = () => {
                     textTransform: "none",
                     mt: 3,
                   }}
+                  onClick={handleOnClickCustomerPortal}
                 >
                   Update Details
                 </Button>
@@ -168,9 +182,7 @@ const AccountSettings = () => {
             </SettingSection>
           </Grid>
         </Grid>
-
         <Divider light sx={dividerStyle} />
-
         <Grid container justifyContent="space-between">
           <Grid item xs={12} sm={5}>
             <SettingSection
@@ -219,6 +231,70 @@ const AccountSettings = () => {
             </>
           )}
         </Grid>
+        <Divider light sx={dividerStyle} />
+        <Stack
+          spacing={2}
+          direction="row"
+          sx={{ justifyContent: "space-around" }}
+        >
+          {hasPaymentPlan && (
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{
+                textTransform: "none",
+              }}
+              onClick={handleFreezePlanButtonClick}
+              startIcon={<AcUnitIcon />}
+            >
+              Freeze Payment Plan
+            </Button>
+          )}
+          <Button
+            startIcon={<ClearIcon />}
+            sx={{
+              textTransform: "none",
+            }}
+            onClick={() => {
+              setEndPlanDialog(true);
+            }}
+          >
+            End Plan And Benefits
+          </Button>
+        </Stack>
+        <ConfirmationDialog
+          open={endPlanDialog}
+          onCancel={() => navigate("/switching-plan")}
+          onClose={handleEndPlanDialogClose}
+          onConfirm={handleEndPlanDialogConfirm}
+          confirmText="Freeze My Plan"
+          cancelText="Continue to Cancel"
+        >
+          <FreezeModalForm
+            header="Before you cancel..."
+            subtext={
+              <Typography
+                variant="h6"
+                sx={{
+                  color: (theme) => theme.palette.primary.mainTextColor,
+                }}
+                gutterBottom
+              >
+                Did you know you can put your plan on hold?
+              </Typography>
+            }
+          />
+        </ConfirmationDialog>
+        <ConfirmationDialog
+          open={showFreezePlanDialog}
+          onClose={handleFreezePlanDialogClose}
+          onCancel={handleFreezePlanDialogClose}
+          onConfirm={handleFreezePlanDialogConfirm}
+          confirmText="Freeze My Plan"
+          cancelText="Cancel"
+        >
+          <FreezeModalForm header="Need a break from investing?" />
+        </ConfirmationDialog>
       </Paper>
     </>
   );
