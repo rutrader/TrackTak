@@ -163,16 +163,17 @@ const getCellsData = (xSpreadsheetData, sheetId, sheet) => {
               setStyle({
                 textFormatPattern: "0.00%",
               });
-            } else if (
-              xStyles[styleKey] === "million" ||
-              xStyles[styleKey] === "million-currency"
-            ) {
+            } else if (xStyles[styleKey] === "million") {
+              break;
+            } else if (xStyles[styleKey] === "million-currency") {
               setStyle({
                 textFormatPattern: "#,###.##,,",
+                dynamicFormat: "currency",
               });
             } else if (xStyles[styleKey] === "currency") {
               setStyle({
                 textFormatPattern: "#,##0.##",
+                dynamicFormat: "currency",
               });
             } else {
               console.warn("unknown format", xStyles[styleKey]);
