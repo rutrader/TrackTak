@@ -9,7 +9,10 @@ import dayjs from "dayjs";
 import SearchIcon from "@material-ui/icons/Search";
 import useDebouncedCallback from "../../../packages/intrinsic-valuations/src/hooks/useDebouncedCallback";
 import TTRoundInput from "./TTRoundInput";
-import { getAutocompleteQuery } from "../../../packages/intrinsic-valuations/src/api/api";
+import {
+  getAutocompleteQuery,
+  getFundamentals,
+} from "../../../packages/intrinsic-valuations/src/api/api";
 import { useAuth } from "../hooks/useAuth";
 import { createSpreadsheet } from "../api/api";
 import { navigate } from "gatsby";
@@ -32,10 +35,28 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
   const dispatch = useDispatch();
 
   const createUserSpreadsheet = async (ticker) => {
-    const token = await getAccessToken();
-    const freeCashFlowToFirmTemplateData = await import(
-      "../../../packages/intrinsic-valuations/src/spreadsheet/templates/freeCashFlowFirmSimple.json"
-    );
+    const values = await Promise.all([
+      getAccessToken(),
+      import(
+        "../../../packages/intrinsic-valuations/src/spreadsheet/templates/freeCashFlowFirmSimple.json"
+      ),
+      getFundamentals(ticker, {
+        filter: "General::CurrencySymbol",
+      }),
+    ]);
+
+    const token = values[0];
+    const freeCashFlowToFirmTemplateData = values[1];
+    const currencySymbol = values[2].data.value;
+
+    Object.keys(freeCashFlowToFirmTemplateData.cells).forEach((key) => {
+      const cellData = freeCashFlowToFirmTemplateData.cells[key];
+
+      if (cellData.dynamicFormat === "currency") {
+        freeCashFlowToFirmTemplateData.cells[key].textFormatPattern =
+          currencySymbol + cellData.textFormatPattern;
+      }
+    });
     const sheetData = {
       name: ticker,
       data: freeCashFlowToFirmTemplateData.default,

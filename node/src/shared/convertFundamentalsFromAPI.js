@@ -73,6 +73,10 @@ const convertCashFlowStatement = ({
 };
 
 const convertFundamentalsFromAPI = (fundamentalsData) => {
+  if (typeof fundamentalsData !== "object") {
+    return fundamentalsData;
+  }
+
   const {
     General,
     Highlights,

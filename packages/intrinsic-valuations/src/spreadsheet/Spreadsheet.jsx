@@ -50,20 +50,7 @@ const Spreadsheet = ({ sheetData, financialData, saveSheetData, ...props }) => {
   const [spreadsheet, setSpreadsheet] = useState();
   const [containerEl, setContainerEl] = useState();
   const currencySymbol = financialData?.general?.currencySymbol;
-
-  // interface IExtendedCellData extends ICellData {
-  //   dynamicFormat: 'currency';
-  // }
-
-  // Object.keys(args.data!.cells!).forEach((key) => {
-  //   const cellData = args.data!.cells![key as CellId] as IExtendedCellData;
-
-  //   if (cellData.dynamicFormat === 'currency') {
-  //     if (!cellData.textFormatPattern?.includes('$')) {
-  //       cellData.textFormatPattern = '$' + cellData.textFormatPattern;
-  //     }
-  //   }
-  // });
+  const name = sheetData?.name;
 
   useEffect(() => {
     const FinancialPlugin = getTTFinancialPlugin(financialData);
@@ -108,13 +95,26 @@ const Spreadsheet = ({ sheetData, financialData, saveSheetData, ...props }) => {
       if (containerEl) {
         containerEl.appendChild(spreadsheet.spreadsheetEl);
         spreadsheet.setData(sheetData.data);
+        spreadsheet.initialize();
       }
-
-      spreadsheet?.setOptions({
-        exportSpreadsheetName: sheetData.name,
-      });
     }
   }, [containerEl, sheetData, spreadsheet]);
+
+  useEffect(() => {
+    spreadsheet?.setOptions({
+      exportSpreadsheetName: name,
+      row: {
+        amount: 100,
+      },
+      options: {
+        textPatternFormats: {
+          currency: `${currencySymbol}#,##0.##`,
+          million: "#,###.##,,",
+          "million-currency": `${currencySymbol}#,###.##,,`,
+        },
+      },
+    });
+  }, [currencySymbol, name, spreadsheet]);
 
   if (!spreadsheet) return null;
 

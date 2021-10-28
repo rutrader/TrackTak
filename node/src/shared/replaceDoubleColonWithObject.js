@@ -15,8 +15,13 @@ const assignNestedObject = (obj, keyPath, value) => {
 const replaceDoubleColonWithObject = (data) => {
   const newData = {};
 
+  if (typeof data !== "object") {
+    return data;
+  }
+
   Object.keys(data).forEach((key) => {
     const value = data[key];
+
     const splits = key.split("::");
 
     assignNestedObject(newData, splits, value);

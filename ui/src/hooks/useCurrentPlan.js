@@ -14,12 +14,12 @@ const Addons = {
 
 export const isStockDisabled = (currentPlan, stock) => {
   if (stock.exchange === "US" && stock.isUSLargeCap) {
-    return true;
+    return false;
   }
   if (stock.exchange === "US" && !stock.isUSLargeCap) {
-    return currentPlan.addons.includes(Addons.US_SMALL_CAP);
+    return !currentPlan.addons?.includes(Addons.US_SMALL_CAP);
   }
-  return currentPlan.addons.includes(stock.exchange); // TODO Might need a mapping to make this work
+  return !currentPlan.addons?.includes(stock.exchange); // TODO Might need a mapping to make this work
 };
 
 const useCurrentPlan = () => {

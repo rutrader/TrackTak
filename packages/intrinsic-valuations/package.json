@@ -42,7 +42,7 @@
     "dayjs": "^1.9.7",
     "eventemitter3": "^4.0.7",
     "@tracktak/powersheet": "*",
-    "hyperformula": "^1.2.0",
+    "hyperformula": "^1.3.0",
     "iso-3166-1-alpha-2": "^1.0.0",
     "less": "^4.1.1",
     "lodash-es": "^4.17.20",

@@ -11,7 +11,7 @@ import getMinimumHistoricalDateFromFinancialStatements from "../../shared/getMin
 
 const yearMonthDateFormat = "YYYY-MM";
 const fundamentalsFilter =
-  "General,Highlights,SharesStats,Financials::Balance_Sheet,Financials::Income_Statement";
+  "General,Highlights,SharesStats,Financials::Balance_Sheet,Financials::Income_Statement,Financials::Cash_Flow";
 
 export const getExchangeRatesThunk = createAsyncThunk(
   "fundamentals/getExchangeRates",
