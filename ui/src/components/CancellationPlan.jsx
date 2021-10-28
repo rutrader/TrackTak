@@ -3,7 +3,7 @@ import { IconButton, Typography } from "@material-ui/core";
 import { Box, useTheme } from "@material-ui/system";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
-import { navigate } from "gatsby-link";
+import { navigate } from "gatsby";
 
 function CancellationPlan({ route, iconArrow, header, bodyText }) {
   const theme = useTheme();

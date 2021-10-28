@@ -125,16 +125,6 @@ const Header = ({ hideSearch, position = "fixed", links = [], children }) => {
         Settings
       </LinkButton>
     </MenuItemLink>,
-    <MenuItemLink key="pricing">
-      <LinkButton
-        onClick={() => {
-          navigate("/pricing");
-          handleAccountMenuClose();
-        }}
-      >
-        Pricing
-      </LinkButton>
-    </MenuItemLink>,
     <MenuItemLink key="sign-out">
       <SignOutButton key="sign-out" handleOnSignOut={handleOnSignOut} />
     </MenuItemLink>,
