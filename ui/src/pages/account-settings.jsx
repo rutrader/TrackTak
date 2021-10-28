@@ -36,16 +36,15 @@ const AccountSettings = () => {
   const { currentPlan } = useCurrentPlan();
   const [showFreezePlanDialog, setShowFreezePlanDialog] = useState(false);
   const [endPlanDialog, setEndPlanDialog] = useState(false);
-  const hasPaymentPlan = currentPlan?.addons?.length > 1;
+  const hasPaymentPlan = currentPlan?.priceIds?.length > 0;
 
   const dividerStyle = {
     marginTop: 4,
     marginBottom: 4,
   };
 
-  // TODO API call to get expiration?
-  const planExpiration = currentPlan?.expiration
-    ? new Date(currentPlan.expiration).toLocaleDateString()
+  const planExpiration = currentPlan?.periodEnd
+    ? new Date(currentPlan.periodEnd).toLocaleDateString()
     : "";
 
   const handleFreezePlanButtonClick = () => {
@@ -135,7 +134,7 @@ const AccountSettings = () => {
                   variant="h8"
                   gutterBottom
                 >
-                  $X/mo. Auto-renews on {planExpiration}
+                  ${currentPlan?.totalCost}/mo. Auto-renews on {planExpiration}
                 </Typography>
               )}
               <CurrentPlan />
@@ -163,9 +162,11 @@ const AccountSettings = () => {
                   mt: 3,
                 }}
               >
-                <Typography variant="h6" gutterBottom>
-                  **** **** **** 1543
-                </Typography>
+                {hasPaymentPlan && (
+                  <Typography variant="h6" gutterBottom>
+                    **** **** **** {currentPlan?.paymentCardLast4}
+                  </Typography>
+                )}
                 <Button
                   fullWidth
                   variant="contained"
@@ -175,6 +176,7 @@ const AccountSettings = () => {
                     mt: 3,
                   }}
                   onClick={handleOnClickCustomerPortal}
+                  disabled={!hasPaymentPlan}
                 >
                   Update Details
                 </Button>

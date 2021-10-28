@@ -2,7 +2,7 @@ import React from "react";
 import { Typography } from "@material-ui/core";
 import RegionStatus from "./RegionStatus";
 import useCurrentPlan from "../hooks/useCurrentPlan";
-import { listAPIregions } from "../data/regions";
+import { listAPIregions, mediumCapUSPlusPriceId } from "../data/regions";
 
 const CurrentPlan = () => {
   const { currentPlan } = useCurrentPlan();
@@ -12,7 +12,9 @@ const CurrentPlan = () => {
         Enabled Regions
       </Typography>
       {listAPIregions.map((listAPIRegion, i) => {
-        const enabled = currentPlan?.addons.includes(listAPIRegion.priceId);
+        const enabled =
+          listAPIRegion.priceId === mediumCapUSPlusPriceId ||
+          currentPlan?.priceIds.includes(listAPIRegion.priceId);
 
         return (
           <RegionStatus

@@ -42,13 +42,13 @@ const mapCognitoAttributesToPlan = (attributes) => ({
 });
 
 const setUserAccountAttributes = async (username, attributes) => {
-  const cognitoAttribute = attributes.reduce((all, current) => ({
-    ...all,
-    [current.Name]: current.Value,
+  const cognitoAttributes = Object.keys(attributes).map((key) => ({
+    Name: key,
+    Value: attributes[key],
   }));
   const params = {
     UserPoolId: cognitoPoolId,
-    UserAttributes: cognitoAttribute,
+    UserAttributes: cognitoAttributes,
     Username: username,
   };
 
