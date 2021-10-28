@@ -170,8 +170,40 @@ app.delete("/api/v1/spreadsheets/:id", auth, async (req, res) => {
 
 app.get(CURRENT_PLAN_ENDPOINT, auth, async (req, res) => {
   const currentPlan = await api.getCurrentPlan(req.user.accessToken);
+  let stripeData = {
+    priceIds: [],
+  };
+  if (currentPlan.stripeCustomerId) {
+    const customer = await stripe.customers.retrieve(
+      currentPlan.stripeCustomerId,
+      {
+        expand: ["subscriptions"],
+      },
+    );
+    const data =
+      customer.subscriptions.data.length > 0 && customer.subscriptions.data[0];
 
-  res.send(currentPlan);
+    if (data) {
+      const paymentMethod = await stripe.paymentMethods.retrieve(
+        data.default_payment_method,
+      );
+
+      stripeData = {
+        periodEnd: data.current_period_end * 1000, // to ms
+        priceIds: data.items.data.map((x) => x.price.id),
+        totalCost:
+          data.items.data.reduce((sum, x) => (sum += x.price.unit_amount), 0) /
+          100,
+        paymentCardLast4: paymentMethod && paymentMethod.card.last4,
+        paymentCardBrand: paymentMethod && paymentMethod.card.brand,
+      };
+    }
+  }
+
+  res.send({
+    ...currentPlan,
+    ...stripeData,
+  });
 });
 
 app.get("/v1/prices/:id", auth, async (req, res) => {

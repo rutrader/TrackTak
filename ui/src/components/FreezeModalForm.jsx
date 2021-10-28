@@ -22,6 +22,10 @@ const FreezeModalForm = ({ header, subtext }) => {
     setFreezeOption(e);
   };
 
+  const planExpiration = currentPlan?.periodEnd
+    ? new Date(currentPlan.periodEnd).toLocaleDateString()
+    : "";
+
   return (
     <Box
       sx={{
@@ -80,8 +84,8 @@ const FreezeModalForm = ({ header, subtext }) => {
           Freeze start date
         </Typography>
         <Typography>
-          Your membership will freeze from your next payment date and you won’t
-          be charged.
+          Your membership will freeze from your next payment date,{" "}
+          {planExpiration} and you won’t be charged.
         </Typography>
         <Typography
           sx={{
