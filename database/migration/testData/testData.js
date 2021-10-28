@@ -4,6 +4,331 @@ const test = [
       data: {
         datas: [
           {
+            name: "Required Inputs",
+            freeze: "A1",
+            styles: [
+              {
+                format: "percent",
+              },
+              {},
+              {},
+              {
+                format: "currency",
+              },
+              {
+                format: "number",
+              },
+              {
+                bgcolor: "rgba(47, 219, 171, 0.4)",
+                format: "percent",
+              },
+              {
+                bgcolor: "rgba(47, 219, 171, 0.4)",
+                format: "number",
+              },
+              {
+                bgcolor: "#ffe59a",
+              },
+            ],
+            merges: [],
+            rows: {
+              0: {
+                cells: {
+                  1: {
+                    style: 5,
+                    comment:
+                      "Compound Annual Growth Rate - look at: a. Revenue growth in your company in recent years b. Your company's revenues, relative to the overall market size and larger players in the sector.",
+                  },
+                  3: {
+                    style: 7,
+                  },
+                },
+              },
+              1: {
+                height: 35,
+                cells: {
+                  1: {
+                    style: 5,
+                    comment:
+                      "Start by looking at your company's current pre-tax operating margin but also look at the average for your industry.",
+                  },
+                  3: {
+                    style: 7,
+                  },
+                },
+              },
+              2: {
+                cells: {
+                  1: {
+                    style: 6,
+                    comment:
+                      "The forecasted number of years until the company’s current Operating Margin will converge on the target Operating Margin. For example, if today's year is 2021 and the year of convergence is 5 then it will converge in year 2026.",
+                  },
+                },
+              },
+              3: {
+                cells: {
+                  1: {
+                    style: 6,
+                    comment:
+                      "The efficiency of how much the company has to reinvest the business to grow. The formula is Revenue / Invested Capital. The higher the number the more efficient the company is. The default value is set to the industry average as this is usually a good starting point. You should also look at the previous years sales to capital ratio's in the above table to fine tune this value. In the DCF output we compute how much the company is going to reinvest to keep the business growing in future years. The higher you set this number, the more efficiently the business is growing and the higher the value of your growth.",
+                  },
+                },
+              },
+            },
+            cols: {
+              0: {
+                width: 170,
+              },
+              1: {
+                width: 75,
+              },
+              3: {
+                width: 305,
+              },
+            },
+            validations: [],
+            autofilter: {},
+            cellsSerialized: {
+              0: {
+                0: "CAGR in Years 1-5 *",
+                3: "Fill out the green input cells to generate your DCF",
+              },
+              1: {
+                0: "Operating Target Margin in\nYear 10 *",
+                3: "Numbers are in millions, expect per share amounts",
+              },
+              2: {
+                0: "Year of Convergence *",
+              },
+              3: {
+                0: "Sales to Capital Ratio *",
+                1: '=FIN("sales/Capital")',
+              },
+            },
+          },
+          {
+            name: "Optional Inputs",
+            freeze: "A1",
+            styles: [
+              {
+                format: "percent",
+              },
+              {},
+              {},
+              {
+                format: "currency",
+              },
+              {
+                format: "number",
+              },
+              {
+                align: "center",
+                underline: true,
+                font: {
+                  bold: true,
+                },
+              },
+              {
+                format: "million-currency",
+              },
+              {
+                format: "million",
+              },
+            ],
+            merges: ["A1:B1", "C1:D1", "E1:F1", "G1:H1", "I1:J1"],
+            rows: {
+              0: {
+                cells: {
+                  0: {
+                    merge: [0, 1],
+                    style: 5,
+                  },
+                  2: {
+                    style: 5,
+                    merge: [0, 1],
+                  },
+                  4: {
+                    style: 5,
+                    merge: [0, 1],
+                  },
+                  6: {
+                    style: 5,
+                    merge: [0, 1],
+                  },
+                  8: {
+                    style: 5,
+                    merge: [0, 1],
+                  },
+                },
+              },
+              1: {
+                cells: {
+                  1: {
+                    style: 0,
+                    comment:
+                      "If you don't enter an input we will use a synthetic pre-tax cost of debt. You can override this by entering your own calculated pre-tax cost of debt here if you want.",
+                  },
+                  3: {
+                    style: 3,
+                    comment:
+                      "Debt which is convertible to equity at some point in time. This is found in the financial statements",
+                  },
+                  5: {
+                    style: 4,
+                    comment:
+                      "Shares of a company’s stock with dividends that are paid out to shareholders before common stock dividends are issued, i.e they have priority. This is found in the financial statements.",
+                  },
+                  7: {
+                    style: 4,
+                    comment:
+                      "The same as shares outstanding but specifically for the employees options outstanding instead. If the company does have employee options outstanding, enter the total number here, vested and non vested, in the money and out of the money. This is found in the financial statements.",
+                  },
+                  9: {
+                    style: 3,
+                    comment:
+                      "Any losses from the previous years that the company is carrying over to this year. It allows the company to reduce it's taxable income for the current year. This is found in the financial statements.",
+                  },
+                },
+              },
+              2: {
+                cells: {
+                  1: {
+                    style: 4,
+                    comment:
+                      "Years until all of the companies outstanding debt matures on average. Generally found in the footnotes to the financial statements.",
+                  },
+                  3: {
+                    style: 3,
+                    comment:
+                      "The same as normal interest expense but for Convertible Debt. This is found in the financial statements.",
+                  },
+                  5: {
+                    style: 3,
+                    comment:
+                      "The same as normal price per share but for Preferred Stock. This is found in the financial statements.",
+                  },
+                  7: {
+                    style: 3,
+                    comment:
+                      "Enter the weighted average strike price of the employee options outstanding. This is found in the financial statements.",
+                  },
+                  9: {
+                    style: 3,
+                    comment:
+                      "Also known as 'cross holdings in other companies'. This is the earnings that don't (and will never) show up as part of the operating income. The most common non-operating assets are minority cross-holdings in other companies (which are not consolidated). You can find the book value of these holdings on the balance sheet, but best practice is to convert it to the market value. (Apply a price to book ratio, based on the sector that the company is in to the book value).",
+                  },
+                },
+              },
+              3: {
+                cells: {
+                  3: {
+                    style: 4,
+                    comment:
+                      "The same as normal maturity of debt but for Convertible Debt. This is found in the financial statements.",
+                  },
+                  5: {
+                    style: 3,
+                    comment:
+                      "How much dividends are payed out on average per share each year. This is found in the financial statements.",
+                  },
+                  7: {
+                    style: 4,
+                    comment:
+                      "The weighted average maturity of the employee options outstanding. This is found in the financial statements.",
+                  },
+                  9: {
+                    style: 0,
+                    comment:
+                      "Many young, growth companies fail, especially if they have trouble raising cash. Many distressed companies fail because they have trouble making debt payments. This is a tough input to estimate but try to use the agencies credit rating if the company has one, if not then use the synthetic credit rating default spread as a guide.",
+                  },
+                },
+              },
+              4: {
+                cells: {
+                  3: {
+                    style: 3,
+                    comment:
+                      "This is the equity part of the convertible debt. If the debt is publicly traded you can find it's market value on cbonds.com or similar. If it's not then we recommend just using the Book Value of Convertible Debt from cell D2 here as well.",
+                  },
+                  9: {
+                    style: 0,
+                    comment:
+                      "If the company fails then sometimes there will be assets that get sold off (usually at fire sale prices) or cash left over to distribute to shareholders. This is only true if all liabilites have been paid first as shareholders are last in line if a company goes bankrupt. Sometimes however, companies will continue to run themselves into the ground with more debt to continue giving the executives a job and therefore will never have proceeds to distribute to shareholders.",
+                  },
+                },
+              },
+            },
+            cols: {
+              0: {
+                width: 155,
+              },
+              1: {
+                width: 75,
+              },
+              2: {
+                width: 230,
+              },
+              3: {
+                width: 85,
+              },
+              4: {
+                width: 175,
+              },
+              5: {
+                width: 85,
+              },
+              6: {
+                width: 195,
+              },
+              7: {
+                width: 85,
+              },
+              8: {
+                width: 250,
+              },
+              9: {
+                width: 85,
+              },
+              len: 26,
+            },
+            validations: [],
+            autofilter: {},
+            cellsSerialized: {
+              0: {
+                0: "Normal Debt",
+                2: "Convertible Debt",
+                4: "Preferred Stock",
+                6: "Employee Options",
+                8: "Other",
+              },
+              1: {
+                0: "Pre-tax Cost of Debt",
+                2: "Book Value of Convertible Debt",
+                4: "Number of Preferred Shares",
+                6: "Employee Options Outstanding",
+                8: "Net Operating Loss",
+              },
+              2: {
+                0: "Average Maturity of Debt",
+                2: "Interest Expense on Convertible Debt",
+                4: "Market Price Per Share",
+                6: "Average Strike Price",
+                8: "Non-operating assets",
+              },
+              3: {
+                2: "Maturity of Convertible Debt",
+                4: "Annual Dividend Per Share",
+                6: "Average Maturity",
+                8: "Probability of Failure",
+              },
+              4: {
+                2: "Market Value of Convertible Debt",
+                8: "Proceeds as a Percentage of Book value",
+              },
+            },
+          },
+          {
             name: "DCF Valuation",
             freeze: "A1",
             styles: [

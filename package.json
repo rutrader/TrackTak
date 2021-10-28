@@ -15,9 +15,8 @@
     "lint": "eslint ./ui/src",
     "install:ui": "cd ./ui && npm install",
     "install:node": "cd ./node && npm install",
-    "install:spreadsheet": "cd ./packages/web-spreadsheet && npm install",
     "install:intrinsic-valuations": "cd ./packages/intrinsic-valuations && npm install",
-    "postinstall": "run-s install:ui install:node install:spreadsheet install:intrinsic-valuations"
+    "postinstall": "run-s install:ui install:node install:intrinsic-valuations"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.0.0",

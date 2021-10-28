@@ -205,12 +205,14 @@ const getCellsData = (xSpreadsheetData, sheetId, sheet) => {
   };
 
   Object.keys(xSpreadsheetData.cols).forEach((colKey) => {
-    const id = `${sheetId}_${colKey}`;
-    col[id] = {
-      size: xSpreadsheetData.cols[colKey].width,
-      id,
-    };
-    sheet.cols[id] = id;
+    if (colKey !== "len") {
+      const id = `${sheetId}_${colKey}`;
+      col[id] = {
+        size: xSpreadsheetData.cols[colKey].width,
+        id,
+      };
+      sheet.cols[id] = id;
+    }
   });
 
   Object.keys(xSpreadsheetData.rows).forEach((rowKey) => {
@@ -250,7 +252,11 @@ const getPowersheet = (xSpreadsheets) => {
       mergedCells: {},
     };
 
-    if (!isEmpty(xSpreadsheetData.freeze)) {
+    if (
+      !isEmpty(xSpreadsheetData.freeze) &&
+      xSpreadsheetData.name !== "Required Inputs" &&
+      xSpreadsheetData.name !== "Optional Inputs"
+    ) {
       const frozenCell = getFrozenCell(xSpreadsheetData.freeze, sheetId);
       if (frozenCell) {
         sheet.frozenCell = sheetId;

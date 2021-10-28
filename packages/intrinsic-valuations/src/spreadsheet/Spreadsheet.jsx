@@ -51,6 +51,20 @@ const Spreadsheet = ({ sheetData, financialData, saveSheetData, ...props }) => {
   const [containerEl, setContainerEl] = useState();
   const currencySymbol = financialData?.general?.currencySymbol;
 
+  // interface IExtendedCellData extends ICellData {
+  //   dynamicFormat: 'currency';
+  // }
+
+  // Object.keys(args.data!.cells!).forEach((key) => {
+  //   const cellData = args.data!.cells![key as CellId] as IExtendedCellData;
+
+  //   if (cellData.dynamicFormat === 'currency') {
+  //     if (!cellData.textFormatPattern?.includes('$')) {
+  //       cellData.textFormatPattern = '$' + cellData.textFormatPattern;
+  //     }
+  //   }
+  // });
+
   useEffect(() => {
     const FinancialPlugin = getTTFinancialPlugin(financialData);
 
