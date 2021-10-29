@@ -23,6 +23,18 @@ const buildPowersheet = () => {
     undoLimit: 0,
     licenseKey: "gpl-v3",
   });
+
+  const trueArgs = ["TRUE", "=TRUE()"];
+  const falseArgs = ["FALSE", "=FALSE()"];
+
+  if (hyperformula.isItPossibleToAddNamedExpression(...trueArgs)) {
+    hyperformula.addNamedExpression(...trueArgs);
+  }
+
+  if (hyperformula.isItPossibleToAddNamedExpression(...falseArgs)) {
+    hyperformula.addNamedExpression(...falseArgs);
+  }
+
   const toolbar = new Toolbar();
   const formulaBar = new FormulaBar();
   const exporter = new Exporter();
@@ -106,12 +118,10 @@ const Spreadsheet = ({ sheetData, financialData, saveSheetData, ...props }) => {
       row: {
         amount: 100,
       },
-      options: {
-        textPatternFormats: {
-          currency: `${currencySymbol}#,##0.##`,
-          million: "#,###.##,,",
-          "million-currency": `${currencySymbol}#,###.##,,`,
-        },
+      textPatternFormats: {
+        currency: `${currencySymbol}#,##0.##`,
+        million: "#,###.##,,",
+        "million-currency": `${currencySymbol}#,###.##,,`,
       },
     });
   }, [currencySymbol, name, spreadsheet]);
