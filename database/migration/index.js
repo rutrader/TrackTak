@@ -4,12 +4,12 @@ import { Collections } from "./client/collections.js";
 import allData from "./testData/testData.js";
 
 (async function () {
-  // await database.connect();
+  await database.connect();
 
   //  const allData = await database.find(Collections.SPREADSHEET);
   const mappedData = allData.map((data) => ({
     ...data,
-    sheetData: mapper(data.sheetData), //, data.financialData.ticker),
+    sheetData: mapper(data.sheetData, data.financialData.ticker),
   }));
   console.log(
     `Mapped ${mappedData.length} records from collection: ${Collections.SPREADSHEET}`,
@@ -19,13 +19,13 @@ import allData from "./testData/testData.js";
     process.exit(0);
   }
 
-  // await database.clearAll(Collections.POWERSHEET_SPREADSHEET);
+  await database.clearAll(Collections.POWERSHEET_SPREADSHEET);
   console.log(`Cleared collection: ${Collections.POWERSHEET_SPREADSHEET}`);
-  // await database.bulkInsert(Collections.POWERSHEET_SPREADSHEET, mappedData);
+  await database.bulkInsert(Collections.POWERSHEET_SPREADSHEET, mappedData);
 
-  // const result = await database.find(Collections.POWERSHEET_SPREADSHEET);
+  const result = await database.find(Collections.POWERSHEET_SPREADSHEET);
 
-  console.log(JSON.stringify(mappedData));
+  console.log(JSON.stringify(result));
   // console.log(
   //   `Inserted ${result.length} records into collection: ${Collections.POWERSHEET_SPREADSHEET}`,
   // );
