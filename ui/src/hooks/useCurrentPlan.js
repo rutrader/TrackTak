@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { getCurrentPlan, updateCurrentPlan } from "../api/api";
+import { exchangeToPriceId, smallCapUSPlusPriceId, worldwidePriceId } from "../data/regions";
 import { useAuth } from "./useAuth";
 
 export const Plans = {
@@ -7,19 +8,14 @@ export const Plans = {
   FROZEN: "Frozen",
 };
 
-const Addons = {
-  US_SMALL_CAP: "us_small",
-  US_LARGE_CAP: "us_large",
-};
-
 export const isStockDisabled = (currentPlan, stock) => {
-  if (stock.exchange === "US" && stock.isUSLargeCap) {
-    return true;
+  if (currentPlan?.priceIds.includes(worldwidePriceId) || (stock.exchange === "US" && stock.isUSLargeCap)) {
+    return false;
   }
   if (stock.exchange === "US" && !stock.isUSLargeCap) {
-    return currentPlan.addons.includes(Addons.US_SMALL_CAP);
+    return !currentPlan?.priceIds.includes(smallCapUSPlusPriceId);
   }
-  return currentPlan.addons.includes(stock.exchange); // TODO Might need a mapping to make this work
+  return !currentPlan?.priceIds.includes(exchangeToPriceId[stock.exchange]);
 };
 
 const useCurrentPlan = () => {
