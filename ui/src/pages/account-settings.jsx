@@ -21,7 +21,7 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import LockIcon from "@mui/icons-material/Lock";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PaymentIcon from "@mui/icons-material/Payment";
-import useCurrentPlan from "../hooks/useCurrentPlan";
+import useCurrentPlan, { Plans } from "../hooks/useCurrentPlan";
 import ConfirmationDialog from "../components/ConfirmationDialog";
 import AcUnitIcon from "@mui/icons-material/AcUnit";
 import { createCustomerPortal } from "../api/api";
@@ -33,10 +33,12 @@ import { navigate } from "gatsby";
 const AccountSettings = () => {
   const { getAccessToken } = useAuth();
   const { isExternalIdentityProvider } = useAuth();
-  const { currentPlan } = useCurrentPlan();
+  const { currentPlan, updatePlan } = useCurrentPlan();
   const [showFreezePlanDialog, setShowFreezePlanDialog] = useState(false);
   const [endPlanDialog, setEndPlanDialog] = useState(false);
-  const hasPaymentPlan = currentPlan?.priceIds?.length > 0;
+  const [freezeOption, setFreezeOption] = useState("1");
+  const hasPaymentPlan =
+    currentPlan?.type === Plans.FROZEN || currentPlan?.priceIds?.length > 0;
 
   const dividerStyle = {
     marginTop: 4,
@@ -56,6 +58,10 @@ const AccountSettings = () => {
   };
 
   const handleFreezePlanDialogConfirm = () => {
+    updatePlan({
+      state: "freeze",
+      monthsToFreeze: freezeOption,
+    });
     setShowFreezePlanDialog(false);
   };
 
@@ -64,6 +70,10 @@ const AccountSettings = () => {
   };
 
   const handleEndPlanDialogConfirm = () => {
+    updatePlan({
+      state: "freeze",
+      monthsToFreeze: freezeOption,
+    });
     setEndPlanDialog(false);
   };
 
@@ -134,7 +144,9 @@ const AccountSettings = () => {
                   variant="h8"
                   gutterBottom
                 >
-                  ${currentPlan?.totalCost}/mo. Auto-renews on {planExpiration}
+                  {currentPlan?.type === Plans.FROZEN && "Plan Frozen"}
+                  <br />${currentPlan?.totalCost}/mo. Auto-renews on{" "}
+                  {planExpiration}
                 </Typography>
               )}
               <CurrentPlan />
@@ -274,6 +286,7 @@ const AccountSettings = () => {
         >
           <FreezeModalForm
             header="Before you cancel..."
+            setFreezeOption={setFreezeOption}
             subtext={
               <Typography
                 variant="h6"
@@ -295,7 +308,10 @@ const AccountSettings = () => {
           confirmText="Freeze My Plan"
           cancelText="Cancel"
         >
-          <FreezeModalForm header="Need a break from investing?" />
+          <FreezeModalForm
+            setFreezeOption={setFreezeOption}
+            header="Need a break from investing?"
+          />
         </ConfirmationDialog>
       </Paper>
     </>

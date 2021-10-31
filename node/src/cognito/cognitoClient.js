@@ -10,6 +10,11 @@ cup.config = new AWS.Config({
 });
 cup.endpoint = new AWS.Endpoint(cognitoIssuerUri);
 
+export const Plans = {
+  ACTIVE: "Active",
+  FROZEN: "Frozen",
+};
+
 export const getCurrentPlan = async (accessToken) => {
   const user = await cup.getUser({ AccessToken: accessToken }).promise();
   const attributes = user.UserAttributes.reduce(
@@ -26,13 +31,15 @@ export const getCurrentPlan = async (accessToken) => {
 export const updatePlan = async (
   username,
   stripeCustomerId,
-  type = "Active",
+  type = Plans.ACTIVE,
 ) => {
   const newPlan = {
     "custom:account_type": type,
     "custom:stripe_customer_id": stripeCustomerId,
   };
+  console.log("before cognito update");
   await setUserAccountAttributes(username, newPlan);
+  console.log("after cognito update");
   return mapCognitoAttributesToPlan(newPlan);
 };
 

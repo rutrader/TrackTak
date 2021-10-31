@@ -5,6 +5,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import { navigate } from "gatsby";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
+import useCurrentPlan from "../hooks/useCurrentPlan";
 
 export const StyledButton = (props) => (
   <Button
@@ -17,9 +18,10 @@ export const StyledButton = (props) => (
   />
 );
 
-const MembershipButtons = ({ route }) => {
+const MembershipButtons = ({ route = "/" }) => {
   const theme = useTheme();
   const isOnMobile = useMediaQuery(theme.breakpoints.up("sm"));
+  const { updatePlan } = useCurrentPlan();
 
   return (
     <>
@@ -38,6 +40,9 @@ const MembershipButtons = ({ route }) => {
         <StyledButton
           variant="outlined"
           onClick={() => {
+            updatePlan({
+              state: "cancel",
+            });
             navigate(route);
           }}
         >

@@ -3,6 +3,7 @@ import { Typography } from "@material-ui/core";
 import RegionStatus from "./RegionStatus";
 import useCurrentPlan from "../hooks/useCurrentPlan";
 import { listAPIregions, mediumCapUSPlusPriceId } from "../data/regions";
+import { WORLDWIDE_PRICE_ID } from "../pages/switching-plan";
 
 const CurrentPlan = () => {
   const { currentPlan } = useCurrentPlan();
@@ -14,6 +15,7 @@ const CurrentPlan = () => {
       {listAPIregions.map((listAPIRegion, i) => {
         const enabled =
           listAPIRegion.priceId === mediumCapUSPlusPriceId ||
+          currentPlan?.priceIds.includes(WORLDWIDE_PRICE_ID) ||
           currentPlan?.priceIds.includes(listAPIRegion.priceId);
 
         return (

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { getCurrentPlan } from "../api/api";
+import { getCurrentPlan, updateCurrentPlan } from "../api/api";
 import { useAuth } from "./useAuth";
 
 export const Plans = {
@@ -34,6 +34,20 @@ const useCurrentPlan = () => {
     setCurrentPlan(response.data);
   }, [getAccessToken]);
 
+  const updatePlan = useCallback(
+    async (planUpdates) => {
+      const token = await getAccessToken();
+      const response = await updateCurrentPlan(token?.jwtToken, planUpdates);
+      const newPlan = {
+        ...currentPlan,
+        ...response.data,
+      };
+      cache.current = newPlan;
+      setCurrentPlan(newPlan);
+    },
+    [getAccessToken, currentPlan],
+  );
+
   useEffect(() => {
     if (!currentPlan && !cache.current) {
       fetchPlan();
@@ -45,6 +59,7 @@ const useCurrentPlan = () => {
   return {
     currentPlan,
     fetchPlan,
+    updatePlan,
   };
 };
 

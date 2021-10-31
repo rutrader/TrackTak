@@ -12,10 +12,9 @@ import Typography from "@material-ui/core/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import useCurrentPlan from "../hooks/useCurrentPlan";
 
-const FreezeModalForm = ({ header, subtext }) => {
+const FreezeModalForm = ({ header, subtext, setFreezeOption }) => {
   const theme = useTheme();
   const { currentPlan } = useCurrentPlan();
-  const [freezeOption, setFreezeOption] = useState("1");
   const isOnMobile = useMediaQuery(theme.breakpoints.up("sm"));
 
   const handleOptionChange = (_, e) => {

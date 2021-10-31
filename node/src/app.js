@@ -5,7 +5,7 @@ import api from "./api";
 import auth, { excludeStripeWebhookJSON } from "./middleware/auth";
 import Stripe from "stripe";
 import { CURRENT_PLAN_ENDPOINT } from "./shared/constants";
-import { updatePlan } from "./cognito/cognitoClient";
+import { Plans, updatePlan } from "./cognito/cognitoClient";
 
 const hostname = "127.0.0.1";
 const port = process.env.NODE_ENV === "development" ? 3001 : process.env.PORT;
@@ -168,32 +168,43 @@ app.delete("/api/v1/spreadsheets/:id", auth, async (req, res) => {
   res.send({ id: req.params.id });
 });
 
+const getSubscription = async (stripeCustomerId) => {
+  const customer = await stripe.customers.retrieve(stripeCustomerId, {
+    expand: ["subscriptions"],
+  });
+  return (
+    customer.subscriptions.data.length > 0 && customer.subscriptions.data[0]
+  );
+};
+
 app.get(CURRENT_PLAN_ENDPOINT, auth, async (req, res) => {
   const currentPlan = await api.getCurrentPlan(req.user.accessToken);
   let stripeData = {
     priceIds: [],
   };
   if (currentPlan.stripeCustomerId) {
-    const customer = await stripe.customers.retrieve(
-      currentPlan.stripeCustomerId,
-      {
-        expand: ["subscriptions"],
-      },
-    );
-    const data =
-      customer.subscriptions.data.length > 0 && customer.subscriptions.data[0];
+    const subscription = await getSubscription(currentPlan.stripeCustomerId);
+    console.log("subscription", subscription);
 
-    if (data) {
+    if (subscription) {
       const paymentMethod = await stripe.paymentMethods.retrieve(
-        data.default_payment_method,
+        subscription.default_payment_method,
       );
 
       stripeData = {
-        periodEnd: data.current_period_end * 1000, // to ms
-        priceIds: data.items.data.map((x) => x.price.id),
+        periodEnd:
+          currentPlan.type === Plans.FROZEN
+            ? subscription.pause_collection.resumes_at * 1000
+            : subscription.current_period_end * 1000, // to ms
+        priceIds:
+          currentPlan.type === Plans.FROZEN
+            ? []
+            : subscription.items.data.map((x) => x.price.id),
         totalCost:
-          data.items.data.reduce((sum, x) => (sum += x.price.unit_amount), 0) /
-          100,
+          subscription.items.data.reduce(
+            (sum, x) => (sum += x.price.unit_amount),
+            0,
+          ) / 100,
         paymentCardLast4: paymentMethod && paymentMethod.card.last4,
         paymentCardBrand: paymentMethod && paymentMethod.card.brand,
       };
@@ -204,6 +215,58 @@ app.get(CURRENT_PLAN_ENDPOINT, auth, async (req, res) => {
     ...currentPlan,
     ...stripeData,
   });
+});
+
+app.put(CURRENT_PLAN_ENDPOINT, auth, async (req, res) => {
+  const currentPlan = await api.getCurrentPlan(req.user.accessToken);
+  const { state, monthsToFreeze } = req.body;
+
+  if (currentPlan.stripeCustomerId) {
+    const subscription = await getSubscription(currentPlan.stripeCustomerId);
+
+    switch (state) {
+      case "freeze": {
+        const now = new Date();
+        const resumesAt =
+          new Date(
+            now.getFullYear(),
+            now.getMonth() + Number(monthsToFreeze),
+            now.getDay(),
+          ).getTime() / 1000; // to seconds
+        await stripe.subscriptions.update(subscription.id, {
+          pause_collection: {
+            behavior: "void",
+            resumes_at: resumesAt,
+          },
+        });
+        const updatedPlan = await updatePlan(
+          req.user.username,
+          currentPlan.stripeCustomerId,
+          Plans.FROZEN,
+        );
+        res.send({
+          ...updatedPlan,
+          priceIds: [],
+        });
+        break;
+      }
+      case "cancel": {
+        await stripe.subscriptions.del(subscription.id);
+        const updatedPlan = await updatePlan(
+          req.user.username,
+          "",
+          Plans.ACTIVE,
+        );
+        res.send({
+          ...updatedPlan,
+          priceIds: [],
+        });
+        break;
+      }
+      default:
+        console.error("Unknown account state transition");
+    }
+  }
 });
 
 app.get("/v1/prices/:id", auth, async (req, res) => {
@@ -232,6 +295,8 @@ app.post("/api/v1/create-checkout-session", auth, async (req, res) => {
         username: req.user.username,
       },
     });
+    console.log("create-checkout-session");
+
     res.send({ url: session.url });
   } catch (e) {
     res.status(400);
@@ -250,7 +315,7 @@ app.post(
   async (req, res) => {
     let event;
     const signature = req.headers["stripe-signature"];
-
+    console.log("/api/v1/stripe-webhook");
     try {
       event = stripe.webhooks.constructEvent(
         req.body,
@@ -265,6 +330,7 @@ app.post(
     switch (event.type) {
       case "checkout.session.completed":
         const eventData = event.data.object;
+        console.log("/api/v1/stripe-webhook UpdatePlan");
         updatePlan(eventData.metadata.username, eventData.customer);
         break;
       default:
@@ -277,6 +343,7 @@ app.post(
 
 app.post("/api/v1/create-customer-portal-session", auth, async (req, res) => {
   const returnUrl = `${process.env.ORIGIN_URL}/account-settings`;
+  console.log("create-customer-portal-session");
 
   const portalSession = await stripe.billingPortal.sessions.create({
     customer: "cus_KRWrqkdz1yQ8L6",
