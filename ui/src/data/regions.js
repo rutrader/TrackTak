@@ -124,14 +124,4 @@ export const exchangeToPriceId = {
   BA: "price_1Ji1WGDOsUBI2OhC1wdJ7FcD",
   MX: "price_1Ji1WGDOsUBI2OhC1wdJ7FcD",
   LIM: "price_1Ji1WGDOsUBI2OhC1wdJ7FcD",
-
-  // Excluded
-  BOND: "",
-  INDX: "",
-  EUFUND: "",
-  MONEY: "",
-  GBOND: "",
-  CC: "",
-  COMM: "",
-  FOREX: "",
 };

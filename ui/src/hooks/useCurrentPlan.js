@@ -15,11 +15,11 @@ export const Plans = {
 export const isStockDisabled = (currentPlan, stock) => {
   if (
     currentPlan?.priceIds.includes(worldwidePriceId) ||
-    (stock.exchange === "US" && stock.isUSLargeCap)
+    (stock.exchange === "US" && stock.isMediumCapUSPlus)
   ) {
     return false;
   }
-  if (stock.exchange === "US" && !stock.isUSLargeCap) {
+  if (stock.exchange === "US" && !stock.isMediumCapUSPlus) {
     return !currentPlan?.priceIds.includes(smallCapUSPriceId);
   }
   return !currentPlan?.priceIds.includes(exchangeToPriceId[stock.exchange]);
