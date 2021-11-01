@@ -30,10 +30,6 @@ const duplicatePackageModules = [
   "gatsby-plugin-anchor-links",
   "hyperformula",
   "lodash-es",
-  "eventemitter3",
-  "numfmt",
-  "undo-redo-manager",
-  "xlsx",
 ];
 
 const alias = {

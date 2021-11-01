@@ -17,6 +17,17 @@ import {
 import { isNil } from "lodash-es";
 import defaultStatement from "../../shared/defaultStatement";
 
+export const ttFinancialImplementedFunctions = {
+  FINANCIAL: {
+    method: "financial",
+    arraySizeMethod: "financialSize",
+  },
+};
+
+export const ttFinancialAliases = {
+  FIN: "FINANCIAL",
+};
+
 export const getTTFinancialPlugin = (financialData) => {
   const hasFinancialsLoaded = !!financialData;
   const {
@@ -172,16 +183,8 @@ export const getTTFinancialPlugin = (financialData) => {
     }
   }
 
-  TTFinancialPlugin.implementedFunctions = {
-    FINANCIAL: {
-      method: "financial",
-      arraySizeMethod: "financialSize",
-    },
-  };
-
-  TTFinancialPlugin.aliases = {
-    FIN: "FINANCIAL",
-  };
+  TTFinancialPlugin.implementedFunctions = ttFinancialImplementedFunctions;
+  TTFinancialPlugin.aliases = ttFinancialAliases;
 
   return TTFinancialPlugin;
 };

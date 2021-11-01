@@ -14,6 +14,8 @@ import { currencySymbolMap } from "currency-symbol-map";
 import {
   finTranslations,
   getTTFinancialPlugin,
+  ttFinancialAliases,
+  ttFinancialImplementedFunctions,
 } from "./plugins/getTTFinancialPlugin";
 
 const buildPowersheet = () => {
@@ -37,7 +39,12 @@ const buildPowersheet = () => {
 
   const toolbar = new Toolbar();
   const formulaBar = new FormulaBar();
-  const exporter = new Exporter();
+  const exporter = new Exporter([
+    {
+      implementedFunctions: ttFinancialImplementedFunctions,
+      aliases: ttFinancialAliases,
+    },
+  ]);
   const bottomBar = new BottomBar();
 
   const spreadsheet = new PowerSpreadsheet({
@@ -114,7 +121,7 @@ const Spreadsheet = ({ sheetData, financialData, saveSheetData, ...props }) => {
 
   useEffect(() => {
     spreadsheet?.setOptions({
-      exportSpreadsheetName: name,
+      exportSpreadsheetName: `${name}.xlsx`,
       row: {
         amount: 100,
       },
