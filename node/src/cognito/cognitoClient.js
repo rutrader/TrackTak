@@ -37,9 +37,7 @@ export const updatePlan = async (
     "custom:account_type": type,
     "custom:stripe_customer_id": stripeCustomerId,
   };
-  console.log("before cognito update");
   await setUserAccountAttributes(username, newPlan);
-  console.log("after cognito update");
   return mapCognitoAttributesToPlan(newPlan);
 };
 

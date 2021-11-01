@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { getCurrentPlan, updateCurrentPlan } from "../api/api";
 import {
   exchangeToPriceId,
-  smallCapUSPlusPriceId,
+  smallCapUSPriceId,
   worldwidePriceId,
 } from "../data/regions";
 import { useAuth } from "./useAuth";
@@ -20,7 +20,7 @@ export const isStockDisabled = (currentPlan, stock) => {
     return false;
   }
   if (stock.exchange === "US" && !stock.isUSLargeCap) {
-    return !currentPlan?.priceIds.includes(smallCapUSPlusPriceId);
+    return !currentPlan?.priceIds.includes(smallCapUSPriceId);
   }
   return !currentPlan?.priceIds.includes(exchangeToPriceId[stock.exchange]);
 };

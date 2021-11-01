@@ -184,7 +184,6 @@ app.get(CURRENT_PLAN_ENDPOINT, auth, async (req, res) => {
   };
   if (currentPlan.stripeCustomerId) {
     const subscription = await getSubscription(currentPlan.stripeCustomerId);
-    console.log("subscription", subscription);
 
     if (subscription) {
       const paymentMethod = await stripe.paymentMethods.retrieve(
@@ -254,7 +253,7 @@ app.put(CURRENT_PLAN_ENDPOINT, auth, async (req, res) => {
         await stripe.subscriptions.del(subscription.id);
         const updatedPlan = await updatePlan(
           req.user.username,
-          "",
+          currentPlan.stripeCustomerId,
           Plans.ACTIVE,
         );
         res.send({
@@ -299,7 +298,6 @@ app.post("/api/v1/create-checkout-session", auth, async (req, res) => {
         customer: currentPlan.stripeCustomerId,
       }),
     });
-    console.log("create-checkout-session");
 
     res.send({ url: session.url });
   } catch (e) {
@@ -319,7 +317,6 @@ app.post(
   async (req, res) => {
     let event;
     const signature = req.headers["stripe-signature"];
-    console.log("/api/v1/stripe-webhook");
     try {
       event = stripe.webhooks.constructEvent(
         req.body,
@@ -334,7 +331,6 @@ app.post(
     switch (event.type) {
       case "checkout.session.completed":
         const eventData = event.data.object;
-        console.log("/api/v1/stripe-webhook UpdatePlan");
         updatePlan(eventData.metadata.username, eventData.customer);
         break;
       default:
@@ -347,7 +343,6 @@ app.post(
 
 app.post("/api/v1/create-customer-portal-session", auth, async (req, res) => {
   const returnUrl = `${process.env.ORIGIN_URL}/account-settings`;
-  console.log("create-customer-portal-session");
 
   const portalSession = await stripe.billingPortal.sessions.create({
     customer: "cus_KRWrqkdz1yQ8L6",

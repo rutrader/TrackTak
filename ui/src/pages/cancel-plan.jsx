@@ -7,6 +7,7 @@ import {
   ListItemText,
   Typography,
 } from "@material-ui/core";
+import { navigate } from "gatsby";
 import { Box } from "@material-ui/system";
 import React from "react";
 import CheckIcon from "@material-ui/icons/Check";
@@ -14,6 +15,7 @@ import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import MembershipButtons from "../components/MembershipButtons";
 import CancellationPlan from "../components/CancellationPlan";
+import useCurrentPlan from "../hooks/useCurrentPlan";
 
 const listOfFeatures = [
   { feature: "Small-cap United States API region access" },
@@ -23,6 +25,15 @@ const listOfFeatures = [
 
 const CancelPlan = () => {
   const theme = useTheme();
+  const { updatePlan } = useCurrentPlan();
+
+  const handleEndMyMembershipClick = () => {
+    updatePlan({
+      state: "cancel",
+    });
+    navigate("/dashboard");
+  };
+
   return (
     <>
       <CancellationPlan
@@ -78,7 +89,7 @@ const CancelPlan = () => {
           </Grid>
         }
       />
-      <MembershipButtons />
+      <MembershipButtons onEndMyMembershipClick={handleEndMyMembershipClick} />
     </>
   );
 };

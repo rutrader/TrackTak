@@ -12,7 +12,7 @@ const commonIconProps = {
 
 export const worldwidePriceId = "price_1Jo6txDOsUBI2OhCuv0mVZE0";
 export const mediumCapUSPlusPriceId = "price_1JpAUvDOsUBI2OhCsE4GSzNk";
-export const smallCapUSPlusPriceId = "price_1JoW4KDOsUBI2OhCHFgCSAVi";
+export const smallCapUSPriceId = "price_1JoW4KDOsUBI2OhCHFgCSAVi";
 
 export const listAPIregions = [
   {
@@ -22,7 +22,7 @@ export const listAPIregions = [
     disabled: true,
   },
   {
-    priceId: smallCapUSPlusPriceId,
+    priceId: smallCapUSPriceId,
     regionName: "United States (small cap)",
     iconSvg: <USAIconSvg {...commonIconProps} alt="usa" />,
   },

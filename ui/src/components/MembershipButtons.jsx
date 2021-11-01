@@ -5,7 +5,6 @@ import PersonIcon from "@mui/icons-material/Person";
 import { navigate } from "gatsby";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
-import useCurrentPlan from "../hooks/useCurrentPlan";
 
 export const StyledButton = (props) => (
   <Button
@@ -18,10 +17,19 @@ export const StyledButton = (props) => (
   />
 );
 
-const MembershipButtons = ({ route = "/" }) => {
+const handleEndMyMembershipClick = () => {
+  navigate("/cancel-plan");
+};
+
+const MembershipButtons = ({
+  onEndMyMembershipClick = handleEndMyMembershipClick,
+}) => {
   const theme = useTheme();
   const isOnMobile = useMediaQuery(theme.breakpoints.up("sm"));
-  const { updatePlan } = useCurrentPlan();
+
+  const handleKeepMyBenefitsClick = () => {
+    navigate("/dashboard");
+  };
 
   return (
     <>
@@ -33,19 +41,16 @@ const MembershipButtons = ({ route = "/" }) => {
           gap: isOnMobile ? theme.spacing(7) : theme.spacing(2),
         }}
       >
-        <StyledButton startIcon={<PersonIcon />}>Keep My Benefits</StyledButton>
+        <StyledButton
+          startIcon={<PersonIcon />}
+          onClick={handleKeepMyBenefitsClick}
+        >
+          Keep My Benefits
+        </StyledButton>
         <StyledButton startIcon={<AcUnitIcon />}>
           Freeze Payment Plan
         </StyledButton>
-        <StyledButton
-          variant="outlined"
-          onClick={() => {
-            updatePlan({
-              state: "cancel",
-            });
-            navigate(route);
-          }}
-        >
+        <StyledButton variant="outlined" onClick={onEndMyMembershipClick}>
           End My Membership
         </StyledButton>
       </Stack>
