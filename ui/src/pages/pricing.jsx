@@ -1,6 +1,6 @@
 import { Box, Link, Typography } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import getTitle from "../shared/getTitle";
 import resourceName from "../shared/resourceName";
@@ -11,11 +11,13 @@ import { createCheckoutSession } from "../api/api";
 import { useAuth } from "../hooks/useAuth";
 import withAuthentication from "../hocs/withAuthentication";
 import { mediumCapUSPlusPriceId } from "../data/regions";
+import useCurrentPlan from "../hooks/useCurrentPlan";
 
 const Pricing = () => {
   const theme = useTheme();
   const { getAccessToken } = useAuth();
-  const [checked, setChecked] = useState([mediumCapUSPlusPriceId]);
+  const { currentPlan } = useCurrentPlan();
+  const [checked, setChecked] = useState([]);
 
   const handleOnClick = async () => {
     const token = await getAccessToken();
@@ -29,6 +31,12 @@ const Pricing = () => {
 
     window.location.href = data.url;
   };
+
+  useEffect(() => {
+    if (currentPlan?.priceIds) {
+      setChecked([mediumCapUSPlusPriceId, ...currentPlan?.priceIds]);
+    }
+  }, [currentPlan]);
 
   return (
     <>

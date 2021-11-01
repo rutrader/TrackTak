@@ -280,6 +280,7 @@ app.post("/api/v1/create-checkout-session", auth, async (req, res) => {
   const { lineItems } = req.body;
 
   try {
+    const currentPlan = await api.getCurrentPlan(req.user.accessToken);
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       payment_method_types: ["card"],
@@ -294,6 +295,9 @@ app.post("/api/v1/create-checkout-session", auth, async (req, res) => {
       metadata: {
         username: req.user.username,
       },
+      ...(currentPlan.stripeCustomerId && {
+        customer: currentPlan.stripeCustomerId,
+      }),
     });
     console.log("create-checkout-session");
 

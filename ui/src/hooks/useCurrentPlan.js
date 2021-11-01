@@ -1,6 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { getCurrentPlan, updateCurrentPlan } from "../api/api";
-import { exchangeToPriceId, smallCapUSPlusPriceId, worldwidePriceId } from "../data/regions";
+import {
+  exchangeToPriceId,
+  smallCapUSPlusPriceId,
+  worldwidePriceId,
+} from "../data/regions";
 import { useAuth } from "./useAuth";
 
 export const Plans = {
@@ -9,7 +13,10 @@ export const Plans = {
 };
 
 export const isStockDisabled = (currentPlan, stock) => {
-  if (currentPlan?.priceIds.includes(worldwidePriceId) || (stock.exchange === "US" && stock.isUSLargeCap)) {
+  if (
+    currentPlan?.priceIds.includes(worldwidePriceId) ||
+    (stock.exchange === "US" && stock.isUSLargeCap)
+  ) {
     return false;
   }
   if (stock.exchange === "US" && !stock.isUSLargeCap) {
@@ -54,7 +61,6 @@ const useCurrentPlan = () => {
 
   return {
     currentPlan,
-    fetchPlan,
     updatePlan,
   };
 };

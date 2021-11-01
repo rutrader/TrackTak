@@ -149,7 +149,7 @@ const AccountSettings = () => {
                   {planExpiration}
                 </Typography>
               )}
-              <CurrentPlan />
+              <CurrentPlan currentPlan={currentPlan} />
             </SettingSection>
           </Grid>
           <Divider orientation="vertical" light flexItem sx={dividerStyle} />
@@ -298,6 +298,7 @@ const AccountSettings = () => {
                 Did you know you can put your plan on hold?
               </Typography>
             }
+            currentPlan={currentPlan}
           />
         </ConfirmationDialog>
         <ConfirmationDialog
@@ -311,6 +312,7 @@ const AccountSettings = () => {
           <FreezeModalForm
             setFreezeOption={setFreezeOption}
             header="Need a break from investing?"
+            currentPlan={currentPlan}
           />
         </ConfirmationDialog>
       </Paper>
