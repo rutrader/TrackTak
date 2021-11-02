@@ -23,7 +23,6 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PaymentIcon from "@mui/icons-material/Payment";
 import useCurrentPlan, { Plans } from "../hooks/useCurrentPlan";
 import ConfirmationDialog from "../components/ConfirmationDialog";
-import AcUnitIcon from "@mui/icons-material/AcUnit";
 import { createCustomerPortal } from "../api/api";
 import ClearIcon from "@mui/icons-material/Clear";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
@@ -253,28 +252,17 @@ const AccountSettings = () => {
         >
           {hasPaymentPlan && (
             <Button
-              variant="contained"
-              color="primary"
+              startIcon={<ClearIcon />}
               sx={{
                 textTransform: "none",
               }}
-              onClick={handleFreezePlanButtonClick}
-              startIcon={<AcUnitIcon />}
+              onClick={() => {
+                setEndPlanDialog(true);
+              }}
             >
-              Freeze Payment Plan
+              End Plan
             </Button>
           )}
-          <Button
-            startIcon={<ClearIcon />}
-            sx={{
-              textTransform: "none",
-            }}
-            onClick={() => {
-              setEndPlanDialog(true);
-            }}
-          >
-            End Plan And Benefits
-          </Button>
         </Stack>
         <ConfirmationDialog
           open={endPlanDialog}
