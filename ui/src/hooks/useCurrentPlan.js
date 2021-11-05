@@ -1,26 +1,17 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { getCurrentPlan, updateCurrentPlan } from "../api/api";
-import {
-  exchangeToPriceId,
-  smallCapUSPriceId,
-  worldwidePriceId,
-} from "../data/regions";
+import { exchangeToPriceId, PriceIds } from "../data/regions";
 import { useAuth } from "./useAuth";
-
-export const Plans = {
-  ACTIVE: "Active",
-  FROZEN: "Frozen",
-};
 
 export const isStockDisabled = (currentPlan, stock) => {
   if (
-    currentPlan?.priceIds.includes(worldwidePriceId) ||
+    currentPlan?.priceIds.includes(PriceIds.WORLDWIDE) ||
     (stock.exchange === "US" && stock.isMediumCapUSPlus)
   ) {
     return false;
   }
   if (stock.exchange === "US" && !stock.isMediumCapUSPlus) {
-    return !currentPlan?.priceIds.includes(smallCapUSPriceId);
+    return !currentPlan?.priceIds.includes(PriceIds.SMALL_CAP_US);
   }
   return !currentPlan?.priceIds.includes(exchangeToPriceId[stock.exchange]);
 };

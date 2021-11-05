@@ -5,7 +5,7 @@ import RoundButton from "./RoundButton";
 import { listAPIregions } from "../data/regions";
 import ListRegion from "../components/ListRegion";
 
-const SelectAPIRegion = ({ checked, setChecked, handleOnClick, priceId }) => {
+const SelectAPIRegion = ({ checked, setChecked, handleOnClick }) => {
   const handleOnChangeChecked = (value) => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
@@ -77,7 +77,7 @@ const SelectAPIRegion = ({ checked, setChecked, handleOnClick, priceId }) => {
           <RoundButton
             disabled={checked.length === 1}
             onClick={() => {
-              handleOnClick(priceId);
+              handleOnClick();
             }}
             variant="contained"
             sx={{

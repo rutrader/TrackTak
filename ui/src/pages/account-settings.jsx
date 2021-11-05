@@ -28,6 +28,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import FreezeModalForm from "../components/FreezeModalForm";
 import { navigate } from "gatsby";
+import AcUnit from "@mui/icons-material/AcUnit";
 
 const AccountSettings = () => {
   const { getAccessToken } = useAuth();
@@ -37,7 +38,7 @@ const AccountSettings = () => {
   const [endPlanDialog, setEndPlanDialog] = useState(false);
   const [freezeOption, setFreezeOption] = useState("1");
   const hasPaymentPlan =
-    currentPlan?.type === Plans.FROZEN || currentPlan?.priceIds?.length > 0;
+    currentPlan?.isFrozen || currentPlan?.priceIds?.length > 0;
 
   const dividerStyle = {
     marginTop: 4,
@@ -74,6 +75,12 @@ const AccountSettings = () => {
       monthsToFreeze: freezeOption,
     });
     setEndPlanDialog(false);
+  };
+
+  const handleUnfreezePlanButtonClick = () => {
+    updatePlan({
+      state: "unfreeze",
+    });
   };
 
   const handleOnClickCustomerPortal = async () => {
@@ -143,7 +150,7 @@ const AccountSettings = () => {
                   variant="h8"
                   gutterBottom
                 >
-                  {currentPlan?.type === Plans.FROZEN && "Plan Frozen"}
+                  {currentPlan?.isFrozen && "Plan Frozen"}
                   <br />${currentPlan?.totalCost}/mo. Auto-renews on{" "}
                   {planExpiration}
                 </Typography>
@@ -250,6 +257,17 @@ const AccountSettings = () => {
           direction="row"
           sx={{ justifyContent: "space-around" }}
         >
+          {currentPlan?.isFrozen && (
+            <Button
+              startIcon={<AcUnit />}
+              sx={{
+                textTransform: "none",
+              }}
+              onClick={handleUnfreezePlanButtonClick}
+            >
+              Unfreeze Plan
+            </Button>
+          )}
           {hasPaymentPlan && (
             <Button
               startIcon={<ClearIcon />}

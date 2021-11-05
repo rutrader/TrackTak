@@ -10,7 +10,7 @@ import FrequentlyAskedQuestion from "../components/FrequentlyAskedQuestion";
 import { createCheckoutSession } from "../api/api";
 import { useAuth } from "../hooks/useAuth";
 import withAuthentication from "../hocs/withAuthentication";
-import { mediumCapUSPlusPriceId } from "../data/regions";
+import { PriceIds } from "../data/regions";
 import useCurrentPlan from "../hooks/useCurrentPlan";
 
 const Pricing = () => {
@@ -22,7 +22,7 @@ const Pricing = () => {
   const handleOnClick = async () => {
     const token = await getAccessToken();
     const apiRegionLineItems = checked
-      .filter((priceId) => priceId !== mediumCapUSPlusPriceId)
+      .filter((priceId) => priceId !== PriceIds.MEDIUM_CAP_US_PLUS)
       .map((priceId) => {
         return { price: priceId, quantity: 1 };
       });
@@ -34,7 +34,7 @@ const Pricing = () => {
 
   useEffect(() => {
     if (currentPlan?.priceIds) {
-      setChecked([mediumCapUSPlusPriceId, ...currentPlan?.priceIds]);
+      setChecked([PriceIds.MEDIUM_CAP_US_PLUS, ...currentPlan?.priceIds]);
     }
   }, [currentPlan]);
 
