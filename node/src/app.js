@@ -200,18 +200,9 @@ const getPlanFromSubscription = async (subscription) => {
     const now = new Date().getTime() / 1000; // to seconds
     const isFrozen = !!(
       subscription.pause_collection &&
-      now > subscription.current_period_end &&
+      now > subscription.metadata.period_end_at_freeze &&
       now <= subscription.pause_collection.resumes_at
     );
-
-    console.log({
-      currentPeriodEnd: subscription && subscription.current_period_end,
-      resumesAt:
-        subscription.pause_collection &&
-        subscription.pause_collection.resumes_at,
-      now,
-      diff: subscription && subscription.current_period_end - now,
-    });
 
     return {
       periodEnd: isFrozen
@@ -272,6 +263,9 @@ app.put(CURRENT_PLAN_ENDPOINT, auth, async (req, res) => {
             pause_collection: {
               behavior: "void",
               resumes_at: resumesAt,
+            },
+            metadata: {
+              period_end_at_freeze: subscription.current_period_end,
             },
           },
         );
