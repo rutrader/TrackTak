@@ -10,7 +10,6 @@ import * as database from "./database/mongoDbClient";
 import { Collections } from "./database/collections";
 import convertFundamentalsFromAPI from "./shared/convertFundamentalsFromAPI";
 import { default as MongoDb } from "mongodb";
-import { getCurrentPlan } from "./cognito/cognitoClient";
 
 const baseUrl = "https://eodhistoricaldata.com/api";
 const fundamentalsUrl = `${baseUrl}/fundamentals`;
@@ -20,7 +19,7 @@ const searchUrl = `${baseUrl}/search`;
 const exchangeSymbolListUrl = `${baseUrl}/exchange-symbol-list`;
 const bulkFundamentalsUrl = `${baseUrl}/bulk-fundamentals`;
 
-const LARGE_CAP_PRICE_THRESHOLD = 30;
+const MEDIUM_PLUS_CAP_PRICE_THRESHOLD = 30;
 
 database.connect();
 
@@ -268,8 +267,8 @@ const api = {
           })
           .map((datum) => ({
             ...datum,
-            isUSLargeCap:
-              datum.previousClose > LARGE_CAP_PRICE_THRESHOLD &&
+            isMediumCapUSPlus:
+              datum.previousClose > MEDIUM_PLUS_CAP_PRICE_THRESHOLD &&
               datum.Exchange === "US",
           }));
         return result;
@@ -379,12 +378,6 @@ const api = {
       _id: new MongoDb.ObjectId(id),
       userId,
     });
-  },
-
-  getCurrentPlan: async (token) => {
-    const plan = await getCurrentPlan(token);
-
-    return plan;
   },
 };
 

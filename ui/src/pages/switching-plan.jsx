@@ -9,17 +9,16 @@ import useFetchPrice from "../hooks/useFetchPrice";
 import { formatPrice } from "../shared/utils";
 import MembershipButtons from "../components/MembershipButtons";
 import CancellationPlan from "../components/CancellationPlan";
-
-const priceId = "price_1Jo6txDOsUBI2OhCuv0mVZE0";
+import { PriceIds } from "../data/regions";
 
 const SwitchingPlan = () => {
   const theme = useTheme();
   const { getAccessToken } = useAuth();
-  const priceData = useFetchPrice(priceId);
+  const priceData = useFetchPrice(PriceIds.WORLDWIDE);
 
   const handleOnClick = async () => {
     const token = await getAccessToken();
-    const lineItems = [{ price: priceId, quantity: 1 }];
+    const lineItems = [{ price: PriceIds.WORLDWIDE, quantity: 1 }];
 
     const { data } = await createCheckoutSession(lineItems, token?.jwtToken);
 

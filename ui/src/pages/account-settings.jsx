@@ -21,22 +21,24 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import LockIcon from "@mui/icons-material/Lock";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PaymentIcon from "@mui/icons-material/Payment";
-import useCurrentPlan from "../hooks/useCurrentPlan";
+import useCurrentPlan, { Plans } from "../hooks/useCurrentPlan";
 import ConfirmationDialog from "../components/ConfirmationDialog";
-import AcUnitIcon from "@mui/icons-material/AcUnit";
 import { createCustomerPortal } from "../api/api";
 import ClearIcon from "@mui/icons-material/Clear";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import FreezeModalForm from "../components/FreezeModalForm";
 import { navigate } from "gatsby";
+import AcUnit from "@mui/icons-material/AcUnit";
 
 const AccountSettings = () => {
   const { getAccessToken } = useAuth();
   const { isExternalIdentityProvider } = useAuth();
-  const { currentPlan } = useCurrentPlan();
+  const { currentPlan, updatePlan } = useCurrentPlan();
   const [showFreezePlanDialog, setShowFreezePlanDialog] = useState(false);
   const [endPlanDialog, setEndPlanDialog] = useState(false);
-  const hasPaymentPlan = currentPlan?.priceIds?.length > 0;
+  const [freezeOption, setFreezeOption] = useState("1");
+  const hasPaymentPlan =
+    currentPlan?.isFrozen || currentPlan?.priceIds?.length > 0;
 
   const dividerStyle = {
     marginTop: 4,
@@ -56,6 +58,10 @@ const AccountSettings = () => {
   };
 
   const handleFreezePlanDialogConfirm = () => {
+    updatePlan({
+      state: "freeze",
+      monthsToFreeze: freezeOption,
+    });
     setShowFreezePlanDialog(false);
   };
 
@@ -64,7 +70,17 @@ const AccountSettings = () => {
   };
 
   const handleEndPlanDialogConfirm = () => {
+    updatePlan({
+      state: "freeze",
+      monthsToFreeze: freezeOption,
+    });
     setEndPlanDialog(false);
+  };
+
+  const handleUnfreezePlanButtonClick = () => {
+    updatePlan({
+      state: "unfreeze",
+    });
   };
 
   const handleOnClickCustomerPortal = async () => {
@@ -134,10 +150,12 @@ const AccountSettings = () => {
                   variant="h8"
                   gutterBottom
                 >
-                  ${currentPlan?.totalCost}/mo. Auto-renews on {planExpiration}
+                  {currentPlan?.isFrozen && "Plan Frozen"}
+                  <br />${currentPlan?.totalCost}/mo. Auto-renews on{" "}
+                  {planExpiration}
                 </Typography>
               )}
-              <CurrentPlan />
+              <CurrentPlan currentPlan={currentPlan} />
             </SettingSection>
           </Grid>
           <Divider orientation="vertical" light flexItem sx={dividerStyle} />
@@ -239,30 +257,30 @@ const AccountSettings = () => {
           direction="row"
           sx={{ justifyContent: "space-around" }}
         >
-          {hasPaymentPlan && (
+          {currentPlan?.isFrozen && (
             <Button
-              variant="contained"
-              color="primary"
+              startIcon={<AcUnit />}
               sx={{
                 textTransform: "none",
               }}
-              onClick={handleFreezePlanButtonClick}
-              startIcon={<AcUnitIcon />}
+              onClick={handleUnfreezePlanButtonClick}
             >
-              Freeze Payment Plan
+              Unfreeze Plan
             </Button>
           )}
-          <Button
-            startIcon={<ClearIcon />}
-            sx={{
-              textTransform: "none",
-            }}
-            onClick={() => {
-              setEndPlanDialog(true);
-            }}
-          >
-            End Plan And Benefits
-          </Button>
+          {hasPaymentPlan && (
+            <Button
+              startIcon={<ClearIcon />}
+              sx={{
+                textTransform: "none",
+              }}
+              onClick={() => {
+                setEndPlanDialog(true);
+              }}
+            >
+              End Plan
+            </Button>
+          )}
         </Stack>
         <ConfirmationDialog
           open={endPlanDialog}
@@ -274,6 +292,7 @@ const AccountSettings = () => {
         >
           <FreezeModalForm
             header="Before you cancel..."
+            setFreezeOption={setFreezeOption}
             subtext={
               <Typography
                 variant="h6"
@@ -285,6 +304,7 @@ const AccountSettings = () => {
                 Did you know you can put your plan on hold?
               </Typography>
             }
+            currentPlan={currentPlan}
           />
         </ConfirmationDialog>
         <ConfirmationDialog
@@ -295,7 +315,11 @@ const AccountSettings = () => {
           confirmText="Freeze My Plan"
           cancelText="Cancel"
         >
-          <FreezeModalForm header="Need a break from investing?" />
+          <FreezeModalForm
+            setFreezeOption={setFreezeOption}
+            header="Need a break from investing?"
+            currentPlan={currentPlan}
+          />
         </ConfirmationDialog>
       </Paper>
     </>

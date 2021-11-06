@@ -92,3 +92,9 @@ export const getCurrentPlan = async (accessToken) => {
     headers: { Authorization: `Bearer ${accessToken}` },
   });
 };
+
+export const updateCurrentPlan = async (accessToken, planUpdates) => {
+  return axios.put(`/api/v1/current-plan`, planUpdates, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+};

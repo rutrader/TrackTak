@@ -17,9 +17,19 @@ export const StyledButton = (props) => (
   />
 );
 
-const MembershipButtons = ({ route }) => {
+const handleEndMyMembershipClick = () => {
+  navigate("/cancel-plan");
+};
+
+const MembershipButtons = ({
+  onEndMyMembershipClick = handleEndMyMembershipClick,
+}) => {
   const theme = useTheme();
   const isOnMobile = useMediaQuery(theme.breakpoints.up("sm"));
+
+  const handleKeepMyBenefitsClick = () => {
+    navigate("/dashboard");
+  };
 
   return (
     <>
@@ -31,16 +41,16 @@ const MembershipButtons = ({ route }) => {
           gap: isOnMobile ? theme.spacing(7) : theme.spacing(2),
         }}
       >
-        <StyledButton startIcon={<PersonIcon />}>Keep My Benefits</StyledButton>
+        <StyledButton
+          startIcon={<PersonIcon />}
+          onClick={handleKeepMyBenefitsClick}
+        >
+          Keep My Benefits
+        </StyledButton>
         <StyledButton startIcon={<AcUnitIcon />}>
           Freeze Payment Plan
         </StyledButton>
-        <StyledButton
-          variant="outlined"
-          onClick={() => {
-            navigate(route);
-          }}
-        >
+        <StyledButton variant="outlined" onClick={onEndMyMembershipClick}>
           End My Membership
         </StyledButton>
       </Stack>
