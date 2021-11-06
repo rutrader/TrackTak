@@ -319,24 +319,6 @@ app.post("/api/v1/create-checkout-session", auth, async (req, res) => {
 
   try {
     const customer = await getCustomer(req.user.accessToken);
-    console.log({
-      mode: "subscription",
-      payment_method_types: ["card"],
-      line_items: lineItems,
-      allow_promotion_codes: true,
-      billing_address_collection: "required",
-      automatic_tax: {
-        enabled: true,
-      },
-      success_url: `${process.env.ORIGIN_URL}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.ORIGIN_URL}/pricing`,
-      ...(customer.id && {
-        customer: customer.id,
-      }),
-      ...(!customer.id && {
-        customer_email: customer.email,
-      }),
-    });
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       payment_method_types: ["card"],
