@@ -5,7 +5,7 @@ import api from "./api";
 import auth, { excludeStripeWebhookJSON } from "./middleware/auth";
 import Stripe from "stripe";
 import { CURRENT_PLAN_ENDPOINT } from "./shared/constants";
-import { updatePlan } from "./cognito/cognitoClient";
+import { getUserDetails } from "./cognito/cognitoClient";
 
 const hostname = "127.0.0.1";
 const port = process.env.NODE_ENV === "development" ? 3001 : process.env.PORT;
@@ -168,42 +168,143 @@ app.delete("/api/v1/spreadsheets/:id", auth, async (req, res) => {
   res.send({ id: req.params.id });
 });
 
-app.get(CURRENT_PLAN_ENDPOINT, auth, async (req, res) => {
-  const currentPlan = await api.getCurrentPlan(req.user.accessToken);
-  let stripeData = {
-    priceIds: [],
-  };
-  if (currentPlan.stripeCustomerId) {
-    const customer = await stripe.customers.retrieve(
-      currentPlan.stripeCustomerId,
-      {
-        expand: ["subscriptions"],
-      },
+const getSubscription = async (stripeCustomerId) => {
+  const customer = await stripe.customers.retrieve(stripeCustomerId, {
+    expand: ["subscriptions"],
+  });
+  return (
+    customer.subscriptions.data.length > 0 && customer.subscriptions.data[0]
+  );
+};
+
+const getCustomer = async (accessToken) => {
+  const userDetails = await getUserDetails(accessToken);
+  if (!userDetails || !userDetails.email) {
+    return null;
+  }
+  const customers = await stripe.customers.list({
+    limit: 1,
+    email: userDetails.email,
+  });
+  return customers.data.length > 0
+    ? customers.data[0]
+    : { email: userDetails.email };
+};
+
+const getPlanFromSubscription = async (subscription) => {
+  if (subscription) {
+    const paymentMethod = await stripe.paymentMethods.retrieve(
+      subscription.default_payment_method,
     );
-    const data =
-      customer.subscriptions.data.length > 0 && customer.subscriptions.data[0];
 
-    if (data) {
-      const paymentMethod = await stripe.paymentMethods.retrieve(
-        data.default_payment_method,
-      );
+    const now = new Date().getTime() / 1000; // to seconds
+    const isFrozen = !!(
+      subscription.pause_collection &&
+      now > subscription.metadata.period_end_at_freeze &&
+      now <= subscription.pause_collection.resumes_at
+    );
 
-      stripeData = {
-        periodEnd: data.current_period_end * 1000, // to ms
-        priceIds: data.items.data.map((x) => x.price.id),
-        totalCost:
-          data.items.data.reduce((sum, x) => (sum += x.price.unit_amount), 0) /
-          100,
-        paymentCardLast4: paymentMethod && paymentMethod.card.last4,
-        paymentCardBrand: paymentMethod && paymentMethod.card.brand,
-      };
-    }
+    return {
+      periodEnd: isFrozen
+        ? subscription.pause_collection.resumes_at * 1000
+        : subscription.current_period_end * 1000, // to ms
+      priceIds: isFrozen ? [] : subscription.items.data.map((x) => x.price.id),
+      totalCost:
+        subscription.items.data.reduce(
+          (sum, x) => (sum += x.price.unit_amount),
+          0,
+        ) / 100,
+      paymentCardLast4: paymentMethod && paymentMethod.card.last4,
+      paymentCardBrand: paymentMethod && paymentMethod.card.brand,
+      isFrozen,
+    };
   }
 
-  res.send({
-    ...currentPlan,
-    ...stripeData,
-  });
+  return {
+    priceIds: [],
+    isFrozen: false,
+  };
+};
+
+app.get(CURRENT_PLAN_ENDPOINT, auth, async (req, res) => {
+  try {
+    const customer = await getCustomer(req.user.accessToken);
+    const subscription = customer.id
+      ? await getSubscription(customer.id)
+      : null;
+    const plan = await getPlanFromSubscription(subscription);
+    res.send(plan);
+  } catch (e) {
+    console.error(e);
+  }
+});
+
+app.put(CURRENT_PLAN_ENDPOINT, auth, async (req, res) => {
+  const customer = await getCustomer(req.user.accessToken);
+  const { state, monthsToFreeze } = req.body;
+
+  if (customer.id) {
+    const subscription = await getSubscription(customer.id);
+
+    switch (state) {
+      case "freeze": {
+        const nextPaymentDate = new Date(
+          subscription.current_period_end * 1000,
+        );
+        const resumesAt =
+          new Date(
+            nextPaymentDate.getFullYear(),
+            nextPaymentDate.getMonth() + Number(monthsToFreeze),
+            nextPaymentDate.getDay(),
+          ).getTime() / 1000; // to seconds
+        const updatedSubscription = await stripe.subscriptions.update(
+          subscription.id,
+          {
+            pause_collection: {
+              behavior: "void",
+              resumes_at: resumesAt,
+            },
+            metadata: {
+              period_end_at_freeze: subscription.current_period_end,
+            },
+          },
+        );
+        const plan = await getPlanFromSubscription(updatedSubscription);
+        res.send(plan);
+        break;
+      }
+      case "unfreeze": {
+        const updatedSubscription = await stripe.subscriptions.update(
+          subscription.id,
+          {
+            pause_collection: "",
+          },
+        );
+        const plan = await getPlanFromSubscription(updatedSubscription);
+        res.send(plan);
+        break;
+      }
+      case "cancel": {
+        const updatedSubscription = await stripe.subscriptions.del(
+          subscription.id,
+        );
+        const plan = await getPlanFromSubscription(updatedSubscription);
+        res.send(plan);
+        break;
+      }
+      default:
+        const message = `Unknown account state transition ${state} for customer ${customer.id}`;
+        console.error(message);
+        res.status(400).send({
+          message,
+        });
+    }
+  } else {
+    const message = "Failed to update plan. Customer does not exist.";
+    res.status(400).send({
+      message,
+    });
+  }
 });
 
 app.get("/v1/prices/:id", auth, async (req, res) => {
@@ -217,6 +318,7 @@ app.post("/api/v1/create-checkout-session", auth, async (req, res) => {
   const { lineItems } = req.body;
 
   try {
+    const customer = await getCustomer(req.user.accessToken);
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       payment_method_types: ["card"],
@@ -228,9 +330,12 @@ app.post("/api/v1/create-checkout-session", auth, async (req, res) => {
       },
       success_url: `${process.env.ORIGIN_URL}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.ORIGIN_URL}/pricing`,
-      metadata: {
-        username: req.user.username,
-      },
+      ...(customer.id && {
+        customer: customer.id,
+      }),
+      ...(!customer.id && {
+        customer_email: customer.email,
+      }),
     });
     res.send({ url: session.url });
   } catch (e) {
@@ -250,7 +355,6 @@ app.post(
   async (req, res) => {
     let event;
     const signature = req.headers["stripe-signature"];
-
     try {
       event = stripe.webhooks.constructEvent(
         req.body,
@@ -265,7 +369,9 @@ app.post(
     switch (event.type) {
       case "checkout.session.completed":
         const eventData = event.data.object;
-        updatePlan(eventData.metadata.username, eventData.customer);
+        console.log(
+          `Successfully processed payment for customer ${eventData.customer}`,
+        );
         break;
       default:
         console.error(`Unhandled event type ${event.type}`);

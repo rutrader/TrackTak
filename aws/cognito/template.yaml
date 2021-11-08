@@ -143,38 +143,10 @@ Resources:
       Handler: pre-sign-up.handler
       Runtime: nodejs12.x
 
-  PostAuthentication:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: lambda-triggers/post-authentication/
-      Handler: post-authentication.handler
-      Runtime: nodejs12.x
-      Policies:
-        - Version: "2012-10-17"
-          Statement:
-            - Effect: Allow
-              Action:
-                - cognito-identity:*
-                - cognito-idp:*
-              Resource: "*"
-
   UserPool:
     Type: "AWS::Cognito::UserPool"
     Properties:
       UserPoolName: !Ref UserPoolName
-      Schema:
-        - Name: account_type
-          AttributeDataType: String
-          Mutable: true
-          StringAttributeConstraints:
-            MinLength: 1
-            MaxLength: 256
-        - Name: stripe_customer_id
-          AttributeDataType: String
-          Mutable: true
-          StringAttributeConstraints:
-            MinLength: 1
-            MaxLength: 256
       Policies:
         PasswordPolicy:
           MinimumLength: 8
@@ -196,7 +168,6 @@ Resources:
         DefineAuthChallenge: !GetAtt DefineAuthChallenge.Arn
         PreSignUp: !GetAtt PreSignUp.Arn
         VerifyAuthChallengeResponse: !GetAtt VerifyAuthChallengeResponse.Arn
-        PostAuthentication: !GetAtt PostAuthentication.Arn
       EmailConfiguration:
         EmailSendingAccount: DEVELOPER
         From: no-reply@tracktak.com
@@ -312,13 +283,6 @@ Resources:
     Properties:
       Action: lambda:InvokeFunction
       FunctionName: !GetAtt PreSignUp.Arn
-      Principal: cognito-idp.amazonaws.com
-      SourceArn: !GetAtt UserPool.Arn
-  PostAuthenticationInvocationPermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: lambda:InvokeFunction
-      FunctionName: !GetAtt PostAuthentication.Arn
       Principal: cognito-idp.amazonaws.com
       SourceArn: !GetAtt UserPool.Arn
 

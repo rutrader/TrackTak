@@ -68,10 +68,18 @@ const handler = async (request) => {
       clientId: claim.client_id,
       isValid: true,
       accessToken: token.raw,
+      email: token.email,
     };
   } catch (error) {
     console.error("Error decoding JWT", error);
-    result = { username: "", clientId: "", error, isValid: false, token: "" };
+    result = {
+      username: "",
+      clientId: "",
+      error,
+      isValid: false,
+      token: "",
+      email: "",
+    };
   }
   return result;
 };

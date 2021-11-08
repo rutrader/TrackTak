@@ -145,7 +145,7 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
             name: option.Name,
             code: option.Code,
             exchange: option.Exchange,
-            isUSLargeCap: option.isUSLargeCap,
+            isMediumCapUSPlus: option.isMediumCapUSPlus,
           };
         })}
         autoHighlight
