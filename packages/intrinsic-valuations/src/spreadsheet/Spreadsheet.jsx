@@ -193,6 +193,14 @@ const Spreadsheet = ({ sheetData, financialData, saveSheetData, ...props }) => {
         "million-currency": `${currencySymbol}#,###.##,,`,
       },
     });
+
+    // TODO: Figure out why setTimeout needed
+    // raise an issue with material components
+    setTimeout(() => {
+      spreadsheet?.setOptions({
+        showFunctionHelper: true,
+      });
+    }, 500);
   }, [currencySymbol, name, spreadsheet]);
 
   if (!spreadsheet) return null;
