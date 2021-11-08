@@ -2,7 +2,7 @@ import { Button, Typography } from "@material-ui/core";
 import { Box, useTheme } from "@material-ui/system";
 import React from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import GlobeIconSvg from "../icons/globe.svg";
+import globeSvg from "../assets/globe.svg";
 import { createCheckoutSession } from "../api/api";
 import { useAuth } from "../hooks/useAuth";
 import useFetchPrice from "../hooks/useFetchPrice";
@@ -49,7 +49,9 @@ const SwitchingPlan = () => {
               alignItems: "center",
             }}
           >
-            <GlobeIconSvg
+            <img
+              src={globeSvg}
+              alt="worldwide"
               style={{
                 height: "37px",
               }}

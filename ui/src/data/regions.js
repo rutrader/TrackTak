@@ -1,14 +1,8 @@
-import React from "react";
-import USAIconSvg from "../icons/united-states.svg";
-import ChinaIconSvg from "../icons/china.svg";
-import EuropeIconSvg from "../icons/europe.svg";
-import UKIconSvg from "../icons/united-kingdom.svg";
-import BrazilIconSvg from "../icons/brazil.svg";
-
-const commonIconProps = {
-  width: 30,
-  height: 30,
-};
+import usaIconSvg from "../assets/united-states.svg";
+import chinaIconSvg from "../assets/china.svg";
+import europeIconSvg from "../assets/europe.svg";
+import ukIconSvg from "../assets/united-kingdom.svg";
+import brazilIconSvg from "../assets/brazil.svg";
 
 export const PriceIds = {
   WORLDWIDE: "price_1Jo6txDOsUBI2OhCuv0mVZE0",
@@ -24,33 +18,33 @@ export const listAPIregions = [
   {
     priceId: PriceIds.MEDIUM_CAP_US_PLUS,
     regionName: "United States (medium cap+)",
-    iconSvg: <USAIconSvg {...commonIconProps} alt="usa" />,
+    iconSvg: usaIconSvg,
     disabled: true,
   },
   {
     priceId: PriceIds.SMALL_CAP_US,
     regionName: "United States (small cap)",
-    iconSvg: <USAIconSvg {...commonIconProps} alt="usa" />,
+    iconSvg: usaIconSvg,
   },
   {
     priceId: PriceIds.CHINA_AND_ASIA,
     regionName: "China & Asia",
-    iconSvg: <ChinaIconSvg {...commonIconProps} alt="china" />,
+    iconSvg: chinaIconSvg,
   },
   {
     priceId: PriceIds.LATIN_AMERICA_AND_EMEA,
     regionName: "Latin America, Middle East & Africa",
-    iconSvg: <BrazilIconSvg {...commonIconProps} alt="brazil" />,
+    iconSvg: brazilIconSvg,
   },
   {
     priceId: PriceIds.EUROPE,
     regionName: "Europe",
-    iconSvg: <EuropeIconSvg {...commonIconProps} alt="europe" />,
+    iconSvg: europeIconSvg,
   },
   {
     priceId: PriceIds.CANADA_AUSTRALIA_UK_IRELAND,
     regionName: "Canada, Australia, UK & Ireland",
-    iconSvg: <UKIconSvg {...commonIconProps} alt="uk" />,
+    iconSvg: ukIconSvg,
   },
 ];
 

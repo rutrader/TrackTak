@@ -57,7 +57,7 @@ const ListRegion = ({
               height: "30px",
             }}
           >
-            {iconSvg}
+            <img src={iconSvg} alt="" width={30} height={30} />
           </ListItemIcon>
           <ListItemText primary={regionName} />
         </Box>

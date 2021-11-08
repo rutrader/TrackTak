@@ -163,16 +163,17 @@ const getCellsData = (xSpreadsheetData, sheetId, sheet) => {
               setStyle({
                 textFormatPattern: "0.00%",
               });
-            } else if (
-              xStyles[styleKey] === "million" ||
-              xStyles[styleKey] === "million-currency"
-            ) {
+            } else if (xStyles[styleKey] === "million") {
+              break;
+            } else if (xStyles[styleKey] === "million-currency") {
               setStyle({
                 textFormatPattern: "#,###.##,,",
+                dynamicFormat: "currency",
               });
             } else if (xStyles[styleKey] === "currency") {
               setStyle({
                 textFormatPattern: "#,##0.##",
+                dynamicFormat: "currency",
               });
             } else {
               console.warn("unknown format", xStyles[styleKey]);
@@ -204,12 +205,14 @@ const getCellsData = (xSpreadsheetData, sheetId, sheet) => {
   };
 
   Object.keys(xSpreadsheetData.cols).forEach((colKey) => {
-    const id = `${sheetId}_${colKey}`;
-    col[id] = {
-      size: xSpreadsheetData.cols[colKey].width,
-      id,
-    };
-    sheet.cols[id] = id;
+    if (colKey !== "len") {
+      const id = `${sheetId}_${colKey}`;
+      col[id] = {
+        size: xSpreadsheetData.cols[colKey].width,
+        id,
+      };
+      sheet.cols[id] = id;
+    }
   });
 
   Object.keys(xSpreadsheetData.rows).forEach((rowKey) => {
@@ -249,7 +252,11 @@ const getPowersheet = (xSpreadsheets) => {
       mergedCells: {},
     };
 
-    if (!isEmpty(xSpreadsheetData.freeze)) {
+    if (
+      !isEmpty(xSpreadsheetData.freeze) &&
+      xSpreadsheetData.name !== "Required Inputs" &&
+      xSpreadsheetData.name !== "Optional Inputs"
+    ) {
       const frozenCell = getFrozenCell(xSpreadsheetData.freeze, sheetId);
       if (frozenCell) {
         sheet.frozenCell = sheetId;
@@ -298,6 +305,12 @@ const getPowersheet = (xSpreadsheets) => {
       }
     });
 
+    powersheetData.sheets[sheetId] = {
+      ...sheet,
+      sheetName: xSpreadsheetData.name,
+      id: sheetId,
+    };
+
     if (powersheetData.mergedCells) {
       // Delete any cell data for mergedCells that isn't
       // top left cell as x-spreadsheet was duplicating it
@@ -313,17 +326,12 @@ const getPowersheet = (xSpreadsheets) => {
 
             if (!powersheetData.mergedCells[associatedMergedCellId]) {
               delete powersheetData.cells[associatedMergedCellId];
+              delete powersheetData.sheets[sheet].cells[associatedMergedCellId];
             }
           }
         }
       });
     }
-
-    powersheetData.sheets[sheetId] = {
-      ...sheet,
-      sheetName: xSpreadsheetData.name,
-      id: sheetId,
-    };
   });
 
   return powersheetData;

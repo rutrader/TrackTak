@@ -144,7 +144,7 @@ const Header = ({ hideSearch, position = "fixed", links = [], children }) => {
             px: 3,
             background: "#fff",
             boxShadow:
-              "0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 6%)",
+              "0 1px 0px 0 rgb(0 0 0 / 10%), 0 0px 0px 0 rgb(0 0 0 / 6%)",
           }}
         >
           <Box

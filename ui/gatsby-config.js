@@ -30,10 +30,6 @@ const duplicatePackageModules = [
   "gatsby-plugin-anchor-links",
   "hyperformula",
   "lodash-es",
-  "eventemitter3",
-  "numfmt",
-  "undo-redo-manager",
-  "xlsx",
 ];
 
 const alias = {
@@ -109,18 +105,9 @@ module.exports = {
       },
     },
     {
-      resolve: "gatsby-plugin-react-svg",
-      options: {
-        rule: {
-          include: /icons/,
-        },
-      },
-    },
-    {
       resolve: "gatsby-plugin-create-client-paths",
       options: { prefixes: ["/stock/*"] },
     },
-    "gatsby-plugin-less",
     {
       resolve: "gatsby-source-contentful",
       options: {
@@ -146,7 +133,7 @@ module.exports = {
     {
       resolve: "gatsby-plugin-manifest",
       options: {
-        icon: "src/icons/tracktak-logo-small.svg",
+        icon: "src/assets/tracktak-logo-small.svg",
       },
     },
     //"gatsby-plugin-offline",

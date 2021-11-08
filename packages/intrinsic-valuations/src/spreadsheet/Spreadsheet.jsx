@@ -1,230 +1,211 @@
-import React, { useRef, useState, Fragment } from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
-import { Box, useMediaQuery } from "@material-ui/core";
-import { useLocation } from "@reach/router";
-import { HyperFormula } from "hyperformula";
-import getSpreadsheet, {
-  spreadsheetEvents,
-} from "../../../web-spreadsheet/src";
-import getFormats from "./getFormats";
-import SaveStatus from "./SaveStatus";
-import hyperformulaConfig from "./hyperformulaConfig";
-import { useTheme } from "@material-ui/core/styles";
+import { Box } from "@material-ui/core";
+import { AlwaysSparse, HyperFormula } from "hyperformula";
+import "@tracktak/powersheet/dist/index.css";
+import {
+  Spreadsheet as PowerSpreadsheet,
+  Toolbar,
+  FormulaBar,
+  Exporter,
+  BottomBar,
+  FunctionHelper,
+} from "@tracktak/powersheet";
+import { currencySymbolMap } from "currency-symbol-map";
+import {
+  finTranslations,
+  getTTFinancialPlugin,
+  ttFinancialAliases,
+  ttFinancialImplementedFunctions,
+} from "./plugins/getTTFinancialPlugin";
+import finFunctionHelperData from "./templates/finFunctionHelperData";
+import "./Spreadsheet.css";
 
-const requiredInputsId = "required-inputs";
-const dcfValuationId = "dcf-valuation";
-const defaultColWidth = 110;
+const buildPowersheet = () => {
+  const hyperformula = HyperFormula.buildEmpty({
+    chooseAddressMappingPolicy: new AlwaysSparse(),
+    // We use our own undo/redo instead
+    undoLimit: 0,
+    licenseKey: "gpl-v3",
+  });
 
-const Spreadsheet = ({
-  spreadsheetData,
-  financialData,
-  setSpreadsheet,
-  spreadsheet,
-  saveSheetData,
-}) => {
-  const containerRef = useRef();
-  const theme = useTheme();
-  const location = useLocation();
-  const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const isFocusedOnValueDrivingInputs = location.hash?.includes(
-    requiredInputsId,
-  );
-  const [isSaving, setIsSaving] = useState(false);
-  const sheetName = spreadsheetData?.sheetData?.name;
+  const trueArgs = ["TRUE", "=TRUE()"];
+  const falseArgs = ["FALSE", "=FALSE()"];
+
+  if (hyperformula.isItPossibleToAddNamedExpression(...trueArgs)) {
+    hyperformula.addNamedExpression(...trueArgs);
+  }
+
+  if (hyperformula.isItPossibleToAddNamedExpression(...falseArgs)) {
+    hyperformula.addNamedExpression(...falseArgs);
+  }
+
+  const functionHelper = new FunctionHelper(finFunctionHelperData);
+  const toolbar = new Toolbar();
+  const formulaBar = new FormulaBar();
+  const exporter = new Exporter([
+    {
+      implementedFunctions: ttFinancialImplementedFunctions,
+      aliases: ttFinancialAliases,
+    },
+  ]);
+  const bottomBar = new BottomBar();
+
+  const spreadsheet = new PowerSpreadsheet({
+    hyperformula,
+    toolbar,
+    formulaBar,
+    exporter,
+    bottomBar,
+    functionHelper,
+    hyperformulaConfig: {
+      currencySymbol: Object.values(currencySymbolMap),
+    },
+  });
+
+  toolbar.setToolbarIcons([
+    {
+      elements: [
+        toolbar.iconElementsMap.undo.buttonContainer,
+        toolbar.iconElementsMap.redo.buttonContainer,
+      ],
+    },
+    {
+      elements: [toolbar.buttonElementsMap.textFormatPattern.buttonContainer],
+    },
+    {
+      elements: [toolbar.buttonElementsMap.fontSize.buttonContainer],
+    },
+    {
+      elements: [
+        toolbar.iconElementsMap.bold.buttonContainer,
+        toolbar.iconElementsMap.italic.buttonContainer,
+        toolbar.iconElementsMap.underline.buttonContainer,
+        toolbar.iconElementsMap.strikeThrough.buttonContainer,
+        toolbar.iconElementsMap.fontColor.buttonContainer,
+      ],
+    },
+    {
+      elements: [
+        toolbar.iconElementsMap.backgroundColor.buttonContainer,
+        toolbar.iconElementsMap.borders.buttonContainer,
+        toolbar.iconElementsMap.merge.buttonContainer,
+      ],
+    },
+    {
+      elements: [
+        toolbar.iconElementsMap.horizontalTextAlign.buttonContainer,
+        toolbar.iconElementsMap.verticalTextAlign.buttonContainer,
+        toolbar.iconElementsMap.textWrap.buttonContainer,
+      ],
+    },
+    {
+      elements: [
+        toolbar.iconElementsMap.freeze.buttonContainer,
+        toolbar.iconElementsMap.functions.buttonContainer,
+        toolbar.iconElementsMap.formula.buttonContainer,
+      ],
+    },
+    {
+      elements: [toolbar.iconElementsMap.export.buttonContainer],
+    },
+    {
+      elements: [toolbar.iconElementsMap.autosave.buttonContainer],
+    },
+    {
+      elements: [toolbar.iconElementsMap.functionHelper.buttonContainer],
+    },
+  ]);
+
+  spreadsheet.spreadsheetEl.prepend(formulaBar.formulaBarEl);
+  spreadsheet.spreadsheetEl.prepend(toolbar.toolbarEl);
+  spreadsheet.spreadsheetEl.appendChild(bottomBar.bottomBarEl);
+  spreadsheet.sheets.sheetEl.appendChild(functionHelper.functionHelperEl);
+
+  spreadsheet.functionHelper.setDrawer();
+
+  return spreadsheet;
+};
+
+const Spreadsheet = ({ sheetData, financialData, saveSheetData, ...props }) => {
+  const [spreadsheet, setSpreadsheet] = useState();
+  const [containerEl, setContainerEl] = useState();
   const currencySymbol = financialData?.general?.currencySymbol;
+  const name = sheetData?.name;
 
   useEffect(() => {
-    const exportToExcel = (exportFn) => {
-      const formats = getFormats(currencySymbol);
+    const FinancialPlugin = getTTFinancialPlugin(financialData);
 
-      exportFn(`${sheetName}.xlsx`, formats, ["FIN"]);
-    };
+    HyperFormula.registerFunctionPlugin(FinancialPlugin, finTranslations);
 
-    if (spreadsheet) {
-      spreadsheet.eventEmitter.on(
-        spreadsheetEvents.export.exportSheets,
-        exportToExcel,
-      );
-    }
+    spreadsheet?.hyperformula.rebuildAndRecalculate();
+    spreadsheet?.updateViewport();
 
     return () => {
-      if (spreadsheet) {
-        spreadsheet.eventEmitter.off(
-          spreadsheetEvents.export.exportSheets,
-          exportToExcel,
-        );
-      }
+      HyperFormula.unregisterFunctionPlugin(FinancialPlugin);
     };
-  }, [currencySymbol, sheetName, spreadsheet]);
+  }, [financialData, spreadsheet]);
 
   useEffect(() => {
-    let spreadsheet;
-
-    const dcfValuationElement = document.getElementById(`${dcfValuationId}`);
-
-    const width = () => {
-      if (containerRef?.current) {
-        const containerStyle = getComputedStyle(containerRef.current);
-        const paddingX =
-          parseFloat(containerStyle.paddingLeft) +
-          parseFloat(containerStyle.paddingRight);
-        const borderX =
-          parseFloat(containerStyle.borderLeftWidth) +
-          parseFloat(containerStyle.borderRightWidth);
-        const elementWidth =
-          containerRef.current.offsetWidth - paddingX - borderX;
-
-        return elementWidth;
-      }
-    };
-    const debugMode = process.env.NODE_ENV === "development";
-
-    const options = {
-      debugMode,
-      col: {
-        width: defaultColWidth,
-      },
-      view: {
-        height: () => 1200,
-        width,
-      },
-    };
-
-    const variablesSpreadsheetOptions = {
-      debugMode,
-      view: {
-        width,
-      },
-    };
-
-    const hyperformula = HyperFormula.buildEmpty(hyperformulaConfig);
-
-    spreadsheet = getSpreadsheet(
-      dcfValuationElement,
-      options,
-      variablesSpreadsheetOptions,
-      hyperformula,
-    );
-
-    spreadsheet.variablesSpreadsheet.sheet.el.el.id = requiredInputsId;
+    const spreadsheet = buildPowersheet();
 
     setSpreadsheet(spreadsheet);
 
     return () => {
       spreadsheet?.destroy();
+      spreadsheet?.hyperformula.destroy();
     };
-  }, [setSpreadsheet]);
+  }, []);
 
   useEffect(() => {
-    const handleSave = async (data) => {
-      if (saveSheetData) {
-        setIsSaving(true);
-        await saveSheetData(data);
-        setIsSaving(false);
-      }
+    const persistData = async (sheetData, done) => {
+      await saveSheetData(sheetData);
+
+      done();
     };
 
-    if (spreadsheet) {
-      spreadsheet.eventEmitter.on(
-        spreadsheetEvents.save.persistDataChange,
-        handleSave,
-      );
-
-      spreadsheet.variablesEventEmitter.on(
-        spreadsheetEvents.save.persistDataChange,
-        handleSave,
-      );
-    }
+    spreadsheet?.eventEmitter.on("persistData", persistData);
 
     return () => {
-      if (spreadsheet) {
-        spreadsheet.eventEmitter.off(
-          spreadsheetEvents.save.persistDataChange,
-          handleSave,
-        );
-
-        spreadsheet.variablesEventEmitter.off(
-          spreadsheetEvents.save.persistDataChange,
-          handleSave,
-        );
-      }
+      spreadsheet?.eventEmitter.off("persistData", persistData);
     };
-  }, [spreadsheet, saveSheetData, spreadsheetData]);
+  }, [saveSheetData, spreadsheet]);
 
   useEffect(() => {
-    if (spreadsheet) {
-      const options = {
-        formats: getFormats(currencySymbol),
-      };
-
-      spreadsheet.setOptions(options);
-      spreadsheet.variablesSpreadsheet.setOptions(options);
+    if (spreadsheet && sheetData) {
+      if (containerEl) {
+        containerEl.appendChild(spreadsheet.spreadsheetEl);
+        spreadsheet.setData(sheetData.data);
+        spreadsheet.initialize();
+      }
     }
-  }, [currencySymbol, spreadsheet]);
+  }, [containerEl, sheetData, spreadsheet]);
 
   useEffect(() => {
-    if (spreadsheet) {
-      // Disable main sheet editing on mobile for now
-      // until we make mobile have better UX
-      spreadsheet.setOptions({
-        mode: isOnMobile ? "read" : "edit",
+    spreadsheet?.setOptions({
+      exportSpreadsheetName: `${name}.xlsx`,
+      row: {
+        amount: 100,
+      },
+      textPatternFormats: {
+        currency: `${currencySymbol}#,##0.##`,
+        million: "#,###.##,,",
+        "million-currency": `${currencySymbol}#,###.##,,`,
+      },
+    });
+
+    // TODO: Figure out why setTimeout needed
+    // raise an issue with material components
+    setTimeout(() => {
+      spreadsheet?.setOptions({
+        showFunctionHelper: true,
       });
-    }
-  }, [isOnMobile, spreadsheet]);
+    }, 500);
+  }, [currencySymbol, name, spreadsheet]);
 
-  useEffect(() => {
-    if (spreadsheet && spreadsheetData) {
-      spreadsheet.setData(spreadsheetData?.sheetData.data);
-    }
-  }, [spreadsheetData, spreadsheet]);
+  if (!spreadsheet) return null;
 
-  return (
-    <Fragment>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-          my: 0.75,
-        }}
-      >
-        <Box
-          sx={{
-            px: "30px",
-            display: "flex",
-            alignItems: "center",
-            flex: 1,
-          }}
-        >
-          <Box
-            sx={{
-              ml: "auto",
-            }}
-          >
-            {saveSheetData && <SaveStatus isSaving={isSaving} />}
-          </Box>
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          position: "relative",
-          "& .powersheet-comment": {
-            fontFamily: theme.typography.fontFamily,
-          },
-          "& .powersheet-variables-sheet": isFocusedOnValueDrivingInputs
-            ? {
-                boxShadow: `0 0 5px ${theme.palette.primary.main}`,
-                border: `1px solid ${theme.palette.primary.main}`,
-              }
-            : {},
-        }}
-        ref={containerRef}
-      >
-        <Box id={dcfValuationId} />
-      </Box>
-    </Fragment>
-  );
+  return <Box {...props} ref={setContainerEl} />;
 };
 
 export default Spreadsheet;

@@ -21,7 +21,14 @@ const RegionStatus = ({ iconSvg, regionName, enabled }) => {
           minWidth: "33px",
         }}
       >
-        {iconSvg}
+        <img
+          src={iconSvg}
+          alt=""
+          style={{
+            width: 30,
+            height: 30,
+          }}
+        />
       </Box>
       {regionName}
       <Box

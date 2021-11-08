@@ -1,8 +1,8 @@
 import { Box, Hidden, Typography } from "@material-ui/core";
 import { Link } from "gatsby";
 import React from "react";
-import TracktakLogoSvg from "../icons/tracktak-purple.svg";
-import TracktakLogoSmallSvg from "../icons/tracktak-logo-small.svg";
+import tracktakLogoSvg from "../assets/tracktak-purple.svg";
+import tracktakLogoSmallSvg from "../assets/tracktak-logo-small.svg";
 import { useAuth } from "../hooks/useAuth";
 
 const TracktakLogo = ({ width, height, logoProps, ...props }) => {
@@ -20,10 +20,10 @@ const TracktakLogo = ({ width, height, logoProps, ...props }) => {
         title={`Back to the ${isAuthenticated ? "dashboard" : "home page"}`}
       >
         <Hidden mdDown implementation="css">
-          <TracktakLogoSvg {...logoProps} />
+          <img {...logoProps} alt="tracktak" src={tracktakLogoSvg} />
         </Hidden>
         <Hidden mdUp implementation="css">
-          <TracktakLogoSmallSvg />
+          <img {...logoProps} alt="t" src={tracktakLogoSmallSvg} />
         </Hidden>
         <Box sx={{ ml: 0.35 }}>
           <Typography color="textSecondary">beta</Typography>

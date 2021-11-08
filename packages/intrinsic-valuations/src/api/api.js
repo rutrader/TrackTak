@@ -32,7 +32,9 @@ export const computeSensitivityAnalysis = async (
 };
 
 export const getFundamentals = async (ticker, params) => {
-  return axios.get(`/api/v1/fundamentals/${ticker}`, params);
+  return axios.get(`/api/v1/fundamentals/${ticker}`, {
+    params,
+  });
 };
 
 export const getExchangeRate = async (baseCurrency, quoteCurrency, params) => {

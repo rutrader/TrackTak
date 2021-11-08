@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Hidden } from "@material-ui/core";
-import GridDots from "../icons/grid-dots-purple.svg";
+import gridDots from "../assets/grid-dots-purple.svg";
 import YoutubeTutorial from "../components/YoutubeTutorial";
 
 const VideoSection = () => {
@@ -13,7 +13,9 @@ const VideoSection = () => {
       <YoutubeTutorial />
       <Box>
         <Hidden mdDown implementation="css">
-          <GridDots
+          <img
+            src={gridDots}
+            alt=""
             style={{
               position: "absolute",
               right: "-70px",

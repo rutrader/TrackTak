@@ -2,8 +2,8 @@ import {
   FunctionPlugin,
   InvalidArgumentsError,
   SimpleRangeValue,
-  ArraySize,
 } from "hyperformula";
+import { ArraySize } from "hyperformula/es/ArraySize";
 import dayjs from "dayjs";
 import convertSubCurrencyToCurrency from "../../shared/convertSubCurrencyToCurrency";
 import {
@@ -17,7 +17,19 @@ import {
 import { isNil } from "lodash-es";
 import defaultStatement from "../../shared/defaultStatement";
 
-export const getTTFinancialPlugin = (financialData, hasFinancialsLoaded) => {
+export const ttFinancialImplementedFunctions = {
+  FINANCIAL: {
+    method: "financial",
+    arraySizeMethod: "financialSize",
+  },
+};
+
+export const ttFinancialAliases = {
+  FIN: "FINANCIAL",
+};
+
+export const getTTFinancialPlugin = (financialData) => {
+  const hasFinancialsLoaded = !!financialData;
   const {
     exchangeRates,
     financialStatements = {},
@@ -110,43 +122,32 @@ export const getTTFinancialPlugin = (financialData, hasFinancialsLoaded) => {
       if (!args.length) {
         return new InvalidArgumentsError(1);
       }
-
       if (!hasFinancialsLoaded) {
         return "Loading...";
       }
-
       const attribute = args[0].value;
-
       // TODO: Add proper error checking here later
       if (args.length === 1) {
         if (attribute === "currencyCode") {
           const currencyCode = ttmData[attribute];
-
           return convertSubCurrencyToCurrency(currencyCode);
         }
-
         if (attribute === "financialStatements") {
           return SimpleRangeValue.onlyValues(statements);
         }
-
         return ttmData[attribute] ?? "";
       }
-
       const startDate = args[1].value;
       const statementType = getTypeOfStatementToUse(attribute);
-
       if (args.length === 2) {
         if (attribute === "description") {
           return ttmData[attribute];
         }
-
         return (
           historicalDataArrays[statementType].yearly[startDate][attribute] ?? ""
         );
       }
-
       const endDate = args[2].value;
-
       if (args.length === 3) {
         return SimpleRangeValue.onlyValues([
           getYearlyValues(attribute, statementType, startDate, endDate),
@@ -182,16 +183,8 @@ export const getTTFinancialPlugin = (financialData, hasFinancialsLoaded) => {
     }
   }
 
-  TTFinancialPlugin.implementedFunctions = {
-    FINANCIAL: {
-      method: "financial",
-      arraySizeMethod: "financialSize",
-    },
-  };
-
-  TTFinancialPlugin.aliases = {
-    FIN: "FINANCIAL",
-  };
+  TTFinancialPlugin.implementedFunctions = ttFinancialImplementedFunctions;
+  TTFinancialPlugin.aliases = ttFinancialAliases;
 
   return TTFinancialPlugin;
 };

@@ -9,16 +9,15 @@ import dayjs from "dayjs";
 import SearchIcon from "@material-ui/icons/Search";
 import useDebouncedCallback from "../../../packages/intrinsic-valuations/src/hooks/useDebouncedCallback";
 import TTRoundInput from "./TTRoundInput";
-import { getAutocompleteQuery } from "../../../packages/intrinsic-valuations/src/api/api";
+import {
+  getAutocompleteQuery,
+  getFundamentals,
+} from "../../../packages/intrinsic-valuations/src/api/api";
 import { useAuth } from "../hooks/useAuth";
 import { createSpreadsheet } from "../api/api";
 import { navigate } from "gatsby";
-import freeCashFlowToFirmData, {
-  freeCashFlowToFirmVariablesData,
-} from "../../../packages/intrinsic-valuations/src/spreadsheet/templates/freeCashFlowFirmSimple/data";
 import { useDispatch } from "react-redux";
 import { setMessage } from "../redux/actions/snackbarActions";
-import { useSpreadsheet } from "../hooks/useSpreadsheet";
 import { HyperFormula } from "hyperformula";
 import { trackCustomEvent } from "gatsby-plugin-google-analytics";
 import { trackingFormatDate } from "../shared/utils";
@@ -34,28 +33,43 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
   const { userData, getAccessToken } = useAuth();
   const { currentPlan } = useCurrentPlan();
   const dispatch = useDispatch();
-  const spreadsheetContext = useSpreadsheet();
 
   const createUserSpreadsheet = async (ticker) => {
-    const token = await getAccessToken();
-    const data = {
-      datas: freeCashFlowToFirmData,
-      variablesDatas: freeCashFlowToFirmVariablesData,
+    const values = await Promise.all([
+      getAccessToken(),
+      import(
+        "../../../packages/intrinsic-valuations/src/spreadsheet/templates/freeCashFlowFirmSimple.json"
+      ),
+      getFundamentals(ticker, {
+        filter: "General::CurrencySymbol",
+      }),
+    ]);
+
+    const token = values[0];
+    const freeCashFlowToFirmTemplateData = values[1];
+    const currencySymbol = values[2].data.value;
+
+    Object.keys(freeCashFlowToFirmTemplateData.cells).forEach((key) => {
+      const cellData = freeCashFlowToFirmTemplateData.cells[key];
+
+      if (cellData.dynamicFormat === "currency") {
+        freeCashFlowToFirmTemplateData.cells[key].textFormatPattern =
+          currencySymbol + cellData.textFormatPattern;
+      }
+    });
+    const sheetData = {
+      name: ticker,
+      data: freeCashFlowToFirmTemplateData.default,
     };
-    const sheetData = { name: ticker, data };
     const response = await createSpreadsheet(
       { sheetData, ticker },
       token?.jwtToken,
     );
-    if (spreadsheetContext?.spreadsheet) {
-      const {
-        spreadsheet: { hyperformula },
-      } = spreadsheetContext;
 
-      const registeredPluginClass = HyperFormula.getFunctionPlugin("FINANCIAL");
-      HyperFormula.unregisterFunctionPlugin(registeredPluginClass);
-      hyperformula.rebuildAndRecalculate();
-    }
+    const registeredPluginClass = HyperFormula.getFunctionPlugin("FINANCIAL");
+
+    HyperFormula.unregisterFunctionPlugin(registeredPluginClass);
+
     navigate(
       `/${userData.name}/my-spreadsheets/${response.data.spreadsheet._id}`,
     );

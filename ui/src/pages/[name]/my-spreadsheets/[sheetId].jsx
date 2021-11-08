@@ -1,34 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import getTitle from "../../../shared/getTitle";
 import Spreadsheet from "../../../../../packages/intrinsic-valuations/src/spreadsheet/Spreadsheet";
 import useFetchSpreadsheet from "../../../hooks/useFetchSpreadsheet";
 import withAuthentication from "../../../hocs/withAuthentication";
 import useSaveSpreadsheetData from "../../../hooks/useSaveSpreadsheetData";
-import { useSpreadsheet } from "../../../hooks/useSpreadsheet";
 import { useTTFinancialPlugin } from "../../../hooks/useTTFinancialPlugin";
 
 const SpreadsheetPage = ({ sheetId }) => {
-  const { spreadsheet, setSpreadsheet } = useSpreadsheet();
-  const spreadsheetData = useFetchSpreadsheet(sheetId);
-  const saveSheetData = useSaveSpreadsheetData(spreadsheetData);
-  const financialData = useTTFinancialPlugin(spreadsheet, spreadsheetData);
+  const spreadsheet = useFetchSpreadsheet(sheetId);
+  const saveSheetData = useSaveSpreadsheetData(spreadsheet);
+  const financialData = useTTFinancialPlugin(spreadsheet);
 
   return (
     <>
-      {spreadsheetData?.sheetData.name && (
+      {spreadsheet?.sheetData.name && (
         <Helmet>
-          <title>
-            {getTitle(`${spreadsheetData.sheetData.name} Spreadsheet`)}
-          </title>
+          <title>{getTitle(`${spreadsheet.sheetData.name} Spreadsheet`)}</title>
         </Helmet>
       )}
       <Spreadsheet
-        spreadsheet={spreadsheet}
-        setSpreadsheet={setSpreadsheet}
         saveSheetData={saveSheetData}
-        spreadsheetData={spreadsheetData}
+        sheetData={spreadsheet?.sheetData}
         financialData={financialData}
+        sx={{
+          flex: 1,
+        }}
       />
     </>
   );
