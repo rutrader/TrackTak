@@ -1,12 +1,11 @@
 import mapper from "./mapper.js";
 import * as database from "./client/mongoDbClient.js";
 import { Collections } from "./client/collections.js";
-import allData from "./testData/testData.js";
 
 (async function () {
   await database.connect();
 
-  //  const allData = await database.find(Collections.SPREADSHEET);
+  const allData = await database.find(Collections.SPREADSHEET);
   const mappedData = allData.map((data) => ({
     ...data,
     sheetData: mapper(data.sheetData, data.financialData.ticker),
@@ -25,10 +24,9 @@ import allData from "./testData/testData.js";
 
   const result = await database.find(Collections.POWERSHEET_SPREADSHEET);
 
-  console.log(JSON.stringify(result));
-  // console.log(
-  //   `Inserted ${result.length} records into collection: ${Collections.POWERSHEET_SPREADSHEET}`,
-  // );
+  console.log(
+    `Inserted ${result.length} records into collection: ${Collections.POWERSHEET_SPREADSHEET}`,
+  );
 
   process.exit(0);
 })();
