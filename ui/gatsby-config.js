@@ -105,18 +105,9 @@ module.exports = {
       },
     },
     {
-      resolve: "gatsby-plugin-react-svg",
-      options: {
-        rule: {
-          include: /assets/,
-        },
-      },
-    },
-    {
       resolve: "gatsby-plugin-create-client-paths",
       options: { prefixes: ["/stock/*"] },
     },
-    "gatsby-plugin-less",
     {
       resolve: "gatsby-source-contentful",
       options: {

@@ -9,6 +9,7 @@ import {
   FormulaBar,
   Exporter,
   BottomBar,
+  FunctionHelper,
 } from "@tracktak/powersheet";
 import { currencySymbolMap } from "currency-symbol-map";
 import {
@@ -17,6 +18,8 @@ import {
   ttFinancialAliases,
   ttFinancialImplementedFunctions,
 } from "./plugins/getTTFinancialPlugin";
+import finFunctionHelperData from "./templates/finFunctionHelperData";
+import "./Spreadsheet.css";
 
 const buildPowersheet = () => {
   const hyperformula = HyperFormula.buildEmpty({
@@ -37,6 +40,7 @@ const buildPowersheet = () => {
     hyperformula.addNamedExpression(...falseArgs);
   }
 
+  const functionHelper = new FunctionHelper(finFunctionHelperData);
   const toolbar = new Toolbar();
   const formulaBar = new FormulaBar();
   const exporter = new Exporter([
@@ -53,14 +57,72 @@ const buildPowersheet = () => {
     formulaBar,
     exporter,
     bottomBar,
+    functionHelper,
     hyperformulaConfig: {
       currencySymbol: Object.values(currencySymbolMap),
     },
   });
 
+  toolbar.setToolbarIcons([
+    {
+      elements: [
+        toolbar.iconElementsMap.undo.buttonContainer,
+        toolbar.iconElementsMap.redo.buttonContainer,
+      ],
+    },
+    {
+      elements: [toolbar.buttonElementsMap.textFormatPattern.buttonContainer],
+    },
+    {
+      elements: [toolbar.buttonElementsMap.fontSize.buttonContainer],
+    },
+    {
+      elements: [
+        toolbar.iconElementsMap.bold.buttonContainer,
+        toolbar.iconElementsMap.italic.buttonContainer,
+        toolbar.iconElementsMap.underline.buttonContainer,
+        toolbar.iconElementsMap.strikeThrough.buttonContainer,
+        toolbar.iconElementsMap.fontColor.buttonContainer,
+      ],
+    },
+    {
+      elements: [
+        toolbar.iconElementsMap.backgroundColor.buttonContainer,
+        toolbar.iconElementsMap.borders.buttonContainer,
+        toolbar.iconElementsMap.merge.buttonContainer,
+      ],
+    },
+    {
+      elements: [
+        toolbar.iconElementsMap.horizontalTextAlign.buttonContainer,
+        toolbar.iconElementsMap.verticalTextAlign.buttonContainer,
+        toolbar.iconElementsMap.textWrap.buttonContainer,
+      ],
+    },
+    {
+      elements: [
+        toolbar.iconElementsMap.freeze.buttonContainer,
+        toolbar.iconElementsMap.functions.buttonContainer,
+        toolbar.iconElementsMap.formula.buttonContainer,
+      ],
+    },
+    {
+      elements: [toolbar.iconElementsMap.export.buttonContainer],
+    },
+    {
+      elements: [toolbar.iconElementsMap.autosave.buttonContainer],
+    },
+    {
+      elements: [toolbar.iconElementsMap.functionHelper.buttonContainer],
+    },
+  ]);
+
   spreadsheet.spreadsheetEl.prepend(formulaBar.formulaBarEl);
   spreadsheet.spreadsheetEl.prepend(toolbar.toolbarEl);
   spreadsheet.spreadsheetEl.appendChild(bottomBar.bottomBarEl);
+  spreadsheet.sheets.sheetEl.appendChild(functionHelper.functionHelperEl);
+
+  spreadsheet.functionHelper.setDrawer();
 
   return spreadsheet;
 };
