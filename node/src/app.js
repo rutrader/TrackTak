@@ -6,6 +6,7 @@ import auth, { excludeStripeWebhookJSON } from "./middleware/auth";
 import Stripe from "stripe";
 import { CURRENT_PLAN_ENDPOINT } from "./shared/constants";
 import { getUserDetails } from "./cognito/cognitoClient";
+import dayjs from "dayjs";
 
 const hostname = "127.0.0.1";
 const port = process.env.NODE_ENV === "development" ? 3001 : process.env.PORT;
@@ -248,15 +249,8 @@ app.put(CURRENT_PLAN_ENDPOINT, auth, async (req, res) => {
 
     switch (state) {
       case "freeze": {
-        const nextPaymentDate = new Date(
-          subscription.current_period_end * 1000,
-        );
-        const resumesAt =
-          new Date(
-            nextPaymentDate.getFullYear(),
-            nextPaymentDate.getMonth() + Number(monthsToFreeze),
-            nextPaymentDate.getDay(),
-          ).getTime() / 1000; // to seconds
+        const nextPaymentDate = dayjs.unix(subscription.current_period_end);
+        const resumesAt = nextPaymentDate.add(monthsToFreeze, "month").unix();
         const updatedSubscription = await stripe.subscriptions.update(
           subscription.id,
           {
