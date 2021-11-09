@@ -5,7 +5,7 @@ import RoundButton from "./RoundButton";
 import { listAPIregions } from "../data/regions";
 import ListRegion from "../components/ListRegion";
 
-const SelectAPIRegion = ({ checked, setChecked, handleOnClick }) => {
+const SelectAPIRegion = ({ checked, disabled, setChecked, handleOnClick }) => {
   const handleOnChangeChecked = (value) => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
@@ -59,6 +59,8 @@ const SelectAPIRegion = ({ checked, setChecked, handleOnClick }) => {
           </Typography>
           <List>
             {listAPIregions.map((listAPIRegion) => {
+              const priceIdPredicate = (x) => x === listAPIRegion.priceId;
+
               return (
                 <ListRegion
                   key={listAPIRegion.priceId}
@@ -66,16 +68,16 @@ const SelectAPIRegion = ({ checked, setChecked, handleOnClick }) => {
                     handleOnChangeChecked(listAPIRegion.priceId);
                   }}
                   regionName={listAPIRegion.regionName}
-                  disabled={!!listAPIRegion.disabled}
                   priceId={listAPIRegion.priceId}
                   iconSvg={listAPIRegion.iconSvg}
-                  checked={!!checked.find((x) => x === listAPIRegion.priceId)}
+                  disabled={!!disabled.find(priceIdPredicate)}
+                  checked={!!checked.find(priceIdPredicate)}
                 />
               );
             })}
           </List>
           <RoundButton
-            disabled={checked.length === 1}
+            disabled={checked.length === 1 || disabled.length === 6}
             onClick={() => {
               handleOnClick();
             }}
