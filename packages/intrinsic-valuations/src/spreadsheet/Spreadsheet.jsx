@@ -177,30 +177,31 @@ const Spreadsheet = ({ sheetData, financialData, saveSheetData, ...props }) => {
         containerEl.appendChild(spreadsheet.spreadsheetEl);
         spreadsheet.setData(sheetData.data);
         spreadsheet.initialize();
+
+        if (sheetData.data) {
+          // TODO: Figure out why setTimeout needed
+          // raise an issue with material components
+          setTimeout(() => {
+            spreadsheet?.setOptions({
+              showFunctionHelper: true,
+            });
+          }, 500);
+        }
       }
     }
   }, [containerEl, sheetData, spreadsheet]);
 
   useEffect(() => {
-    spreadsheet?.setOptions({
+    const options = {
       exportSpreadsheetName: `${name}.xlsx`,
-      row: {
-        amount: 100,
-      },
       textPatternFormats: {
         currency: `${currencySymbol}#,##0.##`,
         million: "#,###.##,,",
         "million-currency": `${currencySymbol}#,###.##,,`,
       },
-    });
+    };
 
-    // TODO: Figure out why setTimeout needed
-    // raise an issue with material components
-    setTimeout(() => {
-      spreadsheet?.setOptions({
-        showFunctionHelper: true,
-      });
-    }, 500);
+    spreadsheet?.setOptions(options);
   }, [currencySymbol, name, spreadsheet]);
 
   if (!spreadsheet) return null;

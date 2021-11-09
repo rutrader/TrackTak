@@ -26,6 +26,7 @@
     "axios-jsonp": "^1.0.4",
     "change-case": "^4.1.2",
     "cross-env": "^7.0.3",
+    "currency-symbol-map": "^5.0.1",
     "dayjs": "^1.9.7",
     "dotenv": "^8.2.0",
     "esm": "^3.2.25",

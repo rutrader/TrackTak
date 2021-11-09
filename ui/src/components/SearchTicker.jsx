@@ -23,6 +23,8 @@ import { trackCustomEvent } from "gatsby-plugin-google-analytics";
 import { trackingFormatDate } from "../shared/utils";
 import { useTheme } from "@material-ui/core/styles";
 import useCurrentPlan, { isStockDisabled } from "../hooks/useCurrentPlan";
+import convertSubCurrencyToCurrency from "../../../packages/intrinsic-valuations/src/shared/convertSubCurrencyToCurrency";
+import getSymbolFromCurrency from "currency-symbol-map";
 
 const SearchTicker = ({ isSmallSearch, sx }) => {
   const theme = useTheme();
@@ -41,16 +43,17 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
         "../../../packages/intrinsic-valuations/src/spreadsheet/templates/freeCashFlowFirmSimple.json"
       ),
       getFundamentals(ticker, {
-        filter: "General::CurrencySymbol",
+        filter: "General::CurrencyCode",
       }),
     ]);
 
     const token = values[0];
     const freeCashFlowToFirmTemplateData = values[1];
-    const currencySymbol = values[2].data.value;
 
     Object.keys(freeCashFlowToFirmTemplateData.cells).forEach((key) => {
       const cellData = freeCashFlowToFirmTemplateData.cells[key];
+      const currencyCode = convertSubCurrencyToCurrency(values[2].data.value);
+      const currencySymbol = getSymbolFromCurrency(currencyCode);
 
       if (cellData.dynamicFormat === "currency") {
         freeCashFlowToFirmTemplateData.cells[key].textFormatPattern =
