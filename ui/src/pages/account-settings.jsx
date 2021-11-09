@@ -21,7 +21,7 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import LockIcon from "@mui/icons-material/Lock";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PaymentIcon from "@mui/icons-material/Payment";
-import useCurrentPlan, { Plans } from "../hooks/useCurrentPlan";
+import useCurrentPlan from "../hooks/useCurrentPlan";
 import ConfirmationDialog from "../components/ConfirmationDialog";
 import { createCustomerPortal } from "../api/api";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -48,10 +48,6 @@ const AccountSettings = () => {
   const planExpiration = currentPlan?.periodEnd
     ? new Date(currentPlan.periodEnd).toLocaleDateString()
     : "";
-
-  const handleFreezePlanButtonClick = () => {
-    setShowFreezePlanDialog(true);
-  };
 
   const handleFreezePlanDialogClose = () => {
     setShowFreezePlanDialog(false);
@@ -113,96 +109,105 @@ const AccountSettings = () => {
           Account Settings
         </Typography>
         <Divider light sx={dividerStyle} />
-        <Grid container justifyContent="space-between">
-          <Grid item xs={12} sm={5}>
-            <SettingSection
-              heading="Current Plan"
-              sx={{
-                position: "relative",
-              }}
-              icon={
-                <CheckCircleIcon
-                  fontSize="large"
-                  color="action"
+        {process.env.GATSBY_PREMIUM_ENABLED === "true" && (
+          <>
+            <Grid container justifyContent="space-between">
+              <Grid item xs={12} sm={5}>
+                <SettingSection
+                  heading="Current Plan"
                   sx={{
-                    mr: 0.5,
-                    color: (theme) => theme.palette.primary.light,
+                    position: "relative",
                   }}
-                />
-              }
-            >
-              <Button
-                variant="contained"
-                color="primary"
-                sx={{
-                  textTransform: "none",
-                }}
-                startIcon={<AutoAwesomeIcon />}
-                onClick={handleAddRegionsClick}
-              >
-                Upgrade Regions
-              </Button>
-              {hasPaymentPlan && (
-                <Typography
-                  sx={{
-                    color: (theme) => theme.palette.secondary.grey,
-                  }}
-                  variant="h8"
-                  gutterBottom
+                  icon={
+                    <CheckCircleIcon
+                      fontSize="large"
+                      color="action"
+                      sx={{
+                        mr: 0.5,
+                        color: (theme) => theme.palette.primary.light,
+                      }}
+                    />
+                  }
                 >
-                  {currentPlan?.isFrozen && "Plan Frozen"}
-                  <br />${currentPlan?.totalCost}/mo. Auto-renews on{" "}
-                  {planExpiration}
-                </Typography>
-              )}
-              <CurrentPlan currentPlan={currentPlan} />
-            </SettingSection>
-          </Grid>
-          <Divider orientation="vertical" light flexItem sx={dividerStyle} />
-          <Grid item xs={12} sm={5}>
-            <SettingSection
-              heading="Payment Method"
-              icon={
-                <PaymentIcon
-                  fontSize="large"
-                  color="action"
-                  sx={{
-                    mr: 0.5,
-                    color: (theme) => theme.palette.primary.light,
-                  }}
-                />
-              }
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  mt: 3,
-                }}
-              >
-                {hasPaymentPlan && (
-                  <Typography variant="h6" gutterBottom>
-                    **** **** **** {currentPlan?.paymentCardLast4}
-                  </Typography>
-                )}
-                <Button
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  sx={{
-                    textTransform: "none",
-                    mt: 3,
-                  }}
-                  onClick={handleOnClickCustomerPortal}
-                  disabled={!hasPaymentPlan}
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      textTransform: "none",
+                    }}
+                    startIcon={<AutoAwesomeIcon />}
+                    onClick={handleAddRegionsClick}
+                  >
+                    Upgrade Regions
+                  </Button>
+                  {hasPaymentPlan && (
+                    <Typography
+                      sx={{
+                        color: (theme) => theme.palette.secondary.grey,
+                      }}
+                      variant="h8"
+                      gutterBottom
+                    >
+                      {currentPlan?.isFrozen && "Plan Frozen"}
+                      <br />${currentPlan?.totalCost}/mo. Auto-renews on{" "}
+                      {planExpiration}
+                    </Typography>
+                  )}
+                  <CurrentPlan currentPlan={currentPlan} />
+                </SettingSection>
+              </Grid>
+              <Divider
+                orientation="vertical"
+                light
+                flexItem
+                sx={dividerStyle}
+              />
+              <Grid item xs={12} sm={5}>
+                <SettingSection
+                  heading="Payment Method"
+                  icon={
+                    <PaymentIcon
+                      fontSize="large"
+                      color="action"
+                      sx={{
+                        mr: 0.5,
+                        color: (theme) => theme.palette.primary.light,
+                      }}
+                    />
+                  }
                 >
-                  Update Details
-                </Button>
-              </Box>
-            </SettingSection>
-          </Grid>
-        </Grid>
-        <Divider light sx={dividerStyle} />
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      mt: 3,
+                    }}
+                  >
+                    {hasPaymentPlan && (
+                      <Typography variant="h6" gutterBottom>
+                        **** **** **** {currentPlan?.paymentCardLast4}
+                      </Typography>
+                    )}
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      sx={{
+                        textTransform: "none",
+                        mt: 3,
+                      }}
+                      onClick={handleOnClickCustomerPortal}
+                      disabled={!hasPaymentPlan}
+                    >
+                      Update Details
+                    </Button>
+                  </Box>
+                </SettingSection>
+              </Grid>
+            </Grid>
+            <Divider light sx={dividerStyle} />
+          </>
+        )}
         <Grid container justifyContent="space-between">
           <Grid item xs={12} sm={5}>
             <SettingSection
@@ -222,105 +227,110 @@ const AccountSettings = () => {
               <ContactDetailsForm />
             </SettingSection>
           </Grid>
-          {!isExternalIdentityProvider && (
-            <>
-              <Divider
-                orientation="vertical"
-                light
-                flexItem
-                sx={dividerStyle}
-              />
-              <Grid item xs={12} sm={5}>
-                <SettingSection
-                  heading="Security"
-                  subHeading="Change Password"
-                  icon={
-                    <LockIcon
-                      fontSize="large"
-                      color="action"
-                      sx={{
-                        mr: 0.5,
-                        color: (theme) => theme.palette.primary.light,
-                      }}
-                    />
-                  }
-                >
-                  <ChangePasswordForm />
-                </SettingSection>
-              </Grid>
-            </>
-          )}
+          {!isExternalIdentityProvider &&
+            process.env.GATSBY_PREMIUM_ENABLED === "true" && (
+              <>
+                <Divider
+                  orientation="vertical"
+                  light
+                  flexItem
+                  sx={dividerStyle}
+                />
+                <Grid item xs={12} sm={5}>
+                  <SettingSection
+                    heading="Security"
+                    subHeading="Change Password"
+                    icon={
+                      <LockIcon
+                        fontSize="large"
+                        color="action"
+                        sx={{
+                          mr: 0.5,
+                          color: (theme) => theme.palette.primary.light,
+                        }}
+                      />
+                    }
+                  >
+                    <ChangePasswordForm />
+                  </SettingSection>
+                </Grid>
+              </>
+            )}
         </Grid>
-        <Divider light sx={dividerStyle} />
-        <Stack
-          spacing={2}
-          direction="row"
-          sx={{ justifyContent: "space-around" }}
-        >
-          {currentPlan?.isFrozen && (
-            <Button
-              startIcon={<AcUnit />}
-              sx={{
-                textTransform: "none",
-              }}
-              onClick={handleUnfreezePlanButtonClick}
+        {process.env.GATSBY_PREMIUM_ENABLED === "true" && (
+          <>
+            <Divider light sx={dividerStyle} />
+            <Stack
+              spacing={2}
+              direction="row"
+              sx={{ justifyContent: "space-around" }}
             >
-              Unfreeze Plan
-            </Button>
-          )}
-          {hasPaymentPlan && (
-            <Button
-              startIcon={<ClearIcon />}
-              sx={{
-                textTransform: "none",
-              }}
-              onClick={() => {
-                setEndPlanDialog(true);
-              }}
+              {currentPlan?.isFrozen && (
+                <Button
+                  startIcon={<AcUnit />}
+                  sx={{
+                    textTransform: "none",
+                  }}
+                  onClick={handleUnfreezePlanButtonClick}
+                >
+                  Unfreeze Plan
+                </Button>
+              )}
+              {hasPaymentPlan && (
+                <Button
+                  startIcon={<ClearIcon />}
+                  sx={{
+                    textTransform: "none",
+                  }}
+                  onClick={() => {
+                    setEndPlanDialog(true);
+                  }}
+                >
+                  End Plan
+                </Button>
+              )}
+            </Stack>
+            <ConfirmationDialog
+              open={endPlanDialog}
+              onCancel={() => navigate("/switching-plan")}
+              onClose={handleEndPlanDialogClose}
+              onConfirm={handleEndPlanDialogConfirm}
+              confirmText="Freeze My Plan"
+              cancelText="Continue to Cancel"
             >
-              End Plan
-            </Button>
-          )}
-        </Stack>
-        <ConfirmationDialog
-          open={endPlanDialog}
-          onCancel={() => navigate("/switching-plan")}
-          onClose={handleEndPlanDialogClose}
-          onConfirm={handleEndPlanDialogConfirm}
-          confirmText="Freeze My Plan"
-          cancelText="Continue to Cancel"
-        >
-          <FreezeModalForm
-            header="Before you cancel..."
-            setFreezeOption={setFreezeOption}
-            subtext={
-              <Typography
-                variant="h6"
-                sx={{
-                  color: (theme) => theme.palette.primary.mainTextColor,
-                }}
-                gutterBottom
-              >
-                Did you know you can put your plan on hold?
-              </Typography>
-            }
-            currentPlan={currentPlan}
-          />
-        </ConfirmationDialog>
-        <ConfirmationDialog
-          open={showFreezePlanDialog}
-          onClose={handleFreezePlanDialogClose}
-          onCancel={handleFreezePlanDialogClose}
-          onConfirm={handleFreezePlanDialogConfirm}
-          confirmText="Freeze My Plan"
-          cancelText="Cancel"
-        >
-          <FreezeModalForm
-            setFreezeOption={setFreezeOption}
-            header="Need a break from investing?"
-            currentPlan={currentPlan}
-          />
-        </ConfirmationDialog>
+              <FreezeModalForm
+                header="Before you cancel..."
+                setFreezeOption={setFreezeOption}
+                subtext={
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      color: (theme) => theme.palette.primary.mainTextColor,
+                    }}
+                    gutterBottom
+                  >
+                    Did you know you can put your plan on hold?
+                  </Typography>
+                }
+                currentPlan={currentPlan}
+              />
+            </ConfirmationDialog>
+            <ConfirmationDialog
+              open={showFreezePlanDialog}
+              onClose={handleFreezePlanDialogClose}
+              onCancel={handleFreezePlanDialogClose}
+              onConfirm={handleFreezePlanDialogConfirm}
+              confirmText="Freeze My Plan"
+              cancelText="Cancel"
+            >
+              <FreezeModalForm
+                setFreezeOption={setFreezeOption}
+                header="Need a break from investing?"
+                currentPlan={currentPlan}
+              />
+            </ConfirmationDialog>
+          </>
+        )}
       </Paper>
     </>
   );

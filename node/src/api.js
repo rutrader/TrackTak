@@ -261,22 +261,26 @@ const api = {
           },
         });
 
-        const result = data
-          .filter((datum) => {
+        if (process.env.PREMIUM_ENABLED === "true") {
+          return data
+            .filter((datum) => {
+              return datum.Exchange !== "TSE";
+            })
+            .map((datum) => ({
+              ...datum,
+              isMediumCapUSPlus:
+                datum.previousClose > MEDIUM_PLUS_CAP_PRICE_THRESHOLD &&
+                datum.Exchange === "US",
+            }));
+        } else {
+          return data.filter((datum) => {
             return datum.Exchange !== "TSE";
-          })
-          .map((datum) => ({
-            ...datum,
-            isMediumCapUSPlus:
-              datum.previousClose > MEDIUM_PLUS_CAP_PRICE_THRESHOLD &&
-              datum.Exchange === "US",
-          }));
-        return result;
+          });
+        }
       },
       "autocompleteQuery",
       { queryString, query },
     );
-    console.log(data);
     return data;
   },
 

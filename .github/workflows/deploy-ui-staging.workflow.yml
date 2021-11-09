@@ -25,6 +25,7 @@ jobs:
       GATSBY_SOCIAL_LOGIN_FACEBOOK: ${{ secrets.GATSBY_SOCIAL_LOGIN_FACEBOOK }}
       GATSBY_SOCIAL_LOGIN_REDIRECT_URL: ${{ secrets.GATSBY_SOCIAL_LOGIN_REDIRECT_URL }}
       GATSBY_COGNITO_TOKEN_ENDPOINT: ${{ secrets.GATSBY_COGNITO_TOKEN_ENDPOINT }}
+      GATSBY_PREMIUM_ENABLED: ${{ secrets.GATSBY_PREMIUM_ENABLED }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2

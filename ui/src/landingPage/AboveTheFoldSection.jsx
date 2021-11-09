@@ -108,7 +108,7 @@ const AboveTheFoldSection = () => {
           </Typography>
           <Typography variant="h6" color="inherit" gutterBottom>
             A new, faster way for investors to value projects and companies in a
-            spreadsheet with their favorite formulas. Free in beta.
+            spreadsheet with their favorite formulas.
           </Typography>
           <Box
             sx={{

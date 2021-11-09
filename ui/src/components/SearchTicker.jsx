@@ -25,6 +25,7 @@ import { useTheme } from "@material-ui/core/styles";
 import useCurrentPlan, { isStockDisabled } from "../hooks/useCurrentPlan";
 import convertSubCurrencyToCurrency from "../../../packages/intrinsic-valuations/src/shared/convertSubCurrencyToCurrency";
 import getSymbolFromCurrency from "currency-symbol-map";
+import { cloneDeep } from "lodash-es";
 
 const SearchTicker = ({ isSmallSearch, sx }) => {
   const theme = useTheme();
@@ -48,7 +49,7 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
     ]);
 
     const token = values[0];
-    const freeCashFlowToFirmTemplateData = values[1];
+    const freeCashFlowToFirmTemplateData = cloneDeep(values[1].default);
 
     Object.keys(freeCashFlowToFirmTemplateData.cells).forEach((key) => {
       const cellData = freeCashFlowToFirmTemplateData.cells[key];
@@ -62,7 +63,7 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
     });
     const sheetData = {
       name: ticker,
-      data: freeCashFlowToFirmTemplateData.default,
+      data: freeCashFlowToFirmTemplateData,
     };
     const response = await createSpreadsheet(
       { sheetData, ticker },

@@ -1,4 +1,4 @@
-import { Box, Hidden, Typography } from "@material-ui/core";
+import { Box, Hidden } from "@material-ui/core";
 import { Link } from "gatsby";
 import React from "react";
 import tracktakLogoSvg from "../assets/tracktak-purple.svg";
@@ -25,9 +25,6 @@ const TracktakLogo = ({ width, height, logoProps, ...props }) => {
         <Hidden mdUp implementation="css">
           <img {...logoProps} alt="t" src={tracktakLogoSmallSvg} />
         </Hidden>
-        <Box sx={{ ml: 0.35 }}>
-          <Typography color="textSecondary">beta</Typography>
-        </Box>
       </Link>
     </Box>
   );
