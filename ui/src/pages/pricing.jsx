@@ -18,6 +18,7 @@ const Pricing = () => {
   const { getAccessToken } = useAuth();
   const { currentPlan } = useCurrentPlan();
   const [checked, setChecked] = useState([]);
+  const [disabled, setDisabled] = useState([]);
 
   const handleOnClick = async () => {
     const token = await getAccessToken();
@@ -34,7 +35,12 @@ const Pricing = () => {
 
   useEffect(() => {
     if (currentPlan?.priceIds) {
-      setChecked([PriceIds.MEDIUM_CAP_US_PLUS, ...currentPlan?.priceIds]);
+      const currentStocks = [
+        PriceIds.MEDIUM_CAP_US_PLUS,
+        ...currentPlan?.priceIds,
+      ];
+      setChecked(currentStocks);
+      setDisabled(currentStocks);
     }
   }, [currentPlan]);
 
@@ -75,6 +81,7 @@ const Pricing = () => {
         </FormGroup>
       </Box>
       <SelectAPIRegion
+        disabled={disabled}
         checked={checked}
         setChecked={setChecked}
         handleOnClick={handleOnClick}
