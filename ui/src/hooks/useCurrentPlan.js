@@ -4,7 +4,7 @@ import { exchangeToPriceId, PriceIds } from "../data/regions";
 import { useAuth } from "./useAuth";
 
 export const isStockDisabled = (currentPlan, stock) => {
-  if (process.env.PREMIUM_ENABLED === "false") {
+  if (process.env.GATSBY_PREMIUM_ENABLED === "false") {
     return false;
   }
 
