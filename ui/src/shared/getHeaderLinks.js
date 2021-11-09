@@ -17,7 +17,7 @@ export const getHeaderLinks = (isAuthenticated) => {
     links.push(signInLink);
   }
 
-  if (isAuthenticated) {
+  if (isAuthenticated && process.env.PREMIUM_ENABLED === "true") {
     links.push(upgradePlanLink);
   }
 

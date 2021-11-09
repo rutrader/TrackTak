@@ -4,6 +4,10 @@ import { exchangeToPriceId, PriceIds } from "../data/regions";
 import { useAuth } from "./useAuth";
 
 export const isStockDisabled = (currentPlan, stock) => {
+  if (process.env.PREMIUM_ENABLED === "false") {
+    return false;
+  }
+
   if (
     currentPlan?.priceIds.includes(PriceIds.WORLDWIDE) ||
     (stock.exchange === "US" && stock.isMediumCapUSPlus)
