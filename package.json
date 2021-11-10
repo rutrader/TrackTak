@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "workspaces": [
+    "packages/**"
+  ],
   "scripts": {
     "generate-exh-pairs": "node --es-module-specifier-resolution=node ./scripts/writeECBExchangePairsToJSON.js",
     "generate-fundamentals": "node --es-module-specifier-resolution=node ./scripts/writeBulkFundamentalsDataToJSON.js",
