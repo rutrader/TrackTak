@@ -2,7 +2,7 @@ import React from "react";
 import { Snackbar, Alert, Box } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import selectSnackbar from "../../../common/selectors/selectSnackbar";
-import { clearMessage } from "../../../../tracktak-gatsby/src/redux/actions/snackbarActions";
+import { clearMessage } from "../../../tracktak-gatsby/src/redux/actions/snackbarActions";
 
 const StyledSnackbar = ({ sx, ...props }) => {
   return (

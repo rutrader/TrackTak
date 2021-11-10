@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { getCurrentPlan, updateCurrentPlan } from "../api/api";
-import { exchangeToPriceId, PriceIds } from "../../../packages/common/src/data/regions";
+import { exchangeToPriceId, PriceIds } from "../../../common/src/data/regions";
 import { useAuth } from "./useAuth";
 
 export const isStockDisabled = (currentPlan, stock) => {

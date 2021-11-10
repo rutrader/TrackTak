@@ -10,7 +10,7 @@ import FrequentlyAskedQuestion from "../components/FrequentlyAskedQuestion";
 import { createCheckoutSession } from "../api/api";
 import { useAuth } from "../hooks/useAuth";
 import withAuthentication from "../hocs/withAuthentication";
-import { PriceIds } from "../../../packages/common/src/data/regions";
+import { PriceIds } from "../../../common/src/data/regions";
 import useCurrentPlan from "../hooks/useCurrentPlan";
 
 const Pricing = () => {

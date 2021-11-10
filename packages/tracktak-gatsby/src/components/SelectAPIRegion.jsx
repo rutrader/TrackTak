@@ -1,9 +1,9 @@
 import React from "react";
 import { List, Paper, Typography } from "@material-ui/core";
 import { Box } from "@material-ui/system";
-import RoundButton from "../../../packages/common/src/components/RoundButton";
-import { listAPIregions } from "../../../packages/common/src/data/regions";
-import ListRegion from "../components/ListRegion";
+import RoundButton from "../../../common/src/components/RoundButton";
+import { listAPIregions } from "../../../common/src/data/regions";
+import ListRegion from "./ListRegion";
 
 const SelectAPIRegion = ({ checked, disabled, setChecked, handleOnClick }) => {
   const handleOnChangeChecked = (value) => {
