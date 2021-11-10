@@ -1,26 +1,26 @@
 module.exports = {
   flags: {
-    DEV_SSR: false
+    DEV_SSR: true
   },
   plugins: [
     {
       resolve: '@elegantstack/gatsby-theme-flexiblocks',
       options: {
-        createDemoPages: true,
-        colorMode: true
+        createDemoPages: false,
+        colorMode: false
       }
     },
     {
       resolve: `gatsby-plugin-s3`,
       options: {
-        bucketName: 'powersheet.io'
+        bucketName: 'powersheet.tracktak.com'
       }
     }
   ],
-  // Customize your site metadata
   siteMetadata: {
-    title: 'FlexiBlocks Theme',
-    name: 'FlexiBlocks',
-    description: 'My site description...'
+    title: 'Powersheet By Tracktak',
+    name: 'Powersheet',
+    description:
+      'A lightning fast spreadsheet with formula support for businesses.'
   }
 }
