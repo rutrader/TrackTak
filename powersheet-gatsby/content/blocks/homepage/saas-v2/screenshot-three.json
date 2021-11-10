@@ -1,0 +1,29 @@
+{
+  "text": [
+    {
+      "text": "Advanced Features",
+      "color": "beta",
+      "variant": "h4"
+    },
+    {
+      "text": "Scheduling Panel Overview",
+      "color": "omegaDarker",
+      "variant": "h2"
+    },
+    {
+      "text": "Lorem ipsum dolor sit amet, consectetur magna aliqua. Eaque ipsa quae ab illo.",
+      "color": "omegaDark",
+      "variant": "medium"
+    }
+  ],
+  "images": [
+    {
+      "src": "../../../assets/flexiblocks/homepage/saas-v2/hero.png",
+      "alt": "alt text",
+      "radius": "lg",
+      "shadow": "default",
+      "border": "lg",
+      "effects": ["fadeInDown"]
+    }
+  ]
+}

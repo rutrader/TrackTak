@@ -1,0 +1,61 @@
+{
+  "text": [
+    {
+      "text": "GROW YOUR BUSINESS",
+      "color": "alpha",
+      "variant": "h4"
+    },
+    {
+      "text": "Tap into our unique insights to identify the right leads",
+      "variant": "h2"
+    },
+    {
+      "text": "Target your audience based on their interests. Lorem ipsum dolor sit amet, consectetur magna aliqua.",
+      "variant": "medium"
+    }
+  ],
+  "images": [
+    {
+      "src": "../../../assets/flexiblocks/homepage/marketing/feature-one.png",
+      "alt": "alt text"
+    }
+  ],
+  "collection": [
+    {
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-check-circle.svg",
+        "color": "beta"
+      },
+      "text": [
+        {
+          "text": "Automatic interest detection",
+          "variant": "h5"
+        }
+      ]
+    },
+    {
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-check-circle.svg",
+        "color": "beta"
+      },
+      "text": [
+        {
+          "text": "Daily email reports",
+          "variant": "h5"
+        }
+      ]
+    },
+    {
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-check-circle.svg",
+        "color": "beta"
+      },
+      "text": [
+        {
+          "text": "Create & manage campaigns",
+          "variant": "h5"
+        }
+      ]
+    }
+  ]
+}

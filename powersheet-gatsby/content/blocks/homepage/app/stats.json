@@ -1,0 +1,60 @@
+{
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "570",
+          "color": "omegaDarker",
+          "variant": "h1"
+        },
+        {
+          "text": "Active Users",
+          "color": "beta",
+          "variant": "h5"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "1300",
+          "color": "omegaDarker",
+          "variant": "h1"
+        },
+        {
+          "text": "Downloads",
+          "color": "beta",
+          "variant": "h5"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "420",
+          "color": "omegaDarker",
+          "variant": "h1"
+        },
+        {
+          "text": "Positive Feedback",
+          "color": "beta",
+          "variant": "h5"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "810",
+          "color": "omegaDarker",
+          "variant": "h1"
+        },
+        {
+          "text": "A++ Rating",
+          "color": "beta",
+          "variant": "h5"
+        }
+      ]
+    }
+  ]
+}

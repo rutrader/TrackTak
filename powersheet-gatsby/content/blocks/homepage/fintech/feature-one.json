@@ -1,0 +1,70 @@
+{
+  "text": [
+    {
+      "text": "Unlimited Lessons",
+      "color": "beta",
+      "variant": "h4"
+    },
+    {
+      "text": "Unlimited Collection of **Advanced Lessons**",
+      "variant": "h2"
+    },
+    {
+      "text": "Target your audience based on their interests. Lorem ipsum dolor sit amet, consectetur magna aliqua.",
+      "variant": "medium"
+    }
+  ],
+  "images": [
+    {
+      "src": "../../../assets/flexiblocks/homepage/fintech/feature-one.png",
+      "alt": "alt text"
+    },
+    {
+      "src": "../../../assets/flexiblocks/homepage/fintech/feature-one-overlay-one.png",
+      "alt": "alt text",
+      "effects": ["fadeInUp", "float"],
+      "position": {
+        "bottom": "10%",
+        "right": "0%"
+      }
+    }
+  ],
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "Automatic interest detection",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Tempor incididunt ut labore et dolore magna aliqua consectetur magna aliqua."
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Daily email reports",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Tempor incididunt ut labore et dolore magna aliqua consectetur magna aliqua."
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Daily email reports",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Tempor incididunt ut labore et dolore magna aliqua consectetur magna aliqua."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "Our Motto",
+          "color": "omegaDarker",
+          "variant": "h2",
+          "space": 3
+        },
+        {
+          "text": "Lorem ipsum dolor sit amet, pri cu etiam iudicabit.",
+          "color": "omegaDark",
+          "variant": "medium"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Docendi deleniti eos ad. His enim tractatos ea, evertitur dissentiunt nec ut, Mel tota quidam senserit et ut tritani platonem est. In a professional context it often happens that private or corporate clients corder a publication to be made and presented with the actual content still not being ready.",
+          "color": "omegaDark"
+        }
+      ]
+    }
+  ]
+}

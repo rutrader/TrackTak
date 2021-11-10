@@ -1,0 +1,115 @@
+{
+  "text": [
+    {
+      "text": "Meet Our Talented Team",
+      "color": "alpha",
+      "variant": "h4"
+    },
+    {
+      "text": "We Design Together with Our Clients",
+      "variant": "h2"
+    },
+    {
+      "text": "Docendi deleniti eos ad. His enim tractatos ea, evertitur dissentiunt nec ut.",
+      "color": "omegaDark",
+      "variant": "medium"
+    }
+  ],
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "John Doe",
+          "variant": "h6"
+        },
+        {
+          "text": "CEO of CoolCompany"
+        },
+        {
+          "text": "Joined April, 2018",
+          "color": "omega",
+          "variant": "small"
+        }
+      ],
+      "avatar": {
+        "src": "../../../assets/flexiblocks/testimonials/john-doe-large.png"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Jane Smith",
+          "variant": "h6"
+        },
+        {
+          "text": "Developer at AwesomeCo"
+        },
+        {
+          "text": "Joined March, 2019",
+          "color": "omega",
+          "variant": "small"
+        }
+      ],
+      "avatar": {
+        "src": "../../../assets/flexiblocks/testimonials/jane-smith-large.png"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Sarah Doe",
+          "variant": "h6"
+        },
+        {
+          "text": "Social Media Manager"
+        },
+        {
+          "text": "Joined May, 2020",
+          "color": "omega",
+          "variant": "small"
+        }
+      ],
+      "avatar": {
+        "src": "../../../assets/flexiblocks/testimonials/sarah-doe-large.png"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Steve Grant",
+          "variant": "h6"
+        },
+        {
+          "text": "Freelancer Developer"
+        },
+        {
+          "text": "Joined June, 2020",
+          "color": "omega",
+          "variant": "small"
+        }
+      ],
+      "avatar": {
+        "src": "../../../assets/flexiblocks/testimonials/steve-grant-large.png"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Florrie Jacobs",
+          "variant": "h6"
+        },
+        {
+          "text": "Senior Fashion Designer"
+        },
+        {
+          "text": "Joined August, 2020",
+          "color": "omega",
+          "variant": "small"
+        }
+      ],
+      "avatar": {
+        "src": "../../../assets/flexiblocks/testimonials/florrie-jacobs-large.png"
+      }
+    }
+  ]
+}

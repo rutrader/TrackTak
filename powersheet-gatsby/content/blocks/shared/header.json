@@ -1,0 +1,308 @@
+{
+  "images": [
+    {
+      "src": "../../assets/flexiblocks/shared/logo.png",
+      "alt": "alt text"
+    }
+  ],
+  "collection": [
+    {
+      "buttons": [
+        {
+          "text": "Landing Pages",
+          "type": "SUB",
+          "variant": "links.nav-dark",
+          "buttons": [
+            {
+              "text": "Software",
+              "type": "PAGE",
+              "link": "/homepage/saas/",
+              "variant": "links.nav-dark",
+              "icon": {
+                "src": "../../assets/flexiblocks/icons/bxs-window-alt.svg",
+                "color": "#276BF0"
+              }
+            },
+            {
+              "text": "Software v2",
+              "type": "PAGE",
+              "link": "/homepage/saas-v2/",
+              "variant": "links.nav-dark",
+              "icon": {
+                "src": "../../assets/flexiblocks/icons/bxs-window-alt.svg",
+                "color": "#FE7245"
+              }
+            },
+            {
+              "text": "Fintech Startup",
+              "type": "PAGE",
+              "link": "/homepage/fintech/",
+              "variant": "links.nav-dark",
+              "icon": {
+                "src": "../../assets/flexiblocks/icons/bxs-window-alt.svg",
+                "color": "#000000"
+              }
+            },
+            {
+              "text": "Consulting",
+              "type": "PAGE",
+              "link": "/homepage/consulting/",
+              "variant": "links.nav-dark",
+              "icon": {
+                "src": "../../assets/flexiblocks/icons/bxs-window-alt.svg",
+                "color": "#6E5BD8"
+              }
+            },
+            {
+              "text": "Mobile App",
+              "type": "PAGE",
+              "link": "/homepage/app/",
+              "variant": "links.nav-dark",
+              "icon": {
+                "src": "../../assets/flexiblocks/icons/bxs-window-alt.svg",
+                "color": "#FF4A32"
+              }
+            },
+            {
+              "text": "Marketing",
+              "type": "PAGE",
+              "link": "/homepage/marketing/",
+              "variant": "links.nav-dark",
+              "icon": {
+                "src": "../../assets/flexiblocks/icons/bxs-window-alt.svg",
+                "color": "#3D8DFF"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Pages",
+          "variant": "links.nav-dark",
+          "type": "SUB",
+          "collection": [
+            {
+              "buttons": [
+                {
+                  "text": "LANDING PAGES",
+                  "type": "SUB",
+                  "variant": "links.disabled",
+                  "buttons": [
+                    {
+                      "text": "Software",
+                      "type": "PAGE",
+                      "link": "/homepage/saas/",
+                      "variant": "links.nav-dark",
+                      "icon": {
+                        "src": "../../assets/flexiblocks/icons/bxs-window-alt.svg",
+                        "color": "omegaDark"
+                      }
+                    },
+                    {
+                      "text": "Software v2",
+                      "type": "PAGE",
+                      "link": "/homepage/saas-v2/",
+                      "variant": "links.nav-dark",
+                      "icon": {
+                        "src": "../../assets/flexiblocks/icons/bxs-window-alt.svg",
+                        "color": "omegaDark"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "text": "_",
+                  "type": "SUB",
+                  "variant": "links.hidden",
+                  "buttons": [
+                    {
+                      "text": "Fintech Startup",
+                      "type": "PAGE",
+                      "link": "/homepage/fintech/",
+                      "variant": "links.nav-dark",
+                      "icon": {
+                        "src": "../../assets/flexiblocks/icons/bxs-window-alt.svg",
+                        "color": "omegaDark"
+                      }
+                    },
+                    {
+                      "text": "Consulting",
+                      "type": "PAGE",
+                      "link": "/homepage/consulting/",
+                      "variant": "links.nav-dark",
+                      "icon": {
+                        "src": "../../assets/flexiblocks/icons/bxs-window-alt.svg",
+                        "color": "omegaDark"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "text": "_",
+                  "type": "SUB",
+                  "variant": "links.hidden",
+                  "buttons": [
+                    {
+                      "text": "Mobile App",
+                      "type": "PAGE",
+                      "link": "/homepage/app/",
+                      "variant": "links.nav-dark",
+                      "icon": {
+                        "src": "../../assets/flexiblocks/icons/bxs-window-alt.svg",
+                        "color": "omegaDark"
+                      }
+                    },
+                    {
+                      "text": "Marketing",
+                      "type": "PAGE",
+                      "link": "/homepage/marketing/",
+                      "variant": "links.nav-dark",
+                      "icon": {
+                        "src": "../../assets/flexiblocks/icons/bxs-window-alt.svg",
+                        "color": "omegaDark"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "container": {
+                "bg": "omegaLighter"
+              },
+              "buttons": [
+                {
+                  "text": "PRICING",
+                  "type": "SUB",
+                  "variant": "links.disabled",
+                  "icon": {
+                    "src": "../../assets/flexiblocks/icons/bx-dollar-circle.svg",
+                    "color": "alpha"
+                  },
+                  "buttons": [
+                    {
+                      "text": "Pricing 01",
+                      "type": "PAGE",
+                      "link": "/innerpage/pricing-01/",
+                      "variant": "links.nav-dark"
+                    },
+                    {
+                      "text": "Pricing 02",
+                      "type": "PAGE",
+                      "link": "/innerpage/pricing-02/",
+                      "variant": "links.nav-dark"
+                    },
+                    {
+                      "text": "Pricing 03",
+                      "type": "PAGE",
+                      "link": "/innerpage/pricing-03/",
+                      "variant": "links.nav-dark"
+                    }
+                  ]
+                },
+                {
+                  "text": "SERVICES",
+                  "type": "SUB",
+                  "variant": "links.disabled",
+                  "icon": {
+                    "src": "../../assets/flexiblocks/icons/bxs-component.svg",
+                    "color": "alpha"
+                  },
+                  "buttons": [
+                    {
+                      "text": "Services 01",
+                      "type": "PAGE",
+                      "link": "/innerpage/services-01/",
+                      "variant": "links.nav-dark"
+                    },
+                    {
+                      "text": "Services 02",
+                      "type": "PAGE",
+                      "link": "/innerpage/services-02/",
+                      "variant": "links.nav-dark"
+                    },
+                    {
+                      "text": "Services 03",
+                      "type": "PAGE",
+                      "link": "/innerpage/services-03/",
+                      "variant": "links.nav-dark"
+                    }
+                  ]
+                },
+                {
+                  "text": "ABOUT US",
+                  "type": "SUB",
+                  "variant": "links.disabled",
+                  "icon": {
+                    "src": "../../assets/flexiblocks/icons/bxs-component.svg",
+                    "color": "alpha"
+                  },
+                  "buttons": [
+                    {
+                      "text": "About 01",
+                      "type": "PAGE",
+                      "link": "/innerpage/about-us-01",
+                      "variant": "links.nav-dark"
+                    },
+                    {
+                      "text": "About 02",
+                      "type": "PAGE",
+                      "link": "/innerpage/about-us-02",
+                      "variant": "links.nav-dark"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "Modals",
+          "type": "SUB",
+          "variant": "links.nav-dark",
+          "buttons": [
+            {
+              "text": "Register/Login",
+              "type": "MODAL",
+              "link": "authentication",
+              "variant": "links.nav-dark",
+              "icon": {
+                "src": "../../assets/flexiblocks/icons/bx-lock-alt.svg",
+                "color": "alphaLight"
+              }
+            },
+            {
+              "text": "Contact Form",
+              "type": "MODAL",
+              "link": "contact",
+              "variant": "links.nav-dark",
+              "icon": {
+                "src": "../../assets/flexiblocks/icons/bx-envelope.svg",
+                "color": "alphaLight"
+              }
+            },
+            {
+              "text": "Advertisement",
+              "type": "MODAL",
+              "link": "advertisement",
+              "variant": "links.nav-dark",
+              "icon": {
+                "src": "../../assets/flexiblocks/icons/bx-target-lock.svg",
+                "color": "alphaLight"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "buttons": [
+        {
+          "text": "Contact Us",
+          "type": "MODAL",
+          "link": "contact",
+          "variant": "secondary"
+        }
+      ]
+    }
+  ]
+}

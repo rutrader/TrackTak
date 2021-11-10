@@ -1,0 +1,80 @@
+{
+  "text": [
+    {
+      "text": "HIGH IMPACT RESULTS",
+      "color": "omegaDark",
+      "variant": "h4"
+    },
+    {
+      "text": "Strategies Focused on Your Performance",
+      "color": "alpha",
+      "variant": "h2"
+    },
+    {
+      "text": "Understand First. Lorem ipsum dolor sit amet.",
+      "variant": "medium"
+    },
+    {
+      "text": "We help our clients achieve tangible, high-impact results.",
+      "variant": "medium"
+    }
+  ],
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "450+",
+          "variant": "h1"
+        },
+        {
+          "text": "Leads Generated",
+          "variant": "h5"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "500+",
+          "variant": "h1"
+        },
+        {
+          "text": "Marketing Campaigns",
+          "variant": "h5"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "200+",
+          "variant": "h1"
+        },
+        {
+          "text": "Successful Clients",
+          "variant": "h5"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "100+",
+          "variant": "h1"
+        },
+        {
+          "text": "Social Media",
+          "variant": "h5"
+        }
+      ]
+    }
+  ],
+  "buttons": [
+    {
+      "text": "Schedule a Call",
+      "type": "MODAL",
+      "link": "contact",
+      "variant": "secondary"
+    }
+  ]
+}

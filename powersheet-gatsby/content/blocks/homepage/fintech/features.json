@@ -1,0 +1,212 @@
+{
+  "text": [
+    {
+      "text": "Choose Your Platform",
+      "color": "beta",
+      "variant": "h4"
+    },
+    {
+      "text": "Available on All Platforms",
+      "variant": "h2"
+    }
+  ],
+  "icon": {
+    "src": "../../../assets/flexiblocks/icons/bx-analyse.svg",
+    "alt": "alt text"
+  },
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "Mobile App for Android",
+          "color": "alpha",
+          "variant": "h4"
+        },
+        {
+          "text": "As an Internet marketing strategy, SEO considers how search engines work, the computer-programmed algorithms that dictate seo behavior."
+        }
+      ],
+      "collection": [
+        {
+          "text": [
+            {
+              "text": "Content optimization",
+              "color": "omegaDark",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-radio-circle-marked.svg",
+            "alt": "alt text",
+            "color": "beta"
+          }
+        },
+        {
+          "text": [
+            {
+              "text": "Strategy & planning",
+              "color": "omegaDark",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-radio-circle-marked.svg",
+            "alt": "alt text",
+            "color": "beta"
+          }
+        },
+        {
+          "text": [
+            {
+              "text": "Monthly reports",
+              "color": "omegaDark",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-radio-circle-marked.svg",
+            "alt": "alt text",
+            "color": "beta"
+          }
+        }
+      ],
+      "buttons": [
+        {
+          "text": "Get it on Google Play",
+          "type": "APP",
+          "link": "",
+          "variant": "google"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Cloud Based Software",
+          "color": "alpha",
+          "variant": "h4"
+        },
+        {
+          "text": "Social media marketing is the use of social media platforms and websites to promote a product or service and is becoming more popular."
+        }
+      ],
+      "collection": [
+        {
+          "text": [
+            {
+              "text": "Creating engaging content",
+              "color": "omegaDark",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-radio-circle-marked.svg",
+            "alt": "alt text",
+            "color": "beta"
+          }
+        },
+        {
+          "text": [
+            {
+              "text": "Trend research",
+              "color": "omegaDark",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-radio-circle-marked.svg",
+            "alt": "alt text",
+            "color": "beta"
+          }
+        },
+        {
+          "text": [
+            {
+              "text": "Evaluation and feedback",
+              "color": "omegaDark",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-radio-circle-marked.svg",
+            "alt": "alt text",
+            "color": "beta"
+          }
+        }
+      ],
+      "buttons": [
+        {
+          "text": "Web Application",
+          "type": "PAGE",
+          "link": "",
+          "variant": "dark",
+          "bg": "#000"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Mobile App for iPhone",
+          "color": "alpha",
+          "variant": "h4"
+        },
+        {
+          "text": "Content marketing is a form of marketing focused on creating, publishing, and distributing content for a targeted audience online."
+        }
+      ],
+      "collection": [
+        {
+          "text": [
+            {
+              "text": "Unique content creation",
+              "color": "omegaDark",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-radio-circle-marked.svg",
+            "alt": "alt text",
+            "color": "beta"
+          }
+        },
+        {
+          "text": [
+            {
+              "text": "SEO optimized articles",
+              "color": "omegaDark",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-radio-circle-marked.svg",
+            "alt": "alt text",
+            "color": "beta"
+          }
+        },
+        {
+          "text": [
+            {
+              "text": "Fast turnaround",
+              "color": "omegaDark",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-radio-circle-marked.svg",
+            "alt": "alt text",
+            "color": "beta"
+          }
+        }
+      ],
+      "buttons": [
+        {
+          "text": "Download on the App Store",
+          "type": "APP",
+          "link": "",
+          "variant": "apple"
+        }
+      ]
+    }
+  ]
+}

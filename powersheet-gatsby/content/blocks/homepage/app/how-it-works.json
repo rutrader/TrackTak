@@ -1,0 +1,101 @@
+{
+  "text": [
+    {
+      "text": "Have Fun Learn Fast",
+      "color": "beta",
+      "variant": "h4"
+    },
+    {
+      "text": "See How It Works",
+      "variant": "h2"
+    },
+    {
+      "text": "We help our clients achieve tangible, high-impact results.",
+      "variant": "medium"
+    },
+    {
+      "text": "Tempor incididunt ut labore et dolore magna aliqua.",
+      "variant": "medium"
+    }
+  ],
+  "images": [
+    {
+      "src": "../../../assets/flexiblocks/homepage/app/how-it-works.png",
+      "alt": "alt text"
+    }
+  ],
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "Listening and Speaking",
+          "color": "alpha",
+          "variant": "h5"
+        },
+        {
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Fun, Bite-Sized Lessons",
+          "color": "alpha",
+          "variant": "h5"
+        },
+        {
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Unlimited Lessons",
+          "color": "alpha",
+          "variant": "h5"
+        },
+        {
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Daily Goals and Ranking",
+          "color": "alpha",
+          "variant": "h5"
+        },
+        {
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Native Teachers",
+          "color": "alpha",
+          "variant": "h5"
+        },
+        {
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Useful Everyday Phrases",
+          "color": "alpha",
+          "variant": "h5"
+        },
+        {
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
+        }
+      ]
+    }
+  ]
+}

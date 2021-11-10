@@ -1,0 +1,94 @@
+{
+  "collection": [
+    {
+      "container": {
+        "variant": "cards.interactive"
+      },
+      "text": [
+        null,
+        {
+          "text": "Marketing solutions for startups & businesses",
+          "color": "omegaDarker",
+          "variant": "h4"
+        },
+        {
+          "text": "As an Internet marketing strategy, SEO considers how search engines work, the computer-programmed algorithms that dictate search engine behavior."
+        }
+      ],
+      "images": [
+        {
+          "src": "../../../assets/flexiblocks/innerpage/services-03/gallery-1.jpg",
+          "alt": "alt text"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "Learn More   ➜",
+          "type": "PAGE",
+          "link": "",
+          "variant": "primary-light"
+        }
+      ]
+    },
+    {
+      "container": {
+        "variant": "cards.interactive"
+      },
+      "text": [
+        null,
+        {
+          "text": "Lead generation & customer experience",
+          "color": "omegaDarker",
+          "variant": "h4"
+        },
+        {
+          "text": "As an Internet marketing strategy, SEO considers how search engines work, the computer-programmed algorithms that dictate search engine behavior."
+        }
+      ],
+      "images": [
+        {
+          "src": "../../../assets/flexiblocks/innerpage/services-03/gallery-2.jpg",
+          "alt": "alt text"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "Learn More   ➜",
+          "type": "PAGE",
+          "link": "",
+          "variant": "primary-light"
+        }
+      ]
+    },
+    {
+      "container": {
+        "variant": "cards.interactive"
+      },
+      "text": [
+        null,
+        {
+          "text": "Application design & development",
+          "color": "omegaDarker",
+          "variant": "h4"
+        },
+        {
+          "text": "As an Internet marketing strategy, SEO considers how search engines work, the computer-programmed algorithms that dictate search engine behavior."
+        }
+      ],
+      "images": [
+        {
+          "src": "../../../assets/flexiblocks/innerpage/services-03/gallery-3.jpg",
+          "alt": "alt text"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "Learn More   ➜",
+          "type": "PAGE",
+          "link": "",
+          "variant": "primary-light"
+        }
+      ]
+    }
+  ]
+}

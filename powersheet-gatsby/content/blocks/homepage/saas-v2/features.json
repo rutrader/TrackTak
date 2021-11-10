@@ -1,0 +1,100 @@
+{
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "Market Research",
+          "variant": "h4"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut sime labore et dolore magna aliqua."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-dollar-circle.svg",
+        "bg": "#FFF2DD",
+        "color": "#FF9655"
+      },
+      "buttons": [
+        {
+          "text": "Learn More   ➜",
+          "type": "PAGE",
+          "link": "",
+          "variant": "links.normal"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Strategy & Direction",
+          "variant": "h4"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut sime labore et dolore magna aliqua."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-brain.svg",
+        "bg": "#FEE9E3",
+        "color": "#F87488"
+      },
+      "buttons": [
+        {
+          "text": "Learn More   ➜",
+          "type": "PAGE",
+          "link": "",
+          "variant": "links.normal"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Brand Marketing",
+          "variant": "h4"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut sime labore et dolore magna aliqua."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-hive.svg",
+        "bg": "#E5FCF3",
+        "color": "#6DC9C8"
+      },
+      "buttons": [
+        {
+          "text": "Learn More   ➜",
+          "type": "PAGE",
+          "link": "",
+          "variant": "links.normal"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Smart Scaling",
+          "variant": "h4"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut sime labore et dolore magna aliqua."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-bar-chart-alt.svg",
+        "bg": "#F5E7FE",
+        "color": "#B887F8"
+      },
+      "buttons": [
+        {
+          "text": "Learn More   ➜",
+          "type": "PAGE",
+          "link": "",
+          "variant": "links.normal"
+        }
+      ]
+    }
+  ]
+}

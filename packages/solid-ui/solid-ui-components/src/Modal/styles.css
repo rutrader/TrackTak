@@ -1,0 +1,46 @@
+.ModalPortalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 20;
+  outline: none;
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.ModalPortalOverlay.ReactModal__Overlay--after-open {
+  opacity: 1;
+  transition: all 0.3s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.ModalPortalOverlay.ReactModal__Overlay--before-close {
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.ModalPortalContent {
+  position: relative;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: scale(0.7) translate(-50%, -50%);
+  transform-origin: left top;
+  outline: none;
+  transition: transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+}
+
+.ModalPortalContent.ReactModal__Content--after-open {
+  transform: scale(1) translate(-50%, -50%);
+  box-shadow: 0 0 45px 0 rgba(0, 0, 0, 0.25);
+}
+
+.ModalPortalContent.ReactModal__Content--before-close {
+  transform: scale(1.1) translate(-50%, -50%);
+}
+
+.ReactModal__Body--open,
+.ReactModal__Html--open {
+  overflow: hidden;
+}

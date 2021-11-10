@@ -1,0 +1,58 @@
+{
+  "text": [
+    {
+      "text": "Start Learning Today",
+      "color": "beta",
+      "variant": "h4"
+    },
+    {
+      "text": "Introducing Learning App",
+      "color": "omegaDarker",
+      "variant": "h1"
+    },
+    {
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "color": "omegaDark",
+      "variant": "medium"
+    }
+  ],
+  "images": [
+    {
+      "src": "../../../assets/flexiblocks/homepage/app/hero.png",
+      "alt": "alt text",
+      "effects": ["fadeInDown"]
+    },
+    {
+      "src": "../../../assets/flexiblocks/homepage/app/hero-overlay-one.png",
+      "alt": "alt text",
+      "effects": ["fadeInRight", "float"],
+      "position": {
+        "bottom": "18%",
+        "left": "11%"
+      }
+    },
+    {
+      "src": "../../../assets/flexiblocks/homepage/app/hero-overlay-two.png",
+      "alt": "alt text",
+      "effects": ["fadeInLeft", "floatFaster"],
+      "position": {
+        "top": "5%",
+        "right": "10%"
+      }
+    }
+  ],
+  "buttons": [
+    {
+      "text": "Get it on Google Play",
+      "type": "APP",
+      "link": "",
+      "variant": "google"
+    },
+    {
+      "text": "Download on the App Store",
+      "type": "APP",
+      "link": "",
+      "variant": "apple"
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "container": {
+    "variant": ""
+  },
+  "text": [
+    {
+      "text": "Don't Just Take our Word for it!",
+      "variant": "h2",
+      "space": 3
+    },
+    {
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "variant": "medium"
+    },
+    {
+      "text": "Sed do eiusmod tempor incididunt ut labore Lorem ipsum dolor sit amet.",
+      "variant": "medium"
+    }
+  ],
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "570",
+          "color": "betaLight",
+          "variant": "h1"
+        },
+        {
+          "text": "Active Users",
+          "color": "omegaDark",
+          "variant": "h5"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "1300",
+          "color": "beta",
+          "variant": "h1"
+        },
+        {
+          "text": "Downloads",
+          "color": "omegaDark",
+          "variant": "h5"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "420",
+          "color": "betaDark",
+          "variant": "h1"
+        },
+        {
+          "text": "Positive Feedback",
+          "color": "omegaDark",
+          "variant": "h5"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "810",
+          "color": "betaDarker",
+          "variant": "h1"
+        },
+        {
+          "text": "A++ Rating",
+          "color": "omegaDark",
+          "variant": "h5"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "@elegantstack/solid-ui-blocks",
+  "version": "3.2.0",
+  "main": "index.js",
+  "private": true,
+  "author": "ElegantStack Team",
+  "license": "",
+  "dependencies": {
+    "@elegantstack/gatsby-plugin-alias-imports": "^3.0.0",
+    "prop-types": "^15.7.2",
+    "react-icons": "^4.2.0",
+    "react-sticky-el": "^2.0.9",
+    "react-tabs": "^3.2.2",
+    "theme-ui": "^0.3.4"
+  }
+}

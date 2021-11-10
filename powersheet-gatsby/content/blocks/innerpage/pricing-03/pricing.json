@@ -1,0 +1,325 @@
+{
+  "text": [
+    {
+      "text": "Ready to start tracking your expenses?",
+      "color": "omegaDark",
+      "variant": "h4"
+    },
+    {
+      "text": "Our Pricing Plans",
+      "variant": "h1"
+    },
+    {
+      "text": "Building great customer relationships is just a step away",
+      "variant": "medium"
+    },
+    {
+      "textGroup": ["Monthly", "Annually (Save 10%)"]
+    }
+  ],
+  "collection": [
+    {
+      "container": {
+        "variant": "cards.paper"
+      },
+      "text": [
+        {
+          "text": "Starter",
+          "color": "omegaDark",
+          "variant": "h5"
+        },
+        {
+          "textGroup": ["$29", "$25"],
+          "color": "omegaDarker",
+          "variant": "h2"
+        },
+        {
+          "text": "/month"
+        },
+        {
+          "textGroup": ["", "Save 10%"]
+        },
+        {
+          "text": "For up to 10 customers and 1 agent"
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-dice-1.svg",
+        "bg": "omegaLighter",
+        "color": "omegaDark"
+      },
+      "buttons": [
+        {
+          "text": "Choose Starter",
+          "type": "MODAL",
+          "link": "authentication",
+          "variant": "primary",
+          "width": "100%"
+        }
+      ],
+      "collection": [
+        {
+          "text": [
+            {
+              "text": "10 Customers",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-check.svg",
+            "color": "omega"
+          }
+        },
+        {
+          "text": [
+            {
+              "text": "1 Agent",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-check.svg",
+            "color": "omega"
+          }
+        },
+        {
+          "text": [
+            {
+              "text": "Deal pipeline",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-check.svg",
+            "color": "omega"
+          }
+        },
+        {
+          "text": [
+            {
+              "text": "Meeting scheduling",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-check.svg",
+            "color": "omega"
+          }
+        }
+      ]
+    },
+    {
+      "container": {
+        "variant": "cards.paper",
+        "bg": "omegaDarker"
+      },
+      "text": [
+        {
+          "text": "Professional",
+          "color": "omegaLight",
+          "variant": "h5"
+        },
+        {
+          "textGroup": ["$49", "$45"],
+          "color": "white",
+          "variant": "h2"
+        },
+        {
+          "text": "/month",
+          "color": "omega"
+        },
+        {
+          "textGroup": ["", "Save 10%"]
+        },
+        {
+          "text": "For up to 100 customers and 10 agent",
+          "color": "omega"
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-dice-2.svg",
+        "bg": "beta",
+        "color": "white"
+      },
+      "buttons": [
+        {
+          "text": "Choose Professional",
+          "type": "MODAL",
+          "link": "authentication",
+          "variant": "secondary",
+          "width": "100%"
+        }
+      ],
+      "collection": [
+        {
+          "text": [
+            {
+              "text": "100 Customers",
+              "color": "omegaLight",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-check.svg",
+            "color": "omega"
+          }
+        },
+        {
+          "text": [
+            {
+              "text": "10 Agents",
+              "color": "omegaLight",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-check.svg",
+            "color": "omega"
+          }
+        },
+        {
+          "text": [
+            {
+              "text": "Sales analytics",
+              "color": "omegaLight",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-check.svg",
+            "color": "omega"
+          }
+        },
+        {
+          "text": [
+            {
+              "text": "Smart send times",
+              "color": "omegaLight",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-check.svg",
+            "color": "omega"
+          }
+        },
+        {
+          "text": [
+            {
+              "text": "1:1 video creation",
+              "color": "omegaLight",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-check.svg",
+            "color": "omega"
+          }
+        },
+        {
+          "text": [
+            {
+              "text": "Single sign-on",
+              "color": "omegaLight",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-check.svg",
+            "color": "omega"
+          }
+        }
+      ]
+    },
+    {
+      "container": {
+        "variant": "cards.paper"
+      },
+      "text": [
+        {
+          "text": "Organization",
+          "color": "alpha",
+          "variant": "h5"
+        },
+        {
+          "textGroup": ["$99", "$95"],
+          "color": "omegaDarker",
+          "variant": "h2"
+        },
+        {
+          "text": "/month"
+        },
+        {
+          "textGroup": ["", "Save 10%"]
+        },
+        {
+          "text": "Unlimited customers and agents"
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-dice-3.svg",
+        "bg": "omegaLighter",
+        "color": "omegaDark"
+      },
+      "buttons": [
+        {
+          "text": "Choose Organization",
+          "type": "MODAL",
+          "link": "authentication",
+          "variant": "primary",
+          "width": "100%"
+        }
+      ],
+      "collection": [
+        {
+          "text": [
+            {
+              "text": "Unlimited Customers",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-check.svg",
+            "color": "omega"
+          }
+        },
+        {
+          "text": [
+            {
+              "text": "Unlimited Agents",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-check.svg",
+            "color": "omega"
+          }
+        },
+        {
+          "text": [
+            {
+              "text": "Predictive lead scoring",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-check.svg",
+            "color": "omega"
+          }
+        },
+        {
+          "text": [
+            {
+              "text": "User roles",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-check.svg",
+            "color": "omega"
+          }
+        }
+      ]
+    }
+  ]
+}

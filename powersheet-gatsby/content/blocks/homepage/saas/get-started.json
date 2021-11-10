@@ -1,0 +1,37 @@
+{
+  "text": [
+    {
+      "text": "Let's get in touch",
+      "color": "omegaDark",
+      "variant": "h4"
+    },
+    {
+      "text": "Hello, Ready to get started?",
+      "variant": "h2"
+    },
+    {
+      "text": "Get in touch to grow your business and increase sales.",
+      "color": "alpha",
+      "variant": "medium"
+    },
+    {
+      "text": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua!",
+      "color": "omegaDark",
+      "variant": "medium"
+    }
+  ],
+  "buttons": [
+    {
+      "text": "Get Started",
+      "type": "MODAL",
+      "link": "authentication",
+      "variant": "secondary"
+    },
+    {
+      "text": "Contact us",
+      "type": "MODAL",
+      "link": "contact",
+      "variant": "primary-light"
+    }
+  ]
+}

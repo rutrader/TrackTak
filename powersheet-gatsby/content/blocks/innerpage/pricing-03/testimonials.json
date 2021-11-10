@@ -1,0 +1,111 @@
+{
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "Customer Story",
+          "color": "alpha",
+          "variant": "h4"
+        },
+        {
+          "text": "Excellent customer service, You guys are the best!",
+          "color": "omegaDarker",
+          "variant": "h3"
+        },
+        {
+          "text": "Sed commodo, est quis maximus fermentum, massa ipsum euismod neque, in varius risus tellus quis lacus. Sed ac bibendum odio.",
+          "variant": "medium"
+        },
+        {
+          "text": "John Doe",
+          "color": "omegaDark"
+        },
+        {
+          "text": "Marketing Manager - PayPal"
+        }
+      ],
+      "avatar": {
+        "src": "../../../assets/flexiblocks/testimonials/john-doe-large.png"
+      },
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bxl-paypal.svg",
+        "color": "omegaLighter",
+        "bg": "omegaDarker"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Customer Story",
+          "color": "alpha",
+          "variant": "h4"
+        },
+        {
+          "text": "Professional in their craft, Super attention to details.",
+          "color": "omegaDarker",
+          "variant": "h3"
+        },
+        {
+          "text": "Sed commodo, est quis maximus fermentum, massa ipsum euismod neque, in varius risus tellus quis lacus. Sed ac bibendum odio.",
+          "variant": "medium"
+        },
+        {
+          "text": "Jane Smith",
+          "color": "omegaDark"
+        },
+        {
+          "text": "Customer Relation - Shopify"
+        }
+      ],
+      "avatar": {
+        "src": "../../../assets/flexiblocks/testimonials/jane-smith-large.png"
+      },
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bxl-shopify.svg",
+        "color": "omegaLighter",
+        "bg": "omegaDarker"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Customer Story",
+          "color": "alpha",
+          "variant": "h4"
+        },
+        {
+          "text": "Excellent work quality, best in the market!",
+          "color": "omegaDarker",
+          "variant": "h3"
+        },
+        {
+          "text": "Sed commodo, est quis maximus fermentum, massa ipsum euismod neque, in varius risus tellus quis lacus. Sed ac bibendum odio.",
+          "variant": "medium"
+        },
+        {
+          "text": "Florrie Jacobs",
+          "color": "omegaDark"
+        },
+        {
+          "text": "Software Developer - Amazon"
+        }
+      ],
+      "avatar": {
+        "src": "../../../assets/flexiblocks/testimonials/florrie-jacobs-large.png"
+      },
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bxl-amazon.svg",
+        "color": "omegaLighter",
+        "bg": "omegaDarker"
+      }
+    }
+  ],
+  "buttons": [
+    {
+      "text": "Get Started Now",
+      "type": "MODAL",
+      "link": "authentication",
+      "variant": "gradient"
+    }
+  ]
+}

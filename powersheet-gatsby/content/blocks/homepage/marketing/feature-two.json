@@ -1,0 +1,69 @@
+{
+  "text": [
+    {
+      "text": "INNOVATIVE SOLUTIONS",
+      "color": "alpha",
+      "variant": "h4"
+    },
+    {
+      "text": "The ultimate marketing resources. All in one place.",
+      "variant": "h2"
+    },
+    {
+      "text": "Lorem ipsum dolor sit amet, consectetur magna aliqua. Eaque ipsa quae ab illo inventore veritatis. Nemo enim ipsam voluptatem voluptas.",
+      "variant": "medium"
+    }
+  ],
+  "images": [
+    {
+      "src": "../../../assets/flexiblocks/homepage/marketing/feature-two.png",
+      "alt": "alt text"
+    }
+  ],
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "Analytics"
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-analyse.svg",
+        "color": "beta"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Consultation"
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-calendar-check.svg",
+        "color": "beta"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Reports"
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-bar-chart-alt.svg",
+        "color": "beta"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Live Support"
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-chat.svg",
+        "color": "beta"
+      }
+    }
+  ]
+}

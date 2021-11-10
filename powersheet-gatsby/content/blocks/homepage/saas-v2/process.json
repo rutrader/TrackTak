@@ -1,0 +1,66 @@
+{
+  "text": [
+    {
+      "text": "Acceleration Process to Grow Your Business",
+      "variant": "h2"
+    },
+    {
+      "text": "We help our clients achieve tangible, high-impact results. Lorem ipsum dolor sit amet.",
+      "variant": "medium"
+    }
+  ],
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "Market Research",
+          "variant": "h5"
+        },
+        {
+          "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut sime."
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Strategy & Direction",
+          "variant": "h5"
+        },
+        {
+          "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut sime."
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Brand Marketing",
+          "variant": "h5"
+        },
+        {
+          "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut sime."
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Smart Scaling",
+          "variant": "h5"
+        },
+        {
+          "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut sime."
+        }
+      ]
+    }
+  ],
+  "buttons": [
+    {
+      "text": "Schedule a Live Demo",
+      "type": "MODAL",
+      "link": "contact",
+      "variant": "gradient"
+    }
+  ]
+}

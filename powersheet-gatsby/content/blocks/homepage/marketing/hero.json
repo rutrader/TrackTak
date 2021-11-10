@@ -1,0 +1,37 @@
+{
+  "text": [
+    {
+      "text": "Modern Solutions",
+      "variant": "h4",
+      "color": "omegaDarker"
+    },
+    {
+      "text": "Your Partner in Creating and Growing Brands",
+      "variant": "h2"
+    },
+    {
+      "text": "Hassle-free platform and specialists to help you with your marketing campaigns.",
+      "variant": "medium"
+    }
+  ],
+  "images": [
+    {
+      "src": "../../../assets/flexiblocks/homepage/marketing/hero.png",
+      "alt": "alt text"
+    }
+  ],
+  "buttons": [
+    {
+      "text": "Get Started",
+      "type": "MODAL",
+      "link": "contact",
+      "variant": "secondary"
+    },
+    {
+      "text": "Case Studies",
+      "type": "PAGE",
+      "link": "",
+      "variant": "white"
+    }
+  ]
+}

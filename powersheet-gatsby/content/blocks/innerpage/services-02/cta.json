@@ -1,0 +1,20 @@
+{
+  "text": [
+    {
+      "text": "Helping brands to grow and attract more customers",
+      "color": "alpha",
+      "variant": "h5"
+    },
+    {
+      "text": "We help our clients achieve tangible, high-impact results."
+    }
+  ],
+  "buttons": [
+    {
+      "text": "Contact Us Now",
+      "type": "MODAL",
+      "link": "contact",
+      "variant": "primary-light"
+    }
+  ]
+}

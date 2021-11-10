@@ -1,0 +1,58 @@
+{
+  "text": [
+    {
+      "text": "Business Analysis",
+      "color": "omegaDarker",
+      "variant": "h4"
+    },
+    {
+      "text": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium.",
+      "color": "omegaDark",
+      "space": 4
+    },
+    {
+      "text": "Consulting & Marketing",
+      "color": "omegaDarker",
+      "variant": "h4"
+    },
+    {
+      "text": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium.",
+      "color": "omegaDark",
+      "space": 4
+    },
+    {
+      "text": "Strategic Planning",
+      "color": "omegaDarker",
+      "variant": "h4"
+    },
+    {
+      "text": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium.",
+      "color": "omegaDark",
+      "space": 4
+    },
+    {
+      "text": "Design & Development",
+      "color": "omegaDarker",
+      "variant": "h4"
+    },
+    {
+      "text": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium.",
+      "color": "omegaDark"
+    }
+  ],
+  "images": [
+    {
+      "src": "../../../assets/flexiblocks/innerpage/services-02/services.jpg",
+      "alt": "alt text",
+      "radius": "lg"
+    }
+  ],
+  "buttons": [
+    {
+      "text": "Scedule a Consultation",
+      "type": "MODAL",
+      "link": "contact",
+      "variant": "secondary-gradient"
+    }
+  ]
+}
