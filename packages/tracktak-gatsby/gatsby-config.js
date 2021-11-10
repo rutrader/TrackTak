@@ -1,124 +1,118 @@
 const activeEnv =
-  process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV || "development";
+  process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV || 'development'
 
-require("dotenv").config({
-  path: `.env.${activeEnv}`,
-});
+require('dotenv').config({
+  path: `.env.${activeEnv}`
+})
 
-const isInProduction = activeEnv === "production";
+const isInProduction = activeEnv === 'production'
 
 module.exports = {
   flags: {
     PRESERVE_WEBPACK_CACHE: true,
-    DEV_SSR: true,
+    DEV_SSR: true
   },
   siteMetadata: {
-    title: "tracktak",
-    siteUrl: "https://tracktak.com",
+    title: 'tracktak',
+    siteUrl: 'https://tracktak.com'
   },
   plugins: [
+    'gatsby-plugin-no-sourcemaps',
     {
-      resolve: `gatsby-plugin-alias-imports`,
-      options: {
-        alias,
-      },
-    },
-    "gatsby-plugin-no-sourcemaps",
-    {
-      resolve: "gatsby-transformer-remark",
+      resolve: 'gatsby-transformer-remark',
       options: {
         commonmark: true,
         footnotes: true,
         pedantic: true,
         gfm: true,
-        plugins: [],
-      },
+        plugins: []
+      }
     },
     {
-      resolve: "gatsby-plugin-anchor-links",
+      resolve: 'gatsby-plugin-anchor-links',
       options: {
         offset: -60,
-        duration: 0,
-      },
+        duration: 0
+      }
     },
     {
       resolve: `gatsby-plugin-webpack-bundle-analyser-v2`,
       options: {
         devMode: true,
-        analyzerPort: 3002,
-      },
+        analyzerPort: 3002
+      }
     },
-    "gatsby-plugin-react-helmet",
-    "gatsby-plugin-layout",
+    'gatsby-plugin-react-helmet',
+    'gatsby-plugin-layout',
     {
-      resolve: "gatsby-plugin-material-ui",
-      options: {},
+      resolve: 'gatsby-plugin-material-ui',
+      options: {}
     },
-    "gatsby-plugin-styled-components",
-    "gatsby-plugin-emotion",
+    'gatsby-plugin-styled-components',
+    'gatsby-plugin-emotion',
     {
-      resolve: "gatsby-plugin-s3",
+      resolve: 'gatsby-plugin-s3',
       options: {
-        bucketName: isInProduction ? "tracktak.com" : "staging.tracktak.com",
-      },
+        bucketName: isInProduction ? 'tracktak.com' : 'staging.tracktak.com'
+      }
     },
     {
       resolve: `gatsby-plugin-hotjar`,
       options: {
-        id: "2536228",
-        sv: 6,
-      },
+        id: '2536228',
+        sv: 6
+      }
     },
     {
-      resolve: "gatsby-source-contentful",
+      resolve: 'gatsby-source-contentful',
       options: {
         accessToken: process.env.CONTENTFUL_API_KEY,
-        spaceId: "kq8pz2yvb2zk",
-        host: isInProduction ? undefined : "preview.contentful.com",
-      },
+        spaceId: 'kq8pz2yvb2zk',
+        host: isInProduction ? undefined : 'preview.contentful.com'
+      }
     },
     {
       resolve: `gatsby-plugin-google-gtag`,
       options: {
-        trackingIds: ["G-WFB538909G", "UA-185279234-1"],
-      },
+        trackingIds: ['G-WFB538909G', 'UA-185279234-1']
+      }
     },
-    "gatsby-plugin-react-helmet",
+    'gatsby-plugin-react-helmet',
     {
-      resolve: "gatsby-plugin-sitemap"
+      resolve: 'gatsby-plugin-sitemap'
     },
-    "gatsby-plugin-robots-txt",
+    'gatsby-plugin-robots-txt',
     {
-      resolve: "gatsby-plugin-manifest",
+      resolve: 'gatsby-plugin-manifest',
       options: {
-        icon: "src/assets/tracktak-logo-small.svg",
-      },
+        icon: 'src/assets/tracktak-logo-small.svg'
+      }
     },
     //"gatsby-plugin-offline",
-    "gatsby-plugin-mdx",
-    "gatsby-plugin-image",
+    'gatsby-plugin-mdx',
+    'gatsby-plugin-image',
     {
-      resolve: "gatsby-plugin-sharp",
+      resolve: 'gatsby-plugin-sharp',
       options: {
-        defaultQuality: 90,
-      },
+        defaultQuality: 90
+      }
     },
-    "gatsby-transformer-sharp",
+    'gatsby-transformer-sharp',
     {
-      resolve: "gatsby-source-filesystem",
+      resolve: 'gatsby-source-filesystem',
       options: {
-        name: "images",
-        path: "./src/images/",
+        name: 'images',
+        path: './src/images/'
       },
-      __key: "images",
+      __key: 'images'
     },
     {
-      resolve: "gatsby-source-filesystem",
+      resolve: 'gatsby-source-filesystem',
       options: {
-        name: "pages",
-        path: "./src/pages/",
+        name: 'pages',
+        path: './src/pages/'
       },
-      __key: "pages",
-    },
-  ],
-};
+      __key: 'pages'
+    }
+  ]
+}
