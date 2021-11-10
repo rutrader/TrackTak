@@ -9,9 +9,6 @@
   "main": "dist/index.js",
   "module": "dist/index.modern.module.js",
   "source": "src/index.js",
-  "engines": {
-    "node": ">=12.20.1"
-  },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
@@ -63,10 +60,6 @@
     "@fontsource/nunito": "^4.2.2",
     "rimraf": "^3.0.2",
     "source-map-explorer": "^2.5.2"
-  },
-  "optionalPeerDependencies": {
-    "gatsby": "^2.32.8",
-    "gatsby-plugin-anchor-links": "^1.2.1"
   },
   "files": [
     "dist"

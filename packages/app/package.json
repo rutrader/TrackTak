@@ -46,18 +46,10 @@
     "redux": "^4.0.5",
     "styled-components": "^5.2.1"
   },
-  "peerDependencies": {
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
-  },
   "devDependencies": {
     "@fontsource/nunito": "^4.2.2",
     "rimraf": "^3.0.2",
     "source-map-explorer": "^2.5.2"
-  },
-  "optionalPeerDependencies": {
-    "gatsby": "^2.32.8",
-    "gatsby-plugin-anchor-links": "^1.2.1"
   },
   "files": [
     "dist"
