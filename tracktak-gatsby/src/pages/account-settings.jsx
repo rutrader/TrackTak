@@ -11,7 +11,7 @@ import {
   Button,
   Stack,
 } from "@material-ui/core";
-import ContactDetailsForm from "../components/ContactDetailsForm";
+import ContactDetailsForm from "../../../packages/app/src/components/ContactDetailsForm";
 import SettingSection from "../components/SettingSection";
 import ChangePasswordForm from "../components/ChangePasswordForm";
 import CurrentPlan from "../components/CurrentPlan";
@@ -26,7 +26,7 @@ import ConfirmationDialog from "../components/ConfirmationDialog";
 import { createCustomerPortal } from "../api/api";
 import ClearIcon from "@mui/icons-material/Clear";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
-import FreezeModalForm from "../components/FreezeModalForm";
+import FreezeModalForm from "../../../packages/app/src/components/FreezeModalForm";
 import { navigate } from "gatsby";
 import AcUnit from "@mui/icons-material/AcUnit";
 

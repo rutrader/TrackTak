@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import PageSpinner from "./PageSpinner";
+import PageSpinner from "../../../../tracktak-gatsby/src/components/PageSpinner";
 
 const FundamentalsSpinner = () => {
   const fundamentals = useSelector((state) => state.stock.fundamentals);
