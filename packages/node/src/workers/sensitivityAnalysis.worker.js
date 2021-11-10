@@ -3,7 +3,7 @@
 // import nodeEndpoint from "comlink/dist/umd/node-adapter";
 // import { expose } from "comlink";
 // import calculateDCFModel from "../dcfModel/calculateDCFModel";
-//  import hyperformulaConfig from "../../../packages/intrinsic-valuations/src/spreadsheet/hyperformulaConfig";
+//  import hyperformulaConfig from "../../../packages/financial-model/src/spreadsheet/hyperformulaConfig";
 
 // const sensitivityAnalysisWorker = {
 //   computeSensitivityAnalysis: (

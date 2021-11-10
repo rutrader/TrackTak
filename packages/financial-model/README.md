@@ -1,15 +1,15 @@
-# @tracktak/intrinsic-valuations
+# @tracktak/financial-model
 
 > A react package that allows external websites to use our intrinsic valuations for https://tracktak.com
 
 For an example on how to use, please click here: https://github.com/TrackTak/tracktak-example
 
-[![NPM](https://img.shields.io/npm/v/@tracktak/intrinsic-valuations.svg)](https://www.npmjs.com/package/@tracktak/intrinsic-valuations) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/@tracktak/financial-model.svg)](https://www.npmjs.com/package/@tracktak/financial-model) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Prerequisites
 
 - node >= v12.20.1
-- To install the @tracktak/intrinsic-valuations package you must have created a personal access token on GitHub settings, see here: https://docs.github.com/en/packages/guides/configuring-npm-for-use-with-github-packages#authenticating-to-github-packages
+- To install the @tracktak/financial-model package you must have created a personal access token on GitHub settings, see here: https://docs.github.com/en/packages/guides/configuring-npm-for-use-with-github-packages#authenticating-to-github-packages
 
 Once you have the token, edit your .npmrc file and add these two lines:
 
@@ -21,7 +21,7 @@ Once you have the token, edit your .npmrc file and add these two lines:
 ## Install
 
 ```bash
-npm install --save @tracktak/intrinsic-valuations
+npm install --save @tracktak/financial-model
 ```
 
 ## Exports

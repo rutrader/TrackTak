@@ -1,7 +1,7 @@
 {
-  "name": "@tracktak/intrinsic-valuations",
-  "version": "8.1.3",
-  "description": "A react package that allows external websites to use our financial spreadsheet for https://tracktak.com",
+  "name": "@tracktak/financial-model",
+  "version": "1.0.0",
+  "description": "A react package that allows external websites to use our financial model for https://tracktak.com",
   "author": "tracktak",
   "license": "SEE LICENSE IN README.MD",
   "type": "module",

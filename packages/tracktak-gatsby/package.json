@@ -54,7 +54,7 @@
     "dayjs": "^1.9.7",
     "dotenv": "^8.2.0",
     "esm": "^3.2.25",
-    "gatsby": "^2.32.3",
+    "gatsby": "^3.14.5",
     "gatsby-background-image": "^1.5.0",
     "gatsby-image": "^2.11.0",
     "gatsby-plugin-anchor-links": "^1.2.1",
