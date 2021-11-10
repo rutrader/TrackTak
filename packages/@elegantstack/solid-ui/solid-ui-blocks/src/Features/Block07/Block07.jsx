@@ -6,8 +6,13 @@ import ContentContainer from '@solid-ui-components/ContentContainer'
 import ContentText from '@solid-ui-components/ContentText'
 import ListItem from '@solid-ui-components/ListItem'
 import WithDefaultContent from '@solid-ui-blocks/WithDefaultContent'
+import { chunk } from 'lodash'
 
 const FeaturesBlock07 = ({ content: { text, collection, icon } }) => {
+  const chunkedCollection = collection
+    ? chunk(collection, collection.length / 3)
+    : null
+
   return (
     <Container sx={{ textAlign: `left` }}>
       <Reveal effect={'fadeInUp'}>
@@ -18,25 +23,35 @@ const FeaturesBlock07 = ({ content: { text, collection, icon } }) => {
             mb='0'
             mx='auto'
           />
-          {collection && (
+          {chunkedCollection && (
             <>
               <Divider space={2} />
               <Box
                 sx={{
                   display: 'flex',
                   flexWrap: 'wrap',
-                  flexDirection: 'column',
-                  maxHeight: 300
+                  justifyContent: 'center',
+                  columnGap: 20
                 }}
               >
-                {collection.map((props, index) => (
-                  <ListItem
-                    key={`item-${index}`}
-                    {...props}
-                    icon={icon}
-                    compact
-                  />
-                ))}
+                {chunkedCollection.map(chunk => {
+                  return (
+                    <Box
+                      sx={{
+                        flex: '1 1 315px'
+                      }}
+                    >
+                      {chunk.map((props, index) => (
+                        <ListItem
+                          key={`item-${index}`}
+                          {...props}
+                          icon={icon}
+                          compact
+                        />
+                      ))}
+                    </Box>
+                  )
+                })}
               </Box>
             </>
           )}
@@ -45,5 +60,4 @@ const FeaturesBlock07 = ({ content: { text, collection, icon } }) => {
     </Container>
   )
 }
-
 export default WithDefaultContent(FeaturesBlock07)

@@ -1,5 +1,4 @@
 import { Link as GLink } from 'gatsby'
-import AnchorLink from 'react-anchor-link-smooth-scroll'
 import { Button, Link } from 'theme-ui'
 import AppButton from '@solid-ui-components/AppButton'
 import VideoButton from '@solid-ui-components/VideoButton'
@@ -56,7 +55,7 @@ const buildLinkProps = ({
       }
       break
     case 'ANCHOR':
-      linkProps = { href: link, as: AnchorLink, offset: 150 }
+      linkProps = { href: link, as: 'a', offset: 150 }
       break
     case 'SUBMIT':
       linkProps = { type: 'submit' }
