@@ -1,8 +1,8 @@
 import { Box } from "@material-ui/system";
 import React from "react";
 import Header from "../components/Header";
-import { useAuth } from "../hooks/useAuth";
-import { getHeaderLinks } from "../shared/getHeaderLinks";
+import { useAuth } from "../../../../tracktak-gatsby/src/hooks/useAuth";
+import { getHeaderLinks } from "../../../common/src/shared/getHeaderLinks";
 
 const LayoutFullScreen = ({ children }) => {
   const { isAuthenticated } = useAuth();

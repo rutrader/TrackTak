@@ -14,7 +14,7 @@ import CheckIcon from "@material-ui/icons/Check";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import MembershipButtons from "../components/MembershipButtons";
-import CancellationPlan from "../components/CancellationPlan";
+import CancellationPlan from "./CancellationPlan";
 import useCurrentPlan from "../hooks/useCurrentPlan";
 
 const listOfFeatures = [

@@ -2,7 +2,7 @@ import { Container } from "@material-ui/core";
 import React from "react";
 import Header from "../components/Header";
 import { useAuth } from "../hooks/useAuth";
-import { getHeaderLinks } from "../shared/getHeaderLinks";
+import { getHeaderLinks } from "../../../packages/common/src/shared/getHeaderLinks";
 
 const LayoutPricing = ({ children }) => {
   const { isAuthenticated } = useAuth();

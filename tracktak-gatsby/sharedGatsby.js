@@ -19,7 +19,6 @@ export const wrapRootElement = ({ element }) => {
     <TracktakProvider store={store} theme={theme}>
       <CssBaseline />
       <ProvideAuth>
-        {/* <FundamentalsSpinner /> */}
         {element}
         <TTCookieBanner />
       </ProvideAuth>

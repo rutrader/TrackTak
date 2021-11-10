@@ -3,7 +3,7 @@ import { Link } from "gatsby";
 import React from "react";
 import tracktakLogoSvg from "../assets/tracktak-purple.svg";
 import tracktakLogoSmallSvg from "../assets/tracktak-logo-small.svg";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../../../tracktak-gatsby/src/hooks/useAuth";
 
 const TracktakLogo = ({ width, height, logoProps, ...props }) => {
   const { isAuthenticated } = useAuth();

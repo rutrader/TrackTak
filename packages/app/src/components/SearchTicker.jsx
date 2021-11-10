@@ -8,7 +8,7 @@ import {
 import dayjs from "dayjs";
 import SearchIcon from "@material-ui/icons/Search";
 import useDebouncedCallback from "../../../packages/intrinsic-valuations/src/hooks/useDebouncedCallback";
-import TTRoundInput from "./TTRoundInput";
+import TTRoundInput from "../../../common/src/components/TTRoundInput";
 import {
   getAutocompleteQuery,
   getFundamentals,

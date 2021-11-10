@@ -4,7 +4,7 @@ import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import RedditIcon from "@material-ui/icons/Reddit";
 import dayjs from "dayjs";
 import tracktakLogoSvg from "../assets/tracktak-purple.svg";
-import { landingPageLinks } from "../shared/getHeaderLinks";
+import { landingPageLinks } from "../../../packages/common/src/shared/getHeaderLinks";
 import { Link as RouterLink } from "gatsby";
 
 const iconStyles = { width: "45px", height: "45px" };

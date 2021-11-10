@@ -18,7 +18,7 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production microbundle --no-sourcemap",
     "build:dev": "rimraf ./dist && cross-env NODE_ENV=production microbundle --compress false",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "yarn run build",
     "clean": "rimraf ./node_modules",
     "analyze-size": "rimraf ./dist && cross-env NODE_ENV=production microbundle -f modern && source-map-explorer ./dist/index.modern.module.js"
   },

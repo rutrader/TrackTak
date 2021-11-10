@@ -54,12 +54,6 @@ export const onCreatePage = ({ page, actions }) => {
     page.context.layout = "pricing";
     createPage(page);
   }
-
-  if (page.path.match(/my-spreadsheets/)) {
-    page.context.layout = "fullscreen";
-
-    createPage(page);
-  }
 };
 
 // exports.sourceNodes = async ({

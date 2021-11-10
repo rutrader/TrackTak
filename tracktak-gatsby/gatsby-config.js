@@ -5,42 +5,7 @@ require("dotenv").config({
   path: `.env.${activeEnv}`,
 });
 
-const path = require("path");
-
 const isInProduction = activeEnv === "production";
-
-const duplicatePackageModules = [
-  "react",
-  "react-dom",
-  "redux",
-  "react-redux",
-  "@emotion/react",
-  "@emotion/styled",
-  "@material-ui/core",
-  "@material-ui/icons",
-  "@material-ui/styles",
-  "styled-components",
-  "@reduxjs/toolkit",
-  "change-case",
-  "cross-env",
-  "dayjs",
-  "query-string",
-  "axios",
-  "gatsby",
-  "gatsby-plugin-anchor-links",
-  "hyperformula",
-  "lodash-es",
-];
-
-const alias = {
-  "@tracktak/intrinsic-valuations": path.resolve(
-    "../packages/intrinsic-valuations/src",
-  ),
-};
-
-duplicatePackageModules.forEach((packageModule) => {
-  alias[packageModule] = path.resolve(`./node_modules/${packageModule}`);
-});
 
 module.exports = {
   flags: {
@@ -105,10 +70,6 @@ module.exports = {
       },
     },
     {
-      resolve: "gatsby-plugin-create-client-paths",
-      options: { prefixes: ["/stock/*"] },
-    },
-    {
       resolve: "gatsby-source-contentful",
       options: {
         accessToken: process.env.CONTENTFUL_API_KEY,
@@ -124,10 +85,7 @@ module.exports = {
     },
     "gatsby-plugin-react-helmet",
     {
-      resolve: "gatsby-plugin-sitemap",
-      options: {
-        exclude: [`/stock/**`],
-      },
+      resolve: "gatsby-plugin-sitemap"
     },
     "gatsby-plugin-robots-txt",
     {

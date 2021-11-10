@@ -10,7 +10,7 @@ import FrequentlyAskedQuestion from "../components/FrequentlyAskedQuestion";
 import { createCheckoutSession } from "../api/api";
 import { useAuth } from "../hooks/useAuth";
 import withAuthentication from "../hocs/withAuthentication";
-import { PriceIds } from "../data/regions";
+import { PriceIds } from "../../../packages/common/src/data/regions";
 import useCurrentPlan from "../hooks/useCurrentPlan";
 
 const Pricing = () => {
@@ -21,6 +21,7 @@ const Pricing = () => {
   const [disabled, setDisabled] = useState([]);
 
   const handleOnClick = async () => {
+    // TODO: Redirect to signup here instead if user not logged in
     const token = await getAccessToken();
     const apiRegionLineItems = checked
       .filter((priceId) => priceId !== PriceIds.MEDIUM_CAP_US_PLUS)
@@ -91,4 +92,4 @@ const Pricing = () => {
   );
 };
 
-export default withAuthentication(Pricing);
+export default Pricing;

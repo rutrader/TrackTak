@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
-import getTitle from "../shared/getTitle";
-import resourceName from "../shared/resourceName";
+import getTitle from "../../../../tracktak-gatsby/src/shared/getTitle";
+import resourceName from "../../../../tracktak-gatsby/src/shared/resourceName";
 import {
   Divider,
   Paper,
@@ -11,22 +11,22 @@ import {
   Button,
   Stack,
 } from "@material-ui/core";
-import ContactDetailsForm from "../../../packages/app/src/components/ContactDetailsForm";
-import SettingSection from "../components/SettingSection";
-import ChangePasswordForm from "../components/ChangePasswordForm";
-import CurrentPlan from "../components/CurrentPlan";
+import ContactDetailsForm from "./ContactDetailsForm";
+import SettingSection from "./SettingSection";
+import ChangePasswordForm from "./ChangePasswordForm";
+import CurrentPlan from "./CurrentPlan";
 import withAuthentication from "../hocs/withAuthentication";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../../../tracktak-gatsby/src/hooks/useAuth";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import LockIcon from "@mui/icons-material/Lock";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PaymentIcon from "@mui/icons-material/Payment";
-import useCurrentPlan from "../hooks/useCurrentPlan";
-import ConfirmationDialog from "../components/ConfirmationDialog";
+import useCurrentPlan from "../../../../tracktak-gatsby/src/hooks/useCurrentPlan";
+import ConfirmationDialog from "./ConfirmationDialog";
 import { createCustomerPortal } from "../api/api";
 import ClearIcon from "@mui/icons-material/Clear";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
-import FreezeModalForm from "../../../packages/app/src/components/FreezeModalForm";
+import FreezeModalForm from "./FreezeModalForm";
 import { navigate } from "gatsby";
 import AcUnit from "@mui/icons-material/AcUnit";
 

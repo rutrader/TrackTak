@@ -3,18 +3,15 @@
   "version": "0.1.0",
   "main": "./src/app.js",
   "private": true,
-  "engines": {
-    "node": "12.20.1"
-  },
   "scripts": {
     "start": "node ./app.js",
     "start:dev": "cross-env NODE_ENV=development nodemon --es-module-specifier-resolution=node",
     "zip": "cd ./build && bestzip ../build.zip *",
     "clean:build": "rimraf ./build",
-    "build": "npm run clean:build && cross-env NODE_ENV=production webpack && npm run zip",
-    "build:staging": "cross-env NODE_ENV=staging webpack && npm run zip",
+    "build": "yarn run clean:build && cross-env NODE_ENV=production webpack && yarn run zip",
+    "build:staging": "cross-env NODE_ENV=staging webpack && yarn run zip",
     "clean": "rimraf ./node_modules",
-    "deploy": "npm run build && eb deploy"
+    "deploy": "yarn run build && eb deploy"
   },
   "devDependencies": {
     "nodemon": "^2.0.6",

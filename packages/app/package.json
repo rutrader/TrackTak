@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "The spreadsheet application behind user auth.",
-  "author": "tracktak",
+  "author": "TRACKTAK LTD",
   "license": "",
   "type": "module",
   "source": "src/index.ts",

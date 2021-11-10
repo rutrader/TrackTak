@@ -4,10 +4,10 @@ import React from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import globeSvg from "../assets/globe.svg";
 import { createCheckoutSession } from "../api/api";
-import { useAuth } from "../hooks/useAuth";
-import useFetchPrice from "../hooks/useFetchPrice";
-import { formatPrice } from "../shared/utils";
-import MembershipButtons from "../components/MembershipButtons";
+import { useAuth } from "../../../../tracktak-gatsby/src/hooks/useAuth";
+import useFetchPrice from "../../../../tracktak-gatsby/src/hooks/useFetchPrice";
+import { formatPrice } from "../../../../tracktak-gatsby/src/shared/utils";
+import MembershipButtons from "../../../../tracktak-gatsby/src/components/MembershipButtons";
 import CancellationPlan from "../components/CancellationPlan";
 import { PriceIds } from "../data/regions";
 
