@@ -22,7 +22,6 @@
     "@mui/icons-material": "^5.1.0",
     "@mui/material": "^5.1.0",
     "@parcel/core": "^2.0.1",
-    "@tracktak/auth": "*",
     "@tracktak/common": "*",
     "@tracktak/financial-model": "*",
     "currency-symbol-map": "^5.0.1",

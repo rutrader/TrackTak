@@ -1,9 +1,8 @@
 import { Box, IconButton, Typography } from '@mui/material'
-import { withAuthentication } from '@tracktak/auth'
 import AddIcon from '@mui/icons-material/Add'
 import React, { useState } from 'react'
 import { Helmet } from 'react-helmet'
-import { utils } from '@tracktak/common'
+import { utils, withAuthentication } from '@tracktak/common'
 import SavedSpreadsheets from './SavedSpreadsheets'
 import SearchTickerDialog from './SearchTickerDialog'
 

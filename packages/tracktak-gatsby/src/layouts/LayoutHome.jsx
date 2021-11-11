@@ -2,8 +2,7 @@ import { Box, Container, useTheme } from '@mui/material'
 import { Link } from 'gatsby'
 import React from 'react'
 import Header, { LinkButton } from '../components/Header'
-import { headerLinks } from '@tracktak/common'
-import { useAuth } from '@tracktak/auth'
+import { headerLinks, useAuth } from '@tracktak/common'
 
 const LayoutHome = ({ children }) => {
   const theme = useTheme()

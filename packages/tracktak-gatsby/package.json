@@ -38,7 +38,6 @@
     "@mui/icons-material": "^5.0.0-rc.1",
     "@mui/material": "^5.0.0-rc.1",
     "@reduxjs/toolkit": "^1.6.2",
-    "@tracktak/auth": "*",
     "@tracktak/common": "*",
     "axios": "^0.21.0",
     "axios-jsonp": "^1.0.4",

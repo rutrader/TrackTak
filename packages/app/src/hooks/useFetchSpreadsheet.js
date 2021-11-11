@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
-import { api } from '@tracktak/common'
-import { useAuth } from '@tracktak/auth'
+import { api, useAuth } from '@tracktak/common'
 
 const useFetchSpreadsheet = sheetId => {
   const [spreadsheet, setSpreadsheet] = useState()

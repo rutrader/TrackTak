@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Box, TextField, Button, Grid } from '@mui/material'
-import { useAuth } from '@tracktak/auth'
-import { snackbarActions } from '@tracktak/common'
+import { snackbarActions, useAuth } from '@tracktak/common'
 import VerifyEmailLink from './VerifyEmailLink'
 
 const ChangePasswordForm = () => {

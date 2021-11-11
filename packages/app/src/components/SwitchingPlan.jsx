@@ -1,8 +1,14 @@
 import { Button, Typography, Box, useTheme } from '@mui/material'
 import React from 'react'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { globeIcon, api, useFetchPrice, utils, regions } from '@tracktak/common'
-import { useAuth } from '@tracktak/auth'
+import {
+  globeIcon,
+  api,
+  useFetchPrice,
+  utils,
+  regions,
+  useAuth
+} from '@tracktak/common'
 import MembershipButtons from './MembershipButtons'
 import CancellationPlan from './CancellationPlan'
 

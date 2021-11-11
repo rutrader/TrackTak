@@ -1,7 +1,6 @@
 import { Box } from '@mui/material'
 import React from 'react'
-import { Header, headerLinks } from '@tracktak/common'
-import { useAuth } from '@tracktak/auth'
+import { Header, headerLinks, useAuth } from '@tracktak/common'
 
 const LayoutFullScreen = ({ children }) => {
   const { isAuthenticated } = useAuth()

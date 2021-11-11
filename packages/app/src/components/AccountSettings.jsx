@@ -1,7 +1,12 @@
 import React, { useState } from 'react'
 import { Helmet } from 'react-helmet'
-import { utils, useCurrentPlan, api } from '@tracktak/common'
-import { useAuth, withAuthentication } from '@tracktak/auth'
+import {
+  utils,
+  useCurrentPlan,
+  api,
+  useAuth,
+  withAuthentication
+} from '@tracktak/common'
 import {
   Divider,
   Paper,

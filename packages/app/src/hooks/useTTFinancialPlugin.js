@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { api } from '@tracktak/common'
+import { api, useAuth } from '@tracktak/common'
 import { convertStockAPIData, thunks } from '@tracktak/financial-model'
-import { useAuth } from '@tracktak/auth'
 
 export const useTTFinancialPlugin = spreadsheet => {
   const [financialData, setFinancialData] = useState()

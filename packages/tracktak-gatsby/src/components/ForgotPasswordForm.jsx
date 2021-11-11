@@ -8,8 +8,13 @@ import {
   Alert,
   Box
 } from '@mui/material'
-import { useAuth } from '@tracktak/auth'
-import { api, trackTakLogoIcon, utils, RoundButton } from '@tracktak/common'
+import {
+  api,
+  trackTakLogoIcon,
+  utils,
+  RoundButton,
+  useAuth
+} from '@tracktak/common'
 
 const ForgotPasswordForm = ({ onCancelClick }) => {
   const theme = useTheme()

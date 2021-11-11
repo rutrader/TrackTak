@@ -14,9 +14,9 @@ import {
   api,
   snackbarActions,
   utils,
-  useCurrentPlan
+  useCurrentPlan,
+  useAuth
 } from '@tracktak/common'
-import { useAuth } from '@tracktak/auth'
 import { convertSubCurrencyToCurrency } from '@tracktak/financial-model'
 import { useDispatch } from 'react-redux'
 import { HyperFormula } from 'hyperformula'

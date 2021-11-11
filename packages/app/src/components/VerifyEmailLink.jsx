@@ -1,7 +1,6 @@
 import React from 'react'
 import { Box, Link } from '@mui/material'
-import { utils, api } from '@tracktak/common'
-import { useAuth } from '@tracktak/auth'
+import { utils, api, useAuth } from '@tracktak/common'
 import { useDispatch } from 'react-redux'
 import WarningAmberIcon from '@mui/icons-material/WarningAmber'
 

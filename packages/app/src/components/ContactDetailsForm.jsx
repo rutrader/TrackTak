@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Button, TextField, Grid } from '@mui/material'
-import { useAuth } from '@tracktak/auth'
 import { useDispatch } from 'react-redux'
-import { snackbarActions } from '@tracktak/common'
+import { snackbarActions, useAuth } from '@tracktak/common'
 import VerifyEmailLink from './VerifyEmailLink'
 
 const ContactDetailsForm = () => {
