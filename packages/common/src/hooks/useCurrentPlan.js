@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { getCurrentPlan, updateCurrentPlan } from '../api/api'
-import { exchangeToPriceId, PriceIds } from '../data/regions'
 import { useAuth } from '@tracktak/auth'
 
 const useCurrentPlan = () => {

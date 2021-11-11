@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { getSpreadsheet } from '../api/api'
-import { useAuth } from './useAuth'
+import { api } from '@tracktak/common'
+import { useAuth } from '@tracktak/auth'
 
 const useFetchSpreadsheet = sheetId => {
   const [spreadsheet, setSpreadsheet] = useState()
@@ -9,7 +9,7 @@ const useFetchSpreadsheet = sheetId => {
   useEffect(() => {
     async function fetchData() {
       const token = await getAccessToken()
-      const response = await getSpreadsheet(sheetId, token?.jwtToken)
+      const response = await api.getSpreadsheet(sheetId, token?.jwtToken)
 
       setSpreadsheet(response.data.spreadsheet)
     }

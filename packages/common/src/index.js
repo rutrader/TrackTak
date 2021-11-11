@@ -11,6 +11,7 @@ import TTRoundInput from './components/TTRoundInput'
 import TTSnackbar from './components/TTSnackbar'
 import useDebouncedCallback from './hooks/useDebouncedCallback'
 import useCurrentPlan from './hooks/useCurrentPlan'
+import useFetchPrice from './hooks/useFetchPrice'
 import selectSnackbar from './selectors/selectSnackbar'
 import * as headerLinks from './shared/getHeaderLinks'
 import * as utils from './shared/utils'
@@ -34,6 +35,7 @@ export default {
   regions,
   useDebouncedCallback,
   useCurrentPlan,
+  useFetchPrice,
   snackbarActions,
   snackbarReducer,
   selectSnackbar,

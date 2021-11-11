@@ -1,6 +1,5 @@
 import React from 'react'
-import { Box } from '@material-ui/core'
-import Typography from '@material-ui/core/Typography'
+import { Box, Typography } from '@mui/material'
 
 const SettingsSection = ({ children, icon, heading, subHeading, sx }) => {
   return (

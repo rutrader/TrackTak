@@ -1,9 +1,9 @@
 import { useCallback } from 'react'
-import { saveSpreadsheet } from '../api/api'
-import { useAuth } from './useAuth'
+import { api } from '@tracktak/common'
+import { useAuth } from '@tracktak/auth'
 
 const saveSpreadsheetData = async (spreadsheet, newData, token) => {
-  await saveSpreadsheet(
+  await api.saveSpreadsheet(
     {
       ...spreadsheet,
       sheetData: {

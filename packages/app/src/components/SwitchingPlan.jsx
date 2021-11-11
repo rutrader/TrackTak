@@ -1,33 +1,28 @@
-import { Button, Typography } from '@material-ui/core'
-import { Box, useTheme } from '@material-ui/system'
+import { Button, Typography, Box, useTheme } from '@mui/material'
 import React from 'react'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import globeSvg from '../assets/globe.svg'
-import { createCheckoutSession } from '../api/api'
-import { useAuth } from '../../../../tracktak-gatsby/src/hooks/useAuth'
-import useFetchPrice from '../../../../tracktak-gatsby/src/hooks/useFetchPrice'
-import { formatPrice } from '../../../../tracktak-gatsby/src/shared/utils'
-import MembershipButtons from '../../../../tracktak-gatsby/src/components/MembershipButtons'
-import CancellationPlan from '../components/CancellationPlan'
-import { PriceIds } from '../data/regions'
+import { globeIcon, api, useFetchPrice, utils, regions } from '@tracktak/common'
+import { useAuth } from '@tracktak/auth'
+import MembershipButtons from './MembershipButtons'
+import CancellationPlan from './CancellationPlan'
 
 const SwitchingPlan = () => {
   const theme = useTheme()
   const { getAccessToken } = useAuth()
-  const priceData = useFetchPrice(PriceIds.WORLDWIDE)
+  const priceData = useFetchPrice(regions.PriceIds.WORLDWIDE)
 
   const handleOnClick = async () => {
     const token = await getAccessToken()
-    const lineItems = [{ price: PriceIds.WORLDWIDE, quantity: 1 }]
+    const lineItems = [{ price: regions.PriceIds.WORLDWIDE, quantity: 1 }]
 
-    const { data } = await createCheckoutSession(lineItems, token?.jwtToken)
+    const { data } = await api.createCheckoutSession(lineItems, token?.jwtToken)
 
     window.location.href = data.url
   }
 
   const formattedPrice = priceData ? (
     <>
-      {formatPrice({
+      {utils.formatPrice({
         unitAmount: priceData.unit_amount,
         currency: priceData.currency.toUpperCase()
       })}
@@ -50,7 +45,7 @@ const SwitchingPlan = () => {
             }}
           >
             <img
-              src={globeSvg}
+              src={globeIcon}
               alt='worldwide'
               style={{
                 height: '37px'

@@ -1,4 +1,4 @@
-import { Box, Hidden } from '@material-ui/core'
+import { Box, Hidden } from '@mui/material'
 import React from 'react'
 import tracktakLogoSvg from '../assets/tracktak-logo.svg'
 import tracktakLogoSmallSvg from '../assets/tracktak-logo-small.svg'

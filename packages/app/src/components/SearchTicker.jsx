@@ -17,6 +17,7 @@ import {
   useCurrentPlan
 } from '@tracktak/common'
 import { useAuth } from '@tracktak/auth'
+import { convertSubCurrencyToCurrency } from '@tracktak/financial-model'
 import { useDispatch } from 'react-redux'
 import { HyperFormula } from 'hyperformula'
 import isStockDisabled from '../shared/isStockDisabled'
@@ -49,9 +50,7 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
 
     Object.keys(freeCashFlowToFirmTemplateData.cells).forEach(key => {
       const cellData = freeCashFlowToFirmTemplateData.cells[key]
-      const currencyCode = utils.convertSubCurrencyToCurrency(
-        values[2].data.value
-      )
+      const currencyCode = convertSubCurrencyToCurrency(values[2].data.value)
       const currencySymbol = getSymbolFromCurrency(currencyCode)
 
       if (cellData.dynamicFormat === 'currency') {

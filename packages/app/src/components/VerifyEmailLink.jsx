@@ -1,9 +1,8 @@
 import React from 'react'
-import { Box, Link } from '@material-ui/core'
-import { useAuth } from '../hooks/useAuth'
+import { Box, Link } from '@mui/material'
+import { utils, api } from '@tracktak/common'
+import { useAuth } from '@tracktak/auth'
 import { useDispatch } from 'react-redux'
-import { setMessage } from '../redux/actions/snackbarActions'
-import { noop } from '../shared/utils'
 import WarningAmberIcon from '@mui/icons-material/WarningAmber'
 
 const VerifyEmailLink = ({ text, ...props }) => {
@@ -12,7 +11,7 @@ const VerifyEmailLink = ({ text, ...props }) => {
 
   const handleVerificationCodeError = err => {
     dispatch(
-      setMessage({
+      api.setMessage({
         message: 'Failed to send verification link',
         severity: 'error'
       })
@@ -21,7 +20,7 @@ const VerifyEmailLink = ({ text, ...props }) => {
 
   const handleVerificationEmailSent = () => {
     dispatch(
-      setMessage({
+      api.setMessage({
         message: 'A verification link has been sent to your email.'
       })
     )
@@ -31,7 +30,7 @@ const VerifyEmailLink = ({ text, ...props }) => {
     sendEmailVerification(
       userData.email,
       handleVerificationEmailSent,
-      noop,
+      utils.noop,
       handleVerificationCodeError
     )
   }

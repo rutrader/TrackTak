@@ -1,5 +1,5 @@
 import React from 'react'
-import { Snackbar, Alert, Box } from '@material-ui/core'
+import { Snackbar, Alert, Box } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import selectSnackbar from '../selectors/selectSnackbar'
 import { clearMessage } from '../redux/actions/snackbarActions'

@@ -21,16 +21,6 @@ export const removeQueryParams = () => {
   )
 }
 
-export const convertSubCurrencyToCurrency = currencyCode => {
-  if (currencyCode === 'ILA') {
-    return 'ILS'
-  }
-  if (currencyCode === 'GBX') {
-    return 'GBP'
-  }
-  return currencyCode
-}
-
 export const formatPrice = ({ unitAmount, currency }) => {
   const numberFormat = new Intl.NumberFormat('en-US', {
     style: 'currency',

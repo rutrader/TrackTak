@@ -5,14 +5,14 @@ import {
   Hidden,
   IconButton,
   Menu,
-  MenuItem
-} from '@material-ui/core'
+  MenuItem,
+  useTheme
+} from '@mui/material'
 import LinkButton from './LinkButton'
 import React, { useState } from 'react'
-import MenuIcon from '@material-ui/icons/Menu'
+import MenuIcon from '@mui/icons-material/Menu'
 import TracktakLogo from './TracktakLogo'
 import { useAuth } from '@tracktak/auth'
-import { useTheme } from '@material-ui/core/styles'
 
 const MenuItemLink = props => {
   return <MenuItem sx={{ '&.MuiMenuItem-root': { padding: 0 } }} {...props} />

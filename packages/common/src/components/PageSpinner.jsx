@@ -1,5 +1,4 @@
-import { Box, CircularProgress } from '@material-ui/core'
-import { useTheme } from '@material-ui/core/styles'
+import { useTheme, Box, CircularProgress } from '@mui/material'
 import React from 'react'
 
 const PageSpinner = () => {

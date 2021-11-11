@@ -1,14 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { createFinancialData, getFinancialData } from '../api/api'
-import convertStockAPIData from '../../../packages/financial-model/src/shared/convertStockAPIData'
-import {
-  getExchangeRatesThunk,
-  getFundamentalsThunk,
-  getLastPriceCloseThunk,
-  getTenYearGovernmentBondLastCloseThunk
-} from '../../../packages/financial-model/src/redux/thunks/stockThunks'
-import { useAuth } from '../../../auth/src/hooks/useAuth'
+import { api } from '@tracktak/common'
+import { convertStockAPIData, thunks } from '@tracktak/financial-model'
+import { useAuth } from '@tracktak/auth'
 
 export const useTTFinancialPlugin = spreadsheet => {
   const [financialData, setFinancialData] = useState()
@@ -26,34 +20,34 @@ export const useTTFinancialPlugin = spreadsheet => {
 
     if (id) {
       const fetchFinancials = async () => {
-        return await getFinancialData(id)
+        return await api.getFinancialData(id)
       }
 
       fetchData(fetchFinancials)
     } else if (ticker) {
       const fetchCreateNewFinancials = async () => {
         const { payload: fundamentals } = await dispatch(
-          getFundamentalsThunk({
+          thunks.getFundamentalsThunk({
             ticker
           })
         )
 
         const values = await Promise.all([
           dispatch(
-            getExchangeRatesThunk({
+            thunks.getExchangeRatesThunk({
               currencyCode: fundamentals.general.currencyCode,
               incomeStatement: fundamentals.incomeStatement,
               balanceSheet: fundamentals.balanceSheet
             })
           ),
           dispatch(
-            getLastPriceCloseThunk({
+            thunks.getLastPriceCloseThunk({
               ticker
             })
           ),
 
           dispatch(
-            getTenYearGovernmentBondLastCloseThunk({
+            thunks.getTenYearGovernmentBondLastCloseThunk({
               countryISO: fundamentals.general.countryISO
             })
           ),
@@ -69,7 +63,7 @@ export const useTTFinancialPlugin = spreadsheet => {
 
         const token = values[3]
 
-        return await createFinancialData(
+        return await api.createFinancialData(
           financialData,
           token?.jwtToken,
           spreadsheet._id

@@ -1,5 +1,4 @@
-import { alpha, responsiveFontSizes } from '@material-ui/core/styles'
-import { createTheme } from '@material-ui/core/styles'
+import { alpha, responsiveFontSizes, createTheme } from '@mui/material'
 
 let theme = createTheme({
   typography: {

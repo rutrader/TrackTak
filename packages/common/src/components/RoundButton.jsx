@@ -1,6 +1,5 @@
-import { Button } from '@material-ui/core'
+import { Button, useTheme } from '@mui/material'
 import React from 'react'
-import { useTheme } from '@material-ui/core/styles'
 
 const RoundButton = ({ sx, ...props }) => {
   const theme = useTheme()
