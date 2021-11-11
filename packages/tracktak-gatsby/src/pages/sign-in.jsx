@@ -1,11 +1,10 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import getTitle from '../shared/getTitle'
-import resourceName from '../shared/resourceName'
-import { Grid } from '@material-ui/core'
+import { utils } from '@tracktak/common'
+import { Grid } from '@mui/material'
 import Authentication from '../components/Authentication'
 import { navigate } from 'gatsby'
-import withAuthenticatedRedirect from '../hocs/withAuthenticatedRedirect'
+import { withAuthenticatedRedirect } from '@tracktak/auth'
 
 const SignIn = ({ location }) => {
   const handleSuccess = () => {
@@ -15,8 +14,8 @@ const SignIn = ({ location }) => {
   return (
     <>
       <Helmet>
-        <title>{getTitle('Sign in')}</title>
-        <link rel='canonical' href={`${resourceName}/sign-in`} />
+        <title>{utils.getTitle('Sign in')}</title>
+        <link rel='canonical' href={`${utils.resourceName}/sign-in`} />
         <meta name='description' content='Sign in to Tracktak.' />
       </Helmet>
       <Grid container justifyContent='center'>

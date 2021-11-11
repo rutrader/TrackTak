@@ -1,12 +1,11 @@
-import { Container } from '@material-ui/core'
+import { Container } from '@mui/material'
 import React from 'react'
-import Header from '../components/Header'
-import { useAuth } from '../hooks/useAuth'
-import { getHeaderLinks } from '../../../packages/common/src/shared/getHeaderLinks'
+import { Header, headerLinks } from '@tracktak/common'
+import { useAuth } from '@tracktak/auth'
 
 const LayoutPricing = ({ children }) => {
   const { isAuthenticated } = useAuth()
-  const links = getHeaderLinks(isAuthenticated)
+  const links = headerLinks.getHeaderLinks(isAuthenticated)
 
   return (
     <Container maxWidth='xl'>

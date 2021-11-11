@@ -1,11 +1,10 @@
 import Layout from './Layout'
 import LayoutHome from './LayoutHome'
 import React from 'react'
-import LayoutFullScreen from '../../../packages/app/src/components/LayoutFullScreen'
-import TTSnackbar from '../../../packages/common/src/components/TTSnackbar'
+import { TTSnackbar } from '@tracktak/common'
 import LayoutPricing from './LayoutPricing'
 
-const Root = ({ children, pageContext, params }) => {
+const Root = ({ children, pageContext }) => {
   if (pageContext.layout === 'home') {
     return <LayoutHome>{children}</LayoutHome>
   }

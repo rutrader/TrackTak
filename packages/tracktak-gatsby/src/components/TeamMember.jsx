@@ -1,6 +1,6 @@
 import React from 'react'
 import Img from 'gatsby-image'
-import { Box, Typography } from '@material-ui/core'
+import { Box, Typography } from '@mui/material'
 
 const BoxColumnWrapper = ({ sx, ...props }) => {
   return (

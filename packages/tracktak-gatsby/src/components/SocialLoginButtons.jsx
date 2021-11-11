@@ -1,6 +1,5 @@
 import React from 'react'
-import { Grid, Typography } from '@material-ui/core'
-import { useTheme } from '@material-ui/core/styles'
+import { Grid, Typography, useTheme } from '@mui/material'
 import GoogleIcon from '@material-ui/icons/Google'
 import FacebookIcon from '@material-ui/icons/Facebook'
 import SocialMediaButton from './SocialMediaButton'

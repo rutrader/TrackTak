@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
-import Accordion from '@mui/material/Accordion'
-import AccordionSummary from '@mui/material/AccordionSummary'
-import AccordionDetails from '@mui/material/AccordionDetails'
-import { useTheme } from '@emotion/react'
-import { Link, Typography } from '@material-ui/core'
-import { Box } from '@material-ui/system'
+import {
+  Link,
+  Typography,
+  useTheme,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Box
+} from '@mui/material'
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp'
 
 const questionsAndAnswers = [

@@ -1,4 +1,4 @@
-import { Box, List, ListItem } from '@material-ui/core'
+import { Box, List, ListItem } from '@mui/material'
 import React from 'react'
 
 const Formula = ({ formula, explanations }) => {

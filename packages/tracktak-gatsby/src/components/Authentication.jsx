@@ -1,16 +1,14 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { navigate } from 'gatsby'
-import { useAuth } from '../hooks/useAuth'
-import { setMessage } from '../redux/actions/snackbarActions'
+import { useAuth } from '@tracktak/auth'
+import { snackbarActions, utils, axios } from '@tracktak/common'
 import ForgotPasswordForm from './ForgotPasswordForm'
 import SignInForm from './SignInForm'
 import SignUpForm from './SignUpForm'
-import { Box } from '@material-ui/core'
-import { noop } from '../shared/utils'
+import { Box } from '@mui/material'
 import queryString from 'query-string'
 import jsonAdapter from 'axios-jsonp'
-import axios from '../../../packages/financial-model/src/api/axios'
 
 export const AUTHENTICATION_FORM_STATE = {
   SIGN_UP: 'SIGN_UP',
@@ -20,8 +18,8 @@ export const AUTHENTICATION_FORM_STATE = {
 
 const Authentication = ({
   initialState = AUTHENTICATION_FORM_STATE.SIGN_IN,
-  onSuccess = noop,
-  onFailure = noop,
+  onSuccess = utils.noop,
+  onFailure = utils.noop,
   isModal = false,
   location
 }) => {
@@ -31,7 +29,7 @@ const Authentication = ({
 
   const onError = error => {
     dispatch(
-      setMessage({
+      snackbarActions.setMessage({
         message: error?.message,
         severity: 'error'
       })

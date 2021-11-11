@@ -1,10 +1,9 @@
 import React from 'react'
 import { graphql } from 'gatsby'
-import { Typography } from '@material-ui/core'
+import { Typography } from '@mui/material'
 import ReactMarkdown from 'react-markdown'
-import resourceName from '../shared/resourceName'
 import { Helmet } from 'react-helmet'
-import getTitle from '../shared/getTitle'
+import { utils } from '@tracktak/common'
 
 export const query = graphql`
   query TermsAndConditionsQuery {
@@ -27,8 +26,11 @@ const TermsAndConditions = ({ data }) => {
   return (
     <>
       <Helmet>
-        <title>{getTitle('Terms & Conditions')}</title>
-        <link rel='canonical' href={`${resourceName}/terms-and-conditions`} />
+        <title>{utils.getTitle('Terms & Conditions')}</title>
+        <link
+          rel='canonical'
+          href={`${utils.resourceName}/terms-and-conditions`}
+        />
         <meta name='description' content='Our terms and conditions' />
       </Helmet>
       <Typography component='div' paragraph>

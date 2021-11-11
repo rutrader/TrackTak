@@ -4,13 +4,13 @@ import {
   IconButton,
   Link,
   Typography,
-  useMediaQuery
-} from '@material-ui/core'
-import MobileStepper from '@material-ui/core/MobileStepper'
+  useMediaQuery,
+  MobileStepper,
+  useTheme
+} from '@mui/material'
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import Testimonials from '../components/Testimonials'
-import { useTheme } from '@material-ui/core/styles'
 
 const robbertSmitTestimonial = (
   <Testimonials

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PhoneInput from 'react-phone-input-2'
-import { Box } from '@material-ui/core'
+import { Box } from '@mui/material'
 import 'react-phone-input-2/lib/material.css'
 
 const PhoneField = ({

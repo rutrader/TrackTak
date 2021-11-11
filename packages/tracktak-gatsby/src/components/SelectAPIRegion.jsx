@@ -1,8 +1,6 @@
 import React from 'react'
-import { List, Paper, Typography } from '@material-ui/core'
-import { Box } from '@material-ui/system'
-import RoundButton from '../../../common/src/components/RoundButton'
-import { listAPIregions } from '../../../common/src/data/regions'
+import { List, Paper, Typography, Box } from '@mui/material'
+import { RoundButton, regions } from '@tracktak/common'
 import ListRegion from './ListRegion'
 
 const SelectAPIRegion = ({ checked, disabled, setChecked, handleOnClick }) => {
@@ -58,7 +56,7 @@ const SelectAPIRegion = ({ checked, disabled, setChecked, handleOnClick }) => {
             Select API Regions
           </Typography>
           <List>
-            {listAPIregions.map(listAPIRegion => {
+            {regions.listAPIregions.map(listAPIRegion => {
               const priceIdPredicate = x => x === listAPIRegion.priceId
 
               return (

@@ -1,6 +1,5 @@
 import React from 'react'
-import Dialog from '@material-ui/core/Dialog'
-import { DialogContent } from '@material-ui/core'
+import { Dialog, DialogContent } from '@mui/material'
 import Authentication, { AUTHENTICATION_FORM_STATE } from './Authentication'
 
 const AuthenticationFormDialog = ({

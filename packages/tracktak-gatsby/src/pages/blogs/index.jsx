@@ -7,14 +7,13 @@ import {
   CardActions,
   List,
   ListItem,
-  Typography
-} from '@material-ui/core'
+  Typography,
+  useTheme
+} from '@mui/material'
 import { navigate, graphql, Link } from 'gatsby'
 import { Helmet } from 'react-helmet'
-import getTitle from '../../shared/getTitle'
-import resourceName from '../../shared/resourceName'
+import { utils } from '@tracktak/common'
 import Img from 'gatsby-image'
-import { useTheme } from '@material-ui/core/styles'
 
 export const query = graphql`
   query BlogsQuery {
@@ -34,8 +33,8 @@ const Blogs = ({ data }) => {
   return (
     <>
       <Helmet>
-        <title>{getTitle('Blogs')}</title>
-        <link rel='canonical' href={`${resourceName}/blogs`} />
+        <title>{utils.getTitle('Blogs')}</title>
+        <link rel='canonical' href={`${utils.resourceName}/blogs`} />
         <meta name='description' content='Tracktak blogs' />
       </Helmet>
       <Typography variant='h5' gutterBottom>

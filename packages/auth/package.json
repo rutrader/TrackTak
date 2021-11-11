@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@tracktak/common": "*",
+    "@tracktak/auth": "*",
     "@parcel/core": "^2.0.1",
     "amazon-cognito-identity-js": "^4.6.0",
     "axios": "^0.21.1",

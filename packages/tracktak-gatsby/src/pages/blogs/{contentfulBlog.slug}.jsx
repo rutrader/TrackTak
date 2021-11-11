@@ -1,9 +1,8 @@
 import React from 'react'
 import { graphql } from 'gatsby'
-import { Box, Typography } from '@material-ui/core'
-import resourceName from '../../shared/resourceName'
+import { Box, Typography } from '@mui/material'
+import { utils } from '@tracktak/common'
 import { Helmet } from 'react-helmet'
-import getTitle from '../../shared/getTitle'
 import { renderRichText } from 'gatsby-source-contentful/rich-text'
 import { INLINES, BLOCKS } from '@contentful/rich-text-types'
 import Img from 'gatsby-image'
@@ -53,9 +52,11 @@ const options = {
     [INLINES.HYPERLINK]: ({ data }, children) => (
       <a
         href={data.uri}
-        target={`${data.uri.startsWith(resourceName) ? '_self' : '_blank'}`}
+        target={`${
+          data.uri.startsWith(utils.resourceName) ? '_self' : '_blank'
+        }`}
         rel={`${
-          data.uri.startsWith(resourceName) ? '' : 'noopener noreferrer'
+          data.uri.startsWith(utils.resourceName) ? '' : 'noopener noreferrer'
         }`}
       >
         {children}
@@ -75,8 +76,8 @@ const Blog = ({ data }) => {
   return (
     <>
       <Helmet>
-        <title>{getTitle(`${blogTitle}`)}</title>
-        <link rel='canonical' href={`${resourceName}/blogs/${slug}`} />
+        <title>{utils.getTitle(`${blogTitle}`)}</title>
+        <link rel='canonical' href={`${utils.resourceName}/blogs/${slug}`} />
         <meta name='description' content={descriptionBlog} />
       </Helmet>
       <Box>

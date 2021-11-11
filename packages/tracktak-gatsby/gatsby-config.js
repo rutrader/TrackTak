@@ -5,6 +5,10 @@ require('dotenv').config({
   path: `.env.${activeEnv}`
 })
 
+const { tracktakLogoSmallIcon, utils } = require('@tracktak/common')
+
+console.log(tracktakLogoSmallIcon)
+
 const isInProduction = activeEnv === 'production'
 
 module.exports = {
@@ -14,7 +18,7 @@ module.exports = {
   },
   siteMetadata: {
     title: 'tracktak',
-    siteUrl: 'https://tracktak.com'
+    siteUrl: utils.resourceName
   },
   plugins: [
     'gatsby-plugin-no-sourcemaps',
@@ -85,7 +89,7 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-manifest',
       options: {
-        icon: 'src/assets/tracktak-logo-small.svg'
+        icon: tracktakLogoSmallIcon
       }
     },
     'gatsby-plugin-mdx',

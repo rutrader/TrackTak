@@ -1,15 +1,14 @@
-import { Box, Link, Typography } from '@material-ui/core'
+import { Box, Link, Typography } from '@mui/material'
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import getTitle from '../shared/getTitle'
-import resourceName from '../shared/resourceName'
+import { utils } from '@tracktak/common'
 
 const ContactUs = () => {
   return (
     <>
       <Helmet>
-        <title>{getTitle('Contact Us')}</title>
-        <link rel='canonical' href={`${resourceName}/contact-us`} />
+        <title>{utils.getTitle('Contact Us')}</title>
+        <link rel='canonical' href={`${utils.resourceName}/contact-us`} />
         <meta
           name='description'
           content='Need help with your DCF? Send us an email at kristina@tracktak.com.'

@@ -1,7 +1,7 @@
-import { useAuth } from '../hooks/useAuth'
+import { useAuth } from '@tracktak/auth'
+import { PageSpinner } from '@tracktak/common'
 import React, { useEffect } from 'react'
 import { navigate } from 'gatsby'
-import PageSpinner from '../components/PageSpinner'
 
 const withAuthenticatedRedirect = Component => {
   const Container = props => {

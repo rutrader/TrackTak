@@ -1,10 +1,9 @@
-import { Box, Typography, IconButton, Link } from '@material-ui/core'
+import { Box, Typography, IconButton, Link } from '@mui/material'
 import React from 'react'
 import LinkedInIcon from '@material-ui/icons/LinkedIn'
 import RedditIcon from '@material-ui/icons/Reddit'
 import dayjs from 'dayjs'
-import tracktakLogoSvg from '../assets/tracktak-logo.svg'
-import { landingPageLinks } from '../../../packages/common/src/shared/getHeaderLinks'
+import { tracktakLogoSvg, headerLinks } from '@tracktak/common'
 import { Link as RouterLink } from 'gatsby'
 
 const iconStyles = { width: '45px', height: '45px' }
@@ -79,7 +78,7 @@ const Footer = () => {
           <Typography>
             <Link href='/terms-and-conditions'>Terms &amp; Conditions</Link>
           </Typography>
-          {landingPageLinks.map(link => (
+          {headerLinks.landingPageLinks.map(link => (
             <Typography key={link.to}>
               <Link component={RouterLink} to={link.to}>
                 {link.text}

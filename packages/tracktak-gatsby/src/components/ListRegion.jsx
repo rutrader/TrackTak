@@ -4,13 +4,12 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
-  ListItemText
-} from '@material-ui/core'
-import { Box } from '@material-ui/system'
-import useMediaQuery from '@mui/material/useMediaQuery'
-import { formatPrice } from '../shared/utils'
-import useFetchPrice from '../hooks/useFetchPrice'
-import { useTheme } from '@emotion/react'
+  ListItemText,
+  Box,
+  useMediaQuery,
+  useTheme
+} from '@mui/material'
+import { utils, useFetchPrice } from '@tracktak/common'
 
 const ListRegion = ({
   iconSvg,
@@ -26,7 +25,7 @@ const ListRegion = ({
 
   const formattedPrice = priceData ? (
     <>
-      {formatPrice({
+      {utils.formatPrice({
         unitAmount: priceData.unit_amount,
         currency: priceData.currency.toUpperCase()
       })}

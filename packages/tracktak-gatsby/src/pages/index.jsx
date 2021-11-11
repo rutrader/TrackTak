@@ -1,9 +1,8 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import resourceName from '../shared/resourceName'
+import { utils } from '@tracktak/common'
 import UseNowSection from '../landingPage/UseNowSection'
-import { Box, Container } from '@material-ui/core'
-import { useTheme } from '@material-ui/core/styles'
+import { Box, Container, useTheme } from '@mui/material'
 import Footer from '../landingPage/Footer'
 import TestimonialsSection from '../landingPage/TestimonialsSection'
 import OurTeamSection from '../landingPage/OurTeamSection'
@@ -31,7 +30,7 @@ const Home = () => {
     <>
       <Helmet>
         <title>Tracktak | The spreadsheet for financial modelling</title>
-        <link rel='canonical' href={`${resourceName}`} />
+        <link rel='canonical' href={`${utils.resourceName}`} />
         <meta
           name='description'
           content='Tracktak is a financial modeling tool that makes it easy for financial modellers and investors to value projects and companies.'

@@ -1,8 +1,7 @@
 import React from 'react'
-import { Box, Typography } from '@material-ui/core'
+import { Box, Typography, useTheme } from '@mui/material'
 import { graphql, useStaticQuery } from 'gatsby'
 import TeamMember from '../components/TeamMember'
-import { useTheme } from '@material-ui/core/styles'
 
 const OurTeamSection = () => {
   const theme = useTheme()

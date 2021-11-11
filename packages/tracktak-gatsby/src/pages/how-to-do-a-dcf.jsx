@@ -1,15 +1,12 @@
 import React from 'react'
-import Typography from '@material-ui/core/Typography'
-import { Box } from '@material-ui/core'
+import { Box, Typography } from '@mui/material'
 import wikiContent from '../data/wikiContent'
-import replaceSpaceWithHyphen from '../shared/replaceSpaceWithHyphen'
 import { Helmet } from 'react-helmet'
-import getTitle from '../shared/getTitle'
-import resourceName from '../shared/resourceName'
+import { utils } from '@tracktak/common'
 import SidePanel from '../components/SidePanel'
 
 const removeNonHashableChars = str => {
-  const newStr = replaceSpaceWithHyphen(str)
+  const newStr = utils.replaceSpaceWithHyphen(str)
 
   return newStr.replace(/\?|\(|\)|,|&/g, '')
 }
@@ -27,8 +24,10 @@ const Docs = () => {
   return (
     <>
       <Helmet>
-        <title>{getTitle('How to do a Discounted Cash Flow (DCF)')}</title>
-        <link rel='canonical' href={`${resourceName}/how-to-do-a-dcf`} />
+        <title>
+          {utils.getTitle('How to do a Discounted Cash Flow (DCF)')}
+        </title>
+        <link rel='canonical' href={`${utils.resourceName}/how-to-do-a-dcf`} />
         <meta
           name='description'
           content='Learn how to do a full DCF with projections of cash flows, terminal value and WACC.'

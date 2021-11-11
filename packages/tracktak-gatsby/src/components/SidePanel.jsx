@@ -9,14 +9,14 @@ import {
   Typography,
   List,
   ListItem,
-  ListItemText
-} from '@material-ui/core'
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
-import ChevronRightIcon from '@material-ui/icons/ChevronRight'
+  ListItemText,
+  useTheme
+} from '@mui/material'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import { navigate } from 'gatsby'
 import { AnchorLink } from 'gatsby-plugin-anchor-links'
-import { noop } from '../shared/utils'
-import { useTheme } from '@material-ui/core/styles'
+import { utils } from '@tracktak/common'
 
 const drawerWidth = 240
 
@@ -25,7 +25,7 @@ const SidePanel = ({
   tabs,
   titleMenuButtons,
   selectedTab,
-  setSeletedTab = noop
+  setSeletedTab = utils.noop
 }) => {
   const theme = useTheme()
   const [open, setOpen] = useState(false)

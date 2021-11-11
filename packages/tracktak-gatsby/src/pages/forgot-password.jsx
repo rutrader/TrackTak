@@ -1,13 +1,12 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import getTitle from '../shared/getTitle'
-import resourceName from '../shared/resourceName'
-import { Grid } from '@material-ui/core'
+import { utils } from '@tracktak/common'
+import { Grid } from '@mui/material'
 import Authentication, {
   AUTHENTICATION_FORM_STATE
 } from '../components/Authentication'
 import { navigate } from 'gatsby'
-import withAuthenticatedRedirect from '../hocs/withAuthenticatedRedirect'
+import { withAuthenticatedRedirect } from '@tracktak/auth'
 
 const ForgotPassword = ({ location }) => {
   const handleSuccess = () => {
@@ -17,8 +16,8 @@ const ForgotPassword = ({ location }) => {
   return (
     <>
       <Helmet>
-        <title>{getTitle('Forgot Password')}</title>
-        <link rel='canonical' href={`${resourceName}/forgot-password`} />
+        <title>{utils.getTitle('Forgot Password')}</title>
+        <link rel='canonical' href={`${utils.resourceName}/forgot-password`} />
         <meta name='description' content='Tracktak password recovery.' />
       </Helmet>
       <Grid container justifyContent='center'>

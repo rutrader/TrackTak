@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Hidden } from '@material-ui/core'
+import { Box, Hidden } from '@mui/material'
 import gridDots from '../assets/grid-dots-purple.svg'
 import YoutubeTutorial from '../components/YoutubeTutorial'
 

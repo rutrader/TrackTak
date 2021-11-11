@@ -1,16 +1,15 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import TextField from '@material-ui/core/TextField'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-import { useTheme } from '@material-ui/core/styles'
-import { useAuth } from '../hooks/useAuth'
-import Alert from '@material-ui/core/Alert'
-import { setMessage } from '../redux/actions/snackbarActions'
-import { Box } from '@material-ui/core'
-import tracktakLogoSvg from '../assets/tracktak-logo.svg'
-import { noop } from '../shared/utils'
-import RoundButton from './RoundButton'
+import {
+  TextField,
+  Grid,
+  Typography,
+  useTheme,
+  Alert,
+  Box
+} from '@mui/material'
+import { useAuth } from '@tracktak/auth'
+import { api, trackTakLogoIcon, utils, RoundButton } from '@tracktak/common'
 
 const ForgotPasswordForm = ({ onCancelClick }) => {
   const theme = useTheme()
@@ -22,7 +21,7 @@ const ForgotPasswordForm = ({ onCancelClick }) => {
 
   const handlePasswordResetFailure = err => {
     dispatch(
-      setMessage({
+      api.setMessage({
         message: err?.message,
         severity: 'error'
       })
@@ -38,7 +37,7 @@ const ForgotPasswordForm = ({ onCancelClick }) => {
     sendEmailVerification(
       email,
       handleVerificationEmailSent,
-      noop,
+      utils.noop,
       handlePasswordResetFailure,
       password
     )
@@ -60,7 +59,7 @@ const ForgotPasswordForm = ({ onCancelClick }) => {
           alignItems: 'center'
         }}
       >
-        <img src={tracktakLogoSvg} alt='tracktak' />
+        <img src={trackTakLogoIcon} alt='tracktak' />
         <Typography
           variant='h4'
           sx={{

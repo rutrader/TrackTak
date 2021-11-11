@@ -1,9 +1,7 @@
-import { Box, Typography } from '@material-ui/core'
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material'
 import React from 'react'
 import Img from 'gatsby-image'
 import { graphql, useStaticQuery } from 'gatsby'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
-import { useTheme } from '@material-ui/core/styles'
 
 const StyledImage = ({ sx, ...props }) => {
   return (

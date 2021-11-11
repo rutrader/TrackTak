@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, List, ListItem, Typography } from '@material-ui/core'
+import { Box, List, ListItem, Typography } from '@mui/material'
 import Formula from '../components/Formula'
 import YoutubeTutorial from '../components/YoutubeTutorial'
 

@@ -1,10 +1,9 @@
-import { useTheme } from '@emotion/react'
-import { Box, Container } from '@material-ui/core'
+import { Box, Container, useTheme } from '@mui/material'
 import { Link } from 'gatsby'
 import React from 'react'
 import Header, { LinkButton } from '../components/Header'
-import { signInLink } from '../../../packages/common/src/shared/getHeaderLinks'
-import { useAuth } from '../hooks/useAuth'
+import { headerLinks } from '@tracktak/common'
+import { useAuth } from '@tracktak/auth'
 
 const LayoutHome = ({ children }) => {
   const theme = useTheme()
@@ -13,7 +12,7 @@ const LayoutHome = ({ children }) => {
   const links = []
 
   if (!isAuthenticated) {
-    links.push(signInLink)
+    links.push(headerLinks.signInLink)
   }
 
   return (

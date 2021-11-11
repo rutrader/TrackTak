@@ -1,15 +1,14 @@
-import { Typography } from '@material-ui/core'
+import { Typography } from '@mui/material'
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import getTitle from '../shared/getTitle'
-import resourceName from '../shared/resourceName'
+import { utils } from '@tracktak/common'
 
 const AboutUs = () => {
   return (
     <>
       <Helmet>
-        <title>{getTitle('About Us')}</title>
-        <link rel='canonical' href={`${resourceName}/about-us`} />
+        <title>{utils.getTitle('About Us')}</title>
+        <link rel='canonical' href={`${utils.resourceName}/about-us`} />
         <meta
           name='description'
           content='Information about tracktak.com and the co-founders.'
