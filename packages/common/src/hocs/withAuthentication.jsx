@@ -1,7 +1,8 @@
 import { getUrlAuthParameters, useAuth } from '../hooks/useAuth'
 import React, { useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { PageSpinner, snackbarActions } from '@tracktak/common'
+import PageSpinner from '../components/PageSpinner'
+import { setMessage } from '../redux/actions/snackbarActions'
 import { useDispatch } from 'react-redux'
 
 const withAuthentication = Component => {
@@ -14,7 +15,7 @@ const withAuthentication = Component => {
 
     const handleVerificationFailure = useCallback(() => {
       dispatch(
-        snackbarActions.setMessage({
+        setMessage({
           message: 'Failed to update your details',
           severity: 'error'
         })
@@ -23,7 +24,7 @@ const withAuthentication = Component => {
 
     const handleVerificationSuccess = useCallback(() => {
       dispatch(
-        snackbarActions.setMessage({
+        setMessage({
           message: 'Successfully updated your details',
           severity: 'success'
         })

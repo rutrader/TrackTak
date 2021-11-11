@@ -1,5 +1,4 @@
-import { useAuth } from '@tracktak/auth'
-import { PageSpinner } from '@tracktak/common'
+import { PageSpinner, useAuth } from '@tracktak/common'
 import React, { useEffect } from 'react'
 import { navigate } from 'gatsby'
 

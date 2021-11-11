@@ -19,8 +19,14 @@ import * as regions from './data/regions'
 import * as snackbarActions from './redux/actions/snackbarActions'
 import * as snackbarReducer from './redux/reducers/snackbarReducer'
 import theme from './theme'
+import auth from './auth'
+import useAuth from './hooks/useAuth'
+import withAuthentication from './hocs/withAuthentication'
 
 export default {
+  auth,
+  useAuth,
+  withAuthentication,
   axios,
   api,
   globeIcon,

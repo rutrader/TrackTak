@@ -17,7 +17,7 @@ import {
   updateContactDetails as userUpdateContactDetails,
   getUserFromCode
 } from '../auth'
-import { utils } from '@tracktak/common'
+import utils from '../shared/utils'
 
 const AuthContext = createContext()
 

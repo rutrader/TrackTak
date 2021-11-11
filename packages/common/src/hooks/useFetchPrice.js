@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getPrice } from '../api/api'
-import { useAuth } from '@tracktak/auth'
+import useAuth from '../hooks/useAuth'
 
 const useFetchPrice = priceId => {
   const { getAccessToken } = useAuth()

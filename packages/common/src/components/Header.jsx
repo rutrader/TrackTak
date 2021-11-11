@@ -12,7 +12,7 @@ import LinkButton from './LinkButton'
 import React, { useState } from 'react'
 import MenuIcon from '@mui/icons-material/Menu'
 import TracktakLogo from './TracktakLogo'
-import { useAuth } from '@tracktak/auth'
+import useAuth from '../hooks/useAuth'
 
 const MenuItemLink = props => {
   return <MenuItem sx={{ '&.MuiMenuItem-root': { padding: 0 } }} {...props} />

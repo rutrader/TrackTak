@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { getCurrentPlan, updateCurrentPlan } from '../api/api'
-import { useAuth } from '@tracktak/auth'
+import useAuth from '../hooks/useAuth'
 
 const useCurrentPlan = () => {
   const { getAccessToken } = useAuth()
