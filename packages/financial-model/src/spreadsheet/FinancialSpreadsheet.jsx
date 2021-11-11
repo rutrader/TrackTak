@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { AlwaysSparse, HyperFormula } from 'hyperformula'
 import '@tracktak/powersheet/dist/index.css'
 import {
-  Spreadsheet as PowerSpreadsheet,
+  Spreadsheet,
   Toolbar,
   FormulaBar,
   Exporter,
@@ -17,7 +17,7 @@ import {
   ttFinancialImplementedFunctions
 } from './plugins/getTTFinancialPlugin'
 import finFunctionHelperData from './templates/finFunctionHelperData'
-import './Spreadsheet.css'
+import './FinancialSpreadsheet.css'
 
 const buildPowersheet = () => {
   const hyperformula = HyperFormula.buildEmpty({
@@ -125,7 +125,12 @@ const buildPowersheet = () => {
   return spreadsheet
 }
 
-const Spreadsheet = ({ sheetData, financialData, saveSheetData, ...props }) => {
+const FinancialSpreadsheet = ({
+  sheetData,
+  financialData,
+  saveSheetData,
+  ...props
+}) => {
   const [spreadsheet, setSpreadsheet] = useState()
   const [containerEl, setContainerEl] = useState()
   const currencySymbol = financialData?.general?.currencySymbol
@@ -207,4 +212,4 @@ const Spreadsheet = ({ sheetData, financialData, saveSheetData, ...props }) => {
   return <Box {...props} ref={setContainerEl} />
 }
 
-export default Spreadsheet
+export default FinancialSpreadsheet

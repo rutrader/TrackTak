@@ -1,5 +1,5 @@
 import getFinancialSheetPastValues from './getFinancialSheetPastValues'
-import isFinite from 'lodash/isFinite'
+import { isFinite } from 'lodash-es'
 
 // TODO: Fix when the API fixes the TTM for non-US stocks
 const getUSFinancialData = (

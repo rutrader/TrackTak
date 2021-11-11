@@ -5,6 +5,8 @@ import isBetween from 'dayjs/plugin/isBetween'
 import convertSubCurrencyToCurrency from './shared/convertSubCurrencyToCurrency'
 import convertStockAPIData from './shared/convertStockAPIData'
 import * as thunks from './redux/thunks/stockThunks'
+import FinancialSpreadsheet from './spreadsheet/FinancialSpreadsheet'
+import createStore from './redux/createStore'
 
 dayjs.extend(minMax)
 dayjs.extend(advancedFormat)
@@ -15,5 +17,5 @@ export default {
   convertStockAPIData,
   thunks,
   createStore,
-  Spreadsheet
+  FinancialSpreadsheet
 }
