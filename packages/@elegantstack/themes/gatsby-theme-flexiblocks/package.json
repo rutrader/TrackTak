@@ -13,7 +13,9 @@
     "@elegantstack/solid-ui-components": "^3.5.0",
     "@elegantstack/solid-ui-layout": "^3.0.0",
     "@elegantstack/solid-ui-theme": "^3.2.0",
-    "gatsby-plugin-page-creator": "^3.13.0"
+    "gatsby-plugin-page-creator": "^3.13.0",
+    "@babel/core": "^7.12.3",
+    "gatsby": "^3.14.5"
   },
   "peerDependencies": {
     "gatsby": "^3.14.5",
