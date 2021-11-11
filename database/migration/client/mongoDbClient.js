@@ -6,7 +6,7 @@ const DB_CONFIG = {
   user: "root",
   password: "mongoRootPassword",
 };
-const URI = `mongodb://${DB_CONFIG.user}:${DB_CONFIG.password}@${DB_CONFIG.host}/${DB_CONFIG.name}?retryWrites=true&authSource=admin`;
+const URI = `mongodb://${DB_CONFIG.user}:${DB_CONFIG.password}@${DB_CONFIG.host}/${DB_CONFIG.name}?retryWrites=true&authSource=${DB_CONFIG.name}`;
 
 const client = new MongoDb.MongoClient(URI, {
   useNewUrlParser: true,
