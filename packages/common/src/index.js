@@ -1,5 +1,5 @@
 import axios from './api/axios'
-import api from './api/api'
+import * as api from './api/api'
 import globeIcon from './assets/globe.svg'
 import tracktakLogoSmallIcon from './assets/tracktak-logo-small.svg'
 import tracktakLogoIcon from './assets/tracktak-logo.svg'

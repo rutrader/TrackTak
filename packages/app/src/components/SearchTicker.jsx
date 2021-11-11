@@ -24,7 +24,7 @@ import isStockDisabled from '../shared/isStockDisabled'
 import getSymbolFromCurrency from 'currency-symbol-map'
 import { cloneDeep } from 'lodash-es'
 
-const SearchTicker = ({ isSmallSearch, sx }) => {
+const SearchTicker = ({ isSmallSearch, sx, template }) => {
   const theme = useTheme()
   const [autoComplete, setAutoComplete] = useState([])
   const [isLoadingAutocomplete, setIsLoadingAutocomplete] = useState(false)
@@ -37,20 +37,17 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
   const createUserSpreadsheet = async ticker => {
     const values = await Promise.all([
       getAccessToken(),
-      import(
-        '../../../packages/financial-model/src/spreadsheet/templates/freeCashFlowFirmSimple.json'
-      ),
       api.getFundamentals(ticker, {
         filter: 'General::CurrencyCode'
       })
     ])
 
     const token = values[0]
-    const freeCashFlowToFirmTemplateData = cloneDeep(values[1].default)
+    const freeCashFlowToFirmTemplateData = cloneDeep(template)
 
     Object.keys(freeCashFlowToFirmTemplateData.cells).forEach(key => {
       const cellData = freeCashFlowToFirmTemplateData.cells[key]
-      const currencyCode = convertSubCurrencyToCurrency(values[2].data.value)
+      const currencyCode = convertSubCurrencyToCurrency(values[1].data.value)
       const currencySymbol = getSymbolFromCurrency(currencyCode)
 
       if (cellData.dynamicFormat === 'currency') {

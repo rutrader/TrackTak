@@ -8,7 +8,7 @@ import {
   CognitoUserSession
 } from 'amazon-cognito-identity-js'
 import axios from 'axios'
-import utils from './utils'
+import utils from './shared/utils'
 
 const POOL_CONFIG = {
   UserPoolId: process.env.GATSBY_COGNITO_USER_POOL_ID,

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Dialog, DialogContent, DialogTitle } from '@mui/material'
 import SearchTicker from './SearchTicker'
+import { freeCashFlowFirmSimple } from '@tracktak/financial-model'
 
 const SearchTickerDialog = ({ open, onClose }) => {
   return (
@@ -19,7 +20,7 @@ const SearchTickerDialog = ({ open, onClose }) => {
         Search for the company that you want to value.
       </DialogTitle>
       <DialogContent>
-        <SearchTicker />
+        <SearchTicker template={freeCashFlowFirmSimple} />
       </DialogContent>
     </Dialog>
   )
