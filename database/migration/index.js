@@ -6,10 +6,18 @@ import { Collections } from "./client/collections.js";
   await database.connect();
 
   const allData = await database.find(Collections.SPREADSHEET);
-  const mappedData = allData.map((data) => ({
-    ...data,
-    sheetData: mapper(data.sheetData, data.financialData.ticker),
-  }));
+  const mappedData = allData.map((data) => {
+    const isInPowersheetFormat = !!data.sheetData.data.sheets;
+    if (isInPowersheetFormat) {
+      console.log("Record already in Powersheet format");
+      return data;
+    }
+
+    return {
+      ...data,
+      sheetData: mapper(data.sheetData, data.financialData.ticker),
+    };
+  });
   console.log(
     `Mapped ${mappedData.length} records from collection: ${Collections.SPREADSHEET}`,
   );
