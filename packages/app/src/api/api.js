@@ -1,4 +1,4 @@
-import axios from '../../../financial-model/src/api/axios'
+import axios from '../../../common/src/api/axios'
 
 const errorResponseHandler = error => {
   if (

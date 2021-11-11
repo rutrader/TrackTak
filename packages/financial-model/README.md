@@ -51,17 +51,6 @@ The ticker must be in dot notation, so for example: AAPL.US, RDW.LSE, PTL.AU etc
 
 The package has a couple of API calls to our backend, this is due to the spreadsheet having an api built into it, i.e =FIN().
 
-## To Note
-
-- Later on we will be removing the React dependency and making this a pure javascript library.
-- The spreadsheet will add the input props to the url so that it can be deep linked into, i.e this part of the url: `?cagrInYears_1_5=11%25&ebitTargetMarginInYear_10=11%25&salesToCapitalRatio=1.71&yearOfConvergence=2`.
-
-Apologies is this isn't what you want, we are removing it soon and switching to user accounts with unique hash id's like Google Sheets. If this is a big problem in using this library then we can remove it immediately for you.
-
-## Branding
-
-Please insert 'powered by tracktak.com' with tracktak.com being a link or similar linked text somewhere near the spreadsheet.
-
 ## License
 
 You cannot use this package in a production environment unless you have signed the 'SOFTWARE VAR AGREEMENT' contract we have provided you (or will provide) or a similar license agreement with us.

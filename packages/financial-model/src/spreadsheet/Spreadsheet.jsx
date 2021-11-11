@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import { useEffect } from 'react'
-import { Box } from '@material-ui/core'
 import { AlwaysSparse, HyperFormula } from 'hyperformula'
 import '@tracktak/powersheet/dist/index.css'
 import {
