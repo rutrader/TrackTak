@@ -1,13 +1,13 @@
 module.exports = {
   flags: {
-    DEV_SSR: true
+    DEV_SSR: false
   },
   plugins: [
     {
       resolve: '@elegantstack/gatsby-theme-flexiblocks',
       options: {
-        createDemoPages: false,
-        colorMode: false
+        createDemoPages: true,
+        colorMode: true
       }
     },
     {

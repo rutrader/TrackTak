@@ -5472,7 +5472,7 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
   integrity sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
 
-"@tracktak/powersheet@*", "@tracktak/powersheet@^1.0.1":
+"@tracktak/powersheet@^1.0.1":
   version "1.0.1"
   resolved "https://npm.pkg.github.com/download/@tracktak/powersheet/1.0.1/15be30d7e2f5ef01ab2b77ff2d976cf131500aec3ebc1a549aa65221d269949b#4135138ebc2212cd10b16b6b720c1995138a7140"
   integrity sha512-DZkVks5kpDXo6ngEle/8oxhg1hgWTE7Zw7n7W5y/YHbCpvgQaraTeaQxthmd2orDszl7FP/TuscOzM24ZpsDVg==
@@ -20638,6 +20638,11 @@ react-accessible-accordion@^3.3.5:
   resolved "https://registry.yarnpkg.com/react-accessible-accordion/-/react-accessible-accordion-3.3.5.tgz#5d035994a261c832a57e7822f1bbacf914c5a5cc"
   integrity sha512-yCh3tx+jNuOPs+m58LOBFTGDEaGvM8UfuCNznr855FDAWzwV8V/ZH/TVBvgqH0npP58KrrVrHpj4jcy0EE5hEw==
 
+react-accessible-accordion@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/react-accessible-accordion/-/react-accessible-accordion-4.0.0.tgz#83bf0c3e403e7627dbf3109c628b597142923937"
+  integrity sha512-MovuWj2Uweo57LSgTIPpB83IYq8BNdZJ44j4NmDKYxaHC/H0JjYiqt8OfNMt+YK+XN8qRON13ERQnLfM73vmqw==
+
 react-app-polyfill@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/react-app-polyfill/-/react-app-polyfill-2.0.0.tgz#a0bea50f078b8a082970a9d853dc34b6dcc6a3cf"
@@ -20688,7 +20693,7 @@ react-dev-utils@^11.0.0, react-dev-utils@^11.0.3:
     strip-ansi "6.0.0"
     text-table "0.2.0"
 
-react-dom@^16.8.1:
+react-dom@^16.11.0, react-dom@^16.8.1:
   version "16.14.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.14.0.tgz#7ad838ec29a777fb3c75c3a190f661cf92ab8b89"
   integrity sha512-1gCeQXDLoIqMgqD3IO2Ah9bnf0w9kzhwN5q4FGnHZ67hBm9yePzB5JJAIQCc8x3pFnNlwFq4RidZggNAAkzWWw==
@@ -20938,7 +20943,7 @@ react-sticky-el@^2.0.9:
   resolved "https://registry.yarnpkg.com/react-sticky-el/-/react-sticky-el-2.0.9.tgz#8cfd17f073c8c116d7c15d2a23156b5e8e372bd9"
   integrity sha512-JFjFWlaB7gn5bszZlRQ/VKxK3zHiViJdn0EhQ/6WImun5Xbx3OMUX2rirr0QLSEo27dwvoSE4HkIFr30QAScfg==
 
-react-tabs@^3.2.2:
+react-tabs@^3.2.3:
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/react-tabs/-/react-tabs-3.2.3.tgz#ccbb3e1241ad3f601047305c75db661239977f2f"
   integrity sha512-jx325RhRVnS9DdFbeF511z0T0WEqEoMl1uCE3LoZ6VaZZm7ytatxbum0B8bCTmaiV0KsU+4TtLGTGevCic7SWg==

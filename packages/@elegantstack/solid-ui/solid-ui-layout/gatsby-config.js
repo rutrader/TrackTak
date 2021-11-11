@@ -1,6 +1,5 @@
 module.exports = {
   plugins: [
-    // 'gatsby-plugin-smooth-scrollbar',
     {
       resolve: '@elegantstack/gatsby-plugin-alias-imports',
       options: {

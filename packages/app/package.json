@@ -6,7 +6,7 @@
   "author": "TRACKTAK LTD",
   "license": "",
   "type": "module",
-  "source": "src/index.ts",
+  "source": "src/index.js",
   "exports": "./dist/index.modern.js",
   "main": "./dist/index.js",
   "module": "./dist/index.module.js",
