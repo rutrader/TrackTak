@@ -77,12 +77,12 @@ const styles = {
 
 const ColorMode = () => {
   const [open, setOpen] = useState()
-  const [colorMode, setColorMode] = useColorMode()
-  const context = useThemeUI()
+  // const [colorMode, setColorMode] = useColorMode()
+  // const context = useThemeUI()
   const { pageContext } = useContext(pageContextProvider)
 
-  const { modes } = context.theme.colors
-  const modeNames = Object.keys(modes)
+  // const { modes } = context.theme.colors
+  // const modeNames = Object.keys(modes)
 
   const handleChange = color => setColorMode(color)
   const handleToggle = () => setOpen(state => !state)

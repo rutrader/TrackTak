@@ -27,7 +27,7 @@
   "dependencies": {
     "@babel/core": "^7.12.3",
     "@contentful/rich-text-react-renderer": "^14.1.2",
-    "@emotion/react": "^11.4.1",
+    "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
     "@fontsource/nunito": "^4.2.2",
     "@material-ui/core": "^5.0.0-beta.2",
