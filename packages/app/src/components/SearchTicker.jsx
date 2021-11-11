@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import { Box, IconButton, Autocomplete, useMediaQuery } from '@material-ui/core'
-import dayjs from 'dayjs'
-import SearchIcon from '@material-ui/icons/Search'
-import useDebouncedCallback from '../../../packages/financial-model/src/hooks/useDebouncedCallback'
-import TTRoundInput from '../../../common/src/components/TTRoundInput'
 import {
-  getAutocompleteQuery,
-  getFundamentals
-} from '../../../packages/financial-model/src/api/api'
-import { useAuth } from '../hooks/useAuth'
-import { createSpreadsheet } from '../api/api'
-import { navigate } from 'gatsby'
+  Box,
+  IconButton,
+  Autocomplete,
+  useMediaQuery,
+  useTheme
+} from '@mui/material'
+import dayjs from 'dayjs'
+import SearchIcon from '@mui/icons-material/Search'
+import {
+  useDebouncedCallback,
+  TTRoundInput,
+  api,
+  snackbarActions,
+  utils,
+  useCurrentPlan
+} from '@tracktak/common'
+import { useAuth } from '@tracktak/auth'
 import { useDispatch } from 'react-redux'
-import { setMessage } from '../redux/actions/snackbarActions'
 import { HyperFormula } from 'hyperformula'
-import { trackCustomEvent } from 'gatsby-plugin-google-analytics'
-import { trackingFormatDate } from '../shared/utils'
-import { useTheme } from '@material-ui/core/styles'
-import useCurrentPlan, { isStockDisabled } from '../hooks/useCurrentPlan'
-import convertSubCurrencyToCurrency from '../../../packages/financial-model/src/shared/convertSubCurrencyToCurrency'
+import isStockDisabled from '../shared/isStockDisabled'
 import getSymbolFromCurrency from 'currency-symbol-map'
 import { cloneDeep } from 'lodash-es'
 
@@ -38,7 +39,7 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
       import(
         '../../../packages/financial-model/src/spreadsheet/templates/freeCashFlowFirmSimple.json'
       ),
-      getFundamentals(ticker, {
+      api.getFundamentals(ticker, {
         filter: 'General::CurrencyCode'
       })
     ])
@@ -48,7 +49,9 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
 
     Object.keys(freeCashFlowToFirmTemplateData.cells).forEach(key => {
       const cellData = freeCashFlowToFirmTemplateData.cells[key]
-      const currencyCode = convertSubCurrencyToCurrency(values[2].data.value)
+      const currencyCode = utils.convertSubCurrencyToCurrency(
+        values[2].data.value
+      )
       const currencySymbol = getSymbolFromCurrency(currencyCode)
 
       if (cellData.dynamicFormat === 'currency') {
@@ -60,7 +63,7 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
       name: ticker,
       data: freeCashFlowToFirmTemplateData
     }
-    const response = await createSpreadsheet(
+    const response = await api.createSpreadsheet(
       { sheetData, ticker },
       token?.jwtToken
     )
@@ -73,7 +76,7 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
       `/${userData.name}/my-spreadsheets/${response.data.spreadsheet._id}`
     )
     dispatch(
-      setMessage({
+      snackbarActions.setMessage({
         severity: 'success',
         message: `${ticker}'s financial data has been frozen to ${dayjs().format(
           'DD MMM YYYY'
@@ -83,7 +86,9 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
   }
 
   const getAutoCompleteDebounced = useDebouncedCallback(async value => {
-    const { data } = await getAutocompleteQuery(`${value}?limit=9&type=stock`)
+    const { data } = await api.getAutocompleteQuery(
+      `${value}?limit=9&type=stock`
+    )
     setIsLoadingAutocomplete(false)
     setAutoComplete(data.value)
   }, 300)
@@ -99,7 +104,7 @@ const SearchTicker = ({ isSmallSearch, sx }) => {
       trackCustomEvent({
         category: 'Valuation',
         action: `Create ${ticker} valuation`,
-        value: dayjs().format(trackingFormatDate)
+        value: dayjs().format(utils.trackingFormatDate)
       })
 
       createUserSpreadsheet(ticker)

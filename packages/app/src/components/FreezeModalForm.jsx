@@ -5,11 +5,11 @@ import {
   FormControlLabel,
   FormLabel,
   Radio,
-  RadioGroup
-} from '@material-ui/core'
-import { useTheme } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
-import useMediaQuery from '@mui/material/useMediaQuery'
+  RadioGroup,
+  useTheme,
+  Typography,
+  useMediaQuery
+} from '@mui/material'
 
 const FreezeModalForm = ({ header, subtext, setFreezeOption, currentPlan }) => {
   const theme = useTheme()

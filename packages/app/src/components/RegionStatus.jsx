@@ -1,8 +1,8 @@
 import React from 'react'
-import { Box } from '@material-ui/system'
-import CheckIcon from '@material-ui/icons/Check'
+import { Box } from '@mui/material'
+import CheckIcon from '@mui/icons-material/Check'
 import ClearIcon from '@mui/icons-material/Clear'
-import { red } from '@material-ui/core/colors'
+import { red } from '@mui/material/colors'
 
 const RegionStatus = ({ iconSvg, regionName, enabled }) => {
   return (

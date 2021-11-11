@@ -16,8 +16,8 @@ import {
   changePassword,
   updateContactDetails as userUpdateContactDetails,
   getUserFromCode
-} from '../api/auth'
-import { noop, removeQueryParams } from '../shared/utils'
+} from '../auth'
+import { utils } from '@tracktak/common'
 
 const AuthContext = createContext()
 
@@ -96,7 +96,7 @@ const useProvideAuth = () => {
         onSuccess(session)
       }
 
-      userSignIn(username, password, onCognitoSuccess, onFailure, noop)
+      userSignIn(username, password, onCognitoSuccess, onFailure, utils.noop)
     },
     [handleLoginSuccess]
   )
@@ -154,11 +154,11 @@ const useProvideAuth = () => {
     (challengeAnswer, onSuccess, onFailure, onChallengeFailure) => {
       const handleVerificationSuccess = () => {
         resumeSession()
-        removeQueryParams()
+        utils.removeQueryParams()
         onSuccess()
       }
       const handleVerificationFailure = () => {
-        removeQueryParams()
+        utils.removeQueryParams()
         onFailure()
       }
       userSendChallengeAnswer(
@@ -195,7 +195,7 @@ const useProvideAuth = () => {
     const signInWithFederatedLoginCode = async code => {
       await getUserFromCode(code)
       handleLoginSuccess()
-      removeQueryParams()
+      utils.removeQueryParams()
     }
 
     try {

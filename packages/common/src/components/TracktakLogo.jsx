@@ -1,11 +1,10 @@
 import { Box, Hidden } from '@material-ui/core'
-import { Link } from 'gatsby'
 import React from 'react'
-import tracktakLogoSvg from '../assets/tracktak-purple.svg'
+import tracktakLogoSvg from '../assets/tracktak-logo.svg'
 import tracktakLogoSmallSvg from '../assets/tracktak-logo-small.svg'
-import { useAuth } from '../../../../tracktak-gatsby/src/hooks/useAuth'
+import { useAuth } from '@tracktak/auth'
 
-const TracktakLogo = ({ width, height, logoProps, ...props }) => {
+const TracktakLogo = ({ width, height, logoProps, Link, ...props }) => {
   const { isAuthenticated } = useAuth()
 
   return (

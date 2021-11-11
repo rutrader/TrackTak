@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import Button from '@material-ui/core/Button'
-import { Box } from '@material-ui/core'
-
-import TextField from '@material-ui/core/TextField'
-import Grid from '@material-ui/core/Grid'
-import { useAuth } from '../../../../tracktak-gatsby/src/hooks/useAuth'
+import { Box, Button, TextField, Grid } from '@mui/material'
+import { useAuth } from '@tracktak/auth'
 import { useDispatch } from 'react-redux'
-import { setMessage } from '../../../../tracktak-gatsby/src/redux/actions/snackbarActions'
-import VerifyEmailLink from '../../../../tracktak-gatsby/src/components/VerifyEmailLink'
+import { snackbarActions } from '@tracktak/common'
+import VerifyEmailLink from './VerifyEmailLink'
 
 const ContactDetailsForm = () => {
   const { userData, updateContactDetails, isExternalIdentityProvider } =
@@ -38,7 +34,7 @@ const ContactDetailsForm = () => {
 
   const handleSuccess = () => {
     dispatch(
-      setMessage({
+      snackbarActions.setMessage({
         message: 'Successfully updated your details',
         severity: 'success'
       })
@@ -47,7 +43,7 @@ const ContactDetailsForm = () => {
 
   const handleError = err => {
     dispatch(
-      setMessage({
+      snackbarActions.setMessage({
         message: err?.message,
         severity: 'error'
       })

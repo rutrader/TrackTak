@@ -10,21 +10,20 @@ import {
   ListItemIcon,
   IconButton,
   Typography,
-  DialogContentText
-} from '@material-ui/core'
-import GridOnIcon from '@material-ui/icons/GridOn'
-import DeleteIcon from '@material-ui/icons/Delete'
-import { useTheme } from '@material-ui/core/styles'
+  DialogContentText,
+  useTheme
+} from '@mui/material'
+import GridOnIcon from '@mui/icons-material/GridOn'
+import DeleteIcon from '@mui/icons-material/Delete'
 import ConfirmationDialog from './ConfirmationDialog'
-import { useAuth } from '../../../../tracktak-gatsby/src/hooks/useAuth'
-import { deleteSpreadsheet, getSpreadsheets } from '../api/api'
-import { navigate } from 'gatsby'
+import { useAuth } from '@tracktak/auth'
+import { api, utils } from '@tracktak/common'
+import { useNavigate } from 'react-router-dom'
 import RoundButton from './RoundButton'
 import dayjs from 'dayjs'
-import { trackCustomEvent } from 'gatsby-plugin-google-analytics'
-import { trackingFormatDate } from '../../../../tracktak-gatsby/src/shared/utils'
 
-const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
+const SavedSpreadsheets = ({ onNewSpreadsheetClick, trackCustomEvent }) => {
+  const navigate = useNavigate()
   const theme = useTheme()
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false)
   const { userData, getAccessToken } = useAuth()
@@ -34,7 +33,7 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
   useEffect(() => {
     async function fetchData() {
       const token = await getAccessToken()
-      const response = await getSpreadsheets(token?.jwtToken)
+      const response = await api.getSpreadsheets(token?.jwtToken)
 
       setSpreadsheets(response.data.spreadsheets)
     }
@@ -47,7 +46,7 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
       category: 'Valuation',
       action: 'Modify',
       label: `Modified ${spreadsheet.sheetData.name}`,
-      value: dayjs().format(trackingFormatDate)
+      value: dayjs().format(utils.trackingFormatDate)
     })
   }
 
@@ -59,7 +58,7 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
   const handleDeleteConfirm = async () => {
     if (selectedSpreadsheet) {
       const token = await getAccessToken()
-      const response = await deleteSpreadsheet(
+      const response = await api.deleteSpreadsheet(
         selectedSpreadsheet._id,
         token?.jwtToken
       )

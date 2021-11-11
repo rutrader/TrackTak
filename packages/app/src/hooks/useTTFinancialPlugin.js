@@ -8,7 +8,7 @@ import {
   getLastPriceCloseThunk,
   getTenYearGovernmentBondLastCloseThunk
 } from '../../../packages/financial-model/src/redux/thunks/stockThunks'
-import { useAuth } from './useAuth'
+import { useAuth } from '../../../auth/src/hooks/useAuth'
 
 export const useTTFinancialPlugin = spreadsheet => {
   const [financialData, setFinancialData] = useState()

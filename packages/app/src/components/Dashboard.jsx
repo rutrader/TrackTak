@@ -1,11 +1,11 @@
-import { Box, IconButton, Typography } from '@material-ui/core'
+import { Box, IconButton, Typography } from '@mui/material'
+import { withAuthentication } from '@tracktak/auth'
+import AddIcon from '@mui/icons-material/Add'
 import React, { useState } from 'react'
 import { Helmet } from 'react-helmet'
-import getTitle from '../../../../tracktak-gatsby/src/shared/getTitle'
-import SavedSpreadsheets from '../components/SavedSpreadsheets'
-import SearchTickerDialog from '../components/SearchTickerDialog'
-import AddIcon from '@material-ui/icons/Add'
-import withAuthentication from '../hocs/withAuthentication'
+import { utils } from '@tracktak/common'
+import SavedSpreadsheets from './SavedSpreadsheets'
+import SearchTickerDialog from './SearchTickerDialog'
 
 const Dashboard = () => {
   const [showSearchTickerDialog, setShowSearchTickerDialog] = useState(false)
@@ -21,7 +21,7 @@ const Dashboard = () => {
   return (
     <>
       <Helmet>
-        <title>{getTitle('Dashboard')}</title>
+        <title>{utils.getTitle('Dashboard')}</title>
       </Helmet>
       <SearchTickerDialog
         open={showSearchTickerDialog}

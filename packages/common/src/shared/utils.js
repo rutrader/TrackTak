@@ -2,6 +2,14 @@ export const noop = () => {}
 
 export const trackingFormatDate = 'DD/MM/YYYY HH:mm'
 
+export const resourceName = 'https://tracktak.com'
+
+export const getTitle = title => {
+  return `${title} | tracktak.com`
+}
+
+export const replaceSpaceWithHyphen = str => str.replace(/\s/g, '-')
+
 export const removeQueryParams = () => {
   window.history.replaceState(
     null,
@@ -11,6 +19,16 @@ export const removeQueryParams = () => {
         .substring(window.location.href.lastIndexOf('/') + 1)
         .split('?')[0]
   )
+}
+
+export const convertSubCurrencyToCurrency = currencyCode => {
+  if (currencyCode === 'ILA') {
+    return 'ILS'
+  }
+  if (currencyCode === 'GBX') {
+    return 'GBP'
+  }
+  return currencyCode
 }
 
 export const formatPrice = ({ unitAmount, currency }) => {

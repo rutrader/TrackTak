@@ -1,16 +1,17 @@
 import React from 'react'
-import { IconButton, Typography } from '@material-ui/core'
-import { Box, useTheme } from '@material-ui/system'
+import { IconButton, Typography, Box, useTheme } from '@mui/material'
 import { Helmet } from 'react-helmet'
-import getTitle from '../../../../tracktak-gatsby/src/shared/getTitle'
-import { navigate } from 'gatsby'
+import { utils } from '@tracktak/common'
+import { useNavigate } from 'react-router-dom'
 
-function CancellationPlan({ route, iconArrow, header, bodyText }) {
+const CancellationPlan = ({ route, iconArrow, header, bodyText }) => {
   const theme = useTheme()
+  const navigate = useNavigate()
+
   return (
     <>
       <Helmet>
-        <title>{getTitle('Switching Plan')}</title>
+        <title>{utils.getTitle('Switching Plan')}</title>
       </Helmet>
       <Box>
         <IconButton

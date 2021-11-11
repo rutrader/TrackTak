@@ -2,7 +2,7 @@ import React from 'react'
 import { Box } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 
-const SettingSection = ({ children, icon, heading, subHeading, sx }) => {
+const SettingsSection = ({ children, icon, heading, subHeading, sx }) => {
   return (
     <Box
       sx={{
@@ -33,4 +33,4 @@ const SettingSection = ({ children, icon, heading, subHeading, sx }) => {
   )
 }
 
-export default SettingSection
+export default SettingsSection

@@ -1,12 +1,9 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import Button from '@material-ui/core/Button'
-import { Box } from '@material-ui/core'
-import TextField from '@material-ui/core/TextField'
-import Grid from '@material-ui/core/Grid'
-import { useAuth } from '../../../../tracktak-gatsby/src/hooks/useAuth'
-import { setMessage } from '../../../../tracktak-gatsby/src/redux/actions/snackbarActions'
-import VerifyEmailLink from '../../../../tracktak-gatsby/src/components/VerifyEmailLink'
+import { Box, TextField, Button, Grid } from '@mui/material'
+import { useAuth } from '@tracktak/auth'
+import { snackbarActions } from '@tracktak/common'
+import VerifyEmailLink from './VerifyEmailLink'
 
 const ChangePasswordForm = () => {
   const { isEmailVerified, changePassword } = useAuth()
@@ -21,7 +18,7 @@ const ChangePasswordForm = () => {
 
   const handleSuccess = () => {
     dispatch(
-      setMessage({
+      snackbarActions.setMessage({
         message: 'Successfully updated your password',
         severity: 'success'
       })

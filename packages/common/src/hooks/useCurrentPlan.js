@@ -1,24 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { getCurrentPlan, updateCurrentPlan } from '../api/api'
-import { exchangeToPriceId, PriceIds } from '../../../common/src/data/regions'
-import { useAuth } from './useAuth'
-
-export const isStockDisabled = (currentPlan, stock) => {
-  if (process.env.GATSBY_PREMIUM_ENABLED === 'false') {
-    return false
-  }
-
-  if (
-    currentPlan?.priceIds.includes(PriceIds.WORLDWIDE) ||
-    (stock.exchange === 'US' && stock.isMediumCapUSPlus)
-  ) {
-    return false
-  }
-  if (stock.exchange === 'US' && !stock.isMediumCapUSPlus) {
-    return !currentPlan?.priceIds.includes(PriceIds.SMALL_CAP_US)
-  }
-  return !currentPlan?.priceIds.includes(exchangeToPriceId[stock.exchange])
-}
+import { exchangeToPriceId, PriceIds } from '../data/regions'
+import { useAuth } from '@tracktak/auth'
 
 const useCurrentPlan = () => {
   const { getAccessToken } = useAuth()

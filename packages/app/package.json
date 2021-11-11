@@ -7,6 +7,8 @@
   "license": "",
   "type": "module",
   "source": "src/index.ts",
+  "exports": "./dist/index.modern.js",
+  "main": "./dist/index.js",
   "module": "./dist/index.module.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -14,9 +16,26 @@
     "watch:build": "parcel watch"
   },
   "dependencies": {
+    "@babel/core": "^7.16.0",
+    "@emotion/react": "^11.5.0",
+    "@emotion/styled": "^11.3.0",
+    "@mui/icons-material": "^5.1.0",
+    "@mui/material": "^5.1.0",
+    "@parcel/core": "^2.0.1",
+    "@tracktak/auth": "*",
     "@tracktak/common": "*",
     "@tracktak/financial-model": "*",
-    "@parcel/core": "^2.0.1"
+    "currency-symbol-map": "^5.0.1",
+    "dayjs": "^1.10.7",
+    "hyperformula": "^1.3.0",
+    "lodash-es": "^4.17.21",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-helmet": "^6.1.0",
+    "react-redux": "^7.2.6",
+    "react-router": "^6.0.2",
+    "react-router-dom": "^6.0.2",
+    "redux": "^4.1.2"
   },
   "files": [
     "dist"

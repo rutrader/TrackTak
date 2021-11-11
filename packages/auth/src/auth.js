@@ -7,8 +7,8 @@ import {
   CognitoUserPool,
   CognitoUserSession
 } from 'amazon-cognito-identity-js'
-import { noop } from '../shared/utils'
 import axios from 'axios'
+import { utils } from '@tracktak/common'
 
 const POOL_CONFIG = {
   UserPoolId: process.env.GATSBY_COGNITO_USER_POOL_ID,
@@ -45,7 +45,7 @@ export const signIn = (
   password,
   onSuccess,
   onFailure,
-  newPasswordRequired = () => {}
+  newPasswordRequired = utils.noop
 ) => {
   const user = new CognitoUser({
     Username: username,
@@ -136,7 +136,7 @@ export const getUserFromCode = async code => {
 export const getCurrentUser = () => {
   const user = userPool.getCurrentUser()
   if (user) {
-    user.getSession(noop)
+    user.getSession(utils.noop)
   }
   return user
 }

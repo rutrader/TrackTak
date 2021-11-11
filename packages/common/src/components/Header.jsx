@@ -2,41 +2,17 @@ import {
   AppBar,
   Avatar,
   Box,
-  Button,
   Hidden,
   IconButton,
   Menu,
   MenuItem
 } from '@material-ui/core'
+import LinkButton from './LinkButton'
 import React, { useState } from 'react'
-import { Link, navigate } from 'gatsby'
 import MenuIcon from '@material-ui/icons/Menu'
-import SearchTicker from '../../../../tracktak-gatsby/src/components/SearchTicker'
 import TracktakLogo from './TracktakLogo'
-import { useAuth } from '../../../../tracktak-gatsby/src/hooks/useAuth'
+import { useAuth } from '@tracktak/auth'
 import { useTheme } from '@material-ui/core/styles'
-
-export const LinkButton = ({ sx, ...props }) => {
-  return (
-    <Button
-      sx={{
-        px: 2,
-        width: '100%',
-        textTransform: 'none',
-        fontWeight: 'bold',
-        color: theme => theme.palette.primary.mainTextColor,
-        borderTopLeftRadius: 0,
-        borderTopRightRadius: 0,
-        borderBottomRightRadius: 0,
-        borderBottomLeftRadius: 0,
-        height: '48px',
-        whiteSpace: 'nowrap',
-        ...sx
-      }}
-      {...props}
-    />
-  )
-}
 
 const MenuItemLink = props => {
   return <MenuItem sx={{ '&.MuiMenuItem-root': { padding: 0 } }} {...props} />
@@ -55,25 +31,14 @@ const SignOutButton = ({ handleOnSignOut, ...props }) => {
   )
 }
 
-const HeaderLink = ({ to, text, style }) => {
-  return (
-    <Box
-      sx={{
-        mx: 1,
-        whiteSpace: 'nowrap',
-        marginRight: 2.25,
-        ...style
-      }}
-    >
-      {/* aria-current due to @reach/router bug mismatch between server/client */}
-      <LinkButton aria-current={null} to={to} component={Link}>
-        {text}
-      </LinkButton>
-    </Box>
-  )
-}
-
-const Header = ({ hideSearch, position = 'fixed', links = [], children }) => {
+const Header = ({
+  hideSearch,
+  position = 'fixed',
+  links = [],
+  children,
+  navigate,
+  Link
+}) => {
   const theme = useTheme()
   const extraPadding = 20
   const paddingBottom = `${theme.mixins.toolbar.minHeight + extraPadding}px`
@@ -102,6 +67,24 @@ const Header = ({ hideSearch, position = 'fixed', links = [], children }) => {
   const handleAccountMenuClose = () => {
     setUserMenuAnchorEl(null)
     handleClose()
+  }
+
+  const HeaderLink = ({ to, text, style }) => {
+    return (
+      <Box
+        sx={{
+          mx: 1,
+          whiteSpace: 'nowrap',
+          marginRight: 2.25,
+          ...style
+        }}
+      >
+        {/* aria-current due to @reach/router bug mismatch between server/client */}
+        <LinkButton aria-current={null} to={to} component={Link}>
+          {text}
+        </LinkButton>
+      </Box>
+    )
   }
 
   const getUserAccountMenuItems = () => [

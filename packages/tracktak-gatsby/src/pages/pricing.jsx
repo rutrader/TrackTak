@@ -11,7 +11,7 @@ import { createCheckoutSession } from '../api/api'
 import { useAuth } from '../hooks/useAuth'
 import withAuthentication from '../hocs/withAuthentication'
 import { PriceIds } from '../../../common/src/data/regions'
-import useCurrentPlan from '../hooks/useCurrentPlan'
+import useCurrentPlan from '../../../common/src/hooks/useCurrentPlan'
 
 const Pricing = () => {
   const theme = useTheme()

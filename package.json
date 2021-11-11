@@ -6,8 +6,8 @@
     "packages/**"
   ],
   "engines": {
-    "yarn": "^1.17.3",
-    "node": "^16.3.0"
+    "yarn": "1.22.15",
+    "node": "16.13.0"
   },
   "scripts": {
     "generate-exh-pairs": "node --es-module-specifier-resolution=node ./scripts/writeECBExchangePairsToJSON.js",

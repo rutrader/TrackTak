@@ -1,21 +1,21 @@
-import { useTheme } from '@emotion/react'
 import {
   Grid,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Typography
-} from '@material-ui/core'
-import { navigate } from 'gatsby'
-import { Box } from '@material-ui/system'
+  Typography,
+  useTheme,
+  Box
+} from '@mui/material'
+import { useCurrentPlan } from '@tracktak/common'
 import React from 'react'
-import CheckIcon from '@material-ui/icons/Check'
+import CheckIcon from '@mui/icons-material/Check'
 import WarningAmberIcon from '@mui/icons-material/WarningAmber'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import MembershipButtons from '../components/MembershipButtons'
+import MembershipButtons from './MembershipButtons'
 import CancellationPlan from './CancellationPlan'
-import useCurrentPlan from '../hooks/useCurrentPlan'
+import { useNavigate } from 'react-router-dom'
 
 const listOfFeatures = [
   { feature: 'Small-cap United States API region access' },
@@ -26,6 +26,7 @@ const listOfFeatures = [
 const CancelPlan = () => {
   const theme = useTheme()
   const { updatePlan } = useCurrentPlan()
+  const navigate = useNavigate()
 
   const handleEndMyMembershipClick = () => {
     updatePlan({

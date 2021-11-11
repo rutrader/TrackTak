@@ -8,7 +8,7 @@ import { useAuth } from '../hooks/useAuth'
 import Alert from '@material-ui/core/Alert'
 import { setMessage } from '../redux/actions/snackbarActions'
 import { Box } from '@material-ui/core'
-import tracktakLogoSvg from '../assets/tracktak-purple.svg'
+import tracktakLogoSvg from '../assets/tracktak-logo.svg'
 import { noop } from '../shared/utils'
 import RoundButton from './RoundButton'
 

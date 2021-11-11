@@ -1,7 +1,7 @@
 import React from 'react'
 import { Typography } from '@material-ui/core'
 import RegionStatus from './RegionStatus'
-import { listAPIregions, PriceIds } from '../data/regions'
+import { regions } from '@tracktak/common'
 
 const CurrentPlan = ({ currentPlan }) => {
   return (
@@ -9,10 +9,10 @@ const CurrentPlan = ({ currentPlan }) => {
       <Typography variant='h8' fontWeight='bold' gutterBottom>
         Enabled Regions
       </Typography>
-      {listAPIregions.map((listAPIRegion, i) => {
+      {regions.listAPIregions.map((listAPIRegion, i) => {
         const enabled =
-          listAPIRegion.priceId === PriceIds.MEDIUM_CAP_US_PLUS ||
-          currentPlan?.priceIds.includes(PriceIds.WORLDWIDE) ||
+          listAPIRegion.priceId === regions.PriceIds.MEDIUM_CAP_US_PLUS ||
+          currentPlan?.priceIds.includes(regions.PriceIds.WORLDWIDE) ||
           currentPlan?.priceIds.includes(listAPIRegion.priceId)
 
         return (

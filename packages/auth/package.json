@@ -1,8 +1,8 @@
 {
-  "name": "@tracktak/common",
+  "name": "@tracktak/auth",
   "version": "1.0.0",
   "private": true,
-  "description": "The spreadsheet application behind user auth.",
+  "description": "The authentication for trackak.",
   "author": "TRACKTAK LTD",
   "license": "",
   "type": "module",
@@ -16,9 +16,14 @@
     "watch:build": "parcel watch"
   },
   "dependencies": {
-    "@tracktak/auth": "*",
-    "@tracktak/financial-model": "*",
-    "@parcel/core": "^2.0.1"
+    "@tracktak/common": "*",
+    "@parcel/core": "^2.0.1",
+    "amazon-cognito-identity-js": "^4.6.0",
+    "axios": "^0.21.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router": "^6.0.2",
+    "react-router-dom": "^6.0.2"
   },
   "files": [
     "dist"

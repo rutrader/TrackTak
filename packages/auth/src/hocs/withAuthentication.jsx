@@ -1,11 +1,12 @@
 import { getUrlAuthParameters, useAuth } from '../hooks/useAuth'
 import React, { useCallback, useEffect } from 'react'
-import { navigate } from 'gatsby'
-import PageSpinner from '../components/PageSpinner'
-import { setMessage } from '../redux/actions/snackbarActions'
+import { useNavigate } from 'react-router-dom'
+import { PageSpinner, snackbarActions } from '@tracktak/common'
 import { useDispatch } from 'react-redux'
 
 const withAuthentication = Component => {
+  const navigate = useNavigate()
+
   const Container = props => {
     const { isAuthenticated, hasLoadedAuthDetails, sendChallengeAnswer } =
       useAuth()
@@ -13,7 +14,7 @@ const withAuthentication = Component => {
 
     const handleVerificationFailure = useCallback(() => {
       dispatch(
-        setMessage({
+        snackbarActions.setMessage({
           message: 'Failed to update your details',
           severity: 'error'
         })
@@ -22,7 +23,7 @@ const withAuthentication = Component => {
 
     const handleVerificationSuccess = useCallback(() => {
       dispatch(
-        setMessage({
+        snackbarActions.setMessage({
           message: 'Successfully updated your details',
           severity: 'success'
         })

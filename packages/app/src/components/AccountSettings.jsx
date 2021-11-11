@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Helmet } from 'react-helmet'
-import getTitle from '../../../../tracktak-gatsby/src/shared/getTitle'
-import resourceName from '../../../../tracktak-gatsby/src/shared/resourceName'
+import { utils, useCurrentPlan, api } from '@tracktak/common'
+import { useAuth, withAuthentication } from '@tracktak/auth'
 import {
   Divider,
   Paper,
@@ -10,28 +10,25 @@ import {
   Grid,
   Button,
   Stack
-} from '@material-ui/core'
+} from '@mui/material'
 import ContactDetailsForm from './ContactDetailsForm'
-import SettingSection from './SettingSection'
+import SettingSection from './SettingsSection'
 import ChangePasswordForm from './ChangePasswordForm'
 import CurrentPlan from './CurrentPlan'
-import withAuthentication from '../hocs/withAuthentication'
-import { useAuth } from '../../../../tracktak-gatsby/src/hooks/useAuth'
 import AccountBoxIcon from '@mui/icons-material/AccountBox'
 import LockIcon from '@mui/icons-material/Lock'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import PaymentIcon from '@mui/icons-material/Payment'
-import useCurrentPlan from '../../../../tracktak-gatsby/src/hooks/useCurrentPlan'
 import ConfirmationDialog from './ConfirmationDialog'
-import { createCustomerPortal } from '../api/api'
 import ClearIcon from '@mui/icons-material/Clear'
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome'
 import FreezeModalForm from './FreezeModalForm'
-import { navigate } from 'gatsby'
 import AcUnit from '@mui/icons-material/AcUnit'
+import { useNavigate } from 'react-router-dom'
 
 const AccountSettings = () => {
   const { getAccessToken } = useAuth()
+  const navigate = useNavigate()
   const { isExternalIdentityProvider } = useAuth()
   const { currentPlan, updatePlan } = useCurrentPlan()
   const [showFreezePlanDialog, setShowFreezePlanDialog] = useState(false)
@@ -81,7 +78,7 @@ const AccountSettings = () => {
 
   const handleOnClickCustomerPortal = async () => {
     const token = await getAccessToken()
-    const { data } = await createCustomerPortal(token?.jwtToken)
+    const { data } = await api.createCustomerPortal(token?.jwtToken)
 
     window.location.href = data.url
   }
@@ -93,8 +90,8 @@ const AccountSettings = () => {
   return (
     <>
       <Helmet>
-        <title>{getTitle('Account Settings')}</title>
-        <link rel='canonical' href={`${resourceName}/account-settings`} />
+        <title>{utils.getTitle('Account Settings')}</title>
+        <link rel='canonical' href={`${utils.resourceName}/account-settings`} />
         <meta name='description' content='Account Settings.' />
       </Helmet>
       <Paper
