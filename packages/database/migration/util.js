@@ -1,1 +1,1 @@
-export const isEmpty = (obj) => (obj ? !Object.keys(obj).length : true);
+export const isEmpty = obj => (obj ? !Object.keys(obj).length : true)

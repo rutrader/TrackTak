@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 import {
   Table,
   TableBody,
@@ -10,76 +10,76 @@ import {
   ListItemIcon,
   IconButton,
   Typography,
-  DialogContentText,
-} from "@material-ui/core";
-import GridOnIcon from "@material-ui/icons/GridOn";
-import DeleteIcon from "@material-ui/icons/Delete";
-import { useTheme } from "@material-ui/core/styles";
-import ConfirmationDialog from "./ConfirmationDialog";
-import { useAuth } from "../../../../tracktak-gatsby/src/hooks/useAuth";
-import { deleteSpreadsheet, getSpreadsheets } from "../api/api";
-import { navigate } from "gatsby";
-import RoundButton from "./RoundButton";
-import dayjs from "dayjs";
-import { trackCustomEvent } from "gatsby-plugin-google-analytics";
-import { trackingFormatDate } from "../../../../tracktak-gatsby/src/shared/utils";
+  DialogContentText
+} from '@material-ui/core'
+import GridOnIcon from '@material-ui/icons/GridOn'
+import DeleteIcon from '@material-ui/icons/Delete'
+import { useTheme } from '@material-ui/core/styles'
+import ConfirmationDialog from './ConfirmationDialog'
+import { useAuth } from '../../../../tracktak-gatsby/src/hooks/useAuth'
+import { deleteSpreadsheet, getSpreadsheets } from '../api/api'
+import { navigate } from 'gatsby'
+import RoundButton from './RoundButton'
+import dayjs from 'dayjs'
+import { trackCustomEvent } from 'gatsby-plugin-google-analytics'
+import { trackingFormatDate } from '../../../../tracktak-gatsby/src/shared/utils'
 
 const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
-  const theme = useTheme();
-  const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
-  const { userData, getAccessToken } = useAuth();
-  const [spreadsheets, setSpreadsheets] = useState(null);
-  const [selectedSpreadsheet, setSelectedSpreadsheet] = useState();
+  const theme = useTheme()
+  const [showConfirmationDialog, setShowConfirmationDialog] = useState(false)
+  const { userData, getAccessToken } = useAuth()
+  const [spreadsheets, setSpreadsheets] = useState(null)
+  const [selectedSpreadsheet, setSelectedSpreadsheet] = useState()
 
   useEffect(() => {
     async function fetchData() {
-      const token = await getAccessToken();
-      const response = await getSpreadsheets(token?.jwtToken);
+      const token = await getAccessToken()
+      const response = await getSpreadsheets(token?.jwtToken)
 
-      setSpreadsheets(response.data.spreadsheets);
+      setSpreadsheets(response.data.spreadsheets)
     }
-    fetchData();
-  }, [getAccessToken]);
+    fetchData()
+  }, [getAccessToken])
 
-  const handleRowClick = (spreadsheet) => {
-    navigate(`/${userData.name}/my-spreadsheets/${spreadsheet._id}`);
+  const handleRowClick = spreadsheet => {
+    navigate(`/${userData.name}/my-spreadsheets/${spreadsheet._id}`)
     trackCustomEvent({
-      category: "Valuation",
-      action: "Modify",
+      category: 'Valuation',
+      action: 'Modify',
       label: `Modified ${spreadsheet.sheetData.name}`,
-      value: dayjs().format(trackingFormatDate),
-    });
-  };
+      value: dayjs().format(trackingFormatDate)
+    })
+  }
 
-  const handleDelete = (spreadsheet) => {
-    setSelectedSpreadsheet(spreadsheet);
-    setShowConfirmationDialog(true);
-  };
+  const handleDelete = spreadsheet => {
+    setSelectedSpreadsheet(spreadsheet)
+    setShowConfirmationDialog(true)
+  }
 
   const handleDeleteConfirm = async () => {
     if (selectedSpreadsheet) {
-      const token = await getAccessToken();
+      const token = await getAccessToken()
       const response = await deleteSpreadsheet(
         selectedSpreadsheet._id,
-        token?.jwtToken,
-      );
+        token?.jwtToken
+      )
       if (response.status === 200) {
         const updatedSpreadsheets = spreadsheets.filter(
-          (spreadsheet) => spreadsheet._id !== selectedSpreadsheet._id,
-        );
-        setSpreadsheets(updatedSpreadsheets);
+          spreadsheet => spreadsheet._id !== selectedSpreadsheet._id
+        )
+        setSpreadsheets(updatedSpreadsheets)
       }
     }
-  };
+  }
 
   const handleConfirmationDialogClose = () => {
-    setShowConfirmationDialog(false);
-  };
+    setShowConfirmationDialog(false)
+  }
 
   const cellHeaderStyle = {
     fontSize: theme.typography.table.header,
-    fontWeight: "bold",
-  };
+    fontWeight: 'bold'
+  }
 
   return (
     <>
@@ -88,13 +88,13 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
         onClose={handleConfirmationDialogClose}
         onCancel={handleConfirmationDialogClose}
         onConfirm={handleDeleteConfirm}
-        confirmText="Delete"
-        cancelText="Cancel"
-        titleText="Confirm"
+        confirmText='Delete'
+        cancelText='Cancel'
+        titleText='Confirm'
       >
         <DialogContentText
           sx={{
-            color: "black",
+            color: 'black'
           }}
         >
           Are you sure you want to delete this valuation?
@@ -104,21 +104,21 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
       {spreadsheets?.length === 0 && (
         <Box
           sx={{
-            marginTop: (theme) => theme.spacing(10),
+            marginTop: theme => theme.spacing(10)
           }}
-          textAlign={"center"}
+          textAlign={'center'}
         >
-          <Typography gutterBottom variant="h5">
+          <Typography gutterBottom variant='h5'>
             Start by creating your first valuation!
           </Typography>
           <RoundButton
-            variant="contained"
-            color="primary"
+            variant='contained'
+            color='primary'
             onClick={onNewSpreadsheetClick}
-            type="button"
+            type='button'
             sx={{
               mt: 2,
-              textTransform: "none",
+              textTransform: 'none'
             }}
           >
             Create Valuation
@@ -128,20 +128,20 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
       {spreadsheets?.length > 0 && (
         <TableContainer
           sx={{
-            marginTop: "20px",
-            "& .MuiTableRow-root": {
-              cursor: "pointer",
-            },
+            marginTop: '20px',
+            '& .MuiTableRow-root': {
+              cursor: 'pointer'
+            }
           }}
         >
-          <Table aria-label="spreadsheet table">
+          <Table aria-label='spreadsheet table'>
             <TableHead>
               <TableRow>
                 <TableCell style={cellHeaderStyle}>Name</TableCell>
-                <TableCell style={cellHeaderStyle} align="right">
+                <TableCell style={cellHeaderStyle} align='right'>
                   Last Modified
                 </TableCell>
-                <TableCell style={cellHeaderStyle} align="right" />
+                <TableCell style={cellHeaderStyle} align='right' />
               </TableRow>
             </TableHead>
             <TableBody>
@@ -149,19 +149,19 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
                 .sort(
                   (a, b) =>
                     new Date(b.lastModifiedTimestamp) -
-                    new Date(a.lastModifiedTimestamp),
+                    new Date(a.lastModifiedTimestamp)
                 )
-                .map((spreadsheet) => (
+                .map(spreadsheet => (
                   <TableRow
                     key={spreadsheet._id}
                     hover
                     onClick={() => handleRowClick(spreadsheet)}
                   >
-                    <TableCell component="th" scope="row">
+                    <TableCell component='th' scope='row'>
                       <Box
                         sx={{
-                          display: "flex",
-                          alignItems: "center",
+                          display: 'flex',
+                          alignItems: 'center'
                         }}
                       >
                         <ListItemIcon>
@@ -170,22 +170,22 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
                         {spreadsheet.sheetData.name}
                       </Box>
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align='right'>
                       {dayjs(spreadsheet.lastModifiedTimestamp).format(
-                        "DD MMM YY HH:mm",
+                        'DD MMM YY HH:mm'
                       )}
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align='right'>
                       <IconButton
                         sx={{
-                          borderRadius: "2px",
-                          color: theme.palette.alert,
+                          borderRadius: '2px',
+                          color: theme.palette.alert
                         }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDelete(spreadsheet);
+                        onClick={e => {
+                          e.stopPropagation()
+                          handleDelete(spreadsheet)
                         }}
-                        type="button"
+                        type='button'
                       >
                         <DeleteIcon />
                       </IconButton>
@@ -197,7 +197,7 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
         </TableContainer>
       )}
     </>
-  );
-};
+  )
+}
 
-export default SavedSpreadsheets;
+export default SavedSpreadsheets

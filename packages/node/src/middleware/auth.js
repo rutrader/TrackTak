@@ -1,24 +1,24 @@
-import decodeVerifyJwt from "../security/decodeVerifyJwt";
+import decodeVerifyJwt from '../security/decodeVerifyJwt'
 
 const auth = async (req, res, next) => {
-  const userDetails = await decodeVerifyJwt(req);
+  const userDetails = await decodeVerifyJwt(req)
   if (!userDetails.isValid) {
-    return res.status(401).send("Invalid auth token");
+    return res.status(401).send('Invalid auth token')
   }
 
-  req.user = userDetails;
+  req.user = userDetails
 
-  return next();
-};
+  return next()
+}
 
-export default auth;
+export default auth
 
-export const excludeStripeWebhookJSON = (fn) => {
+export const excludeStripeWebhookJSON = fn => {
   return (req, res, next) => {
-    if (req.path === "/api/v1/stripe-webhook" && req.method === "POST") {
-      next();
+    if (req.path === '/api/v1/stripe-webhook' && req.method === 'POST') {
+      next()
     } else {
-      fn(req, res, next);
+      fn(req, res, next)
     }
-  };
-};
+  }
+}

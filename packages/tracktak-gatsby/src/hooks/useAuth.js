@@ -3,8 +3,8 @@ import React, {
   useContext,
   createContext,
   useEffect,
-  useCallback,
-} from "react";
+  useCallback
+} from 'react'
 import {
   signUp as userSignUp,
   signIn as userSignIn,
@@ -15,125 +15,124 @@ import {
   getUserData,
   changePassword,
   updateContactDetails as userUpdateContactDetails,
-  getUserFromCode,
-} from "../api/auth";
-import { noop, removeQueryParams } from "../shared/utils";
+  getUserFromCode
+} from '../api/auth'
+import { noop, removeQueryParams } from '../shared/utils'
 
-const AuthContext = createContext();
+const AuthContext = createContext()
 
 /**
  *
  * @param children child components
  * @returns wrapped components provided with access to auth object
  */
-export const ProvideAuth = (props) => {
-  const auth = useProvideAuth();
+export const ProvideAuth = props => {
+  const auth = useProvideAuth()
   return (
     <AuthContext.Provider value={auth}>{props.children}</AuthContext.Provider>
-  );
-};
+  )
+}
 
 const getUpdatedUserDetails = (_, updatedUserDataArray) => {
   if (updatedUserDataArray) {
     const updatedUserData = updatedUserDataArray.reduce(
       (attributes, current) => ({
         ...attributes,
-        [current.Name]: current.Value,
+        [current.Name]: current.Value
       }),
-      {},
-    );
-    const isEmailVerified = updatedUserData?.email_verified === "true";
+      {}
+    )
+    const isEmailVerified = updatedUserData?.email_verified === 'true'
 
-    return [updatedUserData, isEmailVerified];
+    return [updatedUserData, isEmailVerified]
   }
 
-  return [];
-};
+  return []
+}
 
 export const getUrlAuthParameters = () => {
-  const params = new URLSearchParams(window.location.search);
-  const challengeCode = params.get("challengeCode");
-  const code = params.get("code"); // This is for Federated Login e.g. with Google/Facebook.
+  const params = new URLSearchParams(window.location.search)
+  const challengeCode = params.get('challengeCode')
+  const code = params.get('code') // This is for Federated Login e.g. with Google/Facebook.
   return {
     challengeCode,
-    code,
-  };
-};
+    code
+  }
+}
 
 /**
  *
  * Hook for managing authentication
  */
 const useProvideAuth = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isEmailVerified, setIsEmailVerified] = useState(false);
-  const [hasLoadedAuthDetails, setHasLoadedAuthDetails] = useState(false);
-  const [userData, setUserData] = useState();
-  const [isExternalIdentityProvider, setIsExternalIdentityProvider] = useState(
-    false,
-  );
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isEmailVerified, setIsEmailVerified] = useState(false)
+  const [hasLoadedAuthDetails, setHasLoadedAuthDetails] = useState(false)
+  const [userData, setUserData] = useState()
+  const [isExternalIdentityProvider, setIsExternalIdentityProvider] =
+    useState(false)
 
   const handleGetUserData = useCallback((...args) => {
-    const [updatedUserData, isEmailVerified] = getUpdatedUserDetails(...args);
+    const [updatedUserData, isEmailVerified] = getUpdatedUserDetails(...args)
 
-    setUserData(updatedUserData);
-    setIsEmailVerified(isEmailVerified);
+    setUserData(updatedUserData)
+    setIsEmailVerified(isEmailVerified)
 
     if (updatedUserData.identities) {
-      setIsExternalIdentityProvider(true);
+      setIsExternalIdentityProvider(true)
     }
-  }, []);
+  }, [])
 
   const handleLoginSuccess = useCallback(() => {
-    setIsAuthenticated(true);
-    getUserData(handleGetUserData);
-    setHasLoadedAuthDetails(true);
-  }, [handleGetUserData]);
+    setIsAuthenticated(true)
+    getUserData(handleGetUserData)
+    setHasLoadedAuthDetails(true)
+  }, [handleGetUserData])
 
   const signIn = useCallback(
     (username, password, onSuccess, onFailure) => {
-      const onCognitoSuccess = (session) => {
-        handleLoginSuccess();
-        onSuccess(session);
-      };
+      const onCognitoSuccess = session => {
+        handleLoginSuccess()
+        onSuccess(session)
+      }
 
-      userSignIn(username, password, onCognitoSuccess, onFailure, noop);
+      userSignIn(username, password, onCognitoSuccess, onFailure, noop)
     },
-    [handleLoginSuccess],
-  );
+    [handleLoginSuccess]
+  )
 
   const signUp = useCallback(
     (email, password, userAttributes = [], onSuccess, onFailure) => {
-      userSignUp(email, password, onSuccess, onFailure, userAttributes);
+      userSignUp(email, password, onSuccess, onFailure, userAttributes)
     },
-    [],
-  );
+    []
+  )
 
   const signOut = useCallback(() => {
-    userSignOut();
-    setIsAuthenticated(false);
-    setUserData(null);
-    setIsExternalIdentityProvider(false);
-  }, []);
+    userSignOut()
+    setIsAuthenticated(false)
+    setUserData(null)
+    setIsExternalIdentityProvider(false)
+  }, [])
 
   const resumeSession = useCallback(() => {
-    const currentUser = getCurrentUser();
+    const currentUser = getCurrentUser()
 
     if (currentUser) {
       currentUser.getSession((error, session) => {
         if (!error && session) {
-          handleLoginSuccess();
+          handleLoginSuccess()
         } else {
-          signOut();
-          setHasLoadedAuthDetails(true);
+          signOut()
+          setHasLoadedAuthDetails(true)
         }
-      });
+      })
     } else {
       const hasAuthParameter =
-        !!getUrlAuthParameters().challengeCode || !!getUrlAuthParameters().code;
-      setHasLoadedAuthDetails(!hasAuthParameter);
+        !!getUrlAuthParameters().challengeCode || !!getUrlAuthParameters().code
+      setHasLoadedAuthDetails(!hasAuthParameter)
     }
-  }, [handleLoginSuccess, signOut]);
+  }, [handleLoginSuccess, signOut])
 
   const updateContactDetails = useCallback(
     (updatedAttributes, onSuccess, onFailure) => {
@@ -142,74 +141,74 @@ const useProvideAuth = () => {
           updatedAttributes.email &&
           updatedAttributes.email !== userData.email
         ) {
-          setIsEmailVerified(false);
+          setIsEmailVerified(false)
         }
-        onSuccess();
-      };
-      userUpdateContactDetails(updatedAttributes, onUpdateSuccess, onFailure);
+        onSuccess()
+      }
+      userUpdateContactDetails(updatedAttributes, onUpdateSuccess, onFailure)
     },
-    [userData],
-  );
+    [userData]
+  )
 
   const sendChallengeAnswer = useCallback(
     (challengeAnswer, onSuccess, onFailure, onChallengeFailure) => {
       const handleVerificationSuccess = () => {
-        resumeSession();
-        removeQueryParams();
-        onSuccess();
-      };
+        resumeSession()
+        removeQueryParams()
+        onSuccess()
+      }
       const handleVerificationFailure = () => {
-        removeQueryParams();
-        onFailure();
-      };
+        removeQueryParams()
+        onFailure()
+      }
       userSendChallengeAnswer(
         challengeAnswer,
         handleVerificationSuccess,
         handleVerificationFailure,
-        onChallengeFailure,
-      );
+        onChallengeFailure
+      )
     },
-    [resumeSession],
-  );
+    [resumeSession]
+  )
 
   const getAccessToken = useCallback(async () => {
     const session = await new Promise((resolve, reject) => {
-      const currentUser = getCurrentUser();
+      const currentUser = getCurrentUser()
       if (currentUser) {
         currentUser.getSession((error, session) => {
           if (!error && session) {
-            resolve(session);
+            resolve(session)
           } else {
-            reject(error);
-            signOut();
+            reject(error)
+            signOut()
           }
-        });
+        })
       } else {
-        signOut();
+        signOut()
       }
-    });
+    })
 
-    return session.accessToken;
-  }, [signOut]);
+    return session.accessToken
+  }, [signOut])
 
   useEffect(() => {
-    const signInWithFederatedLoginCode = async (code) => {
-      await getUserFromCode(code);
-      handleLoginSuccess();
-      removeQueryParams();
-    };
+    const signInWithFederatedLoginCode = async code => {
+      await getUserFromCode(code)
+      handleLoginSuccess()
+      removeQueryParams()
+    }
 
     try {
-      const code = getUrlAuthParameters()?.code;
+      const code = getUrlAuthParameters()?.code
       if (code) {
-        signInWithFederatedLoginCode(code);
+        signInWithFederatedLoginCode(code)
       } else {
-        resumeSession();
+        resumeSession()
       }
     } catch (e) {
-      signOut();
+      signOut()
     }
-  }, [handleLoginSuccess, resumeSession, signOut]);
+  }, [handleLoginSuccess, resumeSession, signOut])
 
   return {
     isAuthenticated,
@@ -224,10 +223,10 @@ const useProvideAuth = () => {
     sendChallengeAnswer,
     changePassword,
     updateContactDetails,
-    getAccessToken,
-  };
-};
+    getAccessToken
+  }
+}
 
 export const useAuth = () => {
-  return useContext(AuthContext);
-};
+  return useContext(AuthContext)
+}

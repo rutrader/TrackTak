@@ -1,35 +1,35 @@
 import {
   FunctionPlugin,
   InvalidArgumentsError,
-  SimpleRangeValue,
-} from "hyperformula";
-import { ArraySize } from "hyperformula/es/ArraySize";
-import dayjs from "dayjs";
-import convertSubCurrencyToCurrency from "../../shared/convertSubCurrencyToCurrency";
+  SimpleRangeValue
+} from 'hyperformula'
+import { ArraySize } from 'hyperformula/es/ArraySize'
+import dayjs from 'dayjs'
+import convertSubCurrencyToCurrency from '../../shared/convertSubCurrencyToCurrency'
 import {
   balanceSheet,
   cashFlowStatement,
   dateFormat,
   getDatesFromStatements,
   getStatements,
-  incomeStatement,
-} from "../templates/financialStatements";
-import { isNil } from "lodash-es";
-import defaultStatement from "../../shared/defaultStatement";
+  incomeStatement
+} from '../templates/financialStatements'
+import { isNil } from 'lodash-es'
+import defaultStatement from '../../shared/defaultStatement'
 
 export const ttFinancialImplementedFunctions = {
   FINANCIAL: {
-    method: "financial",
-    arraySizeMethod: "financialSize",
-  },
-};
+    method: 'financial',
+    arraySizeMethod: 'financialSize'
+  }
+}
 
 export const ttFinancialAliases = {
-  FIN: "FINANCIAL",
-};
+  FIN: 'FINANCIAL'
+}
 
-export const getTTFinancialPlugin = (financialData) => {
-  const hasFinancialsLoaded = !!financialData;
+export const getTTFinancialPlugin = financialData => {
+  const hasFinancialsLoaded = !!financialData
   const {
     exchangeRates,
     financialStatements = {},
@@ -38,26 +38,26 @@ export const getTTFinancialPlugin = (financialData) => {
     general,
     highlights,
     ...data
-  } = financialData ?? {};
+  } = financialData ?? {}
   const {
     incomeStatements = defaultStatement,
     balanceSheets = defaultStatement,
-    cashFlowStatements = defaultStatement,
-  } = financialStatements;
+    cashFlowStatements = defaultStatement
+  } = financialStatements
 
-  const dates = getDatesFromStatements(incomeStatements);
+  const dates = getDatesFromStatements(incomeStatements)
 
   const statements = [
     [null, ...dates],
-    ["Income Statement"],
+    ['Income Statement'],
     ...getStatements(incomeStatements, incomeStatement),
-    [""],
-    ["Balance Sheet"],
+    [''],
+    ['Balance Sheet'],
     ...getStatements(balanceSheets, balanceSheet),
-    [""],
-    ["Cash Flow Statement"],
-    ...getStatements(cashFlowStatements, cashFlowStatement),
-  ];
+    [''],
+    ['Cash Flow Statement'],
+    ...getStatements(cashFlowStatements, cashFlowStatement)
+  ]
 
   const ttmData = {
     ...incomeStatements.ttm,
@@ -67,105 +67,105 @@ export const getTTFinancialPlugin = (financialData) => {
     ...currentIndustry,
     ...general,
     ...highlights,
-    ...data,
-  };
+    ...data
+  }
 
   const historicalDataArrays = {
     incomeStatements: {
-      yearly: Object.values(incomeStatements.yearly ?? {}),
+      yearly: Object.values(incomeStatements.yearly ?? {})
     },
     balanceSheets: {
-      yearly: Object.values(balanceSheets.yearly ?? {}),
+      yearly: Object.values(balanceSheets.yearly ?? {})
     },
     cashFlowStatements: {
-      yearly: Object.values(cashFlowStatements.yearly ?? {}),
-    },
-  };
+      yearly: Object.values(cashFlowStatements.yearly ?? {})
+    }
+  }
 
-  const getTypeOfStatementToUse = (attribute) => {
+  const getTypeOfStatementToUse = attribute => {
     if (!isNil(incomeStatements.ttm[attribute])) {
-      return "incomeStatements";
+      return 'incomeStatements'
     }
 
     if (!isNil(balanceSheets.ttm[attribute])) {
-      return "balanceSheets";
+      return 'balanceSheets'
     }
 
     if (!isNil(cashFlowStatements.ttm[attribute])) {
-      return "cashFlowStatements";
+      return 'cashFlowStatements'
     }
-  };
+  }
 
   const getYearlyValues = (attribute, statementType, startDate, endDate) => {
-    const startDateDayjs = dayjs(startDate);
-    const endDateDayjs = dayjs(endDate);
+    const startDateDayjs = dayjs(startDate)
+    const endDateDayjs = dayjs(endDate)
 
     return historicalDataArrays[statementType].yearly
       .filter(({ date }) => {
-        return dayjs(date).isBetween(startDateDayjs, endDateDayjs, "day", "[]");
+        return dayjs(date).isBetween(startDateDayjs, endDateDayjs, 'day', '[]')
       })
-      .map((datum) => {
-        let value = datum[attribute];
+      .map(datum => {
+        let value = datum[attribute]
 
-        if (attribute === "date") {
-          value = dayjs(value).format(dateFormat);
+        if (attribute === 'date') {
+          value = dayjs(value).format(dateFormat)
         }
 
-        return value;
-      });
-  };
+        return value
+      })
+  }
 
   // Pre-fixed with TT due to there already being a FinancialPlugin
   // in hyperformula
   class TTFinancialPlugin extends FunctionPlugin {
     financial({ args }) {
       if (!args.length) {
-        return new InvalidArgumentsError(1);
+        return new InvalidArgumentsError(1)
       }
       if (!hasFinancialsLoaded) {
-        return "Loading...";
+        return 'Loading...'
       }
-      const attribute = args[0].value;
+      const attribute = args[0].value
       // TODO: Add proper error checking here later
       if (args.length === 1) {
-        if (attribute === "currencyCode") {
-          const currencyCode = ttmData[attribute];
-          return convertSubCurrencyToCurrency(currencyCode);
+        if (attribute === 'currencyCode') {
+          const currencyCode = ttmData[attribute]
+          return convertSubCurrencyToCurrency(currencyCode)
         }
-        if (attribute === "financialStatements") {
-          return SimpleRangeValue.onlyValues(statements);
+        if (attribute === 'financialStatements') {
+          return SimpleRangeValue.onlyValues(statements)
         }
-        return ttmData[attribute] ?? "";
+        return ttmData[attribute] ?? ''
       }
-      const startDate = args[1].value;
-      const statementType = getTypeOfStatementToUse(attribute);
+      const startDate = args[1].value
+      const statementType = getTypeOfStatementToUse(attribute)
       if (args.length === 2) {
-        if (attribute === "description") {
-          return ttmData[attribute];
+        if (attribute === 'description') {
+          return ttmData[attribute]
         }
         return (
-          historicalDataArrays[statementType].yearly[startDate][attribute] ?? ""
-        );
+          historicalDataArrays[statementType].yearly[startDate][attribute] ?? ''
+        )
       }
-      const endDate = args[2].value;
+      const endDate = args[2].value
       if (args.length === 3) {
         return SimpleRangeValue.onlyValues([
-          getYearlyValues(attribute, statementType, startDate, endDate),
-        ]);
+          getYearlyValues(attribute, statementType, startDate, endDate)
+        ])
       }
     }
     financialSize({ args }) {
       if (!hasFinancialsLoaded) {
-        return ArraySize.scalar();
+        return ArraySize.scalar()
       }
 
-      const attribute = args[0].value;
-      const statementType = getTypeOfStatementToUse(attribute);
-      const startDate = args[1] ? args[1].value : null;
-      const endDate = args[2] ? args[2].value : null;
+      const attribute = args[0].value
+      const statementType = getTypeOfStatementToUse(attribute)
+      const startDate = args[1] ? args[1].value : null
+      const endDate = args[2] ? args[2].value : null
 
-      if (attribute === "financialStatements") {
-        return ArraySize.fromArray(statements);
+      if (attribute === 'financialStatements') {
+        return ArraySize.fromArray(statements)
       }
 
       if (args.length === 3) {
@@ -173,24 +173,24 @@ export const getTTFinancialPlugin = (financialData) => {
           attribute,
           statementType,
           startDate,
-          endDate,
-        );
+          endDate
+        )
 
-        return ArraySize.fromArray([yearlyValues]);
+        return ArraySize.fromArray([yearlyValues])
       }
 
-      return ArraySize.scalar();
+      return ArraySize.scalar()
     }
   }
 
-  TTFinancialPlugin.implementedFunctions = ttFinancialImplementedFunctions;
-  TTFinancialPlugin.aliases = ttFinancialAliases;
+  TTFinancialPlugin.implementedFunctions = ttFinancialImplementedFunctions
+  TTFinancialPlugin.aliases = ttFinancialAliases
 
-  return TTFinancialPlugin;
-};
+  return TTFinancialPlugin
+}
 
 export const finTranslations = {
   enGB: {
-    FIN: "FIN",
-  },
-};
+    FIN: 'FIN'
+  }
+}

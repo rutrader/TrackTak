@@ -1,26 +1,26 @@
-import { useAuth } from "../hooks/useAuth";
-import React, { useEffect } from "react";
-import { navigate } from "gatsby";
-import PageSpinner from "../components/PageSpinner";
+import { useAuth } from '../hooks/useAuth'
+import React, { useEffect } from 'react'
+import { navigate } from 'gatsby'
+import PageSpinner from '../components/PageSpinner'
 
-const withAuthenticatedRedirect = (Component) => {
-  const Container = (props) => {
-    const { isAuthenticated, hasLoadedAuthDetails } = useAuth();
+const withAuthenticatedRedirect = Component => {
+  const Container = props => {
+    const { isAuthenticated, hasLoadedAuthDetails } = useAuth()
 
     useEffect(() => {
       if (isAuthenticated && hasLoadedAuthDetails) {
-        navigate("/dashboard");
+        navigate('/dashboard')
       }
-    }, [hasLoadedAuthDetails, isAuthenticated]);
+    }, [hasLoadedAuthDetails, isAuthenticated])
 
     if (!hasLoadedAuthDetails) {
-      return <PageSpinner />;
+      return <PageSpinner />
     }
 
-    return !isAuthenticated && <Component {...props} />;
-  };
+    return !isAuthenticated && <Component {...props} />
+  }
 
-  return Container;
-};
+  return Container
+}
 
-export default withAuthenticatedRedirect;
+export default withAuthenticatedRedirect

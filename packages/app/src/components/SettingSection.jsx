@@ -1,28 +1,28 @@
-import React from "react";
-import { Box } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
+import React from 'react'
+import { Box } from '@material-ui/core'
+import Typography from '@material-ui/core/Typography'
 
 const SettingSection = ({ children, icon, heading, subHeading, sx }) => {
   return (
     <Box
       sx={{
         ...sx,
-        display: "flex",
+        display: 'flex'
       }}
     >
       {icon}
       <Box
         sx={{
-          display: "flex",
-          flexDirection: "column",
+          display: 'flex',
+          flexDirection: 'column'
         }}
       >
-        <Typography variant="h7">{heading}</Typography>
+        <Typography variant='h7'>{heading}</Typography>
         <Typography
           sx={{
-            color: (theme) => theme.palette.primary.purple,
+            color: theme => theme.palette.primary.purple
           }}
-          variant="h6"
+          variant='h6'
           gutterBottom
         >
           {subHeading}
@@ -30,7 +30,7 @@ const SettingSection = ({ children, icon, heading, subHeading, sx }) => {
         {children}
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default SettingSection;
+export default SettingSection

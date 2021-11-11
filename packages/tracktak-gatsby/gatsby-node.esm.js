@@ -1,9 +1,9 @@
 // https://github.com/gatsbyjs/gatsby/issues/7810
 // CLI with esm npx has a bug in it for windows: https://github.com/npm/npx/issues/5
 
-import "dotenv/config";
-import webpack from "webpack";
-import path from "path";
+import 'dotenv/config'
+import webpack from 'webpack'
+import path from 'path'
 
 // https://github.com/gatsbyjs/gatsby/issues/19618
 
@@ -30,31 +30,31 @@ export const onCreateWebpackConfig = ({
   rules,
   loaders,
   plugins,
-  actions,
+  actions
 }) => {
   actions.setWebpackConfig({
     plugins: [
       new webpack.NormalModuleReplacementPlugin(
         /.*\/generated\/iconSvgPaths.*/,
-        path.resolve(__dirname, "src/icons.js"),
-      ),
-    ],
-  });
-};
+        path.resolve(__dirname, 'src/icons.js')
+      )
+    ]
+  })
+}
 
 export const onCreatePage = ({ page, actions }) => {
-  const { createPage } = actions;
+  const { createPage } = actions
 
-  if (page.path === "/") {
-    page.context.layout = "home";
-    createPage(page);
+  if (page.path === '/') {
+    page.context.layout = 'home'
+    createPage(page)
   }
 
-  if (page.path === "/pricing/") {
-    page.context.layout = "pricing";
-    createPage(page);
+  if (page.path === '/pricing/') {
+    page.context.layout = 'pricing'
+    createPage(page)
   }
-};
+}
 
 // exports.sourceNodes = async ({
 //   actions: { createNode },

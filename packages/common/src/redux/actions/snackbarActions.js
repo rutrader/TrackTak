@@ -1,5 +1,5 @@
-import { createAction } from "@reduxjs/toolkit";
+import { createAction } from '@reduxjs/toolkit'
 
-export const setMessage = createAction("snackbar/setMessage");
+export const setMessage = createAction('snackbar/setMessage')
 
-export const clearMessage = createAction("snackbar/clearMessage");
+export const clearMessage = createAction('snackbar/clearMessage')

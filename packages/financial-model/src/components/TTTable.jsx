@@ -1,28 +1,28 @@
-import React, { useCallback } from "react";
+import React, { useCallback } from 'react'
 import {
   Box,
   Table,
   TableBody,
   TableCell,
   TableHead,
-  TableRow,
-} from "@material-ui/core";
-import { useBlockLayout, useTable } from "react-table";
-import { FixedSizeList } from "react-window";
-import { useTheme } from "@material-ui/core/styles";
+  TableRow
+} from '@material-ui/core'
+import { useBlockLayout, useTable } from 'react-table'
+import { FixedSizeList } from 'react-window'
+import { useTheme } from '@material-ui/core/styles'
 
 const RenderTableRow = ({ prepareRow, row, index, ...props }) => {
-  prepareRow(row);
+  prepareRow(row)
   return (
     <TableRow {...row.getRowProps(props)} className={`table_row_${index}`}>
-      {row.cells.map((cell) => {
+      {row.cells.map(cell => {
         return (
-          <TableCell {...cell.getCellProps()}>{cell.render("Cell")}</TableCell>
-        );
+          <TableCell {...cell.getCellProps()}>{cell.render('Cell')}</TableCell>
+        )
       })}
     </TableRow>
-  );
-};
+  )
+}
 
 const TTTable = ({
   columns,
@@ -40,20 +40,20 @@ const TTTable = ({
     headerGroups,
     rows,
     prepareRow,
-    totalColumnsWidth,
+    totalColumnsWidth
   } = useTable(
     {
       columns,
       data,
-      ...tableOptions,
+      ...tableOptions
     },
-    useVirtualization ? useBlockLayout : undefined,
-  );
-  const theme = useTheme();
+    useVirtualization ? useBlockLayout : undefined
+  )
+  const theme = useTheme()
 
   const renderRow = useCallback(
     ({ index, style }) => {
-      const row = rows[index];
+      const row = rows[index]
       return (
         <RenderTableRow
           index={index}
@@ -61,43 +61,43 @@ const TTTable = ({
           row={row}
           prepareRow={prepareRow}
         />
-      );
+      )
     },
-    [prepareRow, rows],
-  );
+    [prepareRow, rows]
+  )
 
   return (
     <Box
       sx={{
-        "& .indented-cell": {
-          paddingLeft: (theme) => theme.spacing(2),
+        '& .indented-cell': {
+          paddingLeft: theme => theme.spacing(2)
         },
-        "& .bold-cell": {
-          fontWeight: "bold",
+        '& .bold-cell': {
+          fontWeight: 'bold'
         },
-        "& .MuiTableCell-body:first-of-type": {
-          whiteSpace: "nowrap",
+        '& .MuiTableCell-body:first-of-type': {
+          whiteSpace: 'nowrap'
         },
-        "& .MuiTableBody-root .MuiTableRow-root:nth-of-type(odd)": {
-          backgroundColor: theme.palette.tableBackground,
+        '& .MuiTableBody-root .MuiTableRow-root:nth-of-type(odd)': {
+          backgroundColor: theme.palette.tableBackground
         },
-        ...sx,
+        ...sx
       }}
     >
       <Table {...getTableProps()} {...props}>
         <TableHead {...tableHeadProps}>
-          {headerGroups.map((headerGroup) => {
+          {headerGroups.map(headerGroup => {
             return (
               <TableRow {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => {
+                {headerGroup.headers.map(column => {
                   return (
                     <TableCell {...column.getHeaderProps()}>
-                      {column.render("Header")}
+                      {column.render('Header')}
                     </TableCell>
-                  );
+                  )
                 })}
               </TableRow>
-            );
+            )
           })}
         </TableHead>
         <TableBody {...getTableBodyProps()}>
@@ -122,7 +122,7 @@ const TTTable = ({
         </TableBody>
       </Table>
     </Box>
-  );
-};
+  )
+}
 
-export default TTTable;
+export default TTTable

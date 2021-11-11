@@ -1,21 +1,21 @@
-import { Box, Link, Typography } from "@material-ui/core";
-import React from "react";
-import { Helmet } from "react-helmet";
-import getTitle from "../shared/getTitle";
-import resourceName from "../shared/resourceName";
+import { Box, Link, Typography } from '@material-ui/core'
+import React from 'react'
+import { Helmet } from 'react-helmet'
+import getTitle from '../shared/getTitle'
+import resourceName from '../shared/resourceName'
 
 const ContactUs = () => {
   return (
     <>
       <Helmet>
-        <title>{getTitle("Contact Us")}</title>
-        <link rel="canonical" href={`${resourceName}/contact-us`} />
+        <title>{getTitle('Contact Us')}</title>
+        <link rel='canonical' href={`${resourceName}/contact-us`} />
         <meta
-          name="description"
-          content="Need help with your DCF? Send us an email at kristina@tracktak.com."
+          name='description'
+          content='Need help with your DCF? Send us an email at kristina@tracktak.com.'
         />
       </Helmet>
-      <Typography variant="h5" gutterBottom>
+      <Typography variant='h5' gutterBottom>
         Contact Us
       </Typography>
       <Typography paragraph gutterBottom>
@@ -24,11 +24,11 @@ const ContactUs = () => {
       </Typography>
       <Typography gutterBottom>
         Email:
-        <Link href="mailto:kristina@tracktak.com">
+        <Link href='mailto:kristina@tracktak.com'>
           &nbsp;kristina@tracktak.com
         </Link>
       </Typography>
-      <Typography component="div">
+      <Typography component='div'>
         <Box>Address:</Box>
         <address>
           <Box>
@@ -40,7 +40,7 @@ const ContactUs = () => {
         </address>
       </Typography>
     </>
-  );
-};
+  )
+}
 
-export default ContactUs;
+export default ContactUs

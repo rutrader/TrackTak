@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useState } from 'react'
 import {
   Box,
   Drawer,
@@ -9,40 +9,40 @@ import {
   Typography,
   List,
   ListItem,
-  ListItemText,
-} from "@material-ui/core";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import { navigate } from "gatsby";
-import { AnchorLink } from "gatsby-plugin-anchor-links";
-import { noop } from "../shared/utils";
-import { useTheme } from "@material-ui/core/styles";
+  ListItemText
+} from '@material-ui/core'
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
+import ChevronRightIcon from '@material-ui/icons/ChevronRight'
+import { navigate } from 'gatsby'
+import { AnchorLink } from 'gatsby-plugin-anchor-links'
+import { noop } from '../shared/utils'
+import { useTheme } from '@material-ui/core/styles'
 
-const drawerWidth = 240;
+const drawerWidth = 240
 
 const SidePanel = ({
   children,
   tabs,
   titleMenuButtons,
   selectedTab,
-  setSeletedTab = noop,
+  setSeletedTab = noop
 }) => {
-  const theme = useTheme();
-  const [open, setOpen] = useState(false);
-  const isOnMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const top = theme.mixins.toolbar.minHeight - 2;
+  const theme = useTheme()
+  const [open, setOpen] = useState(false)
+  const isOnMobile = useMediaQuery(theme.breakpoints.down('sm'))
+  const top = theme.mixins.toolbar.minHeight - 2
 
   const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleDrawerClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   useEffect(() => {
-    setOpen(true);
-  }, []);
+    setOpen(true)
+  }, [])
 
   const getSidePanelTabs = () => (
     <List>
@@ -54,48 +54,48 @@ const SidePanel = ({
               <AnchorLink {...props} gatsbyLinkProps={{ ref }} />
             ))}
             onAnchorLinkClick={() => {
-              setSeletedTab(index);
-              navigate(to);
+              setSeletedTab(index)
+              navigate(to)
             }}
             to={to}
             button
           >
             <ListItemText primary={title} />
           </ListItem>
-        );
+        )
       })}
     </List>
-  );
+  )
 
   return (
     <Box
       sx={{
-        display: "flex",
-        width: "100%",
-        "& .MuiDrawer-root": {
+        display: 'flex',
+        width: '100%',
+        '& .MuiDrawer-root': {
           [theme.breakpoints.down(1550)]: {
-            width: open ? drawerWidth : "initial",
-          },
-        },
+            width: open ? drawerWidth : 'initial'
+          }
+        }
       }}
     >
       <Drawer
-        variant={isOnMobile ? "persistent" : "permanent"}
-        anchor="left"
+        variant={isOnMobile ? 'persistent' : 'permanent'}
+        anchor='left'
         open={open}
         PaperProps={{
           style: {
             top,
             width: drawerWidth,
-            height: `calc(100% - ${top}px)`,
-          },
+            height: `calc(100% - ${top}px)`
+          }
         }}
       >
         <>
-          <Hidden smUp implementation="css">
+          <Hidden smUp implementation='css'>
             <Box>
               <IconButton onClick={handleDrawerClose}>
-                <ChevronLeftIcon color="primary" />
+                <ChevronLeftIcon color='primary' />
               </IconButton>
             </Box>
             <Divider />
@@ -103,30 +103,30 @@ const SidePanel = ({
           {getSidePanelTabs()}
         </>
       </Drawer>
-      <Hidden smUp implementation="css">
+      <Hidden smUp implementation='css'>
         <IconButton
-          aria-label="open drawer"
+          aria-label='open drawer'
           onClick={handleDrawerOpen}
           sx={{
-            position: "fixed",
+            position: 'fixed',
             padding: 0,
             left: 0,
-            top: (theme) => theme.mixins.toolbar.minHeight + 10,
+            top: theme => theme.mixins.toolbar.minHeight + 10
           }}
         >
-          <ChevronRightIcon color="primary" />
+          <ChevronRightIcon color='primary' />
         </IconButton>
       </Hidden>
-      <Box component="main" sx={{ width: "100%" }}>
+      <Box component='main' sx={{ width: '100%' }}>
         <Box>
           <Box
             sx={{
-              display: "flex",
-              justifyContent: "space-between",
+              display: 'flex',
+              justifyContent: 'space-between'
             }}
           >
             {tabs[selectedTab]?.title && (
-              <Typography variant="h5" gutterBottom>
+              <Typography variant='h5' gutterBottom>
                 {tabs[selectedTab].title}
               </Typography>
             )}
@@ -136,7 +136,7 @@ const SidePanel = ({
         </Box>
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default SidePanel;
+export default SidePanel

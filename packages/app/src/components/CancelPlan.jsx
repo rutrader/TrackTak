@@ -1,62 +1,62 @@
-import { useTheme } from "@emotion/react";
+import { useTheme } from '@emotion/react'
 import {
   Grid,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Typography,
-} from "@material-ui/core";
-import { navigate } from "gatsby";
-import { Box } from "@material-ui/system";
-import React from "react";
-import CheckIcon from "@material-ui/icons/Check";
-import WarningAmberIcon from "@mui/icons-material/WarningAmber";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import MembershipButtons from "../components/MembershipButtons";
-import CancellationPlan from "./CancellationPlan";
-import useCurrentPlan from "../hooks/useCurrentPlan";
+  Typography
+} from '@material-ui/core'
+import { navigate } from 'gatsby'
+import { Box } from '@material-ui/system'
+import React from 'react'
+import CheckIcon from '@material-ui/icons/Check'
+import WarningAmberIcon from '@mui/icons-material/WarningAmber'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import MembershipButtons from '../components/MembershipButtons'
+import CancellationPlan from './CancellationPlan'
+import useCurrentPlan from '../hooks/useCurrentPlan'
 
 const listOfFeatures = [
-  { feature: "Small-cap United States API region access" },
-  { feature: "Access to Worldwide API region" },
-  { feature: "Priority email and call support" },
-];
+  { feature: 'Small-cap United States API region access' },
+  { feature: 'Access to Worldwide API region' },
+  { feature: 'Priority email and call support' }
+]
 
 const CancelPlan = () => {
-  const theme = useTheme();
-  const { updatePlan } = useCurrentPlan();
+  const theme = useTheme()
+  const { updatePlan } = useCurrentPlan()
 
   const handleEndMyMembershipClick = () => {
     updatePlan({
-      state: "cancel",
-    });
-    navigate("/dashboard");
-  };
+      state: 'cancel'
+    })
+    navigate('/dashboard')
+  }
 
   return (
     <>
       <CancellationPlan
-        route="/switching-plan"
+        route='/switching-plan'
         iconArrow={<ArrowBackIcon />}
-        header="We are sorry to see you go!"
+        header='We are sorry to see you go!'
         bodyText={
           <Grid
             item
             xs={12}
             sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-              mb: 4,
+              display: 'flex',
+              justifyContent: 'center',
+              alignContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'column',
+              mb: 4
             }}
           >
-            <Typography gutterBottom variant="h5" fontWeight="bold">
+            <Typography gutterBottom variant='h5' fontWeight='bold'>
               Please confirm the cancellation of your plan
             </Typography>
-            <Box sx={{ display: "flex" }}>
+            <Box sx={{ display: 'flex' }}>
               <WarningAmberIcon sx={{ color: theme.palette.warning.main }} />
               <Typography
                 gutterBottom
@@ -68,8 +68,8 @@ const CancelPlan = () => {
             </Box>
             <Typography
               gutterBottom
-              variant="h6"
-              fontWeight="bold"
+              variant='h6'
+              fontWeight='bold'
               sx={{ mt: 4 }}
             >
               Benefits you will lose:
@@ -77,13 +77,13 @@ const CancelPlan = () => {
             <List>
               {listOfFeatures.map((feature, index) => {
                 return (
-                  <ListItem sx={{ paddingTop: "0px" }} key={index}>
-                    <ListItemIcon sx={{ minWidth: "33px" }}>
-                      <CheckIcon color="primary" />
+                  <ListItem sx={{ paddingTop: '0px' }} key={index}>
+                    <ListItemIcon sx={{ minWidth: '33px' }}>
+                      <CheckIcon color='primary' />
                     </ListItemIcon>
                     <ListItemText primary={feature.feature} />
                   </ListItem>
-                );
+                )
               })}
             </List>
           </Grid>
@@ -91,7 +91,7 @@ const CancelPlan = () => {
       />
       <MembershipButtons onEndMyMembershipClick={handleEndMyMembershipClick} />
     </>
-  );
-};
+  )
+}
 
-export default CancelPlan;
+export default CancelPlan

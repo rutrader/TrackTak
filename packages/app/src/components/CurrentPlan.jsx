@@ -1,19 +1,19 @@
-import React from "react";
-import { Typography } from "@material-ui/core";
-import RegionStatus from "./RegionStatus";
-import { listAPIregions, PriceIds } from "../data/regions";
+import React from 'react'
+import { Typography } from '@material-ui/core'
+import RegionStatus from './RegionStatus'
+import { listAPIregions, PriceIds } from '../data/regions'
 
 const CurrentPlan = ({ currentPlan }) => {
   return (
     <>
-      <Typography variant="h8" fontWeight="bold" gutterBottom>
+      <Typography variant='h8' fontWeight='bold' gutterBottom>
         Enabled Regions
       </Typography>
       {listAPIregions.map((listAPIRegion, i) => {
         const enabled =
           listAPIRegion.priceId === PriceIds.MEDIUM_CAP_US_PLUS ||
           currentPlan?.priceIds.includes(PriceIds.WORLDWIDE) ||
-          currentPlan?.priceIds.includes(listAPIRegion.priceId);
+          currentPlan?.priceIds.includes(listAPIRegion.priceId)
 
         return (
           <RegionStatus
@@ -22,10 +22,10 @@ const CurrentPlan = ({ currentPlan }) => {
             iconSvg={listAPIRegion.iconSvg}
             enabled={enabled}
           />
-        );
+        )
       })}
     </>
-  );
-};
+  )
+}
 
-export default CurrentPlan;
+export default CurrentPlan

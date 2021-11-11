@@ -1,3 +1,3 @@
-const defaultStatement = { ttm: {}, yearly: {} };
+const defaultStatement = { ttm: {}, yearly: {} }
 
-export default defaultStatement;
+export default defaultStatement

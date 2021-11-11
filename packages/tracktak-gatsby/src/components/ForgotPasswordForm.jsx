@@ -1,53 +1,53 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import { useTheme } from "@material-ui/core/styles";
-import { useAuth } from "../hooks/useAuth";
-import Alert from "@material-ui/core/Alert";
-import { setMessage } from "../redux/actions/snackbarActions";
-import { Box } from "@material-ui/core";
-import tracktakLogoSvg from "../assets/tracktak-purple.svg";
-import { noop } from "../shared/utils";
-import RoundButton from "./RoundButton";
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import TextField from '@material-ui/core/TextField'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
+import { useTheme } from '@material-ui/core/styles'
+import { useAuth } from '../hooks/useAuth'
+import Alert from '@material-ui/core/Alert'
+import { setMessage } from '../redux/actions/snackbarActions'
+import { Box } from '@material-ui/core'
+import tracktakLogoSvg from '../assets/tracktak-purple.svg'
+import { noop } from '../shared/utils'
+import RoundButton from './RoundButton'
 
 const ForgotPasswordForm = ({ onCancelClick }) => {
-  const theme = useTheme();
-  const dispatch = useDispatch();
-  const { sendEmailVerification } = useAuth();
-  const [verificationEmailSent, setVerificationEmailSent] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const theme = useTheme()
+  const dispatch = useDispatch()
+  const { sendEmailVerification } = useAuth()
+  const [verificationEmailSent, setVerificationEmailSent] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
-  const handlePasswordResetFailure = (err) => {
+  const handlePasswordResetFailure = err => {
     dispatch(
       setMessage({
         message: err?.message,
-        severity: "error",
-      }),
-    );
-  };
+        severity: 'error'
+      })
+    )
+  }
 
   const handleVerificationEmailSent = () => {
-    setVerificationEmailSent(true);
-  };
+    setVerificationEmailSent(true)
+  }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = e => {
+    e.preventDefault()
     sendEmailVerification(
       email,
       handleVerificationEmailSent,
       noop,
       handlePasswordResetFailure,
-      password,
-    );
-  };
+      password
+    )
+  }
 
   return (
     <>
       {verificationEmailSent && (
-        <Alert severity="info">
+        <Alert severity='info'>
           Please check your email for the Forgot Password link
         </Alert>
       )}
@@ -55,17 +55,17 @@ const ForgotPasswordForm = ({ onCancelClick }) => {
         sx={{
           marginTop: theme.spacing(5),
           marginBottom: theme.spacing(5),
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
         }}
       >
-        <img src={tracktakLogoSvg} alt="tracktak" />
+        <img src={tracktakLogoSvg} alt='tracktak' />
         <Typography
-          variant="h4"
+          variant='h4'
           sx={{
             mt: theme.spacing(2),
-            color: theme.palette.primary.mainTextColor,
+            color: theme.palette.primary.mainTextColor
           }}
           gutterBottom
         >
@@ -73,62 +73,62 @@ const ForgotPasswordForm = ({ onCancelClick }) => {
         </Typography>
         <Box
           sx={{
-            marginTop: theme.spacing(3),
+            marginTop: theme.spacing(3)
           }}
         >
-          <form onSubmit={handleSubmit} validate="true">
-            <Grid container spacing={2} justifyContent="center">
+          <form onSubmit={handleSubmit} validate='true'>
+            <Grid container spacing={2} justifyContent='center'>
               <Grid item xs={12}>
                 <TextField
-                  variant="outlined"
+                  variant='outlined'
                   required
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
+                  id='email'
+                  label='Email Address'
+                  name='email'
+                  autoComplete='email'
                   disabled={verificationEmailSent}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={e => setEmail(e.target.value)}
                   sx={{
-                    display: "flex",
+                    display: 'flex'
                   }}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  onChange={(e) => setPassword(e.target.value)}
-                  variant="outlined"
+                  onChange={e => setPassword(e.target.value)}
+                  variant='outlined'
                   required
-                  name="password"
-                  label="New Password"
-                  type="password"
-                  id="password"
+                  name='password'
+                  label='New Password'
+                  type='password'
+                  id='password'
                   InputProps={{ inputProps: { minLength: 8 } }}
                   sx={{
-                    display: "flex",
+                    display: 'flex'
                   }}
                 />
               </Grid>
             </Grid>
             <RoundButton
-              type="submit"
+              type='submit'
               fullWidth
-              variant="contained"
-              color="primary"
+              variant='contained'
+              color='primary'
               sx={{
                 margin: theme.spacing(3, 0, 2),
-                textTransform: "none",
+                textTransform: 'none'
               }}
             >
               Send Reset Email
             </RoundButton>
             <RoundButton
               fullWidth
-              variant="outlined"
-              color="primary"
+              variant='outlined'
+              color='primary'
               onClick={onCancelClick}
-              type="button"
+              type='button'
               sx={{
-                textTransform: "none",
+                textTransform: 'none'
               }}
             >
               Cancel
@@ -137,7 +137,7 @@ const ForgotPasswordForm = ({ onCancelClick }) => {
         </Box>
       </Box>
     </>
-  );
-};
+  )
+}
 
-export default ForgotPasswordForm;
+export default ForgotPasswordForm

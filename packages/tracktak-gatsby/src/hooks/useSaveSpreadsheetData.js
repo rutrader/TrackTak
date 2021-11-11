@@ -1,6 +1,6 @@
-import { useCallback } from "react";
-import { saveSpreadsheet } from "../api/api";
-import { useAuth } from "./useAuth";
+import { useCallback } from 'react'
+import { saveSpreadsheet } from '../api/api'
+import { useAuth } from './useAuth'
 
 const saveSpreadsheetData = async (spreadsheet, newData, token) => {
   await saveSpreadsheet(
@@ -8,26 +8,26 @@ const saveSpreadsheetData = async (spreadsheet, newData, token) => {
       ...spreadsheet,
       sheetData: {
         ...spreadsheet.sheetData,
-        data: newData,
-      },
+        data: newData
+      }
     },
-    token?.jwtToken,
-  );
-};
+    token?.jwtToken
+  )
+}
 
-const useSaveSpreadsheetData = (spreadsheet) => {
-  const { getAccessToken } = useAuth();
+const useSaveSpreadsheetData = spreadsheet => {
+  const { getAccessToken } = useAuth()
 
   const saveSheetData = useCallback(
-    async (newData) => {
-      const token = await getAccessToken();
+    async newData => {
+      const token = await getAccessToken()
 
-      return saveSpreadsheetData(spreadsheet, newData, token);
+      return saveSpreadsheetData(spreadsheet, newData, token)
     },
-    [getAccessToken, spreadsheet],
-  );
+    [getAccessToken, spreadsheet]
+  )
 
-  return saveSheetData;
-};
+  return saveSheetData
+}
 
-export default useSaveSpreadsheetData;
+export default useSaveSpreadsheetData

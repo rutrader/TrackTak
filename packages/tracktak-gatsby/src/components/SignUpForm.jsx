@@ -1,66 +1,66 @@
-import React, { useState } from "react";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import RoundButton from "./RoundButton";
-import { useTheme } from "@material-ui/core/styles";
-import { Box, FormControlLabel, Link } from "@material-ui/core";
-import Checkbox from "@material-ui/core/Checkbox";
-import SocialLoginButtons from "./SocialLoginButtons";
+import React, { useState } from 'react'
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
+import RoundButton from './RoundButton'
+import { useTheme } from '@material-ui/core/styles'
+import { Box, FormControlLabel, Link } from '@material-ui/core'
+import Checkbox from '@material-ui/core/Checkbox'
+import SocialLoginButtons from './SocialLoginButtons'
 
 const BoxWrapper = ({ sx, ...props }) => {
   return (
     <Box
       sx={{
         mt: 2,
-        ...sx,
+        ...sx
       }}
       {...props}
     />
-  );
-};
+  )
+}
 
 export const ContinueToSpreadsheet = () => {
   return (
-    <Typography variant="h7" color="textSecondary" gutterBottom>
+    <Typography variant='h7' color='textSecondary' gutterBottom>
       Continue to your Spreadsheet
     </Typography>
-  );
-};
+  )
+}
 
 const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
-  const theme = useTheme();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [checkedMailingList, setCheckedMailingList] = useState(false);
+  const theme = useTheme()
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [checkedMailingList, setCheckedMailingList] = useState(false)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     onSubmit(e, {
       name,
       email,
       password,
-      checkedMailingList,
-    });
-  };
+      checkedMailingList
+    })
+  }
 
   return (
     <Box
       sx={{
         marginTop: theme.spacing(5),
         marginBottom: theme.spacing(5),
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
       }}
     >
       <Typography
-        variant="h4"
+        variant='h4'
         sx={{
           mt: theme.spacing(2),
           color: theme.palette.primary.mainTextColor,
-          fontWeight: "bold",
+          fontWeight: 'bold'
         }}
         gutterBottom
       >
@@ -70,53 +70,53 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
       <SocialLoginButtons />
       <Box
         sx={{
-          marginTop: theme.spacing(3),
+          marginTop: theme.spacing(3)
         }}
       >
         <form onSubmit={handleSubmit}>
-          <Grid container spacing={2} justifyContent="center">
+          <Grid container spacing={2} justifyContent='center'>
             <Grid item xs={12}>
               <TextField
-                onChange={(e) => setName(e.target.value)}
-                autoComplete="name"
-                name="name"
-                variant="outlined"
+                onChange={e => setName(e.target.value)}
+                autoComplete='name'
+                name='name'
+                variant='outlined'
                 required
-                id="name"
-                label="Name"
+                id='name'
+                label='Name'
                 autoFocus
                 sx={{
-                  display: "flex",
+                  display: 'flex'
                 }}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                onChange={(e) => setEmail(e.target.value)}
-                variant="outlined"
+                onChange={e => setEmail(e.target.value)}
+                variant='outlined'
                 required
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id='email'
+                label='Email Address'
+                name='email'
+                autoComplete='email'
                 sx={{
-                  display: "flex",
+                  display: 'flex'
                 }}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                onChange={(e) => setPassword(e.target.value)}
-                variant="outlined"
+                onChange={e => setPassword(e.target.value)}
+                variant='outlined'
                 required
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
+                name='password'
+                label='Password'
+                type='password'
+                id='password'
+                autoComplete='current-password'
                 InputProps={{ inputProps: { minLength: 8 } }}
                 sx={{
-                  display: "flex",
+                  display: 'flex'
                 }}
               />
             </Grid>
@@ -124,10 +124,10 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
           <BoxWrapper>
             <FormControlLabel
               checked={checkedMailingList}
-              onChange={(e) => {
-                setCheckedMailingList(e.target.checked);
+              onChange={e => {
+                setCheckedMailingList(e.target.checked)
               }}
-              control={<Checkbox color="primary" />}
+              control={<Checkbox color='primary' />}
               label={
                 <Typography>
                   Occasionally send me updates on new features
@@ -137,52 +137,52 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
           </BoxWrapper>
           <BoxWrapper>
             <Typography
-              variant="h7"
-              color="textSecondary"
-              sx={{ fontSize: "14px" }}
+              variant='h7'
+              color='textSecondary'
+              sx={{ fontSize: '14px' }}
             >
-              By clicking Sign Up, you agree to our{" "}
+              By clicking Sign Up, you agree to our{' '}
               <Link
-                href="/terms-and-conditions"
-                rel="noreferrer"
-                target="_blank"
+                href='/terms-and-conditions'
+                rel='noreferrer'
+                target='_blank'
               >
                 Terms
-              </Link>{" "}
-              and that you have read our{" "}
-              <Link href="/privacy-policy" rel="noreferrer" target="_blank">
+              </Link>{' '}
+              and that you have read our{' '}
+              <Link href='/privacy-policy' rel='noreferrer' target='_blank'>
                 Privacy Policy
               </Link>
-              , including our{" "}
-              <Link href="/cookie-policy" rel="noreferrer" target="_blank">
+              , including our{' '}
+              <Link href='/cookie-policy' rel='noreferrer' target='_blank'>
                 Cookie Policy
               </Link>
               .
             </Typography>
           </BoxWrapper>
           <RoundButton
-            type="submit"
+            type='submit'
             fullWidth
-            variant="contained"
-            color="primary"
+            variant='contained'
+            color='primary'
             sx={{
               margin: theme.spacing(3, 0, 2),
-              fontWeight: "bold",
+              fontWeight: 'bold'
             }}
           >
             Create account
           </RoundButton>
-          <Grid container justify="flex-end">
+          <Grid container justify='flex-end'>
             <Grid item>
               <Button
-                color="primary"
+                color='primary'
                 disableRipple
                 sx={{
-                  textTransform: "none",
-                  fontWeight: "bold",
+                  textTransform: 'none',
+                  fontWeight: 'bold'
                 }}
                 onClick={onSwitchToSignInClick}
-                type="button"
+                type='button'
               >
                 Already have an account? Sign in
               </Button>
@@ -191,7 +191,7 @@ const SignUpForm = ({ onSubmit, onSwitchToSignInClick }) => {
         </form>
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default SignUpForm;
+export default SignUpForm

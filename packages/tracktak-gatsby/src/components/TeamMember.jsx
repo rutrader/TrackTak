@@ -1,61 +1,61 @@
-import React from "react";
-import Img from "gatsby-image";
-import { Box, Typography } from "@material-ui/core";
+import React from 'react'
+import Img from 'gatsby-image'
+import { Box, Typography } from '@material-ui/core'
 
 const BoxColumnWrapper = ({ sx, ...props }) => {
   return (
     <Box
       sx={{
-        display: "flex",
-        justifyContent: "space-evenly",
-        flex: "1 1 234px",
-        ...sx,
+        display: 'flex',
+        justifyContent: 'space-evenly',
+        flex: '1 1 234px',
+        ...sx
       }}
       {...props}
     />
-  );
-};
+  )
+}
 
 const StyledImage = ({ sx, ...props }) => {
   return (
     <Box
       component={Img}
       sx={{
-        borderRadius: "10px",
+        borderRadius: '10px'
       }}
       {...props}
     />
-  );
-};
+  )
+}
 
 const BoxInfoWrapper = ({ sx, ...props }) => {
   return (
     <Box
       sx={{
-        flex: "1 1 300px",
-        maxWidth: 300,
+        flex: '1 1 300px',
+        maxWidth: 300
       }}
       {...props}
     />
-  );
-};
+  )
+}
 
 const TypographyMemberName = ({ sx, ...props }) => {
   return (
     <Typography
       sx={{
-        visibility: "visible",
-        animationDelay: "0.4s",
-        animationName: "fadeInUp",
-        fontWeight: "bold",
-        color: (theme) => theme.palette.primary.mainTextColor,
-        marginTop: (theme) => theme.spacing(2),
+        visibility: 'visible',
+        animationDelay: '0.4s',
+        animationName: 'fadeInUp',
+        fontWeight: 'bold',
+        color: theme => theme.palette.primary.mainTextColor,
+        marginTop: theme => theme.spacing(2)
       }}
-      variant="h4"
+      variant='h4'
       {...props}
     />
-  );
-};
+  )
+}
 
 const TeamMember = ({ memberInfo, memberTitle, memberName, fluid }) => {
   return (
@@ -63,13 +63,13 @@ const TeamMember = ({ memberInfo, memberTitle, memberName, fluid }) => {
       <BoxInfoWrapper>
         <StyledImage fluid={fluid} />
         <TypographyMemberName>{memberName}</TypographyMemberName>
-        <Typography variant="h6">{memberTitle}</Typography>
-        <Typography variant="subtitle1" color="textSecondary">
+        <Typography variant='h6'>{memberTitle}</Typography>
+        <Typography variant='subtitle1' color='textSecondary'>
           {memberInfo}
         </Typography>
       </BoxInfoWrapper>
     </BoxColumnWrapper>
-  );
-};
+  )
+}
 
-export default TeamMember;
+export default TeamMember

@@ -1,25 +1,25 @@
-import { useEffect, useState } from "react";
-import { getPrice } from "../api/api";
-import { useAuth } from "./useAuth";
+import { useEffect, useState } from 'react'
+import { getPrice } from '../api/api'
+import { useAuth } from './useAuth'
 
-const useFetchPrice = (priceId) => {
-  const { getAccessToken } = useAuth();
-  const [price, setPrice] = useState();
+const useFetchPrice = priceId => {
+  const { getAccessToken } = useAuth()
+  const [price, setPrice] = useState()
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = await getAccessToken();
+      const token = await getAccessToken()
       const {
-        data: { price },
-      } = await getPrice(priceId, token?.jwtToken);
+        data: { price }
+      } = await getPrice(priceId, token?.jwtToken)
 
-      setPrice(price);
-    };
+      setPrice(price)
+    }
 
-    fetchData();
-  }, [getAccessToken, priceId]);
+    fetchData()
+  }, [getAccessToken, priceId])
 
-  return price;
-};
+  return price
+}
 
-export default useFetchPrice;
+export default useFetchPrice

@@ -1,42 +1,42 @@
-import React from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import { navigate } from "gatsby";
+import React from 'react'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
+import Modal from '@mui/material/Modal'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
+import { navigate } from 'gatsby'
 
 const PaymentSuccess = () => {
   return (
     <Modal hideBackdrop open>
       <Box
         sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
           width: 500,
-          bgcolor: "background.paper",
-          borderRadius: "8px",
+          bgcolor: 'background.paper',
+          borderRadius: '8px',
           boxShadow:
-            "0 50px 100px rgb(60 66 87 / 12%), 0 15px 35px rgb(60 66 87 / 12%), 0 5px 15px rgb(0 0 0 / 8%)",
+            '0 50px 100px rgb(60 66 87 / 12%), 0 15px 35px rgb(60 66 87 / 12%), 0 5px 15px rgb(0 0 0 / 8%)',
           p: 4,
-          "&:focus": {
+          '&:focus': {
             outline: 0,
-            border: 0,
-          },
+            border: 0
+          }
         }}
       >
         <CheckCircleOutlineIcon
-          color="primary"
-          fontSize="large"
+          color='primary'
+          fontSize='large'
           sx={{ mb: 2 }}
         />
         <Typography
-          variant="h6"
-          component="h2"
-          sx={{ fontWeight: "bold", mb: 2 }}
+          variant='h6'
+          component='h2'
+          sx={{ fontWeight: 'bold', mb: 2 }}
         >
           Payment success
         </Typography>
@@ -46,17 +46,17 @@ const PaymentSuccess = () => {
         </Typography>
         <Button
           onClick={() => {
-            navigate("/dashboard");
+            navigate('/dashboard')
           }}
           endIcon={<ArrowForwardIcon />}
-          sx={{ textTransform: "none" }}
-          variant="contained"
+          sx={{ textTransform: 'none' }}
+          variant='contained'
         >
           Go to Dashboard
         </Button>
       </Box>
     </Modal>
-  );
-};
+  )
+}
 
-export default PaymentSuccess;
+export default PaymentSuccess

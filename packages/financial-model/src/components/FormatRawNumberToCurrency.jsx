@@ -1,5 +1,5 @@
-import React from "react";
-import FormatRawNumber from "./FormatRawNumber";
+import React from 'react'
+import FormatRawNumber from './FormatRawNumber'
 
 const FormatRawNumberToCurrency = ({ value, ...props }) => {
   // const currencySymbol = useSelector(selectValuationCurrencySymbol);
@@ -11,7 +11,7 @@ const FormatRawNumberToCurrency = ({ value, ...props }) => {
       decimalScale={2}
       {...props}
     />
-  );
-};
+  )
+}
 
-export default FormatRawNumberToCurrency;
+export default FormatRawNumberToCurrency

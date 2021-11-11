@@ -1,33 +1,33 @@
 const assignNestedObject = (obj, keyPath, value) => {
-  const lastKeyIndex = keyPath.length - 1;
+  const lastKeyIndex = keyPath.length - 1
 
   for (var i = 0; i < lastKeyIndex; ++i) {
-    const key = keyPath[i];
+    const key = keyPath[i]
 
     if (!(key in obj)) {
-      obj[key] = {};
+      obj[key] = {}
     }
-    obj = obj[key];
+    obj = obj[key]
   }
-  obj[keyPath[lastKeyIndex]] = value;
-};
+  obj[keyPath[lastKeyIndex]] = value
+}
 
-const replaceDoubleColonWithObject = (data) => {
-  const newData = {};
+const replaceDoubleColonWithObject = data => {
+  const newData = {}
 
-  if (typeof data !== "object") {
-    return data;
+  if (typeof data !== 'object') {
+    return data
   }
 
-  Object.keys(data).forEach((key) => {
-    const value = data[key];
+  Object.keys(data).forEach(key => {
+    const value = data[key]
 
-    const splits = key.split("::");
+    const splits = key.split('::')
 
-    assignNestedObject(newData, splits, value);
-  });
+    assignNestedObject(newData, splits, value)
+  })
 
-  return newData;
-};
+  return newData
+}
 
-export default replaceDoubleColonWithObject;
+export default replaceDoubleColonWithObject

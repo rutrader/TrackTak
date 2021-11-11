@@ -1,23 +1,23 @@
-import { useState, useEffect } from "react";
-import { getSpreadsheet } from "../api/api";
-import { useAuth } from "./useAuth";
+import { useState, useEffect } from 'react'
+import { getSpreadsheet } from '../api/api'
+import { useAuth } from './useAuth'
 
-const useFetchSpreadsheet = (sheetId) => {
-  const [spreadsheet, setSpreadsheet] = useState();
-  const { getAccessToken } = useAuth();
+const useFetchSpreadsheet = sheetId => {
+  const [spreadsheet, setSpreadsheet] = useState()
+  const { getAccessToken } = useAuth()
 
   useEffect(() => {
     async function fetchData() {
-      const token = await getAccessToken();
-      const response = await getSpreadsheet(sheetId, token?.jwtToken);
+      const token = await getAccessToken()
+      const response = await getSpreadsheet(sheetId, token?.jwtToken)
 
-      setSpreadsheet(response.data.spreadsheet);
+      setSpreadsheet(response.data.spreadsheet)
     }
 
-    fetchData();
-  }, [getAccessToken, sheetId]);
+    fetchData()
+  }, [getAccessToken, sheetId])
 
-  return spreadsheet;
-};
+  return spreadsheet
+}
 
-export default useFetchSpreadsheet;
+export default useFetchSpreadsheet

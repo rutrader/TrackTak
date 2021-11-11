@@ -1,133 +1,130 @@
-import React, { useEffect, useState } from "react";
-import Button from "@material-ui/core/Button";
-import { Box } from "@material-ui/core";
+import React, { useEffect, useState } from 'react'
+import Button from '@material-ui/core/Button'
+import { Box } from '@material-ui/core'
 
-import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
-import { useAuth } from "../../../../tracktak-gatsby/src/hooks/useAuth";
-import { useDispatch } from "react-redux";
-import { setMessage } from "../../../../tracktak-gatsby/src/redux/actions/snackbarActions";
-import VerifyEmailLink from "../../../../tracktak-gatsby/src/components/VerifyEmailLink";
+import TextField from '@material-ui/core/TextField'
+import Grid from '@material-ui/core/Grid'
+import { useAuth } from '../../../../tracktak-gatsby/src/hooks/useAuth'
+import { useDispatch } from 'react-redux'
+import { setMessage } from '../../../../tracktak-gatsby/src/redux/actions/snackbarActions'
+import VerifyEmailLink from '../../../../tracktak-gatsby/src/components/VerifyEmailLink'
 
 const ContactDetailsForm = () => {
-  const {
-    userData,
-    updateContactDetails,
-    isExternalIdentityProvider,
-  } = useAuth();
-  const [name, setName] = useState(userData?.name);
-  const [email, setEmail] = useState(userData?.email);
-  const [isDirty, setIsDirty] = useState(false);
-  const dispatch = useDispatch();
+  const { userData, updateContactDetails, isExternalIdentityProvider } =
+    useAuth()
+  const [name, setName] = useState(userData?.name)
+  const [email, setEmail] = useState(userData?.email)
+  const [isDirty, setIsDirty] = useState(false)
+  const dispatch = useDispatch()
 
   const handleFieldChange = (e, setter) => {
-    const value = e.target.value;
-    setter(value);
-    setIsDirty(true);
-  };
+    const value = e.target.value
+    setter(value)
+    setIsDirty(true)
+  }
 
   useEffect(() => {
     if (name === userData?.name && email === userData?.email) {
-      setIsDirty(false);
+      setIsDirty(false)
     }
-  }, [name, email, userData]);
+  }, [name, email, userData])
 
   useEffect(() => {
     if (userData) {
-      setName(userData.name);
-      setEmail(userData.email);
+      setName(userData.name)
+      setEmail(userData.email)
     }
-  }, [userData]);
+  }, [userData])
 
   const handleSuccess = () => {
     dispatch(
       setMessage({
-        message: "Successfully updated your details",
-        severity: "success",
-      }),
-    );
-  };
+        message: 'Successfully updated your details',
+        severity: 'success'
+      })
+    )
+  }
 
-  const handleError = (err) => {
+  const handleError = err => {
     dispatch(
       setMessage({
         message: err?.message,
-        severity: "error",
-      }),
-    );
-  };
+        severity: 'error'
+      })
+    )
+  }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = e => {
+    e.preventDefault()
     updateContactDetails(
       {
         name: name ?? userData?.name,
-        email: email ?? userData.email,
+        email: email ?? userData.email
       },
       handleSuccess,
-      handleError,
-    );
-  };
+      handleError
+    )
+  }
 
   return (
     <Box
       sx={{
-        display: "flex",
+        display: 'flex'
       }}
     >
-      <form style={{ width: "100%" }} onSubmit={handleSubmit}>
+      <form style={{ width: '100%' }} onSubmit={handleSubmit}>
         <Grid
           container
-          direction="column"
-          justifyContent="space-between"
+          direction='column'
+          justifyContent='space-between'
           gap={3}
         >
           <Grid item xs={12} sm={4}>
             <TextField
-              value={name || ""}
-              onChange={(e) => handleFieldChange(e, setName)}
-              variant="outlined"
+              value={name || ''}
+              onChange={e => handleFieldChange(e, setName)}
+              variant='outlined'
               required
               fullWidth
-              id="name"
-              label="Name"
-              name="name"
-              autoComplete="name"
-              size="small"
+              id='name'
+              label='Name'
+              name='name'
+              autoComplete='name'
+              size='small'
               disabled={isExternalIdentityProvider}
             />
           </Grid>
           <Grid item xs={12} sm={4}>
             <TextField
-              value={email || ""}
-              onChange={(e) => handleFieldChange(e, setEmail)}
-              variant="outlined"
+              value={email || ''}
+              onChange={e => handleFieldChange(e, setEmail)}
+              variant='outlined'
               required
               fullWidth
-              name="email"
-              label="Email"
-              type="email"
-              id="email"
-              autoComplete="email"
-              size="small"
+              name='email'
+              label='Email'
+              type='email'
+              id='email'
+              autoComplete='email'
+              size='small'
               disabled={isExternalIdentityProvider}
             />
             <VerifyEmailLink
               sx={{
                 mb: 1,
-                mt: 1,
+                mt: 1
               }}
-              text="Click here to verify your email!"
+              text='Click here to verify your email!'
             />
           </Grid>
           <Grid item xs={12} sm={2}>
             <Button
-              type="submit"
+              type='submit'
               fullWidth
-              variant="contained"
-              color="primary"
+              variant='contained'
+              color='primary'
               sx={{
-                textTransform: "none",
+                textTransform: 'none'
               }}
               disabled={!isDirty}
             >
@@ -137,7 +134,7 @@ const ContactDetailsForm = () => {
         </Grid>
       </form>
     </Box>
-  );
-};
+  )
+}
 
-export default ContactDetailsForm;
+export default ContactDetailsForm

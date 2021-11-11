@@ -1,63 +1,63 @@
-import axios from "axios";
-import cache from "memory-cache";
-import replaceDoubleColonWithObject from "./shared/replaceDoubleColonWithObject";
-import tenYearGovernmentBondYields from "../data/tenYearGovernmentBondYields.json";
-import iso3311a2 from "iso-3166-1-alpha-2";
+import axios from 'axios'
+import cache from 'memory-cache'
+import replaceDoubleColonWithObject from './shared/replaceDoubleColonWithObject'
+import tenYearGovernmentBondYields from '../data/tenYearGovernmentBondYields.json'
+import iso3311a2 from 'iso-3166-1-alpha-2'
 // import { wrap } from "comlink";
 // import nodeEndpoint from "comlink/dist/umd/node-adapter";
 // import { getSensitivityAnalysisWorker } from "./workers";
-import * as database from "./database/mongoDbClient";
-import { Collections } from "./database/collections";
-import convertFundamentalsFromAPI from "./shared/convertFundamentalsFromAPI";
-import { default as MongoDb } from "mongodb";
+import * as database from './database/mongoDbClient'
+import { Collections } from './database/collections'
+import convertFundamentalsFromAPI from './shared/convertFundamentalsFromAPI'
+import { default as MongoDb } from 'mongodb'
 
-const baseUrl = "https://eodhistoricaldata.com/api";
-const fundamentalsUrl = `${baseUrl}/fundamentals`;
-const exchangesListUrl = `${baseUrl}/exchanges-list`;
-const eodUrl = `${baseUrl}/eod`;
-const searchUrl = `${baseUrl}/search`;
-const exchangeSymbolListUrl = `${baseUrl}/exchange-symbol-list`;
-const bulkFundamentalsUrl = `${baseUrl}/bulk-fundamentals`;
+const baseUrl = 'https://eodhistoricaldata.com/api'
+const fundamentalsUrl = `${baseUrl}/fundamentals`
+const exchangesListUrl = `${baseUrl}/exchanges-list`
+const eodUrl = `${baseUrl}/eod`
+const searchUrl = `${baseUrl}/search`
+const exchangeSymbolListUrl = `${baseUrl}/exchange-symbol-list`
+const bulkFundamentalsUrl = `${baseUrl}/bulk-fundamentals`
 
-const MEDIUM_PLUS_CAP_PRICE_THRESHOLD = 30;
+const MEDIUM_PLUS_CAP_PRICE_THRESHOLD = 30
 
-database.connect();
+database.connect()
 
 const globalParams = {
-  api_token: process.env.EOD_HISTORICAL_DATA_API_KEY,
-};
+  api_token: process.env.EOD_HISTORICAL_DATA_API_KEY
+}
 
 const setCachedData = (data, cacheKey, time) => {
   if (data) {
-    return cache.put(cacheKey, data, time);
+    return cache.put(cacheKey, data, time)
   }
-  return data;
-};
+  return data
+}
 
-const getCachedData = (cacheKey) => {
-  const cachedData = cache.get(cacheKey);
+const getCachedData = cacheKey => {
+  const cachedData = cache.get(cacheKey)
 
-  if (cachedData) return cachedData;
+  if (cachedData) return cachedData
 
-  return null;
-};
+  return null
+}
 
 const sendReqOrGetCachedData = async (
   request,
   keyPrefix,
   cacheParams = {},
   // 6 hour
-  time = 2.16e7,
+  time = 2.16e7
 ) => {
-  const cacheKey = `${keyPrefix}_${JSON.stringify(cacheParams)}`;
-  const cachedData = getCachedData(cacheKey);
+  const cacheKey = `${keyPrefix}_${JSON.stringify(cacheParams)}`
+  const cachedData = getCachedData(cacheKey)
 
-  if (cachedData) return cachedData;
+  if (cachedData) return cachedData
 
-  const data = await request();
+  const data = await request()
 
-  return setCachedData(data, cacheKey, time);
-};
+  return setCachedData(data, cacheKey, time)
+}
 
 // switch to piscina later
 // const sensitivityAnalysisWorker = getSensitivityAnalysisWorker();
@@ -71,17 +71,17 @@ const api = {
           params: {
             ...globalParams,
             ...query,
-            fmt: "json",
-          },
-        });
+            fmt: 'json'
+          }
+        })
 
-        return data;
+        return data
       },
-      "bulkFundamentals",
-      { exchange, query },
-    );
+      'bulkFundamentals',
+      { exchange, query }
+    )
 
-    return data;
+    return data
   },
   getFundamentals: async (ticker, query) => {
     const data = await sendReqOrGetCachedData(
@@ -89,19 +89,19 @@ const api = {
         const { data } = await axios.get(`${fundamentalsUrl}/${ticker}`, {
           params: {
             ...globalParams,
-            ...query,
-          },
-        });
+            ...query
+          }
+        })
 
-        const newObject = replaceDoubleColonWithObject(data);
+        const newObject = replaceDoubleColonWithObject(data)
 
-        return convertFundamentalsFromAPI(newObject);
+        return convertFundamentalsFromAPI(newObject)
       },
-      "fundamentals",
-      { ticker, query },
-    );
+      'fundamentals',
+      { ticker, query }
+    )
 
-    return data;
+    return data
   },
   getPrices: async (ticker, query) => {
     // TODO: Cache this and remove the cache every time it updates
@@ -109,11 +109,11 @@ const api = {
       params: {
         ...globalParams,
         ...query,
-        fmt: "json",
-      },
-    });
+        fmt: 'json'
+      }
+    })
 
-    return data;
+    return data
   },
   getExchangeSymbolList: async (code, query) => {
     const data = await sendReqOrGetCachedData(
@@ -122,17 +122,17 @@ const api = {
           params: {
             ...globalParams,
             ...query,
-            fmt: "json",
-          },
-        });
+            fmt: 'json'
+          }
+        })
 
-        return data;
+        return data
       },
-      "exchangeSymbolList",
-      { code, query },
-    );
+      'exchangeSymbolList',
+      { code, query }
+    )
 
-    return data;
+    return data
   },
   getGovernmentBond: async (code, query) => {
     const data = await sendReqOrGetCachedData(
@@ -142,38 +142,39 @@ const api = {
             params: {
               ...globalParams,
               ...query,
-              fmt: "json",
-            },
-          });
+              fmt: 'json'
+            }
+          })
 
-          return data;
+          return data
         } catch (error) {
           // API doesn't yet provide a lot of country government bonds
           if (error.response.status === 404) {
-            const splits = code.split("10Y");
+            const splits = code.split('10Y')
 
-            console.log(code);
+            console.log(code)
 
             if (splits[0]) {
               const country = iso3311a2
                 .getCountry(splits[0].toUpperCase())
-                .toUpperCase();
-              const tenYearGovernmentBondYield = tenYearGovernmentBondYields.find(
-                (x) => x.country.toUpperCase() === country,
-              ).yield;
+                .toUpperCase()
+              const tenYearGovernmentBondYield =
+                tenYearGovernmentBondYields.find(
+                  x => x.country.toUpperCase() === country
+                ).yield
 
-              return tenYearGovernmentBondYield;
+              return tenYearGovernmentBondYield
             }
           }
 
-          throw error;
+          throw error
         }
       },
-      "governmentBond",
-      { code, query },
-    );
+      'governmentBond',
+      { code, query }
+    )
 
-    return data;
+    return data
   },
   getExchangeRate: async (baseCurrency, quoteCurrency, query) => {
     const data = await sendReqOrGetCachedData(
@@ -184,32 +185,32 @@ const api = {
             params: {
               ...globalParams,
               ...query,
-              order: "d",
-              fmt: "json",
-            },
-          },
-        );
+              order: 'd',
+              fmt: 'json'
+            }
+          }
+        )
 
         if (Array.isArray(data)) {
-          const newData = {};
+          const newData = {}
 
-          data.forEach((exchangeObject) => {
-            const dateKeyWithoutDay = exchangeObject.date.slice(0, -3);
+          data.forEach(exchangeObject => {
+            const dateKeyWithoutDay = exchangeObject.date.slice(0, -3)
 
             newData[dateKeyWithoutDay] = {
-              ...exchangeObject,
-            };
-          });
+              ...exchangeObject
+            }
+          })
 
-          return newData;
+          return newData
         }
-        return data;
+        return data
       },
-      "exchangeRate",
-      { baseCurrency, quoteCurrency, query },
-    );
+      'exchangeRate',
+      { baseCurrency, quoteCurrency, query }
+    )
 
-    return data;
+    return data
   },
   // Base currency is always EUR
   getEURBaseExchangeRate: async (code, query) => {
@@ -219,36 +220,36 @@ const api = {
           params: {
             ...globalParams,
             ...query,
-            order: "d",
-            fmt: "json",
-          },
-        });
+            order: 'd',
+            fmt: 'json'
+          }
+        })
 
-        return data;
+        return data
       },
-      "eurBaseExchangeRate",
-      { code, query },
-    );
+      'eurBaseExchangeRate',
+      { code, query }
+    )
 
-    return data;
+    return data
   },
-  getListOfExchanges: async (query) => {
+  getListOfExchanges: async query => {
     const data = await sendReqOrGetCachedData(
       async () => {
         const { data } = await axios.get(`${exchangesListUrl}`, {
           params: {
             ...globalParams,
-            ...query,
-          },
-        });
+            ...query
+          }
+        })
 
-        return data;
+        return data
       },
-      "listOfExchanges",
-      { query },
-    );
+      'listOfExchanges',
+      { query }
+    )
 
-    return data;
+    return data
   },
 
   getAutocompleteQuery: async (queryString, query) => {
@@ -257,31 +258,31 @@ const api = {
         const { data } = await axios.get(`${searchUrl}/${queryString}`, {
           params: {
             ...globalParams,
-            ...query,
-          },
-        });
+            ...query
+          }
+        })
 
-        if (process.env.PREMIUM_ENABLED === "true") {
+        if (process.env.PREMIUM_ENABLED === 'true') {
           return data
-            .filter((datum) => {
-              return datum.Exchange !== "TSE";
+            .filter(datum => {
+              return datum.Exchange !== 'TSE'
             })
-            .map((datum) => ({
+            .map(datum => ({
               ...datum,
               isMediumCapUSPlus:
                 datum.previousClose > MEDIUM_PLUS_CAP_PRICE_THRESHOLD &&
-                datum.Exchange === "US",
-            }));
+                datum.Exchange === 'US'
+            }))
         } else {
-          return data.filter((datum) => {
-            return datum.Exchange !== "TSE";
-          });
+          return data.filter(datum => {
+            return datum.Exchange !== 'TSE'
+          })
         }
       },
-      "autocompleteQuery",
-      { queryString, query },
-    );
-    return data;
+      'autocompleteQuery',
+      { queryString, query }
+    )
+    return data
   },
 
   // computeSensitivityAnalysis: async (
@@ -306,22 +307,22 @@ const api = {
   //   return data;
   // },
 
-  getFinancialDataByQuery: async (financialDataQuery) => {
+  getFinancialDataByQuery: async financialDataQuery => {
     return database.findOne(Collections.FINANCIAL_DATA, {
-      "general.code": financialDataQuery.code,
-      "general.exchange": financialDataQuery.exchange,
-      "general.updatedAt": financialDataQuery.updatedAt,
-    });
+      'general.code': financialDataQuery.code,
+      'general.exchange': financialDataQuery.exchange,
+      'general.updatedAt': financialDataQuery.updatedAt
+    })
   },
 
-  getFinancialData: async (id) => {
+  getFinancialData: async id => {
     return database.findOne(Collections.FINANCIAL_DATA, {
-      _id: new MongoDb.ObjectId(id),
-    });
+      _id: new MongoDb.ObjectId(id)
+    })
   },
 
-  createFinancialData: async (financialData) => {
-    return database.insert(Collections.FINANCIAL_DATA, financialData);
+  createFinancialData: async financialData => {
+    return database.insert(Collections.FINANCIAL_DATA, financialData)
   },
 
   updateSpreadsheet: async (id, financialDataId, userId) => {
@@ -329,12 +330,12 @@ const api = {
       Collections.SPREADSHEET,
       {
         _id: new MongoDb.ObjectId(id),
-        userId,
+        userId
       },
       {
-        $set: { "financialData.id": financialDataId },
-      },
-    );
+        $set: { 'financialData.id': financialDataId }
+      }
+    )
   },
 
   saveSpreadsheet: async (
@@ -342,47 +343,47 @@ const api = {
     userId,
     financialData,
     spreadsheetId,
-    createdTimestamp = new Date(),
+    createdTimestamp = new Date()
   ) => {
     const document = {
       financialData,
       userId,
       sheetData,
       lastModifiedTimestamp: new Date(),
-      createdTimestamp,
-    };
+      createdTimestamp
+    }
     const query = {
-      "sheetData.name": sheetData.name,
-      userId,
-    };
+      'sheetData.name': sheetData.name,
+      userId
+    }
 
     return database.replace(
       Collections.SPREADSHEET,
       query,
       document,
-      spreadsheetId,
-    );
+      spreadsheetId
+    )
   },
 
-  getSpreadsheets: async (userId) => {
+  getSpreadsheets: async userId => {
     return database.find(Collections.SPREADSHEET, {
-      userId,
-    });
+      userId
+    })
   },
 
   getSpreadsheet: async (userId, id) => {
     return database.findOne(Collections.SPREADSHEET, {
       _id: new MongoDb.ObjectId(id),
-      userId,
-    });
+      userId
+    })
   },
 
   deleteSpreadsheet: async (id, userId) => {
     return database.deleteOne(Collections.SPREADSHEET, {
       _id: new MongoDb.ObjectId(id),
-      userId,
-    });
-  },
-};
+      userId
+    })
+  }
+}
 
-export default api;
+export default api

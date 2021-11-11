@@ -1,21 +1,21 @@
 const getEstimatedCostOfDebt = (
   riskFreeRate,
   interestSpread,
-  currentEquityRiskPremium,
+  currentEquityRiskPremium
 ) => {
   if (
     riskFreeRate === null ||
     interestSpread === null ||
     !currentEquityRiskPremium
   )
-    return null;
+    return null
 
   const value =
     riskFreeRate +
     interestSpread.spread +
-    currentEquityRiskPremium.adjDefaultSpread;
+    currentEquityRiskPremium.adjDefaultSpread
 
-  return value;
-};
+  return value
+}
 
-export default getEstimatedCostOfDebt;
+export default getEstimatedCostOfDebt

@@ -1,96 +1,96 @@
-import { Box, Typography } from "@material-ui/core";
-import React from "react";
-import Img from "gatsby-image";
-import { graphql, useStaticQuery } from "gatsby";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useTheme } from "@material-ui/core/styles";
+import { Box, Typography } from '@material-ui/core'
+import React from 'react'
+import Img from 'gatsby-image'
+import { graphql, useStaticQuery } from 'gatsby'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { useTheme } from '@material-ui/core/styles'
 
 const StyledImage = ({ sx, ...props }) => {
   return (
     <Box
       component={Img}
       sx={{
-        borderRadius: "10px",
-        width: "100%",
-        flex: "1 1 100%",
-        boxShadow: "4px 4px 10px #ccc",
+        borderRadius: '10px',
+        width: '100%',
+        flex: '1 1 100%',
+        boxShadow: '4px 4px 10px #ccc'
       }}
       {...props}
     />
-  );
-};
+  )
+}
 
 export const BoxColumnWrapper = ({ sx, ...props }) => {
   return (
     <Box
       sx={{
-        display: "flex",
-        justifyContent: "space-evenly",
-        flex: "1 1 100%",
-        width: "100%",
-        ...sx,
+        display: 'flex',
+        justifyContent: 'space-evenly',
+        flex: '1 1 100%',
+        width: '100%',
+        ...sx
       }}
       {...props}
     />
-  );
-};
+  )
+}
 
 const BoxImage = ({ sx, ...props }) => {
   return (
     <Box
       sx={{
-        width: "100%",
-        display: "flex",
-        gap: "45px",
-        alignItems: "center",
-        ...sx,
+        width: '100%',
+        display: 'flex',
+        gap: '45px',
+        alignItems: 'center',
+        ...sx
       }}
       {...props}
     />
-  );
-};
+  )
+}
 
-const FeatureHeader = (props) => (
+const FeatureHeader = props => (
   <Typography
     {...props}
     sx={{
-      whiteSpace: "nowrap",
-      fontSize: (theme) => theme.typography.fontSize3,
-      color: (theme) => theme.palette.primary.mainTextColor,
-      fontWeight: "bold",
-      marginBottom: (theme) => theme.spacing(2),
+      whiteSpace: 'nowrap',
+      fontSize: theme => theme.typography.fontSize3,
+      color: theme => theme.palette.primary.mainTextColor,
+      fontWeight: 'bold',
+      marginBottom: theme => theme.spacing(2)
     }}
   />
-);
+)
 
-const FeatureText = (props) => (
+const FeatureText = props => (
   <Typography
     {...props}
-    component="div"
+    component='div'
     sx={{
-      fontSize: (theme) => theme.typography.fontSize2,
-      alignItems: "center",
-      flex: "1 1 100px",
-      maxWidth: "700px",
+      fontSize: theme => theme.typography.fontSize2,
+      alignItems: 'center',
+      flex: '1 1 100px',
+      maxWidth: '700px'
     }}
-    color="textSecondary"
+    color='textSecondary'
   />
-);
+)
 
-const FunctionText = (props) => {
-  return <Typography {...props} component="code" fontWeight="bold" />;
-};
+const FunctionText = props => {
+  return <Typography {...props} component='code' fontWeight='bold' />
+}
 
 const ProcessSection = () => {
-  const theme = useTheme();
-  const isOnMobile = useMediaQuery(theme.breakpoints.down("lg"));
+  const theme = useTheme()
+  const isOnMobile = useMediaQuery(theme.breakpoints.down('lg'))
 
-  let boxImageStyles;
+  let boxImageStyles
 
   if (isOnMobile) {
     boxImageStyles = {
-      flexDirection: "column",
-    };
+      flexDirection: 'column'
+    }
   }
 
   const data = useStaticQuery(graphql`
@@ -120,11 +120,11 @@ const ProcessSection = () => {
         }
       }
     }
-  `);
+  `)
 
   const arrayTexts = [
     {
-      header: "Templates",
+      header: 'Templates',
       image: data.templates.childImageSharp.fluid,
       text: (
         <>
@@ -132,95 +132,95 @@ const ProcessSection = () => {
           the heavy work for you. Theres no need to build your own models,
           simply plug in your inputs and get the models output.
         </>
-      ),
+      )
     },
     {
-      header: "Financial plugin",
+      header: 'Financial plugin',
       image: data.finPlugin.childImageSharp.fluid,
       text: (
         <>
-          No need to keep paying for third-party plugins in Excel. Simply type{" "}
+          No need to keep paying for third-party plugins in Excel. Simply type{' '}
           <FunctionText>=FIN([attribute])</FunctionText> directly into your
           spreadsheet to fill in stock data automatically from 100's of possible
           attributes.
         </>
-      ),
+      )
     },
     {
-      header: "Formulas",
+      header: 'Formulas',
       image: data.formulas.childImageSharp.fluid,
       text: (
         <>
-          We match Excel with over 300+ formulas such as{" "}
-          <FunctionText>VLOOKUP</FunctionText>, <FunctionText>IF</FunctionText>,{" "}
+          We match Excel with over 300+ formulas such as{' '}
+          <FunctionText>VLOOKUP</FunctionText>, <FunctionText>IF</FunctionText>,{' '}
           <FunctionText>SUM</FunctionText> just to name a few and all of the
           same keyboard shortcuts allowing you to be productive from day one.
         </>
-      ),
-    },
-  ];
+      )
+    }
+  ]
 
   return (
     <>
       <Box
         sx={{
-          marginLeft: "auto",
-          marginRight: "auto",
+          marginLeft: 'auto',
+          marginRight: 'auto',
           marginBottom: theme.spacing(7),
-          textAlign: "center",
+          textAlign: 'center'
         }}
       >
         <Typography
-          color="primary"
+          color='primary'
           fontSize={25}
-          fontWeight="bold"
+          fontWeight='bold'
           gutterBottom
         >
           Our Offering
         </Typography>
         <Typography
           sx={{
-            fontWeight: "bold",
+            fontWeight: 'bold',
             color: theme.palette.primary.mainTextColor,
-            marginBottom: theme.spacing(2),
+            marginBottom: theme.spacing(2)
           }}
-          variant="h3"
+          variant='h3'
         >
           Spreadsheet Solution
         </Typography>
-        <Typography variant="h6" color="textSecondary">
+        <Typography variant='h6' color='textSecondary'>
           No learning curve required.
         </Typography>
       </Box>
       <Box
         sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: 6.2,
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 6.2
         }}
       >
         {arrayTexts.map((arrayText, i) => {
-          const isEven = i % 2 === 0;
+          const isEven = i % 2 === 0
           return (
             <BoxColumnWrapper key={i}>
               <BoxImage
                 sx={{
-                  flexDirection: isEven ? "row-reverse" : null,
-                  ...boxImageStyles,
+                  flexDirection: isEven ? 'row-reverse' : null,
+                  ...boxImageStyles
                 }}
               >
                 <StyledImage fluid={arrayText.image} />
                 <Box>
-                  <FeatureHeader variant="h4">{arrayText.header}</FeatureHeader>
+                  <FeatureHeader variant='h4'>{arrayText.header}</FeatureHeader>
                   <FeatureText>{arrayText.text}</FeatureText>
                 </Box>
               </BoxImage>
             </BoxColumnWrapper>
-          );
+          )
         })}
       </Box>
     </>
-  );
-};
+  )
+}
 
-export default ProcessSection;
+export default ProcessSection

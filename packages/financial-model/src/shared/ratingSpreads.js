@@ -1,10 +1,10 @@
-import ratingSpreadsJson from "../data/ratingSpreads.json";
+import ratingSpreadsJson from '../data/ratingSpreads.json'
 
 const ratingSpreads = ratingSpreadsJson
-  .map((ratingSpread) => ({
+  .map(ratingSpread => ({
     rating: ratingSpread.rating,
-    spread: parseFloat(ratingSpread.spread) / 100,
+    spread: parseFloat(ratingSpread.spread) / 100
   }))
-  .reverse();
+  .reverse()
 
-export default ratingSpreads;
+export default ratingSpreads

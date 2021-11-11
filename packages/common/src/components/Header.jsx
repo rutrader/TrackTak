@@ -6,63 +6,63 @@ import {
   Hidden,
   IconButton,
   Menu,
-  MenuItem,
-} from "@material-ui/core";
-import React, { useState } from "react";
-import { Link, navigate } from "gatsby";
-import MenuIcon from "@material-ui/icons/Menu";
-import SearchTicker from "../../../../tracktak-gatsby/src/components/SearchTicker";
-import TracktakLogo from "./TracktakLogo";
-import { useAuth } from "../../../../tracktak-gatsby/src/hooks/useAuth";
-import { useTheme } from "@material-ui/core/styles";
+  MenuItem
+} from '@material-ui/core'
+import React, { useState } from 'react'
+import { Link, navigate } from 'gatsby'
+import MenuIcon from '@material-ui/icons/Menu'
+import SearchTicker from '../../../../tracktak-gatsby/src/components/SearchTicker'
+import TracktakLogo from './TracktakLogo'
+import { useAuth } from '../../../../tracktak-gatsby/src/hooks/useAuth'
+import { useTheme } from '@material-ui/core/styles'
 
 export const LinkButton = ({ sx, ...props }) => {
   return (
     <Button
       sx={{
         px: 2,
-        width: "100%",
-        textTransform: "none",
-        fontWeight: "bold",
-        color: (theme) => theme.palette.primary.mainTextColor,
+        width: '100%',
+        textTransform: 'none',
+        fontWeight: 'bold',
+        color: theme => theme.palette.primary.mainTextColor,
         borderTopLeftRadius: 0,
         borderTopRightRadius: 0,
         borderBottomRightRadius: 0,
         borderBottomLeftRadius: 0,
-        height: "48px",
-        whiteSpace: "nowrap",
-        ...sx,
+        height: '48px',
+        whiteSpace: 'nowrap',
+        ...sx
       }}
       {...props}
     />
-  );
-};
+  )
+}
 
-const MenuItemLink = (props) => {
-  return <MenuItem sx={{ "&.MuiMenuItem-root": { padding: 0 } }} {...props} />;
-};
+const MenuItemLink = props => {
+  return <MenuItem sx={{ '&.MuiMenuItem-root': { padding: 0 } }} {...props} />
+}
 
 const SignOutButton = ({ handleOnSignOut, ...props }) => {
   return (
     <LinkButton
       onClick={() => {
-        handleOnSignOut();
+        handleOnSignOut()
       }}
       {...props}
     >
       Sign Out
     </LinkButton>
-  );
-};
+  )
+}
 
 const HeaderLink = ({ to, text, style }) => {
   return (
     <Box
       sx={{
         mx: 1,
-        whiteSpace: "nowrap",
+        whiteSpace: 'nowrap',
         marginRight: 2.25,
-        ...style,
+        ...style
       }}
     >
       {/* aria-current due to @reach/router bug mismatch between server/client */}
@@ -70,71 +70,71 @@ const HeaderLink = ({ to, text, style }) => {
         {text}
       </LinkButton>
     </Box>
-  );
-};
+  )
+}
 
-const Header = ({ hideSearch, position = "fixed", links = [], children }) => {
-  const theme = useTheme();
-  const extraPadding = 20;
-  const paddingBottom = `${theme.mixins.toolbar.minHeight + extraPadding}px`;
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [userMenuAnchorEl, setUserMenuAnchorEl] = useState(null);
-  const { isAuthenticated, signOut } = useAuth();
+const Header = ({ hideSearch, position = 'fixed', links = [], children }) => {
+  const theme = useTheme()
+  const extraPadding = 20
+  const paddingBottom = `${theme.mixins.toolbar.minHeight + extraPadding}px`
+  const [anchorEl, setAnchorEl] = useState(null)
+  const [userMenuAnchorEl, setUserMenuAnchorEl] = useState(null)
+  const { isAuthenticated, signOut } = useAuth()
 
   const handleOnSignOut = async () => {
     if (isAuthenticated) {
-      signOut();
+      signOut()
     }
-  };
+  }
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget)
+  }
 
   const handleClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
 
-  const handleAccountMenuClick = (event) => {
-    setUserMenuAnchorEl(event.currentTarget);
-  };
+  const handleAccountMenuClick = event => {
+    setUserMenuAnchorEl(event.currentTarget)
+  }
 
   const handleAccountMenuClose = () => {
-    setUserMenuAnchorEl(null);
-    handleClose();
-  };
+    setUserMenuAnchorEl(null)
+    handleClose()
+  }
 
   const getUserAccountMenuItems = () => [
-    <MenuItemLink key="dashboard">
+    <MenuItemLink key='dashboard'>
       <LinkButton
         onClick={() => {
-          navigate("/dashboard");
-          handleAccountMenuClose();
+          navigate('/dashboard')
+          handleAccountMenuClose()
         }}
       >
         Dashboard
       </LinkButton>
     </MenuItemLink>,
-    <MenuItemLink key="account-settings">
+    <MenuItemLink key='account-settings'>
       <LinkButton
         onClick={() => {
-          navigate("/account-settings");
-          handleAccountMenuClose();
+          navigate('/account-settings')
+          handleAccountMenuClose()
         }}
       >
         Settings
       </LinkButton>
     </MenuItemLink>,
-    <MenuItemLink key="sign-out">
-      <SignOutButton key="sign-out" handleOnSignOut={handleOnSignOut} />
-    </MenuItemLink>,
-  ];
+    <MenuItemLink key='sign-out'>
+      <SignOutButton key='sign-out' handleOnSignOut={handleOnSignOut} />
+    </MenuItemLink>
+  ]
 
   return (
     <>
       <Box
         sx={{
-          paddingBottom: position === "fixed" ? paddingBottom : 0,
+          paddingBottom: position === 'fixed' ? paddingBottom : 0
         }}
       >
         <AppBar
@@ -142,27 +142,27 @@ const Header = ({ hideSearch, position = "fixed", links = [], children }) => {
             position,
             py: 0.5,
             px: 3,
-            background: "#fff",
+            background: '#fff',
             boxShadow:
-              "0 1px 0px 0 rgb(0 0 0 / 10%), 0 0px 0px 0 rgb(0 0 0 / 6%)",
+              '0 1px 0px 0 rgb(0 0 0 / 10%), 0 0px 0px 0 rgb(0 0 0 / 6%)'
           }}
         >
           <Box
             sx={{
-              display: "flex",
-              alignItems: "left",
-              justifyContent: "left",
+              display: 'flex',
+              alignItems: 'left',
+              justifyContent: 'left'
             }}
           >
-            <Box sx={{ mr: 2, display: "flex", alignItems: "center" }}>
+            <Box sx={{ mr: 2, display: 'flex', alignItems: 'center' }}>
               <TracktakLogo />
             </Box>
             <Box
               sx={{
-                maxWidth: "800px",
-                width: "100%",
-                marginRight: "auto",
-                display: "flex",
+                maxWidth: '800px',
+                width: '100%',
+                marginRight: 'auto',
+                display: 'flex'
               }}
             >
               {!hideSearch && (
@@ -170,15 +170,15 @@ const Header = ({ hideSearch, position = "fixed", links = [], children }) => {
                   isSmallSearch
                   sx={{
                     flex: 1,
-                    alignSelf: "center",
+                    alignSelf: 'center'
                   }}
                 />
               )}
             </Box>
-            <Hidden mdDown implementation="css">
+            <Hidden mdDown implementation='css'>
               <Box
                 sx={{
-                  display: "flex",
+                  display: 'flex'
                 }}
               >
                 {links.map((link, i) => {
@@ -188,20 +188,20 @@ const Header = ({ hideSearch, position = "fixed", links = [], children }) => {
                       sx={{ ml: i === 0 ? 2 : 0 }}
                       {...link}
                     />
-                  );
+                  )
                 })}
                 {children}
                 {isAuthenticated && (
                   <>
                     <LinkButton
                       onClick={handleAccountMenuClick}
-                      aria-controls="account-menu-button"
-                      aria-haspopup="true"
+                      aria-controls='account-menu-button'
+                      aria-haspopup='true'
                     >
-                      <Avatar sx={{ width: "32px", height: "32px" }} />
+                      <Avatar sx={{ width: '32px', height: '32px' }} />
                     </LinkButton>
                     <Menu
-                      id="account-menu"
+                      id='account-menu'
                       anchorEl={userMenuAnchorEl}
                       keepMounted
                       open={Boolean(userMenuAnchorEl)}
@@ -213,37 +213,37 @@ const Header = ({ hideSearch, position = "fixed", links = [], children }) => {
                 )}
               </Box>
             </Hidden>
-            <Hidden mdUp implementation="css">
+            <Hidden mdUp implementation='css'>
               {children ? (
                 children
               ) : (
                 <Box
                   sx={{
-                    display: "flex",
-                    alignItems: "center",
+                    display: 'flex',
+                    alignItems: 'center',
                     ml: 2.5,
-                    height: "100%",
+                    height: '100%'
                   }}
                 >
                   <IconButton
                     sx={{
-                      padding: 0,
+                      padding: 0
                     }}
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
+                    aria-controls='simple-menu'
+                    aria-haspopup='true'
                     onClick={handleClick}
                   >
-                    <MenuIcon color="primary" />
+                    <MenuIcon color='primary' />
                   </IconButton>
                   <Menu
-                    id="simple-menu"
+                    id='simple-menu'
                     anchorEl={anchorEl}
                     keepMounted
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                   >
                     {isAuthenticated && getUserAccountMenuItems()}
-                    {links.map((link) => (
+                    {links.map(link => (
                       <MenuItemLink key={link.to}>
                         <LinkButton
                           component={Link}
@@ -262,7 +262,7 @@ const Header = ({ hideSearch, position = "fixed", links = [], children }) => {
         </AppBar>
       </Box>
     </>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

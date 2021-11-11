@@ -1,62 +1,62 @@
-import { Box, Link, Typography } from "@material-ui/core";
-import { useTheme } from "@material-ui/core/styles";
-import React, { useState, useEffect } from "react";
-import { Helmet } from "react-helmet";
-import getTitle from "../shared/getTitle";
-import resourceName from "../shared/resourceName";
-import FormGroup from "@material-ui/core/FormGroup";
-import SelectAPIRegion from "../components/SelectAPIRegion";
-import FrequentlyAskedQuestion from "../components/FrequentlyAskedQuestion";
-import { createCheckoutSession } from "../api/api";
-import { useAuth } from "../hooks/useAuth";
-import withAuthentication from "../hocs/withAuthentication";
-import { PriceIds } from "../../../common/src/data/regions";
-import useCurrentPlan from "../hooks/useCurrentPlan";
+import { Box, Link, Typography } from '@material-ui/core'
+import { useTheme } from '@material-ui/core/styles'
+import React, { useState, useEffect } from 'react'
+import { Helmet } from 'react-helmet'
+import getTitle from '../shared/getTitle'
+import resourceName from '../shared/resourceName'
+import FormGroup from '@material-ui/core/FormGroup'
+import SelectAPIRegion from '../components/SelectAPIRegion'
+import FrequentlyAskedQuestion from '../components/FrequentlyAskedQuestion'
+import { createCheckoutSession } from '../api/api'
+import { useAuth } from '../hooks/useAuth'
+import withAuthentication from '../hocs/withAuthentication'
+import { PriceIds } from '../../../common/src/data/regions'
+import useCurrentPlan from '../hooks/useCurrentPlan'
 
 const Pricing = () => {
-  const theme = useTheme();
-  const { getAccessToken } = useAuth();
-  const { currentPlan } = useCurrentPlan();
-  const [checked, setChecked] = useState([]);
-  const [disabled, setDisabled] = useState([]);
+  const theme = useTheme()
+  const { getAccessToken } = useAuth()
+  const { currentPlan } = useCurrentPlan()
+  const [checked, setChecked] = useState([])
+  const [disabled, setDisabled] = useState([])
 
   const handleOnClick = async () => {
     // TODO: Redirect to signup here instead if user not logged in
-    const token = await getAccessToken();
+    const token = await getAccessToken()
     const apiRegionLineItems = checked
-      .filter((priceId) => priceId !== PriceIds.MEDIUM_CAP_US_PLUS)
-      .map((priceId) => {
-        return { price: priceId, quantity: 1 };
-      });
-    const lineItems = [...apiRegionLineItems];
-    const { data } = await createCheckoutSession(lineItems, token?.jwtToken);
+      .filter(priceId => priceId !== PriceIds.MEDIUM_CAP_US_PLUS)
+      .map(priceId => {
+        return { price: priceId, quantity: 1 }
+      })
+    const lineItems = [...apiRegionLineItems]
+    const { data } = await createCheckoutSession(lineItems, token?.jwtToken)
 
-    window.location.href = data.url;
-  };
+    window.location.href = data.url
+  }
 
   useEffect(() => {
     if (currentPlan?.priceIds) {
       const currentStocks = [
         PriceIds.MEDIUM_CAP_US_PLUS,
-        ...currentPlan?.priceIds,
-      ];
-      setChecked(currentStocks);
-      setDisabled(currentStocks);
+        ...currentPlan?.priceIds
+      ]
+      setChecked(currentStocks)
+      setDisabled(currentStocks)
     }
-  }, [currentPlan]);
+  }, [currentPlan])
 
   return (
     <>
       <Helmet>
-        <title>{getTitle("Pricing")}</title>
-        <link rel="canonical" href={`${resourceName}/pricing`} />
-        <meta name="description" content="Pricing Plan." />
+        <title>{getTitle('Pricing')}</title>
+        <link rel='canonical' href={`${resourceName}/pricing`} />
+        <meta name='description' content='Pricing Plan.' />
       </Helmet>
-      <Box sx={{ textAlign: "center" }}>
+      <Box sx={{ textAlign: 'center' }}>
         <Typography
           color={theme.palette.primary.purple}
-          fontWeight="bold"
-          variant="h3"
+          fontWeight='bold'
+          variant='h3'
           gutterBottom
         >
           Plans and Pricing
@@ -64,19 +64,19 @@ const Pricing = () => {
         <Typography
           sx={{
             color: theme.palette.primary.mainTextColor,
-            marginBottom: theme.spacing(2),
+            marginBottom: theme.spacing(2)
           }}
-          variant="h4"
+          variant='h4'
         >
           Choose a region that works for you.
         </Typography>
         <FormGroup>
           <Typography
             sx={{ marginTop: theme.spacing(2) }}
-            color="textSecondary"
+            color='textSecondary'
           >
-            For business plans are only available by contacting sales:{" "}
-            <Link href="mailto:support@tracktak.com">support@tracktak.com</Link>
+            For business plans are only available by contacting sales:{' '}
+            <Link href='mailto:support@tracktak.com'>support@tracktak.com</Link>
             .
           </Typography>
         </FormGroup>
@@ -89,7 +89,7 @@ const Pricing = () => {
       />
       <FrequentlyAskedQuestion />
     </>
-  );
-};
+  )
+}
 
-export default Pricing;
+export default Pricing

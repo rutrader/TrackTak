@@ -1,99 +1,99 @@
-import convertCalculationToZeroIfNaN from "./convertCalculationToZeroIfNaN";
-import getIsStockInUS from "./getIsStockInUS";
-import getNonUSFinancialData from "./getNonUSFinancialData";
-import getUSFinancialData from "./getUSFinancialData";
-import getSortedStatements from "./getSortedStatements";
-import defaultStatement from "./defaultStatement";
+import convertCalculationToZeroIfNaN from './convertCalculationToZeroIfNaN'
+import getIsStockInUS from './getIsStockInUS'
+import getNonUSFinancialData from './getNonUSFinancialData'
+import getUSFinancialData from './getUSFinancialData'
+import getSortedStatements from './getSortedStatements'
+import defaultStatement from './defaultStatement'
 
 const getIncomeStatement = (
   incomeStatement,
   convertCurrency,
-  datesToConvertCurrencyAt,
+  datesToConvertCurrencyAt
 ) => {
-  const convertedIncomeStatement = {};
+  const convertedIncomeStatement = {}
 
-  Object.keys(incomeStatement).forEach((property) => {
+  Object.keys(incomeStatement).forEach(property => {
     convertedIncomeStatement[property] = convertCurrency(
       datesToConvertCurrencyAt,
-      incomeStatement[property],
-    );
-  });
+      incomeStatement[property]
+    )
+  })
 
-  const calculations = {};
+  const calculations = {}
 
   calculations.grossMargin =
-    convertedIncomeStatement.grossProfit / convertedIncomeStatement.revenue;
+    convertedIncomeStatement.grossProfit / convertedIncomeStatement.revenue
 
   calculations.operatingMargin =
-    convertedIncomeStatement.operatingIncome / convertedIncomeStatement.revenue;
+    convertedIncomeStatement.operatingIncome / convertedIncomeStatement.revenue
 
   calculations.effectiveTaxRate =
     convertedIncomeStatement.incomeTaxExpense /
-    convertedIncomeStatement.incomeBeforeTax;
+    convertedIncomeStatement.incomeBeforeTax
 
   calculations.netMargin =
     convertedIncomeStatement.netIncomeFromContinuingOps /
-    convertedIncomeStatement.revenue;
+    convertedIncomeStatement.revenue
 
   return {
     ...convertedIncomeStatement,
-    ...convertCalculationToZeroIfNaN(calculations),
-  };
-};
+    ...convertCalculationToZeroIfNaN(calculations)
+  }
+}
 
 const getTTMIncomeStatement = (
   fundamentals,
   quarterlyIncomeStatements,
   yearlyIncomeStatements,
-  convertCurrency,
+  convertCurrency
 ) => {
-  if (!yearlyIncomeStatements.length) return {};
+  if (!yearlyIncomeStatements.length) return {}
 
   const incomeStatement = getIsStockInUS(fundamentals)
     ? getUSFinancialData(
         getIncomeStatement,
         quarterlyIncomeStatements,
-        convertCurrency,
+        convertCurrency
       )
     : getNonUSFinancialData(
         getIncomeStatement,
         yearlyIncomeStatements,
-        convertCurrency,
-      );
+        convertCurrency
+      )
 
-  return incomeStatement;
-};
+  return incomeStatement
+}
 
 const getIncomeStatements = (fundamentals, convertCurrency) => {
   const quarterlyIncomeStatements = getSortedStatements(
-    fundamentals.incomeStatement.quarterly,
-  );
+    fundamentals.incomeStatement.quarterly
+  )
   const yearlyIncomeStatements = getSortedStatements(
-    fundamentals.incomeStatement.yearly,
-  );
+    fundamentals.incomeStatement.yearly
+  )
 
-  if (!yearlyIncomeStatements.length) return defaultStatement;
+  if (!yearlyIncomeStatements.length) return defaultStatement
 
   const ttm = getTTMIncomeStatement(
     fundamentals,
     quarterlyIncomeStatements,
     yearlyIncomeStatements,
-    convertCurrency,
-  );
-  const yearly = {};
+    convertCurrency
+  )
+  const yearly = {}
 
-  yearlyIncomeStatements.forEach((incomeStatement) => {
+  yearlyIncomeStatements.forEach(incomeStatement => {
     yearly[incomeStatement.date] = getIncomeStatement(
       incomeStatement,
       convertCurrency,
-      [incomeStatement.date],
-    );
-  });
+      [incomeStatement.date]
+    )
+  })
 
   return {
     ttm,
-    yearly,
-  };
-};
+    yearly
+  }
+}
 
-export default getIncomeStatements;
+export default getIncomeStatements

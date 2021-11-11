@@ -1,51 +1,49 @@
-import getFinancialSheetPastValues from "./getFinancialSheetPastValues";
-import getIsStockInUS from "./getIsStockInUS";
-import getSortedStatements from "./getSortedStatements";
+import getFinancialSheetPastValues from './getFinancialSheetPastValues'
+import getIsStockInUS from './getIsStockInUS'
+import getSortedStatements from './getSortedStatements'
 
-const pastPeriodsToGet = 3;
-const quarters = 4;
-const pastThreeYearQuarterPeriod = pastPeriodsToGet * quarters;
+const pastPeriodsToGet = 3
+const quarters = 4
+const pastThreeYearQuarterPeriod = pastPeriodsToGet * quarters
 
-const getThreeAverageYearsEffectiveTaxRate = (fundamentals) => {
+const getThreeAverageYearsEffectiveTaxRate = fundamentals => {
   const quarterlyIncomeStatements = getSortedStatements(
-    fundamentals.incomeStatement.quarterly,
-  );
+    fundamentals.incomeStatement.quarterly
+  )
   const yearlyIncomeStatements = getSortedStatements(
-    fundamentals.incomeStatement.yearly,
-  );
-  let pastThreeYearIncomeBeforeTax;
-  let pastThreeYearIncomeTaxExpense;
+    fundamentals.incomeStatement.yearly
+  )
+  let pastThreeYearIncomeBeforeTax
+  let pastThreeYearIncomeTaxExpense
 
   if (getIsStockInUS(fundamentals)) {
-    const pastThreeYearsQuarterlyIncomeStatements = quarterlyIncomeStatements.slice(
-      0,
-      pastThreeYearQuarterPeriod,
-    );
+    const pastThreeYearsQuarterlyIncomeStatements =
+      quarterlyIncomeStatements.slice(0, pastThreeYearQuarterPeriod)
 
     pastThreeYearIncomeBeforeTax = getFinancialSheetPastValues(
       pastThreeYearsQuarterlyIncomeStatements,
-      "incomeBeforeTax",
-    );
+      'incomeBeforeTax'
+    )
     pastThreeYearIncomeTaxExpense = getFinancialSheetPastValues(
       pastThreeYearsQuarterlyIncomeStatements,
-      "incomeTaxExpense",
-    );
+      'incomeTaxExpense'
+    )
   } else {
     const pastThreeYearsYearlyIncomeStatements = yearlyIncomeStatements.slice(
       0,
-      pastPeriodsToGet,
-    );
+      pastPeriodsToGet
+    )
 
     pastThreeYearIncomeBeforeTax = getFinancialSheetPastValues(
       pastThreeYearsYearlyIncomeStatements,
-      "incomeBeforeTax",
-    );
+      'incomeBeforeTax'
+    )
     pastThreeYearIncomeTaxExpense = getFinancialSheetPastValues(
       pastThreeYearsYearlyIncomeStatements,
-      "incomeTaxExpense",
-    );
+      'incomeTaxExpense'
+    )
   }
-  return pastThreeYearIncomeTaxExpense / pastThreeYearIncomeBeforeTax;
-};
+  return pastThreeYearIncomeTaxExpense / pastThreeYearIncomeBeforeTax
+}
 
-export default getThreeAverageYearsEffectiveTaxRate;
+export default getThreeAverageYearsEffectiveTaxRate

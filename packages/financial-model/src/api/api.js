@@ -1,62 +1,62 @@
-import axios from "./axios";
-import baseAxios from "axios";
+import axios from './axios'
+import baseAxios from 'axios'
 
-let sensitivtyAnalysisSource;
+let sensitivtyAnalysisSource
 
 export const computeSensitivityAnalysis = async (
   sheetsSerializedValues,
   existingScope,
-  currentScopes,
+  currentScopes
 ) => {
   if (sensitivtyAnalysisSource) {
-    sensitivtyAnalysisSource.cancel("New request sent.");
+    sensitivtyAnalysisSource.cancel('New request sent.')
   }
 
-  sensitivtyAnalysisSource = baseAxios.CancelToken.source();
+  sensitivtyAnalysisSource = baseAxios.CancelToken.source()
 
   const res = await axios.post(
     `/api/v1/compute-sensitivity-analysis`,
     {
       sheetsSerializedValues,
       existingScope,
-      currentScopes,
+      currentScopes
     },
     {
-      cancelToken: sensitivtyAnalysisSource && sensitivtyAnalysisSource.token,
-    },
-  );
+      cancelToken: sensitivtyAnalysisSource && sensitivtyAnalysisSource.token
+    }
+  )
 
-  sensitivtyAnalysisSource = null;
+  sensitivtyAnalysisSource = null
 
-  return res;
-};
+  return res
+}
 
 export const getFundamentals = async (ticker, params) => {
   return axios.get(`/api/v1/fundamentals/${ticker}`, {
-    params,
-  });
-};
+    params
+  })
+}
 
 export const getExchangeRate = async (baseCurrency, quoteCurrency, params) => {
   return axios.get(`/api/v1/exchange-rate/${baseCurrency}/${quoteCurrency}`, {
-    params,
-  });
-};
+    params
+  })
+}
 
 export const getPrices = async (ticker, params) => {
   return axios.get(`/api/v1/prices/${ticker}`, {
-    params,
-  });
-};
+    params
+  })
+}
 
 export const getGovernmentBond = async (code, params) => {
   return axios.get(`/api/v1/government-bond/${code}`, {
-    params,
-  });
-};
+    params
+  })
+}
 
 export const getAutocompleteQuery = async (query, params) => {
   return axios.get(`/api/v1/autocomplete-query/${query}`, {
-    params,
-  });
-};
+    params
+  })
+}

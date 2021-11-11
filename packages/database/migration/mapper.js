@@ -1,34 +1,34 @@
-import { isEmpty } from "./util.js";
+import { isEmpty } from './util.js'
 
 const getFrozenCell = (xCell, id) => {
   let frozenCell = {
-    id,
-  };
-  const col = parseInt(xCell.charAt(0), 36) - 11;
-  const row = xCell.charAt(1) - 2;
+    id
+  }
+  const col = parseInt(xCell.charAt(0), 36) - 11
+  const row = xCell.charAt(1) - 2
   if (col >= 0) {
-    frozenCell.col = col;
+    frozenCell.col = col
   }
   if (row >= 0) {
-    frozenCell.row = row;
+    frozenCell.row = row
   }
 
   if (frozenCell.col === undefined && frozenCell.row === undefined) {
-    return null;
+    return null
   }
 
-  return frozenCell;
-};
+  return frozenCell
+}
 
 const getCellsData = (xSpreadsheetData, sheetId, sheet) => {
   const cellsData = Object.keys(xSpreadsheetData.cellsSerialized).reduce(
     (all, rowKey) => {
-      const data = xSpreadsheetData.cellsSerialized[rowKey];
+      const data = xSpreadsheetData.cellsSerialized[rowKey]
       const colData = Object.keys(data).reduce((cols, colKey) => {
-        const cellId = `${sheetId}_${rowKey}_${colKey}`;
-        sheet.cells[cellId] = cellId;
+        const cellId = `${sheetId}_${rowKey}_${colKey}`
+        sheet.cells[cellId] = cellId
 
-        const value = xSpreadsheetData.cellsSerialized[rowKey][colKey];
+        const value = xSpreadsheetData.cellsSerialized[rowKey][colKey]
 
         return {
           ...cols,
@@ -37,159 +37,159 @@ const getCellsData = (xSpreadsheetData, sheetId, sheet) => {
               value === null || value === undefined
                 ? undefined
                 : value.toString(),
-            id: cellId,
-          },
-        };
-      }, {});
+            id: cellId
+          }
+        }
+      }, {})
       return {
         ...all,
-        ...colData,
-      };
+        ...colData
+      }
     },
-    {},
-  );
-  const mergedCells = {};
-  const row = {};
-  const col = {};
+    {}
+  )
+  const mergedCells = {}
+  const row = {}
+  const col = {}
 
   const setComment = (source, cellId) => {
-    const comment = source.comment;
+    const comment = source.comment
     if (comment) {
       cellsData[cellId] = {
         ...cellsData[cellId],
-        comment: source.comment,
-      };
+        comment: source.comment
+      }
     }
-  };
+  }
 
   const setStyles = (source, cellId) => {
-    const styleIndex = source.style;
-    const xStyles = xSpreadsheetData.styles[styleIndex];
-    const setStyle = (style) => {
-      sheet.cells[cellId] = cellId;
+    const styleIndex = source.style
+    const xStyles = xSpreadsheetData.styles[styleIndex]
+    const setStyle = style => {
+      sheet.cells[cellId] = cellId
       cellsData[cellId] = {
         ...cellsData[cellId],
         ...(!!cellsData[cellId] && cellsData[cellId].style),
         ...style,
-        id: cellId,
-      };
-    };
+        id: cellId
+      }
+    }
     if (xStyles) {
-      Object.keys(xStyles).forEach((styleKey) => {
+      Object.keys(xStyles).forEach(styleKey => {
         switch (styleKey) {
-          case "font": {
+          case 'font': {
             if (xStyles.font.size) {
               // + 2 to it because x-spreadsheets is 2 lower incorrectly
               setStyle({
-                fontSize: xStyles.font.size + 2,
-              });
+                fontSize: xStyles.font.size + 2
+              })
             }
             if (xStyles.font.bold) {
               setStyle({
-                bold: true,
-              });
+                bold: true
+              })
             }
             if (xStyles.font.italic) {
               setStyle({
-                italic: true,
-              });
+                italic: true
+              })
             }
-            break;
+            break
           }
-          case "underline": {
+          case 'underline': {
             setStyle({
-              [styleKey]: xStyles[styleKey],
-            });
-            break;
+              [styleKey]: xStyles[styleKey]
+            })
+            break
           }
-          case "strike":
+          case 'strike':
             setStyle({
-              strikeThrough: xStyles[styleKey],
-            });
-            break;
-          case "color":
+              strikeThrough: xStyles[styleKey]
+            })
+            break
+          case 'color':
             setStyle({
-              fontColor: xStyles[styleKey],
-            });
-            break;
-          case "bgcolor":
+              fontColor: xStyles[styleKey]
+            })
+            break
+          case 'bgcolor':
             setStyle({
-              backgroundColor: xStyles[styleKey],
-            });
-            break;
-          case "align":
+              backgroundColor: xStyles[styleKey]
+            })
+            break
+          case 'align':
             setStyle({
-              horizontalTextAlign: xStyles[styleKey],
-            });
-            break;
-          case "valign":
+              horizontalTextAlign: xStyles[styleKey]
+            })
+            break
+          case 'valign':
             setStyle({
-              verticalTextAlign: xStyles[styleKey],
-            });
-            break;
-          case "textwrap":
+              verticalTextAlign: xStyles[styleKey]
+            })
+            break
+          case 'textwrap':
             if (xStyles[styleKey]) {
               setStyle({
-                textWrap: "wrap",
-              });
+                textWrap: 'wrap'
+              })
             }
-            break;
-          case "border": {
-            const xBorder = xStyles[styleKey];
-            const borders = [];
+            break
+          case 'border': {
+            const xBorder = xStyles[styleKey]
+            const borders = []
             if (xBorder.right) {
-              borders.push("borderRight");
+              borders.push('borderRight')
             }
             if (xBorder.left) {
-              borders.push("borderLeft");
+              borders.push('borderLeft')
             }
             if (xBorder.top) {
-              borders.push("borderTop");
+              borders.push('borderTop')
             }
             if (xBorder.bottom) {
-              borders.push("borderBottom");
+              borders.push('borderBottom')
             }
-            break;
+            break
           }
-          case "format": {
-            if (xStyles[styleKey] === "normal") {
-              break;
+          case 'format': {
+            if (xStyles[styleKey] === 'normal') {
+              break
             }
-            if (xStyles[styleKey] === "number") {
+            if (xStyles[styleKey] === 'number') {
               setStyle({
-                textFormatPattern: "#,##0.00",
-              });
-            } else if (xStyles[styleKey] === "percent") {
+                textFormatPattern: '#,##0.00'
+              })
+            } else if (xStyles[styleKey] === 'percent') {
               setStyle({
-                textFormatPattern: "0.00%",
-              });
-            } else if (xStyles[styleKey] === "million") {
-              break;
-            } else if (xStyles[styleKey] === "million-currency") {
+                textFormatPattern: '0.00%'
+              })
+            } else if (xStyles[styleKey] === 'million') {
+              break
+            } else if (xStyles[styleKey] === 'million-currency') {
               setStyle({
-                textFormatPattern: "#,###.##,,",
-                dynamicFormat: "currency",
-              });
-            } else if (xStyles[styleKey] === "currency") {
+                textFormatPattern: '#,###.##,,',
+                dynamicFormat: 'currency'
+              })
+            } else if (xStyles[styleKey] === 'currency') {
               setStyle({
-                textFormatPattern: "#,##0.##",
-                dynamicFormat: "currency",
-              });
+                textFormatPattern: '#,##0.##',
+                dynamicFormat: 'currency'
+              })
             } else {
-              console.warn("unknown format", xStyles[styleKey]);
+              console.warn('unknown format', xStyles[styleKey])
             }
-            break;
+            break
           }
           default:
-            console.warn("unknown style", styleKey, xStyles[styleKey]);
-            break;
+            console.warn('unknown style', styleKey, xStyles[styleKey])
+            break
         }
-      });
+      })
     }
-  };
+  }
 
   const setMergedCells = (source, cellId, rowId, colId) => {
-    const merge = source.merge;
+    const merge = source.merge
     if (merge && merge.length) {
       // x-spreadsheet mergedCell y is the amount
       // of subsequent rows/cols to merge. Not the index
@@ -198,154 +198,154 @@ const getCellsData = (xSpreadsheetData, sheetId, sheet) => {
       mergedCells[cellId] = {
         col: { x: parseInt(colId), y: parseInt(colId) + merge[1] },
         row: { x: parseInt(rowId), y: parseInt(rowId) + merge[0] },
-        id: cellId,
-      };
-      sheet.mergedCells[cellId] = cellId;
+        id: cellId
+      }
+      sheet.mergedCells[cellId] = cellId
     }
-  };
+  }
 
-  Object.keys(xSpreadsheetData.cols).forEach((colKey) => {
-    if (colKey !== "len") {
-      const id = `${sheetId}_${colKey}`;
+  Object.keys(xSpreadsheetData.cols).forEach(colKey => {
+    if (colKey !== 'len') {
+      const id = `${sheetId}_${colKey}`
       col[id] = {
         size: xSpreadsheetData.cols[colKey].width,
-        id,
-      };
-      sheet.cols[id] = id;
+        id
+      }
+      sheet.cols[id] = id
     }
-  });
+  })
 
-  Object.keys(xSpreadsheetData.rows).forEach((rowKey) => {
-    const height = xSpreadsheetData.rows[rowKey].height;
-    const id = `${sheetId}_${rowKey}`;
+  Object.keys(xSpreadsheetData.rows).forEach(rowKey => {
+    const height = xSpreadsheetData.rows[rowKey].height
+    const id = `${sheetId}_${rowKey}`
     if (height) {
       row[id] = {
         size: height,
-        id,
-      };
-      sheet.rows[id] = id;
+        id
+      }
+      sheet.rows[id] = id
     }
-    Object.keys(xSpreadsheetData.rows[rowKey].cells).forEach((colId) => {
-      const cellId = `${sheetId}_${rowKey}_${colId}`;
-      const data = xSpreadsheetData.rows[rowKey].cells[colId];
+    Object.keys(xSpreadsheetData.rows[rowKey].cells).forEach(colId => {
+      const cellId = `${sheetId}_${rowKey}_${colId}`
+      const data = xSpreadsheetData.rows[rowKey].cells[colId]
 
-      setComment(data, cellId);
-      setStyles(data, cellId);
+      setComment(data, cellId)
+      setStyles(data, cellId)
 
-      setMergedCells(data, cellId, rowKey, colId);
-    });
-  });
+      setMergedCells(data, cellId, rowKey, colId)
+    })
+  })
 
-  return { cellsData, mergedCells, row, col };
-};
+  return { cellsData, mergedCells, row, col }
+}
 
-const getPowersheet = (xSpreadsheets) => {
+const getPowersheet = xSpreadsheets => {
   const powersheetData = {
-    sheets: {},
-  };
+    sheets: {}
+  }
 
   xSpreadsheets.forEach((xSpreadsheetData, sheetId) => {
     const sheet = {
       cells: {},
       cols: {},
       rows: {},
-      mergedCells: {},
-    };
+      mergedCells: {}
+    }
 
     if (
       !isEmpty(xSpreadsheetData.freeze) &&
-      xSpreadsheetData.name !== "Required Inputs" &&
-      xSpreadsheetData.name !== "Optional Inputs"
+      xSpreadsheetData.name !== 'Required Inputs' &&
+      xSpreadsheetData.name !== 'Optional Inputs'
     ) {
-      const frozenCell = getFrozenCell(xSpreadsheetData.freeze, sheetId);
+      const frozenCell = getFrozenCell(xSpreadsheetData.freeze, sheetId)
       if (frozenCell) {
-        sheet.frozenCell = sheetId;
+        sheet.frozenCell = sheetId
         powersheetData.frozenCells = {
           ...powersheetData.frozenCells,
-          [sheetId]: frozenCell,
-        };
+          [sheetId]: frozenCell
+        }
       }
     }
     const { cellsData, mergedCells, row, col } = getCellsData(
       xSpreadsheetData,
       sheetId,
-      sheet,
-    );
+      sheet
+    )
 
     if (!isEmpty(cellsData)) {
       powersheetData.cells = {
         ...powersheetData.cells,
-        ...cellsData,
-      };
+        ...cellsData
+      }
     }
 
     if (!isEmpty(mergedCells)) {
       powersheetData.mergedCells = {
         ...powersheetData.mergedCells,
-        ...mergedCells,
-      };
+        ...mergedCells
+      }
     }
 
     if (!isEmpty(row)) {
       powersheetData.rows = {
         ...powersheetData.rows,
-        ...row,
-      };
+        ...row
+      }
     }
     if (!isEmpty(col)) {
       powersheetData.cols = {
         ...powersheetData.cols,
-        ...col,
-      };
+        ...col
+      }
     }
 
-    Object.keys(sheet).forEach((key) => {
+    Object.keys(sheet).forEach(key => {
       if (isEmpty(sheet[key])) {
-        delete sheet[key];
+        delete sheet[key]
       }
-    });
+    })
 
     powersheetData.sheets[sheetId] = {
       ...sheet,
       sheetName: xSpreadsheetData.name,
-      id: sheetId,
-    };
+      id: sheetId
+    }
 
     if (powersheetData.mergedCells) {
       // Delete any cell data for mergedCells that isn't
       // top left cell as x-spreadsheet was duplicating it
-      Object.keys(powersheetData.mergedCells).forEach((key) => {
-        const value = powersheetData.mergedCells[key];
+      Object.keys(powersheetData.mergedCells).forEach(key => {
+        const value = powersheetData.mergedCells[key]
 
-        const sections = key.split("_");
-        const sheet = parseInt(sections[0], 10);
+        const sections = key.split('_')
+        const sheet = parseInt(sections[0], 10)
 
         for (let ri = value.row.x; ri <= value.row.y; ri++) {
           for (let ci = value.col.x; ci <= value.col.y; ci++) {
-            const associatedMergedCellId = `${sheet}_${ri}_${ci}`;
+            const associatedMergedCellId = `${sheet}_${ri}_${ci}`
 
             if (!powersheetData.mergedCells[associatedMergedCellId]) {
-              delete powersheetData.cells[associatedMergedCellId];
-              delete powersheetData.sheets[sheet].cells[associatedMergedCellId];
+              delete powersheetData.cells[associatedMergedCellId]
+              delete powersheetData.sheets[sheet].cells[associatedMergedCellId]
             }
           }
         }
-      });
+      })
     }
-  });
+  })
 
-  return powersheetData;
-};
+  return powersheetData
+}
 
 const mapper = (data, name) => {
-  const xSpreadsheets = data.data.datas;
+  const xSpreadsheets = data.data.datas
 
-  const powersheetData = getPowersheet(xSpreadsheets);
+  const powersheetData = getPowersheet(xSpreadsheets)
 
   return {
     name,
-    data: powersheetData,
-  };
-};
+    data: powersheetData
+  }
+}
 
-export default mapper;
+export default mapper

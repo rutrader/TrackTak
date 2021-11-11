@@ -1,17 +1,17 @@
-const convertCalculationToZeroIfNaN = (calculations) => {
+const convertCalculationToZeroIfNaN = calculations => {
   const newCalculations = {
-    ...calculations,
-  };
+    ...calculations
+  }
 
-  Object.keys(newCalculations).forEach((property) => {
-    const value = newCalculations[property];
+  Object.keys(newCalculations).forEach(property => {
+    const value = newCalculations[property]
 
     if (value === Infinity || value === -Infinity || isNaN(value)) {
-      newCalculations[property] = 0;
+      newCalculations[property] = 0
     }
-  });
+  })
 
-  return newCalculations;
-};
+  return newCalculations
+}
 
-export default convertCalculationToZeroIfNaN;
+export default convertCalculationToZeroIfNaN

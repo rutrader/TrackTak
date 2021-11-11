@@ -1,19 +1,19 @@
-import React from "react";
+import React from 'react'
 
 const mapFromStatementsToDateObject = (
   objectToLoop,
   valueKey,
-  ValueFormatter,
+  ValueFormatter
 ) => {
-  const dateObject = {};
+  const dateObject = {}
 
-  Object.keys(objectToLoop).forEach((key) => {
-    const value = objectToLoop[key];
+  Object.keys(objectToLoop).forEach(key => {
+    const value = objectToLoop[key]
 
-    dateObject[key] = <ValueFormatter value={value[valueKey]} />;
-  });
+    dateObject[key] = <ValueFormatter value={value[valueKey]} />
+  })
 
-  return dateObject;
-};
+  return dateObject
+}
 
-export default mapFromStatementsToDateObject;
+export default mapFromStatementsToDateObject

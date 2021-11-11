@@ -1,39 +1,39 @@
-import equityRiskPremiumCountriesJson from "../data/equityRiskPremiumCountries.json";
-import getCountryFromCountryISO from "./getCountryFromCountryISO";
+import equityRiskPremiumCountriesJson from '../data/equityRiskPremiumCountries.json'
+import getCountryFromCountryISO from './getCountryFromCountryISO'
 
-const convertToPercent = (value) => parseFloat(value) / 100;
+const convertToPercent = value => parseFloat(value) / 100
 
-const getCurrentEquityRiskPremium = (fundamentals) => {
+const getCurrentEquityRiskPremium = fundamentals => {
   const {
     corporateTaxRate: marginalTaxRate,
     countryRiskPremium,
     equityRiskPremium,
-    adjDefaultSpread,
-  } = equityRiskPremiumCountriesJson.find((datum) => {
-    const country = datum.country.toUpperCase();
+    adjDefaultSpread
+  } = equityRiskPremiumCountriesJson.find(datum => {
+    const country = datum.country.toUpperCase()
 
     return (
       country ===
       getCountryFromCountryISO(
-        fundamentals.general.countryISO.toUpperCase(),
+        fundamentals.general.countryISO.toUpperCase()
       ).toUpperCase()
-    );
-  });
+    )
+  })
 
   const currentEquityRiskPremium = {
     marginalTaxRate,
     countryRiskPremium,
     equityRiskPremium,
-    adjDefaultSpread,
-  };
+    adjDefaultSpread
+  }
 
-  Object.keys(currentEquityRiskPremium).forEach((key) => {
+  Object.keys(currentEquityRiskPremium).forEach(key => {
     currentEquityRiskPremium[key] = convertToPercent(
-      currentEquityRiskPremium[key],
-    );
-  });
+      currentEquityRiskPremium[key]
+    )
+  })
 
-  return currentEquityRiskPremium;
-};
+  return currentEquityRiskPremium
+}
 
-export default getCurrentEquityRiskPremium;
+export default getCurrentEquityRiskPremium

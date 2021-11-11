@@ -1,1 +1,1 @@
-export { wrapRootElement } from "./sharedGatsby";
+export { wrapRootElement } from './sharedGatsby'

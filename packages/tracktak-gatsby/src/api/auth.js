@@ -5,257 +5,257 @@ import {
   CognitoRefreshToken,
   CognitoUser,
   CognitoUserPool,
-  CognitoUserSession,
-} from "amazon-cognito-identity-js";
-import { noop } from "../shared/utils";
-import axios from "axios";
+  CognitoUserSession
+} from 'amazon-cognito-identity-js'
+import { noop } from '../shared/utils'
+import axios from 'axios'
 
 const POOL_CONFIG = {
   UserPoolId: process.env.GATSBY_COGNITO_USER_POOL_ID,
-  ClientId: process.env.GATSBY_COGNITO_APP_CLIENT_ID,
-};
+  ClientId: process.env.GATSBY_COGNITO_APP_CLIENT_ID
+}
 
-const userPool = new CognitoUserPool(POOL_CONFIG);
+const userPool = new CognitoUserPool(POOL_CONFIG)
 
 const AwsException = {
-  NOT_AUTHORIZED_EXCEPTION: "NotAuthorizedException",
-  USERNAME_EXISTS_EXCEPTION: "UsernameExistsException",
-};
+  NOT_AUTHORIZED_EXCEPTION: 'NotAuthorizedException',
+  USERNAME_EXISTS_EXCEPTION: 'UsernameExistsException'
+}
 
-const CUSTOM_CHALLENGE_SESSION_KEY = "customChallengeSession";
-const CUSTOM_CHALLENGE_USERNAME_KEY = "customChallengeUsername";
-const CUSTOM_CHALLENGE_NEW_PASSWORD_KEY = "customChallengeNewPassword";
+const CUSTOM_CHALLENGE_SESSION_KEY = 'customChallengeSession'
+const CUSTOM_CHALLENGE_USERNAME_KEY = 'customChallengeUsername'
+const CUSTOM_CHALLENGE_NEW_PASSWORD_KEY = 'customChallengeNewPassword'
 
 const onCognitoFailure = (err, onError) => {
   if (err.code === AwsException.NOT_AUTHORIZED_EXCEPTION) {
-    onError(Error("Incorrect username or password"));
-    return;
+    onError(Error('Incorrect username or password'))
+    return
   }
 
   if (err.code === AwsException.USERNAME_EXISTS_EXCEPTION) {
-    onError(Error("This email address has already been registered"));
-    return;
+    onError(Error('This email address has already been registered'))
+    return
   }
 
-  onError(Error("An error occured"));
-};
+  onError(Error('An error occured'))
+}
 
 export const signIn = (
   username,
   password,
   onSuccess,
   onFailure,
-  newPasswordRequired = () => {},
+  newPasswordRequired = () => {}
 ) => {
   const user = new CognitoUser({
     Username: username,
-    Pool: userPool,
-  });
+    Pool: userPool
+  })
 
   const authDetails = new AuthenticationDetails({
     Username: username,
-    Password: password,
-  });
+    Password: password
+  })
 
   user.authenticateUser(authDetails, {
     onSuccess,
-    onFailure: (err) => onCognitoFailure(err, onFailure),
-    newPasswordRequired,
-  });
-};
+    onFailure: err => onCognitoFailure(err, onFailure),
+    newPasswordRequired
+  })
+}
 
 export const signOut = () => {
-  const user = getCurrentUser();
+  const user = getCurrentUser()
   if (user) {
-    user.signOut();
+    user.signOut()
   }
-};
+}
 
 export const signUp = (
   email,
   password,
   onSuccess,
   onFailure,
-  userAttributes = [],
+  userAttributes = []
 ) => {
   userPool.signUp(email, password, userAttributes, null, (err, result) => {
     if (err) {
-      onCognitoFailure(err, onFailure);
-      return;
+      onCognitoFailure(err, onFailure)
+      return
     }
-    onSuccess(result, email, password);
-  });
-};
+    onSuccess(result, email, password)
+  })
+}
 
-export const getUserFromCode = async (code) => {
-  const params = new URLSearchParams();
-  params.append("grant_type", "authorization_code");
-  params.append("client_id", process.env.GATSBY_COGNITO_APP_CLIENT_ID);
-  params.append("code", code);
-  params.append("redirect_uri", process.env.GATSBY_SOCIAL_LOGIN_REDIRECT_URL);
+export const getUserFromCode = async code => {
+  const params = new URLSearchParams()
+  params.append('grant_type', 'authorization_code')
+  params.append('client_id', process.env.GATSBY_COGNITO_APP_CLIENT_ID)
+  params.append('code', code)
+  params.append('redirect_uri', process.env.GATSBY_SOCIAL_LOGIN_REDIRECT_URL)
 
   const config = {
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-  };
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  }
 
   const response = await axios.post(
     process.env.GATSBY_COGNITO_TOKEN_ENDPOINT,
     params,
-    config,
-  );
-  const token = response.data;
+    config
+  )
+  const token = response.data
 
   const IdToken = new CognitoIdToken({
-    IdToken: token.id_token,
-  });
+    IdToken: token.id_token
+  })
   const AccessToken = new CognitoAccessToken({
-    AccessToken: token.access_token,
-  });
+    AccessToken: token.access_token
+  })
   const RefreshToken = new CognitoRefreshToken({
-    RefreshToken: token.refresh_token,
-  });
+    RefreshToken: token.refresh_token
+  })
 
   const user = new CognitoUser({
-    Username: IdToken.payload.username || IdToken.payload["cognito:username"],
-    Pool: userPool,
-  });
+    Username: IdToken.payload.username || IdToken.payload['cognito:username'],
+    Pool: userPool
+  })
 
   user.setSignInUserSession(
     new CognitoUserSession({
       IdToken,
       AccessToken,
-      RefreshToken,
-    }),
-  );
+      RefreshToken
+    })
+  )
 
-  return user;
-};
+  return user
+}
 
 export const getCurrentUser = () => {
-  const user = userPool.getCurrentUser();
+  const user = userPool.getCurrentUser()
   if (user) {
-    user.getSession(noop);
+    user.getSession(noop)
   }
-  return user;
-};
+  return user
+}
 
 const clearCustomChallengeStorage = () => {
-  localStorage.removeItem(CUSTOM_CHALLENGE_SESSION_KEY);
-  localStorage.removeItem(CUSTOM_CHALLENGE_USERNAME_KEY);
-  localStorage.removeItem(CUSTOM_CHALLENGE_NEW_PASSWORD_KEY);
-};
+  localStorage.removeItem(CUSTOM_CHALLENGE_SESSION_KEY)
+  localStorage.removeItem(CUSTOM_CHALLENGE_USERNAME_KEY)
+  localStorage.removeItem(CUSTOM_CHALLENGE_NEW_PASSWORD_KEY)
+}
 
 export const sendEmailVerification = (
   username,
   onChallenge,
   onSuccess,
   onFailure,
-  newPassword,
+  newPassword
 ) => {
   const user = new CognitoUser({
     Username: username,
-    Pool: userPool,
-  });
+    Pool: userPool
+  })
   user.initiateAuth(
     new AuthenticationDetails({
-      Username: user.getUsername(),
+      Username: user.getUsername()
     }),
     {
-      onSuccess: (session) => {
-        onSuccess(session);
+      onSuccess: session => {
+        onSuccess(session)
       },
-      onFailure: (err) => {
-        onCognitoFailure(err, onFailure);
+      onFailure: err => {
+        onCognitoFailure(err, onFailure)
       },
-      customChallenge: (params) => {
-        localStorage.setItem(CUSTOM_CHALLENGE_SESSION_KEY, user.Session);
-        localStorage.setItem(CUSTOM_CHALLENGE_USERNAME_KEY, username);
+      customChallenge: params => {
+        localStorage.setItem(CUSTOM_CHALLENGE_SESSION_KEY, user.Session)
+        localStorage.setItem(CUSTOM_CHALLENGE_USERNAME_KEY, username)
         if (newPassword) {
-          localStorage.setItem(CUSTOM_CHALLENGE_NEW_PASSWORD_KEY, newPassword);
+          localStorage.setItem(CUSTOM_CHALLENGE_NEW_PASSWORD_KEY, newPassword)
         }
-        onChallenge(params);
-      },
-    },
-  );
-};
+        onChallenge(params)
+      }
+    }
+  )
+}
 
 export const sendChallengeAnswer = (
   challengeAnswer,
   onSuccess,
   onFailure,
-  onChallengeFailure,
+  onChallengeFailure
 ) => {
   try {
     const user = new CognitoUser({
       Username: localStorage.getItem(CUSTOM_CHALLENGE_USERNAME_KEY),
-      Pool: userPool,
-    });
-    user.Session = localStorage.getItem(CUSTOM_CHALLENGE_SESSION_KEY);
-    const newPassword = localStorage.getItem(CUSTOM_CHALLENGE_NEW_PASSWORD_KEY);
+      Pool: userPool
+    })
+    user.Session = localStorage.getItem(CUSTOM_CHALLENGE_SESSION_KEY)
+    const newPassword = localStorage.getItem(CUSTOM_CHALLENGE_NEW_PASSWORD_KEY)
     user.sendCustomChallengeAnswer(
       challengeAnswer,
       {
         onSuccess: (session, userConfirmationNecessary) => {
-          clearCustomChallengeStorage();
-          onSuccess(session, userConfirmationNecessary);
+          clearCustomChallengeStorage()
+          onSuccess(session, userConfirmationNecessary)
         },
-        onFailure: (err) => {
-          clearCustomChallengeStorage();
-          onCognitoFailure(err, onFailure);
+        onFailure: err => {
+          clearCustomChallengeStorage()
+          onCognitoFailure(err, onFailure)
         },
-        customChallenge: (params) => {
-          onChallengeFailure(params);
-        },
+        customChallenge: params => {
+          onChallengeFailure(params)
+        }
       },
       {
         ...(newPassword && {
-          newPassword,
-        }),
-      },
-    );
+          newPassword
+        })
+      }
+    )
   } catch (e) {
-    clearCustomChallengeStorage();
-    onFailure(e);
+    clearCustomChallengeStorage()
+    onFailure(e)
   }
-};
+}
 
-export const getUserData = (handleGetUserData) => {
-  const user = getCurrentUser();
-  return user.getUserAttributes(handleGetUserData);
-};
+export const getUserData = handleGetUserData => {
+  const user = getCurrentUser()
+  return user.getUserAttributes(handleGetUserData)
+}
 
 export const changePassword = (
   oldPassword,
   newPassword,
   onSuccess,
-  onError,
+  onError
 ) => {
-  const user = getCurrentUser();
+  const user = getCurrentUser()
   user.changePassword(oldPassword, newPassword, (err, result) => {
     if (err) {
-      onCognitoFailure(err, onError);
-      return;
+      onCognitoFailure(err, onError)
+      return
     }
 
-    onSuccess(result);
-  });
-};
+    onSuccess(result)
+  })
+}
 
 export const updateContactDetails = (contactDetails, onSuccess, onError) => {
-  const user = getCurrentUser();
-  const updatedAttributes = Object.keys(contactDetails).map((key) => ({
+  const user = getCurrentUser()
+  const updatedAttributes = Object.keys(contactDetails).map(key => ({
     Name: key,
-    Value: contactDetails[key],
-  }));
+    Value: contactDetails[key]
+  }))
 
   user.updateAttributes(updatedAttributes, (err, result) => {
     if (err) {
-      onCognitoFailure(err, onError);
-      return;
+      onCognitoFailure(err, onError)
+      return
     }
 
-    onSuccess(result);
-  });
-};
+    onSuccess(result)
+  })
+}

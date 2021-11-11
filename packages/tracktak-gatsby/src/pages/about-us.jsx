@@ -1,29 +1,29 @@
-import { Typography } from "@material-ui/core";
-import React from "react";
-import { Helmet } from "react-helmet";
-import getTitle from "../shared/getTitle";
-import resourceName from "../shared/resourceName";
+import { Typography } from '@material-ui/core'
+import React from 'react'
+import { Helmet } from 'react-helmet'
+import getTitle from '../shared/getTitle'
+import resourceName from '../shared/resourceName'
 
 const AboutUs = () => {
   return (
     <>
       <Helmet>
-        <title>{getTitle("About Us")}</title>
-        <link rel="canonical" href={`${resourceName}/about-us`} />
+        <title>{getTitle('About Us')}</title>
+        <link rel='canonical' href={`${resourceName}/about-us`} />
         <meta
-          name="description"
-          content="Information about tracktak.com and the co-founders."
+          name='description'
+          content='Information about tracktak.com and the co-founders.'
         />
       </Helmet>
-      <Typography variant="h5" gutterBottom>
+      <Typography variant='h5' gutterBottom>
         About Us
       </Typography>
       <Typography gutterBottom paragraph>
         We are a team of three developers and investors who follow Aswath
-        Damoradan's &amp; Warren Buffet's value investing principles.{"\n"}
+        Damoradan's &amp; Warren Buffet's value investing principles.{'\n'}
         As much as we love Aswath's teachings his excel spreadsheets are very
         difficult to understand, therefore we decided that we would automate and
-        make each spreadsheet easy to use and understand.{"\n"}
+        make each spreadsheet easy to use and understand.{'\n'}
         Our goal is to make the DCF and reverse DCF as good as possible first
         and then move on to calculating the intrinsic value of options, optimal
         cost of debts etc.
@@ -35,7 +35,7 @@ const AboutUs = () => {
         which is why we love your feedback!
       </Typography>
     </>
-  );
-};
+  )
+}
 
-export default AboutUs;
+export default AboutUs

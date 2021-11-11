@@ -1,3 +1,3 @@
-const replaceSpaceWithHyphen = (str) => str.replace(/\s/g, "-");
+const replaceSpaceWithHyphen = str => str.replace(/\s/g, '-')
 
-export default replaceSpaceWithHyphen;
+export default replaceSpaceWithHyphen

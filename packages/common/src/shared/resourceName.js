@@ -1,3 +1,3 @@
-const resourceName = "https://tracktak.com";
+const resourceName = 'https://tracktak.com'
 
-export default resourceName;
+export default resourceName

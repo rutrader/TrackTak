@@ -1,11 +1,11 @@
-import React from "react";
-import { Box, Typography } from "@material-ui/core";
-import { graphql, useStaticQuery } from "gatsby";
-import TeamMember from "../components/TeamMember";
-import { useTheme } from "@material-ui/core/styles";
+import React from 'react'
+import { Box, Typography } from '@material-ui/core'
+import { graphql, useStaticQuery } from 'gatsby'
+import TeamMember from '../components/TeamMember'
+import { useTheme } from '@material-ui/core/styles'
 
 const OurTeamSection = () => {
-  const theme = useTheme();
+  const theme = useTheme()
 
   const data = useStaticQuery(graphql`
     query {
@@ -31,50 +31,50 @@ const OurTeamSection = () => {
         }
       }
     }
-  `);
+  `)
 
   return (
     <>
       <Box
         sx={{
-          marginLeft: "auto",
-          marginRight: "auto",
+          marginLeft: 'auto',
+          marginRight: 'auto',
           marginBottom: theme.spacing(7),
-          textAlign: "center",
+          textAlign: 'center'
         }}
       >
         <Typography
           sx={{
-            visibility: "visible",
-            animationDelay: "0.2s",
-            animationName: "fadeInDown",
+            visibility: 'visible',
+            animationDelay: '0.2s',
+            animationName: 'fadeInDown',
             fontSize: theme.typography.fontSize3,
-            fontWeight: "bold",
+            fontWeight: 'bold'
           }}
-          color="primary"
+          color='primary'
           gutterBottom
         >
           Meet Our
         </Typography>
         <Typography
           sx={{
-            visibility: "visible",
-            animationDelay: "0.4s",
-            animationName: "fadeInUp",
-            fontWeight: "bold",
+            visibility: 'visible',
+            animationDelay: '0.4s',
+            animationName: 'fadeInUp',
+            fontWeight: 'bold',
             color: theme.palette.primary.mainTextColor,
-            marginBottom: theme.spacing(2),
+            marginBottom: theme.spacing(2)
           }}
-          variant="h3"
+          variant='h3'
         >
           Founders
         </Typography>
       </Box>
       <Box
         sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: 5,
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 5
         }}
       >
         <TeamMember
@@ -82,29 +82,29 @@ const OurTeamSection = () => {
             Kristina &amp; Martin are jointly responsible for the direction of the
             business. She is involved in helping users, partnerships,
             building the application and the company's financial health."
-          memberTitle="Co-founder"
-          memberName="Kristina Olchova"
+          memberTitle='Co-founder'
+          memberName='Kristina Olchova'
           fluid={data.memberOne.childImageSharp.fluid}
         />
         <TeamMember
-          memberInfo="Martin has over 8 years programming experience and is an avid
+          memberInfo='Martin has over 8 years programming experience and is an avid
             follower of Aswath Damodaran. He is involved in marketing, partnerships
-            and building out the road map for the application."
-          memberTitle="Co-founder"
-          memberName="Martin Dawson"
+            and building out the road map for the application.'
+          memberTitle='Co-founder'
+          memberName='Martin Dawson'
           fluid={data.memberTwo.childImageSharp.fluid}
         />
         <TeamMember
           memberInfo="Sam is managing the company's
             technological projects and plans. He is responsible for
             backend, front-end application, scaling and cloud development."
-          memberTitle="Co-founder"
-          memberName="Sam Rose"
+          memberTitle='Co-founder'
+          memberName='Sam Rose'
           fluid={data.memberThree.childImageSharp.fluid}
         />
       </Box>
     </>
-  );
-};
+  )
+}
 
-export default OurTeamSection;
+export default OurTeamSection

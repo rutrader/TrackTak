@@ -1,12 +1,12 @@
-import React from "react";
-import { graphql } from "gatsby";
-import { Box, Typography } from "@material-ui/core";
-import resourceName from "../../shared/resourceName";
-import { Helmet } from "react-helmet";
-import getTitle from "../../shared/getTitle";
-import { renderRichText } from "gatsby-source-contentful/rich-text";
-import { INLINES, BLOCKS } from "@contentful/rich-text-types";
-import Img from "gatsby-image";
+import React from 'react'
+import { graphql } from 'gatsby'
+import { Box, Typography } from '@material-ui/core'
+import resourceName from '../../shared/resourceName'
+import { Helmet } from 'react-helmet'
+import getTitle from '../../shared/getTitle'
+import { renderRichText } from 'gatsby-source-contentful/rich-text'
+import { INLINES, BLOCKS } from '@contentful/rich-text-types'
+import Img from 'gatsby-image'
 
 export const query = graphql`
   fragment BlogInformation on ContentfulBlog {
@@ -43,66 +43,61 @@ export const query = graphql`
       ...BlogInformation
     }
   }
-`;
+`
 
 const options = {
   renderNode: {
-    [BLOCKS.EMBEDDED_ASSET]: (node) => {
-      return <Img {...node.data.target} />;
+    [BLOCKS.EMBEDDED_ASSET]: node => {
+      return <Img {...node.data.target} />
     },
     [INLINES.HYPERLINK]: ({ data }, children) => (
       <a
         href={data.uri}
-        target={`${data.uri.startsWith(resourceName) ? "_self" : "_blank"}`}
+        target={`${data.uri.startsWith(resourceName) ? '_self' : '_blank'}`}
         rel={`${
-          data.uri.startsWith(resourceName) ? "" : "noopener noreferrer"
+          data.uri.startsWith(resourceName) ? '' : 'noopener noreferrer'
         }`}
       >
         {children}
       </a>
-    ),
-  },
-};
+    )
+  }
+}
 
-const renderField = (field) => {
-  return renderRichText(field, options);
-};
+const renderField = field => {
+  return renderRichText(field, options)
+}
 
 const Blog = ({ data }) => {
-  const {
-    blogContent,
-    dateOfBlog,
-    slug,
-    blogTitle,
-    descriptionBlog,
-  } = data.contentfulBlog;
+  const { blogContent, dateOfBlog, slug, blogTitle, descriptionBlog } =
+    data.contentfulBlog
 
   return (
     <>
       <Helmet>
         <title>{getTitle(`${blogTitle}`)}</title>
-        <link rel="canonical" href={`${resourceName}/blogs/${slug}`} />
-        <meta name="description" content={descriptionBlog} />
+        <link rel='canonical' href={`${resourceName}/blogs/${slug}`} />
+        <meta name='description' content={descriptionBlog} />
       </Helmet>
       <Box>
         {dateOfBlog && (
           <Typography
             gutterBottom
             sx={{
-              display: "flex",
-              justifyContent: "flex-end",
-              flexWrap: "wrap",
+              display: 'flex',
+              justifyContent: 'flex-end',
+              flexWrap: 'wrap'
             }}
           >
             This blog was done on the<Box>&nbsp;{dateOfBlog}</Box>
           </Typography>
         )}
       </Box>
-      <Typography component="div" paragraph>
+      <Typography component='div' paragraph>
         {renderField(blogContent)}
       </Typography>
     </>
-  );
-};
+  )
+}
 
-export default Blog;
+export default Blog

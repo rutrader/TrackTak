@@ -1,14 +1,14 @@
 const getNonUSFinancialData = (
   getStatementFunc,
   yearlyStatements,
-  convertCurrency,
+  convertCurrency
 ) => {
-  const recentStatement = yearlyStatements[0];
+  const recentStatement = yearlyStatements[0]
   const statement = getStatementFunc(recentStatement, convertCurrency, [
-    recentStatement.date,
-  ]);
+    recentStatement.date
+  ])
 
-  return statement;
-};
+  return statement
+}
 
-export default getNonUSFinancialData;
+export default getNonUSFinancialData

@@ -1,5 +1,5 @@
-const getTitle = (title) => {
-  return `${title} | tracktak.com`;
-};
+const getTitle = title => {
+  return `${title} | tracktak.com`
+}
 
-export default getTitle;
+export default getTitle

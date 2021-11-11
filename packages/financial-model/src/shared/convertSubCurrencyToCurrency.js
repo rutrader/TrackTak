@@ -1,11 +1,11 @@
-const convertSubCurrencyToCurrency = (currencyCode) => {
-  if (currencyCode === "ILA") {
-    return "ILS";
+const convertSubCurrencyToCurrency = currencyCode => {
+  if (currencyCode === 'ILA') {
+    return 'ILS'
   }
-  if (currencyCode === "GBX") {
-    return "GBP";
+  if (currencyCode === 'GBX') {
+    return 'GBP'
   }
-  return currencyCode;
-};
+  return currencyCode
+}
 
-export default convertSubCurrencyToCurrency;
+export default convertSubCurrencyToCurrency

@@ -1,52 +1,52 @@
-import usaIconSvg from "../assets/united-states.svg";
-import chinaIconSvg from "../assets/china.svg";
-import europeIconSvg from "../assets/europe.svg";
-import ukIconSvg from "../assets/united-kingdom.svg";
-import brazilIconSvg from "../assets/brazil.svg";
+import usaIconSvg from '../assets/united-states.svg'
+import chinaIconSvg from '../assets/china.svg'
+import europeIconSvg from '../assets/europe.svg'
+import ukIconSvg from '../assets/united-kingdom.svg'
+import brazilIconSvg from '../assets/brazil.svg'
 
 export const PriceIds = {
-  WORLDWIDE: "price_1Jo6txDOsUBI2OhCuv0mVZE0",
-  MEDIUM_CAP_US_PLUS: "price_1JpAUvDOsUBI2OhCsE4GSzNk",
-  SMALL_CAP_US: "price_1JoW4KDOsUBI2OhCHFgCSAVi",
-  CHINA_AND_ASIA: "price_1JhdQPDOsUBI2OhCOkxiOM9Q",
-  LATIN_AMERICA_AND_EMEA: "price_1Ji1WGDOsUBI2OhC1wdJ7FcD",
-  EUROPE: "price_1JhdQpDOsUBI2OhCztCOuKki",
-  CANADA_AUSTRALIA_UK_IRELAND: "price_1JhdRHDOsUBI2OhCVVGyzsZF",
-};
+  WORLDWIDE: 'price_1Jo6txDOsUBI2OhCuv0mVZE0',
+  MEDIUM_CAP_US_PLUS: 'price_1JpAUvDOsUBI2OhCsE4GSzNk',
+  SMALL_CAP_US: 'price_1JoW4KDOsUBI2OhCHFgCSAVi',
+  CHINA_AND_ASIA: 'price_1JhdQPDOsUBI2OhCOkxiOM9Q',
+  LATIN_AMERICA_AND_EMEA: 'price_1Ji1WGDOsUBI2OhC1wdJ7FcD',
+  EUROPE: 'price_1JhdQpDOsUBI2OhCztCOuKki',
+  CANADA_AUSTRALIA_UK_IRELAND: 'price_1JhdRHDOsUBI2OhCVVGyzsZF'
+}
 
 export const listAPIregions = [
   {
     priceId: PriceIds.MEDIUM_CAP_US_PLUS,
-    regionName: "United States (medium cap+)",
+    regionName: 'United States (medium cap+)',
     iconSvg: usaIconSvg,
-    disabled: true,
+    disabled: true
   },
   {
     priceId: PriceIds.SMALL_CAP_US,
-    regionName: "United States (small cap)",
-    iconSvg: usaIconSvg,
+    regionName: 'United States (small cap)',
+    iconSvg: usaIconSvg
   },
   {
     priceId: PriceIds.CHINA_AND_ASIA,
-    regionName: "China & Asia",
-    iconSvg: chinaIconSvg,
+    regionName: 'China & Asia',
+    iconSvg: chinaIconSvg
   },
   {
     priceId: PriceIds.LATIN_AMERICA_AND_EMEA,
-    regionName: "Latin America, Middle East & Africa",
-    iconSvg: brazilIconSvg,
+    regionName: 'Latin America, Middle East & Africa',
+    iconSvg: brazilIconSvg
   },
   {
     priceId: PriceIds.EUROPE,
-    regionName: "Europe",
-    iconSvg: europeIconSvg,
+    regionName: 'Europe',
+    iconSvg: europeIconSvg
   },
   {
     priceId: PriceIds.CANADA_AUSTRALIA_UK_IRELAND,
-    regionName: "Canada, Australia, UK & Ireland",
-    iconSvg: ukIconSvg,
-  },
-];
+    regionName: 'Canada, Australia, UK & Ireland',
+    iconSvg: ukIconSvg
+  }
+]
 
 export const exchangeToPriceId = {
   LSE: PriceIds.CANADA_AUSTRALIA_UK_IRELAND,
@@ -116,5 +116,5 @@ export const exchangeToPriceId = {
   SA: PriceIds.LATIN_AMERICA_AND_EMEA,
   BA: PriceIds.LATIN_AMERICA_AND_EMEA,
   MX: PriceIds.LATIN_AMERICA_AND_EMEA,
-  LIM: PriceIds.LATIN_AMERICA_AND_EMEA,
-};
+  LIM: PriceIds.LATIN_AMERICA_AND_EMEA
+}

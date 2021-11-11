@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Checkbox, Slider, FormControlLabel } from "@material-ui/core";
+import React, { useEffect, useState } from 'react'
+import { Checkbox, Slider, FormControlLabel } from '@material-ui/core'
 
 const trackStyle = {
-  height: "8px",
-};
+  height: '8px'
+}
 
 const CheckboxSlider = ({
   label,
@@ -17,25 +17,25 @@ const CheckboxSlider = ({
   max,
   marks,
   setChecked,
-  onChangeCommitted,
+  onChangeCommitted
 }) => {
-  const [sliderValue, setSliderValue] = useState(value);
+  const [sliderValue, setSliderValue] = useState(value)
 
   const handleOnChange = (_, newValue) => {
-    setSliderValue(newValue);
-  };
+    setSliderValue(newValue)
+  }
 
   const handleValueChangeCommitted = (_, newValue) => {
-    onChangeCommitted(name, newValue);
-  };
+    onChangeCommitted(name, newValue)
+  }
 
-  const handleCheckedChange = (e) => {
-    setChecked(name, e.target.checked);
-  };
+  const handleCheckedChange = e => {
+    setChecked(name, e.target.checked)
+  }
 
   useEffect(() => {
-    setSliderValue(value);
-  }, [value]);
+    setSliderValue(value)
+  }, [value])
 
   return (
     <React.Fragment>
@@ -45,7 +45,7 @@ const CheckboxSlider = ({
           <Checkbox
             checked={checked}
             onChange={handleCheckedChange}
-            color="primary"
+            color='primary'
           />
         }
         label={label}
@@ -53,26 +53,26 @@ const CheckboxSlider = ({
       {checked && (
         <Slider
           sx={{
-            "& .MuiSlider-thumb": {
+            '& .MuiSlider-thumb': {
               height: 24,
               width: 24,
-              backgroundColor: "#fff",
-              border: "2px solid currentColor",
-              marginTop: "-8px",
-              marginLeft: "-12px",
+              backgroundColor: '#fff',
+              border: '2px solid currentColor',
+              marginTop: '-8px',
+              marginLeft: '-12px'
             },
-            "& .MuiSlider-valueLabel": {
-              left: `calc(-50% + 4px)`,
+            '& .MuiSlider-valueLabel': {
+              left: `calc(-50% + 4px)`
             },
-            "& .MuiSlider-mark": trackStyle,
-            "& .MuiSlider-track": trackStyle,
-            "& .MuiSlider-rail": trackStyle,
+            '& .MuiSlider-mark': trackStyle,
+            '& .MuiSlider-track': trackStyle,
+            '& .MuiSlider-rail': trackStyle
           }}
           disabled={disabledSlider}
           value={sliderValue}
           onChange={handleOnChange}
           onChangeCommitted={handleValueChangeCommitted}
-          valueLabelDisplay="auto"
+          valueLabelDisplay='auto'
           marks={marks}
           step={step}
           min={min}
@@ -80,7 +80,7 @@ const CheckboxSlider = ({
         />
       )}
     </React.Fragment>
-  );
-};
+  )
+}
 
-export default CheckboxSlider;
+export default CheckboxSlider

@@ -1,51 +1,51 @@
-import React from "react";
-import { Helmet } from "react-helmet";
-import resourceName from "../shared/resourceName";
-import UseNowSection from "../landingPage/UseNowSection";
-import { Box, Container } from "@material-ui/core";
-import { useTheme } from "@material-ui/core/styles";
-import Footer from "../landingPage/Footer";
-import TestimonialsSection from "../landingPage/TestimonialsSection";
-import OurTeamSection from "../landingPage/OurTeamSection";
-import VideoSection from "../landingPage/VideoSection";
-import ProcessSection from "../landingPage/ProcessSection";
-import AboveTheFoldSection from "../landingPage/AboveTheFoldSection";
-import withAuthenticatedRedirect from "../hocs/withAuthenticatedRedirect";
+import React from 'react'
+import { Helmet } from 'react-helmet'
+import resourceName from '../shared/resourceName'
+import UseNowSection from '../landingPage/UseNowSection'
+import { Box, Container } from '@material-ui/core'
+import { useTheme } from '@material-ui/core/styles'
+import Footer from '../landingPage/Footer'
+import TestimonialsSection from '../landingPage/TestimonialsSection'
+import OurTeamSection from '../landingPage/OurTeamSection'
+import VideoSection from '../landingPage/VideoSection'
+import ProcessSection from '../landingPage/ProcessSection'
+import AboveTheFoldSection from '../landingPage/AboveTheFoldSection'
+import withAuthenticatedRedirect from '../hocs/withAuthenticatedRedirect'
 
 const Section = ({ sx, ...props }) => {
   return (
     <Box
       sx={{
         pb: 8.75,
-        ...sx,
+        ...sx
       }}
       {...props}
     />
-  );
-};
+  )
+}
 
 const Home = () => {
-  const theme = useTheme();
+  const theme = useTheme()
 
   return (
     <>
       <Helmet>
         <title>Tracktak | The spreadsheet for financial modelling</title>
-        <link rel="canonical" href={`${resourceName}`} />
+        <link rel='canonical' href={`${resourceName}`} />
         <meta
-          name="description"
-          content="Tracktak is a financial modeling tool that makes it easy for financial modellers and investors to value projects and companies."
+          name='description'
+          content='Tracktak is a financial modeling tool that makes it easy for financial modellers and investors to value projects and companies.'
         />
       </Helmet>
       <Box
         sx={{
-          [theme.breakpoints.down("sm")]: { pb: 14 },
-          [theme.breakpoints.up(1235)]: { pb: 21 },
+          [theme.breakpoints.down('sm')]: { pb: 14 },
+          [theme.breakpoints.up(1235)]: { pb: 21 }
         }}
       >
         <AboveTheFoldSection />
       </Box>
-      <Container maxWidth="lg">
+      <Container maxWidth='lg'>
         <Section>
           <ProcessSection />
         </Section>
@@ -64,7 +64,7 @@ const Home = () => {
         <Footer />
       </Container>
     </>
-  );
-};
+  )
+}
 
-export default withAuthenticatedRedirect(Home);
+export default withAuthenticatedRedirect(Home)

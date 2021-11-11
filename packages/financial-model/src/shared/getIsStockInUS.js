@@ -1,4 +1,3 @@
-const getIsStockInUS = (fundamentals) =>
-  fundamentals.general.countryISO === "US";
+const getIsStockInUS = fundamentals => fundamentals.general.countryISO === 'US'
 
-export default getIsStockInUS;
+export default getIsStockInUS

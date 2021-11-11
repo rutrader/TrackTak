@@ -1,20 +1,20 @@
-import { Button } from "@material-ui/core";
-import React from "react";
-import { useTheme } from "@material-ui/core/styles";
+import { Button } from '@material-ui/core'
+import React from 'react'
+import { useTheme } from '@material-ui/core/styles'
 
 const RoundButton = ({ sx, ...props }) => {
-  const theme = useTheme();
+  const theme = useTheme()
 
   return (
     <Button
       sx={{
         borderRadius: 50,
         p: `${theme.spacing(2)} ${theme.spacing(5)}`,
-        ...sx,
+        ...sx
       }}
       {...props}
     />
-  );
-};
+  )
+}
 
-export default RoundButton;
+export default RoundButton

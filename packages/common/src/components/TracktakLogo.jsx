@@ -1,32 +1,32 @@
-import { Box, Hidden } from "@material-ui/core";
-import { Link } from "gatsby";
-import React from "react";
-import tracktakLogoSvg from "../assets/tracktak-purple.svg";
-import tracktakLogoSmallSvg from "../assets/tracktak-logo-small.svg";
-import { useAuth } from "../../../../tracktak-gatsby/src/hooks/useAuth";
+import { Box, Hidden } from '@material-ui/core'
+import { Link } from 'gatsby'
+import React from 'react'
+import tracktakLogoSvg from '../assets/tracktak-purple.svg'
+import tracktakLogoSmallSvg from '../assets/tracktak-logo-small.svg'
+import { useAuth } from '../../../../tracktak-gatsby/src/hooks/useAuth'
 
 const TracktakLogo = ({ width, height, logoProps, ...props }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth()
 
   return (
     <Box {...props}>
       <Link
-        to={isAuthenticated ? "/dashboard" : "/"}
+        to={isAuthenticated ? '/dashboard' : '/'}
         style={{
-          display: "flex",
-          alignItems: "center",
-          height: 40,
+          display: 'flex',
+          alignItems: 'center',
+          height: 40
         }}
-        title={`Back to the ${isAuthenticated ? "dashboard" : "home page"}`}
+        title={`Back to the ${isAuthenticated ? 'dashboard' : 'home page'}`}
       >
-        <Hidden mdDown implementation="css">
-          <img {...logoProps} alt="tracktak" src={tracktakLogoSvg} />
+        <Hidden mdDown implementation='css'>
+          <img {...logoProps} alt='tracktak' src={tracktakLogoSvg} />
         </Hidden>
-        <Hidden mdUp implementation="css">
-          <img {...logoProps} alt="t" src={tracktakLogoSmallSvg} />
+        <Hidden mdUp implementation='css'>
+          <img {...logoProps} alt='t' src={tracktakLogoSmallSvg} />
         </Hidden>
       </Link>
     </Box>
-  );
-};
-export default TracktakLogo;
+  )
+}
+export default TracktakLogo

@@ -41,10 +41,11 @@ const styles = {
       transform: `translate(0, -50%) rotate(45deg)`,
       transition: `all 0.15s ease-in`
     },
-    '.accordion__button[aria-expanded="true"]::before, .accordion__button[aria-selected="true"]::before': {
-      transform: `translate(0, -50%) rotate(-45deg)`,
-      transition: `transform 0.35s ease-in`
-    },
+    '.accordion__button[aria-expanded="true"]::before, .accordion__button[aria-selected="true"]::before':
+      {
+        transform: `translate(0, -50%) rotate(-45deg)`,
+        transition: `transform 0.35s ease-in`
+      },
     '[hidden]': {
       display: `none`
     },

@@ -111,9 +111,10 @@ const HeaderBlock01 = ({ content: { images, collection }, menuJustify }) => {
                               key={`item-${index}`}
                               sx={{
                                 fontSize: 3,
-                                '.button-group-link.level-1, button-group-link.level-1:visited': {
-                                  color: `headerActiveColor`
-                                }
+                                '.button-group-link.level-1, button-group-link.level-1:visited':
+                                  {
+                                    color: `headerActiveColor`
+                                  }
                               }}
                             >
                               <ContentButtons

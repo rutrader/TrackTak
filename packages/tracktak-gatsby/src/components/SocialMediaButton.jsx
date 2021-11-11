@@ -1,25 +1,25 @@
-import React from "react";
-import { Button } from "@material-ui/core";
-import { useTheme } from "@material-ui/core/styles";
+import React from 'react'
+import { Button } from '@material-ui/core'
+import { useTheme } from '@material-ui/core/styles'
 
 const SocialMediaButton = ({ sx, text, ...props }) => {
-  const theme = useTheme();
+  const theme = useTheme()
   return (
     <Button
-      variant="contained"
+      variant='contained'
       sx={{
         borderRadius: 50,
-        textTransform: "none",
+        textTransform: 'none',
         padding: `${theme.spacing(1.5)} ${theme.spacing(5)}`,
         width: 150,
-        ...sx,
+        ...sx
       }}
-      type="button"
+      type='button'
       {...props}
     >
       {text}
     </Button>
-  );
-};
+  )
+}
 
-export default SocialMediaButton;
+export default SocialMediaButton

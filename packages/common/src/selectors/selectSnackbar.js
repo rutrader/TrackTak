@@ -1,3 +1,3 @@
-const selectSnackbar = (state) => state.snackbar;
+const selectSnackbar = state => state.snackbar
 
-export default selectSnackbar;
+export default selectSnackbar

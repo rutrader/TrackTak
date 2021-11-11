@@ -1,11 +1,11 @@
-import React from "react";
-import { Box, List, ListItem, Typography } from "@material-ui/core";
-import Formula from "../components/Formula";
-import YoutubeTutorial from "../components/YoutubeTutorial";
+import React from 'react'
+import { Box, List, ListItem, Typography } from '@material-ui/core'
+import Formula from '../components/Formula'
+import YoutubeTutorial from '../components/YoutubeTutorial'
 
 const wikiContent = [
   {
-    title: "What is a DCF?",
+    title: 'What is a DCF?',
     text: (
       <>
         A Discounted Cash Flow (DCF) is a tool that helps investors find the
@@ -16,26 +16,26 @@ const wikiContent = [
           <YoutubeTutorial />
         </Box>
       </>
-    ),
+    )
   },
   {
-    title: "Where does your data come from?",
+    title: 'Where does your data come from?',
     text: (
       <>
         We use the&nbsp;
         <a
-          href="https://eodhistoricaldata.com"
-          rel="noreferrer"
-          target="_blank"
+          href='https://eodhistoricaldata.com'
+          rel='noreferrer'
+          target='_blank'
         >
           eodhistoricaldata
         </a>
         &nbsp;api.
       </>
-    ),
+    )
   },
   {
-    title: "How can I trust your DCF model?",
+    title: 'How can I trust your DCF model?',
     text: (
       <>
         We base our model off of excel DCF templates by Aswath Damodaran. Aswath
@@ -43,26 +43,26 @@ const wikiContent = [
         acknowledged as one of the best in the industry. You can see for your
         self by following along to his valuation courses on&nbsp;
         <a
-          href="https://www.youtube.com/c/AswathDamodaranonValuation/playlists"
-          rel="noreferrer"
-          target="_blank"
+          href='https://www.youtube.com/c/AswathDamodaranonValuation/playlists'
+          rel='noreferrer'
+          target='_blank'
         >
           youtube
         </a>
         &nbsp;or visting his&nbsp;
         <a
-          href="http://pages.stern.nyu.edu/~adamodar"
-          rel="noreferrer"
-          target="_blank"
+          href='http://pages.stern.nyu.edu/~adamodar'
+          rel='noreferrer'
+          target='_blank'
         >
           site
         </a>
         &nbsp;for all of the financial models.
       </>
-    ),
+    )
   },
   {
-    title: "Base Year, Years 1-10 & Terminal Year",
+    title: 'Base Year, Years 1-10 & Terminal Year',
     text: (
       <>
         <Typography paragraph>
@@ -89,10 +89,10 @@ const wikiContent = [
           many years.
         </Typography>
       </>
-    ),
+    )
   },
   {
-    title: "Revenue",
+    title: 'Revenue',
     text: (
       <>
         <Typography paragraph>
@@ -118,10 +118,10 @@ const wikiContent = [
           year 10's growth rate.
         </Typography>
       </>
-    ),
+    )
   },
   {
-    title: "Operating Margin",
+    title: 'Operating Margin',
     text: (
       <>
         <Typography paragraph>
@@ -137,9 +137,9 @@ const wikiContent = [
           type of margin the company can achieve by year 10. This will differ
           greatly depending on how much of a&nbsp;
           <a
-            rel="noreferrer"
-            target="_blank"
-            href="https://www.investopedia.com/terms/e/economicmoat.asp"
+            rel='noreferrer'
+            target='_blank'
+            href='https://www.investopedia.com/terms/e/economicmoat.asp'
           >
             moat
           </a>
@@ -158,10 +158,10 @@ const wikiContent = [
           depends on the Year of Convergence that you type in to this input.
         </Typography>
       </>
-    ),
+    )
   },
   {
-    title: "Tax Rate",
+    title: 'Tax Rate',
     text: (
       <>
         The tax rate in the base year is set to be the effective tax rate for
@@ -171,19 +171,19 @@ const wikiContent = [
         eventually the company has to pay the countries marginal corporation tax
         rate.
       </>
-    ),
+    )
   },
   {
-    title: "NOPAT",
+    title: 'NOPAT',
     text: (
       <>
         This is essentially the Earnings Before Interest. The difference between
         this and the NOPAT is that taxes are included in this calculation.
       </>
-    ),
+    )
   },
   {
-    title: "Reinvestment",
+    title: 'Reinvestment',
     text: (
       <>
         The sales to capital ratio one is that input that is used in these cells
@@ -194,20 +194,20 @@ const wikiContent = [
         previous year and divide it by the sales to capital ratio. This gives us
         the reinvestment amount for the current year.
       </>
-    ),
+    )
   },
   {
-    title: "FCFF",
+    title: 'FCFF',
     text: (
       <>
         Free Cash Flow to the Firm (FCFF) is the amount of money the company has
         left over that can be used for anything from dividends to reinvesting
         back into the firm.
       </>
-    ),
+    )
   },
   {
-    title: "NOL",
+    title: 'NOL',
     text: (
       <>
         The inputs for this are the sections in 'Optional Inputs'!$J2. Net
@@ -216,10 +216,10 @@ const wikiContent = [
         DCF is because it reduces the taxable income so the company has to pay
         less tax.
       </>
-    ),
+    )
   },
   {
-    title: "Cost of Capital",
+    title: 'Cost of Capital',
     text: (
       <>
         <Typography paragraph>
@@ -235,7 +235,7 @@ const wikiContent = [
         <List disablePadding>
           <ListItem>
             <Box>
-              <Box component="span" style={{ fontWeight: "bold" }}>
+              <Box component='span' style={{ fontWeight: 'bold' }}>
                 Risk Free Rate&nbsp;
               </Box>
               - The return you could get in the same currency with 0 risk. We
@@ -246,18 +246,18 @@ const wikiContent = [
               so they have default risk and therefore are not risk free so we
               have to adjust for that.
               <Formula
-                formula="rfr = gb - ads"
+                formula='rfr = gb - ads'
                 explanations={[
-                  "rfr = Risk Free Rate",
-                  "gb = Government Bonds 10 Year Yield",
-                  "ads = Adjusted Default Spread",
+                  'rfr = Risk Free Rate',
+                  'gb = Government Bonds 10 Year Yield',
+                  'ads = Adjusted Default Spread'
                 ]}
               />
             </Box>
           </ListItem>
           <ListItem>
             <Box>
-              <Box component="span" style={{ fontWeight: "bold" }}>
+              <Box component='span' style={{ fontWeight: 'bold' }}>
                 Equity Risk Premium&nbsp;
               </Box>
               - The additional return demanded by investors for investing in
@@ -270,140 +270,140 @@ const wikiContent = [
               So the UK's erp is 5.96%. Investors demand more return for
               investing in the UK because the default chance is higher.
               <Formula
-                formula="erp = mmerp + crp"
+                formula='erp = mmerp + crp'
                 explanations={[
-                  "erp = Equity Risk Premium",
-                  "mmerp = Mature Market Equity Risk Premium",
-                  "crp = Country Risk Premium",
+                  'erp = Equity Risk Premium',
+                  'mmerp = Mature Market Equity Risk Premium',
+                  'crp = Country Risk Premium'
                 ]}
               />
             </Box>
           </ListItem>
           <ListItem>
             <Box>
-              <Box component="span" style={{ fontWeight: "bold" }}>
+              <Box component='span' style={{ fontWeight: 'bold' }}>
                 Estimated Pre-tax Cost of Debt&nbsp;
               </Box>
               - Each company has a cost of raising debt. The more debt a company
               raises the higher the chance of default but the tax benefits of
               offsetting interest payments also increases.
               <Formula
-                formula="pt = rfr + is + ads"
+                formula='pt = rfr + is + ads'
                 explanations={[
-                  "pt = Estimated Pretax Cost of Debt",
-                  "rfr = Risk Free Rate",
-                  "is = Interest Spread",
-                  "ads = Adjusted Default Spread",
+                  'pt = Estimated Pretax Cost of Debt',
+                  'rfr = Risk Free Rate',
+                  'is = Interest Spread',
+                  'ads = Adjusted Default Spread'
                 ]}
               />
             </Box>
           </ListItem>
           <ListItem>
             <Box>
-              <Box component="span" style={{ fontWeight: "bold" }}>
+              <Box component='span' style={{ fontWeight: 'bold' }}>
                 Estimated Market Value of Normal Debt&nbsp;
               </Box>
               - The market value of Normal debt.
               <Formula
-                formula="cd = ie * (1 - (1 + pt) ** - m)) / pt + bd / (1 + pt) ** m"
+                formula='cd = ie * (1 - (1 + pt) ** - m)) / pt + bd / (1 + pt) ** m'
                 explanations={[
-                  "cd = Estimated Market Value of Normal Debt in Convertible",
-                  "ie = Interest Expense",
-                  "pt = Pre-tax Cost of Debt",
-                  "m =  Average Maturity of Debt",
-                  "bd = Book Value of Debt",
+                  'cd = Estimated Market Value of Normal Debt in Convertible',
+                  'ie = Interest Expense',
+                  'pt = Pre-tax Cost of Debt',
+                  'm =  Average Maturity of Debt',
+                  'bd = Book Value of Debt'
                 ]}
               />
             </Box>
           </ListItem>
           <ListItem>
             <Box>
-              <Box component="span" style={{ fontWeight: "bold" }}>
+              <Box component='span' style={{ fontWeight: 'bold' }}>
                 Estimated Market Value of Normal Debt in Convertible&nbsp;
               </Box>
               - The market value of Normal debt in convertible.
               <Formula
-                formula="cd = iecd * (1 - (1 + pt) ** - mcd)) / pt + bcd / (1 + pt) ** mcd"
+                formula='cd = iecd * (1 - (1 + pt) ** - mcd)) / pt + bcd / (1 + pt) ** mcd'
                 explanations={[
-                  "cd = Estimated Market Value of Normal Debt in Convertible",
-                  "iecd = Interest Expense on Convertible Debt",
-                  "pt = Pre-tax Cost of Debt",
-                  "mcd = Maturity of Convertible Debt",
-                  "bcd = Book Value of Convertible Debt",
+                  'cd = Estimated Market Value of Normal Debt in Convertible',
+                  'iecd = Interest Expense on Convertible Debt',
+                  'pt = Pre-tax Cost of Debt',
+                  'mcd = Maturity of Convertible Debt',
+                  'bcd = Book Value of Convertible Debt'
                 ]}
               />
             </Box>
           </ListItem>
           <ListItem>
             <Box>
-              <Box component="span" style={{ fontWeight: "bold" }}>
+              <Box component='span' style={{ fontWeight: 'bold' }}>
                 Debt Market Value&nbsp;
               </Box>
               - The market value of debt.
               <Formula
-                formula="d = sd + cd"
+                formula='d = sd + cd'
                 explanations={[
-                  "d = Debt Market Value",
-                  "sd = Estimated Market Value of Normal Debt",
-                  "cd = Estimated Market Value of Normal Debt in Convertible",
+                  'd = Debt Market Value',
+                  'sd = Estimated Market Value of Normal Debt',
+                  'cd = Estimated Market Value of Normal Debt in Convertible'
                 ]}
               />
             </Box>
           </ListItem>
           <ListItem>
             <Box>
-              <Box component="span" style={{ fontWeight: "bold" }}>
+              <Box component='span' style={{ fontWeight: 'bold' }}>
                 Equity Market Value&nbsp;
               </Box>
               - The market value of equity. We use the market value and not book
               value because it's the theoretical price you would have to pay to
               acquire the company.
               <Formula
-                formula="em = p * so"
+                formula='em = p * so'
                 explanations={[
-                  "em = Equity Market Value",
-                  "p = Current Stock Price",
-                  "so = Shares Outstanding",
+                  'em = Equity Market Value',
+                  'p = Current Stock Price',
+                  'so = Shares Outstanding'
                 ]}
               />
             </Box>
           </ListItem>
           <ListItem>
             <Box>
-              <Box component="span" style={{ fontWeight: "bold" }}>
+              <Box component='span' style={{ fontWeight: 'bold' }}>
                 Preferred Stock Market Value&nbsp;
               </Box>
               - The market value of Preferred Stock outstanding.
               <Formula
-                formula="ps = n * mp"
+                formula='ps = n * mp'
                 explanations={[
-                  "ps = Preferred Stock Market Value",
-                  "n = Number of Preferred Shares Outstanding",
-                  "mp = Market Price Per Share",
+                  'ps = Preferred Stock Market Value',
+                  'n = Number of Preferred Shares Outstanding',
+                  'mp = Market Price Per Share'
                 ]}
               />
             </Box>
           </ListItem>
           <ListItem>
             <Box>
-              <Box component="span" style={{ fontWeight: "bold" }}>
+              <Box component='span' style={{ fontWeight: 'bold' }}>
                 Total Market Value&nbsp;
               </Box>
               - The sum of Total Market Value.
               <Formula
-                formula="tm = em + d + ps"
+                formula='tm = em + d + ps'
                 explanations={[
-                  "tm = Total Market Value",
-                  "em = Total Equity Market Value",
-                  "d = Total Debt Market Value",
-                  "ps = Total Preferred Stock Market Value",
+                  'tm = Total Market Value',
+                  'em = Total Equity Market Value',
+                  'd = Total Debt Market Value',
+                  'ps = Total Preferred Stock Market Value'
                 ]}
               />
             </Box>
           </ListItem>
           <ListItem>
             <Box>
-              <Box component="span" style={{ fontWeight: "bold" }}>
+              <Box component='span' style={{ fontWeight: 'bold' }}>
                 Unlevered Beta&nbsp;
               </Box>
               - The risk a company has in it's industry relative to other
@@ -414,17 +414,17 @@ const wikiContent = [
               unlevered beta for your companies industry and set this field
               equal to it.
               <Formula
-                formula="ub = iub"
+                formula='ub = iub'
                 explanations={[
-                  "ub = Unlevered Beta",
-                  "iub = Industry Average Unlevered Beta",
+                  'ub = Unlevered Beta',
+                  'iub = Industry Average Unlevered Beta'
                 ]}
               />
             </Box>
           </ListItem>
           <ListItem>
             <Box>
-              <Box component="span" style={{ fontWeight: "bold" }}>
+              <Box component='span' style={{ fontWeight: 'bold' }}>
                 Levered Beta&nbsp;
               </Box>
               - The risk a company has in it's industry relative to other
@@ -436,28 +436,28 @@ const wikiContent = [
               risk as the more debt a company has, the more likely it is to
               default on that debt.
               <Formula
-                formula="lb = ub * (1 + (1 - t) * (d / e))"
+                formula='lb = ub * (1 + (1 - t) * (d / e))'
                 explanations={[
-                  "lb = Levered Beta",
-                  "ub = Unlevered Beta",
-                  "t = Marginal Tax Rate",
-                  "d = Debt Market Value",
-                  "e = Equity Market Value",
+                  'lb = Levered Beta',
+                  'ub = Unlevered Beta',
+                  't = Marginal Tax Rate',
+                  'd = Debt Market Value',
+                  'e = Equity Market Value'
                 ]}
               />
             </Box>
           </ListItem>
           <ListItem>
             <Box>
-              <Box component="span" style={{ fontWeight: "bold" }}>
+              <Box component='span' style={{ fontWeight: 'bold' }}>
                 Cost of Preferred Stock&nbsp;
               </Box>
               <Formula
-                formula="cps = anp / mp "
+                formula='cps = anp / mp '
                 explanations={[
-                  "cps = Cost of Preferred Stock",
-                  "anp = Annual Dividend PerShare",
-                  "mp = Market Price Per Share",
+                  'cps = Cost of Preferred Stock',
+                  'anp = Annual Dividend PerShare',
+                  'mp = Market Price Per Share'
                 ]}
               />
             </Box>
@@ -465,18 +465,18 @@ const wikiContent = [
           <ListItem>
             <Box>
               <Box
-                component="span"
-                style={{ fontWeight: "bold", paddingBottom: 0 }}
+                component='span'
+                style={{ fontWeight: 'bold', paddingBottom: 0 }}
               >
                 Equity Weight&nbsp;
               </Box>
               - Weighted % of equity.
               <Formula
-                formula="we = em / tm"
+                formula='we = em / tm'
                 explanations={[
-                  "we = Weighted % of equity",
-                  "em = Equity Market Value",
-                  "tm = Total Market Value",
+                  'we = Weighted % of equity',
+                  'em = Equity Market Value',
+                  'tm = Total Market Value'
                 ]}
               />
             </Box>
@@ -484,18 +484,18 @@ const wikiContent = [
           <ListItem>
             <Box>
               <Box
-                component="span"
-                style={{ fontWeight: "bold", paddingBottom: 0 }}
+                component='span'
+                style={{ fontWeight: 'bold', paddingBottom: 0 }}
               >
                 Debt Weight&nbsp;
               </Box>
               - Weighted % of debt.
               <Formula
-                formula="wd = d / tm"
+                formula='wd = d / tm'
                 explanations={[
-                  "wd = Weighted % of Debt",
-                  "d = Debt Market Value",
-                  "tm = Total Market Value",
+                  'wd = Weighted % of Debt',
+                  'd = Debt Market Value',
+                  'tm = Total Market Value'
                 ]}
               />
             </Box>
@@ -503,18 +503,18 @@ const wikiContent = [
           <ListItem>
             <Box>
               <Box
-                component="span"
-                style={{ fontWeight: "bold", paddingBottom: 0 }}
+                component='span'
+                style={{ fontWeight: 'bold', paddingBottom: 0 }}
               >
                 Preferred Stock Weight&nbsp;
               </Box>
               - Weighted % of preferred stock.
               <Formula
-                formula="wps = ps / tm"
+                formula='wps = ps / tm'
                 explanations={[
-                  "wps = Weighted % of Preferred Stock",
-                  "ps = Preferred Stock Market Value",
-                  "tm = Total Market Value",
+                  'wps = Weighted % of Preferred Stock',
+                  'ps = Preferred Stock Market Value',
+                  'tm = Total Market Value'
                 ]}
               />
             </Box>
@@ -522,19 +522,19 @@ const wikiContent = [
           <ListItem>
             <Box>
               <Box
-                component="span"
-                style={{ fontWeight: "bold", paddingBottom: 0 }}
+                component='span'
+                style={{ fontWeight: 'bold', paddingBottom: 0 }}
               >
                 Total Weight&nbsp;
               </Box>
               - Total weight in cost of capital.
               <Formula
-                formula="twc = we + wd + wps"
+                formula='twc = we + wd + wps'
                 explanations={[
-                  "twc = Total Weight Cost of Capital",
-                  "we = Weighted % of equity",
-                  "wd = Weighted % of Debt",
-                  "wps = Weighted % of Preferred Stock",
+                  'twc = Total Weight Cost of Capital',
+                  'we = Weighted % of equity',
+                  'wd = Weighted % of Debt',
+                  'wps = Weighted % of Preferred Stock'
                 ]}
               />
             </Box>
@@ -542,18 +542,18 @@ const wikiContent = [
           <ListItem>
             <Box>
               <Box
-                component="span"
-                style={{ fontWeight: "bold", paddingBottom: 0 }}
+                component='span'
+                style={{ fontWeight: 'bold', paddingBottom: 0 }}
               >
                 Equity Cost of Capital&nbsp;
               </Box>
               <Formula
-                formula="ecc = rfr + lb + erp"
+                formula='ecc = rfr + lb + erp'
                 explanations={[
-                  "ecc =  Equity Cost of Capital",
-                  "rfr = Risk Free Rate",
-                  "lb = Levered Beta",
-                  "erp = Equity Risk Premium",
+                  'ecc =  Equity Cost of Capital',
+                  'rfr = Risk Free Rate',
+                  'lb = Levered Beta',
+                  'erp = Equity Risk Premium'
                 ]}
               />
             </Box>
@@ -561,17 +561,17 @@ const wikiContent = [
           <ListItem>
             <Box>
               <Box
-                component="span"
-                style={{ fontWeight: "bold", paddingBottom: 0 }}
+                component='span'
+                style={{ fontWeight: 'bold', paddingBottom: 0 }}
               >
                 Debt Cost of Capital&nbsp;
               </Box>
               <Formula
-                formula="dcc = pt * t"
+                formula='dcc = pt * t'
                 explanations={[
-                  "dcc =  Debt Cost of Capital",
-                  "pt = Estimated Pretax Cost of Debt",
-                  "t = Marginal Tax Rate",
+                  'dcc =  Debt Cost of Capital',
+                  'pt = Estimated Pretax Cost of Debt',
+                  't = Marginal Tax Rate'
                 ]}
               />
             </Box>
@@ -579,16 +579,16 @@ const wikiContent = [
           <ListItem>
             <Box>
               <Box
-                component="span"
-                style={{ fontWeight: "bold", paddingBottom: 0 }}
+                component='span'
+                style={{ fontWeight: 'bold', paddingBottom: 0 }}
               >
                 Preferred Stock Cost of Capital&nbsp;
               </Box>
               <Formula
-                formula="ps = cps"
+                formula='ps = cps'
                 explanations={[
-                  "ps = Preferred Stock Cost of Capital",
-                  "cps = Cost of Preferred Stock",
+                  'ps = Preferred Stock Cost of Capital',
+                  'cps = Cost of Preferred Stock'
                 ]}
               />
             </Box>
@@ -596,8 +596,8 @@ const wikiContent = [
           <ListItem>
             <Box>
               <Box
-                component="span"
-                style={{ fontWeight: "bold", paddingBottom: 0 }}
+                component='span'
+                style={{ fontWeight: 'bold', paddingBottom: 0 }}
               >
                 Cost of Capital (WACC)&nbsp;
               </Box>
@@ -607,34 +607,34 @@ const wikiContent = [
               equity then the weight for equity will be set to 80% as equity
               would have more of an affect on the cost of the capital.
               <Formula
-                formula="wacc = we * e + wd * d + wps * ps"
+                formula='wacc = we * e + wd * d + wps * ps'
                 explanations={[
-                  "wacc = Weighted Average Cost of Capital",
-                  "we = Weighted % of equity",
-                  "e = Equity Cost of Capital",
-                  "wd = Weighted % of Debt",
-                  "d = Debt Cost of Capital",
-                  "wps = Weighted % of Preferred Stock",
-                  "ps = Preferred Stock Cost of Capital",
+                  'wacc = Weighted Average Cost of Capital',
+                  'we = Weighted % of equity',
+                  'e = Equity Cost of Capital',
+                  'wd = Weighted % of Debt',
+                  'd = Debt Cost of Capital',
+                  'wps = Weighted % of Preferred Stock',
+                  'ps = Preferred Stock Cost of Capital'
                 ]}
               />
             </Box>
           </ListItem>
         </List>
       </>
-    ),
+    )
   },
   {
-    title: "Cumulated Discount Factor",
+    title: 'Cumulated Discount Factor',
     text: (
       <>
         This is the opposite of the Cost of Capital in decimal form. We take the
         previous years Discount Factor into account as well.
       </>
-    ),
+    )
   },
   {
-    title: "PV (FCFF)",
+    title: 'PV (FCFF)',
     text: (
       <>
         Present Value of Free Cash Flow to the Firm (PV (FCFF)) is the FCFF
@@ -643,46 +643,46 @@ const wikiContent = [
         future. This is due to the time value of money and the risks surrounding
         a company (which is captured in the Cost of Capital).
       </>
-    ),
+    )
   },
   {
-    title: "Terminal Cash Flow",
+    title: 'Terminal Cash Flow',
     text: (
       <>The cash flows that the company generates each year after year 10.</>
-    ),
+    )
   },
   {
-    title: "Terminal Cost of Capital",
-    text: <>The cost of capital for the company each year after year 10.</>,
+    title: 'Terminal Cost of Capital',
+    text: <>The cost of capital for the company each year after year 10.</>
   },
   {
-    title: "Terminal Value",
-    text: <>The total value of the cash flows after year 10.</>,
+    title: 'Terminal Value',
+    text: <>The total value of the cash flows after year 10.</>
   },
   {
-    title: "PV (Terminal Value)",
+    title: 'PV (Terminal Value)',
     text: (
       <>
         The total value of the cash flows after year 10 discounted to today's
         value. This is the true value of the Terminal Cash flows.
       </>
-    ),
+    )
   },
   {
-    title: "PV (CF Over Next 10 Years)",
+    title: 'PV (CF Over Next 10 Years)',
     text: (
       <>
         The total value of the cash flows in the next 10 years discounted to
         today's value.
       </>
-    ),
+    )
   },
   {
-    title: "Sum of PV",
-    text: <>The total sum of the present values of the previous two fields.</>,
+    title: 'Sum of PV',
+    text: <>The total sum of the present values of the previous two fields.</>
   },
   {
-    title: "Probability of Failure",
+    title: 'Probability of Failure',
     text: (
       <>
         The input for this is in 'Optional Inputs'!$J4. Many young, growth
@@ -692,10 +692,10 @@ const wikiContent = [
         credit rating if the company has one, if not then use the synthetic
         credit rating default spread as a guide.
       </>
-    ),
+    )
   },
   {
-    title: "Proceeds if the Firm Fails",
+    title: 'Proceeds if the Firm Fails',
     text: (
       <>
         The input for this is in 'Optional Inputs'!$J5. If the company fails
@@ -707,10 +707,10 @@ const wikiContent = [
         continue giving the executives a job and therefore will never have
         proceeds to distribute to shareholders.
       </>
-    ),
+    )
   },
   {
-    title: "Operating Assets",
+    title: 'Operating Assets',
     text: (
       <>
         We take the Sum of the Present Value and modify it. We minus debt and
@@ -718,19 +718,19 @@ const wikiContent = [
         Cash and Non-Operating Assets are added back as these are distributable
         to shareholders but were not part of the DCF.
       </>
-    ),
+    )
   },
   {
-    title: "Equity",
+    title: 'Equity',
     text: (
       <>
         This is the sum of the above calculations after Operating Assets has
         been modified.
       </>
-    ),
+    )
   },
   {
-    title: "Options",
+    title: 'Options',
     text: (
       <>
         The inputs for this are in 'Optional Inputs'!$H2:$H4 which are Employee
@@ -739,45 +739,45 @@ const wikiContent = [
         these employees when they exercise them. Thus there is less cash
         attributable to shareholders.
       </>
-    ),
+    )
   },
   {
-    title: "Common Stock Equity",
+    title: 'Common Stock Equity',
     text: (
       <>
         This is Equity with the employee options taken away. This is the final
         result of equity which is distributable to shareholders over the
         companies life according to your DCF.
       </>
-    ),
+    )
   },
   {
-    title: "Estimated Value Per Share",
+    title: 'Estimated Value Per Share',
     text: (
       <>
         The intrinsic value per share that the share price should be trading at
         according to your DCF. This may be accurate or not, it all depends on
         how accurate your inputs are.
       </>
-    ),
+    )
   },
   {
-    title: "Margin of Safety",
+    title: 'Margin of Safety',
     text: (
       <>
         How undervalued or overvalued the current price of the stock, if it is
         undervalued then the stock is said to have a&nbsp;
         <a
-          href="https://www.investopedia.com/terms/m/marginofsafety.asp"
-          rel="noreferrer"
-          target="_blank"
+          href='https://www.investopedia.com/terms/m/marginofsafety.asp'
+          rel='noreferrer'
+          target='_blank'
         >
           margin of safety
         </a>
         .
       </>
-    ),
-  },
-];
+    )
+  }
+]
 
-export default wikiContent;
+export default wikiContent

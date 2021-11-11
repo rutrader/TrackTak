@@ -1,20 +1,20 @@
-import { isNil } from "lodash-es";
+import { isNil } from 'lodash-es'
 
 const getRiskFreeRate = (
   governmentBondTenYearYield,
-  currentEquityRiskPremium,
+  currentEquityRiskPremium
 ) => {
   if (
     isNil(governmentBondTenYearYield) ||
     isNil(currentEquityRiskPremium.adjDefaultSpread)
   ) {
-    return null;
+    return null
   }
 
   const riskFreeRate =
-    governmentBondTenYearYield - currentEquityRiskPremium.adjDefaultSpread;
+    governmentBondTenYearYield - currentEquityRiskPremium.adjDefaultSpread
 
-  return riskFreeRate;
-};
+  return riskFreeRate
+}
 
-export default getRiskFreeRate;
+export default getRiskFreeRate

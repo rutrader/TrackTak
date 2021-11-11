@@ -1,9 +1,9 @@
 const getChunksOfArray = (array, size) =>
   array.reduce((acc, _, i) => {
     if (i % size === 0) {
-      acc.push(array.slice(i, i + size));
+      acc.push(array.slice(i, i + size))
     }
-    return acc;
-  }, []);
+    return acc
+  }, [])
 
-export default getChunksOfArray;
+export default getChunksOfArray

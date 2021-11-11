@@ -4,10 +4,10 @@ module.exports = {
       resolve: '@elegantstack/gatsby-plugin-alias-imports',
       options: {
         alias: {
-          '@solid-ui-blocks': '@elegantstack/solid-ui-blocks/src',
+          '@solid-ui-blocks': '@elegantstack/solid-ui-blocks/src'
         },
-        extensions: ['js', 'jsx'],
-      },
-    },
-  ],
+        extensions: ['js', 'jsx']
+      }
+    }
+  ]
 }

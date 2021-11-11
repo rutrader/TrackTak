@@ -1,11 +1,11 @@
-const getValueFromString = (value) => {
-  const newValue = value ? parseFloat(value) : 0;
+const getValueFromString = value => {
+  const newValue = value ? parseFloat(value) : 0
 
   if (isNaN(newValue)) {
-    return value;
+    return value
   }
 
-  return newValue;
-};
+  return newValue
+}
 
-export default getValueFromString;
+export default getValueFromString

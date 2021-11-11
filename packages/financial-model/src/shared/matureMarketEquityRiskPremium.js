@@ -1,9 +1,9 @@
-import equityRiskPremiumCountriesJson from "../data/equityRiskPremiumCountries.json";
+import equityRiskPremiumCountriesJson from '../data/equityRiskPremiumCountries.json'
 
 const matureMarketEquityRiskPremium =
   parseFloat(
-    equityRiskPremiumCountriesJson.find((x) => x.country === "United States")
+    equityRiskPremiumCountriesJson.find(x => x.country === 'United States')
       .equityRiskPremium
-  ) / 100;
+  ) / 100
 
-export default matureMarketEquityRiskPremium;
+export default matureMarketEquityRiskPremium
