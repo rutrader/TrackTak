@@ -8,9 +8,9 @@ import {
   TextField,
   Grid,
   RoundButton,
-  useTheme
+  useTheme,
+  Typography
 } from '@mui/material'
-import Typography from '@material-ui/core/Typography'
 import { RoundButton } from '@tracktak/common'
 import SocialLoginButtons from './SocialLoginButtons'
 

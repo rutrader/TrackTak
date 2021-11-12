@@ -1,8 +1,7 @@
-import { Box, Link, Typography, useTheme } from '@mui/material'
+import { FormGroup, Box, Link, Typography, useTheme } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { utils, api, regions, useCurrentPlan, useAuth } from '@tracktak/common'
-import FormGroup from '@material-ui/core/FormGroup'
 import SelectAPIRegion from '../components/SelectAPIRegion'
 import FrequentlyAskedQuestion from '../components/FrequentlyAskedQuestion'
 

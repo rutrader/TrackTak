@@ -6,7 +6,7 @@ const initialState = {
   severity: null
 }
 
-export const snackbarReducer = createReducer(initialState, builder => {
+const snackbarReducer = createReducer(initialState, builder => {
   builder.addCase(setMessage, (state, action) => {
     const { message, severity = 'info' } = action.payload
 
@@ -18,3 +18,5 @@ export const snackbarReducer = createReducer(initialState, builder => {
     state.severity = null
   })
 })
+
+export default snackbarReducer

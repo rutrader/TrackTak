@@ -5,10 +5,6 @@ require('dotenv').config({
   path: `.env.${activeEnv}`
 })
 
-const { tracktakLogoSmallIcon, utils } = require('@tracktak/common')
-
-console.log(tracktakLogoSmallIcon)
-
 const isInProduction = activeEnv === 'production'
 
 module.exports = {
@@ -18,9 +14,27 @@ module.exports = {
   },
   siteMetadata: {
     title: 'tracktak',
-    siteUrl: utils.resourceName
+    siteUrl: 'https://tracktak.com'
   },
   plugins: [
+    {
+      resolve: '@elegantstack/gatsby-plugin-alias-imports',
+      options: {
+        alias: {
+          '@tracktak/common': '@tracktak/common/src'
+        },
+        extensions: ['js', 'jsx']
+      }
+    },
+    {
+      resolve: '@elegantstack/gatsby-plugin-alias-imports',
+      options: {
+        alias: {
+          '@tracktak/financial-model': '@tracktak/financial-model/src'
+        },
+        extensions: ['js', 'jsx']
+      }
+    },
     'gatsby-plugin-no-sourcemaps',
     {
       resolve: 'gatsby-transformer-remark',
@@ -89,7 +103,7 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-manifest',
       options: {
-        icon: tracktakLogoSmallIcon
+        icon: 'src/assets/tracktak-logo-small.svg'
       }
     },
     'gatsby-plugin-mdx',
