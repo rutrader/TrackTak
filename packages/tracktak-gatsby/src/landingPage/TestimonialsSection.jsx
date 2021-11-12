@@ -8,8 +8,8 @@ import {
   MobileStepper,
   useTheme
 } from '@mui/material'
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
 import Testimonials from '../components/Testimonials'
 
 const robbertSmitTestimonial = (

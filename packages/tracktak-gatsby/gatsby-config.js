@@ -28,18 +28,6 @@ module.exports = {
         extensions: ['js', 'jsx']
       }
     },
-    {
-      resolve: '@elegantstack/gatsby-plugin-alias-imports',
-      options: {
-        alias: {
-          '@tracktak/financial-model': path.resolve(
-            __dirname,
-            '../financial-model/src'
-          )
-        },
-        extensions: ['js', 'jsx']
-      }
-    },
     'gatsby-plugin-no-sourcemaps',
     {
       resolve: 'gatsby-transformer-remark',

@@ -4,7 +4,7 @@ import React from 'react'
 import { TTSnackbar } from '@tracktak/common'
 import LayoutPricing from './LayoutPricing'
 
-const Root = ({ children, pageContext }) => {
+const LayoutSelection = ({ children, pageContext }) => {
   if (pageContext.layout === 'home') {
     return <LayoutHome>{children}</LayoutHome>
   }
@@ -15,11 +15,13 @@ const Root = ({ children, pageContext }) => {
   return <Layout>{children}</Layout>
 }
 
-export default ({ children, pageContext, params }) => {
+const Root = ({ children, pageContext, params }) => {
   return (
-    <Root pageContext={pageContext} params={params}>
+    <LayoutSelection pageContext={pageContext} params={params}>
       {children}
       <TTSnackbar />
-    </Root>
+    </LayoutSelection>
   )
 }
+
+export default Root

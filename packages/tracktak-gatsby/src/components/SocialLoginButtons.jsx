@@ -1,7 +1,7 @@
 import React from 'react'
 import { Grid, Typography, useTheme } from '@mui/material'
-import GoogleIcon from '@material-ui/icons/Google'
-import FacebookIcon from '@material-ui/icons/Facebook'
+import GoogleIcon from '@mui/icons-material/Google'
+import FacebookIcon from '@mui/icons-material/Facebook'
 import SocialMediaButton from './SocialMediaButton'
 
 const SocialLoginButtons = () => {

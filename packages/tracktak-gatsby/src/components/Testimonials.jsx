@@ -1,6 +1,6 @@
 import { Box, Paper, Typography } from '@mui/material'
 import React from 'react'
-import FormatQuoteIcon from '@material-ui/icons/FormatQuote'
+import FormatQuoteIcon from '@mui/icons-material/FormatQuote'
 
 export const TestimonialText = props => (
   <Typography

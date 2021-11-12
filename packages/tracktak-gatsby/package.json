@@ -37,7 +37,6 @@
     "@mui/material": "^5.1.0",
     "@reduxjs/toolkit": "^1.6.2",
     "@tracktak/common": "*",
-    "@tracktak/financial-model": "*",
     "axios": "^0.21.0",
     "axios-jsonp": "^1.0.4",
     "babel-plugin-styled-components": "^1.5.0",

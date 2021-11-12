@@ -21,11 +21,12 @@ import * as snackbarActions from './redux/actions/snackbarActions'
 import snackbarReducer from './redux/reducers/snackbarReducer'
 import theme from './theme'
 import * as auth from './auth'
-import { ProvideAuth, useAuth, getUrlAuthParameters } from './hooks/useAuth'
+import { useAuth, getUrlAuthParameters } from './hooks/useAuth'
 import withAuthentication from './hocs/withAuthentication'
+import TTProvider from './components/Provider'
 
 export default {
-  ProvideAuth,
+  TTProvider,
   useAuth,
   getUrlAuthParameters,
   auth,
