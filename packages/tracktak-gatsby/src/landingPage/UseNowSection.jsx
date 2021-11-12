@@ -1,7 +1,7 @@
 import { Box, Typography, Link, Paper, Divider, useTheme } from '@mui/material'
 import { Link as RouterLink } from 'gatsby'
 import React from 'react'
-import RoundButton from '../components/RoundButton'
+import { RoundButton } from '@tracktak/common'
 import SocialLoginButtons from '../components/SocialLoginButtons'
 
 const HeaderText = props => (

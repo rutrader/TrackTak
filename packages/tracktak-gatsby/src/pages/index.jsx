@@ -1,6 +1,6 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import { utils } from '@tracktak/common'
+import { utils, withAuthenticatedRedirect } from '@tracktak/common'
 import UseNowSection from '../landingPage/UseNowSection'
 import { Box, Container, useTheme } from '@mui/material'
 import Footer from '../landingPage/Footer'
@@ -9,7 +9,6 @@ import OurTeamSection from '../landingPage/OurTeamSection'
 import VideoSection from '../landingPage/VideoSection'
 import ProcessSection from '../landingPage/ProcessSection'
 import AboveTheFoldSection from '../landingPage/AboveTheFoldSection'
-import withAuthenticatedRedirect from '../hocs/withAuthenticatedRedirect'
 
 const Section = ({ sx, ...props }) => {
   return (

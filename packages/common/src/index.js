@@ -9,6 +9,7 @@ import PageSpinner from './components/PageSpinner'
 import RoundButton from './components/RoundButton'
 import TTRoundInput from './components/TTRoundInput'
 import TTSnackbar from './components/TTSnackbar'
+import LinkButton from './components/LinkButton'
 import useDebouncedCallback from './hooks/useDebouncedCallback'
 import useCurrentPlan from './hooks/useCurrentPlan'
 import useFetchPrice from './hooks/useFetchPrice'
@@ -40,6 +41,7 @@ export default {
   RoundButton,
   TTRoundInput,
   TTSnackbar,
+  LinkButton,
   regions,
   useDebouncedCallback,
   useCurrentPlan,

@@ -49,7 +49,7 @@ const buildPowersheet = () => {
   ])
   const bottomBar = new BottomBar()
 
-  const spreadsheet = new PowerSpreadsheet({
+  const spreadsheet = new Spreadsheet({
     hyperformula,
     toolbar,
     formulaBar,

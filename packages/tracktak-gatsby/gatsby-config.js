@@ -1,6 +1,8 @@
 const activeEnv =
   process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV || 'development'
 
+const path = require('path')
+
 require('dotenv').config({
   path: `.env.${activeEnv}`
 })
@@ -21,7 +23,7 @@ module.exports = {
       resolve: '@elegantstack/gatsby-plugin-alias-imports',
       options: {
         alias: {
-          '@tracktak/common': '@tracktak/common/src'
+          '@tracktak/common': path.resolve(__dirname, '../common/src')
         },
         extensions: ['js', 'jsx']
       }
@@ -30,7 +32,10 @@ module.exports = {
       resolve: '@elegantstack/gatsby-plugin-alias-imports',
       options: {
         alias: {
-          '@tracktak/financial-model': '@tracktak/financial-model/src'
+          '@tracktak/financial-model': path.resolve(
+            __dirname,
+            '../financial-model/src'
+          )
         },
         extensions: ['js', 'jsx']
       }
