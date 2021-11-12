@@ -46,13 +46,13 @@ module.exports = {
         duration: 0
       }
     },
-    {
-      resolve: `gatsby-plugin-webpack-bundle-analyser-v2`,
-      options: {
-        devMode: true,
-        analyzerPort: 3002
-      }
-    },
+    // {
+    //   resolve: `gatsby-plugin-webpack-bundle-analyser-v2`,
+    //   options: {
+    //     devMode: true,
+    //     analyzerPort: 3002
+    //   }
+    // },
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-layout',
     {
@@ -96,7 +96,7 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-manifest',
       options: {
-        icon: 'src/assets/tracktak-logo-small.svg'
+        icon: `${__dirname}/src/assets/tracktak-logo-small.svg`
       }
     },
     'gatsby-plugin-mdx',
@@ -112,7 +112,7 @@ module.exports = {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'images',
-        path: './src/images/'
+        path: `${__dirname}/src/images/`
       },
       __key: 'images'
     },
@@ -120,7 +120,7 @@ module.exports = {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'pages',
-        path: './src/pages/'
+        path: `${__dirname}/src/pages/`
       },
       __key: 'pages'
     }

@@ -9,8 +9,8 @@ import {
   Box
 } from '@mui/material'
 import {
-  api,
-  trackTakLogoIcon,
+  snackbarActions,
+  tracktakLogoIcon,
   utils,
   RoundButton,
   useAuth
@@ -26,7 +26,7 @@ const ForgotPasswordForm = ({ onCancelClick }) => {
 
   const handlePasswordResetFailure = err => {
     dispatch(
-      api.setMessage({
+      snackbarActions.setMessage({
         message: err?.message,
         severity: 'error'
       })
@@ -64,7 +64,7 @@ const ForgotPasswordForm = ({ onCancelClick }) => {
           alignItems: 'center'
         }}
       >
-        <img src={trackTakLogoIcon} alt='tracktak' />
+        <img src={tracktakLogoIcon} alt='tracktak' />
         <Typography
           variant='h4'
           sx={{

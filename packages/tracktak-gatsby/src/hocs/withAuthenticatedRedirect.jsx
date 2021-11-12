@@ -1,6 +1,6 @@
 import { PageSpinner, useAuth } from '@tracktak/common'
 import React, { useEffect } from 'react'
-import { navigate } from 'gatsby'
+import subdomainUrl from '../shared/subdomainUrl'
 
 const withAuthenticatedRedirect = Component => {
   const Container = props => {
@@ -8,7 +8,7 @@ const withAuthenticatedRedirect = Component => {
 
     useEffect(() => {
       if (isAuthenticated && hasLoadedAuthDetails) {
-        navigate('/dashboard')
+        window.location.href = subdomainUrl
       }
     }, [hasLoadedAuthDetails, isAuthenticated])
 

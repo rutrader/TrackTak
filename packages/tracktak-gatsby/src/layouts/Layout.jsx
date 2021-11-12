@@ -1,5 +1,6 @@
 import { Box, Container } from '@mui/material'
 import React from 'react'
+import { Link } from 'gatsby'
 import { Header, headerLinks, useAuth } from '@tracktak/common'
 
 const Layout = ({ children }) => {
@@ -8,7 +9,7 @@ const Layout = ({ children }) => {
 
   return (
     <Container maxWidth='md'>
-      <Header hideSearch links={links} />
+      <Header hideSearch links={links} Link={Link} />
       <Box sx={{ mb: 10 }}>{children}</Box>
     </Container>
   )

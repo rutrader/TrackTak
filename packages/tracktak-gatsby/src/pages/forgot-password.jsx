@@ -1,11 +1,12 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import { utils, withAuthenticatedRedirect } from '@tracktak/common'
+import { utils } from '@tracktak/common'
 import { Grid } from '@mui/material'
 import Authentication, {
   AUTHENTICATION_FORM_STATE
 } from '../components/Authentication'
 import { navigate } from 'gatsby'
+import withAuthenticatedRedirect from '../hocs/withAuthenticatedRedirect'
 
 const ForgotPassword = ({ location }) => {
   const handleSuccess = () => {

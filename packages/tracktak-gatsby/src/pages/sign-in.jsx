@@ -1,9 +1,10 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import { utils, withAuthenticatedRedirect } from '@tracktak/common'
+import { utils } from '@tracktak/common'
 import { Grid } from '@mui/material'
 import Authentication from '../components/Authentication'
 import { navigate } from 'gatsby'
+import withAuthenticatedRedirect from '../hocs/withAuthenticatedRedirect'
 
 const SignIn = ({ location }) => {
   const handleSuccess = () => {

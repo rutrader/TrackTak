@@ -25,7 +25,7 @@ import { useAuth, getUrlAuthParameters } from './hooks/useAuth'
 import withAuthentication from './hocs/withAuthentication'
 import TTProvider from './components/Provider'
 
-export default {
+export {
   TTProvider,
   useAuth,
   getUrlAuthParameters,

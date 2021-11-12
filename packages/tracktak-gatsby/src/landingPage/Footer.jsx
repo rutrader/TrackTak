@@ -3,7 +3,7 @@ import React from 'react'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import RedditIcon from '@mui/icons-material/Reddit'
 import dayjs from 'dayjs'
-import { tracktakLogoSvg, headerLinks } from '@tracktak/common'
+import { tracktakLogoIcon, headerLinks } from '@tracktak/common'
 import { Link as RouterLink } from 'gatsby'
 
 const iconStyles = { width: '45px', height: '45px' }
@@ -19,7 +19,7 @@ const Footer = () => {
         }}
       >
         <Box sx={{ mb: 2 }}>
-          <img src={tracktakLogoSvg} alt='tracktak' />
+          <img src={tracktakLogoIcon} alt='tracktak' />
         </Box>
         <Box>
           <IconButton

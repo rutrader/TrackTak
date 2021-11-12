@@ -1,11 +1,6 @@
 import React from 'react'
 import Dashboard from './components/Dashboard'
-import { createStore } from '@tracktak/financial-model'
-import { TTProvider, snackbarReducer } from '@tracktak/common'
-
-const store = createStore(undefined, {
-  snackbar: snackbarReducer
-})
+import { TTProvider } from '@tracktak/common'
 
 const Index = () => {
   return (

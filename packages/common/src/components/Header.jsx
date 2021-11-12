@@ -138,7 +138,7 @@ const Header = ({
             }}
           >
             <Box sx={{ mr: 2, display: 'flex', alignItems: 'center' }}>
-              <TracktakLogo />
+              <TracktakLogo Link={Link} />
             </Box>
             <Box
               sx={{

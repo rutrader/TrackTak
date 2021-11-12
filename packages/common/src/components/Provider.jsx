@@ -4,12 +4,29 @@ import '@fontsource/nunito/700.css'
 import { CssBaseline, createTheme, ThemeProvider } from '@mui/material'
 import theme from '../theme'
 import { ProvideAuth } from '../hooks/useAuth'
+import snackbarReducer from '../redux/reducers/snackbarReducer'
+import { combineReducers } from 'redux'
+import { configureStore } from '@reduxjs/toolkit'
+import { Provider } from 'react-redux'
+
+const createStore = (preloadedState, reducers) => {
+  return configureStore({
+    reducer: combineReducers(reducers),
+    preloadedState
+  })
+}
+
+const store = createStore(undefined, {
+  snackbar: snackbarReducer
+})
 
 const TTProvider = ({ children }) => {
   return (
     <ThemeProvider theme={createTheme(theme)}>
-      <CssBaseline />
-      <ProvideAuth>{children}</ProvideAuth>
+      <Provider store={store}>
+        <CssBaseline />
+        <ProvideAuth>{children}</ProvideAuth>
+      </Provider>
     </ThemeProvider>
   )
 }
