@@ -2,9 +2,11 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 import { Spreadsheet } from '@tracktak/financial-model'
 import useFetchSpreadsheet from '../hooks/useFetchSpreadsheet'
-import { withAuthentication, utils } from '@tracktak/common'
+import { utils } from '@tracktak/common'
 import useSaveSpreadsheetData from '../hooks/useSaveSpreadsheetData'
 import { useTTFinancialPlugin } from '../hooks/useTTFinancialPlugin'
+import withAuthentication from '../hocs/withAuthentication'
+import LayoutFullScreen from './LayoutFullScreen'
 
 const FinancialSpreadsheet = ({ sheetId }) => {
   const spreadsheet = useFetchSpreadsheet(sheetId)
@@ -12,7 +14,7 @@ const FinancialSpreadsheet = ({ sheetId }) => {
   const financialData = useTTFinancialPlugin(spreadsheet)
 
   return (
-    <LayoutFullScreen ticker={params.ticker}>
+    <LayoutFullScreen>
       {spreadsheet?.sheetData.name && (
         <Helmet>
           <title>

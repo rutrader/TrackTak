@@ -11,6 +11,18 @@
     "serve": "gatsby serve",
     "deploy": "gatsby-plugin-s3 deploy"
   },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "dependencies": {
     "@elegantstack/gatsby-theme-flexiblocks": "*",
     "@gatsbyjs/reach-router": "^1.3.6",

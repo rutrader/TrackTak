@@ -1,17 +1,20 @@
-import { getUrlAuthParameters, useAuth } from '../hooks/useAuth'
+import {
+  getUrlAuthParameters,
+  useAuth
+} from '../../../common/src/hooks/useAuth'
 import React, { useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import PageSpinner from '../components/PageSpinner'
-import { setMessage } from '../redux/actions/snackbarActions'
+import PageSpinner from '../../../common/src/components/PageSpinner'
+import { setMessage } from '../../../common/src/redux/actions/snackbarActions'
 import { useDispatch } from 'react-redux'
 
 const withAuthentication = Component => {
-  const navigate = useNavigate()
-
   const Container = props => {
     const { isAuthenticated, hasLoadedAuthDetails, sendChallengeAnswer } =
       useAuth()
+
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const handleVerificationFailure = useCallback(() => {
       dispatch(
@@ -35,7 +38,7 @@ const withAuthentication = Component => {
       if (!isAuthenticated && hasLoadedAuthDetails) {
         navigate('/sign-in')
       }
-    }, [hasLoadedAuthDetails, isAuthenticated, props.location.search])
+    }, [hasLoadedAuthDetails, isAuthenticated, navigate, props.location.search])
 
     useEffect(() => {
       const authParameters = getUrlAuthParameters()

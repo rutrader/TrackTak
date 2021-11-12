@@ -23,6 +23,7 @@ import { HyperFormula } from 'hyperformula'
 import isStockDisabled from '../shared/isStockDisabled'
 import getSymbolFromCurrency from 'currency-symbol-map'
 import { cloneDeep } from 'lodash-es'
+import { useNavigate } from 'react-router'
 
 const SearchTicker = ({ isSmallSearch, sx, template }) => {
   const theme = useTheme()
@@ -32,6 +33,7 @@ const SearchTicker = ({ isSmallSearch, sx, template }) => {
   const [text, setText] = useState('')
   const { userData, getAccessToken } = useAuth()
   const { currentPlan } = useCurrentPlan()
+  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const createUserSpreadsheet = async ticker => {
@@ -97,11 +99,11 @@ const SearchTicker = ({ isSmallSearch, sx, template }) => {
     if (value?.code && value?.exchange) {
       const ticker = `${value.code}.${value.exchange}`
 
-      trackCustomEvent({
-        category: 'Valuation',
-        action: `Create ${ticker} valuation`,
-        value: dayjs().format(utils.trackingFormatDate)
-      })
+      // trackCustomEvent({
+      //   category: 'Valuation',
+      //   action: `Create ${ticker} valuation`,
+      //   value: dayjs().format(utils.trackingFormatDate)
+      // })
 
       createUserSpreadsheet(ticker)
     }

@@ -23,7 +23,7 @@ import theme from './theme'
 import * as auth from './auth'
 import { useAuth, getUrlAuthParameters } from './hooks/useAuth'
 import withAuthentication from './hocs/withAuthentication'
-import TTProvider from './components/Provider'
+import TTProvider from './components/TTProvider'
 
 export {
   TTProvider,

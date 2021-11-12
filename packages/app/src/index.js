@@ -5,9 +5,7 @@ import { TTProvider } from '@tracktak/common'
 const Index = () => {
   return (
     <TTProvider>
-      <Provider store={store}>
-        <Dashboard />
-      </Provider>
+      <Dashboard />
     </TTProvider>
   )
 }

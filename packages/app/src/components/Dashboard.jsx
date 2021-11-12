@@ -2,9 +2,10 @@ import { Box, IconButton, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import React, { useState } from 'react'
 import { Helmet } from 'react-helmet'
-import { utils, withAuthentication } from '@tracktak/common'
+import { utils } from '@tracktak/common'
 import SavedSpreadsheets from './SavedSpreadsheets'
 import SearchTickerDialog from './SearchTickerDialog'
+import withAuthentication from '../hocs/withAuthentication'
 
 const Dashboard = () => {
   const [showSearchTickerDialog, setShowSearchTickerDialog] = useState(false)

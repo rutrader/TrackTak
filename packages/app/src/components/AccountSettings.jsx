@@ -1,12 +1,6 @@
 import React, { useState } from 'react'
 import { Helmet } from 'react-helmet'
-import {
-  utils,
-  useCurrentPlan,
-  api,
-  useAuth,
-  withAuthentication
-} from '@tracktak/common'
+import { utils, useCurrentPlan, api, useAuth } from '@tracktak/common'
 import {
   Divider,
   Paper,
@@ -30,6 +24,7 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome'
 import FreezeModalForm from './FreezeModalForm'
 import AcUnit from '@mui/icons-material/AcUnit'
 import { useNavigate } from 'react-router-dom'
+import withAuthentication from '../hocs/withAuthentication'
 
 const AccountSettings = () => {
   const { getAccessToken } = useAuth()

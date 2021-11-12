@@ -28,7 +28,7 @@ const ChangePasswordForm = () => {
 
   const handleError = err => {
     dispatch(
-      setMessage({
+      snackbarActions.setMessage({
         message: 'Failed to change password',
         severity: 'error'
       })
