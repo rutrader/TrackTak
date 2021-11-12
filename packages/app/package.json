@@ -11,7 +11,7 @@
   "module": "./dist/index.module.js",
   "scripts": {
     "build": "parcel build",
-    "watch:build": "parcel watch"
+    "watch:build": "parcel watch --port 1234"
   },
   "dependencies": {
     "@babel/core": "^7.16.0",

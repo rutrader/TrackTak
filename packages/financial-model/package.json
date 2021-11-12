@@ -14,7 +14,7 @@
   },
   "scripts": {
     "build": "parcel build",
-    "watch:build": "parcel watch",
+    "watch:build": "parcel watch --port 1236",
     "analyze-size": "rimraf ./dist && cross-env NODE_ENV=production yarn run build && source-map-explorer ./dist/index.module.js"
   },
   "dependencies": {
@@ -38,7 +38,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-0",
-    "@parcel/transformer-react-refresh-wrap": "^2.0.1",
     "parcel": "^2.0.1",
     "rimraf": "^3.0.2",
     "source-map-explorer": "^2.5.2"

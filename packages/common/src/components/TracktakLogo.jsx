@@ -2,7 +2,7 @@ import { Box, Hidden } from '@mui/material'
 import React from 'react'
 import tracktakLogoSvg from '../assets/tracktak-logo.svg'
 import tracktakLogoSmallSvg from '../assets/tracktak-logo-small.svg'
-import useAuth from '../hooks/useAuth'
+import { useAuth } from '../hooks/useAuth'
 
 const TracktakLogo = ({ width, height, logoProps, Link, ...props }) => {
   const { isAuthenticated } = useAuth()

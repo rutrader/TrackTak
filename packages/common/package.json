@@ -11,15 +11,15 @@
   "module": "./dist/index.module.js",
   "scripts": {
     "build": "parcel build",
-    "watch:build": "parcel watch"
+    "watch:build": "parcel watch --port 1235"
   },
   "dependencies": {
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
     "@mui/icons-material": "^5.1.0",
     "@mui/material": "^5.1.0",
+    "@parcel/transformer-react-refresh-wrap": "^2.0.1",
     "@reduxjs/toolkit": "^1.6.2",
-    "@tracktak/financial-model": "*",
     "amazon-cognito-identity-js": "^4.6.0",
     "axios": "^0.24.0",
     "lodash-es": "^4.17.21",
@@ -34,7 +34,7 @@
     "dist"
   ],
   "devDependencies": {
-    "parcel": "^2.0.1",
-    "@types/lodash-es": "^4.17.5"
+    "@types/lodash-es": "^4.17.5",
+    "parcel": "^2.0.1"
   }
 }
