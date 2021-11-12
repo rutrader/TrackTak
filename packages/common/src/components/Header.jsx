@@ -32,12 +32,12 @@ const SignOutButton = ({ handleOnSignOut, ...props }) => {
 }
 
 const Header = ({
-  hideSearch,
   position = 'fixed',
   links = [],
   children,
   navigate,
-  Link
+  Link,
+  searchTicker
 }) => {
   const theme = useTheme()
   const extraPadding = 20
@@ -148,15 +148,7 @@ const Header = ({
                 display: 'flex'
               }}
             >
-              {!hideSearch && (
-                <SearchTicker
-                  isSmallSearch
-                  sx={{
-                    flex: 1,
-                    alignSelf: 'center'
-                  }}
-                />
-              )}
+              {searchTicker}
             </Box>
             <Hidden mdDown implementation='css'>
               <Box

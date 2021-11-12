@@ -9,7 +9,7 @@ const LayoutPricing = ({ children }) => {
 
   return (
     <Container maxWidth='xl'>
-      <Header hideSearch links={links} Link={Link} />
+      <Header links={links} Link={Link} />
       {children}
     </Container>
   )

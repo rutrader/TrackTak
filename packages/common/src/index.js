@@ -22,7 +22,6 @@ import snackbarReducer from './redux/reducers/snackbarReducer'
 import theme from './theme'
 import * as auth from './auth'
 import { useAuth, getUrlAuthParameters } from './hooks/useAuth'
-import withAuthentication from './hocs/withAuthentication'
 import TTProvider from './components/TTProvider'
 
 export {
@@ -30,7 +29,6 @@ export {
   useAuth,
   getUrlAuthParameters,
   auth,
-  withAuthentication,
   axios,
   api,
   globeIcon,

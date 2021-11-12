@@ -2,9 +2,10 @@ const activeEnv =
   process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV || 'development'
 
 const path = require('path')
+const workspaceRoot = require('find-yarn-workspace-root')
 
 require('dotenv').config({
-  path: `.env.${activeEnv}`
+  path: `${workspaceRoot()}/.env.${activeEnv}`
 })
 
 const isInProduction = activeEnv === 'production'

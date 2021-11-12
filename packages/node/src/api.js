@@ -262,7 +262,7 @@ const api = {
           }
         })
 
-        if (process.env.PREMIUM_ENABLED === 'true') {
+        if (process.env.GATSBY_PREMIUM_ENABLED === 'true') {
           return data
             .filter(datum => {
               return datum.Exchange !== 'TSE'

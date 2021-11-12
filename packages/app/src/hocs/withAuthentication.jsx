@@ -3,10 +3,11 @@ import {
   useAuth
 } from '../../../common/src/hooks/useAuth'
 import React, { useCallback, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import PageSpinner from '../../../common/src/components/PageSpinner'
 import { setMessage } from '../../../common/src/redux/actions/snackbarActions'
 import { useDispatch } from 'react-redux'
+import mainUrl from '../shared/mainUrl'
 
 const withAuthentication = Component => {
   const Container = props => {
@@ -15,6 +16,7 @@ const withAuthentication = Component => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const location = useLocation()
 
     const handleVerificationFailure = useCallback(() => {
       dispatch(
@@ -36,9 +38,9 @@ const withAuthentication = Component => {
 
     useEffect(() => {
       if (!isAuthenticated && hasLoadedAuthDetails) {
-        navigate('/sign-in')
+        window.location.href = mainUrl
       }
-    }, [hasLoadedAuthDetails, isAuthenticated, navigate, props.location.search])
+    }, [hasLoadedAuthDetails, isAuthenticated, navigate, location.search])
 
     useEffect(() => {
       const authParameters = getUrlAuthParameters()

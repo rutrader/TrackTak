@@ -15,7 +15,7 @@ const LayoutHome = ({ children }) => {
 
   return (
     <Container maxWidth='xl'>
-      <Header hideSearch Link={Link}>
+      <Header Link={Link}>
         <Box
           sx={{
             marginRight: '-24px',

@@ -14,7 +14,7 @@
   },
   "scripts": {
     "build": "parcel build",
-    "watch:build": "parcel watch --port 1236",
+    "watch:build": "parcel watch",
     "analyze-size": "rimraf ./dist && cross-env NODE_ENV=production yarn run build && source-map-explorer ./dist/index.module.js"
   },
   "dependencies": {

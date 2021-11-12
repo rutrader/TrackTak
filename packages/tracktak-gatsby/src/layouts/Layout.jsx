@@ -9,7 +9,7 @@ const Layout = ({ children }) => {
 
   return (
     <Container maxWidth='md'>
-      <Header hideSearch links={links} Link={Link} />
+      <Header links={links} Link={Link} />
       <Box sx={{ mb: 10 }}>{children}</Box>
     </Container>
   )

@@ -2,9 +2,11 @@ import React from 'react'
 import { Modal, Typography, Button, Box } from '@mui/material'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
-import { navigate } from 'gatsby'
+import { useNavigate } from 'react-router-dom'
 
 const PaymentSuccess = () => {
+  const navigate = useNavigate()
+
   return (
     <Modal hideBackdrop open>
       <Box
