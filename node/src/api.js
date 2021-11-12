@@ -324,7 +324,48 @@ const api = {
     return database.insert(Collections.FINANCIAL_DATA, financialData);
   },
 
-  updateSpreadsheet: async (id, financialDataId, userId) => {
+  getFolders: async (userId) => {
+    return database.find(Collections.FOLDER, {
+      userId,
+    });
+  },
+
+  getFolder: async (userId, id) => {
+    return database.find(Collections.FOLDER, [
+      {
+        userId,
+        _id: new MongoDb.ObjectId(id),
+      },
+    ]);
+  },
+
+  createFolder: async (folderName) => {
+    return database.insert(Collections.FOLDER, {
+      name: folderName,
+    });
+  },
+
+  updateSpreadsheetFolder: async (id, folderId, userId) => {
+    return database.updateOne(
+      Collections.SPREADSHEET,
+      {
+        _id: new MongoDb.ObjectId(id),
+        userId,
+      },
+      {
+        $set: { folderId },
+      },
+    );
+  },
+
+  deleteFolder: async (id, userId) => {
+    return database.deleteOne(Collections.FOLDER, {
+      _id: new MongoDb.ObjectId(id),
+      userId,
+    });
+  },
+
+  updateSpreadsheetFinancialData: async (id, financialDataId, userId) => {
     return database.updateOne(
       Collections.SPREADSHEET,
       {
@@ -342,6 +383,7 @@ const api = {
     userId,
     financialData,
     spreadsheetId,
+    folderId,
     createdTimestamp = new Date(),
   ) => {
     const document = {
@@ -361,6 +403,7 @@ const api = {
       query,
       document,
       spreadsheetId,
+      folderId,
     );
   },
 

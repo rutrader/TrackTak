@@ -116,7 +116,7 @@ app.post("/api/v1/financial-data", auth, async (req, res) => {
   }
 
   if (req.body.spreadsheetId) {
-    await api.updateSpreadsheet(
+    await api.updateSpreadsheetFinancialData(
       req.body.spreadsheetId,
       financialData._id,
       req.user.username,
@@ -124,6 +124,41 @@ app.post("/api/v1/financial-data", auth, async (req, res) => {
   }
 
   res.send({ financialData });
+});
+
+app.get("/api/v1/folder", auth, async (req, res) => {
+  const folders = await api.getFolders(req.user.username);
+  res.send({ folders });
+});
+
+app.get("/api/v1/folder/:id/spreadsheets", auth, async (req, res) => {
+  const folder = await api.getFolder(req.user.username, req.params.id);
+  const spreadsheets = await api.getSpreadsheets(req.user.username);
+
+  const spreadsheetsInFolder = spreadsheets.filter(({ _id }) =>
+    folder.spreadsheetIds.includes(_id),
+  );
+
+  res.send({ spreadsheetsInFolder });
+});
+
+app.post("/api/v1/folder", auth, async (req, res) => {
+  const folder = await api.createFolder(req.body.folderName);
+  res.send({ folder });
+});
+
+app.put("/api/v1/spreadsheet/:id", auth, async (req, res) => {
+  const spreadsheet = await api.updateSpreadsheetFolder(
+    req.body.spreadsheetId,
+    req.user.username,
+    req.body.folderId,
+  );
+  res.send({ spreadsheet });
+});
+
+app.delete("/api/v1/folder/:id", auth, async (req, res) => {
+  const folder = await api.deleteFolder(req.body.folderId, req.user.username);
+  res.send({ folder });
 });
 
 app.post("/api/v1/spreadsheets", auth, async (req, res) => {

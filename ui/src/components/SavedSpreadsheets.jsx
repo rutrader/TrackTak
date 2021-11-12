@@ -7,13 +7,9 @@ import {
   TableHead,
   TableRow,
   Box,
-  ListItemIcon,
-  IconButton,
   Typography,
   DialogContentText,
 } from "@material-ui/core";
-import GridOnIcon from "@material-ui/icons/GridOn";
-import DeleteIcon from "@material-ui/icons/Delete";
 import { useTheme } from "@material-ui/core/styles";
 import ConfirmationDialog from "./ConfirmationDialog";
 import { useAuth } from "../hooks/useAuth";
@@ -23,6 +19,9 @@ import RoundButton from "./RoundButton";
 import dayjs from "dayjs";
 import { trackCustomEvent } from "gatsby-plugin-google-analytics";
 import { trackingFormatDate } from "../shared/utils";
+import { Button } from "@mui/material";
+import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
+import CollapsibleFolder from "../components/CollapsibleFolder";
 
 const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
   const theme = useTheme();
@@ -30,6 +29,7 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
   const { userData, getAccessToken } = useAuth();
   const [spreadsheets, setSpreadsheets] = useState(null);
   const [selectedSpreadsheet, setSelectedSpreadsheet] = useState();
+  const [createNewFolder, setCreateNewFolder] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -74,6 +74,10 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
 
   const handleConfirmationDialogClose = () => {
     setShowConfirmationDialog(false);
+  };
+
+  const handleCreateNewFolder = () => {
+    setCreateNewFolder(true);
   };
 
   const cellHeaderStyle = {
@@ -126,75 +130,55 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
         </Box>
       )}
       {spreadsheets?.length > 0 && (
-        <TableContainer
-          sx={{
-            marginTop: "20px",
-            "& .MuiTableRow-root": {
-              cursor: "pointer",
-            },
-          }}
-        >
-          <Table aria-label="spreadsheet table">
-            <TableHead>
-              <TableRow>
-                <TableCell style={cellHeaderStyle}>Name</TableCell>
-                <TableCell style={cellHeaderStyle} align="right">
-                  Last Modified
-                </TableCell>
-                <TableCell style={cellHeaderStyle} align="right" />
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {spreadsheets
-                .sort(
-                  (a, b) =>
-                    new Date(b.lastModifiedTimestamp) -
-                    new Date(a.lastModifiedTimestamp),
-                )
-                .map((spreadsheet) => (
-                  <TableRow
-                    key={spreadsheet._id}
-                    hover
-                    onClick={() => handleRowClick(spreadsheet)}
-                  >
-                    <TableCell component="th" scope="row">
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <ListItemIcon>
-                          <GridOnIcon />
-                        </ListItemIcon>
-                        {spreadsheet.sheetData.name}
-                      </Box>
-                    </TableCell>
-                    <TableCell align="right">
-                      {dayjs(spreadsheet.lastModifiedTimestamp).format(
-                        "DD MMM YY HH:mm",
-                      )}
-                    </TableCell>
-                    <TableCell align="right">
-                      <IconButton
-                        sx={{
-                          borderRadius: "2px",
-                          color: theme.palette.alert,
-                        }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDelete(spreadsheet);
-                        }}
-                        type="button"
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <>
+          <Button
+            sx={{
+              textTransform: "none",
+            }}
+            startIcon={<CreateNewFolderIcon />}
+            onClick={handleCreateNewFolder}
+          >
+            New Folder
+          </Button>
+          <TableContainer
+            sx={{
+              marginTop: "20px",
+              "& .MuiTableRow-root": {
+                cursor: "pointer",
+              },
+            }}
+          >
+            <Table aria-label="spreadsheet table">
+              <TableHead>
+                <TableRow>
+                  <TableCell style={cellHeaderStyle} />
+                  <TableCell style={cellHeaderStyle}>Name</TableCell>
+                  <TableCell style={cellHeaderStyle} align="right">
+                    Last Modified
+                  </TableCell>
+                  <TableCell style={cellHeaderStyle} align="right" />
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {spreadsheets
+                  .sort(
+                    (a, b) =>
+                      new Date(b.lastModifiedTimestamp) -
+                      new Date(a.lastModifiedTimestamp),
+                  )
+                  .map((spreadsheet) => (
+                    <CollapsibleFolder
+                      spreadsheets={spreadsheets}
+                      spreadsheet={spreadsheet}
+                      handleRowClick={handleRowClick}
+                      handleDelete={handleDelete}
+                      key={spreadsheet._id}
+                    />
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </>
       )}
     </>
   );
