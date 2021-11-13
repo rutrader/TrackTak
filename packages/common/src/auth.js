@@ -5,14 +5,21 @@ import {
   CognitoRefreshToken,
   CognitoUser,
   CognitoUserPool,
-  CognitoUserSession
+  CognitoUserSession,
+  CookieStorage
 } from 'amazon-cognito-identity-js'
 import axios from 'axios'
 import * as utils from './shared/utils'
 
+const cookieStorage = new CookieStorage({
+  domain: process.env.GATSBY_COGNITO_COOKIE_DOMAIN ?? 'tracktak.com',
+  secure: process.env.NODE_ENV
+})
+
 const POOL_CONFIG = {
   UserPoolId: process.env.GATSBY_COGNITO_USER_POOL_ID,
-  ClientId: process.env.GATSBY_COGNITO_APP_CLIENT_ID
+  ClientId: process.env.GATSBY_COGNITO_APP_CLIENT_ID,
+  Storage: cookieStorage
 }
 
 const userPool = new CognitoUserPool(POOL_CONFIG)
@@ -49,7 +56,8 @@ export const signIn = (
 ) => {
   const user = new CognitoUser({
     Username: username,
-    Pool: userPool
+    Pool: userPool,
+    Storage: cookieStorage
   })
 
   const authDetails = new AuthenticationDetails({
