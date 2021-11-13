@@ -8,6 +8,7 @@ import snackbarReducer from '../redux/reducers/snackbarReducer'
 import { combineReducers } from 'redux'
 import { configureStore } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
+import TTSnackbar from './TTSnackbar'
 
 const createStore = (preloadedState, reducers) => {
   return configureStore({
@@ -25,7 +26,10 @@ const TTProvider = ({ children }) => {
     <ThemeProvider theme={createTheme(theme)}>
       <Provider store={store}>
         <CssBaseline />
-        <ProvideAuth>{children}</ProvideAuth>
+        <ProvideAuth>
+          {children}
+          <TTSnackbar />
+        </ProvideAuth>
       </Provider>
     </ThemeProvider>
   )

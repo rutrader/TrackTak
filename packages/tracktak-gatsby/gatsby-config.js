@@ -3,8 +3,9 @@ const activeEnv =
 
 const path = require('path')
 const workspaceRoot = require('find-yarn-workspace-root')
+const dotenv = require('dotenv')
 
-require('dotenv').config({
+dotenv.config({
   path: `${workspaceRoot()}/.env.${activeEnv}`
 })
 
@@ -13,7 +14,7 @@ const isInProduction = activeEnv === 'production'
 module.exports = {
   flags: {
     PRESERVE_WEBPACK_CACHE: true,
-    DEV_SSR: true
+    DEV_SSR: false
   },
   siteMetadata: {
     title: 'tracktak',

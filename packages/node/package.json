@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node --es-module-specifier-resolution=node ./src/app.js",
-    "start:dev": "cross-env NODE_ENV=development nodemon --es-module-specifier-resolution=node ./src/app.js",
+    "develop": "cross-env NODE_ENV=development nodemon --es-module-specifier-resolution=node ./src/app.js",
     "deploy": "eb deploy"
   },
   "dependencies": {

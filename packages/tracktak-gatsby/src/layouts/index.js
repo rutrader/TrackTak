@@ -1,7 +1,6 @@
 import Layout from './Layout'
 import LayoutHome from './LayoutHome'
 import React from 'react'
-import { TTSnackbar } from '@tracktak/common'
 import LayoutPricing from './LayoutPricing'
 
 const LayoutSelection = ({ children, pageContext }) => {
@@ -19,7 +18,6 @@ const Root = ({ children, pageContext, params }) => {
   return (
     <LayoutSelection pageContext={pageContext} params={params}>
       {children}
-      <TTSnackbar />
     </LayoutSelection>
   )
 }

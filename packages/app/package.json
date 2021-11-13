@@ -7,7 +7,7 @@
   "license": "",
   "source": "./src/index.html",
   "scripts": {
-    "start": "parcel --open --port 3000",
+    "develop": "parcel --open --port 3000",
     "build": "parcel build",
     "watch:build": "parcel watch"
   },
