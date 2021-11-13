@@ -14,7 +14,7 @@ import { TTProvider, Layout } from '@tracktak/common'
 import CancelPlan from './components/CancelPlan'
 import PaymentSuccess from './components/PaymentSuccess'
 import SwitchingPlan from './components/SwitchingPlan'
-import FinancialSpreadsheet from './components/FinancialSpreadsheet'
+import FinancialModel from './components/FinancialModel'
 import LayoutFullScreen from './components/LayoutFullScreen'
 
 const LayoutContainer = () => {
@@ -36,7 +36,7 @@ const Index = () => {
             path=':name/my-spreadsheets/:sheetId'
             element={
               <LayoutFullScreen>
-                <FinancialSpreadsheet />
+                <FinancialModel />
               </LayoutFullScreen>
             }
           />

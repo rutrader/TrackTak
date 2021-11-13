@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Link } from '@mui/material'
-import { utils, api, useAuth } from '@tracktak/common'
+import { utils, snackbarActions, useAuth } from '@tracktak/common'
 import { useDispatch } from 'react-redux'
 import WarningAmberIcon from '@mui/icons-material/WarningAmber'
 
@@ -10,7 +10,7 @@ const VerifyEmailLink = ({ text, ...props }) => {
 
   const handleVerificationCodeError = err => {
     dispatch(
-      api.setMessage({
+      snackbarActions.setMessage({
         message: 'Failed to send verification link',
         severity: 'error'
       })
@@ -19,7 +19,7 @@ const VerifyEmailLink = ({ text, ...props }) => {
 
   const handleVerificationEmailSent = () => {
     dispatch(
-      api.setMessage({
+      snackbarActions.setMessage({
         message: 'A verification link has been sent to your email.'
       })
     )

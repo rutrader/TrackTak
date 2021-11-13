@@ -40,12 +40,12 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick, trackCustomEvent }) => {
 
   const handleRowClick = spreadsheet => {
     navigate(`/${userData.name}/my-spreadsheets/${spreadsheet._id}`)
-    trackCustomEvent({
-      category: 'Valuation',
-      action: 'Modify',
-      label: `Modified ${spreadsheet.sheetData.name}`,
-      value: dayjs().format(utils.trackingFormatDate)
-    })
+    // trackCustomEvent({
+    //   category: 'Valuation',
+    //   action: 'Modify',
+    //   label: `Modified ${spreadsheet.sheetData.name}`,
+    //   value: dayjs().format(utils.trackingFormatDate)
+    // })
   }
 
   const handleDelete = spreadsheet => {

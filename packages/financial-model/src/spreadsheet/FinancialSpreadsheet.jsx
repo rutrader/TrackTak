@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AlwaysSparse, HyperFormula } from 'hyperformula'
 import '@tracktak/powersheet/dist/index.css'
 import {
@@ -209,7 +209,7 @@ const FinancialSpreadsheet = ({
 
   if (!spreadsheet) return null
 
-  return <Box {...props} ref={setContainerEl} />
+  return <div {...props} ref={setContainerEl} />
 }
 
 export default FinancialSpreadsheet

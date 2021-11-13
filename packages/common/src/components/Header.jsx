@@ -36,7 +36,7 @@ const Header = ({
   links = [],
   children,
   navigate,
-  searchTicker
+  search
 }) => {
   const theme = useTheme()
   const extraPadding = 20
@@ -152,7 +152,7 @@ const Header = ({
                 display: 'flex'
               }}
             >
-              {searchTicker}
+              {search}
             </Box>
             <Hidden mdDown implementation='css'>
               <Box

@@ -1,14 +1,16 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import { Spreadsheet } from '@tracktak/financial-model'
+import { FinancialSpreadsheet } from '@tracktak/financial-model'
 import useFetchSpreadsheet from '../hooks/useFetchSpreadsheet'
 import { utils } from '@tracktak/common'
 import useSaveSpreadsheetData from '../hooks/useSaveSpreadsheetData'
 import { useTTFinancialPlugin } from '../hooks/useTTFinancialPlugin'
 import withAuthentication from '../hocs/withAuthentication'
+import { useParams } from 'react-router-dom'
 
-const FinancialSpreadsheet = ({ sheetId }) => {
-  const spreadsheet = useFetchSpreadsheet(sheetId)
+const FinancialModel = () => {
+  const params = useParams()
+  const spreadsheet = useFetchSpreadsheet(params.sheetId)
   const saveSheetData = useSaveSpreadsheetData(spreadsheet)
   const financialData = useTTFinancialPlugin(spreadsheet)
 
@@ -21,11 +23,11 @@ const FinancialSpreadsheet = ({ sheetId }) => {
           </title>
         </Helmet>
       )}
-      <Spreadsheet
+      <FinancialSpreadsheet
         saveSheetData={saveSheetData}
         sheetData={spreadsheet?.sheetData}
         financialData={financialData}
-        sx={{
+        style={{
           flex: 1
         }}
       />
@@ -33,4 +35,4 @@ const FinancialSpreadsheet = ({ sheetId }) => {
   )
 }
 
-export default withAuthentication(FinancialSpreadsheet)
+export default withAuthentication(FinancialModel)

@@ -5070,6 +5070,14 @@
     globals "^13.2.0"
     nullthrows "^1.1.1"
 
+"@parcel/packager-raw-url@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@parcel/packager-raw-url/-/packager-raw-url-2.0.1.tgz#646466eb3b216e1421323987c5e9ed635963795e"
+  integrity sha512-m8ixkDjJ0RqY2U3Q+ASnphTG1n46jZ/CnRkvT8Kj5MyxtpDX69ri3/C1/b56r6daeemj0laM5lqkr9MrKsdacw==
+  dependencies:
+    "@parcel/plugin" "^2.0.1"
+    "@parcel/utils" "^2.0.1"
+
 "@parcel/packager-raw@^2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@parcel/packager-raw/-/packager-raw-2.0.1.tgz#08516692e6050debc540fab4b36b078edb8ce492"
@@ -5086,6 +5094,16 @@
     "@parcel/types" "^2.0.1"
     "@parcel/utils" "^2.0.1"
     posthtml "^0.16.4"
+
+"@parcel/packager-xml@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@parcel/packager-xml/-/packager-xml-2.0.1.tgz#e6fa1cdddd1dd62e0927f43fbd9553d5f509d2cc"
+  integrity sha512-t1iOLZgmAe4PaAUx0wwhk4Ae36k40vSHqugGC9ag5r/uKwISNrXPxSv0JKc+4Amh26S/v6xCjccCrdDW9u/qUQ==
+  dependencies:
+    "@parcel/plugin" "^2.0.1"
+    "@parcel/types" "^2.0.1"
+    "@parcel/utils" "^2.0.1"
+    "@xmldom/xmldom" "^0.7.5"
 
 "@parcel/plugin@^2.0.1":
   version "2.0.1"
@@ -5407,6 +5425,21 @@
   version "2.10.2"
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.10.2.tgz#0798c03351f0dea1a5a4cabddf26a55a7cbee590"
   integrity sha512-IXf3XA7+XyN7CP9gGh/XB0UxVMlvARGEgGXLubFICsUMGz6Q+DU+i4gGlpOxTjKvXjkJDJC8YdqdKkDj9qZHEQ==
+
+"@pwa-manifest/core@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@pwa-manifest/core/-/core-1.5.0.tgz#7e2dad6c000b556aea9a64d38d59987abe6bc5ff"
+  integrity sha512-Jbut16jl0pvxQS7ud7KbUmfGI5piXbHuE8sdTuIDwn1MJRoC9BR5oNKfR7wF8fJqqv0oZdhMBvZDalP/+dd9jA==
+  dependencies:
+    "@pwa-manifest/potrace" "^1.0.0"
+    sharp "^0.25.2"
+
+"@pwa-manifest/potrace@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@pwa-manifest/potrace/-/potrace-1.0.0.tgz#f622945f027a8a74933b2346573b691a8779251a"
+  integrity sha512-eTiEreR4UjQRN1QEaogZNYFAsrWLSOAhNCVAUYO/8a33b4g5nSkbbyrRSNCyx1jdTXq9NGpRfBtRhDJJqgO5Iw==
+  dependencies:
+    sharp "^0.25.2"
 
 "@reduxjs/toolkit@^1.6.2":
   version "1.6.2"
@@ -6837,6 +6870,11 @@
     "@webassemblyjs/ast" "1.9.0"
     "@webassemblyjs/wast-parser" "1.9.0"
     "@xtuc/long" "4.2.2"
+
+"@xmldom/xmldom@^0.7.5":
+  version "0.7.5"
+  resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.7.5.tgz#09fa51e356d07d0be200642b0e4f91d8e6dd408d"
+  integrity sha512-V3BIhmY36fXZ1OtVcI9W+FxQqxVLsPKcNjWigIaa81dLC9IolJl5Mt4Cvhmr0flUnjSpTdrbMTSbXqYqV5dT6A==
 
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
@@ -9047,7 +9085,7 @@ color-string@^1.6.0:
     color-name "^1.0.0"
     simple-swizzle "^0.2.2"
 
-color@^3.0.0, color@^3.1.3:
+color@^3.0.0, color@^3.1.2, color@^3.1.3:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/color/-/color-3.2.1.tgz#3544dc198caf4490c3ecc9a790b54fe9ff45e164"
   integrity sha512-aBl7dZI9ENN6fUGC7mWpMTPNHmWUSNan9tuWN6ahh5ZLNk9baLJOnSMlrQkHcrfFgz2/RigjUVAjdx36VcemKA==
@@ -18394,14 +18432,14 @@ no-case@^3.0.4:
     lower-case "^2.0.2"
     tslib "^2.0.3"
 
-node-abi@^2.21.0:
+node-abi@^2.21.0, node-abi@^2.7.0:
   version "2.30.1"
   resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-2.30.1.tgz#c437d4b1fe0e285aaf290d45b45d4d7afedac4cf"
   integrity sha512-/2D0wOQPgaUWzVSVgRMx+trKJRC2UG4SUc4oCJoXx9Uxjtp0Vy3/kt7zcbxHF8+Z/pK3UloLWzBISg72brfy1w==
   dependencies:
     semver "^5.4.1"
 
-node-addon-api@^3.0.2, node-addon-api@^3.2.1:
+node-addon-api@^3.0.0, node-addon-api@^3.0.2, node-addon-api@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-3.2.1.tgz#81325e0a2117789c0128dab65e7e38f07ceba161"
   integrity sha512-mmcei9JghVNDYydghQmeDX8KoAm0FAiYyIcUt/N4nhyAipB17pllZQDOJD2fotxABnt4Mdz+dKTO7eftLg4d0A==
@@ -18545,6 +18583,11 @@ nodemon@^2.0.15:
     touch "^3.1.0"
     undefsafe "^2.0.5"
     update-notifier "^5.1.0"
+
+noop-logger@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/noop-logger/-/noop-logger-0.1.1.tgz#94a2b1633c4f1317553007d8966fd0e841b6a4c2"
+  integrity sha1-lKKxYzxPExdVMAfYlm/Q6EG2pMI=
 
 nopt@^4.0.1:
   version "4.0.3"
@@ -19334,6 +19377,20 @@ param-case@^3.0.3, param-case@^3.0.4:
   dependencies:
     dot-case "^3.0.4"
     tslib "^2.0.3"
+
+parcel-config-pwa-manifest@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/parcel-config-pwa-manifest/-/parcel-config-pwa-manifest-0.1.0.tgz#1693063710ff3f2f2a7b6edeee71cdda63deea6e"
+  integrity sha512-0vqdmOucNkOY27OPK79Q2G/FfPziFYmh1SjbLp2PUYJns9WdhkLnctvGf6Z75Fca7jfCVVV7DUqmYMLg/LC5zg==
+  dependencies:
+    parcel-transformer-pwa-manifest "^0.1.0"
+
+parcel-transformer-pwa-manifest@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/parcel-transformer-pwa-manifest/-/parcel-transformer-pwa-manifest-0.1.0.tgz#fc06d4e415cb33315a70342ed9a582abf1305afb"
+  integrity sha512-zYOode+XNiPXRNiOQHLlAzCfO6lP/YLkPW8nK4FjOLWLDyh0YMvM8IH6FxN1s5yhfEQeNR3qgbJF6ADwPO4CCg==
+  dependencies:
+    "@pwa-manifest/core" "^1.5.0"
 
 parcel@^2.0.1:
   version "2.0.1"
@@ -20857,6 +20914,27 @@ potrace@^2.1.8:
   integrity sha512-V9hI7UMJyEhNZjM8CbZaP/804ZRLgzWkCS9OOYnEZkszzj3zKR/erRdj0uFMcN3pp6x4B+AIZebmkQgGRinG/g==
   dependencies:
     jimp "^0.14.0"
+
+prebuild-install@^5.3.4:
+  version "5.3.6"
+  resolved "https://registry.yarnpkg.com/prebuild-install/-/prebuild-install-5.3.6.tgz#7c225568d864c71d89d07f8796042733a3f54291"
+  integrity sha512-s8Aai8++QQGi4sSbs/M1Qku62PFK49Jm1CbgXklGz4nmHveDq0wzJkg7Na5QbnO1uNH8K7iqx2EQ/mV0MZEmOg==
+  dependencies:
+    detect-libc "^1.0.3"
+    expand-template "^2.0.3"
+    github-from-package "0.0.0"
+    minimist "^1.2.3"
+    mkdirp-classic "^0.5.3"
+    napi-build-utils "^1.0.1"
+    node-abi "^2.7.0"
+    noop-logger "^0.1.1"
+    npmlog "^4.0.1"
+    pump "^3.0.0"
+    rc "^1.2.7"
+    simple-get "^3.0.3"
+    tar-fs "^2.0.0"
+    tunnel-agent "^0.6.0"
+    which-pm-runs "^1.0.0"
 
 prebuild-install@^6.0.0, prebuild-install@^6.1.4:
   version "6.1.4"
@@ -22956,6 +23034,21 @@ shallowequal@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/shallowequal/-/shallowequal-1.1.0.tgz#188d521de95b9087404fd4dcb68b13df0ae4e7f8"
   integrity sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ==
+
+sharp@^0.25.2:
+  version "0.25.4"
+  resolved "https://registry.yarnpkg.com/sharp/-/sharp-0.25.4.tgz#1a8e542144a07ab7e9316ab89de80182b827c363"
+  integrity sha512-umSzJJ1oBwIOfwFFt/fJ7JgCva9FvrEU2cbbm7u/3hSDZhXvkME8WE5qpaJqLIe2Har5msF5UG4CzYlEg5o3BQ==
+  dependencies:
+    color "^3.1.2"
+    detect-libc "^1.0.3"
+    node-addon-api "^3.0.0"
+    npmlog "^4.1.2"
+    prebuild-install "^5.3.4"
+    semver "^7.3.2"
+    simple-get "^4.0.0"
+    tar "^6.0.2"
+    tunnel-agent "^0.6.0"
 
 sharp@^0.26.0:
   version "0.26.3"
@@ -26166,6 +26259,11 @@ which-module@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/which-module/-/which-module-2.0.0.tgz#d9ef07dce77b9902b8a3a8fa4b31c3e3f7e6e87a"
   integrity sha1-2e8H3Od7mQK4o6j6SzHD4/fm6Ho=
+
+which-pm-runs@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/which-pm-runs/-/which-pm-runs-1.0.0.tgz#670b3afbc552e0b55df6b7780ca74615f23ad1cb"
+  integrity sha1-Zws6+8VS4LVd9rd4DKdGFfI60cs=
 
 which-typed-array@^1.1.2:
   version "1.1.7"

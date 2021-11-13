@@ -1,5 +1,5 @@
 import { Box, Container, useTheme } from '@mui/material'
-import { Link } from 'gatsby'
+import { Link, navigate } from 'gatsby'
 import React from 'react'
 import { LinkButton, Header, headerLinks, useAuth } from '@tracktak/common'
 
@@ -15,7 +15,7 @@ const LayoutHome = ({ children }) => {
 
   return (
     <Container maxWidth='xl'>
-      <Header>
+      <Header navigate={navigate}>
         <Box
           sx={{
             marginRight: '-24px',
