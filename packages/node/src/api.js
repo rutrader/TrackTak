@@ -1,11 +1,8 @@
 import axios from 'axios'
 import cache from 'memory-cache'
 import replaceDoubleColonWithObject from './shared/replaceDoubleColonWithObject'
-import tenYearGovernmentBondYields from '../data/tenYearGovernmentBondYields.json'
+import tenYearGovernmentBondYields from './data/tenYearGovernmentBondYields.json'
 import iso3311a2 from 'iso-3166-1-alpha-2'
-// import { wrap } from "comlink";
-// import nodeEndpoint from "comlink/dist/umd/node-adapter";
-// import { getSensitivityAnalysisWorker } from "./workers";
 import * as database from './database/mongoDbClient'
 import { Collections } from './database/collections'
 import convertFundamentalsFromAPI from './shared/convertFundamentalsFromAPI'
@@ -58,10 +55,6 @@ const sendReqOrGetCachedData = async (
 
   return setCachedData(data, cacheKey, time)
 }
-
-// switch to piscina later
-// const sensitivityAnalysisWorker = getSensitivityAnalysisWorker();
-// const sensitivityAnalysisApi = wrap(nodeEndpoint(sensitivityAnalysisWorker));
 
 const api = {
   getBulkFundamentals: async (exchange, query) => {
@@ -284,28 +277,6 @@ const api = {
     )
     return data
   },
-
-  // computeSensitivityAnalysis: async (
-  //   sheetsSerializedValues,
-  //   existingScope,
-  //   currentScopes,
-  // ) => {
-  //   const data = await sendReqOrGetCachedData(
-  //     async () => {
-  //       const values = await sensitivityAnalysisApi.computeSensitivityAnalysis(
-  //         sheetsSerializedValues,
-  //         existingScope,
-  //         currentScopes,
-  //       );
-
-  //       return values;
-  //     },
-  //     "computeSensitivityAnalysis",
-  //     { sheetsSerializedValues, existingScope, currentScopes },
-  //   );
-
-  //   return data;
-  // },
 
   getFinancialDataByQuery: async financialDataQuery => {
     return database.findOne(Collections.FINANCIAL_DATA, {

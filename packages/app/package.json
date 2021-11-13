@@ -5,9 +5,9 @@
   "description": "The spreadsheet application behind user auth.",
   "author": "TRACKTAK LTD",
   "license": "",
-  "source": "src/index.html",
+  "source": "./src/index.html",
   "scripts": {
-    "start": "parcel src/index.html --open --port 3000",
+    "start": "parcel --open --port 3000",
     "build": "parcel build",
     "watch:build": "parcel watch"
   },

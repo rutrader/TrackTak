@@ -74,6 +74,11 @@ yarn-error.log
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
 # firebase cache files
 .firebase/
 
@@ -84,4 +89,6 @@ tsconfig.tsbuildinfo
 # build
 dist
 out*
+build
+build.zip
 .parcel-cache

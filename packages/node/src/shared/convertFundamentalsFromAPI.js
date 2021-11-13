@@ -1,5 +1,5 @@
 import isNil from 'lodash/isNil'
-import getValueFromString from '../../../financial-model/src/shared/getValueFromString'
+import getValueFromString from './getValueFromString'
 
 const convertBalanceSheet = ({
   date,

@@ -6,6 +6,6 @@
   "author": "TRACKTAK LTD",
   "license": "",
   "scripts": {
-    "start": "docker-compose up && cd .."
+    "start": "docker-compose --env-file ../../.env.development up"
   }
 }

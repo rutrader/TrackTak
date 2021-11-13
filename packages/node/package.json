@@ -1,35 +1,21 @@
 {
   "name": "@tracktak/node",
   "version": "0.1.0",
-  "main": "./src/app.js",
   "private": true,
+  "type": "module",
   "scripts": {
-    "start": "node ./app.js",
-    "start:dev": "cross-env NODE_ENV=development nodemon --es-module-specifier-resolution=node",
-    "zip": "cd ./build && bestzip ../build.zip *",
-    "clean:build": "rimraf ./build",
-    "build": "yarn run clean:build && cross-env NODE_ENV=production webpack && yarn run zip",
-    "build:staging": "cross-env NODE_ENV=staging webpack && yarn run zip",
-    "clean": "rimraf ./node_modules",
-    "deploy": "yarn run build && eb deploy"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.6",
-    "object-sizeof": "^1.6.1"
+    "start": "node --es-module-specifier-resolution=node ./src/app.js",
+    "start:dev": "cross-env NODE_ENV=development nodemon --es-module-specifier-resolution=node ./src/app.js",
+    "deploy": "eb deploy"
   },
   "dependencies": {
     "aws-sdk": "^2.999.0",
     "axios": "^0.21.0",
-    "bestzip": "^2.1.7",
-    "comlink": "^4.3.0",
-    "copy-webpack-plugin": "^6.3.1",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
-    "currency-symbol-map": "^5.0.1",
     "dayjs": "^1.9.7",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "find-yarn-workspace-root": "^2.0.0",
     "express-async-errors": "^3.1.1",
     "hyperformula": "^1.3.0",
     "iso-3166-1-alpha-2": "^1.0.0",
@@ -38,10 +24,10 @@
     "lodash": "^4.17.21",
     "memory-cache": "^0.2.0",
     "mongodb": "^3.6.9",
-    "piscina": "^2.2.0",
-    "stripe": "^8.178.0",
-    "webpack": "^5.33.2",
-    "webpack-cli": "^4.2.0",
-    "webpack-node-externals": "^2.5.2"
+    "stripe": "^8.178.0"
+  },
+  "devDependencies": {
+    "find-yarn-workspace-root": "^2.0.0",
+    "nodemon": "^2.0.15"
   }
 }
