@@ -7,7 +7,6 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import PageSpinner from '../../../common/src/components/PageSpinner'
 import { setMessage } from '../../../common/src/redux/actions/snackbarActions'
 import { useDispatch } from 'react-redux'
-import mainUrl from '../shared/mainUrl'
 
 const withAuthentication = Component => {
   const Container = props => {
@@ -38,7 +37,7 @@ const withAuthentication = Component => {
 
     useEffect(() => {
       if (!isAuthenticated && hasLoadedAuthDetails) {
-        window.location.href = mainUrl
+        window.location.href = process.env.GATSBY_DOMAIN_URL
       }
     }, [hasLoadedAuthDetails, isAuthenticated, navigate, location.search])
 

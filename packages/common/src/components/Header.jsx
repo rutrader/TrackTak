@@ -36,7 +36,6 @@ const Header = ({
   links = [],
   children,
   navigate,
-  Link,
   searchTicker
 }) => {
   const theme = useTheme()
@@ -80,7 +79,12 @@ const Header = ({
         }}
       >
         {/* aria-current due to @reach/router bug mismatch between server/client */}
-        <LinkButton aria-current={null} to={to} component={Link}>
+        <LinkButton
+          aria-current={null}
+          onClick={() => {
+            window.location.href = `${process.env.GATSBY_DOMAIN_URL}${to}`
+          }}
+        >
           {text}
         </LinkButton>
       </Box>
@@ -91,7 +95,7 @@ const Header = ({
     <MenuItemLink key='dashboard'>
       <LinkButton
         onClick={() => {
-          navigate('/dashboard')
+          navigate('/')
           handleAccountMenuClose()
         }}
       >
@@ -138,7 +142,7 @@ const Header = ({
             }}
           >
             <Box sx={{ mr: 2, display: 'flex', alignItems: 'center' }}>
-              <TracktakLogo Link={Link} />
+              <TracktakLogo navigate={navigate} />
             </Box>
             <Box
               sx={{
@@ -221,9 +225,9 @@ const Header = ({
                     {links.map(link => (
                       <MenuItemLink key={link.to}>
                         <LinkButton
-                          component={Link}
-                          onClick={handleClose}
-                          to={link.to}
+                          onClick={() => {
+                            window.location.href = `${process.env.GATSBY_DOMAIN_URL}${to}`
+                          }}
                         >
                           {link.text}
                         </LinkButton>

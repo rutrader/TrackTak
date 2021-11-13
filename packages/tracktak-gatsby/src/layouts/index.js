@@ -1,7 +1,8 @@
-import Layout from './Layout'
+import { Layout } from '@tracktak/common'
 import LayoutHome from './LayoutHome'
 import React from 'react'
 import LayoutPricing from './LayoutPricing'
+import { navigate } from 'gatsby'
 
 const LayoutSelection = ({ children, pageContext }) => {
   if (pageContext.layout === 'home') {
@@ -11,7 +12,7 @@ const LayoutSelection = ({ children, pageContext }) => {
     return <LayoutPricing>{children}</LayoutPricing>
   }
 
-  return <Layout>{children}</Layout>
+  return <Layout navigate={navigate}>{children}</Layout>
 }
 
 const Root = ({ children, pageContext, params }) => {

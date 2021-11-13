@@ -20,7 +20,10 @@ app.use(cors())
 
 app.use(
   cors({
-    origin: process.env.ORIGIN_URL,
+    origin: [
+      process.env.GATSBY_DOMAIN_URL,
+      process.env.GATSBY_APP_SUBDOMAIN_URL
+    ],
     optionsSuccessStatus: 204
   })
 )
@@ -135,6 +138,8 @@ app.put('/api/v1/spreadsheets', auth, async (req, res) => {
 
 app.get('/api/v1/spreadsheets', auth, async (req, res) => {
   const spreadsheets = await api.getSpreadsheets(req.user.username)
+
+  console.log(spreadsheets)
   res.send({ spreadsheets })
 })
 
@@ -301,8 +306,8 @@ app.post('/api/v1/create-checkout-session', auth, async (req, res) => {
       automatic_tax: {
         enabled: true
       },
-      success_url: `${process.env.ORIGIN_URL}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.ORIGIN_URL}/pricing`,
+      success_url: `${process.env.GATSBY_APP_SUBDOMAIN_URL}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.GATSBY_DOMAIN_URL}/pricing`,
       ...(customer.id && {
         customer: customer.id
       }),
@@ -355,7 +360,7 @@ app.post(
 )
 
 app.post('/api/v1/create-customer-portal-session', auth, async (req, res) => {
-  const returnUrl = `${process.env.ORIGIN_URL}/account-settings`
+  const returnUrl = `${process.env.GATSBY_APP_SUBDOMAIN_URL}/account-settings`
 
   const portalSession = await stripe.billingPortal.sessions.create({
     customer: 'cus_KRWrqkdz1yQ8L6',

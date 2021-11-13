@@ -23,8 +23,10 @@ import theme from './theme'
 import * as auth from './auth'
 import { useAuth, getUrlAuthParameters } from './hooks/useAuth'
 import TTProvider from './components/TTProvider'
+import Layout from './components/Layout'
 
 export {
+  Layout,
   TTProvider,
   useAuth,
   getUrlAuthParameters,
