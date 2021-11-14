@@ -51,7 +51,7 @@ const Pricing = () => {
           variant='h3'
           gutterBottom
         >
-          Plans and Pricing
+          Pricing
         </Typography>
         <Typography
           sx={{
