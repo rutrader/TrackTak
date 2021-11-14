@@ -32,7 +32,7 @@ const CancelPlan = () => {
     updatePlan({
       state: 'cancel'
     })
-    navigate('/dashboard')
+    navigate('/')
   }
 
   return (

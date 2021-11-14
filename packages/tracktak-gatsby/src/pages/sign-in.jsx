@@ -8,7 +8,7 @@ import withAuthenticatedRedirect from '../hocs/withAuthenticatedRedirect'
 
 const SignIn = ({ location }) => {
   const handleSuccess = () => {
-    navigate('/dashboard')
+    window.location.href = process.env.GATSBY_APP_SUBDOMAIN_URL
   }
 
   return (

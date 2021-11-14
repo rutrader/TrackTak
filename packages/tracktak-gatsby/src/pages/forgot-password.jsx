@@ -5,12 +5,11 @@ import { Grid } from '@mui/material'
 import Authentication, {
   AUTHENTICATION_FORM_STATE
 } from '../components/Authentication'
-import { navigate } from 'gatsby'
 import withAuthenticatedRedirect from '../hocs/withAuthenticatedRedirect'
 
 const ForgotPassword = ({ location }) => {
   const handleSuccess = () => {
-    navigate('/dashboard')
+    window.location.href = process.env.GATSBY_APP_SUBDOMAIN_URL
   }
 
   return (

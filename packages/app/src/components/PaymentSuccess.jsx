@@ -45,7 +45,7 @@ const PaymentSuccess = () => {
         </Typography>
         <Button
           onClick={() => {
-            navigate('/dashboard')
+            navigate('/')
           }}
           endIcon={<ArrowForwardIcon />}
           sx={{ textTransform: 'none' }}

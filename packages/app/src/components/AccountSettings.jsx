@@ -84,7 +84,7 @@ const AccountSettings = () => {
   }
 
   const handleAddRegionsClick = async () => {
-    navigate('/pricing')
+    window.location.href = `${process.env.GATSBY_DOMAIN_URL}/pricing`
   }
 
   return (

@@ -27,7 +27,7 @@ const MembershipButtons = ({ onEndMyMembershipClick = () => {} }) => {
   }
 
   const handleKeepMyBenefitsClick = () => {
-    navigate('/dashboard')
+    navigate('/')
   }
 
   return (
