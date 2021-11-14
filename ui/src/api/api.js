@@ -33,6 +33,46 @@ export const createFinancialData = async (
   );
 };
 
+export const getFolders = async (accessToken) => {
+  return axios.get("/api/v1/folders", {
+    headers: getAuthHeaders(accessToken),
+  });
+};
+
+export const getSpreadsheetsInFolder = async (accessToken, id) => {
+  return axios.get(`/api/v1/folder/${id}/spreadsheets`, {
+    headers: getAuthHeaders(accessToken),
+  });
+};
+
+export const createFolder = async (folderName, accessToken) => {
+  return axios.post(
+    "/api/v1/folder",
+    { folderName },
+    {
+      headers: getAuthHeaders(accessToken),
+    },
+  );
+};
+
+export const updateSpreadsheetFolder = async (id, folderId, accessToken) => {
+  return axios.put(
+    `/api/v1/spreadsheet/${id}`,
+    {
+      folderId,
+    },
+    {
+      headers: getAuthHeaders(accessToken),
+    },
+  );
+};
+
+export const deleteFolder = async (id, accessToken) => {
+  return axios.delete(`/api/v1/folder/${id}`, {
+    headers: getAuthHeaders(accessToken),
+  });
+};
+
 export const createSpreadsheet = async (spreadsheet, accessToken) => {
   return axios.post("/api/v1/spreadsheets", spreadsheet, {
     headers: getAuthHeaders(accessToken),

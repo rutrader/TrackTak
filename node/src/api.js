@@ -158,9 +158,10 @@ const api = {
               const country = iso3311a2
                 .getCountry(splits[0].toUpperCase())
                 .toUpperCase();
-              const tenYearGovernmentBondYield = tenYearGovernmentBondYields.find(
-                (x) => x.country.toUpperCase() === country,
-              ).yield;
+              const tenYearGovernmentBondYield =
+                tenYearGovernmentBondYields.find(
+                  (x) => x.country.toUpperCase() === country,
+                ).yield;
 
               return tenYearGovernmentBondYield;
             }
@@ -330,10 +331,9 @@ const api = {
     });
   },
 
-  getFolder: async (userId, id) => {
+  getFolder: async (id) => {
     return database.find(Collections.FOLDER, [
       {
-        userId,
         _id: new MongoDb.ObjectId(id),
       },
     ]);
@@ -345,12 +345,11 @@ const api = {
     });
   },
 
-  updateSpreadsheetFolder: async (id, folderId, userId) => {
+  updateSpreadsheetFolder: async (id, folderId) => {
     return database.updateOne(
       Collections.SPREADSHEET,
       {
         _id: new MongoDb.ObjectId(id),
-        userId,
       },
       {
         $set: { folderId },
@@ -358,19 +357,17 @@ const api = {
     );
   },
 
-  deleteFolder: async (id, userId) => {
+  deleteFolder: async (id) => {
     return database.deleteOne(Collections.FOLDER, {
       _id: new MongoDb.ObjectId(id),
-      userId,
     });
   },
 
-  updateSpreadsheetFinancialData: async (id, financialDataId, userId) => {
+  updateSpreadsheetFinancialData: async (id, financialDataId) => {
     return database.updateOne(
       Collections.SPREADSHEET,
       {
         _id: new MongoDb.ObjectId(id),
-        userId,
       },
       {
         $set: { "financialData.id": financialDataId },
@@ -383,7 +380,6 @@ const api = {
     userId,
     financialData,
     spreadsheetId,
-    folderId,
     createdTimestamp = new Date(),
   ) => {
     const document = {
@@ -403,7 +399,6 @@ const api = {
       query,
       document,
       spreadsheetId,
-      folderId,
     );
   },
 
@@ -413,17 +408,15 @@ const api = {
     });
   },
 
-  getSpreadsheet: async (userId, id) => {
+  getSpreadsheet: async (id) => {
     return database.findOne(Collections.SPREADSHEET, {
       _id: new MongoDb.ObjectId(id),
-      userId,
     });
   },
 
-  deleteSpreadsheet: async (id, userId) => {
+  deleteSpreadsheet: async (id) => {
     return database.deleteOne(Collections.SPREADSHEET, {
       _id: new MongoDb.ObjectId(id),
-      userId,
     });
   },
 };
