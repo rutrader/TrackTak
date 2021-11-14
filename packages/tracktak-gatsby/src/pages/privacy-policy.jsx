@@ -4,6 +4,7 @@ import { Typography } from '@mui/material'
 import ReactMarkdown from 'react-markdown'
 import { utils } from '@tracktak/common'
 import { Helmet } from 'react-helmet'
+import raw from 'rehype-raw'
 
 export const query = graphql`
   query PrivacyPolicyQuery {
@@ -18,7 +19,7 @@ export const query = graphql`
 `
 
 const renderHtml = html => {
-  return <ReactMarkdown allowDangerousHtml>{html}</ReactMarkdown>
+  return <ReactMarkdown rehypePlugins={[raw]}>{html}</ReactMarkdown>
 }
 
 const PrivacyPolicy = ({ data }) => {

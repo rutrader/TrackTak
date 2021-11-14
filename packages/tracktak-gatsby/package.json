@@ -37,7 +37,6 @@
     "@mui/material": "^5.1.0",
     "@reduxjs/toolkit": "^1.6.2",
     "@tracktak/common": "*",
-    "find-yarn-workspace-root": "^2.0.0",
     "axios": "^0.21.0",
     "axios-jsonp": "^1.0.4",
     "babel-plugin-styled-components": "^1.5.0",
@@ -45,6 +44,7 @@
     "dayjs": "^1.9.7",
     "dotenv": "^8.2.0",
     "esm": "^3.2.25",
+    "find-yarn-workspace-root": "^2.0.0",
     "gatsby": "^3.14.5",
     "gatsby-background-image": "^1.5.0",
     "gatsby-image": "^2.11.0",
@@ -90,6 +90,7 @@
     "react-scrollspy": "^3.4.0",
     "react-youtube": "^7.13.0",
     "redux": "^4.0.5",
+    "rehype-raw": "^6.1.0",
     "sharp": "^0.26.0",
     "styled-components": "^5.3.0",
     "web-vitals": "^0.2.4"

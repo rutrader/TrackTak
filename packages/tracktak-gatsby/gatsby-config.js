@@ -48,13 +48,13 @@ module.exports = {
         duration: 0
       }
     },
-    // {
-    //   resolve: `gatsby-plugin-webpack-bundle-analyser-v2`,
-    //   options: {
-    //     devMode: true,
-    //     analyzerPort: 3002
-    //   }
-    // },
+    {
+      resolve: `gatsby-plugin-webpack-bundle-analyser-v2`,
+      options: {
+        devMode: true,
+        analyzerPort: 3002
+      }
+    },
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-layout',
     {
