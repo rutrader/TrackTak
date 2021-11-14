@@ -138,7 +138,6 @@ app.put('/api/v1/spreadsheets', auth, async (req, res) => {
 app.get('/api/v1/spreadsheets', auth, async (req, res) => {
   const spreadsheets = await api.getSpreadsheets(req.user.username)
 
-  console.log(spreadsheets)
   res.send({ spreadsheets })
 })
 
