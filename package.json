@@ -14,11 +14,15 @@
     "generate-fundamentals": "node --es-module-specifier-resolution=node ./scripts/writeBulkFundamentalsDataToJSON.js",
     "find-missing-gbonds": "node --es-module-specifier-resolution=node ./scripts/findMissingGBonds",
     "clean": "lerna clean",
+    "tracktak-backend": "lerna run develop --parallel --scope @tracktak/database --scope @tracktak/node",
+    "tracktak-app": "yarn run tracktak-backend --scope @tracktak/app",
+    "tracktak-gatsby": "yarn run tracktak-backend --scope @tracktak/gatsby",
+    "tracktak": "run-p tracktak-app tracktak-gatsby",
+    "powersheet": "lerna run develop --parallel --scope tracktak-powersheet",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"packages/**/*.{jsx,js}\" --write",
     "fix:lint": "eslint \"packages/**/*.{jsx,js}\" --fix",
-    "release": "lerna version",
-    "prettier:windows": "./node_modules/.bin/prettier --write \"{packages}/**/*.{jsx,js}\""
+    "release": "lerna version"
   },
   "devDependencies": {
     "@octokit/core": "^3.5.1",
