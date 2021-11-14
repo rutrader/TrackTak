@@ -5,12 +5,12 @@ export const onCreatePage = ({ page, actions }) => {
   const { createPage } = actions
 
   if (page.path === '/') {
-    page.context.layout = 'home'
+    page.context.layout = 'xl'
     createPage(page)
   }
 
-  if (page.path === '/pricing/') {
-    page.context.layout = 'pricing'
+  if (page.path === '/sign-up/') {
+    page.context.layout = 'sign-up'
     createPage(page)
   }
 }

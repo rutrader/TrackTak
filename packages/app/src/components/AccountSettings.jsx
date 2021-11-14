@@ -24,7 +24,6 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome'
 import FreezeModalForm from './FreezeModalForm'
 import AcUnit from '@mui/icons-material/AcUnit'
 import { useNavigate } from 'react-router-dom'
-import withAuthentication from '../hocs/withAuthentication'
 
 const AccountSettings = () => {
   const { getAccessToken } = useAuth()
@@ -84,7 +83,7 @@ const AccountSettings = () => {
   }
 
   const handleAddRegionsClick = async () => {
-    window.location.href = `${process.env.GATSBY_DOMAIN_URL}/pricing`
+    navigate('/pricing')
   }
 
   return (
@@ -333,4 +332,4 @@ const AccountSettings = () => {
   )
 }
 
-export default withAuthentication(AccountSettings)
+export default AccountSettings

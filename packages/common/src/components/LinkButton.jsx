@@ -13,7 +13,7 @@ const LinkButton = ({ sx, ...props }) => {
         borderTopRightRadius: 0,
         borderBottomRightRadius: 0,
         borderBottomLeftRadius: 0,
-        height: '48px',
+        height: 40,
         whiteSpace: 'nowrap',
         ...sx
       }}

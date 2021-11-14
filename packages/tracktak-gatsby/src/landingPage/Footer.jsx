@@ -3,7 +3,7 @@ import React from 'react'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import RedditIcon from '@mui/icons-material/Reddit'
 import dayjs from 'dayjs'
-import { tracktakLogoIcon, headerLinks } from '@tracktak/common'
+import { tracktakLogoIcon, links } from '@tracktak/common'
 import { Link as RouterLink } from 'gatsby'
 
 const iconStyles = { width: '45px', height: '45px' }
@@ -78,7 +78,7 @@ const Footer = () => {
           <Typography>
             <Link href='/terms-and-conditions'>Terms &amp; Conditions</Link>
           </Typography>
-          {headerLinks.landingPageLinks.map(link => (
+          {links.landingPageLinks.map(link => (
             <Typography key={link.to}>
               <Link component={RouterLink} to={link.to}>
                 {link.text}

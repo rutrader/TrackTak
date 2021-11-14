@@ -2,8 +2,8 @@ import { FormGroup, Box, Link, Typography, useTheme } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { utils, api, regions, useCurrentPlan, useAuth } from '@tracktak/common'
-import SelectAPIRegion from '../components/SelectAPIRegion'
-import FrequentlyAskedQuestion from '../components/FrequentlyAskedQuestion'
+import SelectAPIRegion from './SelectAPIRegion'
+import FrequentlyAskedQuestion from './FrequentlyAskedQuestion'
 
 const Pricing = () => {
   const theme = useTheme()
@@ -13,7 +13,6 @@ const Pricing = () => {
   const [disabled, setDisabled] = useState([])
 
   const handleOnClick = async () => {
-    // TODO: Redirect to signup here instead if user not logged in
     const token = await getAccessToken()
     const apiRegionLineItems = checked
       .filter(priceId => priceId !== regions.PriceIds.MEDIUM_CAP_US_PLUS)
@@ -67,7 +66,7 @@ const Pricing = () => {
             sx={{ marginTop: theme.spacing(2) }}
             color='textSecondary'
           >
-            For business plans are only available by contacting sales:{' '}
+            Business plans are only available by contacting us:{' '}
             <Link href='mailto:support@tracktak.com'>support@tracktak.com</Link>
             .
           </Typography>

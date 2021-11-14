@@ -5,7 +5,6 @@ import useFetchSpreadsheet from '../hooks/useFetchSpreadsheet'
 import { utils } from '@tracktak/common'
 import useSaveSpreadsheetData from '../hooks/useSaveSpreadsheetData'
 import { useTTFinancialPlugin } from '../hooks/useTTFinancialPlugin'
-import withAuthentication from '../hocs/withAuthentication'
 import { useParams } from 'react-router-dom'
 
 const FinancialModel = () => {
@@ -35,4 +34,4 @@ const FinancialModel = () => {
   )
 }
 
-export default withAuthentication(FinancialModel)
+export default FinancialModel

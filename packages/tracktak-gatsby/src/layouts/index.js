@@ -1,18 +1,48 @@
-import { Layout } from '@tracktak/common'
-import LayoutHome from './LayoutHome'
+import { Layout, LayoutXL, HeaderLink, Header } from '@tracktak/common'
 import React from 'react'
-import LayoutPricing from './LayoutPricing'
-import { navigate } from 'gatsby'
+import { navigate, Link } from 'gatsby'
+import HeaderGoToButton from '../components/HeaderGoToButton'
 
 const LayoutSelection = ({ children, pageContext }) => {
-  if (pageContext.layout === 'home') {
-    return <LayoutHome>{children}</LayoutHome>
-  }
-  if (pageContext.layout === 'pricing') {
-    return <LayoutPricing>{children}</LayoutPricing>
+  if (pageContext.layout === 'xl') {
+    return (
+      <LayoutXL
+        header={
+          <Header navigate={navigate}>
+            <HeaderGoToButton />
+          </Header>
+        }
+      >
+        {children}
+      </LayoutXL>
+    )
   }
 
-  return <Layout navigate={navigate}>{children}</Layout>
+  if (pageContext.layout === 'sign-up') {
+    return (
+      <Layout
+        header={
+          <Header navigate={navigate}>
+            <HeaderLink component={Link} to='/sign-in' text='Sign In' />
+          </Header>
+        }
+      >
+        {children}
+      </Layout>
+    )
+  }
+
+  return (
+    <Layout
+      header={
+        <Header navigate={navigate}>
+          <HeaderGoToButton />
+        </Header>
+      }
+    >
+      {children}
+    </Layout>
+  )
 }
 
 const Root = ({ children, pageContext, params }) => {

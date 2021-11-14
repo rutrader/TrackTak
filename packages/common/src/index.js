@@ -14,7 +14,7 @@ import useDebouncedCallback from './hooks/useDebouncedCallback'
 import useCurrentPlan from './hooks/useCurrentPlan'
 import useFetchPrice from './hooks/useFetchPrice'
 import selectSnackbar from './selectors/selectSnackbar'
-import * as headerLinks from './shared/getHeaderLinks'
+import * as links from './shared/links'
 import * as utils from './shared/utils'
 import * as regions from './data/regions'
 import * as snackbarActions from './redux/actions/snackbarActions'
@@ -23,10 +23,14 @@ import theme from './theme'
 import * as auth from './auth'
 import { useAuth, getUrlAuthParameters } from './hooks/useAuth'
 import TTProvider from './components/TTProvider'
-import Layout from './components/Layout'
+import Layout from './layouts/Layout'
+import LayoutXL from './layouts/LayoutXL'
+import HeaderLink from './components/HeaderLink'
 
 export {
+  HeaderLink,
   Layout,
+  LayoutXL,
   TTProvider,
   useAuth,
   getUrlAuthParameters,
@@ -50,7 +54,7 @@ export {
   snackbarActions,
   snackbarReducer,
   selectSnackbar,
-  headerLinks,
+  links,
   utils,
   theme
 }

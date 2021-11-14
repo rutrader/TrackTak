@@ -1,15 +1,10 @@
 import { Box } from '@mui/material'
 import React from 'react'
-import { Header, headerLinks, useAuth } from '@tracktak/common'
-import { useNavigate } from 'react-router-dom'
 import SearchTicker from './SearchTicker'
 import { freeCashFlowFirmSimple } from '@tracktak/financial-model'
+import AuthenticatedHeader from './AuthenticatedHeader'
 
 const LayoutFullScreen = ({ children }) => {
-  const { isAuthenticated } = useAuth()
-  const navigate = useNavigate()
-  const links = headerLinks.getHeaderLinks(isAuthenticated)
-
   return (
     <Box
       sx={{
@@ -18,20 +13,27 @@ const LayoutFullScreen = ({ children }) => {
         flexDirection: 'column'
       }}
     >
-      <Header
+      <AuthenticatedHeader
         search={
-          <SearchTicker
-            template={freeCashFlowFirmSimple}
-            isSmallSearch
+          <Box
             sx={{
-              flex: 1,
-              alignSelf: 'center'
+              maxWidth: '800px',
+              width: '100%',
+              marginRight: 'auto',
+              display: 'flex'
             }}
-          />
+          >
+            <SearchTicker
+              template={freeCashFlowFirmSimple}
+              isSmallSearch
+              sx={{
+                flex: 1,
+                alignSelf: 'center'
+              }}
+            />
+          </Box>
         }
         position='relative'
-        links={links}
-        navigate={navigate}
       />
       {children}
     </Box>

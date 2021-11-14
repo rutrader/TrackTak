@@ -5,7 +5,6 @@ import { Helmet } from 'react-helmet'
 import { utils } from '@tracktak/common'
 import SavedSpreadsheets from './SavedSpreadsheets'
 import SearchTickerDialog from './SearchTickerDialog'
-import withAuthentication from '../hocs/withAuthentication'
 
 const Dashboard = () => {
   const [showSearchTickerDialog, setShowSearchTickerDialog] = useState(false)
@@ -57,4 +56,4 @@ const Dashboard = () => {
   )
 }
 
-export default withAuthentication(Dashboard)
+export default Dashboard
