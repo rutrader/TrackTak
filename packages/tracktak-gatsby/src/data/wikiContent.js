@@ -99,7 +99,7 @@ const wikiContent = [
           The revenue growth rate is one of the main value drivers that really
           affects the estimated value per share. So it is really important that
           you choose a realistic growth rate for your DCF. We provide a CAGR
-          input for you in the cell: 'Required Inputs'!$B1.
+          input for you in the cell: 'Required Inputs'!$B3.
         </Typography>
         <Typography paragraph>
           Compound Annual Growth Rate (CAGR) is the average growth rate that you
@@ -127,7 +127,7 @@ const wikiContent = [
         <Typography paragraph>
           Operating Target Margin is the other main value driving input that
           heavily affects your DCF. We provide an input for you in the cell:
-          'Required Inputs'!$B2.
+          'Required Inputs'!$B4.
         </Typography>
         <Typography paragraph>
           We use the operating margin input in Years 1-10 and set the terminal
@@ -150,7 +150,7 @@ const wikiContent = [
         <Typography paragraph>
           The Year of Convergence input also affects the Operating Margin
           calculations. We provide an input for you in the cell: 'Required
-          Inputs'!$B3.
+          Inputs'!$E3.
         </Typography>
         <Typography paragraph>
           The Operating Margin will slowly converge from the base years margin
@@ -210,7 +210,7 @@ const wikiContent = [
     title: 'NOL',
     text: (
       <>
-        The inputs for this are the sections in 'Optional Inputs'!$J2. Net
+        The inputs for this are the sections in 'Optional Inputs'!$Q8. Net
         Operating Loss (NOL). Any losses from the previous years that the
         company is carrying over to this year. The reason this is important in a
         DCF is because it reduces the taxable income so the company has to pay
@@ -223,7 +223,7 @@ const wikiContent = [
     text: (
       <>
         <Typography paragraph>
-          The inputs for this are the sections in 'Optional Inputs'!$A1:$E1
+          The inputs for this are the sections in 'Optional Inputs'!$A7:$Q7
           which are Pre-tax Cost of Debt, Book Value of Convertible Debt and
           Number of Preferred Shares. Weighted Cost of Capital (WACC) has
           multiple elements that go in to calculating it. There are also
