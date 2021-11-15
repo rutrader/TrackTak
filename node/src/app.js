@@ -127,6 +127,15 @@ app.post("/api/v1/financial-data", auth, async (req, res) => {
 
 app.get("/api/v1/folders", auth, async (req, res) => {
   const folders = await api.getFolders(req.user.username);
+
+  if (folders.length === 0) {
+    const folder = await api.createFolder("Valuations");
+
+    res.send({ folders: [folder] });
+
+    return;
+  }
+
   res.send({ folders });
 });
 
