@@ -12,13 +12,12 @@ import {
   useTheme,
   Button
 } from '@mui/material'
-import GridOnIcon from '@mui/icons-material/GridOn'
-import DeleteIcon from '@mui/icons-material/Delete'
 import ConfirmationDialog from './ConfirmationDialog'
 import { api, utils, useAuth, RoundButton } from '@tracktak/common'
 import { useNavigate } from 'react-router-dom'
 import dayjs from 'dayjs'
 import CollapsibleFolder from './CollapsibleFolder'
+import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder'
 
 const SavedSpreadsheets = ({ onNewSpreadsheetClick, trackCustomEvent }) => {
   const navigate = useNavigate()
@@ -52,10 +51,6 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick, trackCustomEvent }) => {
   const handleDelete = spreadsheet => {
     setSelectedSpreadsheet(spreadsheet)
     setShowConfirmationDialog(true)
-  }
-
-  const handleCreateNewFolder = () => {
-    setCreateNewFolder(true)
   }
 
   const handleDeleteConfirm = async () => {
