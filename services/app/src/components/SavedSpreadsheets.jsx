@@ -31,7 +31,7 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick, trackCustomEvent }) => {
   useEffect(() => {
     async function fetchData() {
       const token = await getAccessToken()
-      const response = await api.getSpreadsheets(token?.jwtToken)
+      const response = await api.getSpreadsheetsMetadata(token?.jwtToken)
 
       setSpreadsheets(response.data.spreadsheets)
     }
