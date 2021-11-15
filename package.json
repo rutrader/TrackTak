@@ -19,7 +19,7 @@
     "tracktak-app": "yarn run tracktak-backend --scope @tracktak/app",
     "tracktak-gatsby": "yarn run tracktak-backend --scope @tracktak/gatsby",
     "tracktak": "run-p tracktak-app tracktak-gatsby",
-    "powersheet": "lerna run develop --parallel --scope tracktak-powersheet",
+    "powersheet": "lerna run develop --parallel --scope @tracktak/powersheet",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"{packages,services}/**/*.{jsx,js}\" --write",
     "fix:lint": "eslint \"{packages,services}/**/*.{jsx,js}\" --fix",
