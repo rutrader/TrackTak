@@ -1,7 +1,13 @@
 import { Avatar, Box, Hidden, IconButton, Menu, MenuItem } from '@mui/material'
 import React, { useState } from 'react'
 import MenuIcon from '@mui/icons-material/Menu'
-import { Header, HeaderLink, LinkButton, links, auth } from '@tracktak/common'
+import {
+  Header,
+  HeaderLink,
+  LinkButton,
+  links,
+  useAuth
+} from '@tracktak/common'
 import { useNavigate } from 'react-router-dom'
 
 const MenuItemLink = props => {
@@ -9,12 +15,13 @@ const MenuItemLink = props => {
 }
 
 const AuthenticatedHeader = ({ position = 'fixed', search }) => {
+  const { signOut } = useAuth()
   const [anchorEl, setAnchorEl] = useState(null)
   const [userMenuAnchorEl, setUserMenuAnchorEl] = useState(null)
   const navigate = useNavigate()
 
   const handleOnSignOut = async () => {
-    auth.signOut()
+    signOut()
   }
 
   const handleClick = event => {
