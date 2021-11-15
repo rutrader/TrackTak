@@ -25,7 +25,10 @@ module.exports = {
       resolve: '@elegantstack/gatsby-plugin-alias-imports',
       options: {
         alias: {
-          '@tracktak/common': path.resolve(__dirname, '../common/src')
+          '@tracktak/common': path.resolve(
+            __dirname,
+            '../../packages/common/src'
+          )
         },
         extensions: ['js', 'jsx']
       }
