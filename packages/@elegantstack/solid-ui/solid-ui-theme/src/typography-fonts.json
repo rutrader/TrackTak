@@ -1,0 +1,11 @@
+{
+  "fonts": {
+    "google": {
+      "families": ["Poppins:400,600,700"]
+    }
+  },
+  "theme": {
+    "headerFontFamily": ["Poppins", "sans-serif"],
+    "bodyFontFamily": ["Poppins", "sans-serif"]
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "text": [
+    {
+      "text": "Get access to unlimited resources",
+      "color": "alpha",
+      "variant": "h4"
+    },
+    {
+      "text": "Why Choose Us Over Competition?",
+      "variant": "h2"
+    }
+  ],
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "Advanced Analytics",
+          "color": "omegaDark",
+          "variant": "h5"
+        },
+        {
+          "text": "At vero eos et accusamus et. Tempor incididunt ut labore et dolore magna aliqua consectetur magna aliqua."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-analyse.svg",
+        "bg": "omegaLighter",
+        "color": "alpha"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Expert Support",
+          "color": "omegaDark",
+          "variant": "h5"
+        },
+        {
+          "text": "Et harum quidem rerum facilis. Tempor incididunt ut labore et dolore magna aliqua consectetur magna aliqua."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-chat.svg",
+        "bg": "omegaLighter",
+        "color": "alpha"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Lifetime Access",
+          "color": "omegaDark",
+          "variant": "h5"
+        },
+        {
+          "text": "Itaque earum rerum hic tenetur. Tempor incididunt ut labore et dolore magna aliqua consectetur magna aliqua."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-dna.svg",
+        "bg": "omegaLighter",
+        "color": "alpha"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Creative Solutions",
+          "color": "omegaDark",
+          "variant": "h5"
+        },
+        {
+          "text": "Similique sunt in culpa officia. Tempor incididunt ut labore et dolore magna aliqua consectetur magna aliqua."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-directions.svg",
+        "bg": "omegaLighter",
+        "color": "alpha"
+      }
+    }
+  ]
+}

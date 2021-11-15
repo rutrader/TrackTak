@@ -1,0 +1,43 @@
+{
+  "text": [
+    {
+      "text": "OVER 15,000+ LEADS GENERATED",
+      "color": "omegaDark",
+      "variant": "h4"
+    },
+    {
+      "text": "Get **More Conversions** With Our Services",
+      "variant": "h2"
+    },
+    {
+      "text": "Lorem ipsum dolor sit amet, consectetur magna aliqua. Eaque ipsa quae ab illo inventore veritatis. Nemo enim ipsam voluptatem voluptas. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium.",
+      "variant": "medium"
+    }
+  ],
+  "images": [
+    {
+      "src": "../../../assets/flexiblocks/homepage/consulting/feature-two.jpg",
+      "alt": "alt text",
+      "radius": "lg"
+    },
+    {
+      "src": "../../../assets/flexiblocks/homepage/consulting/feature-two-overlay.png",
+      "alt": "alt text",
+      "radius": "lg",
+      "shadow": "default",
+      "effects": ["fadeInRight", "float"],
+      "position": {
+        "top": "15%",
+        "left": "-5%"
+      }
+    }
+  ],
+  "buttons": [
+    {
+      "text": "Get Started",
+      "type": "MODAL",
+      "link": "authentication",
+      "variant": "secondary-light"
+    }
+  ]
+}

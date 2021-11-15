@@ -1,0 +1,66 @@
+{
+  "name": "@tracktak/app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "The spreadsheet application behind user auth.",
+  "author": "TRACKTAK LTD",
+  "license": "",
+  "source": "./src/index.html",
+  "type": "module",
+  "scripts": {
+    "develop": "parcel --open --port 3000",
+    "build": "parcel build",
+    "watch:build": "parcel watch"
+  },
+  "dependencies": {
+    "@babel/core": "^7.16.0",
+    "@emotion/react": "^11.5.0",
+    "@emotion/styled": "^11.3.0",
+    "@mui/icons-material": "^5.1.0",
+    "@mui/material": "^5.1.0",
+    "@parcel/transformer-react-refresh-wrap": "^2.0.1",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@tracktak/common": "*",
+    "@tracktak/financial-model": "*",
+    "currency-symbol-map": "^5.0.1",
+    "dayjs": "^1.10.7",
+    "hyperformula": "^1.3.0",
+    "lodash-es": "^4.17.21",
+    "parcel-config-pwa-manifest": "^0.1.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-helmet": "^6.1.0",
+    "react-redux": "^7.2.6",
+    "react-router": "^6.0.2",
+    "react-router-dom": "^6.0.2",
+    "redux": "^4.1.2"
+  },
+  "devDependencies": {
+    "parcel": "^2.0.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "pwaManifest": {
+    "name": "tracktak.com app",
+    "shortName": "financial modelling | tracktak.com",
+    "generateIconOptions": {
+      "baseIcon": "./src/assets/tracktak-logo-small.svg",
+      "genFavicons": true
+    }
+  },
+  "files": [
+    "dist"
+  ]
+}

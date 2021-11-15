@@ -1,0 +1,98 @@
+{
+  "text": [
+    {
+      "text": "Our Users **Love Learning** With Our App",
+      "variant": "h2"
+    },
+    {
+      "text": "Consectetur adipisicing elit, sed do eiusmod tempor incididunt.",
+      "variant": "medium"
+    },
+    {
+      "text": "Consectetur sed do eiusmod tempor incididunt adipisicing  eiusmod tempor incididunt elit.",
+      "variant": "medium"
+    }
+  ],
+  "collection": [
+    {
+      "container": {
+        "variant": "cards.paper"
+      },
+      "text": [
+        {
+          "text": "Online Learning",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-message-detail.svg",
+        "bg": "#D3E7FE",
+        "color": "#276BF0"
+      }
+    },
+    {
+      "container": {
+        "variant": "cards.paper"
+      },
+      "text": [
+        {
+          "text": "International",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-planet.svg",
+        "bg": "#FFF3CC",
+        "color": "#FF9D01"
+      }
+    },
+    {
+      "container": {
+        "variant": "cards.paper"
+      },
+      "text": [
+        {
+          "text": "Competition",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-coin.svg",
+        "bg": "#FEE8D1",
+        "color": "#F7491D"
+      }
+    },
+    {
+      "container": {
+        "variant": "cards.paper"
+      },
+      "text": [
+        {
+          "text": "Organizer",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-box.svg",
+        "bg": "#D5FCDD",
+        "color": "#2DC88A"
+      }
+    }
+  ]
+}

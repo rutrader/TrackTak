@@ -1,0 +1,19 @@
+{
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "We Guarantee a Stable Work Process",
+          "color": "omegaDark",
+          "variant": "h4"
+        },
+        {
+          "text": "Listening, Planning, Making.",
+          "color": "beta",
+          "variant": "h2",
+          "space": 0
+        }
+      ]
+    }
+  ]
+}

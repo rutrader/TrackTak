@@ -1,0 +1,100 @@
+{
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "Marketing solutions for IT business",
+          "variant": "h4"
+        },
+        {
+          "text": "As an Internet marketing strategy, SEO considers how search engines work, the computer-programmed algorithms that dictate search engine behavior."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-phone.svg",
+        "size": "lg",
+        "color": "omegaDark"
+      },
+      "buttons": [
+        {
+          "text": "Learn More   ➜",
+          "type": "PAGE",
+          "link": "",
+          "variant": "links.normal"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Application design & development",
+          "variant": "h4"
+        },
+        {
+          "text": "Social media marketing is the use of social media platforms and websites to promote a product or service and is becoming more popular."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-mobile-alt.svg",
+        "size": "lg",
+        "color": "omegaDark"
+      },
+      "buttons": [
+        {
+          "text": "Learn More   ➜",
+          "type": "PAGE",
+          "link": "",
+          "variant": "links.normal"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Customer experience Strategy",
+          "variant": "h4"
+        },
+        {
+          "text": "Content marketing is a form of marketing focused on creating, publishing, and distributing content for a targeted audience online."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-mail-send.svg",
+        "size": "lg",
+        "color": "omegaDark"
+      },
+      "buttons": [
+        {
+          "text": "Learn More   ➜",
+          "type": "PAGE",
+          "link": "",
+          "variant": "links.normal"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Branding & marketing solutions",
+          "variant": "h4"
+        },
+        {
+          "text": "Social media marketing is the use of social media platforms and websites to promote a product or service and is becoming more popular."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-directions.svg",
+        "size": "lg",
+        "color": "omegaDark"
+      },
+      "buttons": [
+        {
+          "text": "Learn More   ➜",
+          "type": "PAGE",
+          "link": "",
+          "variant": "links.normal"
+        }
+      ]
+    }
+  ]
+}

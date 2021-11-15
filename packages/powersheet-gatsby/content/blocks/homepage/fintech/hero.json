@@ -1,0 +1,65 @@
+{
+  "text": [
+    {
+      "text": "Smart Commerce Simplified.",
+      "color": "omegaDarker",
+      "variant": "h1"
+    },
+    {
+      "text": "Hassle-free platform ,and specialists to help you with your marketing campaigns.",
+      "color": "omegaDarker",
+      "variant": "medium"
+    }
+  ],
+  "images": [
+    {
+      "src": "../../../assets/flexiblocks/homepage/fintech/hero.png",
+      "alt": "alt text"
+    },
+    {
+      "src": "../../../assets/flexiblocks/homepage/fintech/hero-overlay-one.png",
+      "alt": "alt text",
+      "effects": ["float"],
+      "position": {
+        "bottom": "-5%",
+        "left": "33%"
+      }
+    },
+    {
+      "src": "../../../assets/flexiblocks/homepage/fintech/hero-overlay-two.png",
+      "alt": "alt text",
+      "effects": ["floatFaster"],
+      "position": {
+        "top": "10%",
+        "right": "-7%"
+      }
+    },
+    {
+      "src": "../../../assets/flexiblocks/homepage/fintech/hero-overlay-three.png",
+      "alt": "alt text",
+      "effects": ["float"],
+      "position": {
+        "top": "20%",
+        "left": "25%"
+      }
+    }
+  ],
+  "form": {
+    "fields": [
+      {
+        "identifier": "email",
+        "placeholder": {
+          "text": "Enter Your Email Address"
+        }
+      }
+    ],
+    "buttons": [
+      {
+        "text": "Get Started",
+        "type": "MODAL",
+        "link": "authentication",
+        "variant": "dark"
+      }
+    ]
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "text": [
+    {
+      "text": "Unlimited Possibilities",
+      "color": "beta",
+      "variant": "h4"
+    },
+    {
+      "text": "Join more than 5000 happy clients",
+      "variant": "h2"
+    },
+    {
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
+      "variant": "medium"
+    }
+  ],
+  "images": [
+    {
+      "src": "../../../assets/flexiblocks/innerpage/services-01/clients.jpg",
+      "alt": "alt text",
+      "radius": "lg",
+      "shadow": "lg"
+    }
+  ],
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "4.9/5.0",
+          "color": "alpha",
+          "variant": "h2",
+          "space": 1
+        },
+        {
+          "text": "Customer Rating",
+          "variant": "h6"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "5000",
+          "color": "alpha",
+          "variant": "h2",
+          "space": 1
+        },
+        {
+          "text": "Satisfied Clients",
+          "variant": "h6"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "99%",
+          "color": "alpha",
+          "variant": "h2",
+          "space": 1
+        },
+        {
+          "text": "Success Rate",
+          "variant": "h6"
+        }
+      ]
+    }
+  ]
+}

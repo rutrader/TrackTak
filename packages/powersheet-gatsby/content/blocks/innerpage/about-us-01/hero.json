@@ -1,0 +1,31 @@
+{
+  "text": [
+    {
+      "text": "About Our Team",
+      "color": "omegaDarker",
+      "variant": "h1"
+    },
+    {
+      "text": "Lorem ipsum dolor sit amet, pri cu etiam iudicabit, usu unum urbanitas cu, ei fabulas apeirian sententiae nam. Nec ut adolescens percipitur deterruisset, doming ancillae salutatus eos ei.",
+      "color": "omegaDark",
+      "variant": "medium"
+    }
+  ],
+  "images": [
+    {
+      "src": "../../../assets/flexiblocks/innerpage/about-us-01/hero.jpg",
+      "alt": "alt text",
+      "radius": "lg",
+      "shadow": "xl",
+      "effects": ["fadeInLeft"]
+    }
+  ],
+  "buttons": [
+    {
+      "text": "Contact Us",
+      "type": "MODAL",
+      "link": "contact",
+      "variant": "primary"
+    }
+  ]
+}

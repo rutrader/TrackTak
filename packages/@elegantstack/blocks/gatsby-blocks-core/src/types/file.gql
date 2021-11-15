@@ -1,0 +1,143 @@
+############################################
+## BlockContent
+############################################
+
+type BlockContent implements Node @dontInfer {
+  id: ID
+  identifier: String @proxyField(from: "parent.name")
+  page: String @proxyField(from: "parent.relativeDirectory")
+  container: BlockContentContainer
+  text: [BlockContentText]
+  images: [BlockContentImage]
+  avatar: BlockContentImage
+  icon: BlockContentIcon
+  map: BlockContentMap
+  buttons: [BlockContentButton]
+  form: BlockContentForm
+  collection: [BlockContent]
+}
+
+############################################
+## Container
+############################################
+
+type BlockContentContainer {
+  variant: String
+  bg: String
+  link: BlockContentButton
+}
+
+############################################
+## Text
+############################################
+
+type BlockContentText {
+  text: String
+  textGroup: [String]
+  color: String
+  space: Int
+  variant: String
+}
+
+############################################
+## Button
+############################################
+
+enum BlockContentButtonType {
+  PAGE
+  APP
+  VIDEO
+  ANCHOR
+  MODAL
+  TAB
+  SUBMIT
+  SUB
+}
+
+type BlockContentButton {
+  type: BlockContentButtonType!
+  text: String
+  link: String
+  target: String
+  variant: String
+  width: String
+  bg: String
+  icon: BlockContentIcon
+  collection: [BlockContent]
+  buttons: [BlockContentButton]
+}
+
+############################################
+## Image
+############################################
+
+type BlockContentImage {
+  src: File @fileByRelativePath
+  position: BlockContentImagePosition
+  effects: [String]
+  alt: String
+  radius: String
+  shadow: String
+  border: String
+  width: String
+  maxWidth: String
+}
+
+type BlockContentImagePosition {
+  top: String
+  bottom: String
+  left: String
+  right: String
+}
+
+############################################
+## Map
+############################################
+
+type BlockContentMap {
+  lat: Float
+  lng: Float
+  zoom: Int
+}
+
+############################################
+## Icon
+############################################
+
+type BlockContentIcon {
+  src: String @fileByRelativePath @proxyResolver(on: "File", to: "publicURL")
+  color: String
+  bg: String
+  size: String
+}
+
+############################################
+## Form
+############################################
+
+enum BlockContentFormFieldType {
+  TEXT
+  TEXTAREA
+  EMAIL
+  PASSWORD
+  CHECKBOX
+  HIDDEN
+}
+
+type BlockContentForm {
+  action: String
+  multiStep: Boolean
+  text: [BlockContentText]
+  buttons: [BlockContentButton]
+  fields: [BlockContentFormField]
+}
+
+type BlockContentFormField {
+  identifier: String!
+  type: BlockContentFormFieldType
+  compact: Boolean
+  required: Boolean
+  placeholder: BlockContentText
+  value: String
+  icon: BlockContentIcon
+}

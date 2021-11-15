@@ -1,0 +1,91 @@
+{
+  "text": [
+    {
+      "text": "Innovative Solutions",
+      "color": "omega",
+      "variant": "h4"
+    },
+    {
+      "text": "**Innovative Features** Integrated for Teams",
+      "variant": "h2"
+    },
+    {
+      "text": "Lorem ipsum dolor sit amet, consectetur magna aliqua. Eaque ipsa quae ab illo inventore veritatis. Nemo enim ipsam voluptatem voluptas.",
+      "variant": "medium"
+    }
+  ],
+  "images": [
+    {
+      "src": "../../../assets/flexiblocks/homepage/saas-v2/tab-feature-one.png",
+      "alt": "alt text",
+      "radius": "lg",
+      "shadow": "default"
+    },
+    {
+      "src": "../../../assets/flexiblocks/homepage/saas-v2/tab-feature-one-overlay-two.png",
+      "alt": "alt text",
+      "effects": ["fadeInDown", "float"],
+      "position": {
+        "bottom": "-15%",
+        "left": "10%"
+      }
+    },
+    {
+      "src": "../../../assets/flexiblocks/homepage/saas-v2/tab-feature-one-overlay-one.png",
+      "alt": "alt text",
+      "radius": "lg",
+      "shadow": "default",
+      "effects": ["fadeInUp", "floatFaster"],
+      "position": {
+        "top": "-20%",
+        "right": "17.5%"
+      }
+    }
+  ],
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "Analytics"
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-analyse.svg",
+        "color": "beta"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Consultation"
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-calendar-check.svg",
+        "color": "beta"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Reports"
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-bar-chart-alt.svg",
+        "color": "beta"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Live Support"
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-chat.svg",
+        "color": "beta"
+      }
+    }
+  ]
+}

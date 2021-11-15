@@ -1,0 +1,206 @@
+{
+  "text": [
+    {
+      "text": "Features",
+      "variant": "h2"
+    }
+  ],
+  "icon": {
+    "src": "../../../assets/flexiblocks/icons/bx-check.svg",
+    "color": "#64DB43"
+  },
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "Full Excel Formulas",
+          "color": "omegaDarker"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Pure JS Implementation",
+          "color": "omegaDarker"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "HTML5 Canvas like GSheets",
+          "color": "omegaDarker"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Mobile Support",
+          "color": "omegaDarker"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Fully Responsive",
+          "color": "omegaDarker"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Copy/Cut/Paste",
+          "color": "omegaDarker"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Styling Cells with Colors, Bold etc",
+          "color": "omegaDarker"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Resize Row/Cols",
+          "color": "omegaDarker"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Delete & Insert Rows/Cols",
+          "color": "omegaDarker"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Syntax Cell Highlighting",
+          "color": "omegaDarker"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Undo/Redo",
+          "color": "omegaDarker"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Keyboard Shortcuts",
+          "color": "omegaDarker"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Export",
+          "color": "omegaDarker"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Merge Cells",
+          "color": "omegaDarker"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Freeze Cells",
+          "color": "omegaDarker"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Text Pattern Formatting",
+          "color": "omegaDarker"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Comments",
+          "color": "omegaDarker"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Add/Remove/Select Sheets",
+          "color": "omegaDarker"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Scroll Snapping to Rows/Cols",
+          "color": "omegaDarker"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Cross-Spreadsheets Formula Support",
+          "color": "omegaDarker"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Formula Bar",
+          "color": "omegaDarker"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Toolbar & Bottombar",
+          "color": "omegaDarker"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Completely Customizable",
+          "color": "omegaDarker"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Full Documentation",
+          "color": "omegaDarker"
+        }
+      ]
+    }
+  ]
+}

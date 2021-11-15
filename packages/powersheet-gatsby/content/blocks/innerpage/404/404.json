@@ -1,0 +1,24 @@
+{
+  "text": [
+    {
+      "text": "404 Page Not Found",
+      "color": "omegaDark",
+      "variant": "h4"
+    },
+    {
+      "text": "Sorry, this page isn't available.",
+      "variant": "h2"
+    },
+    {
+      "text": "You may have mistyped the address or the page may have moved."
+    }
+  ],
+  "buttons": [
+    {
+      "text": "Go to Homepage",
+      "type": "PAGE",
+      "link": "/",
+      "variant": "primary"
+    }
+  ]
+}

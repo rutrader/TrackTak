@@ -1,0 +1,129 @@
+{
+  "text": [
+    {
+      "text": "Our Services",
+      "color": "alpha",
+      "variant": "h4"
+    },
+    {
+      "text": "We change the way you build Gatsby sites.",
+      "color": "omegaDarker",
+      "variant": "h1"
+    },
+    {
+      "text": "Flexible blocks with unlimited variants.",
+      "color": "omegaDark",
+      "variant": "medium"
+    }
+  ],
+  "collection": [
+    {
+      "container": {
+        "variant": "cards.paper",
+        "bg": "white"
+      },
+      "text": [
+        {
+          "text": "Top-Rated",
+          "color": "omegaDark",
+          "variant": "h5"
+        },
+        {
+          "text": "Online Learning",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.",
+          "color": "omegaDark"
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-message-detail.svg",
+        "size": "lg",
+        "color": "beta"
+      }
+    },
+    {
+      "container": {
+        "variant": "cards.paper",
+        "bg": "white"
+      },
+      "text": [
+        {
+          "text": "Blazing Fast",
+          "color": "omegaDark",
+          "variant": "h5"
+        },
+        {
+          "text": "Websites",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.",
+          "color": "omegaDark"
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-planet.svg",
+        "size": "lg",
+        "color": "alpha"
+      }
+    },
+    {
+      "container": {
+        "variant": "cards.paper",
+        "bg": "white"
+      },
+      "text": [
+        {
+          "text": "Global",
+          "color": "omegaDark",
+          "variant": "h5"
+        },
+        {
+          "text": "Competition",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.",
+          "color": "omegaDark"
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-coin.svg",
+        "size": "lg",
+        "color": "alpha"
+      }
+    },
+    {
+      "container": {
+        "variant": "cards.paper",
+        "bg": "white"
+      },
+      "text": [
+        {
+          "text": "Best",
+          "color": "omegaDark",
+          "variant": "h5"
+        },
+        {
+          "text": "Organizer",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.",
+          "color": "omegaDark"
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-box.svg",
+        "size": "lg",
+        "color": "beta"
+      }
+    }
+  ]
+}

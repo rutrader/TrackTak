@@ -1,0 +1,34 @@
+{
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "Our Approach to Design",
+          "color": "alphaLight",
+          "variant": "h4"
+        },
+        {
+          "text": "We take inspiration from real people and our ultimate goal is clarification of purpose and meaning.",
+          "color": "white",
+          "variant": "h3"
+        }
+      ],
+      "buttons": [
+        {
+          "text": "Schedule a Consultation",
+          "type": "MODAL",
+          "link": "authentication",
+          "variant": "secondary"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "No eum alia affert apeirian, ubique phaedrum usu no. Te nam paulo doctus graecis, mei wisi reprehendunt ne. Docendi deleniti eos ad. His enim tractatos ea, evertitur dissentiunt nec ut, Mel tota quidam senserit et ut tritani platonem est. However, reviewers tend to be distracted by comprehensible content, say, a random text copied from a newspaper or the internet. The are likely to focus on the text, disregarding the layout and its elements.",
+          "color": "omegaLight"
+        }
+      ]
+    }
+  ]
+}

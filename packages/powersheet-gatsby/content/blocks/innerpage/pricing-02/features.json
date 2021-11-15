@@ -1,0 +1,103 @@
+{
+  "text": [
+    {
+      "text": "HIGH IMPACT RESULTS",
+      "color": "alpha",
+      "variant": "h4"
+    },
+    {
+      "text": "Platform Features",
+      "variant": "h2"
+    },
+    {
+      "text": "We help our clients achieve tangible, high-impact results.",
+      "variant": "medium"
+    },
+    {
+      "text": "Understand First. Lorem ipsum dolor sit amet.",
+      "variant": "medium"
+    }
+  ],
+  "collection": [
+    {
+      "container": {
+        "variant": "cards.paper"
+      },
+      "text": [
+        {
+          "text": "Messaging",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-message-detail.svg",
+        "bg": "betaLighter",
+        "color": "betaDark"
+      }
+    },
+    {
+      "container": {
+        "variant": "cards.paper"
+      },
+      "text": [
+        {
+          "text": "Reminders",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-alarm-snooze.svg",
+        "bg": "betaLighter",
+        "color": "betaDark"
+      }
+    },
+    {
+      "container": {
+        "variant": "cards.paper"
+      },
+      "text": [
+        {
+          "text": "Video Calls",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-webcam.svg",
+        "bg": "betaLighter",
+        "color": "betaDark"
+      }
+    },
+    {
+      "container": {
+        "variant": "cards.paper"
+      },
+      "text": [
+        {
+          "text": "Organizer",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-box.svg",
+        "bg": "betaLighter",
+        "color": "betaDark"
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "@tracktak/database",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "author": "TRACKTAK LTD",
+  "license": "",
+  "scripts": {
+    "develop": "docker-compose --env-file ../../.env.development up"
+  }
+}

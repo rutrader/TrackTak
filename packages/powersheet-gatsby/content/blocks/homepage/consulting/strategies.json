@@ -1,0 +1,72 @@
+{
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "Email Marketing",
+          "color": "omegaDark",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-mail-send.svg",
+        "bg": "betaLighter",
+        "color": "beta"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Facebook Marketing",
+          "color": "omegaDark",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bxl-facebook.svg",
+        "bg": "betaLighter",
+        "color": "beta"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Google Adwords",
+          "color": "omegaDark",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bxl-google.svg",
+        "bg": "betaLighter",
+        "color": "beta"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "In-App Marketing",
+          "color": "omegaDark",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-mobile-alt.svg",
+        "bg": "betaLighter",
+        "color": "beta"
+      }
+    }
+  ]
+}

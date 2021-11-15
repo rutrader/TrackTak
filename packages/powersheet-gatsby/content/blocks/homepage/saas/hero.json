@@ -1,0 +1,42 @@
+{
+  "text": [
+    {
+      "text": "Better Business Metrics",
+      "color": "omegaDarker",
+      "variant": "h4"
+    },
+    {
+      "text": "Discover more insights from collected data",
+      "variant": "h1"
+    },
+    {
+      "text": "Hassle-free platform and specialists to help you with your marketing campaigns.",
+      "color": "omegaDark",
+      "variant": "medium"
+    }
+  ],
+  "images": [
+    {
+      "src": "../../../assets/flexiblocks/homepage/saas/hero.png",
+      "alt": "alt text",
+      "radius": "lg",
+      "shadow": "default",
+      "border": "lg",
+      "effects": ["fadeInDown"]
+    }
+  ],
+  "buttons": [
+    {
+      "text": "Get Started Now",
+      "type": "MODAL",
+      "link": "authentication",
+      "variant": "secondary"
+    },
+    {
+      "text": "Watch The Video",
+      "type": "VIDEO",
+      "link": "https://www.youtube.com/embed/WFOxZAmB_1Y?autoplay=1&modestbranding=1&showinfo=0&rel=0",
+      "variant": "primary"
+    }
+  ]
+}

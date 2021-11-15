@@ -1,0 +1,68 @@
+{
+  "text": [
+    {
+      "text": "GROW YOUR BUSINESS",
+      "color": "omegaDark",
+      "variant": "h4"
+    },
+    {
+      "text": "Best Marketing Service for **Technological Era**",
+      "variant": "h2"
+    },
+    {
+      "text": "Target your audience based on their interests. Lorem ipsum dolor sit amet, consectetur magna aliqua.",
+      "variant": "medium"
+    }
+  ],
+  "images": [
+    {
+      "src": "../../../assets/flexiblocks/homepage/fintech/feature-two.png",
+      "alt": "alt text"
+    },
+    {
+      "src": "../../../assets/flexiblocks/homepage/fintech/feature-two-overlay-one.png",
+      "alt": "alt text",
+      "effects": ["fadeInDown", "float"],
+      "position": {
+        "bottom": "10%",
+        "left": "5%"
+      }
+    }
+  ],
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "Advanced Panel",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Tempor incididunt ut labore."
+        },
+        {
+          "text": "60",
+          "color": "beta",
+          "variant": "h2"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Report Metrics",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Consectetur magna aliqua."
+        },
+        {
+          "text": "75",
+          "color": "beta",
+          "variant": "h2"
+        }
+      ]
+    }
+  ]
+}

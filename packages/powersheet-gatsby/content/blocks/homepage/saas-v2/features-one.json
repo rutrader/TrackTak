@@ -1,0 +1,95 @@
+{
+  "text": [
+    {
+      "text": "ALL IN ONE SOLUTION",
+      "color": "alpha",
+      "variant": "h4"
+    },
+    {
+      "text": "Functionality cloned from Excel & GSheets",
+      "variant": "h2"
+    }
+  ],
+  "collection": [
+    {
+      "container": {
+        "variant": "cards.paper"
+      },
+      "text": [
+        {
+          "text": "Performance",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Faster than all of the existing solutions as we use the HTML5 canvas API to draw objects instead of a DOM."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-message-detail.svg",
+        "bg": "#D3E7FE",
+        "color": "#276BF0"
+      }
+    },
+    {
+      "container": {
+        "variant": "cards.paper"
+      },
+      "text": [
+        {
+          "text": "Formulas",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Hyperformula.js is used internally which means that all Excel formulas are supported including custom formulas."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-alarm-snooze.svg",
+        "bg": "#FEFAD6",
+        "color": "#F4D133"
+      }
+    },
+    {
+      "container": {
+        "variant": "cards.paper"
+      },
+      "text": [
+        {
+          "text": "Customizable",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Great effort was made to make the code as high quality as possible, bug free and completely customizable."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-webcam.svg",
+        "bg": "#FEE8D1",
+        "color": "#F7491D"
+      }
+    },
+    {
+      "container": {
+        "variant": "cards.paper"
+      },
+      "text": [
+        {
+          "text": "Mobile Support",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Full native mobile support with touch event listeners, including responsive design for any layout."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-box.svg",
+        "bg": "#EBFDDA",
+        "color": "#64DB43"
+      }
+    }
+  ]
+}

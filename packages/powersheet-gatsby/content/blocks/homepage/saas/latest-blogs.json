@@ -1,0 +1,143 @@
+{
+  "text": [
+    {
+      "text": "Latest From Our Blog",
+      "variant": "h2"
+    },
+    {
+      "text": "With FlexiBlog Theme, add a fully functional blog to your site.",
+      "variant": "medium"
+    }
+  ],
+  "collection": [
+    {
+      "container": {
+        "variant": "cards.interactive",
+        "link": {
+          "type": "PAGE",
+          "link": "/test"
+        }
+      },
+      "text": [
+        {
+          "text": "Innovation",
+          "color": "alphaDark"
+        },
+        {
+          "text": "Best Digital Marketing Stats We’ve Seen This Week",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt."
+        },
+        {
+          "text": "John Doe",
+          "color": "omegaDark"
+        },
+        {
+          "text": "April 22, 2021"
+        },
+        {
+          "text": "5 min"
+        }
+      ],
+      "avatar": {
+        "src": "../../../assets/flexiblocks/testimonials/sarah-doe.png",
+        "alt": "alt text"
+      },
+      "images": [
+        {
+          "src": "../../../assets/flexiblocks/blog/blog-1.jpg",
+          "alt": "alt text"
+        }
+      ]
+    },
+    {
+      "container": {
+        "variant": "cards.interactive",
+        "link": {
+          "type": "MODAL",
+          "link": "advertisement"
+        }
+      },
+      "text": [
+        {
+          "text": "Management",
+          "color": "alphaDark"
+        },
+        {
+          "text": "A Marketer’s Guide to Price Comparison Websites",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt."
+        },
+        {
+          "text": "John Doe",
+          "color": "omegaDark"
+        },
+        {
+          "text": "May 10, 2021"
+        },
+        {
+          "text": "10 min"
+        }
+      ],
+      "avatar": {
+        "src": "../../../assets/flexiblocks/testimonials/john-doe.png",
+        "alt": "alt text"
+      },
+      "images": [
+        {
+          "src": "../../../assets/flexiblocks/blog/blog-2.jpg",
+          "alt": "alt text"
+        }
+      ]
+    },
+    {
+      "container": {
+        "variant": "cards.interactive",
+        "link": {
+          "type": "MODAL",
+          "link": "advertisement"
+        }
+      },
+      "text": [
+        {
+          "text": "Case Studies",
+          "color": "alphaDark"
+        },
+        {
+          "text": "50 social impact innovations that might save the world",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt."
+        },
+        {
+          "text": "John Doe",
+          "color": "omegaDark"
+        },
+        {
+          "text": "March 16, 2021"
+        },
+        {
+          "text": "7 min"
+        }
+      ],
+      "avatar": {
+        "src": "../../../assets/flexiblocks/testimonials/steve-grant.png",
+        "alt": "alt text"
+      },
+      "images": [
+        {
+          "src": "../../../assets/flexiblocks/blog/blog-3.jpg",
+          "alt": "alt text"
+        }
+      ]
+    }
+  ]
+}

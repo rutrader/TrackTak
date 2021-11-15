@@ -1,0 +1,72 @@
+{
+  "text": [
+    {
+      "text": "GROW YOUR BUSINESS",
+      "color": "omegaDark",
+      "variant": "h4"
+    },
+    {
+      "text": "**Versatile System** for All Software Startups",
+      "variant": "h2"
+    },
+    {
+      "text": "Target your audience based on their interests. Lorem ipsum dolor sit amet, consectetur magna aliqua.",
+      "variant": "medium"
+    }
+  ],
+  "images": [
+    {
+      "src": "../../../assets/flexiblocks/homepage/saas/tab-feature-three.png",
+      "alt": "alt text",
+      "radius": "lg",
+      "shadow": "default"
+    },
+    {
+      "src": "../../../assets/flexiblocks/homepage/saas/tab-feature-three-overlay-one.png",
+      "alt": "alt text",
+      "radius": "lg",
+      "shadow": "default",
+      "effects": ["fadeInDown", "float"],
+      "position": {
+        "top": "-35%",
+        "left": "25%"
+      }
+    }
+  ],
+  "collection": [
+    {
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-analyse.svg",
+        "color": "white",
+        "bg": "beta"
+      },
+      "text": [
+        {
+          "text": "Automatic interest detection",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Tempor incididunt ut labore et dolore magna aliqua consectetur magna aliqua."
+        }
+      ]
+    },
+    {
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-directions.svg",
+        "color": "white",
+        "bg": "alpha"
+      },
+      "text": [
+        {
+          "text": "Daily email reports",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Tempor incididunt ut labore et dolore magna aliqua consectetur magna aliqua."
+        }
+      ]
+    }
+  ]
+}

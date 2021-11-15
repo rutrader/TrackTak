@@ -1,0 +1,91 @@
+{
+  "text": [
+    {
+      "text": "The words from these guys are pure pleasure.",
+      "color": "omegaDark",
+      "variant": "h4"
+    },
+    {
+      "text": "We Care About Our Customers",
+      "variant": "h2"
+    }
+  ],
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "John Doe",
+          "variant": "h5"
+        },
+        {
+          "text": "CEO of CoolCompany",
+          "variant": "small"
+        },
+        {
+          "text": "Sed commodo, est quis maximus fermentum, massa ipsum euismod neque, in varius risus tellus quis lacus. Sed ac bibendum odio."
+        }
+      ],
+      "avatar": {
+        "src": "../../../assets/flexiblocks/testimonials/john-doe.png",
+        "alt": "alt text"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Jane Smith",
+          "variant": "h5"
+        },
+        {
+          "text": "Developer at AwesomeCo",
+          "variant": "small"
+        },
+        {
+          "text": "Sed commodo, est quis maximus fermentum, massa ipsum euismod neque, in varius risus tellus quis lacus. Sed ac bibendum odio."
+        }
+      ],
+      "avatar": {
+        "src": "../../../assets/flexiblocks/testimonials/jane-smith.png",
+        "alt": "alt text"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Sarah Doe",
+          "variant": "h5"
+        },
+        {
+          "text": "Chief Internet Marketer",
+          "variant": "small"
+        },
+        {
+          "text": "Sed commodo, est quis maximus fermentum, massa ipsum euismod neque, in varius risus tellus quis lacus. Sed ac bibendum odio."
+        }
+      ],
+      "avatar": {
+        "src": "../../../assets/flexiblocks/testimonials/sarah-doe.png",
+        "alt": "alt text"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Steve Grant",
+          "variant": "h5"
+        },
+        {
+          "text": "Freelancer Developer",
+          "variant": "small"
+        },
+        {
+          "text": "Sed commodo, est quis maximus fermentum, massa ipsum euismod neque, in varius risus tellus quis lacus. Sed ac bibendum odio."
+        }
+      ],
+      "avatar": {
+        "src": "../../../assets/flexiblocks/testimonials/steve-grant.png",
+        "alt": "alt text"
+      }
+    }
+  ]
+}
