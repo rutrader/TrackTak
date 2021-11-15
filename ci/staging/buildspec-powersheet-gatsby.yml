@@ -1,0 +1,30 @@
+version: 0.2
+
+env:
+  shell: bash
+  parameter-store:
+    NPM_TOKEN: /codebuild/NPM_TOKEN
+    CONTENTFUL_API_KEY: /ui/staging/CONTENTFUL_API_KEY
+    COGNITO_USER_POOL_ID: /common/staging/COGNITO_USER_POOL_ID
+    COGNITO_APP_CLIENT_ID: /common/staging/COGNITO_APP_CLIENT_ID
+
+phases:
+  install:
+    on-failure: ABORT
+    runtime-versions:
+      nodejs: 14.x
+  pre_build:
+    on-failure: ABORT
+    commands:
+      - echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" > .npmrc
+      - echo "@tracktak:registry=https://npm.pkg.github.com/" >> .npmrc
+      - yarn global add lerna
+      - lerna bootstrap
+  build:
+    on-failure: ABORT
+    commands:
+      - yarn run build-powersheet-gatsby
+artifacts:
+  files:
+    - '**/*'
+  base-directory: 'services/powersheet-gatsby/public'
