@@ -1,0 +1,16 @@
+{
+  "text": [
+    {
+      "text": "Ready to try it for free?",
+      "variant": "h2"
+    }
+  ],
+  "buttons": [
+    {
+      "text": "Contact us",
+      "type": "ANCHOR",
+      "link": "mailto:martin@tracktak.com",
+      "variant": "secondary"
+    }
+  ]
+}

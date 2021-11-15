@@ -1,0 +1,122 @@
+{
+  "text": [
+    {
+      "text": "Grow Your Business and Join Our Happy Users",
+      "variant": "h2"
+    },
+    {
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
+      "variant": "medium"
+    }
+  ],
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "John Doe",
+          "variant": "h5"
+        },
+        {
+          "text": "CEO of CoolCompany",
+          "color": "omegaDark",
+          "variant": "h5"
+        },
+        {
+          "text": "Sed commodo, est quis maximus fermentum, massa ipsum euismod neque, in varius risus tellus quis lacus. Sed ac bibendum odio."
+        }
+      ],
+      "avatar": {
+        "src": "../../../assets/flexiblocks/testimonials/john-doe.png",
+        "alt": "alt text"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Jane Smith",
+          "variant": "h5"
+        },
+        {
+          "text": "Developer at AwesomeCo",
+          "color": "omegaDark",
+          "variant": "h5"
+        },
+        {
+          "text": "Sed commodo, est quis maximus fermentum, massa ipsum euismod neque, in varius risus tellus quis lacus. Sed ac bibendum odio."
+        }
+      ],
+      "avatar": {
+        "src": "../../../assets/flexiblocks/testimonials/jane-smith.png",
+        "alt": "alt text"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Sarah Doe",
+          "variant": "h5"
+        },
+        {
+          "text": "Marketing Manager",
+          "color": "omegaDark",
+          "variant": "h5"
+        },
+        {
+          "text": "Sed commodo, est quis maximus fermentum, massa ipsum euismod neque, in varius risus tellus quis lacus. Sed ac bibendum odio."
+        }
+      ],
+      "avatar": {
+        "src": "../../../assets/flexiblocks/testimonials/sarah-doe.png",
+        "alt": "alt text"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Steve Grant",
+          "variant": "h5"
+        },
+        {
+          "text": "Freelancer Developer",
+          "color": "omegaDark",
+          "variant": "h5"
+        },
+        {
+          "text": "Sed commodo, est quis maximus fermentum, massa ipsum euismod neque, in varius risus tellus quis lacus. Sed ac bibendum odio."
+        }
+      ],
+      "avatar": {
+        "src": "../../../assets/flexiblocks/testimonials/steve-grant.png",
+        "alt": "alt text"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Florrie Jacobs",
+          "variant": "h5"
+        },
+        {
+          "text": "Senior Fashion Designer",
+          "color": "omegaDark",
+          "variant": "h5"
+        },
+        {
+          "text": "Sed commodo, est quis maximus fermentum, massa ipsum euismod neque, in varius risus tellus quis lacus. Sed ac bibendum odio."
+        }
+      ],
+      "avatar": {
+        "src": "../../../assets/flexiblocks/testimonials/florrie-jacobs.png",
+        "alt": "alt text"
+      }
+    }
+  ],
+  "buttons": [
+    {
+      "text": "Get Started Now",
+      "type": "MODAL",
+      "link": "authentication",
+      "variant": "gradient"
+    }
+  ]
+}

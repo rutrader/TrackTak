@@ -1,0 +1,91 @@
+{
+  "text": [
+    {
+      "text": "GROW YOUR BUSINESS",
+      "color": "omegaDark",
+      "variant": "h4"
+    },
+    {
+      "text": "Best Marketing Service for **Technological Era**",
+      "variant": "h2"
+    },
+    {
+      "text": "Target your audience based on their interests. Lorem ipsum dolor sit amet, consectetur magna aliqua.",
+      "variant": "medium"
+    }
+  ],
+  "images": [
+    {
+      "src": "../../../assets/flexiblocks/homepage/saas/tab-feature-two.png",
+      "alt": "alt text",
+      "radius": "lg",
+      "shadow": "default"
+    },
+    {
+      "src": "../../../assets/flexiblocks/homepage/saas/tab-feature-two-overlay-one.png",
+      "alt": "alt text",
+      "radius": "lg",
+      "shadow": "default",
+      "effects": ["fadeInDown", "floatFaster"],
+      "position": {
+        "top": "-30%",
+        "right": "5%"
+      }
+    },
+    {
+      "src": "../../../assets/flexiblocks/homepage/saas/tab-feature-two-overlay-two.png",
+      "alt": "alt text",
+      "effects": ["fadeInBounce", "float"],
+      "position": {
+        "top": "-15%",
+        "left": "10%"
+      }
+    },
+
+    {
+      "src": "../../../assets/flexiblocks/homepage/saas/tab-feature-two-overlay-three.png",
+      "alt": "alt text",
+      "effects": ["fadeInBounce", "floatFaster"],
+      "position": {
+        "bottom": "-10%",
+        "left": "20%"
+      }
+    }
+  ],
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "Advanced Panel",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Tempor incididunt ut labore."
+        },
+        {
+          "text": "50",
+          "color": "beta",
+          "variant": "h2"
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Report Metrics",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Consectetur magna aliqua."
+        },
+        {
+          "text": "75",
+          "color": "beta",
+          "variant": "h2"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "text": [
+    {
+      "text": "Build Your Brand",
+      "variant": "h2"
+    },
+    {
+      "text": "We help our clients achieve tangible, high-impact results.",
+      "variant": "medium"
+    },
+    {
+      "text": "tempor incididunt ut labore et dolore magna aliqua.",
+      "variant": "medium"
+    }
+  ],
+  "images": [
+    {
+      "src": "../../../assets/flexiblocks/homepage/consulting/build-brand.jpg",
+      "alt": "alt text",
+      "radius": "lg",
+      "shadow": "lg"
+    }
+  ],
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "Targeted SEO",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "As an Internet marketing strategy, SEO considers tempor incididunt ut labore et."
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Marketing outline",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Social media marketing is the use of social media tempor incididunt ut labore et."
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Content Writing",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Content marketing is a form of marketing focused tempor incididunt ut labore et."
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Market Analysis",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Content marketing is a form of marketing focused tempor incididunt ut labore et."
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Innovative Solutions",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Content marketing is a form of marketing focused tempor incididunt ut labore et."
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Optimal Choice",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Content marketing is a form of marketing focused tempor incididunt ut labore et."
+        }
+      ]
+    }
+  ]
+}

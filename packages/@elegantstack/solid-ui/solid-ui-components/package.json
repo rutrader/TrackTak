@@ -1,0 +1,28 @@
+{
+  "name": "@elegantstack/solid-ui-components",
+  "version": "3.5.0",
+  "main": "index.js",
+  "private": true,
+  "author": "ElegantStack Team",
+  "license": "",
+  "dependencies": {
+    "@babel/core": "^7.12.3",
+    "@elegantstack/gatsby-plugin-alias-imports": "^3.0.0",
+    "framer-motion": "^2.9.4",
+    "gatsby": "^3.14.5",
+    "gatsby-plugin-react-helmet": "^4.13.0",
+    "google-map-react": "^2.1.10",
+    "lodash.mergewith": "^4.6.2",
+    "prop-types": "^15.7.2",
+    "react-accessible-accordion": "^3.3.5",
+    "react-helmet": "^6.1.0",
+    "react-icons": "^4.2.0",
+    "react-inlinesvg": "^2.3.0",
+    "react-intersection-observer": "^8.32.1",
+    "react-modal": "^3.14.3",
+    "react-tabs": "^3.2.3",
+    "theme-ui": "^0.3.4",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0"
+  }
+}

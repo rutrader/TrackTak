@@ -1,0 +1,178 @@
+{
+  "text": [
+    {
+      "text": "More About Our Services",
+      "variant": "h2"
+    },
+    {
+      "text": "Consectetur adipisicing elit, sed do eiusmod tempor incididunt.",
+      "variant": "medium"
+    },
+    {
+      "text": "Consectetur sed do eiusmod tempor incididunt adipisicing eiusmod.",
+      "variant": "medium"
+    }
+  ],
+  "collection": [
+    {
+      "container": {
+        "variant": "cards.paper"
+      },
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-brain.svg",
+        "bg": "omegaLighter",
+        "color": "omegaDark"
+      },
+      "text": [
+        {
+          "text": "Branding",
+          "color": "alpha",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet elit, sed do eiusmod tempor incididunt."
+        }
+      ]
+    },
+    {
+      "container": {
+        "variant": "cards.paper"
+      },
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-message-detail.svg",
+        "bg": "omegaLighter",
+        "color": "omegaDark"
+      },
+      "text": [
+        {
+          "text": "Copy Writing",
+          "color": "alpha",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet elit, sed do eiusmod tempor incididunt."
+        }
+      ]
+    },
+    {
+      "container": {
+        "variant": "cards.paper"
+      },
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-rocket.svg",
+        "bg": "omegaLighter",
+        "color": "omegaDark"
+      },
+      "text": [
+        {
+          "text": "Development",
+          "color": "alpha",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet elit, sed do eiusmod tempor incididunt."
+        }
+      ]
+    },
+    {
+      "container": {
+        "variant": "cards.paper"
+      },
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-pen.svg",
+        "bg": "omegaLighter",
+        "color": "omegaDark"
+      },
+      "text": [
+        {
+          "text": "Design",
+          "color": "alpha",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet elit, sed do eiusmod tempor incididunt."
+        }
+      ]
+    },
+    {
+      "container": {
+        "variant": "cards.paper"
+      },
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bxl-shopify.svg",
+        "bg": "omegaLighter",
+        "color": "omegaDark"
+      },
+      "text": [
+        {
+          "text": "E-Commerce",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet elit, sed do eiusmod tempor incididunt."
+        }
+      ]
+    },
+    {
+      "container": {
+        "variant": "cards.paper"
+      },
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-analyse.svg",
+        "bg": "omegaLighter",
+        "color": "omegaDark"
+      },
+      "text": [
+        {
+          "text": "Advertisement",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet elit, sed do eiusmod tempor incididunt."
+        }
+      ]
+    },
+    {
+      "container": {
+        "variant": "cards.paper"
+      },
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-planet.svg",
+        "bg": "omegaLighter",
+        "color": "omegaDark"
+      },
+      "text": [
+        {
+          "text": "Website Design",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet elit, sed do eiusmod tempor incididunt."
+        }
+      ]
+    },
+    {
+      "container": {
+        "variant": "cards.paper"
+      },
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-phone.svg",
+        "bg": "omegaLighter",
+        "color": "omegaDark"
+      },
+      "text": [
+        {
+          "text": "Mobile App",
+          "color": "omegaDarker",
+          "variant": "h5"
+        },
+        {
+          "text": "Understand First. Lorem ipsum dolor sit amet elit, sed do eiusmod tempor incididunt."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "text": [
+    {
+      "text": "FlexiBlog Theme **Supercharge Your Website Traffic**",
+      "color": "#805AD5",
+      "variant": "h2",
+      "space": 3
+    }
+  ],
+  "images": [
+    {
+      "src": "../../assets/flexiblocks/blog/flexiBlog-ad-skip-pkg.jpg",
+      "alt": "alt text"
+    }
+  ],
+  "collection": [
+    {
+      "icon": {
+        "src": "../../assets/flexiblocks/icons/bx-layer-plus.svg",
+        "color": "#805AD5",
+        "bg": "transparent"
+      },
+      "text": [
+        {
+          "text": "FlexiBlog + FlexiBlocks",
+          "variant": "h6",
+          "space": 1
+        },
+        {
+          "text": "Install both themes on a site with Gatsby Theme Composition. It's a perfect match.",
+          "space": 1
+        }
+      ]
+    },
+    {
+      "icon": {
+        "src": "../../assets/flexiblocks/icons/bx-pen.svg",
+        "color": "#805AD5",
+        "bg": "transparent"
+      },
+      "text": [
+        {
+          "text": "CMS Integrated: Strapi, Contentful, Sanity, Netlify CMS and MDX",
+          "variant": "h6",
+          "space": 1
+        },
+        {
+          "text": "FlexiBlog supports cloud-based or self-hosted CMSes for writing blog posts.",
+          "space": 1
+        }
+      ]
+    },
+    {
+      "icon": {
+        "src": "../../assets/flexiblocks/icons/bx-rocket.svg",
+        "color": "#805AD5",
+        "bg": "transparent"
+      },
+      "text": [
+        {
+          "text": "Search + Comments + Newsletter",
+          "variant": "h6",
+          "space": 1
+        },
+        {
+          "text": "FlexiBlog delivers maximum functionality with value-added serverless APIs.",
+          "space": 1
+        }
+      ]
+    }
+  ],
+  "buttons": [
+    {
+      "text": "Checkout FlexiBlog",
+      "type": "PAGE",
+      "link": "https://1.envato.market/LPD9RM/",
+      "target": "_blank",
+      "variant": "secondary",
+      "bg": "#805AD5"
+    }
+  ]
+}

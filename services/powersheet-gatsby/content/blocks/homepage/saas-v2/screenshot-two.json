@@ -1,0 +1,29 @@
+{
+  "text": [
+    {
+      "text": "Advanced Customer Service Platform",
+      "color": "alpha",
+      "variant": "h4"
+    },
+    {
+      "text": "Acquisition Panel Screenshot",
+      "color": "omegaDarker",
+      "variant": "h2"
+    },
+    {
+      "text": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "color": "omegaDark",
+      "variant": "medium"
+    }
+  ],
+  "images": [
+    {
+      "src": "../../../assets/flexiblocks/homepage/saas-v2/hero.png",
+      "alt": "alt text",
+      "radius": "lg",
+      "shadow": "default",
+      "border": "lg",
+      "effects": ["fadeInDown"]
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "text": [
+    {
+      "text": "Get access to unlimited resources",
+      "color": "beta",
+      "variant": "h4"
+    },
+    {
+      "text": "Why Choose Us Over Competition?",
+      "color": "white",
+      "variant": "h2"
+    }
+  ],
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "Advanced Analytics",
+          "color": "white",
+          "variant": "h5"
+        },
+        {
+          "text": "At vero eos et accusamus et",
+          "color": "omega"
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-analyse.svg",
+        "color": "beta"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Expert Support",
+          "color": "white",
+          "variant": "h5"
+        },
+        {
+          "text": "Et harum quidem rerum facilis",
+          "color": "omega"
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-chat.svg",
+        "color": "beta"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Lifetime Access",
+          "color": "white",
+          "variant": "h5"
+        },
+        {
+          "text": "Itaque earum rerum hic tenetur",
+          "color": "omega"
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-dna.svg",
+        "color": "beta"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Creative Solutions",
+          "color": "white",
+          "variant": "h5"
+        },
+        {
+          "text": "Similique sunt in culpa officia",
+          "color": "omega"
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-directions.svg",
+        "color": "beta"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "#1 Rated Agency",
+          "color": "white",
+          "variant": "h5"
+        },
+        {
+          "text": "Sed ut perspiciatis unde omnis",
+          "color": "omega"
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-crown.svg",
+        "color": "beta"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Unlimited Resources",
+          "color": "white",
+          "variant": "h5"
+        },
+        {
+          "text": "Nemo enim ipsam voluptatem",
+          "color": "omega"
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-data.svg",
+        "color": "beta"
+      }
+    }
+  ]
+}

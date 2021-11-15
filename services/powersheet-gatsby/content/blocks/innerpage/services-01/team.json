@@ -1,0 +1,34 @@
+{
+  "container": {
+    "bg": "linear-gradient(25deg, {{alpha}} 0%, {{beta}} 100%)"
+  },
+  "text": [
+    {
+      "text": "Schedule a Consultation",
+      "color": "alphaLight",
+      "variant": "h3"
+    },
+    {
+      "text": "Make your impact by acquiring new clients.",
+      "color": "white",
+      "variant": "h1"
+    }
+  ],
+  "images": [
+    {
+      "src": "../../../assets/flexiblocks/innerpage/services-01/team.jpg",
+      "alt": "alt text",
+      "radius": "lg",
+      "shadow": "lg",
+      "effects": ["fadeInLeft"]
+    }
+  ],
+  "buttons": [
+    {
+      "text": "Contact Us",
+      "type": "MODAL",
+      "link": "contact",
+      "variant": "primary-light"
+    }
+  ]
+}

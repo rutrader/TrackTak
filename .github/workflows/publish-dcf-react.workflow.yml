@@ -3,22 +3,22 @@ on:
   pull_request:
     types: [closed]
     paths:
-      - "packages/intrinsic-valuations/**"
+      - 'packages/financial-model/**'
 jobs:
-  publish-intrinsic-valuations:
+  publish-financial-model:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./packages/intrinsic-valuations
+        working-directory: ./packages/financial-model
     env:
       NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: "12.20.1"
-          registry-url: "https://npm.pkg.github.com/"
-          scope: "@tracktak"
+          node-version: '12.20.1'
+          registry-url: 'https://npm.pkg.github.com/'
+          scope: '@tracktak'
       - run: npm install --only=prod
       - run: npm publish

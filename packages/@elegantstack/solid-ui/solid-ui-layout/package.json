@@ -1,0 +1,12 @@
+{
+  "name": "@elegantstack/solid-ui-layout",
+  "version": "3.0.0",
+  "main": "index.js",
+  "private": true,
+  "author": "ElegantStack Team",
+  "license": "",
+  "dependencies": {
+    "@elegantstack/gatsby-plugin-alias-imports": "^3.0.0",
+    "theme-ui": "^0.3.4"
+  }
+}

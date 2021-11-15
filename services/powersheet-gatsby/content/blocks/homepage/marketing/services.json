@@ -1,0 +1,205 @@
+{
+  "text": [
+    {
+      "text": "Our Digital Marketing Expertise",
+      "variant": "h2"
+    },
+    {
+      "text": "We help our clients achieve tangible, high-impact results.",
+      "variant": "medium"
+    },
+    {
+      "text": "Tempor incididunt ut labore et dolore magna aliqua.",
+      "variant": "medium"
+    }
+  ],
+  "icon": {
+    "src": "../../../assets/flexiblocks/icons/bx-analyse.svg",
+    "alt": "alt text"
+  },
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "Targeted SEO",
+          "color": "omegaDarker",
+          "variant": "h4"
+        },
+        {
+          "text": "As an Internet marketing strategy, SEO considers how search engines work, the programmed algorithms that dictate search engine."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-target-lock.svg",
+        "bg": "omegaLighter",
+        "color": "beta"
+      },
+      "collection": [
+        {
+          "text": [
+            {
+              "text": "Content optimization",
+              "color": "omegaDark",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-check-circle.svg",
+            "alt": "alt text",
+            "color": "omegaDark"
+          }
+        },
+        {
+          "text": [
+            {
+              "text": "Strategy & planning",
+              "color": "omegaDark",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-check-circle.svg",
+            "alt": "alt text",
+            "color": "omegaDark"
+          }
+        },
+        {
+          "text": [
+            {
+              "text": "Monthly reports",
+              "color": "omegaDark",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-check-circle.svg",
+            "alt": "alt text",
+            "color": "omegaDark"
+          }
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Social Marketing",
+          "color": "omegaDarker",
+          "variant": "h4"
+        },
+        {
+          "text": "Social media marketing is the use of social media platforms and websites to promote a product or service and is becoming more popular."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-user-voice.svg",
+        "bg": "omegaLighter",
+        "color": "beta"
+      },
+      "collection": [
+        {
+          "text": [
+            {
+              "text": "Creating engaging content",
+              "color": "omegaDark",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-check-circle.svg",
+            "alt": "alt text",
+            "color": "omegaDark"
+          }
+        },
+        {
+          "text": [
+            {
+              "text": "Trend research",
+              "color": "omegaDark",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-check-circle.svg",
+            "alt": "alt text",
+            "color": "omegaDark"
+          }
+        },
+        {
+          "text": [
+            {
+              "text": "Evaluation and feedback",
+              "color": "omegaDark",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-check-circle.svg",
+            "alt": "alt text",
+            "color": "omegaDark"
+          }
+        }
+      ]
+    },
+    {
+      "text": [
+        {
+          "text": "Content Writing",
+          "color": "omegaDarker",
+          "variant": "h4"
+        },
+        {
+          "text": "Content marketing is a form of marketing focused on creating, publishing, and distributing content for a targeted audience online."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-pen.svg",
+        "bg": "omegaLighter",
+        "color": "beta"
+      },
+      "collection": [
+        {
+          "text": [
+            {
+              "text": "Unique content creation",
+              "color": "omegaDark",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-check-circle.svg",
+            "alt": "alt text",
+            "color": "omegaDark"
+          }
+        },
+        {
+          "text": [
+            {
+              "text": "SEO optimized articles",
+              "color": "omegaDark",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-check-circle.svg",
+            "alt": "alt text",
+            "color": "omegaDark"
+          }
+        },
+        {
+          "text": [
+            {
+              "text": "Fast turnaround",
+              "color": "omegaDark",
+              "variant": "h6"
+            }
+          ],
+          "icon": {
+            "src": "../../../assets/flexiblocks/icons/bx-check-circle.svg",
+            "alt": "alt text",
+            "color": "omegaDark"
+          }
+        }
+      ]
+    }
+  ]
+}

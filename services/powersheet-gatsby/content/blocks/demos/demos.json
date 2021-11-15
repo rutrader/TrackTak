@@ -1,0 +1,159 @@
+{
+  "text": [
+    {
+      "text": "Professional Landing Pages",
+      "variant": "h2"
+    },
+    {
+      "text": "Built with highly flexible React block components.",
+      "color": "omegaDark",
+      "variant": "h4"
+    }
+  ],
+  "collection": [
+    {
+      "container": {
+        "variant": "cards.interactive",
+        "bg": "transparent",
+        "link": {
+          "type": "PAGE",
+          "target": "_blank",
+          "link": "/homepage/fintech/"
+        }
+      },
+      "text": [
+        {
+          "text": "Fintech Startup",
+          "color": "omegaDarker",
+          "variant": "h5"
+        }
+      ],
+      "images": [
+        {
+          "src": "../../assets/flexiblocks/demos/fintech-skip-pkg.png",
+          "alt": "alt text"
+        }
+      ]
+    },
+    {
+      "container": {
+        "variant": "cards.interactive",
+        "bg": "transparent",
+        "link": {
+          "type": "PAGE",
+          "target": "_blank",
+          "link": "/homepage/saas/"
+        }
+      },
+      "text": [
+        {
+          "text": "Saas Platform",
+          "color": "omegaDarker",
+          "variant": "h5"
+        }
+      ],
+      "images": [
+        {
+          "src": "../../assets/flexiblocks/demos/saas-skip-pkg.png",
+          "alt": "alt text"
+        }
+      ]
+    },
+    {
+      "container": {
+        "variant": "cards.interactive",
+        "bg": "transparent",
+        "link": {
+          "type": "PAGE",
+          "target": "_blank",
+          "link": "/homepage/saas-v2/"
+        }
+      },
+      "text": [
+        {
+          "text": "Saas Platform v2",
+          "color": "omegaDarker",
+          "variant": "h5"
+        }
+      ],
+      "images": [
+        {
+          "src": "../../assets/flexiblocks/demos/saas-v2-skip-pkg.png",
+          "alt": "alt text"
+        }
+      ]
+    },
+    {
+      "container": {
+        "variant": "cards.interactive",
+        "bg": "transparent",
+        "link": {
+          "type": "PAGE",
+          "target": "_blank",
+          "link": "/homepage/consulting/"
+        }
+      },
+      "text": [
+        {
+          "text": "Consulting Agency",
+          "color": "omegaDarker",
+          "variant": "h5"
+        }
+      ],
+      "images": [
+        {
+          "src": "../../assets/flexiblocks/demos/consulting-skip-pkg.png",
+          "alt": "alt text"
+        }
+      ]
+    },
+    {
+      "container": {
+        "variant": "cards.interactive",
+        "bg": "transparent",
+        "link": {
+          "type": "PAGE",
+          "target": "_blank",
+          "link": "/homepage/app/"
+        }
+      },
+      "text": [
+        {
+          "text": "Mobile App",
+          "color": "omegaDarker",
+          "variant": "h5"
+        }
+      ],
+      "images": [
+        {
+          "src": "../../assets/flexiblocks/demos/app-skip-pkg.png",
+          "alt": "alt text"
+        }
+      ]
+    },
+    {
+      "container": {
+        "variant": "cards.interactive",
+        "bg": "transparent",
+        "link": {
+          "type": "PAGE",
+          "target": "_blank",
+          "link": "/homepage/marketing/"
+        }
+      },
+      "text": [
+        {
+          "text": "Marketing Agency",
+          "color": "omegaDarker",
+          "variant": "h5"
+        }
+      ],
+      "images": [
+        {
+          "src": "../../assets/flexiblocks/demos/marketing-skip-pkg.png",
+          "alt": "alt text"
+        }
+      ]
+    }
+  ]
+}

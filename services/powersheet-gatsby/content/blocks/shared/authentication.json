@@ -1,0 +1,220 @@
+{
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "Register",
+          "variant": "h4"
+        },
+        {
+          "text": "**Create** an Account.",
+          "color": "omegaDarker",
+          "variant": "h2",
+          "space": 2
+        },
+        {
+          "text": "Start your 14 days free trial.",
+          "color": "omegaDark",
+          "space": 2
+        },
+        {
+          "text": "No credit card required.",
+          "color": "omega"
+        }
+      ],
+      "images": [
+        {
+          "src": "../../assets/flexiblocks/shared/login.jpg",
+          "alt": "alt text"
+        }
+      ],
+      "form": {
+        "fields": [
+          {
+            "identifier": "name",
+            "type": "TEXT",
+            "placeholder": {
+              "text": "Full Name"
+            },
+            "icon": {
+              "src": "../../assets/flexiblocks/icons/bx-user.svg",
+              "color": "alpha"
+            }
+          },
+          {
+            "identifier": "email",
+            "type": "EMAIL",
+            "placeholder": {
+              "text": "Email Address"
+            },
+            "icon": {
+              "src": "../../assets/flexiblocks/icons/bx-envelope.svg",
+              "color": "alpha"
+            }
+          },
+          {
+            "identifier": "password",
+            "type": "PASSWORD",
+            "placeholder": {
+              "text": "Password"
+            },
+            "icon": {
+              "src": "../../assets/flexiblocks/icons/bx-lock-alt.svg",
+              "color": "alpha"
+            }
+          },
+          {
+            "identifier": "confirm-password",
+            "type": "PASSWORD",
+            "placeholder": {
+              "text": "Confirm Password"
+            },
+            "icon": {
+              "src": "../../assets/flexiblocks/icons/bx-lock-alt.svg",
+              "color": "alpha"
+            }
+          },
+          {
+            "identifier": "agree",
+            "type": "CHECKBOX",
+            "placeholder": {
+              "text": "I agree to all statements in the Terms of Use."
+            },
+            "icon": {
+              "src": "../../assets/flexiblocks/icons/bx-lock-alt.svg",
+              "color": "alpha"
+            }
+          }
+        ],
+        "buttons": [
+          {
+            "text": "Create Account",
+            "type": "PAGE",
+            "link": "",
+            "variant": "secondary",
+            "width": "200px"
+          }
+        ]
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Login"
+        },
+        {
+          "text": "**Welcome** Back.",
+          "color": "omegaDarker",
+          "variant": "h2",
+          "space": 2
+        },
+        {
+          "text": "Log in to your account with the data you entered during registration.",
+          "color": "omegaDark"
+        }
+      ],
+      "images": [
+        {
+          "src": "../../assets/flexiblocks/shared/login.jpg",
+          "alt": "alt text"
+        }
+      ],
+      "form": {
+        "fields": [
+          {
+            "identifier": "email",
+            "type": "EMAIL",
+            "placeholder": {
+              "text": "Email Address"
+            },
+            "icon": {
+              "src": "../../assets/flexiblocks/icons/bx-envelope.svg",
+              "color": "alpha"
+            }
+          },
+          {
+            "identifier": "password",
+            "type": "PASSWORD",
+            "placeholder": {
+              "text": "Password"
+            },
+            "icon": {
+              "src": "../../assets/flexiblocks/icons/bx-lock-alt.svg",
+              "color": "alpha"
+            }
+          },
+          {
+            "identifier": "remember",
+            "type": "CHECKBOX",
+            "placeholder": {
+              "text": "Keep me signed in on this device"
+            },
+            "icon": {
+              "src": "../../assets/flexiblocks/icons/bx-lock-alt.svg",
+              "color": "alpha"
+            }
+          }
+        ],
+        "buttons": [
+          {
+            "text": "Login",
+            "type": "PAGE",
+            "link": "",
+            "variant": "secondary",
+            "width": "200px"
+          },
+          {
+            "text": "Need to find your Password?",
+            "type": "TAB",
+            "link": "authentication.2",
+            "variant": "links.normal"
+          }
+        ]
+      }
+    },
+    {
+      "text": [
+        null,
+        {
+          "text": "**Recover** Your Account.",
+          "color": "omegaDarker",
+          "variant": "h2"
+        },
+        {
+          "text": "Please enter the email address you entered during registration.",
+          "color": "omegaDark"
+        }
+      ],
+      "images": [
+        {
+          "src": "../../assets/flexiblocks/homepage/saas/login.jpg",
+          "alt": "alt text"
+        }
+      ],
+      "form": {
+        "fields": [
+          {
+            "identifier": "email",
+            "type": "EMAIL",
+            "placeholder": {
+              "text": "Email Address"
+            },
+            "icon": {
+              "src": "../../assets/flexiblocks/icons/bx-envelope.svg",
+              "color": "alpha"
+            }
+          }
+        ],
+        "buttons": [
+          {
+            "text": "Send Recovery Email",
+            "type": "PAGE",
+            "link": "",
+            "variant": "secondary",
+            "width": "200px"
+          }
+        ]
+      }
+    }
+  ]
+}

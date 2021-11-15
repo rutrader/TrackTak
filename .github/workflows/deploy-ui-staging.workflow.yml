@@ -3,8 +3,8 @@ on:
   pull_request:
     types: [closed]
     paths:
-      - "ui/**"
-      - "packages/intrinsic-valuations/**"
+      - 'ui/**'
+      - 'packages/financial-model/**'
 jobs:
   deploy-staging-ui:
     if: github.event.pull_request.merged == true
@@ -18,20 +18,20 @@ jobs:
       NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      GATSBY_API_BASE_URL: ${{ secrets.GATSBY_API_BASE_URL }}
-      GATSBY_COGNITO_APP_CLIENT_ID: ${{ secrets.GATSBY_COGNITO_APP_CLIENT_ID }}
-      GATSBY_COGNITO_USER_POOL_ID: ${{ secrets.GATSBY_COGNITO_USER_POOL_ID }}
-      GATSBY_SOCIAL_LOGIN_GOOGLE: ${{ secrets.GATSBY_SOCIAL_LOGIN_GOOGLE }}
-      GATSBY_SOCIAL_LOGIN_FACEBOOK: ${{ secrets.GATSBY_SOCIAL_LOGIN_FACEBOOK }}
+      API_BASE_URL: ${{ secrets.API_BASE_URL }}
+      COGNITO_APP_CLIENT_ID: ${{ secrets.COGNITO_APP_CLIENT_ID }}
+      COGNITO_USER_POOL_ID: ${{ secrets.COGNITO_USER_POOL_ID }}
+      SOCIAL_LOGIN_GOOGLE: ${{ secrets.SOCIAL_LOGIN_GOOGLE }}
+      SOCIAL_LOGIN_FACEBOOK: ${{ secrets.SOCIAL_LOGIN_FACEBOOK }}
       GATSBY_SOCIAL_LOGIN_REDIRECT_URL: ${{ secrets.GATSBY_SOCIAL_LOGIN_REDIRECT_URL }}
       GATSBY_COGNITO_TOKEN_ENDPOINT: ${{ secrets.GATSBY_COGNITO_TOKEN_ENDPOINT }}
-      GATSBY_PREMIUM_ENABLED: ${{ secrets.GATSBY_PREMIUM_ENABLED }}
+      PREMIUM_ENABLED: ${{ secrets.PREMIUM_ENABLED }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: "12.20.1"
-          registry-url: "https://npm.pkg.github.com/"
-          scope: "@tracktak"
+          node-version: '12.20.1'
+          registry-url: 'https://npm.pkg.github.com/'
+          scope: '@tracktak'
       - run: npm install --only=prod
       - run: npm run deploy:staging

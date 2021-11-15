@@ -1,0 +1,24 @@
+{
+  "text": [
+    {
+      "text": "A Lightning Fast Spreadsheet for Businesses",
+      "color": "white",
+      "variant": "h1",
+      "space": 3
+    },
+    {
+      "text": "Written in pure javascript using HTML5 canvas with full formula support.",
+      "color": "white",
+      "variant": "headingText"
+    }
+  ],
+  "buttons": [
+    {
+      "text": "Fullscreen Demo",
+      "type": "PAGE",
+      "link": "http://192.168.1.102:6006",
+      "target": "_blank",
+      "variant": "white"
+    }
+  ]
+}

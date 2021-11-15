@@ -1,0 +1,28 @@
+{
+  "text": [
+    {
+      "text": "Established in 2017",
+      "color": "alpha",
+      "variant": "h4"
+    },
+    {
+      "text": "Discover Our Story",
+      "color": "omegaDarker",
+      "variant": "h1"
+    },
+    {
+      "text": "Credibly brand standards compliant users without extensible services",
+      "color": "omegaDark",
+      "variant": "medium"
+    }
+  ],
+  "images": [
+    {
+      "src": "../../../assets/flexiblocks/innerpage/about-us-02/hero.jpg",
+      "alt": "alt text",
+      "radius": "lg",
+      "shadow": "lg",
+      "effects": ["fadeInLeft"]
+    }
+  ]
+}

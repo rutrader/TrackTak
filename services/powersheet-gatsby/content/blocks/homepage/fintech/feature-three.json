@@ -1,0 +1,35 @@
+{
+  "text": [
+    {
+      "text": "Advanced Customer Service Platform",
+      "color": "beta",
+      "variant": "h4"
+    },
+    {
+      "text": "We Drive Acquisition for Growing Brands",
+      "color": "omegaDarker",
+      "variant": "h2"
+    },
+    {
+      "text": "Hassle-free platform and specialists to help you with your marketing campaigns.",
+      "color": "omegaDark",
+      "variant": "medium"
+    }
+  ],
+  "images": [
+    {
+      "src": "../../../assets/flexiblocks/homepage/fintech/feature-three.jpg",
+      "alt": "alt text",
+      "radius": "xl",
+      "effects": ["fadeInDown"]
+    }
+  ],
+  "buttons": [
+    {
+      "text": "Get Started Now",
+      "type": "MODAL",
+      "link": "authentication",
+      "variant": "primary"
+    }
+  ]
+}

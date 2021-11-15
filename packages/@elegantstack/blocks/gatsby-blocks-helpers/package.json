@@ -1,0 +1,11 @@
+{
+  "name": "@elegantstack/gatsby-blocks-helpers",
+  "version": "2.0.0",
+  "main": "index.js",
+  "private": true,
+  "author": "ElegantStack Team",
+  "license": "",
+  "dependencies": {
+    "@elegantstack/gatsby-plugin-alias-imports": "^3.0.0"
+  }
+}

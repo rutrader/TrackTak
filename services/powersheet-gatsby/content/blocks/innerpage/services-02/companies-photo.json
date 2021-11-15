@@ -1,0 +1,10 @@
+{
+  "images": [
+    {
+      "src": "../../../assets/flexiblocks/innerpage/services-02/clients.jpg",
+      "alt": "alt text",
+      "radius": "lg",
+      "shadow": "lg"
+    }
+  ]
+}

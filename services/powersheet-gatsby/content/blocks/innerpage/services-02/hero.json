@@ -1,0 +1,19 @@
+{
+  "text": [
+    {
+      "text": "Our Services",
+      "color": "betaLight",
+      "variant": "h3"
+    },
+    {
+      "text": "We change the way you build Gatsby sites.",
+      "color": "white",
+      "variant": "h1"
+    },
+    {
+      "text": "Flexible blocks with unlimited variants.",
+      "color": "omegaLight",
+      "variant": "medium"
+    }
+  ]
+}

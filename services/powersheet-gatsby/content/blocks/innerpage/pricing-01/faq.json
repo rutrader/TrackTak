@@ -1,0 +1,79 @@
+{
+  "text": [
+    {
+      "text": "We Are Here To Help You",
+      "color": "beta",
+      "variant": "h4"
+    },
+    {
+      "text": "Frequently Asked Questions",
+      "variant": "h2"
+    }
+  ],
+  "collection": [
+    {
+      "text": [
+        {
+          "text": "Which license do I need to use an item in a commercial?",
+          "variant": "h5"
+        },
+        {
+          "text": "As an Internet marketing strategy, SEO considers how search engines work, the computer-programmed algorithms that dictate search engine behavior."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-phone.svg",
+        "bg": "white",
+        "color": "alpha"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "What do you mean by item and end product in license terms?",
+          "variant": "h5"
+        },
+        {
+          "text": "Social media marketing is the use of social media platforms and websites to promote a product or service and is becoming more popular."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-mobile-alt.svg",
+        "bg": "white",
+        "color": "alpha"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "What are some examples of permitted end products?",
+          "variant": "h5"
+        },
+        {
+          "text": "Content marketing is a form of marketing focused on creating, publishing, and distributing content for a targeted audience online."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-mail-send.svg",
+        "bg": "white",
+        "color": "alpha"
+      }
+    },
+    {
+      "text": [
+        {
+          "text": "Are item packs/bundles still limited to a single-end product?",
+          "variant": "h5"
+        },
+        {
+          "text": "Social media marketing is the use of social media platforms and websites to promote a product or service and is becoming more popular."
+        }
+      ],
+      "icon": {
+        "src": "../../../assets/flexiblocks/icons/bx-directions.svg",
+        "bg": "white",
+        "color": "alpha"
+      }
+    }
+  ]
+}
