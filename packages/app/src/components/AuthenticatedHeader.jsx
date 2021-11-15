@@ -45,7 +45,7 @@ const AuthenticatedHeader = ({ position = 'fixed', search }) => {
     if (relative) {
       navigate(to)
     } else {
-      window.location.href = `${process.env.GATSBY_DOMAIN_URL}${to}`
+      window.location.href = `${process.env.DOMAIN_URL}${to}`
     }
   }
 

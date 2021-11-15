@@ -7,7 +7,7 @@ const withAuthenticatedRedirect = Component => {
 
     useEffect(() => {
       if (isAuthenticated && hasLoadedAuthDetails) {
-        window.location.href = process.env.GATSBY_APP_SUBDOMAIN_URL
+        window.location.href = process.env.APP_SUBDOMAIN_URL
       }
     }, [hasLoadedAuthDetails, isAuthenticated])
 

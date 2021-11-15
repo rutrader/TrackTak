@@ -1,7 +1,7 @@
 import { regions } from '@tracktak/common'
 
 const isStockDisabled = (currentPlan, stock) => {
-  if (process.env.GATSBY_PREMIUM_ENABLED === 'false') {
+  if (process.env.PREMIUM_ENABLED === 'false') {
     return false
   }
 

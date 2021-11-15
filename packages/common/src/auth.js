@@ -12,13 +12,13 @@ import axios from 'axios'
 import * as utils from './shared/utils'
 
 const cookieStorage = new CookieStorage({
-  domain: process.env.GATSBY_COGNITO_COOKIE_DOMAIN ?? 'tracktak.com',
+  domain: process.env.COGNITO_COOKIE_DOMAIN ?? 'tracktak.com',
   secure: process.env.NODE_ENV
 })
 
 const POOL_CONFIG = {
-  UserPoolId: process.env.GATSBY_COGNITO_USER_POOL_ID,
-  ClientId: process.env.GATSBY_COGNITO_APP_CLIENT_ID,
+  UserPoolId: process.env.COGNITO_USER_POOL_ID,
+  ClientId: process.env.COGNITO_APP_CLIENT_ID,
   Storage: cookieStorage
 }
 
@@ -98,7 +98,7 @@ export const signUp = (
 export const getUserFromCode = async code => {
   const params = new URLSearchParams()
   params.append('grant_type', 'authorization_code')
-  params.append('client_id', process.env.GATSBY_COGNITO_APP_CLIENT_ID)
+  params.append('client_id', process.env.COGNITO_APP_CLIENT_ID)
   params.append('code', code)
   params.append('redirect_uri', process.env.GATSBY_SOCIAL_LOGIN_REDIRECT_URL)
 

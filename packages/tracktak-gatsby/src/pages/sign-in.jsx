@@ -7,7 +7,7 @@ import withAuthenticatedRedirect from '../hocs/withAuthenticatedRedirect'
 
 const SignIn = ({ location }) => {
   const handleSuccess = () => {
-    window.location.href = process.env.GATSBY_APP_SUBDOMAIN_URL
+    window.location.href = process.env.APP_SUBDOMAIN_URL
   }
 
   return (

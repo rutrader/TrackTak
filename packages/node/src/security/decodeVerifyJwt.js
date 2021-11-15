@@ -3,7 +3,7 @@ import { default as jsonwebtoken } from 'jsonwebtoken'
 import { default as jwkToPem } from 'jwk-to-pem'
 
 const cognitoIssuerUri = process.env.COGNITO_ISSUER_URI
-const cognitoPoolId = process.env.GATSBY_COGNITO_USER_POOL_ID
+const cognitoPoolId = process.env.COGNITO_USER_POOL_ID
 
 if (!cognitoPoolId || !cognitoIssuerUri) {
   throw new Error('env var required for cognito pool and issuer URL')

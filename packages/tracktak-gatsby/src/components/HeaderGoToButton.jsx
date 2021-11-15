@@ -19,7 +19,7 @@ const HeaderGoToButton = () => {
       {isAuthenticated ? (
         <LinkButton
           onClick={() => {
-            window.location.href = process.env.GATSBY_APP_SUBDOMAIN_URL
+            window.location.href = process.env.APP_SUBDOMAIN_URL
           }}
           variant='contained'
           sx={buttonSx}

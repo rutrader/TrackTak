@@ -33,7 +33,7 @@ const Authenticated = ({ children }) => {
 
   useEffect(() => {
     if (!isAuthenticated && hasLoadedAuthDetails) {
-      window.location.href = process.env.GATSBY_DOMAIN_URL
+      window.location.href = process.env.DOMAIN_URL
     }
   }, [hasLoadedAuthDetails, isAuthenticated])
 

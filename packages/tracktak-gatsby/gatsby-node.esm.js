@@ -14,3 +14,19 @@ export const onCreatePage = ({ page, actions }) => {
     createPage(page)
   }
 }
+
+export const onCreateWebpackConfig = ({ actions, plugins }) => {
+  const varobj = Object.keys(process.env).reduce((acc, key) => {
+    acc[`process.env.${key}`] = JSON.stringify(process.env[key])
+
+    return acc
+  }, {})
+
+  let pluginsToAdd
+
+  if (Object.keys(varobj).length) {
+    pluginsToAdd = [plugins.define(varobj)]
+  }
+
+  actions.setWebpackConfig({ plugins: pluginsToAdd })
+}

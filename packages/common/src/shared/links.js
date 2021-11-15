@@ -12,7 +12,7 @@ export const headerLinks = [
   ...landingPageLinks
 ]
 
-if (process.env.GATSBY_PREMIUM_ENABLED === 'true') {
+if (process.env.PREMIUM_ENABLED === 'true') {
   headerLinks.push({
     to: '/pricing',
     text: 'Upgrade plan',

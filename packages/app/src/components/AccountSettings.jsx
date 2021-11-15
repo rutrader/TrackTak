@@ -105,7 +105,7 @@ const AccountSettings = () => {
           Account Settings
         </Typography>
         <Divider light sx={dividerStyle} />
-        {process.env.GATSBY_PREMIUM_ENABLED === 'true' && (
+        {process.env.PREMIUM_ENABLED === 'true' && (
           <>
             <Grid container justifyContent='space-between'>
               <Grid item xs={12} sm={5}>
@@ -224,7 +224,7 @@ const AccountSettings = () => {
             </SettingSection>
           </Grid>
           {!isExternalIdentityProvider &&
-            process.env.GATSBY_PREMIUM_ENABLED === 'true' && (
+            process.env.PREMIUM_ENABLED === 'true' && (
               <>
                 <Divider
                   orientation='vertical'
@@ -253,7 +253,7 @@ const AccountSettings = () => {
               </>
             )}
         </Grid>
-        {process.env.GATSBY_PREMIUM_ENABLED === 'true' && (
+        {process.env.PREMIUM_ENABLED === 'true' && (
           <>
             <Divider light sx={dividerStyle} />
             <Stack
