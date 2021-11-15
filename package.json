@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "workspaces": [
-    "packages/**"
+    "packages/**",
+    "services/**"
   ],
   "engines": {
     "yarn": "1.22.15",
@@ -20,7 +21,7 @@
     "tracktak": "run-p tracktak-app tracktak-gatsby",
     "powersheet": "lerna run develop --parallel --scope tracktak-powersheet",
     "fix": "run-s fix:*",
-    "fix:prettier": "prettier \"packages/**/*.{jsx,js}\" --write",
+    "fix:prettier": "prettier \"{packages,services}/**/*.{jsx,js}\" --write",
     "fix:lint": "eslint \"packages/**/*.{jsx,js}\" --fix",
     "release": "lerna version"
   },
