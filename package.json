@@ -22,7 +22,7 @@
     "powersheet": "lerna run develop --parallel --scope tracktak-powersheet",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"{packages,services}/**/*.{jsx,js}\" --write",
-    "fix:lint": "eslint \"packages/**/*.{jsx,js}\" --fix",
+    "fix:lint": "eslint \"{packages,services}/**/*.{jsx,js}\" --fix",
     "release": "lerna version"
   },
   "devDependencies": {
