@@ -9,20 +9,23 @@ import {
   Collapse,
   Table,
   TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
   Box,
   ListItemIcon,
   IconButton,
-  TableCell,
-  TableRow
+  useTheme
 } from '@mui/material'
 
-const CollapsibleFolder = ({
-  handleDelete,
-  handleRowClick,
-  spreadsheet,
-  spreadsheets
-}) => {
+const CollapsibleFolder = ({ handleDelete, handleRowClick, folder }) => {
   const [open, setOpen] = useState(false)
+  const theme = useTheme()
+
+  const cellHeaderStyle = {
+    fontSize: theme.typography.table.header,
+    fontWeight: 'bold'
+  }
 
   return (
     <>
@@ -46,11 +49,8 @@ const CollapsibleFolder = ({
             <ListItemIcon>
               <Folder />
             </ListItemIcon>
-            {spreadsheet.sheetData.name}
+            {folder.name}
           </Box>
-        </TableCell>
-        <TableCell align='right'>
-          {dayjs(spreadsheet.lastModifiedTimestamp).format('DD MMM YY HH:mm')}
         </TableCell>
         <TableCell align='right'>
           <IconButton
@@ -68,61 +68,84 @@ const CollapsibleFolder = ({
           </IconButton>
         </TableCell>
       </TableRow>
-      {spreadsheets.map(spreadsheet => {
-        return (
+      <Table aria-label='spreadsheet table'>
+        <TableHead>
           <TableRow>
-            <TableCell sx={{ pb: 0, pt: 0, p: 0, borderBottom: 0 }} colSpan={6}>
-              <Collapse in={open} timeout='auto' unmountOnExit>
-                <Box>
-                  <Table size='small' aria-label='purchases'>
-                    <TableBody align='right'>
-                      <TableRow
-                        hover
-                        onClick={() => handleRowClick(spreadsheet)}
-                      >
-                        <TableCell />
-                        <TableCell component='th' scope='row'>
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center'
-                            }}
-                          >
-                            <ListItemIcon>
-                              <GridOnIcon />
-                            </ListItemIcon>
-                            {spreadsheet.sheetData.name}
-                          </Box>
-                        </TableCell>
-                        <TableCell align='right'>
-                          {dayjs(spreadsheet.lastModifiedTimestamp).format(
-                            'DD MMM YY HH:mm'
-                          )}
-                        </TableCell>
-                        <TableCell align='right'>
-                          <IconButton
-                            sx={{
-                              borderRadius: '2px',
-                              color: theme => theme.palette.alert
-                            }}
-                            onClick={e => {
-                              e.stopPropagation()
-                              handleDelete(spreadsheet)
-                            }}
-                            type='button'
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </Box>
-              </Collapse>
+            <TableCell style={cellHeaderStyle} />
+            <TableCell style={cellHeaderStyle}>Name</TableCell>
+            <TableCell style={cellHeaderStyle} align='right'>
+              Last Modified
             </TableCell>
+            <TableCell style={cellHeaderStyle} align='right' />
           </TableRow>
-        )
-      })}
+        </TableHead>
+        <TableBody>
+          {folder.spreadsheets
+            .sort(
+              (a, b) =>
+                new Date(b.lastModifiedTimestamp) -
+                new Date(a.lastModifiedTimestamp)
+            )
+            .map(spreadsheet => {
+              return (
+                <TableRow>
+                  <TableCell
+                    sx={{ pb: 0, pt: 0, p: 0, borderBottom: 0 }}
+                    colSpan={6}
+                  >
+                    <Collapse in={open} timeout='auto' unmountOnExit>
+                      <Box>
+                        <Table size='small'>
+                          <TableBody align='right'>
+                            <TableRow
+                              hover
+                              onClick={() => handleRowClick(spreadsheet)}
+                            >
+                              <TableCell />
+                              <TableCell component='th' scope='row'>
+                                <Box
+                                  sx={{
+                                    display: 'flex',
+                                    alignItems: 'center'
+                                  }}
+                                >
+                                  <ListItemIcon>
+                                    <GridOnIcon />
+                                  </ListItemIcon>
+                                  {spreadsheet.sheetData.name}
+                                </Box>
+                              </TableCell>
+                              <TableCell align='right'>
+                                {dayjs(
+                                  spreadsheet.lastModifiedTimestamp
+                                ).format('DD MMM YY HH:mm')}
+                              </TableCell>
+                              <TableCell align='right'>
+                                <IconButton
+                                  sx={{
+                                    borderRadius: '2px',
+                                    color: theme => theme.palette.alert
+                                  }}
+                                  onClick={e => {
+                                    e.stopPropagation()
+                                    handleDelete(spreadsheet)
+                                  }}
+                                  type='button'
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </Box>
+                    </Collapse>
+                  </TableCell>
+                </TableRow>
+              )
+            })}
+        </TableBody>
+      </Table>
     </>
   )
 }

@@ -122,19 +122,8 @@ app.get('/api/v1/folders', auth, async (req, res) => {
   res.send({ folders })
 })
 
-app.get('/api/v1/folder/:id/spreadsheets', auth, async (req, res) => {
-  const folder = await api.getFolder(req.params.id)
-  const spreadsheets = await api.getSpreadsheets(req.user.username)
-
-  const spreadsheetsInFolder = spreadsheets.filter(({ _id }) =>
-    folder.spreadsheetIds.includes(_id)
-  )
-
-  res.send({ spreadsheetsInFolder })
-})
-
 app.post('/api/v1/folder', auth, async (req, res) => {
-  const folder = await api.createFolder(req.body.folderName)
+  const folder = await api.createFolder(req.body.name)
   res.send({ folder })
 })
 
@@ -174,8 +163,8 @@ app.put('/api/v1/spreadsheets', auth, async (req, res) => {
   res.send({ spreadsheet })
 })
 
-app.get('/api/v1/spreadsheets', auth, async (req, res) => {
-  const spreadsheets = await api.getSpreadsheets(req.user.username)
+app.get('/api/v1/spreadsheets-metadata', auth, async (req, res) => {
+  const spreadsheets = await api.getSpreadsheetsMetadata(req.user.username)
   res.send({ spreadsheets })
 })
 
@@ -214,7 +203,7 @@ app.put('/api/v1/spreadsheets', auth, async (req, res) => {
 })
 
 app.get('/api/v1/spreadsheets', auth, async (req, res) => {
-  const spreadsheets = await api.getSpreadsheets(req.user.username)
+  const spreadsheets = await api.getSpreadsheetsMetadata(req.user.username)
 
   res.send({ spreadsheets })
 })

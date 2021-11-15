@@ -310,9 +310,10 @@ const api = {
     ])
   },
 
-  createFolder: async folderName => {
+  createFolder: async name => {
     return database.insert(Collections.FOLDER, {
-      name: folderName
+      name: name,
+      spreadsheetIds: []
     })
   },
 
@@ -385,10 +386,18 @@ const api = {
     )
   },
 
-  getSpreadsheets: async userId => {
-    return database.find(Collections.SPREADSHEET, {
-      userId
-    })
+  getSpreadsheetsMetadata: async userId => {
+    return database.find(
+      Collections.SPREADSHEET,
+      {
+        userId
+      },
+      {
+        projection: {
+          'sheetData.data': 0
+        }
+      }
+    )
   },
 
   getSpreadsheet: async id => {

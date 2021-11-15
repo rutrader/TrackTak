@@ -1,17 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Box,
-  Typography,
-  DialogContentText,
-  useTheme,
-  Button
-} from '@mui/material'
+import { Box, Typography, DialogContentText, Button } from '@mui/material'
 import ConfirmationDialog from './ConfirmationDialog'
 import { api, utils, useAuth, RoundButton } from '@tracktak/common'
 import { useNavigate } from 'react-router-dom'
@@ -21,19 +9,41 @@ import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder'
 
 const SavedSpreadsheets = ({ onNewSpreadsheetClick, trackCustomEvent }) => {
   const navigate = useNavigate()
-  const theme = useTheme()
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false)
   const { userData, getAccessToken } = useAuth()
-  const [spreadsheets, setSpreadsheets] = useState(null)
   const [selectedSpreadsheet, setSelectedSpreadsheet] = useState()
-  const [createNewFolder, setCreateNewFolder] = useState(false)
+  const [folders, setFolders] = useState([])
+  const [spreadsheets, setSpreadsheets] = useState(null)
 
   useEffect(() => {
     async function fetchData() {
       const token = await getAccessToken()
-      const response = await api.getSpreadsheets(token?.jwtToken)
+      const accessToken = token?.jwtToken
 
-      setSpreadsheets(response.data.spreadsheets)
+      const getSpreadsheetsMetadataPromise =
+        api.getSpreadsheetsMetadata(accessToken)
+      const getFoldersPromise = api.getFolders(accessToken)
+
+      const dataResponse = await Promise.all([
+        getSpreadsheetsMetadataPromise,
+        getFoldersPromise
+      ])
+
+      const spreadsheets = dataResponse[0].data.spreadsheets
+      const folders = dataResponse[1].data.folders
+
+      const foldersWithSpreadsheets = folders.map(folder => {
+        const spreadsheetsInFolder = spreadsheets.filter(({ _id }) =>
+          folder.spreadsheetIds.includes(_id)
+        )
+        return {
+          name: folder.name,
+          spreadsheets: spreadsheetsInFolder
+        }
+      })
+
+      setSpreadsheets(spreadsheets)
+      setFolders(foldersWithSpreadsheets)
     }
     fetchData()
   }, [getAccessToken])
@@ -71,15 +81,6 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick, trackCustomEvent }) => {
 
   const handleConfirmationDialogClose = () => {
     setShowConfirmationDialog(false)
-  }
-
-  const handleCreateNewFolder = () => {
-    setCreateNewFolder(true)
-  }
-
-  const cellHeaderStyle = {
-    fontSize: theme.typography.table.header,
-    fontWeight: 'bold'
   }
 
   return (
@@ -126,18 +127,17 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick, trackCustomEvent }) => {
           </RoundButton>
         </Box>
       )}
+      <Button
+        sx={{
+          textTransform: 'none'
+        }}
+        startIcon={<CreateNewFolderIcon />}
+      >
+        New Folder
+      </Button>
       {spreadsheets?.length > 0 && (
         <>
-          <Button
-            sx={{
-              textTransform: 'none'
-            }}
-            startIcon={<CreateNewFolderIcon />}
-            onClick={handleCreateNewFolder}
-          >
-            New Folder
-          </Button>
-          <TableContainer
+          <Box
             sx={{
               marginTop: '20px',
               '& .MuiTableRow-root': {
@@ -145,36 +145,17 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick, trackCustomEvent }) => {
               }
             }}
           >
-            <Table aria-label='spreadsheet table'>
-              <TableHead>
-                <TableRow>
-                  <TableCell style={cellHeaderStyle} />
-                  <TableCell style={cellHeaderStyle}>Name</TableCell>
-                  <TableCell style={cellHeaderStyle} align='right'>
-                    Last Modified
-                  </TableCell>
-                  <TableCell style={cellHeaderStyle} align='right' />
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {spreadsheets
-                  .sort(
-                    (a, b) =>
-                      new Date(b.lastModifiedTimestamp) -
-                      new Date(a.lastModifiedTimestamp)
-                  )
-                  .map(spreadsheet => (
-                    <CollapsibleFolder
-                      spreadsheets={spreadsheets}
-                      spreadsheet={spreadsheet}
-                      handleRowClick={handleRowClick}
-                      handleDelete={handleDelete}
-                      key={spreadsheet._id}
-                    />
-                  ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+            {folders.map(folder => {
+              return (
+                <CollapsibleFolder
+                  folder={folder}
+                  handleRowClick={handleRowClick}
+                  handleDelete={handleDelete}
+                  key={folder._id}
+                />
+              )
+            })}
+          </Box>
         </>
       )}
     </>

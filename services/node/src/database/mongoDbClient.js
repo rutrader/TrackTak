@@ -69,9 +69,10 @@ export const updateOne = async (collection, query, update) => {
   return database.collection(collection).updateOne(query, update)
 }
 
-export const find = async (collection, query) => {
+export const find = async (collection, query, fields) => {
   const database = client.db(DATABASE_NAME)
-  return database.collection(collection).find(query).toArray()
+
+  return database.collection(collection).find(query, fields).toArray()
 }
 
 export const findOne = async (collection, query) => {

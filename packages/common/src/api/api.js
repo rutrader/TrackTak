@@ -68,16 +68,10 @@ export const getFolders = async accessToken => {
   })
 }
 
-export const getSpreadsheetsInFolder = async (accessToken, id) => {
-  return axios.get(`/api/v1/folder/${id}/spreadsheets`, {
-    headers: getAuthHeaders(accessToken)
-  })
-}
-
-export const createFolder = async (folderName, accessToken) => {
+export const createFolder = async (name, accessToken) => {
   return axios.post(
     '/api/v1/folder',
-    { folderName },
+    { name },
     {
       headers: getAuthHeaders(accessToken)
     }
@@ -114,8 +108,8 @@ export const saveSpreadsheet = async (spreadsheet, accessToken) => {
   })
 }
 
-export const getSpreadsheets = async accessToken => {
-  return axios.get('/api/v1/spreadsheets', {
+export const getSpreadsheetsMetadata = async accessToken => {
+  return axios.get('/api/v1/spreadsheets-metadata', {
     headers: getAuthHeaders(accessToken)
   })
 }
