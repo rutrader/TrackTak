@@ -23,6 +23,7 @@ import isStockDisabled from '../shared/isStockDisabled'
 import getSymbolFromCurrency from 'currency-symbol-map'
 import { cloneDeep } from 'lodash-es'
 import { useNavigate } from 'react-router'
+import logValuationEvent from '../shared/logValuationEvent'
 
 const SearchTicker = ({ isSmallSearch, sx, getTemplate }) => {
   const theme = useTheme()
@@ -66,13 +67,14 @@ const SearchTicker = ({ isSmallSearch, sx, getTemplate }) => {
       token?.jwtToken
     )
 
+    const spreadsheet = response.data.spreadsheet
+
     const registeredPluginClass = HyperFormula.getFunctionPlugin('FINANCIAL')
 
     HyperFormula.unregisterFunctionPlugin(registeredPluginClass)
 
-    navigate(
-      `/${userData.name}/my-spreadsheets/${response.data.spreadsheet._id}`
-    )
+    navigate(`/${userData.name}/my-spreadsheets/${spreadsheet._id}`)
+
     dispatch(
       snackbarActions.setMessage({
         severity: 'success',
@@ -81,6 +83,7 @@ const SearchTicker = ({ isSmallSearch, sx, getTemplate }) => {
         )} for your valuation.`
       })
     )
+    logValuationEvent('Create', spreadsheet.sheetData.name)
   }
 
   const getAutoCompleteDebounced = useDebouncedCallback(async value => {
@@ -98,12 +101,6 @@ const SearchTicker = ({ isSmallSearch, sx, getTemplate }) => {
 
     if (value?.code && value?.exchange) {
       const ticker = `${value.code}.${value.exchange}`
-
-      // trackCustomEvent({
-      //   category: 'Valuation',
-      //   action: `Create ${ticker} valuation`,
-      //   value: dayjs().format(utils.trackingFormatDate)
-      // })
 
       createUserSpreadsheet(ticker)
     }
