@@ -132,7 +132,7 @@ app.put('/api/v1/spreadsheets', auth, async (req, res) => {
   res.send({ spreadsheet })
 })
 
-app.get('/api/v1/spreadsheets-metadata', auth, async (req, res) => {
+app.get('/api/v1/spreadsheets/metadata', auth, async (req, res) => {
   const spreadsheets = await api.getSpreadsheetsMetadata(req.user.username)
 
   res.send({ spreadsheets })
