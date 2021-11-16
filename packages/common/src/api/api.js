@@ -74,8 +74,8 @@ export const saveSpreadsheet = async (spreadsheet, accessToken) => {
   })
 }
 
-export const getSpreadsheets = async accessToken => {
-  return axios.get('/api/v1/spreadsheets', {
+export const getSpreadsheetsMetadata = async accessToken => {
+  return axios.get('/api/v1/spreadsheets/metadata', {
     headers: getAuthHeaders(accessToken)
   })
 }

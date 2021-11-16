@@ -1,7 +1,7 @@
 import { Box } from '@mui/material'
 import React from 'react'
 import SearchTicker from './SearchTicker'
-import { freeCashFlowFirmSimple } from '@tracktak/financial-model'
+import { getFreeCashFlowFirmSimple } from '@tracktak/financial-model'
 import AuthenticatedHeader from './AuthenticatedHeader'
 
 const LayoutFullScreen = ({ children }) => {
@@ -24,7 +24,7 @@ const LayoutFullScreen = ({ children }) => {
             }}
           >
             <SearchTicker
-              template={freeCashFlowFirmSimple}
+              getTemplate={getFreeCashFlowFirmSimple}
               isSmallSearch
               sx={{
                 flex: 1,

@@ -13,13 +13,14 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "scripts": {
-    "build": "parcel build",
+    "build": "cross-env NODE_ENV=production parcel build --reporter @parcel/reporter-bundle-analyzer",
     "watch:build": "parcel watch",
     "analyze-size": "rimraf ./dist && cross-env NODE_ENV=production yarn run build && source-map-explorer ./dist/index.module.js"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.2",
     "@tracktak/common": "*",
+    "@parcel/reporter-bundle-analyzer": "^2.0.1",
     "@tracktak/powersheet": "^1.0.1",
     "axios": "^0.21.1",
     "change-case": "^4.1.2",

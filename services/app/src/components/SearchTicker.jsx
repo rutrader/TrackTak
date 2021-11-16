@@ -24,7 +24,7 @@ import getSymbolFromCurrency from 'currency-symbol-map'
 import { cloneDeep } from 'lodash-es'
 import { useNavigate } from 'react-router'
 
-const SearchTicker = ({ isSmallSearch, sx, template }) => {
+const SearchTicker = ({ isSmallSearch, sx, getTemplate }) => {
   const theme = useTheme()
   const [autoComplete, setAutoComplete] = useState([])
   const [isLoadingAutocomplete, setIsLoadingAutocomplete] = useState(false)
@@ -38,17 +38,18 @@ const SearchTicker = ({ isSmallSearch, sx, template }) => {
   const createUserSpreadsheet = async ticker => {
     const values = await Promise.all([
       getAccessToken(),
+      getTemplate(),
       api.getFundamentals(ticker, {
         filter: 'General::CurrencyCode'
       })
     ])
 
     const token = values[0]
-    const freeCashFlowToFirmTemplateData = cloneDeep(template)
+    const freeCashFlowToFirmTemplateData = cloneDeep(values[1])
 
     Object.keys(freeCashFlowToFirmTemplateData.cells).forEach(key => {
       const cellData = freeCashFlowToFirmTemplateData.cells[key]
-      const currencyCode = convertSubCurrencyToCurrency(values[1].data.value)
+      const currencyCode = convertSubCurrencyToCurrency(values[2].data.value)
       const currencySymbol = getSymbolFromCurrency(currencyCode)
 
       if (cellData.dynamicFormat === 'currency') {

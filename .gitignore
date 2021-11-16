@@ -92,3 +92,4 @@ out*
 build
 build.zip
 .parcel-cache
+parcel-bundle-reports
