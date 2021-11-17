@@ -338,7 +338,9 @@ const getPowersheet = xSpreadsheets => {
 }
 
 const mapper = (data, name) => {
-  const xSpreadsheets = data.data.datas
+  const { datas, variablesDatas } = data.data
+
+  const xSpreadsheets = [...variablesDatas, ...datas]
 
   const powersheetData = getPowersheet(xSpreadsheets)
 
