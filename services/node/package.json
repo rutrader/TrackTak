@@ -25,7 +25,9 @@
     "memory-cache": "^0.2.0",
     "mongodb": "^3.6.9",
     "stripe": "^8.178.0",
-    "find-yarn-workspace-root": "^2.0.0",
+    "find-yarn-workspace-root": "^2.0.0"
+  },
+  "devDependencies": {
     "nodemon": "^2.0.15"
   }
 }

@@ -4,9 +4,14 @@ env:
   shell: bash
   parameter-store:
     NPM_TOKEN: /codebuild/NPM_TOKEN
-    CONTENTFUL_API_KEY: /ui/staging/CONTENTFUL_API_KEY
-    COGNITO_USER_POOL_ID: /common/staging/COGNITO_USER_POOL_ID
-    COGNITO_APP_CLIENT_ID: /common/staging/COGNITO_APP_CLIENT_ID
+    CONTENTFUL_API_KEY: /ui/prod/CONTENTFUL_API_KEY
+    COGNITO_USER_POOL_ID: /common/prod/COGNITO_USER_POOL_ID
+    COGNITO_APP_CLIENT_ID: /common/prod/COGNITO_APP_CLIENT_ID
+    PREMIUM_ENABLED: /common/prod/PREMIUM_ENABLED
+    APP_SUBDOMAIN_URL: /common/prod/APP_SUBDOMAIN_URL
+    API_BASE_URL: /common/prod/API_BASE_URL
+    DOMAIN_URL: /common/prod/DOMAIN_URL
+    COGNITO_COOKIE_DOMAIN: /common/prod/COGNITO_COOKIE_DOMAIN
 
 phases:
   install:
