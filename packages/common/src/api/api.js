@@ -96,10 +96,17 @@ export const deleteFolder = async (id, accessToken) => {
   })
 }
 
-export const createSpreadsheet = async (spreadsheet, accessToken) => {
-  return axios.post('/api/v1/spreadsheets', spreadsheet, {
-    headers: getAuthHeaders(accessToken)
-  })
+export const createSpreadsheet = async (spreadsheet, folderId, accessToken) => {
+  return axios.post(
+    '/api/v1/spreadsheets',
+    {
+      ...spreadsheet,
+      folderId
+    },
+    {
+      headers: getAuthHeaders(accessToken)
+    }
+  )
 }
 
 export const saveSpreadsheet = async (spreadsheet, accessToken) => {

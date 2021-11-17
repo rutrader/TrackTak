@@ -1,52 +1,37 @@
-import React, { useEffect, useState } from 'react'
-import { Box, Typography, DialogContentText, Button } from '@mui/material'
+import React, { useState } from 'react'
+import {
+  Box,
+  Typography,
+  DialogContentText,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableContainer,
+  ListItemIcon,
+  IconButton,
+  useTheme
+} from '@mui/material'
 import ConfirmationDialog from './ConfirmationDialog'
 import { api, utils, useAuth, RoundButton } from '@tracktak/common'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import dayjs from 'dayjs'
-import CollapsibleFolder from './CollapsibleFolder'
-import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder'
+import { useSpreadsheetsMetadata } from '../hooks/useSpreadsheetsMetadata'
+import GridOnIcon from '@mui/icons-material/GridOn'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 const SavedSpreadsheets = ({ onNewSpreadsheetClick, trackCustomEvent }) => {
+  const theme = useTheme()
   const navigate = useNavigate()
+  const { spreadsheets, defaultFolderId } = useSpreadsheetsMetadata()
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false)
   const { userData, getAccessToken } = useAuth()
   const [selectedSpreadsheet, setSelectedSpreadsheet] = useState()
-  const [folders, setFolders] = useState([])
-  const [spreadsheets, setSpreadsheets] = useState(null)
-
-  useEffect(() => {
-    async function fetchData() {
-      const token = await getAccessToken()
-      const accessToken = token?.jwtToken
-
-      const getSpreadsheetsMetadataPromise =
-        api.getSpreadsheetsMetadata(accessToken)
-      const getFoldersPromise = api.getFolders(accessToken)
-
-      const dataResponse = await Promise.all([
-        getSpreadsheetsMetadataPromise,
-        getFoldersPromise
-      ])
-
-      const spreadsheets = dataResponse[0].data.spreadsheets
-      const folders = dataResponse[1].data.folders
-
-      const foldersWithSpreadsheets = folders.map(folder => {
-        const spreadsheetsInFolder = spreadsheets.filter(({ _id }) =>
-          folder.spreadsheetIds.includes(_id)
-        )
-        return {
-          name: folder.name,
-          spreadsheets: spreadsheetsInFolder
-        }
-      })
-
-      setSpreadsheets(spreadsheets)
-      setFolders(foldersWithSpreadsheets)
-    }
-    fetchData()
-  }, [getAccessToken])
+  const params = useParams()
+  const currentSpreadsheets = spreadsheets?.filter(
+    x => x.folderId === (params.folderId ?? defaultFolderId)
+  )
 
   const handleRowClick = spreadsheet => {
     navigate(`/${userData.name}/my-spreadsheets/${spreadsheet._id}`)
@@ -83,6 +68,11 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick, trackCustomEvent }) => {
     setShowConfirmationDialog(false)
   }
 
+  const cellHeaderStyle = {
+    fontSize: theme.typography.table.header,
+    fontWeight: 'bold'
+  }
+
   return (
     <>
       <ConfirmationDialog
@@ -103,7 +93,7 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick, trackCustomEvent }) => {
         </DialogContentText>
       </ConfirmationDialog>
       {/* No falsy check because null means the data hasn't loaded yet */}
-      {spreadsheets?.length === 0 && (
+      {currentSpreadsheets?.length === 0 && (
         <Box
           sx={{
             marginTop: theme => theme.spacing(10)
@@ -127,17 +117,9 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick, trackCustomEvent }) => {
           </RoundButton>
         </Box>
       )}
-      <Button
-        sx={{
-          textTransform: 'none'
-        }}
-        startIcon={<CreateNewFolderIcon />}
-      >
-        New Folder
-      </Button>
-      {spreadsheets?.length > 0 && (
+      {currentSpreadsheets?.length > 0 && (
         <>
-          <Box
+          <TableContainer
             sx={{
               marginTop: '20px',
               '& .MuiTableRow-root': {
@@ -145,17 +127,67 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick, trackCustomEvent }) => {
               }
             }}
           >
-            {folders.map(folder => {
-              return (
-                <CollapsibleFolder
-                  folder={folder}
-                  handleRowClick={handleRowClick}
-                  handleDelete={handleDelete}
-                  key={folder._id}
-                />
-              )
-            })}
-          </Box>
+            <Table aria-label='spreadsheet table'>
+              <TableHead>
+                <TableRow>
+                  <TableCell style={cellHeaderStyle}>Name</TableCell>
+                  <TableCell style={cellHeaderStyle} align='right'>
+                    Last Modified
+                  </TableCell>
+                  <TableCell style={cellHeaderStyle} align='right' />
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {currentSpreadsheets
+                  .sort(
+                    (a, b) =>
+                      new Date(b.lastModifiedTimestamp) -
+                      new Date(a.lastModifiedTimestamp)
+                  )
+                  .map(spreadsheet => (
+                    <TableRow
+                      key={spreadsheet._id}
+                      hover
+                      onClick={() => handleRowClick(spreadsheet)}
+                    >
+                      <TableCell component='th' scope='row'>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            alignItems: 'center'
+                          }}
+                        >
+                          <ListItemIcon>
+                            <GridOnIcon />
+                          </ListItemIcon>
+                          {spreadsheet.sheetData.name}
+                        </Box>
+                      </TableCell>
+                      <TableCell align='right'>
+                        {dayjs(spreadsheet.lastModifiedTimestamp).format(
+                          'DD MMM YY HH:mm'
+                        )}
+                      </TableCell>
+                      <TableCell align='right'>
+                        <IconButton
+                          sx={{
+                            borderRadius: '2px',
+                            color: theme.palette.alert
+                          }}
+                          onClick={e => {
+                            e.stopPropagation()
+                            handleDelete(spreadsheet)
+                          }}
+                          type='button'
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </>
       )}
     </>

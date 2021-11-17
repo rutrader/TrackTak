@@ -24,6 +24,8 @@ import getSymbolFromCurrency from 'currency-symbol-map'
 import { cloneDeep } from 'lodash-es'
 import { useNavigate } from 'react-router'
 
+const folderId = '6193cb55e2c0a84be0cad813'
+
 const SearchTicker = ({ isSmallSearch, sx, template }) => {
   const theme = useTheme()
   const [autoComplete, setAutoComplete] = useState([])
@@ -62,6 +64,7 @@ const SearchTicker = ({ isSmallSearch, sx, template }) => {
     }
     const response = await api.createSpreadsheet(
       { sheetData, ticker },
+      folderId,
       token?.jwtToken
     )
 

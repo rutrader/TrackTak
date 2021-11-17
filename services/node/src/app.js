@@ -112,7 +112,7 @@ app.get('/api/v1/folders', auth, async (req, res) => {
   const folders = await api.getFolders(req.user.username)
 
   if (folders.length === 0) {
-    const folder = await api.createFolder('Valuations')
+    const folder = await api.createFolder('Valuations', req.user.username)
 
     res.send({ folders: [folder] })
 
@@ -149,6 +149,9 @@ app.post('/api/v1/spreadsheets', auth, async (req, res) => {
     req.user.username,
     financialData
   )
+
+  await api.updateSpreadsheetFolder(spreadsheet._id, req.body.folderId)
+
   res.send({ spreadsheet })
 })
 

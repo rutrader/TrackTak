@@ -310,10 +310,10 @@ const api = {
     ])
   },
 
-  createFolder: async name => {
+  createFolder: async (name, userId) => {
     return database.insert(Collections.FOLDER, {
-      name: name,
-      spreadsheetIds: []
+      userId,
+      name: name
     })
   },
 
@@ -336,18 +336,6 @@ const api = {
   },
 
   updateSpreadsheetFinancialData: async (id, financialDataId) => {
-    return database.updateOne(
-      Collections.SPREADSHEET,
-      {
-        _id: new MongoDb.ObjectId(id)
-      },
-      {
-        $set: { 'financialData.id': financialDataId }
-      }
-    )
-  },
-
-  updateSpreadsheet: async (id, financialDataId) => {
     return database.updateOne(
       Collections.SPREADSHEET,
       {
