@@ -56,7 +56,8 @@ typings/
 
 # gatsby files
 .cache/
-public
+services/tracktak-gatsby/public
+services/powersheet-gatsby/public
 
 # Mac files
 .DS_Store
