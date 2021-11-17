@@ -1,6 +1,10 @@
 import mapper from './mapper.js'
 import * as database from './client/mongoDbClient.js'
-import { Collections } from './client/collections.js'
+
+const Collections = {
+  SPREADSHEET: 'spreadsheet',
+  POWERSHEET_SPREADSHEET: 'powersheet-spreadsheet'
+}
 
 ;(async function () {
   await database.connect()
