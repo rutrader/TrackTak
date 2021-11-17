@@ -4,7 +4,7 @@ env:
   shell: bash
   parameter-store:
     NPM_TOKEN: /codebuild/NPM_TOKEN
-    CONTENTFUL_API_KEY: /ui/prod/CONTENTFUL_API_KEY
+    CONTENTFUL_API_KEY: /tracktak-gatsby/prod/CONTENTFUL_API_KEY
     COGNITO_USER_POOL_ID: /common/prod/COGNITO_USER_POOL_ID
     COGNITO_APP_CLIENT_ID: /common/prod/COGNITO_APP_CLIENT_ID
     PREMIUM_ENABLED: /common/prod/PREMIUM_ENABLED

@@ -9,12 +9,6 @@ module.exports = {
         createDemoPages: false,
         colorMode: false
       }
-    },
-    {
-      resolve: `gatsby-plugin-s3`,
-      options: {
-        bucketName: 'powersheet.tracktak.com'
-      }
     }
   ],
   siteMetadata: {

@@ -8,7 +8,6 @@ import { CURRENT_PLAN_ENDPOINT } from './shared/constants'
 import { getUserDetails } from './cognito/cognitoClient'
 import dayjs from 'dayjs'
 
-const port = process.env.NODE_PORT
 const app = express()
 const stripe = Stripe(process.env.STRIPE_AUTH_SECRET_KEY)
 
@@ -369,6 +368,6 @@ app.get('/', (_, res) => {
   res.sendStatus(200)
 })
 
-app.listen(port, async () => {
-  console.log(`Server running at 127.0.0.1:${port}/`)
+app.listen(process.env.PORT, async () => {
+  console.log(`Server running at 127.0.0.1:${process.env.PORT}/`)
 })
