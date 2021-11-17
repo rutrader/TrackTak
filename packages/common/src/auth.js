@@ -12,7 +12,7 @@ import axios from 'axios'
 import * as utils from './shared/utils'
 
 const cookieStorage = new CookieStorage({
-  domain: process.env.COGNITO_COOKIE_DOMAIN ?? 'tracktak.com',
+  domain: process.env.COGNITO_COOKIE_DOMAIN,
   secure: process.env.NODE_ENV
 })
 

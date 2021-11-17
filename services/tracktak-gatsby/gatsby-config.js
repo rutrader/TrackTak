@@ -66,12 +66,6 @@ module.exports = {
     'gatsby-plugin-styled-components',
     'gatsby-plugin-emotion',
     {
-      resolve: 'gatsby-plugin-s3',
-      options: {
-        bucketName: isInProduction ? 'tracktak.com' : 'staging.tracktak.com'
-      }
-    },
-    {
       resolve: `gatsby-plugin-hotjar`,
       options: {
         id: '2536228',
