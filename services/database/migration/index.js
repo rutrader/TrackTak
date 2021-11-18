@@ -27,19 +27,24 @@ const Collections = {
   const currencies = JSON.parse(fs.readFileSync(`currencies.json`))
 
   for (let index = 0; index < mappedData.length; index++) {
-    const mappedDatum = mappedData[index]
-    const cells = mappedDatum.sheetData.data.cells
-    const ticker = mappedDatum.financialData.ticker
+    try {
+      const mappedDatum = mappedData[index]
+      const cells = mappedDatum.sheetData.data.cells
+      const ticker = mappedDatum.financialData.ticker
 
-    Object.keys(cells).forEach(key => {
-      const cellData = cells[key]
-      const currencySymbol = currencies[ticker]
+      Object.keys(cells).forEach(key => {
+        const cellData = cells[key]
+        const currencySymbol = currencies[ticker]
 
-      if (cellData.dynamicFormat === 'currency') {
-        cells[key].textFormatPattern =
-          currencySymbol + cellData.textFormatPattern
-      }
-    })
+        if (cellData.dynamicFormat === 'currency') {
+          cells[key].textFormatPattern =
+            currencySymbol + cellData.textFormatPattern
+        }
+      })
+    } catch (error) {
+      console.warn(error)
+      console.log(`error occurred, skipping stock`)
+    }
   }
 
   console.log(
