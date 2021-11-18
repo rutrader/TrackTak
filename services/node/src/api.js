@@ -317,6 +317,19 @@ const api = {
     })
   },
 
+  //TO DO:
+  updateFolder: async (id, folderId) => {
+    return database.updateOne(
+      Collections.FOLDER,
+      {
+        _id: new MongoDb.ObjectId(id)
+      },
+      {
+        $set: { folderId }
+      }
+    )
+  },
+
   updateSpreadsheetFolder: async (id, folderId) => {
     return database.updateOne(
       Collections.SPREADSHEET,

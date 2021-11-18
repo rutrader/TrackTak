@@ -1,5 +1,4 @@
-import React, { forwardRef, useEffect, useState } from 'react'
-import Folder from '@mui/icons-material/Folder'
+import React, { useEffect, useState } from 'react'
 import {
   Box,
   Drawer,
@@ -12,7 +11,6 @@ import {
   ListItemText,
   ListItemIcon,
   IconButton,
-  Divider,
   Drawer,
   Box,
   useTheme
@@ -20,6 +18,7 @@ import {
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder'
+import SidePanelTabFolders from './SidePanelTabFolders'
 
 const drawerWidth = 240
 
@@ -45,14 +44,10 @@ const FolderDrawer = ({ folders }) => {
     <List>
       {folders.map(folder => {
         return (
-          <ListItem key={folder.name} button>
-            <ListItemIcon>
-              <Folder />
-            </ListItemIcon>
-            <ListItemText primary={folder.name} />
-          </ListItem>
+          <SidePanelTabFolders key={folder.name} folderName={folder.name} />
         )
       })}
+      <Divider sx={{ my: 0.5 }} />
       <ListItem button sx={{ marginTop: '10px' }}>
         <ListItemIcon>
           <CreateNewFolderIcon />
