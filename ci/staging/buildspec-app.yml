@@ -11,6 +11,8 @@ env:
     API_BASE_URL: /common/staging/API_BASE_URL
     DOMAIN_URL: /common/staging/DOMAIN_URL
     COGNITO_COOKIE_DOMAIN: /common/staging/COGNITO_COOKIE_DOMAIN
+    SOCIAL_LOGIN_REDIRECT_URL: /common/staging/SOCIAL_LOGIN_REDIRECT_URL
+    COGNITO_TOKEN_ENDPOINT: /common/staging/COGNITO_TOKEN_ENDPOINT
 
 phases:
   install:
