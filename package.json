@@ -27,8 +27,7 @@
     "build": "lerna run build --parallel --scope @tracktak/app --scope @tracktak/gatsby --scope @powersheet/gatsby",
     "build-app": "lerna run build --scope @tracktak/app",
     "build-tracktak-gatsby": "lerna run build --scope @tracktak/gatsby",
-    "build-powersheet-gatsby": "lerna run build --scope @powersheet/gatsby",
-    "migration": "lerna run start --scope db-migration"
+    "build-powersheet-gatsby": "lerna run build --scope @powersheet/gatsby"
   },
   "devDependencies": {
     "@octokit/core": "^3.5.1",
