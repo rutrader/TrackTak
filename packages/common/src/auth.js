@@ -127,7 +127,8 @@ export const getUserFromCode = async code => {
 
   const user = new CognitoUser({
     Username: IdToken.payload.username || IdToken.payload['cognito:username'],
-    Pool: userPool
+    Pool: userPool,
+    Storage: cookieStorage
   })
 
   user.setSignInUserSession(
@@ -164,7 +165,8 @@ export const sendEmailVerification = (
 ) => {
   const user = new CognitoUser({
     Username: username,
-    Pool: userPool
+    Pool: userPool,
+    Storage: cookieStorage
   })
   user.initiateAuth(
     new AuthenticationDetails({
@@ -198,7 +200,8 @@ export const sendChallengeAnswer = (
   try {
     const user = new CognitoUser({
       Username: localStorage.getItem(CUSTOM_CHALLENGE_USERNAME_KEY),
-      Pool: userPool
+      Pool: userPool,
+      Storage: cookieStorage
     })
     user.Session = localStorage.getItem(CUSTOM_CHALLENGE_SESSION_KEY)
     const newPassword = localStorage.getItem(CUSTOM_CHALLENGE_NEW_PASSWORD_KEY)
