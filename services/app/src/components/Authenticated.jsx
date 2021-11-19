@@ -6,7 +6,7 @@ const Authenticated = ({ children }) => {
 
   useEffect(() => {
     if (!isAuthenticated && hasLoadedAuthDetails) {
-      window.location.href = process.env.DOMAIN_URL
+      window.location.href = `${process.env.DOMAIN_URL}${window.location.search}`
     }
   }, [hasLoadedAuthDetails, isAuthenticated])
 
