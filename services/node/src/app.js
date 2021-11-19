@@ -126,6 +126,11 @@ app.post('/api/v1/folder', auth, async (req, res) => {
   res.send({ folder })
 })
 
+app.put('/api/v1/folder/:id', auth, async (req, res) => {
+  const folder = await api.updateFolder(req.params.id, req.body.name)
+  res.send({ folder })
+})
+
 app.delete('/api/v1/folder/:id', auth, async (req, res) => {
   const folder = await api.deleteFolder(req.params.id)
   res.send({ folder })

@@ -313,19 +313,18 @@ const api = {
   createFolder: async (name, userId) => {
     return database.insert(Collections.FOLDER, {
       userId,
-      name: name
+      name
     })
   },
 
-  //TO DO:
-  updateFolder: async (id, folderId) => {
+  updateFolder: async (id, name) => {
     return database.updateOne(
       Collections.FOLDER,
       {
         _id: new MongoDb.ObjectId(id)
       },
       {
-        $set: { folderId }
+        $set: { name }
       }
     )
   },

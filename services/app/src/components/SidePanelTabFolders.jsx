@@ -3,17 +3,23 @@ import { ListItem, ListItemText, ListItemIcon } from '@mui/material'
 import Folder from '@mui/icons-material/Folder'
 import OptionsMenu from './OptionsMenu'
 import ContentEditable from 'react-contenteditable'
+import { useAuth, api } from '@tracktak/common'
 import { setCaretToEndOfElement } from '../../../../packages/common/src/shared/utils'
+import { useSpreadsheetsMetadata } from '../hooks/useSpreadsheetsMetadata'
+import { useParams } from 'react-router-dom'
 
 const SidePanelTabFolders = ({ folderName }) => {
   const [anchorEl, setAnchorEl] = useState(null)
   const [disabled, setDisabled] = useState(true)
+  const { getAccessToken } = useAuth()
+  const { defaultFolderId } = useSpreadsheetsMetadata()
+  const params = useParams()
   const open = Boolean(anchorEl)
   const editableRef = useRef()
-  const text = useRef('')
+  const textRef = useRef(folderName)
 
   const handleContentEditable = e => {
-    text.current = e.target.value
+    textRef.current = e.target.value
   }
 
   const handleClickAnchor = e => {
@@ -29,8 +35,14 @@ const SidePanelTabFolders = ({ folderName }) => {
     setAnchorEl(null)
   }
 
-  const handleBlur = () => {
-    //TODO: axios api call
+  const handleBlur = async () => {
+    const token = await getAccessToken()
+    const accessToken = token?.jwtToken
+
+    const folderId = params.folderId ?? defaultFolderId
+
+    await api.updateFolder(folderId, textRef.current, accessToken)
+
     setDisabled(true)
   }
 
@@ -65,7 +77,7 @@ const SidePanelTabFolders = ({ folderName }) => {
             disabled={disabled}
             onBlur={handleBlur}
             onChange={handleContentEditable}
-            html={folderName}
+            html={textRef.current}
           />
         }
       />

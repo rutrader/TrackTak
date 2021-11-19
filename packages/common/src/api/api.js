@@ -78,6 +78,16 @@ export const createFolder = async (name, accessToken) => {
   )
 }
 
+export const updateFolder = async (id, name, accessToken) => {
+  return axios.put(
+    `/api/v1/folder/${id}`,
+    { name },
+    {
+      headers: getAuthHeaders(accessToken)
+    }
+  )
+}
+
 export const updateSpreadsheetFolder = async (id, folderId, accessToken) => {
   return axios.put(
     `/api/v1/spreadsheet/${id}`,

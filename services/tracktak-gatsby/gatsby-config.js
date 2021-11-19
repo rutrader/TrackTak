@@ -91,12 +91,12 @@ module.exports = {
       resolve: 'gatsby-plugin-sitemap'
     },
     'gatsby-plugin-robots-txt',
-    {
-      resolve: 'gatsby-plugin-manifest',
-      options: {
-        icon: `${__dirname}/src/assets/tracktak-logo-small.svg`
-      }
-    },
+    // {
+    //   resolve: 'gatsby-plugin-manifest',
+    //   options: {
+    //     icon: `${__dirname}/src/assets/tracktak-logo-small.svg`
+    //   }
+    // },
     'gatsby-plugin-mdx',
     'gatsby-plugin-image',
     {
