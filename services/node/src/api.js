@@ -350,7 +350,7 @@ const api = {
 
   updateSpreadsheetFinancialData: async (id, financialDataId) => {
     return database.updateOne(
-      Collections.SPREADSHEET,
+      Collections.POWERSHEET_SPREADSHEET,
       {
         _id: new MongoDb.ObjectId(id)
       },
@@ -401,17 +401,15 @@ const api = {
     )
   },
 
-  getSpreadsheet: async (userId, id) => {
+  getSpreadsheet: async id => {
     return database.findOne(Collections.POWERSHEET_SPREADSHEET, {
-      _id: new MongoDb.ObjectId(id),
-      userId
+      _id: new MongoDb.ObjectId(id)
     })
   },
 
-  deleteSpreadsheet: async (id, userId) => {
+  deleteSpreadsheet: async id => {
     return database.deleteOne(Collections.POWERSHEET_SPREADSHEET, {
-      _id: new MongoDb.ObjectId(id),
-      userId
+      _id: new MongoDb.ObjectId(id)
     })
   }
 }
