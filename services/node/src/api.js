@@ -332,7 +332,7 @@ const api = {
 
   updateSpreadsheetFolder: async (id, folderId) => {
     return database.updateOne(
-      Collections.SPREADSHEET,
+      Collections.POWERSHEET_SPREADSHEET,
       {
         _id: new MongoDb.ObjectId(id)
       },
@@ -380,7 +380,7 @@ const api = {
     }
 
     return database.replace(
-      Collections.SPREADSHEET,
+      Collections.POWERSHEET_SPREADSHEET,
       query,
       document,
       spreadsheetId
@@ -389,7 +389,7 @@ const api = {
 
   getSpreadsheetsMetadata: async userId => {
     return database.find(
-      Collections.SPREADSHEET,
+      Collections.POWERSHEET_SPREADSHEET,
       {
         userId
       },
@@ -401,15 +401,17 @@ const api = {
     )
   },
 
-  getSpreadsheet: async id => {
-    return database.findOne(Collections.SPREADSHEET, {
-      _id: new MongoDb.ObjectId(id)
+  getSpreadsheet: async (userId, id) => {
+    return database.findOne(Collections.POWERSHEET_SPREADSHEET, {
+      _id: new MongoDb.ObjectId(id),
+      userId
     })
   },
 
-  deleteSpreadsheet: async id => {
-    return database.deleteOne(Collections.SPREADSHEET, {
-      _id: new MongoDb.ObjectId(id)
+  deleteSpreadsheet: async (id, userId) => {
+    return database.deleteOne(Collections.POWERSHEET_SPREADSHEET, {
+      _id: new MongoDb.ObjectId(id),
+      userId
     })
   }
 }

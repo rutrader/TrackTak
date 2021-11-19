@@ -1,0 +1,12 @@
+version: 0.2
+
+phases:
+  build:
+    on-failure: ABORT
+    commands:
+      - echo "Build Node"
+artifacts:
+  files:
+    - 'src/**/*'
+    - 'package.json'
+  base-directory: 'services/node'

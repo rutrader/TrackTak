@@ -8,7 +8,7 @@
   ],
   "engines": {
     "yarn": "1.22.15",
-    "node": "14.18.1"
+    "node": "14.x"
   },
   "scripts": {
     "generate-exh-pairs": "node --es-module-specifier-resolution=node ./scripts/writeECBExchangePairsToJSON.js",
@@ -19,11 +19,15 @@
     "tracktak-app": "yarn run tracktak-backend --scope @tracktak/app",
     "tracktak-gatsby": "yarn run tracktak-backend --scope @tracktak/gatsby",
     "tracktak": "run-p tracktak-app tracktak-gatsby",
-    "powersheet": "lerna run develop --parallel --scope tracktak-powersheet",
+    "powersheet": "lerna run develop --parallel --scope @tracktak/powersheet",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"{packages,services}/**/*.{jsx,js}\" --write",
     "fix:lint": "eslint \"{packages,services}/**/*.{jsx,js}\" --fix",
-    "release": "lerna version"
+    "release": "lerna version",
+    "build": "lerna run build --parallel --scope @tracktak/app --scope @tracktak/gatsby --scope @powersheet/gatsby",
+    "build-app": "lerna run build --scope @tracktak/app",
+    "build-tracktak-gatsby": "lerna run build --scope @tracktak/gatsby",
+    "build-powersheet-gatsby": "lerna run build --scope @powersheet/gatsby"
   },
   "devDependencies": {
     "@octokit/core": "^3.5.1",

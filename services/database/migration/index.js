@@ -1,6 +1,12 @@
-import mapper from './mapper.js'
-import * as database from './client/mongoDbClient.js'
-import { Collections } from './client/collections.js'
+import 'dotenv/config'
+import mapper from './mapper'
+import * as database from './client/mongoDbClient'
+import fs from 'fs'
+
+const Collections = {
+  SPREADSHEET: 'spreadsheet',
+  POWERSHEET_SPREADSHEET: 'powersheet-spreadsheet'
+}
 
 ;(async function () {
   await database.connect()
@@ -9,7 +15,6 @@ import { Collections } from './client/collections.js'
   const mappedData = allData.map(data => {
     const isInPowersheetFormat = !!data.sheetData.data.sheets
     if (isInPowersheetFormat) {
-      console.log('Record already in Powersheet format')
       return data
     }
 
@@ -18,6 +23,30 @@ import { Collections } from './client/collections.js'
       sheetData: mapper(data.sheetData, data.financialData.ticker)
     }
   })
+
+  const currencies = JSON.parse(fs.readFileSync(`currencies.json`))
+
+  for (let index = 0; index < mappedData.length; index++) {
+    try {
+      const mappedDatum = mappedData[index]
+      const cells = mappedDatum.sheetData.data.cells
+      const ticker = mappedDatum.financialData.ticker
+
+      Object.keys(cells).forEach(key => {
+        const cellData = cells[key]
+        const currencySymbol = currencies[ticker]
+
+        if (cellData.dynamicFormat === 'currency') {
+          cells[key].textFormatPattern =
+            currencySymbol + cellData.textFormatPattern
+        }
+      })
+    } catch (error) {
+      console.warn(error)
+      console.log(`error occurred, skipping stock`)
+    }
+  }
+
   console.log(
     `Mapped ${mappedData.length} records from collection: ${Collections.SPREADSHEET}`
   )
@@ -27,14 +56,7 @@ import { Collections } from './client/collections.js'
   }
 
   await database.clearAll(Collections.POWERSHEET_SPREADSHEET)
-  console.log(`Cleared collection: ${Collections.POWERSHEET_SPREADSHEET}`)
   await database.bulkInsert(Collections.POWERSHEET_SPREADSHEET, mappedData)
-
-  const result = await database.find(Collections.POWERSHEET_SPREADSHEET)
-
-  console.log(
-    `Inserted ${result.length} records into collection: ${Collections.POWERSHEET_SPREADSHEET}`
-  )
 
   process.exit(0)
 })()

@@ -23,10 +23,11 @@ import isStockDisabled from '../shared/isStockDisabled'
 import getSymbolFromCurrency from 'currency-symbol-map'
 import { cloneDeep } from 'lodash-es'
 import { useNavigate } from 'react-router'
+import logValuationEvent from '../shared/logValuationEvent'
 
 const folderId = '6193cb55e2c0a84be0cad813'
 
-const SearchTicker = ({ isSmallSearch, sx, template }) => {
+const SearchTicker = ({ isSmallSearch, sx, getTemplate }) => {
   const theme = useTheme()
   const [autoComplete, setAutoComplete] = useState([])
   const [isLoadingAutocomplete, setIsLoadingAutocomplete] = useState(false)
@@ -40,17 +41,18 @@ const SearchTicker = ({ isSmallSearch, sx, template }) => {
   const createUserSpreadsheet = async ticker => {
     const values = await Promise.all([
       getAccessToken(),
+      getTemplate(),
       api.getFundamentals(ticker, {
         filter: 'General::CurrencyCode'
       })
     ])
 
     const token = values[0]
-    const freeCashFlowToFirmTemplateData = cloneDeep(template)
+    const freeCashFlowToFirmTemplateData = cloneDeep(values[1])
 
     Object.keys(freeCashFlowToFirmTemplateData.cells).forEach(key => {
       const cellData = freeCashFlowToFirmTemplateData.cells[key]
-      const currencyCode = convertSubCurrencyToCurrency(values[1].data.value)
+      const currencyCode = convertSubCurrencyToCurrency(values[2].data.value)
       const currencySymbol = getSymbolFromCurrency(currencyCode)
 
       if (cellData.dynamicFormat === 'currency') {
@@ -68,13 +70,14 @@ const SearchTicker = ({ isSmallSearch, sx, template }) => {
       token?.jwtToken
     )
 
+    const spreadsheet = response.data.spreadsheet
+
     const registeredPluginClass = HyperFormula.getFunctionPlugin('FINANCIAL')
 
     HyperFormula.unregisterFunctionPlugin(registeredPluginClass)
 
-    navigate(
-      `/${userData.name}/my-spreadsheets/${response.data.spreadsheet._id}`
-    )
+    navigate(`/${userData.name}/my-spreadsheets/${spreadsheet._id}`)
+
     dispatch(
       snackbarActions.setMessage({
         severity: 'success',
@@ -83,6 +86,7 @@ const SearchTicker = ({ isSmallSearch, sx, template }) => {
         )} for your valuation.`
       })
     )
+    logValuationEvent('Create', spreadsheet.sheetData.name)
   }
 
   const getAutoCompleteDebounced = useDebouncedCallback(async value => {
@@ -100,12 +104,6 @@ const SearchTicker = ({ isSmallSearch, sx, template }) => {
 
     if (value?.code && value?.exchange) {
       const ticker = `${value.code}.${value.exchange}`
-
-      // trackCustomEvent({
-      //   category: 'Valuation',
-      //   action: `Create ${ticker} valuation`,
-      //   value: dayjs().format(utils.trackingFormatDate)
-      // })
 
       createUserSpreadsheet(ticker)
     }

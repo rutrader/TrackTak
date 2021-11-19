@@ -38,18 +38,20 @@ const SocialLoginButtons = () => {
             text='Google'
           />
         </Grid>
-        <Grid item onClick={handleFacebookLogin}>
-          <SocialMediaButton
-            sx={{
-              backgroundColor: theme.palette.icons.facebook,
-              '&:hover': {
-                backgroundColor: '#2f60b2'
-              }
-            }}
-            startIcon={<FacebookIcon sx={{ width: 25, height: 25 }} />}
-            text='Facebook'
-          />
-        </Grid>
+        {process.env.FACEBOOK_LOGIN_ENABLED === 'true' && (
+          <Grid item onClick={handleFacebookLogin}>
+            <SocialMediaButton
+              sx={{
+                backgroundColor: theme.palette.icons.facebook,
+                '&:hover': {
+                  backgroundColor: '#2f60b2'
+                }
+              }}
+              startIcon={<FacebookIcon sx={{ width: 25, height: 25 }} />}
+              text='Facebook'
+            />
+          </Grid>
+        )}
       </Grid>
       <Grid item>
         <Typography component='div' display='block'>

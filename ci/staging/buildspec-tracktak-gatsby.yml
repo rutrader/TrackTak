@@ -1,0 +1,40 @@
+version: 0.2
+
+env:
+  shell: bash
+  parameter-store:
+    NPM_TOKEN: /codebuild/NPM_TOKEN
+    CONTENTFUL_API_KEY: /tracktak-gatsby/staging/CONTENTFUL_API_KEY
+    SOCIAL_LOGIN_GOOGLE: /tracktak-gatsby/staging/SOCIAL_LOGIN_GOOGLE
+    SOCIAL_LOGIN_FACEBOOK: /tracktak-gatsby/staging/SOCIAL_LOGIN_FACEBOOK
+    COGNITO_APP_CLIENT_ID: /common/staging/COGNITO_APP_CLIENT_ID
+    COGNITO_USER_POOL_ID: /common/staging/COGNITO_USER_POOL_ID
+    PREMIUM_ENABLED: /common/staging/PREMIUM_ENABLED
+    APP_SUBDOMAIN_URL: /common/staging/APP_SUBDOMAIN_URL
+    API_BASE_URL: /common/staging/API_BASE_URL
+    DOMAIN_URL: /common/staging/DOMAIN_URL
+    COGNITO_COOKIE_DOMAIN: /common/staging/COGNITO_COOKIE_DOMAIN
+    GATSBY_ACTIVE_ENV: /tracktak-gatsby/staging/GATSBY_ACTIVE_ENV
+    SOCIAL_LOGIN_REDIRECT_URL: /common/staging/SOCIAL_LOGIN_REDIRECT_URL
+    COGNITO_TOKEN_ENDPOINT: /common/staging/COGNITO_TOKEN_ENDPOINT
+
+phases:
+  install:
+    on-failure: ABORT
+    runtime-versions:
+      nodejs: 14.x
+  pre_build:
+    on-failure: ABORT
+    commands:
+      - echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" > .npmrc
+      - echo "@tracktak:registry=https://npm.pkg.github.com/" >> .npmrc
+      - yarn global add lerna
+      - lerna bootstrap
+  build:
+    on-failure: ABORT
+    commands:
+      - yarn run build-tracktak-gatsby
+artifacts:
+  files:
+    - '**/*'
+  base-directory: 'services/tracktak-gatsby/public'

@@ -54,7 +54,6 @@ module.exports = {
     {
       resolve: `gatsby-plugin-webpack-bundle-analyser-v2`,
       options: {
-        devMode: true,
         analyzerPort: 3002
       }
     },
@@ -66,12 +65,6 @@ module.exports = {
     },
     'gatsby-plugin-styled-components',
     'gatsby-plugin-emotion',
-    {
-      resolve: 'gatsby-plugin-s3',
-      options: {
-        bucketName: isInProduction ? 'tracktak.com' : 'staging.tracktak.com'
-      }
-    },
     {
       resolve: `gatsby-plugin-hotjar`,
       options: {
@@ -90,7 +83,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-google-gtag`,
       options: {
-        trackingIds: ['G-WFB538909G', 'UA-185279234-1']
+        trackingIds: ['G-WFB538909G']
       }
     },
     'gatsby-plugin-react-helmet',

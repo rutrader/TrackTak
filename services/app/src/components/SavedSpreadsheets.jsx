@@ -14,14 +14,15 @@ import {
   useTheme
 } from '@mui/material'
 import ConfirmationDialog from './ConfirmationDialog'
-import { api, utils, useAuth, RoundButton } from '@tracktak/common'
+import { api, useAuth, RoundButton } from '@tracktak/common'
 import { useNavigate, useParams } from 'react-router-dom'
+import logValuationEvent from '../shared/logValuationEvent'
 import dayjs from 'dayjs'
 import { useSpreadsheetsMetadata } from '../hooks/useSpreadsheetsMetadata'
 import GridOnIcon from '@mui/icons-material/GridOn'
 import DeleteIcon from '@mui/icons-material/Delete'
 
-const SavedSpreadsheets = ({ onNewSpreadsheetClick, trackCustomEvent }) => {
+const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
   const theme = useTheme()
   const navigate = useNavigate()
   const { spreadsheets, defaultFolderId } = useSpreadsheetsMetadata()
@@ -35,12 +36,8 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick, trackCustomEvent }) => {
 
   const handleRowClick = spreadsheet => {
     navigate(`/${userData.name}/my-spreadsheets/${spreadsheet._id}`)
-    // trackCustomEvent({
-    //   category: 'Valuation',
-    //   action: 'Modify',
-    //   label: `Modified ${spreadsheet.sheetData.name}`,
-    //   value: dayjs().format(utils.trackingFormatDate)
-    // })
+
+    logValuationEvent('Edit', spreadsheet.sheetData.name)
   }
 
   const handleDelete = spreadsheet => {

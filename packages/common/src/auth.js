@@ -12,8 +12,8 @@ import axios from 'axios'
 import * as utils from './shared/utils'
 
 const cookieStorage = new CookieStorage({
-  domain: process.env.COGNITO_COOKIE_DOMAIN ?? 'tracktak.com',
-  secure: process.env.NODE_ENV
+  domain: process.env.COGNITO_COOKIE_DOMAIN,
+  secure: process.env.NODE_ENV !== 'development'
 })
 
 const POOL_CONFIG = {
@@ -100,7 +100,7 @@ export const getUserFromCode = async code => {
   params.append('grant_type', 'authorization_code')
   params.append('client_id', process.env.COGNITO_APP_CLIENT_ID)
   params.append('code', code)
-  params.append('redirect_uri', process.env.GATSBY_SOCIAL_LOGIN_REDIRECT_URL)
+  params.append('redirect_uri', process.env.SOCIAL_LOGIN_REDIRECT_URL)
 
   const config = {
     headers: {
@@ -109,7 +109,7 @@ export const getUserFromCode = async code => {
   }
 
   const response = await axios.post(
-    process.env.GATSBY_COGNITO_TOKEN_ENDPOINT,
+    process.env.COGNITO_TOKEN_ENDPOINT,
     params,
     config
   )
@@ -127,7 +127,8 @@ export const getUserFromCode = async code => {
 
   const user = new CognitoUser({
     Username: IdToken.payload.username || IdToken.payload['cognito:username'],
-    Pool: userPool
+    Pool: userPool,
+    Storage: cookieStorage
   })
 
   user.setSignInUserSession(
@@ -164,7 +165,8 @@ export const sendEmailVerification = (
 ) => {
   const user = new CognitoUser({
     Username: username,
-    Pool: userPool
+    Pool: userPool,
+    Storage: cookieStorage
   })
   user.initiateAuth(
     new AuthenticationDetails({
@@ -198,7 +200,8 @@ export const sendChallengeAnswer = (
   try {
     const user = new CognitoUser({
       Username: localStorage.getItem(CUSTOM_CHALLENGE_USERNAME_KEY),
-      Pool: userPool
+      Pool: userPool,
+      Storage: cookieStorage
     })
     user.Session = localStorage.getItem(CUSTOM_CHALLENGE_SESSION_KEY)
     const newPassword = localStorage.getItem(CUSTOM_CHALLENGE_NEW_PASSWORD_KEY)

@@ -1,7 +1,7 @@
 # Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: MIT-0
 
-AWSTemplateFormatVersion: "2010-09-09"
+AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
   Amazon Cognito User Pool with Passwordless E-Mail Auth configured
@@ -14,7 +14,7 @@ Metadata:
     Author: Tracktak
     SpdxLicenseId: MIT-0
     LicenseUrl: LICENSE
-    Labels: ["cognito", "passwordless", "authentication", "auth", "sample"]
+    Labels: ['cognito', 'passwordless', 'authentication', 'auth', 'sample']
     SemanticVersion: 1.0.3
 
 Globals:
@@ -38,7 +38,8 @@ Parameters:
     AllowedValues:
       - prod
       - test
-    ConstraintDescription: Must specify prod or test.
+      - local
+    ConstraintDescription: Must specify prod, test or local.
   GoogleClientId:
     Type: String
     Description: Google Social Media Sign In Client Id
@@ -56,6 +57,9 @@ Parameters:
     Description: ARN for user pool custom domain certificate
 
 Conditions:
+  CreateLocalResources: !Equals
+    - !Ref EnvType
+    - local
   CreateTestResources: !Equals
     - !Ref EnvType
     - test
@@ -65,14 +69,18 @@ Conditions:
 
 Mappings:
   EnvMap:
+    local:
+      CallbackURLs: http://localhost:3000/
+      LogoutURLs: http://localhost:8000/
+      ConfirmationURL: http://localhost:3000/
     test:
-      CallbackURLs: https://staging.tracktak.com/dashboard/
+      CallbackURLs: https://app.staging.tracktak.com/
       LogoutURLs: https://staging.tracktak.com/
-      ConfirmationURL: https://staging.tracktak.com/dashboard/
+      ConfirmationURL: https://app.staging.tracktak.com/
     prod:
-      CallbackURLs: https://tracktak.com/dashboard/
+      CallbackURLs: https://app.tracktak.com/
       LogoutURLs: https://tracktak.com/
-      ConfirmationURL: https://tracktak.com/dashboard/
+      ConfirmationURL: https://app.tracktak.com/
 
 Resources:
   ChangePassword:
@@ -83,13 +91,13 @@ Resources:
       Runtime: nodejs12.x
       FunctionName: ChangePassword
       Policies:
-        - Version: "2012-10-17"
+        - Version: '2012-10-17'
           Statement:
             - Effect: Allow
               Action:
                 - cognito-identity:*
                 - cognito-idp:*
-              Resource: "*"
+              Resource: '*'
 
   DefineAuthChallenge:
     Type: AWS::Serverless::Function
@@ -109,12 +117,12 @@ Resources:
           SES_FROM_ADDRESS: !Ref SESFromAddress
           CONFIRMATION_URL: !FindInMap [EnvMap, !Ref EnvType, ConfirmationURL]
       Policies:
-        - Version: "2012-10-17"
+        - Version: '2012-10-17'
           Statement:
             - Effect: Allow
               Action:
                 - ses:SendEmail
-              Resource: "*"
+              Resource: '*'
 
   VerifyAuthChallengeResponse:
     Type: AWS::Serverless::Function
@@ -123,18 +131,18 @@ Resources:
       Handler: verify-auth-challenge-response.handler
       Runtime: nodejs12.x
       Policies:
-        - Version: "2012-10-17"
+        - Version: '2012-10-17'
           Statement:
             - Effect: Allow
               Sid: PermissionToInvoke
               Action:
                 - lambda:InvokeFunction
-              Resource: "arn:aws:lambda:*:*:*:*"
+              Resource: 'arn:aws:lambda:*:*:*:*'
             - Effect: Allow
               Action:
                 - cognito-identity:*
                 - cognito-idp:*
-              Resource: "*"
+              Resource: '*'
 
   PreSignUp:
     Type: AWS::Serverless::Function
@@ -144,7 +152,7 @@ Resources:
       Runtime: nodejs12.x
 
   UserPool:
-    Type: "AWS::Cognito::UserPool"
+    Type: 'AWS::Cognito::UserPool'
     Properties:
       UserPoolName: !Ref UserPoolName
       Policies:
@@ -162,7 +170,7 @@ Resources:
         - email
       VerificationMessageTemplate:
         DefaultEmailOption: CONFIRM_WITH_LINK
-      MfaConfiguration: "OFF"
+      MfaConfiguration: 'OFF'
       LambdaConfig:
         CreateAuthChallenge: !GetAtt CreateAuthChallenge.Arn
         DefineAuthChallenge: !GetAtt DefineAuthChallenge.Arn
@@ -175,7 +183,7 @@ Resources:
         SourceArn: !Ref SESSourceARN
 
   UserPoolClient:
-    Type: "AWS::Cognito::UserPoolClient"
+    Type: 'AWS::Cognito::UserPoolClient'
     DependsOn:
       - UserPoolIdentityProviderGoogle
       - UserPoolIdentityProviderFacebook
@@ -214,31 +222,31 @@ Resources:
     Type: AWS::Cognito::UserPoolIdentityProvider
     Properties:
       AttributeMapping:
-        username: "sub"
-        email: "email"
-        email_verified: "email_verified"
-        name: "name"
+        username: 'sub'
+        email: 'email'
+        email_verified: 'email_verified'
+        name: 'name'
       ProviderDetails:
         client_id: !Ref GoogleClientId
         client_secret: !Ref GoogleClientSecret
-        authorize_scopes: "profile email openid"
-      ProviderName: "Google"
-      ProviderType: "Google"
+        authorize_scopes: 'profile email openid'
+      ProviderName: 'Google'
+      ProviderType: 'Google'
       UserPoolId: !Ref UserPool
 
   UserPoolIdentityProviderFacebook:
     Type: AWS::Cognito::UserPoolIdentityProvider
     Properties:
       AttributeMapping:
-        username: "id"
-        email: "email"
-        name: "name"
+        username: 'id'
+        email: 'email'
+        name: 'name'
       ProviderDetails:
         client_id: !Ref FacebookClientId
         client_secret: !Ref FacebookClientSecret
-        authorize_scopes: "public_profile,email,openid"
-      ProviderName: "Facebook"
-      ProviderType: "Facebook"
+        authorize_scopes: 'public_profile,email,openid'
+      ProviderName: 'Facebook'
+      ProviderType: 'Facebook'
       UserPoolId: !Ref UserPool
 
   UserPoolDomainProd:
@@ -255,6 +263,13 @@ Resources:
     Condition: CreateTestResources
     Properties:
       Domain: tracktak-test
+      UserPoolId: !Ref UserPool
+
+  UserPoolDomainLocal:
+    Type: AWS::Cognito::UserPoolDomain
+    Condition: CreateLocalResources
+    Properties:
+      Domain: tracktak-local
       UserPoolId: !Ref UserPool
 
   DefineAuthChallengeInvocationPermission:
