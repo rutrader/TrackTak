@@ -5884,10 +5884,10 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
   integrity sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
 
-"@tracktak/powersheet@^1.0.1":
-  version "1.0.1"
-  resolved "https://npm.pkg.github.com/download/@tracktak/powersheet/1.0.1/15be30d7e2f5ef01ab2b77ff2d976cf131500aec3ebc1a549aa65221d269949b#4135138ebc2212cd10b16b6b720c1995138a7140"
-  integrity sha512-DZkVks5kpDXo6ngEle/8oxhg1hgWTE7Zw7n7W5y/YHbCpvgQaraTeaQxthmd2orDszl7FP/TuscOzM24ZpsDVg==
+"@tracktak/powersheet@^1.0.2":
+  version "1.0.2"
+  resolved "https://npm.pkg.github.com/download/@tracktak/powersheet/1.0.2/6f8711da35dbe396d44ce4d01e15d4f3c10a10aff884741d21415c2892e43076#3d032b10f35bbf8d2e320d9665c4997817fd5d61"
+  integrity sha512-SG12hz5Q23Qvr8o8wDQtd/u8MPSeg67LnnUAKRA/HEfG4M/pXKu751MdiSvxGhqXeTZ5kzW/tbjf6KuPUer7/A==
   dependencies:
     "@material/drawer" "^13.0.0"
     a-color-picker "^1.2.1"
