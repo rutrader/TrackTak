@@ -122,7 +122,7 @@ app.get('/api/v1/folders', auth, async (req, res) => {
 })
 
 app.post('/api/v1/folder', auth, async (req, res) => {
-  const folder = await api.createFolder(req.body.name)
+  const folder = await api.createFolder(req.body.name, req.user.username)
   res.send({ folder })
 })
 

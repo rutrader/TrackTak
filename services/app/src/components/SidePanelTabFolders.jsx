@@ -18,7 +18,7 @@ const SidePanelTabFolders = ({ folderName }) => {
   const editableRef = useRef()
   const textRef = useRef(folderName)
 
-  const handleContentEditable = e => {
+  const handleOnChangeContentEditable = e => {
     textRef.current = e.target.value
   }
 
@@ -76,7 +76,7 @@ const SidePanelTabFolders = ({ folderName }) => {
             innerRef={editableRef}
             disabled={disabled}
             onBlur={handleBlur}
-            onChange={handleContentEditable}
+            onChange={handleOnChangeContentEditable}
             html={textRef.current}
           />
         }

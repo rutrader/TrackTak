@@ -19,12 +19,15 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder'
 import SidePanelTabFolders from './SidePanelTabFolders'
+import { useAuth, api } from '@tracktak/common'
 
 const drawerWidth = 240
 
-const FolderDrawer = ({ folders }) => {
+const FolderDrawer = ({ initialFolders }) => {
   const theme = useTheme()
+  const { getAccessToken } = useAuth()
   const [open, setOpen] = useState(false)
+  const [folders, setFolders] = useState(initialFolders)
   const isOnMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const top = theme.mixins.toolbar.minHeight - 2
 
@@ -36,26 +39,18 @@ const FolderDrawer = ({ folders }) => {
     setOpen(false)
   }
 
+  const handleOnClickCreateNewFolder = async () => {
+    const token = await getAccessToken()
+    const accessToken = token?.jwtToken
+
+    const dataResponse = await api.createFolder('New Folder', accessToken)
+
+    setFolders([...folders, dataResponse.data.folder])
+  }
+
   useEffect(() => {
     setOpen(true)
   }, [])
-
-  const getSidePanelTabs = (
-    <List>
-      {folders.map(folder => {
-        return (
-          <SidePanelTabFolders key={folder.name} folderName={folder.name} />
-        )
-      })}
-      <Divider sx={{ my: 0.5 }} />
-      <ListItem button sx={{ marginTop: '10px' }}>
-        <ListItemIcon>
-          <CreateNewFolderIcon />
-        </ListItemIcon>
-        <ListItemText primary='New Folder' />
-      </ListItem>
-    </List>
-  )
 
   return (
     <Box
@@ -90,7 +85,27 @@ const FolderDrawer = ({ folders }) => {
             </Box>
             <Divider />
           </Hidden>
-          {getSidePanelTabs}
+          <List>
+            {folders.map(folder => {
+              return (
+                <SidePanelTabFolders
+                  key={folder.name}
+                  folderName={folder.name}
+                />
+              )
+            })}
+            <Divider sx={{ my: 0.5 }} />
+            <ListItem
+              button
+              sx={{ marginTop: '10px' }}
+              onClick={handleOnClickCreateNewFolder}
+            >
+              <ListItemIcon>
+                <CreateNewFolderIcon />
+              </ListItemIcon>
+              <ListItemText primary='New Folder' />
+            </ListItem>
+          </List>
         </>
       </Drawer>
       <Hidden smUp implementation='css'>

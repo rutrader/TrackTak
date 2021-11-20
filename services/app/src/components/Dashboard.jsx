@@ -84,7 +84,7 @@ const Dashboard = () => {
           <AddIcon style={{ color: 'white' }} fontSize='large' />
         </IconButton>
       </Box>
-      <FolderDrawer folders={folders} />
+      <FolderDrawer initialFolders={folders} />
       <Outlet />
     </ProvideSpreadsheetsMetadata>
   )
