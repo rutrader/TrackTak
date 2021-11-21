@@ -23,11 +23,11 @@ import { useAuth, api } from '@tracktak/common'
 
 const drawerWidth = 240
 
-const FolderDrawer = ({ initialFolders }) => {
+const FolderDrawer = ({ folders }) => {
   const theme = useTheme()
   const { getAccessToken } = useAuth()
   const [open, setOpen] = useState(false)
-  const [folders, setFolders] = useState(initialFolders)
+  const [newFolders, setNewFolders] = useState([])
   const isOnMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const top = theme.mixins.toolbar.minHeight - 2
 
@@ -45,8 +45,12 @@ const FolderDrawer = ({ initialFolders }) => {
 
     const dataResponse = await api.createFolder('New Folder', accessToken)
 
-    setFolders([...folders, dataResponse.data.folder])
+    setNewFolders([...newFolders, dataResponse.data.folder])
   }
+
+  useEffect(() => {
+    setNewFolders(folders)
+  }, [folders])
 
   useEffect(() => {
     setOpen(true)
@@ -86,12 +90,9 @@ const FolderDrawer = ({ initialFolders }) => {
             <Divider />
           </Hidden>
           <List>
-            {folders.map(folder => {
+            {newFolders.map(({ _id, name }) => {
               return (
-                <SidePanelTabFolders
-                  key={folder.name}
-                  folderName={folder.name}
-                />
+                <SidePanelTabFolders key={_id} id={_id} folderName={name} />
               )
             })}
             <Divider sx={{ my: 0.5 }} />

@@ -5,15 +5,11 @@ import OptionsMenu from './OptionsMenu'
 import ContentEditable from 'react-contenteditable'
 import { useAuth, api } from '@tracktak/common'
 import { setCaretToEndOfElement } from '../../../../packages/common/src/shared/utils'
-import { useSpreadsheetsMetadata } from '../hooks/useSpreadsheetsMetadata'
-import { useParams } from 'react-router-dom'
 
-const SidePanelTabFolders = ({ folderName }) => {
+const SidePanelTabFolders = ({ id, folderName }) => {
   const [anchorEl, setAnchorEl] = useState(null)
   const [disabled, setDisabled] = useState(true)
   const { getAccessToken } = useAuth()
-  const { defaultFolderId } = useSpreadsheetsMetadata()
-  const params = useParams()
   const open = Boolean(anchorEl)
   const editableRef = useRef()
   const textRef = useRef(folderName)
@@ -39,9 +35,7 @@ const SidePanelTabFolders = ({ folderName }) => {
     const token = await getAccessToken()
     const accessToken = token?.jwtToken
 
-    const folderId = params.folderId ?? defaultFolderId
-
-    await api.updateFolder(folderId, textRef.current, accessToken)
+    await api.updateFolder(id, textRef.current, accessToken)
 
     setDisabled(true)
   }
