@@ -44,8 +44,16 @@ export const getAutocompleteQuery = async (query, params) => {
   })
 }
 
-export const getFinancialData = async id => {
-  return axios.get(`/api/v1/financial-data/${id}`)
+export const getFinancialData = async (id, params) => {
+  return axios.get(`/api/v1/financial-data/${id}`, {
+    params
+  })
+}
+
+export const getTemplate = async (name, params) => {
+  return axios.get(`/api/v1/templates/${name}`, {
+    params
+  })
 }
 
 export const createFinancialData = async (

@@ -16,7 +16,7 @@ import {
   ttFinancialAliases,
   ttFinancialImplementedFunctions
 } from './plugins/getTTFinancialPlugin'
-import finFunctionHelperData from './templates/finFunctionHelperData'
+import finFunctionHelperData from './financialData/finFunctionHelperData'
 import './FinancialSpreadsheet.css'
 
 const buildPowersheet = () => {
@@ -143,8 +143,10 @@ const FinancialSpreadsheet = ({
 
     HyperFormula.registerFunctionPlugin(FinancialPlugin, finTranslations)
 
-    spreadsheet?.hyperformula.rebuildAndRecalculate()
-    spreadsheet?.updateViewport()
+    if (financialData) {
+      spreadsheet?.hyperformula.rebuildAndRecalculate()
+      spreadsheet?.updateViewport()
+    }
 
     return () => {
       HyperFormula.unregisterFunctionPlugin(FinancialPlugin)
@@ -177,11 +179,13 @@ const FinancialSpreadsheet = ({
   }, [saveSheetData, spreadsheet])
 
   useEffect(() => {
-    if (spreadsheet && sheetData) {
+    if (spreadsheet) {
       if (containerEl) {
         containerEl.appendChild(spreadsheet.spreadsheetEl)
+      }
+
+      if (sheetData) {
         spreadsheet.setData(sheetData.data)
-        spreadsheet.initialize()
 
         if (sheetData.data) {
           // TODO: Figure out why setTimeout needed

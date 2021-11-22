@@ -1,0 +1,8 @@
+[
+  {
+    "templateName": "freeCashFlowFirmSimple",
+    "name": "Discounted Cash Flow Model (5 year)",
+    "description": "Prof. NYU Aswath Damodaran's discounted free cash flow to firm template with a 5 year growth projection.",
+    "tags": ["DCF", "Financial Model", "Aswath Damodaran", "5 Year"]
+  }
+]

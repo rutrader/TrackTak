@@ -7,6 +7,7 @@ import Stripe from 'stripe'
 import { CURRENT_PLAN_ENDPOINT } from './shared/constants'
 import { getUserDetails } from './cognito/cognitoClient'
 import dayjs from 'dayjs'
+import fs from 'fs/promises'
 
 const app = express()
 const stripe = Stripe(process.env.STRIPE_AUTH_SECRET_KEY)
@@ -78,6 +79,12 @@ app.get('/api/v1/financial-data/:id', async (req, res) => {
   res.send({ financialData })
 })
 
+app.get('/api/v1/templates/:name', async (req, res) => {
+  const template = await fs.readFile(`./templates/${req.params.name}.json`)
+
+  res.send({ template })
+})
+
 app.post('/api/v1/financial-data', auth, async (req, res) => {
   let financialData = req.body.financialData
 
@@ -98,10 +105,9 @@ app.post('/api/v1/financial-data', auth, async (req, res) => {
   }
 
   if (req.body.spreadsheetId) {
-    await api.updateSpreadsheet(
+    await api.updateSpreadsheetFinancialData(
       req.body.spreadsheetId,
-      financialData._id,
-      req.user.username
+      financialData._id
     )
   }
 
@@ -109,10 +115,14 @@ app.post('/api/v1/financial-data', auth, async (req, res) => {
 })
 
 app.post('/api/v1/spreadsheets', auth, async (req, res) => {
-  const financialData = {
-    ticker: req.body.ticker
+  let financialData
+
+  if (req.body.ticker) {
+    financialData = {
+      ticker: req.body.ticker
+    }
   }
-  const spreadsheet = await api.saveSpreadsheet(
+  const spreadsheet = await api.createSpreadsheet(
     req.body.sheetData,
     req.user.username,
     financialData
@@ -121,7 +131,7 @@ app.post('/api/v1/spreadsheets', auth, async (req, res) => {
 })
 
 app.put('/api/v1/spreadsheets', auth, async (req, res) => {
-  const spreadsheet = await api.saveSpreadsheet(
+  const spreadsheet = await api.updateSpreadsheet(
     req.body.sheetData,
     req.user.username,
     req.body.financialData,
@@ -138,13 +148,13 @@ app.get('/api/v1/spreadsheets/metadata', auth, async (req, res) => {
 })
 
 app.get('/api/v1/spreadsheets/:id', auth, async (req, res) => {
-  const spreadsheet = await api.getSpreadsheet(req.user.username, req.params.id)
+  const spreadsheet = await api.getSpreadsheet(req.params.id)
 
   res.send({ spreadsheet })
 })
 
 app.delete('/api/v1/spreadsheets/:id', auth, async (req, res) => {
-  await api.deleteSpreadsheet(req.params.id, req.user.username)
+  await api.deleteSpreadsheet(req.params.id)
 
   res.send({ id: req.params.id })
 })

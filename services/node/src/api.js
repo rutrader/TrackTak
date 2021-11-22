@@ -296,12 +296,11 @@ const api = {
     return database.insert(Collections.FINANCIAL_DATA, financialData)
   },
 
-  updateSpreadsheet: async (id, financialDataId, userId) => {
+  updateSpreadsheetFinancialData: async (id, financialDataId) => {
     return database.updateOne(
       Collections.POWERSHEET_SPREADSHEET,
       {
-        _id: new MongoDb.ObjectId(id),
-        userId
+        _id: new MongoDb.ObjectId(id)
       },
       {
         $set: { 'financialData.id': financialDataId }
@@ -309,12 +308,24 @@ const api = {
     )
   },
 
-  saveSpreadsheet: async (
+  createSpreadsheet: async (sheetData, userId, financialData) => {
+    const document = {
+      financialData,
+      userId,
+      sheetData,
+      lastModifiedTimestamp: new Date(),
+      createdTimestamp: new Date()
+    }
+
+    return database.insert(Collections.POWERSHEET_SPREADSHEET, document)
+  },
+
+  updateSpreadsheet: async (
     sheetData,
     userId,
     financialData,
     spreadsheetId,
-    createdTimestamp = new Date()
+    createdTimestamp
   ) => {
     const document = {
       financialData,
@@ -350,17 +361,15 @@ const api = {
     )
   },
 
-  getSpreadsheet: async (userId, id) => {
+  getSpreadsheet: async id => {
     return database.findOne(Collections.POWERSHEET_SPREADSHEET, {
-      _id: new MongoDb.ObjectId(id),
-      userId
+      _id: new MongoDb.ObjectId(id)
     })
   },
 
-  deleteSpreadsheet: async (id, userId) => {
+  deleteSpreadsheet: async id => {
     return database.deleteOne(Collections.POWERSHEET_SPREADSHEET, {
-      _id: new MongoDb.ObjectId(id),
-      userId
+      _id: new MongoDb.ObjectId(id)
     })
   }
 }

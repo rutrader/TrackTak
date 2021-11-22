@@ -6,7 +6,7 @@ import convertSubCurrencyToCurrency from './shared/convertSubCurrencyToCurrency'
 import convertStockAPIData from './shared/convertStockAPIData'
 import * as thunks from './redux/thunks/stockThunks'
 import FinancialSpreadsheet from './spreadsheet/FinancialSpreadsheet'
-import { getFreeCashFlowFirmSimple } from './spreadsheet/templates'
+import templates from './spreadsheet/templates.json'
 
 dayjs.extend(minMax)
 dayjs.extend(advancedFormat)
@@ -16,6 +16,6 @@ export {
   convertSubCurrencyToCurrency,
   convertStockAPIData,
   thunks,
-  getFreeCashFlowFirmSimple,
+  templates,
   FinancialSpreadsheet
 }

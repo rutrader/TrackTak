@@ -13,7 +13,7 @@ import {
   getDatesFromStatements,
   getStatements,
   incomeStatement
-} from '../templates/financialStatements'
+} from '../financialData/financialStatements'
 import { isNil } from 'lodash-es'
 import defaultStatement from '../../shared/defaultStatement'
 

@@ -12,6 +12,7 @@ import LayoutFullScreen from './components/LayoutFullScreen'
 import AuthenticatedHeader from './components/AuthenticatedHeader'
 import Authenticated from './components/Authenticated'
 import Pricing from './components/Pricing'
+import Templates from './components/Templates'
 
 const LayoutContainer = () => {
   return (
@@ -44,6 +45,7 @@ const Index = () => {
               }
             />
             <Route path='/' element={<LayoutContainer />}>
+              <Route path='templates' element={<Templates />} />
               <Route path='account-settings' element={<AccountSettings />} />
               <Route path='payment-success' element={<PaymentSuccess />} />
               <Route path='switching-plan' element={<SwitchingPlan />} />
