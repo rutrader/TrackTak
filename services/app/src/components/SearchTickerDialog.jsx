@@ -26,7 +26,13 @@ import getSymbolFromCurrency from 'currency-symbol-map'
 import { useNavigate } from 'react-router'
 import logSpreadsheetEvent from '../shared/logSpreadsheetEvent'
 
-const SearchTickerDialog = ({ open, onClose, isSmallSearch, sx }) => {
+const SearchTickerDialog = ({
+  templatePromise,
+  open,
+  onClose,
+  isSmallSearch,
+  sx
+}) => {
   const theme = useTheme()
   const [autoComplete, setAutoComplete] = useState([])
   const [isLoadingAutocomplete, setIsLoadingAutocomplete] = useState(false)
@@ -40,14 +46,14 @@ const SearchTickerDialog = ({ open, onClose, isSmallSearch, sx }) => {
   const createUserSpreadsheet = async ticker => {
     const values = await Promise.all([
       getAccessToken(),
-      //    api.getTemplate(),
+      templatePromise,
       api.getFundamentals(ticker, {
         filter: 'General::CurrencyCode'
       })
     ])
 
     const token = values[0]
-    const template = values[1]
+    const template = values[1].data.template
 
     Object.keys(template.cells).forEach(key => {
       const cellData = template.cells[key]

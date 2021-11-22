@@ -17,11 +17,16 @@ import SearchTickerDialog from './SearchTickerDialog'
 
 const Templates = () => {
   const [showSearchTickerDialog, setShowSearchTickerDialog] = useState(false)
+  const [templatePromise, setTemplatePromise] = useState()
   const { userData, getAccessToken } = useAuth()
   const navigate = useNavigate()
 
-  const handleShowSearchTickerDialog = () => {
+  const handleShowSearchTickerDialog = async templateName => {
     setShowSearchTickerDialog(true)
+
+    const promise = api.getTemplate(templateName)
+
+    setTemplatePromise(promise)
   }
 
   const handleCloseSearchTickerDialog = () => {
@@ -55,6 +60,7 @@ const Templates = () => {
         <title>{utils.getTitle('Templates')}</title>
       </Helmet>
       <SearchTickerDialog
+        templatePromise={templatePromise}
         open={showSearchTickerDialog}
         onClose={handleCloseSearchTickerDialog}
       />
@@ -68,10 +74,16 @@ const Templates = () => {
           justifyContent: 'center'
         }}
       >
-        {templates.map(template => {
+        {templates.map(({ templateFileName, name, description }) => {
           return (
-            <Card key={template.name} variant='outlined' sx={{ maxWidth: 300 }}>
-              <CardActionArea onClick={handleShowSearchTickerDialog}>
+            <Card
+              key={templateFileName}
+              variant='outlined'
+              sx={{ maxWidth: 300 }}
+            >
+              <CardActionArea
+                onClick={() => handleShowSearchTickerDialog(templateFileName)}
+              >
                 <CardContent>
                   <Typography
                     lineHeight='initial'
@@ -80,14 +92,14 @@ const Templates = () => {
                     component='div'
                     gutterBottom
                   >
-                    {template.name}
+                    {name}
                   </Typography>
                   <Typography
                     sx={{ mb: 1.5 }}
                     variant='body2'
                     color='text.secondary'
                   >
-                    {template.description}
+                    {description}
                   </Typography>
                 </CardContent>
               </CardActionArea>
@@ -116,7 +128,7 @@ const Templates = () => {
           onClick={createBlankSpreadsheetOnClick}
         >
           <Typography fontWeight='bold'>
-            Create Blank Financial Spreadsheet
+            Create Empty Financial Spreadsheet
           </Typography>
         </Button>
       </Box>

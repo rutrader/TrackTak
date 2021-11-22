@@ -80,9 +80,12 @@ app.get('/api/v1/financial-data/:id', async (req, res) => {
 })
 
 app.get('/api/v1/templates/:name', async (req, res) => {
-  const template = await fs.readFile(`./templates/${req.params.name}.json`)
+  const template = await fs.readFile(
+    new URL(`./templates/${req.params.name}`, import.meta.url),
+    'utf8'
+  )
 
-  res.send({ template })
+  res.send({ template: JSON.parse(template) })
 })
 
 app.post('/api/v1/financial-data', auth, async (req, res) => {
