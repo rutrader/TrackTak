@@ -23,7 +23,7 @@ import { useAuth, api } from '@tracktak/common'
 
 const drawerWidth = 240
 
-const FolderDrawer = ({ folders }) => {
+const FolderDrawer = ({ folders, disabledMenuitem }) => {
   const theme = useTheme()
   const { getAccessToken } = useAuth()
   const [open, setOpen] = useState(false)
@@ -46,6 +46,19 @@ const FolderDrawer = ({ folders }) => {
     const dataResponse = await api.createFolder('New Folder', accessToken)
 
     setNewFolders([...newFolders, dataResponse.data.folder])
+  }
+
+  const handleClickDelete = async id => {
+    const token = await getAccessToken()
+    const accessToken = token?.jwtToken
+
+    await api.deleteFolder(id, accessToken)
+
+    setNewFolders(
+      newFolders.filter(({ _id }) => {
+        return _id !== id
+      })
+    )
   }
 
   useEffect(() => {
@@ -92,7 +105,13 @@ const FolderDrawer = ({ folders }) => {
           <List>
             {newFolders.map(({ _id, name }) => {
               return (
-                <SidePanelTabFolders key={_id} id={_id} folderName={name} />
+                <SidePanelTabFolders
+                  key={_id}
+                  id={_id}
+                  folderName={name}
+                  disabledMenuitem={true ? newFolders.length === 1 : false}
+                  onDelete={handleClickDelete}
+                />
               )
             })}
             <Divider sx={{ my: 0.5 }} />

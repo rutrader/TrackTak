@@ -57,7 +57,8 @@ const OptionsMenu = ({
   handleClickAnchor,
   handleAnchorClose,
   handleClickEdit,
-  handleClickDelete
+  handleClickDelete,
+  disabledMenuitem
 }) => {
   return (
     <>
@@ -84,7 +85,11 @@ const OptionsMenu = ({
           <EditIcon />
           Edit
         </MenuItem>
-        <MenuItem onClick={handleClickDelete} disableRipple>
+        <MenuItem
+          onClick={handleClickDelete}
+          disableRipple
+          disabled={disabledMenuitem}
+        >
           <DeleteIcon />
           Delete
         </MenuItem>

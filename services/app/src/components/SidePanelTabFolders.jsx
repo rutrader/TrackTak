@@ -6,7 +6,12 @@ import ContentEditable from 'react-contenteditable'
 import { useAuth, api } from '@tracktak/common'
 import { setCaretToEndOfElement } from '../../../../packages/common/src/shared/utils'
 
-const SidePanelTabFolders = ({ id, folderName }) => {
+const SidePanelTabFolders = ({
+  id,
+  folderName,
+  onDelete,
+  disabledMenuitem
+}) => {
   const [anchorEl, setAnchorEl] = useState(null)
   const [disabled, setDisabled] = useState(true)
   const { getAccessToken } = useAuth()
@@ -40,8 +45,10 @@ const SidePanelTabFolders = ({ id, folderName }) => {
     setDisabled(true)
   }
 
-  const handleClickDelete = () => {
+  const handleClickDelete = async () => {
     setAnchorEl(null)
+
+    onDelete(id)
   }
 
   useEffect(() => {
@@ -80,6 +87,7 @@ const SidePanelTabFolders = ({ id, folderName }) => {
         handleAnchorClose={handleAnchorClose}
         handleClickEdit={handleClickEdit}
         handleClickDelete={handleClickDelete}
+        disabledMenuitem={disabledMenuitem}
         open={open}
         anchorEl={anchorEl}
       />
