@@ -51,7 +51,12 @@ const Dashboard = () => {
   }, [getAccessToken])
 
   return (
-    <ProvideSpreadsheetsMetadata value={data}>
+    <ProvideSpreadsheetsMetadata
+      value={{
+        ...data,
+        handleShowSearchTickerDialog
+      }}
+    >
       <Helmet>
         <title>{utils.getTitle('Dashboard')}</title>
       </Helmet>

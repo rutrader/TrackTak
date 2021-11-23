@@ -22,10 +22,11 @@ import { useSpreadsheetsMetadata } from '../hooks/useSpreadsheetsMetadata'
 import GridOnIcon from '@mui/icons-material/GridOn'
 import DeleteIcon from '@mui/icons-material/Delete'
 
-const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
+const SavedSpreadsheets = () => {
   const theme = useTheme()
   const navigate = useNavigate()
-  const { spreadsheets, defaultFolderId } = useSpreadsheetsMetadata()
+  const { spreadsheets, defaultFolderId, handleShowSearchTickerDialog } =
+    useSpreadsheetsMetadata()
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false)
   const { userData, getAccessToken } = useAuth()
   const [selectedSpreadsheet, setSelectedSpreadsheet] = useState()
@@ -103,7 +104,7 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
           <RoundButton
             variant='contained'
             color='primary'
-            onClick={onNewSpreadsheetClick}
+            onClick={handleShowSearchTickerDialog}
             type='button'
             sx={{
               mt: 2,

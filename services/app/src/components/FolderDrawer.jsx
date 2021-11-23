@@ -23,7 +23,7 @@ import { useAuth, api } from '@tracktak/common'
 
 const drawerWidth = 240
 
-const FolderDrawer = ({ folders, disabledMenuitem }) => {
+const FolderDrawer = ({ folders }) => {
   const theme = useTheme()
   const { getAccessToken } = useAuth()
   const [open, setOpen] = useState(false)
