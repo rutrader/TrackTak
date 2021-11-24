@@ -10,7 +10,7 @@ import { ProvideSpreadsheetsMetadata } from '../hooks/useSpreadsheetsMetadata'
 
 const Dashboard = () => {
   const [folders, setFolders] = useState([])
-  const [data, setData] = useState({})
+  const [defaultFolderId, setDefaultFolderId] = useState()
   const { getAccessToken } = useAuth()
   const [showSearchTickerDialog, setShowSearchTickerDialog] = useState(false)
 
@@ -26,34 +26,20 @@ const Dashboard = () => {
     async function fetchData() {
       const token = await getAccessToken()
       const accessToken = token?.jwtToken
-
-      const getSpreadsheetsMetadataPromise =
-        api.getSpreadsheetsMetadata(accessToken)
-      const getFoldersPromise = api.getFolders(accessToken)
-
-      const dataResponse = await Promise.all([
-        getSpreadsheetsMetadataPromise,
-        getFoldersPromise
-      ])
-
-      const spreadsheets = dataResponse[0].data.spreadsheets
-      const folders = dataResponse[1].data.folders
-
+      const { data } = await api.getFolders(accessToken)
+      const folders = data.folders
       const defaultFolderId = folders[0]._id
 
-      setData({
-        spreadsheets,
-        defaultFolderId
-      })
+      setDefaultFolderId(defaultFolderId)
       setFolders(folders)
     }
     fetchData()
-  }, [getAccessToken])
+  }, [getAccessToken, setDefaultFolderId, setFolders])
 
   return (
     <ProvideSpreadsheetsMetadata
       value={{
-        ...data,
+        defaultFolderId,
         handleShowSearchTickerDialog
       }}
     >

@@ -24,13 +24,13 @@ import getSymbolFromCurrency from 'currency-symbol-map'
 import { cloneDeep } from 'lodash-es'
 import { useNavigate } from 'react-router'
 import logValuationEvent from '../shared/logValuationEvent'
-
-const folderId = '6193cb55e2c0a84be0cad813'
+import { useSpreadsheetsMetadata } from '../hooks/useSpreadsheetsMetadata'
 
 const SearchTicker = ({ isSmallSearch, sx, getTemplate }) => {
   const theme = useTheme()
   const [autoComplete, setAutoComplete] = useState([])
   const [isLoadingAutocomplete, setIsLoadingAutocomplete] = useState(false)
+  const { folderId } = useSpreadsheetsMetadata()
   const isOnMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const [text, setText] = useState('')
   const { userData, getAccessToken } = useAuth()

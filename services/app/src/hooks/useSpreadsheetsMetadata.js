@@ -1,4 +1,5 @@
 import React, { useContext, createContext } from 'react'
+import { useParams } from 'react-router-dom'
 
 const SpreadsheetContext = createContext()
 
@@ -11,5 +12,14 @@ export const ProvideSpreadsheetsMetadata = ({ value, children }) => {
 }
 
 export const useSpreadsheetsMetadata = () => {
-  return useContext(SpreadsheetContext)
+  const { defaultFolderId, handleShowSearchTickerDialog } =
+    useContext(SpreadsheetContext)
+
+  const params = useParams()
+  const folderId = params.folderId ?? defaultFolderId
+
+  return {
+    folderId,
+    handleShowSearchTickerDialog
+  }
 }

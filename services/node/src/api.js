@@ -347,6 +347,20 @@ const api = {
     })
   },
 
+  getSpreadsheetsInFolder: async folderId => {
+    return database.find(
+      Collections.POWERSHEET_SPREADSHEET,
+      {
+        folderId
+      },
+      {
+        projection: {
+          'sheetData.data': 0
+        }
+      }
+    )
+  },
+
   updateSpreadsheetFinancialData: async (id, financialDataId) => {
     return database.updateOne(
       Collections.POWERSHEET_SPREADSHEET,
@@ -383,20 +397,6 @@ const api = {
       query,
       document,
       spreadsheetId
-    )
-  },
-
-  getSpreadsheetsMetadata: async userId => {
-    return database.find(
-      Collections.POWERSHEET_SPREADSHEET,
-      {
-        userId
-      },
-      {
-        projection: {
-          'sheetData.data': 0
-        }
-      }
     )
   },
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Box,
   Typography,
@@ -15,7 +15,7 @@ import {
 } from '@mui/material'
 import ConfirmationDialog from './ConfirmationDialog'
 import { api, useAuth, RoundButton } from '@tracktak/common'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import logValuationEvent from '../shared/logValuationEvent'
 import dayjs from 'dayjs'
 import { useSpreadsheetsMetadata } from '../hooks/useSpreadsheetsMetadata'
@@ -25,15 +25,23 @@ import DeleteIcon from '@mui/icons-material/Delete'
 const SavedSpreadsheets = () => {
   const theme = useTheme()
   const navigate = useNavigate()
-  const { spreadsheets, defaultFolderId, handleShowSearchTickerDialog } =
-    useSpreadsheetsMetadata()
+  const { folderId, handleShowSearchTickerDialog } = useSpreadsheetsMetadata()
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false)
   const { userData, getAccessToken } = useAuth()
   const [selectedSpreadsheet, setSelectedSpreadsheet] = useState()
-  const params = useParams()
-  const currentSpreadsheets = spreadsheets?.filter(
-    x => x.folderId === (params.folderId ?? defaultFolderId)
-  )
+  const [spreadsheets, setSpreadsheets] = useState()
+
+  useEffect(() => {
+    async function fetchData() {
+      const token = await getAccessToken()
+      const accessToken = token?.jwtToken
+      const { data } = await api.getSpreadsheetsInFolder(folderId, accessToken)
+      const spreadsheets = data.spreadsheets
+
+      setSpreadsheets(spreadsheets)
+    }
+    fetchData()
+  }, [getAccessToken, setSpreadsheets, folderId])
 
   const handleRowClick = spreadsheet => {
     navigate(`/${userData.name}/my-spreadsheets/${spreadsheet._id}`)
@@ -91,7 +99,7 @@ const SavedSpreadsheets = () => {
         </DialogContentText>
       </ConfirmationDialog>
       {/* No falsy check because null means the data hasn't loaded yet */}
-      {currentSpreadsheets?.length === 0 && (
+      {spreadsheets?.length === 0 && (
         <Box
           sx={{
             marginTop: theme => theme.spacing(10)
@@ -115,7 +123,7 @@ const SavedSpreadsheets = () => {
           </RoundButton>
         </Box>
       )}
-      {currentSpreadsheets?.length > 0 && (
+      {spreadsheets?.length > 0 && (
         <>
           <TableContainer
             sx={{
@@ -136,7 +144,7 @@ const SavedSpreadsheets = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {currentSpreadsheets
+                {spreadsheets
                   .sort(
                     (a, b) =>
                       new Date(b.lastModifiedTimestamp) -

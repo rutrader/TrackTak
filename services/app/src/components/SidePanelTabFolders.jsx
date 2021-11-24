@@ -10,7 +10,8 @@ const SidePanelTabFolders = ({
   id,
   folderName,
   onDelete,
-  disabledMenuitem
+  disabledMenuitem,
+  handleOnClickRouting
 }) => {
   const [anchorEl, setAnchorEl] = useState(null)
   const [disabled, setDisabled] = useState(true)
@@ -60,7 +61,7 @@ const SidePanelTabFolders = ({
   }, [editableRef, disabled])
 
   return (
-    <ListItem>
+    <ListItem onClick={handleOnClickRouting} button>
       <ListItemIcon>
         <Folder />
       </ListItemIcon>

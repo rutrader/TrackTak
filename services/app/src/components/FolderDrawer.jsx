@@ -20,11 +20,13 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder'
 import SidePanelTabFolders from './SidePanelTabFolders'
 import { useAuth, api } from '@tracktak/common'
+import { useNavigate } from 'react-router-dom'
 
 const drawerWidth = 240
 
 const FolderDrawer = ({ folders }) => {
   const theme = useTheme()
+  const navigate = useNavigate()
   const { getAccessToken } = useAuth()
   const [open, setOpen] = useState(false)
   const [newFolders, setNewFolders] = useState([])
@@ -109,8 +111,11 @@ const FolderDrawer = ({ folders }) => {
                   key={_id}
                   id={_id}
                   folderName={name}
-                  disabledMenuitem={true ? newFolders.length === 1 : false}
+                  disabledMenuitem={newFolders.length === 1 ? true : false}
                   onDelete={handleClickDelete}
+                  handleOnClickRouting={() => {
+                    navigate(`/${_id}`)
+                  }}
                 />
               )
             })}
