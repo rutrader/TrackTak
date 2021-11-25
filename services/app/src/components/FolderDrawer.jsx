@@ -33,6 +33,8 @@ const FolderDrawer = ({ folders }) => {
   const isOnMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const top = theme.mixins.toolbar.minHeight - 2
 
+  const newFoldersLength = newFolders.length === 1 ? true : false
+
   const handleDrawerOpen = () => {
     setOpen(true)
   }
@@ -111,7 +113,9 @@ const FolderDrawer = ({ folders }) => {
                   key={_id}
                   id={_id}
                   folderName={name}
-                  disabledMenuitem={newFolders.length === 1 ? true : false}
+                  disabledMenuitem={newFoldersLength}
+                  disabledModal={newFoldersLength}
+                  folders={newFolders}
                   onDelete={handleClickDelete}
                   handleOnClickRouting={() => {
                     navigate(`/${_id}`)

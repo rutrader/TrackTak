@@ -11,14 +11,26 @@ const SidePanelTabFolders = ({
   folderName,
   onDelete,
   disabledMenuitem,
-  handleOnClickRouting
+  disabledModal,
+  handleOnClickRouting,
+  folders
 }) => {
   const [anchorEl, setAnchorEl] = useState(null)
   const [disabled, setDisabled] = useState(true)
+  const [openModal, setOpenModal] = useState(false)
+
   const { getAccessToken } = useAuth()
   const open = Boolean(anchorEl)
   const editableRef = useRef()
   const textRef = useRef(folderName)
+
+  const handleOnClickOpenModal = () => {
+    setOpenModal(true)
+    setAnchorEl(null)
+  }
+  const handleOnClickCloseModal = () => {
+    setOpenModal(false)
+  }
 
   const handleOnChangeContentEditable = e => {
     textRef.current = e.target.value
@@ -50,6 +62,10 @@ const SidePanelTabFolders = ({
     setAnchorEl(null)
 
     onDelete(id)
+  }
+
+  const handleClickMoveTo = async () => {
+    setAnchorEl(null)
   }
 
   useEffect(() => {
@@ -88,8 +104,14 @@ const SidePanelTabFolders = ({
         handleAnchorClose={handleAnchorClose}
         handleClickEdit={handleClickEdit}
         handleClickDelete={handleClickDelete}
+        handleClickMoveTo={handleClickMoveTo}
+        handleOnClickOpenModal={handleOnClickOpenModal}
+        handleOnClickCloseModal={handleOnClickCloseModal}
         disabledMenuitem={disabledMenuitem}
+        disabledModal={disabledModal}
+        folders={folders}
         open={open}
+        openModal={openModal}
         anchorEl={anchorEl}
       />
     </ListItem>
