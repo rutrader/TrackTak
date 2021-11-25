@@ -1,5 +1,4 @@
 import 'dotenv/config'
-import mapper from './mapper'
 import * as database from './client/mongoDbClient'
 import fs from 'fs'
 
@@ -26,8 +25,7 @@ const BATCH_SIZE = 100
       continue
     }
     const powersheet = {
-      ...data,
-      sheetData: mapper(data.sheetData, data.financialData.ticker)
+      ...data
     }
 
     try {
