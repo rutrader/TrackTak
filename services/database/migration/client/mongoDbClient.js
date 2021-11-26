@@ -25,7 +25,7 @@ export const connect = async () => {
 
 export const find = async (collection, query) => {
   const database = client.db(DB_CONFIG.name)
-  return database.collection(collection).find(query).toArray()
+  return database.collection(collection).find(query)
 }
 
 export const clearAll = async collection => {
