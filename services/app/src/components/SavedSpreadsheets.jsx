@@ -34,7 +34,7 @@ const SavedSpreadsheets = ({ onNewSpreadsheetClick }) => {
       const token = await getAccessToken()
       const response = await api.getSpreadsheetsMetadata(token?.jwtToken)
 
-      setSpreadsheets(response ? response.data?.spreadsheets : [])
+      setSpreadsheets(response.data.spreadsheets)
     }
     fetchData()
   }, [getAccessToken])
