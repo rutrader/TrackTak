@@ -1,23 +1,13 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { styled, alpha } from '@mui/material/styles'
-import {
-  Modal,
-  Typography,
-  Button,
-  Box,
-  Menu,
-  MenuItem,
-  Divider
-} from '@mui/material'
+import { Menu, MenuItem } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import { IconButton } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
-import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove'
-import FolderIcon from '@mui/icons-material/Folder'
 
-const StyledMenu = styled(props => (
+export const StyledMenu = styled(props => (
   <Menu
     elevation={0}
     anchorOrigin={{
@@ -60,25 +50,19 @@ const StyledMenu = styled(props => (
   }
 }))
 
-const OptionsMenu = ({
+const OptionsMenuFolder = ({
   open,
   anchorEl,
   handleClickAnchor,
   handleAnchorClose,
   handleClickEdit,
   handleClickDelete,
-  disabledMenuitem,
-  disabledModal,
-  handleOnClickOpenModal,
-  handleOnClickCloseModal,
-  openModal,
-  folders
+  disabledMenuitem
 }) => {
   return (
     <>
       <IconButton
         color='primary'
-        aria-controls='demo-customized-menu'
         aria-haspopup='true'
         aria-expanded={open ? 'true' : undefined}
         variant='contained'
@@ -87,7 +71,6 @@ const OptionsMenu = ({
         <MoreHorizIcon />
       </IconButton>
       <StyledMenu
-        id='demo-customized-menu'
         MenuListProps={{
           'aria-labelledby': 'demo-customized-button'
         }}
@@ -95,14 +78,6 @@ const OptionsMenu = ({
         open={open}
         onClose={handleAnchorClose}
       >
-        <MenuItem
-          onClick={handleOnClickOpenModal}
-          disabled={disabledModal}
-          disableRipple
-        >
-          <DriveFileMoveIcon />
-          Move to
-        </MenuItem>
         <MenuItem onClick={handleClickEdit} disableRipple>
           <EditIcon />
           Edit
@@ -116,58 +91,8 @@ const OptionsMenu = ({
           Delete
         </MenuItem>
       </StyledMenu>
-      <Modal open={openModal} onClose={handleOnClickCloseModal}>
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: 500,
-            bgcolor: 'background.paper',
-            borderRadius: '8px',
-            p: 4,
-            '&:focus': {
-              outline: 0,
-              border: 0
-            }
-          }}
-        >
-          <Typography
-            variant='h6'
-            component='h2'
-            sx={{ fontWeight: 'bold', mb: 2 }}
-          >
-            Move my spreadsheet to...
-          </Typography>
-          <Divider />
-          <Box sx={{ mt: 2 }}>
-            {folders.map(folder => {
-              return (
-                <Button
-                  fullWidth
-                  key={folder._id}
-                  startIcon={<FolderIcon sx={{ color: '#707070' }} />}
-                  sx={{
-                    textTransform: 'none',
-                    color: '#1A1A1A',
-                    display: 'flex',
-                    justifyContent: 'flex-start',
-                    padding: '15px',
-                    ':hover': {
-                      color: theme => theme.palette.primary.main
-                    }
-                  }}
-                >
-                  {folder.name}
-                </Button>
-              )
-            })}
-          </Box>
-        </Box>
-      </Modal>
     </>
   )
 }
 
-export default OptionsMenu
+export default OptionsMenuFolder

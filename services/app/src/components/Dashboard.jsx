@@ -40,7 +40,8 @@ const Dashboard = () => {
     <ProvideSpreadsheetsMetadata
       value={{
         defaultFolderId,
-        handleShowSearchTickerDialog
+        handleShowSearchTickerDialog,
+        folders
       }}
     >
       <Helmet>

@@ -12,7 +12,7 @@ export const ProvideSpreadsheetsMetadata = ({ value, children }) => {
 }
 
 export const useSpreadsheetsMetadata = () => {
-  const { defaultFolderId, handleShowSearchTickerDialog } =
+  const { defaultFolderId, handleShowSearchTickerDialog, folders } =
     useContext(SpreadsheetContext)
 
   const params = useParams()
@@ -20,6 +20,7 @@ export const useSpreadsheetsMetadata = () => {
 
   return {
     folderId,
-    handleShowSearchTickerDialog
+    handleShowSearchTickerDialog,
+    folders
   }
 }

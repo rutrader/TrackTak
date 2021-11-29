@@ -114,7 +114,6 @@ const FolderDrawer = ({ folders }) => {
                   id={_id}
                   folderName={name}
                   disabledMenuitem={newFoldersLength}
-                  disabledModal={newFoldersLength}
                   folders={newFolders}
                   onDelete={handleClickDelete}
                   handleOnClickRouting={() => {

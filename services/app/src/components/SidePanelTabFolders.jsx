@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { ListItem, ListItemText, ListItemIcon } from '@mui/material'
 import Folder from '@mui/icons-material/Folder'
-import OptionsMenu from './OptionsMenu'
+import OptionsMenuFolder from './OptionsMenuFolder'
 import ContentEditable from 'react-contenteditable'
 import { useAuth, api } from '@tracktak/common'
 import { setCaretToEndOfElement } from '../../../../packages/common/src/shared/utils'
@@ -11,7 +11,6 @@ const SidePanelTabFolders = ({
   folderName,
   onDelete,
   disabledMenuitem,
-  disabledModal,
   handleOnClickRouting,
   folders
 }) => {
@@ -28,6 +27,7 @@ const SidePanelTabFolders = ({
     setOpenModal(true)
     setAnchorEl(null)
   }
+
   const handleOnClickCloseModal = () => {
     setOpenModal(false)
   }
@@ -64,10 +64,6 @@ const SidePanelTabFolders = ({
     onDelete(id)
   }
 
-  const handleClickMoveTo = async () => {
-    setAnchorEl(null)
-  }
-
   useEffect(() => {
     if (editableRef.current && !disabled) {
       editableRef.current.focus()
@@ -99,19 +95,14 @@ const SidePanelTabFolders = ({
           />
         }
       />
-      <OptionsMenu
+      <OptionsMenuFolder
         handleClickAnchor={handleClickAnchor}
         handleAnchorClose={handleAnchorClose}
         handleClickEdit={handleClickEdit}
         handleClickDelete={handleClickDelete}
-        handleClickMoveTo={handleClickMoveTo}
-        handleOnClickOpenModal={handleOnClickOpenModal}
-        handleOnClickCloseModal={handleOnClickCloseModal}
         disabledMenuitem={disabledMenuitem}
-        disabledModal={disabledModal}
         folders={folders}
         open={open}
-        openModal={openModal}
         anchorEl={anchorEl}
       />
     </ListItem>

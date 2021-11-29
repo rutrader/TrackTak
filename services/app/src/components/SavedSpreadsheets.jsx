@@ -10,9 +10,17 @@ import {
   TableRow,
   TableContainer,
   ListItemIcon,
-  IconButton,
-  useTheme
+  useTheme,
+  Modal,
+  Button,
+  MenuItem,
+  Divider,
+  IconButton
 } from '@mui/material'
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
+import DeleteIcon from '@mui/icons-material/Delete'
+import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove'
+import FolderIcon from '@mui/icons-material/Folder'
 import ConfirmationDialog from './ConfirmationDialog'
 import { api, useAuth, RoundButton } from '@tracktak/common'
 import { useNavigate } from 'react-router-dom'
@@ -20,16 +28,20 @@ import logValuationEvent from '../shared/logValuationEvent'
 import dayjs from 'dayjs'
 import { useSpreadsheetsMetadata } from '../hooks/useSpreadsheetsMetadata'
 import GridOnIcon from '@mui/icons-material/GridOn'
-import DeleteIcon from '@mui/icons-material/Delete'
+import { StyledMenu } from './OptionsMenuFolder'
 
 const SavedSpreadsheets = () => {
   const theme = useTheme()
   const navigate = useNavigate()
-  const { folderId, handleShowSearchTickerDialog } = useSpreadsheetsMetadata()
+  const { folderId, handleShowSearchTickerDialog, folders } =
+    useSpreadsheetsMetadata()
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false)
   const { userData, getAccessToken } = useAuth()
   const [selectedSpreadsheet, setSelectedSpreadsheet] = useState()
   const [spreadsheets, setSpreadsheets] = useState()
+  const [openModalFolder, setOpenModalFolder] = useState(false)
+  const [anchorEl, setAnchorEl] = useState(null)
+  const open = Boolean(anchorEl)
 
   useEffect(() => {
     async function fetchData() {
@@ -49,10 +61,31 @@ const SavedSpreadsheets = () => {
     logValuationEvent('Edit', spreadsheet.sheetData.name)
   }
 
-  const handleDelete = spreadsheet => {
-    setSelectedSpreadsheet(spreadsheet)
+  const handleOnClickDelete = () => {
     setShowConfirmationDialog(true)
   }
+
+  const handleOnClickAnchor = spreadsheet => e => {
+    e.stopPropagation()
+
+    setSelectedSpreadsheet(spreadsheet)
+    setAnchorEl(e.currentTarget)
+  }
+
+  const handleOnClickAnchorClose = () => {
+    setAnchorEl(null)
+  }
+
+  const handleOnClickCloseModal = () => {
+    setOpenModalFolder(false)
+  }
+
+  const handleOnClickOpenModal = () => {
+    setOpenModalFolder(true)
+    setAnchorEl(null)
+  }
+
+  const handleOnClickMoveTo = () => {}
 
   const handleDeleteConfirm = async () => {
     if (selectedSpreadsheet) {
@@ -176,17 +209,13 @@ const SavedSpreadsheets = () => {
                       </TableCell>
                       <TableCell align='right'>
                         <IconButton
-                          sx={{
-                            borderRadius: '2px',
-                            color: theme.palette.alert
-                          }}
-                          onClick={e => {
-                            e.stopPropagation()
-                            handleDelete(spreadsheet)
-                          }}
-                          type='button'
+                          color='primary'
+                          aria-haspopup='true'
+                          aria-expanded={open ? 'true' : undefined}
+                          variant='contained'
+                          onClick={handleOnClickAnchor(spreadsheet)}
                         >
-                          <DeleteIcon />
+                          <MoreHorizIcon />
                         </IconButton>
                       </TableCell>
                     </TableRow>
@@ -194,6 +223,82 @@ const SavedSpreadsheets = () => {
               </TableBody>
             </Table>
           </TableContainer>
+          <StyledMenu
+            MenuListProps={{
+              'aria-labelledby': 'demo-customized-button'
+            }}
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleOnClickAnchorClose}
+          >
+            <MenuItem
+              disableRipple
+              onClick={handleOnClickAnchorClose}
+              onClick={handleOnClickOpenModal}
+            >
+              <DriveFileMoveIcon />
+              Move to
+            </MenuItem>
+            <MenuItem
+              disableRipple
+              onClick={handleOnClickAnchorClose}
+              onClick={handleOnClickDelete}
+            >
+              <DeleteIcon />
+              Delete
+            </MenuItem>
+          </StyledMenu>
+          <Modal open={openModalFolder} onClose={handleOnClickCloseModal}>
+            <Box
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: 500,
+                bgcolor: 'background.paper',
+                borderRadius: '8px',
+                p: 4,
+                '&:focus': {
+                  outline: 0,
+                  border: 0
+                }
+              }}
+            >
+              <Typography
+                variant='h6'
+                component='h2'
+                sx={{ fontWeight: 'bold', mb: 2 }}
+              >
+                Move my spreadsheet to...
+              </Typography>
+              <Divider />
+              <Box sx={{ mt: 2 }}>
+                {folders.map(folder => {
+                  return (
+                    <Button
+                      fullWidth
+                      key={folder._id}
+                      startIcon={<FolderIcon sx={{ color: '#707070' }} />}
+                      onClick={handleOnClickMoveTo}
+                      sx={{
+                        textTransform: 'none',
+                        color: '#1A1A1A',
+                        display: 'flex',
+                        justifyContent: 'flex-start',
+                        padding: '15px',
+                        ':hover': {
+                          color: theme => theme.palette.primary.main
+                        }
+                      }}
+                    >
+                      {folder.name}
+                    </Button>
+                  )
+                })}
+              </Box>
+            </Box>
+          </Modal>
         </>
       )}
     </>
