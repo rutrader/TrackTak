@@ -1,6 +1,6 @@
 import { Box, IconButton, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Outlet } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import { utils, useAuth, api } from '@tracktak/common'
@@ -22,19 +22,21 @@ const Dashboard = () => {
     setShowSearchTickerDialog(false)
   }
 
-  useEffect(() => {
-    async function fetchData() {
-      const token = await getAccessToken()
-      const accessToken = token?.jwtToken
-      const { data } = await api.getFolders(accessToken)
-      const folders = data.folders
-      const defaultFolderId = folders[0]._id
+  const fetchFolders = useCallback(async () => {
+    const token = await getAccessToken()
+    const accessToken = token?.jwtToken
 
-      setDefaultFolderId(defaultFolderId)
-      setFolders(folders)
-    }
-    fetchData()
+    const { data } = await api.getFolders(accessToken)
+    const folders = data.folders
+    const defaultFolderId = folders[0]._id
+
+    setDefaultFolderId(defaultFolderId)
+    setFolders(folders)
   }, [getAccessToken, setDefaultFolderId, setFolders])
+
+  useEffect(() => {
+    fetchFolders()
+  }, [fetchFolders])
 
   return (
     <ProvideSpreadsheetsMetadata
@@ -76,7 +78,7 @@ const Dashboard = () => {
           <AddIcon style={{ color: 'white' }} fontSize='large' />
         </IconButton>
       </Box>
-      <FolderDrawer folders={folders} />
+      <FolderDrawer folders={folders} fetchFolders={fetchFolders} />
       <Outlet />
     </ProvideSpreadsheetsMetadata>
   )

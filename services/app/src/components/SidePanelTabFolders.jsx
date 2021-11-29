@@ -16,21 +16,11 @@ const SidePanelTabFolders = ({
 }) => {
   const [anchorEl, setAnchorEl] = useState(null)
   const [disabled, setDisabled] = useState(true)
-  const [openModal, setOpenModal] = useState(false)
 
   const { getAccessToken } = useAuth()
   const open = Boolean(anchorEl)
   const editableRef = useRef()
   const textRef = useRef(folderName)
-
-  const handleOnClickOpenModal = () => {
-    setOpenModal(true)
-    setAnchorEl(null)
-  }
-
-  const handleOnClickCloseModal = () => {
-    setOpenModal(false)
-  }
 
   const handleOnChangeContentEditable = e => {
     textRef.current = e.target.value

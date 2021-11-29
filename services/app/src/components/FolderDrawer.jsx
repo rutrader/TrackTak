@@ -24,16 +24,15 @@ import { useNavigate } from 'react-router-dom'
 
 const drawerWidth = 240
 
-const FolderDrawer = ({ folders }) => {
+const FolderDrawer = ({ folders, fetchFolders }) => {
   const theme = useTheme()
   const navigate = useNavigate()
   const { getAccessToken } = useAuth()
   const [open, setOpen] = useState(false)
-  const [newFolders, setNewFolders] = useState([])
   const isOnMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const top = theme.mixins.toolbar.minHeight - 2
 
-  const newFoldersLength = newFolders.length === 1 ? true : false
+  const newFoldersLength = folders.length === 1 ? true : false
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -47,9 +46,9 @@ const FolderDrawer = ({ folders }) => {
     const token = await getAccessToken()
     const accessToken = token?.jwtToken
 
-    const dataResponse = await api.createFolder('New Folder', accessToken)
+    await api.createFolder('New Folder', accessToken)
 
-    setNewFolders([...newFolders, dataResponse.data.folder])
+    await fetchFolders()
   }
 
   const handleClickDelete = async id => {
@@ -58,16 +57,8 @@ const FolderDrawer = ({ folders }) => {
 
     await api.deleteFolder(id, accessToken)
 
-    setNewFolders(
-      newFolders.filter(({ _id }) => {
-        return _id !== id
-      })
-    )
+    await fetchFolders()
   }
-
-  useEffect(() => {
-    setNewFolders(folders)
-  }, [folders])
 
   useEffect(() => {
     setOpen(true)
@@ -107,14 +98,14 @@ const FolderDrawer = ({ folders }) => {
             <Divider />
           </Hidden>
           <List>
-            {newFolders.map(({ _id, name }) => {
+            {folders.map(({ _id, name }) => {
               return (
                 <SidePanelTabFolders
                   key={_id}
                   id={_id}
                   folderName={name}
                   disabledMenuitem={newFoldersLength}
-                  folders={newFolders}
+                  folders={folders}
                   onDelete={handleClickDelete}
                   handleOnClickRouting={() => {
                     navigate(`/${_id}`)

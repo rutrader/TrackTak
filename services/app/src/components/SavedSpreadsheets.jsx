@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import {
   Box,
   Typography,
@@ -43,17 +43,20 @@ const SavedSpreadsheets = () => {
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
 
-  useEffect(() => {
-    async function fetchData() {
-      const token = await getAccessToken()
-      const accessToken = token?.jwtToken
-      const { data } = await api.getSpreadsheetsInFolder(folderId, accessToken)
-      const spreadsheets = data.spreadsheets
+  const foldersLength = folders.length === 1 ? true : false
 
-      setSpreadsheets(spreadsheets)
-    }
-    fetchData()
+  const fetchNewSpreadsheets = useCallback(async () => {
+    const token = await getAccessToken()
+    const accessToken = token?.jwtToken
+    const { data } = await api.getSpreadsheetsInFolder(folderId, accessToken)
+    const spreadsheets = data.spreadsheets
+
+    setSpreadsheets(spreadsheets)
   }, [getAccessToken, setSpreadsheets, folderId])
+
+  useEffect(() => {
+    fetchNewSpreadsheets()
+  }, [fetchNewSpreadsheets])
 
   const handleRowClick = spreadsheet => {
     navigate(`/${userData.name}/my-spreadsheets/${spreadsheet._id}`)
@@ -85,21 +88,20 @@ const SavedSpreadsheets = () => {
     setAnchorEl(null)
   }
 
-  const handleOnClickMoveTo = () => {}
+  const handleOnClickMoveSpreadsheetTo = async folderId => {
+    const token = await getAccessToken()
+    const accessToken = token?.jwtToken
+
+    await api.updateSpreadsheetFolder(spreadsheet._id, folderId, accessToken)
+    await fetchNewSpreadsheets()
+  }
 
   const handleDeleteConfirm = async () => {
     if (selectedSpreadsheet) {
       const token = await getAccessToken()
-      const response = await api.deleteSpreadsheet(
-        selectedSpreadsheet._id,
-        token?.jwtToken
-      )
-      if (response.status === 200) {
-        const updatedSpreadsheets = spreadsheets.filter(
-          spreadsheet => spreadsheet._id !== selectedSpreadsheet._id
-        )
-        setSpreadsheets(updatedSpreadsheets)
-      }
+
+      await api.deleteSpreadsheet(selectedSpreadsheet._id, token?.jwtToken)
+      await fetchNewSpreadsheets()
     }
   }
 
@@ -233,6 +235,7 @@ const SavedSpreadsheets = () => {
           >
             <MenuItem
               disableRipple
+              disabled={foldersLength}
               onClick={handleOnClickAnchorClose}
               onClick={handleOnClickOpenModal}
             >
@@ -280,7 +283,7 @@ const SavedSpreadsheets = () => {
                       fullWidth
                       key={folder._id}
                       startIcon={<FolderIcon sx={{ color: '#707070' }} />}
-                      onClick={handleOnClickMoveTo}
+                      onClick={() => handleOnClickMoveSpreadsheetTo(folder._id)}
                       sx={{
                         textTransform: 'none',
                         color: '#1A1A1A',
