@@ -89,11 +89,20 @@ const SavedSpreadsheets = () => {
   }
 
   const handleOnClickMoveSpreadsheetTo = async folderId => {
-    const token = await getAccessToken()
-    const accessToken = token?.jwtToken
+    if (selectedSpreadsheet) {
+      const token = await getAccessToken()
+      const accessToken = token?.jwtToken
 
-    await api.updateSpreadsheetFolder(spreadsheet._id, folderId, accessToken)
-    await fetchNewSpreadsheets()
+      await api.updateSpreadsheetFolder(
+        selectedSpreadsheet._id,
+        folderId,
+        accessToken
+      )
+      await fetchNewSpreadsheets()
+
+      setOpenModalFolder(false)
+      navigate(`/${folderId}`)
+    }
   }
 
   const handleDeleteConfirm = async () => {
@@ -102,6 +111,8 @@ const SavedSpreadsheets = () => {
 
       await api.deleteSpreadsheet(selectedSpreadsheet._id, token?.jwtToken)
       await fetchNewSpreadsheets()
+
+      setAnchorEl(null)
     }
   }
 
@@ -277,28 +288,34 @@ const SavedSpreadsheets = () => {
               </Typography>
               <Divider />
               <Box sx={{ mt: 2 }}>
-                {folders.map(folder => {
-                  return (
-                    <Button
-                      fullWidth
-                      key={folder._id}
-                      startIcon={<FolderIcon sx={{ color: '#707070' }} />}
-                      onClick={() => handleOnClickMoveSpreadsheetTo(folder._id)}
-                      sx={{
-                        textTransform: 'none',
-                        color: '#1A1A1A',
-                        display: 'flex',
-                        justifyContent: 'flex-start',
-                        padding: '15px',
-                        ':hover': {
-                          color: theme => theme.palette.primary.main
+                {folders
+                  .filter(({ _id }) => {
+                    return _id !== folderId
+                  })
+                  .map(folder => {
+                    return (
+                      <Button
+                        fullWidth
+                        key={folder._id}
+                        startIcon={<FolderIcon sx={{ color: '#707070' }} />}
+                        onClick={() =>
+                          handleOnClickMoveSpreadsheetTo(folder._id)
                         }
-                      }}
-                    >
-                      {folder.name}
-                    </Button>
-                  )
-                })}
+                        sx={{
+                          textTransform: 'none',
+                          color: '#1A1A1A',
+                          display: 'flex',
+                          justifyContent: 'flex-start',
+                          padding: '15px',
+                          ':hover': {
+                            color: theme => theme.palette.primary.main
+                          }
+                        }}
+                      >
+                        {folder.name}
+                      </Button>
+                    )
+                  })}
               </Box>
             </Box>
           </Modal>

@@ -22,13 +22,12 @@ import SidePanelTabFolders from './SidePanelTabFolders'
 import { useAuth, api } from '@tracktak/common'
 import { useNavigate } from 'react-router-dom'
 
-const drawerWidth = 240
+export const drawerWidth = 240
 
-const FolderDrawer = ({ folders, fetchFolders }) => {
+const FolderDrawer = ({ folders, fetchFolders, open, setOpen }) => {
   const theme = useTheme()
   const navigate = useNavigate()
   const { getAccessToken } = useAuth()
-  const [open, setOpen] = useState(false)
   const isOnMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const top = theme.mixins.toolbar.minHeight - 2
 
@@ -65,17 +64,7 @@ const FolderDrawer = ({ folders, fetchFolders }) => {
   }, [])
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        width: '100%',
-        '& .MuiDrawer-root': {
-          [theme.breakpoints.down(1550)]: {
-            width: open ? drawerWidth : 'initial'
-          }
-        }
-      }}
-    >
+    <>
       <Drawer
         variant={isOnMobile ? 'persistent' : 'permanent'}
         anchor='left'
@@ -141,7 +130,7 @@ const FolderDrawer = ({ folders, fetchFolders }) => {
           <ChevronRightIcon color='primary' />
         </IconButton>
       </Hidden>
-    </Box>
+    </>
   )
 }
 
