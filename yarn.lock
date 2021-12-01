@@ -5884,6 +5884,17 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
   integrity sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
 
+"@tracktak/hyperformula@^2.0.3":
+  version "2.0.3"
+  resolved "https://npm.pkg.github.com/download/@tracktak/hyperformula/2.0.3/9d7ac5d6577a5b2bbab2b55a740c378472456cb6abd25b373794f1f08cf99d7c#a43ec94fbae2db977e7f4684804dff89d42cb269"
+  integrity sha512-aA7va89RY4/4ee000Wi3NVnWsny+wFMlJ/+xMxeW3JvudQoOZ4LOSmpqI9+LhMfNHtnmmB4hZazWHsji+o61mw==
+  dependencies:
+    chevrotain "^6.5.0"
+    core-js "^3.6.4"
+    regenerator-runtime "^0.13.3"
+    tiny-emitter "^2.1.0"
+    unorm "^1.6.0"
+
 "@tracktak/powersheet@^1.0.2":
   version "1.0.2"
   resolved "https://npm.pkg.github.com/download/@tracktak/powersheet/1.0.2/6f8711da35dbe396d44ce4d01e15d4f3c10a10aff884741d21415c2892e43076#3d032b10f35bbf8d2e320d9665c4997817fd5d61"
@@ -14465,17 +14476,6 @@ humanize-ms@^1.2.1:
   integrity sha1-xG4xWaKT9riW2ikxbYtv6Lt5u+0=
   dependencies:
     ms "^2.0.0"
-
-hyperformula@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/hyperformula/-/hyperformula-1.3.0.tgz#328b2fc3b42a031b21af5ada729e23421a9780f9"
-  integrity sha512-1pFHop1J7g46jTfKo8vTRTCFJq13yIRXrrPr+Rz3C5Yc69qNJCqiGam/LdDWNy5UjILRF3BvIlfo9ZGOoJ6Y+Q==
-  dependencies:
-    chevrotain "^6.5.0"
-    core-js "^3.6.4"
-    regenerator-runtime "^0.13.3"
-    tiny-emitter "^2.1.0"
-    unorm "^1.6.0"
 
 iconv-lite@0.4.24, iconv-lite@^0.4.24, iconv-lite@^0.4.4:
   version "0.4.24"

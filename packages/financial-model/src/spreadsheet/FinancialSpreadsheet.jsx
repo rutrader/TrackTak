@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { AlwaysSparse, HyperFormula } from 'hyperformula'
+import { AlwaysSparse, HyperFormula } from '@tracktak/hyperformula'
 import '@tracktak/powersheet/dist/index.css'
 import {
   Spreadsheet,
