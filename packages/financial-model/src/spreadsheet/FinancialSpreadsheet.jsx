@@ -20,23 +20,25 @@ import finFunctionHelperData from './financialData/finFunctionHelperData'
 import './FinancialSpreadsheet.css'
 
 const buildPowersheet = () => {
-  const hyperformula = HyperFormula.buildEmpty({
-    chooseAddressMappingPolicy: new AlwaysSparse(),
-    // We use our own undo/redo instead
-    undoLimit: 0,
-    licenseKey: 'gpl-v3'
-  })
-
-  const trueArgs = ['TRUE', '=TRUE()']
-  const falseArgs = ['FALSE', '=FALSE()']
-
-  if (hyperformula.isItPossibleToAddNamedExpression(...trueArgs)) {
-    hyperformula.addNamedExpression(...trueArgs)
+  const trueNamedExpression = {
+    name: 'TRUE',
+    expression: '=TRUE()'
   }
 
-  if (hyperformula.isItPossibleToAddNamedExpression(...falseArgs)) {
-    hyperformula.addNamedExpression(...falseArgs)
+  const falseNamedExpression = {
+    name: 'FALSE',
+    expression: '=FALSE()'
   }
+
+  const [hyperformula] = HyperFormula.buildEmpty(
+    {
+      chooseAddressMappingPolicy: new AlwaysSparse(),
+      // We use our own undo/redo instead
+      undoLimit: 0,
+      licenseKey: 'gpl-v3'
+    },
+    [trueNamedExpression, falseNamedExpression]
+  )
 
   const functionHelper = new FunctionHelper(finFunctionHelperData)
   const toolbar = new Toolbar()
@@ -144,8 +146,7 @@ const FinancialSpreadsheet = ({
     HyperFormula.registerFunctionPlugin(FinancialPlugin, finTranslations)
 
     if (financialData) {
-      spreadsheet?.hyperformula.rebuildAndRecalculate()
-      spreadsheet?.updateViewport()
+      spreadsheet?.render(true)
     }
 
     return () => {
@@ -160,7 +161,6 @@ const FinancialSpreadsheet = ({
 
     return () => {
       spreadsheet?.destroy()
-      spreadsheet?.hyperformula.destroy()
     }
   }, [])
 
@@ -186,6 +186,7 @@ const FinancialSpreadsheet = ({
 
       if (sheetData) {
         spreadsheet.setData(sheetData.data)
+        spreadsheet.initialize()
 
         if (sheetData.data) {
           // TODO: Figure out why setTimeout needed

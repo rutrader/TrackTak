@@ -70,9 +70,9 @@ export const generalAttributes = getMappedArrayAttributes(general)
 export const otherAttributes = getMappedArrayAttributes(other)
 
 const finFunctionHelperData = {
-  header: 'FINANCIAL - FIN',
+  header: 'FINANCIAL - FIN (beta)',
   headerDescription:
-    'Fetches current or historical securities information from Tracktak Finance.',
+    'Fetches current or historical financial information for a public company.',
   codeSyntaxUsage: [
     '=FIN("revenue")',
     '=FIN("revenue",,"01/01/2000")',
