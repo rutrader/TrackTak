@@ -1,20 +1,33 @@
-import { Box, IconButton, Typography, useTheme } from '@mui/material'
+import {
+  Box,
+  IconButton,
+  Typography,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Divider,
+  ListItemButton
+} from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import React, { useState, useEffect, useCallback } from 'react'
 import { Outlet } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import { utils, useAuth, api } from '@tracktak/common'
 import SearchTickerDialog from './SearchTickerDialog'
-import FolderDrawer, { drawerWidth } from './FolderDrawer'
 import { ProvideSpreadsheetsMetadata } from '../hooks/useSpreadsheetsMetadata'
+import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder'
+import SidePanelTabFolders from './SidePanelTabFolders'
+import { useNavigate } from 'react-router-dom'
+import SidePanel from '../../../tracktak-gatsby/src/components/SidePanel'
 
 const Dashboard = () => {
-  const theme = useTheme()
+  const navigate = useNavigate()
   const [folders, setFolders] = useState([])
   const [defaultFolderId, setDefaultFolderId] = useState()
-  const [open, setOpen] = useState(false)
   const { getAccessToken } = useAuth()
   const [showSearchTickerDialog, setShowSearchTickerDialog] = useState(false)
+
+  const newFoldersLength = folders.length === 1 ? true : false
 
   const handleShowSearchTickerDialog = () => {
     setShowSearchTickerDialog(true)
@@ -36,6 +49,24 @@ const Dashboard = () => {
     setFolders(folders)
   }, [getAccessToken, setDefaultFolderId, setFolders])
 
+  const handleOnClickCreateNewFolder = async () => {
+    const token = await getAccessToken()
+    const accessToken = token?.jwtToken
+
+    await api.createFolder('New Folder', accessToken)
+
+    await fetchFolders()
+  }
+
+  const handleClickDelete = async id => {
+    const token = await getAccessToken()
+    const accessToken = token?.jwtToken
+
+    await api.deleteFolder(id, accessToken)
+
+    await fetchFolders()
+  }
+
   useEffect(() => {
     fetchFolders()
   }, [fetchFolders])
@@ -55,17 +86,38 @@ const Dashboard = () => {
         open={showSearchTickerDialog}
         onClose={handleCloseSearchTickerDialog}
       />
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: '100%',
-          '& .MuiDrawer-root': {
-            [theme.breakpoints.down(1550)]: {
-              width: open ? drawerWidth : 'initial'
-            }
-          }
-        }}
+      <SidePanel
+        sidePanelTabs={
+          <Box>
+            {folders.map(({ _id, name }) => {
+              return (
+                <SidePanelTabFolders
+                  key={_id}
+                  id={_id}
+                  folderName={name}
+                  disabledMenuitem={newFoldersLength}
+                  folders={folders}
+                  onDelete={handleClickDelete}
+                  handleOnClickRouting={() => {
+                    navigate(`/${_id}`)
+                  }}
+                />
+              )
+            })}
+            <Divider sx={{ my: 0.5 }} />
+            <ListItem disablePadding>
+              <ListItemButton
+                sx={{ marginTop: '10px' }}
+                onClick={handleOnClickCreateNewFolder}
+              >
+                <ListItemIcon>
+                  <CreateNewFolderIcon />
+                </ListItemIcon>
+                <ListItemText primary='New Folder' />
+              </ListItemButton>
+            </ListItem>
+          </Box>
+        }
       >
         <Box
           sx={{
@@ -92,14 +144,8 @@ const Dashboard = () => {
             <AddIcon style={{ color: 'white' }} fontSize='large' />
           </IconButton>
         </Box>
-        <FolderDrawer
-          folders={folders}
-          fetchFolders={fetchFolders}
-          open={open}
-          setOpen={setOpen}
-        />
         <Outlet />
-      </Box>
+      </SidePanel>
     </ProvideSpreadsheetsMetadata>
   )
 }

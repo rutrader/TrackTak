@@ -1,5 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { ListItem, ListItemText, ListItemIcon } from '@mui/material'
+import {
+  ListItemButton,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Box
+} from '@mui/material'
 import Folder from '@mui/icons-material/Folder'
 import OptionsMenuFolder from './OptionsMenuFolder'
 import ContentEditable from 'react-contenteditable'
@@ -63,38 +69,48 @@ const SidePanelTabFolders = ({
   }, [editableRef, disabled])
 
   return (
-    <ListItem onClick={handleOnClickRouting} button>
-      <ListItemIcon>
-        <Folder />
-      </ListItemIcon>
-      <ListItemText
-        sx={{
-          '& [contenteditable=true]:focus': {
-            outline: '2px solid #43cea2',
-            borderRadius: '2px'
-          }
-        }}
-        primary={
-          <ContentEditable
-            tabIndex={1}
-            innerRef={editableRef}
-            disabled={disabled}
-            onBlur={handleBlur}
-            onChange={handleOnChangeContentEditable}
-            html={textRef.current}
+    <ListItem disablePadding>
+      <Box sx={{ display: 'flex', flex: 1 }}>
+        <ListItemButton onClick={handleOnClickRouting}>
+          <ListItemIcon>
+            <Folder />
+          </ListItemIcon>
+          <ListItemText
+            sx={{
+              maxWidth: 100,
+              '& [contenteditable=true]:focus': {
+                outline: '2px solid #43cea2',
+                borderRadius: '2px'
+              },
+              '& [contenteditable=false]': {
+                overflowWrap: 'break-word'
+              }
+            }}
+            primary={
+              <ContentEditable
+                tabIndex={1}
+                innerRef={editableRef}
+                disabled={disabled}
+                onBlur={handleBlur}
+                onChange={handleOnChangeContentEditable}
+                html={textRef.current}
+              />
+            }
           />
-        }
-      />
-      <OptionsMenuFolder
-        handleClickAnchor={handleClickAnchor}
-        handleAnchorClose={handleAnchorClose}
-        handleClickEdit={handleClickEdit}
-        handleClickDelete={handleClickDelete}
-        disabledMenuitem={disabledMenuitem}
-        folders={folders}
-        open={open}
-        anchorEl={anchorEl}
-      />
+        </ListItemButton>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <OptionsMenuFolder
+            handleClickAnchor={handleClickAnchor}
+            handleAnchorClose={handleAnchorClose}
+            handleClickEdit={handleClickEdit}
+            handleClickDelete={handleClickDelete}
+            disabledMenuitem={disabledMenuitem}
+            folders={folders}
+            open={open}
+            anchorEl={anchorEl}
+          />
+        </Box>
+      </Box>
     </ListItem>
   )
 }
