@@ -4,8 +4,8 @@ import { Box } from 'theme-ui'
 const Divider = ({ space, color, ...props }) => (
   <Box
     sx={{
-      minWidth: `auto`,
-      borderTopStyle: `solid`,
+      minWidth: 'auto',
+      borderTopStyle: 'solid',
       borderTopColor: color,
       borderTopWidth: 2,
       height: 0,
@@ -22,5 +22,5 @@ export default Divider
 
 Divider.defaultProps = {
   space: 4,
-  color: `transparent`
+  color: 'transparent'
 }

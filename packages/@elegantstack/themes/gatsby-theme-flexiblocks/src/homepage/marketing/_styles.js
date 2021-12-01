@@ -10,10 +10,10 @@ import heroBg from './assets/contour-pattern.svg'
 export default {
   heroContainer: {
     '::before': {
-      content: `" "`,
-      size: `full`,
-      position: `absolute`,
-      top: `-10%`,
+      content: '" "',
+      size: 'full',
+      position: 'absolute',
+      top: '-10%',
       left: 0,
       zIndex: -1,
       background: t =>
@@ -22,16 +22,16 @@ export default {
           ${t.colors.alphaLighter} 0%,
           ${t.colors.background} 100%
         )`,
-      backgroundSize: `100%`
+      backgroundSize: '100%'
     }
   },
   strategiesContainer: {
-    position: `relative`,
+    position: 'relative',
     '::before': {
-      content: `" "`,
-      width: `full`,
-      height: `150%`,
-      position: `absolute`,
+      content: '" "',
+      width: 'full',
+      height: '150%',
+      position: 'absolute',
       top: 0,
       left: 0,
       zIndex: -1,
@@ -41,12 +41,12 @@ export default {
           ${t.colors.alphaLighter} 0%,
           ${t.colors.background} 100%
         )`,
-      backgroundSize: `100%`
+      backgroundSize: '100%'
     }
   },
   whyChooseUsContainer: {
-    bg: `omegaLighter`,
-    borderRadius: `xl`,
+    bg: 'omegaLighter',
+    borderRadius: 'xl',
     py: 5,
     px: [4, 0]
   }

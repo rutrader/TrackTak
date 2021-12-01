@@ -15,13 +15,13 @@ const FeaturesWithPhotoBlock06 = ({
   content: { text, images, collection, buttons },
   reverse
 }) => (
-  <Container sx={{ position: `relative` }}>
+  <Container sx={{ position: 'relative' }}>
     <Flex
       sx={{
-        alignItems: [null, `center`],
+        alignItems: [null, 'center'],
         flexDirection: [
-          reverse ? `column-reverse` : `column`,
-          reverse ? `row-reverse` : `row`
+          reverse ? 'column-reverse' : 'column',
+          reverse ? 'row-reverse' : 'row'
         ],
         mx: [null, null, null, -4]
       }}
@@ -30,7 +30,7 @@ const FeaturesWithPhotoBlock06 = ({
         <ContentImages content={{ images }} reverse={reverse} />
       </FlexImage>
       <FlexContent reverse={reverse}>
-        <Box sx={{ textAlign: [`center`, `left`] }}>
+        <Box sx={{ textAlign: ['center', 'left'] }}>
           <ContentText content={text} />
         </Box>
         {collection && (
@@ -40,8 +40,8 @@ const FeaturesWithPhotoBlock06 = ({
               <Box key={`item-${index}`} mb='4'>
                 <Flex
                   sx={{
-                    justifyContent: `space-between`,
-                    alignItems: `center`,
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
                     mb: 3,
                     px: 2
                   }}
@@ -52,7 +52,7 @@ const FeaturesWithPhotoBlock06 = ({
                   <ContentText
                     content={text?.[2]}
                     variant='h2'
-                    sx={{ color: `omegaDarker` }}
+                    sx={{ color: 'omegaDarker' }}
                     mb='0'
                     pl='3'
                   >

@@ -13,14 +13,14 @@ const TeamsBlock01 = ({
   <Container>
     <Flex
       sx={{
-        alignItems: `center`,
-        flexDirection: [`column`, null, null, `row`]
+        alignItems: 'center',
+        flexDirection: ['column', null, null, 'row']
       }}
     >
       <Box
         sx={{
-          flexBasis: `1/2`,
-          textAlign: `center`,
+          flexBasis: '1/2',
+          textAlign: 'center',
           mr: [null, null, null, 5]
         }}
       >
@@ -36,7 +36,7 @@ const TeamsBlock01 = ({
       </Box>
       <Box
         sx={{
-          flexBasis: `1/2`,
+          flexBasis: '1/2',
           mt: [4, null, null, 0],
           ml: [null, null, null, 5]
         }}
@@ -46,15 +46,15 @@ const TeamsBlock01 = ({
             content={container}
             variant='cards.paper'
             sx={{
-              textAlign: `center`,
-              mx: `auto`,
+              textAlign: 'center',
+              mx: 'auto',
               background: container?.bg
             }}
           >
             <Divider space={2} />
             <ContentText content={text} variant='h5' />
             <Divider space={1} />
-            <Flex sx={{ flexWrap: `wrap`, justifyContent: `center` }}>
+            <Flex sx={{ flexWrap: 'wrap', justifyContent: 'center' }}>
               {collection?.map(({ text, avatar }, index) => (
                 <Reveal
                   effect='fadeInRotate'
@@ -66,10 +66,10 @@ const TeamsBlock01 = ({
                     imageEffect='fadeIn'
                     sx={{
                       size: 100,
-                      mx: `auto`,
+                      mx: 'auto',
                       img: {
-                        bg: `omegaLight`,
-                        borderRadius: `full`
+                        bg: 'omegaLight',
+                        borderRadius: 'full'
                       }
                     }}
                   />
@@ -78,7 +78,7 @@ const TeamsBlock01 = ({
                       <ContentText
                         content={text?.[0]}
                         variant='badges.tag'
-                        sx={{ position: `relative`, zIndex: 2, mt: -4 }}
+                        sx={{ position: 'relative', zIndex: 2, mt: -4 }}
                       />
                     </Reveal>
                   )}

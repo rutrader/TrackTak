@@ -13,8 +13,8 @@ const ImageComponent = ({ image, sx, ...props }) => {
       <img
         src={image.src.publicURL}
         style={{
-          width: image.width || `100%`,
-          maxWidth: image.maxWidth || `none`
+          width: image.width || '100%',
+          maxWidth: image.maxWidth || 'none'
         }}
         {...props}
       />
@@ -29,12 +29,12 @@ const ImageComponent = ({ image, sx, ...props }) => {
         image={imageData}
         alt={image.alt}
         css={css({
-          verticalAlign: `middle`,
-          borderStyle: image.border ? `solid` : `none`,
+          verticalAlign: 'middle',
+          borderStyle: image.border ? 'solid' : 'none',
           borderWidth: image.border || 0,
-          borderColor: `white`,
-          boxShadow: image.shadow || `unset`,
-          borderRadius: image.radius || `unset`,
+          borderColor: 'white',
+          boxShadow: image.shadow || 'unset',
+          borderRadius: image.radius || 'unset',
           ...sx
         })}
         {...props}
@@ -64,7 +64,7 @@ const ContentImages = ({
             imagePosition === 'center'
               ? 'center'
               : reverse
-              ? `right`
+              ? 'right'
               : undefined
         })}
       >
@@ -85,13 +85,13 @@ const ContentImages = ({
               delay={0.5}
               css={css({
                 ...image.position,
-                position: `absolute`,
-                display: [`none`, `block`]
+                position: 'absolute',
+                display: ['none', 'block']
               })}
             >
               <Reveal
                 effect={image.effects[1] || undefined}
-                style={{ backfaceVisibility: `hidden` }}
+                style={{ backfaceVisibility: 'hidden' }}
               >
                 <ImageComponent image={image} loading={loading} />
               </Reveal>

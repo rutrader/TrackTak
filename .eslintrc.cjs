@@ -24,7 +24,11 @@ module.exports = {
     }
   },
   rules: {
-    quotes: ['error', 'single'],
+    quotes: [
+      'error',
+      'single',
+      { avoidEscape: true, allowTemplateLiterals: true }
+    ],
     semi: ['error', 'never'],
     'prettier/prettier': [
       'error',
@@ -36,6 +40,7 @@ module.exports = {
     'eslint-comments/no-unused-disable': 'error',
     'import/order': 'off',
     'sort-imports': 'off',
-    'react/prop-types': 'off'
+    'react/prop-types': 'off',
+    'react/no-unescaped-entities': 'off'
   }
 }

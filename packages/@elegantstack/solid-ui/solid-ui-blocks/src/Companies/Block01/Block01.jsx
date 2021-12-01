@@ -18,10 +18,10 @@ const CompaniesBlock01 = ({ content }) => {
   const { text, collection, buttons } = content
 
   return (
-    <Container sx={{ textAlign: `center` }}>
+    <Container sx={{ textAlign: 'center' }}>
       <ContentText content={text} />
       {text && collection && <Divider />}
-      <Flex sx={{ flexWrap: `wrap`, m: -3 }}>
+      <Flex sx={{ flexWrap: 'wrap', m: -3 }}>
         {collection?.map(({ text, icon }, index) => (
           <Box key={`item-${index}`} sx={{ flexGrow: 1, p: [1, 3] }}>
             <Reveal

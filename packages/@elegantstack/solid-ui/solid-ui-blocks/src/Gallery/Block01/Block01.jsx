@@ -11,18 +11,18 @@ import WithDefaultContent from '@solid-ui-blocks/WithDefaultContent'
 
 const styles = {
   listItem: {
-    flexBasis: [`1`, `1/2`, null, `1/3`],
+    flexBasis: ['1', '1/2', null, '1/3'],
     p: 3
   }
 }
 
 const GalleryBlock01 = ({ content: { text, collection } }) => (
   <Container>
-    <Box sx={{ textAlign: `center` }}>
+    <Box sx={{ textAlign: 'center' }}>
       <ContentText content={text} />
     </Box>
     {collection && text && <Divider />}
-    <Flex sx={{ flexWrap: `wrap` }} m={-3}>
+    <Flex sx={{ flexWrap: 'wrap' }} m={-3}>
       {collection?.map(({ container, text, buttons, images }, index) => (
         <Reveal
           key={`item-${index}`}
@@ -35,11 +35,11 @@ const GalleryBlock01 = ({ content: { text, collection } }) => (
             content={container}
             variant='cards.interactive'
             sx={{
-              height: `full`,
-              overflow: `hidden`,
-              display: `block`,
+              height: 'full',
+              overflow: 'hidden',
+              display: 'block',
               maxWidth: getImage(images?.[0].src)?.width,
-              mx: `auto`
+              mx: 'auto'
             }}
           >
             <ContentImages
@@ -47,7 +47,7 @@ const GalleryBlock01 = ({ content: { text, collection } }) => (
               imagePosition='center'
               threshold={0.1}
             />
-            <Box sx={{ textAlign: `center` }} p='4'>
+            <Box sx={{ textAlign: 'center' }} p='4'>
               <ContentText content={text} />
               {buttons && (
                 <Divider>

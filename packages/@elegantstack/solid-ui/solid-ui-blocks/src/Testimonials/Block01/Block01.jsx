@@ -12,14 +12,14 @@ import WithDefaultContent from '@solid-ui-blocks/WithDefaultContent'
 const styles = {
   avatar: {
     size: 120,
-    display: `block`,
-    bg: `omegaLighter`,
-    borderTopColor: `omegaLighter`,
-    borderTopWidth: `lg`,
-    borderTopStyle: `solid`,
-    borderRadius: `full`,
-    boxSizing: `content-box`,
-    mx: `auto`,
+    display: 'block',
+    bg: 'omegaLighter',
+    borderTopColor: 'omegaLighter',
+    borderTopWidth: 'lg',
+    borderTopStyle: 'solid',
+    borderRadius: 'full',
+    boxSizing: 'content-box',
+    mx: 'auto',
     mt: -90,
     mb: 3
   }
@@ -27,22 +27,22 @@ const styles = {
 
 const TestimonialsBlock01 = ({ content: { text, collection } }) => (
   <Container>
-    <Box sx={{ textAlign: `center` }}>
+    <Box sx={{ textAlign: 'center' }}>
       <ContentText content={text} />
     </Box>
     <Divider />
     <Divider />
-    <Flex sx={{ mx: -3, flexWrap: `wrap` }}>
+    <Flex sx={{ mx: -3, flexWrap: 'wrap' }}>
       {collection?.map(({ container, avatar, text }, index) => (
         <Box
           key={`item-${index}`}
-          sx={{ flexBasis: [`1`, null, `1/2`, `1/3`], flexGrow: 1, p: 3 }}
+          sx={{ flexBasis: ['1', null, '1/2', '1/3'], flexGrow: 1, p: 3 }}
         >
           <Reveal effect='fadeInLeft' delay={0.25 * (index + 2)}>
             <ContentContainer
               content={container}
               variant='cards.paper'
-              sx={{ textAlign: `center` }}
+              sx={{ textAlign: 'center' }}
             >
               <ContentImages
                 content={{ images: [avatar] }}
@@ -50,10 +50,10 @@ const TestimonialsBlock01 = ({ content: { text, collection } }) => (
                 objectPosition='top center'
                 imageEffect='fadeIn'
               />
-              <ImQuotesRight css={css({ size: `icon.xs`, color: `alpha` })} />
+              <ImQuotesRight css={css({ size: 'icon.xs', color: 'alpha' })} />
               <ContentText content={text} />
               {Array.from({ length: 5 }, (_, i) => (
-                <AiFillStar key={`item-${i}`} css={css({ color: `beta` })} />
+                <AiFillStar key={`item-${i}`} css={css({ color: 'beta' })} />
               ))}
             </ContentContainer>
           </Reveal>

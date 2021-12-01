@@ -7,14 +7,14 @@ import appleWhite from '../../assets/apple-store-badge-white.svg'
 
 const styles = {
   button: {
-    display: `inline-block`,
-    width: [`150px`, `167px`],
-    height: [`45px`, `50px`],
-    backgroundRepeat: `no-repeat`,
-    backgroundPosition: `center center`,
-    backgroundSize: `contain`,
-    backgroundColor: `transparent`,
-    transition: `all 250ms ease`,
+    display: 'inline-block',
+    width: ['150px', '167px'],
+    height: ['45px', '50px'],
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center center',
+    backgroundSize: 'contain',
+    backgroundColor: 'transparent',
+    transition: 'all 250ms ease',
     p: 0,
     ':hover': {
       opacity: 0.8

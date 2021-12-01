@@ -69,7 +69,7 @@ function sleep(ms) {
     }
   }
 
-  fs.writeFileSync(`currencies.json`, JSON.stringify(currencySymbolsMap))
+  fs.writeFileSync('currencies.json', JSON.stringify(currencySymbolsMap))
 
   process.exit(0)
 })()

@@ -13,30 +13,30 @@ import { FormContext } from '@solid-ui-components/ContentForm'
 
 const styles = {
   form: {
-    position: `relative`
+    position: 'relative'
   },
   responseOverlay: {
-    position: `absolute`,
-    backgroundColor: `transparent`,
-    width: `full`,
-    height: `105%`,
-    transition: `background-color 350ms ease-in`,
-    textAlign: `center`,
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    width: 'full',
+    height: '105%',
+    transition: 'background-color 350ms ease-in',
+    textAlign: 'center',
     zIndex: -1,
     p: 3,
     top: 0,
     left: 0,
     active: {
       zIndex: 0,
-      backgroundColor: `rgba(255,255,255,0.85)`
+      backgroundColor: 'rgba(255,255,255,0.85)'
     }
   },
   buttonsWrapper: {
-    display: `inline-flex`,
-    flexWrap: `wrap`,
-    justifyContent: `center`,
+    display: 'inline-flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
     '.button-group-button + .button-group-link': {
-      flex: `100%`,
+      flex: '100%',
       ml: 0,
       mt: 3
     }
@@ -119,7 +119,7 @@ const ContentForm = ({ id, form: { action, fields, buttons } = {} }) => {
           )
         })}
       </Box>
-      <Box sx={{ textAlign: `center` }}>
+      <Box sx={{ textAlign: 'center' }}>
         <ContentButtons
           content={buttons}
           wrapperStyles={styles.buttonsWrapper}
@@ -136,11 +136,11 @@ const ContentForm = ({ id, form: { action, fields, buttons } = {} }) => {
         )}
         {success === true && (
           <Reveal effect='fadeInDown'>
-            <BiCheckCircle size='64' css={css({ color: `success` })} />
+            <BiCheckCircle size='64' css={css({ color: 'success' })} />
           </Reveal>
         )}
         {success === false && (
-          <BiErrorCircle size='64' css={css({ color: `error` })} />
+          <BiErrorCircle size='64' css={css({ color: 'error' })} />
         )}
       </Box>
     </form>

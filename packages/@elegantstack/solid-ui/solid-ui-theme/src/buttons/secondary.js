@@ -2,10 +2,10 @@ import common from './common'
 
 export default {
   ...common.button,
-  color: `white`,
+  color: 'white',
   '::after': {
     ...common.button['::after'],
-    bg: `beta`,
-    borderColor: `beta`
+    bg: 'beta',
+    borderColor: 'beta'
   }
 }

@@ -6,9 +6,9 @@ import { TabsContext } from '@solid-ui-components/Tabs'
 import { buildLinkProps } from '@solid-ui-components/ContentButtons'
 
 const linkStyles = {
-  display: `inline-block`,
-  textDecoration: `none`,
-  color: `inherit`
+  display: 'inline-block',
+  textDecoration: 'none',
+  color: 'inherit'
 }
 
 const ContentContainer = ({ content, children, ...props }) => {

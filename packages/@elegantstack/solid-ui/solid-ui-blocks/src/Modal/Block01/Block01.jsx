@@ -30,29 +30,29 @@ const ModalBlock01 = ({ content, reverse }) => {
     <Modal
       id={identifier}
       contentStyles={{
-        maxWidth: hasMedia ? `narrow` : 500,
+        maxWidth: hasMedia ? 'narrow' : 500,
         p: 0
       }}
     >
       <Flex
         sx={{
-          alignItems: `stretch`,
+          alignItems: 'stretch',
           flexDirection: [
-            reverse ? `column-reverse` : `column`,
-            reverse ? `row-reverse` : `row`
+            reverse ? 'column-reverse' : 'column',
+            reverse ? 'row-reverse' : 'row'
           ]
         }}
       >
         {hasMedia && (
           <Box
             sx={{
-              display: [`none`, null, `block`],
+              display: ['none', null, 'block'],
               flex: 1,
               minWidth: [null, null, null, 500],
               height: 750,
-              position: `relative`,
-              borderRadius: reverse ? `right` : `left`,
-              overflow: `hidden`
+              position: 'relative',
+              borderRadius: reverse ? 'right' : 'left',
+              overflow: 'hidden'
             }}
           >
             {images && (
@@ -66,7 +66,7 @@ const ModalBlock01 = ({ content, reverse }) => {
             {map && (
               <Reveal
                 effect={reverse ? 'fadeInRight' : 'fadeInLeft'}
-                style={{ width: `100%`, height: `100%` }}
+                style={{ width: '100%', height: '100%' }}
               >
                 <ContentMap content={map} />
               </Reveal>
@@ -87,7 +87,7 @@ const ModalBlock01 = ({ content, reverse }) => {
                   >
                     {text && (
                       <>
-                        <Box sx={{ textAlign: `center` }}>
+                        <Box sx={{ textAlign: 'center' }}>
                           <ContentText content={text?.slice(1)} />
                         </Box>
                         <Divider space={3} />

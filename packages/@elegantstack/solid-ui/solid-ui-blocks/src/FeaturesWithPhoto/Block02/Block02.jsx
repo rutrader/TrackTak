@@ -15,13 +15,13 @@ const FeaturesWithPhotoBlock02 = ({
   content: { text, images, collection, buttons },
   reverse
 }) => (
-  <Container sx={{ position: `relative` }}>
+  <Container sx={{ position: 'relative' }}>
     <Flex
       sx={{
-        alignItems: [null, `center`],
+        alignItems: [null, 'center'],
         flexDirection: [
-          reverse ? `column-reverse` : `column`,
-          reverse ? `row-reverse` : `row`
+          reverse ? 'column-reverse' : 'column',
+          reverse ? 'row-reverse' : 'row'
         ],
         mx: [null, null, null, -4]
       }}
@@ -36,13 +36,13 @@ const FeaturesWithPhotoBlock02 = ({
         {collection && (
           <>
             <Divider space={3} />
-            <Flex sx={{ flexWrap: `wrap`, maxWidth: 500, m: -2 }}>
+            <Flex sx={{ flexWrap: 'wrap', maxWidth: 500, m: -2 }}>
               {collection.map((props, index) => (
                 <Reveal
                   key={`item-${index}`}
                   effect='fadeInPop'
                   delay={1 + 0.2 * (index + 1)}
-                  css={css({ flexBasis: [`1`, `1/2`] })}
+                  css={css({ flexBasis: ['1', '1/2'] })}
                 >
                   <Card py='3' m='2'>
                     <ListItem {...props} compact middle p='2' />
@@ -53,7 +53,7 @@ const FeaturesWithPhotoBlock02 = ({
           </>
         )}
         {buttons && (
-          <Box sx={{ textAlign: [`center`, `left`] }}>
+          <Box sx={{ textAlign: ['center', 'left'] }}>
             <Divider space={3} />
             <ContentButtons content={buttons} />
           </Box>

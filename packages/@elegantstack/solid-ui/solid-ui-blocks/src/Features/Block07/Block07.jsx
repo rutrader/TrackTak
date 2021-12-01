@@ -14,12 +14,12 @@ const FeaturesBlock07 = ({ content: { text, collection, icon } }) => {
     : null
 
   return (
-    <Container sx={{ textAlign: `left` }}>
+    <Container sx={{ textAlign: 'left' }}>
       <Reveal effect={'fadeInUp'}>
-        <ContentContainer variant='cards.paper' sx={{ position: `relative` }}>
+        <ContentContainer variant='cards.paper' sx={{ position: 'relative' }}>
           <ContentText
             content={text}
-            sx={{ textAlign: `center` }}
+            sx={{ textAlign: 'center' }}
             mb='0'
             mx='auto'
           />
