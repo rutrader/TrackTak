@@ -8,7 +8,7 @@ const VerifyEmailLink = ({ text, ...props }) => {
   const { sendEmailVerification, isEmailVerified, userData } = useAuth()
   const dispatch = useDispatch()
 
-  const handleVerificationCodeError = err => {
+  const handleVerificationCodeError = () => {
     dispatch(
       snackbarActions.setMessage({
         message: 'Failed to send verification link',

@@ -23,7 +23,7 @@ const LogoButton = ({ children, navigate }) => {
   )
 }
 
-const TracktakLogo = ({ width, height, logoProps, navigate, ...props }) => {
+const TracktakLogo = ({ logoProps, navigate, ...props }) => {
   return (
     <Box {...props}>
       <Hidden mdDown implementation='css'>

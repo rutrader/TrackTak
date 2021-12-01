@@ -11,7 +11,8 @@ const StyledImage = ({ sx, ...props }) => {
         borderRadius: '10px',
         width: '100%',
         flex: '1 1 100%',
-        boxShadow: '4px 4px 10px #ccc'
+        boxShadow: '4px 4px 10px #ccc',
+        ...sx
       }}
       {...props}
     />
