@@ -12,52 +12,52 @@ import WithDefaultContent from '@solid-ui-blocks/WithDefaultContent'
 const styles = {
   avatar: {
     width: 150,
-    bg: `omegaLighter`,
-    borderTopColor: `omegaLighter`,
-    borderTopWidth: `xl`,
-    borderTopStyle: `solid`,
-    borderRadius: `lg`,
-    boxSizing: `content-box`
+    bg: 'omegaLighter',
+    borderTopColor: 'omegaLighter',
+    borderTopWidth: 'xl',
+    borderTopStyle: 'solid',
+    borderRadius: 'lg',
+    boxSizing: 'content-box'
   }
 }
 
 const TestimonialsBlock02 = ({ content: { text, collection } }) => (
   <Container>
-    <Box sx={{ textAlign: `center` }}>
+    <Box sx={{ textAlign: 'center' }}>
       <ContentText content={text} />
     </Box>
     <Divider />
-    <Flex sx={{ mx: -3, flexWrap: `wrap` }}>
+    <Flex sx={{ mx: -3, flexWrap: 'wrap' }}>
       {collection?.map(({ container, avatar, text }, index) => (
         <Box
           key={`item-${index}`}
-          sx={{ flexBasis: [`1`, `1/2`], flexGrow: 1, p: 3 }}
+          sx={{ flexBasis: ['1', '1/2'], flexGrow: 1, p: 3 }}
         >
           <Reveal effect='fadeInLeft' delay={0.25 * (index + 2)}>
             <Flex
               sx={{
-                alignItems: `center`,
-                flexDirection: [`column`, null, null, `row`]
+                alignItems: 'center',
+                flexDirection: ['column', null, null, 'row']
               }}
             >
               <ContentContainer
                 content={container}
                 variant='cards.paper'
                 sx={{
-                  flexBasis: `1/3`,
-                  textAlign: `center`,
-                  position: `relative`,
-                  width: `full`
+                  flexBasis: '1/3',
+                  textAlign: 'center',
+                  position: 'relative',
+                  width: 'full'
                 }}
               >
                 <ImQuotesRight
                   css={css({
-                    size: `icon.lg`,
-                    color: `omegaLighter`,
-                    position: `absolute`,
-                    bottom: `-12%`,
-                    left: `50%`,
-                    transform: `translate(-50%, 0)`
+                    size: 'icon.lg',
+                    color: 'omegaLighter',
+                    position: 'absolute',
+                    bottom: '-12%',
+                    left: '50%',
+                    transform: 'translate(-50%, 0)'
                   })}
                 />
                 <ContentText content={text?.slice(0, 2)} />
@@ -65,7 +65,7 @@ const TestimonialsBlock02 = ({ content: { text, collection } }) => (
                   {Array.from({ length: 5 }, (_, i) => (
                     <AiFillStar
                       key={`item-${i}`}
-                      css={css({ color: `alphaLight` })}
+                      css={css({ color: 'alphaLight' })}
                     />
                   ))}
                 </Box>
@@ -84,7 +84,7 @@ const TestimonialsBlock02 = ({ content: { text, collection } }) => (
                   imageEffect='fadeIn'
                 />
               </Box>
-              <Box sx={{ flexBasis: `1/3`, flexGrow: 1 }}>
+              <Box sx={{ flexBasis: '1/3', flexGrow: 1 }}>
                 <ContentText content={text?.slice(2)} />
               </Box>
             </Flex>

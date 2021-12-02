@@ -65,11 +65,11 @@ function sleep(ms) {
       console.log(data.financialData.ticker)
     } catch (error) {
       console.warn(error)
-      console.log(`error occurred, skipping: ${data.financialData.ticker}`)
+      console.log(`error occurred, skipping`)
     }
   }
 
-  fs.writeFileSync(`currencies.json`, JSON.stringify(currencySymbolsMap))
+  fs.writeFileSync('currencies.json', JSON.stringify(currencySymbolsMap))
 
   process.exit(0)
 })()

@@ -18,33 +18,33 @@ const styles = {
     py: [5, 5, 6]
   },
   controlWrapper: {
-    position: `absolute`,
+    position: 'absolute',
     bottom: 0,
     left: 0
   },
   control: {
-    color: `omega`,
-    cursor: `pointer`,
-    transition: `all 0.2s ease-in`,
+    color: 'omega',
+    cursor: 'pointer',
+    transition: 'all 0.2s ease-in',
     mr: 2,
     ':hover': {
-      color: `omegaDark`
+      color: 'omegaDark'
     },
     '&.active': {
-      color: `alpha`
+      color: 'alpha'
     }
   },
   avatar: {
-    borderTopColor: `omegaLighter`,
+    borderTopColor: 'omegaLighter',
     borderTopWidth: 30,
-    borderTopStyle: `solid`,
-    bg: `omegaLighter`,
-    borderRadius: `lg`,
-    mx: `auto`,
+    borderTopStyle: 'solid',
+    bg: 'omegaLighter',
+    borderRadius: 'lg',
+    mx: 'auto',
     mb: [4, 0],
     mt: [5, 0],
     img: {
-      borderRadius: `lg`
+      borderRadius: 'lg'
     }
   }
 }
@@ -62,20 +62,20 @@ const TestimonialsBlock04 = ({ content: { text, collection }, reverse }) => {
             index === state && (
               <Flex
                 sx={{
-                  alignItems: [null, `center`],
+                  alignItems: [null, 'center'],
                   flexDirection: [
-                    reverse ? `column-reverse` : `column`,
+                    reverse ? 'column-reverse' : 'column',
 
-                    reverse ? `row-reverse` : `row`
+                    reverse ? 'row-reverse' : 'row'
                   ]
                 }}
               >
                 <Box
                   sx={{
-                    flexBasis: [null, `2/5`],
+                    flexBasis: [null, '2/5'],
                     [reverse ? 'ml' : 'mr']: [null, 5],
-                    position: `relative`,
-                    textAlign: `center`
+                    position: 'relative',
+                    textAlign: 'center'
                   }}
                 >
                   <ContentImages
@@ -84,17 +84,17 @@ const TestimonialsBlock04 = ({ content: { text, collection }, reverse }) => {
                     imageEffect='fadeIn'
                   />
                 </Box>
-                <Box sx={{ flexBasis: `3/5`, textAlign: [`center`, `left`] }}>
+                <Box sx={{ flexBasis: '3/5', textAlign: ['center', 'left'] }}>
                   <Flex
                     sx={{
-                      flexDirection: `column`,
-                      minHeight: [`none`, 420],
-                      position: `relative`
+                      flexDirection: 'column',
+                      minHeight: ['none', 420],
+                      position: 'relative'
                     }}
                   >
                     <Reveal effect='fadeInRight'>
                       <ContentText content={text?.slice(0, 3)} />
-                      <Box sx={{ display: `inline-block`, textAlign: `left` }}>
+                      <Box sx={{ display: 'inline-block', textAlign: 'left' }}>
                         <ListItem
                           key={`item-${index}`}
                           text={text?.slice(3, 5)}
@@ -111,7 +111,7 @@ const TestimonialsBlock04 = ({ content: { text, collection }, reverse }) => {
             )
         )}
         <Divider space={2} />
-        <Box sx={{ textAlign: `center` }}>
+        <Box sx={{ textAlign: 'center' }}>
           {Array.from({ length: collection.length }, (_, i) => (
             <FaDotCircle
               size={24}

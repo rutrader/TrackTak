@@ -9,7 +9,7 @@ import ContentButtons from '@solid-ui-components/ContentButtons'
 import WithDefaultContent from '@solid-ui-blocks/WithDefaultContent'
 
 const FeaturesBlock06 = ({ content: { text = [], collection, buttons } }) => (
-  <Container sx={{ textAlign: `center` }}>
+  <Container sx={{ textAlign: 'center' }}>
     <Box>
       <ContentText content={text} />
     </Box>
@@ -17,11 +17,11 @@ const FeaturesBlock06 = ({ content: { text = [], collection, buttons } }) => (
       <>
         <Divider />
         <Reveal effect='fadeInDown'>
-          <Flex sx={{ justifyContent: `center`, flexWrap: `wrap`, m: -3 }}>
+          <Flex sx={{ justifyContent: 'center', flexWrap: 'wrap', m: -3 }}>
             {collection.map(({ container, ...props }, index) => (
               <Box
                 key={`item-${index}`}
-                sx={{ flexBasis: [`1`, `1/2`, null, `1/4`], p: 3 }}
+                sx={{ flexBasis: ['1', '1/2', null, '1/4'], p: 3 }}
               >
                 <ContentContainer content={container}>
                   <ListItem

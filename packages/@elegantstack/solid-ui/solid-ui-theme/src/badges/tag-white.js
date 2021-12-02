@@ -2,10 +2,10 @@ import common from './common'
 
 export default {
   ...common.badge,
-  bg: `white`,
-  color: `alpha`,
+  bg: 'white',
+  color: 'alpha',
   ':hover': {
-    bg: `alpha`,
-    color: `white`
+    bg: 'alpha',
+    color: 'white'
   }
 }

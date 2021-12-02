@@ -10,19 +10,19 @@ import WithDefaultContent from '@solid-ui-blocks/WithDefaultContent'
 
 const styles = {
   listItem: {
-    flexBasis: [`1`, null, `1/2`],
-    alignItems: `center`,
-    justifyContent: `center`,
+    flexBasis: ['1', null, '1/2'],
+    alignItems: 'center',
+    justifyContent: 'center',
     p: [3, 4],
     ':nth-of-type(even)': {
-      borderLeftStyle: `solid`,
-      borderLeftColor: `rgba(113, 128, 150, 0.2)`,
-      borderLeftWidth: [0, null, null, `sm`]
+      borderLeftStyle: 'solid',
+      borderLeftColor: 'rgba(113, 128, 150, 0.2)',
+      borderLeftWidth: [0, null, null, 'sm']
     },
     ':nth-last-of-type(2), :last-child': {
-      borderTopStyle: `solid`,
-      borderTopColor: `rgba(113, 128, 150, 0.2)`,
-      borderTopWidth: [0, null, null, `sm`]
+      borderTopStyle: 'solid',
+      borderTopColor: 'rgba(113, 128, 150, 0.2)',
+      borderTopWidth: [0, null, null, 'sm']
     }
   }
 }
@@ -31,18 +31,18 @@ const FeaturesBlock04 = ({
   content: { container, text, collection, buttons }
 }) => (
   <Container>
-    <Box sx={{ textAlign: `center` }}>
+    <Box sx={{ textAlign: 'center' }}>
       <ContentText content={text} />
     </Box>
     {collection && (
       <>
         <Divider />
         <ContentContainer content={container} as={Reveal} variant='cards.paper'>
-          <Flex sx={{ flexWrap: `wrap` }}>
+          <Flex sx={{ flexWrap: 'wrap' }}>
             {collection?.map(({ text, icon }, index) => (
               <Box key={`item-${index}`} css={css(styles.listItem)}>
                 {text?.[0] && (
-                  <Flex sx={{ alignItems: `center`, mb: 3 }}>
+                  <Flex sx={{ alignItems: 'center', mb: 3 }}>
                     <Icon content={icon} size='sm' mr='3' />
                     <ContentText content={text[0]} mb='0' />
                   </Flex>

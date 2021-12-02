@@ -29,7 +29,7 @@ const Pricing = () => {
     if (currentPlan?.priceIds) {
       const currentStocks = [
         regions.PriceIds.MEDIUM_CAP_US_PLUS,
-        ...currentPlan?.priceIds
+        ...(currentPlan?.priceIds ?? {})
       ]
       setChecked(currentStocks)
       setDisabled(currentStocks)

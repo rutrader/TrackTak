@@ -103,7 +103,7 @@ export const cashFlowStatement = [
 ]
 
 export const getStatements = (statements, statementKeys) => {
-  const { date, filingDate, currencyCode, ...statement } = {
+  const { ...statement } = {
     ...statements.ttm
   }
 

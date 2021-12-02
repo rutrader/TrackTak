@@ -17,10 +17,10 @@ const ContentIcon = ({ content, round, p, ...props }) => {
   return (
     <Box
       sx={{
-        display: `inline-block`,
-        verticalAlign: `middle`,
-        borderRadius: round ? `full` : `lg`,
-        minWidth: `auto`,
+        display: 'inline-block',
+        verticalAlign: 'middle',
+        borderRadius: round ? 'full' : 'lg',
+        minWidth: 'auto',
         bg: mergedProps.bg
       }}
       p={mergedProps.bg && p}
@@ -31,7 +31,7 @@ const ContentIcon = ({ content, round, p, ...props }) => {
         css={css({
           fill: mergedProps.color,
           size: `icon.${mergedProps.size || 'md'}`,
-          display: `block`
+          display: 'block'
         })}
       />
     </Box>

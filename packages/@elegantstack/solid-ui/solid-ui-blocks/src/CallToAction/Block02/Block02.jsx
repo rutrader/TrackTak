@@ -10,10 +10,10 @@ const CallToActionBlock02 = ({ content: { container, text, buttons } }) => (
     <ContentContainer content={container} variant='cards.paper'>
       <Flex
         sx={{
-          flexDirection: [`column`, `row`],
-          justifyContent: `space-between`,
-          alignItems: `center`,
-          textAlign: [`center`, `left`]
+          flexDirection: ['column', 'row'],
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          textAlign: ['center', 'left']
         }}
       >
         <Box>

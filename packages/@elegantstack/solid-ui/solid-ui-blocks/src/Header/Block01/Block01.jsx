@@ -10,21 +10,21 @@ import WithDefaultContent from '@solid-ui-blocks/WithDefaultContent'
 
 const styles = {
   wrapper: {
-    position: `relative`,
+    position: 'relative',
     zIndex: 10,
     '.nav-container': {
-      bg: `headerBg`,
-      position: `fixed`,
-      transition: `all 250ms ease-in`,
+      bg: 'headerBg',
+      position: 'fixed',
+      transition: 'all 250ms ease-in',
       // overflow: `hidden`,
       py: 3
     },
     '.nav-sticky .nav-container': {
-      bg: `headerActiveBg`,
-      boxShadow: `0 0 25px rgba(140,152,164,.25)`,
+      bg: 'headerActiveBg',
+      boxShadow: '0 0 25px rgba(140,152,164,.25)',
       py: [3, null, 2],
       '.button-group-link.level-1, button-group-link.level-1:visited': {
-        color: `headerActiveColor`
+        color: 'headerActiveColor'
       }
     },
     //Make buttons in header smaller
@@ -36,8 +36,8 @@ const styles = {
     }
   },
   header: {
-    justifyContent: `space-between`,
-    alignItems: `center`
+    justifyContent: 'space-between',
+    alignItems: 'center'
     // height: [`6rem`, `7rem`], //prevent layout shift
   },
   logoContainer: {
@@ -45,12 +45,12 @@ const styles = {
     mr: [null, null, 3, 5]
   },
   desktopMenu: {
-    display: [`none`, null, `block`],
-    minWidth: `auto`,
+    display: ['none', null, 'block'],
+    minWidth: 'auto',
     flexGrow: 1
   },
   mobileMenu: {
-    display: [`block`, null, `none`]
+    display: ['block', null, 'none']
   }
 }
 
@@ -80,7 +80,7 @@ const HeaderBlock01 = ({ content: { images, collection }, menuJustify }) => {
                     <Reveal effect='fadeInDown'>
                       <Flex
                         sx={{
-                          alignItems: `center`,
+                          alignItems: 'center',
                           justifyContent: menuJustify
                         }}
                       >
@@ -113,7 +113,7 @@ const HeaderBlock01 = ({ content: { images, collection }, menuJustify }) => {
                                 fontSize: 3,
                                 '.button-group-link.level-1, button-group-link.level-1:visited':
                                   {
-                                    color: `headerActiveColor`
+                                    color: 'headerActiveColor'
                                   }
                               }}
                             >
@@ -137,7 +137,7 @@ const HeaderBlock01 = ({ content: { images, collection }, menuJustify }) => {
 }
 
 HeaderBlock01.defaultProps = {
-  menuJustify: `flex-end`
+  menuJustify: 'flex-end'
 }
 
 export default WithDefaultContent(HeaderBlock01)

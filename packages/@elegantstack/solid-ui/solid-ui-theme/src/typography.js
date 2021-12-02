@@ -17,12 +17,12 @@ typographyTheme.space = null
 
 typographyTheme.fonts = {
   ...typographyTheme.fonts,
-  monospace: `Consolas, Menlo, Monaco, source-code-pro, Courier New, monospace`
+  monospace: 'Consolas, Menlo, Monaco, source-code-pro, Courier New, monospace'
 }
 
 typographyTheme.fontWeights = {
-  body: `normal`,
-  heading: `bold`,
+  body: 'normal',
+  heading: 'bold',
   bold: 700,
   medium: 600,
   bolder: 900

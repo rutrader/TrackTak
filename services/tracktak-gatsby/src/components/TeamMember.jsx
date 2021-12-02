@@ -21,7 +21,8 @@ const StyledImage = ({ sx, ...props }) => {
     <Box
       component={Img}
       sx={{
-        borderRadius: '10px'
+        borderRadius: '10px',
+        ...sx
       }}
       {...props}
     />
@@ -33,7 +34,8 @@ const BoxInfoWrapper = ({ sx, ...props }) => {
     <Box
       sx={{
         flex: '1 1 300px',
-        maxWidth: 300
+        maxWidth: 300,
+        ...sx
       }}
       {...props}
     />
@@ -49,7 +51,8 @@ const TypographyMemberName = ({ sx, ...props }) => {
         animationName: 'fadeInUp',
         fontWeight: 'bold',
         color: theme => theme.palette.primary.mainTextColor,
-        marginTop: theme => theme.spacing(2)
+        marginTop: theme => theme.spacing(2),
+        ...sx
       }}
       variant='h4'
       {...props}

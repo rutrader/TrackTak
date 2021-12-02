@@ -9,8 +9,8 @@
 
 export default {
   colors: {
-    background: `#fbfbfb`,
-    headerBg: `transparent`,
-    footerBg: `#ffffff`
+    background: '#fbfbfb',
+    headerBg: 'transparent',
+    footerBg: '#ffffff'
   }
 }

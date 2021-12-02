@@ -9,25 +9,25 @@ import ContentButtons from '@solid-ui-components/ContentButtons'
 import WithDefaultContent from '@solid-ui-blocks/WithDefaultContent'
 
 const FeaturesBlock02 = ({ content: { text, collection, buttons } }) => (
-  <Container sx={{ textAlign: `center` }}>
+  <Container sx={{ textAlign: 'center' }}>
     <ContentText content={text} />
     <Reveal effect='fadeInUp'>
       {collection && (
         <>
           <Divider />
-          <Flex sx={{ flexWrap: `wrap`, m: -3 }}>
+          <Flex sx={{ flexWrap: 'wrap', m: -3 }}>
             {collection?.map(({ text, icon, buttons, container }, index) => (
               <Box
                 key={`item-${index}`}
                 sx={{
-                  flexBasis: [`1`, null, `1/2`],
-                  textAlign: `left`,
+                  flexBasis: ['1', null, '1/2'],
+                  textAlign: 'left',
                   p: 3
                 }}
               >
                 <ContentContainer content={container} variant='cards.paper-lg'>
                   {text?.[0] && (
-                    <Flex sx={{ alignItems: `center`, mb: 4 }}>
+                    <Flex sx={{ alignItems: 'center', mb: 4 }}>
                       <Icon content={icon} size='sm' mr='3' />
                       <ContentText content={text[0]} mb='0' />
                     </Flex>

@@ -9,13 +9,13 @@ import WithDefaultContent from '@solid-ui-blocks/WithDefaultContent'
 
 const styles = {
   wrapper: {
-    position: `relative`,
-    bg: `footerBg`
+    position: 'relative',
+    bg: 'footerBg'
   },
   footer: {
-    flexDirection: [`column-reverse`, `row`],
-    justifyContent: `space-between`,
-    alignItems: [`center`, `flex-start`],
+    flexDirection: ['column-reverse', 'row'],
+    justifyContent: 'space-between',
+    alignItems: ['center', 'flex-start'],
     py: 5
   }
 }
@@ -45,12 +45,12 @@ const FooterBlock01 = ({ content: { images, collection } }) => {
                   <ContentText
                     content={text?.[0]}
                     variant='h5'
-                    sx={{ display: [`none`, `block`] }}
+                    sx={{ display: ['none', 'block'] }}
                   />
                   <ContentButtons
                     content={buttons}
                     variant='vertical'
-                    wrapperStyles={{ flexDirection: [null, `column`] }}
+                    wrapperStyles={{ flexDirection: [null, 'column'] }}
                   />
                 </Box>
               )
@@ -62,7 +62,7 @@ const FooterBlock01 = ({ content: { images, collection } }) => {
 }
 
 FooterBlock01.defaultProps = {
-  menuJustify: `flex-end`
+  menuJustify: 'flex-end'
 }
 
 export default WithDefaultContent(FooterBlock01)
