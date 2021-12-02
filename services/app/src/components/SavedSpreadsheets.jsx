@@ -42,8 +42,7 @@ const SavedSpreadsheets = () => {
   const [openModalFolder, setOpenModalFolder] = useState(false)
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
-
-  const foldersLength = folders.length === 1 ? true : false
+  const moveToDisabled = folders.length === 1
 
   const fetchNewSpreadsheets = useCallback(async () => {
     const token = await getAccessToken()
@@ -246,7 +245,7 @@ const SavedSpreadsheets = () => {
           >
             <MenuItem
               disableRipple
-              disabled={foldersLength}
+              disabled={moveToDisabled}
               onClick={handleOnClickAnchorClose}
               onClick={handleOnClickOpenModal}
             >

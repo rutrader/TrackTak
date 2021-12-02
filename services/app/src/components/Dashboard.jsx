@@ -26,8 +26,8 @@ const Dashboard = () => {
   const [defaultFolderId, setDefaultFolderId] = useState()
   const { getAccessToken } = useAuth()
   const [showSearchTickerDialog, setShowSearchTickerDialog] = useState(false)
-
-  const newFoldersLength = folders.length === 1 ? true : false
+  const [currentEditableFolderId, setCurrentEditableFolderId] = useState(null)
+  const deleteDisabled = folders.length === 1
 
   const handleShowSearchTickerDialog = () => {
     setShowSearchTickerDialog(true)
@@ -52,8 +52,10 @@ const Dashboard = () => {
   const handleOnClickCreateNewFolder = async () => {
     const token = await getAccessToken()
     const accessToken = token?.jwtToken
+    const res = await api.createFolder('New Folder', accessToken)
+    const id = res.data.folder._id
 
-    await api.createFolder('New Folder', accessToken)
+    setCurrentEditableFolderId(id)
 
     await fetchFolders()
   }
@@ -95,12 +97,14 @@ const Dashboard = () => {
                   key={_id}
                   id={_id}
                   folderName={name}
-                  disabledMenuitem={newFoldersLength}
+                  deleteDisabled={deleteDisabled}
                   folders={folders}
                   onDelete={handleClickDelete}
                   handleOnClickRouting={() => {
                     navigate(`/${_id}`)
                   }}
+                  setCurrentEditableFolderId={setCurrentEditableFolderId}
+                  currentEditableFolderId={currentEditableFolderId}
                 />
               )
             })}

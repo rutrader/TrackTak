@@ -16,17 +16,18 @@ const SidePanelTabFolders = ({
   id,
   folderName,
   onDelete,
-  disabledMenuitem,
+  deleteDisabled,
   handleOnClickRouting,
-  folders
+  folders,
+  setCurrentEditableFolderId,
+  currentEditableFolderId
 }) => {
   const [anchorEl, setAnchorEl] = useState(null)
-  const [disabled, setDisabled] = useState(true)
-
   const { getAccessToken } = useAuth()
   const open = Boolean(anchorEl)
   const editableRef = useRef()
   const textRef = useRef(folderName)
+  const isInEditMode = currentEditableFolderId === id
 
   const handleOnChangeContentEditable = e => {
     textRef.current = e.target.value
@@ -41,7 +42,7 @@ const SidePanelTabFolders = ({
   }
 
   const handleClickEdit = () => {
-    setDisabled(false)
+    setCurrentEditableFolderId(id)
     setAnchorEl(null)
   }
 
@@ -51,7 +52,7 @@ const SidePanelTabFolders = ({
 
     await api.updateFolder(id, textRef.current, accessToken)
 
-    setDisabled(true)
+    setCurrentEditableFolderId(null)
   }
 
   const handleClickDelete = async () => {
@@ -61,12 +62,12 @@ const SidePanelTabFolders = ({
   }
 
   useEffect(() => {
-    if (editableRef.current && !disabled) {
+    if (editableRef.current && isInEditMode) {
       editableRef.current.focus()
 
       setCaretToEndOfElement(editableRef.current)
     }
-  }, [editableRef, disabled])
+  }, [editableRef, isInEditMode])
 
   return (
     <ListItem disablePadding>
@@ -90,7 +91,7 @@ const SidePanelTabFolders = ({
               <ContentEditable
                 tabIndex={1}
                 innerRef={editableRef}
-                disabled={disabled}
+                disabled={!isInEditMode}
                 onBlur={handleBlur}
                 onChange={handleOnChangeContentEditable}
                 html={textRef.current}
@@ -104,7 +105,7 @@ const SidePanelTabFolders = ({
             handleAnchorClose={handleAnchorClose}
             handleClickEdit={handleClickEdit}
             handleClickDelete={handleClickDelete}
-            disabledMenuitem={disabledMenuitem}
+            deleteDisabled={deleteDisabled}
             folders={folders}
             open={open}
             anchorEl={anchorEl}

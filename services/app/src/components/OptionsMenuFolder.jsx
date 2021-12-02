@@ -57,7 +57,7 @@ const OptionsMenuFolder = ({
   handleAnchorClose,
   handleClickEdit,
   handleClickDelete,
-  disabledMenuitem
+  deleteDisabled
 }) => {
   return (
     <>
@@ -85,7 +85,7 @@ const OptionsMenuFolder = ({
         <MenuItem
           onClick={handleClickDelete}
           disableRipple
-          disabled={disabledMenuitem}
+          disabled={deleteDisabled}
         >
           <DeleteIcon />
           Delete
