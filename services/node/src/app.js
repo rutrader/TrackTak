@@ -324,7 +324,7 @@ app.post('/api/v1/create-checkout-session', auth, async (req, res) => {
     })
     res.send({ url: session.url })
   } catch (e) {
-    res.status(400)
+    res.status(500)
     return res.send({
       error: {
         message: e.message
@@ -367,14 +367,24 @@ app.post(
 )
 
 app.post('/api/v1/create-customer-portal-session', auth, async (req, res) => {
-  const returnUrl = `${process.env.APP_SUBDOMAIN_URL}/account-settings`
+  try {
+    const returnUrl = `${process.env.APP_SUBDOMAIN_URL}/account-settings`
+    const customer = await getCustomer(req.user.accessToken)
 
-  const portalSession = await stripe.billingPortal.sessions.create({
-    customer: 'cus_KRWrqkdz1yQ8L6',
-    return_url: returnUrl
-  })
+    const portalSession = await stripe.billingPortal.sessions.create({
+      customer: customer.id,
+      return_url: returnUrl
+    })
 
-  res.send({ url: portalSession.url })
+    res.send({ url: portalSession.url })
+  } catch (e) {
+    res.status(500)
+    return res.send({
+      error: {
+        message: e.message
+      }
+    })
+  }
 })
 
 app.get('/', (_, res) => {
