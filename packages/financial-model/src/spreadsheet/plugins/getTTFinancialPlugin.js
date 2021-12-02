@@ -38,6 +38,9 @@ export const getTTFinancialPlugin = financialData => {
     highlights,
     ...data
   } = financialData ?? {}
+
+  delete data.exchangeRates
+
   const {
     incomeStatements = defaultStatement,
     balanceSheets = defaultStatement,
