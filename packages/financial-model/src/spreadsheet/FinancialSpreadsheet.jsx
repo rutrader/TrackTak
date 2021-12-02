@@ -118,7 +118,9 @@ const buildPowersheet = () => {
   spreadsheet.spreadsheetEl.prepend(formulaBar.formulaBarEl)
   spreadsheet.spreadsheetEl.prepend(toolbar.toolbarEl)
   spreadsheet.spreadsheetEl.appendChild(bottomBar.bottomBarEl)
-  spreadsheet.sheets.sheetEl.appendChild(functionHelper.functionHelperEl)
+  spreadsheet.sheets.sheetElContainer.appendChild(
+    functionHelper.functionHelperEl
+  )
 
   spreadsheet.functionHelper.setDrawer()
 

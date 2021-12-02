@@ -223,35 +223,34 @@ const AccountSettings = () => {
               <ContactDetailsForm />
             </SettingSection>
           </Grid>
-          {!isExternalIdentityProvider &&
-            process.env.PREMIUM_ENABLED === 'true' && (
-              <>
-                <Divider
-                  orientation='vertical'
-                  light
-                  flexItem
-                  sx={dividerStyle}
-                />
-                <Grid item xs={12} sm={5}>
-                  <SettingSection
-                    heading='Security'
-                    subHeading='Change Password'
-                    icon={
-                      <LockIcon
-                        fontSize='large'
-                        color='action'
-                        sx={{
-                          mr: 0.5,
-                          color: theme => theme.palette.primary.light
-                        }}
-                      />
-                    }
-                  >
-                    <ChangePasswordForm />
-                  </SettingSection>
-                </Grid>
-              </>
-            )}
+          {!isExternalIdentityProvider && (
+            <>
+              <Divider
+                orientation='vertical'
+                light
+                flexItem
+                sx={dividerStyle}
+              />
+              <Grid item xs={12} sm={5}>
+                <SettingSection
+                  heading='Security'
+                  subHeading='Change Password'
+                  icon={
+                    <LockIcon
+                      fontSize='large'
+                      color='action'
+                      sx={{
+                        mr: 0.5,
+                        color: theme => theme.palette.primary.light
+                      }}
+                    />
+                  }
+                >
+                  <ChangePasswordForm />
+                </SettingSection>
+              </Grid>
+            </>
+          )}
         </Grid>
         {process.env.PREMIUM_ENABLED === 'true' && (
           <>

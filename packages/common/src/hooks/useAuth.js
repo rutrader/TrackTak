@@ -18,6 +18,8 @@ import {
   getUserFromCode
 } from '../auth'
 import * as utils from '../shared/utils'
+import { setMessage } from '../redux/actions/snackbarActions'
+import { useDispatch } from 'react-redux'
 
 const AuthContext = createContext()
 
@@ -71,6 +73,7 @@ const useProvideAuth = () => {
   const [userData, setUserData] = useState()
   const [isExternalIdentityProvider, setIsExternalIdentityProvider] =
     useState(false)
+  const dispatch = useDispatch()
 
   const handleGetUserData = useCallback((...args) => {
     const [updatedUserData, isEmailVerified] = getUpdatedUserDetails(...args)
@@ -150,27 +153,6 @@ const useProvideAuth = () => {
     [userData]
   )
 
-  const sendChallengeAnswer = useCallback(
-    (challengeAnswer, onSuccess, onFailure, onChallengeFailure) => {
-      const handleVerificationSuccess = () => {
-        resumeSession()
-        utils.removeQueryParams()
-        onSuccess()
-      }
-      const handleVerificationFailure = () => {
-        utils.removeQueryParams()
-        onFailure()
-      }
-      userSendChallengeAnswer(
-        challengeAnswer,
-        handleVerificationSuccess,
-        handleVerificationFailure,
-        onChallengeFailure
-      )
-    },
-    [resumeSession]
-  )
-
   const getAccessToken = useCallback(async () => {
     const session = await new Promise((resolve, reject) => {
       const currentUser = getCurrentUser()
@@ -190,6 +172,59 @@ const useProvideAuth = () => {
 
     return session.accessToken
   }, [signOut])
+
+  const handleVerificationFailure = useCallback(() => {
+    dispatch(
+      setMessage({
+        message: 'Failed to update your details',
+        severity: 'error'
+      })
+    )
+  }, [dispatch])
+
+  const handleVerificationSuccess = useCallback(() => {
+    dispatch(
+      setMessage({
+        message: 'Successfully updated your details',
+        severity: 'success'
+      })
+    )
+  }, [dispatch])
+
+  useEffect(() => {
+    const authParameters = getUrlAuthParameters()
+    const sendChallengeAnswer = (
+      challengeAnswer,
+      onSuccess,
+      onFailure,
+      onChallengeFailure
+    ) => {
+      const handleVerificationSuccess = () => {
+        resumeSession()
+        utils.removeQueryParams()
+        onSuccess()
+      }
+      const handleVerificationFailure = () => {
+        utils.removeQueryParams()
+        onFailure()
+      }
+      userSendChallengeAnswer(
+        challengeAnswer,
+        handleVerificationSuccess,
+        handleVerificationFailure,
+        onChallengeFailure
+      )
+    }
+
+    if (authParameters.challengeCode) {
+      sendChallengeAnswer(
+        authParameters.challengeCode,
+        handleVerificationSuccess,
+        handleVerificationFailure,
+        handleVerificationFailure
+      )
+    }
+  }, [handleVerificationFailure, handleVerificationSuccess, resumeSession])
 
   useEffect(() => {
     const signInWithFederatedLoginCode = async code => {
@@ -220,7 +255,6 @@ const useProvideAuth = () => {
     signOut,
     isEmailVerified,
     sendEmailVerification,
-    sendChallengeAnswer,
     changePassword,
     updateContactDetails,
     getAccessToken
