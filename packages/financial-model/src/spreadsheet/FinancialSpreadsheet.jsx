@@ -156,9 +156,33 @@ const FinancialSpreadsheet = ({
 
     setSpreadsheet(spreadsheet)
 
+    const clickEventListener = () => {
+      if (spreadsheet.functionHelper.drawer.open) {
+        localStorage.setItem('functionHelperClosed', 'true')
+      }
+    }
+
+    spreadsheet.functionHelper.closeButton.addEventListener(
+      'click',
+      clickEventListener
+    )
+
+    spreadsheet.toolbar.iconElementsMap.functionHelper.buttonContainer.addEventListener(
+      'click',
+      clickEventListener
+    )
+
     return () => {
       spreadsheet?.destroy()
       spreadsheet?.hyperformula.destroy()
+      spreadsheet.functionHelper.closeButton.removeEventListener(
+        'click',
+        clickEventListener
+      )
+      spreadsheet.toolbar.iconElementsMap.functionHelper.buttonContainer.removeEventListener(
+        'click',
+        clickEventListener
+      )
     }
   }, [])
 
@@ -183,7 +207,11 @@ const FinancialSpreadsheet = ({
         spreadsheet.setData(sheetData.data)
         spreadsheet.initialize()
 
-        if (sheetData.data) {
+        const functionHelperClosed = localStorage.getItem(
+          'functionHelperClosed'
+        )
+
+        if (sheetData.data && functionHelperClosed !== 'true') {
           // TODO: Figure out why setTimeout needed
           // raise an issue with material components
           setTimeout(() => {
