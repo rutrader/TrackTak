@@ -10,11 +10,11 @@ const QuickSignupForm = ({ space, fields, buttons }) =>
       <Box
         variant='cards.primary'
         sx={{
-          display: `inline-flex`,
-          alignContent: `space-between`,
-          bg: `contentBg`,
-          borderRadius: `xl`,
-          minWidth: [`auto`, 400],
+          display: 'inline-flex',
+          alignContent: 'space-between',
+          bg: 'contentBg',
+          borderRadius: 'xl',
+          minWidth: ['auto', 400],
           p: 2
         }}
       >
@@ -23,18 +23,18 @@ const QuickSignupForm = ({ space, fields, buttons }) =>
           name={fields[0].identifier}
           placeholder={fields[0].placeholder?.text}
           sx={{
-            bg: `transparent`,
+            bg: 'transparent',
             px: 3,
             py: 0,
             '::placeholder': {
-              color: fields[0].placeholder?.color || `omegaDark`
+              color: fields[0].placeholder?.color || 'omegaDark'
             }
           }}
         />
         {buttons?.[0] && (
           <ContentButtons
             content={buttons}
-            wrapperStyles={{ minWidth: `auto` }}
+            wrapperStyles={{ minWidth: 'auto' }}
           />
         )}
       </Box>

@@ -34,7 +34,6 @@ export const ttFinancialAliases = {
 export const getTTFinancialPlugin = financialData => {
   const hasFinancialsLoaded = !!financialData
   const {
-    exchangeRates,
     financialStatements = {},
     currentEquityRiskPremium,
     currentIndustry,
@@ -42,6 +41,9 @@ export const getTTFinancialPlugin = financialData => {
     highlights,
     ...data
   } = financialData ?? {}
+
+  delete data.exchangeRates
+
   const {
     incomeStatements = defaultStatement,
     balanceSheets = defaultStatement,

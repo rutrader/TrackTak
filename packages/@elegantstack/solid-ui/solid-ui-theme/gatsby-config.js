@@ -12,7 +12,7 @@ module.exports = options => {
           extensions: ['js', 'jsx', 'json']
         }
       },
-      `gatsby-plugin-emotion`,
+      'gatsby-plugin-emotion',
       //Add preconnect to google fonts servers for performance
       {
         resolve: 'gatsby-plugin-preconnect',
@@ -24,7 +24,7 @@ module.exports = options => {
         }
       },
       {
-        resolve: `gatsby-plugin-web-font-loader`,
+        resolve: 'gatsby-plugin-web-font-loader',
         options: {
           ...((options && options.fonts) ||
             (defaultFonts && defaultFonts.fonts))

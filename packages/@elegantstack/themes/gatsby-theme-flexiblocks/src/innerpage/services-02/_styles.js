@@ -9,19 +9,19 @@ import sprinkle from './assets/sprinkle-pattern.svg'
 
 export default {
   heroContainer: {
-    position: `relative`,
+    position: 'relative',
     pt: [6, 7],
     '::before, ::after': {
-      position: `absolute`,
-      content: `" "`,
-      width: `full`,
-      height: `3/5`,
+      position: 'absolute',
+      content: '" "',
+      width: 'full',
+      height: '3/5',
       top: 0,
       right: 0
     },
     '::before': {
       zIndex: -3,
-      bg: `white`,
+      bg: 'white',
       background: t => `linear-gradient(
         145deg,
         ${t.colors.alpha} 0%,

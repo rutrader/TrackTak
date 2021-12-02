@@ -7,24 +7,24 @@ import './styles.css'
 
 const styles = {
   modalContent: {
-    borderRadius: `lg`,
-    bg: `contentBg`,
-    maxWidth: `container`,
-    overflow: `hidden`,
+    borderRadius: 'lg',
+    bg: 'contentBg',
+    maxWidth: 'container',
+    overflow: 'hidden',
     py: 5,
     px: 4
   },
   close: {
-    position: `absolute`,
+    position: 'absolute',
     top: [3, null, -5],
     left: [2, null, null, -5],
-    size: [`icon.sm`, null, `icon.md`],
+    size: ['icon.sm', null, 'icon.md'],
     zIndex: 99,
     svg: {
-      size: [`icon.sm`, null, `icon.md`]
+      size: ['icon.sm', null, 'icon.md']
     },
     ':hover': {
-      color: `omegaLighter`
+      color: 'omegaLighter'
     }
   }
 }

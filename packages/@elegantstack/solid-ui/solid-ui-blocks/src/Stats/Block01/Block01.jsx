@@ -11,7 +11,7 @@ import WithDefaultContent from '@solid-ui-blocks/WithDefaultContent'
 const StatsBlock01 = ({
   content: { text, container, collection, buttons }
 }) => (
-  <Container sx={{ textAlign: `center` }}>
+  <Container sx={{ textAlign: 'center' }}>
     <ContentContainer content={container} variant='cards.paper-lg'>
       <ContentText content={text} />
       {text && collection && <Divider space={3} />}
@@ -19,10 +19,10 @@ const StatsBlock01 = ({
         <>
           <Flex
             sx={{
-              flexWrap: `wrap`,
-              alignItems: `flex-start`,
-              alignContent: `center`,
-              justifyContent: `center`,
+              flexWrap: 'wrap',
+              alignItems: 'flex-start',
+              alignContent: 'center',
+              justifyContent: 'center',
               m: -1
             }}
           >
@@ -30,9 +30,9 @@ const StatsBlock01 = ({
               <Box
                 key={`item-${index}`}
                 sx={{
-                  flex: `1`,
+                  flex: '1',
                   minWidth: 100,
-                  textAlign: `center`,
+                  textAlign: 'center',
                   p: 1
                 }}
               >
@@ -42,7 +42,7 @@ const StatsBlock01 = ({
                   </ContentText>
                   <ContentText
                     content={text?.[1]}
-                    sx={{ fontWeight: `body` }}
+                    sx={{ fontWeight: 'body' }}
                     mb='0'
                   />
                 </Reveal>

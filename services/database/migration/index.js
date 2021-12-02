@@ -12,7 +12,7 @@ const BATCH_SIZE = 100
 ;(async function () {
   await database.connect()
 
-  const currencies = JSON.parse(fs.readFileSync(`currencies.json`))
+  const currencies = JSON.parse(fs.readFileSync('currencies.json'))
 
   const allDataItr = await database.find(Collections.SPREADSHEET)
 
@@ -43,7 +43,7 @@ const BATCH_SIZE = 100
       })
     } catch (error) {
       console.warn(error)
-      console.log(`error occurred, skipping stock`)
+      console.log('error occurred, skipping stock')
     }
 
     batch.push(powersheet)

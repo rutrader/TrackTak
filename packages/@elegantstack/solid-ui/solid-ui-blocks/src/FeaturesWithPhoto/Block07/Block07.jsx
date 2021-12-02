@@ -12,26 +12,26 @@ import WithDefaultContent from '@solid-ui-blocks/WithDefaultContent'
 
 const styles = {
   listItem: {
-    alignItems: `stretch`,
-    justifyContent: `flex-start`
+    alignItems: 'stretch',
+    justifyContent: 'flex-start'
   },
   line: {
-    position: `absolute`,
-    bottom: `10px`,
-    left: `50%`,
-    width: `1px`,
+    position: 'absolute',
+    bottom: '10px',
+    left: '50%',
+    width: '1px',
     height: t => `calc(100% - ${t.sizes.icon.md + 20}px)`,
-    transform: `translateX(-50%)`,
+    transform: 'translateX(-50%)',
     zIndex: 1,
-    bg: `omega`
+    bg: 'omega'
   },
   number: {
-    color: `white`,
-    fontWeight: `body`,
-    borderRadius: `full`,
-    bg: `alpha`,
-    size: `icon.md`,
-    textAlign: `center`,
+    color: 'white',
+    fontWeight: 'body',
+    borderRadius: 'full',
+    bg: 'alpha',
+    size: 'icon.md',
+    textAlign: 'center',
     p: 2,
     mb: 0
   }
@@ -41,13 +41,13 @@ const FeaturesWithPhotoBlock07 = ({
   content: { text, images, collection, buttons },
   reverse
 }) => (
-  <Container sx={{ position: `relative` }}>
+  <Container sx={{ position: 'relative' }}>
     <Flex
       sx={{
-        alignItems: [null, `center`],
+        alignItems: [null, 'center'],
         flexDirection: [
-          reverse ? `column-reverse` : `column`,
-          reverse ? `row-reverse` : `row`
+          reverse ? 'column-reverse' : 'column',
+          reverse ? 'row-reverse' : 'row'
         ],
         mx: [null, null, null, -4]
       }}
@@ -56,7 +56,7 @@ const FeaturesWithPhotoBlock07 = ({
         <ContentImages content={{ images }} reverse={reverse} />
       </FlexImage>
       <FlexContent reverse={reverse}>
-        <Box sx={{ textAlign: [`center`, `left`] }}>
+        <Box sx={{ textAlign: ['center', 'left'] }}>
           <ContentText content={text} />
         </Box>
         {collection && (
@@ -68,7 +68,7 @@ const FeaturesWithPhotoBlock07 = ({
             >
               {collection.map(({ text }, index) => (
                 <Flex key={`item-${index}`} sx={styles.listItem}>
-                  <Box sx={{ position: `relative`, flexShrink: 0, mr: 4 }}>
+                  <Box sx={{ position: 'relative', flexShrink: 0, mr: 4 }}>
                     <Heading variant='h4' as='div' sx={styles.number}>
                       {index + 1}
                     </Heading>

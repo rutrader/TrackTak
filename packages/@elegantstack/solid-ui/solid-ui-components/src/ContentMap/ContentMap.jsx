@@ -8,7 +8,7 @@ const MapMarker = ({ lat, lng }) => (
     color='#222'
     lat={lat}
     lng={lng}
-    style={{ transform: `(translate -50%,-100%)` }}
+    style={{ transform: '(translate -50%,-100%)' }}
   />
 )
 

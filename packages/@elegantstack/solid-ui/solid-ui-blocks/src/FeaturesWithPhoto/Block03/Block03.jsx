@@ -8,7 +8,7 @@ import ContentButtons from '@solid-ui-components/ContentButtons'
 import WithDefaultContent from '@solid-ui-blocks/WithDefaultContent'
 
 const FeaturesWithPhotoBlock03 = ({ content: { text, buttons, images } }) => (
-  <Container sx={{ textAlign: `center` }}>
+  <Container sx={{ textAlign: 'center' }}>
     <Box>
       {text && (
         <Reveal effect='fadeInDown'>
@@ -25,7 +25,7 @@ const FeaturesWithPhotoBlock03 = ({ content: { text, buttons, images } }) => (
     {images && (
       <>
         <Divider space={3} />
-        <Box sx={{ position: `relative` }}>
+        <Box sx={{ position: 'relative' }}>
           <ContentImages
             content={{ images }}
             loading='eager'

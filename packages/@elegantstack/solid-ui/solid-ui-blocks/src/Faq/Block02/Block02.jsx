@@ -9,13 +9,13 @@ import WithDefaultContent from '@solid-ui-blocks/WithDefaultContent'
 
 const FaqBlock02 = ({ content: { text, collection } }) => (
   <Container as={Reveal}>
-    <Box sx={{ textAlign: `center` }}>
+    <Box sx={{ textAlign: 'center' }}>
       <ContentText content={text} />
     </Box>
     {text && collection && <Divider />}
-    <Flex sx={{ flexWrap: `wrap`, m: -3 }}>
+    <Flex sx={{ flexWrap: 'wrap', m: -3 }}>
       {collection?.map(({ container, ...props }, index) => (
-        <Box key={`item-${index}`} sx={{ flexBasis: [`1`, `1/2`] }}>
+        <Box key={`item-${index}`} sx={{ flexBasis: ['1', '1/2'] }}>
           <ContentContainer content={container} p='4'>
             <ListItem {...props} middle iconProps={{ mr: 2 }} />
           </ContentContainer>

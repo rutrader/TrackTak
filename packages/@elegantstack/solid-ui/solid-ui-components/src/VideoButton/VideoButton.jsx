@@ -5,35 +5,35 @@ import Modal, { ModalContext } from '@solid-ui-components/Modal'
 
 const styles = {
   buttonWrapper: {
-    display: `inline-flex`,
-    alignItems: `center`
+    display: 'inline-flex',
+    alignItems: 'center'
   },
   button: {
-    minWidth: `auto`,
-    borderWidth: `sm`,
-    borderRadius: `full`,
+    minWidth: 'auto',
+    borderWidth: 'sm',
+    borderRadius: 'full',
     p: 3,
     mr: 3,
     svg: {
-      transform: `translate(10%, 0)`
+      transform: 'translate(10%, 0)'
     }
   },
   modal: {
-    width: [`100%`, `75%`],
-    maxWidth: `none`,
-    bg: `#000`,
+    width: ['100%', '75%'],
+    maxWidth: 'none',
+    bg: '#000',
     px: 0,
     pb: 0,
-    pt: [`56%`, `42.15%`]
+    pt: ['56%', '42.15%']
   },
   iframe: {
-    position: `absolute`,
+    position: 'absolute',
     top: 0,
     left: 0,
     bottom: 0,
     right: 0,
-    width: `100%`,
-    height: `100%`
+    width: '100%',
+    height: '100%'
   }
 }
 

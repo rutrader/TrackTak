@@ -2,13 +2,13 @@ import common from './common'
 
 export default {
   ...common.button,
-  color: `alpha`,
+  color: 'alpha',
   '::before': {
-    display: `none`
+    display: 'none'
   },
   '::after': {
     ...common.button['::after'],
-    bg: `white`,
-    borderColor: `alpha`
+    bg: 'white',
+    borderColor: 'alpha'
   }
 }

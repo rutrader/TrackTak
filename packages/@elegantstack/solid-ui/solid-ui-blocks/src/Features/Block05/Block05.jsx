@@ -11,12 +11,12 @@ import WithDefaultContent from '@solid-ui-blocks/WithDefaultContent'
 
 const styles = {
   listItem: {
-    flex: `1 1 0`,
+    flex: '1 1 0',
     minWidth: 300,
     p: 3
   },
   itemDescription: {
-    flexBasis: `3/5`,
+    flexBasis: '3/5',
     flexGrow: 1,
     order: [1, null, 0],
     mb: 3
@@ -25,13 +25,13 @@ const styles = {
 
 const FeaturesBlock05 = ({ content: { text, collection } }) => (
   <Container as={Reveal}>
-    <Box sx={{ textAlign: `center` }}>
+    <Box sx={{ textAlign: 'center' }}>
       <ContentText content={text} />
     </Box>
     {collection && (
       <>
         <Divider />
-        <Flex sx={{ flexWrap: `wrap` }} m={-3}>
+        <Flex sx={{ flexWrap: 'wrap' }} m={-3}>
           {collection.map(
             ({ text, icon, collection, buttons, container }, index) => (
               <Reveal
@@ -43,11 +43,11 @@ const FeaturesBlock05 = ({ content: { text, collection } }) => (
                 <ContentContainer
                   content={container}
                   variant='cards.paper'
-                  sx={{ height: `full` }}
+                  sx={{ height: 'full' }}
                 >
                   <Icon content={icon} size='md' mr='3' mb='3' />
                   <ContentText content={text?.[0]} />
-                  <Flex sx={{ alignItems: `center`, flexWrap: `wrap` }}>
+                  <Flex sx={{ alignItems: 'center', flexWrap: 'wrap' }}>
                     <ContentText
                       content={text?.slice(1)}
                       sx={styles.itemDescription}
