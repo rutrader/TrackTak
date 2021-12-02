@@ -1,5 +1,4 @@
 import 'dotenv/config'
-import mapper from './mapper'
 import * as database from './client/mongoDbClient'
 import fs from 'fs'
 
@@ -8,29 +7,30 @@ const Collections = {
   POWERSHEET_SPREADSHEET: 'powersheet-spreadsheet'
 }
 
+const BATCH_SIZE = 100
+
 ;(async function () {
   await database.connect()
 
-  const allData = await database.find(Collections.SPREADSHEET)
-  const mappedData = allData.map(data => {
-    const isInPowersheetFormat = !!data.sheetData.data.sheets
-    if (isInPowersheetFormat) {
-      return data
-    }
-
-    return {
-      ...data,
-      sheetData: mapper(data.sheetData, data.financialData.ticker)
-    }
-  })
-
   const currencies = JSON.parse(fs.readFileSync(`currencies.json`))
 
-  for (let index = 0; index < mappedData.length; index++) {
+  const allDataItr = await database.find(Collections.SPREADSHEET)
+
+  let batch = []
+  let insertCount = 0
+  while (await allDataItr.hasNext()) {
+    const data = await allDataItr.next()
+    const isInPowersheetFormat = !!data.sheetData.data.sheets
+    if (isInPowersheetFormat) {
+      continue
+    }
+    const powersheet = {
+      ...data
+    }
+
     try {
-      const mappedDatum = mappedData[index]
-      const cells = mappedDatum.sheetData.data.cells
-      const ticker = mappedDatum.financialData.ticker
+      const cells = powersheet.sheetData.data.cells
+      const ticker = powersheet.financialData.ticker
 
       Object.keys(cells).forEach(key => {
         const cellData = cells[key]
@@ -45,18 +45,19 @@ const Collections = {
       console.warn(error)
       console.log(`error occurred, skipping stock`)
     }
+
+    batch.push(powersheet)
+    if (batch.length === BATCH_SIZE) {
+      await database.bulkInsert(Collections.POWERSHEET_SPREADSHEET, batch)
+      batch = []
+      insertCount += BATCH_SIZE
+      console.log(`Inserted ${insertCount} / ${await allDataItr.count()}`)
+    }
   }
 
-  console.log(
-    `Mapped ${mappedData.length} records from collection: ${Collections.SPREADSHEET}`
-  )
-
-  if (!mappedData.length) {
-    process.exit(0)
+  if (batch.length > 0) {
+    await database.bulkInsert(Collections.POWERSHEET_SPREADSHEET, batch)
   }
-
-  await database.clearAll(Collections.POWERSHEET_SPREADSHEET)
-  await database.bulkInsert(Collections.POWERSHEET_SPREADSHEET, mappedData)
 
   process.exit(0)
 })()

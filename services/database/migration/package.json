@@ -6,7 +6,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "start": "node --es-module-specifier-resolution=node index.js",
+    "start": "node --max-old-space-size=20480 --es-module-specifier-resolution=node index.js",
     "generate-currency-symbols": "node --es-module-specifier-resolution=node currency.js"
   },
   "dependencies": {
