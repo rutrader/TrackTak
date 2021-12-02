@@ -277,12 +277,13 @@ app.put(CURRENT_PLAN_ENDPOINT, auth, async (req, res) => {
         res.send(plan)
         break
       }
-      default:
+      default: {
         const message = `Unknown account state transition ${state} for customer ${customer.id}`
         console.error(message)
         res.status(400).send({
           message
         })
+      }
     }
   } else {
     const message = 'Failed to update plan. Customer does not exist.'
@@ -352,12 +353,13 @@ app.post(
     }
 
     switch (event.type) {
-      case 'checkout.session.completed':
+      case 'checkout.session.completed': {
         const eventData = event.data.object
         console.log(
           `Successfully processed payment for customer ${eventData.customer}`
         )
         break
+      }
       default:
         console.error(`Unhandled event type ${event.type}`)
     }

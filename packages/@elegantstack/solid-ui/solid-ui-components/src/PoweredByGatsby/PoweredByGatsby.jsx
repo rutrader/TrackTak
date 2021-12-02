@@ -5,15 +5,15 @@ import gatsbySVG from '../../assets/Gatsby-Logo.svg'
 
 const styles = {
   link: {
-    display: `inline-flex`,
-    color: `heading`,
-    fontWeight: `medium`,
-    textDecoration: `none`,
+    display: 'inline-flex',
+    color: 'heading',
+    fontWeight: 'medium',
+    textDecoration: 'none',
     ':visited': {
-      color: `heading`
+      color: 'heading'
     },
     ':hover': {
-      color: `#663399`
+      color: '#663399'
     },
     svg: {
       height: 24,

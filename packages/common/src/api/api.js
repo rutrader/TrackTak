@@ -2,7 +2,7 @@ import axios from './axios'
 
 const errorResponseHandler = error => {
   if (
-    error.config.hasOwnProperty('errorHandle') &&
+    Object.prototype.hasOwnProperty.call(error.config, 'errorHandle') &&
     error.config.errorHandle === false
   ) {
     return Promise.reject(error)
@@ -62,7 +62,7 @@ export const createFinancialData = async (
   spreadsheetId
 ) => {
   return axios.post(
-    `/api/v1/financial-data/`,
+    '/api/v1/financial-data/',
     { financialData, spreadsheetId },
     {
       headers: getAuthHeaders(accessToken)
@@ -125,13 +125,13 @@ export const getPrice = async (id, accessToken) => {
 }
 
 export const getCurrentPlan = async accessToken => {
-  return axios.get(`/api/v1/current-plan`, {
+  return axios.get('/api/v1/current-plan', {
     headers: { Authorization: `Bearer ${accessToken}` }
   })
 }
 
 export const updateCurrentPlan = async (accessToken, planUpdates) => {
-  return axios.put(`/api/v1/current-plan`, planUpdates, {
+  return axios.put('/api/v1/current-plan', planUpdates, {
     headers: { Authorization: `Bearer ${accessToken}` }
   })
 }

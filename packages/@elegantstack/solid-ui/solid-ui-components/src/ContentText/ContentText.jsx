@@ -9,8 +9,8 @@ const gradient = {
       ${t.colors.alpha} 32.5%,
       ${t.colors.alphaDarker} 50.5%)
   `,
-  WebkitBackgroundClip: `text`,
-  WebkitTextFillColor: `transparent`
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent'
 }
 
 const headings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']

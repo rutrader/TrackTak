@@ -12,7 +12,8 @@ const StyledSnackbar = ({ sx, ...props }) => {
         top: theme => `${theme.mixins.toolbar.minHeight + 4}px`,
         '& .MuiSnackbarContent-message': {
           margin: '0 auto'
-        }
+        },
+        ...sx
       }}
       {...props}
     />

@@ -1,5 +1,5 @@
 export default {
   variant: 'cards.primary',
-  borderRadius: `xl`,
+  borderRadius: 'xl',
   p: [4, 5]
 }

@@ -13,13 +13,13 @@ import WithDefaultContent from '@solid-ui-blocks/WithDefaultContent'
 
 const styles = {
   avatar: {
-    bg: `omegaLighter`,
-    borderTopColor: `omegaLighter`,
-    borderTopWidth: `xl`,
-    borderTopStyle: `solid`,
-    borderRadius: `lg`,
-    boxSizing: `content-box`,
-    verticalAlign: `baseline`
+    bg: 'omegaLighter',
+    borderTopColor: 'omegaLighter',
+    borderTopWidth: 'xl',
+    borderTopStyle: 'solid',
+    borderRadius: 'lg',
+    boxSizing: 'content-box',
+    verticalAlign: 'baseline'
   }
 }
 
@@ -30,19 +30,19 @@ const TestimonialsBlock03 = ({
   <Container>
     <Flex
       sx={{
-        alignItems: `flex-start`,
+        alignItems: 'flex-start',
         flexDirection: [
-          reverse ? `column-reverse` : `column`,
+          reverse ? 'column-reverse' : 'column',
           null,
           null,
-          reverse ? `row-reverse` : `row`
+          reverse ? 'row-reverse' : 'row'
         ],
         mx: [null, null, null, -4]
       }}
     >
       <Box
         sx={{
-          flexBasis: `1/2`,
+          flexBasis: '1/2',
           mx: [null, null, null, 4],
           [reverse ? 'mt' : 'mb']: [5, null, null, 0]
         }}
@@ -53,13 +53,13 @@ const TestimonialsBlock03 = ({
               content={container}
               variant='cards.paper'
               key={`item-${index}`}
-              sx={{ position: `relative` }}
+              sx={{ position: 'relative' }}
             >
               <Flex
                 sx={{
-                  alignItems: `center`,
-                  position: `relative`,
-                  flexWrap: `wrap`,
+                  alignItems: 'center',
+                  position: 'relative',
+                  flexWrap: 'wrap',
                   zIndex: 1
                 }}
               >
@@ -70,7 +70,7 @@ const TestimonialsBlock03 = ({
                     imageEffect='fadeInRotate'
                   />
                 </Box>
-                <Box sx={{ flex: [`100%`, 1], ml: [0, 4] }}>
+                <Box sx={{ flex: ['100%', 1], ml: [0, 4] }}>
                   <Reveal effect='fadeInUp'>
                     <ContentText content={text} />
                     {Array.from({ length: 5 }, (_, i) => (
@@ -78,10 +78,10 @@ const TestimonialsBlock03 = ({
                         key={`item-${i}`}
                         effect='fadeInRotate'
                         delay={0.2 * (i + 1)}
-                        css={css({ display: `inline-block`, mt: 3 })}
+                        css={css({ display: 'inline-block', mt: 3 })}
                       >
                         <AiFillStar
-                          css={css({ color: `beta`, size: `icon.xs` })}
+                          css={css({ color: 'beta', size: 'icon.xs' })}
                         />
                       </Reveal>
                     ))}
@@ -90,10 +90,10 @@ const TestimonialsBlock03 = ({
               </Flex>
               <ImQuotesRight
                 css={css({
-                  size: `30%`,
-                  color: `omegaLighter`,
-                  position: `absolute`,
-                  transform: `translate(0, -20%)`,
+                  size: '30%',
+                  color: 'omegaLighter',
+                  position: 'absolute',
+                  transform: 'translate(0, -20%)',
                   bottom: 0,
                   right: 0
                 })}
@@ -104,9 +104,9 @@ const TestimonialsBlock03 = ({
       </Box>
       <Box
         sx={{
-          flexBasis: `1/2`,
+          flexBasis: '1/2',
           mx: [null, null, null, 4],
-          textAlign: [`center`, null, null, `left`]
+          textAlign: ['center', null, null, 'left']
         }}
       >
         <Reveal effect={reverse ? 'fadeInLeft' : 'fadeInRight'}>

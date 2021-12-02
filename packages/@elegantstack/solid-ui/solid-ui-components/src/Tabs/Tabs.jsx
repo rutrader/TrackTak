@@ -121,14 +121,14 @@ const StyledTabs = ({
             sx={{ ...styles.arrowButton, ...styles.arrowButtonLeft }}
             onClick={handlePrev}
           >
-            <Box sx={{ ...styles.arrow, transform: `rotate(45deg)` }} />
+            <Box sx={{ ...styles.arrow, transform: 'rotate(45deg)' }} />
           </Button>
           <Button
             variant='white'
             sx={{ ...styles.arrowButton, ...styles.arrowButtonRight }}
             onClick={handleNext}
           >
-            <Box sx={{ ...styles.arrow, transform: `rotate(225deg)` }} />
+            <Box sx={{ ...styles.arrow, transform: 'rotate(225deg)' }} />
           </Button>
         </>
       )}

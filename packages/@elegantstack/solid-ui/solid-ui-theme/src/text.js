@@ -1,7 +1,7 @@
 const heading = {
-  display: `block`,
-  color: `heading`,
-  textDecoration: `none`,
+  display: 'block',
+  color: 'heading',
+  textDecoration: 'none',
   mb: 3
 }
 
@@ -10,14 +10,14 @@ export default {
     ...heading,
     fontSize: [6, 7],
     maxWidth: 900,
-    mx: `auto`,
+    mx: 'auto',
     mb: 4
   },
   h2: {
     ...heading,
     fontSize: 6,
     maxWidth: 800,
-    mx: `auto`,
+    mx: 'auto',
     mb: 4
   },
   h3: {
@@ -57,7 +57,7 @@ export default {
     m: 0
   },
   p: {
-    fontFamily: `body`,
+    fontFamily: 'body',
     mb: 3
   }
 }

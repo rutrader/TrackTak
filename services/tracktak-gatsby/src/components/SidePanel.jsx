@@ -50,6 +50,7 @@ const SidePanel = ({
         return (
           <ListItem
             key={title}
+            // eslint-disable-next-line react/display-name
             component={forwardRef((props, ref) => (
               <AnchorLink {...props} gatsbyLinkProps={{ ref }} />
             ))}
