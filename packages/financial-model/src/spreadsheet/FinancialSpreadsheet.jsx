@@ -15,9 +15,11 @@ import {
   getTTFinancialPlugin,
   ttFinancialAliases,
   ttFinancialImplementedFunctions
-} from './plugins/getTTFinancialPlugin'
-import finFunctionHelperData from './financialData/finFunctionHelperData'
+} from './plugins/ttFinancialPlugin/getTTFinancialPlugin'
+import getToolbarActionGroups from './getToolbarActionGroups'
+import getFunctionHelperContent from './getFunctionHelperContent'
 import './FinancialSpreadsheet.css'
+import { Box } from '@mui/material'
 
 const buildPowersheet = () => {
   const trueNamedExpression = {
@@ -40,7 +42,7 @@ const buildPowersheet = () => {
     [trueNamedExpression, falseNamedExpression]
   )
 
-  const functionHelper = new FunctionHelper(finFunctionHelperData)
+  const functionHelper = new FunctionHelper()
   const toolbar = new Toolbar()
   const formulaBar = new FormulaBar()
   const exporter = new Exporter([
@@ -63,60 +65,6 @@ const buildPowersheet = () => {
     }
   })
 
-  toolbar.setToolbarIcons([
-    {
-      elements: [
-        toolbar.iconElementsMap.undo.buttonContainer,
-        toolbar.iconElementsMap.redo.buttonContainer
-      ]
-    },
-    {
-      elements: [toolbar.buttonElementsMap.textFormatPattern.buttonContainer]
-    },
-    {
-      elements: [toolbar.buttonElementsMap.fontSize.buttonContainer]
-    },
-    {
-      elements: [
-        toolbar.iconElementsMap.bold.buttonContainer,
-        toolbar.iconElementsMap.italic.buttonContainer,
-        toolbar.iconElementsMap.underline.buttonContainer,
-        toolbar.iconElementsMap.strikeThrough.buttonContainer,
-        toolbar.iconElementsMap.fontColor.buttonContainer
-      ]
-    },
-    {
-      elements: [
-        toolbar.iconElementsMap.backgroundColor.buttonContainer,
-        toolbar.iconElementsMap.borders.buttonContainer,
-        toolbar.iconElementsMap.merge.buttonContainer
-      ]
-    },
-    {
-      elements: [
-        toolbar.iconElementsMap.horizontalTextAlign.buttonContainer,
-        toolbar.iconElementsMap.verticalTextAlign.buttonContainer,
-        toolbar.iconElementsMap.textWrap.buttonContainer
-      ]
-    },
-    {
-      elements: [
-        toolbar.iconElementsMap.freeze.buttonContainer,
-        toolbar.iconElementsMap.functions.buttonContainer,
-        toolbar.iconElementsMap.formula.buttonContainer
-      ]
-    },
-    {
-      elements: [toolbar.iconElementsMap.export.buttonContainer]
-    },
-    {
-      elements: [toolbar.iconElementsMap.autosave.buttonContainer]
-    },
-    {
-      elements: [toolbar.iconElementsMap.functionHelper.buttonContainer]
-    }
-  ])
-
   spreadsheet.spreadsheetEl.prepend(formulaBar.formulaBarEl)
   spreadsheet.spreadsheetEl.prepend(toolbar.toolbarEl)
   spreadsheet.spreadsheetEl.appendChild(bottomBar.bottomBarEl)
@@ -124,7 +72,7 @@ const buildPowersheet = () => {
     functionHelper.functionHelperEl
   )
 
-  spreadsheet.functionHelper.setDrawer()
+  toolbar.setToolbarIcons(getToolbarActionGroups(toolbar))
 
   return spreadsheet
 }
@@ -133,7 +81,7 @@ const FinancialSpreadsheet = ({
   sheetData,
   financialData,
   saveSheetData,
-  ...props
+  sx
 }) => {
   const [spreadsheet, setSpreadsheet] = useState()
   const [containerEl, setContainerEl] = useState()
@@ -165,8 +113,22 @@ const FinancialSpreadsheet = ({
   }, [])
 
   useEffect(() => {
-    const persistData = async (sheetData, done) => {
-      await saveSheetData(sheetData)
+    const setTicker = async ticker => {
+      await saveSheetData({
+        financialData: {
+          ticker
+        }
+      })
+    }
+
+    spreadsheet?.functionHelper.setDrawerContent(
+      getFunctionHelperContent(setTicker)
+    )
+  }, [spreadsheet, saveSheetData])
+
+  useEffect(() => {
+    const persistData = async (data, done) => {
+      await saveSheetData({ data })
 
       done()
     }
@@ -216,7 +178,7 @@ const FinancialSpreadsheet = ({
 
   if (!spreadsheet) return null
 
-  return <div {...props} ref={setContainerEl} />
+  return <Box sx={sx} ref={setContainerEl} />
 }
 
 export default FinancialSpreadsheet

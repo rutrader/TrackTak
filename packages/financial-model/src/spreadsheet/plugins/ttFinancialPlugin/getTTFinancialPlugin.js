@@ -8,7 +8,7 @@ import {
 import { ArraySize } from '@tracktak/hyperformula/es/ArraySize'
 import { ErrorMessage } from '@tracktak/hyperformula/es/error-message'
 import dayjs from 'dayjs'
-import convertSubCurrencyToCurrency from '../../shared/convertSubCurrencyToCurrency'
+import convertSubCurrencyToCurrency from '../../../shared/convertSubCurrencyToCurrency'
 import {
   balanceSheet,
   cashFlowStatement,
@@ -16,9 +16,9 @@ import {
   getDatesFromStatements,
   getStatements,
   incomeStatement
-} from '../financialData/financialStatements'
+} from '../../financialData/financialStatements'
 import { isNil } from 'lodash-es'
-import defaultStatement from '../../shared/defaultStatement'
+import defaultStatement from '../../../shared/defaultStatement'
 
 export const ttFinancialImplementedFunctions = {
   FINANCIAL: {

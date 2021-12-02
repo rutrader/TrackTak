@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom'
 const FinancialModel = () => {
   const params = useParams()
   const spreadsheet = useFetchSpreadsheet(params.sheetId)
-  const saveSheetData = useSaveSpreadsheetData(spreadsheet)
+  const saveSpreadsheetData = useSaveSpreadsheetData(spreadsheet)
   const financialData = useTTFinancialPlugin(spreadsheet)
 
   return (
@@ -23,10 +23,10 @@ const FinancialModel = () => {
         </Helmet>
       )}
       <FinancialSpreadsheet
-        saveSheetData={saveSheetData}
+        saveSpreadsheetData={saveSpreadsheetData}
         sheetData={spreadsheet?.sheetData}
         financialData={financialData}
-        style={{
+        sx={{
           flex: 1
         }}
       />

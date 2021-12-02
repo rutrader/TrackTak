@@ -1,4 +1,4 @@
-import { regions } from '@tracktak/common'
+import { regions } from '../data/regions'
 
 const isStockDisabled = (currentPlan, stock) => {
   if (process.env.PREMIUM_ENABLED === 'false') {
