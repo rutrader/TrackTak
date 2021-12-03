@@ -105,6 +105,7 @@ const Dashboard = () => {
                   }}
                   setCurrentEditableFolderId={setCurrentEditableFolderId}
                   currentEditableFolderId={currentEditableFolderId}
+                  fetchFolders={fetchFolders}
                 />
               )
             })}

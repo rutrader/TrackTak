@@ -20,7 +20,8 @@ const SidePanelTabFolders = ({
   handleOnClickRouting,
   folders,
   setCurrentEditableFolderId,
-  currentEditableFolderId
+  currentEditableFolderId,
+  fetchFolders
 }) => {
   const [anchorEl, setAnchorEl] = useState(null)
   const { getAccessToken } = useAuth()
@@ -53,6 +54,8 @@ const SidePanelTabFolders = ({
     await api.updateFolder(id, textRef.current, accessToken)
 
     setCurrentEditableFolderId(null)
+
+    await fetchFolders()
   }
 
   const handleClickDelete = async () => {
