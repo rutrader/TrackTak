@@ -1,5 +1,5 @@
-import * as database from './database/mongoDbClient'
-import { Collections } from './database/collections'
+import * as database from '../../../../database/mongoDbClient'
+import { Collections } from '../../../../database/collections'
 import { default as MongoDb } from 'mongodb'
 
 export const getFinancialDataByQuery = async financialDataQuery => {

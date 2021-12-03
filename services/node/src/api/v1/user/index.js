@@ -11,10 +11,10 @@ const router = express.Router()
 
 router.use('/', auth)
 router.use('/financial-data', financialData)
-router.use('/plan', plan)
 router.use('/plan/portal-session', portalSession)
 router.use('/plan/webhook', webhook)
-router.use('/spreadsheets', spreadsheets)
+router.use('/plan', plan)
 router.use('/spreadsheets/metadata', spreadsheetsMetadata)
+router.use('/spreadsheets', spreadsheets)
 
 export default router

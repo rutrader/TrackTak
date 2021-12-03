@@ -1,6 +1,6 @@
 import axios from 'axios'
-import replaceDoubleColonWithObject from './shared/replaceDoubleColonWithObject'
-import convertFundamentalsFromAPI from './shared/convertFundamentalsFromAPI'
+import replaceDoubleColonWithObject from '../../../../shared/replaceDoubleColonWithObject'
+import convertFundamentalsFromAPI from '../../../../shared/convertFundamentalsFromAPI'
 import { sendReqOrGetCachedData } from '../../../../cache'
 import {
   eodAPIToken,

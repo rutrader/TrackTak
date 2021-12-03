@@ -19,7 +19,9 @@ export const useTTFinancialPlugin = spreadsheet => {
 
     if (id) {
       const fetchFinancialData = async () => {
-        return await api.getFinancialData(id)
+        const token = await getAccessToken()
+
+        return await api.getFinancialData(id, token?.jwtToken)
       }
 
       fetchData(fetchFinancialData)

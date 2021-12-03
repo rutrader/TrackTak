@@ -62,8 +62,9 @@ export const createFinancialData = async (
   )
 }
 
-export const getFinancialData = async (id, params) => {
+export const getFinancialData = async (id, accessToken, params) => {
   return axios.get(`/api/v1/user/financial-data/${id}`, {
+    headers: getAuthHeaders(accessToken),
     params
   })
 }
