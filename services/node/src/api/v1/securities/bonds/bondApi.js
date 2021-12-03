@@ -22,7 +22,7 @@ export const getCountryBond = async (code, query) => {
         if (error.response.status === 404) {
           const splits = code.split('10Y')
 
-          console.log(code)
+          console.log(`${code} not found in EOD API. Using fallback file.`)
 
           if (splits[0]) {
             const country = iso3311a2
