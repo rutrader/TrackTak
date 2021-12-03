@@ -41,16 +41,9 @@ const SavedSpreadsheets = ({ spreadsheets }) => {
   const handleDeleteConfirm = async () => {
     if (selectedSpreadsheet) {
       const token = await getAccessToken()
-      const response = await api.deleteSpreadsheet(
-        selectedSpreadsheet._id,
-        token?.jwtToken
-      )
-      if (response.status === 200) {
-        const updatedSpreadsheets = spreadsheets.filter(
-          spreadsheet => spreadsheet._id !== selectedSpreadsheet._id
-        )
-        setSpreadsheets(updatedSpreadsheets)
-      }
+
+      // TODO: Wait for kristina's folder code before releasing
+      await api.deleteSpreadsheet(selectedSpreadsheet._id, token?.jwtToken)
     }
   }
 

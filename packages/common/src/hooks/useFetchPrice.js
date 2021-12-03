@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getPrice } from '../api/api'
+import { getPlanPrice } from '../api/api'
 import { useAuth } from './useAuth'
 
 const useFetchPrice = priceId => {
@@ -11,7 +11,7 @@ const useFetchPrice = priceId => {
       const token = await getAccessToken()
       const {
         data: { price }
-      } = await getPrice(priceId, token?.jwtToken)
+      } = await getPlanPrice(priceId, token?.jwtToken)
 
       setPrice(price)
     }

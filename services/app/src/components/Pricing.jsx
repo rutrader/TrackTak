@@ -20,7 +20,7 @@ const Pricing = () => {
         return { price: priceId, quantity: 1 }
       })
     const lineItems = [...apiRegionLineItems]
-    const { data } = await api.createCheckoutSession(lineItems, token?.jwtToken)
+    const { data } = await api.createUserPlan(lineItems, token?.jwtToken)
 
     window.location.href = data.url
   }

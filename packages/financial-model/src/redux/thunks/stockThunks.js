@@ -40,10 +40,10 @@ export const getExchangeRatesThunk = createAsyncThunk(
   }
 )
 
-export const getTenYearGovernmentBondLastCloseThunk = createAsyncThunk(
-  'fundamentals/getTenYearGovernmentBondLastCloseThunk',
+export const getTenYearCountryBondLastCloseThunk = createAsyncThunk(
+  'fundamentals/getTenYearCountryBondLastCloseThunk',
   async ({ countryISO, params }) => {
-    const { data } = await api.getGovernmentBond(`${countryISO}10Y`, {
+    const { data } = await api.getCountryBond(`${countryISO}10Y`, {
       ...params,
       filter: 'last_close'
     })
@@ -55,7 +55,7 @@ export const getTenYearGovernmentBondLastCloseThunk = createAsyncThunk(
 export const getLastPriceCloseThunk = createAsyncThunk(
   'fundamentals/getLastPriceClose',
   async ({ ticker, params }) => {
-    const { data } = await api.getPrices(ticker, {
+    const { data } = await api.getEOD(ticker, {
       ...params,
       filter: 'last_close'
     })
