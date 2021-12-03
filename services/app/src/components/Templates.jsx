@@ -24,7 +24,7 @@ const Templates = () => {
   const handleShowSearchTickerDialog = async templateName => {
     setShowSearchTickerDialog(true)
 
-    const promise = api.getTemplate(templateName)
+    const promise = api.getSpreadsheetTemplate(templateName)
 
     setTemplatePromise(promise)
   }

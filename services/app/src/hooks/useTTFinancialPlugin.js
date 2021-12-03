@@ -18,11 +18,11 @@ export const useTTFinancialPlugin = spreadsheet => {
     }
 
     if (id) {
-      const fetchFinancials = async () => {
+      const fetchFinancialData = async () => {
         return await api.getFinancialData(id)
       }
 
-      fetchData(fetchFinancials)
+      fetchData(fetchFinancialData)
     } else if (ticker) {
       const fetchCreateNewFinancials = async () => {
         const { payload: fundamentals } = await dispatch(
@@ -46,7 +46,7 @@ export const useTTFinancialPlugin = spreadsheet => {
           ),
 
           dispatch(
-            thunks.getTenYearGovernmentBondLastCloseThunk({
+            thunks.getTenYearCountryBondLastCloseThunk({
               countryISO: fundamentals.general.countryISO
             })
           ),

@@ -24,7 +24,7 @@ const SearchTicker = ({ setTicker }) => {
   const { currentPlan } = useCurrentPlan()
 
   const getAutoCompleteDebounced = useDebouncedCallback(async value => {
-    const { data } = await api.getAutocompleteQuery(
+    const { data } = await api.getSecuritiesAutocomplete(
       `${value}?limit=9&type=stock`
     )
     setIsLoadingAutocomplete(false)
