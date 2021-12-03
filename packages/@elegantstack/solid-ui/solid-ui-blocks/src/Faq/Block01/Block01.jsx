@@ -17,40 +17,40 @@ import WithDefaultContent from '@solid-ui-blocks/WithDefaultContent'
 const styles = {
   accordion: {
     '.accordion__button': {
-      cursor: `pointer`,
-      position: `relative`,
-      outline: `none`,
-      transition: `all 0.15s ease-in`
+      cursor: 'pointer',
+      position: 'relative',
+      outline: 'none',
+      transition: 'all 0.15s ease-in'
     },
     '.accordion__button:hover': {
       opacity: 0.75,
       '&::before': {
-        borderColor: `beta`
+        borderColor: 'beta'
       }
     },
     '.accordion__button::before': {
-      content: `' '`,
-      width: `10px`,
-      height: `10px`,
-      marginRight: `12px`,
-      borderBottom: `3px solid currentColor`,
-      borderLeft: `3px solid currentColor`,
-      position: `absolute`,
+      content: "' '",
+      width: '10px',
+      height: '10px',
+      marginRight: '12px',
+      borderBottom: '3px solid currentColor',
+      borderLeft: '3px solid currentColor',
+      position: 'absolute',
       right: 4,
-      top: `50%`,
-      transform: `translate(0, -50%) rotate(45deg)`,
-      transition: `all 0.15s ease-in`
+      top: '50%',
+      transform: 'translate(0, -50%) rotate(45deg)',
+      transition: 'all 0.15s ease-in'
     },
     '.accordion__button[aria-expanded="true"]::before, .accordion__button[aria-selected="true"]::before':
       {
-        transform: `translate(0, -50%) rotate(-45deg)`,
-        transition: `transform 0.35s ease-in`
+        transform: 'translate(0, -50%) rotate(-45deg)',
+        transition: 'transform 0.35s ease-in'
       },
     '[hidden]': {
-      display: `none`
+      display: 'none'
     },
     '.accordion__panel': {
-      animation: `fadeIn 0.25s ease-in`
+      animation: 'fadeIn 0.25s ease-in'
     },
     '@keyframes fadeIn': {
       '0%': {
@@ -67,7 +67,7 @@ const styles = {
 
 const FaqBlock01 = ({ content: { text, collection } }) => (
   <Container as={Reveal}>
-    <Box sx={{ textAlign: `center` }}>
+    <Box sx={{ textAlign: 'center' }}>
       <ContentText content={text} />
     </Box>
     {text && collection && <Divider />}
@@ -83,7 +83,7 @@ const FaqBlock01 = ({ content: { text, collection } }) => (
             <AccordionItem>
               <AccordionItemHeading>
                 <AccordionItemButton>
-                  <Flex sx={{ alignItems: `center` }} p='3'>
+                  <Flex sx={{ alignItems: 'center' }} p='3'>
                     <Icon content={icon} size='xs' mr='3' p='2' round />
                     <ContentText content={text?.[0]} mb='0' pr='5' />
                   </Flex>

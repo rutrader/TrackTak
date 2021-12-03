@@ -6,22 +6,22 @@ import './styles.css'
 
 const styles = {
   panelContent: {
-    height: `100%`,
+    height: '100%',
     zIndex: 2,
-    bg: `contentBg`,
-    overflowY: `scroll`,
+    bg: 'contentBg',
+    overflowY: 'scroll',
     p: 3
   },
   openButton: {
     // display: ['', '', 'none'], //to avoid ssr rehydration issue
-    verticalAlign: `middle`
+    verticalAlign: 'middle'
   },
   closeButton: {
-    position: `fixed`,
+    position: 'fixed',
     zIndex: 99999,
-    left: `-20%`,
+    left: '-20%',
     top: 4,
-    color: `white`
+    color: 'white'
   }
 }
 

@@ -9,22 +9,22 @@ import WithDefaultContent from '@solid-ui-blocks/WithDefaultContent'
 
 const styles = {
   listItem: {
-    flexBasis: [`100%`, `1/2`, null, `1/3`],
-    alignItems: `center`,
-    justifyContent: `left`,
+    flexBasis: ['100%', '1/2', null, '1/3'],
+    alignItems: 'center',
+    justifyContent: 'left',
     p: 3
   }
 }
 
 const FeaturesBlock01 = ({ content: { text, collection, buttons } }) => (
   <Container as={Reveal}>
-    <Box sx={{ textAlign: `center` }}>
+    <Box sx={{ textAlign: 'center' }}>
       <ContentText content={text} />
     </Box>
     {collection && (
       <>
         <Divider />
-        <Flex sx={{ flexWrap: `wrap`, mx: -3 }}>
+        <Flex sx={{ flexWrap: 'wrap', mx: -3 }}>
           {collection?.map((props, index) => (
             <Reveal
               key={`item-${index}`}

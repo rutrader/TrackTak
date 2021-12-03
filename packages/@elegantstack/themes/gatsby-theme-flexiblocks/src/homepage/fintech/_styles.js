@@ -9,18 +9,18 @@ import holographic from './assets/holographic.jpg'
 
 export default {
   heroContainer: {
-    position: `relative`,
+    position: 'relative',
     py: [3],
     '::before, ::after': {
-      position: `absolute`,
-      content: `" "`,
-      width: `full`,
-      height: `85%`,
-      top: [`25%`, null, null, `50%`],
-      right: `50%`,
-      transform: `translate(50%, -50%)`,
+      position: 'absolute',
+      content: '" "',
+      width: 'full',
+      height: '85%',
+      top: ['25%', null, null, '50%'],
+      right: '50%',
+      transform: 'translate(50%, -50%)',
       zIndex: -1,
-      borderRadius: `xl`
+      borderRadius: 'xl'
     },
     '::after': {
       background: `linear-gradient(
@@ -31,23 +31,23 @@ export default {
     },
     '::before': {
       background: `url(${holographic}) no-repeat center center`,
-      backgroundSize: `cover`
+      backgroundSize: 'cover'
     }
   },
   featureOneContainer: {
-    position: `relative`,
+    position: 'relative',
     py: [3],
     '::before, ::after': {
-      position: `absolute`,
-      content: `" "`,
-      size: `70vw`,
-      maxWidth: `500px`,
-      maxHeight: `500px`,
-      top: `50%`,
-      left: `0%`,
-      transform: [`translate(15vw, -185%)`, `translate(20%, -85%)`],
+      position: 'absolute',
+      content: '" "',
+      size: '70vw',
+      maxWidth: '500px',
+      maxHeight: '500px',
+      top: '50%',
+      left: '0%',
+      transform: ['translate(15vw, -185%)', 'translate(20%, -85%)'],
       zIndex: -2,
-      borderRadius: `full`
+      borderRadius: 'full'
     },
     '::after': {
       background: `linear-gradient(
@@ -58,23 +58,23 @@ export default {
     },
     '::before': {
       background: `url(${holographic}) no-repeat center center`,
-      backgroundSize: `cover`
+      backgroundSize: 'cover'
     }
   },
   featureTwoContainer: {
-    position: `relative`,
+    position: 'relative',
     py: [3],
     '::before, ::after': {
-      position: `absolute`,
-      content: `" "`,
-      size: `70vw`,
-      maxWidth: `500px`,
-      maxHeight: `500px`,
-      top: `50%`,
-      right: `0%`,
-      transform: [`translate(-15vw, 30%)`, `translate(-15%, -85%)`],
+      position: 'absolute',
+      content: '" "',
+      size: '70vw',
+      maxWidth: '500px',
+      maxHeight: '500px',
+      top: '50%',
+      right: '0%',
+      transform: ['translate(-15vw, 30%)', 'translate(-15%, -85%)'],
       zIndex: -2,
-      borderRadius: `full`
+      borderRadius: 'full'
     },
     '::after': {
       background: `linear-gradient(
@@ -85,18 +85,18 @@ export default {
     },
     '::before': {
       background: `url(${holographic}) no-repeat center center`,
-      backgroundSize: `cover`
+      backgroundSize: 'cover'
     }
   },
   featureThreeContainer: {
-    position: `relative`,
+    position: 'relative',
     py: [4],
     '::before, ::after': {
-      position: `absolute`,
-      content: `" "`,
-      size: `full`,
-      top: `30%`,
-      right: `0%`,
+      position: 'absolute',
+      content: '" "',
+      size: 'full',
+      top: '30%',
+      right: '0%',
       zIndex: -1
     },
     '::after': {
@@ -109,12 +109,12 @@ export default {
     },
     '::before': {
       background: `url(${holographic}) no-repeat center center`,
-      backgroundSize: `cover`
+      backgroundSize: 'cover'
     }
   },
   whyChooseUsContainer: {
-    bg: `omegaDarker`,
-    borderRadius: `xl`,
+    bg: 'omegaDarker',
+    borderRadius: 'xl',
     py: 5,
     px: [4, 0]
   }

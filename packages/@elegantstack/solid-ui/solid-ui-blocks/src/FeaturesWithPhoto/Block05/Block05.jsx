@@ -12,12 +12,12 @@ import WithDefaultContent from '@solid-ui-blocks/WithDefaultContent'
 
 const styles = {
   items: {
-    flexWrap: `wrap`,
+    flexWrap: 'wrap',
     mx: [-2, -4],
     '& > div': {
       flex: 1,
       px: [2, 4],
-      textAlign: [`center`, `unset`]
+      textAlign: ['center', 'unset']
     }
   }
 }
@@ -26,13 +26,13 @@ const FeaturesWithPhotoBlock05 = ({
   content: { text, images, collection, buttons },
   reverse
 }) => (
-  <Container sx={{ position: `relative` }}>
+  <Container sx={{ position: 'relative' }}>
     <Flex
       sx={{
-        alignItems: [null, `center`],
+        alignItems: [null, 'center'],
         flexDirection: [
-          reverse ? `column-reverse` : `column`,
-          reverse ? `row-reverse` : `row`
+          reverse ? 'column-reverse' : 'column',
+          reverse ? 'row-reverse' : 'row'
         ],
         mx: [null, null, null, -4]
       }}
@@ -41,7 +41,7 @@ const FeaturesWithPhotoBlock05 = ({
         <ContentImages content={{ images }} reverse={reverse} />
       </FlexImage>
       <FlexContent reverse={reverse}>
-        <Box sx={{ textAlign: [`center`, `left`] }}>
+        <Box sx={{ textAlign: ['center', 'left'] }}>
           <ContentText content={text} />
         </Box>
         {collection && (
@@ -56,8 +56,8 @@ const FeaturesWithPhotoBlock05 = ({
                 >
                   <Flex
                     sx={{
-                      flexDirection: `column`,
-                      height: `full`
+                      flexDirection: 'column',
+                      height: 'full'
                     }}
                   >
                     <ContentText content={text} ml={0} />

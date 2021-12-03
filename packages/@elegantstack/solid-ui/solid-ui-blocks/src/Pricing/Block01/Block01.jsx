@@ -12,15 +12,15 @@ import WithDefaultContent from '@solid-ui-blocks/WithDefaultContent'
 
 const styles = {
   middleBox: {
-    position: `relative`,
+    position: 'relative',
     zIndex: 2
   },
   prevPrice: {
-    textDecoration: `line-through`,
+    textDecoration: 'line-through',
     opacity: 0.2
   },
   saveBadge: {
-    position: `absolute`,
+    position: 'absolute',
     top: 3,
     right: 3
   }
@@ -30,7 +30,7 @@ const PricingBlock01 = ({ content: { text, collection, buttons } }) => {
   const [plan, setPlan] = useState(0)
 
   return (
-    <Container sx={{ textAlign: `center` }}>
+    <Container sx={{ textAlign: 'center' }}>
       <ContentText content={text?.slice(0, 3)} />
       {text?.[3]?.textGroup && (
         <>
@@ -41,9 +41,9 @@ const PricingBlock01 = ({ content: { text, collection, buttons } }) => {
       {collection && (
         <Flex
           sx={{
-            flexWrap: `wrap`,
-            alignItems: `center`,
-            justifyContent: `center`,
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'center',
             mx: -3
           }}
         >
@@ -51,7 +51,7 @@ const PricingBlock01 = ({ content: { text, collection, buttons } }) => {
             ({ container, text, icon, collection, buttons }, i) => (
               <Box
                 key={`item-${i}`}
-                sx={{ flex: [`auto`, 1], minWidth: 320, maxWidth: 500, p: 3 }}
+                sx={{ flex: ['auto', 1], minWidth: 320, maxWidth: 500, p: 3 }}
               >
                 <Reveal
                   effect={
@@ -70,7 +70,7 @@ const PricingBlock01 = ({ content: { text, collection, buttons } }) => {
                   <ContentContainer
                     content={container}
                     variant='cards.paper'
-                    sx={{ position: `relative` }}
+                    sx={{ position: 'relative' }}
                   >
                     {text?.[3]?.textGroup?.[plan] && (
                       <Reveal effect='fadeInRight' css={css(styles.saveBadge)}>
@@ -82,7 +82,7 @@ const PricingBlock01 = ({ content: { text, collection, buttons } }) => {
                     <Icon content={icon} size='sm' mb='2' round />
                     <ContentText content={text?.[0]} />
                     <Flex
-                      sx={{ alignItems: `center`, justifyContent: `center` }}
+                      sx={{ alignItems: 'center', justifyContent: 'center' }}
                     >
                       <ContentText
                         content={{
@@ -96,7 +96,7 @@ const PricingBlock01 = ({ content: { text, collection, buttons } }) => {
                         mr='2'
                         ml='0'
                         sx={{
-                          transition: `all .4s ease-in`,
+                          transition: 'all .4s ease-in',
                           ...(plan > 0 && styles.prevPrice)
                         }}
                       />

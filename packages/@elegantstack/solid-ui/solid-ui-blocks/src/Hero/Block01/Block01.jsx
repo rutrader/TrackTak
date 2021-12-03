@@ -11,13 +11,13 @@ const HeroBlock01 = ({ content: { text = [], buttons, form }, reverse }) => (
   <Container>
     <Flex
       sx={{
-        flexDirection: [reverse ? `column-reverse` : `column`]
+        flexDirection: [reverse ? 'column-reverse' : 'column']
       }}
     >
       <Box
         sx={{
-          position: `relative`,
-          textAlign: `center`
+          position: 'relative',
+          textAlign: 'center'
         }}
       >
         <iframe
@@ -33,8 +33,8 @@ const HeroBlock01 = ({ content: { text = [], buttons, form }, reverse }) => (
       </Box>
       <Box
         sx={{
-          flexBasis: `2/5`,
-          textAlign: `center`
+          flexBasis: '2/5',
+          textAlign: 'center'
         }}
       >
         <Reveal effect='fadeInDown'>

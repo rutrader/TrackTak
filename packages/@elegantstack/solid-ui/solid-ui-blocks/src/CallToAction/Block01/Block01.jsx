@@ -7,7 +7,7 @@ import ContentButtons from '@solid-ui-components/ContentButtons'
 import WithDefaultContent from '@solid-ui-blocks/WithDefaultContent'
 
 const CallToActionBlock01 = ({ content: { container, text, buttons } }) => (
-  <Container sx={{ textAlign: `center` }}>
+  <Container sx={{ textAlign: 'center' }}>
     <ContentText content={text?.slice(0, 2)} />
     <ContentContainer content={container} variant='cards.paper-lg'>
       <ContentText content={text?.slice(2)} />

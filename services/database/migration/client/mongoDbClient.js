@@ -19,6 +19,7 @@ export const connect = async () => {
     await client.db('admin').command({ ping: 1 })
     console.log('Connected successfully to MongoDB server')
   } catch (err) {
+    console.error(err)
     throw err
   }
 }

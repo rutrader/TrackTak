@@ -2,11 +2,11 @@ import common from './common'
 
 export default {
   ...common.button,
-  cursor: `not-allowed`,
-  color: `white`,
+  cursor: 'not-allowed',
+  color: 'white',
   '::after': {
     ...common.button['::after'],
-    bg: `omega`,
-    borderColor: `omega`
+    bg: 'omega',
+    borderColor: 'omega'
   }
 }

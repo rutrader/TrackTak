@@ -7,16 +7,16 @@
 
 export default {
   featuresContainer: {
-    position: `relative`,
+    position: 'relative',
     py: [5, 6],
     '::before': {
-      position: `absolute`,
-      content: `" "`,
-      size: `full`,
+      position: 'absolute',
+      content: '" "',
+      size: 'full',
       top: -3,
       right: 0,
       zIndex: -1,
-      borderRadius: `xl`,
+      borderRadius: 'xl',
       background: `linear-gradient(
         180deg,
         #f7f9fe 0%,
@@ -25,16 +25,16 @@ export default {
     }
   },
   tabsContainer: {
-    position: `relative`,
+    position: 'relative',
     py: [4, 5],
     '::before': {
-      position: `absolute`,
-      content: `" "`,
-      size: `full`,
+      position: 'absolute',
+      content: '" "',
+      size: 'full',
       top: 0,
       right: 0,
       zIndex: -1,
-      borderRadius: `xl`,
+      borderRadius: 'xl',
       background: `linear-gradient(
         180deg,
         #f7f9fe 0%,
@@ -43,18 +43,18 @@ export default {
     }
   },
   testimonialsContainer: {
-    position: `relative`,
+    position: 'relative',
     pt: 6,
     pb: 5,
     '::before': {
-      position: `absolute`,
-      content: `" "`,
-      width: `full`,
-      height: `full`,
+      position: 'absolute',
+      content: '" "',
+      width: 'full',
+      height: 'full',
       top: 0,
       right: 0,
       zIndex: -1,
-      borderRadius: `xl`,
+      borderRadius: 'xl',
       background: `linear-gradient(
         180deg,
         #f7f9fe 0%,

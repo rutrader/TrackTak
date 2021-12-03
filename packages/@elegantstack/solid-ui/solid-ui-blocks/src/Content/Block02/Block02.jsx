@@ -11,18 +11,18 @@ const ContentBlock02 = ({ content: { collection }, reverse }) => (
     <Flex
       sx={{
         flexDirection: [
-          reverse ? `column-reverse` : `column`,
+          reverse ? 'column-reverse' : 'column',
           null,
           null,
-          reverse ? `row-reverse` : `row`
+          reverse ? 'row-reverse' : 'row'
         ]
       }}
     >
       <Box
         sx={{
-          flexBasis: [null, null, null, `1/2`],
+          flexBasis: [null, null, null, '1/2'],
           [reverse ? 'ml' : 'mr']: [null, null, null, 5],
-          position: `relative`,
+          position: 'relative',
           textAlign: ['center', 'left']
         }}
       >
@@ -48,8 +48,8 @@ const ContentBlock02 = ({ content: { collection }, reverse }) => (
       </Box>
       <Box
         sx={{
-          flexBasis: `1/2`,
-          textAlign: [`center`, null, null, `left`]
+          flexBasis: '1/2',
+          textAlign: ['center', null, null, 'left']
         }}
       >
         {collection?.[1] && (

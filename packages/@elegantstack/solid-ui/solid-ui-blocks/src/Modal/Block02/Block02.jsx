@@ -19,26 +19,26 @@ const ModalBlock02 = ({
   return (
     <Modal
       id={identifier}
-      contentStyles={{ maxWidth: hasMedia ? `narrow` : 500, p: 0 }}
+      contentStyles={{ maxWidth: hasMedia ? 'narrow' : 500, p: 0 }}
     >
       <Flex
         sx={{
-          alignItems: `stretch`,
+          alignItems: 'stretch',
           flexDirection: [
-            reverse ? `column-reverse` : `column`,
-            reverse ? `row-reverse` : `row`
+            reverse ? 'column-reverse' : 'column',
+            reverse ? 'row-reverse' : 'row'
           ]
         }}
       >
         {hasMedia && (
           <Box
             sx={{
-              display: [`none`, null, `block`],
+              display: ['none', null, 'block'],
               minWidth: [null, null, null, 500],
               flex: 1,
-              position: `relative`,
-              borderRadius: reverse ? `right` : `left`,
-              overflow: `hidden`
+              position: 'relative',
+              borderRadius: reverse ? 'right' : 'left',
+              overflow: 'hidden'
             }}
           >
             {images && (
@@ -52,7 +52,7 @@ const ModalBlock02 = ({
             {map && (
               <Reveal
                 effect={reverse ? 'fadeInRight' : 'fadeInLeft'}
-                style={{ width: `100%`, height: `100%` }}
+                style={{ width: '100%', height: '100%' }}
               >
                 <ContentMap content={map} />
               </Reveal>
@@ -62,7 +62,7 @@ const ModalBlock02 = ({
         <Box sx={{ flex: 1, p: 5 }}>
           {text && (
             <>
-              <Box sx={{ textAlign: `center` }}>
+              <Box sx={{ textAlign: 'center' }}>
                 <ContentText content={text} />
               </Box>
               <Divider space={3} />
@@ -77,7 +77,7 @@ const ModalBlock02 = ({
               <Divider space={2} />
               <ContentButtons
                 content={buttons}
-                wrapperStyles={{ textAlign: `center` }}
+                wrapperStyles={{ textAlign: 'center' }}
               />
             </>
           )}

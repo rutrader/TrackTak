@@ -5,9 +5,9 @@ import { Box, css } from 'theme-ui'
 const ProgressBar = ({ from, to, delay, duration, color, bg }) => (
   <Box
     sx={{
-      width: `full`,
-      height: `8px`,
-      borderRadius: `full`,
+      width: 'full',
+      height: '8px',
+      borderRadius: 'full',
       bg
     }}
   >
@@ -27,8 +27,8 @@ const ProgressBar = ({ from, to, delay, duration, color, bg }) => (
         ]
       }}
       css={css({
-        height: `full`,
-        borderRadius: `full`,
+        height: 'full',
+        borderRadius: 'full',
         bg: color
       })}
     />
@@ -38,8 +38,8 @@ const ProgressBar = ({ from, to, delay, duration, color, bg }) => (
 export default ProgressBar
 
 ProgressBar.defaultProps = {
-  from: `20%`,
-  to: `100%`,
+  from: '20%',
+  to: '100%',
   delay: 0,
   color: 'alpha',
   bg: 'omegaLight'

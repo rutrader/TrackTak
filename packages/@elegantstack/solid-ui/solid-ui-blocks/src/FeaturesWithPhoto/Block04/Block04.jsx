@@ -18,17 +18,17 @@ const FeaturesWithPhotoBlock04 = ({
 }) => (
   <Container>
     {text && (
-      <Box sx={{ textAlign: `center` }}>
+      <Box sx={{ textAlign: 'center' }}>
         <ContentText content={text} />
         <Divider />
       </Box>
     )}
-    <Flex sx={{ flexDirection: [`column`, `row`], m: -3 }}>
+    <Flex sx={{ flexDirection: ['column', 'row'], m: -3 }}>
       <Box
         sx={{
-          flexBasis: `1/3`,
-          alignSelf: `center`,
-          textAlign: [`center`, `right`],
+          flexBasis: '1/3',
+          alignSelf: 'center',
+          textAlign: ['center', 'right'],
           mx: [0, 4]
         }}
       >
@@ -40,14 +40,14 @@ const FeaturesWithPhotoBlock04 = ({
           ))}
         </Reveal>
       </Box>
-      <Box sx={{ flexBasis: `1/3`, position: `relative`, my: [4, 0] }}>
+      <Box sx={{ flexBasis: '1/3', position: 'relative', my: [4, 0] }}>
         <ContentImages content={{ images }} imageEffect='fadeInUp' />
       </Box>
       <Box
         sx={{
-          flexBasis: `1/3`,
-          alignSelf: `center`,
-          textAlign: [`center`, `left`],
+          flexBasis: '1/3',
+          alignSelf: 'center',
+          textAlign: ['center', 'left'],
           mx: [0, 4]
         }}
       >

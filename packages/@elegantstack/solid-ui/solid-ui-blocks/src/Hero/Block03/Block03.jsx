@@ -14,23 +14,23 @@ const styles = {
     maxWidth: 500
   },
   content: {
-    flexDirection: `column`,
-    size: `full`,
-    alignItems: `center`,
-    justifyContent: `center`,
+    flexDirection: 'column',
+    size: 'full',
+    alignItems: 'center',
+    justifyContent: 'center',
     py: 4
   },
   overlay: {
-    size: `full`,
-    bg: `omegaDarker`,
+    size: 'full',
+    bg: 'omegaDarker',
     opacity: 0.75,
-    position: `absolute`,
+    position: 'absolute',
     top: 0,
     zIndex: -1
   },
   image: {
-    size: `full`,
-    position: `absolute`,
+    size: 'full',
+    position: 'absolute',
     top: 0,
     zIndex: -2
   }
@@ -39,7 +39,7 @@ const styles = {
 const HeroBlock03 = ({
   content: { container, text, buttons, form, images }
 }) => (
-  <Container variant='full' sx={{ textAlign: `center`, position: `relative` }}>
+  <Container variant='full' sx={{ textAlign: 'center', position: 'relative' }}>
     <Flex
       sx={{
         ...styles.content,
@@ -52,8 +52,8 @@ const HeroBlock03 = ({
         <ContentText
           content={text?.[0]}
           sx={{
-            bg: `omegaDarker`,
-            display: `inline-block`
+            bg: 'omegaDarker',
+            display: 'inline-block'
           }}
           px='2'
           mb='3'
@@ -83,7 +83,7 @@ const HeroBlock03 = ({
       <ContentImages
         loading='eager'
         content={{ images }}
-        sx={{ size: `full` }}
+        sx={{ size: 'full' }}
         imageEffect='fadeIn'
       />
     </Box>

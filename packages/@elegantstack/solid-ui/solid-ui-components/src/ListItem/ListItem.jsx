@@ -15,15 +15,15 @@ const ListItem = ({
   <Flex
     sx={{
       flexDirection: vertical ? 'column' : 'row',
-      alignItems: center ? `center` : `flex-start`,
-      textAlign: center && vertical ? `center` : `unset`,
-      justifyContent: middle ? `center` : `unset`
+      alignItems: center ? 'center' : 'flex-start',
+      textAlign: center && vertical ? 'center' : 'unset',
+      justifyContent: middle ? 'center' : 'unset'
     }}
   >
     {icon?.src && (
       <Box
         sx={{
-          display: `inline-flex`,
+          display: 'inline-flex',
           flexShrink: 0,
           [vertical ? 'mb' : 'mr']: compact ? 2 : 3
         }}
@@ -36,7 +36,7 @@ const ListItem = ({
         />
       </Box>
     )}
-    <Box sx={{ alignSelf: vertical ? `auto` : `center` }}>
+    <Box sx={{ alignSelf: vertical ? 'auto' : 'center' }}>
       <ContentText content={text} />
     </Box>
   </Flex>

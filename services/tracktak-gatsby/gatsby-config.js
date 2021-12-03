@@ -52,7 +52,7 @@ module.exports = {
       }
     },
     {
-      resolve: `gatsby-plugin-webpack-bundle-analyser-v2`,
+      resolve: 'gatsby-plugin-webpack-bundle-analyser-v2',
       options: {
         analyzerPort: 3002
       }
@@ -66,7 +66,7 @@ module.exports = {
     'gatsby-plugin-styled-components',
     'gatsby-plugin-emotion',
     {
-      resolve: `gatsby-plugin-hotjar`,
+      resolve: 'gatsby-plugin-hotjar',
       options: {
         id: '2536228',
         sv: 6
@@ -81,7 +81,7 @@ module.exports = {
       }
     },
     {
-      resolve: `gatsby-plugin-google-gtag`,
+      resolve: 'gatsby-plugin-google-gtag',
       options: {
         trackingIds: ['G-WFB538909G']
       }
@@ -91,12 +91,12 @@ module.exports = {
       resolve: 'gatsby-plugin-sitemap'
     },
     'gatsby-plugin-robots-txt',
-    {
-      resolve: 'gatsby-plugin-manifest',
-      options: {
-        icon: `${__dirname}/src/assets/tracktak-logo-small.svg`
-      }
-    },
+    // {
+    //   resolve: 'gatsby-plugin-manifest',
+    //   options: {
+    //     icon: `${__dirname}/src/assets/tracktak-logo-small.svg`
+    //   }
+    // },
     'gatsby-plugin-mdx',
     'gatsby-plugin-image',
     {
