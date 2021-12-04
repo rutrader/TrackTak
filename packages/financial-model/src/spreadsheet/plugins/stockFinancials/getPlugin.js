@@ -20,7 +20,7 @@ export const aliases = {
 
 export const translations = {
   enGB: {
-    STOCK_FINANCIALS: 'STOCK_FINANCIALS'
+    S_FIN: 'STOCK_FINANCIALS'
   }
 }
 

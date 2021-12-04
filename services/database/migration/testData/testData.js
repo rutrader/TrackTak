@@ -103,7 +103,7 @@ const test = [
               },
               3: {
                 0: 'Sales to Capital Ratio *',
-                1: '=FIN("sales/Capital")'
+                1: '=S_FIN("sales/Capital")'
               }
             }
           },
@@ -434,49 +434,49 @@ const test = [
             cellsSerialized: {
               0: {
                 0: 'Revenue',
-                1: '=FIN("revenue")/E1',
+                1: '=S_FIN("revenue")/E1',
                 3: 'Million Modifier',
                 4: '1000000'
               },
               1: {
                 0: 'Operating Income',
-                1: '=FIN("operatingIncome")/E1'
+                1: '=S_FIN("operatingIncome")/E1'
               },
               2: {
                 0: 'Book Value of Equity',
-                1: '=FIN("bookValueOfEquity")/E1'
+                1: '=S_FIN("bookValueOfEquity")/E1'
               },
               3: {
                 0: 'Book Value of Debt',
-                1: '=FIN("bookValueOfDebt")/E1'
+                1: '=S_FIN("bookValueOfDebt")/E1'
               },
               4: {
                 0: 'Invested Capital',
-                1: '=FIN("investedCapital")/E1'
+                1: '=S_FIN("investedCapital")/E1'
               },
               5: {
                 0: 'Shares Outstanding',
-                1: '=FIN("sharesOutstanding")/E1'
+                1: '=S_FIN("sharesOutstanding")/E1'
               },
               6: {
                 0: 'Minority Interest',
-                1: '=FIN("minorityInterest")/E1'
+                1: '=S_FIN("minorityInterest")/E1'
               },
               7: {
                 0: 'Cash & Short Term Investments',
-                1: '=FIN("cashAndShortTermInvestments")/E1'
+                1: '=S_FIN("cashAndShortTermInvestments")/E1'
               },
               8: {
                 0: 'Interest Expense',
-                1: '=FIN("interestExpense")/E1'
+                1: '=S_FIN("interestExpense")/E1'
               },
               9: {
                 0: 'Capital Lease Obligations',
-                1: '=FIN("capitalLeaseObligations")/E1'
+                1: '=S_FIN("capitalLeaseObligations")/E1'
               },
               10: {
                 0: 'Market Capitalization',
-                1: '=FIN("marketCapitalization")/E1'
+                1: '=S_FIN("marketCapitalization")/E1'
               }
             }
           }
@@ -3344,15 +3344,15 @@ const test = [
             autofilter: {},
             cellsSerialized: {
               0: {
-                0: '=FIN("name")'
+                0: '=S_FIN("name")'
               },
               1: {
-                0: '=FIN("code")&"."&FIN("exchange")',
+                0: '=S_FIN("code")&"."&S_FIN("exchange")',
                 3: 'Business Description'
               },
               2: {
-                0: '=FIN("price")&" "&FIN("currencyCode")',
-                3: '=FIN("description")'
+                0: '=S_FIN("price")&" "&S_FIN("currencyCode")',
+                3: '=S_FIN("description")'
               },
               3: {
                 0: 'Shares Outstanding',
@@ -3363,63 +3363,63 @@ const test = [
               },
               6: {
                 0: 'Category',
-                1: '=FIN("industryName")'
+                1: '=S_FIN("industryName")'
               },
               7: {
                 0: 'CAGR Past Five Years',
-                1: '=FIN("annualAverageCAGRLastFiveYears")',
+                1: '=S_FIN("annualAverageCAGRLastFiveYears")',
                 3: 'Financials Overview'
               },
               8: {
                 0: 'Pre-tax Operating Margin (TTM)',
-                1: '=FIN("preTaxOperatingMarginUnadjusted")',
+                1: '=S_FIN("preTaxOperatingMarginUnadjusted")',
                 4: 'TTM',
-                5: '=FIN("date",,"01/01/2000")'
+                5: '=S_FIN("date",,"01/01/2000")'
               },
               9: {
                 0: 'ROIC (TTM)',
-                1: '=FIN("afterTaxROIC")',
+                1: '=S_FIN("afterTaxROIC")',
                 3: 'Revenue',
-                4: '=FIN("revenue")',
-                5: '=FIN("revenue",,"01/01/2000")'
+                4: '=S_FIN("revenue")',
+                5: '=S_FIN("revenue",,"01/01/2000")'
               },
               10: {
                 0: 'Sales to Capital Ratio',
-                1: '=FIN("sales/Capital")',
+                1: '=S_FIN("sales/Capital")',
                 3: 'Operating Income',
-                4: '=FIN("operatingIncome")',
-                5: '=FIN("operatingIncome",,"01/01/2000")'
+                4: '=S_FIN("operatingIncome")',
+                5: '=S_FIN("operatingIncome",,"01/01/2000")'
               },
               11: {
                 0: 'WACC',
-                1: '=FIN("costOfCapital")',
+                1: '=S_FIN("costOfCapital")',
                 3: 'Operating Margin',
-                4: '=FIN("operatingMargin")',
-                5: '=FIN("operatingMargin",,"01/01/2000")'
+                4: '=S_FIN("operatingMargin")',
+                5: '=S_FIN("operatingMargin",,"01/01/2000")'
               },
               12: {
                 0: 'Unlevered Beta',
-                1: '=FIN("unleveredBeta")',
+                1: '=S_FIN("unleveredBeta")',
                 3: 'Book Value of Equity',
-                4: '=FIN("bookValueOfEquity")',
-                5: '=FIN("bookValueOfEquity",,"01/01/2000")'
+                4: '=S_FIN("bookValueOfEquity")',
+                5: '=S_FIN("bookValueOfEquity",,"01/01/2000")'
               },
               13: {
                 0: 'Levered Beta',
-                1: '=FIN("equityLeveredBeta")',
+                1: '=S_FIN("equityLeveredBeta")',
                 3: 'Book Value of Debt',
-                4: '=FIN("bookValueOfDebt")',
-                5: '=FIN("bookValueOfDebt",,"01/01/2000")'
+                4: '=S_FIN("bookValueOfDebt")',
+                5: '=S_FIN("bookValueOfDebt",,"01/01/2000")'
               },
               14: {
                 3: 'Invested Capital',
-                4: '=FIN("investedCapital")',
-                5: '=FIN("investedCapital",,"01/01/2000")'
+                4: '=S_FIN("investedCapital")',
+                5: '=S_FIN("investedCapital",,"01/01/2000")'
               },
               15: {
                 3: 'Sales to Capital Ratio',
-                4: '=FIN("salesToCapitalRatio")',
-                5: '=FIN("salesToCapitalRatio",,"01/01/2000")'
+                4: '=S_FIN("salesToCapitalRatio")',
+                5: '=S_FIN("salesToCapitalRatio",,"01/01/2000")'
               },
               17: {
                 0: 'DCF Valuaton'
@@ -3446,12 +3446,12 @@ const test = [
                 4: "=D20*(1+'Required Inputs'!$B$1)",
                 5: "=E20*(1+'Required Inputs'!$B$1)",
                 6: "=F20*(1+'Required Inputs'!$B$1)",
-                7: "=G20*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-FIN(\"riskFreeRate\")) / 5))",
-                8: "=H20*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-FIN(\"riskFreeRate\")) / 5) * 2)",
-                9: "=I20*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-FIN(\"riskFreeRate\")) / 5) * 3)",
-                10: "=J20*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-FIN(\"riskFreeRate\")) / 5) * 4)",
-                11: "=K20*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-FIN(\"riskFreeRate\")) / 5) * 5)",
-                12: '=L20*(1+FIN("riskFreeRate"))'
+                7: "=G20*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-S_FIN(\"riskFreeRate\")) / 5))",
+                8: "=H20*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-S_FIN(\"riskFreeRate\")) / 5) * 2)",
+                9: "=I20*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-S_FIN(\"riskFreeRate\")) / 5) * 3)",
+                10: "=J20*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-S_FIN(\"riskFreeRate\")) / 5) * 4)",
+                11: "=K20*(1+'Required Inputs'!$B$1 - (('Required Inputs'!$B$1-S_FIN(\"riskFreeRate\")) / 5) * 5)",
+                12: '=L20*(1+S_FIN("riskFreeRate"))'
               },
               20: {
                 0: 'Operating Margin',
@@ -3485,7 +3485,7 @@ const test = [
               },
               22: {
                 0: 'Tax Rate',
-                1: '=FIN("pastThreeYearsAverageEffectiveTaxRate")',
+                1: '=S_FIN("pastThreeYearsAverageEffectiveTaxRate")',
                 2: '=B23',
                 3: '=C23',
                 4: '=D23',
@@ -3496,7 +3496,7 @@ const test = [
                 9: '=I23+(M23-G23)/5',
                 10: '=J23+(M23-G23)/5',
                 11: '=K23+(M23-G23)/5',
-                12: '=FIN("marginalTaxRate")'
+                12: '=S_FIN("marginalTaxRate")'
               },
               23: {
                 0: 'NOPAT',
@@ -3525,7 +3525,7 @@ const test = [
                 9: '=(J20-I20)/J33',
                 10: '=(K20-J20)/K33',
                 11: '=(L20-K20)/L33',
-                12: '=IF(FIN("riskFreeRate") > 0, (FIN("riskFreeRate") / M35) * M24, 0)'
+                12: '=IF(S_FIN("riskFreeRate") > 0, (S_FIN("riskFreeRate") / M35) * M24, 0)'
               },
               25: {
                 0: 'FCFF',
@@ -3568,7 +3568,7 @@ const test = [
                 9: '=I29-(G29-M29)/5',
                 10: '=J29-(G29-M29)/5',
                 11: '=K29-(G29-M29)/5',
-                12: '=FIN("matureMarketEquityRiskPremium") + FIN("riskFreeRate")'
+                12: '=S_FIN("matureMarketEquityRiskPremium") + S_FIN("riskFreeRate")'
               },
               29: {
                 0: 'Cumulated Discount Factor',
@@ -3648,7 +3648,7 @@ const test = [
               },
               38: {
                 0: 'Terminal Value',
-                1: '=B37/(B38-FIN("riskFreeRate"))'
+                1: '=B37/(B38-S_FIN("riskFreeRate"))'
               },
               39: {
                 0: 'PV (Terminal Value)',
@@ -3704,7 +3704,7 @@ const test = [
               },
               52: {
                 0: 'Current Price',
-                1: '=FIN("price")'
+                1: '=S_FIN("price")'
               },
               53: {
                 0: 'Estimated Value Per Share',
@@ -12518,7 +12518,7 @@ const test = [
             autofilter: {},
             cellsSerialized: {
               0: {
-                0: '=FIN("financialStatements")'
+                0: '=S_FIN("financialStatements")'
               }
             }
           },
@@ -12897,19 +12897,19 @@ const test = [
               },
               3: {
                 0: 'Market Price per Share',
-                1: '=FIN("price")'
+                1: '=S_FIN("price")'
               },
               4: {
                 0: 'Unlevered Beta',
-                1: '=FIN("unleveredBeta")'
+                1: '=S_FIN("unleveredBeta")'
               },
               5: {
                 0: 'Riskfree Rate',
-                1: '=FIN("riskFreeRate")'
+                1: '=S_FIN("riskFreeRate")'
               },
               6: {
                 0: 'Equity Risk Premium',
-                1: '=FIN("equityRiskPremium")'
+                1: '=S_FIN("equityRiskPremium")'
               },
               8: {
                 0: 'Normal Debt'
@@ -12939,13 +12939,13 @@ const test = [
               },
               13: {
                 0: '="Pre-tax Cost of Debt"&" ("&B13&")"',
-                1: '=IF(\'Optional Inputs\'!$B$2="", FIN("estimatedCostOfDebt"), \'Optional Inputs\'!$B$2)',
+                1: '=IF(\'Optional Inputs\'!$B$2="", S_FIN("estimatedCostOfDebt"), \'Optional Inputs\'!$B$2)',
                 2: 'Levered Beta for Equity',
                 3: '=B5*(1+(1-B15)*(E16/D16))'
               },
               14: {
                 0: 'Marginal Tax Rate',
-                1: '=FIN("marginalTaxRate")',
+                1: '=S_FIN("marginalTaxRate")',
                 3: 'Equity',
                 4: 'Debt',
                 5: 'Preferred Stock',
@@ -13138,11 +13138,11 @@ const test = [
               },
               4: {
                 0: 'Standard deviation in stock price (volatility)',
-                1: '=FIN("standardDeviationInStockPrices")'
+                1: '=S_FIN("standardDeviationInStockPrices")'
               },
               5: {
                 0: 'Risk free rate',
-                1: '=FIN("riskFreeRate")'
+                1: '=S_FIN("riskFreeRate")'
               },
               6: {
                 0: 'Shares outstanding',
@@ -13150,7 +13150,7 @@ const test = [
               },
               7: {
                 0: 'Share price',
-                1: '=FIN("price")'
+                1: '=S_FIN("price")'
               },
               9: {
                 0: 'd1',
@@ -13779,11 +13779,11 @@ const test = [
               },
               5: {
                 0: 'Estimated Country Default Spread',
-                1: '=FIN("adjDefaultSpread")'
+                1: '=S_FIN("adjDefaultSpread")'
               },
               6: {
                 0: 'Estimated Pre-tax Cost of Debt',
-                1: '=FIN("riskFreeRate")+B5+B6'
+                1: '=S_FIN("riskFreeRate")+B5+B6'
               },
               9: {
                 0: 'Large Companies (< $5,000m Market Cap)',
