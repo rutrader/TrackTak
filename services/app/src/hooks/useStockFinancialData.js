@@ -27,7 +27,7 @@ const useStockFinancialData = spreadsheet => {
         const values = await Promise.all([
           api.getFundamentals(ticker, {
             filter:
-              'General::Code,General::Exchange,General::UpdatedAt,Financials::Balance_Sheet,Financials::Income_Statement,Financials::Cash_Flow'
+              'General::CountryISO,General::Code,General::Exchange,General::UpdatedAt,Financials::Balance_Sheet,Financials::Income_Statement,Financials::Cash_Flow'
           }),
           getAccessToken()
         ])

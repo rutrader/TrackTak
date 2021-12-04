@@ -3,6 +3,35 @@ import isNil from 'lodash/isNil'
 import getValueFromString from './getValueFromString'
 import replaceDoubleColonWithObject from './replaceDoubleColonWithObject'
 
+const sumFinancialStatementValues = (financialStatements, valueKey) => {
+  const sumOfFirstFourValues = financialStatements.reduce((acc, curr) => {
+    return (acc += curr[valueKey])
+  }, 0)
+
+  return sumOfFirstFourValues
+}
+
+const dateSortComparer = (a, b) => b.date.localeCompare(a.date)
+
+const getTTMValuesFromQuarters = statement => {
+  const ttm = {}
+  const firstFourStatements = statement.quarterly.slice(0, 4)
+
+  firstFourStatements.forEach(statement => {
+    Object.keys(statement).forEach(key => {
+      const value = statement[key]
+
+      if (Number.isFinite(value)) {
+        ttm[key] = sumFinancialStatementValues(firstFourStatements, key)
+      } else {
+        ttm[key] = value
+      }
+    })
+  })
+
+  return ttm
+}
+
 const convertBalanceSheet = ({
   date,
   filingDate,
@@ -139,111 +168,154 @@ const convertFundamentalsFromAPI = (ticker, data) => {
       }
     }
 
-    // Fix EOD issue by removing stocks with incomplete data
-    const quarterlyDatesRemoved = {}
+    if (newFundamentalsData.financials) {
+      // Fix EOD issue by removing stocks with incomplete data
+      const quarterlyDatesRemoved = {}
+      const yearlyDatesRemoved = {}
 
-    if (newFundamentalsData.financials?.incomeStatement?.quarterly) {
-      const quarterly = newFundamentalsData.financials.incomeStatement.quarterly
+      const financials = newFundamentalsData.financials
+      const incomeStatement = financials.incomeStatement
+      const balanceSheet = financials.balanceSheet
+      const cashFlowStatement = financials.cashFlow
 
-      Object.keys(quarterly).forEach(key => {
-        const datum = quarterly[key]
+      const isInUS = newFundamentalsData.general.countryISO === 'US'
 
-        if (isNil(datum.totalRevenue)) {
-          quarterlyDatesRemoved[key] = datum.date
-        } else {
-          quarterly[key] = convertIncomeStatement(datum)
+      if (incomeStatement) {
+        if (incomeStatement.quarterly) {
+          const quarterly = []
+
+          Object.keys(incomeStatement.quarterly).forEach(key => {
+            const datum = incomeStatement.quarterly[key]
+
+            if (isNil(datum.totalRevenue)) {
+              quarterlyDatesRemoved[key] = datum.date
+            } else {
+              quarterly.push(convertIncomeStatement(datum))
+            }
+          })
+
+          incomeStatement.quarterly = quarterly.sort(dateSortComparer)
+
+          if (isInUS) {
+            incomeStatement.ttm = getTTMValuesFromQuarters(incomeStatement)
+          }
         }
-      })
 
-      newFundamentalsData.financials.incomeStatement.quarterly = quarterly
-    }
+        if (incomeStatement.yearly) {
+          const yearly = []
 
-    if (newFundamentalsData.financials?.balanceSheet?.quarterly) {
-      const quarterly = newFundamentalsData.financials.balanceSheet.quarterly
+          Object.keys(incomeStatement.yearly).forEach(key => {
+            const datum = incomeStatement.yearly[key]
 
-      Object.keys(quarterly).forEach(key => {
-        const datum = quarterly[key]
+            if (isNil(datum.totalRevenue)) {
+              yearlyDatesRemoved[key] = datum.date
+            } else {
+              yearly.push(convertIncomeStatement(datum))
+            }
+          })
 
-        if (isNil(datum.totalStockholderEquity) || quarterlyDatesRemoved[key]) {
-          quarterlyDatesRemoved[key] = datum.date
-        } else {
-          quarterly[key] = convertBalanceSheet(datum)
+          incomeStatement.yearly = yearly.sort(dateSortComparer)
+
+          if (!isInUS) {
+            incomeStatement.ttm = incomeStatement.yearly[0]
+          }
         }
-      })
-
-      newFundamentalsData.financials.balanceSheet.quarterly = quarterly
-    }
-
-    if (newFundamentalsData.financials?.cashFlow.quarterly) {
-      const quarterly = newFundamentalsData.financials.cashFlow.quarterly
-
-      Object.keys(quarterly).forEach(key => {
-        const datum = quarterly[key]
-
-        if (!quarterlyDatesRemoved[key]) {
-          quarterly[key] = convertCashFlowStatement(datum)
-        }
-      })
-
-      newFundamentalsData.financials.cashFlowStatement = {
-        ...newFundamentalsData.financials.cashFlowStatement,
-        quarterly
+        financials.incomeStatement = incomeStatement
       }
-    }
 
-    const yearlyDatesRemoved = {}
+      if (balanceSheet) {
+        if (balanceSheet.quarterly) {
+          const quarterly = []
 
-    if (newFundamentalsData.financials?.incomeStatement.yearly) {
-      const yearly = newFundamentalsData.financials.incomeStatement.yearly
+          Object.keys(balanceSheet.quarterly).forEach(key => {
+            const datum = balanceSheet.quarterly[key]
 
-      Object.keys(yearly).forEach(key => {
-        const datum = yearly[key]
+            if (
+              isNil(datum.totalStockholderEquity) ||
+              quarterlyDatesRemoved[key]
+            ) {
+              quarterlyDatesRemoved[key] = datum.date
+            } else {
+              quarterly.push(convertBalanceSheet(datum))
+            }
+          })
 
-        if (isNil(datum.totalRevenue)) {
-          yearlyDatesRemoved[key] = datum.date
-        } else {
-          yearly[key] = convertIncomeStatement(datum)
+          balanceSheet.quarterly = quarterly.sort(dateSortComparer)
+
+          if (isInUS) {
+            balanceSheet.ttm = getTTMValuesFromQuarters(balanceSheet)
+          }
         }
-      })
 
-      newFundamentalsData.financials.incomeStatement.yearly = yearly
-    }
+        if (balanceSheet.yearly) {
+          const yearly = []
 
-    if (newFundamentalsData.financials?.balanceSheet.yearly) {
-      const yearly = newFundamentalsData.financials.balanceSheet.yearly
+          Object.keys(balanceSheet.yearly).forEach(key => {
+            const datum = balanceSheet.yearly[key]
 
-      Object.keys(yearly).forEach(key => {
-        const datum = yearly[key]
+            if (
+              isNil(datum.totalStockholderEquity) ||
+              yearlyDatesRemoved[key]
+            ) {
+              yearlyDatesRemoved[key] = datum.date
+            } else {
+              yearly.push(convertBalanceSheet(datum))
+            }
+          })
 
-        if (isNil(datum.totalStockholderEquity) || yearlyDatesRemoved[key]) {
-          yearlyDatesRemoved[key] = datum.date
-        } else {
-          yearly[key] = convertBalanceSheet(datum)
+          balanceSheet.yearly = yearly.sort(dateSortComparer)
+
+          if (!isInUS) {
+            balanceSheet.ttm = balanceSheet.yearly[0]
+          }
         }
-      })
 
-      newFundamentalsData.financials.balanceSheet.yearly = yearly
-    }
-
-    if (newFundamentalsData.financials?.cashFlow.yearly) {
-      const yearly = newFundamentalsData.financials.cashFlow.yearly
-
-      Object.keys(yearly).forEach(key => {
-        const datum = yearly[key]
-
-        if (!yearlyDatesRemoved[key]) {
-          yearly[key] = convertCashFlowStatement(datum)
-        }
-      })
-
-      newFundamentalsData.financials.cashFlowStatement = {
-        ...newFundamentalsData.financials.cashFlowStatement,
-        yearly
+        financials.balanceSheet = balanceSheet
       }
-    }
 
-    if (newFundamentalsData.financials.cashFlow) {
-      delete newFundamentalsData.financials.cashFlow
+      if (cashFlowStatement) {
+        if (cashFlowStatement.quarterly) {
+          const quarterly = []
+
+          Object.keys(cashFlowStatement.quarterly).forEach(key => {
+            const datum = cashFlowStatement.quarterly[key]
+
+            if (!quarterlyDatesRemoved[key]) {
+              quarterly.push(convertCashFlowStatement(datum))
+            }
+          })
+
+          cashFlowStatement.quarterly = quarterly.sort(dateSortComparer)
+
+          if (isInUS) {
+            cashFlowStatement.ttm = getTTMValuesFromQuarters(cashFlowStatement)
+          }
+        }
+
+        if (cashFlowStatement.yearly) {
+          const yearly = []
+
+          Object.keys(cashFlowStatement.yearly).forEach(key => {
+            const datum = cashFlowStatement.yearly[key]
+
+            if (!yearlyDatesRemoved[key]) {
+              yearly.push(convertCashFlowStatement(datum))
+            }
+          })
+
+          cashFlowStatement.yearly = yearly.sort(dateSortComparer)
+
+          if (!isInUS) {
+            cashFlowStatement.ttm = cashFlowStatement.yearly[0]
+          }
+        }
+
+        delete financials.cashFlow
+
+        financials.cashFlowStatement = cashFlowStatement
+      }
+
+      newFundamentalsData.financials = financials
     }
   } catch (error) {
     console.info(`Conversion partially failed for: ${ticker}.`)

@@ -52,7 +52,7 @@ const functionHelperData = {
     {
       syntaxName: 'attribute',
       description:
-        'Required argument. Defaults to returning the "ttm" (Trailing Twelve Months) data if a [type] parameter is not given. See below for the list of the attributes that can be given here.'
+        'Required argument. Defaults to returning the trailing twelve months data if a [type] parameter is not given. See below for the list of the attributes that can be given here.'
     },
     {
       syntaxName: '[ticker]',
