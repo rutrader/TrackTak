@@ -1,16 +1,17 @@
+import camelCase from 'camelcase'
 import isNil from 'lodash/isNil'
 import getValueFromString from './getValueFromString'
 
 const convertBalanceSheet = ({
   date,
-  filing_date,
-  currency_symbol,
+  filingDate,
+  currencySymbol,
   ...balanceSheet
 }) => {
   const newBalanceSheet = {
     date,
-    filingDate: filing_date,
-    currencyCode: currency_symbol,
+    filingDate,
+    currencyCode: currencySymbol,
     ...balanceSheet
   }
 
@@ -28,8 +29,8 @@ const convertBalanceSheet = ({
 
 const convertIncomeStatement = ({
   date,
-  filing_date,
-  currency_symbol,
+  filingDate,
+  currencySymbol,
   totalRevenue,
   totalOtherIncomeExpenseNet,
   totalOperatingExpenses,
@@ -37,8 +38,8 @@ const convertIncomeStatement = ({
 }) => {
   const newIncomeStatement = {
     date,
-    filingDate: filing_date,
-    currencyCode: currency_symbol,
+    filingDate,
+    currencyCode: currencySymbol,
     revenue: getValueFromString(totalRevenue),
     otherIncomeExpense: getValueFromString(totalOtherIncomeExpenseNet),
     operatingExpenses: getValueFromString(totalOperatingExpenses),
@@ -54,14 +55,14 @@ const convertIncomeStatement = ({
 
 const convertCashFlowStatement = ({
   date,
-  filing_date,
-  currency_symbol,
+  filingDate,
+  currencySymbol,
   ...cashFlowStatement
 }) => {
   const newCashFlowStatement = {
     date,
-    filingDate: filing_date,
-    currencyCode: currency_symbol,
+    filingDate,
+    currencyCode: currencySymbol,
     ...cashFlowStatement
   }
 
@@ -72,119 +73,143 @@ const convertCashFlowStatement = ({
   return newCashFlowStatement
 }
 
+const convertEarningsTrend = ({ date, period, ...trend }) => {
+  const newTrend = {
+    date,
+    period,
+    ...trend
+  }
+
+  Object.keys(trend).forEach(key => {
+    newTrend[key] = getValueFromString(trend[key])
+  })
+
+  return newTrend
+}
+
+const camelCaseObject = (obj, key) => {
+  const returnedObj = {}
+
+  try {
+    Object.keys(obj).forEach(key => {
+      const value = obj[key]
+      const camelCaseKey = camelCase(key, {
+        preserveConsecutiveUppercase: true
+      })
+
+      if (typeof value === 'object' && value !== null) {
+        returnedObj[camelCaseKey] = camelCaseObject(value, camelCaseKey)
+      } else {
+        returnedObj[camelCaseKey] = value
+      }
+    })
+  } catch (error) {
+    console.error(`camelCase error thrown for key: ${key}. Ignoring key.`)
+  }
+
+  return returnedObj
+}
+
 const convertFundamentalsFromAPI = fundamentalsData => {
   if (typeof fundamentalsData !== 'object') {
     return fundamentalsData
   }
 
-  const {
-    General,
-    Highlights,
-    SharesStats,
-    Financials: { Balance_Sheet, Income_Statement, Cash_Flow }
-  } = fundamentalsData
+  let newFundamentalsData = {}
 
-  const general = {
-    code: General.Code,
-    name: General.Name,
-    description: General.Description,
-    exchange: General.Exchange,
-    currencyCode: General.CurrencyCode,
-    currencyName: General.CurrencyName,
-    currencySymbol: General.CurrencySymbol,
-    countryISO: General.CountryISO,
-    industry: General.Industry,
-    gicSubIndustry: General.GicSubIndustry,
-    updatedAt: General.UpdatedAt
-  }
+  try {
+    newFundamentalsData = camelCaseObject(fundamentalsData)
 
-  const highlights = {
-    marketCapitalization: Highlights.MarketCapitalization,
-    mostRecentQuarter: Highlights.MostRecentQuarter
-  }
+    const {
+      financials: {
+        incomeStatement,
+        balanceSheet,
+        cashFlow: cashFlowStatement
+      },
+      earnings: { trend, ...earnings }
+    } = newFundamentalsData
 
-  const sharesStats = {
-    sharesOutstanding: SharesStats.SharesOutstanding
-  }
+    Object.keys(trend).forEach(key => {
+      const datum = trend[key]
 
-  const balanceSheet = {
-    currencyCode: Balance_Sheet.currency_symbol,
-    quarterly: {},
-    yearly: {}
-  }
+      trend[key] = convertEarningsTrend(datum)
+    })
 
-  const incomeStatement = {
-    currencyCode: Income_Statement.currency_symbol,
-    quarterly: {},
-    yearly: {}
-  }
+    // Fix EOD issue by removing stocks with incomplete data
+    const quarterlyDatesRemoved = {}
 
-  const cashFlowStatement = {
-    currencyCode: Cash_Flow.currency_symbol,
-    quarterly: {},
-    yearly: {}
-  }
+    Object.keys(incomeStatement.quarterly).forEach(key => {
+      const datum = incomeStatement.quarterly[key]
 
-  // Fix EOD issue by removing stocks with incomplete data
-  const quarterlyDatesRemoved = {}
+      if (isNil(datum.totalRevenue)) {
+        quarterlyDatesRemoved[key] = datum.date
+      } else {
+        incomeStatement.quarterly[key] = convertIncomeStatement(datum)
+      }
+    })
 
-  Object.values(Income_Statement.quarterly).forEach(datum => {
-    if (isNil(datum.totalRevenue)) {
-      quarterlyDatesRemoved[datum.date] = datum.date
-    } else {
-      incomeStatement.quarterly[datum.date] = convertIncomeStatement(datum)
+    Object.keys(balanceSheet.quarterly).forEach(key => {
+      const datum = balanceSheet.quarterly[key]
+
+      if (isNil(datum.totalStockholderEquity) || quarterlyDatesRemoved[key]) {
+        quarterlyDatesRemoved[key] = datum.date
+      } else {
+        balanceSheet.quarterly[key] = convertBalanceSheet(datum)
+      }
+    })
+
+    Object.keys(cashFlowStatement.quarterly).forEach(key => {
+      const datum = cashFlowStatement.quarterly[key]
+
+      if (!quarterlyDatesRemoved[key]) {
+        cashFlowStatement.quarterly[key] = convertCashFlowStatement(datum)
+      }
+    })
+
+    const yearlyDatesRemoved = {}
+
+    Object.keys(incomeStatement.yearly).forEach(key => {
+      const datum = incomeStatement.yearly[key]
+
+      if (isNil(datum.totalRevenue)) {
+        yearlyDatesRemoved[key] = datum.date
+      } else {
+        incomeStatement.yearly[key] = convertIncomeStatement(datum)
+      }
+    })
+
+    Object.keys(balanceSheet.yearly).forEach(key => {
+      const datum = balanceSheet.yearly[key]
+
+      if (isNil(datum.totalStockholderEquity) || yearlyDatesRemoved[key]) {
+        yearlyDatesRemoved[key] = datum.date
+      } else {
+        balanceSheet.yearly[key] = convertBalanceSheet(datum)
+      }
+    })
+
+    Object.keys(cashFlowStatement.yearly).forEach(key => {
+      const datum = cashFlowStatement.yearly[key]
+
+      if (!yearlyDatesRemoved[key]) {
+        cashFlowStatement.yearly[key] = convertCashFlowStatement(datum)
+      }
+    })
+
+    newFundamentalsData.incomeStatement = incomeStatement
+    newFundamentalsData.balanceSheet = balanceSheet
+    newFundamentalsData.cashFlowStatement = cashFlowStatement
+    newFundamentalsData.earnings = {
+      ...earnings,
+      trend
     }
-  })
-
-  Object.values(Balance_Sheet.quarterly).forEach(datum => {
-    if (
-      isNil(datum.totalStockholderEquity) ||
-      quarterlyDatesRemoved[datum.date]
-    ) {
-      quarterlyDatesRemoved[datum.date] = datum.date
-    } else {
-      balanceSheet.quarterly[datum.date] = convertBalanceSheet(datum)
-    }
-  })
-
-  Object.values(Cash_Flow.quarterly).forEach(datum => {
-    if (!quarterlyDatesRemoved[datum.date]) {
-      cashFlowStatement.quarterly[datum.date] = convertCashFlowStatement(datum)
-    }
-  })
-
-  const yearlyDatesRemoved = {}
-
-  Object.values(Income_Statement.yearly).forEach(datum => {
-    if (isNil(datum.totalRevenue)) {
-      yearlyDatesRemoved[datum.date] = datum.date
-    } else {
-      incomeStatement.yearly[datum.date] = convertIncomeStatement(datum)
-    }
-  })
-
-  Object.values(Balance_Sheet.yearly).forEach(datum => {
-    if (isNil(datum.totalStockholderEquity) || yearlyDatesRemoved[datum.date]) {
-      yearlyDatesRemoved[datum.date] = datum.date
-    } else {
-      balanceSheet.yearly[datum.date] = convertBalanceSheet(datum)
-    }
-  })
-
-  Object.values(Cash_Flow.yearly).forEach(datum => {
-    if (!yearlyDatesRemoved[datum.date]) {
-      cashFlowStatement.yearly[datum.date] = convertCashFlowStatement(datum)
-    }
-  })
-
-  return {
-    general,
-    highlights,
-    sharesStats,
-    balanceSheet,
-    incomeStatement,
-    cashFlowStatement
+  } catch (error) {
+    console.info(
+      `Conversion partially failed for: ${fundamentalsData.General.Code}.`
+    )
   }
+
+  return newFundamentalsData
 }
 
 export default convertFundamentalsFromAPI

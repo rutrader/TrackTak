@@ -1,10 +1,10 @@
 import express from 'express'
-import { getCountryBond } from './bondApi'
+import { getGovernmentBond } from './bondApi'
 
 const router = express.Router()
 
 router.get('/:code', async (req, res) => {
-  const value = await getCountryBond(req.params.code, req.query)
+  const value = await getGovernmentBond(req.params.code, req.query)
 
   res.send({ value })
 })
