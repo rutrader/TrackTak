@@ -121,6 +121,8 @@ export const getPlugin = financialData => {
       if (!hasFinancialsLoaded) {
         return new CellError(ErrorType.LOADING, ErrorMessage.FunctionLoading)
       }
+      const f = financialData
+
       return new CellError(ErrorType.LOADING, ErrorMessage.FunctionLoading)
       // const attribute = args[0].value
       // // TODO: Add proper error checking here later

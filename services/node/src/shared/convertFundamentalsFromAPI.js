@@ -1,6 +1,7 @@
 import camelCase from 'camelcase'
 import isNil from 'lodash/isNil'
 import getValueFromString from './getValueFromString'
+import replaceDoubleColonWithObject from './replaceDoubleColonWithObject'
 
 const convertBalanceSheet = ({
   date,
@@ -105,108 +106,148 @@ const camelCaseObject = (obj, key) => {
     })
   } catch (error) {
     console.error(`camelCase error thrown for key: ${key}. Ignoring key.`)
+    console.error(error)
   }
 
   return returnedObj
 }
 
-const convertFundamentalsFromAPI = fundamentalsData => {
-  if (typeof fundamentalsData !== 'object') {
-    return fundamentalsData
+const convertFundamentalsFromAPI = (ticker, data) => {
+  if (typeof data !== 'object' || data === null) {
+    return data
   }
+
+  const fundamentalsData = replaceDoubleColonWithObject(data)
 
   let newFundamentalsData = {}
 
   try {
     newFundamentalsData = camelCaseObject(fundamentalsData)
 
-    const {
-      financials: {
-        incomeStatement,
-        balanceSheet,
-        cashFlow: cashFlowStatement
-      },
-      earnings: { trend, ...earnings }
-    } = newFundamentalsData
+    if (newFundamentalsData.earnings?.trend) {
+      const trend = newFundamentalsData.earnings?.trend
 
-    Object.keys(trend).forEach(key => {
-      const datum = trend[key]
+      Object.keys(trend).forEach(key => {
+        const datum = trend[key]
 
-      trend[key] = convertEarningsTrend(datum)
-    })
+        trend[key] = convertEarningsTrend(datum)
+      })
+
+      newFundamentalsData.earnings = {
+        ...newFundamentalsData.earnings,
+        trend
+      }
+    }
 
     // Fix EOD issue by removing stocks with incomplete data
     const quarterlyDatesRemoved = {}
 
-    Object.keys(incomeStatement.quarterly).forEach(key => {
-      const datum = incomeStatement.quarterly[key]
+    if (newFundamentalsData.financials?.incomeStatement?.quarterly) {
+      const quarterly = newFundamentalsData.financials.incomeStatement.quarterly
 
-      if (isNil(datum.totalRevenue)) {
-        quarterlyDatesRemoved[key] = datum.date
-      } else {
-        incomeStatement.quarterly[key] = convertIncomeStatement(datum)
+      Object.keys(quarterly).forEach(key => {
+        const datum = quarterly[key]
+
+        if (isNil(datum.totalRevenue)) {
+          quarterlyDatesRemoved[key] = datum.date
+        } else {
+          quarterly[key] = convertIncomeStatement(datum)
+        }
+      })
+
+      newFundamentalsData.financials.incomeStatement.quarterly = quarterly
+    }
+
+    if (newFundamentalsData.financials?.balanceSheet?.quarterly) {
+      const quarterly = newFundamentalsData.financials.balanceSheet.quarterly
+
+      Object.keys(quarterly).forEach(key => {
+        const datum = quarterly[key]
+
+        if (isNil(datum.totalStockholderEquity) || quarterlyDatesRemoved[key]) {
+          quarterlyDatesRemoved[key] = datum.date
+        } else {
+          quarterly[key] = convertBalanceSheet(datum)
+        }
+      })
+
+      newFundamentalsData.financials.balanceSheet.quarterly = quarterly
+    }
+
+    if (newFundamentalsData.financials?.cashFlow.quarterly) {
+      const quarterly = newFundamentalsData.financials.cashFlow.quarterly
+
+      Object.keys(quarterly).forEach(key => {
+        const datum = quarterly[key]
+
+        if (!quarterlyDatesRemoved[key]) {
+          quarterly[key] = convertCashFlowStatement(datum)
+        }
+      })
+
+      newFundamentalsData.financials.cashFlowStatement = {
+        ...newFundamentalsData.financials.cashFlowStatement,
+        quarterly
       }
-    })
-
-    Object.keys(balanceSheet.quarterly).forEach(key => {
-      const datum = balanceSheet.quarterly[key]
-
-      if (isNil(datum.totalStockholderEquity) || quarterlyDatesRemoved[key]) {
-        quarterlyDatesRemoved[key] = datum.date
-      } else {
-        balanceSheet.quarterly[key] = convertBalanceSheet(datum)
-      }
-    })
-
-    Object.keys(cashFlowStatement.quarterly).forEach(key => {
-      const datum = cashFlowStatement.quarterly[key]
-
-      if (!quarterlyDatesRemoved[key]) {
-        cashFlowStatement.quarterly[key] = convertCashFlowStatement(datum)
-      }
-    })
+    }
 
     const yearlyDatesRemoved = {}
 
-    Object.keys(incomeStatement.yearly).forEach(key => {
-      const datum = incomeStatement.yearly[key]
+    if (newFundamentalsData.financials?.incomeStatement.yearly) {
+      const yearly = newFundamentalsData.financials.incomeStatement.yearly
 
-      if (isNil(datum.totalRevenue)) {
-        yearlyDatesRemoved[key] = datum.date
-      } else {
-        incomeStatement.yearly[key] = convertIncomeStatement(datum)
+      Object.keys(yearly).forEach(key => {
+        const datum = yearly[key]
+
+        if (isNil(datum.totalRevenue)) {
+          yearlyDatesRemoved[key] = datum.date
+        } else {
+          yearly[key] = convertIncomeStatement(datum)
+        }
+      })
+
+      newFundamentalsData.financials.incomeStatement.yearly = yearly
+    }
+
+    if (newFundamentalsData.financials?.balanceSheet.yearly) {
+      const yearly = newFundamentalsData.financials.balanceSheet.yearly
+
+      Object.keys(yearly).forEach(key => {
+        const datum = yearly[key]
+
+        if (isNil(datum.totalStockholderEquity) || yearlyDatesRemoved[key]) {
+          yearlyDatesRemoved[key] = datum.date
+        } else {
+          yearly[key] = convertBalanceSheet(datum)
+        }
+      })
+
+      newFundamentalsData.financials.balanceSheet.yearly = yearly
+    }
+
+    if (newFundamentalsData.financials?.cashFlow.yearly) {
+      const yearly = newFundamentalsData.financials.cashFlow.yearly
+
+      Object.keys(yearly).forEach(key => {
+        const datum = yearly[key]
+
+        if (!yearlyDatesRemoved[key]) {
+          yearly[key] = convertCashFlowStatement(datum)
+        }
+      })
+
+      newFundamentalsData.financials.cashFlowStatement = {
+        ...newFundamentalsData.financials.cashFlowStatement,
+        yearly
       }
-    })
+    }
 
-    Object.keys(balanceSheet.yearly).forEach(key => {
-      const datum = balanceSheet.yearly[key]
-
-      if (isNil(datum.totalStockholderEquity) || yearlyDatesRemoved[key]) {
-        yearlyDatesRemoved[key] = datum.date
-      } else {
-        balanceSheet.yearly[key] = convertBalanceSheet(datum)
-      }
-    })
-
-    Object.keys(cashFlowStatement.yearly).forEach(key => {
-      const datum = cashFlowStatement.yearly[key]
-
-      if (!yearlyDatesRemoved[key]) {
-        cashFlowStatement.yearly[key] = convertCashFlowStatement(datum)
-      }
-    })
-
-    newFundamentalsData.incomeStatement = incomeStatement
-    newFundamentalsData.balanceSheet = balanceSheet
-    newFundamentalsData.cashFlowStatement = cashFlowStatement
-    newFundamentalsData.earnings = {
-      ...earnings,
-      trend
+    if (newFundamentalsData.financials.cashFlow) {
+      delete newFundamentalsData.financials.cashFlow
     }
   } catch (error) {
-    console.info(
-      `Conversion partially failed for: ${fundamentalsData.General.Code}.`
-    )
+    console.info(`Conversion partially failed for: ${ticker}.`)
+    console.error(error)
   }
 
   return newFundamentalsData

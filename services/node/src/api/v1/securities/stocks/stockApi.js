@@ -1,5 +1,4 @@
 import axios from 'axios'
-import replaceDoubleColonWithObject from '../../../../shared/replaceDoubleColonWithObject'
 import convertFundamentalsFromAPI from '../../../../shared/convertFundamentalsFromAPI'
 import { sendReqOrGetCachedData } from '../../../../cache'
 import {
@@ -18,9 +17,9 @@ export const getFundamentals = async (ticker, query) => {
         }
       })
 
-      const newObject = replaceDoubleColonWithObject(data)
+      const convertedFundamentals = convertFundamentalsFromAPI(ticker, data)
 
-      return convertFundamentalsFromAPI(newObject)
+      return convertedFundamentals
     },
     'fundamentals',
     { ticker, query }

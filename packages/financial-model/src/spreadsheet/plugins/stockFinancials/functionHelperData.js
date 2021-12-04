@@ -52,22 +52,22 @@ const functionHelperData = {
     {
       syntaxName: 'attribute',
       description:
-        'Required argument. See below for the list of the attributes that can be given here'
+        'Required argument. Defaults to returning the "ttm" (Trailing Twelve Months) data if a [type] parameter is not given. See below for the list of the attributes that can be given here.'
     },
     {
       syntaxName: '[ticker]',
       description:
-        'Example "AAPL" or "BP.LSE". When supplied this will override the global ticker set above. For non-us companies you must supply the exchange as well.'
+        'Example: "AAPL" or "BP.LSE". When supplied this will override the global ticker set above. For non-us companies you must supply the exchange as well.'
     },
     {
       syntaxName: '[type]',
       description:
-        'Accepts either "ttm", "quarterly", "annual". Defaults to "ttm" (Trailing Twelve Months). Non-us stocks do not support "quarterly".'
+        'Accepts either "quarterly", "annual". Non-us stocks do not support "quarterly".'
     },
     {
       syntaxName: '[fiscalDate]',
       description:
-        'Example "2010/01/01;2015/01/01", ">2010/01/01", "<2020/01/01" or "2020/01/01".'
+        'Example: "2010/01/01;2015/01/01" (between), ">2010/01/01" (more than) "<2020/01/01" (less than).'
     }
   ],
   attributes: [
