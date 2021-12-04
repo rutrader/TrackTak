@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { api, useAuth } from '@tracktak/common'
 
-export const useTTFinancialPlugin = spreadsheet => {
+const useStockFinancialsPlugin = spreadsheet => {
   const [financialData, setFinancialData] = useState()
   const { getAccessToken } = useAuth()
 
@@ -25,14 +25,17 @@ export const useTTFinancialPlugin = spreadsheet => {
     } else if (ticker) {
       const fetchCreateNewFinancials = async () => {
         const values = await Promise.all([
-          api.getFundamentals(ticker),
+          api.getFundamentals(ticker, {
+            filter:
+              'Financials::Balance_Sheet,Financials::Income_Statement,Financials::Cash_Flow'
+          }),
           getAccessToken()
         ])
-        const fundamentals = values[0].data.value
+        const financials = values[0].data.value
         const token = values[1]
 
         return await api.createFinancialData(
-          fundamentals,
+          financials,
           token?.jwtToken,
           spreadsheet._id
         )
@@ -44,3 +47,5 @@ export const useTTFinancialPlugin = spreadsheet => {
 
   return financialData
 }
+
+export default useStockFinancialsPlugin

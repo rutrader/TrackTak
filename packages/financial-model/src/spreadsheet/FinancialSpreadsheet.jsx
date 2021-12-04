@@ -11,11 +11,11 @@ import {
 } from '@tracktak/powersheet'
 import { currencySymbolMap } from 'currency-symbol-map'
 import {
-  finTranslations,
-  getTTFinancialPlugin,
-  ttFinancialAliases,
-  ttFinancialImplementedFunctions
-} from './plugins/ttFinancialPlugin/getTTFinancialPlugin'
+  translations,
+  getPlugin,
+  aliases,
+  implementedFunctions
+} from './plugins/stockFinancials/getPlugin'
 import getToolbarActionGroups from './getToolbarActionGroups'
 import getFunctionHelperContent from './getFunctionHelperContent'
 import './FinancialSpreadsheet.css'
@@ -47,8 +47,8 @@ const buildPowersheet = () => {
   const formulaBar = new FormulaBar()
   const exporter = new Exporter([
     {
-      implementedFunctions: ttFinancialImplementedFunctions,
-      aliases: ttFinancialAliases
+      implementedFunctions,
+      aliases
     }
   ])
   const bottomBar = new BottomBar()
@@ -89,9 +89,9 @@ const FinancialSpreadsheet = ({
   const name = sheetData?.name
 
   useEffect(() => {
-    const FinancialPlugin = getTTFinancialPlugin(financialData)
+    const FinancialPlugin = getPlugin(financialData)
 
-    HyperFormula.registerFunctionPlugin(FinancialPlugin, finTranslations)
+    HyperFormula.registerFunctionPlugin(FinancialPlugin, translations)
 
     if (financialData) {
       spreadsheet?.render(true)

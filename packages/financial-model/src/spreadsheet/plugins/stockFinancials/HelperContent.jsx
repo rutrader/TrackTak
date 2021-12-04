@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { Box } from '@mui/material'
 import { functionHelperPrefix } from '@tracktak/powersheet'
-import finFunctionHelperData from '../../financialData/finFunctionHelperData'
+import functionHelperData from './functionHelperData'
 import { SearchTicker } from '@tracktak/common'
 
 const MainHeader = props => (
@@ -20,16 +20,26 @@ const Paragraph = props => (
   <p className={`${functionHelperPrefix}-paragraph`} {...props} />
 )
 
-const TTFinancialHelperContent = setTicker => {
+const HelperContent = setTicker => {
   return (
     <Box>
-      <MainHeader>{finFunctionHelperData.header}</MainHeader>
-      <Paragraph>{finFunctionHelperData.headerDescription}</Paragraph>
+      <MainHeader>{functionHelperData.header}</MainHeader>
+      <Paragraph>{functionHelperData.headerDescription}</Paragraph>
+      <Header>Aliases</Header>
+      <List>
+        {functionHelperData.aliases.map(alias => {
+          return (
+            <li key={alias}>
+              <p>{alias}</p>
+            </li>
+          )
+        })}
+      </List>
       <Header>Global Ticker</Header>
-      <Paragraph>{finFunctionHelperData.globalContext}</Paragraph>
+      <Paragraph>{functionHelperData.globalContext}</Paragraph>
       <SearchTicker setTicker={setTicker} />
       <Header>Samples Usage</Header>
-      {finFunctionHelperData.exampleUsages.map(syntax => {
+      {functionHelperData.exampleUsages.map(syntax => {
         return (
           <p key={syntax}>
             <Code>{syntax}</Code>
@@ -38,14 +48,14 @@ const TTFinancialHelperContent = setTicker => {
       })}
       <Header>Syntax</Header>
       <p>
-        <Code>{finFunctionHelperData.syntax}</Code>
+        <Code>{functionHelperData.syntax}</Code>
       </p>
       <Paragraph>
-        <Code>{finFunctionHelperData.optionalElement.syntaxName}</Code>&nbsp;-{' '}
-        {finFunctionHelperData.optionalElement.description}
+        <Code>{functionHelperData.optionalElement.syntaxName}</Code>&nbsp;-{' '}
+        {functionHelperData.optionalElement.description}
       </Paragraph>
       <List>
-        {finFunctionHelperData.syntaxElements.map(
+        {functionHelperData.syntaxElements.map(
           ({ syntaxName, description }) => {
             return (
               <li key={syntaxName}>
@@ -58,7 +68,7 @@ const TTFinancialHelperContent = setTicker => {
         )}
       </List>
       <Header>Attributes</Header>
-      {finFunctionHelperData.attributes.map(({ header, attributeNames }) => {
+      {functionHelperData.attributes.map(({ header, attributeNames }) => {
         return (
           <Fragment key={header}>
             <h5>{header}</h5>
@@ -80,4 +90,4 @@ const TTFinancialHelperContent = setTicker => {
   )
 }
 
-export default TTFinancialHelperContent
+export default HelperContent

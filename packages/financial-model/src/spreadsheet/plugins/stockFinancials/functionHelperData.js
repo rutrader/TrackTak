@@ -3,6 +3,7 @@ import {
   cashFlowStatement,
   incomeStatement
 } from './financialStatements'
+import { aliases } from './getPlugin'
 
 const getMappedArrayAttributes = financialSecurityAttribute => {
   return financialSecurityAttribute.map(attribute => {
@@ -18,41 +19,6 @@ const getMappedFilteredArrayAttributes = financialSecurityAttribute => {
   return getMappedArrayAttributes(filteredAttributes)
 }
 
-const riskPremiumsAndBetas = [
-  'unleveredBeta',
-  'equityLeveredBeta',
-  'riskFreeRate',
-  'equityRiskPremium',
-  'adjDefaultSpread',
-  'matureMarketEquityRiskPremium'
-]
-
-const general = [
-  'description',
-  'currencyCode',
-  'code',
-  'exchange',
-  'name',
-  'price',
-  'sharesOutstanding',
-  'industryName'
-]
-
-const other = [
-  'bookValueOfEquity',
-  'bookValueOfDebt',
-  'investedCapital',
-  'salesToCapitalRatio',
-  'marginalTaxRate',
-  'standardDeviationInStockPrices',
-  'marketCapitalization',
-  'pastThreeYearsAverageEffectiveTaxRate',
-  'costOfCapital',
-  'afterTaxROIC',
-  'preTaxOperatingMarginUnadjusted',
-  'annualAverageCAGRLastFiveYears'
-]
-
 export const incomeStatementAttributes =
   getMappedFilteredArrayAttributes(incomeStatement)
 
@@ -62,31 +28,25 @@ export const balanceSheetAttributes =
 export const cashFlowStatementAttributes =
   getMappedFilteredArrayAttributes(cashFlowStatement)
 
-export const riskPremiumsAndBetasAttributes =
-  getMappedArrayAttributes(riskPremiumsAndBetas)
-
-export const generalAttributes = getMappedArrayAttributes(general)
-
-export const otherAttributes = getMappedArrayAttributes(other)
-
-const finFunctionHelperData = {
-  header: 'FINANCIAL - FIN (beta)',
+const functionHelperData = {
+  header: 'STOCK_FINANCIALS',
   headerDescription:
     'Fetches current or historical financial information for a public company.',
+  aliases: Object.keys(aliases),
   globalContext:
-    'If a global ticker is set here then every FIN function call will fetch data against this ticker unless overridden in the second parameter.',
+    'If a global ticker is set here then every S_FIN() function call will fetch data against this ticker unless overridden in the second parameter.',
   exampleUsages: [
-    '=FIN("revenue")',
-    '=FIN("revenue", "AMZN")',
-    '=FIN("revenue", "BP.LSE", "quarterly")',
-    '=FIN("revenue",,, "2010/01/01;2015/01/01")',
-    '=FIN("financialStatements",, "annual")'
+    '=S_FIN("revenue")',
+    '=S_FIN("revenue", "AMZN")',
+    '=S_FIN("revenue", "BP.LSE", "quarterly")',
+    '=S_FIN("revenue",,, "2010/01/01;2015/01/01")',
+    '=S_FIN("financialStatements",, "annual")'
   ],
-  syntax: '=FIN(attribute, [ticker], [type], [fiscalDate])',
+  syntax: '=S_FIN(attribute, [ticker], [type], [fiscalDate])',
   optionalElement: {
     syntaxName: '[]',
     description:
-      'Indicates an optional parameter. If a parameter is optional it can be skipped with a comma. Example: =FIN("revenue",, "annual")'
+      'Indicates an optional parameter. If a parameter is optional it can be skipped with a comma. Example: =S_FIN("revenue",, "annual")'
   },
   syntaxElements: [
     {
@@ -112,10 +72,6 @@ const finFunctionHelperData = {
   ],
   attributes: [
     {
-      header: 'General',
-      attributeNames: generalAttributes
-    },
-    {
       header: 'Income Statement',
       attributeNames: incomeStatementAttributes
     },
@@ -126,16 +82,8 @@ const finFunctionHelperData = {
     {
       header: 'Cashflow Statement',
       attributeNames: cashFlowStatementAttributes
-    },
-    {
-      header: 'Risk Premiums and Betas',
-      attributeNames: riskPremiumsAndBetasAttributes
-    },
-    {
-      header: 'Other',
-      attributeNames: otherAttributes
     }
   ]
 }
 
-export default finFunctionHelperData
+export default functionHelperData

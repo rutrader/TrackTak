@@ -30,7 +30,6 @@ export const getFundamentals = async (ticker, query) => {
 }
 
 export const getEOD = async (ticker, query) => {
-  // TODO: Cache this and remove the cache every time it updates
   const { data } = await axios.get(`${eodEndpoint}/${ticker}`, {
     params: {
       api_token: eodAPIToken,

@@ -7,18 +7,24 @@ import {
 import { ArraySize } from '@tracktak/hyperformula/es/ArraySize'
 import { ErrorMessage } from '@tracktak/hyperformula/es/error-message'
 
-export const ttFinancialImplementedFunctions = {
-  FINANCIAL: {
-    method: 'financial',
-    arraySizeMethod: 'financialSize'
+export const implementedFunctions = {
+  STOCK_FINANCIALS: {
+    method: 'stockFinancials',
+    arraySizeMethod: 'stockFinancialsSize'
   }
 }
 
-export const ttFinancialAliases = {
-  FIN: 'FINANCIAL'
+export const aliases = {
+  S_FIN: 'STOCK_FINANCIALS'
 }
 
-export const getTTFinancialPlugin = financialData => {
+export const translations = {
+  enGB: {
+    STOCK_FINANCIALS: 'STOCK_FINANCIALS'
+  }
+}
+
+export const getPlugin = financialData => {
   const hasFinancialsLoaded = !!financialData
   // const {
   //   financialStatements = {},
@@ -107,10 +113,8 @@ export const getTTFinancialPlugin = financialData => {
   //     })
   // }
 
-  // Pre-fixed with TT due to there already being a FinancialPlugin
-  // in hyperformula
-  class TTFinancialPlugin extends FunctionPlugin {
-    financial({ args }) {
+  class StockFinancialsPlugin extends FunctionPlugin {
+    stockFinancials({ args }) {
       if (!args.length) {
         return new InvalidArgumentsError(1)
       }
@@ -147,7 +151,7 @@ export const getTTFinancialPlugin = financialData => {
       //   ])
       // }
     }
-    financialSize({ args }) {
+    stockFinancialsSize({ args }) {
       if (!hasFinancialsLoaded) {
         return ArraySize.scalar()
       }
@@ -176,14 +180,8 @@ export const getTTFinancialPlugin = financialData => {
     }
   }
 
-  TTFinancialPlugin.implementedFunctions = ttFinancialImplementedFunctions
-  TTFinancialPlugin.aliases = ttFinancialAliases
+  StockFinancialsPlugin.implementedFunctions = implementedFunctions
+  StockFinancialsPlugin.aliases = aliases
 
-  return TTFinancialPlugin
-}
-
-export const finTranslations = {
-  enGB: {
-    FIN: 'FIN'
-  }
+  return StockFinancialsPlugin
 }
