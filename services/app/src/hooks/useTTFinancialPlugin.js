@@ -1,11 +1,8 @@
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { api, useAuth } from '@tracktak/common'
-import { convertStockAPIData, thunks } from '@tracktak/financial-model'
 
 export const useTTFinancialPlugin = spreadsheet => {
   const [financialData, setFinancialData] = useState()
-  const dispatch = useDispatch()
   const { getAccessToken } = useAuth()
 
   useEffect(() => {
@@ -27,45 +24,15 @@ export const useTTFinancialPlugin = spreadsheet => {
       fetchData(fetchFinancialData)
     } else if (ticker) {
       const fetchCreateNewFinancials = async () => {
-        const { payload: fundamentals } = await dispatch(
-          thunks.getFundamentalsThunk({
-            ticker
-          })
-        )
-
         const values = await Promise.all([
-          dispatch(
-            thunks.getExchangeRatesThunk({
-              currencyCode: fundamentals.general.currencyCode,
-              incomeStatement: fundamentals.incomeStatement,
-              balanceSheet: fundamentals.balanceSheet
-            })
-          ),
-          dispatch(
-            thunks.getLastPriceCloseThunk({
-              ticker
-            })
-          ),
-
-          dispatch(
-            thunks.getTenYearCountryBondLastCloseThunk({
-              countryISO: fundamentals.general.countryISO
-            })
-          ),
+          api.getFundamentals(ticker),
           getAccessToken()
         ])
-
-        const financialData = convertStockAPIData(
-          fundamentals,
-          values[0].payload,
-          values[1].payload,
-          values[2].payload
-        )
-
-        const token = values[3]
+        const fundamentals = values[0].data.value
+        const token = values[1]
 
         return await api.createFinancialData(
-          financialData,
+          fundamentals,
           token?.jwtToken,
           spreadsheet._id
         )
@@ -73,7 +40,7 @@ export const useTTFinancialPlugin = spreadsheet => {
 
       fetchData(fetchCreateNewFinancials)
     }
-  }, [dispatch, getAccessToken, spreadsheet])
+  }, [getAccessToken, spreadsheet])
 
   return financialData
 }

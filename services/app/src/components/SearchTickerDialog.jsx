@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Dialog, DialogContent, DialogTitle } from '@mui/material'
 import dayjs from 'dayjs'
 import { api, snackbarActions, useAuth, SearchTicker } from '@tracktak/common'

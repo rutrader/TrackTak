@@ -27,8 +27,8 @@ export const getEOD = async (ticker, params) => {
   })
 }
 
-export const getCountryBond = async (code, params) => {
-  return axios.get(`/api/v1/securities/bonds/country/${code}`, {
+export const getGovernmentBond = async (code, params) => {
+  return axios.get(`/api/v1/securities/bonds/government/${code}`, {
     params
   })
 }
