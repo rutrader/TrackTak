@@ -32,7 +32,7 @@ export const implementedFunctions = {
         argumentType: ArgumentTypes.STRING,
         optionalArg: true
       },
-      { argumentType: ArgumentTypes.STRING, defaultValue: 'ttm' },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true },
       { argumentType: ArgumentTypes.STRING, optionalArg: true }
     ]
   }
@@ -147,7 +147,9 @@ export const getPlugin = financialData => {
         args,
         state,
         metadata,
-        (attribute, ticker, type, fiscalDate) => {
+        (attribute, ticker, defaultType, fiscalDate) => {
+          // defaultType can be an empty string
+          const type = defaultType || 'ttm'
           const isAttributeValid = !!allAttributes.find(x => x === attribute)
           const isTickerValid = ticker ? !!ticker.match(tickerRegex) : true
           const isTypeValid =
