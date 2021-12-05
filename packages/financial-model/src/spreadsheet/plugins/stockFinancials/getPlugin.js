@@ -1,31 +1,56 @@
-import {
-  CellError,
-  FunctionPlugin,
-  ErrorType,
-  InvalidArgumentsError
-} from '@tracktak/hyperformula'
+import { CellError, FunctionPlugin, ErrorType } from '@tracktak/hyperformula'
 import { ArraySize } from '@tracktak/hyperformula/es/ArraySize'
 import { ErrorMessage } from '@tracktak/hyperformula/es/error-message'
+import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
+import { isNil } from 'lodash'
+import stockExchanges from './stockExchanges'
+import {
+  attributesCellError,
+  fiscalDateCellError,
+  tickerCellError,
+  typeCellError
+} from './cellErrors'
+import { allAttributes } from './attributes'
+
+const exchangesString = stockExchanges.join('|')
+const tickerRegex = new RegExp(`^[0-9A-Za-z-]+\\.?(${exchangesString})?$`)
+
+const dateFormatString = '([0-9]{4}/[0-9]{2}/[0-9]{2})'
+const fiscalDateRegex = new RegExp(
+  `(^(>|<)${dateFormatString}$)|(^${dateFormatString};${dateFormatString}$)`
+)
 
 export const implementedFunctions = {
-  STOCK_FINANCIALS: {
+  'STOCK.FINANCIALS': {
     method: 'stockFinancials',
-    arraySizeMethod: 'stockFinancialsSize'
+    arraySizeMethod: 'stockFinancialsSize',
+    parameters: [
+      {
+        argumentType: ArgumentTypes.STRING
+      },
+      {
+        argumentType: ArgumentTypes.STRING,
+        optionalArg: true
+      },
+      { argumentType: ArgumentTypes.STRING, defaultValue: 'ttm' },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true }
+    ]
   }
 }
 
 export const aliases = {
-  S_FIN: 'STOCK_FINANCIALS'
+  'S.FIN': 'STOCK.FINANCIALS'
 }
 
 export const translations = {
   enGB: {
-    S_FIN: 'STOCK_FINANCIALS'
+    'S.FIN': 'STOCK.FINANCIALS'
   }
 }
 
 export const getPlugin = financialData => {
-  const hasFinancialsLoaded = !!financialData
+  const { financials = {} } = financialData ?? {}
+  const { balanceSheet, incomeStatement, cashFlowStatement } = financials
   // const {
   //   financialStatements = {},
   //   currentEquityRiskPremium,
@@ -80,19 +105,19 @@ export const getPlugin = financialData => {
   //   }
   // }
 
-  // const getTypeOfStatementToUse = attribute => {
-  //   if (!isNil(incomeStatements.ttm[attribute])) {
-  //     return 'incomeStatements'
-  //   }
+  const getTypeOfStatementToUse = attribute => {
+    if (!isNil(incomeStatement.ttm[attribute])) {
+      return 'incomeStatement'
+    }
 
-  //   if (!isNil(balanceSheets.ttm[attribute])) {
-  //     return 'balanceSheets'
-  //   }
+    if (!isNil(balanceSheet.ttm[attribute])) {
+      return 'balanceSheet'
+    }
 
-  //   if (!isNil(cashFlowStatements.ttm[attribute])) {
-  //     return 'cashFlowStatements'
-  //   }
-  // }
+    if (!isNil(cashFlowStatement.ttm[attribute])) {
+      return 'cashFlowStatement'
+    }
+  }
 
   // const getYearlyValues = (attribute, statementType, startDate, endDate) => {
   //   const startDateDayjs = dayjs(startDate)
@@ -114,16 +139,58 @@ export const getPlugin = financialData => {
   // }
 
   class StockFinancialsPlugin extends FunctionPlugin {
-    stockFinancials({ args }) {
-      if (!args.length) {
-        return new InvalidArgumentsError(1)
-      }
-      if (!hasFinancialsLoaded) {
-        return new CellError(ErrorType.LOADING, ErrorMessage.FunctionLoading)
-      }
-      const f = financialData
+    stockFinancials(ast, state) {
+      const args = ast.args
+      const metadata = this.metadata('STOCK.FINANCIALS')
 
-      return new CellError(ErrorType.LOADING, ErrorMessage.FunctionLoading)
+      return this.runFunction(
+        args,
+        state,
+        metadata,
+        (attribute, ticker, type, fiscalDate) => {
+          const isAttributeValid = !!allAttributes.find(x => x === attribute)
+          const isTickerValid = ticker ? !!ticker.match(tickerRegex) : true
+          const isTypeValid =
+            type === 'ttm' || type === 'quarterly' || type === 'annual'
+          const isFiscalDateValid = fiscalDate
+            ? !!fiscalDate.match(fiscalDateRegex)
+            : true
+
+          if (!isAttributeValid) {
+            return attributesCellError
+          }
+
+          if (!isTickerValid) {
+            return tickerCellError
+          }
+
+          if (!isTypeValid) {
+            return typeCellError
+          }
+
+          if (!isFiscalDateValid) {
+            return fiscalDateCellError
+          }
+
+          if (isNil(ticker)) {
+            if (!financialData) {
+              return new CellError(
+                ErrorType.LOADING,
+                ErrorMessage.FunctionLoading
+              )
+            }
+            const statementKey = getTypeOfStatementToUse(attribute)
+
+            if (args.length === 1) {
+              return financials[statementKey].ttm[attribute]
+            }
+          } else {
+            return undefined
+          }
+
+          return undefined
+        }
+      )
       // const attribute = args[0].value
       // // TODO: Add proper error checking here later
       // if (args.length === 1) {
@@ -154,7 +221,7 @@ export const getPlugin = financialData => {
       // }
     }
     stockFinancialsSize({ args }) {
-      if (!hasFinancialsLoaded) {
+      if (!financialData) {
         return ArraySize.scalar()
       }
 

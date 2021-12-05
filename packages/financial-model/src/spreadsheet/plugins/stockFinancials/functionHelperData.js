@@ -1,32 +1,9 @@
 import {
-  balanceSheet,
-  cashFlowStatement,
-  incomeStatement
-} from './financialStatements'
+  balanceSheetAttributes,
+  cashFlowStatementAttributes,
+  incomeStatementAttributes
+} from './attributes'
 import { aliases } from './getPlugin'
-
-const getMappedArrayAttributes = financialSecurityAttribute => {
-  return financialSecurityAttribute.map(attribute => {
-    return attribute
-  })
-}
-
-const getMappedFilteredArrayAttributes = financialSecurityAttribute => {
-  const filteredAttributes = financialSecurityAttribute.filter(
-    element => element
-  )
-
-  return getMappedArrayAttributes(filteredAttributes)
-}
-
-export const incomeStatementAttributes =
-  getMappedFilteredArrayAttributes(incomeStatement)
-
-export const balanceSheetAttributes =
-  getMappedFilteredArrayAttributes(balanceSheet)
-
-export const cashFlowStatementAttributes =
-  getMappedFilteredArrayAttributes(cashFlowStatement)
 
 const functionHelperData = {
   header: 'STOCK_FINANCIALS',
@@ -52,22 +29,22 @@ const functionHelperData = {
     {
       syntaxName: 'attribute',
       description:
-        'Required argument. Defaults to returning the trailing twelve months data if a [type] parameter is not given. See below for the list of the attributes that can be given here.'
+        "Required argument. See the 'attributes' section below for the list of parameters that can be given here."
     },
     {
       syntaxName: '[ticker]',
       description:
-        'Example: "AAPL" or "BP.LSE". When supplied this will override the global ticker set above. For non-us companies you must supply the exchange as well.'
+        'Example: "AAPL", "AAPL.US" or "BP.LSE". When supplied this will override the global ticker set above. For non-us companies you must supply the exchange as well. See the \'exchanges\' section below for the list of valid exchanges that can be given here.'
     },
     {
       syntaxName: '[type]',
       description:
-        'Accepts either "quarterly", "annual". Non-us stocks do not support "quarterly".'
+        'Accepts either "ttm", "quarterly" or "annual". Defaults to ttm (trailing twelve months) if the [fiscalDate] parameter is not given, else it will default to "annual". Non-us stocks do not support "quarterly".'
     },
     {
       syntaxName: '[fiscalDate]',
       description:
-        'Example: "2010/01/01;2015/01/01" (between), ">2010/01/01" (more than) "<2020/01/01" (less than).'
+        'Example: ">2010/01/01" (more than), "<2020/01/01" (less than) or "2010/01/01;2015/01/01" (between).'
     }
   ],
   attributes: [
