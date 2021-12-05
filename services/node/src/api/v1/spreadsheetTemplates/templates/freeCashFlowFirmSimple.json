@@ -8448,7 +8448,7 @@
   },
   "cells": {
     "1_0_0": {
-      "value": "=S_FIN(\"financialStatements\")",
+      "value": "=S.FIN(\"financialStatements\")",
       "id": "1_0_0",
       "bold": true,
       "textWrap": "wrap"
@@ -19995,7 +19995,7 @@
       "id": "2_3_0"
     },
     "2_3_1": {
-      "value": "=S_FIN(\"price\")",
+      "value": "=S.FIN(\"price\")",
       "id": "2_3_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -20005,7 +20005,7 @@
       "id": "2_4_0"
     },
     "2_4_1": {
-      "value": "=S_FIN(\"unleveredBeta\")",
+      "value": "=S.FIN(\"unleveredBeta\")",
       "id": "2_4_1",
       "comment": "Is a measure of the market risk of the company relative to it's peers in the same industry without the impact of debt. This determines how much risk comes with owning a stock.",
       "textFormatPattern": "#,##0.00"
@@ -20015,7 +20015,7 @@
       "id": "2_5_0"
     },
     "2_5_1": {
-      "value": "=S_FIN(\"riskFreeRate\")",
+      "value": "=S.FIN(\"riskFreeRate\")",
       "id": "2_5_1",
       "comment": "Refers to the theoretical rate of return of an investment with zero risk.",
       "textFormatPattern": "0.00%"
@@ -20025,7 +20025,7 @@
       "id": "2_6_0"
     },
     "2_6_1": {
-      "value": "=S_FIN(\"equityRiskPremium\")",
+      "value": "=S.FIN(\"equityRiskPremium\")",
       "id": "2_6_1",
       "textFormatPattern": "0.00%"
     },
@@ -20113,7 +20113,7 @@
       "id": "2_13_0"
     },
     "2_13_1": {
-      "value": "=IF('DCF Valuation'!$C$8=\"\", S_FIN(\"estimatedCostOfDebt\"), 'DCF Valuation'!$C$8)",
+      "value": "=IF('DCF Valuation'!$C$8=\"\", S.FIN(\"estimatedCostOfDebt\"), 'DCF Valuation'!$C$8)",
       "id": "2_13_1",
       "comment": "By default this is the synthetic credit rating pre-tax cost of debt that we have automatically calculated for you which is fine for most cases. If you manually input a cost of debt in the Normal Debt input field then it will overwrite this synthetic cost of debt.",
       "textFormatPattern": "0.00%"
@@ -20133,7 +20133,7 @@
       "id": "2_14_0"
     },
     "2_14_1": {
-      "value": "=S_FIN(\"marginalTaxRate\")",
+      "value": "=S.FIN(\"marginalTaxRate\")",
       "id": "2_14_1",
       "textFormatPattern": "0.00%"
     },
@@ -20305,7 +20305,7 @@
       "id": "3_4_0"
     },
     "3_4_1": {
-      "value": "=S_FIN(\"standardDeviationInStockPrices\")",
+      "value": "=S.FIN(\"standardDeviationInStockPrices\")",
       "id": "3_4_1",
       "textFormatPattern": "0.00%"
     },
@@ -20314,7 +20314,7 @@
       "id": "3_5_0"
     },
     "3_5_1": {
-      "value": "=S_FIN(\"riskFreeRate\")",
+      "value": "=S.FIN(\"riskFreeRate\")",
       "id": "3_5_1",
       "textFormatPattern": "0.00%"
     },
@@ -20332,7 +20332,7 @@
       "id": "3_7_0"
     },
     "3_7_1": {
-      "value": "=S_FIN(\"price\")",
+      "value": "=S.FIN(\"price\")",
       "id": "3_7_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -20480,7 +20480,7 @@
       "id": "4_5_0"
     },
     "4_5_1": {
-      "value": "=S_FIN(\"adjDefaultSpread\")",
+      "value": "=S.FIN(\"adjDefaultSpread\")",
       "id": "4_5_1",
       "comment": "The chance of a country defaulting on it's debts within a year.",
       "textFormatPattern": "0.00%"
@@ -20490,7 +20490,7 @@
       "id": "4_6_0"
     },
     "4_6_1": {
-      "value": "=S_FIN(\"riskFreeRate\")+B5+B6",
+      "value": "=S.FIN(\"riskFreeRate\")+B5+B6",
       "id": "4_6_1",
       "comment": "The Synthetic Credit Rating pre-tax cost of debt that we have automatically calculated for you. This is used to work out the cost of capital.",
       "textFormatPattern": "0.00%"
@@ -41943,7 +41943,7 @@
       "id": "7_0_0"
     },
     "7_0_1": {
-      "value": "=S_FIN(\"revenue\")/E1",
+      "value": "=S.FIN(\"revenue\")/E1",
       "id": "7_0_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -41962,7 +41962,7 @@
       "id": "7_1_0"
     },
     "7_1_1": {
-      "value": "=S_FIN(\"operatingIncome\")/E1",
+      "value": "=S.FIN(\"operatingIncome\")/E1",
       "id": "7_1_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -41972,7 +41972,7 @@
       "id": "7_2_0"
     },
     "7_2_1": {
-      "value": "=S_FIN(\"bookValueOfEquity\")/E1",
+      "value": "=S.FIN(\"bookValueOfEquity\")/E1",
       "id": "7_2_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -41982,7 +41982,7 @@
       "id": "7_3_0"
     },
     "7_3_1": {
-      "value": "=S_FIN(\"bookValueOfDebt\")/E1",
+      "value": "=S.FIN(\"bookValueOfDebt\")/E1",
       "id": "7_3_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -41992,7 +41992,7 @@
       "id": "7_4_0"
     },
     "7_4_1": {
-      "value": "=S_FIN(\"investedCapital\")/E1",
+      "value": "=S.FIN(\"investedCapital\")/E1",
       "id": "7_4_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -42002,7 +42002,7 @@
       "id": "7_5_0"
     },
     "7_5_1": {
-      "value": "=S_FIN(\"sharesOutstanding\")/E1",
+      "value": "=S.FIN(\"sharesOutstanding\")/E1",
       "id": "7_5_1",
       "textFormatPattern": "#,##0.00"
     },
@@ -42011,7 +42011,7 @@
       "id": "7_6_0"
     },
     "7_6_1": {
-      "value": "=S_FIN(\"minorityInterest\")/E1",
+      "value": "=S.FIN(\"minorityInterest\")/E1",
       "id": "7_6_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -42021,7 +42021,7 @@
       "id": "7_7_0"
     },
     "7_7_1": {
-      "value": "=S_FIN(\"cashAndShortTermInvestments\")/E1",
+      "value": "=S.FIN(\"cashAndShortTermInvestments\")/E1",
       "id": "7_7_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -42031,7 +42031,7 @@
       "id": "7_8_0"
     },
     "7_8_1": {
-      "value": "=S_FIN(\"interestExpense\")/E1",
+      "value": "=S.FIN(\"interestExpense\")/E1",
       "id": "7_8_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -42041,7 +42041,7 @@
       "id": "7_9_0"
     },
     "7_9_1": {
-      "value": "=S_FIN(\"capitalLeaseObligations\")/E1",
+      "value": "=S.FIN(\"capitalLeaseObligations\")/E1",
       "id": "7_9_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -42051,7 +42051,7 @@
       "id": "7_10_0"
     },
     "7_10_1": {
-      "value": "=S_FIN(\"marketCapitalization\")/E1",
+      "value": "=S.FIN(\"marketCapitalization\")/E1",
       "id": "7_10_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -42107,7 +42107,7 @@
       "backgroundColor": "#8ff1d2",
       "id": "0_3_4",
       "comment": "The efficiency of how much the company has to reinvest the business to grow. The formula is Revenue / Invested Capital. The higher the number the more efficient the company is. The default value is set to the industry average as this is usually a good starting point. You should also look at the previous years sales to capital ratio's in the above table to fine tune this value. In the DCF output we compute how much the company is going to reinvest to keep the business growing in future years. The higher you set this number, the more efficiently the business is growing and the higher the value of your growth.",
-      "value": "=S_FIN(\"sales/Capital\")",
+      "value": "=S.FIN(\"sales/Capital\")",
       "textFormatPattern": "#,##0.00"
     },
     "0_5_0": {
@@ -42368,14 +42368,14 @@
       "id": "0_10_23"
     },
     "0_11_0": {
-      "value": "=S_FIN(\"name\")",
+      "value": "=S.FIN(\"name\")",
       "id": "0_11_0",
       "fontSize": 16,
       "bold": true,
       "horizontalTextAlign": "center"
     },
     "0_12_0": {
-      "value": "=S_FIN(\"code\")&\".\"&S_FIN(\"exchange\")",
+      "value": "=S.FIN(\"code\")&\".\"&S.FIN(\"exchange\")",
       "id": "0_12_0",
       "horizontalTextAlign": "center"
     },
@@ -42386,12 +42386,12 @@
       "bold": true
     },
     "0_13_0": {
-      "value": "=S_FIN(\"currencySymbol\")&S_FIN(\"price\")&\" \"&S_FIN(\"currencyCode\")",
+      "value": "=S.FIN(\"currencySymbol\")&S.FIN(\"price\")&\" \"&S.FIN(\"currencyCode\")",
       "id": "0_13_0",
       "horizontalTextAlign": "center"
     },
     "0_13_3": {
-      "value": "=S_FIN(\"description\")",
+      "value": "=S.FIN(\"description\")",
       "id": "0_13_3",
       "textWrap": "wrap"
     },
@@ -42417,7 +42417,7 @@
       "id": "0_17_0"
     },
     "0_17_1": {
-      "value": "=S_FIN(\"industryName\")",
+      "value": "=S.FIN(\"industryName\")",
       "id": "0_17_1"
     },
     "0_18_0": {
@@ -42425,7 +42425,7 @@
       "id": "0_18_0"
     },
     "0_18_1": {
-      "value": "=S_FIN(\"annualAverageCAGRLastFiveYears\")",
+      "value": "=S.FIN(\"annualAverageCAGRLastFiveYears\")",
       "id": "0_18_1",
       "textFormatPattern": "0.00%"
     },
@@ -42440,7 +42440,7 @@
       "id": "0_19_0"
     },
     "0_19_1": {
-      "value": "=S_FIN(\"preTaxOperatingMarginUnadjusted\")",
+      "value": "=S.FIN(\"preTaxOperatingMarginUnadjusted\")",
       "id": "0_19_1",
       "textFormatPattern": "0.00%"
     },
@@ -42450,7 +42450,7 @@
       "bold": true
     },
     "0_19_6": {
-      "value": "=S_FIN(\"date\",,\"01/01/2000\")",
+      "value": "=S.FIN(\"date\",,\"01/01/2000\")",
       "id": "0_19_6",
       "bold": true
     },
@@ -42539,7 +42539,7 @@
       "id": "0_20_0"
     },
     "0_20_1": {
-      "value": "=S_FIN(\"afterTaxROIC\")",
+      "value": "=S.FIN(\"afterTaxROIC\")",
       "id": "0_20_1",
       "textFormatPattern": "0.00%"
     },
@@ -42549,13 +42549,13 @@
       "bold": true
     },
     "0_20_5": {
-      "value": "=S_FIN(\"revenue\")",
+      "value": "=S.FIN(\"revenue\")",
       "id": "0_20_5",
       "textFormatPattern": "#,###.##,,",
       "dynamicFormat": "currency"
     },
     "0_20_6": {
-      "value": "=S_FIN(\"revenue\",,\"01/01/2000\")",
+      "value": "=S.FIN(\"revenue\",,\"01/01/2000\")",
       "id": "0_20_6",
       "textFormatPattern": "#,###.##,,",
       "dynamicFormat": "currency"
@@ -42665,7 +42665,7 @@
       "id": "0_21_0"
     },
     "0_21_1": {
-      "value": "=S_FIN(\"sales/Capital\")",
+      "value": "=S.FIN(\"sales/Capital\")",
       "id": "0_21_1",
       "textFormatPattern": "#,##0.00"
     },
@@ -42675,13 +42675,13 @@
       "bold": true
     },
     "0_21_5": {
-      "value": "=S_FIN(\"operatingIncome\")",
+      "value": "=S.FIN(\"operatingIncome\")",
       "id": "0_21_5",
       "textFormatPattern": "#,###.##,,",
       "dynamicFormat": "currency"
     },
     "0_21_6": {
-      "value": "=S_FIN(\"operatingIncome\",,\"01/01/2000\")",
+      "value": "=S.FIN(\"operatingIncome\",,\"01/01/2000\")",
       "id": "0_21_6",
       "textFormatPattern": "#,###.##,,",
       "dynamicFormat": "currency"
@@ -42791,7 +42791,7 @@
       "id": "0_22_0"
     },
     "0_22_1": {
-      "value": "=S_FIN(\"costOfCapital\")",
+      "value": "=S.FIN(\"costOfCapital\")",
       "id": "0_22_1",
       "textFormatPattern": "0.00%"
     },
@@ -42801,12 +42801,12 @@
       "bold": true
     },
     "0_22_5": {
-      "value": "=S_FIN(\"operatingMargin\")",
+      "value": "=S.FIN(\"operatingMargin\")",
       "id": "0_22_5",
       "textFormatPattern": "0.00%"
     },
     "0_22_6": {
-      "value": "=S_FIN(\"operatingMargin\",,\"01/01/2000\")",
+      "value": "=S.FIN(\"operatingMargin\",,\"01/01/2000\")",
       "id": "0_22_6",
       "textFormatPattern": "0.00%"
     },
@@ -42895,7 +42895,7 @@
       "id": "0_23_0"
     },
     "0_23_1": {
-      "value": "=S_FIN(\"unleveredBeta\")",
+      "value": "=S.FIN(\"unleveredBeta\")",
       "id": "0_23_1",
       "textFormatPattern": "#,##0.00"
     },
@@ -42906,13 +42906,13 @@
       "bold": true
     },
     "0_23_5": {
-      "value": "=S_FIN(\"bookValueOfEquity\")",
+      "value": "=S.FIN(\"bookValueOfEquity\")",
       "id": "0_23_5",
       "textFormatPattern": "#,###.##,,",
       "dynamicFormat": "currency"
     },
     "0_23_6": {
-      "value": "=S_FIN(\"bookValueOfEquity\",,\"01/01/2000\")",
+      "value": "=S.FIN(\"bookValueOfEquity\",,\"01/01/2000\")",
       "id": "0_23_6",
       "textFormatPattern": "#,###.##,,",
       "dynamicFormat": "currency"
@@ -43022,7 +43022,7 @@
       "id": "0_24_0"
     },
     "0_24_1": {
-      "value": "=S_FIN(\"equityLeveredBeta\")",
+      "value": "=S.FIN(\"equityLeveredBeta\")",
       "id": "0_24_1",
       "textFormatPattern": "#,##0.00"
     },
@@ -43033,13 +43033,13 @@
       "bold": true
     },
     "0_24_5": {
-      "value": "=S_FIN(\"bookValueOfDebt\")",
+      "value": "=S.FIN(\"bookValueOfDebt\")",
       "id": "0_24_5",
       "textFormatPattern": "#,###.##,,",
       "dynamicFormat": "currency"
     },
     "0_24_6": {
-      "value": "=S_FIN(\"bookValueOfDebt\",,\"01/01/2000\")",
+      "value": "=S.FIN(\"bookValueOfDebt\",,\"01/01/2000\")",
       "id": "0_24_6",
       "textFormatPattern": "#,###.##,,",
       "dynamicFormat": "currency"
@@ -43151,13 +43151,13 @@
       "bold": true
     },
     "0_25_5": {
-      "value": "=S_FIN(\"investedCapital\")",
+      "value": "=S.FIN(\"investedCapital\")",
       "id": "0_25_5",
       "textFormatPattern": "#,###.##,,",
       "dynamicFormat": "currency"
     },
     "0_25_6": {
-      "value": "=S_FIN(\"investedCapital\",,\"01/01/2000\")",
+      "value": "=S.FIN(\"investedCapital\",,\"01/01/2000\")",
       "id": "0_25_6",
       "textFormatPattern": "#,###.##,,",
       "dynamicFormat": "currency"
@@ -43268,12 +43268,12 @@
       "bold": true
     },
     "0_26_5": {
-      "value": "=S_FIN(\"salesToCapitalRatio\")",
+      "value": "=S.FIN(\"salesToCapitalRatio\")",
       "id": "0_26_5",
       "textFormatPattern": "#,##0.00"
     },
     "0_26_6": {
-      "value": "=S_FIN(\"salesToCapitalRatio\",,\"01/01/2000\")",
+      "value": "=S.FIN(\"salesToCapitalRatio\",,\"01/01/2000\")",
       "id": "0_26_6",
       "textFormatPattern": "#,##0.00"
     },
@@ -43475,37 +43475,37 @@
       "dynamicFormat": "currency"
     },
     "0_30_7": {
-      "value": "=G31*(1+$B$3 - (($B$3-S_FIN(\"riskFreeRate\")) / 5))",
+      "value": "=G31*(1+$B$3 - (($B$3-S.FIN(\"riskFreeRate\")) / 5))",
       "id": "0_30_7",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
     },
     "0_30_8": {
-      "value": "=H31*(1+$B$3 - (($B$3-S_FIN(\"riskFreeRate\")) / 5) * 2)",
+      "value": "=H31*(1+$B$3 - (($B$3-S.FIN(\"riskFreeRate\")) / 5) * 2)",
       "id": "0_30_8",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
     },
     "0_30_9": {
-      "value": "=I31*(1+$B$3 - (($B$3-S_FIN(\"riskFreeRate\")) / 5) * 3)",
+      "value": "=I31*(1+$B$3 - (($B$3-S.FIN(\"riskFreeRate\")) / 5) * 3)",
       "id": "0_30_9",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
     },
     "0_30_10": {
-      "value": "=J31*(1+$B$3 - (($B$3-S_FIN(\"riskFreeRate\")) / 5) * 4)",
+      "value": "=J31*(1+$B$3 - (($B$3-S.FIN(\"riskFreeRate\")) / 5) * 4)",
       "id": "0_30_10",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
     },
     "0_30_11": {
-      "value": "=K31*(1+$B$3 - (($B$3-S_FIN(\"riskFreeRate\")) / 5) * 5)",
+      "value": "=K31*(1+$B$3 - (($B$3-S.FIN(\"riskFreeRate\")) / 5) * 5)",
       "id": "0_30_11",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
     },
     "0_30_12": {
-      "value": "=L31*(1+S_FIN(\"riskFreeRate\"))",
+      "value": "=L31*(1+S.FIN(\"riskFreeRate\"))",
       "id": "0_30_12",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -43658,7 +43658,7 @@
       "bold": true
     },
     "0_33_1": {
-      "value": "=S_FIN(\"pastThreeYearsAverageEffectiveTaxRate\")",
+      "value": "=S.FIN(\"pastThreeYearsAverageEffectiveTaxRate\")",
       "id": "0_33_1",
       "textFormatPattern": "0.00%"
     },
@@ -43713,7 +43713,7 @@
       "textFormatPattern": "0.00%"
     },
     "0_33_12": {
-      "value": "=S_FIN(\"marginalTaxRate\")",
+      "value": "=S.FIN(\"marginalTaxRate\")",
       "id": "0_33_12",
       "textFormatPattern": "0.00%"
     },
@@ -43865,7 +43865,7 @@
       "dynamicFormat": "currency"
     },
     "0_35_12": {
-      "value": "=IF(S_FIN(\"riskFreeRate\") > 0, (S_FIN(\"riskFreeRate\") / M46) * M35, 0)",
+      "value": "=IF(S.FIN(\"riskFreeRate\") > 0, (S.FIN(\"riskFreeRate\") / M46) * M35, 0)",
       "id": "0_35_12",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -44087,7 +44087,7 @@
       "textFormatPattern": "0.00%"
     },
     "0_39_12": {
-      "value": "=S_FIN(\"matureMarketEquityRiskPremium\") + S_FIN(\"riskFreeRate\")",
+      "value": "=S.FIN(\"matureMarketEquityRiskPremium\") + S.FIN(\"riskFreeRate\")",
       "id": "0_39_12",
       "textFormatPattern": "0.00%"
     },
@@ -44468,7 +44468,7 @@
       "bold": true
     },
     "0_49_1": {
-      "value": "=B48/(B49-S_FIN(\"riskFreeRate\"))",
+      "value": "=B48/(B49-S.FIN(\"riskFreeRate\"))",
       "id": "0_49_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -44621,7 +44621,7 @@
       "bold": true
     },
     "0_63_1": {
-      "value": "=S_FIN(\"price\")",
+      "value": "=S.FIN(\"price\")",
       "id": "0_63_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"

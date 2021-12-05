@@ -139,7 +139,7 @@ const ProcessSection = () => {
       text: (
         <>
           No need to keep paying for third-party plugins in Excel. Simply type{' '}
-          <FunctionText>=STOCK_FINANCIALS([attribute])</FunctionText> directly
+          <FunctionText>=STOCK.FINANCIALS([attribute])</FunctionText> directly
           into your spreadsheet to fill in stock data automatically from 100's
           of possible attributes.
         </>

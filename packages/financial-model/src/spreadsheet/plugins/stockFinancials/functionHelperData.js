@@ -6,24 +6,24 @@ import {
 import { aliases } from './getPlugin'
 
 const functionHelperData = {
-  header: 'STOCK_FINANCIALS',
+  header: 'STOCK.FINANCIALS',
   headerDescription:
     'Fetches current or historical financial information for a public company.',
   aliases: Object.keys(aliases),
   globalContext:
-    'If a global ticker is set here then every S_FIN() function call will fetch data against this ticker unless overridden in the second parameter.',
+    'If a global ticker is set here then every S.FIN() function call will fetch data against this ticker unless overridden in the second parameter.',
   exampleUsages: [
-    '=S_FIN("revenue")',
-    '=S_FIN("revenue", "AMZN")',
-    '=S_FIN("revenue", "BP.LSE", "quarterly")',
-    '=S_FIN("revenue",,, "2010/01/01;2015/01/01")',
-    '=S_FIN("financialStatements",, "annual")'
+    '=S.FIN("revenue")',
+    '=S.FIN("revenue", "AMZN")',
+    '=S.FIN("revenue", "BP.LSE", "quarterly")',
+    '=S.FIN("revenue",,, "2010/01/01;2015/01/01")',
+    '=S.FIN("financialStatements",, "annual")'
   ],
-  syntax: '=S_FIN(attribute, [ticker], [type], [fiscalDate])',
+  syntax: '=S.FIN(attribute, [ticker], [type], [fiscalDate])',
   optionalElement: {
     syntaxName: '[]',
     description:
-      'Indicates an optional parameter. If a parameter is optional it can be skipped with a comma. Example: =S_FIN("revenue",, "annual")'
+      'Indicates an optional parameter. If a parameter is optional it can be skipped with a comma. Example: =S.FIN("revenue",, "annual")'
   },
   syntaxElements: [
     {
