@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom'
 const FinancialModel = () => {
   const params = useParams()
   const spreadsheet = useFetchSpreadsheet(params.sheetId)
-  const saveSpreadsheetData = useSaveSpreadsheetData(spreadsheet)
+  const saveSheetData = useSaveSpreadsheetData(spreadsheet)
   const financialData = useStockFinancialData(spreadsheet)
 
   return (
@@ -23,7 +23,7 @@ const FinancialModel = () => {
         </Helmet>
       )}
       <FinancialSpreadsheet
-        saveSpreadsheetData={saveSpreadsheetData}
+        saveSheetData={saveSheetData}
         sheetData={spreadsheet?.sheetData}
         financialData={financialData}
         sx={{

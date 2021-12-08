@@ -5,9 +5,15 @@ import isBetween from 'dayjs/plugin/isBetween'
 import convertSubCurrencyToCurrency from './shared/convertSubCurrencyToCurrency'
 import FinancialSpreadsheet from './spreadsheet/FinancialSpreadsheet'
 import templates from './spreadsheet/templates.json'
+import { fundamentalsFilter } from './spreadsheet/plugins/stockFinancials/getPlugin'
 
 dayjs.extend(minMax)
 dayjs.extend(advancedFormat)
 dayjs.extend(isBetween)
 
-export { convertSubCurrencyToCurrency, templates, FinancialSpreadsheet }
+export {
+  fundamentalsFilter,
+  convertSubCurrencyToCurrency,
+  templates,
+  FinancialSpreadsheet
+}

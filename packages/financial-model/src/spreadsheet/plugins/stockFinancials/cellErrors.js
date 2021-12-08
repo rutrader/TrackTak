@@ -15,7 +15,7 @@ const allAttributesString = allAttributes
 // generic error in HF.
 export const tickerCellError = new CellError(
   ErrorType.VALUE,
-  `ticker is not valid. Format must be {ticker} for US companies or {ticker.exchange} for non-us companies. The list of valid exchanges is: ${stockExchangesString}.`
+  `ticker is not valid. Format must be {SYMBOL} for US companies or {SYMBOL.EXCHANGE} for non-us companies. The list of valid exchanges is: ${stockExchangesString}.`
 )
 
 export const attributesCellError = new CellError(
@@ -23,12 +23,12 @@ export const attributesCellError = new CellError(
   `attribute is not valid. Must be one of these attributes: ${allAttributesString}.`
 )
 
-export const typeCellError = new CellError(
+export const granularityCellError = new CellError(
   ErrorType.VALUE,
-  `type is not valid. Must be one of these attributes: "ttm", "quarterly" or "annual".`
+  `granularity is not valid. Must be one of these attributes: "ttm", "quarterly" or "yearly".`
 )
 
-export const fiscalDateCellError = new CellError(
+export const fiscalDateRangeCellError = new CellError(
   ErrorType.VALUE,
-  `fiscalDate is not valid. Must be in this format: ">{YYYY}/{MM}/{DD}" (more than), "<{YYYY}/{MM}/{DD}" (less than) or "{YYYY}/{MM}/{DD};{YYYY}/{MM}/{DD}" (between).`
+  `fiscalDateRange is not valid. Must be in this format: ">{YYYY}/{MM}" (more than), "<{YYYY}/{MM}" (less than) or "{YYYY}/{MM};{YYYY}/{MM}" (between).`
 )

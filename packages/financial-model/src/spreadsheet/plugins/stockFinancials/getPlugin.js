@@ -1,4 +1,9 @@
-import { CellError, FunctionPlugin, ErrorType } from '@tracktak/hyperformula'
+import {
+  CellError,
+  FunctionPlugin,
+  ErrorType,
+  SimpleRangeValue
+} from '@tracktak/hyperformula'
 import { ArraySize } from '@tracktak/hyperformula/es/ArraySize'
 import { ErrorMessage } from '@tracktak/hyperformula/es/error-message'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
@@ -6,17 +11,19 @@ import { isNil } from 'lodash'
 import stockExchanges from './stockExchanges'
 import {
   attributesCellError,
-  fiscalDateCellError,
+  fiscalDateRangeCellError,
   tickerCellError,
-  typeCellError
+  granularityCellError
 } from './cellErrors'
 import { allAttributes } from './attributes'
+import { api } from '@tracktak/common'
+import dayjs from 'dayjs'
 
 const exchangesString = stockExchanges.join('|')
 const tickerRegex = new RegExp(`^[0-9A-Za-z-]+\\.?(${exchangesString})?$`)
 
-const dateFormatString = '([0-9]{4}/[0-9]{2}/[0-9]{2})'
-const fiscalDateRegex = new RegExp(
+const dateFormatString = '([0-9]{4}/[0-9]{2}(/[0-9]{2})?)'
+const fiscalDateRangeRegex = new RegExp(
   `(^(>|<)${dateFormatString}$)|(^${dateFormatString};${dateFormatString}$)`
 )
 
@@ -24,6 +31,7 @@ export const implementedFunctions = {
   'STOCK.FINANCIALS': {
     method: 'stockFinancials',
     arraySizeMethod: 'stockFinancialsSize',
+    isAsyncMethod: true,
     parameters: [
       {
         argumentType: ArgumentTypes.STRING
@@ -48,114 +56,51 @@ export const translations = {
   }
 }
 
+const getTypeOfStatementToUse = (financials, attribute) => {
+  if (!isNil(financials.incomeStatement.ttm[attribute])) {
+    return 'incomeStatement'
+  }
+
+  if (!isNil(financials.balanceSheet.ttm[attribute])) {
+    return 'balanceSheet'
+  }
+
+  if (!isNil(financials.cashFlowStatement.ttm[attribute])) {
+    return 'cashFlowStatement'
+  }
+}
+
+export const fundamentalsFilter =
+  'General::CountryISO,General::Code,General::Exchange,General::UpdatedAt,Financials::Balance_Sheet,Financials::Income_Statement,Financials::Cash_Flow'
+
 export const getPlugin = financialData => {
   const { financials = {} } = financialData ?? {}
   const { balanceSheet, incomeStatement, cashFlowStatement } = financials
-  // const {
-  //   financialStatements = {},
-  //   currentEquityRiskPremium,
-  //   currentIndustry,
-  //   general,
-  //   highlights,
-  //   ...data
-  // } = financialData ?? {}
-
-  // delete data.exchangeRates
-
-  // const {
-  //   incomeStatements = defaultStatement,
-  //   balanceSheets = defaultStatement,
-  //   cashFlowStatements = defaultStatement
-  // } = financialStatements
-
-  // const dates = getDatesFromStatements(incomeStatements)
-
-  // const statements = [
-  //   [null, ...dates],
-  //   ['Income Statement'],
-  //   ...getStatements(incomeStatements, incomeStatement),
-  //   [''],
-  //   ['Balance Sheet'],
-  //   ...getStatements(balanceSheets, balanceSheet),
-  //   [''],
-  //   ['Cash Flow Statement'],
-  //   ...getStatements(cashFlowStatements, cashFlowStatement)
-  // ]
-
-  // const ttmData = {
-  //   ...incomeStatements.ttm,
-  //   ...balanceSheets.ttm,
-  //   ...cashFlowStatements.ttm,
-  //   ...currentEquityRiskPremium,
-  //   ...currentIndustry,
-  //   ...general,
-  //   ...highlights,
-  //   ...data
-  // }
-
-  // const historicalDataArrays = {
-  //   incomeStatements: {
-  //     yearly: Object.values(incomeStatements.yearly ?? {})
-  //   },
-  //   balanceSheets: {
-  //     yearly: Object.values(balanceSheets.yearly ?? {})
-  //   },
-  //   cashFlowStatements: {
-  //     yearly: Object.values(cashFlowStatements.yearly ?? {})
-  //   }
-  // }
-
-  const getTypeOfStatementToUse = attribute => {
-    if (!isNil(incomeStatement.ttm[attribute])) {
-      return 'incomeStatement'
-    }
-
-    if (!isNil(balanceSheet.ttm[attribute])) {
-      return 'balanceSheet'
-    }
-
-    if (!isNil(cashFlowStatement.ttm[attribute])) {
-      return 'cashFlowStatement'
-    }
-  }
-
-  // const getYearlyValues = (attribute, statementType, startDate, endDate) => {
-  //   const startDateDayjs = dayjs(startDate)
-  //   const endDateDayjs = dayjs(endDate)
-
-  //   return historicalDataArrays[statementType].yearly
-  //     .filter(({ date }) => {
-  //       return dayjs(date).isBetween(startDateDayjs, endDateDayjs, 'day', '[]')
-  //     })
-  //     .map(datum => {
-  //       let value = datum[attribute]
-
-  //       if (attribute === 'date') {
-  //         value = dayjs(value).format(dateFormat)
-  //       }
-
-  //       return value
-  //     })
-  // }
 
   class StockFinancialsPlugin extends FunctionPlugin {
     stockFinancials(ast, state) {
-      const args = ast.args
       const metadata = this.metadata('STOCK.FINANCIALS')
 
-      return this.runFunction(
-        args,
+      return this.runAsyncFunction(
+        ast.args,
         state,
         metadata,
-        (attribute, ticker, defaultType, fiscalDate) => {
-          // defaultType can be an empty string
-          const type = defaultType || 'ttm'
+        async (...args) => {
+          const [attribute, ticker, defaultGranularity, fiscalDateRange] = args
+          const granularity =
+            !isNil(defaultGranularity) && defaultGranularity !== ''
+              ? defaultGranularity
+              : fiscalDateRange
+              ? 'yearly'
+              : 'ttm'
           const isAttributeValid = !!allAttributes.find(x => x === attribute)
           const isTickerValid = ticker ? !!ticker.match(tickerRegex) : true
-          const isTypeValid =
-            type === 'ttm' || type === 'quarterly' || type === 'annual'
-          const isFiscalDateValid = fiscalDate
-            ? !!fiscalDate.match(fiscalDateRegex)
+          const isGranularityValid =
+            granularity === 'ttm' ||
+            granularity === 'quarterly' ||
+            granularity === 'yearly'
+          const isFiscalDateRangeValid = fiscalDateRange
+            ? !!fiscalDateRange.match(fiscalDateRangeRegex)
             : true
 
           if (!isAttributeValid) {
@@ -166,12 +111,12 @@ export const getPlugin = financialData => {
             return tickerCellError
           }
 
-          if (!isTypeValid) {
-            return typeCellError
+          if (!isGranularityValid) {
+            return granularityCellError
           }
 
-          if (!isFiscalDateValid) {
-            return fiscalDateCellError
+          if (!isFiscalDateRangeValid) {
+            return fiscalDateRangeCellError
           }
 
           if (isNil(ticker)) {
@@ -181,73 +126,112 @@ export const getPlugin = financialData => {
                 ErrorMessage.FunctionLoading
               )
             }
-            const statementKey = getTypeOfStatementToUse(attribute)
 
-            if (args.length === 1) {
-              return financials[statementKey].ttm[attribute]
-            }
-          } else {
-            return undefined
+            return this.getAttributeValues(
+              attribute,
+              granularity,
+              fiscalDateRange,
+              financials
+            )
           }
 
-          return undefined
+          const { data } = await api.getFundamentals(ticker, {
+            filter: fundamentalsFilter
+          })
+          const financials = data.value.financials
+
+          return this.getAttributeValues(
+            attribute,
+            granularity,
+            fiscalDateRange,
+            financials
+          )
         }
       )
-      // const attribute = args[0].value
-      // // TODO: Add proper error checking here later
-      // if (args.length === 1) {
-      //   if (attribute === 'currencyCode') {
-      //     const currencyCode = ttmData[attribute]
-      //     return convertSubCurrencyToCurrency(currencyCode)
-      //   }
-      //   if (attribute === 'financialStatements') {
-      //     return SimpleRangeValue.onlyValues(statements)
-      //   }
-      //   return ttmData[attribute] ?? ''
-      // }
-      // const startDate = args[1].value
-      // const statementType = getTypeOfStatementToUse(attribute)
-      // if (args.length === 2) {
-      //   if (attribute === 'description') {
-      //     return ttmData[attribute]
-      //   }
-      //   return (
-      //     historicalDataArrays[statementType].yearly[startDate][attribute] ?? ''
-      //   )
-      // }
-      // const endDate = args[2].value
-      // if (args.length === 3) {
-      //   return SimpleRangeValue.onlyValues([
-      //     getYearlyValues(attribute, statementType, startDate, endDate)
-      //   ])
-      // }
     }
-    stockFinancialsSize({ args }) {
-      if (!financialData) {
-        return ArraySize.scalar()
+    stockFinancialsSize(_, state) {
+      const cellValue = state.formulaVertex?.getCellValue()
+
+      if (
+        (!financialData && !state.formulaVertex) ||
+        cellValue instanceof CellError
+      ) {
+        return ArraySize.error()
       }
 
-      // const attribute = args[0].value
-      // const statementType = getTypeOfStatementToUse(attribute)
-      // const startDate = args[1] ? args[1].value : null
-      // const endDate = args[2] ? args[2].value : null
+      if (cellValue instanceof SimpleRangeValue) {
+        const arraySize = new ArraySize(cellValue.width(), cellValue.height())
 
-      // if (attribute === 'financialStatements') {
-      //   return ArraySize.fromArray(statements)
-      // }
-
-      // if (args.length === 3) {
-      //   const yearlyValues = getYearlyValues(
-      //     attribute,
-      //     statementType,
-      //     startDate,
-      //     endDate
-      //   )
-
-      //   return ArraySize.fromArray([yearlyValues])
-      // }
+        return arraySize
+      }
 
       return ArraySize.scalar()
+    }
+
+    getAttributeValues(attribute, granularity, fiscalDateRange, financials) {
+      const statementKey = getTypeOfStatementToUse(financials, attribute)
+
+      const getSimpleRangeValues = values => {
+        // TODO: If has one length then HF is throwing errors.
+        // Raise with HF as this seems to be a bug.
+        return values.length === 1
+          ? values[0]
+          : SimpleRangeValue.onlyValues([values])
+      }
+
+      if (fiscalDateRange) {
+        const [fiscalDate, operator] =
+          this.parseFiscalDateFromRange(fiscalDateRange)
+        const dateGranularity = 'month'
+
+        const values = financials[statementKey][granularity]
+          .filter(({ date }) => {
+            if (operator === '>') {
+              return dayjs(date).isAfter(fiscalDate, dateGranularity)
+            }
+
+            if (operator === '<') {
+              return dayjs(date).isBefore(fiscalDate, dateGranularity)
+            }
+
+            return dayjs(date).isBetween(
+              fiscalDate[0],
+              fiscalDate[1],
+              dateGranularity
+            )
+          })
+          .map(statement => statement[attribute])
+
+        return getSimpleRangeValues(values)
+      }
+
+      if (granularity !== 'ttm') {
+        const values = financials[statementKey][granularity].map(
+          statement => statement[attribute]
+        )
+
+        return getSimpleRangeValues(values)
+      }
+
+      return financials[statementKey].ttm[attribute]
+    }
+
+    parseFiscalDateFromRange(fiscalDateRange) {
+      if (fiscalDateRange.charAt(0) === '>') {
+        const fiscalDate = fiscalDateRange.slice(1)
+
+        return [fiscalDate, '>']
+      }
+
+      if (fiscalDateRange.charAt(0) === '<') {
+        const fiscalDate = fiscalDateRange.slice(1)
+
+        return [fiscalDate, '<']
+      }
+
+      const fiscalDates = fiscalDateRange.split(';')
+
+      return [fiscalDates]
     }
   }
 

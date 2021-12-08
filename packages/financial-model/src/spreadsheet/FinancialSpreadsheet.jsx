@@ -172,7 +172,6 @@ const FinancialSpreadsheet = ({
 
       if (sheetData) {
         spreadsheet.setData(sheetData.data)
-        spreadsheet.initialize()
 
         const functionHelperClosed = localStorage.getItem(
           'functionHelperClosed'

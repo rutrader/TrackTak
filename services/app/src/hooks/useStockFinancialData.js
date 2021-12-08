@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api, useAuth } from '@tracktak/common'
+import { fundamentalsFilter } from '@tracktak/financial-model'
 
 const useStockFinancialData = spreadsheet => {
   const [financialData, setFinancialData] = useState()
@@ -26,8 +27,7 @@ const useStockFinancialData = spreadsheet => {
       const fetchCreateNewFinancials = async () => {
         const values = await Promise.all([
           api.getFundamentals(ticker, {
-            filter:
-              'General::CountryISO,General::Code,General::Exchange,General::UpdatedAt,Financials::Balance_Sheet,Financials::Income_Statement,Financials::Cash_Flow'
+            filter: fundamentalsFilter
           }),
           getAccessToken()
         ])
