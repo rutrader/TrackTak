@@ -18,6 +18,7 @@ import {
 import { allAttributes } from './attributes'
 import { api } from '@tracktak/common'
 import dayjs from 'dayjs'
+import { sentenceCase } from 'sentence-case'
 
 const exchangesString = stockExchanges.join('|')
 const tickerRegex = new RegExp(`^[0-9A-Za-z-]+\\.?(${exchangesString})?$`)
@@ -57,15 +58,24 @@ export const translations = {
 }
 
 const getTypeOfStatementToUse = (financials, attribute) => {
-  if (!isNil(financials.incomeStatement.ttm[attribute])) {
+  if (
+    !isNil(financials.incomeStatement.ttm[attribute]) ||
+    attribute === 'incomeStatement'
+  ) {
     return 'incomeStatement'
   }
 
-  if (!isNil(financials.balanceSheet.ttm[attribute])) {
+  if (
+    !isNil(financials.balanceSheet.ttm[attribute]) ||
+    attribute === 'balanceSheet'
+  ) {
     return 'balanceSheet'
   }
 
-  if (!isNil(financials.cashFlowStatement.ttm[attribute])) {
+  if (
+    !isNil(financials.cashFlowStatement.ttm[attribute]) ||
+    attribute === 'cashFlowStatement'
+  ) {
     return 'cashFlowStatement'
   }
 }
@@ -74,9 +84,6 @@ export const fundamentalsFilter =
   'General::CountryISO,General::Code,General::Exchange,General::UpdatedAt,Financials::Balance_Sheet,Financials::Income_Statement,Financials::Cash_Flow'
 
 export const getPlugin = financialData => {
-  const { financials = {} } = financialData ?? {}
-  const { balanceSheet, incomeStatement, cashFlowStatement } = financials
-
   class StockFinancialsPlugin extends FunctionPlugin {
     stockFinancials(ast, state) {
       const metadata = this.metadata('STOCK.FINANCIALS')
@@ -131,7 +138,7 @@ export const getPlugin = financialData => {
               attribute,
               granularity,
               fiscalDateRange,
-              financials
+              financialData.financials
             )
           }
 
@@ -170,6 +177,11 @@ export const getPlugin = financialData => {
 
     getAttributeValues(attribute, granularity, fiscalDateRange, financials) {
       const statementKey = getTypeOfStatementToUse(financials, attribute)
+      const isStatement =
+        attribute === 'incomeStatement' ||
+        attribute === 'balanceSheet' ||
+        attribute === 'cashFlowStatement'
+      const statements = financials[statementKey][granularity]
 
       const getSimpleRangeValues = values => {
         // TODO: If has one length then HF is throwing errors.
@@ -183,37 +195,88 @@ export const getPlugin = financialData => {
         const [fiscalDate, operator] =
           this.parseFiscalDateFromRange(fiscalDateRange)
         const dateGranularity = 'month'
+        const dateFilterPredicate = ({ date }) => {
+          const realDate =
+            date.toLowerCase() === 'ttm' ? statements[0].date : date
 
-        const values = financials[statementKey][granularity]
-          .filter(({ date }) => {
-            if (operator === '>') {
-              return dayjs(date).isAfter(fiscalDate, dateGranularity)
-            }
+          if (operator === '>') {
+            return dayjs(realDate).isAfter(fiscalDate, dateGranularity)
+          }
 
-            if (operator === '<') {
-              return dayjs(date).isBefore(fiscalDate, dateGranularity)
-            }
+          if (operator === '<') {
+            return dayjs(realDate).isBefore(fiscalDate, dateGranularity)
+          }
 
-            return dayjs(date).isBetween(
-              fiscalDate[0],
-              fiscalDate[1],
-              dateGranularity
-            )
-          })
+          return dayjs(realDate).isBetween(
+            fiscalDate[0],
+            fiscalDate[1],
+            dateGranularity
+          )
+        }
+
+        if (isStatement) {
+          const filteredStatements = [
+            financials[statementKey].ttm,
+            ...statements
+          ].filter(dateFilterPredicate)
+
+          return this.mapArrayObjectStatementsToSimpleRangeValues(
+            filteredStatements
+          )
+        }
+
+        const values = statements
+          .filter(dateFilterPredicate)
           .map(statement => statement[attribute])
 
         return getSimpleRangeValues(values)
       }
 
       if (granularity !== 'ttm') {
-        const values = financials[statementKey][granularity].map(
-          statement => statement[attribute]
-        )
+        if (isStatement) {
+          return this.mapArrayObjectStatementsToSimpleRangeValues([
+            financials[statementKey].ttm,
+            ...statements
+          ])
+        }
+
+        const values = statements.map(statement => statement[attribute])
 
         return getSimpleRangeValues(values)
       }
 
-      return financials[statementKey].ttm[attribute]
+      const statement = statements
+
+      if (isStatement) {
+        return this.mapObjectArrayStatementToSimpleRangevalues(statement)
+      }
+
+      return statement[attribute]
+    }
+
+    mapArrayObjectStatementsToSimpleRangeValues(statements) {
+      const rows = {}
+
+      Object.keys(statements[0]).map(key => {
+        rows[key] = []
+      })
+
+      statements.forEach(statement => {
+        Object.entries(statement).forEach(([key, value]) => {
+          rows[key].push(value)
+        })
+      })
+
+      return this.mapObjectArrayStatementToSimpleRangevalues(rows)
+    }
+
+    mapObjectArrayStatementToSimpleRangevalues(statement) {
+      const values = Object.entries(statement).map(([key, value]) => [
+        sentenceCase(key),
+        ...(Array.isArray(value) ? value : [value])
+      ])
+
+      return SimpleRangeValue.onlyValues(values)
     }
 
     parseFiscalDateFromRange(fiscalDateRange) {

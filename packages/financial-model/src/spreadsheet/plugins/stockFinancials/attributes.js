@@ -10,24 +10,22 @@ const getMappedArrayAttributes = financialSecurityAttribute => {
   })
 }
 
-const getMappedFilteredArrayAttributes = financialSecurityAttribute => {
-  const filteredAttributes = financialSecurityAttribute.filter(
-    element => element
-  )
-
-  return getMappedArrayAttributes(filteredAttributes)
-}
+export const fullStatementAttributes = [
+  'incomeStatement',
+  'balanceSheet',
+  'cashFlowStatement'
+]
 
 export const incomeStatementAttributes =
-  getMappedFilteredArrayAttributes(incomeStatement)
+  getMappedArrayAttributes(incomeStatement)
 
-export const balanceSheetAttributes =
-  getMappedFilteredArrayAttributes(balanceSheet)
+export const balanceSheetAttributes = getMappedArrayAttributes(balanceSheet)
 
 export const cashFlowStatementAttributes =
-  getMappedFilteredArrayAttributes(cashFlowStatement)
+  getMappedArrayAttributes(cashFlowStatement)
 
 export const allAttributes = [
+  ...fullStatementAttributes,
   ...incomeStatementAttributes,
   ...balanceSheetAttributes,
   ...cashFlowStatementAttributes

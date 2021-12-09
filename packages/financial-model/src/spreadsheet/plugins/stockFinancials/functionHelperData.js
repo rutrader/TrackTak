@@ -1,6 +1,7 @@
 import {
   balanceSheetAttributes,
   cashFlowStatementAttributes,
+  fullStatementAttributes,
   incomeStatementAttributes
 } from './attributes'
 import { aliases } from './getPlugin'
@@ -17,7 +18,7 @@ const functionHelperData = {
     '=S.FIN("revenue", "AMZN")',
     '=S.FIN("revenue", "BP.LSE", "quarterly")',
     '=S.FIN("revenue",,, "2010/01;2015/01")',
-    '=S.FIN("financialStatements",, "yearly")'
+    '=S.FIN("allFinancialStatements",, "yearly")'
   ],
   syntax: '=S.FIN(attribute, [ticker], [granularity], [fiscalDate])',
   optionalElement: {
@@ -49,6 +50,10 @@ const functionHelperData = {
   ],
   attributes: [
     {
+      header: 'Full Statements',
+      attributeNames: fullStatementAttributes
+    },
+    {
       header: 'Income Statement',
       attributeNames: incomeStatementAttributes
     },
@@ -57,7 +62,7 @@ const functionHelperData = {
       attributeNames: balanceSheetAttributes
     },
     {
-      header: 'Cashflow Statement',
+      header: 'Cash Flow Statement',
       attributeNames: cashFlowStatementAttributes
     }
   ]

@@ -37,6 +37,7 @@ const buildPowersheet = () => {
       chooseAddressMappingPolicy: new AlwaysSparse(),
       // We use our own undo/redo instead
       undoLimit: 0,
+      timeoutTime: 10000,
       licenseKey: 'gpl-v3'
     },
     [trueNamedExpression, falseNamedExpression]

@@ -220,6 +220,9 @@ const convertFundamentalsFromAPI = (ticker, data) => {
             incomeStatement.ttm = incomeStatement.yearly[0]
           }
         }
+
+        incomeStatement.ttm.date = 'TTM'
+
         financials.incomeStatement = incomeStatement
       }
 
@@ -270,6 +273,8 @@ const convertFundamentalsFromAPI = (ticker, data) => {
           }
         }
 
+        balanceSheet.ttm.date = 'TTM'
+
         financials.balanceSheet = balanceSheet
       }
 
@@ -312,6 +317,7 @@ const convertFundamentalsFromAPI = (ticker, data) => {
 
         delete financials.cashFlow
 
+        cashFlowStatement.ttm.date = 'TTM'
         financials.cashFlowStatement = cashFlowStatement
       }
 
