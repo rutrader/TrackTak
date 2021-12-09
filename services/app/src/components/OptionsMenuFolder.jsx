@@ -70,14 +70,7 @@ const OptionsMenuFolder = ({
       >
         <MoreHorizIcon />
       </IconButton>
-      <StyledMenu
-        MenuListProps={{
-          'aria-labelledby': 'demo-customized-button'
-        }}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleAnchorClose}
-      >
+      <StyledMenu anchorEl={anchorEl} open={open} onClose={handleAnchorClose}>
         <MenuItem onClick={handleClickEdit} disableRipple>
           <EditIcon />
           Edit

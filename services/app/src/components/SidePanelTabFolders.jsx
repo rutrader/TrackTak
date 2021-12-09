@@ -17,7 +17,7 @@ const SidePanelTabFolders = ({
   folderName,
   onDelete,
   deleteDisabled,
-  handleOnClickRouting,
+  onClick,
   folders,
   setCurrentEditableFolderId,
   currentEditableFolderId,
@@ -75,7 +75,7 @@ const SidePanelTabFolders = ({
   return (
     <ListItem disablePadding>
       <Box sx={{ display: 'flex', flex: 1 }}>
-        <ListItemButton onClick={handleOnClickRouting}>
+        <ListItemButton onClick={onClick}>
           <ListItemIcon>
             <Folder />
           </ListItemIcon>

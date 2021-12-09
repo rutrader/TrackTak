@@ -16,6 +16,7 @@ let theme = createTheme({
   palette: {
     tableBackground: alpha('#51509c', 0.04),
     spreadsheetBackground: '#eeeef5',
+    folderNameText: '#1A1A1A',
     warning: {
       main: '#ED6C02'
     },

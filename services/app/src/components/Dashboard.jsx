@@ -100,7 +100,7 @@ const Dashboard = () => {
                   deleteDisabled={deleteDisabled}
                   folders={folders}
                   onDelete={handleClickDelete}
-                  handleOnClickRouting={() => {
+                  onClick={() => {
                     navigate(`/${_id}`)
                   }}
                   setCurrentEditableFolderId={setCurrentEditableFolderId}

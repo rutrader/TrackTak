@@ -302,12 +302,12 @@ const SavedSpreadsheets = () => {
                         }
                         sx={{
                           textTransform: 'none',
-                          color: '#1A1A1A',
+                          color: theme.palette.folderNameText,
                           display: 'flex',
                           justifyContent: 'flex-start',
                           padding: '15px',
                           ':hover': {
-                            color: theme => theme.palette.primary.main
+                            color: theme.palette.primary.main
                           }
                         }}
                       >
