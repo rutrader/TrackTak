@@ -2,7 +2,6 @@ import React, { Fragment } from 'react'
 import { Box } from '@mui/material'
 import { functionHelperPrefix } from '@tracktak/powersheet'
 import functionHelperData from './functionHelperData'
-import { SearchTicker } from '@tracktak/common'
 
 const MainHeader = props => (
   <h1 className={`${functionHelperPrefix}-main-header`} {...props} />
@@ -20,7 +19,7 @@ const Paragraph = props => (
   <p className={`${functionHelperPrefix}-paragraph`} {...props} />
 )
 
-const HelperContent = setTicker => {
+const HelperContent = () => {
   return (
     <Box>
       <MainHeader>{functionHelperData.header}</MainHeader>
@@ -35,9 +34,6 @@ const HelperContent = setTicker => {
           )
         })}
       </List>
-      <Header>Global Ticker</Header>
-      <Paragraph>{functionHelperData.globalContext}</Paragraph>
-      <SearchTicker setTicker={setTicker} />
       <Header>Samples Usage</Header>
       {functionHelperData.exampleUsages.map(syntax => {
         return (
@@ -67,17 +63,17 @@ const HelperContent = setTicker => {
           }
         )}
       </List>
-      <Header>Attributes</Header>
-      {functionHelperData.attributes.map(({ header, attributeNames }) => {
+      <Header>Fields</Header>
+      {functionHelperData.fields.map(({ header, fieldNames }) => {
         return (
           <Fragment key={header}>
             <h5>{header}</h5>
             <List>
-              {attributeNames.map(attribute => {
+              {fieldNames.map(field => {
                 return (
-                  <li key={attribute}>
+                  <li key={field}>
                     <p>
-                      <Code>{attribute}</Code>
+                      <Code>{field}</Code>
                     </p>
                   </li>
                 )

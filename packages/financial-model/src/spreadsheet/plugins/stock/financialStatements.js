@@ -1,6 +1,3 @@
-import { sentenceCase } from 'change-case'
-import dayjs from 'dayjs'
-
 export const incomeStatement = [
   'revenue',
   'costOfRevenue',
@@ -97,40 +94,3 @@ export const cashFlowStatement = [
   'capitalExpenditures',
   'freeCashFlow'
 ]
-
-export const getStatements = (statements, statementKeys) => {
-  const { ...statement } = {
-    ...statements.ttm
-  }
-
-  const values = statementKeys.map(key => {
-    if (!key) return ['']
-
-    const formattedKey = sentenceCase(key)
-    const values = []
-
-    values.push(statement[key])
-
-    Object.keys(statements.yearly).forEach(yearlyDate => {
-      const statement = statements.yearly[yearlyDate]
-
-      values.push(statement[key])
-    })
-
-    return [formattedKey, ...values]
-  })
-
-  return values
-}
-
-export const dateFormat = 'MMM YY'
-
-export const getDatesFromStatements = statement => {
-  const dates = Object.keys(statement.yearly).map(date =>
-    dayjs(date).format(dateFormat)
-  )
-
-  dates.unshift('TTM')
-
-  return dates
-}
