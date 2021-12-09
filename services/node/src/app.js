@@ -98,14 +98,56 @@ app.post('/api/v1/financial-data', auth, async (req, res) => {
   }
 
   if (req.body.spreadsheetId) {
-    await api.updateSpreadsheet(
+    await api.updateSpreadsheetFinancialData(
       req.body.spreadsheetId,
-      financialData._id,
-      req.user.username
+      financialData._id
     )
   }
 
   res.send({ financialData })
+})
+
+app.get('/api/v1/folders', auth, async (req, res) => {
+  const folders = await api.getFolders(req.user.username)
+
+  if (folders.length === 0) {
+    const folder = await api.createFolder('Valuations', req.user.username)
+
+    res.send({ folders: [folder] })
+
+    return
+  }
+
+  res.send({ folders })
+})
+
+app.post('/api/v1/folder', auth, async (req, res) => {
+  const folder = await api.createFolder(req.body.name, req.user.username)
+  res.send({ folder })
+})
+
+app.put('/api/v1/folder/:id', auth, async (req, res) => {
+  const folder = await api.updateFolder(req.params.id, req.body.name)
+  res.send({ folder })
+})
+
+app.delete('/api/v1/folder/:id', auth, async (req, res) => {
+  const folder = await api.deleteFolder(req.params.id)
+  res.send({ folder })
+})
+
+app.get('/api/v1/folder/:id/spreadsheets', auth, async (req, res) => {
+  const spreadsheets = await api.getSpreadsheetsInFolder(req.params.id)
+
+  res.send({ spreadsheets })
+})
+
+app.put('/api/v1/spreadsheet/:id', auth, async (req, res) => {
+  const spreadsheet = await api.updateSpreadsheetFolder(
+    req.params.id,
+    req.body.folderId
+  )
+  res.send({ spreadsheet })
 })
 
 app.post('/api/v1/spreadsheets', auth, async (req, res) => {
@@ -117,7 +159,21 @@ app.post('/api/v1/spreadsheets', auth, async (req, res) => {
     req.user.username,
     financialData
   )
+
+  await api.updateSpreadsheetFolder(spreadsheet._id, req.body.folderId)
+
   res.send({ spreadsheet })
+})
+
+app.get('/api/v1/spreadsheets/:id', auth, async (req, res) => {
+  const spreadsheet = await api.getSpreadsheet(req.params.id)
+  res.send({ spreadsheet })
+})
+
+app.delete('/api/v1/spreadsheets/:id', auth, async (req, res) => {
+  await api.deleteSpreadsheet(req.params.id)
+
+  res.send({ id: req.params.id })
 })
 
 app.put('/api/v1/spreadsheets', auth, async (req, res) => {
@@ -129,24 +185,6 @@ app.put('/api/v1/spreadsheets', auth, async (req, res) => {
     req.body.createdTimestamp
   )
   res.send({ spreadsheet })
-})
-
-app.get('/api/v1/spreadsheets/metadata', auth, async (req, res) => {
-  const spreadsheets = await api.getSpreadsheetsMetadata(req.user.username)
-
-  res.send({ spreadsheets })
-})
-
-app.get('/api/v1/spreadsheets/:id', auth, async (req, res) => {
-  const spreadsheet = await api.getSpreadsheet(req.user.username, req.params.id)
-
-  res.send({ spreadsheet })
-})
-
-app.delete('/api/v1/spreadsheets/:id', auth, async (req, res) => {
-  await api.deleteSpreadsheet(req.params.id, req.user.username)
-
-  res.send({ id: req.params.id })
 })
 
 const getSubscription = async stripeCustomerId => {

@@ -14,7 +14,7 @@ const MenuItemLink = props => {
   return <MenuItem sx={{ '&.MuiMenuItem-root': { padding: 0 } }} {...props} />
 }
 
-const AuthenticatedHeader = ({ position = 'fixed', search }) => {
+const AuthenticatedHeader = ({ position = 'fixed' }) => {
   const { signOut } = useAuth()
   const [anchorEl, setAnchorEl] = useState(null)
   const [userMenuAnchorEl, setUserMenuAnchorEl] = useState(null)
@@ -77,7 +77,6 @@ const AuthenticatedHeader = ({ position = 'fixed', search }) => {
 
   return (
     <Header navigate={navigate} position={position}>
-      {search}
       <Hidden mdDown implementation='css'>
         <Box
           sx={{

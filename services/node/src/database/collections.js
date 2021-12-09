@@ -1,5 +1,6 @@
 export const Collections = {
   SPREADSHEET: 'spreadsheet',
-  POWERSHEET_SPREADSHEET: 'powersheet-spreadsheet',
-  FINANCIAL_DATA: 'financialData'
+  FINANCIAL_DATA: 'financialData',
+  FOLDER: 'folder',
+  POWERSHEET_SPREADSHEET: 'powersheet-spreadsheet'
 }

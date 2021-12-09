@@ -13,28 +13,7 @@ const LayoutFullScreen = ({ children }) => {
         flexDirection: 'column'
       }}
     >
-      <AuthenticatedHeader
-        search={
-          <Box
-            sx={{
-              maxWidth: '800px',
-              width: '100%',
-              marginRight: 'auto',
-              display: 'flex'
-            }}
-          >
-            <SearchTicker
-              getTemplate={getFreeCashFlowFirmSimple}
-              isSmallSearch
-              sx={{
-                flex: 1,
-                alignSelf: 'center'
-              }}
-            />
-          </Box>
-        }
-        position='relative'
-      />
+      <AuthenticatedHeader position='relative' />
       {children}
     </Box>
   )

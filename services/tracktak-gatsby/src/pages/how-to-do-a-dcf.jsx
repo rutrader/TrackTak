@@ -1,9 +1,10 @@
-import React from 'react'
-import { Box, Typography } from '@mui/material'
+import React, { forwardRef } from 'react'
+import { Box, Typography, List, ListItem, ListItemText } from '@mui/material'
 import wikiContent from '../data/wikiContent'
 import { Helmet } from 'react-helmet'
-import { utils } from '@tracktak/common'
-import SidePanel from '../components/SidePanel'
+import { utils, SidePanel } from '@tracktak/common'
+import { navigate } from 'gatsby'
+import { AnchorLink } from 'gatsby-plugin-anchor-links'
 
 const removeNonHashableChars = str => {
   const newStr = utils.replaceSpaceWithHyphen(str)
@@ -11,16 +12,14 @@ const removeNonHashableChars = str => {
   return newStr.replace(/\?|\(|\)|,|&/g, '')
 }
 
-const Docs = () => {
-  const getSidePanelTabs = () => {
-    return wikiContent.map(({ title }) => {
-      return {
-        title,
-        to: `/how-to-do-a-dcf#${removeNonHashableChars(title)}`
-      }
-    })
+const tabs = wikiContent.map(({ title }) => {
+  return {
+    title,
+    to: `/how-to-do-a-dcf#${removeNonHashableChars(title)}`
   }
+})
 
+const Docs = () => {
   return (
     <>
       <Helmet>
@@ -33,7 +32,29 @@ const Docs = () => {
           content='Learn how to do a full DCF with projections of cash flows, terminal value and WACC.'
         />
       </Helmet>
-      <SidePanel tabs={getSidePanelTabs()}>
+      <SidePanel
+        sidePanelTabs={
+          <List>
+            {tabs.map(({ title, to }) => {
+              return (
+                <ListItem
+                  key={title}
+                  component={forwardRef((props, ref) => (
+                    <AnchorLink {...props} gatsbyLinkProps={{ ref }} />
+                  ))}
+                  onAnchorLinkClick={() => {
+                    navigate(to)
+                  }}
+                  to={to}
+                  button
+                >
+                  <ListItemText primary={title} />
+                </ListItem>
+              )
+            })}
+          </List>
+        }
+      >
         {wikiContent.map(({ title, text }, i) => {
           return (
             <Box key={i}>

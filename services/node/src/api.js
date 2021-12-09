@@ -296,12 +296,76 @@ const api = {
     return database.insert(Collections.FINANCIAL_DATA, financialData)
   },
 
-  updateSpreadsheet: async (id, financialDataId, userId) => {
+  getFolders: async userId => {
+    return database.find(Collections.FOLDER, {
+      userId
+    })
+  },
+
+  getFolder: async id => {
+    return database.find(Collections.FOLDER, [
+      {
+        _id: new MongoDb.ObjectId(id)
+      }
+    ])
+  },
+
+  createFolder: async (name, userId) => {
+    return database.insert(Collections.FOLDER, {
+      userId,
+      name
+    })
+  },
+
+  updateFolder: async (id, name) => {
+    return database.updateOne(
+      Collections.FOLDER,
+      {
+        _id: new MongoDb.ObjectId(id)
+      },
+      {
+        $set: { name }
+      }
+    )
+  },
+
+  updateSpreadsheetFolder: async (id, folderId) => {
     return database.updateOne(
       Collections.POWERSHEET_SPREADSHEET,
       {
-        _id: new MongoDb.ObjectId(id),
-        userId
+        _id: new MongoDb.ObjectId(id)
+      },
+      {
+        $set: { folderId }
+      }
+    )
+  },
+
+  deleteFolder: async id => {
+    return database.deleteOne(Collections.FOLDER, {
+      _id: new MongoDb.ObjectId(id)
+    })
+  },
+
+  getSpreadsheetsInFolder: async folderId => {
+    return database.find(
+      Collections.POWERSHEET_SPREADSHEET,
+      {
+        folderId
+      },
+      {
+        projection: {
+          'sheetData.data': 0
+        }
+      }
+    )
+  },
+
+  updateSpreadsheetFinancialData: async (id, financialDataId) => {
+    return database.updateOne(
+      Collections.POWERSHEET_SPREADSHEET,
+      {
+        _id: new MongoDb.ObjectId(id)
       },
       {
         $set: { 'financialData.id': financialDataId }
@@ -336,31 +400,15 @@ const api = {
     )
   },
 
-  getSpreadsheetsMetadata: async userId => {
-    return database.find(
-      Collections.POWERSHEET_SPREADSHEET,
-      {
-        userId
-      },
-      {
-        projection: {
-          'sheetData.data': 0
-        }
-      }
-    )
-  },
-
-  getSpreadsheet: async (userId, id) => {
+  getSpreadsheet: async id => {
     return database.findOne(Collections.POWERSHEET_SPREADSHEET, {
-      _id: new MongoDb.ObjectId(id),
-      userId
+      _id: new MongoDb.ObjectId(id)
     })
   },
 
-  deleteSpreadsheet: async (id, userId) => {
+  deleteSpreadsheet: async id => {
     return database.deleteOne(Collections.POWERSHEET_SPREADSHEET, {
-      _id: new MongoDb.ObjectId(id),
-      userId
+      _id: new MongoDb.ObjectId(id)
     })
   }
 }

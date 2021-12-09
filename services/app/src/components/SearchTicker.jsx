@@ -24,11 +24,13 @@ import getSymbolFromCurrency from 'currency-symbol-map'
 import { cloneDeep } from 'lodash-es'
 import { useNavigate } from 'react-router'
 import logValuationEvent from '../shared/logValuationEvent'
+import { useSpreadsheetsMetadata } from '../hooks/useSpreadsheetsMetadata'
 
 const SearchTicker = ({ isSmallSearch, sx, getTemplate }) => {
   const theme = useTheme()
   const [autoComplete, setAutoComplete] = useState([])
   const [isLoadingAutocomplete, setIsLoadingAutocomplete] = useState(false)
+  const { folderId } = useSpreadsheetsMetadata()
   const isOnMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const [text, setText] = useState('')
   const { userData, getAccessToken } = useAuth()
@@ -64,6 +66,7 @@ const SearchTicker = ({ isSmallSearch, sx, getTemplate }) => {
     }
     const response = await api.createSpreadsheet(
       { sheetData, ticker },
+      folderId,
       token?.jwtToken
     )
 
