@@ -26,9 +26,11 @@ import TTProvider from './components/TTProvider'
 import Layout from './layouts/Layout'
 import LayoutXL from './layouts/LayoutXL'
 import HeaderLink from './components/HeaderLink'
+import SidePanel from './components/SidePanel'
 
 export {
   HeaderLink,
+  SidePanel,
   Layout,
   LayoutXL,
   TTProvider,

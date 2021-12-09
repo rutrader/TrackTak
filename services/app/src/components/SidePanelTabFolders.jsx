@@ -9,8 +9,7 @@ import {
 import Folder from '@mui/icons-material/Folder'
 import OptionsMenuFolder from './OptionsMenuFolder'
 import ContentEditable from 'react-contenteditable'
-import { useAuth, api } from '@tracktak/common'
-import { setCaretToEndOfElement } from '../../../../packages/common/src/shared/utils'
+import { useAuth, api, utils } from '@tracktak/common'
 
 const SidePanelTabFolders = ({
   id,
@@ -68,7 +67,7 @@ const SidePanelTabFolders = ({
     if (editableRef.current && isInEditMode) {
       editableRef.current.focus()
 
-      setCaretToEndOfElement(editableRef.current)
+      utils.setCaretToEndOfElement(editableRef.current)
     }
   }, [editableRef, isInEditMode])
 

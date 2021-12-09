@@ -12,13 +12,12 @@ import AddIcon from '@mui/icons-material/Add'
 import React, { useState, useEffect, useCallback } from 'react'
 import { Outlet } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
-import { utils, useAuth, api } from '@tracktak/common'
+import { utils, useAuth, api, SidePanel } from '@tracktak/common'
 import SearchTickerDialog from './SearchTickerDialog'
 import { ProvideSpreadsheetsMetadata } from '../hooks/useSpreadsheetsMetadata'
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder'
 import SidePanelTabFolders from './SidePanelTabFolders'
 import { useNavigate } from 'react-router-dom'
-import SidePanel from '../../../tracktak-gatsby/src/components/SidePanel'
 
 const Dashboard = () => {
   const navigate = useNavigate()
