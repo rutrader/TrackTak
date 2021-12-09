@@ -1,14 +1,14 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { TTProvider } from '@tracktak/common'
-import HelperContent from './plugins/stockFinancials/HelperContent'
+import HelperContent from './plugins/stock/financials/HelperContent'
 
-const getFunctionHelperContent = setTicker => {
+const getFunctionHelperContent = () => {
   const content = document.createElement('div')
 
   render(
     <TTProvider>
-      <HelperContent setTicker={setTicker} />
+      <HelperContent />
     </TTProvider>,
     content
   )

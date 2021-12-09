@@ -117,8 +117,9 @@ const convertEarningsTrend = ({ date, period, ...trend }) => {
   return newTrend
 }
 
-const camelCaseObject = (obj, key) => {
+const camelCaseObject = (obj, topLevelKey) => {
   const returnedObj = {}
+  const returnedArr = []
 
   try {
     Object.keys(obj).forEach(key => {
@@ -128,17 +129,25 @@ const camelCaseObject = (obj, key) => {
       })
 
       if (typeof value === 'object' && value !== null) {
-        returnedObj[camelCaseKey] = camelCaseObject(value, camelCaseKey)
+        const camelCaseObj = camelCaseObject(value, camelCaseKey)
+
+        if (isNaN(parseInt(key))) {
+          returnedObj[camelCaseKey] = camelCaseObj
+        } else {
+          returnedArr.push(camelCaseObj)
+        }
       } else {
         returnedObj[camelCaseKey] = value
       }
     })
   } catch (error) {
-    console.error(`camelCase error thrown for key: ${key}. Ignoring key.`)
+    console.error(
+      `camelCase error thrown for key: ${topLevelKey}. Ignoring key.`
+    )
     console.error(error)
   }
 
-  return returnedObj
+  return returnedArr.length ? returnedArr : returnedObj
 }
 
 const convertFundamentalsFromAPI = (ticker, data) => {

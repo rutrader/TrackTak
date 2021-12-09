@@ -10,16 +10,15 @@ import {
   FunctionHelper
 } from '@tracktak/powersheet'
 import { currencySymbolMap } from 'currency-symbol-map'
-import {
-  translations,
-  getPlugin,
-  aliases,
-  implementedFunctions
-} from './plugins/stockFinancials/getPlugin'
 import getToolbarActionGroups from './getToolbarActionGroups'
 import getFunctionHelperContent from './getFunctionHelperContent'
 import './FinancialSpreadsheet.css'
 import { Box } from '@mui/material'
+import plugins from './plugins'
+
+plugins.forEach(value => {
+  HyperFormula.registerFunctionPlugin(value.Plugin, value.translations)
+})
 
 const buildPowersheet = () => {
   const trueNamedExpression = {
@@ -46,12 +45,7 @@ const buildPowersheet = () => {
   const functionHelper = new FunctionHelper()
   const toolbar = new Toolbar()
   const formulaBar = new FormulaBar()
-  const exporter = new Exporter([
-    {
-      implementedFunctions,
-      aliases
-    }
-  ])
+  const exporter = new Exporter(plugins)
   const bottomBar = new BottomBar()
 
   const spreadsheet = new Spreadsheet({
@@ -73,35 +67,16 @@ const buildPowersheet = () => {
     functionHelper.functionHelperEl
   )
 
+  functionHelper.setDrawerContent(getFunctionHelperContent())
   toolbar.setToolbarIcons(getToolbarActionGroups(toolbar))
 
   return spreadsheet
 }
 
-const FinancialSpreadsheet = ({
-  sheetData,
-  financialData,
-  saveSheetData,
-  sx
-}) => {
+const FinancialSpreadsheet = ({ sheetData, saveSheetData, sx }) => {
   const [spreadsheet, setSpreadsheet] = useState()
   const [containerEl, setContainerEl] = useState()
-  const currencySymbol = financialData?.general?.currencySymbol
   const name = sheetData?.name
-
-  useEffect(() => {
-    const FinancialPlugin = getPlugin(financialData)
-
-    HyperFormula.registerFunctionPlugin(FinancialPlugin, translations)
-
-    if (financialData) {
-      spreadsheet?.render(true)
-    }
-
-    return () => {
-      HyperFormula.unregisterFunctionPlugin(FinancialPlugin)
-    }
-  }, [financialData, spreadsheet])
 
   useEffect(() => {
     const spreadsheet = buildPowersheet()
@@ -136,20 +111,6 @@ const FinancialSpreadsheet = ({
       )
     }
   }, [])
-
-  useEffect(() => {
-    const setTicker = async ticker => {
-      await saveSheetData({
-        financialData: {
-          ticker
-        }
-      })
-    }
-
-    spreadsheet?.functionHelper.setDrawerContent(
-      getFunctionHelperContent(setTicker)
-    )
-  }, [spreadsheet, saveSheetData])
 
   useEffect(() => {
     const persistData = async (data, done) => {
@@ -195,14 +156,14 @@ const FinancialSpreadsheet = ({
     const options = {
       exportSpreadsheetName: `${name}.xlsx`,
       textPatternFormats: {
-        currency: `${currencySymbol}#,##0.##`,
-        million: '#,###.##,,',
-        'million-currency': `${currencySymbol}#,###.##,,`
+        // currency: `${currencySymbol}#,##0.##`,
+        million: '#,###.##,,'
+        // 'million-currency': `${currencySymbol}#,###.##,,`
       }
     }
 
     spreadsheet?.setOptions(options)
-  }, [currencySymbol, name, spreadsheet])
+  }, [name, spreadsheet])
 
   if (!spreadsheet) return null
 
