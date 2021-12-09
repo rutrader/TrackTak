@@ -77,7 +77,7 @@ const AccountSettings = () => {
 
   const handleOnClickCustomerPortal = async () => {
     const token = await getAccessToken()
-    const { data } = await api.createCustomerPortal(token?.jwtToken)
+    const { data } = await api.createUserPortalSession(token?.jwtToken)
 
     window.location.href = data.url
   }

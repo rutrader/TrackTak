@@ -4,14 +4,14 @@ import { FinancialSpreadsheet } from '@tracktak/financial-model'
 import useFetchSpreadsheet from '../hooks/useFetchSpreadsheet'
 import { utils } from '@tracktak/common'
 import useSaveSpreadsheetData from '../hooks/useSaveSpreadsheetData'
-import { useTTFinancialPlugin } from '../hooks/useTTFinancialPlugin'
+import useStockFinancialData from '../hooks/useStockFinancialData'
 import { useParams } from 'react-router-dom'
 
 const FinancialModel = () => {
   const params = useParams()
   const spreadsheet = useFetchSpreadsheet(params.sheetId)
   const saveSheetData = useSaveSpreadsheetData(spreadsheet)
-  const financialData = useTTFinancialPlugin(spreadsheet)
+  const financialData = useStockFinancialData(spreadsheet)
 
   return (
     <>
@@ -26,7 +26,7 @@ const FinancialModel = () => {
         saveSheetData={saveSheetData}
         sheetData={spreadsheet?.sheetData}
         financialData={financialData}
-        style={{
+        sx={{
           flex: 1
         }}
       />

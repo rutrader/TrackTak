@@ -21,7 +21,7 @@ const SwitchingPlan = () => {
     const token = await getAccessToken()
     const lineItems = [{ price: regions.PriceIds.WORLDWIDE, quantity: 1 }]
 
-    const { data } = await api.createCheckoutSession(lineItems, token?.jwtToken)
+    const { data } = await api.createUserPlan(lineItems, token?.jwtToken)
 
     window.location.href = data.url
   }
