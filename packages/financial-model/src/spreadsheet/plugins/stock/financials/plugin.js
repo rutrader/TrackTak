@@ -1,24 +1,20 @@
 import { FunctionPlugin, SimpleRangeValue } from '@tracktak/hyperformula'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
 import { isNil } from 'lodash'
-import {
-  fiscalDateRangeCellError,
-  getFieldsCellError,
-  granularityCellError,
-  tickerCellError
-} from '../cellErrors'
+import { granularityCellError, tickerCellError } from '../cellErrors'
 import { api } from '@tracktak/common'
-import dayjs from 'dayjs'
 import { fields } from './fields'
-import { tickerRegex, fiscalDateRangeRegex } from '../matchers'
+import { tickerRegex } from '../matchers'
 import {
+  getFiscalDateRangeFilterPredicate,
   mapArrayObjectsToSimpleRangeValues,
   mapObjToSimpleRangeValues,
   sizeMethod
 } from '../../helpers'
+import { fiscalDateRangeCellError, getFieldCellError } from '../../cellErrors'
+import { fiscalDateRangeRegex } from '../../matchers'
 
-const fieldsString = fields.join(', ')
-const fieldsCellError = getFieldsCellError(fieldsString)
+const fieldCellError = getFieldCellError(fields)
 
 export const implementedFunctions = {
   'STOCK.FINANCIALS': {
@@ -63,16 +59,15 @@ export class Plugin extends FunctionPlugin {
       async (ticker, field, defaultGranularity, fiscalDateRange) => {
         const isTickerValid = !!ticker.match(tickerRegex)
         const isFieldValid = !!fields.find(x => x === field)
-        const granularity =
-          !isNil(defaultGranularity) && defaultGranularity !== ''
-            ? defaultGranularity
-            : fiscalDateRange
-            ? 'yearly'
-            : 'ttm'
+        const granularity = defaultGranularity
+          ? defaultGranularity
+          : fiscalDateRange
+          ? 'year'
+          : 'ttm'
         const isGranularityValid =
           granularity === 'ttm' ||
-          granularity === 'quarterly' ||
-          granularity === 'yearly'
+          granularity === 'quarter' ||
+          granularity === 'year'
         const isFiscalDateRangeValid = fiscalDateRange
           ? !!fiscalDateRange.match(fiscalDateRangeRegex)
           : true
@@ -82,7 +77,7 @@ export class Plugin extends FunctionPlugin {
         }
 
         if (!isFieldValid) {
-          return fieldsCellError
+          return fieldCellError
         }
 
         if (!isGranularityValid) {
@@ -98,9 +93,19 @@ export class Plugin extends FunctionPlugin {
         })
         const financials = data.value.financials
 
+        let formattedGranularity = granularity
+
+        if (granularity === 'quarter') {
+          formattedGranularity = 'quarterly'
+        }
+
+        if (granularity === 'year') {
+          formattedGranularity = 'yearly'
+        }
+
         return this.getFieldValues(
           field,
-          granularity,
+          formattedGranularity,
           fiscalDateRange,
           financials
         )
@@ -152,39 +157,20 @@ export class Plugin extends FunctionPlugin {
     }
 
     if (fiscalDateRange) {
-      const [fiscalDate, operator] =
-        this.parseFiscalDateFromRange(fiscalDateRange)
-      const dateGranularity = 'month'
-      const dateFilterPredicate = ({ date }) => {
-        const realDate =
-          date.toLowerCase() === 'ttm' ? statements[0].date : date
-
-        if (operator === '>') {
-          return dayjs(realDate).isAfter(fiscalDate, dateGranularity)
-        }
-
-        if (operator === '<') {
-          return dayjs(realDate).isBefore(fiscalDate, dateGranularity)
-        }
-
-        return dayjs(realDate).isBetween(
-          fiscalDate[0],
-          fiscalDate[1],
-          dateGranularity
-        )
-      }
+      const fiscalDateRangeFilterPredicate =
+        getFiscalDateRangeFilterPredicate(fiscalDateRange)
 
       if (isStatement) {
         const filteredStatements = [
           financials[statementKey].ttm,
           ...statements
-        ].filter(dateFilterPredicate)
+        ].filter(fiscalDateRangeFilterPredicate)
 
         return mapArrayObjectsToSimpleRangeValues(filteredStatements)
       }
 
       const values = statements
-        .filter(dateFilterPredicate)
+        .filter(fiscalDateRangeFilterPredicate)
         .map(statement => statement[field])
 
       return getSimpleRangeValues(values)
@@ -210,24 +196,6 @@ export class Plugin extends FunctionPlugin {
     }
 
     return statement[field]
-  }
-
-  parseFiscalDateFromRange(fiscalDateRange) {
-    if (fiscalDateRange.charAt(0) === '>') {
-      const fiscalDate = fiscalDateRange.slice(1)
-
-      return [fiscalDate, '>']
-    }
-
-    if (fiscalDateRange.charAt(0) === '<') {
-      const fiscalDate = fiscalDateRange.slice(1)
-
-      return [fiscalDate, '<']
-    }
-
-    const fiscalDates = fiscalDateRange.split(';')
-
-    return [fiscalDates]
   }
 }
 

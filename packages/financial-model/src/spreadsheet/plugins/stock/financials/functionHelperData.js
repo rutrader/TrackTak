@@ -13,15 +13,15 @@ const functionHelperData = {
   aliases: Object.keys(aliases),
   exampleUsages: [
     '=S.FIN("AMZN", "revenue")',
-    '=S.FIN("BP.LSE", "revenue", "quarterly")',
-    '=S.FIN("AAPL", "revenue",,, "2010/01;2015/01")',
-    '=S.FIN("KME.AU", "incomeStatement",, "yearly")'
+    '=S.FIN("BP.LSE", "revenue", "quarter")',
+    '=S.FIN("AAPL", "revenue",,, "2010-01-01;2015-01-01")',
+    '=S.FIN("KME.AU", "incomeStatement",, "year")'
   ],
   syntax: '=S.FIN(ticker, field, [granularity], [fiscalDateRange])',
   optionalElement: {
     syntaxName: '[]',
     description:
-      'Indicates an optional parameter. If a parameter is optional it can be skipped with a comma. Example: =S.FIN("revenue",, "yearly")'
+      'Indicates an optional parameter. If a parameter is optional it can be skipped with a comma. Example: =S.FIN("revenue",, "year")'
   },
   syntaxElements: [
     {
@@ -37,12 +37,12 @@ const functionHelperData = {
     {
       syntaxName: '[granularity]',
       description:
-        'Accepts either "ttm", "quarterly" or "yearly". Defaults to ttm (trailing twelve months) if the [fiscalDateRange] parameter is not given, else it will default to "yearly". Non-us stocks do not support "quarterly".'
+        'Accepts either "ttm", "quarter" or "year". Defaults to ttm (trailing twelve months) if the [fiscalDateRange] parameter is not given, else it will default to "year". Non-us stocks do not support "quarter".'
     },
     {
       syntaxName: '[fiscalDateRange]',
       description:
-        'Example: ">2010/01" (more than), "<2020/01" (less than) or "2010/01;2015/01" (between).'
+        'Example: "2010-01-01" (exact), ">2010-01-01" (more than), "<2020-01-01" (less than) or "2010-01-01;2015-01-01" (between).'
     }
   ],
   fields: [

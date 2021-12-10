@@ -1,13 +1,13 @@
 import { FunctionPlugin } from '@tracktak/hyperformula'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
-import { getFieldsCellError, tickerCellError } from '../cellErrors'
+import { tickerCellError } from '../cellErrors'
 import { tickerRegex } from '../matchers'
 import { api } from '@tracktak/common'
 import fields from './fields'
 import { getFieldValue, sizeMethod } from '../../helpers'
+import { getFieldCellError } from '../../cellErrors'
 
-const fieldsString = fields.join(', ')
-const fieldsCellError = getFieldsCellError(fieldsString)
+const fieldCellError = getFieldCellError(fields)
 
 export const implementedFunctions = {
   'STOCK.INFO': {
@@ -52,7 +52,7 @@ export class Plugin extends FunctionPlugin {
         }
 
         if (!isFieldValid) {
-          return fieldsCellError
+          return fieldCellError
         }
 
         const { data } = await api.getFundamentals(ticker, {
