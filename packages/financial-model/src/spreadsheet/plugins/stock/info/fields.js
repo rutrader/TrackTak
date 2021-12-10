@@ -32,7 +32,19 @@ const fields = [
   'webURL',
   'logoURL',
   'fullTimeEmployees',
-  'updatedAt'
+  'updatedAt',
+  'marketCapitalization',
+  'mostRecentQuarter',
+  'wallStreetTargetPrice',
+  'sharesOutstanding',
+  'sharesFloat',
+  'percentInsiders',
+  'percentInstitutions',
+  'sharesShort',
+  'sharesShortPriorMonth',
+  'shortRatio',
+  'shortPercentOutstanding',
+  'shortPercentFloat'
 ]
 
 export default fields

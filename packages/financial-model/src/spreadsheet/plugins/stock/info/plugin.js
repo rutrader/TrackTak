@@ -56,11 +56,15 @@ export class Plugin extends FunctionPlugin {
         }
 
         const { data } = await api.getFundamentals(ticker, {
-          filter: 'General'
+          filter: 'General,SharesStats,Highlights'
         })
-        const general = data.value
+        const info = {
+          ...data.value.general,
+          ...data.value.sharesStats,
+          ...data.value.highlights
+        }
 
-        return getFieldValue(general[field])
+        return getFieldValue(info[field])
       }
     )
   }
