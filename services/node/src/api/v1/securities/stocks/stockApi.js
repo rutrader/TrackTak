@@ -32,8 +32,9 @@ export const getEOD = async (ticker, query) => {
   const { data } = await axios.get(`${eodEndpoint}/${ticker}`, {
     params: {
       api_token: eodAPIToken,
-      ...query,
-      fmt: 'json'
+      order: 'd',
+      fmt: 'json',
+      ...query
     }
   })
 

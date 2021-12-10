@@ -8,8 +8,9 @@ export const getGovernmentBond = async (code, query) => {
       const { data } = await axios.get(`${eodEndpoint}/${code}.GBOND`, {
         params: {
           api_token: eodAPIToken,
-          ...query,
-          fmt: 'json'
+          order: 'd',
+          fmt: 'json',
+          ...query
         }
       })
 

@@ -1,16 +1,15 @@
 import { FunctionPlugin } from '@tracktak/hyperformula'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
 import { api } from '@tracktak/common'
-import { getFieldValue, sizeMethod } from '../../helpers'
-import countryCodes from './countryCodes'
-import { countryCodeCellError, maturityCellError } from './cellErrors'
-import { maturityRegex } from './matchers'
+import currencyCodes from './currencyCodes'
+import { baseCurrencyCellError, quoteCurrencyCellError } from './cellErrors'
 import { getEODParams, validateEODParamsHasError } from '../../eod'
+import { getFieldValue, sizeMethod } from '../../helpers'
 
 export const implementedFunctions = {
-  'BOND.COUNTRY': {
-    method: 'country',
-    arraySizeMethod: 'countrySize',
+  'FX.FIAT': {
+    method: 'fiat',
+    arraySizeMethod: 'fiatSize',
     isAsyncMethod: true,
     parameters: [
       {
@@ -26,27 +25,41 @@ export const implementedFunctions = {
   }
 }
 
-export const aliases = {
-  'B.CO': 'BOND.COUNTRY'
-}
-
 export const translations = {
   enGB: {
-    'B.CO': 'BOND.COUNTRY'
+    'FX.FIAT': 'FX.FIAT'
   }
 }
 
 export class Plugin extends FunctionPlugin {
-  country(ast, state) {
-    const metadata = this.metadata('BOND.COUNTRY')
+  fiat(ast, state) {
+    const metadata = this.metadata('FX.FIAT')
 
     return this.runAsyncFunction(
       ast.args,
       state,
       metadata,
-      async (countryCode, maturity, field, granularity, fiscalDateRange) => {
-        const isCountryCodeValid = !!countryCodes.find(x => x === countryCode)
-        const isMaturityValidValid = !!maturity.match(maturityRegex)
+      async (
+        baseCurrency,
+        quoteCurrency,
+        field,
+        granularity,
+        fiscalDateRange
+      ) => {
+        const isBaseCurrencyValid = !!currencyCodes.find(
+          x => x === baseCurrency
+        )
+        const isQuoteCurrencyValid = !!currencyCodes.find(
+          x => x === quoteCurrency
+        )
+
+        if (!isBaseCurrencyValid) {
+          return baseCurrencyCellError
+        }
+
+        if (!isQuoteCurrencyValid) {
+          return quoteCurrencyCellError
+        }
 
         const error = validateEODParamsHasError(
           field,
@@ -58,28 +71,11 @@ export class Plugin extends FunctionPlugin {
           return error
         }
 
-        if (!isCountryCodeValid) {
-          return countryCodeCellError
-        }
-
-        if (!isMaturityValidValid) {
-          return maturityCellError
-        }
-
-        const maturityGranularity = [...maturity.matchAll(maturityRegex)][0][1]
-
-        let formattedMaturity = parseInt(maturity, 10)
-
-        if (maturityGranularity === 'yr') {
-          formattedMaturity += 'Y'
-        } else {
-          formattedMaturity += 'M'
-        }
-
         const params = getEODParams(granularity, field, fiscalDateRange)
 
-        const { data } = await api.getGovernmentBond(
-          `${countryCode}${formattedMaturity}`,
+        const { data } = await api.getExchangeRate(
+          baseCurrency,
+          quoteCurrency,
           params
         )
 
@@ -88,10 +84,9 @@ export class Plugin extends FunctionPlugin {
     )
   }
 
-  countrySize(_, state) {
+  fiatSize(_, state) {
     return sizeMethod(state)
   }
 }
 
 Plugin.implementedFunctions = implementedFunctions
-Plugin.aliases = aliases
