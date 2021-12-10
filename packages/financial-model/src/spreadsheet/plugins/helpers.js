@@ -127,6 +127,10 @@ export const mapArrayObjectsToSimpleRangeValues = (arr, isVertical) => {
 
 export const getFieldValue = (value, isVertical) => {
   if (Array.isArray(value)) {
+    if (!value.length) {
+      return null
+    }
+
     if (typeof value[0] === 'object') {
       return mapArrayObjectsToSimpleRangeValues(value, isVertical)
     } else {
