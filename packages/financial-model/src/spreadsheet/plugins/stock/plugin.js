@@ -1,25 +1,28 @@
 import { FunctionPlugin, SimpleRangeValue } from '@tracktak/hyperformula'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
 import { isNil } from 'lodash'
-import { granularityCellError, tickerCellError } from '../cellErrors'
+import { granularityCellError, tickerCellError } from './cellErrors'
 import { api } from '@tracktak/common'
-import { fields } from './fields'
-import { tickerRegex } from '../matchers'
+import { financialFields, infoFields } from './fields'
+import { tickerRegex } from './matchers'
 import {
   getFiscalDateRangeFilterPredicate,
   mapArrayObjectsToSimpleRangeValues,
   mapObjToSimpleRangeValues,
-  sizeMethod
-} from '../../helpers'
-import { fiscalDateRangeCellError, getFieldCellError } from '../../cellErrors'
-import { fiscalDateRangeRegex } from '../../matchers'
+  sizeMethod,
+  getFieldValue
+} from '../helpers'
+import { fiscalDateRangeCellError, getFieldCellError } from '../cellErrors'
+import { fiscalDateRangeRegex } from '../matchers'
+import { getEODParams, validateEODParamsHasError } from '../eod'
 
-const fieldCellError = getFieldCellError(fields)
+const financialsFieldCellError = getFieldCellError(financialFields)
+const infoFieldCellError = getFieldCellError(infoFields)
 
 export const implementedFunctions = {
   'STOCK.GET_COMPANY_FINANCIALS': {
     method: 'getCompanyFinancials',
-    arraySizeMethod: 'getCompanyFinancialsSize',
+    arraySizeMethod: 'stockSize',
     isAsyncMethod: true,
     parameters: [
       {
@@ -31,16 +34,46 @@ export const implementedFunctions = {
       { argumentType: ArgumentTypes.STRING, optionalArg: true },
       { argumentType: ArgumentTypes.STRING, optionalArg: true }
     ]
+  },
+  'STOCK.GET_PRICE': {
+    method: 'getPrice',
+    arraySizeMethod: 'stockSize',
+    isAsyncMethod: true,
+    parameters: [
+      {
+        argumentType: ArgumentTypes.STRING
+      },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true }
+    ]
+  },
+  'STOCK.GET_COMPANY_INFO': {
+    method: 'getCompanyInfo',
+    arraySizeMethod: 'stockSize',
+    isAsyncMethod: true,
+    parameters: [
+      {
+        argumentType: ArgumentTypes.STRING
+      },
+      {
+        argumentType: ArgumentTypes.STRING
+      }
+    ]
   }
 }
 
 export const aliases = {
-  'S.GCF': 'STOCK.GET_COMPANY_FINANCIALS'
+  'S.GCF': 'STOCK.GET_COMPANY_FINANCIALS',
+  'S.GP': 'STOCK.GET_PRICE',
+  'S.GCI': 'STOCK.GET_COMPANY_INFO'
 }
 
 export const translations = {
   enGB: {
-    'S.GCF': 'STOCK.GET_COMPANY_FINANCIALS'
+    'S.GCF': 'STOCK.GET_COMPANY_FINANCIALS',
+    'S.GP': 'STOCK.GET_PRICE',
+    'S.GCI': 'STOCK.GET_COMPANY_INFO'
   }
 }
 
@@ -57,7 +90,7 @@ export class Plugin extends FunctionPlugin {
       metadata,
       async (ticker, field, defaultGranularity, fiscalDateRange) => {
         const isTickerValid = !!ticker.match(tickerRegex)
-        const isFieldValid = !!fields.find(x => x === field)
+        const isFieldValid = !!financialFields.find(x => x === field)
         const granularity = defaultGranularity
           ? defaultGranularity
           : fiscalDateRange
@@ -76,7 +109,7 @@ export class Plugin extends FunctionPlugin {
         }
 
         if (!isFieldValid) {
-          return fieldCellError
+          return financialsFieldCellError
         }
 
         if (!isGranularityValid) {
@@ -112,7 +145,73 @@ export class Plugin extends FunctionPlugin {
     )
   }
 
-  getCompanyFinancialsSize(_, state) {
+  getPrice(ast, state) {
+    const metadata = this.metadata('STOCK.GET_PRICE')
+
+    return this.runAsyncFunction(
+      ast.args,
+      state,
+      metadata,
+      async (ticker, field, granularity, fiscalDateRange) => {
+        const isTickerValid = !!ticker.match(tickerRegex)
+
+        const error = validateEODParamsHasError(
+          field,
+          granularity,
+          fiscalDateRange
+        )
+
+        if (!isTickerValid) {
+          return tickerCellError
+        }
+
+        if (error) {
+          return error
+        }
+
+        const params = getEODParams(granularity, field, fiscalDateRange)
+
+        const { data } = await api.getEOD(ticker, params)
+
+        return getFieldValue(data.value, true)
+      }
+    )
+  }
+
+  getCompanyInfo(ast, state) {
+    const metadata = this.metadata('STOCK.GET_COMPANY_INFO')
+
+    return this.runAsyncFunction(
+      ast.args,
+      state,
+      metadata,
+      async (ticker, field) => {
+        const isTickerValid = !!ticker.match(tickerRegex)
+        const isFieldValid = infoFields.find(x => x === field)
+
+        if (!isTickerValid) {
+          return tickerCellError
+        }
+
+        if (!isFieldValid) {
+          return infoFieldCellError
+        }
+
+        const { data } = await api.getFundamentals(ticker, {
+          filter: 'General,SharesStats,Highlights'
+        })
+        const info = {
+          ...data.value.general,
+          ...data.value.sharesStats,
+          ...data.value.highlights
+        }
+
+        return getFieldValue(info[field])
+      }
+    )
+  }
+
+  stockSize(_, state) {
     return sizeMethod(state)
   }
 

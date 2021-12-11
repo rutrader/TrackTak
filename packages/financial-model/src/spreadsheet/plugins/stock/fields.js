@@ -1,4 +1,23 @@
-const fields = [
+import {
+  balanceSheet,
+  cashFlowStatement,
+  incomeStatement
+} from './financialStatements'
+
+export const financialStatementFields = [
+  'incomeStatement',
+  'balanceSheet',
+  'cashFlowStatement'
+]
+
+export const financialFields = [
+  ...financialStatementFields,
+  ...incomeStatement,
+  ...balanceSheet,
+  ...cashFlowStatement
+]
+
+export const infoFields = [
   'code',
   'type',
   'name',
@@ -46,5 +65,3 @@ const fields = [
   'shortPercentOutstanding',
   'shortPercentFloat'
 ]
-
-export default fields

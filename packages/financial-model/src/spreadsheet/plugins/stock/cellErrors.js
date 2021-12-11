@@ -10,3 +10,8 @@ export const tickerCellError = new CellError(
   ErrorType.VALUE,
   `ticker is not valid. Format must be {SYMBOL} for US companies or {SYMBOL.EXCHANGE} for non-us companies. The valid exchanges are: ${exchangesString}.`
 )
+
+export const granularityCellError = new CellError(
+  ErrorType.VALUE,
+  `granularity is not valid. Must be one of these fields: "ttm", "quarter" or "year".`
+)

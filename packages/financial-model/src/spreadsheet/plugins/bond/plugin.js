@@ -1,11 +1,11 @@
 import { FunctionPlugin } from '@tracktak/hyperformula'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
 import { api } from '@tracktak/common'
-import { getFieldValue, sizeMethod } from '../../helpers'
+import { getFieldValue, sizeMethod } from '../helpers'
 import countryCodes from './countryCodes'
 import { countryCodeCellError, maturityCellError } from './cellErrors'
 import { maturityRegex } from './matchers'
-import { getEODParams, validateEODParamsHasError } from '../../eod'
+import { getEODParams, validateEODParamsHasError } from '../eod'
 
 export const implementedFunctions = {
   'BOND.GET_COUNTRY_YIELD': {
