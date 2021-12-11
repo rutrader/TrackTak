@@ -8,9 +8,9 @@ import { maturityRegex } from './matchers'
 import { getEODParams, validateEODParamsHasError } from '../../eod'
 
 export const implementedFunctions = {
-  'BOND.COUNTRY': {
-    method: 'country',
-    arraySizeMethod: 'countrySize',
+  'BOND.GET_COUNTRY_YIELD': {
+    method: 'getCountryYield',
+    arraySizeMethod: 'getCountryYieldSize',
     isAsyncMethod: true,
     parameters: [
       {
@@ -27,18 +27,18 @@ export const implementedFunctions = {
 }
 
 export const aliases = {
-  'B.CO': 'BOND.COUNTRY'
+  'B.GCY': 'BOND.GET_COUNTRY_YIELD'
 }
 
 export const translations = {
   enGB: {
-    'B.CO': 'BOND.COUNTRY'
+    'B.GCY': 'BOND.GET_COUNTRY_YIELD'
   }
 }
 
 export class Plugin extends FunctionPlugin {
-  country(ast, state) {
-    const metadata = this.metadata('BOND.COUNTRY')
+  getCountryYield(ast, state) {
+    const metadata = this.metadata('BOND.GET_COUNTRY_YIELD')
 
     return this.runAsyncFunction(
       ast.args,
@@ -88,7 +88,7 @@ export class Plugin extends FunctionPlugin {
     )
   }
 
-  countrySize(_, state) {
+  getCountryYieldSize(_, state) {
     return sizeMethod(state)
   }
 }

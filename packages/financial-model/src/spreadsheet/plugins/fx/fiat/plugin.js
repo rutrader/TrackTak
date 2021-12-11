@@ -7,9 +7,9 @@ import { getEODParams, validateEODParamsHasError } from '../../eod'
 import { getFieldValue, sizeMethod } from '../../helpers'
 
 export const implementedFunctions = {
-  'FX.FIAT': {
-    method: 'fiat',
-    arraySizeMethod: 'fiatSize',
+  'FX.GET_FIAT_EXCHANGE_RATE': {
+    method: 'getFiatExchangeRate',
+    arraySizeMethod: 'getFiatExchangeRateSize',
     isAsyncMethod: true,
     parameters: [
       {
@@ -25,15 +25,19 @@ export const implementedFunctions = {
   }
 }
 
+export const aliases = {
+  'F.GFER': 'FX.GET_FIAT_EXCHANGE_RATE'
+}
+
 export const translations = {
   enGB: {
-    'FX.FIAT': 'FX.FIAT'
+    'F.GFER': 'FX.GET_FIAT_EXCHANGE_RATE'
   }
 }
 
 export class Plugin extends FunctionPlugin {
-  fiat(ast, state) {
-    const metadata = this.metadata('FX.FIAT')
+  getFiatExchangeRate(ast, state) {
+    const metadata = this.metadata('FX.GET_FIAT_EXCHANGE_RATE')
 
     return this.runAsyncFunction(
       ast.args,
@@ -84,9 +88,10 @@ export class Plugin extends FunctionPlugin {
     )
   }
 
-  fiatSize(_, state) {
+  getFiatExchangeRateSize(_, state) {
     return sizeMethod(state)
   }
 }
 
 Plugin.implementedFunctions = implementedFunctions
+Plugin.aliases = aliases

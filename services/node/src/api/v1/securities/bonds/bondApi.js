@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { sendReqOrGetCachedData } from '../../../../cache'
 import { eodAPIToken, eodEndpoint } from '../../../../shared/constants'
+import alterFromToQuery from '../alterFromToQuery'
 
 export const getGovernmentBond = async (code, query) => {
   const data = await sendReqOrGetCachedData(
@@ -10,7 +11,7 @@ export const getGovernmentBond = async (code, query) => {
           api_token: eodAPIToken,
           order: 'd',
           fmt: 'json',
-          ...query
+          ...alterFromToQuery(query)
         }
       })
 

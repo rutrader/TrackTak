@@ -2,6 +2,7 @@ import { CellError, SimpleRangeValue } from '@tracktak/hyperformula'
 import { ArraySize } from '@tracktak/hyperformula/es/ArraySize'
 import dayjs from 'dayjs'
 import { sentenceCase } from 'change-case'
+import { noValueReturnedCellError } from './cellErrors'
 
 const parseFiscalDateFromRange = fiscalDateRange => {
   if (fiscalDateRange.charAt(0) === '>') {
@@ -128,7 +129,7 @@ export const mapArrayObjectsToSimpleRangeValues = (arr, isVertical) => {
 export const getFieldValue = (value, isVertical) => {
   if (Array.isArray(value)) {
     if (!value.length) {
-      return null
+      return noValueReturnedCellError
     }
 
     if (typeof value[0] === 'object') {
@@ -141,10 +142,14 @@ export const getFieldValue = (value, isVertical) => {
   }
 
   if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
+    if (Object.keys(value).length === 0) {
+      return noValueReturnedCellError
+    }
+
     return mapObjToSimpleRangeValues(value, isVertical)
   }
 
-  return value
+  return value ?? noValueReturnedCellError
 }
 
 // TODO: Could this be in hyperformula automatically?

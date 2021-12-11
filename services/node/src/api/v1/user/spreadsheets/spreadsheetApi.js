@@ -14,9 +14,8 @@ export const updateSpreadsheetFinancialData = async (id, financialDataId) => {
   )
 }
 
-export const createSpreadsheet = async (sheetData, userId, financialData) => {
+export const createSpreadsheet = async (sheetData, userId) => {
   const document = {
-    financialData,
     userId,
     sheetData,
     lastModifiedTimestamp: new Date(),

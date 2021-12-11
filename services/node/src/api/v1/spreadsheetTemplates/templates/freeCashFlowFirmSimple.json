@@ -5,14 +5,6 @@
       "cells": {
         "0_0_0": "0_0_0",
         "0_1_0": "0_1_0",
-        "0_2_0": "0_2_0",
-        "0_2_1": "0_2_1",
-        "0_3_0": "0_3_0",
-        "0_3_1": "0_3_1",
-        "0_2_2": "0_2_2",
-        "0_3_2": "0_3_2",
-        "0_2_4": "0_2_4",
-        "0_3_4": "0_3_4",
         "0_5_0": "0_5_0",
         "0_6_0": "0_6_0",
         "0_6_3": "0_6_3",
@@ -513,7 +505,18 @@
         "0_65_1": "0_65_1",
         "0_14_2": "0_14_2",
         "0_0_3": "0_0_3",
-        "0_12_2": "0_12_2"
+        "0_12_2": "0_12_2",
+        "0_2_2": "0_2_2",
+        "0_3_2": "0_3_2",
+        "0_2_0": "0_2_0",
+        "0_2_1": "0_2_1",
+        "0_2_4": "0_2_4",
+        "0_2_5": "0_2_5",
+        "0_2_7": "0_2_7",
+        "0_3_4": "0_3_4",
+        "0_3_5": "0_3_5",
+        "0_3_7": "0_3_7",
+        "0_4_2": "0_4_2"
       },
       "cols": {
         "0_0": "0_0"
@@ -521,8 +524,6 @@
       "mergedCells": {
         "0_0_0": "0_0_0",
         "0_1_0": "0_1_0",
-        "0_2_2": "0_2_2",
-        "0_3_2": "0_3_2",
         "0_5_0": "0_5_0",
         "0_6_0": "0_6_0",
         "0_6_3": "0_6_3",
@@ -558,7 +559,11 @@
         "0_24_3": "0_24_3",
         "0_25_3": "0_25_3",
         "0_26_3": "0_26_3",
-        "0_0_3": "0_0_3"
+        "0_0_3": "0_0_3",
+        "0_2_5": "0_2_5",
+        "0_3_5": "0_3_5",
+        "0_2_2": "0_2_2",
+        "0_3_2": "0_3_2"
       },
       "id": 0
     },
@@ -42069,47 +42074,6 @@
       "horizontalTextAlign": "center",
       "bold": true
     },
-    "0_2_0": {
-      "value": "CAGR in Years 1-5",
-      "id": "0_2_0"
-    },
-    "0_2_1": {
-      "backgroundColor": "#8ff1d2",
-      "id": "0_2_1",
-      "comment": "Compound Annual Growth Rate - look at: a. Revenue growth in your company in recent years b. Your company's revenues, relative to the overall market size and larger players in the sector.",
-      "textFormatPattern": "0.00%"
-    },
-    "0_3_0": {
-      "value": "Operating Target Margin in Year 10",
-      "id": "0_3_0"
-    },
-    "0_3_1": {
-      "backgroundColor": "#8ff1d2",
-      "id": "0_3_1",
-      "comment": "Start by looking at your company's current pre-tax operating margin but also look at the average for your industry.",
-      "textFormatPattern": "0.00%"
-    },
-    "0_2_2": {
-      "value": "Year of Convergence",
-      "id": "0_2_2"
-    },
-    "0_3_2": {
-      "value": "Sales to Capital Ratio",
-      "id": "0_3_2"
-    },
-    "0_2_4": {
-      "backgroundColor": "#8ff1d2",
-      "id": "0_2_4",
-      "comment": "The forecasted number of years until the company’s current Operating Margin will converge on the target Operating Margin. For example, if today's year is 2021 and the year of convergence is 5 then it will converge in year 2026.",
-      "textFormatPattern": "#,##0.00"
-    },
-    "0_3_4": {
-      "backgroundColor": "#8ff1d2",
-      "id": "0_3_4",
-      "comment": "The efficiency of how much the company has to reinvest the business to grow. The formula is Revenue / Invested Capital. The higher the number the more efficient the company is. The default value is set to the industry average as this is usually a good starting point. You should also look at the previous years sales to capital ratio's in the above table to fine tune this value. In the DCF output we compute how much the company is going to reinvest to keep the business growing in future years. The higher you set this number, the more efficiently the business is growing and the higher the value of your growth.",
-      "value": "=S.FIN(\"sales/Capital\")",
-      "textFormatPattern": "#,##0.00"
-    },
     "0_5_0": {
       "value": "Optional Inputs",
       "id": "0_5_0",
@@ -42368,14 +42332,14 @@
       "id": "0_10_23"
     },
     "0_11_0": {
-      "value": "=S.FIN(\"name\")",
+      "value": "=STOCK.INFO(B3, \"name\")",
       "id": "0_11_0",
       "fontSize": 16,
       "bold": true,
       "horizontalTextAlign": "center"
     },
     "0_12_0": {
-      "value": "=S.FIN(\"code\")&\".\"&S.FIN(\"exchange\")",
+      "value": "=STOCK.INFO(B3, \"code\")&\".\"&STOCK.INFO(B3, \"exchange\")",
       "id": "0_12_0",
       "horizontalTextAlign": "center"
     },
@@ -42386,7 +42350,7 @@
       "bold": true
     },
     "0_13_0": {
-      "value": "=S.FIN(\"currencySymbol\")&S.FIN(\"price\")&\" \"&S.FIN(\"currencyCode\")",
+      "value": "=STOCK.INFO(B3, \"currencySymbol\")&STOCK.PRICE(B3, \"close\",, \"12-11-2021\")&\" \"&STOCK.INFO(B3, \"currencyCode\")",
       "id": "0_13_0",
       "horizontalTextAlign": "center"
     },
@@ -43445,61 +43409,61 @@
       "dynamicFormat": "currency"
     },
     "0_30_2": {
-      "value": "=B31*(1+$B$3)",
+      "value": "=B31*(1+$E$3)",
       "id": "0_30_2",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
     },
     "0_30_3": {
-      "value": "=C31*(1+$B$3)",
+      "value": "=C31*(1+$E$3)",
       "id": "0_30_3",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
     },
     "0_30_4": {
-      "value": "=D31*(1+$B$3)",
+      "value": "=D31*(1+$E$3)",
       "id": "0_30_4",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
     },
     "0_30_5": {
-      "value": "=E31*(1+$B$3)",
+      "value": "=E31*(1+$E$3)",
       "id": "0_30_5",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
     },
     "0_30_6": {
-      "value": "=F31*(1+$B$3)",
+      "value": "=F31*(1+$E$3)",
       "id": "0_30_6",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
     },
     "0_30_7": {
-      "value": "=G31*(1+$B$3 - (($B$3-S.FIN(\"riskFreeRate\")) / 5))",
+      "value": "=G31*(1+$E$3 - (($E$3-STOCK.FINANCIALS(\"riskFreeRate\")) / 5))",
       "id": "0_30_7",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
     },
     "0_30_8": {
-      "value": "=H31*(1+$B$3 - (($B$3-S.FIN(\"riskFreeRate\")) / 5) * 2)",
+      "value": "=H31*(1+$E$3 - (($E$3-STOCK.FINANCIALS(\"riskFreeRate\")) / 5) * 2)",
       "id": "0_30_8",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
     },
     "0_30_9": {
-      "value": "=I31*(1+$B$3 - (($B$3-S.FIN(\"riskFreeRate\")) / 5) * 3)",
+      "value": "=I31*(1+$E$3 - (($E$3-STOCK.FINANCIALS(\"riskFreeRate\")) / 5) * 3)",
       "id": "0_30_9",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
     },
     "0_30_10": {
-      "value": "=J31*(1+$B$3 - (($B$3-S.FIN(\"riskFreeRate\")) / 5) * 4)",
+      "value": "=J31*(1+$E$3 - (($E$3-STOCK.FINANCIALS(\"riskFreeRate\")) / 5) * 4)",
       "id": "0_30_10",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
     },
     "0_30_11": {
-      "value": "=K31*(1+$B$3 - (($B$3-S.FIN(\"riskFreeRate\")) / 5) * 5)",
+      "value": "=K31*(1+$E$3 - (($E$3-STOCK.FINANCIALS(\"riskFreeRate\")) / 5) * 5)",
       "id": "0_30_11",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -43521,52 +43485,52 @@
       "textFormatPattern": "0.00%"
     },
     "0_31_2": {
-      "value": "=IF(C30 > $E$3, $B$4, $B$4 - (($B$4 - B32) / $E$3) * ($E$3 - C30))",
+      "value": "=IF(C30 > $H$3, $E$4, $E$4 - (($E$4 - B32) / $H$3) * ($H$3 - C30))",
       "id": "0_31_2",
       "textFormatPattern": "0.00%"
     },
     "0_31_3": {
-      "value": "=IF(D30 > $E$3, $B$4, $B$4 - (($B$4 - B32) / $E$3) * ($E$3 - D30))",
+      "value": "=IF(D30 > $H$3, $E$4, $E$4 - (($E$4 - B32) / $H$3) * ($H$3 - D30))",
       "id": "0_31_3",
       "textFormatPattern": "0.00%"
     },
     "0_31_4": {
-      "value": "=IF(E30 > $E$3, $B$4, $B$4 - (($B$4 - B32) / $E$3) * ($E$3 - E30))",
+      "value": "=IF(E30 > $H$3, $E$4, $E$4 - (($E$4 - B32) / $H$3) * ($H$3 - E30))",
       "id": "0_31_4",
       "textFormatPattern": "0.00%"
     },
     "0_31_5": {
-      "value": "=IF(F30 > $E$3, $B$4, $B$4 - (($B$4 - B32) / $E$3) * ($E$3 - F30))",
+      "value": "=IF(F30 > $H$3, $E$4, $E$4 - (($E$4 - B32) / $H$3) * ($H$3 - F30))",
       "id": "0_31_5",
       "textFormatPattern": "0.00%"
     },
     "0_31_6": {
-      "value": "=IF(G30 > $E$3, $B$4, $B$4 - (($B$4 - B32) / $E$3) * ($E$3 - G30))",
+      "value": "=IF(G30 > $H$3, $E$4, $E$4 - (($E$4 - B32) / $H$3) * ($H$3 - G30))",
       "id": "0_31_6",
       "textFormatPattern": "0.00%"
     },
     "0_31_7": {
-      "value": "=IF(H30 > $E$3, $B$4, $B$4 - (($B$4 - B32) / $E$3) * ($E$3 - H30))",
+      "value": "=IF(H30 > $H$3, $E$4, $E$4 - (($E$4 - B32) / $H$3) * ($H$3 - H30))",
       "id": "0_31_7",
       "textFormatPattern": "0.00%"
     },
     "0_31_8": {
-      "value": "=IF(I30 > $E$3, $B$4, $B$4 - (($B$4 - B32) / $E$3) * ($E$3 - I30))",
+      "value": "=IF(I30 > $H$3, $E$4, $E$4 - (($E$4 - B32) / $H$3) * ($H$3 - I30))",
       "id": "0_31_8",
       "textFormatPattern": "0.00%"
     },
     "0_31_9": {
-      "value": "=IF(J30 > $E$3, $B$4, $B$4 - (($B$4 - B32) / $E$3) * ($E$3 - J30))",
+      "value": "=IF(J30 > $H$3, $E$4, $E$4 - (($E$4 - B32) / $H$3) * ($H$3 - J30))",
       "id": "0_31_9",
       "textFormatPattern": "0.00%"
     },
     "0_31_10": {
-      "value": "=IF(K30 > $E$3, $B$4, $B$4 - (($B$4 - B32) / $E$3) * ($E$3 - K30))",
+      "value": "=IF(K30 > $H$3, $E$4, $E$4 - (($E$4 - B32) / $H$3) * ($H$3 - K30))",
       "id": "0_31_10",
       "textFormatPattern": "0.00%"
     },
     "0_31_11": {
-      "value": "=IF(L30 > $E$3, $B$4, $B$4 - (($B$4 - B32) / $E$3) * ($E$3 - L30))",
+      "value": "=IF(L30 > $H$3, $E$4, $E$4 - (($E$4 - B32) / $H$3) * ($H$3 - L30))",
       "id": "0_31_11",
       "textFormatPattern": "0.00%"
     },
@@ -44243,7 +44207,7 @@
       "id": "0_43_1"
     },
     "0_43_2": {
-      "value": "=$E$4",
+      "value": "=$H$4",
       "id": "0_43_2",
       "textFormatPattern": "#,##0.00"
     },
@@ -44659,6 +44623,59 @@
     },
     "0_12_2": {
       "id": "0_12_2"
+    },
+    "0_2_2": {
+      "value": "CAGR in Years 1-5",
+      "id": "0_2_2"
+    },
+    "0_3_2": {
+      "value": "Operating Target Margin in Year 10",
+      "id": "0_3_2"
+    },
+    "0_2_0": {
+      "value": "Stock Ticker To Value",
+      "id": "0_2_0"
+    },
+    "0_2_1": {
+      "backgroundColor": "#8ff1d2",
+      "comment": "Example: \"AAPL\", \"BP.LSE\", \"KME.AU\" etc. For non-us companies you must supply the exchange as well. See the 'exchanges' section in the helper panel (? icon in the toolbar) to the right for the list of valid exchanges that can be given here.",
+      "id": "0_2_1"
+    },
+    "0_2_4": {
+      "backgroundColor": "#8ff1d2",
+      "id": "0_2_4",
+      "comment": "Compound Annual Growth Rate - look at: a. Revenue growth in your company in recent years b. Your company's revenues, relative to the overall market size and larger players in the sector.",
+      "textFormatPattern": "0.00%"
+    },
+    "0_2_5": {
+      "value": "Year of Convergence",
+      "id": "0_2_5"
+    },
+    "0_2_7": {
+      "backgroundColor": "#8ff1d2",
+      "id": "0_2_7",
+      "comment": "The forecasted number of years until the company’s current Operating Margin will converge on the target Operating Margin. For example, if today's year is 2021 and the year of convergence is 5 then it will converge in year 2026.",
+      "textFormatPattern": "#,##0.00"
+    },
+    "0_3_4": {
+      "backgroundColor": "#8ff1d2",
+      "id": "0_3_4",
+      "comment": "Start by looking at your company's current pre-tax operating margin but also look at the average for your industry.",
+      "textFormatPattern": "0.00%"
+    },
+    "0_3_5": {
+      "value": "Sales to Capital Ratio",
+      "id": "0_3_5"
+    },
+    "0_3_7": {
+      "backgroundColor": "#8ff1d2",
+      "id": "0_3_7",
+      "comment": "The efficiency of how much the company has to reinvest the business to grow. The formula is Revenue / Invested Capital. The higher the number the more efficient the company is. The default value is set to the industry average as this is usually a good starting point. You should also look at the previous years sales to capital ratio's in the above table to fine tune this value. In the DCF output we compute how much the company is going to reinvest to keep the business growing in future years. The higher you set this number, the more efficiently the business is growing and the higher the value of your growth.",
+      "value": "=S.FIN(\"sales/Capital\")",
+      "textFormatPattern": "#,##0.00"
+    },
+    "0_4_2": {
+      "id": "0_4_2"
     }
   },
   "mergedCells": {
@@ -44738,28 +44755,6 @@
         "y": 1
       },
       "id": "0_1_0"
-    },
-    "0_2_2": {
-      "row": {
-        "x": 2,
-        "y": 2
-      },
-      "col": {
-        "x": 2,
-        "y": 3
-      },
-      "id": "0_2_2"
-    },
-    "0_3_2": {
-      "row": {
-        "x": 3,
-        "y": 3
-      },
-      "col": {
-        "x": 2,
-        "y": 3
-      },
-      "id": "0_3_2"
     },
     "0_5_0": {
       "row": {
@@ -45156,6 +45151,50 @@
         "y": 5
       },
       "id": "0_0_3"
+    },
+    "0_2_5": {
+      "row": {
+        "x": 2,
+        "y": 2
+      },
+      "col": {
+        "x": 5,
+        "y": 6
+      },
+      "id": "0_2_5"
+    },
+    "0_3_5": {
+      "row": {
+        "x": 3,
+        "y": 3
+      },
+      "col": {
+        "x": 5,
+        "y": 6
+      },
+      "id": "0_3_5"
+    },
+    "0_2_2": {
+      "row": {
+        "x": 2,
+        "y": 2
+      },
+      "col": {
+        "x": 2,
+        "y": 3
+      },
+      "id": "0_2_2"
+    },
+    "0_3_2": {
+      "row": {
+        "x": 3,
+        "y": 3
+      },
+      "col": {
+        "x": 2,
+        "y": 3
+      },
+      "id": "0_3_2"
     }
   },
   "rows": {

@@ -10,9 +10,9 @@ import { getFieldCellError } from '../../cellErrors'
 const fieldCellError = getFieldCellError(fields)
 
 export const implementedFunctions = {
-  'STOCK.INFO': {
-    method: 'info',
-    arraySizeMethod: 'infoSize',
+  'STOCK.GET_COMPANY_INFO': {
+    method: 'getCompanyInfo',
+    arraySizeMethod: 'getCompanyInfoSize',
     isAsyncMethod: true,
     parameters: [
       {
@@ -26,18 +26,18 @@ export const implementedFunctions = {
 }
 
 export const aliases = {
-  'S.INFO': 'STOCK.INFO'
+  'S.GCI': 'STOCK.GET_COMPANY_INFO'
 }
 
 export const translations = {
   enGB: {
-    'S.INFO': 'STOCK.INFO'
+    'S.GCI': 'STOCK.GET_COMPANY_INFO'
   }
 }
 
 export class Plugin extends FunctionPlugin {
-  info(ast, state) {
-    const metadata = this.metadata('STOCK.INFO')
+  getCompanyInfo(ast, state) {
+    const metadata = this.metadata('STOCK.GET_COMPANY_INFO')
 
     return this.runAsyncFunction(
       ast.args,
@@ -68,7 +68,7 @@ export class Plugin extends FunctionPlugin {
       }
     )
   }
-  infoSize(_, state) {
+  getCompanyInfoSize(_, state) {
     return sizeMethod(state)
   }
 }

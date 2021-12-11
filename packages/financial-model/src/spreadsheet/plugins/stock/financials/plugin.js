@@ -17,17 +17,16 @@ import { fiscalDateRangeRegex } from '../../matchers'
 const fieldCellError = getFieldCellError(fields)
 
 export const implementedFunctions = {
-  'STOCK.FINANCIALS': {
-    method: 'financials',
-    arraySizeMethod: 'financialsSize',
+  'STOCK.GET_COMPANY_FINANCIALS': {
+    method: 'getCompanyFinancials',
+    arraySizeMethod: 'getCompanyFinancialsSize',
     isAsyncMethod: true,
     parameters: [
       {
         argumentType: ArgumentTypes.STRING
       },
       {
-        argumentType: ArgumentTypes.STRING,
-        optionalArg: true
+        argumentType: ArgumentTypes.STRING
       },
       { argumentType: ArgumentTypes.STRING, optionalArg: true },
       { argumentType: ArgumentTypes.STRING, optionalArg: true }
@@ -36,12 +35,12 @@ export const implementedFunctions = {
 }
 
 export const aliases = {
-  'S.FIN': 'STOCK.FINANCIALS'
+  'S.GCF': 'STOCK.GET_COMPANY_FINANCIALS'
 }
 
 export const translations = {
   enGB: {
-    'S.FIN': 'STOCK.FINANCIALS'
+    'S.GCF': 'STOCK.GET_COMPANY_FINANCIALS'
   }
 }
 
@@ -49,8 +48,8 @@ export const fundamentalsFilter =
   'General::CountryISO,General::Code,General::Exchange,General::UpdatedAt,Financials::Balance_Sheet,Financials::Income_Statement,Financials::Cash_Flow'
 
 export class Plugin extends FunctionPlugin {
-  financials(ast, state) {
-    const metadata = this.metadata('STOCK.FINANCIALS')
+  getCompanyFinancials(ast, state) {
+    const metadata = this.metadata('STOCK.GET_COMPANY_FINANCIALS')
 
     return this.runAsyncFunction(
       ast.args,
@@ -113,7 +112,7 @@ export class Plugin extends FunctionPlugin {
     )
   }
 
-  financialsSize(_, state) {
+  getCompanyFinancialsSize(_, state) {
     return sizeMethod(state)
   }
 

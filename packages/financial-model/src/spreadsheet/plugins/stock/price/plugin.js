@@ -7,14 +7,11 @@ import { tickerRegex } from '../matchers'
 import { tickerCellError } from '../cellErrors'
 
 export const implementedFunctions = {
-  'STOCK.PRICE': {
-    method: 'price',
-    arraySizeMethod: 'priceSize',
+  'STOCK.GET_PRICE': {
+    method: 'getPrice',
+    arraySizeMethod: 'getPriceSize',
     isAsyncMethod: true,
     parameters: [
-      {
-        argumentType: ArgumentTypes.STRING
-      },
       {
         argumentType: ArgumentTypes.STRING
       },
@@ -26,18 +23,18 @@ export const implementedFunctions = {
 }
 
 export const aliases = {
-  'S.PRICE': 'STOCK.PRICE'
+  'S.GP': 'STOCK.GET_PRICE'
 }
 
 export const translations = {
   enGB: {
-    'S.PRICE': 'STOCK.PRICE'
+    'S.GP': 'STOCK.GET_PRICE'
   }
 }
 
 export class Plugin extends FunctionPlugin {
-  price(ast, state) {
-    const metadata = this.metadata('STOCK.PRICE')
+  getPrice(ast, state) {
+    const metadata = this.metadata('STOCK.GET_PRICE')
 
     return this.runAsyncFunction(
       ast.args,
@@ -69,7 +66,7 @@ export class Plugin extends FunctionPlugin {
     )
   }
 
-  priceSize(_, state) {
+  getPriceSize(_, state) {
     return sizeMethod(state)
   }
 }

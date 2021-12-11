@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { sendReqOrGetCachedData } from '../../../../cache'
 import { eodAPIToken, eodEndpoint } from '../../../../shared/constants'
+import alterFromToQuery from '../alterFromToQuery'
 
 export const getExchangeRate = async (baseCurrency, quoteCurrency, query) => {
   const data = await sendReqOrGetCachedData(
@@ -12,7 +13,7 @@ export const getExchangeRate = async (baseCurrency, quoteCurrency, query) => {
             api_token: eodAPIToken,
             fmt: 'json',
             order: 'd',
-            ...query
+            ...alterFromToQuery(query)
           }
         }
       )
