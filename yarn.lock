@@ -5908,7 +5908,7 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
   integrity sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
 
-"@tracktak/powersheet@^1.0.3":
+"@tracktak/powersheet@1.0.3":
   version "1.0.3"
   resolved "https://npm.pkg.github.com/download/@tracktak/powersheet/1.0.3/53fa85f1ee45739414d65f7bdaf0af70ea56c35eac33a89f1cc3d8712ea35b00#0a9499e5fc1404961e966bf89ac0200bb0a3b59a"
   integrity sha512-TuX2c5zOhJl7Kl1ybes8nAnaXo/7tth5QuXCweVDCgB5ANSd+8eQ3v5eHHs4+tZzvnRSCE2oOpmMxHqkjOwfoQ==
