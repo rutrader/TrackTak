@@ -72,7 +72,7 @@ export const balanceSheet = [
   'capitalSurpluse',
   'otherStockholderEquity',
   'totalStockholderEquity',
-  'minorityInterest',
+  'noncontrollingInterestInConsolidatedEntity',
   'totalEquity',
   'currencyCode',
   'filingDate'

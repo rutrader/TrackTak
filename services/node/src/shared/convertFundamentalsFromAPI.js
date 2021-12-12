@@ -6,6 +6,22 @@ import * as financialStatementKeys from './financialStatementKeys'
 
 const dateSortComparer = (a, b) => b.date.localeCompare(a.date)
 
+const convertCalculationToZeroIfNaN = calculations => {
+  const newCalculations = {
+    ...calculations
+  }
+
+  Object.keys(newCalculations).forEach(property => {
+    const value = newCalculations[property]
+
+    if (value === Infinity || value === -Infinity || isNaN(value)) {
+      newCalculations[property] = 0
+    }
+  })
+
+  return newCalculations
+}
+
 const convertBalanceSheet = ({
   date,
   filingDate,
@@ -28,7 +44,32 @@ const convertBalanceSheet = ({
     ? newBalanceSheet.longTermDebtTotal
     : newBalanceSheet.longTermDebt
 
-  return newBalanceSheet
+  const calculations = {}
+
+  // API returns wrong value for this property for non-us stocks
+  // so we overwrite it
+  calculations.cashAndShortTermInvestments =
+    newBalanceSheet.cash + newBalanceSheet.shortTermInvestments
+
+  calculations.longTermDebtAndCapitalLeases =
+    newBalanceSheet.longTermDebt + newBalanceSheet.capitalLeaseObligations
+
+  calculations.totalEquity =
+    newBalanceSheet.totalStockholderEquity +
+    newBalanceSheet.noncontrollingInterestInConsolidatedEntity
+
+  // Take it out here because we show capital leases as a separate line
+  // on the balance statement
+  calculations.nonCurrentLiabilitiesOther =
+    newBalanceSheet.nonCurrentLiabilitiesOther -
+    newBalanceSheet.capitalLeaseObligations
+
+  const convertedCalculations = convertCalculationToZeroIfNaN(calculations)
+
+  return {
+    ...newBalanceSheet,
+    ...convertedCalculations
+  }
 }
 
 const getFinancialMapCallback = key => statement => {
@@ -65,7 +106,26 @@ const convertIncomeStatement = ({
     newIncomeStatement[key] = getValueFromString(incomeStatement[key])
   })
 
-  return newIncomeStatement
+  const calculations = {}
+
+  calculations.grossMargin =
+    newIncomeStatement.grossProfit / newIncomeStatement.revenue
+
+  calculations.operatingMargin =
+    newIncomeStatement.operatingIncome / newIncomeStatement.revenue
+
+  calculations.effectiveTaxRate =
+    newIncomeStatement.incomeTaxExpense / newIncomeStatement.incomeBeforeTax
+
+  calculations.netMargin =
+    newIncomeStatement.netIncomeFromContinuingOps / newIncomeStatement.revenue
+
+  const convertedCalculations = convertCalculationToZeroIfNaN(calculations)
+
+  return {
+    ...newIncomeStatement,
+    ...convertedCalculations
+  }
 }
 
 const convertCashFlowStatement = ({
