@@ -1,7 +1,11 @@
 import { FunctionPlugin, SimpleRangeValue } from '@tracktak/hyperformula'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
 import { isNil } from 'lodash'
-import { granularityCellError, tickerCellError } from './cellErrors'
+import {
+  granularityCellError,
+  industryTypeCellError,
+  tickerCellError
+} from './cellErrors'
 import { api } from '@tracktak/common'
 import { financialFields, infoFields } from './fields'
 import { tickerRegex } from './matchers'
@@ -60,20 +64,32 @@ export const implementedFunctions = {
         argumentType: ArgumentTypes.STRING
       }
     ]
+  },
+  'STOCK.GET_INDUSTRY_AVERAGES': {
+    method: 'getIndustryAverages',
+    arraySizeMethod: 'stockSize',
+    isAsyncMethod: true,
+    parameters: [
+      {
+        argumentType: ArgumentTypes.STRING
+      }
+    ]
   }
 }
 
 export const aliases = {
   'S.GCF': 'STOCK.GET_COMPANY_FINANCIALS',
   'S.GP': 'STOCK.GET_PRICE',
-  'S.GCI': 'STOCK.GET_COMPANY_INFO'
+  'S.GCI': 'STOCK.GET_COMPANY_INFO',
+  'S.GIA': 'STOCK.GET_INDUSTRY_AVERAGES'
 }
 
 export const translations = {
   enGB: {
     'S.GCF': 'STOCK.GET_COMPANY_FINANCIALS',
     'S.GP': 'STOCK.GET_PRICE',
-    'S.GCI': 'STOCK.GET_COMPANY_INFO'
+    'S.GCI': 'STOCK.GET_COMPANY_INFO',
+    'S.GIA': 'STOCK.GET_INDUSTRY_AVERAGES'
   }
 }
 
@@ -211,6 +227,22 @@ export class Plugin extends FunctionPlugin {
         return getFieldValue(info[field])
       }
     )
+  }
+
+  getIndustryAverages(ast, state) {
+    const metadata = this.metadata('STOCK.GET_INDUSTRY_AVERAGES')
+
+    return this.runAsyncFunction(ast.args, state, metadata, async type => {
+      const isTypeValid = type === 'US' || 'Global'
+
+      if (!isTypeValid) {
+        return industryTypeCellError
+      }
+
+      const { data } = await api.getIndustryAverages(type)
+
+      return getFieldValue(data.value, true)
+    })
   }
 
   stockSize(_, state) {

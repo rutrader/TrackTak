@@ -1,6 +1,3 @@
-import industryAveragesGlobalJson from '../data/industryAveragesGlobal.json'
-import industryAveragesUSJson from '../data/industryAveragesUS.json'
-
 const getConvertedIndustryAverages = industryAverages => {
   return industryAverages.map(industryAverage => {
     const industryAverageObject = {}
@@ -23,9 +20,4 @@ const getConvertedIndustryAverages = industryAverages => {
   })
 }
 
-const industryAverage = {
-  global: getConvertedIndustryAverages(industryAveragesGlobalJson),
-  US: getConvertedIndustryAverages(industryAveragesUSJson)
-}
-
-export default industryAverage
+export default getConvertedIndustryAverages

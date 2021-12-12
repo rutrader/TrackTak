@@ -15,3 +15,8 @@ export const granularityCellError = new CellError(
   ErrorType.VALUE,
   `granularity is not valid. Must be one of these fields: "ttm", "quarter" or "year".`
 )
+
+export const industryTypeCellError = new CellError(
+  ErrorType.VALUE,
+  `type is not valid. Must be either "US" or "Global".`
+)

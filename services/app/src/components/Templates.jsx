@@ -30,7 +30,7 @@ const Templates = () => {
       api.getSpreadsheetTemplate(templateFileName)
     ])
     const token = values[0]
-    const template = values[1].data.template
+    const template = values[1].data.value
 
     const sheetData = {
       name,

@@ -27,6 +27,12 @@ export const getEOD = async (ticker, params) => {
   })
 }
 
+export const getIndustryAverages = async (type, params) => {
+  return axios.get(`/api/v1/securities/stocks/industry-averages/${type}`, {
+    params
+  })
+}
+
 export const getGovernmentBond = async (code, params) => {
   return axios.get(`/api/v1/securities/bonds/government/${code}`, {
     params
