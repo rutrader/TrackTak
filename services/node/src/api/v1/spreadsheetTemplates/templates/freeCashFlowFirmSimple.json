@@ -8417,7 +8417,7 @@
       "id": 6
     },
     "7": {
-      "sheetName": "API Millions Data",
+      "sheetName": "Helper Data",
       "cells": {
         "7_0_0": "7_0_0",
         "7_0_1": "7_0_1",
@@ -8442,7 +8442,9 @@
         "7_9_0": "7_9_0",
         "7_9_1": "7_9_1",
         "7_10_0": "7_10_0",
-        "7_10_1": "7_10_1"
+        "7_10_1": "7_10_1",
+        "7_11_0": "7_11_0",
+        "7_11_1": "7_11_1"
       },
       "cols": {
         "7_0": "7_0",
@@ -19991,7 +19993,7 @@
       "id": "2_2_0"
     },
     "2_2_1": {
-      "value": "='API Millions Data'!$B$6",
+      "value": "='Helper Data'!$B$6",
       "id": "2_2_1",
       "textFormatPattern": "#,##0.00"
     },
@@ -20045,7 +20047,7 @@
       "id": "2_9_0"
     },
     "2_9_1": {
-      "value": "='API Millions Data'!$B$4",
+      "value": "='Helper Data'!$B$4",
       "id": "2_9_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -20061,7 +20063,7 @@
       "id": "2_10_0"
     },
     "2_10_1": {
-      "value": "=ABS('API Millions Data'!$B$9)",
+      "value": "=ABS('Helper Data'!$B$9)",
       "id": "2_10_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -20227,7 +20229,7 @@
       "id": "2_17_0"
     },
     "2_17_1": {
-      "value": "='API Millions Data'!$B$10",
+      "value": "='Helper Data'!$B$10",
       "id": "2_17_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -20328,7 +20330,7 @@
       "id": "3_6_0"
     },
     "3_6_1": {
-      "value": "='API Millions Data'!$B$6",
+      "value": "='Helper Data'!$B$6",
       "id": "3_6_1",
       "textFormatPattern": "#,##0.00"
     },
@@ -20425,7 +20427,7 @@
       "horizontalTextAlign": "left"
     },
     "4_1_3": {
-      "value": "='API Millions Data'!$B$2",
+      "value": "='Helper Data'!$B$2",
       "id": "4_1_3",
       "horizontalTextAlign": "left",
       "textFormatPattern": "#,##0.##",
@@ -20446,7 +20448,7 @@
       "id": "4_2_2"
     },
     "4_2_3": {
-      "value": "=ABS('API Millions Data'!$B$9)",
+      "value": "=ABS('Helper Data'!$B$9)",
       "id": "4_2_3",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -20465,7 +20467,7 @@
       "id": "4_3_2"
     },
     "4_3_3": {
-      "value": "='API Millions Data'!$B$11",
+      "value": "='Helper Data'!$B$11",
       "id": "4_3_3",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -42332,14 +42334,14 @@
       "id": "0_10_23"
     },
     "0_11_0": {
-      "value": "=STOCK.INFO(B3, \"name\")",
+      "value": "=S.GCI(B3, \"name\")",
       "id": "0_11_0",
       "fontSize": 16,
       "bold": true,
       "horizontalTextAlign": "center"
     },
     "0_12_0": {
-      "value": "=STOCK.INFO(B3, \"code\")&\".\"&STOCK.INFO(B3, \"exchange\")",
+      "value": "=S.GCI(B3, \"code\")&\".\"&S.GCI(B3, \"exchange\")",
       "id": "0_12_0",
       "horizontalTextAlign": "center"
     },
@@ -42350,7 +42352,7 @@
       "bold": true
     },
     "0_13_0": {
-      "value": "=STOCK.INFO(B3, \"currencySymbol\")&STOCK.PRICE(B3, \"close\",, \"12-11-2021\")&\" \"&STOCK.INFO(B3, \"currencyCode\")",
+      "value": "=STOCK.GET_COMPANY_INFO(B3, \"currencySymbol\")&STOCK.GET_PRICE(B3, \"close\",,'Helper Data'!$B$12)&\" \"&STOCK.GET_COMPANY_INFO(B3, \"currencyCode\")",
       "id": "0_13_0",
       "horizontalTextAlign": "center"
     },
@@ -42365,7 +42367,7 @@
       "textFormatPattern": ""
     },
     "0_14_1": {
-      "value": "='API Millions Data'!$B$6",
+      "value": "='Helper Data'!$B$6",
       "id": "0_14_1",
       "textFormatPattern": "#,##0.00"
     },
@@ -43403,7 +43405,7 @@
       "bold": true
     },
     "0_30_1": {
-      "value": "='API Millions Data'!$B$1",
+      "value": "='Helper Data'!$B$1",
       "id": "0_30_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -43545,7 +43547,7 @@
       "bold": true
     },
     "0_32_1": {
-      "value": "=IFERROR('API Millions Data'!$B$2, 0)",
+      "value": "=IFERROR('Helper Data'!$B$2, 0)",
       "id": "0_32_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -44266,7 +44268,7 @@
       "bold": true
     },
     "0_44_1": {
-      "value": "=IFERROR('API Millions Data'!$B$5, 0)",
+      "value": "=IFERROR('Helper Data'!$B$5, 0)",
       "id": "0_44_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -44486,7 +44488,7 @@
       "bold": true
     },
     "0_54_1": {
-      "value": "=(('API Millions Data'!$B$3)+('API Millions Data'!$B$4))*$Q$11",
+      "value": "=(('Helper Data'!$B$3)+('Helper Data'!$B$4))*$Q$11",
       "id": "0_54_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -44508,7 +44510,7 @@
       "bold": true
     },
     "0_56_1": {
-      "value": "=IFERROR('API Millions Data'!$B$4, 0)",
+      "value": "=IFERROR('Helper Data'!$B$4, 0)",
       "id": "0_56_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -44519,7 +44521,7 @@
       "bold": true
     },
     "0_57_1": {
-      "value": "=IFERROR('API Millions Data'!$B$7, 0)",
+      "value": "=IFERROR('Helper Data'!$B$7, 0)",
       "id": "0_57_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -44530,7 +44532,7 @@
       "bold": true
     },
     "0_58_1": {
-      "value": "=IFERROR('API Millions Data'!$B$8, 0)",
+      "value": "=IFERROR('Helper Data'!$B$8, 0)",
       "id": "0_58_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency"
@@ -44596,7 +44598,7 @@
       "bold": true
     },
     "0_64_1": {
-      "value": "=IF(B63/'API Millions Data'!$B$6 < 0, 0, B63/'API Millions Data'!$B$6)",
+      "value": "=IF(B63/'Helper Data'!$B$6 < 0, 0, B63/'Helper Data'!$B$6)",
       "id": "0_64_1",
       "textFormatPattern": "#,##0.##",
       "dynamicFormat": "currency",
@@ -44676,6 +44678,14 @@
     },
     "0_4_2": {
       "id": "0_4_2"
+    },
+    "7_11_0": {
+      "value": "Creation Date",
+      "id": "7_11_0"
+    },
+    "7_11_1": {
+      "value": "=TEXT(SPREADSHEET_CREATION_DATE(), \"YYYY-MM-DD\")",
+      "id": "7_11_1"
     }
   },
   "mergedCells": {

@@ -124,6 +124,7 @@ export class Plugin extends FunctionPlugin {
           filter: fundamentalsFilter
         })
         const financials = data.value.financials
+        const isInUS = data.value.general.countryISO === 'US'
 
         let formattedGranularity = granularity
 
@@ -139,7 +140,8 @@ export class Plugin extends FunctionPlugin {
           field,
           formattedGranularity,
           fiscalDateRange,
-          financials
+          financials,
+          isInUS
         )
       }
     )
@@ -217,34 +219,35 @@ export class Plugin extends FunctionPlugin {
 
   getTypeOfStatementToUse(financials, field) {
     if (
-      !isNil(financials.incomeStatement.ttm[field]) ||
+      !isNil(financials.incomeStatement.yearly[0][field]) ||
       field === 'incomeStatement'
     ) {
       return 'incomeStatement'
     }
 
     if (
-      !isNil(financials.balanceSheet.ttm[field]) ||
+      !isNil(financials.balanceSheet.yearly[0][field]) ||
       field === 'balanceSheet'
     ) {
       return 'balanceSheet'
     }
 
     if (
-      !isNil(financials.cashFlowStatement.ttm[field]) ||
+      !isNil(financials.cashFlowStatement.yearly[0][field]) ||
       field === 'cashFlowStatement'
     ) {
       return 'cashFlowStatement'
     }
   }
 
-  getFieldValues(field, granularity, fiscalDateRange, financials) {
+  getFieldValues(field, granularity, fiscalDateRange, financials, isInUS) {
     const statementKey = this.getTypeOfStatementToUse(financials, field)
     const isStatement =
       field === 'incomeStatement' ||
       field === 'balanceSheet' ||
       field === 'cashFlowStatement'
-    const statements = financials[statementKey][granularity]
+    const statements =
+      granularity === 'ttm' ? [] : financials[statementKey][granularity]
 
     const getSimpleRangeValues = values => {
       // TODO: If has one length then HF is throwing errors.
@@ -257,29 +260,47 @@ export class Plugin extends FunctionPlugin {
     if (fiscalDateRange) {
       const fiscalDateRangeFilterPredicate =
         getFiscalDateRangeFilterPredicate(fiscalDateRange)
+      const filteredStatements = statements.filter(
+        fiscalDateRangeFilterPredicate
+      )
+
+      if (granularity !== 'quarterly') {
+        if (isInUS) {
+          const filteredQuarters = financials[statementKey].quarterly.filter(
+            fiscalDateRangeFilterPredicate
+          )
+          const ttmStatement = this.getTTMValuesFromQuarters(filteredQuarters)
+
+          filteredStatements.unshift(ttmStatement)
+        } else {
+          filteredStatements.unshift(financials[statementKey].yearly[0])
+        }
+      }
 
       if (isStatement) {
-        const filteredStatements = [
-          financials[statementKey].ttm,
-          ...statements
-        ].filter(fiscalDateRangeFilterPredicate)
-
         return mapArrayObjectsToSimpleRangeValues(filteredStatements)
       }
 
-      const values = statements
-        .filter(fiscalDateRangeFilterPredicate)
-        .map(statement => statement[field])
+      const values = filteredStatements.map(statement => statement[field])
 
       return getSimpleRangeValues(values)
     }
 
+    if (granularity !== 'quarterly') {
+      if (isInUS) {
+        const ttmStatement = this.getTTMValuesFromQuarters(
+          financials[statementKey].quarterly
+        )
+
+        statements.unshift(ttmStatement)
+      } else {
+        statements.unshift(financials[statementKey].yearly[0])
+      }
+    }
+
     if (granularity !== 'ttm') {
       if (isStatement) {
-        return mapArrayObjectsToSimpleRangeValues([
-          financials[statementKey].ttm,
-          ...statements
-        ])
+        return mapArrayObjectsToSimpleRangeValues(statements)
       }
 
       const values = statements.map(statement => statement[field])
@@ -287,13 +308,40 @@ export class Plugin extends FunctionPlugin {
       return getSimpleRangeValues(values)
     }
 
-    const statement = statements
-
     if (isStatement) {
-      return mapObjToSimpleRangeValues(statement)
+      return mapObjToSimpleRangeValues(statements[0])
     }
 
-    return statement[field]
+    return statements[0][field]
+  }
+
+  getTTMValuesFromQuarters(statements) {
+    const ttm = {}
+    const firstFourStatements = statements.slice(0, 4)
+
+    firstFourStatements.forEach(statement => {
+      Object.keys(statement).forEach(key => {
+        const value = statement[key]
+
+        if (Number.isFinite(value)) {
+          ttm[key] = this.sumFinancialStatementValues(firstFourStatements, key)
+        } else {
+          ttm[key] = value
+        }
+      })
+    })
+
+    ttm.date = 'TTM'
+
+    return ttm
+  }
+
+  sumFinancialStatementValues(financialStatements, valueKey) {
+    const sumOfFirstFourValues = financialStatements.reduce((acc, curr) => {
+      return (acc += curr[valueKey])
+    }, 0)
+
+    return sumOfFirstFourValues
   }
 }
 

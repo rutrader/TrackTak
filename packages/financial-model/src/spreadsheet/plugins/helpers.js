@@ -5,13 +5,25 @@ import { sentenceCase } from 'change-case'
 import { noValueReturnedCellError } from './cellErrors'
 
 const parseFiscalDateFromRange = fiscalDateRange => {
-  if (fiscalDateRange.charAt(0) === '>') {
+  if (fiscalDateRange.includes('>=')) {
+    const fiscalDate = fiscalDateRange.slice(2)
+
+    return [fiscalDate, '>=']
+  }
+
+  if (fiscalDateRange.includes('<=')) {
+    const fiscalDate = fiscalDateRange.slice(2)
+
+    return [fiscalDate, '<=']
+  }
+
+  if (fiscalDateRange.includes('>')) {
     const fiscalDate = fiscalDateRange.slice(1)
 
     return [fiscalDate, '>']
   }
 
-  if (fiscalDateRange.charAt(0) === '<') {
+  if (fiscalDateRange.includes('<')) {
     const fiscalDate = fiscalDateRange.slice(1)
 
     return [fiscalDate, '<']
@@ -28,7 +40,7 @@ const parseFiscalDateFromRange = fiscalDateRange => {
 
 export const getFiscalDateRangeFilterPredicate = fiscalDateRange => {
   const [fiscalDate, operator] = parseFiscalDateFromRange(fiscalDateRange)
-  const fiscalDateRangeFilterPredicate = ({ date }, _, arr) => {
+  const fiscalDateRangeFilterPredicate = ({ date }, i, arr) => {
     // Handles cases such as ttm dates for financials
     const realDate = dayjs(date).isValid() ? date : arr[0].date
 
@@ -36,11 +48,19 @@ export const getFiscalDateRangeFilterPredicate = fiscalDateRange => {
       return dayjs(realDate).isAfter(fiscalDate)
     }
 
+    if (operator === '>=') {
+      return dayjs(realDate).add(1, 'day').isAfter(fiscalDate)
+    }
+
     if (operator === '<') {
       return dayjs(realDate).isBefore(fiscalDate)
     }
 
-    if (operator === ';') {
+    if (operator === '<=') {
+      return dayjs(realDate).subtract(1, 'day').isBefore(fiscalDate)
+    }
+
+    if (operator === ':') {
       return dayjs(realDate).isBetween(fiscalDate[0], fiscalDate[1])
     }
 
@@ -53,7 +73,18 @@ export const getFiscalDateRangeFilterPredicate = fiscalDateRange => {
 export const convertFiscalDateRangeToFromTo = fiscalDateRange => {
   const [fiscalDate, operator] = parseFiscalDateFromRange(fiscalDateRange)
 
+  const addOneDay = () => dayjs(fiscalDate).add(1, 'day').format('YYYY-MM-DD')
+  const subtractOneDay = () =>
+    dayjs(fiscalDate).subtract(1, 'day').format('YYYY-MM-DD')
+
+  // EOD API filter is inclusive so we need to make it exclusive
   if (operator === '>') {
+    return {
+      from: addOneDay()
+    }
+  }
+
+  if (operator === '>=') {
     return {
       from: fiscalDate
     }
@@ -61,13 +92,19 @@ export const convertFiscalDateRangeToFromTo = fiscalDateRange => {
 
   if (operator === '<') {
     return {
+      to: subtractOneDay()
+    }
+  }
+
+  if (operator === '<=') {
+    return {
       to: fiscalDate
     }
   }
 
-  if (operator === ';') {
-    const from = fiscalDate[0]
-    const to = fiscalDate[1]
+  if (operator === ':') {
+    const from = addOneDay()
+    const to = subtractOneDay()
 
     return {
       from,
@@ -167,4 +204,8 @@ export const sizeMethod = state => {
   }
 
   return ArraySize.scalar()
+}
+
+export const timeToNumber = time => {
+  return ((time.seconds / 60 + time.minutes) / 60 + time.hours) / 24
 }

@@ -1,5 +1,8 @@
 import { CellError, ErrorType } from '@tracktak/hyperformula'
 
+export const fiscalDateRangeExample =
+  'Example: "2010-01-01", ">2010-01-01", ">=2010-01-01", "<2020-01-01", <=2020-01-01", "2010-01-01:2015-01-01" (exclusive between)'
+
 export const getFieldCellError = fields =>
   new CellError(
     ErrorType.VALUE,
@@ -8,7 +11,7 @@ export const getFieldCellError = fields =>
 
 export const fiscalDateRangeCellError = new CellError(
   ErrorType.VALUE,
-  `fiscalDateRange is not valid. Must be in this format: "{YYYY}-{MM}-{DD}" (exact), ">{YYYY}-{MM}-{DD}" (more than), "<{YYYY}-{MM}-{DD}" (less than) or "{YYYY}-{MM}-{DD};{YYYY}-{MM}-{DD}" (between).`
+  `fiscalDateRange is not valid. ${fiscalDateRangeExample}`
 )
 
 export const noValueReturnedCellError = new CellError(

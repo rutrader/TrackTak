@@ -5,6 +5,7 @@ import {
 } from './financialStatements'
 import { financialStatementFields } from './fields'
 import { aliases } from './plugin'
+import { fiscalDateRangeExample } from '../cellErrors'
 
 const functionHelperData = {
   header: 'STOCK.FINANCIALS',
@@ -14,7 +15,7 @@ const functionHelperData = {
   exampleUsages: [
     '=S.FIN("AMZN", "revenue")',
     '=S.FIN("BP.LSE", "revenue", "quarter")',
-    '=S.FIN("AAPL", "revenue",,, "2010-01-01;2015-01-01")',
+    '=S.FIN("AAPL", "revenue",,, "2010-01-01:2015-01-01")',
     '=S.FIN("KME.AU", "incomeStatement",, "year")'
   ],
   syntax: '=S.FIN(ticker, field, [granularity], [fiscalDateRange])',
@@ -41,8 +42,7 @@ const functionHelperData = {
     },
     {
       syntaxName: '[fiscalDateRange]',
-      description:
-        'Example: "2010-01-01" (exact), ">2010-01-01" (more than), "<2020-01-01" (less than) or "2010-01-01;2015-01-01" (between).'
+      description: fiscalDateRangeExample
     }
   ],
   fields: [

@@ -13,7 +13,7 @@ const alterFromToQuery = (query, changeSunday = false) => {
     if (changeSunday) {
       // Sunday
       if (date.day() === 0) {
-        date = date.day(6)
+        date = date.day(-2)
       }
     }
 

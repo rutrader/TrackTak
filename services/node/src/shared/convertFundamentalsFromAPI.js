@@ -3,34 +3,7 @@ import isNil from 'lodash/isNil'
 import getValueFromString from './getValueFromString'
 import replaceDoubleColonWithObject from './replaceDoubleColonWithObject'
 
-const sumFinancialStatementValues = (financialStatements, valueKey) => {
-  const sumOfFirstFourValues = financialStatements.reduce((acc, curr) => {
-    return (acc += curr[valueKey])
-  }, 0)
-
-  return sumOfFirstFourValues
-}
-
 const dateSortComparer = (a, b) => b.date.localeCompare(a.date)
-
-const getTTMValuesFromQuarters = statement => {
-  const ttm = {}
-  const firstFourStatements = statement.quarterly.slice(0, 4)
-
-  firstFourStatements.forEach(statement => {
-    Object.keys(statement).forEach(key => {
-      const value = statement[key]
-
-      if (Number.isFinite(value)) {
-        ttm[key] = sumFinancialStatementValues(firstFourStatements, key)
-      } else {
-        ttm[key] = value
-      }
-    })
-  })
-
-  return ttm
-}
 
 const convertBalanceSheet = ({
   date,
@@ -187,8 +160,6 @@ const convertFundamentalsFromAPI = (ticker, data) => {
       const balanceSheet = financials.balanceSheet
       const cashFlowStatement = financials.cashFlow
 
-      const isInUS = newFundamentalsData.general.countryISO === 'US'
-
       if (incomeStatement) {
         if (incomeStatement.quarterly) {
           const quarterly = []
@@ -204,10 +175,6 @@ const convertFundamentalsFromAPI = (ticker, data) => {
           })
 
           incomeStatement.quarterly = quarterly.sort(dateSortComparer)
-
-          if (isInUS) {
-            incomeStatement.ttm = getTTMValuesFromQuarters(incomeStatement)
-          }
         }
 
         if (incomeStatement.yearly) {
@@ -224,13 +191,7 @@ const convertFundamentalsFromAPI = (ticker, data) => {
           })
 
           incomeStatement.yearly = yearly.sort(dateSortComparer)
-
-          if (!isInUS) {
-            incomeStatement.ttm = incomeStatement.yearly[0]
-          }
         }
-
-        incomeStatement.ttm.date = 'TTM'
 
         financials.incomeStatement = incomeStatement
       }
@@ -253,10 +214,6 @@ const convertFundamentalsFromAPI = (ticker, data) => {
           })
 
           balanceSheet.quarterly = quarterly.sort(dateSortComparer)
-
-          if (isInUS) {
-            balanceSheet.ttm = getTTMValuesFromQuarters(balanceSheet)
-          }
         }
 
         if (balanceSheet.yearly) {
@@ -276,13 +233,7 @@ const convertFundamentalsFromAPI = (ticker, data) => {
           })
 
           balanceSheet.yearly = yearly.sort(dateSortComparer)
-
-          if (!isInUS) {
-            balanceSheet.ttm = balanceSheet.yearly[0]
-          }
         }
-
-        balanceSheet.ttm.date = 'TTM'
 
         financials.balanceSheet = balanceSheet
       }
@@ -300,10 +251,6 @@ const convertFundamentalsFromAPI = (ticker, data) => {
           })
 
           cashFlowStatement.quarterly = quarterly.sort(dateSortComparer)
-
-          if (isInUS) {
-            cashFlowStatement.ttm = getTTMValuesFromQuarters(cashFlowStatement)
-          }
         }
 
         if (cashFlowStatement.yearly) {
@@ -318,15 +265,10 @@ const convertFundamentalsFromAPI = (ticker, data) => {
           })
 
           cashFlowStatement.yearly = yearly.sort(dateSortComparer)
-
-          if (!isInUS) {
-            cashFlowStatement.ttm = cashFlowStatement.yearly[0]
-          }
         }
 
         delete financials.cashFlow
 
-        cashFlowStatement.ttm.date = 'TTM'
         financials.cashFlowStatement = cashFlowStatement
       }
 

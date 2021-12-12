@@ -73,10 +73,10 @@ const buildPowersheet = () => {
   return spreadsheet
 }
 
-const FinancialSpreadsheet = ({ sheetData, saveSheetData, sx }) => {
+const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
   const [spreadsheet, setSpreadsheet] = useState()
   const [containerEl, setContainerEl] = useState()
-  const name = sheetData?.name
+  const name = spreadsheetData?.sheetData.name
 
   useEffect(() => {
     const spreadsheet = buildPowersheet()
@@ -132,14 +132,23 @@ const FinancialSpreadsheet = ({ sheetData, saveSheetData, sx }) => {
         containerEl.appendChild(spreadsheet.spreadsheetEl)
       }
 
-      if (sheetData) {
-        spreadsheet.setData(sheetData.data)
+      if (spreadsheetData) {
+        const metaPlugin =
+          spreadsheet.hyperformula._evaluator.interpreter.functionRegistry.functions.get(
+            'SPREADSHEET_CREATION_DATE'
+          )[1]
+
+        metaPlugin.setSpreadsheetCreationDate(
+          new Date(spreadsheetData.createdTimestamp)
+        )
+
+        spreadsheet.setData(spreadsheetData.sheetData.data)
 
         const functionHelperClosed = localStorage.getItem(
           'functionHelperClosed'
         )
 
-        if (sheetData.data && functionHelperClosed !== 'true') {
+        if (functionHelperClosed !== 'true') {
           // TODO: Figure out why setTimeout needed
           // raise an issue with material components
           setTimeout(() => {
@@ -150,7 +159,7 @@ const FinancialSpreadsheet = ({ sheetData, saveSheetData, sx }) => {
         }
       }
     }
-  }, [containerEl, sheetData, spreadsheet])
+  }, [containerEl, spreadsheetData, spreadsheet])
 
   useEffect(() => {
     const options = {

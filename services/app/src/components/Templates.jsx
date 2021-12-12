@@ -18,7 +18,7 @@ const Templates = () => {
   const { userData, getAccessToken } = useAuth()
   const navigate = useNavigate()
 
-  const createSpreadsheet = (spreadsheet, name) => {
+  const navigateToSpreadsheet = (spreadsheet, name) => {
     navigate(`/${userData.name}/my-spreadsheets/${spreadsheet._id}`)
 
     logSpreadsheetEvent('Create', name)
@@ -38,7 +38,7 @@ const Templates = () => {
     }
     const response = await api.createSpreadsheet({ sheetData }, token?.jwtToken)
 
-    createSpreadsheet(response.data.spreadsheet, sheetData.name)
+    navigateToSpreadsheet(response.data.spreadsheet, sheetData.name)
   }
 
   const createBlankSpreadsheetOnClick = async () => {
@@ -56,7 +56,7 @@ const Templates = () => {
     const token = await getAccessToken()
     const response = await api.createSpreadsheet({ sheetData }, token?.jwtToken)
 
-    createSpreadsheet(response.data.spreadsheet, sheetData.name)
+    navigateToSpreadsheet(response.data.spreadsheet, sheetData.name)
   }
 
   return (
