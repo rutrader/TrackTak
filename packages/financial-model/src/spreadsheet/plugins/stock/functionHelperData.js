@@ -2,7 +2,7 @@ import {
   balanceSheet,
   cashFlowStatement,
   incomeStatement
-} from './financialStatements'
+} from './financialStatementKeys'
 import { financialStatementFields } from './fields'
 import { aliases } from './plugin'
 import { fiscalDateRangeExample } from '../cellErrors'

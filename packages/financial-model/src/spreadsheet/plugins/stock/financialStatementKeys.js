@@ -1,4 +1,5 @@
 export const incomeStatement = [
+  'date',
   'revenue',
   'costOfRevenue',
   'grossProfit',
@@ -29,10 +30,13 @@ export const incomeStatement = [
   'nonRecurring',
   'reconciledDepreciation',
   'otherItems',
-  'ebitda'
+  'ebitda',
+  'currencyCode',
+  'filingDate'
 ]
 
 export const balanceSheet = [
+  'date',
   'cash',
   'shortTermInvestments',
   'cashAndShortTermInvestments',
@@ -68,10 +72,13 @@ export const balanceSheet = [
   'otherStockholderEquity',
   'totalStockholderEquity',
   'minorityInterest',
-  'totalEquity'
+  'totalEquity',
+  'currencyCode',
+  'filingDate'
 ]
 
 export const cashFlowStatement = [
+  'date',
   'netIncome',
   'depreciation',
   'changeToAccountReceivables',
@@ -92,5 +99,7 @@ export const cashFlowStatement = [
   'endPeriodCashFlow',
   'changeInCash',
   'capitalExpenditures',
-  'freeCashFlow'
+  'freeCashFlow',
+  'currencyCode',
+  'filingDate'
 ]

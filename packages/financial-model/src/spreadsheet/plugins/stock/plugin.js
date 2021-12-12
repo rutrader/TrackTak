@@ -317,7 +317,8 @@ export class Plugin extends FunctionPlugin {
 
   getTTMValuesFromQuarters(statements) {
     const ttm = {}
-    const firstFourStatements = statements.slice(0, 4)
+    // Reverse the array because we want the latest data that isn't numbers
+    const firstFourStatements = statements.slice(0, 4).reverse()
 
     firstFourStatements.forEach(statement => {
       Object.keys(statement).forEach(key => {

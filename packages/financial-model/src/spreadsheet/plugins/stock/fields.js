@@ -2,7 +2,7 @@ import {
   balanceSheet,
   cashFlowStatement,
   incomeStatement
-} from './financialStatements'
+} from './financialStatementKeys'
 
 export const financialStatementFields = [
   'incomeStatement',

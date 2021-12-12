@@ -2,6 +2,7 @@ import camelCase from 'camelcase'
 import isNil from 'lodash/isNil'
 import getValueFromString from './getValueFromString'
 import replaceDoubleColonWithObject from './replaceDoubleColonWithObject'
+import * as financialStatementKeys from './financialStatementKeys'
 
 const dateSortComparer = (a, b) => b.date.localeCompare(a.date)
 
@@ -28,6 +29,17 @@ const convertBalanceSheet = ({
     : newBalanceSheet.longTermDebt
 
   return newBalanceSheet
+}
+
+const getFinancialMapCallback = key => statement => {
+  const statementKeys = financialStatementKeys[key]
+  const newStatement = {}
+
+  statementKeys.forEach(key => {
+    newStatement[key] = statement[key]
+  })
+
+  return newStatement
 }
 
 const convertIncomeStatement = ({
@@ -272,7 +284,18 @@ const convertFundamentalsFromAPI = (ticker, data) => {
         financials.cashFlowStatement = cashFlowStatement
       }
 
-      newFundamentalsData.financials = financials
+      Object.keys(financials).forEach(key => {
+        const { quarterly, yearly } = financials[key]
+
+        const newQuarterlyValues = quarterly.map(getFinancialMapCallback(key))
+        const newYearlyValues = yearly.map(getFinancialMapCallback(key))
+
+        newFundamentalsData.financials[key] = {
+          ...financials[key],
+          quarterly: newQuarterlyValues,
+          yearly: newYearlyValues
+        }
+      })
     }
   } catch (error) {
     console.info(`Conversion partially failed for: ${ticker}.`)
