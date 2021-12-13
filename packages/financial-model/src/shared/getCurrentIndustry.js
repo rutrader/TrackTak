@@ -1,7 +1,6 @@
 import { isNil } from 'lodash-es'
 import gicSubIndustryMappingJson from '../data/gicSubIndustryMapping.json'
 import getIsStockInUS from './getIsStockInUS'
-import industryAverage from './industryAverage'
 import industryMapping, { spaceRegex } from './industryMappings'
 
 const getCurrentIndustry = fundamentals => {

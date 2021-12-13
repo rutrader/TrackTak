@@ -11,9 +11,7 @@
     "node": "14.x"
   },
   "scripts": {
-    "generate-exh-pairs": "node --es-module-specifier-resolution=node ./scripts/writeECBExchangePairsToJSON.js",
-    "generate-fundamentals": "node --es-module-specifier-resolution=node ./scripts/writeBulkFundamentalsDataToJSON.js",
-    "find-missing-gbonds": "node --es-module-specifier-resolution=node ./scripts/findMissingGBonds",
+    "write-industry-averages": "node --es-module-specifier-resolution=node ./scripts/writeIndustryAveragesIndustryNames.js",
     "clean": "lerna clean",
     "tracktak-backend": "lerna run develop --parallel --scope @tracktak/database --scope @tracktak/node",
     "tracktak-app": "lerna run develop --scope @tracktak/app",

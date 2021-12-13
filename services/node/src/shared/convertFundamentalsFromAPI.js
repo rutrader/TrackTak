@@ -2,34 +2,24 @@ import camelCase from 'camelcase'
 import isNil from 'lodash/isNil'
 import getValueFromString from './getValueFromString'
 import replaceDoubleColonWithObject from './replaceDoubleColonWithObject'
-
-const sumFinancialStatementValues = (financialStatements, valueKey) => {
-  const sumOfFirstFourValues = financialStatements.reduce((acc, curr) => {
-    return (acc += curr[valueKey])
-  }, 0)
-
-  return sumOfFirstFourValues
-}
+import * as financialStatementKeys from './financialStatementKeys'
 
 const dateSortComparer = (a, b) => b.date.localeCompare(a.date)
 
-const getTTMValuesFromQuarters = statement => {
-  const ttm = {}
-  const firstFourStatements = statement.quarterly.slice(0, 4)
+const convertCalculationToZeroIfNaN = calculations => {
+  const newCalculations = {
+    ...calculations
+  }
 
-  firstFourStatements.forEach(statement => {
-    Object.keys(statement).forEach(key => {
-      const value = statement[key]
+  Object.keys(newCalculations).forEach(property => {
+    const value = newCalculations[property]
 
-      if (Number.isFinite(value)) {
-        ttm[key] = sumFinancialStatementValues(firstFourStatements, key)
-      } else {
-        ttm[key] = value
-      }
-    })
+    if (value === Infinity || value === -Infinity || isNaN(value)) {
+      newCalculations[property] = 0
+    }
   })
 
-  return ttm
+  return newCalculations
 }
 
 const convertBalanceSheet = ({
@@ -54,7 +44,43 @@ const convertBalanceSheet = ({
     ? newBalanceSheet.longTermDebtTotal
     : newBalanceSheet.longTermDebt
 
-  return newBalanceSheet
+  const calculations = {}
+
+  // API returns wrong value for this property for non-us stocks
+  // so we overwrite it
+  calculations.cashAndShortTermInvestments =
+    newBalanceSheet.cash + newBalanceSheet.shortTermInvestments
+
+  calculations.longTermDebtAndCapitalLeases =
+    newBalanceSheet.longTermDebt + newBalanceSheet.capitalLeaseObligations
+
+  calculations.totalEquity =
+    newBalanceSheet.totalStockholderEquity +
+    newBalanceSheet.noncontrollingInterestInConsolidatedEntity
+
+  // Take it out here because we show capital leases as a separate line
+  // on the balance statement
+  calculations.nonCurrentLiabilitiesOther =
+    newBalanceSheet.nonCurrentLiabilitiesOther -
+    newBalanceSheet.capitalLeaseObligations
+
+  const convertedCalculations = convertCalculationToZeroIfNaN(calculations)
+
+  return {
+    ...newBalanceSheet,
+    ...convertedCalculations
+  }
+}
+
+const getFinancialMapCallback = key => statement => {
+  const statementKeys = financialStatementKeys[key]
+  const newStatement = {}
+
+  statementKeys.forEach(key => {
+    newStatement[key] = statement[key]
+  })
+
+  return newStatement
 }
 
 const convertIncomeStatement = ({
@@ -80,7 +106,26 @@ const convertIncomeStatement = ({
     newIncomeStatement[key] = getValueFromString(incomeStatement[key])
   })
 
-  return newIncomeStatement
+  const calculations = {}
+
+  calculations.grossMargin =
+    newIncomeStatement.grossProfit / newIncomeStatement.revenue
+
+  calculations.operatingMargin =
+    newIncomeStatement.operatingIncome / newIncomeStatement.revenue
+
+  calculations.effectiveTaxRate =
+    newIncomeStatement.incomeTaxExpense / newIncomeStatement.incomeBeforeTax
+
+  calculations.netMargin =
+    newIncomeStatement.netIncomeFromContinuingOps / newIncomeStatement.revenue
+
+  const convertedCalculations = convertCalculationToZeroIfNaN(calculations)
+
+  return {
+    ...newIncomeStatement,
+    ...convertedCalculations
+  }
 }
 
 const convertCashFlowStatement = ({
@@ -187,8 +232,6 @@ const convertFundamentalsFromAPI = (ticker, data) => {
       const balanceSheet = financials.balanceSheet
       const cashFlowStatement = financials.cashFlow
 
-      const isInUS = newFundamentalsData.general.countryISO === 'US'
-
       if (incomeStatement) {
         if (incomeStatement.quarterly) {
           const quarterly = []
@@ -204,10 +247,6 @@ const convertFundamentalsFromAPI = (ticker, data) => {
           })
 
           incomeStatement.quarterly = quarterly.sort(dateSortComparer)
-
-          if (isInUS) {
-            incomeStatement.ttm = getTTMValuesFromQuarters(incomeStatement)
-          }
         }
 
         if (incomeStatement.yearly) {
@@ -224,13 +263,7 @@ const convertFundamentalsFromAPI = (ticker, data) => {
           })
 
           incomeStatement.yearly = yearly.sort(dateSortComparer)
-
-          if (!isInUS) {
-            incomeStatement.ttm = incomeStatement.yearly[0]
-          }
         }
-
-        incomeStatement.ttm.date = 'TTM'
 
         financials.incomeStatement = incomeStatement
       }
@@ -253,10 +286,6 @@ const convertFundamentalsFromAPI = (ticker, data) => {
           })
 
           balanceSheet.quarterly = quarterly.sort(dateSortComparer)
-
-          if (isInUS) {
-            balanceSheet.ttm = getTTMValuesFromQuarters(balanceSheet)
-          }
         }
 
         if (balanceSheet.yearly) {
@@ -276,13 +305,7 @@ const convertFundamentalsFromAPI = (ticker, data) => {
           })
 
           balanceSheet.yearly = yearly.sort(dateSortComparer)
-
-          if (!isInUS) {
-            balanceSheet.ttm = balanceSheet.yearly[0]
-          }
         }
-
-        balanceSheet.ttm.date = 'TTM'
 
         financials.balanceSheet = balanceSheet
       }
@@ -300,10 +323,6 @@ const convertFundamentalsFromAPI = (ticker, data) => {
           })
 
           cashFlowStatement.quarterly = quarterly.sort(dateSortComparer)
-
-          if (isInUS) {
-            cashFlowStatement.ttm = getTTMValuesFromQuarters(cashFlowStatement)
-          }
         }
 
         if (cashFlowStatement.yearly) {
@@ -318,19 +337,25 @@ const convertFundamentalsFromAPI = (ticker, data) => {
           })
 
           cashFlowStatement.yearly = yearly.sort(dateSortComparer)
-
-          if (!isInUS) {
-            cashFlowStatement.ttm = cashFlowStatement.yearly[0]
-          }
         }
 
         delete financials.cashFlow
 
-        cashFlowStatement.ttm.date = 'TTM'
         financials.cashFlowStatement = cashFlowStatement
       }
 
-      newFundamentalsData.financials = financials
+      Object.keys(financials).forEach(key => {
+        const { quarterly, yearly } = financials[key]
+
+        const newQuarterlyValues = quarterly.map(getFinancialMapCallback(key))
+        const newYearlyValues = yearly.map(getFinancialMapCallback(key))
+
+        newFundamentalsData.financials[key] = {
+          ...financials[key],
+          quarterly: newQuarterlyValues,
+          yearly: newYearlyValues
+        }
+      })
     }
   } catch (error) {
     console.info(`Conversion partially failed for: ${ticker}.`)

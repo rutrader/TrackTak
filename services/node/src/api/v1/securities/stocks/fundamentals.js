@@ -1,5 +1,5 @@
 import express from 'express'
-import { getFundamentals } from '../stockApi'
+import { getFundamentals } from './stockApi'
 
 const router = express.Router()
 

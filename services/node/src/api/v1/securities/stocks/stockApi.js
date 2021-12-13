@@ -6,6 +6,7 @@ import {
   eodEndpoint,
   fundamentalsEndpoint
 } from '../../../../shared/constants'
+import alterFromToQuery from '../alterFromToQuery'
 
 export const getFundamentals = async (ticker, query) => {
   const data = await sendReqOrGetCachedData(
@@ -32,8 +33,9 @@ export const getEOD = async (ticker, query) => {
   const { data } = await axios.get(`${eodEndpoint}/${ticker}`, {
     params: {
       api_token: eodAPIToken,
-      ...query,
-      fmt: 'json'
+      order: 'd',
+      fmt: 'json',
+      ...alterFromToQuery(query, true)
     }
   })
 

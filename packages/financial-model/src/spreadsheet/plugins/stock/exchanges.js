@@ -1,4 +1,4 @@
-const stockExchanges = [
+const exchanges = [
   'US',
   'LSE',
   'TO',
@@ -70,4 +70,4 @@ const stockExchanges = [
   'CN'
 ]
 
-export default stockExchanges
+export default exchanges

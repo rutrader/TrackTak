@@ -1,11 +1,7 @@
-import stockExchanges from './stockExchanges'
+import exchanges from './exchanges'
 
-const exchangesString = stockExchanges.join('|')
-const dateFormatString = '([0-9]{4}/[0-9]{2}(/[0-9]{2})?)'
+const exchangesString = exchanges.join('|')
 
 export const tickerRegex = new RegExp(
   `^[0-9A-Za-z-]+\\.?(${exchangesString})?$`
-)
-export const fiscalDateRangeRegex = new RegExp(
-  `(^(>|<)${dateFormatString}$)|(^${dateFormatString};${dateFormatString}$)`
 )

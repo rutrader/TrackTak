@@ -7,30 +7,38 @@ import {
   Button,
   CardActionArea
 } from '@mui/material'
-import React, { useState } from 'react'
+import React from 'react'
 import { Helmet } from 'react-helmet'
 import { api, utils, useAuth } from '@tracktak/common'
 import { templates } from '@tracktak/financial-model'
 import { useNavigate } from 'react-router'
 import logSpreadsheetEvent from '../shared/logSpreadsheetEvent'
-import SearchTickerDialog from './SearchTickerDialog'
 
 const Templates = () => {
-  const [showSearchTickerDialog, setShowSearchTickerDialog] = useState(false)
-  const [templatePromise, setTemplatePromise] = useState()
   const { userData, getAccessToken } = useAuth()
   const navigate = useNavigate()
 
-  const handleShowSearchTickerDialog = async templateName => {
-    setShowSearchTickerDialog(true)
+  const navigateToSpreadsheet = (spreadsheet, name) => {
+    navigate(`/${userData.name}/my-spreadsheets/${spreadsheet._id}`)
 
-    const promise = api.getSpreadsheetTemplate(templateName)
-
-    setTemplatePromise(promise)
+    logSpreadsheetEvent('Create', name)
   }
 
-  const handleCloseSearchTickerDialog = () => {
-    setShowSearchTickerDialog(false)
+  const createTemplateSpreadsheetOnClick = async (templateFileName, name) => {
+    const values = await Promise.all([
+      getAccessToken(),
+      api.getSpreadsheetTemplate(templateFileName)
+    ])
+    const token = values[0]
+    const template = values[1].data.value
+
+    const sheetData = {
+      name,
+      data: template
+    }
+    const response = await api.createSpreadsheet({ sheetData }, token?.jwtToken)
+
+    navigateToSpreadsheet(response.data.spreadsheet, sheetData.name)
   }
 
   const createBlankSpreadsheetOnClick = async () => {
@@ -47,11 +55,8 @@ const Templates = () => {
     }
     const token = await getAccessToken()
     const response = await api.createSpreadsheet({ sheetData }, token?.jwtToken)
-    const spreadsheet = response.data.spreadsheet
 
-    navigate(`/${userData.name}/my-spreadsheets/${spreadsheet._id}`)
-
-    logSpreadsheetEvent('Create', sheetData.name)
+    navigateToSpreadsheet(response.data.spreadsheet, sheetData.name)
   }
 
   return (
@@ -59,11 +64,6 @@ const Templates = () => {
       <Helmet>
         <title>{utils.getTitle('Templates')}</title>
       </Helmet>
-      <SearchTickerDialog
-        templatePromise={templatePromise}
-        open={showSearchTickerDialog}
-        onClose={handleCloseSearchTickerDialog}
-      />
       <Typography textAlign='center' variant='h5' gutterBottom>
         Select a Financial Modelling Template
       </Typography>
@@ -82,7 +82,9 @@ const Templates = () => {
               sx={{ maxWidth: 300 }}
             >
               <CardActionArea
-                onClick={() => handleShowSearchTickerDialog(templateFileName)}
+                onClick={() =>
+                  createTemplateSpreadsheetOnClick(templateFileName, name)
+                }
               >
                 <CardContent>
                   <Typography

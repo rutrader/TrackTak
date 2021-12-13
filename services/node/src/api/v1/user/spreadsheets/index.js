@@ -9,17 +9,9 @@ import {
 const router = express.Router()
 
 router.post('/', async (req, res) => {
-  let financialData
-
-  if (req.body.ticker) {
-    financialData = {
-      ticker: req.body.ticker
-    }
-  }
   const spreadsheet = await createSpreadsheet(
     req.body.sheetData,
-    req.user.username,
-    financialData
+    req.user.username
   )
   res.send({ spreadsheet })
 })

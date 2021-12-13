@@ -9,7 +9,7 @@ router.get('/:name', async (req, res) => {
     'utf8'
   )
 
-  res.send({ template: JSON.parse(template) })
+  res.send({ value: JSON.parse(template) })
 })
 
 export default router

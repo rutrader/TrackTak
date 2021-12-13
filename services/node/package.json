@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "author": "TRACKTAK LTD",
+  "license": "",
   "scripts": {
     "start": "node --es-module-specifier-resolution=node ./src/app.js",
     "develop": "cross-env NODE_ENV=development nodemon --es-module-specifier-resolution=node ./src/app.js"
@@ -20,6 +22,7 @@
     "iso-3166-1-alpha-2": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
     "jwk-to-pem": "^2.0.5",
+    "@tracktak/financial-model": "*",
     "lodash": "^4.17.21",
     "memory-cache": "^0.2.0",
     "mongodb": "^3.6.9",
