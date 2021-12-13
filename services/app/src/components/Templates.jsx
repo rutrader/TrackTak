@@ -13,7 +13,7 @@ import { api, utils, useAuth } from '@tracktak/common'
 import { templates } from '@tracktak/financial-model'
 import { useNavigate } from 'react-router'
 import logSpreadsheetEvent from '../shared/logSpreadsheetEvent'
-import CashflowYearSelection from './CashflowYearSelection'
+import SearchTickerDialog from './SearchTickerDialog'
 
 const Templates = () => {
   const [showSearchTickerDialog, setShowSearchTickerDialog] = useState(false)
@@ -59,7 +59,8 @@ const Templates = () => {
       <Helmet>
         <title>{utils.getTitle('Templates')}</title>
       </Helmet>
-      <CashflowYearSelection
+      <SearchTickerDialog
+        templatePromise={templatePromise}
         open={showSearchTickerDialog}
         onClose={handleCloseSearchTickerDialog}
       />
