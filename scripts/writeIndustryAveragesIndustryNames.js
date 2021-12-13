@@ -51,12 +51,16 @@ const setIndustryNames = () => {
   Object.values(industryAveragesUS).forEach(industryAverageUS => {
     industryAverageUS.industryName =
       industryAverageUS.newIndustryName ?? industryAverageUS.industryName
+
+    delete industryAverageUS.newIndustryName
   })
 
   Object.values(industryAveragesGlobal).forEach(industryAverageGlobal => {
     industryAverageGlobal.industryName =
       industryAverageGlobal.newIndustryName ??
       industryAverageGlobal.industryName
+
+    delete industryAverageGlobal.newIndustryName
   })
 
   const sort = (a, b) => {

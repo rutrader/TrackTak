@@ -72,7 +72,8 @@ export const implementedFunctions = {
     parameters: [
       {
         argumentType: ArgumentTypes.STRING
-      }
+      },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true }
     ]
   }
 }
@@ -239,6 +240,8 @@ export class Plugin extends FunctionPlugin {
         return industryTypeCellError
       }
 
+      // TODO: Handle dates for industryAverages and store in database
+      // before updating industryAverages JSON
       const { data } = await api.getIndustryAverages(type)
 
       return getFieldValue(data.value, true)
