@@ -127,7 +127,9 @@ export const mapObjToSimpleRangeValues = (obj, isVertical) => {
     values[0] = keys
 
     Object.values(obj).forEach((objValues, i) => {
-      objValues.forEach((value, j) => {
+      const newObjValues = Array.isArray(objValues) ? objValues : [objValues]
+
+      newObjValues.forEach((value, j) => {
         const newIndex = j + 1
 
         if (i === 0) {

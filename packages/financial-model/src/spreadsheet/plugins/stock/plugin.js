@@ -7,7 +7,7 @@ import {
   tickerCellError
 } from './cellErrors'
 import { api } from '@tracktak/common'
-import { financialFields, infoFields } from './fields'
+import { financialFields, industryAverageFields, infoFields } from './fields'
 import { tickerRegex } from './matchers'
 import {
   getFiscalDateRangeFilterPredicate,
@@ -75,6 +75,17 @@ export const implementedFunctions = {
       },
       { argumentType: ArgumentTypes.STRING, optionalArg: true }
     ]
+  },
+  'STOCK.GET_COMPANY_INDUSTRY_AVERAGE': {
+    method: 'getCompanyIndustryAverage',
+    arraySizeMethod: 'stockSize',
+    isAsyncMethod: true,
+    parameters: [
+      {
+        argumentType: ArgumentTypes.STRING
+      },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true }
+    ]
   }
 }
 
@@ -82,7 +93,8 @@ export const aliases = {
   'S.GCF': 'STOCK.GET_COMPANY_FINANCIALS',
   'S.GP': 'STOCK.GET_PRICE',
   'S.GCI': 'STOCK.GET_COMPANY_INFO',
-  'S.GIA': 'STOCK.GET_INDUSTRY_AVERAGES'
+  'S.GIA': 'STOCK.GET_INDUSTRY_AVERAGES',
+  'S.GCIA': 'STOCK.GET_COMPANY_INDUSTRY_AVERAGE'
 }
 
 export const translations = {
@@ -90,7 +102,8 @@ export const translations = {
     'S.GCF': 'STOCK.GET_COMPANY_FINANCIALS',
     'S.GP': 'STOCK.GET_PRICE',
     'S.GCI': 'STOCK.GET_COMPANY_INFO',
-    'S.GIA': 'STOCK.GET_INDUSTRY_AVERAGES'
+    'S.GIA': 'STOCK.GET_INDUSTRY_AVERAGES',
+    'S.GCIA': 'STOCK.GET_COMPANY_INDUSTRY_AVERAGE'
   }
 }
 
@@ -246,6 +259,38 @@ export class Plugin extends FunctionPlugin {
 
       return getFieldValue(data.value, true)
     })
+  }
+
+  getCompanyIndustryAverage(ast, state) {
+    const metadata = this.metadata('STOCK.GET_COMPANY_INDUSTRY_AVERAGE')
+
+    return this.runAsyncFunction(
+      ast.args,
+      state,
+      metadata,
+      async (ticker, field) => {
+        const isTickerValid = !!ticker.match(tickerRegex)
+        const isFieldValid = field
+          ? !!industryAverageFields.find(x => x === field)
+          : true
+
+        if (!isTickerValid) {
+          return tickerCellError
+        }
+
+        if (!isFieldValid) {
+          return financialsFieldCellError
+        }
+
+        // TODO: Handle dates for industryAverages and store in database
+        // before updating industryAverages JSON
+        const { data } = await api.getCompanyIndustryAverage(ticker, {
+          field
+        })
+
+        return getFieldValue(data.value)
+      }
+    )
   }
 
   stockSize(_, state) {

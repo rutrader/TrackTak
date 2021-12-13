@@ -5,13 +5,37 @@ import gicSubIndustryMapping from './data/gicSubIndustryMapping.json'
 
 const __dirname = new URL('.', import.meta.url).pathname
 
-const setIndustryNames = () => {
-  const industryAveragesUSPath = `${__dirname}../services/node/src/api/v1/securities/stocks/industryAverages/industryAveragesUS.json`
-  const industryAveragesGlobalPath = `${__dirname}../services/node/src/api/v1/securities/stocks/industryAverages/industryAveragesGlobal.json`
+const getConvertedIndustryAverages = industryAverages => {
+  return industryAverages.map(industryAverage => {
+    const industryAverageObject = {}
 
-  const industryAveragesUS = JSON.parse(fs.readFileSync(industryAveragesUSPath))
+    Object.keys(industryAverage).forEach(key => {
+      const value = industryAverage[key]
+
+      if (typeof value === 'string') {
+        const parsedNumber = parseFloat(value)
+
+        industryAverageObject[key] = isNaN(parsedNumber)
+          ? value
+          : parsedNumber / 100
+      } else {
+        industryAverageObject[key] = value
+      }
+    })
+
+    return industryAverageObject
+  })
+}
+
+const setIndustryNames = () => {
+  const inputIndustryAveragesUSPath = `${__dirname}data/industryAveragesUS.json`
+  const inputIndustryAveragesGlobalPath = `${__dirname}data/industryAveragesGlobal.json`
+
+  const industryAveragesUS = JSON.parse(
+    fs.readFileSync(inputIndustryAveragesUSPath)
+  )
   const industryAveragesGlobal = JSON.parse(
-    fs.readFileSync(industryAveragesGlobalPath)
+    fs.readFileSync(inputIndustryAveragesGlobalPath)
   )
 
   Object.entries(gicSubIndustryMapping).forEach(([key, value]) => {
@@ -40,8 +64,8 @@ const setIndustryNames = () => {
         x => x.industryName === value
       )
 
-      industryAverageUS.newIndustryName = key
-      industryAverageGlobal.newIndustryName = key
+      industryAverageUS.industry = key
+      industryAverageGlobal.industry = key
     } catch (error) {
       console.log(`failed for key: ${key}`)
       throw error
@@ -49,40 +73,52 @@ const setIndustryNames = () => {
   })
 
   Object.values(industryAveragesUS).forEach(industryAverageUS => {
-    industryAverageUS.industryName =
-      industryAverageUS.newIndustryName ?? industryAverageUS.industryName
+    industryAverageUS.industry =
+      industryAverageUS.industry ?? industryAverageUS.industryName
 
-    delete industryAverageUS.newIndustryName
+    delete industryAverageUS.industryName
   })
 
   Object.values(industryAveragesGlobal).forEach(industryAverageGlobal => {
-    industryAverageGlobal.industryName =
-      industryAverageGlobal.newIndustryName ??
-      industryAverageGlobal.industryName
+    industryAverageGlobal.industry =
+      industryAverageGlobal.industry ?? industryAverageGlobal.industryName
 
-    delete industryAverageGlobal.newIndustryName
+    delete industryAverageGlobal.industryName
   })
 
   const sort = (a, b) => {
-    if (a.industryName.includes('Total Market')) {
+    if (a.industry.includes('Total Market')) {
       return 1
     }
 
-    if (b.industryName.includes('Total Market')) {
+    if (b.industry.includes('Total Market')) {
       return -1
     }
 
-    return a.industryName?.localeCompare(b.industryName)
+    return a.industry.localeCompare(b.industry)
   }
 
   industryAveragesUS.sort(sort)
   industryAveragesGlobal.sort(sort)
 
-  fs.writeFileSync(industryAveragesUSPath, JSON.stringify(industryAveragesUS))
+  const convertedIndustryAveragesUS =
+    getConvertedIndustryAverages(industryAveragesUS)
+
+  const convertedIndustryAveragesGlobal = getConvertedIndustryAverages(
+    industryAveragesGlobal
+  )
+
+  const outputIndustryAveragesUSPath = `${__dirname}../services/node/src/api/v1/securities/stocks/industryAverages/industryAveragesUS.json`
+  const outputIndustryAveragesGlobalPath = `${__dirname}../services/node/src/api/v1/securities/stocks/industryAverages/industryAveragesGlobal.json`
 
   fs.writeFileSync(
-    industryAveragesGlobalPath,
-    JSON.stringify(industryAveragesGlobal)
+    outputIndustryAveragesUSPath,
+    JSON.stringify(convertedIndustryAveragesUS)
+  )
+
+  fs.writeFileSync(
+    outputIndustryAveragesGlobalPath,
+    JSON.stringify(convertedIndustryAveragesGlobal)
   )
 
   process.exit(0)

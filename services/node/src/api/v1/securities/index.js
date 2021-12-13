@@ -5,6 +5,7 @@ import exchangeRates from './fx/exchangeRates'
 import eod from './stocks/eod'
 import fundamentals from './stocks/fundamentals'
 import industryAverages from './stocks/industryAverages'
+import companyIndustryAverage from './stocks/industryAverages/company'
 
 const router = express.Router()
 
@@ -14,5 +15,6 @@ router.use('/fx/exchange-rates', exchangeRates)
 router.use('/stocks/eod', eod)
 router.use('/stocks/fundamentals', fundamentals)
 router.use('/stocks/industry-averages', industryAverages)
+router.use('/stocks/industry-averages/company', companyIndustryAverage)
 
 export default router

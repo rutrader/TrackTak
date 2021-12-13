@@ -65,3 +65,34 @@ export const infoFields = [
   'shortPercentOutstanding',
   'shortPercentFloat'
 ]
+
+export const industryAverageFields = [
+  'numberOfFirms',
+  'annualAverageCAGRLastFiveYears',
+  'preTaxOperatingMarginUnadjusted',
+  'afterTaxROIC',
+  'averageEffectiveTaxRate',
+  'unleveredBeta',
+  'equityLeveredBeta',
+  'costOfEquity',
+  'standardDeviationInStockPrices',
+  'preTaxCostOfDebt',
+  'marketDebt/Capital',
+  'costOfCapital',
+  'sales/Capital',
+  'EV/Sales',
+  'EV/EBITDA',
+  'EV/EBIT',
+  'price/Book',
+  'trailingPE',
+  'nonCashWCAsPercentageOfRevenues',
+  'CAPEXAsAPercentageOfRevenues',
+  'netCAPEXAsAPercentageOfRevenues',
+  'reinvestmentRate',
+  'ROE',
+  'dividendPayoutRatio',
+  'equityReinvestmentRate',
+  'preTaxOperatingMarginLeaseAndR&DAdjusted',
+  'gicSubIndustry',
+  'industry'
+]

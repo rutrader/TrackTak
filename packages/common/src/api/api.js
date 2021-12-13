@@ -33,6 +33,15 @@ export const getIndustryAverages = async (type, params) => {
   })
 }
 
+export const getCompanyIndustryAverage = async (ticker, params) => {
+  return axios.get(
+    `/api/v1/securities/stocks/industry-averages/company/${ticker}`,
+    {
+      params
+    }
+  )
+}
+
 export const getGovernmentBond = async (code, params) => {
   return axios.get(`/api/v1/securities/bonds/government/${code}`, {
     params
