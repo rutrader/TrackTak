@@ -73,15 +73,11 @@ const Templates = () => {
           justifyContent: 'center'
         }}
       >
-        {templates.map(({ templateFileName, name, description }) => {
+        {templates.map(({ templateName, name, description }) => {
           return (
-            <Card
-              key={templateFileName}
-              variant='outlined'
-              sx={{ maxWidth: 300 }}
-            >
+            <Card key={templateName} variant='outlined' sx={{ maxWidth: 300 }}>
               <CardActionArea
-                onClick={() => handleShowSearchTickerDialog(templateFileName)}
+                onClick={() => handleShowSearchTickerDialog(templateName)}
               >
                 <CardContent>
                   <Typography
