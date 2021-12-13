@@ -1,7 +1,7 @@
 import fs from 'fs/promises'
 
-const readIndustryAveragesFile = async isUSStock => {
-  const fileName = isUSStock ? 'industryAveragesUS' : 'industryAveragesGlobal'
+const readFile = async isUSStock => {
+  const fileName = isUSStock ? 'US' : 'global'
 
   const industryAverages = await fs.readFile(
     new URL(`./${fileName}.json`, import.meta.url),
@@ -11,4 +11,4 @@ const readIndustryAveragesFile = async isUSStock => {
   return JSON.parse(industryAverages)
 }
 
-export default readIndustryAveragesFile
+export default readFile

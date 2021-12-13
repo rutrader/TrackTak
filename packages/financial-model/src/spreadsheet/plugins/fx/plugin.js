@@ -9,7 +9,7 @@ import { getFieldValue, sizeMethod } from '../helpers'
 export const implementedFunctions = {
   'FX.GET_FIAT_EXCHANGE_RATE': {
     method: 'getFiatExchangeRate',
-    arraySizeMethod: 'getFiatExchangeRateSize',
+    arraySizeMethod: 'fxSize',
     isAsyncMethod: true,
     parameters: [
       {
@@ -88,7 +88,7 @@ export class Plugin extends FunctionPlugin {
     )
   }
 
-  getFiatExchangeRateSize(_, state) {
+  fxSize(_, state) {
     return sizeMethod(state)
   }
 }

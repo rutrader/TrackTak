@@ -10,7 +10,7 @@ import { getEODParams, validateEODParamsHasError } from '../eod'
 export const implementedFunctions = {
   'BOND.GET_COUNTRY_YIELD': {
     method: 'getCountryYield',
-    arraySizeMethod: 'getCountryYieldSize',
+    arraySizeMethod: 'bondSize',
     isAsyncMethod: true,
     parameters: [
       {
@@ -88,7 +88,7 @@ export class Plugin extends FunctionPlugin {
     )
   }
 
-  getCountryYieldSize(_, state) {
+  bondSize(_, state) {
     return sizeMethod(state)
   }
 }

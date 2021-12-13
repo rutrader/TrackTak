@@ -1,6 +1,6 @@
 import express from 'express'
 import { getFundamentals } from '../stockApi'
-import readIndustryAveragesFile from './readIndustryAveragesFile'
+import readFile from './readFile'
 
 const router = express.Router()
 
@@ -9,11 +9,11 @@ router.get('/:ticker', async (req, res) => {
   const field = req.query.field
 
   const general = await getFundamentals(ticker, {
-    filter: 'General'
+    filter: 'General::CountryISO,General::GicSubIndustry,General::Industry'
   })
 
   const isUSStock = general.countryISO === 'US'
-  const industryAverages = await readIndustryAveragesFile(isUSStock)
+  const industryAverages = await readFile(isUSStock)
 
   // Some stocks do not have a gicSubIndustry so fallback to industry for them
   const companyIndustry = industryAverages.find(

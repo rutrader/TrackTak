@@ -19,9 +19,14 @@ import {
 import { fiscalDateRangeCellError, getFieldCellError } from '../cellErrors'
 import { fiscalDateRangeRegex } from '../matchers'
 import { getEODParams, validateEODParamsHasError } from '../eod'
+import { equityRiskPremiumFields } from '../fields'
 
 const financialsFieldCellError = getFieldCellError(financialFields)
 const infoFieldCellError = getFieldCellError(infoFields)
+const industryAveragesFieldCellError = getFieldCellError(industryAverageFields)
+const equityRiskPremiumsFieldCellError = getFieldCellError(
+  equityRiskPremiumFields
+)
 
 export const implementedFunctions = {
   'STOCK.GET_COMPANY_FINANCIALS': {
@@ -86,6 +91,17 @@ export const implementedFunctions = {
       },
       { argumentType: ArgumentTypes.STRING, optionalArg: true }
     ]
+  },
+  'STOCK.GET_COMPANY_EQUITY_RISK_PREMIUM': {
+    method: 'getCompanyEquityRiskPremium',
+    arraySizeMethod: 'stockSize',
+    isAsyncMethod: true,
+    parameters: [
+      {
+        argumentType: ArgumentTypes.STRING
+      },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true }
+    ]
   }
 }
 
@@ -94,7 +110,8 @@ export const aliases = {
   'S.GP': 'STOCK.GET_PRICE',
   'S.GCI': 'STOCK.GET_COMPANY_INFO',
   'S.GIA': 'STOCK.GET_INDUSTRY_AVERAGES',
-  'S.GCIA': 'STOCK.GET_COMPANY_INDUSTRY_AVERAGE'
+  'S.GCIA': 'STOCK.GET_COMPANY_INDUSTRY_AVERAGE',
+  'S.GCERP': 'STOCK.GET_COMPANY_EQUITY_RISK_PREMIUM'
 }
 
 export const translations = {
@@ -103,7 +120,8 @@ export const translations = {
     'S.GP': 'STOCK.GET_PRICE',
     'S.GCI': 'STOCK.GET_COMPANY_INFO',
     'S.GIA': 'STOCK.GET_INDUSTRY_AVERAGES',
-    'S.GCIA': 'STOCK.GET_COMPANY_INDUSTRY_AVERAGE'
+    'S.GCIA': 'STOCK.GET_COMPANY_INDUSTRY_AVERAGE',
+    'S.GCERP': 'STOCK.GET_COMPANY_EQUITY_RISK_PREMIUM'
   }
 }
 
@@ -246,19 +264,33 @@ export class Plugin extends FunctionPlugin {
   getIndustryAverages(ast, state) {
     const metadata = this.metadata('STOCK.GET_INDUSTRY_AVERAGES')
 
-    return this.runAsyncFunction(ast.args, state, metadata, async type => {
-      const isTypeValid = type === 'US' || 'Global'
+    return this.runAsyncFunction(
+      ast.args,
+      state,
+      metadata,
+      async (type, field) => {
+        const isTypeValid = type === 'US' || 'Global'
+        const isFieldValid = field
+          ? !!industryAverageFields.find(x => x === field)
+          : true
 
-      if (!isTypeValid) {
-        return industryTypeCellError
+        if (!isTypeValid) {
+          return industryTypeCellError
+        }
+
+        if (!isFieldValid) {
+          return industryAveragesFieldCellError
+        }
+
+        // TODO: Handle dates for industryAverages and store in database
+        // before updating industryAverages JSON
+        const { data } = await api.getIndustryAverages(type, {
+          field
+        })
+
+        return getFieldValue(data.value, true)
       }
-
-      // TODO: Handle dates for industryAverages and store in database
-      // before updating industryAverages JSON
-      const { data } = await api.getIndustryAverages(type)
-
-      return getFieldValue(data.value, true)
-    })
+    )
   }
 
   getCompanyIndustryAverage(ast, state) {
@@ -279,12 +311,44 @@ export class Plugin extends FunctionPlugin {
         }
 
         if (!isFieldValid) {
-          return financialsFieldCellError
+          return industryAveragesFieldCellError
         }
 
         // TODO: Handle dates for industryAverages and store in database
         // before updating industryAverages JSON
         const { data } = await api.getCompanyIndustryAverage(ticker, {
+          field
+        })
+
+        return getFieldValue(data.value)
+      }
+    )
+  }
+
+  getCompanyEquityRiskPremium(ast, state) {
+    const metadata = this.metadata('STOCK.GET_COMPANY_EQUITY_RISK_PREMIUM')
+
+    return this.runAsyncFunction(
+      ast.args,
+      state,
+      metadata,
+      async (ticker, field) => {
+        const isTickerValid = !!ticker.match(tickerRegex)
+        const isFieldValid = field
+          ? !!equityRiskPremiumFields.find(x => x === field)
+          : true
+
+        if (!isTickerValid) {
+          return tickerCellError
+        }
+
+        if (!isFieldValid) {
+          return equityRiskPremiumsFieldCellError
+        }
+
+        // TODO: Handle dates for equityRiskPremiums and store in database
+        // before updating equityRiskPremiums JSON
+        const { data } = await api.getCompanyEquityRiskPremium(ticker, {
           field
         })
 
