@@ -6,6 +6,7 @@ import eod from './stocks/eod'
 import fundamentals from './stocks/fundamentals'
 import industryAverages from './stocks/industryAverages'
 import companyIndustryAverage from './stocks/industryAverages/company'
+import companyEquityRiskPremium from './stocks/equityRiskPremiums/company'
 
 const router = express.Router()
 
@@ -16,5 +17,6 @@ router.use('/stocks/eod', eod)
 router.use('/stocks/fundamentals', fundamentals)
 router.use('/stocks/industry-averages', industryAverages)
 router.use('/stocks/industry-averages/company', companyIndustryAverage)
+router.use('/stocks/equity-risk-premiums/company', companyEquityRiskPremium)
 
 export default router

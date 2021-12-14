@@ -36,7 +36,7 @@ const writeEquityRiskPremiumCountries = () => {
 
   equityRiskPremiumCountries.sort(sort)
 
-  const outputPath = `${__dirname}../services/node/src/api/v1/equityRiskPremiums/countries.json`
+  const outputPath = `${__dirname}../services/node/src/api/v1/market/equityRiskPremiums/index.json`
 
   fs.writeFileSync(outputPath, JSON.stringify(equityRiskPremiumCountries))
 

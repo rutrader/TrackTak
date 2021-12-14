@@ -1,6 +1,6 @@
 import express from 'express'
-import { getFundamentals } from '../securities/stocks/stockApi'
-import readFile from './readFile'
+import { getFundamentals } from '../stockApi'
+import readFile from '../../../market/equityRiskPremiums/readFile'
 
 const router = express.Router()
 

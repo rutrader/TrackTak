@@ -5,14 +5,12 @@ const router = express.Router()
 
 router.get('/', async (req, res) => {
   const field = req.query.field
-  const countryEquityRiskPremiums = await readFile()
+  const equityRiskPremiums = await readFile()
 
-  let value = countryEquityRiskPremiums
+  let value = equityRiskPremiums
 
   if (field) {
-    value = countryEquityRiskPremiums.map(
-      industryAverage => industryAverage[field]
-    )
+    value = equityRiskPremiums.map(industryAverage => industryAverage[field])
   }
 
   res.send({

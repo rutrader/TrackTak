@@ -6,9 +6,14 @@ import { equityRiskPremiumFields } from '../fields'
 import { fiscalDateRangeCellError, getFieldCellError } from '../cellErrors'
 import { fiscalDateRangeRegex } from '../matchers'
 import { NumberType } from '@tracktak/hyperformula/es/interpreter/InterpreterValue'
+import { creditRatingInterestSpreadsFields } from './fields'
 
 const equityRiskPremiumsFieldCellError = getFieldCellError(
   equityRiskPremiumFields
+)
+
+const creditRatingInterestSpreadsFieldCellError = getFieldCellError(
+  creditRatingInterestSpreadsFields
 )
 
 export const implementedFunctions = {
@@ -22,22 +27,36 @@ export const implementedFunctions = {
       { argumentType: ArgumentTypes.STRING, optionalArg: true }
     ]
   },
+  'MARKET.GET_CREDIT_RATING_INTEREST_SPREADS': {
+    method: 'getCreditRatingInterestSpreads',
+    arraySizeMethod: 'marketSize',
+    inferReturnType: true,
+    isAsyncMethod: true,
+    parameters: [
+      { argumentType: ArgumentTypes.STRING, optionalArg: true },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true }
+    ]
+  },
   'MARKET.RISK_FREE_RATE': {
     method: 'riskFreeRate',
     parameters: [
-      { argumentType: ArgumentTypes.ANY, minValue: 0 },
-      { argumentType: ArgumentTypes.NUMBER, minValue: 0 }
+      { argumentType: ArgumentTypes.ANY, maxValue: 1 },
+      { argumentType: ArgumentTypes.NUMBER, maxValue: 1 }
     ],
     returnNumberType: NumberType.NUMBER_PERCENT
   }
 }
 
 export const aliases = {
+  'M.GERP': 'MARKET.GET_EQUITY_RISK_PREMIUMS',
+  'M.GCRIS': 'MARKET.GET_CREDIT_RATING_INTEREST_SPREADS',
   'M.RFR': 'MARKET.RISK_FREE_RATE'
 }
 
 export const translations = {
   enGB: {
+    'M.GERP': 'MARKET.GET_EQUITY_RISK_PREMIUMS',
+    'M.GCRIS': 'MARKET.GET_CREDIT_RATING_INTEREST_SPREADS',
     'M.RFR': 'MARKET.RISK_FREE_RATE'
   }
 }
@@ -69,6 +88,41 @@ export class Plugin extends FunctionPlugin {
         // TODO: Handle dates for equityRiskPremiums and store in database
         // before updating equityRiskPremiums JSON
         const { data } = await api.getEquityRiskPremiums({
+          field,
+          fiscalDateRange
+        })
+
+        return getFieldValue(data.value, true)
+      }
+    )
+  }
+
+  getCreditRatingInterestSpreads(ast, state) {
+    const metadata = this.metadata('MARKET.GET_CREDIT_RATING_INTEREST_SPREADS')
+
+    return this.runAsyncFunction(
+      ast.args,
+      state,
+      metadata,
+      async (field, fiscalDateRange) => {
+        const isFieldValid = field
+          ? !!creditRatingInterestSpreadsFields.find(x => x === field)
+          : true
+        const isFiscalDateRangeValid = fiscalDateRange
+          ? !!fiscalDateRange.match(fiscalDateRangeRegex)
+          : true
+
+        if (!isFieldValid) {
+          return creditRatingInterestSpreadsFieldCellError
+        }
+
+        if (!isFiscalDateRangeValid) {
+          return fiscalDateRangeCellError
+        }
+
+        // TODO: Handle dates for equityRiskPremiums and store in database
+        // before updating equityRiskPremiums JSON
+        const { data } = await api.getCreditRatingInterestSpreads({
           field,
           fiscalDateRange
         })
