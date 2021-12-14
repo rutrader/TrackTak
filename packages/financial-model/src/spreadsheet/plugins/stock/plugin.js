@@ -33,6 +33,7 @@ export const implementedFunctions = {
     method: 'getCompanyFinancials',
     arraySizeMethod: 'stockSize',
     isAsyncMethod: true,
+    inferReturnType: true,
     parameters: [
       {
         argumentType: ArgumentTypes.STRING
@@ -48,6 +49,7 @@ export const implementedFunctions = {
     method: 'getPrice',
     arraySizeMethod: 'stockSize',
     isAsyncMethod: true,
+    inferReturnType: true,
     parameters: [
       {
         argumentType: ArgumentTypes.STRING
@@ -61,6 +63,7 @@ export const implementedFunctions = {
     method: 'getCompanyInfo',
     arraySizeMethod: 'stockSize',
     isAsyncMethod: true,
+    inferReturnType: true,
     parameters: [
       {
         argumentType: ArgumentTypes.STRING
@@ -74,10 +77,12 @@ export const implementedFunctions = {
     method: 'getIndustryAverages',
     arraySizeMethod: 'stockSize',
     isAsyncMethod: true,
+    inferReturnType: true,
     parameters: [
       {
         argumentType: ArgumentTypes.STRING
       },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true },
       { argumentType: ArgumentTypes.STRING, optionalArg: true }
     ]
   },
@@ -85,10 +90,12 @@ export const implementedFunctions = {
     method: 'getCompanyIndustryAverage',
     arraySizeMethod: 'stockSize',
     isAsyncMethod: true,
+    inferReturnType: true,
     parameters: [
       {
         argumentType: ArgumentTypes.STRING
       },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true },
       { argumentType: ArgumentTypes.STRING, optionalArg: true }
     ]
   },
@@ -96,10 +103,12 @@ export const implementedFunctions = {
     method: 'getCompanyEquityRiskPremium',
     arraySizeMethod: 'stockSize',
     isAsyncMethod: true,
+    inferReturnType: true,
     parameters: [
       {
         argumentType: ArgumentTypes.STRING
       },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true },
       { argumentType: ArgumentTypes.STRING, optionalArg: true }
     ]
   }
@@ -268,10 +277,13 @@ export class Plugin extends FunctionPlugin {
       ast.args,
       state,
       metadata,
-      async (type, field) => {
+      async (type, field, fiscalDateRange) => {
         const isTypeValid = type === 'US' || 'Global'
         const isFieldValid = field
           ? !!industryAverageFields.find(x => x === field)
+          : true
+        const isFiscalDateRangeValid = fiscalDateRange
+          ? !!fiscalDateRange.match(fiscalDateRangeRegex)
           : true
 
         if (!isTypeValid) {
@@ -282,10 +294,15 @@ export class Plugin extends FunctionPlugin {
           return industryAveragesFieldCellError
         }
 
+        if (!isFiscalDateRangeValid) {
+          return fiscalDateRangeCellError
+        }
+
         // TODO: Handle dates for industryAverages and store in database
         // before updating industryAverages JSON
         const { data } = await api.getIndustryAverages(type, {
-          field
+          field,
+          fiscalDateRange
         })
 
         return getFieldValue(data.value, true)
@@ -300,10 +317,13 @@ export class Plugin extends FunctionPlugin {
       ast.args,
       state,
       metadata,
-      async (ticker, field) => {
+      async (ticker, field, fiscalDateRange) => {
         const isTickerValid = !!ticker.match(tickerRegex)
         const isFieldValid = field
           ? !!industryAverageFields.find(x => x === field)
+          : true
+        const isFiscalDateRangeValid = fiscalDateRange
+          ? !!fiscalDateRange.match(fiscalDateRangeRegex)
           : true
 
         if (!isTickerValid) {
@@ -314,10 +334,15 @@ export class Plugin extends FunctionPlugin {
           return industryAveragesFieldCellError
         }
 
+        if (!isFiscalDateRangeValid) {
+          return fiscalDateRangeCellError
+        }
+
         // TODO: Handle dates for industryAverages and store in database
         // before updating industryAverages JSON
         const { data } = await api.getCompanyIndustryAverage(ticker, {
-          field
+          field,
+          fiscalDateRange
         })
 
         return getFieldValue(data.value)
@@ -332,10 +357,13 @@ export class Plugin extends FunctionPlugin {
       ast.args,
       state,
       metadata,
-      async (ticker, field) => {
+      async (ticker, field, fiscalDateRange) => {
         const isTickerValid = !!ticker.match(tickerRegex)
         const isFieldValid = field
           ? !!equityRiskPremiumFields.find(x => x === field)
+          : true
+        const isFiscalDateRangeValid = fiscalDateRange
+          ? !!fiscalDateRange.match(fiscalDateRangeRegex)
           : true
 
         if (!isTickerValid) {
@@ -346,10 +374,15 @@ export class Plugin extends FunctionPlugin {
           return equityRiskPremiumsFieldCellError
         }
 
+        if (!isFiscalDateRangeValid) {
+          return fiscalDateRangeCellError
+        }
+
         // TODO: Handle dates for equityRiskPremiums and store in database
         // before updating equityRiskPremiums JSON
         const { data } = await api.getCompanyEquityRiskPremium(ticker, {
-          field
+          field,
+          fiscalDateRange
         })
 
         return getFieldValue(data.value)

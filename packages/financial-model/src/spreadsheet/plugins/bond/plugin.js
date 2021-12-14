@@ -11,6 +11,7 @@ export const implementedFunctions = {
   'BOND.GET_COUNTRY_YIELD': {
     method: 'getCountryYield',
     arraySizeMethod: 'bondSize',
+    inferReturnType: true,
     isAsyncMethod: true,
     parameters: [
       {

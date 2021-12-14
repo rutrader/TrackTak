@@ -35,7 +35,7 @@ export const getEOD = async (ticker, query) => {
       api_token: eodAPIToken,
       order: 'd',
       fmt: 'json',
-      ...alterFromToQuery(query, true)
+      ...alterFromToQuery(query, { changeSunday: true, changeToday: true })
     }
   })
 

@@ -11,7 +11,7 @@ export const getGovernmentBond = async (code, query) => {
           api_token: eodAPIToken,
           order: 'd',
           fmt: 'json',
-          ...alterFromToQuery(query)
+          ...alterFromToQuery(query, { changeToday: true })
         }
       })
 

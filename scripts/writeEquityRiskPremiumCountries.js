@@ -24,6 +24,7 @@ const writeEquityRiskPremiumCountries = () => {
       countryISO = 'UK'
     }
 
+    erpCountry.adjustedDefaultSpread = erpCountry.adjDefaultSpread
     erpCountry.countryISO = countryISO
 
     delete erpCountry.adjDefaultSpread

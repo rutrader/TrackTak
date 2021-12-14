@@ -10,6 +10,7 @@ export const implementedFunctions = {
   'FX.GET_FIAT_EXCHANGE_RATE': {
     method: 'getFiatExchangeRate',
     arraySizeMethod: 'fxSize',
+    inferReturnType: true,
     isAsyncMethod: true,
     parameters: [
       {
