@@ -1,5 +1,5 @@
 import camelCase from 'camelcase'
-import isNil from 'lodash/isNil'
+import { isNil } from 'lodash-es'
 import getValueFromString from './getValueFromString'
 import replaceDoubleColonWithObject from './replaceDoubleColonWithObject'
 import * as financialStatementKeys from './financialStatementKeys'
@@ -228,9 +228,26 @@ const convertFundamentalsFromAPI = (ticker, data) => {
       const yearlyDatesRemoved = {}
 
       const financials = newFundamentalsData.financials
-      const incomeStatement = financials.incomeStatement
-      const balanceSheet = financials.balanceSheet
-      const cashFlowStatement = financials.cashFlow
+      const incomeStatement = {
+        ...financials.incomeStatement,
+        currencyCode: financials.incomeStatement.currencySymbol
+      }
+
+      delete incomeStatement.currencySymbol
+
+      const balanceSheet = {
+        ...financials.balanceSheet,
+        currencyCode: financials.balanceSheet.currencySymbol
+      }
+
+      delete balanceSheet.currencySymbol
+
+      const cashFlowStatement = {
+        ...financials.cashFlow,
+        currencyCode: financials.cashFlow.currencySymbol
+      }
+
+      delete cashFlowStatement.currencySymbol
 
       if (incomeStatement) {
         if (incomeStatement.quarterly) {

@@ -7,7 +7,12 @@ import {
   tickerCellError
 } from './cellErrors'
 import { api } from '@tracktak/common'
-import { financialFields, industryAverageFields, infoFields } from './fields'
+import {
+  financialFields,
+  industryAverageFields,
+  infoFields,
+  ratioFields
+} from './fields'
 import { tickerRegex } from './matchers'
 import {
   getFiscalDateRangeFilterPredicate,
@@ -27,6 +32,7 @@ const industryAveragesFieldCellError = getFieldCellError(industryAverageFields)
 const equityRiskPremiumsFieldCellError = getFieldCellError(
   equityRiskPremiumFields
 )
+const ratioFieldCellError = getFieldCellError(ratioFields)
 
 export const implementedFunctions = {
   'STOCK.GET_COMPANY_FINANCIALS': {
@@ -40,6 +46,23 @@ export const implementedFunctions = {
       },
       {
         argumentType: ArgumentTypes.STRING
+      },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true }
+    ]
+  },
+  'STOCK.GET_COMPANY_RATIOS': {
+    method: 'getCompanyRatios',
+    arraySizeMethod: 'stockSize',
+    isAsyncMethod: true,
+    inferReturnType: true,
+    parameters: [
+      {
+        argumentType: ArgumentTypes.STRING
+      },
+      {
+        argumentType: ArgumentTypes.STRING,
+        optionalArg: true
       },
       { argumentType: ArgumentTypes.STRING, optionalArg: true },
       { argumentType: ArgumentTypes.STRING, optionalArg: true }
@@ -116,6 +139,7 @@ export const implementedFunctions = {
 
 export const aliases = {
   'S.GCF': 'STOCK.GET_COMPANY_FINANCIALS',
+  'S.GCR': 'STOCK.GET_COMPANY_RATIOS',
   'S.GP': 'STOCK.GET_PRICE',
   'S.GCI': 'STOCK.GET_COMPANY_INFO',
   'S.GIA': 'STOCK.GET_INDUSTRY_AVERAGES',
@@ -126,6 +150,7 @@ export const aliases = {
 export const translations = {
   enGB: {
     'S.GCF': 'STOCK.GET_COMPANY_FINANCIALS',
+    'S.GCR': 'GET_COMPANY_RATIOS',
     'S.GP': 'STOCK.GET_PRICE',
     'S.GCI': 'STOCK.GET_COMPANY_INFO',
     'S.GIA': 'STOCK.GET_INDUSTRY_AVERAGES',
@@ -153,13 +178,14 @@ export class Plugin extends FunctionPlugin {
           : fiscalDateRange
           ? 'year'
           : 'ttm'
+
         const isGranularityValid =
           granularity === 'ttm' ||
           granularity === 'quarter' ||
           granularity === 'year'
-        const isFiscalDateRangeValid = fiscalDateRange
-          ? !!fiscalDateRange.match(fiscalDateRangeRegex)
-          : true
+
+        const isFiscalDateRangeValid =
+          this.getIsFiscalDateRangeValid(fiscalDateRange)
 
         if (!isTickerValid) {
           return tickerCellError
@@ -177,29 +203,198 @@ export class Plugin extends FunctionPlugin {
           return fiscalDateRangeCellError
         }
 
-        const { data } = await api.getFundamentals(ticker, {
+        const { data } = await api.getCompanyFundamentals(ticker, {
           filter: fundamentalsFilter
         })
         const financials = data.value.financials
         const isInUS = data.value.general.countryISO === 'US'
 
-        let formattedGranularity = granularity
+        const formattedGranularity =
+          this.getFundamentalsFormattedGranularity(granularity)
 
-        if (granularity === 'quarter') {
-          formattedGranularity = 'quarterly'
+        const statementKey = this.getTypeOfStatementToUse(financials, field)
+        const isStatement =
+          field === 'incomeStatement' ||
+          field === 'balanceSheet' ||
+          field === 'cashFlowStatement'
+        const statements =
+          formattedGranularity === 'ttm'
+            ? []
+            : financials[statementKey][formattedGranularity]
+
+        if (fiscalDateRange) {
+          const fiscalDateRangeFilterPredicate =
+            getFiscalDateRangeFilterPredicate(fiscalDateRange)
+          const filteredStatements = statements.filter(
+            fiscalDateRangeFilterPredicate
+          )
+
+          if (formattedGranularity !== 'quarterly') {
+            if (isInUS) {
+              const filteredQuarters = financials[
+                statementKey
+              ].quarterly.filter(fiscalDateRangeFilterPredicate)
+              const ttmStatement =
+                this.getTTMValuesFromQuarters(filteredQuarters)
+
+              filteredStatements.unshift(
+                this.getStatementWithTTMDate(ttmStatement)
+              )
+            } else {
+              filteredStatements.unshift(
+                this.getStatementWithTTMDate(financials[statementKey].yearly[0])
+              )
+            }
+          }
+
+          if (isStatement) {
+            return mapArrayObjectsToSimpleRangeValues(filteredStatements)
+          }
+
+          const values = filteredStatements.map(statement => statement[field])
+
+          return this.getFixedSimpleRangeValues(values)
         }
 
-        if (granularity === 'year') {
-          formattedGranularity = 'yearly'
+        if (formattedGranularity !== 'quarterly') {
+          if (isInUS) {
+            const ttmStatement = this.getTTMValuesFromQuarters(
+              financials[statementKey].quarterly
+            )
+
+            statements.unshift(this.getStatementWithTTMDate(ttmStatement))
+          } else {
+            statements.unshift(
+              this.getStatementWithTTMDate(financials[statementKey].yearly[0])
+            )
+          }
         }
 
-        return this.getFieldValues(
-          field,
-          formattedGranularity,
-          fiscalDateRange,
-          financials,
-          isInUS
-        )
+        if (formattedGranularity !== 'ttm') {
+          if (isStatement) {
+            return mapArrayObjectsToSimpleRangeValues(statements)
+          }
+
+          const values = statements.map(statement => statement[field])
+
+          return this.getFixedSimpleRangeValues(values)
+        }
+
+        if (isStatement) {
+          return mapObjToSimpleRangeValues(statements[0])
+        }
+
+        return statements[0][field]
+      }
+    )
+  }
+
+  getCompanyRatios(ast, state) {
+    const metadata = this.metadata('STOCK.GET_COMPANY_RATIOS')
+
+    return this.runAsyncFunction(
+      ast.args,
+      state,
+      metadata,
+      async (ticker, field, defaultGranularity, fiscalDateRange) => {
+        const isTickerValid = !!ticker.match(tickerRegex)
+        const isFieldValid = field ? !!ratioFields.find(x => x === field) : true
+        const granularity = defaultGranularity
+          ? defaultGranularity
+          : fiscalDateRange
+          ? 'year'
+          : 'latest'
+
+        const isGranularityValid =
+          granularity === 'latest' ||
+          granularity === 'quarter' ||
+          granularity === 'year'
+
+        const isFiscalDateRangeValid =
+          this.getIsFiscalDateRangeValid(fiscalDateRange)
+
+        if (!isTickerValid) {
+          return tickerCellError
+        }
+
+        if (!isFieldValid) {
+          return ratioFieldCellError
+        }
+
+        if (!isGranularityValid) {
+          return granularityCellError
+        }
+
+        if (!isFiscalDateRangeValid) {
+          return fiscalDateRangeCellError
+        }
+
+        const { data } = await api.getCompanyRatios(ticker, {
+          filter: fundamentalsFilter
+        })
+
+        const ratios = data.value.ratios
+        const isInUS = data.value.general.countryISO === 'US'
+
+        const formattedGranularity =
+          this.getFundamentalsFormattedGranularity(granularity)
+
+        const ratioValues =
+          formattedGranularity === 'latest' ? [] : ratios[formattedGranularity]
+
+        if (fiscalDateRange) {
+          const fiscalDateRangeFilterPredicate =
+            getFiscalDateRangeFilterPredicate(fiscalDateRange)
+          const filteredRatios = ratioValues.filter(
+            fiscalDateRangeFilterPredicate
+          )
+
+          if (formattedGranularity !== 'quarterly') {
+            if (isInUS) {
+              filteredRatios.unshift(
+                this.getRatiosWithLatestDate(ratios.quarterly[0])
+              )
+            } else {
+              filteredRatios.unshift(
+                this.getRatiosWithLatestDate(ratios.yearly[0])
+              )
+            }
+          }
+
+          if (!field) {
+            return mapArrayObjectsToSimpleRangeValues(filteredRatios)
+          }
+
+          const values = filteredRatios.map(ratios => ratios[field])
+
+          return this.getFixedSimpleRangeValues(values)
+        }
+
+        if (formattedGranularity !== 'quarterly') {
+          if (isInUS) {
+            ratioValues.unshift(
+              this.getRatiosWithLatestDate(ratios.quarterly[0])
+            )
+          } else {
+            ratioValues.unshift(this.getRatiosWithLatestDate(ratios.yearly[0]))
+          }
+        }
+
+        if (formattedGranularity !== 'latest') {
+          if (!field) {
+            return mapArrayObjectsToSimpleRangeValues(ratioValues)
+          }
+
+          const values = ratioValues.map(ratios => ratios[field])
+
+          return this.getFixedSimpleRangeValues(values)
+        }
+
+        if (!field) {
+          return mapObjToSimpleRangeValues(ratioValues[0])
+        }
+
+        return ratioValues[0][field]
       }
     )
   }
@@ -230,7 +425,7 @@ export class Plugin extends FunctionPlugin {
 
         const params = getEODParams(granularity, field, fiscalDateRange)
 
-        const { data } = await api.getEOD(ticker, params)
+        const { data } = await api.getCompanyEOD(ticker, params)
 
         return getFieldValue(data.value, true)
       }
@@ -256,7 +451,7 @@ export class Plugin extends FunctionPlugin {
           return infoFieldCellError
         }
 
-        const { data } = await api.getFundamentals(ticker, {
+        const { data } = await api.getCompanyFundamentals(ticker, {
           filter: 'General,SharesStats,Highlights'
         })
         const info = {
@@ -282,9 +477,8 @@ export class Plugin extends FunctionPlugin {
         const isFieldValid = field
           ? !!industryAverageFields.find(x => x === field)
           : true
-        const isFiscalDateRangeValid = fiscalDateRange
-          ? !!fiscalDateRange.match(fiscalDateRangeRegex)
-          : true
+        const isFiscalDateRangeValid =
+          this.getIsFiscalDateRangeValid(fiscalDateRange)
 
         if (!isTypeValid) {
           return industryTypeCellError
@@ -322,9 +516,8 @@ export class Plugin extends FunctionPlugin {
         const isFieldValid = field
           ? !!industryAverageFields.find(x => x === field)
           : true
-        const isFiscalDateRangeValid = fiscalDateRange
-          ? !!fiscalDateRange.match(fiscalDateRangeRegex)
-          : true
+        const isFiscalDateRangeValid =
+          this.getIsFiscalDateRangeValid(fiscalDateRange)
 
         if (!isTickerValid) {
           return tickerCellError
@@ -362,9 +555,8 @@ export class Plugin extends FunctionPlugin {
         const isFieldValid = field
           ? !!equityRiskPremiumFields.find(x => x === field)
           : true
-        const isFiscalDateRangeValid = fiscalDateRange
-          ? !!fiscalDateRange.match(fiscalDateRangeRegex)
-          : true
+        const isFiscalDateRangeValid =
+          this.getIsFiscalDateRangeValid(fiscalDateRange)
 
         if (!isTickerValid) {
           return tickerCellError
@@ -417,79 +609,32 @@ export class Plugin extends FunctionPlugin {
     }
   }
 
-  getFieldValues(field, granularity, fiscalDateRange, financials, isInUS) {
-    const statementKey = this.getTypeOfStatementToUse(financials, field)
-    const isStatement =
-      field === 'incomeStatement' ||
-      field === 'balanceSheet' ||
-      field === 'cashFlowStatement'
-    const statements =
-      granularity === 'ttm' ? [] : financials[statementKey][granularity]
+  getIsFiscalDateRangeValid(fiscalDateRange) {
+    return fiscalDateRange
+      ? !!fiscalDateRange.match(fiscalDateRangeRegex)
+      : true
+  }
 
-    const getSimpleRangeValues = values => {
-      // TODO: If has one length then HF is throwing errors.
-      // Raise with HF as this seems to be a bug.
-      return values.length === 1
-        ? values[0]
-        : SimpleRangeValue.onlyValues([values])
+  getFixedSimpleRangeValues(values) {
+    // TODO: If has one length then HF is throwing errors.
+    // Raise with HF as this seems to be a bug.
+    return values.length === 1
+      ? values[0]
+      : SimpleRangeValue.onlyValues([values])
+  }
+
+  getFundamentalsFormattedGranularity(granularity) {
+    let formattedGranularity = granularity
+
+    if (granularity === 'quarter') {
+      formattedGranularity = 'quarterly'
     }
 
-    if (fiscalDateRange) {
-      const fiscalDateRangeFilterPredicate =
-        getFiscalDateRangeFilterPredicate(fiscalDateRange)
-      const filteredStatements = statements.filter(
-        fiscalDateRangeFilterPredicate
-      )
-
-      if (granularity !== 'quarterly') {
-        if (isInUS) {
-          const filteredQuarters = financials[statementKey].quarterly.filter(
-            fiscalDateRangeFilterPredicate
-          )
-          const ttmStatement = this.getTTMValuesFromQuarters(filteredQuarters)
-
-          filteredStatements.unshift(ttmStatement)
-        } else {
-          filteredStatements.unshift(financials[statementKey].yearly[0])
-        }
-      }
-
-      if (isStatement) {
-        return mapArrayObjectsToSimpleRangeValues(filteredStatements)
-      }
-
-      const values = filteredStatements.map(statement => statement[field])
-
-      return getSimpleRangeValues(values)
+    if (granularity === 'year') {
+      formattedGranularity = 'yearly'
     }
 
-    if (granularity !== 'quarterly') {
-      if (isInUS) {
-        const ttmStatement = this.getTTMValuesFromQuarters(
-          financials[statementKey].quarterly
-        )
-
-        statements.unshift(ttmStatement)
-      } else {
-        statements.unshift(financials[statementKey].yearly[0])
-      }
-    }
-
-    if (granularity !== 'ttm') {
-      if (isStatement) {
-        return mapArrayObjectsToSimpleRangeValues(statements)
-      }
-
-      const values = statements.map(statement => statement[field])
-
-      return getSimpleRangeValues(values)
-    }
-
-    if (isStatement) {
-      return mapObjToSimpleRangeValues(statements[0])
-    }
-
-    return statements[0][field]
+    return formattedGranularity
   }
 
   getTTMValuesFromQuarters(statements) {
@@ -509,9 +654,21 @@ export class Plugin extends FunctionPlugin {
       })
     })
 
-    ttm.date = 'TTM'
-
     return ttm
+  }
+
+  getStatementWithTTMDate(statement) {
+    return {
+      ...statement,
+      date: 'TTM'
+    }
+  }
+
+  getRatiosWithLatestDate(statement) {
+    return {
+      ...statement,
+      date: 'Latest'
+    }
   }
 
   sumFinancialStatementValues(financialStatements, valueKey) {

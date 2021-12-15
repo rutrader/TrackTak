@@ -15,14 +15,20 @@ const getAuthHeaders = accessToken => {
   return { Authorization: `Bearer ${accessToken}` }
 }
 
-export const getFundamentals = async (ticker, params) => {
+export const getCompanyFundamentals = async (ticker, params) => {
   return axios.get(`/api/v1/securities/stocks/fundamentals/${ticker}`, {
     params
   })
 }
 
-export const getEOD = async (ticker, params) => {
+export const getCompanyEOD = async (ticker, params) => {
   return axios.get(`/api/v1/securities/stocks/eod/${ticker}`, {
+    params
+  })
+}
+
+export const getCompanyRatios = async (ticker, params) => {
+  return axios.get(`/api/v1/securities/stocks/ratios/${ticker}`, {
     params
   })
 }
