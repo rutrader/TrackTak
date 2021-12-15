@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import { sentenceCase } from 'change-case'
 
-const parseFiscalDateFromRange = fiscalDateRange => {
+export const parseFiscalDateFromRange = fiscalDateRange => {
   if (fiscalDateRange.includes('>=')) {
     const fiscalDate = fiscalDateRange.slice(2)
 
@@ -67,17 +67,19 @@ export const getFiscalDateRangeFilterPredicate = fiscalDateRange => {
   return fiscalDateRangeFilterPredicate
 }
 
+const addOneDay = fiscalDate =>
+  dayjs(fiscalDate).add(1, 'day').format('YYYY-MM-DD')
+
+const subtractOneDay = fiscalDate =>
+  dayjs(fiscalDate).subtract(1, 'day').format('YYYY-MM-DD')
+
 export const convertFiscalDateRangeToFromTo = fiscalDateRange => {
   const [fiscalDate, operator] = parseFiscalDateFromRange(fiscalDateRange)
-
-  const addOneDay = () => dayjs(fiscalDate).add(1, 'day').format('YYYY-MM-DD')
-  const subtractOneDay = () =>
-    dayjs(fiscalDate).subtract(1, 'day').format('YYYY-MM-DD')
 
   // EOD API filter is inclusive so we need to make it exclusive
   if (operator === '>') {
     return {
-      from: addOneDay()
+      from: addOneDay(fiscalDate)
     }
   }
 
@@ -89,7 +91,7 @@ export const convertFiscalDateRangeToFromTo = fiscalDateRange => {
 
   if (operator === '<') {
     return {
-      to: subtractOneDay()
+      to: subtractOneDay(fiscalDate)
     }
   }
 
@@ -99,9 +101,9 @@ export const convertFiscalDateRangeToFromTo = fiscalDateRange => {
     }
   }
 
-  if (operator === ':') {
-    const from = addOneDay()
-    const to = subtractOneDay()
+  if (operator === ';') {
+    const from = addOneDay(fiscalDate[0])
+    const to = subtractOneDay(fiscalDate[1])
 
     return {
       from,
