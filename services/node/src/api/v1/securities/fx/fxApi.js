@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { sendReqOrGetCachedData } from '../../../../cache'
+import camelCaseObjects from '../../../../shared/camelCaseObjects'
 import { eodAPIToken, eodEndpoint } from '../../../../shared/constants'
 import alterFromToQuery from '../alterFromToQuery'
 
@@ -18,7 +19,7 @@ export const getExchangeRate = async (baseCurrency, quoteCurrency, query) => {
         }
       )
 
-      return data
+      return camelCaseObjects(data)
     },
     'exchangeRate',
     { baseCurrency, quoteCurrency, query }

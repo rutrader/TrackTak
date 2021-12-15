@@ -3,9 +3,9 @@ import dayjs from 'dayjs'
 // This is needed because EOD doesn't return data on some days.
 // Stock prices: Sat, Sun & holidays, today
 // Bonds: Sat, today
-// FX: Sat
+// FX: Sat, today
 // TODO: Add same for holidays
-const alterFromToQuery = (query, { changeSunday, changeToday }) => {
+const alterFromToQuery = (query, { changeSunday } = {}) => {
   const newQuery = query
   const { period, from, to } = newQuery
 
@@ -16,7 +16,7 @@ const alterFromToQuery = (query, { changeSunday, changeToday }) => {
 
     const todayDate = dayjs()
 
-    if (todayDate.isSame(date, 'day') && changeToday) {
+    if (todayDate.isSame(date, 'day')) {
       date = date.subtract(1, 'day')
     }
 

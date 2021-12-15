@@ -25,6 +25,7 @@ import { fiscalDateRangeCellError, getFieldCellError } from '../cellErrors'
 import { fiscalDateRangeRegex } from '../matchers'
 import { getEODParams, validateEODParamsHasError } from '../eod'
 import { equityRiskPremiumFields } from '../fields'
+import { creditRatingInterestSpreadsFields } from '../market/fields'
 
 const financialsFieldCellError = getFieldCellError(financialFields)
 const infoFieldCellError = getFieldCellError(infoFields)
@@ -134,6 +135,19 @@ export const implementedFunctions = {
       { argumentType: ArgumentTypes.STRING, optionalArg: true },
       { argumentType: ArgumentTypes.STRING, optionalArg: true }
     ]
+  },
+  'STOCK.GET_COMPANY_CREDIT_RATING_INTEREST_SPREAD': {
+    method: 'getCompanyCreditRatingInterestSpread',
+    arraySizeMethod: 'stockSize',
+    isAsyncMethod: true,
+    inferReturnType: true,
+    parameters: [
+      {
+        argumentType: ArgumentTypes.STRING
+      },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true }
+    ]
   }
 }
 
@@ -144,19 +158,12 @@ export const aliases = {
   'S.GCI': 'STOCK.GET_COMPANY_INFO',
   'S.GIA': 'STOCK.GET_INDUSTRY_AVERAGES',
   'S.GCIA': 'STOCK.GET_COMPANY_INDUSTRY_AVERAGE',
-  'S.GCERP': 'STOCK.GET_COMPANY_EQUITY_RISK_PREMIUM'
+  'S.GCERP': 'STOCK.GET_COMPANY_EQUITY_RISK_PREMIUM',
+  'S.GCCRIS': 'STOCK.GET_COMPANY_CREDIT_RATING_INTEREST_SPREAD'
 }
 
 export const translations = {
-  enGB: {
-    'S.GCF': 'STOCK.GET_COMPANY_FINANCIALS',
-    'S.GCR': 'GET_COMPANY_RATIOS',
-    'S.GP': 'STOCK.GET_PRICE',
-    'S.GCI': 'STOCK.GET_COMPANY_INFO',
-    'S.GIA': 'STOCK.GET_INDUSTRY_AVERAGES',
-    'S.GCIA': 'STOCK.GET_COMPANY_INDUSTRY_AVERAGE',
-    'S.GCERP': 'STOCK.GET_COMPANY_EQUITY_RISK_PREMIUM'
-  }
+  enGB: aliases
 }
 
 export const fundamentalsFilter =
@@ -576,6 +583,50 @@ export class Plugin extends FunctionPlugin {
           field,
           fiscalDateRange
         })
+
+        return getFieldValue(data.value)
+      }
+    )
+  }
+
+  getCompanyCreditRatingInterestSpread(ast, state) {
+    const metadata = this.metadata(
+      'STOCK.GET_COMPANY_CREDIT_RATING_INTEREST_SPREAD'
+    )
+
+    return this.runAsyncFunction(
+      ast.args,
+      state,
+      metadata,
+      async (ticker, field, fiscalDateRange) => {
+        const isTickerValid = !!ticker.match(tickerRegex)
+        const isFieldValid = field
+          ? !!creditRatingInterestSpreadsFields.find(x => x === field)
+          : true
+        const isFiscalDateRangeValid =
+          this.getIsFiscalDateRangeValid(fiscalDateRange)
+
+        if (!isTickerValid) {
+          return tickerCellError
+        }
+
+        if (!isFieldValid) {
+          return equityRiskPremiumsFieldCellError
+        }
+
+        if (!isFiscalDateRangeValid) {
+          return fiscalDateRangeCellError
+        }
+
+        // TODO: Handle dates for creditRatingInterestSpreads and store in database
+        // before updating creditRatingInterestSpreads JSON
+        const { data } = await api.getCompanyCreditRatingInterestSpreads(
+          ticker,
+          {
+            field,
+            fiscalDateRange
+          }
+        )
 
         return getFieldValue(data.value)
       }

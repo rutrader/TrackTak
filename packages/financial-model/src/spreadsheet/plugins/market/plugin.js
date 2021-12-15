@@ -54,11 +54,7 @@ export const aliases = {
 }
 
 export const translations = {
-  enGB: {
-    'M.GERP': 'MARKET.GET_EQUITY_RISK_PREMIUMS',
-    'M.GCRIS': 'MARKET.GET_CREDIT_RATING_INTEREST_SPREADS',
-    'M.RFR': 'MARKET.RISK_FREE_RATE'
-  }
+  enGB: aliases
 }
 
 export class Plugin extends FunctionPlugin {

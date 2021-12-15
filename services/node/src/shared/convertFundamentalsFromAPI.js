@@ -1,8 +1,8 @@
-import camelCase from 'camelcase'
 import { isNil } from 'lodash-es'
 import getValueFromString from './getValueFromString'
 import replaceDoubleColonWithObject from './replaceDoubleColonWithObject'
 import * as financialStatementKeys from './financialStatementKeys'
+import camelCaseObjects from './camelCaseObjects'
 
 const dateSortComparer = (a, b) => b.date.localeCompare(a.date)
 
@@ -162,50 +162,17 @@ const convertEarningsTrend = ({ date, period, ...trend }) => {
   return newTrend
 }
 
-const camelCaseObject = (obj, topLevelKey) => {
-  const returnedObj = {}
-  const returnedArr = []
-
-  try {
-    Object.keys(obj).forEach(key => {
-      const value = obj[key]
-      const camelCaseKey = camelCase(key, {
-        preserveConsecutiveUppercase: true
-      })
-
-      if (typeof value === 'object' && value !== null) {
-        const camelCaseObj = camelCaseObject(value, camelCaseKey)
-
-        if (isNaN(parseInt(key))) {
-          returnedObj[camelCaseKey] = camelCaseObj
-        } else {
-          returnedArr.push(camelCaseObj)
-        }
-      } else {
-        returnedObj[camelCaseKey] = value
-      }
-    })
-  } catch (error) {
-    console.error(
-      `camelCase error thrown for key: ${topLevelKey}. Ignoring key.`
-    )
-    console.error(error)
-  }
-
-  return returnedArr.length ? returnedArr : returnedObj
-}
-
 const convertFundamentalsFromAPI = (ticker, data) => {
   if (typeof data !== 'object' || data === null) {
     return data
   }
 
-  const fundamentalsData = replaceDoubleColonWithObject(data)
-
-  let newFundamentalsData = {}
-
   try {
-    newFundamentalsData = camelCaseObject(fundamentalsData)
+    const fundamentalsData = replaceDoubleColonWithObject(data)
+
+    let newFundamentalsData = {}
+
+    newFundamentalsData = camelCaseObjects(fundamentalsData)
 
     if (newFundamentalsData.earnings?.trend) {
       const trend = newFundamentalsData.earnings?.trend
@@ -374,12 +341,12 @@ const convertFundamentalsFromAPI = (ticker, data) => {
         }
       })
     }
+
+    return newFundamentalsData
   } catch (error) {
     console.info(`Conversion partially failed for: ${ticker}.`)
     console.error(error)
   }
-
-  return newFundamentalsData
 }
 
 export default convertFundamentalsFromAPI

@@ -32,9 +32,7 @@ export const aliases = {
 }
 
 export const translations = {
-  enGB: {
-    'B.GCY': 'BOND.GET_COUNTRY_YIELD'
-  }
+  enGB: aliases
 }
 
 export class Plugin extends FunctionPlugin {

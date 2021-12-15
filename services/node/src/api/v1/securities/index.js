@@ -8,6 +8,7 @@ import ratios from './stocks/ratios'
 import industryAverages from './stocks/industryAverages'
 import companyIndustryAverage from './stocks/industryAverages/company'
 import companyEquityRiskPremium from './stocks/equityRiskPremiums/company'
+import companyCreditRatingInterestSpreads from './stocks/creditRatingInterestSpreads/company'
 
 const router = express.Router()
 
@@ -20,5 +21,9 @@ router.use('/stocks/ratios', ratios)
 router.use('/stocks/industry-averages', industryAverages)
 router.use('/stocks/industry-averages/company', companyIndustryAverage)
 router.use('/stocks/equity-risk-premiums/company', companyEquityRiskPremium)
+router.use(
+  '/stocks/credit-rating-interest-spreads/company',
+  companyCreditRatingInterestSpreads
+)
 
 export default router

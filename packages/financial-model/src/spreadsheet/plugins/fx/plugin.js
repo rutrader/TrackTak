@@ -31,9 +31,7 @@ export const aliases = {
 }
 
 export const translations = {
-  enGB: {
-    'F.GFER': 'FX.GET_FIAT_EXCHANGE_RATE'
-  }
+  enGB: aliases
 }
 
 export class Plugin extends FunctionPlugin {

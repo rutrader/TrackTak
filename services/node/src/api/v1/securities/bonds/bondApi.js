@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { sendReqOrGetCachedData } from '../../../../cache'
+import camelCaseObjects from '../../../../shared/camelCaseObjects'
 import { eodAPIToken, eodEndpoint } from '../../../../shared/constants'
 import alterFromToQuery from '../alterFromToQuery'
 
@@ -11,11 +12,11 @@ export const getGovernmentBond = async (code, query) => {
           api_token: eodAPIToken,
           order: 'd',
           fmt: 'json',
-          ...alterFromToQuery(query, { changeToday: true })
+          ...alterFromToQuery(query)
         }
       })
 
-      return data
+      return camelCaseObjects(data)
     },
     'governmentBond',
     { code, query }

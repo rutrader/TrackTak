@@ -54,6 +54,15 @@ export const getCreditRatingInterestSpreads = async params => {
   })
 }
 
+export const getCompanyCreditRatingInterestSpreads = async (ticker, params) => {
+  return axios.get(
+    `/api/v1/securities/stocks/credit-rating-interest-spreads/company/${ticker}`,
+    {
+      params
+    }
+  )
+}
+
 export const getEquityRiskPremiums = async params => {
   return axios.get(`/api/v1/market/equity-risk-premiums`, {
     params
