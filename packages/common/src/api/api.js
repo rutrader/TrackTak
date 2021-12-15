@@ -15,8 +15,8 @@ const getAuthHeaders = accessToken => {
   return { Authorization: `Bearer ${accessToken}` }
 }
 
-export const getCompanyFundamentals = async (ticker, params) => {
-  return axios.get(`/api/v1/securities/stocks/fundamentals/${ticker}`, {
+export const getCompanyFinancials = async (ticker, params) => {
+  return axios.get(`/api/v1/securities/stocks/financials/${ticker}`, {
     params
   })
 }

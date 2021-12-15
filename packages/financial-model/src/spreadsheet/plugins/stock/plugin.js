@@ -1,6 +1,5 @@
-import { FunctionPlugin, SimpleRangeValue } from '@tracktak/hyperformula'
+import { FunctionPlugin } from '@tracktak/hyperformula'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
-import { isNil } from 'lodash'
 import {
   granularityCellError,
   industryTypeCellError,
@@ -14,13 +13,7 @@ import {
   ratioFields
 } from './fields'
 import { tickerRegex } from './matchers'
-import {
-  getFiscalDateRangeFilterPredicate,
-  mapArrayObjectsToSimpleRangeValues,
-  mapObjToSimpleRangeValues,
-  sizeMethod,
-  getFieldValue
-} from '../helpers'
+import { sizeMethod, getPluginAsyncValue } from '../helpers'
 import { fiscalDateRangeCellError, getFieldCellError } from '../cellErrors'
 import { fiscalDateRangeRegex } from '../matchers'
 import { getEODParams, validateEODParamsHasError } from '../eod'
@@ -166,9 +159,6 @@ export const translations = {
   enGB: aliases
 }
 
-export const fundamentalsFilter =
-  'General::CountryISO,General::Code,General::Exchange,General::UpdatedAt,Financials::Balance_Sheet,Financials::Income_Statement,Financials::Cash_Flow'
-
 export class Plugin extends FunctionPlugin {
   getCompanyFinancials(ast, state) {
     const metadata = this.metadata('STOCK.GET_COMPANY_FINANCIALS')
@@ -210,88 +200,13 @@ export class Plugin extends FunctionPlugin {
           return fiscalDateRangeCellError
         }
 
-        const { data } = await api.getCompanyFundamentals(ticker, {
-          filter: fundamentalsFilter
+        const { data } = await api.getCompanyFinancials(ticker, {
+          granularity,
+          field,
+          fiscalDateRange
         })
-        const financials = data.value.financials
-        const isInUS = data.value.general.countryISO === 'US'
 
-        const formattedGranularity =
-          this.getFundamentalsFormattedGranularity(granularity)
-
-        const statementKey = this.getTypeOfStatementToUse(financials, field)
-        const isStatement =
-          field === 'incomeStatement' ||
-          field === 'balanceSheet' ||
-          field === 'cashFlowStatement'
-        const statements =
-          formattedGranularity === 'ttm'
-            ? []
-            : financials[statementKey][formattedGranularity]
-
-        if (fiscalDateRange) {
-          const fiscalDateRangeFilterPredicate =
-            getFiscalDateRangeFilterPredicate(fiscalDateRange)
-          const filteredStatements = statements.filter(
-            fiscalDateRangeFilterPredicate
-          )
-
-          if (formattedGranularity !== 'quarterly') {
-            if (isInUS) {
-              const filteredQuarters = financials[
-                statementKey
-              ].quarterly.filter(fiscalDateRangeFilterPredicate)
-              const ttmStatement =
-                this.getTTMValuesFromQuarters(filteredQuarters)
-
-              filteredStatements.unshift(
-                this.getStatementWithTTMDate(ttmStatement)
-              )
-            } else {
-              filteredStatements.unshift(
-                this.getStatementWithTTMDate(financials[statementKey].yearly[0])
-              )
-            }
-          }
-
-          if (isStatement) {
-            return mapArrayObjectsToSimpleRangeValues(filteredStatements)
-          }
-
-          const values = filteredStatements.map(statement => statement[field])
-
-          return this.getFixedSimpleRangeValues(values)
-        }
-
-        if (formattedGranularity !== 'quarterly') {
-          if (isInUS) {
-            const ttmStatement = this.getTTMValuesFromQuarters(
-              financials[statementKey].quarterly
-            )
-
-            statements.unshift(this.getStatementWithTTMDate(ttmStatement))
-          } else {
-            statements.unshift(
-              this.getStatementWithTTMDate(financials[statementKey].yearly[0])
-            )
-          }
-        }
-
-        if (formattedGranularity !== 'ttm') {
-          if (isStatement) {
-            return mapArrayObjectsToSimpleRangeValues(statements)
-          }
-
-          const values = statements.map(statement => statement[field])
-
-          return this.getFixedSimpleRangeValues(values)
-        }
-
-        if (isStatement) {
-          return mapObjToSimpleRangeValues(statements[0])
-        }
-
-        return statements[0][field]
+        return getPluginAsyncValue(data.value)
       }
     )
   }
@@ -337,71 +252,12 @@ export class Plugin extends FunctionPlugin {
         }
 
         const { data } = await api.getCompanyRatios(ticker, {
-          filter: fundamentalsFilter
+          granularity,
+          field,
+          fiscalDateRange
         })
 
-        const ratios = data.value.ratios
-        const isInUS = data.value.general.countryISO === 'US'
-
-        const formattedGranularity =
-          this.getFundamentalsFormattedGranularity(granularity)
-
-        const ratioValues =
-          formattedGranularity === 'latest' ? [] : ratios[formattedGranularity]
-
-        if (fiscalDateRange) {
-          const fiscalDateRangeFilterPredicate =
-            getFiscalDateRangeFilterPredicate(fiscalDateRange)
-          const filteredRatios = ratioValues.filter(
-            fiscalDateRangeFilterPredicate
-          )
-
-          if (formattedGranularity !== 'quarterly') {
-            if (isInUS) {
-              filteredRatios.unshift(
-                this.getRatiosWithLatestDate(ratios.quarterly[0])
-              )
-            } else {
-              filteredRatios.unshift(
-                this.getRatiosWithLatestDate(ratios.yearly[0])
-              )
-            }
-          }
-
-          if (!field) {
-            return mapArrayObjectsToSimpleRangeValues(filteredRatios)
-          }
-
-          const values = filteredRatios.map(ratios => ratios[field])
-
-          return this.getFixedSimpleRangeValues(values)
-        }
-
-        if (formattedGranularity !== 'quarterly') {
-          if (isInUS) {
-            ratioValues.unshift(
-              this.getRatiosWithLatestDate(ratios.quarterly[0])
-            )
-          } else {
-            ratioValues.unshift(this.getRatiosWithLatestDate(ratios.yearly[0]))
-          }
-        }
-
-        if (formattedGranularity !== 'latest') {
-          if (!field) {
-            return mapArrayObjectsToSimpleRangeValues(ratioValues)
-          }
-
-          const values = ratioValues.map(ratios => ratios[field])
-
-          return this.getFixedSimpleRangeValues(values)
-        }
-
-        if (!field) {
-          return mapObjToSimpleRangeValues(ratioValues[0])
-        }
-
-        return ratioValues[0][field]
+        return getPluginAsyncValue(data.value)
       }
     )
   }
@@ -434,7 +290,7 @@ export class Plugin extends FunctionPlugin {
 
         const { data } = await api.getCompanyEOD(ticker, params)
 
-        return getFieldValue(data.value, true)
+        return getPluginAsyncValue(data.value)
       }
     )
   }
@@ -467,7 +323,7 @@ export class Plugin extends FunctionPlugin {
           ...data.value.highlights
         }
 
-        return getFieldValue(info[field])
+        return getPluginAsyncValue(info[field])
       }
     )
   }
@@ -506,7 +362,7 @@ export class Plugin extends FunctionPlugin {
           fiscalDateRange
         })
 
-        return getFieldValue(data.value, true)
+        return getPluginAsyncValue(data.value)
       }
     )
   }
@@ -545,7 +401,7 @@ export class Plugin extends FunctionPlugin {
           fiscalDateRange
         })
 
-        return getFieldValue(data.value)
+        return getPluginAsyncValue(data.value)
       }
     )
   }
@@ -584,7 +440,7 @@ export class Plugin extends FunctionPlugin {
           fiscalDateRange
         })
 
-        return getFieldValue(data.value)
+        return getPluginAsyncValue(data.value)
       }
     )
   }
@@ -628,7 +484,7 @@ export class Plugin extends FunctionPlugin {
           }
         )
 
-        return getFieldValue(data.value)
+        return getPluginAsyncValue(data.value)
       }
     )
   }
@@ -637,97 +493,10 @@ export class Plugin extends FunctionPlugin {
     return sizeMethod(state)
   }
 
-  getTypeOfStatementToUse(financials, field) {
-    if (
-      !isNil(financials.incomeStatement.yearly[0][field]) ||
-      field === 'incomeStatement'
-    ) {
-      return 'incomeStatement'
-    }
-
-    if (
-      !isNil(financials.balanceSheet.yearly[0][field]) ||
-      field === 'balanceSheet'
-    ) {
-      return 'balanceSheet'
-    }
-
-    if (
-      !isNil(financials.cashFlowStatement.yearly[0][field]) ||
-      field === 'cashFlowStatement'
-    ) {
-      return 'cashFlowStatement'
-    }
-  }
-
   getIsFiscalDateRangeValid(fiscalDateRange) {
     return fiscalDateRange
       ? !!fiscalDateRange.match(fiscalDateRangeRegex)
       : true
-  }
-
-  getFixedSimpleRangeValues(values) {
-    // TODO: If has one length then HF is throwing errors.
-    // Raise with HF as this seems to be a bug.
-    return values.length === 1
-      ? values[0]
-      : SimpleRangeValue.onlyValues([values])
-  }
-
-  getFundamentalsFormattedGranularity(granularity) {
-    let formattedGranularity = granularity
-
-    if (granularity === 'quarter') {
-      formattedGranularity = 'quarterly'
-    }
-
-    if (granularity === 'year') {
-      formattedGranularity = 'yearly'
-    }
-
-    return formattedGranularity
-  }
-
-  getTTMValuesFromQuarters(statements) {
-    const ttm = {}
-    // Reverse the array because we want the latest data that isn't numbers
-    const firstFourStatements = statements.slice(0, 4).reverse()
-
-    firstFourStatements.forEach(statement => {
-      Object.keys(statement).forEach(key => {
-        const value = statement[key]
-
-        if (Number.isFinite(value)) {
-          ttm[key] = this.sumFinancialStatementValues(firstFourStatements, key)
-        } else {
-          ttm[key] = value
-        }
-      })
-    })
-
-    return ttm
-  }
-
-  getStatementWithTTMDate(statement) {
-    return {
-      ...statement,
-      date: 'TTM'
-    }
-  }
-
-  getRatiosWithLatestDate(statement) {
-    return {
-      ...statement,
-      date: 'Latest'
-    }
-  }
-
-  sumFinancialStatementValues(financialStatements, valueKey) {
-    const sumOfFirstFourValues = financialStatements.reduce((acc, curr) => {
-      return (acc += curr[valueKey])
-    }, 0)
-
-    return sumOfFirstFourValues
   }
 }
 

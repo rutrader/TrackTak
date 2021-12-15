@@ -3,6 +3,7 @@ import { sendReqOrGetCachedData } from '../../../../cache'
 import camelCaseObjects from '../../../../shared/camelCaseObjects'
 import { eodAPIToken, eodEndpoint } from '../../../../shared/constants'
 import alterFromToQuery from '../alterFromToQuery'
+import { getFieldValue } from '../helpers'
 
 export const getGovernmentBond = async (code, query) => {
   const data = await sendReqOrGetCachedData(
@@ -16,7 +17,9 @@ export const getGovernmentBond = async (code, query) => {
         }
       })
 
-      return camelCaseObjects(data)
+      const value = camelCaseObjects(data)
+
+      return getFieldValue(value, true)
     },
     'governmentBond',
     { code, query }

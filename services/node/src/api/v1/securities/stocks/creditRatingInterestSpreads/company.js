@@ -4,6 +4,7 @@ import readFile from '../../../market/creditRatingInterestSpreads/readFile'
 import { getExchangeRate } from '../../fx/fxApi'
 import dayjs from 'dayjs'
 import convertSubCurrencyToCurrency from '../../fx/convertSubCurrencyToCurrency'
+import { getFieldValue } from '../../helpers'
 
 const router = express.Router()
 
@@ -61,7 +62,7 @@ router.get('/:ticker', async (req, res) => {
   }
 
   res.send({
-    value
+    value: getFieldValue(value)
   })
 })
 

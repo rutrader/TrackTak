@@ -3,6 +3,7 @@ import { sendReqOrGetCachedData } from '../../../../cache'
 import camelCaseObjects from '../../../../shared/camelCaseObjects'
 import { eodAPIToken, eodEndpoint } from '../../../../shared/constants'
 import alterFromToQuery from '../alterFromToQuery'
+import { getFieldValue } from '../helpers'
 
 export const getExchangeRate = async (baseCurrency, quoteCurrency, query) => {
   const data = await sendReqOrGetCachedData(
@@ -19,7 +20,9 @@ export const getExchangeRate = async (baseCurrency, quoteCurrency, query) => {
         }
       )
 
-      return camelCaseObjects(data)
+      const value = camelCaseObjects(data)
+
+      return getFieldValue(value, true)
     },
     'exchangeRate',
     { baseCurrency, quoteCurrency, query }

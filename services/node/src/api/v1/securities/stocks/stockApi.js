@@ -9,39 +9,90 @@ import {
 import alterFromToQuery from '../alterFromToQuery'
 import camelCaseObjects from '../../../../shared/camelCaseObjects'
 import { isNil } from 'lodash-es'
+import {
+  getFieldValue,
+  getFiscalDateRangeFilterPredicate,
+  mapArrayObjectsToValues,
+  mapObjToValues
+} from '../helpers'
 
-export const getFundamentals = async (ticker, query) => {
-  const data = await sendReqOrGetCachedData(
-    async () => {
-      const { data } = await axios.get(`${fundamentalsEndpoint}/${ticker}`, {
-        params: {
-          api_token: eodAPIToken,
-          ...query
-        }
-      })
+const getTypeOfStatementToUse = (financials, field) => {
+  if (
+    !isNil(financials.incomeStatement.yearly[0][field]) ||
+    field === 'incomeStatement'
+  ) {
+    return 'incomeStatement'
+  }
 
-      const convertedFundamentals = convertFundamentalsFromAPI(ticker, data)
+  if (
+    !isNil(financials.balanceSheet.yearly[0][field]) ||
+    field === 'balanceSheet'
+  ) {
+    return 'balanceSheet'
+  }
 
-      return convertedFundamentals
-    },
-    'fundamentals',
-    { ticker, query }
-  )
-
-  return data
+  if (
+    !isNil(financials.cashFlowStatement.yearly[0][field]) ||
+    field === 'cashFlowStatement'
+  ) {
+    return 'cashFlowStatement'
+  }
 }
 
-export const getEOD = async (ticker, query) => {
-  const { data } = await axios.get(`${eodEndpoint}/${ticker}`, {
-    params: {
-      api_token: eodAPIToken,
-      order: 'd',
-      fmt: 'json',
-      ...alterFromToQuery(query, { changeSunday: true })
-    }
+const getFundamentalsFormattedGranularity = granularity => {
+  let formattedGranularity = granularity
+
+  if (granularity === 'quarter') {
+    formattedGranularity = 'quarterly'
+  }
+
+  if (granularity === 'year') {
+    formattedGranularity = 'yearly'
+  }
+
+  return formattedGranularity
+}
+
+const getTTMValuesFromQuarters = statements => {
+  const ttm = {}
+  // Reverse the array because we want the latest data that isn't numbers
+  const firstFourStatements = statements.slice(0, 4).reverse()
+
+  firstFourStatements.forEach(statement => {
+    Object.keys(statement).forEach(key => {
+      const value = statement[key]
+
+      if (Number.isFinite(value)) {
+        ttm[key] = sumFinancialStatementValues(firstFourStatements, key)
+      } else {
+        ttm[key] = value
+      }
+    })
   })
 
-  return camelCaseObjects(data)
+  return ttm
+}
+
+const getStatementWithTTMDate = statement => {
+  return {
+    ...statement,
+    date: 'TTM'
+  }
+}
+
+const getRatiosWithLatestDate = statement => {
+  return {
+    ...statement,
+    date: 'Latest'
+  }
+}
+
+const sumFinancialStatementValues = (financialStatements, valueKey) => {
+  const sumOfFirstFourValues = financialStatements.reduce((acc, curr) => {
+    return (acc += curr[valueKey])
+  }, 0)
+
+  return sumOfFirstFourValues
 }
 
 const getInterestCoverage = statement => {
@@ -64,8 +115,122 @@ const getIncomeStatementRatios = statement => {
   }
 }
 
-export const getRatios = async (ticker, query) => {
-  const { general, financials } = await getFundamentals(ticker, query)
+export const getFundamentals = async (ticker, query) => {
+  const data = await sendReqOrGetCachedData(
+    async () => {
+      const { data } = await axios.get(`${fundamentalsEndpoint}/${ticker}`, {
+        params: {
+          api_token: eodAPIToken,
+          ...query
+        }
+      })
+
+      const convertedFundamentals = convertFundamentalsFromAPI(ticker, data)
+
+      return convertedFundamentals
+    },
+    'fundamentals',
+    { ticker, query }
+  )
+
+  return data
+}
+
+export const getFinancials = async (
+  ticker,
+  granularity,
+  field,
+  fiscalDateRange
+) => {
+  const { general, financials } = await getFundamentals(ticker, {
+    filter:
+      'General::CountryISO,Financials::Balance_Sheet,Financials::Income_Statement,Financials::Cash_Flow'
+  })
+
+  const isInUS = general.countryISO === 'US'
+
+  const formattedGranularity = getFundamentalsFormattedGranularity(granularity)
+
+  const statementKey = getTypeOfStatementToUse(financials, field)
+  const isStatement =
+    field === 'incomeStatement' ||
+    field === 'balanceSheet' ||
+    field === 'cashFlowStatement'
+  const statements =
+    formattedGranularity === 'ttm'
+      ? []
+      : financials[statementKey][formattedGranularity]
+
+  if (fiscalDateRange) {
+    const fiscalDateRangeFilterPredicate =
+      getFiscalDateRangeFilterPredicate(fiscalDateRange)
+    const filteredStatements = statements.filter(fiscalDateRangeFilterPredicate)
+
+    if (formattedGranularity !== 'quarterly') {
+      if (isInUS) {
+        const filteredQuarters = financials[statementKey].quarterly.filter(
+          fiscalDateRangeFilterPredicate
+        )
+        const ttmStatement = getTTMValuesFromQuarters(filteredQuarters)
+
+        filteredStatements.unshift(getStatementWithTTMDate(ttmStatement))
+      } else {
+        filteredStatements.unshift(
+          getStatementWithTTMDate(financials[statementKey].yearly[0])
+        )
+      }
+    }
+
+    if (isStatement) {
+      return mapArrayObjectsToValues(filteredStatements)
+    }
+
+    const values = filteredStatements.map(statement => statement[field])
+
+    return values
+  }
+
+  if (formattedGranularity !== 'quarterly') {
+    if (isInUS) {
+      const ttmStatement = getTTMValuesFromQuarters(
+        financials[statementKey].quarterly
+      )
+
+      statements.unshift(getStatementWithTTMDate(ttmStatement))
+    } else {
+      statements.unshift(
+        getStatementWithTTMDate(financials[statementKey].yearly[0])
+      )
+    }
+  }
+
+  if (formattedGranularity !== 'ttm') {
+    if (isStatement) {
+      return mapArrayObjectsToValues(statements)
+    }
+
+    const values = statements.map(statement => statement[field])
+
+    return values
+  }
+
+  if (isStatement) {
+    return mapObjToValues(statements[0])
+  }
+
+  return statements[0][field]
+}
+
+export const getRatios = async (
+  ticker,
+  granularity,
+  field,
+  fiscalDateRange
+) => {
+  const { general, financials } = await getFundamentals(ticker, {
+    filter:
+      'General::CountryISO,Financials::Balance_Sheet,Financials::Income_Statement,Financials::Cash_Flow'
+  })
 
   const ratios = {
     quarterly: [],
@@ -86,8 +251,71 @@ export const getRatios = async (ticker, query) => {
     })
   })
 
-  return {
-    general,
-    ratios
+  const isInUS = general.countryISO === 'US'
+
+  const formattedGranularity = getFundamentalsFormattedGranularity(granularity)
+
+  const ratioValues =
+    formattedGranularity === 'latest' ? [] : ratios[formattedGranularity]
+
+  if (fiscalDateRange) {
+    const fiscalDateRangeFilterPredicate =
+      getFiscalDateRangeFilterPredicate(fiscalDateRange)
+    const filteredRatios = ratioValues.filter(fiscalDateRangeFilterPredicate)
+
+    if (formattedGranularity !== 'quarterly') {
+      if (isInUS) {
+        filteredRatios.unshift(getRatiosWithLatestDate(ratios.quarterly[0]))
+      } else {
+        filteredRatios.unshift(getRatiosWithLatestDate(ratios.yearly[0]))
+      }
+    }
+
+    if (!field) {
+      return mapArrayObjectsToValues(filteredRatios)
+    }
+
+    const values = filteredRatios.map(ratios => ratios[field])
+
+    return values
   }
+
+  if (formattedGranularity !== 'quarterly') {
+    if (isInUS) {
+      ratioValues.unshift(getRatiosWithLatestDate(ratios.quarterly[0]))
+    } else {
+      ratioValues.unshift(getRatiosWithLatestDate(ratios.yearly[0]))
+    }
+  }
+
+  if (formattedGranularity !== 'latest') {
+    if (!field) {
+      return mapArrayObjectsToValues(ratioValues)
+    }
+
+    const values = ratioValues.map(ratios => ratios[field])
+
+    return values
+  }
+
+  if (!field) {
+    return mapObjToValues(ratioValues[0])
+  }
+
+  return ratioValues[0][field]
+}
+
+export const getEOD = async (ticker, query) => {
+  const { data } = await axios.get(`${eodEndpoint}/${ticker}`, {
+    params: {
+      api_token: eodAPIToken,
+      order: 'd',
+      fmt: 'json',
+      ...alterFromToQuery(query, { changeSunday: true })
+    }
+  })
+
+  const value = camelCaseObjects(data)
+
+  return getFieldValue(value, true)
 }

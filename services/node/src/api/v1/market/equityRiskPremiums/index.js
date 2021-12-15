@@ -1,4 +1,5 @@
 import express from 'express'
+import { getFieldValue } from '../../securities/helpers'
 import readFile from './readFile'
 
 const router = express.Router()
@@ -14,7 +15,7 @@ router.get('/', async (req, res) => {
   }
 
   res.send({
-    value
+    value: getFieldValue(value, true)
   })
 })
 

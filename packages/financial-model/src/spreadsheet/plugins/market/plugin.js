@@ -1,7 +1,7 @@
 import { FunctionPlugin } from '@tracktak/hyperformula'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
 import { api } from '@tracktak/common'
-import { getFieldValue, sizeMethod } from '../helpers'
+import { getPluginAsyncValue, sizeMethod } from '../helpers'
 import { equityRiskPremiumFields } from '../fields'
 import { fiscalDateRangeCellError, getFieldCellError } from '../cellErrors'
 import { fiscalDateRangeRegex } from '../matchers'
@@ -88,7 +88,7 @@ export class Plugin extends FunctionPlugin {
           fiscalDateRange
         })
 
-        return getFieldValue(data.value, true)
+        return getPluginAsyncValue(data.value)
       }
     )
   }
@@ -123,7 +123,7 @@ export class Plugin extends FunctionPlugin {
           fiscalDateRange
         })
 
-        return getFieldValue(data.value, true)
+        return getPluginAsyncValue(data.value)
       }
     )
   }

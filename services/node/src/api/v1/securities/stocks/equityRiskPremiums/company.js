@@ -1,6 +1,7 @@
 import express from 'express'
 import { getFundamentals } from '../stockApi'
 import readFile from '../../../market/equityRiskPremiums/readFile'
+import { getFieldValue } from '../../helpers'
 
 const router = express.Router()
 
@@ -26,7 +27,7 @@ router.get('/:ticker', async (req, res) => {
   }
 
   res.send({
-    value
+    value: getFieldValue(value)
   })
 })
 

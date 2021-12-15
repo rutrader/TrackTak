@@ -1,7 +1,7 @@
 import { FunctionPlugin } from '@tracktak/hyperformula'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
 import { api } from '@tracktak/common'
-import { getFieldValue, sizeMethod } from '../helpers'
+import { getPluginAsyncValue, sizeMethod } from '../helpers'
 import countryCodes from './countryCodes'
 import { countryCodeCellError, maturityCellError } from './cellErrors'
 import { maturityRegex } from './matchers'
@@ -82,7 +82,7 @@ export class Plugin extends FunctionPlugin {
           params
         )
 
-        return getFieldValue(data.value, true)
+        return getPluginAsyncValue(data.value)
       }
     )
   }
