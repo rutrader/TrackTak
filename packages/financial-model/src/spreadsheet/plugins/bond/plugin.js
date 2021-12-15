@@ -5,7 +5,7 @@ import { getPluginAsyncValue, sizeMethod } from '../helpers'
 import countryCodes from './countryCodes'
 import { countryCodeCellError, maturityCellError } from './cellErrors'
 import { maturityRegex } from './matchers'
-import { getEODParams, validateEODParamsHasError } from '../eod'
+import { validateEODParamsHasError } from '../eod'
 
 export const implementedFunctions = {
   'BOND.GET_COUNTRY_YIELD': {
@@ -75,11 +75,13 @@ export class Plugin extends FunctionPlugin {
           formattedMaturity += 'M'
         }
 
-        const params = getEODParams(granularity, field, fiscalDateRange)
-
         const { data } = await api.getGovernmentBond(
           `${countryCode}${formattedMaturity}`,
-          params
+          {
+            field,
+            granularity,
+            fiscalDateRange
+          }
         )
 
         return getPluginAsyncValue(data.value)

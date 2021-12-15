@@ -23,7 +23,6 @@
     "@parcel/reporter-bundle-analyzer": "^2.0.1",
     "@tracktak/powersheet": "^1.0.5",
     "axios": "^0.21.1",
-    "change-case": "^4.1.2",
     "cross-env": "^7.0.2",
     "@parcel/transformer-react-refresh-wrap": "^2.0.1",
     "currency-symbol-map": "^4.0.4",

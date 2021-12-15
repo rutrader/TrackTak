@@ -4,8 +4,11 @@ import camelCaseObjects from '../../../../shared/camelCaseObjects'
 import { eodAPIToken, eodEndpoint } from '../../../../shared/constants'
 import alterFromToQuery from '../alterFromToQuery'
 import { getFieldValue } from '../helpers'
+import getEODQuery from '../stocks/getEODQuery'
 
 export const getGovernmentBond = async (code, query) => {
+  const newQuery = getEODQuery(query)
+
   const data = await sendReqOrGetCachedData(
     async () => {
       const { data } = await axios.get(`${eodEndpoint}/${code}.GBOND`, {
@@ -13,7 +16,7 @@ export const getGovernmentBond = async (code, query) => {
           api_token: eodAPIToken,
           order: 'd',
           fmt: 'json',
-          ...alterFromToQuery(query)
+          ...alterFromToQuery(newQuery)
         }
       })
 
@@ -22,7 +25,7 @@ export const getGovernmentBond = async (code, query) => {
       return getFieldValue(value, true)
     },
     'governmentBond',
-    { code, query }
+    { code, query: newQuery }
   )
 
   return data

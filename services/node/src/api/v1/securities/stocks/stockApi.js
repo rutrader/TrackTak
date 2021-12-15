@@ -15,6 +15,7 @@ import {
   mapArrayObjectsToValues,
   mapObjToValues
 } from '../helpers'
+import getEODQuery from './getEODQuery'
 
 const getTypeOfStatementToUse = (financials, field) => {
   if (
@@ -136,15 +137,13 @@ export const getFundamentals = async (ticker, query) => {
   return data
 }
 
-export const getFinancials = async (
-  ticker,
-  granularity,
-  field,
-  fiscalDateRange
-) => {
+const fundamentalsFilter =
+  'General::CountryISO,Financials::Balance_Sheet,Financials::Income_Statement,Financials::Cash_Flow'
+
+export const getFinancials = async (ticker, params) => {
+  const { granularity, field, fiscalDateRange } = params
   const { general, financials } = await getFundamentals(ticker, {
-    filter:
-      'General::CountryISO,Financials::Balance_Sheet,Financials::Income_Statement,Financials::Cash_Flow'
+    filter: fundamentalsFilter
   })
 
   const isInUS = general.countryISO === 'US'
@@ -221,15 +220,10 @@ export const getFinancials = async (
   return statements[0][field]
 }
 
-export const getRatios = async (
-  ticker,
-  granularity,
-  field,
-  fiscalDateRange
-) => {
+export const getRatios = async (ticker, params) => {
+  const { granularity, field, fiscalDateRange } = params
   const { general, financials } = await getFundamentals(ticker, {
-    filter:
-      'General::CountryISO,Financials::Balance_Sheet,Financials::Income_Statement,Financials::Cash_Flow'
+    filter: fundamentalsFilter
   })
 
   const ratios = {
@@ -306,12 +300,14 @@ export const getRatios = async (
 }
 
 export const getEOD = async (ticker, query) => {
+  const newQuery = getEODQuery(query)
+
   const { data } = await axios.get(`${eodEndpoint}/${ticker}`, {
     params: {
       api_token: eodAPIToken,
       order: 'd',
       fmt: 'json',
-      ...alterFromToQuery(query, { changeSunday: true })
+      ...alterFromToQuery(newQuery, { changeSunday: true })
     }
   })
 

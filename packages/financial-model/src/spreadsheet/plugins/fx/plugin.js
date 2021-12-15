@@ -3,7 +3,7 @@ import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/Func
 import { api } from '@tracktak/common'
 import currencyCodes from './currencyCodes'
 import { baseCurrencyCellError, quoteCurrencyCellError } from './cellErrors'
-import { getEODParams, validateEODParamsHasError } from '../eod'
+import { validateEODParamsHasError } from '../eod'
 import { getPluginAsyncValue, sizeMethod } from '../helpers'
 
 export const implementedFunctions = {
@@ -74,12 +74,14 @@ export class Plugin extends FunctionPlugin {
           return error
         }
 
-        const params = getEODParams(granularity, field, fiscalDateRange)
-
         const { data } = await api.getExchangeRate(
           baseCurrency,
           quoteCurrency,
-          params
+          {
+            field,
+            granularity,
+            fiscalDateRange
+          }
         )
 
         return getPluginAsyncValue(data.value)

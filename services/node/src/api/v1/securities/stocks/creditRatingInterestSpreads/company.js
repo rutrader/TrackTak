@@ -41,10 +41,7 @@ router.get('/:ticker', async (req, res) => {
 
   const creditRatingInterestSpreads = await readFile()
 
-  const ratios = await getRatios(ticker, {
-    filter:
-      'Financials::Balance_Sheet,Financials::Income_Statement,Financials::Cash_Flow'
-  })
+  const ratios = await getRatios(ticker, req.query)
 
   const creditRatingInterestSpread = creditRatingInterestSpreads.find(
     spread => {

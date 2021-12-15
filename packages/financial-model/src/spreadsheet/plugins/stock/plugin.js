@@ -16,7 +16,7 @@ import { tickerRegex } from './matchers'
 import { sizeMethod, getPluginAsyncValue } from '../helpers'
 import { fiscalDateRangeCellError, getFieldCellError } from '../cellErrors'
 import { fiscalDateRangeRegex } from '../matchers'
-import { getEODParams, validateEODParamsHasError } from '../eod'
+import { validateEODParamsHasError } from '../eod'
 import { equityRiskPremiumFields } from '../fields'
 import { creditRatingInterestSpreadsFields } from '../market/fields'
 
@@ -286,9 +286,11 @@ export class Plugin extends FunctionPlugin {
           return error
         }
 
-        const params = getEODParams(granularity, field, fiscalDateRange)
-
-        const { data } = await api.getCompanyEOD(ticker, params)
+        const { data } = await api.getCompanyEOD(ticker, {
+          field,
+          granularity,
+          fiscalDateRange
+        })
 
         return getPluginAsyncValue(data.value)
       }
