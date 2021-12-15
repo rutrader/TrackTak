@@ -38,16 +38,3 @@ export const formatPrice = ({ unitAmount, currency }) => {
   const total = unitAmount?.toFixed(2)
   return numberFormat.format(total)
 }
-
-export const setCaretToEndOfElement = element => {
-  const range = document.createRange()
-  const sel = window.getSelection()
-
-  range.selectNodeContents(element)
-  range.collapse(false)
-
-  sel?.removeAllRanges()
-  sel?.addRange(range)
-
-  range.detach()
-}

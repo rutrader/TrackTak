@@ -17,16 +17,19 @@ import SearchTickerDialog from './SearchTickerDialog'
 import { ProvideSpreadsheetsMetadata } from '../hooks/useSpreadsheetsMetadata'
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder'
 import SidePanelTabFolders from './SidePanelTabFolders'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const Dashboard = () => {
   const navigate = useNavigate()
   const [folders, setFolders] = useState([])
+  const params = useParams()
   const [defaultFolderId, setDefaultFolderId] = useState()
   const { getAccessToken } = useAuth()
   const [showSearchTickerDialog, setShowSearchTickerDialog] = useState(false)
   const [currentEditableFolderId, setCurrentEditableFolderId] = useState(null)
   const deleteDisabled = folders.length === 1
+  const folderId = params.folderId ?? defaultFolderId
+  const currentFolder = folders.find(folder => folder._id === folderId)
 
   const handleShowSearchTickerDialog = () => {
     setShowSearchTickerDialog(true)
@@ -130,7 +133,7 @@ const Dashboard = () => {
           }}
         >
           <Typography variant='h5' gutterBottom>
-            My Valuations
+            {currentFolder?.name}
           </Typography>
           <IconButton
             sx={{

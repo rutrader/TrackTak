@@ -4,12 +4,13 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
-  Box
+  Box,
+  FormControl,
+  Input
 } from '@mui/material'
 import Folder from '@mui/icons-material/Folder'
 import OptionsMenuFolder from './OptionsMenuFolder'
-import ContentEditable from 'react-contenteditable'
-import { useAuth, api, utils } from '@tracktak/common'
+import { useAuth, api } from '@tracktak/common'
 
 const SidePanelTabFolders = ({
   id,
@@ -25,12 +26,13 @@ const SidePanelTabFolders = ({
   const [anchorEl, setAnchorEl] = useState(null)
   const { getAccessToken } = useAuth()
   const open = Boolean(anchorEl)
-  const editableRef = useRef()
-  const textRef = useRef(folderName)
+  const inputRef = useRef()
+  const [name, setName] = useState(folderName)
   const isInEditMode = currentEditableFolderId === id
 
-  const handleOnChangeContentEditable = e => {
-    textRef.current = e.target.value
+  const handleOnChangeEditable = e => {
+    e.preventDefault()
+    setName(e.target.value)
   }
 
   const handleClickAnchor = e => {
@@ -44,17 +46,33 @@ const SidePanelTabFolders = ({
   const handleClickEdit = () => {
     setCurrentEditableFolderId(id)
     setAnchorEl(null)
+
+    if (isInEditMode) {
+      inputRef.current.focus()
+    }
   }
 
-  const handleBlur = async () => {
+  const updateFolderName = async () => {
     const token = await getAccessToken()
     const accessToken = token?.jwtToken
 
-    await api.updateFolder(id, textRef.current, accessToken)
+    await api.updateFolder(id, name, accessToken)
 
     setCurrentEditableFolderId(null)
 
     await fetchFolders()
+  }
+
+  const handleBlur = async () => {
+    await updateFolderName()
+  }
+
+  const handleEditedTextOnEnter = async e => {
+    if (e.key === 'Enter') {
+      inputRef.current.blur()
+
+      await updateFolderName()
+    }
   }
 
   const handleClickDelete = async () => {
@@ -64,12 +82,11 @@ const SidePanelTabFolders = ({
   }
 
   useEffect(() => {
-    if (editableRef.current && isInEditMode) {
-      editableRef.current.focus()
-
-      utils.setCaretToEndOfElement(editableRef.current)
+    // Has to be in useEffect due to re-render
+    if (inputRef.current && isInEditMode) {
+      inputRef.current.focus()
     }
-  }, [editableRef, isInEditMode])
+  }, [isInEditMode, inputRef])
 
   return (
     <ListItem disablePadding>
@@ -80,24 +97,26 @@ const SidePanelTabFolders = ({
           </ListItemIcon>
           <ListItemText
             sx={{
-              maxWidth: 100,
-              '& [contenteditable=true]:focus': {
-                outline: '2px solid #43cea2',
-                borderRadius: '2px'
-              },
-              '& [contenteditable=false]': {
-                overflowWrap: 'break-word'
-              }
+              maxWidth: 100
             }}
             primary={
-              <ContentEditable
-                tabIndex={1}
-                innerRef={editableRef}
-                disabled={!isInEditMode}
-                onBlur={handleBlur}
-                onChange={handleOnChangeContentEditable}
-                html={textRef.current}
-              />
+              <>
+                {!isInEditMode ? (
+                  <Box sx={{ overflow: 'hidden' }}>{name}</Box>
+                ) : (
+                  <FormControl focused={isInEditMode}>
+                    <Input
+                      inputRef={inputRef}
+                      disableUnderline={!isInEditMode}
+                      defaultValue={name}
+                      tabIndex={1}
+                      onBlur={handleBlur}
+                      onChange={handleOnChangeEditable}
+                      onKeyDown={handleEditedTextOnEnter}
+                    />
+                  </FormControl>
+                )}
+              </>
             }
           />
         </ListItemButton>
