@@ -2,7 +2,7 @@ import express from 'express'
 import autocomplete from './autocomplete'
 import government from './bonds/government'
 import exchangeRates from './fx/exchangeRates'
-import eod from './stocks/eod'
+import prices from './stocks/prices'
 import financials from './stocks/financials'
 import outstandingShares from './stocks/outstandingShares'
 import ratios from './stocks/ratios'
@@ -16,7 +16,7 @@ const router = express.Router()
 router.use('/autocomplete', autocomplete)
 router.use('/bonds/government', government)
 router.use('/fx/exchange-rates', exchangeRates)
-router.use('/stocks/eod', eod)
+router.use('/stocks/prices', prices)
 router.use('/stocks/financials', financials)
 router.use('/stocks/outstanding-shares', outstandingShares)
 router.use('/stocks/ratios', ratios)

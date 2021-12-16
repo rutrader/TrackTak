@@ -83,8 +83,8 @@ export const implementedFunctions = {
       { argumentType: ArgumentTypes.STRING, optionalArg: true }
     ]
   },
-  'STOCK.GET_COMPANY_PRICE': {
-    method: 'getCompanyPrice',
+  'STOCK.GET_COMPANY_PRICES': {
+    method: 'getCompanyPrices',
     arraySizeMethod: 'stockSize',
     isAsyncMethod: true,
     inferReturnType: true,
@@ -124,8 +124,8 @@ export const implementedFunctions = {
       { argumentType: ArgumentTypes.STRING, optionalArg: true }
     ]
   },
-  'STOCK.GET_COMPANY_INDUSTRY_AVERAGE': {
-    method: 'getCompanyIndustryAverage',
+  'STOCK.GET_COMPANY_INDUSTRY_AVERAGES': {
+    method: 'getCompanyIndustryAverages',
     arraySizeMethod: 'stockSize',
     isAsyncMethod: true,
     inferReturnType: true,
@@ -168,10 +168,10 @@ export const implementedFunctions = {
 export const aliases = {
   'S.GCF': 'STOCK.GET_COMPANY_FINANCIALS',
   'S.GCR': 'STOCK.GET_COMPANY_RATIOS',
-  'S.GCP': 'STOCK.GET_COMPANY_PRICE',
+  'S.GCP': 'STOCK.GET_COMPANY_PRICES',
   'S.GCI': 'STOCK.GET_COMPANY_INFO',
   'S.GIA': 'STOCK.GET_INDUSTRY_AVERAGES',
-  'S.GCIA': 'STOCK.GET_COMPANY_INDUSTRY_AVERAGE',
+  'S.GCIA': 'STOCK.GET_COMPANY_INDUSTRY_AVERAGES',
   'S.GCERP': 'STOCK.GET_COMPANY_EQUITY_RISK_PREMIUM',
   'S.GCCRIS': 'STOCK.GET_COMPANY_CREDIT_RATING_INTEREST_SPREAD',
   'S.GCOS': 'STOCK.GET_COMPANY_OUTSTANDING_SHARES'
@@ -284,8 +284,8 @@ export class Plugin extends FunctionPlugin {
     )
   }
 
-  getCompanyPrice(ast, state) {
-    const metadata = this.metadata('STOCK.GET_COMPANY_PRICE')
+  getCompanyPrices(ast, state) {
+    const metadata = this.metadata('STOCK.GET_COMPANY_PRICES')
 
     return this.runAsyncFunction(
       ast.args,
@@ -308,7 +308,7 @@ export class Plugin extends FunctionPlugin {
           return error
         }
 
-        const { data } = await api.getCompanyEOD(ticker, {
+        const { data } = await api.getCompanyPrices(ticker, {
           field,
           granularity,
           fiscalDateRange
@@ -391,8 +391,8 @@ export class Plugin extends FunctionPlugin {
     )
   }
 
-  getCompanyIndustryAverage(ast, state) {
-    const metadata = this.metadata('STOCK.GET_COMPANY_INDUSTRY_AVERAGE')
+  getCompanyIndustryAverages(ast, state) {
+    const metadata = this.metadata('STOCK.GET_COMPANY_INDUSTRY_AVERAGES')
 
     return this.runAsyncFunction(
       ast.args,

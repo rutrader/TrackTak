@@ -1,5 +1,10 @@
 import express from 'express'
-import { getFundamentals, getRatios } from '../stockApi'
+import {
+  getFundamentals,
+  getOutstandingShares,
+  getPrices,
+  getRatios
+} from '../stockApi'
 import readFile from '../../../market/creditRatingInterestSpreads/readFile'
 import { getExchangeRate } from '../../fx/fxApi'
 import dayjs from 'dayjs'
@@ -14,20 +19,45 @@ router.get('/:ticker', async (req, res) => {
   const { ticker } = req.params
   const { field, fiscalDateRange } = req.query
 
-  const { general, outstandingShares } = await getFundamentals(ticker, {
-    filter: 'General::CurrencyCode,outstandingShares'
-  })
   const date = parseFiscalDateFromRange(
     fiscalDateRange ?? dayjs().format('YYYY-MM-DD')
   )[0]
-
   let exchangeRate = 1
 
-  if (general.currencyCode !== 'USD') {
+  const promises = Promise.all([
+    readFile(),
+    getFundamentals(ticker, {
+      filter: 'General::CurrencyCode'
+    }),
+    getPrices(ticker, {
+      fiscalDateRange: date,
+      field: 'adjustedClose'
+    }),
+    getOutstandingShares(ticker, {
+      granularity: 'latest',
+      fiscalDateRange: date,
+      field: 'shares'
+    }),
+    getRatios(ticker, {
+      granularity: 'latest',
+      field: 'interestCoverage',
+      fiscalDateRange: date
+    })
+  ])
+
+  const [
+    creditRatingInterestSpreads,
+    currencyCode,
+    prices,
+    outstandingShares,
+    interestCoverage
+  ] = await promises
+
+  if (currencyCode !== 'USD') {
     // TODO: Fix dates when we have in the database
     exchangeRate = await getExchangeRate(
       'USD',
-      convertSubCurrencyToCurrency(general.currencyCode),
+      convertSubCurrencyToCurrency(currencyCode),
       {
         fiscalDateRange: date,
         field: 'adjustedClose'
@@ -36,19 +66,8 @@ router.get('/:ticker', async (req, res) => {
   }
 
   const thresholdMarketCap = thresholdMarketCapUSD * exchangeRate
-
-  // TODO: Change marketCap to historical one
-  const isLargeCompany = highlights.marketCapitalization >= thresholdMarketCap
-
-  const creditRatingInterestSpreads = await readFile()
-
-  const interestCoverage = (
-    await getRatios(ticker, {
-      granularity: 'latest',
-      field: 'interestCoverage',
-      fiscalDateRange: date
-    })
-  )[0]
+  const marketCapitalization = prices[0] * outstandingShares[0]
+  const isLargeCompany = marketCapitalization >= thresholdMarketCap
 
   const creditRatingInterestSpread = creditRatingInterestSpreads.find(
     spread => {

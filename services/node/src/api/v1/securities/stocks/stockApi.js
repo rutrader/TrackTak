@@ -357,7 +357,7 @@ export const getOutstandingShares = async (ticker, params) => {
   return shareValues[0][field]
 }
 
-export const getEOD = async (ticker, query) => {
+export const getPrices = async (ticker, query) => {
   const newQuery = getEODQuery(query)
 
   const { data } = await axios.get(`${eodEndpoint}/${ticker}`, {
