@@ -27,6 +27,13 @@ export const implementedFunctions = {
       { argumentType: ArgumentTypes.STRING, optionalArg: true }
     ]
   },
+  'MARKET.GET_MATURE_MARKET_EQUITY_RISK_PREMIUM': {
+    method: 'getMatureMarketEquityRiskPremium',
+    arraySizeMethod: 'marketSize',
+    inferReturnType: true,
+    isAsyncMethod: true,
+    parameters: [{ argumentType: ArgumentTypes.STRING, optionalArg: true }]
+  },
   'MARKET.GET_CREDIT_RATING_INTEREST_SPREADS': {
     method: 'getCreditRatingInterestSpreads',
     arraySizeMethod: 'marketSize',
@@ -49,6 +56,7 @@ export const implementedFunctions = {
 
 export const aliases = {
   'M.GERP': 'MARKET.GET_EQUITY_RISK_PREMIUMS',
+  'M.GMMERP': 'MARKET.GET_MATURE_MARKET_EQUITY_RISK_PREMIUM',
   'M.GCRIS': 'MARKET.GET_CREDIT_RATING_INTEREST_SPREADS',
   'M.RFR': 'MARKET.RISK_FREE_RATE'
 }
@@ -87,6 +95,31 @@ export class Plugin extends FunctionPlugin {
           field,
           fiscalDateRange
         })
+
+        return getPluginAsyncValue(data.value)
+      }
+    )
+  }
+
+  getMatureMarketEquityRiskPremium(ast, state) {
+    const metadata = this.metadata(
+      'MARKET.GET_MATURE_MARKET_EQUITY_RISK_PREMIUM'
+    )
+
+    return this.runAsyncFunction(
+      ast.args,
+      state,
+      metadata,
+      async fiscalDateRange => {
+        const isFiscalDateRangeValid = fiscalDateRange
+          ? !!fiscalDateRange.match(fiscalDateRangeRegex)
+          : true
+
+        if (!isFiscalDateRangeValid) {
+          return fiscalDateRangeCellError
+        }
+
+        const { data } = await api.getMatureMarketEquityRiskPremium()
 
         return getPluginAsyncValue(data.value)
       }

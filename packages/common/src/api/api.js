@@ -75,6 +75,12 @@ export const getEquityRiskPremiums = async params => {
   })
 }
 
+export const getMatureMarketEquityRiskPremium = async params => {
+  return axios.get(`/api/v1/market/equity-risk-premiums/mature-market`, {
+    params
+  })
+}
+
 export const getCompanyEquityRiskPremium = async (ticker, params) => {
   return axios.get(
     `/api/v1/securities/stocks/equity-risk-premiums/company/${ticker}`,
