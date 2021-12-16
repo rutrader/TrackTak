@@ -1,15 +1,11 @@
 import express from 'express'
-import {
-  getFundamentals,
-  getOutstandingShares,
-  getPrices,
-  getRatios
-} from '../stockApi'
+import { getOutstandingShares, getPrices, getRatios } from '../stockApi'
 import readFile from '../../../market/creditRatingInterestSpreads/readFile'
 import { getExchangeRate } from '../../fx/fxApi'
 import dayjs from 'dayjs'
 import convertSubCurrencyToCurrency from '../../fx/convertSubCurrencyToCurrency'
 import { getFieldValue, parseFiscalDateFromRange } from '../../helpers'
+import { getFundamentals } from '../../eodHistoricalData/eodAPI'
 
 const router = express.Router()
 

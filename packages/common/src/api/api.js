@@ -15,6 +15,15 @@ const getAuthHeaders = accessToken => {
   return { Authorization: `Bearer ${accessToken}` }
 }
 
+export const getEODHistoricalDataFundamentals = async (ticker, params) => {
+  return axios.get(
+    `/api/v1/securities/eod-historical-data/fundamentals/${ticker}`,
+    {
+      params
+    }
+  )
+}
+
 export const getCompanyFinancials = async (ticker, params) => {
   return axios.get(`/api/v1/securities/stocks/financials/${ticker}`, {
     params

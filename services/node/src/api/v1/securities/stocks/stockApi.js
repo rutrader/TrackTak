@@ -1,15 +1,5 @@
-import axios from 'axios'
-import convertFundamentalsFromAPI, {
-  convertOutstandingSharesObjects
-} from '../../../../shared/convertFundamentalsFromAPI'
-import { sendReqOrGetCachedData } from '../../../../cache'
-import {
-  eodAPIToken,
-  eodEndpoint,
-  fundamentalsEndpoint
-} from '../../../../shared/constants'
+import { convertOutstandingSharesObjects } from '../../../../shared/convertFundamentalsFromAPI'
 import alterFromToQuery from '../alterFromToQuery'
-import camelCaseObjects from '../../../../shared/camelCaseObjects'
 import { isNil } from 'lodash-es'
 import {
   getFieldValue,
@@ -18,6 +8,10 @@ import {
   mapObjToValues
 } from '../helpers'
 import getEODQuery from './getEODQuery'
+import { getEOD, getFundamentals } from '../eodHistoricalData/eodAPI'
+
+const fundamentalsFilter =
+  'General::CountryISO,Financials::Balance_Sheet,Financials::Income_Statement,Financials::Cash_Flow'
 
 const getTypeOfStatementToUse = (financials, field) => {
   if (
@@ -117,30 +111,6 @@ const getIncomeStatementRatios = statement => {
     interestCoverage: getInterestCoverage(statement)
   }
 }
-
-export const getFundamentals = async (ticker, query) => {
-  const data = await sendReqOrGetCachedData(
-    async () => {
-      const { data } = await axios.get(`${fundamentalsEndpoint}/${ticker}`, {
-        params: {
-          api_token: eodAPIToken,
-          ...query
-        }
-      })
-
-      const convertedFundamentals = convertFundamentalsFromAPI(ticker, data)
-
-      return convertedFundamentals
-    },
-    'fundamentals',
-    { ticker, query }
-  )
-
-  return data
-}
-
-const fundamentalsFilter =
-  'General::CountryISO,Financials::Balance_Sheet,Financials::Income_Statement,Financials::Cash_Flow'
 
 export const getFinancials = async (ticker, params) => {
   const { granularity, field, fiscalDateRange } = params
@@ -358,18 +328,8 @@ export const getOutstandingShares = async (ticker, params) => {
 }
 
 export const getPrices = async (ticker, query) => {
-  const newQuery = getEODQuery(query)
-
-  const { data } = await axios.get(`${eodEndpoint}/${ticker}`, {
-    params: {
-      api_token: eodAPIToken,
-      order: 'd',
-      fmt: 'json',
-      ...alterFromToQuery(newQuery, { changeSunday: true })
-    }
-  })
-
-  const value = camelCaseObjects(data)
+  const newQuery = alterFromToQuery(getEODQuery(query), { changeSunday: true })
+  const value = await getEOD(ticker, newQuery)
 
   return getFieldValue(value, true)
 }

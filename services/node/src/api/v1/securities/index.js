@@ -10,12 +10,16 @@ import industryAverages from './stocks/industryAverages'
 import companyIndustryAverage from './stocks/industryAverages/company'
 import companyEquityRiskPremium from './stocks/equityRiskPremiums/company'
 import companyCreditRatingInterestSpreads from './stocks/creditRatingInterestSpreads/company'
+import eodHistoricalDataEOD from './eodHistoricalData/eod'
+import eodHistoricalDataFundamentals from './eodHistoricalData/fundamentals'
 
 const router = express.Router()
 
 router.use('/autocomplete', autocomplete)
 router.use('/bonds/government', government)
 router.use('/fx/exchange-rates', exchangeRates)
+router.use('/eod-historical-data/eod', eodHistoricalDataEOD)
+router.use('/eod-historical-data/fundamentals', eodHistoricalDataFundamentals)
 router.use('/stocks/prices', prices)
 router.use('/stocks/financials', financials)
 router.use('/stocks/outstanding-shares', outstandingShares)

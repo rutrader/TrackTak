@@ -338,7 +338,7 @@ export class Plugin extends FunctionPlugin {
           return infoFieldCellError
         }
 
-        const { data } = await api.getCompanyFundamentals(ticker, {
+        const { data } = await api.getEODHistoricalDataFundamentals(ticker, {
           filter: 'General,SharesStats,Highlights'
         })
         const info = {
