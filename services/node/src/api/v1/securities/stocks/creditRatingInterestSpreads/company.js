@@ -14,8 +14,8 @@ router.get('/:ticker', async (req, res) => {
   const { ticker } = req.params
   const { field, fiscalDateRange } = req.query
 
-  const { general, highlights } = await getFundamentals(ticker, {
-    filter: 'General::CurrencyCode,Highlights::MarketCapitalization'
+  const { general, outstandingShares } = await getFundamentals(ticker, {
+    filter: 'General::CurrencyCode,outstandingShares'
   })
   const date = parseFiscalDateFromRange(
     fiscalDateRange ?? dayjs().format('YYYY-MM-DD')

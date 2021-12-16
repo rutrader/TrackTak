@@ -162,6 +162,54 @@ const convertEarningsTrend = ({ date, period, ...trend }) => {
   return newTrend
 }
 
+const convertOutstandingSharesObject = ({
+  dateFormatted,
+  ...outstandingShares
+}) => {
+  const newOutstandingShares = {
+    ...outstandingShares
+  }
+
+  delete newOutstandingShares.dateFormatted
+  delete newOutstandingShares.sharesMln
+
+  newOutstandingShares.date = dateFormatted
+
+  return newOutstandingShares
+}
+
+export const convertOutstandingSharesObjects = outstandingShares => {
+  const newOutstandingShares = { ...outstandingShares }
+
+  if (newOutstandingShares.quarterly) {
+    const quarterly = []
+
+    Object.keys(newOutstandingShares.quarterly).forEach(key => {
+      const datum = newOutstandingShares.quarterly[key]
+
+      quarterly.push(convertOutstandingSharesObject(datum))
+    })
+
+    newOutstandingShares.quarterly = quarterly.sort(dateSortComparer)
+  }
+
+  if (newOutstandingShares.annual) {
+    const yearly = []
+
+    Object.keys(newOutstandingShares.annual).forEach(key => {
+      const datum = newOutstandingShares.annual[key]
+
+      yearly.push(convertOutstandingSharesObject(datum))
+    })
+
+    newOutstandingShares.yearly = yearly.sort(dateSortComparer)
+
+    delete newOutstandingShares.annual
+  }
+
+  return newOutstandingShares
+}
+
 const convertFundamentalsFromAPI = (ticker, data) => {
   if (typeof data !== 'object' || data === null) {
     return data
@@ -187,6 +235,12 @@ const convertFundamentalsFromAPI = (ticker, data) => {
         ...newFundamentalsData.earnings,
         trend
       }
+    }
+
+    if (newFundamentalsData.outstandingShares) {
+      newFundamentalsData.outstandingShares = convertOutstandingSharesObjects(
+        newFundamentalsData.outstandingShares
+      )
     }
 
     if (newFundamentalsData.financials) {

@@ -10,6 +10,7 @@ import {
   financialFields,
   industryAverageFields,
   infoFields,
+  outstandingSharesFields,
   ratioFields
 } from './fields'
 import { tickerRegex } from './matchers'
@@ -27,6 +28,9 @@ const equityRiskPremiumsFieldCellError = getFieldCellError(
   equityRiskPremiumFields
 )
 const ratioFieldCellError = getFieldCellError(ratioFields)
+const outstandingSharesFieldCellError = getFieldCellError(
+  outstandingSharesFields
+)
 
 export const implementedFunctions = {
   'STOCK.GET_COMPANY_FINANCIALS': {
@@ -62,8 +66,25 @@ export const implementedFunctions = {
       { argumentType: ArgumentTypes.STRING, optionalArg: true }
     ]
   },
-  'STOCK.GET_PRICE': {
-    method: 'getPrice',
+  'STOCK.GET_COMPANY_OUTSTANDING_SHARES': {
+    method: 'getCompanyOutstandingShares',
+    arraySizeMethod: 'stockSize',
+    isAsyncMethod: true,
+    inferReturnType: true,
+    parameters: [
+      {
+        argumentType: ArgumentTypes.STRING
+      },
+      {
+        argumentType: ArgumentTypes.STRING,
+        optionalArg: true
+      },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true }
+    ]
+  },
+  'STOCK.GET_COMPANY_PRICE': {
+    method: 'getCompanyPrice',
     arraySizeMethod: 'stockSize',
     isAsyncMethod: true,
     inferReturnType: true,
@@ -147,12 +168,13 @@ export const implementedFunctions = {
 export const aliases = {
   'S.GCF': 'STOCK.GET_COMPANY_FINANCIALS',
   'S.GCR': 'STOCK.GET_COMPANY_RATIOS',
-  'S.GP': 'STOCK.GET_PRICE',
+  'S.GCP': 'STOCK.GET_COMPANY_PRICE',
   'S.GCI': 'STOCK.GET_COMPANY_INFO',
   'S.GIA': 'STOCK.GET_INDUSTRY_AVERAGES',
   'S.GCIA': 'STOCK.GET_COMPANY_INDUSTRY_AVERAGE',
   'S.GCERP': 'STOCK.GET_COMPANY_EQUITY_RISK_PREMIUM',
-  'S.GCCRIS': 'STOCK.GET_COMPANY_CREDIT_RATING_INTEREST_SPREAD'
+  'S.GCCRIS': 'STOCK.GET_COMPANY_CREDIT_RATING_INTEREST_SPREAD',
+  'S.GCOS': 'STOCK.GET_COMPANY_OUTSTANDING_SHARES'
 }
 
 export const translations = {
@@ -262,8 +284,8 @@ export class Plugin extends FunctionPlugin {
     )
   }
 
-  getPrice(ast, state) {
-    const metadata = this.metadata('STOCK.GET_PRICE')
+  getCompanyPrice(ast, state) {
+    const metadata = this.metadata('STOCK.GET_COMPANY_PRICE')
 
     return this.runAsyncFunction(
       ast.args,
@@ -485,6 +507,59 @@ export class Plugin extends FunctionPlugin {
             fiscalDateRange
           }
         )
+
+        return getPluginAsyncValue(data.value)
+      }
+    )
+  }
+
+  getCompanyOutstandingShares(ast, state) {
+    const metadata = this.metadata('STOCK.GET_COMPANY_OUTSTANDING_SHARES')
+
+    return this.runAsyncFunction(
+      ast.args,
+      state,
+      metadata,
+      async (ticker, field, defaultGranularity, fiscalDateRange) => {
+        const isTickerValid = !!ticker.match(tickerRegex)
+        const isFieldValid = field
+          ? !!outstandingSharesFields.find(x => x === field)
+          : true
+        const granularity = defaultGranularity
+          ? defaultGranularity
+          : fiscalDateRange
+          ? 'year'
+          : 'latest'
+
+        const isGranularityValid =
+          granularity === 'latest' ||
+          granularity === 'quarter' ||
+          granularity === 'year'
+
+        const isFiscalDateRangeValid =
+          this.getIsFiscalDateRangeValid(fiscalDateRange)
+
+        if (!isTickerValid) {
+          return tickerCellError
+        }
+
+        if (!isFieldValid) {
+          return outstandingSharesFieldCellError
+        }
+
+        if (!isGranularityValid) {
+          return granularityCellError
+        }
+
+        if (!isFiscalDateRangeValid) {
+          return fiscalDateRangeCellError
+        }
+
+        const { data } = await api.getCompanyOutstandingShares(ticker, {
+          granularity,
+          field,
+          fiscalDateRange
+        })
 
         return getPluginAsyncValue(data.value)
       }

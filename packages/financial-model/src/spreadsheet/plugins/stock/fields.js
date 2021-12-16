@@ -98,3 +98,5 @@ export const industryAverageFields = [
 ]
 
 export const ratioFields = ['interestCoverage']
+
+export const outstandingSharesFields = ['date', 'shares']

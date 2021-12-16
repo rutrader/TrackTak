@@ -1,5 +1,7 @@
 import axios from 'axios'
-import convertFundamentalsFromAPI from '../../../../shared/convertFundamentalsFromAPI'
+import convertFundamentalsFromAPI, {
+  convertOutstandingSharesObjects
+} from '../../../../shared/convertFundamentalsFromAPI'
 import { sendReqOrGetCachedData } from '../../../../cache'
 import {
   eodAPIToken,
@@ -74,16 +76,16 @@ const getTTMValuesFromQuarters = statements => {
   return ttm
 }
 
-const getStatementWithTTMDate = statement => {
+const getObjWithTTMDate = statement => {
   return {
     ...statement,
     date: 'TTM'
   }
 }
 
-const getRatiosWithLatestDate = statement => {
+const getObjWithLatestDate = obj => {
   return {
-    ...statement,
+    ...obj,
     date: 'Latest'
   }
 }
@@ -172,10 +174,10 @@ export const getFinancials = async (ticker, params) => {
         )
         const ttmStatement = getTTMValuesFromQuarters(filteredQuarters)
 
-        filteredStatements.unshift(getStatementWithTTMDate(ttmStatement))
+        filteredStatements.unshift(getObjWithTTMDate(ttmStatement))
       } else {
         filteredStatements.unshift(
-          getStatementWithTTMDate(financials[statementKey].yearly[0])
+          getObjWithTTMDate(financials[statementKey].yearly[0])
         )
       }
     }
@@ -195,11 +197,9 @@ export const getFinancials = async (ticker, params) => {
         financials[statementKey].quarterly
       )
 
-      statements.unshift(getStatementWithTTMDate(ttmStatement))
+      statements.unshift(getObjWithTTMDate(ttmStatement))
     } else {
-      statements.unshift(
-        getStatementWithTTMDate(financials[statementKey].yearly[0])
-      )
+      statements.unshift(getObjWithTTMDate(financials[statementKey].yearly[0]))
     }
   }
 
@@ -259,9 +259,9 @@ export const getRatios = async (ticker, params) => {
 
     if (formattedGranularity !== 'quarterly') {
       if (isInUS) {
-        filteredRatios.unshift(getRatiosWithLatestDate(ratios.quarterly[0]))
+        filteredRatios.unshift(getObjWithLatestDate(ratios.quarterly[0]))
       } else {
-        filteredRatios.unshift(getRatiosWithLatestDate(ratios.yearly[0]))
+        filteredRatios.unshift(getObjWithLatestDate(ratios.yearly[0]))
       }
     }
 
@@ -276,9 +276,9 @@ export const getRatios = async (ticker, params) => {
 
   if (formattedGranularity !== 'quarterly') {
     if (isInUS) {
-      ratioValues.unshift(getRatiosWithLatestDate(ratios.quarterly[0]))
+      ratioValues.unshift(getObjWithLatestDate(ratios.quarterly[0]))
     } else {
-      ratioValues.unshift(getRatiosWithLatestDate(ratios.yearly[0]))
+      ratioValues.unshift(getObjWithLatestDate(ratios.yearly[0]))
     }
   }
 
@@ -297,6 +297,64 @@ export const getRatios = async (ticker, params) => {
   }
 
   return ratioValues[0][field]
+}
+
+export const getOutstandingShares = async (ticker, params) => {
+  const { granularity, field, fiscalDateRange } = params
+  const outstandingShares = convertOutstandingSharesObjects(
+    await getFundamentals(ticker, {
+      filter: 'outstandingShares'
+    })
+  )
+
+  const formattedGranularity = getFundamentalsFormattedGranularity(granularity)
+
+  const shareValues =
+    formattedGranularity === 'latest'
+      ? []
+      : outstandingShares[formattedGranularity]
+
+  if (fiscalDateRange) {
+    const fiscalDateRangeFilterPredicate =
+      getFiscalDateRangeFilterPredicate(fiscalDateRange)
+    const filteredShareValues = shareValues.filter(
+      fiscalDateRangeFilterPredicate
+    )
+
+    if (formattedGranularity !== 'quarterly') {
+      filteredShareValues.unshift(
+        getObjWithLatestDate(outstandingShares.quarterly[0])
+      )
+    }
+
+    if (!field) {
+      return mapArrayObjectsToValues(filteredShareValues)
+    }
+
+    const values = filteredShareValues.map(ratios => ratios[field])
+
+    return values
+  }
+
+  if (formattedGranularity !== 'quarterly') {
+    shareValues.unshift(getObjWithLatestDate(outstandingShares.quarterly[0]))
+  }
+
+  if (formattedGranularity !== 'latest') {
+    if (!field) {
+      return mapArrayObjectsToValues(shareValues)
+    }
+
+    const values = shareValues.map(ratios => ratios[field])
+
+    return values
+  }
+
+  if (!field) {
+    return mapObjToValues(shareValues[0])
+  }
+
+  return shareValues[0][field]
 }
 
 export const getEOD = async (ticker, query) => {

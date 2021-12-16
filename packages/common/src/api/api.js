@@ -21,6 +21,12 @@ export const getCompanyFinancials = async (ticker, params) => {
   })
 }
 
+export const getCompanyOutstandingShares = async (ticker, params) => {
+  return axios.get(`/api/v1/securities/stocks/outstanding-shares/${ticker}`, {
+    params
+  })
+}
+
 export const getCompanyEOD = async (ticker, params) => {
   return axios.get(`/api/v1/securities/stocks/eod/${ticker}`, {
     params
