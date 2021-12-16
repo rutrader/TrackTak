@@ -4,6 +4,12 @@ import cors from 'cors'
 import { excludeStripeWebhookJSON } from './middleware/auth'
 import * as database from './database/mongoDbClient'
 import api from './api'
+import dayjs from 'dayjs'
+import advancedFormat from 'dayjs/plugin/advancedFormat'
+import isBetween from 'dayjs/plugin/isBetween'
+
+dayjs.extend(advancedFormat)
+dayjs.extend(isBetween)
 
 database.connect()
 
