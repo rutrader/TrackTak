@@ -46,10 +46,6 @@ const SidePanelTabFolders = ({
   const handleClickEdit = () => {
     setCurrentEditableFolderId(id)
     setAnchorEl(null)
-
-    if (isInEditMode) {
-      inputRef.current.focus()
-    }
   }
 
   const updateFolderName = async () => {

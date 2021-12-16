@@ -272,7 +272,7 @@ const SavedSpreadsheets = () => {
                 maxHeight: 500,
                 bgcolor: 'background.paper',
                 borderRadius: '8px',
-                overflowY: 'scroll',
+                overflow: 'auto',
                 p: 4,
                 '&:focus': {
                   outline: 0,
