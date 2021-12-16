@@ -269,8 +269,10 @@ const SavedSpreadsheets = () => {
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
                 width: 500,
+                maxHeight: 500,
                 bgcolor: 'background.paper',
                 borderRadius: '8px',
+                overflow: 'auto',
                 p: 4,
                 '&:focus': {
                   outline: 0,
