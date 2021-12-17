@@ -1,33 +1,43 @@
-import { FunctionPlugin, SimpleRangeValue } from '@tracktak/hyperformula'
+import { FunctionPlugin } from '@tracktak/hyperformula'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
-import { isNil } from 'lodash'
 import {
   granularityCellError,
   industryTypeCellError,
   tickerCellError
 } from './cellErrors'
 import { api } from '@tracktak/common'
-import { financialFields, industryAverageFields, infoFields } from './fields'
-import { tickerRegex } from './matchers'
 import {
-  getFiscalDateRangeFilterPredicate,
-  mapArrayObjectsToSimpleRangeValues,
-  mapObjToSimpleRangeValues,
-  sizeMethod,
-  getFieldValue
-} from '../helpers'
+  financialFields,
+  industryAverageFields,
+  infoFields,
+  outstandingSharesFields,
+  ratioFields
+} from './fields'
+import { tickerRegex } from './matchers'
+import { sizeMethod, getPluginAsyncValue } from '../helpers'
 import { fiscalDateRangeCellError, getFieldCellError } from '../cellErrors'
 import { fiscalDateRangeRegex } from '../matchers'
-import { getEODParams, validateEODParamsHasError } from '../eod'
+import { validateEODParamsHasError } from '../eod'
+import { equityRiskPremiumFields } from '../fields'
+import { creditRatingInterestSpreadsFields } from '../market/fields'
 
 const financialsFieldCellError = getFieldCellError(financialFields)
 const infoFieldCellError = getFieldCellError(infoFields)
+const industryAveragesFieldCellError = getFieldCellError(industryAverageFields)
+const equityRiskPremiumsFieldCellError = getFieldCellError(
+  equityRiskPremiumFields
+)
+const ratioFieldCellError = getFieldCellError(ratioFields)
+const outstandingSharesFieldCellError = getFieldCellError(
+  outstandingSharesFields
+)
 
 export const implementedFunctions = {
   'STOCK.GET_COMPANY_FINANCIALS': {
     method: 'getCompanyFinancials',
     arraySizeMethod: 'stockSize',
     isAsyncMethod: true,
+    inferReturnType: true,
     parameters: [
       {
         argumentType: ArgumentTypes.STRING
@@ -39,10 +49,45 @@ export const implementedFunctions = {
       { argumentType: ArgumentTypes.STRING, optionalArg: true }
     ]
   },
-  'STOCK.GET_PRICE': {
-    method: 'getPrice',
+  'STOCK.GET_COMPANY_RATIOS': {
+    method: 'getCompanyRatios',
     arraySizeMethod: 'stockSize',
     isAsyncMethod: true,
+    inferReturnType: true,
+    parameters: [
+      {
+        argumentType: ArgumentTypes.STRING
+      },
+      {
+        argumentType: ArgumentTypes.STRING,
+        optionalArg: true
+      },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true }
+    ]
+  },
+  'STOCK.GET_COMPANY_OUTSTANDING_SHARES': {
+    method: 'getCompanyOutstandingShares',
+    arraySizeMethod: 'stockSize',
+    isAsyncMethod: true,
+    inferReturnType: true,
+    parameters: [
+      {
+        argumentType: ArgumentTypes.STRING
+      },
+      {
+        argumentType: ArgumentTypes.STRING,
+        optionalArg: true
+      },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true }
+    ]
+  },
+  'STOCK.GET_COMPANY_PRICES': {
+    method: 'getCompanyPrices',
+    arraySizeMethod: 'stockSize',
+    isAsyncMethod: true,
+    inferReturnType: true,
     parameters: [
       {
         argumentType: ArgumentTypes.STRING
@@ -56,6 +101,7 @@ export const implementedFunctions = {
     method: 'getCompanyInfo',
     arraySizeMethod: 'stockSize',
     isAsyncMethod: true,
+    inferReturnType: true,
     parameters: [
       {
         argumentType: ArgumentTypes.STRING
@@ -69,21 +115,51 @@ export const implementedFunctions = {
     method: 'getIndustryAverages',
     arraySizeMethod: 'stockSize',
     isAsyncMethod: true,
+    inferReturnType: true,
     parameters: [
       {
         argumentType: ArgumentTypes.STRING
       },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true },
       { argumentType: ArgumentTypes.STRING, optionalArg: true }
     ]
   },
-  'STOCK.GET_COMPANY_INDUSTRY_AVERAGE': {
-    method: 'getCompanyIndustryAverage',
+  'STOCK.GET_COMPANY_INDUSTRY_AVERAGES': {
+    method: 'getCompanyIndustryAverages',
     arraySizeMethod: 'stockSize',
     isAsyncMethod: true,
+    inferReturnType: true,
     parameters: [
       {
         argumentType: ArgumentTypes.STRING
       },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true }
+    ]
+  },
+  'STOCK.GET_COMPANY_EQUITY_RISK_PREMIUM': {
+    method: 'getCompanyEquityRiskPremium',
+    arraySizeMethod: 'stockSize',
+    isAsyncMethod: true,
+    inferReturnType: true,
+    parameters: [
+      {
+        argumentType: ArgumentTypes.STRING
+      },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true }
+    ]
+  },
+  'STOCK.GET_COMPANY_CREDIT_RATING_INTEREST_SPREAD': {
+    method: 'getCompanyCreditRatingInterestSpread',
+    arraySizeMethod: 'stockSize',
+    isAsyncMethod: true,
+    inferReturnType: true,
+    parameters: [
+      {
+        argumentType: ArgumentTypes.STRING
+      },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true },
       { argumentType: ArgumentTypes.STRING, optionalArg: true }
     ]
   }
@@ -91,24 +167,19 @@ export const implementedFunctions = {
 
 export const aliases = {
   'S.GCF': 'STOCK.GET_COMPANY_FINANCIALS',
-  'S.GP': 'STOCK.GET_PRICE',
+  'S.GCR': 'STOCK.GET_COMPANY_RATIOS',
+  'S.GCP': 'STOCK.GET_COMPANY_PRICES',
   'S.GCI': 'STOCK.GET_COMPANY_INFO',
   'S.GIA': 'STOCK.GET_INDUSTRY_AVERAGES',
-  'S.GCIA': 'STOCK.GET_COMPANY_INDUSTRY_AVERAGE'
+  'S.GCIA': 'STOCK.GET_COMPANY_INDUSTRY_AVERAGES',
+  'S.GCERP': 'STOCK.GET_COMPANY_EQUITY_RISK_PREMIUM',
+  'S.GCCRIS': 'STOCK.GET_COMPANY_CREDIT_RATING_INTEREST_SPREAD',
+  'S.GCOS': 'STOCK.GET_COMPANY_OUTSTANDING_SHARES'
 }
 
 export const translations = {
-  enGB: {
-    'S.GCF': 'STOCK.GET_COMPANY_FINANCIALS',
-    'S.GP': 'STOCK.GET_PRICE',
-    'S.GCI': 'STOCK.GET_COMPANY_INFO',
-    'S.GIA': 'STOCK.GET_INDUSTRY_AVERAGES',
-    'S.GCIA': 'STOCK.GET_COMPANY_INDUSTRY_AVERAGE'
-  }
+  enGB: aliases
 }
-
-export const fundamentalsFilter =
-  'General::CountryISO,General::Code,General::Exchange,General::UpdatedAt,Financials::Balance_Sheet,Financials::Income_Statement,Financials::Cash_Flow'
 
 export class Plugin extends FunctionPlugin {
   getCompanyFinancials(ast, state) {
@@ -126,13 +197,14 @@ export class Plugin extends FunctionPlugin {
           : fiscalDateRange
           ? 'year'
           : 'ttm'
+
         const isGranularityValid =
           granularity === 'ttm' ||
           granularity === 'quarter' ||
           granularity === 'year'
-        const isFiscalDateRangeValid = fiscalDateRange
-          ? !!fiscalDateRange.match(fiscalDateRangeRegex)
-          : true
+
+        const isFiscalDateRangeValid =
+          this.getIsFiscalDateRangeValid(fiscalDateRange)
 
         if (!isTickerValid) {
           return tickerCellError
@@ -150,35 +222,70 @@ export class Plugin extends FunctionPlugin {
           return fiscalDateRangeCellError
         }
 
-        const { data } = await api.getFundamentals(ticker, {
-          filter: fundamentalsFilter
-        })
-        const financials = data.value.financials
-        const isInUS = data.value.general.countryISO === 'US'
-
-        let formattedGranularity = granularity
-
-        if (granularity === 'quarter') {
-          formattedGranularity = 'quarterly'
-        }
-
-        if (granularity === 'year') {
-          formattedGranularity = 'yearly'
-        }
-
-        return this.getFieldValues(
+        const { data } = await api.getCompanyFinancials(ticker, {
+          granularity,
           field,
-          formattedGranularity,
-          fiscalDateRange,
-          financials,
-          isInUS
-        )
+          fiscalDateRange
+        })
+
+        return getPluginAsyncValue(data.value)
       }
     )
   }
 
-  getPrice(ast, state) {
-    const metadata = this.metadata('STOCK.GET_PRICE')
+  getCompanyRatios(ast, state) {
+    const metadata = this.metadata('STOCK.GET_COMPANY_RATIOS')
+
+    return this.runAsyncFunction(
+      ast.args,
+      state,
+      metadata,
+      async (ticker, field, defaultGranularity, fiscalDateRange) => {
+        const isTickerValid = !!ticker.match(tickerRegex)
+        const isFieldValid = field ? !!ratioFields.find(x => x === field) : true
+        const granularity = defaultGranularity
+          ? defaultGranularity
+          : fiscalDateRange
+          ? 'year'
+          : 'latest'
+
+        const isGranularityValid =
+          granularity === 'latest' ||
+          granularity === 'quarter' ||
+          granularity === 'year'
+
+        const isFiscalDateRangeValid =
+          this.getIsFiscalDateRangeValid(fiscalDateRange)
+
+        if (!isTickerValid) {
+          return tickerCellError
+        }
+
+        if (!isFieldValid) {
+          return ratioFieldCellError
+        }
+
+        if (!isGranularityValid) {
+          return granularityCellError
+        }
+
+        if (!isFiscalDateRangeValid) {
+          return fiscalDateRangeCellError
+        }
+
+        const { data } = await api.getCompanyRatios(ticker, {
+          granularity,
+          field,
+          fiscalDateRange
+        })
+
+        return getPluginAsyncValue(data.value)
+      }
+    )
+  }
+
+  getCompanyPrices(ast, state) {
+    const metadata = this.metadata('STOCK.GET_COMPANY_PRICES')
 
     return this.runAsyncFunction(
       ast.args,
@@ -201,11 +308,13 @@ export class Plugin extends FunctionPlugin {
           return error
         }
 
-        const params = getEODParams(granularity, field, fiscalDateRange)
+        const { data } = await api.getCompanyPrices(ticker, {
+          field,
+          granularity,
+          fiscalDateRange
+        })
 
-        const { data } = await api.getEOD(ticker, params)
-
-        return getFieldValue(data.value, true)
+        return getPluginAsyncValue(data.value)
       }
     )
   }
@@ -229,7 +338,7 @@ export class Plugin extends FunctionPlugin {
           return infoFieldCellError
         }
 
-        const { data } = await api.getFundamentals(ticker, {
+        const { data } = await api.getEODHistoricalDataFundamentals(ticker, {
           filter: 'General,SharesStats,Highlights'
         })
         const info = {
@@ -238,7 +347,7 @@ export class Plugin extends FunctionPlugin {
           ...data.value.highlights
         }
 
-        return getFieldValue(info[field])
+        return getPluginAsyncValue(info[field])
       }
     )
   }
@@ -246,49 +355,213 @@ export class Plugin extends FunctionPlugin {
   getIndustryAverages(ast, state) {
     const metadata = this.metadata('STOCK.GET_INDUSTRY_AVERAGES')
 
-    return this.runAsyncFunction(ast.args, state, metadata, async type => {
-      const isTypeValid = type === 'US' || 'Global'
+    return this.runAsyncFunction(
+      ast.args,
+      state,
+      metadata,
+      async (type, field, fiscalDateRange) => {
+        const isTypeValid = type === 'US' || 'Global'
+        const isFieldValid = field
+          ? !!industryAverageFields.find(x => x === field)
+          : true
+        const isFiscalDateRangeValid =
+          this.getIsFiscalDateRangeValid(fiscalDateRange)
 
-      if (!isTypeValid) {
-        return industryTypeCellError
+        if (!isTypeValid) {
+          return industryTypeCellError
+        }
+
+        if (!isFieldValid) {
+          return industryAveragesFieldCellError
+        }
+
+        if (!isFiscalDateRangeValid) {
+          return fiscalDateRangeCellError
+        }
+
+        // TODO: Handle dates for industryAverages and store in database
+        // before updating industryAverages JSON
+        const { data } = await api.getIndustryAverages(type, {
+          field,
+          fiscalDateRange
+        })
+
+        return getPluginAsyncValue(data.value)
       }
-
-      // TODO: Handle dates for industryAverages and store in database
-      // before updating industryAverages JSON
-      const { data } = await api.getIndustryAverages(type)
-
-      return getFieldValue(data.value, true)
-    })
+    )
   }
 
-  getCompanyIndustryAverage(ast, state) {
-    const metadata = this.metadata('STOCK.GET_COMPANY_INDUSTRY_AVERAGE')
+  getCompanyIndustryAverages(ast, state) {
+    const metadata = this.metadata('STOCK.GET_COMPANY_INDUSTRY_AVERAGES')
 
     return this.runAsyncFunction(
       ast.args,
       state,
       metadata,
-      async (ticker, field) => {
+      async (ticker, field, fiscalDateRange) => {
         const isTickerValid = !!ticker.match(tickerRegex)
         const isFieldValid = field
           ? !!industryAverageFields.find(x => x === field)
           : true
+        const isFiscalDateRangeValid =
+          this.getIsFiscalDateRangeValid(fiscalDateRange)
 
         if (!isTickerValid) {
           return tickerCellError
         }
 
         if (!isFieldValid) {
-          return financialsFieldCellError
+          return industryAveragesFieldCellError
+        }
+
+        if (!isFiscalDateRangeValid) {
+          return fiscalDateRangeCellError
         }
 
         // TODO: Handle dates for industryAverages and store in database
         // before updating industryAverages JSON
         const { data } = await api.getCompanyIndustryAverage(ticker, {
-          field
+          field,
+          fiscalDateRange
         })
 
-        return getFieldValue(data.value)
+        return getPluginAsyncValue(data.value)
+      }
+    )
+  }
+
+  getCompanyEquityRiskPremium(ast, state) {
+    const metadata = this.metadata('STOCK.GET_COMPANY_EQUITY_RISK_PREMIUM')
+
+    return this.runAsyncFunction(
+      ast.args,
+      state,
+      metadata,
+      async (ticker, field, fiscalDateRange) => {
+        const isTickerValid = !!ticker.match(tickerRegex)
+        const isFieldValid = field
+          ? !!equityRiskPremiumFields.find(x => x === field)
+          : true
+        const isFiscalDateRangeValid =
+          this.getIsFiscalDateRangeValid(fiscalDateRange)
+
+        if (!isTickerValid) {
+          return tickerCellError
+        }
+
+        if (!isFieldValid) {
+          return equityRiskPremiumsFieldCellError
+        }
+
+        if (!isFiscalDateRangeValid) {
+          return fiscalDateRangeCellError
+        }
+
+        // TODO: Handle dates for equityRiskPremiums and store in database
+        // before updating equityRiskPremiums JSON
+        const { data } = await api.getCompanyEquityRiskPremium(ticker, {
+          field,
+          fiscalDateRange
+        })
+
+        return getPluginAsyncValue(data.value)
+      }
+    )
+  }
+
+  getCompanyCreditRatingInterestSpread(ast, state) {
+    const metadata = this.metadata(
+      'STOCK.GET_COMPANY_CREDIT_RATING_INTEREST_SPREAD'
+    )
+
+    return this.runAsyncFunction(
+      ast.args,
+      state,
+      metadata,
+      async (ticker, field, fiscalDateRange) => {
+        const isTickerValid = !!ticker.match(tickerRegex)
+        const isFieldValid = field
+          ? !!creditRatingInterestSpreadsFields.find(x => x === field)
+          : true
+        const isFiscalDateRangeValid =
+          this.getIsFiscalDateRangeValid(fiscalDateRange)
+
+        if (!isTickerValid) {
+          return tickerCellError
+        }
+
+        if (!isFieldValid) {
+          return equityRiskPremiumsFieldCellError
+        }
+
+        if (!isFiscalDateRangeValid) {
+          return fiscalDateRangeCellError
+        }
+
+        // TODO: Handle dates for creditRatingInterestSpreads and store in database
+        // before updating creditRatingInterestSpreads JSON
+        const { data } = await api.getCompanyCreditRatingInterestSpreads(
+          ticker,
+          {
+            field,
+            fiscalDateRange
+          }
+        )
+
+        return getPluginAsyncValue(data.value)
+      }
+    )
+  }
+
+  getCompanyOutstandingShares(ast, state) {
+    const metadata = this.metadata('STOCK.GET_COMPANY_OUTSTANDING_SHARES')
+
+    return this.runAsyncFunction(
+      ast.args,
+      state,
+      metadata,
+      async (ticker, field, defaultGranularity, fiscalDateRange) => {
+        const isTickerValid = !!ticker.match(tickerRegex)
+        const isFieldValid = field
+          ? !!outstandingSharesFields.find(x => x === field)
+          : true
+        const granularity = defaultGranularity
+          ? defaultGranularity
+          : fiscalDateRange
+          ? 'year'
+          : 'latest'
+
+        const isGranularityValid =
+          granularity === 'latest' ||
+          granularity === 'quarter' ||
+          granularity === 'year'
+
+        const isFiscalDateRangeValid =
+          this.getIsFiscalDateRangeValid(fiscalDateRange)
+
+        if (!isTickerValid) {
+          return tickerCellError
+        }
+
+        if (!isFieldValid) {
+          return outstandingSharesFieldCellError
+        }
+
+        if (!isGranularityValid) {
+          return granularityCellError
+        }
+
+        if (!isFiscalDateRangeValid) {
+          return fiscalDateRangeCellError
+        }
+
+        const { data } = await api.getCompanyOutstandingShares(ticker, {
+          granularity,
+          field,
+          fiscalDateRange
+        })
+
+        return getPluginAsyncValue(data.value)
       }
     )
   }
@@ -297,132 +570,10 @@ export class Plugin extends FunctionPlugin {
     return sizeMethod(state)
   }
 
-  getTypeOfStatementToUse(financials, field) {
-    if (
-      !isNil(financials.incomeStatement.yearly[0][field]) ||
-      field === 'incomeStatement'
-    ) {
-      return 'incomeStatement'
-    }
-
-    if (
-      !isNil(financials.balanceSheet.yearly[0][field]) ||
-      field === 'balanceSheet'
-    ) {
-      return 'balanceSheet'
-    }
-
-    if (
-      !isNil(financials.cashFlowStatement.yearly[0][field]) ||
-      field === 'cashFlowStatement'
-    ) {
-      return 'cashFlowStatement'
-    }
-  }
-
-  getFieldValues(field, granularity, fiscalDateRange, financials, isInUS) {
-    const statementKey = this.getTypeOfStatementToUse(financials, field)
-    const isStatement =
-      field === 'incomeStatement' ||
-      field === 'balanceSheet' ||
-      field === 'cashFlowStatement'
-    const statements =
-      granularity === 'ttm' ? [] : financials[statementKey][granularity]
-
-    const getSimpleRangeValues = values => {
-      // TODO: If has one length then HF is throwing errors.
-      // Raise with HF as this seems to be a bug.
-      return values.length === 1
-        ? values[0]
-        : SimpleRangeValue.onlyValues([values])
-    }
-
-    if (fiscalDateRange) {
-      const fiscalDateRangeFilterPredicate =
-        getFiscalDateRangeFilterPredicate(fiscalDateRange)
-      const filteredStatements = statements.filter(
-        fiscalDateRangeFilterPredicate
-      )
-
-      if (granularity !== 'quarterly') {
-        if (isInUS) {
-          const filteredQuarters = financials[statementKey].quarterly.filter(
-            fiscalDateRangeFilterPredicate
-          )
-          const ttmStatement = this.getTTMValuesFromQuarters(filteredQuarters)
-
-          filteredStatements.unshift(ttmStatement)
-        } else {
-          filteredStatements.unshift(financials[statementKey].yearly[0])
-        }
-      }
-
-      if (isStatement) {
-        return mapArrayObjectsToSimpleRangeValues(filteredStatements)
-      }
-
-      const values = filteredStatements.map(statement => statement[field])
-
-      return getSimpleRangeValues(values)
-    }
-
-    if (granularity !== 'quarterly') {
-      if (isInUS) {
-        const ttmStatement = this.getTTMValuesFromQuarters(
-          financials[statementKey].quarterly
-        )
-
-        statements.unshift(ttmStatement)
-      } else {
-        statements.unshift(financials[statementKey].yearly[0])
-      }
-    }
-
-    if (granularity !== 'ttm') {
-      if (isStatement) {
-        return mapArrayObjectsToSimpleRangeValues(statements)
-      }
-
-      const values = statements.map(statement => statement[field])
-
-      return getSimpleRangeValues(values)
-    }
-
-    if (isStatement) {
-      return mapObjToSimpleRangeValues(statements[0])
-    }
-
-    return statements[0][field]
-  }
-
-  getTTMValuesFromQuarters(statements) {
-    const ttm = {}
-    // Reverse the array because we want the latest data that isn't numbers
-    const firstFourStatements = statements.slice(0, 4).reverse()
-
-    firstFourStatements.forEach(statement => {
-      Object.keys(statement).forEach(key => {
-        const value = statement[key]
-
-        if (Number.isFinite(value)) {
-          ttm[key] = this.sumFinancialStatementValues(firstFourStatements, key)
-        } else {
-          ttm[key] = value
-        }
-      })
-    })
-
-    ttm.date = 'TTM'
-
-    return ttm
-  }
-
-  sumFinancialStatementValues(financialStatements, valueKey) {
-    const sumOfFirstFourValues = financialStatements.reduce((acc, curr) => {
-      return (acc += curr[valueKey])
-    }, 0)
-
-    return sumOfFirstFourValues
+  getIsFiscalDateRangeValid(fiscalDateRange) {
+    return fiscalDateRange
+      ? !!fiscalDateRange.match(fiscalDateRangeRegex)
+      : true
   }
 }
 

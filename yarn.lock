@@ -5908,10 +5908,10 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
   integrity sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
 
-"@tracktak/hyperformula@^2.0.4":
-  version "2.0.4"
-  resolved "https://npm.pkg.github.com/download/@tracktak/hyperformula/2.0.4/c01d6e7635e6560bde67fffa332c0a06fe978f42b0f86a2c1484132cc4492c2a#461ac5460f8fdeb2c8fefc9bd539593c390bc42d"
-  integrity sha512-XBN+M17Q0L4BNpgIx5M1NXiq/KQPVCbz42OWgXWDYUkKkyI2xFMKFcqEj3GT9Du7jUGesr/8zV7lqhFPlqRK3g==
+"@tracktak/hyperformula@^2.1.1":
+  version "2.1.1"
+  resolved "https://npm.pkg.github.com/download/@tracktak/hyperformula/2.1.1/2984854fe761b84b54dd28268c4f9900020dc413d70ddf18fa4c044e07e1f8fa#ac56a26e26cbc759175dfca88b7bbe3336e9cc6e"
+  integrity sha512-hZIsVN73PyIdPUbHGfRdITWImQMJuWhyJkAxQbgd7CeVp0c6v80tJWNi//LlcXsqqBI+5tq8AIF61JjG2saasQ==
   dependencies:
     chevrotain "^6.5.0"
     core-js "^3.6.4"
@@ -5919,10 +5919,10 @@
     tiny-emitter "^2.1.0"
     unorm "^1.6.0"
 
-"@tracktak/powersheet@^1.0.5":
-  version "1.0.5"
-  resolved "https://npm.pkg.github.com/download/@tracktak/powersheet/1.0.5/351056b7e9121f95da270dcc40e46940990e0fdbf317126e60cb13135b812e42#4514539e61f152b7ef90764e5235bc0771567135"
-  integrity sha512-SLR+wrnghx9OGNrAHlYEIbG+mEBy22hkVvDZJ9yzN+ER+Rz+HlsLmPjrY5ibN6uCmpkhsVNKaWHaNog9b1feiw==
+"@tracktak/powersheet@^1.1.1":
+  version "1.1.1"
+  resolved "https://npm.pkg.github.com/download/@tracktak/powersheet/1.1.1/4991f2de8a4d694bdf83caaedc72c921c379318e6d7e3ef2c3f8f95ddac3ea77#70b7916135dfd337639630cca41b46810d0e29e7"
+  integrity sha512-6dz1DUMrx+gEcr26Vi4jYGE/DOifmqGXFUqCrVm8DolAeS99VGkkDeVCAnl6NaVwIYDI3cpwHDWWVHamBl4v/A==
   dependencies:
     "@material/drawer" "^13.0.0"
     a-color-picker "^1.2.1"
@@ -9604,10 +9604,15 @@ core-js@^2.4.0:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.12.tgz#d9333dfa7b065e347cc5682219d6f690859cc2ec"
   integrity sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==
 
-core-js@^3.17.2, core-js@^3.2.1, core-js@^3.6.4, core-js@^3.6.5:
+core-js@^3.17.2, core-js@^3.2.1, core-js@^3.6.5:
   version "3.19.2"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.19.2.tgz#ae216d7f4f7e924d9a2e3ff1e4b1940220f9157b"
   integrity sha512-ciYCResnLIATSsXuXnIOH4CbdfgV+H1Ltg16hJFN7/v6OxqnFr/IFGeLacaZ+fHLAm0TBbXwNK9/DNBzBUrO/g==
+
+core-js@^3.6.4:
+  version "3.19.3"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.19.3.tgz#6df8142a996337503019ff3235a7022d7cdf4559"
+  integrity sha512-LeLBMgEGSsG7giquSzvgBrTS7V5UL6ks3eQlUSbN8dJStlLFiRzUm5iqsRyzUB8carhfKjkJ2vzKqE6z1Vga9g==
 
 core-util-is@1.0.2:
   version "1.0.2"

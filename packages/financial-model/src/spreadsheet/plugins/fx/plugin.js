@@ -3,13 +3,14 @@ import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/Func
 import { api } from '@tracktak/common'
 import currencyCodes from './currencyCodes'
 import { baseCurrencyCellError, quoteCurrencyCellError } from './cellErrors'
-import { getEODParams, validateEODParamsHasError } from '../eod'
-import { getFieldValue, sizeMethod } from '../helpers'
+import { validateEODParamsHasError } from '../eod'
+import { getPluginAsyncValue, sizeMethod } from '../helpers'
 
 export const implementedFunctions = {
   'FX.GET_FIAT_EXCHANGE_RATE': {
     method: 'getFiatExchangeRate',
-    arraySizeMethod: 'getFiatExchangeRateSize',
+    arraySizeMethod: 'fxSize',
+    inferReturnType: true,
     isAsyncMethod: true,
     parameters: [
       {
@@ -30,9 +31,7 @@ export const aliases = {
 }
 
 export const translations = {
-  enGB: {
-    'F.GFER': 'FX.GET_FIAT_EXCHANGE_RATE'
-  }
+  enGB: aliases
 }
 
 export class Plugin extends FunctionPlugin {
@@ -75,20 +74,22 @@ export class Plugin extends FunctionPlugin {
           return error
         }
 
-        const params = getEODParams(granularity, field, fiscalDateRange)
-
         const { data } = await api.getExchangeRate(
           baseCurrency,
           quoteCurrency,
-          params
+          {
+            field,
+            granularity,
+            fiscalDateRange
+          }
         )
 
-        return getFieldValue(data.value, true)
+        return getPluginAsyncValue(data.value)
       }
     )
   }
 
-  getFiatExchangeRateSize(_, state) {
+  fxSize(_, state) {
     return sizeMethod(state)
   }
 }

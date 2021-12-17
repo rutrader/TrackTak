@@ -15,14 +15,35 @@ const getAuthHeaders = accessToken => {
   return { Authorization: `Bearer ${accessToken}` }
 }
 
-export const getFundamentals = async (ticker, params) => {
-  return axios.get(`/api/v1/securities/stocks/fundamentals/${ticker}`, {
+export const getEODHistoricalDataFundamentals = async (ticker, params) => {
+  return axios.get(
+    `/api/v1/securities/eod-historical-data/fundamentals/${ticker}`,
+    {
+      params
+    }
+  )
+}
+
+export const getCompanyFinancials = async (ticker, params) => {
+  return axios.get(`/api/v1/securities/stocks/financials/${ticker}`, {
     params
   })
 }
 
-export const getEOD = async (ticker, params) => {
-  return axios.get(`/api/v1/securities/stocks/eod/${ticker}`, {
+export const getCompanyOutstandingShares = async (ticker, params) => {
+  return axios.get(`/api/v1/securities/stocks/outstanding-shares/${ticker}`, {
+    params
+  })
+}
+
+export const getCompanyPrices = async (ticker, params) => {
+  return axios.get(`/api/v1/securities/stocks/prices/${ticker}`, {
+    params
+  })
+}
+
+export const getCompanyRatios = async (ticker, params) => {
+  return axios.get(`/api/v1/securities/stocks/ratios/${ticker}`, {
     params
   })
 }
@@ -36,6 +57,42 @@ export const getIndustryAverages = async (type, params) => {
 export const getCompanyIndustryAverage = async (ticker, params) => {
   return axios.get(
     `/api/v1/securities/stocks/industry-averages/company/${ticker}`,
+    {
+      params
+    }
+  )
+}
+
+export const getCreditRatingInterestSpreads = async params => {
+  return axios.get(`/api/v1/market/credit-rating-interest-spreads`, {
+    params
+  })
+}
+
+export const getCompanyCreditRatingInterestSpreads = async (ticker, params) => {
+  return axios.get(
+    `/api/v1/securities/stocks/credit-rating-interest-spreads/company/${ticker}`,
+    {
+      params
+    }
+  )
+}
+
+export const getEquityRiskPremiums = async params => {
+  return axios.get(`/api/v1/market/equity-risk-premiums`, {
+    params
+  })
+}
+
+export const getMatureMarketEquityRiskPremium = async params => {
+  return axios.get(`/api/v1/market/equity-risk-premiums/mature-market`, {
+    params
+  })
+}
+
+export const getCompanyEquityRiskPremium = async (ticker, params) => {
+  return axios.get(
+    `/api/v1/securities/stocks/equity-risk-premiums/company/${ticker}`,
     {
       params
     }

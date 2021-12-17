@@ -96,3 +96,7 @@ export const industryAverageFields = [
   'gicSubIndustry',
   'industry'
 ]
+
+export const ratioFields = ['interestCoverage']
+
+export const outstandingSharesFields = ['date', 'shares']

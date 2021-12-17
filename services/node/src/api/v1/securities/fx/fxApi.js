@@ -1,28 +1,11 @@
-import axios from 'axios'
-import { sendReqOrGetCachedData } from '../../../../cache'
-import { eodAPIToken, eodEndpoint } from '../../../../shared/constants'
 import alterFromToQuery from '../alterFromToQuery'
+import { getEOD } from '../eodHistoricalData/eodAPI'
+import { getFieldValue } from '../helpers'
+import getEODQuery from '../stocks/getEODQuery'
 
 export const getExchangeRate = async (baseCurrency, quoteCurrency, query) => {
-  const data = await sendReqOrGetCachedData(
-    async () => {
-      const { data } = await axios.get(
-        `${eodEndpoint}/${baseCurrency}${quoteCurrency}.FOREX`,
-        {
-          params: {
-            api_token: eodAPIToken,
-            fmt: 'json',
-            order: 'd',
-            ...alterFromToQuery(query)
-          }
-        }
-      )
+  const newQuery = alterFromToQuery(getEODQuery(query))
+  const value = await getEOD(`${baseCurrency}${quoteCurrency}.FOREX`, newQuery)
 
-      return data
-    },
-    'exchangeRate',
-    { baseCurrency, quoteCurrency, query }
-  )
-
-  return data
+  return getFieldValue(value, true)
 }

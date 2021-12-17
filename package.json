@@ -11,7 +11,9 @@
     "node": "14.x"
   },
   "scripts": {
-    "write-industry-averages": "node --es-module-specifier-resolution=node ./scripts/writeIndustryAveragesIndustryNames.js",
+    "write-industry-averages": "node --es-module-specifier-resolution=node ./scripts/writeIndustryAverages.js",
+    "write-equity-risk-premium-countries": "node --es-module-specifier-resolution=node ./scripts/writeEquityRiskPremiumCountries.js",
+    "write-credit-rating-interest-spreads": "node --es-module-specifier-resolution=node ./scripts/writeCreditRatingInterestSpreads.js",
     "clean": "lerna clean",
     "tracktak-backend": "lerna run develop --parallel --scope @tracktak/database --scope @tracktak/node",
     "tracktak-app": "lerna run develop --scope @tracktak/app",
@@ -42,7 +44,9 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.27.1",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "iso-3166-1-alpha-2": "^1.0.0",
     "lerna": "^3.22.1",
+    "lodash-es": "^4.17.21",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.1.1",
     "react": "^17.0.2",

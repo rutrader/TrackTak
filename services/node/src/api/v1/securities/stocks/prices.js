@@ -1,10 +1,10 @@
 import express from 'express'
-import { getFundamentals } from './stockApi'
+import { getPrices } from './stockApi'
 
 const router = express.Router()
 
 router.get('/:ticker', async (req, res) => {
-  const value = await getFundamentals(req.params.ticker, req.query)
+  const value = await getPrices(req.params.ticker, req.query)
 
   res.send({ value })
 })

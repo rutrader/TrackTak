@@ -5,29 +5,7 @@ import gicSubIndustryMapping from './data/gicSubIndustryMapping.json'
 
 const __dirname = new URL('.', import.meta.url).pathname
 
-const getConvertedIndustryAverages = industryAverages => {
-  return industryAverages.map(industryAverage => {
-    const industryAverageObject = {}
-
-    Object.keys(industryAverage).forEach(key => {
-      const value = industryAverage[key]
-
-      if (typeof value === 'string') {
-        const parsedNumber = parseFloat(value)
-
-        industryAverageObject[key] = isNaN(parsedNumber)
-          ? value
-          : parsedNumber / 100
-      } else {
-        industryAverageObject[key] = value
-      }
-    })
-
-    return industryAverageObject
-  })
-}
-
-const setIndustryNames = () => {
+const writeIndustryAverages = () => {
   const inputIndustryAveragesUSPath = `${__dirname}data/industryAveragesUS.json`
   const inputIndustryAveragesGlobalPath = `${__dirname}data/industryAveragesGlobal.json`
 
@@ -101,27 +79,20 @@ const setIndustryNames = () => {
   industryAveragesUS.sort(sort)
   industryAveragesGlobal.sort(sort)
 
-  const convertedIndustryAveragesUS =
-    getConvertedIndustryAverages(industryAveragesUS)
-
-  const convertedIndustryAveragesGlobal = getConvertedIndustryAverages(
-    industryAveragesGlobal
-  )
-
-  const outputIndustryAveragesUSPath = `${__dirname}../services/node/src/api/v1/securities/stocks/industryAverages/industryAveragesUS.json`
-  const outputIndustryAveragesGlobalPath = `${__dirname}../services/node/src/api/v1/securities/stocks/industryAverages/industryAveragesGlobal.json`
+  const outputIndustryAveragesUSPath = `${__dirname}../services/node/src/api/v1/securities/stocks/industryAverages/US.json`
+  const outputIndustryAveragesGlobalPath = `${__dirname}../services/node/src/api/v1/securities/stocks/industryAverages/global.json`
 
   fs.writeFileSync(
     outputIndustryAveragesUSPath,
-    JSON.stringify(convertedIndustryAveragesUS)
+    JSON.stringify(industryAveragesUS)
   )
 
   fs.writeFileSync(
     outputIndustryAveragesGlobalPath,
-    JSON.stringify(convertedIndustryAveragesGlobal)
+    JSON.stringify(industryAveragesGlobal)
   )
 
   process.exit(0)
 }
 
-setIndustryNames()
+writeIndustryAverages()

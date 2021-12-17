@@ -1,25 +1,11 @@
-import axios from 'axios'
-import { sendReqOrGetCachedData } from '../../../../cache'
-import { eodAPIToken, eodEndpoint } from '../../../../shared/constants'
 import alterFromToQuery from '../alterFromToQuery'
+import { getEOD } from '../eodHistoricalData/eodAPI'
+import { getFieldValue } from '../helpers'
+import getEODQuery from '../stocks/getEODQuery'
 
 export const getGovernmentBond = async (code, query) => {
-  const data = await sendReqOrGetCachedData(
-    async () => {
-      const { data } = await axios.get(`${eodEndpoint}/${code}.GBOND`, {
-        params: {
-          api_token: eodAPIToken,
-          order: 'd',
-          fmt: 'json',
-          ...alterFromToQuery(query)
-        }
-      })
+  const newQuery = alterFromToQuery(getEODQuery(query))
+  const value = getEOD(`${code}.GBOND`, newQuery)
 
-      return data
-    },
-    'governmentBond',
-    { code, query }
-  )
-
-  return data
+  return getFieldValue(value, true)
 }

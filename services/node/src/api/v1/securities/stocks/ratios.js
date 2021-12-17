@@ -1,10 +1,10 @@
 import express from 'express'
-import { getEOD } from './stockApi'
+import { getRatios } from './stockApi'
 
 const router = express.Router()
 
 router.get('/:ticker', async (req, res) => {
-  const value = await getEOD(req.params.ticker, req.query)
+  const value = await getRatios(req.params.ticker, req.query)
 
   res.send({ value })
 })

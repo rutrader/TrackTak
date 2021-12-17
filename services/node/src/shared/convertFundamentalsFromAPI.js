@@ -1,8 +1,8 @@
-import camelCase from 'camelcase'
-import isNil from 'lodash/isNil'
+import { isNil } from 'lodash-es'
 import getValueFromString from './getValueFromString'
 import replaceDoubleColonWithObject from './replaceDoubleColonWithObject'
 import * as financialStatementKeys from './financialStatementKeys'
+import camelCaseObjects from './camelCaseObjects'
 
 const dateSortComparer = (a, b) => b.date.localeCompare(a.date)
 
@@ -162,37 +162,52 @@ const convertEarningsTrend = ({ date, period, ...trend }) => {
   return newTrend
 }
 
-const camelCaseObject = (obj, topLevelKey) => {
-  const returnedObj = {}
-  const returnedArr = []
-
-  try {
-    Object.keys(obj).forEach(key => {
-      const value = obj[key]
-      const camelCaseKey = camelCase(key, {
-        preserveConsecutiveUppercase: true
-      })
-
-      if (typeof value === 'object' && value !== null) {
-        const camelCaseObj = camelCaseObject(value, camelCaseKey)
-
-        if (isNaN(parseInt(key))) {
-          returnedObj[camelCaseKey] = camelCaseObj
-        } else {
-          returnedArr.push(camelCaseObj)
-        }
-      } else {
-        returnedObj[camelCaseKey] = value
-      }
-    })
-  } catch (error) {
-    console.error(
-      `camelCase error thrown for key: ${topLevelKey}. Ignoring key.`
-    )
-    console.error(error)
+const convertOutstandingSharesObject = ({
+  dateFormatted,
+  ...outstandingShares
+}) => {
+  const newOutstandingShares = {
+    ...outstandingShares
   }
 
-  return returnedArr.length ? returnedArr : returnedObj
+  delete newOutstandingShares.dateFormatted
+  delete newOutstandingShares.sharesMln
+
+  newOutstandingShares.date = dateFormatted
+
+  return newOutstandingShares
+}
+
+export const convertOutstandingSharesObjects = outstandingShares => {
+  const newOutstandingShares = { ...outstandingShares }
+
+  if (newOutstandingShares.quarterly) {
+    const quarterly = []
+
+    Object.keys(newOutstandingShares.quarterly).forEach(key => {
+      const datum = newOutstandingShares.quarterly[key]
+
+      quarterly.push(convertOutstandingSharesObject(datum))
+    })
+
+    newOutstandingShares.quarterly = quarterly.sort(dateSortComparer)
+  }
+
+  if (newOutstandingShares.annual) {
+    const yearly = []
+
+    Object.keys(newOutstandingShares.annual).forEach(key => {
+      const datum = newOutstandingShares.annual[key]
+
+      yearly.push(convertOutstandingSharesObject(datum))
+    })
+
+    newOutstandingShares.yearly = yearly.sort(dateSortComparer)
+
+    delete newOutstandingShares.annual
+  }
+
+  return newOutstandingShares
 }
 
 const convertFundamentalsFromAPI = (ticker, data) => {
@@ -200,12 +215,12 @@ const convertFundamentalsFromAPI = (ticker, data) => {
     return data
   }
 
-  const fundamentalsData = replaceDoubleColonWithObject(data)
-
-  let newFundamentalsData = {}
-
   try {
-    newFundamentalsData = camelCaseObject(fundamentalsData)
+    const fundamentalsData = replaceDoubleColonWithObject(data)
+
+    let newFundamentalsData = {}
+
+    newFundamentalsData = camelCaseObjects(fundamentalsData)
 
     if (newFundamentalsData.earnings?.trend) {
       const trend = newFundamentalsData.earnings?.trend
@@ -222,15 +237,38 @@ const convertFundamentalsFromAPI = (ticker, data) => {
       }
     }
 
+    if (newFundamentalsData.outstandingShares) {
+      newFundamentalsData.outstandingShares = convertOutstandingSharesObjects(
+        newFundamentalsData.outstandingShares
+      )
+    }
+
     if (newFundamentalsData.financials) {
       // Fix EOD issue by removing stocks with incomplete data
       const quarterlyDatesRemoved = {}
       const yearlyDatesRemoved = {}
 
       const financials = newFundamentalsData.financials
-      const incomeStatement = financials.incomeStatement
-      const balanceSheet = financials.balanceSheet
-      const cashFlowStatement = financials.cashFlow
+      const incomeStatement = {
+        ...financials.incomeStatement,
+        currencyCode: financials.incomeStatement.currencySymbol
+      }
+
+      delete incomeStatement.currencySymbol
+
+      const balanceSheet = {
+        ...financials.balanceSheet,
+        currencyCode: financials.balanceSheet.currencySymbol
+      }
+
+      delete balanceSheet.currencySymbol
+
+      const cashFlowStatement = {
+        ...financials.cashFlow,
+        currencyCode: financials.cashFlow.currencySymbol
+      }
+
+      delete cashFlowStatement.currencySymbol
 
       if (incomeStatement) {
         if (incomeStatement.quarterly) {
@@ -357,12 +395,12 @@ const convertFundamentalsFromAPI = (ticker, data) => {
         }
       })
     }
+
+    return newFundamentalsData
   } catch (error) {
     console.info(`Conversion partially failed for: ${ticker}.`)
     console.error(error)
   }
-
-  return newFundamentalsData
 }
 
 export default convertFundamentalsFromAPI
