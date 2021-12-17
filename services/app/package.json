@@ -26,7 +26,6 @@
     "@tracktak/common": "*",
     "@tracktak/financial-model": "*",
     "cross-env": "^7.0.3",
-    "currency-symbol-map": "^5.0.1",
     "dayjs": "^1.10.7",
     "parcel": "^2.0.1",
     "parcel-config-pwa-manifest": "^0.1.0",

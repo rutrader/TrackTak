@@ -141,6 +141,7 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
         metaPlugin.setSpreadsheetCreationDate(
           new Date(spreadsheetData.createdTimestamp)
         )
+        metaPlugin.setSpreadsheet(spreadsheet)
 
         spreadsheet.setData(spreadsheetData.sheetData.data)
 
@@ -165,9 +166,7 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
     const options = {
       exportSpreadsheetName: `${name}.xlsx`,
       textPatternFormats: {
-        // currency: `${currencySymbol}#,##0.##`,
         million: '#,###.##,,'
-        // 'million-currency': `${currencySymbol}#,###.##,,`
       }
     }
 
