@@ -5,6 +5,7 @@ import {
 } from '@tracktak/hyperformula'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
 import { ArraySize } from '@tracktak/hyperformula/es/ArraySize'
+import roundDecimal from '../../shared/roundDecimal'
 
 export const implementedFunctions = {
   'DATA_ANALYSIS.SENSITIVITY_ANALYSIS': {
@@ -21,12 +22,10 @@ export const implementedFunctions = {
         argumentType: ArgumentTypes.NUMBER
       },
       {
-        argumentType: ArgumentTypes.RANGE,
-        optionalArg: true
+        argumentType: ArgumentTypes.RANGE
       },
       {
-        argumentType: ArgumentTypes.RANGE,
-        optionalArg: true
+        argumentType: ArgumentTypes.RANGE
       }
     ]
   }
@@ -39,35 +38,15 @@ export const aliases = {
 export const translations = {
   enGB: aliases
 }
-//TO DO
-export const getLowerUpperSliderHalves = (minPoint, midPoint) => {
+
+const getLowerUpperHalves = (midPoint, minPoint) => {
   const lowerHalfPoint = (midPoint - minPoint) / 2 + minPoint
   const upperHalfPoint = midPoint - lowerHalfPoint + midPoint
 
+  roundDecimal(lowerHalfPoint, 2)
+  roundDecimal(upperHalfPoint, 2)
+
   return { lowerHalfPoint, upperHalfPoint }
-}
-
-const fixData = data => {
-  // return data.map(datum => roundDecimal(datum, 2))
-}
-
-export const getSliderValuesFromMinMax = (minPoint, maxPoint) => {
-  const length = maxPoint - minPoint
-  const midPoint = length / 2 + minPoint
-  const { lowerHalfPoint, upperHalfPoint } = getLowerUpperSliderHalves(
-    minPoint,
-    midPoint
-  )
-
-  const data = fixData([
-    minPoint,
-    lowerHalfPoint,
-    midPoint,
-    upperHalfPoint,
-    maxPoint
-  ])
-
-  return data
 }
 
 export class Plugin extends FunctionPlugin {
@@ -89,12 +68,36 @@ export class Plugin extends FunctionPlugin {
       ast.args,
       state,
       metadata,
-      (_, __, ___, xRange, yRange) => {
+      (_, xVar, yVar, xMinMax, yMinMax) => {
         const sheets = this.serialization.getAllSheetsSerialized()
         const hfInstance = HyperFormula.buildFromSheets(sheets)[0]
 
-        const xRangeValues = xRange.rawData()[0]
-        const yRangeValues = yRange.rawData()[0]
+        const xMinMaxData = xMinMax.rawData()
+        const yMinMaxData = yMinMax.rawData()
+
+        const xMinValue = xMinMaxData[0][0]
+        const yMinValue = yMinMaxData[0][0]
+
+        const xMaxValue = xMinMaxData[0][1]
+        const yMaxValue = yMinMaxData[0][1]
+
+        const xLowerUpper = getLowerUpperHalves(xVar, xMinValue)
+        const yLowerUpper = getLowerUpperHalves(yVar, yMinValue)
+
+        const xRangeValues = [
+          xMinValue,
+          xLowerUpper.lowerHalfPoint,
+          xVar,
+          xLowerUpper.upperHalfPoint,
+          xMaxValue
+        ]
+        const yRangeValues = [
+          yMinValue,
+          yLowerUpper.lowerHalfPoint,
+          yVar,
+          yLowerUpper.upperHalfPoint,
+          yMaxValue
+        ]
 
         const intersectionPointValues = xRangeValues.map(xValue => {
           hfInstance.setCellContents(xVarCellReference, xValue)
@@ -124,7 +127,7 @@ export class Plugin extends FunctionPlugin {
   }
 
   dataAnalysisSize() {
-    return new ArraySize(4, 4)
+    return new ArraySize(7, 7)
   }
 }
 
