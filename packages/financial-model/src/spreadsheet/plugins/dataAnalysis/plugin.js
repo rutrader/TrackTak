@@ -5,7 +5,6 @@ import {
 } from '@tracktak/hyperformula'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
 import { ArraySize } from '@tracktak/hyperformula/es/ArraySize'
-import roundDecimal from '../../shared/roundDecimal'
 import {
   xMaxValueCellError,
   xMinMaxValuesCellError,
