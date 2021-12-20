@@ -39,7 +39,7 @@ export const implementedFunctions = {
 }
 
 export const aliases = {
-  'DA.SA': 'DATA_ANALYSIS.SENSITIVITY_ANALYSIS'
+  'D.SA': 'DATA_ANALYSIS.SENSITIVITY_ANALYSIS'
 }
 
 export const translations = {
