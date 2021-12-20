@@ -51,9 +51,6 @@ const getLowerUpperHalves = (midPoint, minPoint) => {
   const lowerHalfPoint = (midPoint - minPoint) / 2 + minPoint
   const upperHalfPoint = midPoint - lowerHalfPoint + midPoint
 
-  roundDecimal(lowerHalfPoint, 2)
-  roundDecimal(upperHalfPoint, 2)
-
   return { lowerHalfPoint, upperHalfPoint }
 }
 
@@ -142,10 +139,10 @@ export class Plugin extends FunctionPlugin {
           yMaxValue
         ]
 
-        const intersectionPointValues = xRangeValues.map(xValue => {
+        const intersectionPointValues = yRangeValues.map(xValue => {
           hfInstance.setCellContents(xVarCellReference, xValue)
 
-          return yRangeValues.map(yValue => {
+          return xRangeValues.map(yValue => {
             hfInstance.setCellContents(yVarCellReference, yValue)
 
             const interesectionPointValue = hfInstance.getCellValue(

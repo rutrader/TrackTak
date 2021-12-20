@@ -22,10 +22,10 @@ export const yMaxValueCellError = new CellError(
 
 export const xMinMaxValuesCellError = new CellError(
   ErrorType.VALUE,
-  'Required two min and max values. Must be {xMin,xMax}'
+  'Required two min and max values. Must be {xMin,xMax}.'
 )
 
 export const yMinMaxValuesCellError = new CellError(
   ErrorType.VALUE,
-  'Required two min and max values. Must be {yMin,yMax}'
+  'Required two min and max values. Must be {yMin,yMax}.'
 )
