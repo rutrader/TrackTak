@@ -6,6 +6,14 @@ import {
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
 import { ArraySize } from '@tracktak/hyperformula/es/ArraySize'
 import roundDecimal from '../../shared/roundDecimal'
+import {
+  xMaxValueCellError,
+  xMinMaxValuesCellError,
+  xMinValueCellError,
+  yMaxValueCellError,
+  yMinMaxValuesCellError,
+  yMinValueCellError
+} from './cellErrors'
 
 export const implementedFunctions = {
   'DATA_ANALYSIS.SENSITIVITY_ANALYSIS': {
@@ -75,11 +83,46 @@ export class Plugin extends FunctionPlugin {
         const xMinMaxData = xMinMax.rawData()
         const yMinMaxData = yMinMax.rawData()
 
+        const isXMinMaxValid =
+          xMinMaxData.length === 1 && xMinMaxData[0].length === 2
+        const isYMinMaxValid =
+          yMinMaxData.length === 1 && yMinMaxData[0].length === 2
+
+        if (!isXMinMaxValid) {
+          return xMinMaxValuesCellError
+        }
+
+        if (!isYMinMaxValid) {
+          return yMinMaxValuesCellError
+        }
+
         const xMinValue = xMinMaxData[0][0]
         const yMinValue = yMinMaxData[0][0]
 
         const xMaxValue = xMinMaxData[0][1]
         const yMaxValue = yMinMaxData[0][1]
+
+        const isXMinValid = xVar >= xMinValue
+        const isXMaxValid = xVar <= xMaxValue
+
+        if (!isXMinValid) {
+          return xMinValueCellError
+        }
+
+        if (!isXMaxValid) {
+          return xMaxValueCellError
+        }
+
+        const isYMinValid = yVar >= yMinValue
+        const isYMaxValid = yVar <= yMaxValue
+
+        if (!isYMinValid) {
+          return yMinValueCellError
+        }
+
+        if (!isYMaxValid) {
+          return yMaxValueCellError
+        }
 
         const xLowerUpper = getLowerUpperHalves(xVar, xMinValue)
         const yLowerUpper = getLowerUpperHalves(yVar, yMinValue)
