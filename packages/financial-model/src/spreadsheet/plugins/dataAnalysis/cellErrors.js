@@ -2,22 +2,22 @@ import { CellError, ErrorType } from '@tracktak/hyperformula'
 
 export const xMinValueCellError = new CellError(
   ErrorType.VALUE,
-  'min value is not valid. Min value cannot be greater than xVar value or equal.'
+  'xMin value is not valid. Min value cannot be greater than xVar value or equal.'
 )
 
 export const xMaxValueCellError = new CellError(
   ErrorType.VALUE,
-  'max value is not valid. Max value cannot be less than xVar value or equal.'
+  'xMax value is not valid. Max value cannot be less than xVar value or equal.'
 )
 
 export const yMinValueCellError = new CellError(
   ErrorType.VALUE,
-  'min value is not valid. Min value cannot be greater than yVar value or equal.'
+  'yMin value is not valid. Min value cannot be greater than yVar value or equal.'
 )
 
 export const yMaxValueCellError = new CellError(
   ErrorType.VALUE,
-  'max value is not valid. Max value cannot be less than yVar value or equal.'
+  'yMax value is not valid. Max value cannot be less than yVar value or equal.'
 )
 
 export const xMinMaxValuesCellError = new CellError(

@@ -13,6 +13,7 @@ import {
   yMinMaxValuesCellError,
   yMinValueCellError
 } from './cellErrors'
+import truncateDecimal from '../../shared/truncateDecimal'
 
 export const implementedFunctions = {
   'DATA_ANALYSIS.SENSITIVITY_ANALYSIS': {
@@ -50,7 +51,10 @@ const getLowerUpperHalves = (midPoint, minPoint) => {
   const lowerHalfPoint = (midPoint - minPoint) / 2 + minPoint
   const upperHalfPoint = midPoint - lowerHalfPoint + midPoint
 
-  return { lowerHalfPoint, upperHalfPoint }
+  const truncatelowerHalfPoint = truncateDecimal(lowerHalfPoint, 2)
+  const truncateUpperHalfPoint = truncateDecimal(upperHalfPoint, 2)
+
+  return { truncatelowerHalfPoint, truncateUpperHalfPoint }
 }
 
 export class Plugin extends FunctionPlugin {
@@ -98,8 +102,8 @@ export class Plugin extends FunctionPlugin {
         const xMaxValue = xMinMaxData[0][1]
         const yMaxValue = yMinMaxData[0][1]
 
-        const isXMinValid = xVar >= xMinValue
-        const isXMaxValid = xVar <= xMaxValue
+        const isXMinValid = xVar >= xMinValue && xVar !== xMinValue
+        const isXMaxValid = xVar <= xMaxValue && xVar !== xMaxValue
 
         if (!isXMinValid) {
           return xMinValueCellError
@@ -109,8 +113,8 @@ export class Plugin extends FunctionPlugin {
           return xMaxValueCellError
         }
 
-        const isYMinValid = yVar >= yMinValue
-        const isYMaxValid = yVar <= yMaxValue
+        const isYMinValid = yVar >= yMinValue && yVar !== yMinValue
+        const isYMaxValid = yVar <= yMaxValue && yVar !== yMaxValue
 
         if (!isYMinValid) {
           return yMinValueCellError
@@ -125,16 +129,16 @@ export class Plugin extends FunctionPlugin {
 
         const xRangeValues = [
           xMinValue,
-          xLowerUpper.lowerHalfPoint,
+          xLowerUpper.truncatelowerHalfPoint,
           xVar,
-          xLowerUpper.upperHalfPoint,
+          xLowerUpper.truncateUpperHalfPoint,
           xMaxValue
         ]
         const yRangeValues = [
           yMinValue,
-          yLowerUpper.lowerHalfPoint,
+          yLowerUpper.truncatelowerHalfPoint,
           yVar,
-          yLowerUpper.upperHalfPoint,
+          yLowerUpper.truncateUpperHalfPoint,
           yMaxValue
         ]
 
