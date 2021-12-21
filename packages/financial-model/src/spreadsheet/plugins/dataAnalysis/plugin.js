@@ -102,8 +102,8 @@ export class Plugin extends FunctionPlugin {
         const xMaxValue = xMinMaxData[0][1]
         const yMaxValue = yMinMaxData[0][1]
 
-        const isXMinValid = xVar >= xMinValue && xVar !== xMinValue
-        const isXMaxValid = xVar <= xMaxValue && xVar !== xMaxValue
+        const isXMinValid = xVar > xMinValue
+        const isXMaxValid = xVar < xMaxValue
 
         if (!isXMinValid) {
           return xMinValueCellError
@@ -113,8 +113,8 @@ export class Plugin extends FunctionPlugin {
           return xMaxValueCellError
         }
 
-        const isYMinValid = yVar >= yMinValue && yVar !== yMinValue
-        const isYMaxValid = yVar <= yMaxValue && yVar !== yMaxValue
+        const isYMinValid = yVar > yMinValue
+        const isYMaxValid = yVar < yMaxValue
 
         if (!isYMinValid) {
           return yMinValueCellError
