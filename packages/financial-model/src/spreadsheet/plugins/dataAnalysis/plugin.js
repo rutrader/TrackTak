@@ -37,10 +37,24 @@ export const implementedFunctions = {
       }
     ]
   }
+  // 'DATA_ANALYSIS.MONTE_CARLO_SIMULATION': {
+  //   method: 'monteCarloSimulation',
+  //   arraySizeMethod: 'dataAnalysisSize',
+  //   parameters: [
+  //     //TO DO
+  //     {
+  //       argumentType: ArgumentTypes.NUMBER
+  //     },
+  //     {
+  //       argumentType: ArgumentTypes.NUMBER
+  //     }
+  //   ]
+  // }
 }
 
 export const aliases = {
   'D.SA': 'DATA_ANALYSIS.SENSITIVITY_ANALYSIS'
+  /*   'D.MCS': 'DATA_ANALYSIS.MONTE_CARLO_SIMULATION' */
 }
 
 export const translations = {
@@ -172,6 +186,11 @@ export class Plugin extends FunctionPlugin {
   dataAnalysisSize() {
     return new ArraySize(7, 7)
   }
+
+  //TO DO
+  // monteCarloSimulation(ast, state) {
+  //   const metadata = this.metadata('DATA_ANALYSIS.MONTE_CARLO_SIMULATION')
+  // }
 }
 
 Plugin.implementedFunctions = implementedFunctions
