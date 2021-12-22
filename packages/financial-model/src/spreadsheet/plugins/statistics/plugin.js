@@ -1,8 +1,10 @@
-import { SimpleRangeValue } from '@tracktak/hyperformula'
 import { StatisticalPlugin } from '@tracktak/hyperformula/es/interpreter/plugin/StatisticalPlugin'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
 import { ArraySize } from '@tracktak/hyperformula/es/ArraySize'
-import { normal } from '@tracktak/hyperformula/es/interpreter/plugin/3rdparty/jstat/jstat'
+import {
+  normal,
+  lognorminv
+} from '@tracktak/hyperformula/es/interpreter/plugin/3rdparty/jstat/jstat'
 
 export const implementedFunctions = {
   'STATISTICS.NORMAL_INVERSE_RANDOM': {
@@ -13,16 +15,16 @@ export const implementedFunctions = {
       { argumentType: ArgumentTypes.NUMBER, greaterThan: 0 }
     ]
   },
-  'STATISTICS.UNIFORM_RANDOM': {
-    method: 'uniformRandom',
+  'STATISTICS.UNIFORM_INVERSE_RANDOM': {
+    method: 'uniformInverseRandom',
     arraySizeMethod: 'statisticsSize',
     parameters: [
       { argumentType: ArgumentTypes.NUMBER },
       { argumentType: ArgumentTypes.NUMBER }
     ]
   },
-  'STATISTICS.TRIANGULAR_RANDOM': {
-    method: 'triangularRandom',
+  'STATISTICS.TRIANGULAR_INVERSE_RANDOM': {
+    method: 'triangularInverseRandom',
     arraySizeMethod: 'statisticsSize',
     parameters: [
       {
@@ -47,14 +49,23 @@ export const implementedFunctions = {
         argumentType: ArgumentTypes.INTEGER
       }
     ]
+  },
+  'STATISTICS.LOGNORMAL_INVERSE_RANDOM': {
+    method: 'lognormalInverseRandom',
+    arraySizeMethod: 'statisticsSize',
+    parameters: [
+      { argumentType: ArgumentTypes.NUMBER },
+      { argumentType: ArgumentTypes.NUMBER, greaterThan: 0 }
+    ]
   }
 }
 
 export const aliases = {
   'S.NIR': 'STATISTICS.NORMAL_INVERSE_RANDOM',
-  'S.UR': 'STATISTICS.UNIFORM_RANDOM',
-  'S.TR': 'STATISTICS.TRIANGULAR_RANDOM',
-  'S.DR': 'STATISTICS.DISCRETE_RANDOM'
+  'S.UIR': 'STATISTICS.UNIFORM_INVERSE_RANDOM',
+  'S.TIR': 'STATISTICS.TRIANGULAR_INVERSE_RANDOM',
+  'S.DR': 'STATISTICS.DISCRETE_RANDOM',
+  'S.LIR': 'STATISTICS.LOGNORMAL_INVERSE_RANDOM'
 }
 
 export const translations = {
@@ -70,44 +81,77 @@ export class Plugin extends StatisticalPlugin {
       state,
       metadata,
       (mean, standardDeviation) => {
-        const normalinvValue = normal.inv(
+        const normalInvValue = normal.inv(
           Math.random(),
           mean,
           standardDeviation
         )
 
-        return normalinvValue
+        return normalInvValue
       }
     )
   }
 
-  uniformRandom(ast, state) {
-    const metadata = this.metadata('STATISTICS.UNIFORM_RANDOM')
+  uniformInverseRandom(ast, state) {
+    const metadata = this.metadata('STATISTICS.UNIFORM_INVERSE_RANDOM')
 
     return this.runFunction(ast.args, state, metadata, (min, max) => {
       const uniformDistFormula = (random, min, max) => {
         return min + random * (max - min)
       }
 
-      const uniformDistValue = uniformDistFormula(
+      const uniformInvDistValue = uniformDistFormula(
         Math.random(),
         Math.min(min),
         Math.min(max)
       )
 
-      return uniformDistValue
+      return uniformInvDistValue
     })
   }
 
-  triangularRandom(ast, state) {
-    const metadata = this.metadata('STATISTICS.TRIANGULAR_RANDOM')
+  triangularInverseRandom(ast, state) {
+    const metadata = this.metadata('STATISTICS.TRIANGULAR_INVERSE_RANDOM')
 
     return this.runFunction(
       ast.args,
       state,
       metadata,
       (min, mostLikely, max) => {
-        return SimpleRangeValue.onlyValues()
+        const triangularInvFormula = (random, lowerLimit, mode, upperLimit) => {
+          const lowerRange = mode - lowerLimit
+          const totalRange = upperLimit - lowerLimit
+
+          if (
+            mode <= lowerLimit ||
+            upperLimit < lowerLimit ||
+            upperLimit > mode
+          ) {
+            return NaN
+          } else {
+            if (random <= totalRange / lowerRange) {
+              return (
+                lowerLimit +
+                lowerRange * Math.sqrt(random * (totalRange / lowerRange))
+              )
+            } else {
+              return (
+                lowerLimit +
+                lowerRange *
+                  (1 - Math.sqrt((1 - random) * (1 - totalRange / lowerRange)))
+              )
+            }
+          }
+        }
+
+        const triangularInvValue = triangularInvFormula(
+          Math.random(),
+          min,
+          mostLikely,
+          max
+        )
+
+        return triangularInvValue
       }
     )
   }
@@ -120,7 +164,31 @@ export class Plugin extends StatisticalPlugin {
       state,
       metadata,
       (values, probabilities) => {
-        return SimpleRangeValue.onlyValues()
+        const discreteFormula = (random, minInteger, maxInteger) => {
+          if (random < minInteger) return 0
+          else if (random < maxInteger)
+            return (random - minInteger) / (maxInteger - minInteger)
+          return 1
+        }
+      }
+    )
+  }
+
+  lognormalInverseRandom(ast, state) {
+    const metadata = this.metadata('STATISTICS.LOGNORMAL_RANDOM')
+
+    return this.runFunction(
+      ast.args,
+      state,
+      metadata,
+      (mean, standardDeviation) => {
+        const lognormalInvValue = lognorminv.inv(
+          Math.random(),
+          mean,
+          standardDeviation
+        )
+
+        return lognormalInvValue
       }
     )
   }
