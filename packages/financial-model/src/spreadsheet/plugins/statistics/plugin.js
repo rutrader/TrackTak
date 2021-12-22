@@ -1,4 +1,4 @@
-import { HyperFormula, SimpleRangeValue } from '@tracktak/hyperformula'
+import { SimpleRangeValue } from '@tracktak/hyperformula'
 import { StatisticalPlugin } from '@tracktak/hyperformula/es/interpreter/plugin/StatisticalPlugin'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
 import { ArraySize } from '@tracktak/hyperformula/es/ArraySize'
@@ -17,12 +17,8 @@ export const implementedFunctions = {
     method: 'uniformRandom',
     arraySizeMethod: 'statisticsSize',
     parameters: [
-      {
-        argumentType: ArgumentTypes.NUMBER
-      },
-      {
-        argumentType: ArgumentTypes.NUMBER
-      }
+      { argumentType: ArgumentTypes.NUMBER },
+      { argumentType: ArgumentTypes.NUMBER }
     ]
   },
   'STATISTICS.TRIANGULAR_RANDOM': {
@@ -86,70 +82,44 @@ export class Plugin extends StatisticalPlugin {
   }
 
   uniformRandom(ast, state) {
-    const metadata = this.metadata('STATISTICS.NORMAL_INVERSE_RANDOM')
-
-    const minCellReference = ast.args[0].reference.toSimpleCellAddress(
-      state.formulaAddress
-    )
-
-    const maxDeviationCellReference = ast.args[1].reference.toSimpleCellAddress(
-      state.formulaAddress
-    )
+    const metadata = this.metadata('STATISTICS.UNIFORM_RANDOM')
 
     return this.runFunction(ast.args, state, metadata, (min, max) => {
-      const sheets = this.serialization.getAllSheetsSerialized()
-      const hfInstance = HyperFormula.buildFromSheets(sheets)[0]
+      const uniformDistFormula = (random, min, max) => {
+        return min + random * (max - min)
+      }
 
-      return SimpleRangeValue.onlyValues()
+      const uniformDistValue = uniformDistFormula(
+        Math.random(),
+        Math.min(min),
+        Math.min(max)
+      )
+
+      return uniformDistValue
     })
   }
 
   triangularRandom(ast, state) {
-    const metadata = this.metadata('STATISTICS.NORMAL_INVERSE_RANDOM')
-
-    const minCellReference = ast.args[0].reference.toSimpleCellAddress(
-      state.formulaAddress
-    )
-
-    const mostLikelyDeviationCellReference =
-      ast.args[1].reference.toSimpleCellAddress(state.formulaAddress)
-
-    const maxDeviationCellReference = ast.args[2].reference.toSimpleCellAddress(
-      state.formulaAddress
-    )
+    const metadata = this.metadata('STATISTICS.TRIANGULAR_RANDOM')
 
     return this.runFunction(
       ast.args,
       state,
       metadata,
       (min, mostLikely, max) => {
-        const sheets = this.serialization.getAllSheetsSerialized()
-        const hfInstance = HyperFormula.buildFromSheets(sheets)[0]
-
         return SimpleRangeValue.onlyValues()
       }
     )
   }
 
   discreteRandom(ast, state) {
-    const metadata = this.metadata('STATISTICS.NORMAL_INVERSE_RANDOM')
-
-    const minCellReference = ast.args[0].reference.toSimpleCellAddress(
-      state.formulaAddress
-    )
-
-    const maxDeviationCellReference = ast.args[1].reference.toSimpleCellAddress(
-      state.formulaAddress
-    )
+    const metadata = this.metadata('STATISTICS.DISCRETE_RANDOM')
 
     return this.runFunction(
       ast.args,
       state,
       metadata,
       (values, probabilities) => {
-        const sheets = this.serialization.getAllSheetsSerialized()
-        const hfInstance = HyperFormula.buildFromSheets(sheets)[0]
-
         return SimpleRangeValue.onlyValues()
       }
     )
