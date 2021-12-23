@@ -3,7 +3,7 @@ import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/Func
 import { ArraySize } from '@tracktak/hyperformula/es/ArraySize'
 import {
   normal,
-  lognorminv
+  lognormal
 } from '@tracktak/hyperformula/es/interpreter/plugin/3rdparty/jstat/jstat'
 
 export const implementedFunctions = {
@@ -38,18 +38,6 @@ export const implementedFunctions = {
       }
     ]
   },
-  'STATISTICS.DISCRETE_RANDOM': {
-    method: 'discreteRandom',
-    arraySizeMethod: 'statisticsSize',
-    parameters: [
-      {
-        argumentType: ArgumentTypes.RANGE
-      },
-      {
-        argumentType: ArgumentTypes.INTEGER
-      }
-    ]
-  },
   'STATISTICS.LOGNORMAL_INVERSE_RANDOM': {
     method: 'lognormalInverseRandom',
     arraySizeMethod: 'statisticsSize',
@@ -64,7 +52,6 @@ export const aliases = {
   'S.NIR': 'STATISTICS.NORMAL_INVERSE_RANDOM',
   'S.UIR': 'STATISTICS.UNIFORM_INVERSE_RANDOM',
   'S.TIR': 'STATISTICS.TRIANGULAR_INVERSE_RANDOM',
-  'S.DR': 'STATISTICS.DISCRETE_RANDOM',
   'S.LIR': 'STATISTICS.LOGNORMAL_INVERSE_RANDOM'
 }
 
@@ -156,33 +143,15 @@ export class Plugin extends StatisticalPlugin {
     )
   }
 
-  discreteRandom(ast, state) {
-    const metadata = this.metadata('STATISTICS.DISCRETE_RANDOM')
-
-    return this.runFunction(
-      ast.args,
-      state,
-      metadata,
-      (values, probabilities) => {
-        const discreteFormula = (random, minInteger, maxInteger) => {
-          if (random < minInteger) return 0
-          else if (random < maxInteger)
-            return (random - minInteger) / (maxInteger - minInteger)
-          return 1
-        }
-      }
-    )
-  }
-
   lognormalInverseRandom(ast, state) {
-    const metadata = this.metadata('STATISTICS.LOGNORMAL_RANDOM')
+    const metadata = this.metadata('STATISTICS.LOGNORMAL_INVERSE_RANDOM')
 
     return this.runFunction(
       ast.args,
       state,
       metadata,
       (mean, standardDeviation) => {
-        const lognormalInvValue = lognorminv.inv(
+        const lognormalInvValue = lognormal.inv(
           Math.random(),
           mean,
           standardDeviation
