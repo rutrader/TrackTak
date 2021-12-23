@@ -1,5 +1,6 @@
 import { CellError, SimpleRangeValue } from '@tracktak/hyperformula'
 import { ArraySize } from '@tracktak/hyperformula/es/ArraySize'
+import { isNil } from 'lodash'
 import { noValueReturnedCellError } from './cellErrors'
 
 // TODO: Could this be in hyperformula automatically?
@@ -30,7 +31,7 @@ const getFixedSimpleRangeValues = values => {
 }
 
 export const getPluginAsyncValue = value => {
-  if (!value) {
+  if (isNil(value)) {
     return noValueReturnedCellError
   }
 

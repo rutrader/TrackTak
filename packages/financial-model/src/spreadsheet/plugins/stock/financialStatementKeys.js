@@ -58,6 +58,7 @@ export const balanceSheet = [
   'longTermDebt',
   'capitalLeaseObligations',
   'longTermDebtAndCapitalLeases',
+  'totalDebt',
   'deferredLongTermLiab',
   'nonCurrentLiabilitiesOther',
   'nonCurrentLiabilitiesTotal',
@@ -71,7 +72,7 @@ export const balanceSheet = [
   'capitalSurpluse',
   'otherStockholderEquity',
   'totalStockholderEquity',
-  'minorityInterest',
+  'noncontrollingInterestInConsolidatedEntity',
   'totalEquity',
   'currencyCode',
   'filingDate'

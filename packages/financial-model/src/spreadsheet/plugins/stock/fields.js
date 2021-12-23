@@ -52,10 +52,8 @@ export const infoFields = [
   'logoURL',
   'fullTimeEmployees',
   'updatedAt',
-  'marketCapitalization',
   'mostRecentQuarter',
   'wallStreetTargetPrice',
-  'sharesOutstanding',
   'sharesFloat',
   'percentInsiders',
   'percentInstitutions',
@@ -97,6 +95,6 @@ export const industryAverageFields = [
   'industry'
 ]
 
-export const ratioFields = ['interestCoverage']
+export const ratioFields = ['marketCapitalization', 'interestCoverage']
 
 export const outstandingSharesFields = ['date', 'shares']
