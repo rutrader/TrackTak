@@ -105,27 +105,31 @@ export class Plugin extends StatisticalPlugin {
       state,
       metadata,
       (min, mostLikely, max) => {
-        const triangularInvFormula = (random, lowerLimit, mode, upperLimit) => {
-          const lowerRange = mode - lowerLimit
-          const totalRange = upperLimit - lowerLimit
-
+        const triangularInvFormula = (random, lowerBound, upperBound, mode) => {
           if (
-            mode <= lowerLimit ||
-            upperLimit < lowerLimit ||
-            upperLimit > mode
+            upperBound <= lowerBound ||
+            mode < lowerBound ||
+            mode > upperBound
           ) {
             return NaN
           } else {
-            if (random <= totalRange / lowerRange) {
+            if (random <= (mode - lowerBound) / (upperBound - lowerBound)) {
               return (
-                lowerLimit +
-                lowerRange * Math.sqrt(random * (totalRange / lowerRange))
+                lowerBound +
+                (upperBound - lowerBound) *
+                  Math.sqrt(
+                    random * ((mode - lowerBound) / (upperBound - lowerBound))
+                  )
               )
             } else {
               return (
-                lowerLimit +
-                lowerRange *
-                  (1 - Math.sqrt((1 - random) * (1 - totalRange / lowerRange)))
+                lowerBound +
+                (upperBound - lowerBound) *
+                  (1 -
+                    Math.sqrt(
+                      (1 - random) *
+                        (1 - (mode - lowerBound) / (upperBound - lowerBound))
+                    ))
               )
             }
           }
@@ -134,8 +138,8 @@ export class Plugin extends StatisticalPlugin {
         const triangularInvValue = triangularInvFormula(
           Math.random(),
           min,
-          mostLikely,
-          max
+          max,
+          mostLikely
         )
 
         return triangularInvValue
