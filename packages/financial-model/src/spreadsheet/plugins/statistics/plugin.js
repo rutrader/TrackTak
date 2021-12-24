@@ -5,6 +5,7 @@ import {
   normal,
   lognormal
 } from '@tracktak/hyperformula/es/interpreter/plugin/3rdparty/jstat/jstat'
+import { triangularInvFormula, uniformInvDistFormula } from './statsFormulas'
 
 export const implementedFunctions = {
   'STATISTICS.NORMAL_INVERSE_RANDOM': {
@@ -83,11 +84,7 @@ export class Plugin extends StatisticalPlugin {
     const metadata = this.metadata('STATISTICS.UNIFORM_INVERSE_RANDOM')
 
     return this.runFunction(ast.args, state, metadata, (min, max) => {
-      const uniformDistFormula = (random, min, max) => {
-        return min + random * (max - min)
-      }
-
-      const uniformInvDistValue = uniformDistFormula(
+      const uniformInvDistValue = uniformInvDistFormula(
         Math.random(),
         Math.min(min),
         Math.min(max)
@@ -105,36 +102,6 @@ export class Plugin extends StatisticalPlugin {
       state,
       metadata,
       (min, mostLikely, max) => {
-        const triangularInvFormula = (random, lowerBound, upperBound, mode) => {
-          if (
-            upperBound <= lowerBound ||
-            mode < lowerBound ||
-            mode > upperBound
-          ) {
-            return NaN
-          } else {
-            if (random <= (mode - lowerBound) / (upperBound - lowerBound)) {
-              return (
-                lowerBound +
-                (upperBound - lowerBound) *
-                  Math.sqrt(
-                    random * ((mode - lowerBound) / (upperBound - lowerBound))
-                  )
-              )
-            } else {
-              return (
-                lowerBound +
-                (upperBound - lowerBound) *
-                  (1 -
-                    Math.sqrt(
-                      (1 - random) *
-                        (1 - (mode - lowerBound) / (upperBound - lowerBound))
-                    ))
-              )
-            }
-          }
-        }
-
         const triangularInvValue = triangularInvFormula(
           Math.random(),
           min,
