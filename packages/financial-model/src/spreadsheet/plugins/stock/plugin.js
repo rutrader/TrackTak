@@ -14,7 +14,7 @@ import {
   ratioFields
 } from './fields'
 import { tickerRegex } from './matchers'
-import { sizeMethod, getPluginAsyncValue } from '../helpers'
+import { inferSizeMethod, getPluginAsyncValue } from '../helpers'
 import { fiscalDateRangeCellError, getFieldCellError } from '../cellErrors'
 import { fiscalDateRangeRegex } from '../matchers'
 import { validateEODParamsHasError } from '../eod'
@@ -566,8 +566,8 @@ export class Plugin extends FunctionPlugin {
     )
   }
 
-  stockSize(_, state) {
-    return sizeMethod(state)
+  stockSize(ast, state) {
+    return inferSizeMethod(ast, state)
   }
 
   getIsFiscalDateRangeValid(fiscalDateRange) {

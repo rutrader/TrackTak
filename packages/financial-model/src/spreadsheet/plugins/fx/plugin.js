@@ -4,7 +4,7 @@ import { api } from '@tracktak/common'
 import currencyCodes from './currencyCodes'
 import { baseCurrencyCellError, quoteCurrencyCellError } from './cellErrors'
 import { validateEODParamsHasError } from '../eod'
-import { getPluginAsyncValue, sizeMethod } from '../helpers'
+import { getPluginAsyncValue, inferSizeMethod } from '../helpers'
 
 export const implementedFunctions = {
   'FX.GET_FIAT_EXCHANGE_RATE': {
@@ -89,8 +89,8 @@ export class Plugin extends FunctionPlugin {
     )
   }
 
-  fxSize(_, state) {
-    return sizeMethod(state)
+  fxSize(ast, state) {
+    return inferSizeMethod(ast, state)
   }
 }
 

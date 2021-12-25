@@ -1,7 +1,7 @@
 import { FunctionPlugin } from '@tracktak/hyperformula'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
 import { api } from '@tracktak/common'
-import { getPluginAsyncValue, sizeMethod } from '../helpers'
+import { getPluginAsyncValue, inferSizeMethod } from '../helpers'
 import { equityRiskPremiumFields } from '../fields'
 import { fiscalDateRangeCellError, getFieldCellError } from '../cellErrors'
 import { fiscalDateRangeRegex } from '../matchers'
@@ -174,8 +174,8 @@ export class Plugin extends FunctionPlugin {
     )
   }
 
-  marketSize(_, state) {
-    return sizeMethod(state)
+  marketSize(ast, state) {
+    return inferSizeMethod(ast, state)
   }
 }
 

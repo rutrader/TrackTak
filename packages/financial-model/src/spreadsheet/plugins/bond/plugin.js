@@ -1,7 +1,7 @@
 import { FunctionPlugin } from '@tracktak/hyperformula'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
 import { api } from '@tracktak/common'
-import { getPluginAsyncValue, sizeMethod } from '../helpers'
+import { getPluginAsyncValue, inferSizeMethod } from '../helpers'
 import countryCodes from './countryCodes'
 import { countryCodeCellError, maturityCellError } from './cellErrors'
 import { maturityRegex } from './matchers'
@@ -89,8 +89,8 @@ export class Plugin extends FunctionPlugin {
     )
   }
 
-  bondSize(_, state) {
-    return sizeMethod(state)
+  bondSize(ast, state) {
+    return inferSizeMethod(ast, state)
   }
 }
 
