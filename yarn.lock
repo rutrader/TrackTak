@@ -5908,10 +5908,10 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
   integrity sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
 
-"@tracktak/hyperformula@^2.1.5":
-  version "2.1.5"
-  resolved "https://npm.pkg.github.com/download/@tracktak/hyperformula/2.1.5/991936340d9f1894cf3c78aec7745e114ec46a7282aeaa852394abd6ec0be7f0#a3a8d23059fd5d09c8b5088c119044cf36d3e18e"
-  integrity sha512-/0P1rRBdTwhApa4uDfXP1uyJ915bKKHhyvGCejyPrt+E6eNhYnihmqbQJU18djLDhCXSbUBP3HqsGDNpKHzRVw==
+"@tracktak/hyperformula@^2.1.6":
+  version "2.1.6"
+  resolved "https://npm.pkg.github.com/download/@tracktak/hyperformula/2.1.6/a93e716d6080877e9126e8d00152b5aa326f4e608f1e1ff59069dc43878d9a27#57e128bc028bd19959ccdbb508dd1acaedaac0c0"
+  integrity sha512-nj20s40TAvHsvwJ0U3exfYe3iRWE1xxkceJVww/Le3QSDNAgVvJwBWdsKUwxniKgHlYpeVwQOxF4EqA/uEY5nQ==
   dependencies:
     chevrotain "^6.5.0"
     core-js "^3.6.4"
