@@ -1,4 +1,4 @@
-const countryCodes = [
+const countryISOs = [
   'AU',
   'BR',
   'CA',
@@ -23,4 +23,4 @@ const countryCodes = [
   'US'
 ]
 
-export default countryCodes
+export default countryISOs

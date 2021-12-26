@@ -3,8 +3,8 @@ import { getGovernmentBond } from './bondApi'
 
 const router = express.Router()
 
-router.get('/:code', async (req, res) => {
-  const value = await getGovernmentBond(req.params.code, req.query)
+router.get('/:countryISO', async (req, res) => {
+  const value = await getGovernmentBond(req.params.countryISO, req.query)
 
   res.send({ value })
 })

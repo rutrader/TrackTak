@@ -9,6 +9,14 @@ export const getFieldCellError = fields =>
     `field is not valid. Must be one of these fields: ${fields.join(', ')}.`
   )
 
+export const getCountryISOCellError = countryISOs =>
+  new CellError(
+    ErrorType.VALUE,
+    `countryISO is not valid. The valid country codes are: ${countryISOs.join(
+      ', '
+    )}.`
+  )
+
 export const fiscalDateRangeCellError = new CellError(
   ErrorType.VALUE,
   `fiscalDateRange is not valid. ${fiscalDateRangeExample}`

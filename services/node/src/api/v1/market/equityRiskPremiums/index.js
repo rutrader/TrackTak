@@ -19,4 +19,24 @@ router.get('/', async (req, res) => {
   })
 })
 
+router.get('/:countryISO', async (req, res) => {
+  const countryISO = req.params.countryISO
+  const field = req.query.field
+  const equityRiskPremiums = await readFile()
+
+  const countryEquityRiskPremium = equityRiskPremiums.find(
+    x => x.countryISO === countryISO
+  )
+
+  let value = countryEquityRiskPremium
+
+  if (field) {
+    value = countryEquityRiskPremium[field]
+  }
+
+  res.send({
+    value: getFieldValue(value)
+  })
+})
+
 export default router
