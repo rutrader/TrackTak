@@ -11,6 +11,7 @@ export const implementedFunctions = {
   'STATISTICS.NORMAL_INVERSE_RANDOM': {
     method: 'normalInverseRandom',
     arraySizeMethod: 'statisticsSize',
+    isVolatile: true,
     parameters: [
       { argumentType: ArgumentTypes.NUMBER },
       { argumentType: ArgumentTypes.NUMBER, greaterThan: 0 }
@@ -19,6 +20,7 @@ export const implementedFunctions = {
   'STATISTICS.UNIFORM_INVERSE_RANDOM': {
     method: 'uniformInverseRandom',
     arraySizeMethod: 'statisticsSize',
+    isVolatile: true,
     parameters: [
       { argumentType: ArgumentTypes.NUMBER },
       { argumentType: ArgumentTypes.NUMBER }
@@ -27,6 +29,7 @@ export const implementedFunctions = {
   'STATISTICS.TRIANGULAR_INVERSE_RANDOM': {
     method: 'triangularInverseRandom',
     arraySizeMethod: 'statisticsSize',
+    isVolatile: true,
     parameters: [
       {
         argumentType: ArgumentTypes.NUMBER
@@ -42,6 +45,7 @@ export const implementedFunctions = {
   'STATISTICS.LOGNORMAL_INVERSE_RANDOM': {
     method: 'lognormalInverseRandom',
     arraySizeMethod: 'statisticsSize',
+    isVolatile: true,
     parameters: [
       { argumentType: ArgumentTypes.NUMBER },
       { argumentType: ArgumentTypes.NUMBER, greaterThan: 0 }

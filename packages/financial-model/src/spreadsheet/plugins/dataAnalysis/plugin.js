@@ -14,11 +14,12 @@ import {
   yMinValueCellError
 } from './cellErrors'
 import truncateDecimal from '../../shared/truncateDecimal'
+import { config, namedExpressions } from '../../hyperformulaConfig'
 
 export const implementedFunctions = {
   'DATA_ANALYSIS.SENSITIVITY_ANALYSIS': {
     method: 'sensitivityAnalysis',
-    arraySizeMethod: 'dataAnalysisSize',
+    arraySizeMethod: 'dataAnalysisSensitivitySize',
     parameters: [
       {
         argumentType: ArgumentTypes.NUMBER
@@ -36,25 +37,28 @@ export const implementedFunctions = {
         argumentType: ArgumentTypes.RANGE
       }
     ]
+  },
+  'DATA_ANALYSIS.MONTE_CARLO_SIMULATION': {
+    method: 'monteCarloSimulation',
+    arraySizeMethod: 'dataAnalysisMonteCarloSize',
+    parameters: [
+      {
+        argumentType: ArgumentTypes.NUMBER
+      },
+      {
+        argumentType: ArgumentTypes.RANGE
+      },
+      {
+        argumentType: ArgumentTypes.NUMBER,
+        greaterThan: 0
+      }
+    ]
   }
-  // 'DATA_ANALYSIS.MONTE_CARLO_SIMULATION': {
-  //   method: 'monteCarloSimulation',
-  //   arraySizeMethod: 'dataAnalysisSize',
-  //   parameters: [
-  //     //TO DO
-  //     {
-  //       argumentType: ArgumentTypes.NUMBER
-  //     },
-  //     {
-  //       argumentType: ArgumentTypes.NUMBER
-  //     }
-  //   ]
-  // }
 }
 
 export const aliases = {
-  'D.SA': 'DATA_ANALYSIS.SENSITIVITY_ANALYSIS'
-  /*   'D.MCS': 'DATA_ANALYSIS.MONTE_CARLO_SIMULATION' */
+  'D.SA': 'DATA_ANALYSIS.SENSITIVITY_ANALYSIS',
+  'D.MCS': 'DATA_ANALYSIS.MONTE_CARLO_SIMULATION'
 }
 
 export const translations = {
@@ -92,7 +96,15 @@ export class Plugin extends FunctionPlugin {
       metadata,
       (_, xVar, yVar, xMinMax, yMinMax) => {
         const sheets = this.serialization.getAllSheetsSerialized()
-        const hfInstance = HyperFormula.buildFromSheets(sheets)[0]
+
+        HyperFormula.unregisterFunction('DATA_ANALYSIS.SENSITIVITY_ANALYSIS')
+        HyperFormula.unregisterFunction('D.SA')
+
+        const hfInstance = HyperFormula.buildFromSheets(
+          sheets,
+          config,
+          namedExpressions
+        )[0]
 
         const xMinMaxData = xMinMax.rawData()
         const yMinMaxData = yMinMax.rawData()
@@ -178,19 +190,80 @@ export class Plugin extends FunctionPlugin {
           }
         })
 
+        hfInstance.destroy()
+
+        HyperFormula.registerFunction(
+          'DATA_ANALYSIS.SENSITIVITY_ANALYSIS',
+          Plugin,
+          translations
+        )
+        HyperFormula.registerFunction('D.SA', Plugin, translations)
+
         return SimpleRangeValue.onlyValues(intersectionPointValues)
       }
     )
   }
 
-  dataAnalysisSize() {
+  monteCarloSimulation(ast, state) {
+    const metadata = this.metadata('DATA_ANALYSIS.MONTE_CARLO_SIMULATION')
+
+    const interesectionCellAddress = ast.args[0].reference.toSimpleCellAddress(
+      state.formulaAddress
+    )
+
+    const varAssumptionCellAddresses = ast.args[1].args.map(arr => {
+      return arr.map(({ reference }) =>
+        reference.toSimpleCellAddress(state.formulaAddress)
+      )
+    })[0]
+
+    return this.runFunction(ast.args, state, metadata, () => {
+      const sheets = this.serialization.getAllSheetsSerialized()
+      HyperFormula.unregisterFunction('DATA_ANALYSIS.MONTE_CARLO_SIMULATION')
+      HyperFormula.unregisterFunction('D.MCS')
+
+      const hfInstance = HyperFormula.buildFromSheets(
+        sheets,
+        config,
+        namedExpressions
+      )[0]
+
+      const output = []
+
+      for (let i = 1; i <= 100; i++) {
+        varAssumptionCellAddresses.forEach(cellAddress => {
+          const formula = hfInstance.getCellFormula(cellAddress)
+
+          hfInstance.setCellContents(cellAddress, formula)
+        })
+
+        const interesectionValue = hfInstance.getCellValue(
+          interesectionCellAddress
+        )
+
+        output.push(interesectionValue)
+      }
+
+      hfInstance.destroy()
+
+      HyperFormula.registerFunction(
+        'DATA_ANALYSIS.MONTE_CARLO_SIMULATION',
+        Plugin,
+        translations
+      )
+      HyperFormula.registerFunction('D.MCS', Plugin, translations)
+
+      return SimpleRangeValue.onlyValues([output])
+    })
+  }
+
+  dataAnalysisSensitivitySize() {
     return new ArraySize(7, 7)
   }
 
-  //TO DO
-  // monteCarloSimulation(ast, state) {
-  //   const metadata = this.metadata('DATA_ANALYSIS.MONTE_CARLO_SIMULATION')
-  // }
+  dataAnalysisMonteCarloSize() {
+    return new ArraySize(2, 100)
+  }
 }
 
 Plugin.implementedFunctions = implementedFunctions
