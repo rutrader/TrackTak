@@ -11,7 +11,8 @@ import {
   xMinValueCellError,
   yMaxValueCellError,
   yMinMaxValuesCellError,
-  yMinValueCellError
+  yMinValueCellError,
+  varAssumptionValuesCellError
 } from './cellErrors'
 import truncateDecimal from '../../shared/truncateDecimal'
 import { config, namedExpressions } from '../../hyperformulaConfig'
@@ -217,7 +218,7 @@ export class Plugin extends FunctionPlugin {
       )
     })[0]
 
-    return this.runFunction(ast.args, state, metadata, () => {
+    return this.runFunction(ast.args, state, metadata, (_, varAssumption) => {
       const sheets = this.serialization.getAllSheetsSerialized()
       HyperFormula.unregisterFunction('DATA_ANALYSIS.MONTE_CARLO_SIMULATION')
       HyperFormula.unregisterFunction('D.MCS')
@@ -227,6 +228,14 @@ export class Plugin extends FunctionPlugin {
         config,
         namedExpressions
       )[0]
+
+      const varAssumptionData = varAssumption.rawData()
+
+      const isVarAssumptionValid = varAssumptionData.length === 1
+
+      if (!isVarAssumptionValid) {
+        return varAssumptionValuesCellError
+      }
 
       const output = []
 
@@ -241,7 +250,7 @@ export class Plugin extends FunctionPlugin {
           interesectionCellAddress
         )
 
-        output.push(interesectionValue)
+        output.push([interesectionValue])
       }
 
       hfInstance.destroy()
@@ -253,7 +262,7 @@ export class Plugin extends FunctionPlugin {
       )
       HyperFormula.registerFunction('D.MCS', Plugin, translations)
 
-      return SimpleRangeValue.onlyValues([output])
+      return SimpleRangeValue.onlyValues(output)
     })
   }
 
@@ -262,7 +271,7 @@ export class Plugin extends FunctionPlugin {
   }
 
   dataAnalysisMonteCarloSize() {
-    return new ArraySize(2, 100)
+    return new ArraySize(1, 100)
   }
 }
 
