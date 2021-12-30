@@ -16,6 +16,31 @@ import {
 } from './cellErrors'
 import truncateDecimal from '../../shared/truncateDecimal'
 import { config, namedExpressions } from '../../hyperformulaConfig'
+import {
+  mean,
+  stdev,
+  variance
+} from '@tracktak/hyperformula/es/interpreter/plugin/3rdparty/jstat/jstat'
+import {
+  kurtosisFormula,
+  medianFormula,
+  skewnessFormula
+} from '../../../statsFormulas'
+
+export const standardizedMoment = (arr, n) => {
+  const mu = mean(arr)
+  const sigma = stdev(arr)
+  const length = arr.length
+  let skewSum = 0
+
+  for (let i = 0; i < length; i++) skewSum += Math.pow((arr[i] - mu) / sigma, n)
+
+  return skewSum / arr.length
+}
+
+const coefficientOfVariationFormula = arrVector => {
+  return stdev(arrVector) / mean(arrVector)
+}
 
 export const implementedFunctions = {
   'DATA_ANALYSIS.SENSITIVITY_ANALYSIS': {
@@ -250,8 +275,18 @@ export class Plugin extends FunctionPlugin {
           interesectionCellAddress
         )
 
-        output.push([interesectionValue])
+        output.push(interesectionValue)
       }
+
+      const meanOutput = mean(output)
+      const medianOutput = medianFormula(output)
+      const min = Math.min(...output)
+      const max = Math.max(...output)
+      const stdevOutput = stdev(output)
+      const varianceOutput = variance(output)
+      const skewnessOutput = skewnessFormula(output)
+      const kurtosisOutput = kurtosisFormula(output)
+      const coefficientOfVariationOutput = coefficientOfVariationFormula(output)
 
       hfInstance.destroy()
 
@@ -262,7 +297,17 @@ export class Plugin extends FunctionPlugin {
       )
       HyperFormula.registerFunction('D.MCS', Plugin, translations)
 
-      return SimpleRangeValue.onlyValues(output)
+      return SimpleRangeValue.onlyValues([
+        [meanOutput],
+        [medianOutput],
+        [min],
+        [max],
+        [stdevOutput],
+        [varianceOutput],
+        [skewnessOutput],
+        [kurtosisOutput],
+        [coefficientOfVariationOutput]
+      ])
     })
   }
 
@@ -271,7 +316,7 @@ export class Plugin extends FunctionPlugin {
   }
 
   dataAnalysisMonteCarloSize() {
-    return new ArraySize(1, 100)
+    return new ArraySize(1, 10)
   }
 }
 

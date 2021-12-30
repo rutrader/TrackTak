@@ -5,7 +5,10 @@ import {
   normal,
   lognormal
 } from '@tracktak/hyperformula/es/interpreter/plugin/3rdparty/jstat/jstat'
-import { triangularInvFormula, uniformInvDistFormula } from './statsFormulas'
+import {
+  triangularInvFormula,
+  uniformInvDistFormula
+} from '../../../statsFormulas'
 
 export const implementedFunctions = {
   'STATISTICS.NORMAL_INVERSE_RANDOM': {
