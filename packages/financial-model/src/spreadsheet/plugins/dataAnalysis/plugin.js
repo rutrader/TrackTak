@@ -22,6 +22,7 @@ import {
   variance
 } from '@tracktak/hyperformula/es/interpreter/plugin/3rdparty/jstat/jstat'
 import {
+  confidenceIntervalFormula,
   kurtosisFormula,
   medianFormula,
   skewnessFormula
@@ -38,8 +39,16 @@ export const standardizedMoment = (arr, n) => {
   return skewSum / arr.length
 }
 
-const coefficientOfVariationFormula = arrVector => {
+export const coefficientOfVariationFormula = arrVector => {
   return stdev(arrVector) / mean(arrVector)
+}
+
+export const stDevErrorOfMeanFormula = arr => {
+  return stdev(arr) / Math.sqrt(arr.length)
+}
+
+export const getConfidenceInterval = arr => {
+  return confidenceIntervalFormula(stDevErrorOfMeanFormula(arr), 1.96)
 }
 
 export const implementedFunctions = {
@@ -278,6 +287,7 @@ export class Plugin extends FunctionPlugin {
         output.push(interesectionValue)
       }
 
+      const trialsOutput = output.length
       const meanOutput = mean(output)
       const medianOutput = medianFormula(output)
       const min = Math.min(...output)
@@ -287,6 +297,9 @@ export class Plugin extends FunctionPlugin {
       const skewnessOutput = skewnessFormula(output)
       const kurtosisOutput = kurtosisFormula(output)
       const coefficientOfVariationOutput = coefficientOfVariationFormula(output)
+      const stDevErrorOfMeanOutput = stDevErrorOfMeanFormula(output)
+      const upperLimitOutput = mean(output) + getConfidenceInterval(output)
+      const lowerLimitOutput = mean(output) - getConfidenceInterval(output)
 
       hfInstance.destroy()
 
@@ -298,15 +311,19 @@ export class Plugin extends FunctionPlugin {
       HyperFormula.registerFunction('D.MCS', Plugin, translations)
 
       return SimpleRangeValue.onlyValues([
-        [meanOutput],
-        [medianOutput],
-        [min],
-        [max],
-        [stdevOutput],
-        [varianceOutput],
-        [skewnessOutput],
-        [kurtosisOutput],
-        [coefficientOfVariationOutput]
+        ['Trials', trialsOutput],
+        ['Mean', meanOutput],
+        ['Median', medianOutput],
+        ['Minimum', min],
+        ['Maximum', max],
+        ['Standard Deviation', stdevOutput],
+        ['Variance', varianceOutput],
+        ['Skewness', skewnessOutput],
+        ['Kurtosis', kurtosisOutput],
+        ['Coeff. of Variation', coefficientOfVariationOutput],
+        ['Mean Standard Error', stDevErrorOfMeanOutput],
+        ['@95% Upper Limit', upperLimitOutput],
+        ['@95% Lower Limit', lowerLimitOutput]
       ])
     })
   }
@@ -316,7 +333,7 @@ export class Plugin extends FunctionPlugin {
   }
 
   dataAnalysisMonteCarloSize() {
-    return new ArraySize(1, 10)
+    return new ArraySize(13, 13)
   }
 }
 

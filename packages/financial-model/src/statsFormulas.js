@@ -62,3 +62,7 @@ export const skewnessFormula = arrVector => {
 export const kurtosisFormula = arrVector => {
   return standardizedMoment(arrVector, 4) - 3
 }
+
+export const confidenceIntervalFormula = (stDevErrorOfMean, zScore) => {
+  return stDevErrorOfMean * zScore
+}
