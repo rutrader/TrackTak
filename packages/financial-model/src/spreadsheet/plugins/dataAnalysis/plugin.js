@@ -19,7 +19,8 @@ import { config, namedExpressions } from '../../hyperformulaConfig'
 import {
   mean,
   stdev,
-  variance
+  variance,
+  percentile
 } from '@tracktak/hyperformula/es/interpreter/plugin/3rdparty/jstat/jstat'
 import {
   confidenceIntervalFormula,
@@ -287,6 +288,13 @@ export class Plugin extends FunctionPlugin {
         output.push(interesectionValue)
       }
 
+      const n = 11
+      const percentiles = Array.from(Array(n), (_, number) => number / 10).map(
+        percent => {
+          return [percent * 100 + '%', percentile(output, percent, false)]
+        }
+      )
+
       const trialsOutput = output.length
       const meanOutput = mean(output)
       const medianOutput = medianFormula(output)
@@ -311,6 +319,7 @@ export class Plugin extends FunctionPlugin {
       HyperFormula.registerFunction('D.MCS', Plugin, translations)
 
       return SimpleRangeValue.onlyValues([
+        ['Statistic', 'Forecast values'],
         ['Trials', trialsOutput],
         ['Mean', meanOutput],
         ['Median', medianOutput],
@@ -323,7 +332,10 @@ export class Plugin extends FunctionPlugin {
         ['Coeff. of Variation', coefficientOfVariationOutput],
         ['Mean Standard Error', stDevErrorOfMeanOutput],
         ['@95% Upper Limit', upperLimitOutput],
-        ['@95% Lower Limit', lowerLimitOutput]
+        ['@95% Lower Limit', lowerLimitOutput],
+        [''],
+        ['Percentile', 'Forecast values'],
+        ...percentiles
       ])
     })
   }
@@ -333,7 +345,7 @@ export class Plugin extends FunctionPlugin {
   }
 
   dataAnalysisMonteCarloSize() {
-    return new ArraySize(13, 13)
+    return new ArraySize(27, 27)
   }
 }
 
