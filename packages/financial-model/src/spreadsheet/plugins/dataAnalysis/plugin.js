@@ -86,7 +86,8 @@ export const implementedFunctions = {
       },
       {
         argumentType: ArgumentTypes.NUMBER,
-        greaterThan: 0
+        greaterThan: 0,
+        defaultValue: 10000
       }
     ]
   }
@@ -253,91 +254,98 @@ export class Plugin extends FunctionPlugin {
       )
     })[0]
 
-    return this.runFunction(ast.args, state, metadata, (_, varAssumption) => {
-      const sheets = this.serialization.getAllSheetsSerialized()
-      HyperFormula.unregisterFunction('DATA_ANALYSIS.MONTE_CARLO_SIMULATION')
-      HyperFormula.unregisterFunction('D.MCS')
+    return this.runFunction(
+      ast.args,
+      state,
+      metadata,
+      (_, varAssumption, iteration) => {
+        const sheets = this.serialization.getAllSheetsSerialized()
+        HyperFormula.unregisterFunction('DATA_ANALYSIS.MONTE_CARLO_SIMULATION')
+        HyperFormula.unregisterFunction('D.MCS')
 
-      const hfInstance = HyperFormula.buildFromSheets(
-        sheets,
-        config,
-        namedExpressions
-      )[0]
+        const hfInstance = HyperFormula.buildFromSheets(
+          sheets,
+          config,
+          namedExpressions
+        )[0]
 
-      const varAssumptionData = varAssumption.rawData()
+        const varAssumptionData = varAssumption.rawData()
 
-      const isVarAssumptionValid = varAssumptionData.length === 1
+        const isVarAssumptionValid = varAssumptionData.length === 1
 
-      if (!isVarAssumptionValid) {
-        return varAssumptionValuesCellError
-      }
+        if (!isVarAssumptionValid) {
+          return varAssumptionValuesCellError
+        }
 
-      const output = []
+        const output = []
 
-      for (let i = 1; i <= 100; i++) {
-        varAssumptionCellAddresses.forEach(cellAddress => {
-          const formula = hfInstance.getCellFormula(cellAddress)
+        for (let i = 1; i <= iteration; i++) {
+          varAssumptionCellAddresses.forEach(cellAddress => {
+            const formula = hfInstance.getCellFormula(cellAddress)
 
-          hfInstance.setCellContents(cellAddress, formula)
+            hfInstance.setCellContents(cellAddress, formula)
+          })
+
+          const interesectionValue = hfInstance.getCellValue(
+            interesectionCellAddress
+          )
+
+          output.push(interesectionValue)
+        }
+
+        const n = 11
+        const percentiles = Array.from(
+          Array(n),
+          (_, number) => number / 10
+        ).map(percent => {
+          return [percent * 100 + '%', percentile(output, percent, false)]
         })
 
-        const interesectionValue = hfInstance.getCellValue(
-          interesectionCellAddress
+        const trialsOutput = output.length
+        const meanOutput = mean(output)
+        const medianOutput = medianFormula(output)
+        const min = Math.min(...output)
+        const max = Math.max(...output)
+        const stdevOutput = stdev(output)
+        const varianceOutput = variance(output)
+        const skewnessOutput = skewnessFormula(output)
+        const kurtosisOutput = kurtosisFormula(output)
+        const coefficientOfVariationOutput =
+          coefficientOfVariationFormula(output)
+        const stDevErrorOfMeanOutput = stDevErrorOfMeanFormula(output)
+        const upperLimitOutput = mean(output) + getConfidenceInterval(output)
+        const lowerLimitOutput = mean(output) - getConfidenceInterval(output)
+
+        hfInstance.destroy()
+
+        HyperFormula.registerFunction(
+          'DATA_ANALYSIS.MONTE_CARLO_SIMULATION',
+          Plugin,
+          translations
         )
+        HyperFormula.registerFunction('D.MCS', Plugin, translations)
 
-        output.push(interesectionValue)
+        return SimpleRangeValue.onlyValues([
+          ['Statistic', 'Forecast values'],
+          ['Trials', trialsOutput],
+          ['Mean', meanOutput],
+          ['Median', medianOutput],
+          ['Minimum', min],
+          ['Maximum', max],
+          ['Standard Deviation', stdevOutput],
+          ['Variance', varianceOutput],
+          ['Skewness', skewnessOutput],
+          ['Kurtosis', kurtosisOutput],
+          ['Coeff. of Variation', coefficientOfVariationOutput],
+          ['Mean Standard Error', stDevErrorOfMeanOutput],
+          ['@95% Upper Limit', upperLimitOutput],
+          ['@95% Lower Limit', lowerLimitOutput],
+          [''],
+          ['Percentile', 'Forecast values'],
+          ...percentiles
+        ])
       }
-
-      const n = 11
-      const percentiles = Array.from(Array(n), (_, number) => number / 10).map(
-        percent => {
-          return [percent * 100 + '%', percentile(output, percent, false)]
-        }
-      )
-
-      const trialsOutput = output.length
-      const meanOutput = mean(output)
-      const medianOutput = medianFormula(output)
-      const min = Math.min(...output)
-      const max = Math.max(...output)
-      const stdevOutput = stdev(output)
-      const varianceOutput = variance(output)
-      const skewnessOutput = skewnessFormula(output)
-      const kurtosisOutput = kurtosisFormula(output)
-      const coefficientOfVariationOutput = coefficientOfVariationFormula(output)
-      const stDevErrorOfMeanOutput = stDevErrorOfMeanFormula(output)
-      const upperLimitOutput = mean(output) + getConfidenceInterval(output)
-      const lowerLimitOutput = mean(output) - getConfidenceInterval(output)
-
-      hfInstance.destroy()
-
-      HyperFormula.registerFunction(
-        'DATA_ANALYSIS.MONTE_CARLO_SIMULATION',
-        Plugin,
-        translations
-      )
-      HyperFormula.registerFunction('D.MCS', Plugin, translations)
-
-      return SimpleRangeValue.onlyValues([
-        ['Statistic', 'Forecast values'],
-        ['Trials', trialsOutput],
-        ['Mean', meanOutput],
-        ['Median', medianOutput],
-        ['Minimum', min],
-        ['Maximum', max],
-        ['Standard Deviation', stdevOutput],
-        ['Variance', varianceOutput],
-        ['Skewness', skewnessOutput],
-        ['Kurtosis', kurtosisOutput],
-        ['Coeff. of Variation', coefficientOfVariationOutput],
-        ['Mean Standard Error', stDevErrorOfMeanOutput],
-        ['@95% Upper Limit', upperLimitOutput],
-        ['@95% Lower Limit', lowerLimitOutput],
-        [''],
-        ['Percentile', 'Forecast values'],
-        ...percentiles
-      ])
-    })
+    )
   }
 
   dataAnalysisSensitivitySize() {
