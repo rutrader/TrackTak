@@ -9,6 +9,9 @@ import {
   triangularInvFormula,
   uniformInvDistFormula
 } from '../../../statsFormulas'
+import Rand, { PRNG } from 'rand-seed'
+
+const rand = new Rand(undefined, PRNG.mulberry32)
 
 export const implementedFunctions = {
   'STATISTICS.NORMAL_INVERSE_RANDOM': {
@@ -76,11 +79,7 @@ export class Plugin extends StatisticalPlugin {
       state,
       metadata,
       (mean, standardDeviation) => {
-        const normalInvValue = normal.inv(
-          Math.random(),
-          mean,
-          standardDeviation
-        )
+        const normalInvValue = normal.inv(rand.next(), mean, standardDeviation)
 
         return normalInvValue
       }
@@ -92,7 +91,7 @@ export class Plugin extends StatisticalPlugin {
 
     return this.runFunction(ast.args, state, metadata, (min, max) => {
       const uniformInvDistValue = uniformInvDistFormula(
-        Math.random(),
+        rand.next(),
         Math.min(min),
         Math.min(max)
       )
@@ -110,7 +109,7 @@ export class Plugin extends StatisticalPlugin {
       metadata,
       (min, mostLikely, max) => {
         const triangularInvValue = triangularInvFormula(
-          Math.random(),
+          rand.next(),
           min,
           max,
           mostLikely
@@ -130,7 +129,7 @@ export class Plugin extends StatisticalPlugin {
       metadata,
       (mean, standardDeviation) => {
         const lognormalInvValue = lognormal.inv(
-          Math.random(),
+          rand.next(),
           mean,
           standardDeviation
         )
