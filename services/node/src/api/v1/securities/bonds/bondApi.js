@@ -3,9 +3,9 @@ import { getEOD } from '../eodHistoricalData/eodAPI'
 import { getFieldValue } from '../helpers'
 import getEODQuery from '../stocks/getEODQuery'
 
-export const getGovernmentBond = async (code, query) => {
+export const getGovernmentBond = async (countryISO, query) => {
   const newQuery = alterFromToQuery(getEODQuery(query))
-  const value = getEOD(`${code}.GBOND`, newQuery)
+  const value = await getEOD(`${countryISO}.GBOND`, newQuery)
 
   return getFieldValue(value, true)
 }

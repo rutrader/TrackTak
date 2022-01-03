@@ -14,19 +14,14 @@ import {
   ratioFields
 } from './fields'
 import { tickerRegex } from './matchers'
-import { sizeMethod, getPluginAsyncValue } from '../helpers'
+import { inferSizeMethod, getPluginAsyncValue } from '../helpers'
 import { fiscalDateRangeCellError, getFieldCellError } from '../cellErrors'
 import { fiscalDateRangeRegex } from '../matchers'
 import { validateEODParamsHasError } from '../eod'
-import { equityRiskPremiumFields } from '../fields'
-import { creditRatingInterestSpreadsFields } from '../market/fields'
 
 const financialsFieldCellError = getFieldCellError(financialFields)
 const infoFieldCellError = getFieldCellError(infoFields)
 const industryAveragesFieldCellError = getFieldCellError(industryAverageFields)
-const equityRiskPremiumsFieldCellError = getFieldCellError(
-  equityRiskPremiumFields
-)
 const ratioFieldCellError = getFieldCellError(ratioFields)
 const outstandingSharesFieldCellError = getFieldCellError(
   outstandingSharesFields
@@ -136,32 +131,6 @@ export const implementedFunctions = {
       { argumentType: ArgumentTypes.STRING, optionalArg: true },
       { argumentType: ArgumentTypes.STRING, optionalArg: true }
     ]
-  },
-  'STOCK.GET_COMPANY_EQUITY_RISK_PREMIUM': {
-    method: 'getCompanyEquityRiskPremium',
-    arraySizeMethod: 'stockSize',
-    isAsyncMethod: true,
-    inferReturnType: true,
-    parameters: [
-      {
-        argumentType: ArgumentTypes.STRING
-      },
-      { argumentType: ArgumentTypes.STRING, optionalArg: true },
-      { argumentType: ArgumentTypes.STRING, optionalArg: true }
-    ]
-  },
-  'STOCK.GET_COMPANY_CREDIT_RATING_INTEREST_SPREAD': {
-    method: 'getCompanyCreditRatingInterestSpread',
-    arraySizeMethod: 'stockSize',
-    isAsyncMethod: true,
-    inferReturnType: true,
-    parameters: [
-      {
-        argumentType: ArgumentTypes.STRING
-      },
-      { argumentType: ArgumentTypes.STRING, optionalArg: true },
-      { argumentType: ArgumentTypes.STRING, optionalArg: true }
-    ]
   }
 }
 
@@ -172,8 +141,6 @@ export const aliases = {
   'S.GCI': 'STOCK.GET_COMPANY_INFO',
   'S.GIA': 'STOCK.GET_INDUSTRY_AVERAGES',
   'S.GCIA': 'STOCK.GET_COMPANY_INDUSTRY_AVERAGES',
-  'S.GCERP': 'STOCK.GET_COMPANY_EQUITY_RISK_PREMIUM',
-  'S.GCCRIS': 'STOCK.GET_COMPANY_CREDIT_RATING_INTEREST_SPREAD',
   'S.GCOS': 'STOCK.GET_COMPANY_OUTSTANDING_SHARES'
 }
 
@@ -430,89 +397,6 @@ export class Plugin extends FunctionPlugin {
     )
   }
 
-  getCompanyEquityRiskPremium(ast, state) {
-    const metadata = this.metadata('STOCK.GET_COMPANY_EQUITY_RISK_PREMIUM')
-
-    return this.runAsyncFunction(
-      ast.args,
-      state,
-      metadata,
-      async (ticker, field, fiscalDateRange) => {
-        const isTickerValid = !!ticker.match(tickerRegex)
-        const isFieldValid = field
-          ? !!equityRiskPremiumFields.find(x => x === field)
-          : true
-        const isFiscalDateRangeValid =
-          this.getIsFiscalDateRangeValid(fiscalDateRange)
-
-        if (!isTickerValid) {
-          return tickerCellError
-        }
-
-        if (!isFieldValid) {
-          return equityRiskPremiumsFieldCellError
-        }
-
-        if (!isFiscalDateRangeValid) {
-          return fiscalDateRangeCellError
-        }
-
-        // TODO: Handle dates for equityRiskPremiums and store in database
-        // before updating equityRiskPremiums JSON
-        const { data } = await api.getCompanyEquityRiskPremium(ticker, {
-          field,
-          fiscalDateRange
-        })
-
-        return getPluginAsyncValue(data.value)
-      }
-    )
-  }
-
-  getCompanyCreditRatingInterestSpread(ast, state) {
-    const metadata = this.metadata(
-      'STOCK.GET_COMPANY_CREDIT_RATING_INTEREST_SPREAD'
-    )
-
-    return this.runAsyncFunction(
-      ast.args,
-      state,
-      metadata,
-      async (ticker, field, fiscalDateRange) => {
-        const isTickerValid = !!ticker.match(tickerRegex)
-        const isFieldValid = field
-          ? !!creditRatingInterestSpreadsFields.find(x => x === field)
-          : true
-        const isFiscalDateRangeValid =
-          this.getIsFiscalDateRangeValid(fiscalDateRange)
-
-        if (!isTickerValid) {
-          return tickerCellError
-        }
-
-        if (!isFieldValid) {
-          return equityRiskPremiumsFieldCellError
-        }
-
-        if (!isFiscalDateRangeValid) {
-          return fiscalDateRangeCellError
-        }
-
-        // TODO: Handle dates for creditRatingInterestSpreads and store in database
-        // before updating creditRatingInterestSpreads JSON
-        const { data } = await api.getCompanyCreditRatingInterestSpreads(
-          ticker,
-          {
-            field,
-            fiscalDateRange
-          }
-        )
-
-        return getPluginAsyncValue(data.value)
-      }
-    )
-  }
-
   getCompanyOutstandingShares(ast, state) {
     const metadata = this.metadata('STOCK.GET_COMPANY_OUTSTANDING_SHARES')
 
@@ -566,8 +450,8 @@ export class Plugin extends FunctionPlugin {
     )
   }
 
-  stockSize(_, state) {
-    return sizeMethod(state)
+  stockSize(ast, state) {
+    return inferSizeMethod(ast, state)
   }
 
   getIsFiscalDateRangeValid(fiscalDateRange) {

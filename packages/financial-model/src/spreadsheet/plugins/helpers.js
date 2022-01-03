@@ -1,22 +1,15 @@
-import { CellError, SimpleRangeValue } from '@tracktak/hyperformula'
+import { SimpleRangeValue } from '@tracktak/hyperformula'
 import { ArraySize } from '@tracktak/hyperformula/es/ArraySize'
+import { isNil } from 'lodash'
 import { noValueReturnedCellError } from './cellErrors'
 
 // TODO: Could this be in hyperformula automatically?
-export const sizeMethod = state => {
-  const cellValue = state.formulaVertex?.getCellValue()
-
-  if (!state.formulaVertex || cellValue instanceof CellError) {
+export const inferSizeMethod = ast => {
+  if (!ast.asyncPromise?.getIsResolvedValue()) {
     return ArraySize.error()
   }
 
-  if (cellValue instanceof SimpleRangeValue) {
-    const arraySize = new ArraySize(cellValue.width(), cellValue.height())
-
-    return arraySize
-  }
-
-  return ArraySize.scalar()
+  return ast.asyncPromise.resolvedValue.size ?? ArraySize.scalar()
 }
 
 const getFixedSimpleRangeValues = values => {
@@ -30,7 +23,7 @@ const getFixedSimpleRangeValues = values => {
 }
 
 export const getPluginAsyncValue = value => {
-  if (!value) {
+  if (isNil(value)) {
     return noValueReturnedCellError
   }
 

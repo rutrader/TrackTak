@@ -1,11 +1,14 @@
 import { FunctionPlugin } from '@tracktak/hyperformula'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
 import { api } from '@tracktak/common'
-import { getPluginAsyncValue, sizeMethod } from '../helpers'
-import countryCodes from './countryCodes'
-import { countryCodeCellError, maturityCellError } from './cellErrors'
+import { getPluginAsyncValue, inferSizeMethod } from '../helpers'
+import countryISOs from './countryISOs'
+import { maturityCellError } from './cellErrors'
 import { maturityRegex } from './matchers'
 import { validateEODParamsHasError } from '../eod'
+import { getCountryISOCellError } from '../cellErrors'
+
+const countryISOCellError = getCountryISOCellError(countryISOs)
 
 export const implementedFunctions = {
   'BOND.GET_COUNTRY_YIELD': {
@@ -43,8 +46,8 @@ export class Plugin extends FunctionPlugin {
       ast.args,
       state,
       metadata,
-      async (countryCode, maturity, field, granularity, fiscalDateRange) => {
-        const isCountryCodeValid = !!countryCodes.find(x => x === countryCode)
+      async (countryISO, maturity, field, granularity, fiscalDateRange) => {
+        const isCountryISOValid = !!countryISOs.find(x => x === countryISO)
         const isMaturityValidValid = !!maturity.match(maturityRegex)
 
         const error = validateEODParamsHasError(
@@ -57,8 +60,8 @@ export class Plugin extends FunctionPlugin {
           return error
         }
 
-        if (!isCountryCodeValid) {
-          return countryCodeCellError
+        if (!isCountryISOValid) {
+          return countryISOCellError
         }
 
         if (!isMaturityValidValid) {
@@ -76,7 +79,7 @@ export class Plugin extends FunctionPlugin {
         }
 
         const { data } = await api.getGovernmentBond(
-          `${countryCode}${formattedMaturity}`,
+          `${countryISO}${formattedMaturity}`,
           {
             field,
             granularity,
@@ -89,8 +92,8 @@ export class Plugin extends FunctionPlugin {
     )
   }
 
-  bondSize(_, state) {
-    return sizeMethod(state)
+  bondSize(ast, state) {
+    return inferSizeMethod(ast, state)
   }
 }
 

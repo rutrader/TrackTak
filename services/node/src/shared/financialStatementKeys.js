@@ -59,6 +59,7 @@ export const balanceSheet = [
   'longTermDebt',
   'capitalLeaseObligations',
   'longTermDebtAndCapitalLeases',
+  'totalDebt',
   'deferredLongTermLiab',
   'nonCurrentLiabilitiesOther',
   'nonCurrentLiabilitiesTotal',

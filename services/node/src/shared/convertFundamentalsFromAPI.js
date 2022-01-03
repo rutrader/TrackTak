@@ -58,6 +58,10 @@ const convertBalanceSheet = ({
     newBalanceSheet.totalStockholderEquity +
     newBalanceSheet.noncontrollingInterestInConsolidatedEntity
 
+  calculations.totalDebt =
+    newBalanceSheet.shortLongTermDebt +
+    calculations.longTermDebtAndCapitalLeases
+
   // Take it out here because we show capital leases as a separate line
   // on the balance statement
   calculations.nonCurrentLiabilitiesOther =

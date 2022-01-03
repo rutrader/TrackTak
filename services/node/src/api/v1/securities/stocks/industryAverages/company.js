@@ -1,5 +1,6 @@
 import express from 'express'
 import { getFundamentals } from '../../eodHistoricalData/eodAPI'
+import { getFieldValue } from '../../helpers'
 import readFile from './readFile'
 
 const router = express.Router()
@@ -8,7 +9,7 @@ router.get('/:ticker', async (req, res) => {
   const ticker = req.params.ticker
   const field = req.query.field
 
-  const general = await getFundamentals(ticker, {
+  const { general } = await getFundamentals(ticker, {
     filter: 'General::CountryISO,General::GicSubIndustry,General::Industry'
   })
 
@@ -29,7 +30,7 @@ router.get('/:ticker', async (req, res) => {
   }
 
   res.send({
-    value
+    value: getFieldValue(value)
   })
 })
 

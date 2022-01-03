@@ -1,12 +1,17 @@
 import { FunctionPlugin } from '@tracktak/hyperformula'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
 import { api } from '@tracktak/common'
-import { getPluginAsyncValue, sizeMethod } from '../helpers'
+import { getPluginAsyncValue, inferSizeMethod } from '../helpers'
 import { equityRiskPremiumFields } from '../fields'
-import { fiscalDateRangeCellError, getFieldCellError } from '../cellErrors'
+import {
+  fiscalDateRangeCellError,
+  getCountryISOCellError,
+  getFieldCellError
+} from '../cellErrors'
 import { fiscalDateRangeRegex } from '../matchers'
 import { NumberType } from '@tracktak/hyperformula/es/interpreter/InterpreterValue'
 import { creditRatingInterestSpreadsFields } from './fields'
+import countryISOs from './countryISOs'
 
 const equityRiskPremiumsFieldCellError = getFieldCellError(
   equityRiskPremiumFields
@@ -15,6 +20,7 @@ const equityRiskPremiumsFieldCellError = getFieldCellError(
 const creditRatingInterestSpreadsFieldCellError = getFieldCellError(
   creditRatingInterestSpreadsFields
 )
+const countryISOCellError = getCountryISOCellError(countryISOs)
 
 export const implementedFunctions = {
   'MARKET.GET_EQUITY_RISK_PREMIUMS': {
@@ -27,12 +33,18 @@ export const implementedFunctions = {
       { argumentType: ArgumentTypes.STRING, optionalArg: true }
     ]
   },
-  'MARKET.GET_MATURE_MARKET_EQUITY_RISK_PREMIUM': {
-    method: 'getMatureMarketEquityRiskPremium',
+  'MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM': {
+    method: 'getCountryEquityRiskPremium',
     arraySizeMethod: 'marketSize',
-    inferReturnType: true,
     isAsyncMethod: true,
-    parameters: [{ argumentType: ArgumentTypes.STRING, optionalArg: true }]
+    inferReturnType: true,
+    parameters: [
+      {
+        argumentType: ArgumentTypes.STRING
+      },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true },
+      { argumentType: ArgumentTypes.STRING, optionalArg: true }
+    ]
   },
   'MARKET.GET_CREDIT_RATING_INTEREST_SPREADS': {
     method: 'getCreditRatingInterestSpreads',
@@ -56,7 +68,7 @@ export const implementedFunctions = {
 
 export const aliases = {
   'M.GERP': 'MARKET.GET_EQUITY_RISK_PREMIUMS',
-  'M.GMMERP': 'MARKET.GET_MATURE_MARKET_EQUITY_RISK_PREMIUM',
+  'M.GCERP': 'MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM',
   'M.GCRIS': 'MARKET.GET_CREDIT_RATING_INTEREST_SPREADS',
   'M.RFR': 'MARKET.RISK_FREE_RATE'
 }
@@ -101,25 +113,40 @@ export class Plugin extends FunctionPlugin {
     )
   }
 
-  getMatureMarketEquityRiskPremium(ast, state) {
-    const metadata = this.metadata(
-      'MARKET.GET_MATURE_MARKET_EQUITY_RISK_PREMIUM'
-    )
+  getCountryEquityRiskPremium(ast, state) {
+    const metadata = this.metadata('MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM')
 
     return this.runAsyncFunction(
       ast.args,
       state,
       metadata,
-      async fiscalDateRange => {
+      async (countryISO, field, fiscalDateRange) => {
+        const isCountryISOValid = !!countryISOs.find(x => x === countryISO)
+        const isFieldValid = field
+          ? !!equityRiskPremiumFields.find(x => x === field)
+          : true
         const isFiscalDateRangeValid = fiscalDateRange
           ? !!fiscalDateRange.match(fiscalDateRangeRegex)
           : true
+
+        if (!isCountryISOValid) {
+          return countryISOCellError
+        }
+
+        if (!isFieldValid) {
+          return equityRiskPremiumsFieldCellError
+        }
 
         if (!isFiscalDateRangeValid) {
           return fiscalDateRangeCellError
         }
 
-        const { data } = await api.getMatureMarketEquityRiskPremium()
+        // TODO: Handle dates for equityRiskPremiums and store in database
+        // before updating equityRiskPremiums JSON
+        const { data } = await api.getCountryEquityRiskPremium(countryISO, {
+          field,
+          fiscalDateRange
+        })
 
         return getPluginAsyncValue(data.value)
       }
@@ -174,8 +201,8 @@ export class Plugin extends FunctionPlugin {
     )
   }
 
-  marketSize(_, state) {
-    return sizeMethod(state)
+  marketSize(ast, state) {
+    return inferSizeMethod(ast, state)
   }
 }
 

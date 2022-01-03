@@ -69,38 +69,20 @@ export const getCreditRatingInterestSpreads = async params => {
   })
 }
 
-export const getCompanyCreditRatingInterestSpreads = async (ticker, params) => {
-  return axios.get(
-    `/api/v1/securities/stocks/credit-rating-interest-spreads/company/${ticker}`,
-    {
-      params
-    }
-  )
-}
-
 export const getEquityRiskPremiums = async params => {
   return axios.get(`/api/v1/market/equity-risk-premiums`, {
     params
   })
 }
 
-export const getMatureMarketEquityRiskPremium = async params => {
-  return axios.get(`/api/v1/market/equity-risk-premiums/mature-market`, {
+export const getCountryEquityRiskPremium = async (countryISO, params) => {
+  return axios.get(`/api/v1/market/equity-risk-premiums/${countryISO}`, {
     params
   })
 }
 
-export const getCompanyEquityRiskPremium = async (ticker, params) => {
-  return axios.get(
-    `/api/v1/securities/stocks/equity-risk-premiums/company/${ticker}`,
-    {
-      params
-    }
-  )
-}
-
-export const getGovernmentBond = async (code, params) => {
-  return axios.get(`/api/v1/securities/bonds/government/${code}`, {
+export const getGovernmentBond = async (countryISO, params) => {
+  return axios.get(`/api/v1/securities/bonds/government/${countryISO}`, {
     params
   })
 }
