@@ -1,0 +1,682 @@
+{
+  "STOCK.GET_COMPANY_FINANCIALS": {
+    "header": "STOCK.GET_COMPANY_FINANCIALS",
+    "headerDescription": "Fetches current or historical financial information for a public company.",
+    "type": "Stock Financials",
+    "aliases": "S.GFC",
+    "parameters": ["ticker", "field", "[granularity]", "[fiscalDateRange]"],
+    "codeSyntaxUsage": [
+      "=STOCK.GET_COMPANY_FINANCIALS(\"AMZN\",\"revenue\")",
+      "=STOCK.GET_COMPANY_FINANCIALS(\"BP.LSE\",\"revenue\",\"quarter\")",
+      "=STOCK.GET_COMPANY_FINANCIALS(\"AAPL\",\"revenue\",,\"2017-09-30\")",
+      "=STOCK.GET_COMPANY_FINANCIALS(\"AAPL\",\"date\",,\">2017-09-30\")",
+      "=STOCK.GET_COMPANY_FINANCIALS(\"AAPL\",\"revenue\",,\"2010-01-01:2015-01-01\")"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "=STOCK.GET_COMPANY_FINANCIALS(ticker, field, [granularity], [fiscalDateRange])",
+        "values": [
+          {
+            "syntaxName": "ticker",
+            "description": "Example: \"AAPL\", \"BP.LSE\", \"KME.AU\" etc. For non-us companies you must supply the exchange as well. See the 'exchanges' section below for the list of valid exchanges that can be given here."
+          },
+          {
+            "syntaxName": "field",
+            "description": "See the 'fields' section below for the list of parameters that can be given here."
+          },
+          {
+            "syntaxName": "[granularity]",
+            "description": "Accepts either \"ttm\", \"quarter\" or \"year\". Defaults to ttm (trailing twelve months) if the [fiscalDateRange] parameter is not given, else it will default to \"year\". Non-us stocks do not support \"quarter\"."
+          },
+          {
+            "syntaxName": "[fiscalDateRange]",
+            "description": "Example: \"2010-01-01\", \">2010-01-01\", \">=2010-01-01\", \"<2020-01-01\", <=2020-01-01\", \"2010-01-01:2015-01-01\" (exclusive between)"
+          }
+        ]
+      }
+    ],
+    "attributes": [
+      {
+        "header": "Full Statements",
+        "fieldNames": ["incomeStatement", "balanceSheet", "cashFlowStatement"]
+      },
+      {
+        "header": "Income Statement",
+        "fieldNames": [
+          "date",
+          "revenue",
+          "costOfRevenue",
+          "grossProfit",
+          "grossMargin",
+          "sellingGeneralAdministrative",
+          "sellingAndMarketingExpenses",
+          "researchDevelopment",
+          "effectOfAccountingCharges",
+          "operatingExpenses",
+          "operatingIncome",
+          "operatingMargin",
+          "interestIncome",
+          "interestExpense",
+          "netInterestIncome",
+          "otherIncomeExpense",
+          "incomeBeforeTax",
+          "incomeTaxExpense",
+          "effectiveTaxRate",
+          "discontinuedOperations",
+          "minorityInterest",
+          "netIncomeFromContinuingOps",
+          "netIncome",
+          "preferredStockAndOtherAdjustments",
+          "netIncomeApplicableToCommonShares",
+          "netMargin",
+          "ebit",
+          "depreciationAndAmortization",
+          "nonRecurring",
+          "reconciledDepreciation",
+          "otherItems",
+          "ebitda",
+          "currencyCode",
+          "filingDate"
+        ]
+      },
+      {
+        "header": "Balance Sheet",
+        "fieldNames": [
+          "date",
+          "cash",
+          "shortTermInvestments",
+          "cashAndShortTermInvestments",
+          "netReceivables",
+          "inventory",
+          "otherCurrentAssets",
+          "totalCurrentAssets",
+          "longTermInvestments",
+          "propertyPlantEquipment",
+          "intangibleAssets",
+          "goodWill",
+          "otherAssets",
+          "nonCurrentAssetsTotal",
+          "totalAssets",
+          "accountsPayable",
+          "shortLongTermDebt",
+          "otherCurrentLiab",
+          "totalCurrentLiabilities",
+          "longTermDebt",
+          "capitalLeaseObligations",
+          "longTermDebtAndCapitalLeases",
+          "totalDebt",
+          "deferredLongTermLiab",
+          "nonCurrentLiabilitiesOther",
+          "nonCurrentLiabilitiesTotal",
+          "totalLiab",
+          "commonStock",
+          "preferredStockTotalEquity",
+          "retainedEarnings",
+          "accumulatedOtherComprehensiveIncome",
+          "additionalPaidInCapital",
+          "treasuryStock",
+          "capitalSurpluse",
+          "otherStockholderEquity",
+          "totalStockholderEquity",
+          "noncontrollingInterestInConsolidatedEntity",
+          "totalEquity",
+          "currencyCode",
+          "filingDate"
+        ]
+      },
+      {
+        "header": "Cashflow Statement",
+        "fieldNames": [
+          "date",
+          "netIncome",
+          "depreciation",
+          "changeToAccountReceivables",
+          "changeReceivables",
+          "changeToInventory",
+          "changeToLiabilities",
+          "changeInWorkingCapital",
+          "totalCashFromOperatingActivities",
+          "investments",
+          "otherCashflowsFromInvestingActivities",
+          "totalCashflowsFromInvestingActivities",
+          "salePurchaseOfStock",
+          "netBorrowings",
+          "dividendsPaid",
+          "otherCashflowsFromFinancingActivities",
+          "totalCashFromFinancingActivities",
+          "beginPeriodCashFlow",
+          "endPeriodCashFlow",
+          "changeInCash",
+          "capitalExpenditures",
+          "freeCashFlow",
+          "currencyCode",
+          "filingDate"
+        ]
+      }
+    ]
+  },
+  "STOCK.GET_COMPANY_RATIOS": {
+    "header": "STOCK.GET_COMPANY_RATIOS",
+    "headerDescription": "Fetches current or historical ratios information for a public company.",
+    "type": "Stock Ratios",
+    "aliases": "S.GCR",
+    "parameters": ["ticker", "[field]", "[granularity]", "[fiscalDateRange]"],
+    "codeSyntaxUsage": [
+      "=STOCK.GET_COMPANY_RATIOS(\"AMZN\",\"interestCoverage\")",
+      "=STOCK.GET_COMPANY_RATIOS(\"AMZN\",\"interestCoverage\",\"quarter\")",
+      "=STOCK.GET_COMPANY_RATIOS(\"AAPL\",\"interestCoverage\",,\"2010-09-30\")"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "=STOCK.GET_COMPANY_RATIOS(ticker, [field], [granularity], [fiscalDateRange])",
+        "values": [
+          {
+            "syntaxName": "ticker",
+            "description": "Example: \"AAPL\", \"BP.LSE\", \"KME.AU\" etc. For non-us companies you must supply the exchange as well. See the 'exchanges' section below for the list of valid exchanges that can be given here."
+          },
+          {
+            "syntaxName": "[field]",
+            "description": "Accepts \"interestCoverage\""
+          },
+          {
+            "syntaxName": "[granularity]",
+            "description": "Accepts either \"latest\", \"quarter\" or \"year\". Defaults to latest if the [fiscalDateRange] parameter is not given, else it will default to \"year\". Non-us stocks do not support \"quarter\"."
+          },
+          {
+            "syntaxName": "[fiscalDateRange]",
+            "description": "Example: \"2010-01-01\", \">2010-01-01\", \">=2010-01-01\", \"<2020-01-01\", <=2020-01-01\", \"2010-01-01:2015-01-01\" (exclusive between)"
+          }
+        ]
+      }
+    ],
+    "attributes": []
+  },
+  "STOCK.GET_COMPANY_OUTSTANDING_SHARES": {
+    "header": "STOCK.GET_COMPANY_OUTSTANDING_SHARES",
+    "headerDescription": "Fetches current or historical outstanding shares information for a public company.",
+    "type": "Stock Outstanding Shares",
+    "aliases": "S.GCOS",
+    "parameters": ["ticker", "[field]", "[granularity]", "[fiscalDateRange]"],
+    "codeSyntaxUsage": [
+      "=STOCK.GET_COMPANY_OUTSTANDING_SHARES(\"AMZN\",\"shares\")",
+      "=STOCK.GET_COMPANY_OUTSTANDING_SHARES(\"BP.LSE\",\"shares\",\"quarter\")",
+      "=STOCK.GET_COMPANY_OUTSTANDING_SHARES(\"AAPL\",\"shares\",,\"2010-09-30\")",
+      "=STOCK.GET_COMPANY_OUTSTANDING_SHARES(\"AAPL\",\"shares\",,\">=2010-09-30\")",
+      "=STOCK.GET_COMPANY_OUTSTANDING_SHARES(\"AAPL\",\"date\",,\">=2010-09-30\")"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "=STOCK.GET_COMPANY_OUTSTANDING_SHARES(ticker, field, [granularity], [fiscalDateRange])",
+        "values": [
+          {
+            "syntaxName": "ticker",
+            "description": "Example: \"AAPL\", \"BP.LSE\", \"KME.AU\" etc. For non-us companies you must supply the exchange as well. See the 'exchanges' section below for the list of valid exchanges that can be given here."
+          },
+          {
+            "syntaxName": "[field]",
+            "description": "Accepts \"shares\" and \"date\""
+          },
+          {
+            "syntaxName": "[granularity]",
+            "description": "Accepts either \"latest\", \"quarter\" or \"year\". Defaults to ttm (trailing twelve months) if the [fiscalDateRange] parameter is not given, else it will default to \"year\". Non-us stocks do not support \"quarter\"."
+          },
+          {
+            "syntaxName": "[fiscalDateRange]",
+            "description": "Example: \"2010-01-01\", \">2010-01-01\", \">=2010-01-01\", \"<2020-01-01\", <=2020-01-01\", \"2010-01-01:2015-01-01\" (exclusive between)"
+          }
+        ]
+      }
+    ],
+    "attributes": []
+  },
+  "STOCK.GET_COMPANY_PRICES": {
+    "header": "STOCK.GET_COMPANY_PRICES",
+    "headerDescription": "Fetches current or historical prices information for a public company.",
+    "type": "Stock Prices",
+    "aliases": "S.GCP",
+    "parameters": ["ticker", "[field]", "[granularity]", "[fiscalDateRange]"],
+    "codeSyntaxUsage": [
+      "=STOCK.GET_COMPANY_PRICES(\"AMZN\",\"open\")",
+      "=STOCK.GET_COMPANY_PRICES(\"BP.LSE\",\"high\",\"day\")",
+      "=STOCK.GET_COMPANY_PRICES(\"AAPL\",\"week\",,\"2010-09-30\")"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "=STOCK.GET_COMPANY_PRICES(ticker, field, [granularity], [fiscalDateRange])",
+        "values": [
+          {
+            "syntaxName": "ticker",
+            "description": "Example: \"AAPL\", \"BP.LSE\", \"KME.AU\" etc. For non-us companies you must supply the exchange as well. See the 'exchanges' section below for the list of valid exchanges that can be given here."
+          },
+          {
+            "syntaxName": "[field]",
+            "description": "See the 'fields' section below for the list of parameters that can be given here."
+          },
+          {
+            "syntaxName": "[granularity]",
+            "description": "Accepts either \"day\", \"week\" or \"month\"."
+          },
+          {
+            "syntaxName": "[fiscalDateRange]",
+            "description": "Example: \"2010-01-01\", \">2010-01-01\", \">=2010-01-01\", \"<2020-01-01\", <=2020-01-01\", \"2010-01-01:2015-01-01\" (exclusive between)"
+          }
+        ]
+      }
+    ],
+    "attributes": [
+      {
+        "header": "Prices",
+        "fieldNames": [
+          "date",
+          "open",
+          "high",
+          "close",
+          "adjustedClose",
+          "low",
+          "type",
+          "volume"
+        ]
+      }
+    ]
+  },
+  "STOCK.GET_COMPANY_INFO": {
+    "header": "STOCK.GET_COMPANY_INFO",
+    "headerDescription": "Fetches current company's background information for a public company.",
+    "type": "Stock Information",
+    "aliases": "S.GCI",
+    "parameters": ["ticker", "field"],
+    "codeSyntaxUsage": [
+      "=STOCK.GET_COMPANY_INFO(\"AMZN\",\"code\")",
+      "=STOCK.GET_COMPANY_INFO(\"AMZN\",\"description\")",
+      "=STOCK.GET_COMPANY_INFO(\"AMZN\",\"code\")&\".\"&STOCK.GET_COMPANY_INFO(\"AMZN\",\"exchange\")"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "=STOCK.GET_COMPANY_INFO(ticker, field)",
+        "values": [
+          {
+            "syntaxName": "ticker",
+            "description": "Example: \"AAPL\", \"BP.LSE\", \"KME.AU\" etc. For non-us companies you must supply the exchange as well. See the 'exchanges' section below for the list of valid exchanges that can be given here."
+          },
+          {
+            "syntaxName": "field",
+            "description": "See the 'fields' section below for the list of parameters that can be given here."
+          }
+        ]
+      }
+    ],
+    "attributes": [
+      {
+        "header": "Prices",
+        "fieldNames": [
+          "code",
+          "type",
+          "name",
+          "exchange",
+          "currencyCode",
+          "currencyName",
+          "currencySymbol",
+          "countryName",
+          "countryISO",
+          "ISIN",
+          "CUSIP",
+          "CIK",
+          "employerIdNumber",
+          "fiscalYearEnd",
+          "IPODate",
+          "internationalDomestic",
+          "sector",
+          "industry",
+          "gicSector",
+          "gicGroup",
+          "gicIndustry",
+          "gicSubIndustry",
+          "homeCategory",
+          "isDelisted",
+          "description",
+          "address",
+          "addressData",
+          "listings",
+          "officers",
+          "phone",
+          "webURL",
+          "logoURL",
+          "fullTimeEmployees",
+          "updatedAt",
+          "mostRecentQuarter",
+          "wallStreetTargetPrice",
+          "sharesFloat",
+          "percentInsiders",
+          "percentInstitutions",
+          "sharesShort",
+          "sharesShortPriorMonth",
+          "shortRatio",
+          "shortPercentOutstanding",
+          "shortPercentFloat"
+        ]
+      }
+    ]
+  },
+  "STOCK.GET_COMPANY_INDUSTRY_AVERAGES": {
+    "header": "STOCK.GET_COMPANY_INDUSTRY_AVERAGES",
+    "headerDescription": "Fetches current or historical industry averages information for a public company.",
+    "type": "Stock Industry Averages",
+    "aliases": "S.GCIA",
+    "parameters": ["ticker", "[field]", "[fiscalDateRange]"],
+    "codeSyntaxUsage": [
+      "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(\"AMZN\",\"afterTaxROIC\")",
+      "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(\"AMZN\",,\">2020-09-30\")",
+      "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(\"AMZN\",\"costOfEquity\",\">2020-09-30\")"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(ticker, field, [fiscalDateRange])",
+        "values": [
+          {
+            "syntaxName": "ticker",
+            "description": "Example: \"AAPL\", \"BP.LSE\", \"KME.AU\" etc. For non-us companies you must supply the exchange as well. See the 'exchanges' section below for the list of valid exchanges that can be given here."
+          },
+          {
+            "syntaxName": "[field]",
+            "description": "See the 'fields' section below for the list of parameters that can be given here."
+          },
+          {
+            "syntaxName": "[fiscalDateRange]",
+            "description": "Example: \"2010-01-01\", \">2010-01-01\", \">=2010-01-01\", \"<2020-01-01\", <=2020-01-01\", \"2010-01-01:2015-01-01\" (exclusive between)"
+          }
+        ]
+      }
+    ],
+    "attributes": [
+      {
+        "header": "Industry Averages",
+        "fieldNames": [
+          "numberOfFirms",
+          "annualAverageCAGRLastFiveYears",
+          "preTaxOperatingMarginUnadjusted",
+          "afterTaxROIC",
+          "averageEffectiveTaxRate",
+          "unleveredBeta",
+          "equityLeveredBeta",
+          "costOfEquity",
+          "standardDeviationInStockPrices",
+          "preTaxCostOfDebt",
+          "marketDebt/Capital",
+          "costOfCapital",
+          "sales/Capital",
+          "EV/Sales",
+          "EV/EBITDA",
+          "EV/EBIT",
+          "price/Book",
+          "trailingPE",
+          "nonCashWCAsPercentageOfRevenues",
+          "CAPEXAsAPercentageOfRevenues",
+          "netCAPEXAsAPercentageOfRevenues",
+          "reinvestmentRate",
+          "ROE",
+          "dividendPayoutRatio",
+          "equityReinvestmentRate",
+          "preTaxOperatingMarginLeaseAndR&DAdjusted",
+          "gicSubIndustry",
+          "industry"
+        ]
+      }
+    ]
+  },
+  "STOCK.GET_INDUSTRY_AVERAGES": {
+    "header": "STOCK.GET_INDUSTRY_AVERAGES",
+    "headerDescription": "Fetches current or historical industry averages by sector information for a public company.",
+    "type": "Stock Industry Averages by Sector",
+    "aliases": "S.GIA",
+    "parameters": ["type", "[field]", "[fiscalDateRange]"],
+    "codeSyntaxUsage": [
+      "=STOCK.GET_INDUSTRY_AVERAGES(\"US\")",
+      "=STOCK.GET_INDUSTRY_AVERAGES(\"Global\")",
+      "=STOCK.GET_INDUSTRY_AVERAGES(\"US\",\"costOfCapital\")",
+      "=STOCK.GET_INDUSTRY_AVERAGES(\"US\",,\"2020-09-30\")",
+      "=STOCK.GET_INDUSTRY_AVERAGES(\"Global\",\"numberOfFirms\",\"2020-09-30\")"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "=STOCK.GET_INDUSTRY_AVERAGES(type, [field], [fiscalDateRange])",
+        "values": [
+          {
+            "syntaxName": "type",
+            "description": "Example: \"US\", \"Global\"."
+          },
+          {
+            "syntaxName": "[field]",
+            "description": "See the 'fields' section below for the list of parameters that can be given here."
+          },
+          {
+            "syntaxName": "[fiscalDateRange]",
+            "description": "Example: \"2010-01-01\", \">2010-01-01\", \">=2010-01-01\", \"<2020-01-01\", <=2020-01-01\", \"2010-01-01:2015-01-01\" (exclusive between)"
+          }
+        ]
+      }
+    ],
+    "attributes": [
+      {
+        "header": "Industry Averages",
+        "fieldNames": [
+          "numberOfFirms",
+          "annualAverageCAGRLastFiveYears",
+          "preTaxOperatingMarginUnadjusted",
+          "afterTaxROIC",
+          "averageEffectiveTaxRate",
+          "unleveredBeta",
+          "equityLeveredBeta",
+          "costOfEquity",
+          "standardDeviationInStockPrices",
+          "preTaxCostOfDebt",
+          "marketDebt/Capital",
+          "costOfCapital",
+          "sales/Capital",
+          "EV/Sales",
+          "EV/EBITDA",
+          "EV/EBIT",
+          "price/Book",
+          "trailingPE",
+          "nonCashWCAsPercentageOfRevenues",
+          "CAPEXAsAPercentageOfRevenues",
+          "netCAPEXAsAPercentageOfRevenues",
+          "reinvestmentRate",
+          "ROE",
+          "dividendPayoutRatio",
+          "equityReinvestmentRate",
+          "preTaxOperatingMarginLeaseAndR&DAdjusted",
+          "gicSubIndustry",
+          "industry"
+        ]
+      }
+    ]
+  },
+  "SENSITIVITY_ANALYSIS": {
+    "header": "DATA_ANALYSIS.SENSITIVITY_ANALYSIS",
+    "headerDescription": "Sensitivity analysis determines how different values of an independent variable affect a particular dependent variable under a given set of assumptions.",
+    "type": "Data Analysis",
+    "aliases": "D.SA",
+    "parameters": [
+      "intersection_point",
+      "x_var",
+      "y_var",
+      "{xMin,xMax}",
+      "{yMin,yMax}"
+    ],
+    "codeSyntaxUsage": [
+      "=DATA_ANALYSIS.SENSITIVITY_ANALYSIS(B1,B2,B3,{15,20},{3,30})",
+      "=DATA_ANALYSIS.SENSITIVITY_ANALYSIS(B1,B2,B3,{C1:C5},{D1:D5})"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "DATA_ANALYSIS.SENSITIVITY_ANALYSIS(intersection_point, x_var, y_var, {rangeX}, {rangeY})",
+        "values": [
+          {
+            "syntaxName": "intersection_point",
+            "description": "The point of intersection of the two base input assumptions that links the desired output."
+          },
+          {
+            "syntaxName": "x_var",
+            "description": "1st base input assumption."
+          },
+          {
+            "syntaxName": "y_var",
+            "description": "2nd base input assumption."
+          },
+          {
+            "syntaxName": "{rangeX}",
+            "description": "Min and max of the 1st base input assumption."
+          },
+          {
+            "syntaxName": "{rangeY}",
+            "description": "Min and max of the 2nd base input assumption."
+          }
+        ]
+      }
+    ],
+    "attributes": []
+  },
+  "MONTE_CARLO_SIMULATION": {
+    "header": "DATA_ANALYSIS.MONTE_CARLO_SIMULATION",
+    "headerDescription": "Monte Carlo simulation is a model used to predict the probability of different outcomes when the intervention of randomness is present.",
+    "type": "Data Analysis",
+    "aliases": "D.MCS",
+    "parameters": ["intersection_point", "{var_assumptions}", "[iteration]"],
+    "codeSyntaxUsage": [
+      "=DATA_ANALYSIS.MONTE_CARLO_SIMULATION(B3,{B1,B2},10000)",
+      "=DATA_ANALYSIS.MONTE_CARLO_SIMULATION(A3,{A1},100)"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "DATA_ANALYSIS.MONTE_CARLO_SIMULATION(intersection_point, {var_assumptions}, [iteration])",
+        "values": [
+          {
+            "syntaxName": "intersection_point",
+            "description": "The point of intersection (forecast value) of the assumptions that links the desired output."
+          },
+          {
+            "syntaxName": "{var_assumptions}",
+            "description": "Array of assumptions."
+          },
+          {
+            "syntaxName": "[iteration]",
+            "description": "[OPTIONAL]. Sets the number of trials to run."
+          }
+        ]
+      }
+    ],
+    "attributes": []
+  },
+  "NORMAL_INVERSE_RANDOM": {
+    "header": "STATISTICS.NORMAL_INVERSE_RANDOM",
+    "headerDescription": "Normal Distribution defines the mean (expected value) and a standard deviation to describe the variation about the mean. Describes uncertain variables such as inflation, interest, growth rates or prices of fuel, electricty, rent and etc.",
+    "type": "Probability Distribution",
+    "aliases": "S.NIR",
+    "parameters": ["mean", "standard_deviation"],
+    "codeSyntaxUsage": [
+      "=STATISTICS.NORMAL_INVERSE_RANDOM(B1,B2)",
+      "=STATISTICS.NORMAL_INVERSE_RANDOM(20,3)"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "STATISTICS.NORMAL_INVERSE_RANDOM(mean, standard_deviation)",
+        "values": [
+          {
+            "syntaxName": "mean",
+            "description": "Expected value that is most likely to occur."
+          },
+          {
+            "syntaxName": "standard_deviation",
+            "description": "Value that is more likely to deviate from the mean value."
+          }
+        ]
+      }
+    ],
+    "attributes": []
+  },
+  "UNIFORM_INVERSE_RANDOM": {
+    "header": "STATISTICS.UNIFORM_INVERSE_RANDOM",
+    "headerDescription": "In the uniform distribution (continuous) all values have an equal chance of occurring by defining the minimum and maximum. It can be used to describe a real estate appraisal, future production costs and selling prices for new products or a leak in a pipe.",
+    "type": "Probability Distribution",
+    "aliases": "S.UIR",
+    "parameters": ["min", "max"],
+    "codeSyntaxUsage": [
+      "=STATISTICS.UNIFORM_INVERSE_RANDOM(A1,B2)",
+      "=STATISTICS.UNIFORM_INVERSE_RANDOM(2,10)"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "STATISTICS.UNIFORM_INVERSE_RANDOM(min, max)",
+        "values": [
+          {
+            "syntaxName": "min",
+            "description": "Minimum fixed value."
+          },
+          {
+            "syntaxName": "max",
+            "description": "Maximum fixed value."
+          }
+        ]
+      }
+    ],
+    "attributes": []
+  },
+  "TRIANGULAR_INVERSE_RANDOM": {
+    "header": "STATISTICS.TRIANGULAR_INVERSE_RANDOM",
+    "headerDescription": "The triangular distribution (continuous) defines a minimum and maximum, and most likely value or called peak value. It is useful with limited data in situations such as sales performance, work hours, inventory numbers, and marketing costs.",
+    "type": "Probability Distribution",
+    "aliases": "S.TIR",
+    "parameters": ["min", "most_likely", "max"],
+    "codeSyntaxUsage": [
+      "=STATISTICS.TRIANGULAR_INVERSE_RANDOM(A1,A2,A3)",
+      "=STATISTICS.TRIANGULAR_INVERSE_RANDOM(2000,6000,7500)"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "STATISTICS.TRIANGULAR_INVERSE_RANDOM(min, most_likely, max)",
+        "values": [
+          {
+            "syntaxName": "min",
+            "description": "Minimum fixed value."
+          },
+          {
+            "syntaxName": "most_likely",
+            "description": "Most likely value to occur in this min and max range."
+          },
+          {
+            "syntaxName": "max",
+            "description": "Maximum fixed value."
+          }
+        ]
+      }
+    ],
+    "attributes": []
+  },
+  "LOGNORMAL_INVERSE_RANDOM": {
+    "header": "STATISTICS.LOGNORMAL_INVERSE_RANDOM",
+    "headerDescription": "In the lognormal distribution where values are positively skewed to the right and don't go below zero but have unlimited positive potential. It is used in determining stock prices, real estate prices, pay scales, and oil reservoir size.",
+    "type": "Probability Distribution",
+    "aliases": "S.LIR",
+    "parameters": ["mean", "standard_deviation"],
+    "codeSyntaxUsage": [
+      "=STATISTICS.LOGNORMAL_INVERSE_RANDOM(D1,D2)",
+      "=STATISTICS.LOGNORMAL_INVERSE_RANDOM(10,2)"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "STATISTICS.LOGNORMAL_INVERSE_RANDOM(mean, standard_deviation)",
+        "values": [
+          {
+            "syntaxName": "mean",
+            "description": "Mean of the Ln(x), where Ln(x) is normally distributed."
+          },
+          {
+            "syntaxName": "standard_deviation",
+            "description": "Standard deviation of the Ln(x), where Ln(x) is normally distributed."
+          }
+        ]
+      }
+    ],
+    "attributes": []
+  }
+}

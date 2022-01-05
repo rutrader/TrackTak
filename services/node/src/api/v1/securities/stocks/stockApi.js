@@ -137,7 +137,7 @@ export const getFinancials = async (ticker, params) => {
       getFiscalDateRangeFilterPredicate(fiscalDateRange)
     const filteredStatements = statements.filter(fiscalDateRangeFilterPredicate)
 
-    if (formattedGranularity !== 'quarterly') {
+    if (formattedGranularity !== 'quarterly' && filteredStatements.length > 0) {
       if (isInUS) {
         const filteredQuarters = financials[statementKey].quarterly.filter(
           fiscalDateRangeFilterPredicate
