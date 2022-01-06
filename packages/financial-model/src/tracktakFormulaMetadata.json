@@ -176,7 +176,7 @@
           },
           {
             "syntaxName": "[field]",
-            "description": "Accepts \"interestCoverage\""
+            "description": "Accepts \"interestCoverage\"."
           },
           {
             "syntaxName": "[granularity]",
@@ -908,7 +908,7 @@
   },
   "SENSITIVITY_ANALYSIS": {
     "header": "DATA_ANALYSIS.SENSITIVITY_ANALYSIS",
-    "headerDescription": "Sensitivity analysis determines how different values of an independent variable affect a particular dependent variable under a given set of assumptions.",
+    "headerDescription": "Determines how different values of an independent variable affect a particular dependent variable under a given set of assumptions.",
     "type": "Data Analysis",
     "aliases": "D.SA",
     "parameters": [
@@ -953,7 +953,7 @@
   },
   "MONTE_CARLO_SIMULATION": {
     "header": "DATA_ANALYSIS.MONTE_CARLO_SIMULATION",
-    "headerDescription": "Monte Carlo simulation is a model used to predict the probability of different outcomes when the intervention of randomness is present.",
+    "headerDescription": "Is a model used to predict the probability of different outcomes when the intervention of randomness is present.",
     "type": "Data Analysis",
     "aliases": "D.MCS",
     "parameters": ["intersection_point", "{var_assumptions}", "[iteration]"],
@@ -984,7 +984,7 @@
   },
   "NORMAL_INVERSE_RANDOM": {
     "header": "STATISTICS.NORMAL_INVERSE_RANDOM",
-    "headerDescription": "Normal Distribution defines the mean (expected value) and a standard deviation to describe the variation about the mean. Describes uncertain variables such as inflation, interest, growth rates or prices of fuel, electricty, rent and etc.",
+    "headerDescription": "Defines the mean (expected value) and a standard deviation to describe the variation about the mean. Describes uncertain variables such as inflation, interest, growth rates or prices of fuel, electricty, rent and etc.",
     "type": "Probability Distribution",
     "aliases": "S.NIR",
     "parameters": ["mean", "standard_deviation"],
@@ -1011,7 +1011,7 @@
   },
   "UNIFORM_INVERSE_RANDOM": {
     "header": "STATISTICS.UNIFORM_INVERSE_RANDOM",
-    "headerDescription": "In the uniform distribution (continuous) all values have an equal chance of occurring by defining the minimum and maximum. It can be used to describe a real estate appraisal, future production costs and selling prices for new products or a leak in a pipe.",
+    "headerDescription": "All values have an equal chance of occurring by defining the minimum and maximum. It can be used to describe a real estate appraisal, future production costs and selling prices for new products or a leak in a pipe.",
     "type": "Probability Distribution",
     "aliases": "S.UIR",
     "parameters": ["min", "max"],
@@ -1038,7 +1038,7 @@
   },
   "TRIANGULAR_INVERSE_RANDOM": {
     "header": "STATISTICS.TRIANGULAR_INVERSE_RANDOM",
-    "headerDescription": "The triangular distribution (continuous) defines a minimum and maximum, and most likely value or called peak value. It is useful with limited data in situations such as sales performance, work hours, inventory numbers, and marketing costs.",
+    "headerDescription": "Defines a minimum and maximum, and most likely value or called peak value. It is useful with limited data in situations such as sales performance, work hours, inventory numbers, and marketing costs.",
     "type": "Probability Distribution",
     "aliases": "S.TIR",
     "parameters": ["min", "most_likely", "max"],
@@ -1069,7 +1069,7 @@
   },
   "LOGNORMAL_INVERSE_RANDOM": {
     "header": "STATISTICS.LOGNORMAL_INVERSE_RANDOM",
-    "headerDescription": "In the lognormal distribution where values are positively skewed to the right and don't go below zero but have unlimited positive potential. It is used in determining stock prices, real estate prices, pay scales, and oil reservoir size.",
+    "headerDescription": "Values are positively skewed to the right and don't go below zero but have unlimited positive potential. It is used in determining stock prices, real estate prices, pay scales, and oil reservoir size.",
     "type": "Probability Distribution",
     "aliases": "S.LIR",
     "parameters": ["mean", "standard_deviation"],
