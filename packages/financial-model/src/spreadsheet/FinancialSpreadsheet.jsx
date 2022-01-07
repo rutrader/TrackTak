@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { AlwaysSparse, HyperFormula } from '@tracktak/hyperformula'
+import { HyperFormula } from '@tracktak/hyperformula'
 import '@tracktak/powersheet/dist/index.css'
 import {
   Spreadsheet,
@@ -15,32 +15,14 @@ import getFunctionHelperContent from './getFunctionHelperContent'
 import './FinancialSpreadsheet.css'
 import { Box } from '@mui/material'
 import plugins from './plugins'
+import { config, namedExpressions } from './hyperformulaConfig'
 
 plugins.forEach(value => {
   HyperFormula.registerFunctionPlugin(value.Plugin, value.translations)
 })
 
 const buildPowersheet = () => {
-  const trueNamedExpression = {
-    name: 'TRUE',
-    expression: '=TRUE()'
-  }
-
-  const falseNamedExpression = {
-    name: 'FALSE',
-    expression: '=FALSE()'
-  }
-
-  const [hyperformula] = HyperFormula.buildEmpty(
-    {
-      chooseAddressMappingPolicy: new AlwaysSparse(),
-      // We use our own undo/redo instead
-      undoLimit: 0,
-      timeoutTime: 10000,
-      licenseKey: 'gpl-v3'
-    },
-    [trueNamedExpression, falseNamedExpression]
-  )
+  const [hyperformula] = HyperFormula.buildEmpty(config, namedExpressions)
 
   const functionHelper = new FunctionHelper()
   const toolbar = new Toolbar()

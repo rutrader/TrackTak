@@ -11,14 +11,51 @@ import {
   xMinValueCellError,
   yMaxValueCellError,
   yMinMaxValuesCellError,
-  yMinValueCellError
+  yMinValueCellError,
+  varAssumptionValuesCellError
 } from './cellErrors'
 import truncateDecimal from '../../shared/truncateDecimal'
+import { config, namedExpressions } from '../../hyperformulaConfig'
+import {
+  mean,
+  stdev,
+  variance,
+  percentile
+} from '@tracktak/hyperformula/es/interpreter/plugin/3rdparty/jstat/jstat'
+import {
+  confidenceIntervalFormula,
+  kurtosisFormula,
+  medianFormula,
+  skewnessFormula
+} from '../../../statsFormulas'
+
+export const standardizedMoment = (arr, n) => {
+  const mu = mean(arr)
+  const sigma = stdev(arr)
+  const length = arr.length
+  let skewSum = 0
+
+  for (let i = 0; i < length; i++) skewSum += Math.pow((arr[i] - mu) / sigma, n)
+
+  return skewSum / arr.length
+}
+
+export const coefficientOfVariationFormula = arrVector => {
+  return stdev(arrVector) / mean(arrVector)
+}
+
+export const stDevErrorOfMeanFormula = arr => {
+  return stdev(arr) / Math.sqrt(arr.length)
+}
+
+export const getConfidenceInterval = arr => {
+  return confidenceIntervalFormula(stDevErrorOfMeanFormula(arr), 1.96)
+}
 
 export const implementedFunctions = {
   'DATA_ANALYSIS.SENSITIVITY_ANALYSIS': {
     method: 'sensitivityAnalysis',
-    arraySizeMethod: 'dataAnalysisSize',
+    arraySizeMethod: 'dataAnalysisSensitivitySize',
     parameters: [
       {
         argumentType: ArgumentTypes.NUMBER
@@ -36,11 +73,29 @@ export const implementedFunctions = {
         argumentType: ArgumentTypes.RANGE
       }
     ]
+  },
+  'DATA_ANALYSIS.MONTE_CARLO_SIMULATION': {
+    method: 'monteCarloSimulation',
+    arraySizeMethod: 'dataAnalysisMonteCarloSize',
+    parameters: [
+      {
+        argumentType: ArgumentTypes.NUMBER
+      },
+      {
+        argumentType: ArgumentTypes.RANGE
+      },
+      {
+        argumentType: ArgumentTypes.NUMBER,
+        greaterThan: 0,
+        defaultValue: 10000
+      }
+    ]
   }
 }
 
 export const aliases = {
-  'D.SA': 'DATA_ANALYSIS.SENSITIVITY_ANALYSIS'
+  'D.SA': 'DATA_ANALYSIS.SENSITIVITY_ANALYSIS',
+  'D.MCS': 'DATA_ANALYSIS.MONTE_CARLO_SIMULATION'
 }
 
 export const translations = {
@@ -78,7 +133,15 @@ export class Plugin extends FunctionPlugin {
       metadata,
       (_, xVar, yVar, xMinMax, yMinMax) => {
         const sheets = this.serialization.getAllSheetsSerialized()
-        const hfInstance = HyperFormula.buildFromSheets(sheets)[0]
+
+        HyperFormula.unregisterFunction('DATA_ANALYSIS.SENSITIVITY_ANALYSIS')
+        HyperFormula.unregisterFunction('D.SA')
+
+        const hfInstance = HyperFormula.buildFromSheets(
+          sheets,
+          config,
+          namedExpressions
+        )[0]
 
         const xMinMaxData = xMinMax.rawData()
         const yMinMaxData = yMinMax.rawData()
@@ -164,13 +227,133 @@ export class Plugin extends FunctionPlugin {
           }
         })
 
+        hfInstance.destroy()
+
+        HyperFormula.registerFunction(
+          'DATA_ANALYSIS.SENSITIVITY_ANALYSIS',
+          Plugin,
+          translations
+        )
+        HyperFormula.registerFunction('D.SA', Plugin, translations)
+
         return SimpleRangeValue.onlyValues(intersectionPointValues)
       }
     )
   }
 
-  dataAnalysisSize() {
+  monteCarloSimulation(ast, state) {
+    const metadata = this.metadata('DATA_ANALYSIS.MONTE_CARLO_SIMULATION')
+
+    const interesectionCellAddress = ast.args[0].reference.toSimpleCellAddress(
+      state.formulaAddress
+    )
+
+    const varAssumptionCellAddresses = ast.args[1].args.map(arr => {
+      return arr.map(({ reference }) =>
+        reference.toSimpleCellAddress(state.formulaAddress)
+      )
+    })[0]
+
+    return this.runFunction(
+      ast.args,
+      state,
+      metadata,
+      (_, varAssumption, iteration) => {
+        const sheets = this.serialization.getAllSheetsSerialized()
+        HyperFormula.unregisterFunction('DATA_ANALYSIS.MONTE_CARLO_SIMULATION')
+        HyperFormula.unregisterFunction('D.MCS')
+
+        const hfInstance = HyperFormula.buildFromSheets(
+          sheets,
+          config,
+          namedExpressions
+        )[0]
+
+        const varAssumptionData = varAssumption.rawData()
+
+        const isVarAssumptionValid = varAssumptionData.length === 1
+
+        if (!isVarAssumptionValid) {
+          return varAssumptionValuesCellError
+        }
+
+        const output = []
+
+        for (let i = 1; i <= iteration; i++) {
+          varAssumptionCellAddresses.forEach(cellAddress => {
+            const formula = hfInstance.getCellFormula(cellAddress)
+
+            hfInstance.setCellContents(cellAddress, formula)
+          })
+
+          const interesectionValue = hfInstance.getCellValue(
+            interesectionCellAddress
+          )
+
+          output.push(interesectionValue)
+        }
+
+        const n = 11
+        const percentiles = Array.from(
+          Array(n),
+          (_, number) => number / 10
+        ).map(percent => {
+          return [percent * 100 + '%', percentile(output, percent, false)]
+        })
+
+        const trialsOutput = output.length
+        const meanOutput = mean(output)
+        const medianOutput = medianFormula(output)
+        const min = Math.min(...output)
+        const max = Math.max(...output)
+        const stdevOutput = stdev(output)
+        const varianceOutput = variance(output)
+        const skewnessOutput = skewnessFormula(output)
+        const kurtosisOutput = kurtosisFormula(output)
+        const coefficientOfVariationOutput =
+          coefficientOfVariationFormula(output)
+        const stDevErrorOfMeanOutput = stDevErrorOfMeanFormula(output)
+        const upperLimitOutput = mean(output) + getConfidenceInterval(output)
+        const lowerLimitOutput = mean(output) - getConfidenceInterval(output)
+
+        hfInstance.destroy()
+
+        HyperFormula.registerFunction(
+          'DATA_ANALYSIS.MONTE_CARLO_SIMULATION',
+          Plugin,
+          translations
+        )
+        HyperFormula.registerFunction('D.MCS', Plugin, translations)
+
+        return SimpleRangeValue.onlyValues([
+          ['Statistic', 'Forecast values'],
+          ['Trials', trialsOutput],
+          ['Mean', meanOutput],
+          ['Median', medianOutput],
+          ['Minimum', min],
+          ['Maximum', max],
+          ['Standard Deviation', stdevOutput],
+          ['Variance', varianceOutput],
+          ['Skewness', skewnessOutput],
+          ['Kurtosis', kurtosisOutput],
+          ['Coeff. of Variation', coefficientOfVariationOutput],
+          ['Mean Standard Error', stDevErrorOfMeanOutput],
+          ['@95% Upper Limit', upperLimitOutput],
+          ['@95% Lower Limit', lowerLimitOutput],
+          [''],
+          ['Percentile', 'Forecast values'],
+          ...percentiles
+        ])
+      }
+    )
+  }
+
+  dataAnalysisSensitivitySize() {
     return new ArraySize(7, 7)
+  }
+
+  dataAnalysisMonteCarloSize() {
+    return new ArraySize(27, 27)
   }
 }
 

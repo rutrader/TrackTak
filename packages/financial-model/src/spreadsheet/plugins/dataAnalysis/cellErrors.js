@@ -29,3 +29,8 @@ export const yMinMaxValuesCellError = new CellError(
   ErrorType.VALUE,
   'Required two min and max values. Must be {yMin,yMax}.'
 )
+
+export const varAssumptionValuesCellError = new CellError(
+  ErrorType.VALUE,
+  'varAssumption(s) are not valid. The parameter varAssumption accepts a single array. Must be {assumption1,assumption2,...etc.}.'
+)
