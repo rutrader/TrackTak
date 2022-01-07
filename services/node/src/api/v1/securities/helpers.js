@@ -26,10 +26,10 @@ export const parseFiscalDateFromRange = fiscalDateRange => {
     return [fiscalDate, '<']
   }
 
-  if (fiscalDateRange.includes(';')) {
-    const fiscalDates = fiscalDateRange.split(';')
+  if (fiscalDateRange.includes(':')) {
+    const fiscalDates = fiscalDateRange.split(':')
 
-    return [fiscalDates, ';']
+    return [fiscalDates, ':']
   }
 
   return [fiscalDateRange]
@@ -101,7 +101,7 @@ export const convertFiscalDateRangeToFromTo = fiscalDateRange => {
     }
   }
 
-  if (operator === ';') {
+  if (operator === ':') {
     const from = addOneDay(fiscalDate[0])
     const to = subtractOneDay(fiscalDate[1])
 

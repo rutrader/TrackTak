@@ -8,6 +8,7 @@ const eodFields = [
   'high',
   'close',
   'adjustedClose',
+  'low',
   'type',
   'volume'
 ]

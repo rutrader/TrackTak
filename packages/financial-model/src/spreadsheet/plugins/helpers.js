@@ -28,6 +28,8 @@ export const getPluginAsyncValue = value => {
   }
 
   if (Array.isArray(value)) {
+    if (value.length === 0) return noValueReturnedCellError
+
     return getFixedSimpleRangeValues(value)
   }
 
