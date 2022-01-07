@@ -1,22 +1,22 @@
 import { standardizedMoment } from './spreadsheet/plugins/dataAnalysis/plugin'
 import {
-  uniformInvMinCellError,
-  triangularInvMaxCellError,
-  triangularInvMostLikelyMaxCellError,
-  triangularInvMostLikelyMinCellError
+  minCellError,
+  maxCellError,
+  mostLikelyMaxCellError,
+  mostLikelyMinCellError
 } from './spreadsheet/plugins/statistics/cellErrors'
 
 export const triangularInvFormula = (random, lowerBound, upperBound, mode) => {
   if (upperBound <= lowerBound) {
-    return triangularInvMaxCellError
+    return maxCellError
   }
 
   if (mode < lowerBound) {
-    return triangularInvMostLikelyMinCellError
+    return mostLikelyMinCellError
   }
 
   if (mode > upperBound) {
-    return triangularInvMostLikelyMaxCellError
+    return mostLikelyMaxCellError
   } else {
     if (random <= (mode - lowerBound) / (upperBound - lowerBound)) {
       return (
@@ -40,7 +40,7 @@ export const triangularInvFormula = (random, lowerBound, upperBound, mode) => {
 
 export const uniformInvDistFormula = (random, min, max) => {
   if (min >= max) {
-    return uniformInvMinCellError
+    return minCellError
   }
 
   return min + random * (max - min)
