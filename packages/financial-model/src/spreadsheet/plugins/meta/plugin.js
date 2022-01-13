@@ -78,14 +78,14 @@ export class Plugin extends FunctionPlugin {
             : cellData.textFormatPattern
 
           this.spreadsheet.data._spreadsheetData.cells[key].textFormatPattern =
-            currencySymbol + newTextFormatPatternPart
+            `"${currencySymbol}"` + newTextFormatPatternPart
         }
       })
 
       this.spreadsheet.setOptions({
         textPatternFormats: {
-          currency: `${currencySymbol}#,##0.##`,
-          'million-currency': `${currencySymbol}#,###.##,,`
+          currency: `"${currencySymbol}"#,##0.##`,
+          'million-currency': `"${currencySymbol}"#,###.##,,`
         }
       })
 
