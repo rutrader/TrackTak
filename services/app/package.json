@@ -9,7 +9,7 @@
   "type": "module",
   "scripts": {
     "develop": "parcel --open --port 3000",
-    "build": "cross-env NODE_ENV=production parcel build",
+    "build": "cross-env NODE_ENV=production parcel build --no-source-maps",
     "watch:build": "parcel watch"
   },
   "dependencies": {
