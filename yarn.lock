@@ -5908,10 +5908,10 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
   integrity sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
 
-"@tracktak/hyperformula@^2.1.6":
-  version "2.1.6"
-  resolved "https://npm.pkg.github.com/download/@tracktak/hyperformula/2.1.6/a93e716d6080877e9126e8d00152b5aa326f4e608f1e1ff59069dc43878d9a27#57e128bc028bd19959ccdbb508dd1acaedaac0c0"
-  integrity sha512-nj20s40TAvHsvwJ0U3exfYe3iRWE1xxkceJVww/Le3QSDNAgVvJwBWdsKUwxniKgHlYpeVwQOxF4EqA/uEY5nQ==
+"@tracktak/hyperformula@^5.0.0":
+  version "5.0.0"
+  resolved "https://npm.pkg.github.com/download/@tracktak/hyperformula/5.0.0/75164804790718a935fd0c90e589dbaec2c213a01ed4b70cd28ac12c2e56ea88#9687862dcd70d7465e0d2c6383f0386d4e22891e"
+  integrity sha512-w9Y8sub+pNP33Q89OLeY99HPc5GjHFtdmVszz3NoBj/uvQc3G6DrMqcGMimejeSPT9wVQ3okrkAkd5uV98TeTw==
   dependencies:
     chevrotain "^6.5.0"
     core-js "^3.6.4"
@@ -5919,10 +5919,10 @@
     tiny-emitter "^2.1.0"
     unorm "^1.6.0"
 
-"@tracktak/powersheet@^1.1.1":
-  version "1.1.1"
-  resolved "https://npm.pkg.github.com/download/@tracktak/powersheet/1.1.1/4991f2de8a4d694bdf83caaedc72c921c379318e6d7e3ef2c3f8f95ddac3ea77#70b7916135dfd337639630cca41b46810d0e29e7"
-  integrity sha512-6dz1DUMrx+gEcr26Vi4jYGE/DOifmqGXFUqCrVm8DolAeS99VGkkDeVCAnl6NaVwIYDI3cpwHDWWVHamBl4v/A==
+"@tracktak/powersheet@^2.0.0-beta.1":
+  version "2.0.0-beta.1"
+  resolved "https://npm.pkg.github.com/download/@tracktak/powersheet/2.0.0-beta.1/a2badb7caece8de644cebd9ee9f94f6cf1786b1506ec1ff261cb98f253ae0670#25facb4bcbfdb69f542c27a600c3fccbfd670de2"
+  integrity sha512-umN5UjmBp4zd8lL1bcZIzYq4PUokb2oZF+nTpAettz9R5HhDYIhfrXaJiWDn75imNkFRysCjN9J98QZReBF4bw==
   dependencies:
     "@material/drawer" "^13.0.0"
     a-color-picker "^1.2.1"
@@ -5934,7 +5934,6 @@
     sass "^1.36.0"
     tiny-typed-emitter "^2.1.0"
     tippy.js "^6.3.1"
-    undo-redo-manager "^1.0.0"
     xlsx "^0.17.3"
 
 "@trysound/sax@0.2.0":
@@ -25104,11 +25103,6 @@ underscore.string@^3.3.5:
   dependencies:
     sprintf-js "^1.0.3"
     util-deprecate "^1.0.2"
-
-undo-redo-manager@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/undo-redo-manager/-/undo-redo-manager-1.0.0.tgz#845bd079b8324d816e6c2d903efc510a30e135c8"
-  integrity sha512-nMBzETo2VdM0Nw6Ygi2Dhv4S3eH/EsLv8CXjZ0Mw2tcgezND/veuRYYKNEoj5uJRpDnog2mWKk8KlsEi92v2Vw==
 
 unfetch@^4.2.0:
   version "4.2.0"

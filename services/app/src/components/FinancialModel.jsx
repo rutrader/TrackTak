@@ -20,13 +20,15 @@ const FinancialModel = () => {
           </title>
         </Helmet>
       )}
-      <FinancialSpreadsheet
-        saveSheetData={saveSheetData}
-        spreadsheetData={spreadsheetData}
-        sx={{
-          flex: 1
-        }}
-      />
+      {spreadsheetData?.sheetData.data.sheets && (
+        <FinancialSpreadsheet
+          saveSheetData={saveSheetData}
+          spreadsheetData={spreadsheetData}
+          sx={{
+            flex: 1
+          }}
+        />
+      )}
     </>
   )
 }

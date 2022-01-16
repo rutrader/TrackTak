@@ -102,27 +102,6 @@ export const getSecuritiesAutocomplete = async (query, params) => {
   })
 }
 
-export const createFinancialData = async (
-  financialData,
-  accessToken,
-  spreadsheetId
-) => {
-  return axios.post(
-    '/api/v1/user/financial-data',
-    { financialData, spreadsheetId },
-    {
-      headers: getAuthHeaders(accessToken)
-    }
-  )
-}
-
-export const getFinancialData = async (id, accessToken, params) => {
-  return axios.get(`/api/v1/user/financial-data/${id}`, {
-    headers: getAuthHeaders(accessToken),
-    params
-  })
-}
-
 export const getSpreadsheetTemplate = async (name, params) => {
   return axios.get(`/api/v1/spreadsheet-templates/${name}`, {
     params

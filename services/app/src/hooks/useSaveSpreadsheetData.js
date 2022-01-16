@@ -1,36 +1,29 @@
 import { useCallback } from 'react'
 import { api, useAuth } from '@tracktak/common'
 
-const saveSpreadsheetData = async (spreadsheet, token, data, financialData) => {
+const saveSpreadsheetData = async (token, spreadsheetData, data) => {
   await api.saveSpreadsheet(
     {
-      ...spreadsheet,
+      ...spreadsheetData,
       sheetData: {
-        ...spreadsheet.sheetData,
-        data: {
-          ...spreadsheet.sheetData.data,
-          ...data
-        }
-      },
-      financialData: {
-        ...spreadsheet.financialData,
-        ...financialData
+        ...spreadsheetData.sheetData,
+        data
       }
     },
     token?.jwtToken
   )
 }
 
-const useSaveSpreadsheetData = spreadsheet => {
+const useSaveSpreadsheetData = spreadsheetData => {
   const { getAccessToken } = useAuth()
 
   const saveSheetData = useCallback(
-    async ({ data, financialData }) => {
+    async data => {
       const token = await getAccessToken()
 
-      return saveSpreadsheetData(spreadsheet, token, data, financialData)
+      return saveSpreadsheetData(token, spreadsheetData, data)
     },
-    [getAccessToken, spreadsheet]
+    [getAccessToken, spreadsheetData]
   )
 
   return saveSheetData

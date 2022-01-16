@@ -36,84 +36,86 @@ export const translations = {
   }
 }
 
-export class Plugin extends FunctionPlugin {
-  setSpreadsheetCreationDate(creationDate) {
-    this.creationDate = creationDate
-  }
+export const getPlugin = (creationDate, spreadsheet) => {
+  class Plugin extends FunctionPlugin {
+    // TODO: Remove when we have conditional currency formatting
+    internalSetSpreadsheetCurrency(ast, state) {
+      const metadata = this.metadata('INTERNAL_SET_SPREADSHEET_CURRENCY')
 
-  setSpreadsheet(spreadsheet) {
-    this.spreadsheet = spreadsheet
-  }
+      return this.runAsyncFunction(ast.args, state, metadata, async ticker => {
+        const isTickerValid = !!ticker.match(tickerRegex)
 
-  // TODO: Remove when we have conditional currency formatting
-  internalSetSpreadsheetCurrency(ast, state) {
-    const metadata = this.metadata('INTERNAL_SET_SPREADSHEET_CURRENCY')
-
-    return this.runAsyncFunction(ast.args, state, metadata, async ticker => {
-      const isTickerValid = !!ticker.match(tickerRegex)
-
-      if (!isTickerValid) {
-        return tickerCellError
-      }
-
-      const { data } = await api.getEODHistoricalDataFundamentals(ticker, {
-        filter: 'General::CurrencyCode'
-      })
-
-      const mainCurrencyCode = convertSubCurrencyToCurrency(data.value)
-
-      const currencySymbol = getSymbolFromCurrency(mainCurrencyCode)
-
-      Object.keys(this.spreadsheet.data._spreadsheetData.cells).forEach(key => {
-        const cellData = this.spreadsheet.data._spreadsheetData.cells[key]
-
-        if (cellData.dynamicFormat === 'currency') {
-          const oldCurrencySymbol = cellData.textFormatPattern.charAt(0)
-          const hasCurrencySymbol = Object.values(currencySymbolMap).some(
-            x => x === oldCurrencySymbol
-          )
-
-          const newTextFormatPatternPart = hasCurrencySymbol
-            ? cellData.textFormatPattern.slice(1)
-            : cellData.textFormatPattern
-
-          this.spreadsheet.data._spreadsheetData.cells[key].textFormatPattern =
-            currencySymbol + newTextFormatPatternPart
+        if (!isTickerValid) {
+          return tickerCellError
         }
-      })
 
-      this.spreadsheet.setOptions({
-        textPatternFormats: {
-          currency: `${currencySymbol}#,##0.##`,
-          'million-currency': `${currencySymbol}#,###.##,,`
-        }
-      })
-
-      return '@@internalFunction'
-    })
-  }
-
-  spreadsheetCreationDate(ast, state) {
-    const metadata = this.metadata('SPREADSHEET_CREATION_DATE')
-
-    return this.runFunction(ast.args, state, metadata, () => {
-      const date = this.creationDate
-
-      return (
-        timeToNumber({
-          hours: date.getHours(),
-          minutes: date.getMinutes(),
-          seconds: date.getSeconds()
-        }) +
-        this.dateTimeHelper.dateToNumber({
-          year: date.getFullYear(),
-          month: date.getMonth() + 1,
-          day: date.getDate()
+        const { data } = await api.getEODHistoricalDataFundamentals(ticker, {
+          filter: 'General::CurrencyCode'
         })
-      )
-    })
-  }
-}
 
-Plugin.implementedFunctions = implementedFunctions
-Plugin.aliases = aliases
+        const mainCurrencyCode = convertSubCurrencyToCurrency(data.value)
+
+        const currencySymbol = getSymbolFromCurrency(mainCurrencyCode)
+
+        const sheets = spreadsheet.hyperformula.getAllSheetsSerialized()
+
+        for (const sheetName in sheets) {
+          const sheet = sheets[sheetName]
+
+          sheet.cells.forEach(row => {
+            row.forEach(({ metadata }) => {
+              if (metadata?.dynamicFormat === 'currency') {
+                const oldCurrencySymbol = metadata.textFormatPattern.charAt(0)
+                const hasCurrencySymbol = Object.values(currencySymbolMap).some(
+                  x => x === oldCurrencySymbol
+                )
+
+                const newTextFormatPatternPart = hasCurrencySymbol
+                  ? metadata.textFormatPattern.slice(1)
+                  : metadata.textFormatPattern
+
+                metadata.textFormatPattern =
+                  currencySymbol + newTextFormatPatternPart
+              }
+            })
+          })
+        }
+
+        spreadsheet.setOptions({
+          textPatternFormats: {
+            currency: `${currencySymbol}#,##0.##`,
+            'million-currency': `${currencySymbol}#,###.##,,`
+          }
+        })
+
+        return '@@internalFunction'
+      })
+    }
+
+    spreadsheetCreationDate(ast, state) {
+      const metadata = this.metadata('SPREADSHEET_CREATION_DATE')
+
+      return this.runFunction(ast.args, state, metadata, () => {
+        const date = creationDate
+
+        return (
+          timeToNumber({
+            hours: date.getHours(),
+            minutes: date.getMinutes(),
+            seconds: date.getSeconds()
+          }) +
+          this.dateTimeHelper.dateToNumber({
+            year: date.getFullYear(),
+            month: date.getMonth() + 1,
+            day: date.getDate()
+          })
+        )
+      })
+    }
+  }
+
+  Plugin.implementedFunctions = implementedFunctions
+  Plugin.aliases = aliases
+
+  return Plugin
+}
