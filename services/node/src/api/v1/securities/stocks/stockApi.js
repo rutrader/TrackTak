@@ -132,6 +132,12 @@ export const getFinancials = async (ticker, params) => {
       ? []
       : financials[statementKey][formattedGranularity]
 
+  const getUnitedStatesTTMStatement = quarterlyStatements => {
+    return statementKey === 'balanceSheet'
+      ? financials.balanceSheet.quarterly[0]
+      : getTTMValuesFromQuarters(quarterlyStatements)
+  }
+
   if (fiscalDateRange) {
     const fiscalDateRangeFilterPredicate =
       getFiscalDateRangeFilterPredicate(fiscalDateRange)
@@ -142,7 +148,7 @@ export const getFinancials = async (ticker, params) => {
         const filteredQuarters = financials[statementKey].quarterly.filter(
           fiscalDateRangeFilterPredicate
         )
-        const ttmStatement = getTTMValuesFromQuarters(filteredQuarters)
+        const ttmStatement = getUnitedStatesTTMStatement(filteredQuarters)
 
         filteredStatements.unshift(getObjWithTTMDate(ttmStatement))
       } else {
@@ -163,7 +169,7 @@ export const getFinancials = async (ticker, params) => {
 
   if (formattedGranularity !== 'quarterly') {
     if (isInUS) {
-      const ttmStatement = getTTMValuesFromQuarters(
+      const ttmStatement = getUnitedStatesTTMStatement(
         financials[statementKey].quarterly
       )
 
