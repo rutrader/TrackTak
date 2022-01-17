@@ -2,18 +2,6 @@ import { Collections } from '../../../../database/collections'
 import * as database from '../../../../database/mongoDbClient'
 import { default as MongoDb } from 'mongodb'
 
-export const updateSpreadsheetFinancialData = async (id, financialDataId) => {
-  return database.updateOne(
-    Collections.POWERSHEET_SPREADSHEET,
-    {
-      _id: new MongoDb.ObjectId(id)
-    },
-    {
-      $set: { 'financialData.id': financialDataId }
-    }
-  )
-}
-
 export const createSpreadsheet = async (sheetData, userId) => {
   const document = {
     userId,
@@ -28,12 +16,10 @@ export const createSpreadsheet = async (sheetData, userId) => {
 export const updateSpreadsheet = async (
   sheetData,
   userId,
-  financialData,
   spreadsheetId,
   createdTimestamp
 ) => {
   const document = {
-    financialData,
     userId,
     sheetData,
     lastModifiedTimestamp: new Date(),

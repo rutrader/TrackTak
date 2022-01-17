@@ -59,7 +59,7 @@ export const implementedFunctions = {
   'MARKET.RISK_FREE_RATE': {
     method: 'riskFreeRate',
     parameters: [
-      { argumentType: ArgumentTypes.ANY, maxValue: 1 },
+      { argumentType: ArgumentTypes.NUMBER, maxValue: 1 },
       { argumentType: ArgumentTypes.NUMBER, maxValue: 1 }
     ],
     returnNumberType: NumberType.NUMBER_PERCENT

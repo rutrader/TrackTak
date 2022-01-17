@@ -7,7 +7,8 @@ import {
   FormulaBar,
   Exporter,
   BottomBar,
-  FunctionHelper
+  FunctionHelper,
+  mapFromSerializedSheetsToSheets
 } from '@tracktak/powersheet'
 import { currencySymbolMap } from 'currency-symbol-map'
 import getToolbarActionGroups from './getToolbarActionGroups'
@@ -16,13 +17,19 @@ import './FinancialSpreadsheet.css'
 import { Box } from '@mui/material'
 import plugins from './plugins'
 import { config, namedExpressions } from './hyperformulaConfig'
+import * as metaPlugin from './plugins/meta/plugin'
 
 plugins.forEach(value => {
   HyperFormula.registerFunctionPlugin(value.Plugin, value.translations)
 })
 
-const buildPowersheet = () => {
-  const [hyperformula] = HyperFormula.buildEmpty(config, namedExpressions)
+const buildPowersheet = serializedSheets => {
+  const sheets = mapFromSerializedSheetsToSheets(serializedSheets)
+  const [hyperformula] = HyperFormula.buildFromSheets(
+    sheets,
+    config,
+    namedExpressions
+  )
 
   const functionHelper = new FunctionHelper()
   const toolbar = new Toolbar()
@@ -61,7 +68,17 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
   const name = spreadsheetData?.sheetData.name
 
   useEffect(() => {
-    const spreadsheet = buildPowersheet()
+    const spreadsheet = buildPowersheet(spreadsheetData.sheetData.data.sheets)
+
+    const metaPluginInstance = metaPlugin.getPlugin(
+      new Date(spreadsheetData.createdTimestamp),
+      spreadsheet
+    )
+
+    HyperFormula.registerFunctionPlugin(
+      metaPluginInstance,
+      metaPlugin.translations
+    )
 
     setSpreadsheet(spreadsheet)
 
@@ -81,8 +98,24 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
       clickEventListener
     )
 
+    spreadsheet.setData(spreadsheetData.sheetData.data.data)
+
+    // TODO: Remove this once internal meta plugin function is removed
+    spreadsheet.render(true)
+
+    const functionHelperClosed = localStorage.getItem('functionHelperClosed')
+
+    if (functionHelperClosed !== 'true') {
+      // TODO: Figure out why setTimeout needed
+      // raise an issue with material components
+      setTimeout(() => {
+        spreadsheet.setOptions({
+          showFunctionHelper: true
+        })
+      }, 500)
+    }
+
     return () => {
-      spreadsheet?.destroy()
       spreadsheet.functionHelper.closeButton.removeEventListener(
         'click',
         clickEventListener
@@ -91,12 +124,16 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
         'click',
         clickEventListener
       )
+
+      HyperFormula.unregisterFunctionPlugin(metaPluginInstance)
+
+      spreadsheet.destroy()
     }
-  }, [])
+  }, [spreadsheetData])
 
   useEffect(() => {
     const persistData = async (data, done) => {
-      await saveSheetData({ data })
+      await saveSheetData(data)
 
       done()
     }
@@ -109,40 +146,12 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
   }, [saveSheetData, spreadsheet])
 
   useEffect(() => {
-    if (spreadsheet) {
-      if (containerEl) {
-        containerEl.appendChild(spreadsheet.spreadsheetEl)
-      }
+    if (containerEl) {
+      containerEl.appendChild(spreadsheet.spreadsheetEl)
 
-      if (spreadsheetData) {
-        const metaPlugin =
-          spreadsheet.hyperformula._evaluator.interpreter.functionRegistry.functions.get(
-            'SPREADSHEET_CREATION_DATE'
-          )[1]
-
-        metaPlugin.setSpreadsheetCreationDate(
-          new Date(spreadsheetData.createdTimestamp)
-        )
-        metaPlugin.setSpreadsheet(spreadsheet)
-
-        spreadsheet.setData(spreadsheetData.sheetData.data)
-
-        const functionHelperClosed = localStorage.getItem(
-          'functionHelperClosed'
-        )
-
-        if (functionHelperClosed !== 'true') {
-          // TODO: Figure out why setTimeout needed
-          // raise an issue with material components
-          setTimeout(() => {
-            spreadsheet?.setOptions({
-              showFunctionHelper: true
-            })
-          }, 500)
-        }
-      }
+      spreadsheet.updateSize()
     }
-  }, [containerEl, spreadsheetData, spreadsheet])
+  }, [containerEl, spreadsheet])
 
   useEffect(() => {
     const options = {
@@ -154,8 +163,6 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
 
     spreadsheet?.setOptions(options)
   }, [name, spreadsheet])
-
-  if (!spreadsheet) return null
 
   return <Box sx={sx} ref={setContainerEl} />
 }

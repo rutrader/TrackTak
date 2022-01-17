@@ -22,7 +22,7 @@
           },
           {
             "syntaxName": "field",
-            "description": "See the 'full, income, balance, cashlow statements' section below for the list of parameters that can be given here."
+            "description": "See the 'full, income, balance, cashflow statements' section below for the list of parameters that can be given here."
           },
           {
             "syntaxName": "[granularity]",
@@ -1240,11 +1240,11 @@
         "values": [
           {
             "syntaxName": "governmentBondRate",
-            "description": "Accepts goverment bond yield. Example: US 10Y Government Bond has a 1.733% yield or use tractak's function BOND.GET_COUNTRY_YIELD(\"US\",\"10yr\") to get the bond rate."
+            "description": "Accepts government bond yield. Example: US 10Y Government Bond has a 1.733% yield or use tractak's function BOND.GET_COUNTRY_YIELD(\"US\",\"10yr\") to get the bond rate."
           },
           {
             "syntaxName": "inflationRate",
-            "description": "Accepts country inflation rate. Example: US inflation rate is 6.8% in 2021."
+            "description": "Accepts inflation rate. Example: US inflation rate is 6.8% in 2021."
           }
         ]
       }
@@ -1430,7 +1430,7 @@
   },
   "NORMAL_INVERSE_RANDOM": {
     "header": "STATISTICS.NORMAL_INVERSE_RANDOM",
-    "headerDescription": "Defines the mean (expected value) and a standard deviation to describe the variation about the mean. Describes uncertain variables such as inflation, interest, growth rates or prices of fuel, electricty, rent and etc.",
+    "headerDescription": "Defines the mean (expected value) and a standard deviation to describe the variation about the mean. Describes uncertain variables such as inflation, interest, growth rates or prices of fuel, electricity, rent and etc.",
     "type": "Probability Distribution",
     "aliases": "S.NIR",
     "parameters": ["mean", "standard_deviation"],

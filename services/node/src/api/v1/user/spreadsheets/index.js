@@ -20,7 +20,6 @@ router.put('/', async (req, res) => {
   const spreadsheet = await updateSpreadsheet(
     req.body.sheetData,
     req.user.username,
-    req.body.financialData,
     req.body._id,
     req.body.createdTimestamp
   )
