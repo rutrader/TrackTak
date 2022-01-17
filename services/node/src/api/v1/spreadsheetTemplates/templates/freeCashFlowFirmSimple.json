@@ -588,6 +588,7 @@
         "3_2": { "cellValue": "Operating Target Margin in Year 10" },
         "2_0": { "cellValue": "Stock Ticker To Value" },
         "2_1": {
+          "cellValue": "AMZN",
           "metadata": {
             "backgroundColor": "#8ff1d2",
             "comment": "Example: \"AAPL\", \"BP.LSE\", \"KME.AU\" etc. For non-us companies you must supply the exchange as well. See the 'exchanges' section in the helper panel (? icon in the toolbar) to the right for the list of valid exchanges that can be given here."
@@ -620,7 +621,7 @@
         },
         "3_5": { "cellValue": "Sales to Capital Ratio" },
         "3_7": {
-          "cellValue": "=F29",
+          "cellValue": "=B22",
           "metadata": {
             "backgroundColor": "#8ff1d2",
             "comment": "The efficiency of how much the company has to reinvest the business to grow. The formula is Revenue / Invested Capital. The higher the number the more efficient the company is. The default value is set to the industry average as this is usually a good starting point. You should also look at the previous years sales to capital ratio's in the above table to fine tune this value. In the DCF output we compute how much the company is going to reinvest to keep the business growing in future years. The higher you set this number, the more efficiently the business is growing and the higher the value of your growth.",
@@ -1127,7 +1128,7 @@
           "metadata": { "bold": true }
         },
         "41_12": {
-          "cellValue": "=MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM(\"US\", \"adjustedDefaultSpread\") + 'Cost of Capital'!$B$6",
+          "cellValue": "=MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM(\"US\", \"equityRiskPremium\") + 'Cost of Capital'!$B$6",
           "metadata": { "textFormatPattern": "0.00%" }
         },
         "41_11": {
@@ -1515,7 +1516,7 @@
         },
         "36_0": { "cellValue": "NOPAT", "metadata": { "bold": true } },
         "35_12": {
-          "cellValue": "=MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM('Cost of Capital'!$D$3, \"corporateTaxRate\")%",
+          "cellValue": "=MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM('Cost of Capital'!$D$3, \"corporateTaxRate\")",
           "metadata": { "textFormatPattern": "0.00%" }
         },
         "35_11": {
@@ -1559,7 +1560,7 @@
           "metadata": { "textFormatPattern": "0.00%" }
         },
         "35_1": {
-          "cellValue": "=AVERAGE(F24, G24, H24)",
+          "cellValue": "=AVERAGE(G24, H24, I24)",
           "metadata": { "textFormatPattern": "0.00%" }
         },
         "35_0": { "cellValue": "Tax Rate", "metadata": { "bold": true } },
@@ -15645,14 +15646,14 @@
           "cellValue": "=IF('DCF Valuation'!$C$8=\"\", \"Synthetic Credit Rating\", \"Manual Input\")"
         },
         "15_1": {
-          "cellValue": "=IF('DCF Valuation'!$C$8=\"\", B14, 'DCF Valuation'!$C$8)%",
+          "cellValue": "=IF('DCF Valuation'!$C$8=\"\", B14, 'DCF Valuation'!$C$8)",
           "metadata": {
             "comment": "By default this is the synthetic credit rating pre-tax cost of debt that we have automatically calculated for you which is fine for most cases. If you manually input a cost of debt in the Normal Debt input field then it will overwrite this synthetic cost of debt.",
             "textFormatPattern": "0.00%"
           }
         },
         "16_1": {
-          "cellValue": "=MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM(D3, \"corporateTaxRate\")%",
+          "cellValue": "=MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM(D3, \"corporateTaxRate\")",
           "metadata": { "textFormatPattern": "0.00%" }
         },
         "14_0": { "cellValue": "Method of Calculating Pre-tax Cost of Debt" },
@@ -15672,14 +15673,14 @@
         "3_2": { "cellValue": "10 yr gov. bond yield" },
         "4_2": { "cellValue": "Country Adjusted Default Spread" },
         "3_3": {
-          "cellValue": "=BOND.GET_COUNTRY_YIELD(D3,\"10yr\",\"adjustedClose\",, 'Helper Data'!$B$12)%",
+          "cellValue": "=BOND.GET_COUNTRY_YIELD(D3,\"10yr\",\"adjustedClose\",, 'Helper Data'!$B$12)",
           "metadata": { "textFormatPattern": "0.00%" }
         },
         "2_3": {
           "cellValue": "=STOCK.GET_COMPANY_INFO('DCF Valuation'!$B$3, \"countryISO\")"
         },
         "4_3": {
-          "cellValue": "=MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM(D3, \"adjustedDefaultSpread\")%",
+          "cellValue": "=MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM(D3, \"adjustedDefaultSpread\")",
           "metadata": { "textFormatPattern": "0.00%" }
         },
         "5_3": {
@@ -15730,12 +15731,12 @@
           "cellValue": "Standard deviation in stock price (volatility)"
         },
         "4_1": {
-          "cellValue": "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES('DCF Valuation'!$B$3, \"standardDeviationInStockPrices\")%",
+          "cellValue": "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES('DCF Valuation'!$B$3, \"standardDeviationInStockPrices\")",
           "metadata": { "textFormatPattern": "0.00%" }
         },
         "5_0": { "cellValue": "Risk free rate" },
         "5_1": {
-          "cellValue": "='Cost of Capital'!$B$6%",
+          "cellValue": "='Cost of Capital'!$B$6",
           "metadata": { "textFormatPattern": "0.00%" }
         },
         "6_0": { "cellValue": "Shares outstanding" },
@@ -15870,7 +15871,7 @@
         },
         "5_0": { "cellValue": "Estimated Country Default Spread" },
         "5_1": {
-          "cellValue": "=MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM('Cost of Capital'!$D$3, \"adjustedDefaultSpread\")%",
+          "cellValue": "=MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM('Cost of Capital'!$D$3, \"adjustedDefaultSpread\")",
           "metadata": {
             "comment": "The chance of a country defaulting on it's debts within a year.",
             "textFormatPattern": "0.00%"

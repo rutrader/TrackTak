@@ -45,7 +45,7 @@ export const getEOD = async (param, query) => {
 
       return value
     },
-    'governmentBond',
+    'eod',
     { param, query }
   )
 
