@@ -3,6 +3,7 @@ import getValueFromString from './getValueFromString'
 import replaceDoubleColonWithObject from './replaceDoubleColonWithObject'
 import * as financialStatementKeys from './financialStatementKeys'
 import camelCaseObjects from './camelCaseObjects'
+import convertPenceToGBPIfNeeded from './convertPenceToGBPIfNeeded'
 
 const dateSortComparer = (a, b) => b.date.localeCompare(a.date)
 
@@ -226,10 +227,18 @@ const convertFundamentalsFromAPI = (ticker, data) => {
 
     newFundamentalsData = camelCaseObjects(fundamentalsData)
 
-    if (newFundamentalsData.general?.exchange === 'LSE') {
-      newFundamentalsData.general.currencyCode = 'GBP'
-      newFundamentalsData.general.currencySymbol = '£'
-      newFundamentalsData.general.currencyName = 'Pound sterling'
+    if (newFundamentalsData.general) {
+      newFundamentalsData.general.currencyCode = convertPenceToGBPIfNeeded(
+        newFundamentalsData.general.currencyCode
+      )
+
+      newFundamentalsData.general.currencySymbol = convertPenceToGBPIfNeeded(
+        newFundamentalsData.general.currencySymbol
+      )
+
+      newFundamentalsData.general.currencyName = convertPenceToGBPIfNeeded(
+        newFundamentalsData.general.currencyName
+      )
     }
 
     if (newFundamentalsData.earnings?.trend) {
