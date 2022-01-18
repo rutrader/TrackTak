@@ -31,7 +31,7 @@
           "cellValue": "Stock Ticker To Value"
         },
         "2_1": {
-          "cellValue": "AMZN",
+          "cellValue": null,
           "metadata": {
             "backgroundColor": "#8ff1d2",
             "comment": "Example: \"AAPL\", \"BP.LSE\", \"KME.AU\" etc. For non-us companies you must supply the exchange as well. See the 'exchanges' section in the helper panel (? icon in the toolbar) to the right for the list of valid exchanges that can be given here."
@@ -41,7 +41,7 @@
           "cellValue": "CAGR in Years 1-5"
         },
         "2_4": {
-          "cellValue": "22%",
+          "cellValue": null,
           "metadata": {
             "backgroundColor": "#8ff1d2",
             "comment": "Compound Annual Growth Rate - look at: a. Revenue growth in your company in recent years b. Your company's revenues, relative to the overall market size and larger players in the sector.",
@@ -52,7 +52,7 @@
           "cellValue": "Year of Convergence"
         },
         "2_7": {
-          "cellValue": "2",
+          "cellValue": null,
           "metadata": {
             "backgroundColor": "#8ff1d2",
             "comment": "The forecasted number of years until the company’s current Operating Margin will converge on the target Operating Margin. For example, if today's year is 2021 and the year of convergence is 5 then it will converge in year 2026.",
@@ -63,7 +63,7 @@
           "cellValue": "Operating Target Margin in Year 10"
         },
         "3_4": {
-          "cellValue": "11%",
+          "cellValue": null,
           "metadata": {
             "backgroundColor": "#8ff1d2",
             "comment": "Start by looking at your company's current pre-tax operating margin but also look at the average for your industry.",
