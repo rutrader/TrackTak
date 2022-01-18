@@ -19,6 +19,7 @@ const countryISOs = [
   'PT',
   'RU',
   'SW',
+  'TW',
   'UK',
   'US'
 ]

@@ -75,7 +75,7 @@ export const getPlugin = (creationDate, spreadsheet) => {
                   : metadata.textFormatPattern
 
                 metadata.textFormatPattern =
-                  currencySymbol + newTextFormatPatternPart
+                  `"${currencySymbol}"` + newTextFormatPatternPart
               }
             })
           })
@@ -83,8 +83,8 @@ export const getPlugin = (creationDate, spreadsheet) => {
 
         spreadsheet.setOptions({
           textPatternFormats: {
-            currency: `${currencySymbol}#,##0.##`,
-            'million-currency': `${currencySymbol}#,###.##,,`
+            currency: `"${currencySymbol}"#,##0.##`,
+            'million-currency': `"${currencySymbol}"#,###.##,,`
           }
         })
 

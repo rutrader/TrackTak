@@ -38,7 +38,7 @@ const BATCH_SIZE = 100
 
         if (cellData.dynamicFormat === 'currency') {
           cells[key].textFormatPattern =
-            currencySymbol + cellData.textFormatPattern
+            `"${currencySymbol}"` + cellData.textFormatPattern
         }
       })
     } catch (error) {
