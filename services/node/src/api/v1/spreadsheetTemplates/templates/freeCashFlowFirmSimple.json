@@ -17173,7 +17173,7 @@
           }
         },
         "1_1": {
-          "cellValue": "Large",
+          "cellValue": "=IF(D4>5000,\"Large\",(IF(D4<5000,\"Small\")))",
           "metadata": {
             "comment": "Large companies usually have stable earnings and less chance of defaulting on their debt. Smaller companies are usually risker, therefore they have higher costs of debts.",
             "underline": false,
@@ -17270,7 +17270,7 @@
           }
         },
         "9_0": {
-          "cellValue": "Large Companies (< $5,000m Market Cap)",
+          "cellValue": "Large Companies (> $5,000m Market Cap)",
           "metadata": {
             "fontSize": 14,
             "bold": true,
