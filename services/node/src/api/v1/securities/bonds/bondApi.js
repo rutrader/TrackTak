@@ -1,3 +1,6 @@
+import convertEODFromAPI, {
+  divideEODYieldsByHundred
+} from '../../../../shared/convertEODFromAPI'
 import alterFromToQuery from '../alterFromToQuery'
 import { getEOD } from '../eodHistoricalData/eodAPI'
 import { getFieldValue } from '../helpers'
@@ -10,7 +13,10 @@ export const getGovernmentBond = async (countryISO, query) => {
   try {
     const value = await getEOD(`${countryISO}.GBOND`, newQuery)
 
-    return getFieldValue(value, true)
+    return getFieldValue(
+      divideEODYieldsByHundred(convertEODFromAPI(value, query), query),
+      true
+    )
   } catch (error) {
     if (error.response.status === 404) {
       const splits = countryISO.split('10Y')

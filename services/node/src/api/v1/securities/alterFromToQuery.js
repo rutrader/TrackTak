@@ -1,39 +1,25 @@
 import dayjs from 'dayjs'
 
+export const isEODQueryFromModified = ({ period, from, to }) =>
+  (period === 'd' || !period) && from === to
+
 // This is needed because EOD doesn't return data on some days.
-// Stock prices: Sat, Sun & holidays, today
-// Bonds: Sat, today
-// FX: Sat, today
-// TODO: Add same for holidays
-const alterFromToQuery = (query, { changeSunday } = {}) => {
+// So we return past 7 days and get latest if user requested a single
+// day that doesn't exist
+const alterFromToQuery = query => {
   const newQuery = query
-  const { period, from, to } = newQuery
+  const { from, to } = newQuery
 
   if (!from && !to) return newQuery
 
-  if ((period === 'd' || !period) && from === to) {
+  if (isEODQueryFromModified(newQuery)) {
     let date = dayjs(from)
 
-    const todayDate = dayjs()
-
-    if (todayDate.isSame(date, 'day')) {
-      date = date.subtract(1, 'day')
-    }
-
-    if (changeSunday) {
-      // Sunday
-      if (date.day() === 0) {
-        date = date.subtract(2, 'day')
-      }
-    }
-
-    // Saturday
-    if (date.day() === 6) {
-      date = date.subtract(1, 'day')
-    }
+    date = date.subtract(7, 'day')
 
     newQuery.from = date.format('YYYY-MM-DD')
-    newQuery.to = date.format('YYYY-MM-DD')
+
+    return newQuery
   }
 
   return newQuery
