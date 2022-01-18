@@ -1,10 +1,22 @@
-const convertEODFromAPI = (data, field) => {
+import { isEODQueryFromModified } from '../api/v1/securities/alterFromToQuery'
+
+const convertEODFromAPI = (data, query) => {
+  let newData = data
+
+  if (isEODQueryFromModified(query)) {
+    newData = data[0]
+  }
+
+  return newData
+}
+
+export const divideEODYieldsByHundred = (data, query) => {
   const yieldFields = ['open', 'high', 'low', 'close', 'adjustedClose']
 
   if (Array.isArray(data)) {
     return data.map(value => {
-      if (field) {
-        if (yieldFields.some(x => x === field)) {
+      if (query.field) {
+        if (yieldFields.some(x => x === query.field)) {
           return value / 100
         }
         return value
@@ -20,7 +32,7 @@ const convertEODFromAPI = (data, field) => {
     })
   }
 
-  if (yieldFields.some(x => x === field)) {
+  if (yieldFields.some(x => x === query.field)) {
     return data / 100
   }
 

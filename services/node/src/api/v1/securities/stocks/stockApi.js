@@ -9,7 +9,9 @@ import {
 } from '../helpers'
 import getEODQuery from './getEODQuery'
 import { getEOD, getFundamentals } from '../eodHistoricalData/eodAPI'
-import convertEODFromAPI from '../../../../shared/convertEODFromAPI'
+import convertEODFromAPI, {
+  divideEODYieldsByHundred
+} from '../../../../shared/convertEODFromAPI'
 
 const fundamentalsFilter =
   'General::CountryISO,Financials::Balance_Sheet,Financials::Income_Statement,Financials::Cash_Flow'
@@ -338,8 +340,10 @@ export const getPrices = async (ticker, query) => {
   const newQuery = alterFromToQuery(getEODQuery(query))
   let value = await getEOD(ticker, newQuery)
 
+  value = convertEODFromAPI(value, query)
+
   if (ticker.slice(-3) === 'LSE') {
-    value = convertEODFromAPI(value, query.field)
+    value = divideEODYieldsByHundred(value, query)
   }
 
   return getFieldValue(value, true)
