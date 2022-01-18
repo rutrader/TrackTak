@@ -226,6 +226,12 @@ const convertFundamentalsFromAPI = (ticker, data) => {
 
     newFundamentalsData = camelCaseObjects(fundamentalsData)
 
+    if (newFundamentalsData.general?.exchange === 'LSE') {
+      newFundamentalsData.general.currencyCode = 'GBP'
+      newFundamentalsData.general.currencySymbol = '£'
+      newFundamentalsData.general.currencyName = 'Pound sterling'
+    }
+
     if (newFundamentalsData.earnings?.trend) {
       const trend = newFundamentalsData.earnings?.trend
 
