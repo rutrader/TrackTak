@@ -29,7 +29,7 @@ export const getGovernmentBond = async (countryISO, query) => {
           x => x.country.toUpperCase() === country
         ).yield
 
-        return tenYearGovernmentBondYield
+        return divideEODYieldsByHundred(tenYearGovernmentBondYield)
       }
     }
     throw error
