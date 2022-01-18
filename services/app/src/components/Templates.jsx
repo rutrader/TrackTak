@@ -46,10 +46,7 @@ const Templates = () => {
       name: 'Untitled Spreadsheet',
       data: {
         sheets: {
-          0: {
-            id: 0,
-            sheetName: 'Sheet1'
-          }
+          Default: {}
         }
       }
     }
