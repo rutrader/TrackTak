@@ -49,6 +49,7 @@ const buildPowersheet = serializedSheets => {
     }
   })
 
+  spreadsheet.setFunctionTypeBlocklist(['Engineering'])
   spreadsheet.spreadsheetEl.prepend(formulaBar.formulaBarEl)
   spreadsheet.spreadsheetEl.prepend(toolbar.toolbarEl)
   spreadsheet.spreadsheetEl.appendChild(bottomBar.bottomBarEl)
