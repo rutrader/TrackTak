@@ -12,12 +12,12 @@ import {
 } from '@tracktak/powersheet'
 import { currencySymbolMap } from 'currency-symbol-map'
 import getToolbarActionGroups from './getToolbarActionGroups'
-import getFunctionHelperContent from './getFunctionHelperContent'
 import './FinancialSpreadsheet.css'
 import { Box } from '@mui/material'
 import plugins from './plugins'
 import { config, namedExpressions } from './hyperformulaConfig'
 import * as metaPlugin from './plugins/meta/plugin'
+import tracktakFormulaMetadataJSON from '../tracktakFormulaMetadata.json'
 
 plugins.forEach(value => {
   HyperFormula.registerFunctionPlugin(value.Plugin, value.translations)
@@ -49,6 +49,8 @@ const buildPowersheet = serializedSheets => {
     }
   })
 
+  spreadsheet.setFunctionTypeBlocklist(['Engineering'])
+  spreadsheet.setCustomFunctionMetadata(tracktakFormulaMetadataJSON)
   spreadsheet.spreadsheetEl.prepend(formulaBar.formulaBarEl)
   spreadsheet.spreadsheetEl.prepend(toolbar.toolbarEl)
   spreadsheet.spreadsheetEl.appendChild(bottomBar.bottomBarEl)
@@ -56,7 +58,7 @@ const buildPowersheet = serializedSheets => {
     functionHelper.functionHelperEl
   )
 
-  functionHelper.setDrawerContent(getFunctionHelperContent())
+  functionHelper.setDrawerContent()
   toolbar.setToolbarIcons(getToolbarActionGroups(toolbar))
 
   return spreadsheet
