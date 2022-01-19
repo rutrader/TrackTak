@@ -3,7 +3,7 @@
     "header": "STOCK.GET_COMPANY_FINANCIALS",
     "headerDescription": "Fetches current or historical financial information for a public company.",
     "type": "Stock Financials",
-    "aliases": "S.GFC",
+    "aliases": ["S.GFC"],
     "parameters": ["ticker", "field", "[granularity]", "[fiscalDateRange]"],
     "codeSyntaxUsage": [
       "=STOCK.GET_COMPANY_FINANCIALS(\"AMZN\",\"revenue\")",
@@ -38,7 +38,7 @@
     "attributes": [
       {
         "header": "Exchanges",
-        "fieldNames": [
+        "attributeNames": [
           "US",
           "LSE",
           "TO",
@@ -112,11 +112,15 @@
       },
       {
         "header": "Full Statements",
-        "fieldNames": ["incomeStatement", "balanceSheet", "cashFlowStatement"]
+        "attributeNames": [
+          "incomeStatement",
+          "balanceSheet",
+          "cashFlowStatement"
+        ]
       },
       {
         "header": "Income Statement",
-        "fieldNames": [
+        "attributeNames": [
           "date",
           "revenue",
           "costOfRevenue",
@@ -155,7 +159,7 @@
       },
       {
         "header": "Balance Sheet",
-        "fieldNames": [
+        "attributeNames": [
           "date",
           "cash",
           "shortTermInvestments",
@@ -200,7 +204,7 @@
       },
       {
         "header": "Cashflow Statement",
-        "fieldNames": [
+        "attributeNames": [
           "date",
           "netIncome",
           "depreciation",
@@ -233,7 +237,7 @@
     "header": "STOCK.GET_COMPANY_RATIOS",
     "headerDescription": "Fetches current or historical ratios information for a public company.",
     "type": "Stock Ratios",
-    "aliases": "S.GCR",
+    "aliases": ["S.GCR"],
     "parameters": ["ticker", "[field]", "[granularity]", "[fiscalDateRange]"],
     "codeSyntaxUsage": [
       "=STOCK.GET_COMPANY_RATIOS(\"AMZN\",\"interestCoverage\")",
@@ -266,7 +270,7 @@
     "attributes": [
       {
         "header": "Exchanges",
-        "fieldNames": [
+        "attributeNames": [
           "US",
           "LSE",
           "TO",
@@ -344,7 +348,7 @@
     "header": "STOCK.GET_COMPANY_OUTSTANDING_SHARES",
     "headerDescription": "Fetches current or historical outstanding shares information for a public company.",
     "type": "Stock Outstanding Shares",
-    "aliases": "S.GCOS",
+    "aliases": ["S.GCOS"],
     "parameters": ["ticker", "[field]", "[granularity]", "[fiscalDateRange]"],
     "codeSyntaxUsage": [
       "=STOCK.GET_COMPANY_OUTSTANDING_SHARES(\"AMZN\",\"shares\")",
@@ -379,7 +383,7 @@
     "attributes": [
       {
         "header": "Exchanges",
-        "fieldNames": [
+        "attributeNames": [
           "US",
           "LSE",
           "TO",
@@ -457,7 +461,7 @@
     "header": "STOCK.GET_COMPANY_PRICES",
     "headerDescription": "Fetches current or historical prices information for a public company.",
     "type": "Stock Prices",
-    "aliases": "S.GCP",
+    "aliases": ["S.GCP"],
     "parameters": ["ticker", "[field]", "[granularity]", "[fiscalDateRange]"],
     "codeSyntaxUsage": [
       "=STOCK.GET_COMPANY_PRICES(\"AMZN\",\"open\")",
@@ -490,7 +494,7 @@
     "attributes": [
       {
         "header": "Exchanges",
-        "fieldNames": [
+        "attributeNames": [
           "US",
           "LSE",
           "TO",
@@ -564,7 +568,7 @@
       },
       {
         "header": "Prices",
-        "fieldNames": [
+        "attributeNames": [
           "date",
           "open",
           "high",
@@ -581,7 +585,7 @@
     "header": "STOCK.GET_COMPANY_INFO",
     "headerDescription": "Fetches current company's background information for a public company.",
     "type": "Stock Information",
-    "aliases": "S.GCI",
+    "aliases": ["S.GCI"],
     "parameters": ["ticker", "field"],
     "codeSyntaxUsage": [
       "=STOCK.GET_COMPANY_INFO(\"AMZN\",\"code\")",
@@ -606,7 +610,7 @@
     "attributes": [
       {
         "header": "Exchanges",
-        "fieldNames": [
+        "attributeNames": [
           "US",
           "LSE",
           "TO",
@@ -680,7 +684,7 @@
       },
       {
         "header": "Information",
-        "fieldNames": [
+        "attributeNames": [
           "code",
           "type",
           "name",
@@ -733,7 +737,7 @@
     "header": "STOCK.GET_COMPANY_INDUSTRY_AVERAGES",
     "headerDescription": "Fetches current or historical industry averages information for a public company.",
     "type": "Industry Averages",
-    "aliases": "S.GCIA",
+    "aliases": ["S.GCIA"],
     "parameters": ["ticker", "[field]", "[fiscalDateRange]"],
     "codeSyntaxUsage": [
       "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(\"AMZN\",\"afterTaxROIC\")",
@@ -762,7 +766,7 @@
     "attributes": [
       {
         "header": "Exchanges",
-        "fieldNames": [
+        "attributeNames": [
           "US",
           "LSE",
           "TO",
@@ -836,7 +840,7 @@
       },
       {
         "header": "Industry Averages",
-        "fieldNames": [
+        "attributeNames": [
           "numberOfFirms",
           "annualAverageCAGRLastFiveYears",
           "preTaxOperatingMarginUnadjusted",
@@ -873,7 +877,7 @@
     "header": "STOCK.GET_INDUSTRY_AVERAGES",
     "headerDescription": "Fetches current or historical industry averages.",
     "type": "Industry Averages",
-    "aliases": "S.GIA",
+    "aliases": ["S.GIA"],
     "parameters": ["type", "[field]", "[fiscalDateRange]"],
     "codeSyntaxUsage": [
       "=STOCK.GET_INDUSTRY_AVERAGES(\"US\")",
@@ -904,7 +908,7 @@
     "attributes": [
       {
         "header": "Industry Averages",
-        "fieldNames": [
+        "attributeNames": [
           "numberOfFirms",
           "annualAverageCAGRLastFiveYears",
           "preTaxOperatingMarginUnadjusted",
@@ -941,7 +945,7 @@
     "header": "MARKET.GET_EQUITY_RISK_PREMIUMS",
     "headerDescription": "Fetches current or historical equity risk premium information for a market.",
     "type": "Market",
-    "aliases": "M.GERP",
+    "aliases": ["M.GERP"],
     "parameters": ["[field]", "[fiscalDateRange]"],
     "codeSyntaxUsage": [
       "=MARKET.GET_EQUITY_RISK_PREMIUMS()",
@@ -966,7 +970,7 @@
     "attributes": [
       {
         "header": "Equity Risk Premiums",
-        "fieldNames": [
+        "attributeNames": [
           "country",
           "countryISO",
           "moodysRating",
@@ -982,7 +986,7 @@
     "header": "MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM",
     "headerDescription": "Fetches current or historical equity risk premium information for a country.",
     "type": "Market",
-    "aliases": "M.GCERP",
+    "aliases": ["M.GCERP"],
     "parameters": ["countryISO", "[field]", "[fiscalDateRange]"],
     "codeSyntaxUsage": [
       "=MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM(\"RU\")",
@@ -1012,7 +1016,7 @@
     "attributes": [
       {
         "header": "Country ISO",
-        "fieldNames": [
+        "attributeNames": [
           "AL",
           "AD",
           "AO",
@@ -1172,7 +1176,7 @@
       },
       {
         "header": "Country Risk Premiums",
-        "fieldNames": [
+        "attributeNames": [
           "country",
           "countryISO",
           "moodysRating",
@@ -1188,7 +1192,7 @@
     "header": "MARKET.GET_CREDIT_RATING_INTEREST_SPREADS",
     "headerDescription": "Fetches current or historical credit rating information for a market.",
     "type": "Market",
-    "aliases": "M.GCRIS",
+    "aliases": ["M.GCRIS"],
     "parameters": ["[field]", "[fiscalDateRange]"],
     "codeSyntaxUsage": [
       "=MARKET.GET_CREDIT_RATING_INTEREST_SPREADS()",
@@ -1213,7 +1217,7 @@
     "attributes": [
       {
         "header": "Market Credit Ratings",
-        "fieldNames": [
+        "attributeNames": [
           "rating",
           "spread",
           "smallFrom",
@@ -1228,7 +1232,7 @@
     "header": "MARKET.RISK_FREE_RATE",
     "headerDescription": "Returns theoretical rate of return of an investment with zero risk.",
     "type": "Market",
-    "aliases": "M.RFR",
+    "aliases": ["M.RFR"],
     "parameters": ["governmentBondRate", "inflationRate"],
     "codeSyntaxUsage": [
       "=MARKET.RISK_FREE_RATE(1.2,0.5)",
@@ -1255,7 +1259,7 @@
     "header": "BOND.GET_COUNTRY_YIELD",
     "headerDescription": "Fetches current or historical country yield information for a bond.",
     "type": "Bond",
-    "aliases": "B.GCY",
+    "aliases": ["B.GCY"],
     "parameters": [
       "countryISO",
       "maturity",
@@ -1297,7 +1301,7 @@
     "attributes": [
       {
         "header": "Country ISOs",
-        "fieldNames": [
+        "attributeNames": [
           "AU",
           "BR",
           "CA",
@@ -1324,7 +1328,7 @@
       },
       {
         "header": "Prices",
-        "fieldNames": [
+        "attributeNames": [
           "date",
           "open",
           "high",
@@ -1341,7 +1345,7 @@
     "header": "SPREADSHEET_CREATION_DATE",
     "headerDescription": "Returns the timestamp when the spreadsheet was created. This is useful for passing into other functions for the fiscalDateRange parameter if you need specific API data from that date.",
     "type": "Spreadsheet",
-    "aliases": "SCD",
+    "aliases": ["SCD"],
     "parameters": [],
     "codeSyntaxUsage": ["=SPREADSHEET_CREATION_DATE()"],
     "codeSyntaxElements": [
@@ -1356,7 +1360,7 @@
     "header": "DATA_ANALYSIS.SENSITIVITY_ANALYSIS",
     "headerDescription": "Determines how different values of an independent variable affect a particular dependent variable under a given set of assumptions.",
     "type": "Data Analysis",
-    "aliases": "D.SA",
+    "aliases": ["D.SA"],
     "parameters": [
       "intersection_point",
       "x_var",
@@ -1401,7 +1405,7 @@
     "header": "DATA_ANALYSIS.MONTE_CARLO_SIMULATION",
     "headerDescription": "Is a model used to predict the probability of different outcomes when the intervention of randomness is present.",
     "type": "Data Analysis",
-    "aliases": "D.MCS",
+    "aliases": ["D.MCS"],
     "parameters": ["intersection_point", "{var_assumptions}", "[iteration]"],
     "codeSyntaxUsage": [
       "=DATA_ANALYSIS.MONTE_CARLO_SIMULATION(B3,{B1,B2},10000)",
@@ -1432,7 +1436,7 @@
     "header": "STATISTICS.NORMAL_INVERSE_RANDOM",
     "headerDescription": "Defines the mean (expected value) and a standard deviation to describe the variation about the mean. Describes uncertain variables such as inflation, interest, growth rates or prices of fuel, electricity, rent and etc.",
     "type": "Probability Distribution",
-    "aliases": "S.NIR",
+    "aliases": ["S.NIR"],
     "parameters": ["mean", "standard_deviation"],
     "codeSyntaxUsage": [
       "=STATISTICS.NORMAL_INVERSE_RANDOM(B1,B2)",
@@ -1459,7 +1463,7 @@
     "header": "STATISTICS.UNIFORM_INVERSE_RANDOM",
     "headerDescription": "All values have an equal chance of occurring by defining the minimum and maximum. It can be used to describe a real estate appraisal, future production costs and selling prices for new products.",
     "type": "Probability Distribution",
-    "aliases": "S.UIR",
+    "aliases": ["S.UIR"],
     "parameters": ["min", "max"],
     "codeSyntaxUsage": [
       "=STATISTICS.UNIFORM_INVERSE_RANDOM(A1,B2)",
@@ -1486,7 +1490,7 @@
     "header": "STATISTICS.TRIANGULAR_INVERSE_RANDOM",
     "headerDescription": "Defines a minimum, maximum and most likely value, also referred to as peak value. It is useful with limited data in situations such as sales performance, work hours, inventory numbers, and marketing costs.",
     "type": "Probability Distribution",
-    "aliases": "S.TIR",
+    "aliases": ["S.TIR"],
     "parameters": ["min", "most_likely", "max"],
     "codeSyntaxUsage": [
       "=STATISTICS.TRIANGULAR_INVERSE_RANDOM(A1,A2,A3)",
@@ -1517,7 +1521,7 @@
     "header": "STATISTICS.LOGNORMAL_INVERSE_RANDOM",
     "headerDescription": "Values are positively skewed to the right and don't go below zero but have unlimited positive potential. It is used in determining stock prices, real estate prices, pay scales, and oil reservoir size.",
     "type": "Probability Distribution",
-    "aliases": "S.LIR",
+    "aliases": ["S.LIR"],
     "parameters": ["mean", "standard_deviation"],
     "codeSyntaxUsage": [
       "=STATISTICS.LOGNORMAL_INVERSE_RANDOM(D1,D2)",

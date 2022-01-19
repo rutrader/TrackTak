@@ -5919,10 +5919,10 @@
     tiny-emitter "^2.1.0"
     unorm "^1.6.0"
 
-"@tracktak/powersheet@^2.0.0-beta.6":
-  version "2.0.0-beta.6"
-  resolved "https://npm.pkg.github.com/download/@tracktak/powersheet/2.0.0-beta.6/da1cef57f723928fb6edc7e45d85f722eaa94fe08b5ff1d3acf5531c86efe678#bba219c563a63b206cf6453afe44b60855bab844"
-  integrity sha512-QqeG6R53sFW4V/BTVaILpWARH4QExzjW6qkC7NPbZFw4QLRi1VJOHK8SVS9r/EDwxica5K3ufljMCRsFJKQLUQ==
+"@tracktak/powersheet@^2.0.0-beta.7":
+  version "2.0.0-beta.7"
+  resolved "https://npm.pkg.github.com/download/@tracktak/powersheet/2.0.0-beta.7/26ea14241a0e874374fbac6a5863111071c35d42497260005ea1d7542bfba129#10654138efd890448a698978f7de2c1379025f81"
+  integrity sha512-+WAIvna2hPVn1A7ueozICjUQkMldxinwJe6PX/KLB9bEK2TkO29IQefapvGhpCMfk0JtvWv7IFoomjYqvv7MYQ==
   dependencies:
     "@material/drawer" "^13.0.0"
     a-color-picker "^1.2.1"
