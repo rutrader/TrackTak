@@ -1,17 +1,13 @@
 import { convertOutstandingSharesObjects } from '../../../../shared/convertFundamentalsFromAPI'
 import alterFromToQuery from '../alterFromToQuery'
 import { isNil } from 'lodash-es'
-import {
-  getFieldValue,
-  getFiscalDateRangeFilterPredicate,
-  mapArrayObjectsToValues,
-  mapObjToValues
-} from '../helpers'
+import { getFiscalDateRangeFilterPredicate } from '../helpers'
 import getEODQuery from './getEODQuery'
 import { getEOD, getFundamentals } from '../eodHistoricalData/eodAPI'
 import convertEODFromAPI, {
-  divideEODYieldsByHundred
+  divideEODNumbersByHundred
 } from '../../../../shared/convertEODFromAPI'
+import { allStatements } from '../../../../shared/financialStatementKeys'
 
 const fundamentalsFilter =
   'General::CountryISO,Financials::Balance_Sheet,Financials::Income_Statement,Financials::Cash_Flow'
@@ -61,9 +57,12 @@ const getTTMValuesFromQuarters = statements => {
   firstFourStatements.forEach(statement => {
     Object.keys(statement).forEach(key => {
       const value = statement[key]
+      const type = allStatements.find(x => x.field === key).type
 
-      if (Number.isFinite(value)) {
+      if (type === 'currency') {
         ttm[key] = sumFinancialStatementValues(firstFourStatements, key)
+      } else if (type === 'percent') {
+        ttm[key] = sumFinancialStatementValues(firstFourStatements, key) / 4
       } else {
         ttm[key] = value
       }
@@ -162,12 +161,21 @@ export const getFinancials = async (ticker, params) => {
     }
 
     if (isStatement) {
-      return mapArrayObjectsToValues(filteredStatements)
+      return filteredStatements
     }
 
-    const values = filteredStatements.map(statement => statement[field])
+    const values = filteredStatements.map(statement => ({
+      key: field,
+      value: statement[field]
+    }))
+    const currencyCodes = filteredStatements.map(
+      statement => statement.currencyCode
+    )
 
-    return values
+    return {
+      values,
+      currencyCodes
+    }
   }
 
   if (formattedGranularity !== 'quarterly') {
@@ -184,19 +192,30 @@ export const getFinancials = async (ticker, params) => {
 
   if (formattedGranularity !== 'ttm') {
     if (isStatement) {
-      return mapArrayObjectsToValues(statements)
+      return statements
     }
 
-    const values = statements.map(statement => statement[field])
+    const values = statements.map(statement => ({
+      key: field,
+      value: statement[field]
+    }))
+    const currencyCodes = statements.map(statement => statement.currencyCode)
 
-    return values
+    return {
+      values,
+      currencyCodes
+    }
   }
 
   if (isStatement) {
-    return mapObjToValues(statements[0])
+    return [statements[0]]
   }
 
-  return statements[0][field]
+  return {
+    key: field,
+    value: statements[0][field],
+    currencyCode: statements[0].currencyCode
+  }
 }
 
 export const getRatios = async (ticker, params) => {
@@ -245,7 +264,7 @@ export const getRatios = async (ticker, params) => {
     }
 
     if (!field) {
-      return mapArrayObjectsToValues(filteredRatios)
+      return filteredRatios
     }
 
     const values = filteredRatios.map(ratios => ratios[field])
@@ -263,7 +282,7 @@ export const getRatios = async (ticker, params) => {
 
   if (formattedGranularity !== 'latest') {
     if (!field) {
-      return mapArrayObjectsToValues(ratioValues)
+      return ratioValues
     }
 
     const values = ratioValues.map(ratios => ratios[field])
@@ -272,7 +291,7 @@ export const getRatios = async (ticker, params) => {
   }
 
   if (!field) {
-    return mapObjToValues(ratioValues[0])
+    return ratioValues[0]
   }
 
   return ratioValues[0][field]
@@ -307,7 +326,7 @@ export const getOutstandingShares = async (ticker, params) => {
     }
 
     if (!field) {
-      return mapArrayObjectsToValues(filteredShareValues)
+      return filteredShareValues
     }
 
     const values = filteredShareValues.map(ratios => ratios[field])
@@ -321,7 +340,7 @@ export const getOutstandingShares = async (ticker, params) => {
 
   if (formattedGranularity !== 'latest') {
     if (!field) {
-      return mapArrayObjectsToValues(shareValues)
+      return shareValues
     }
 
     const values = shareValues.map(ratios => ratios[field])
@@ -330,21 +349,22 @@ export const getOutstandingShares = async (ticker, params) => {
   }
 
   if (!field) {
-    return mapObjToValues(shareValues[0])
+    return shareValues[0]
   }
 
   return shareValues[0][field]
 }
 
 export const getPrices = async (ticker, query) => {
-  const newQuery = alterFromToQuery(getEODQuery(query))
+  const eodQuery = getEODQuery(query)
+  const newQuery = alterFromToQuery(eodQuery)
   let value = await getEOD(ticker, newQuery)
 
-  value = convertEODFromAPI(value, query)
+  value = convertEODFromAPI(value, eodQuery)
 
   if (ticker.slice(-3) === 'LSE') {
-    value = divideEODYieldsByHundred(value, query)
+    value = divideEODNumbersByHundred(value, query)
   }
 
-  return getFieldValue(value, true)
+  return value
 }

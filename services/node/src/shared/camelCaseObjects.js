@@ -1,6 +1,6 @@
 import camelCase from 'camelcase'
 
-const camelCaseObject = (obj, topLevelKey) => {
+export const camelCaseObject = (obj, topLevelKey) => {
   if (typeof obj !== 'object' || obj === null) {
     return obj
   }
@@ -37,16 +37,16 @@ const camelCaseObject = (obj, topLevelKey) => {
   return returnedArr.length ? returnedArr : returnedObj
 }
 
-const camelCaseObjects = arr => {
-  if (Array.isArray(arr)) {
-    return arr.map(obj => camelCaseObject(obj))
+const camelCaseObjects = value => {
+  if (Array.isArray(value)) {
+    return value.map(obj => camelCaseObject(obj))
   }
 
-  if (typeof arr !== 'object' || arr === null) {
-    return arr
+  if (typeof value !== 'object' || value === null) {
+    return value
   }
 
-  return camelCaseObject(arr)
+  return camelCaseObject(value)
 }
 
 export default camelCaseObjects

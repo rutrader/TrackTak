@@ -1,42 +1,40 @@
+import camelCase from 'camelcase'
+import { isNil } from 'lodash-es'
 import { isEODQueryFromModified } from '../api/v1/securities/alterFromToQuery'
 
 const convertEODFromAPI = (data, query) => {
   let newData = data
 
   if (isEODQueryFromModified(query)) {
-    newData = data[0]
+    const key = camelCase(query.filter)
+
+    newData = {
+      key,
+      value: data[0][key]
+    }
   }
 
   return newData
 }
 
-export const divideEODYieldsByHundred = (data, query) => {
-  const yieldFields = ['open', 'high', 'low', 'close', 'adjustedClose']
+export const divideEODNumbersByHundred = data => {
+  const getModifiedValue = value =>
+    isNil(value) ? value : parseFloat((value / 100).toFixed(5))
 
   if (Array.isArray(data)) {
-    return data.map(value => {
-      if (query.field) {
-        if (yieldFields.some(x => x === query.field)) {
-          return value / 100
-        }
-        return value
-      }
+    return data?.map(value => {
       return {
         ...value,
-        open: value.open / 100,
-        high: value.high / 100,
-        low: value.low / 100,
-        close: value.close / 100,
-        adjustedClose: value.adjustedClose / 100
+        open: getModifiedValue(value.open),
+        high: getModifiedValue(value.high),
+        low: getModifiedValue(value.low),
+        close: getModifiedValue(value.close),
+        adjustedClose: getModifiedValue(value.adjustedClose)
       }
     })
   }
 
-  if (yieldFields.some(x => x === query.field)) {
-    return data / 100
-  }
-
-  return data
+  return { ...data, value: getModifiedValue(data.value) }
 }
 
 export default convertEODFromAPI

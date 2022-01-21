@@ -1,7 +1,11 @@
 import { FunctionPlugin } from '@tracktak/hyperformula'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
 import { api } from '@tracktak/common'
-import { getPluginAsyncValue, inferSizeMethod } from '../helpers'
+import {
+  getPluginAsyncValue,
+  inferSizeMethod,
+  mapValuesToArrayOfArrays
+} from '../helpers'
 import { equityRiskPremiumFields } from '../fields'
 import {
   fiscalDateRangeCellError,
@@ -66,15 +70,15 @@ export const implementedFunctions = {
   }
 }
 
-export const aliases = {
-  'M.GERP': 'MARKET.GET_EQUITY_RISK_PREMIUMS',
-  'M.GCERP': 'MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM',
-  'M.GCRIS': 'MARKET.GET_CREDIT_RATING_INTEREST_SPREADS',
-  'M.RFR': 'MARKET.RISK_FREE_RATE'
-}
-
 export const translations = {
-  enGB: aliases
+  enGB: {
+    'MARKET.GET_EQUITY_RISK_PREMIUMS': 'MARKET.GET_EQUITY_RISK_PREMIUMS',
+    'MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM':
+      'MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM',
+    'MARKET.GET_CREDIT_RATING_INTEREST_SPREADS':
+      'MARKET.GET_CREDIT_RATING_INTEREST_SPREADS',
+    'MARKET.RISK_FREE_RATE': 'MARKET.RISK_FREE_RATE'
+  }
 }
 
 export class Plugin extends FunctionPlugin {
@@ -108,7 +112,7 @@ export class Plugin extends FunctionPlugin {
           fiscalDateRange
         })
 
-        return getPluginAsyncValue(data.value)
+        return getPluginAsyncValue(mapValuesToArrayOfArrays(data.value, true))
       }
     )
   }
@@ -148,7 +152,7 @@ export class Plugin extends FunctionPlugin {
           fiscalDateRange
         })
 
-        return getPluginAsyncValue(data.value)
+        return getPluginAsyncValue(mapValuesToArrayOfArrays(data.value))
       }
     )
   }
@@ -183,7 +187,7 @@ export class Plugin extends FunctionPlugin {
           fiscalDateRange
         })
 
-        return getPluginAsyncValue(data.value)
+        return getPluginAsyncValue(mapValuesToArrayOfArrays(data.value, true))
       }
     )
   }
@@ -207,4 +211,3 @@ export class Plugin extends FunctionPlugin {
 }
 
 Plugin.implementedFunctions = implementedFunctions
-Plugin.aliases = aliases

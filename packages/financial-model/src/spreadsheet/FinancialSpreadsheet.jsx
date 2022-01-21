@@ -10,7 +10,6 @@ import {
   FunctionHelper,
   mapFromSerializedSheetsToSheets
 } from '@tracktak/powersheet'
-import { currencySymbolMap } from 'currency-symbol-map'
 import getToolbarActionGroups from './getToolbarActionGroups'
 import './FinancialSpreadsheet.css'
 import { Box } from '@mui/material'
@@ -43,10 +42,7 @@ const buildPowersheet = serializedSheets => {
     formulaBar,
     exporter,
     bottomBar,
-    functionHelper,
-    hyperformulaConfig: {
-      currencySymbol: Object.values(currencySymbolMap)
-    }
+    functionHelper
   })
 
   spreadsheet.setFunctionTypeBlocklist(['Engineering'])
@@ -70,17 +66,16 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
   const name = spreadsheetData?.sheetData.name
 
   useEffect(() => {
-    const spreadsheet = buildPowersheet(spreadsheetData.sheetData.data.sheets)
-
     const metaPluginInstance = metaPlugin.getPlugin(
-      new Date(spreadsheetData.createdTimestamp),
-      spreadsheet
+      new Date(spreadsheetData.createdTimestamp)
     )
 
     HyperFormula.registerFunctionPlugin(
       metaPluginInstance,
       metaPlugin.translations
     )
+
+    const spreadsheet = buildPowersheet(spreadsheetData.sheetData.data.sheets)
 
     setSpreadsheet(spreadsheet)
 
@@ -101,9 +96,6 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
     )
 
     spreadsheet.setData(spreadsheetData.sheetData.data.data)
-
-    // TODO: Remove this once internal meta plugin function is removed
-    spreadsheet.render(true)
 
     const functionHelperClosed = localStorage.getItem('functionHelperClosed')
 

@@ -1,6 +1,5 @@
 import express from 'express'
 import { getFundamentals } from '../../eodHistoricalData/eodAPI'
-import { getFieldValue } from '../../helpers'
 import readFile from './readFile'
 
 const router = express.Router()
@@ -30,7 +29,7 @@ router.get('/:ticker', async (req, res) => {
   }
 
   res.send({
-    value: getFieldValue(value)
+    value
   })
 })
 

@@ -52,6 +52,16 @@ export const getConfidenceInterval = arr => {
   return confidenceIntervalFormula(stDevErrorOfMeanFormula(arr), 1.96)
 }
 
+const getLowerUpperHalves = (midPoint, minPoint) => {
+  const lowerHalfPoint = (midPoint - minPoint) / 2 + minPoint
+  const upperHalfPoint = midPoint - lowerHalfPoint + midPoint
+
+  const truncatelowerHalfPoint = truncateDecimal(lowerHalfPoint, 2)
+  const truncateUpperHalfPoint = truncateDecimal(upperHalfPoint, 2)
+
+  return { truncatelowerHalfPoint, truncateUpperHalfPoint }
+}
+
 export const implementedFunctions = {
   'DATA_ANALYSIS.SENSITIVITY_ANALYSIS': {
     method: 'sensitivityAnalysis',
@@ -93,23 +103,12 @@ export const implementedFunctions = {
   }
 }
 
-export const aliases = {
-  'D.SA': 'DATA_ANALYSIS.SENSITIVITY_ANALYSIS',
-  'D.MCS': 'DATA_ANALYSIS.MONTE_CARLO_SIMULATION'
-}
-
 export const translations = {
-  enGB: aliases
-}
-
-const getLowerUpperHalves = (midPoint, minPoint) => {
-  const lowerHalfPoint = (midPoint - minPoint) / 2 + minPoint
-  const upperHalfPoint = midPoint - lowerHalfPoint + midPoint
-
-  const truncatelowerHalfPoint = truncateDecimal(lowerHalfPoint, 2)
-  const truncateUpperHalfPoint = truncateDecimal(upperHalfPoint, 2)
-
-  return { truncatelowerHalfPoint, truncateUpperHalfPoint }
+  enGB: {
+    'DATA_ANALYSIS.SENSITIVITY_ANALYSIS': 'DATA_ANALYSIS.SENSITIVITY_ANALYSIS',
+    'DATA_ANALYSIS.MONTE_CARLO_SIMULATION':
+      'DATA_ANALYSIS.MONTE_CARLO_SIMULATION'
+  }
 }
 
 export class Plugin extends FunctionPlugin {
@@ -231,10 +230,9 @@ export class Plugin extends FunctionPlugin {
 
         HyperFormula.registerFunction(
           'DATA_ANALYSIS.SENSITIVITY_ANALYSIS',
-          Plugin,
-          translations
+          Plugin
         )
-        HyperFormula.registerFunction('D.SA', Plugin, translations)
+        HyperFormula.registerFunction('D.SA', Plugin)
 
         return SimpleRangeValue.onlyValues(intersectionPointValues)
       }
@@ -320,10 +318,9 @@ export class Plugin extends FunctionPlugin {
 
         HyperFormula.registerFunction(
           'DATA_ANALYSIS.MONTE_CARLO_SIMULATION',
-          Plugin,
-          translations
+          Plugin
         )
-        HyperFormula.registerFunction('D.MCS', Plugin, translations)
+        HyperFormula.registerFunction('D.MCS', Plugin)
 
         return SimpleRangeValue.onlyValues([
           ['Statistic', 'Forecast values'],
@@ -358,4 +355,3 @@ export class Plugin extends FunctionPlugin {
 }
 
 Plugin.implementedFunctions = implementedFunctions
-Plugin.aliases = aliases

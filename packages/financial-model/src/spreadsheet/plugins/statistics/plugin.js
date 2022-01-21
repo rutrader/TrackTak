@@ -1,4 +1,3 @@
-import { StatisticalPlugin } from '@tracktak/hyperformula/es/interpreter/plugin/StatisticalPlugin'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
 import { ArraySize } from '@tracktak/hyperformula/es/ArraySize'
 import {
@@ -10,6 +9,7 @@ import {
   uniformInvDistFormula
 } from '../../../statsFormulas'
 import Rand, { PRNG } from 'rand-seed'
+import { FunctionPlugin } from '@tracktak/hyperformula'
 
 const rand = new Rand(undefined, PRNG.mulberry32)
 
@@ -59,18 +59,17 @@ export const implementedFunctions = {
   }
 }
 
-export const aliases = {
-  'S.NIR': 'STATISTICS.NORMAL_INVERSE_RANDOM',
-  'S.UIR': 'STATISTICS.UNIFORM_INVERSE_RANDOM',
-  'S.TIR': 'STATISTICS.TRIANGULAR_INVERSE_RANDOM',
-  'S.LIR': 'STATISTICS.LOGNORMAL_INVERSE_RANDOM'
-}
-
 export const translations = {
-  enGB: aliases
+  enGB: {
+    'STATISTICS.NORMAL_INVERSE_RANDOM': 'STATISTICS.NORMAL_INVERSE_RANDOM',
+    'STATISTICS.UNIFORM_INVERSE_RANDOM': 'STATISTICS.UNIFORM_INVERSE_RANDOM',
+    'STATISTICS.TRIANGULAR_INVERSE_RANDOM':
+      'STATISTICS.TRIANGULAR_INVERSE_RANDOM',
+    'STATISTICS.LOGNORMAL_INVERSE_RANDOM': 'STATISTICS.LOGNORMAL_INVERSE_RANDOM'
+  }
 }
 
-export class Plugin extends StatisticalPlugin {
+export class Plugin extends FunctionPlugin {
   normalInverseRandom(ast, state) {
     const metadata = this.metadata('STATISTICS.NORMAL_INVERSE_RANDOM')
 
@@ -145,4 +144,3 @@ export class Plugin extends StatisticalPlugin {
 }
 
 Plugin.implementedFunctions = implementedFunctions
-Plugin.aliases = aliases

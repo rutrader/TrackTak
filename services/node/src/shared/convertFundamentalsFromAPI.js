@@ -78,7 +78,7 @@ const convertBalanceSheet = ({
 }
 
 const getFinancialMapCallback = key => statement => {
-  const statementKeys = financialStatementKeys[key]
+  const statementKeys = financialStatementKeys[key].map(x => x.field)
   const newStatement = {}
 
   statementKeys.forEach(key => {

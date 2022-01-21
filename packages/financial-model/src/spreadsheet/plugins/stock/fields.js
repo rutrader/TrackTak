@@ -1,8 +1,4 @@
-import {
-  balanceSheet,
-  cashFlowStatement,
-  incomeStatement
-} from './financialStatementKeys'
+import { allStatements } from './financialStatementKeys'
 
 export const financialStatementFields = [
   'incomeStatement',
@@ -12,9 +8,7 @@ export const financialStatementFields = [
 
 export const financialFields = [
   ...financialStatementFields,
-  ...incomeStatement,
-  ...balanceSheet,
-  ...cashFlowStatement
+  ...allStatements.map(x => x.field)
 ]
 
 export const infoFields = [

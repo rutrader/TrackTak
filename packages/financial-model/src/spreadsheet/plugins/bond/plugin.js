@@ -1,11 +1,16 @@
 import { FunctionPlugin } from '@tracktak/hyperformula'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
 import { api } from '@tracktak/common'
-import { getPluginAsyncValue, inferSizeMethod } from '../helpers'
+import {
+  convertEODNumbersToFormattedNumbers,
+  getPluginAsyncValue,
+  inferSizeMethod,
+  mapValuesToArrayOfArrays
+} from '../helpers'
 import countryISOs from './countryISOs'
 import { maturityCellError } from './cellErrors'
 import { maturityRegex } from './matchers'
-import { validateEODParamsHasError } from '../eod'
+import { getEodKeys, validateEODParamsHasError } from '../eod'
 import { getCountryISOCellError } from '../cellErrors'
 
 const countryISOCellError = getCountryISOCellError(countryISOs)
@@ -30,12 +35,10 @@ export const implementedFunctions = {
   }
 }
 
-export const aliases = {
-  'B.GCY': 'BOND.GET_COUNTRY_YIELD'
-}
-
 export const translations = {
-  enGB: aliases
+  enGB: {
+    'BOND.GET_COUNTRY_YIELD': 'BOND.GET_COUNTRY_YIELD'
+  }
 }
 
 export class Plugin extends FunctionPlugin {
@@ -86,8 +89,14 @@ export class Plugin extends FunctionPlugin {
             fiscalDateRange
           }
         )
+        const eodKeys = getEodKeys('percent')
 
-        return getPluginAsyncValue(data.value)
+        const value = mapValuesToArrayOfArrays(
+          convertEODNumbersToFormattedNumbers(eodKeys, data.value),
+          true
+        )
+
+        return getPluginAsyncValue(value)
       }
     )
   }
@@ -98,4 +107,3 @@ export class Plugin extends FunctionPlugin {
 }
 
 Plugin.implementedFunctions = implementedFunctions
-Plugin.aliases = aliases

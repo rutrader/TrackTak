@@ -2,16 +2,17 @@ import { CellError, ErrorType } from '@tracktak/hyperformula'
 import { fiscalDateRangeCellError, getFieldCellError } from './cellErrors'
 import { fiscalDateRangeRegex } from './matchers'
 
-const eodFields = [
-  'date',
-  'open',
-  'high',
-  'close',
-  'adjustedClose',
-  'low',
-  'type',
-  'volume'
+export const getEodKeys = type => [
+  { field: 'date' },
+  { type, field: 'open' },
+  { type, field: 'high' },
+  { type, field: 'close' },
+  { type, field: 'adjustedClose' },
+  { type, field: 'low' },
+  { field: 'volume' }
 ]
+
+const eodFields = getEodKeys().map(x => x.field)
 
 const fieldCellError = getFieldCellError(eodFields)
 

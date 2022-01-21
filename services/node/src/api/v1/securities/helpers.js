@@ -1,5 +1,4 @@
 import dayjs from 'dayjs'
-import { sentenceCase } from 'change-case'
 
 export const parseFiscalDateFromRange = fiscalDateRange => {
   if (fiscalDateRange.includes('>=')) {
@@ -115,75 +114,4 @@ export const convertFiscalDateRangeToFromTo = fiscalDateRange => {
     from: fiscalDate,
     to: fiscalDate
   }
-}
-
-export const mapObjToValues = (obj, isVertical) => {
-  let values = []
-
-  if (isVertical) {
-    const keys = Object.keys(obj).map(key => sentenceCase(key))
-
-    values[0] = keys
-
-    Object.values(obj).forEach((objValues, i) => {
-      const newObjValues = Array.isArray(objValues) ? objValues : [objValues]
-
-      newObjValues.forEach((value, j) => {
-        const newIndex = j + 1
-
-        if (i === 0) {
-          values[newIndex] = []
-        }
-
-        values[newIndex].push(value)
-      })
-    })
-  } else {
-    values = Object.entries(obj).map(([key, value]) => [
-      sentenceCase(key),
-      ...(Array.isArray(value) ? value : [value])
-    ])
-  }
-
-  return values
-}
-
-export const mapArrayObjectsToValues = (arr, isVertical) => {
-  const rows = {}
-
-  Object.keys(arr[0]).map(key => {
-    rows[key] = []
-  })
-
-  arr.forEach(statement => {
-    Object.entries(statement).forEach(([key, value]) => {
-      rows[key].push(value)
-    })
-  })
-
-  return mapObjToValues(rows, isVertical)
-}
-
-export const getFieldValue = (value, isVertical) => {
-  if (Array.isArray(value)) {
-    if (!value.length) {
-      return null
-    }
-
-    if (typeof value[0] === 'object') {
-      return mapArrayObjectsToValues(value, isVertical)
-    } else {
-      return isVertical ? value.map(x => [x]) : [value]
-    }
-  }
-
-  if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
-    if (Object.keys(value).length === 0) {
-      return null
-    }
-
-    return mapObjToValues(value, isVertical)
-  }
-
-  return value ?? null
 }

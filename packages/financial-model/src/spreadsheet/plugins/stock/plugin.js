@@ -14,10 +14,16 @@ import {
   ratioFields
 } from './fields'
 import { tickerRegex } from './matchers'
-import { inferSizeMethod, getPluginAsyncValue } from '../helpers'
+import {
+  inferSizeMethod,
+  getPluginAsyncValue,
+  mapValuesToArrayOfArrays,
+  convertEODNumbersToFormattedNumbers,
+  convertFinancialNumbersToFormattedNumbers
+} from '../helpers'
 import { fiscalDateRangeCellError, getFieldCellError } from '../cellErrors'
 import { fiscalDateRangeRegex } from '../matchers'
-import { validateEODParamsHasError } from '../eod'
+import { getEodKeys, validateEODParamsHasError } from '../eod'
 
 const financialsFieldCellError = getFieldCellError(financialFields)
 const infoFieldCellError = getFieldCellError(infoFields)
@@ -134,18 +140,17 @@ export const implementedFunctions = {
   }
 }
 
-export const aliases = {
-  'S.GCF': 'STOCK.GET_COMPANY_FINANCIALS',
-  'S.GCR': 'STOCK.GET_COMPANY_RATIOS',
-  'S.GCOS': 'STOCK.GET_COMPANY_OUTSTANDING_SHARES',
-  'S.GCP': 'STOCK.GET_COMPANY_PRICES',
-  'S.GCI': 'STOCK.GET_COMPANY_INFO',
-  'S.GIA': 'STOCK.GET_INDUSTRY_AVERAGES',
-  'S.GCIA': 'STOCK.GET_COMPANY_INDUSTRY_AVERAGES'
-}
-
 export const translations = {
-  enGB: aliases
+  enGB: {
+    'STOCK.GET_COMPANY_FINANCIALS': 'STOCK.GET_COMPANY_FINANCIALS',
+    'STOCK.GET_COMPANY_RATIOS': 'STOCK.GET_COMPANY_RATIOS',
+    'STOCK.GET_COMPANY_OUTSTANDING_SHARES':
+      'STOCK.GET_COMPANY_OUTSTANDING_SHARES',
+    'STOCK.GET_COMPANY_PRICES': 'STOCK.GET_COMPANY_PRICES',
+    'STOCK.GET_COMPANY_INFO': 'STOCK.GET_COMPANY_INFO',
+    'STOCK.GET_INDUSTRY_AVERAGES': 'STOCK.GET_INDUSTRY_AVERAGES',
+    'STOCK.GET_COMPANY_INDUSTRY_AVERAGES': 'STOCK.GET_COMPANY_INDUSTRY_AVERAGES'
+  }
 }
 
 export class Plugin extends FunctionPlugin {
@@ -195,7 +200,11 @@ export class Plugin extends FunctionPlugin {
           fiscalDateRange
         })
 
-        return getPluginAsyncValue(data.value)
+        return getPluginAsyncValue(
+          mapValuesToArrayOfArrays(
+            convertFinancialNumbersToFormattedNumbers(data.value)
+          )
+        )
       }
     )
   }
@@ -246,7 +255,7 @@ export class Plugin extends FunctionPlugin {
           fiscalDateRange
         })
 
-        return getPluginAsyncValue(data.value)
+        return getPluginAsyncValue(mapValuesToArrayOfArrays(data.value))
       }
     )
   }
@@ -275,13 +284,27 @@ export class Plugin extends FunctionPlugin {
           return error
         }
 
-        const { data } = await api.getCompanyPrices(ticker, {
-          field,
-          granularity,
-          fiscalDateRange
-        })
+        const promises = await Promise.all([
+          api.getEODHistoricalDataFundamentals(ticker, {
+            filter: 'General::CurrencyCode'
+          }),
+          api.getCompanyPrices(ticker, {
+            field,
+            granularity,
+            fiscalDateRange
+          })
+        ])
 
-        return getPluginAsyncValue(data.value)
+        const currencyCode = promises[0].data.value
+        const prices = promises[1].data.value
+        const eodKeys = getEodKeys('currency')
+
+        const value = mapValuesToArrayOfArrays(
+          convertEODNumbersToFormattedNumbers(eodKeys, prices, currencyCode),
+          true
+        )
+
+        return getPluginAsyncValue(value)
       }
     )
   }
@@ -353,7 +376,7 @@ export class Plugin extends FunctionPlugin {
           fiscalDateRange
         })
 
-        return getPluginAsyncValue(data.value)
+        return getPluginAsyncValue(mapValuesToArrayOfArrays(data.value, true))
       }
     )
   }
@@ -392,7 +415,7 @@ export class Plugin extends FunctionPlugin {
           fiscalDateRange
         })
 
-        return getPluginAsyncValue(data.value)
+        return getPluginAsyncValue(mapValuesToArrayOfArrays(data.value))
       }
     )
   }
@@ -445,7 +468,7 @@ export class Plugin extends FunctionPlugin {
           fiscalDateRange
         })
 
-        return getPluginAsyncValue(data.value)
+        return getPluginAsyncValue(mapValuesToArrayOfArrays(data.value))
       }
     )
   }
@@ -462,4 +485,3 @@ export class Plugin extends FunctionPlugin {
 }
 
 Plugin.implementedFunctions = implementedFunctions
-Plugin.aliases = aliases

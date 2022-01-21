@@ -3,8 +3,13 @@ import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/Func
 import { api } from '@tracktak/common'
 import currencyCodes from './currencyCodes'
 import { baseCurrencyCellError, quoteCurrencyCellError } from './cellErrors'
-import { validateEODParamsHasError } from '../eod'
-import { getPluginAsyncValue, inferSizeMethod } from '../helpers'
+import { getEodKeys, validateEODParamsHasError } from '../eod'
+import {
+  convertEODNumbersToFormattedNumbers,
+  getPluginAsyncValue,
+  inferSizeMethod,
+  mapValuesToArrayOfArrays
+} from '../helpers'
 
 export const implementedFunctions = {
   'FX.GET_FIAT_EXCHANGE_RATE': {
@@ -26,12 +31,10 @@ export const implementedFunctions = {
   }
 }
 
-export const aliases = {
-  'F.GFER': 'FX.GET_FIAT_EXCHANGE_RATE'
-}
-
 export const translations = {
-  enGB: aliases
+  enGB: {
+    'FX.GET_FIAT_EXCHANGE_RATE': 'FX.GET_FIAT_EXCHANGE_RATE'
+  }
 }
 
 export class Plugin extends FunctionPlugin {
@@ -84,7 +87,17 @@ export class Plugin extends FunctionPlugin {
           }
         )
 
-        return getPluginAsyncValue(data.value)
+        const eodKeys = getEodKeys('currency')
+        const value = mapValuesToArrayOfArrays(
+          convertEODNumbersToFormattedNumbers(
+            eodKeys,
+            data.value,
+            quoteCurrency
+          ),
+          true
+        )
+
+        return getPluginAsyncValue(value)
       }
     )
   }
@@ -95,4 +108,3 @@ export class Plugin extends FunctionPlugin {
 }
 
 Plugin.implementedFunctions = implementedFunctions
-Plugin.aliases = aliases

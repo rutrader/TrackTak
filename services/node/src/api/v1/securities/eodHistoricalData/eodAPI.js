@@ -6,7 +6,9 @@ import {
   eodEndpoint,
   fundamentalsEndpoint
 } from '../../../../shared/constants'
+import convertEODResponseToArray from '../../../../shared/convertEODResponseToArray'
 import camelCaseObjects from '../../../../shared/camelCaseObjects'
+import convertPenceToGBPIfNeeded from '../../../../shared/convertPenceToGBPIfNeeded'
 
 export const getFundamentals = async (ticker, query) => {
   const data = await sendReqOrGetCachedData(
@@ -20,7 +22,7 @@ export const getFundamentals = async (ticker, query) => {
 
       const convertedFundamentals = convertFundamentalsFromAPI(ticker, data)
 
-      return convertedFundamentals
+      return convertPenceToGBPIfNeeded(convertedFundamentals)
     },
     'fundamentals',
     { ticker, query }
@@ -41,9 +43,11 @@ export const getEOD = async (param, query) => {
         }
       })
 
-      const value = camelCaseObjects(data)
+      const arrayValues = camelCaseObjects(
+        convertEODResponseToArray(data, query.filter)
+      )
 
-      return value
+      return arrayValues
     },
     'eod',
     { param, query }

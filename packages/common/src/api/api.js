@@ -81,10 +81,13 @@ export const getCountryEquityRiskPremium = async (countryISO, params) => {
   })
 }
 
-export const getGovernmentBond = async (countryISO, params) => {
-  return axios.get(`/api/v1/securities/bonds/government/${countryISO}`, {
-    params
-  })
+export const getGovernmentBond = async (countryISOMaturity, params) => {
+  return axios.get(
+    `/api/v1/securities/bonds/government/${countryISOMaturity}`,
+    {
+      params
+    }
+  )
 }
 
 export const getExchangeRate = async (baseCurrency, quoteCurrency, params) => {
