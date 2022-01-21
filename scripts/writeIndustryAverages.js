@@ -25,8 +25,17 @@ const writeIndustryAverages = () => {
         x => x.industryName === value
       )
 
-      industryAverageUS.gicSubIndustry = key
-      industryAverageGlobal.gicSubIndustry = key
+      industryAverageUS.gicSubIndustry = Array.isArray(
+        industryAverageUS.gicSubIndustry
+      )
+        ? [...industryAverageUS.gicSubIndustry, key]
+        : [key]
+
+      industryAverageGlobal.gicSubIndustry = Array.isArray(
+        industryAverageGlobal.gicSubIndustry
+      )
+        ? [...industryAverageGlobal.gicSubIndustry, key]
+        : [key]
     } catch (error) {
       console.log(`failed for key: ${key}`)
       throw error
@@ -42,8 +51,14 @@ const writeIndustryAverages = () => {
         x => x.industryName === value
       )
 
-      industryAverageUS.industry = key
-      industryAverageGlobal.industry = key
+      industryAverageUS.industry = Array.isArray(industryAverageUS.industry)
+        ? [...industryAverageUS.industry, key]
+        : [key]
+      industryAverageGlobal.industry = Array.isArray(
+        industryAverageGlobal.industry
+      )
+        ? [...industryAverageGlobal.industry, key]
+        : [key]
     } catch (error) {
       console.log(`failed for key: ${key}`)
       throw error
@@ -51,29 +66,42 @@ const writeIndustryAverages = () => {
   })
 
   Object.values(industryAveragesUS).forEach(industryAverageUS => {
-    industryAverageUS.industry =
-      industryAverageUS.industry ?? industryAverageUS.industryName
+    industryAverageUS.industry = industryAverageUS.industry ?? [
+      industryAverageUS.industryName
+    ]
 
     delete industryAverageUS.industryName
   })
 
   Object.values(industryAveragesGlobal).forEach(industryAverageGlobal => {
-    industryAverageGlobal.industry =
-      industryAverageGlobal.industry ?? industryAverageGlobal.industryName
+    industryAverageGlobal.industry = industryAverageGlobal.industry ?? [
+      industryAverageGlobal.industryName
+    ]
 
     delete industryAverageGlobal.industryName
   })
 
   const sort = (a, b) => {
-    if (a.industry.includes('Total Market')) {
+    if (a.industry.some(i => i.includes('Total Market'))) {
       return 1
     }
 
-    if (b.industry.includes('Total Market')) {
+    if (b.industry.some(i => i.includes('Total Market'))) {
       return -1
     }
 
-    return a.industry.localeCompare(b.industry)
+    let localeCompareValue = Infinity
+
+    a.industry.forEach(aIndustry => {
+      b.industry.forEach(bIndustry => {
+        localeCompareValue = Math.min(
+          localeCompareValue,
+          aIndustry.localeCompare(bIndustry)
+        )
+      })
+    })
+
+    return localeCompareValue
   }
 
   industryAveragesUS.sort(sort)

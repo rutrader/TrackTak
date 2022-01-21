@@ -18,14 +18,18 @@ router.get('/:ticker', async (req, res) => {
   // Some stocks do not have a gicSubIndustry so fallback to industry for them
   const companyIndustry = industryAverages.find(
     x =>
-      x.gicSubIndustry === general.gicSubIndustry ||
-      x.industry === general.industry
+      x.gicSubIndustry.some(i => i === general.gicSubIndustry) ||
+      x.industry.some(i => i === general.industry)
   )
 
-  let value = companyIndustry
+  let value = {
+    ...companyIndustry,
+    industry: companyIndustry.industry.join(),
+    gicSubIndustry: companyIndustry.gicSubIndustry.join()
+  }
 
   if (field) {
-    value = companyIndustry[field]
+    value = value[field]
   }
 
   res.send({

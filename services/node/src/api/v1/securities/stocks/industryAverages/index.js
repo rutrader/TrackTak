@@ -11,7 +11,13 @@ router.get('/:type', async (req, res) => {
   let value = industryAverages
 
   if (field) {
-    value = industryAverages.map(industryAverage => industryAverage[field])
+    value = industryAverages.map(industryAverage => {
+      return {
+        ...industryAverage[field],
+        industry: industryAverage.industry.join(),
+        gicSubIndustry: industryAverage.gicSubIndustry.join()
+      }
+    })
   }
 
   res.send({
