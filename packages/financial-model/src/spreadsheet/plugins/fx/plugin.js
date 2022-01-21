@@ -87,7 +87,7 @@ export class Plugin extends FunctionPlugin {
           }
         )
 
-        const eodKeys = getEodKeys('currency')
+        const eodKeys = getEodKeys('number')
         const value = mapValuesToArrayOfArrays(
           convertEODNumbersToFormattedNumbers(
             eodKeys,

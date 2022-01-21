@@ -9,10 +9,10 @@ const writeIndustryAverages = () => {
   const inputIndustryAveragesUSPath = `${__dirname}data/industryAveragesUS.json`
   const inputIndustryAveragesGlobalPath = `${__dirname}data/industryAveragesGlobal.json`
 
-  const industryAveragesUS = JSON.parse(
+  let industryAveragesUS = JSON.parse(
     fs.readFileSync(inputIndustryAveragesUSPath)
   )
-  const industryAveragesGlobal = JSON.parse(
+  let industryAveragesGlobal = JSON.parse(
     fs.readFileSync(inputIndustryAveragesGlobalPath)
   )
 
@@ -106,6 +106,26 @@ const writeIndustryAverages = () => {
 
   industryAveragesUS.sort(sort)
   industryAveragesGlobal.sort(sort)
+
+  industryAveragesUS = industryAveragesUS.map(
+    ({ industry, gicSubIndustry, ...rest }) => {
+      return {
+        industry,
+        gicSubIndustry,
+        ...rest
+      }
+    }
+  )
+
+  industryAveragesGlobal = industryAveragesGlobal.map(
+    ({ industry, gicSubIndustry, ...rest }) => {
+      return {
+        industry,
+        gicSubIndustry,
+        ...rest
+      }
+    }
+  )
 
   const outputIndustryAveragesUSPath = `${__dirname}../services/node/src/api/v1/securities/stocks/industryAverages/US.json`
   const outputIndustryAveragesGlobalPath = `${__dirname}../services/node/src/api/v1/securities/stocks/industryAverages/global.json`

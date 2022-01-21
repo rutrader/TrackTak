@@ -8,16 +8,16 @@ router.get('/:type', async (req, res) => {
   const field = req.query.field
   const industryAverages = await readFile(type === 'US')
 
-  let value = industryAverages
+  let value = industryAverages.map(industryAverage => {
+    return {
+      ...industryAverage,
+      industry: industryAverage.industry?.join(),
+      gicSubIndustry: industryAverage.gicSubIndustry?.join()
+    }
+  })
 
   if (field) {
-    value = industryAverages.map(industryAverage => {
-      return {
-        ...industryAverage[field],
-        industry: industryAverage.industry.join(),
-        gicSubIndustry: industryAverage.gicSubIndustry.join()
-      }
-    })
+    value = industryAverages.map(industryAverage => industryAverage[field])
   }
 
   res.send({

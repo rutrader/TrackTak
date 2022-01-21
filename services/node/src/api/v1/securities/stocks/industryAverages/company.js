@@ -24,8 +24,8 @@ router.get('/:ticker', async (req, res) => {
 
   let value = {
     ...companyIndustry,
-    industry: companyIndustry.industry.join(),
-    gicSubIndustry: companyIndustry.gicSubIndustry.join()
+    industry: companyIndustry.industry?.join(),
+    gicSubIndustry: companyIndustry.gicSubIndustry?.join()
   }
 
   if (field) {

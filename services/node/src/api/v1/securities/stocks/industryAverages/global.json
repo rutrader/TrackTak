@@ -1,5 +1,12 @@
 [
   {
+    "industry": [
+      "Accident & Health Insurance",
+      "Insurance - Life",
+      "Insurance�Life",
+      "Life Insurance"
+    ],
+    "gicSubIndustry": ["Life & Health Insurance"],
     "numberOfFirms": 133,
     "annualAverageCAGRLastFiveYears": "9.32%",
     "preTaxOperatingMarginUnadjusted": "9.68%",
@@ -25,16 +32,15 @@
     "ROE": "7.89%",
     "dividendPayoutRatio": "45.64%",
     "equityReinvestmentRate": "45.64%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "9.68%",
-    "gicSubIndustry": ["Life & Health Insurance"],
-    "industry": [
-      "Accident & Health Insurance",
-      "Insurance - Life",
-      "Insurance�Life",
-      "Life Insurance"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "9.68%"
   },
   {
+    "industry": [
+      "Aerospace & Defense",
+      "Aerospace/Defense - Major Diversified",
+      "Aerospace/Defense Products & Services"
+    ],
+    "gicSubIndustry": ["Aerospace & Defense"],
     "numberOfFirms": 255,
     "annualAverageCAGRLastFiveYears": "7.84%",
     "preTaxOperatingMarginUnadjusted": "5.47%",
@@ -60,15 +66,18 @@
     "ROE": "-0.18%",
     "dividendPayoutRatio": "1.03%",
     "equityReinvestmentRate": "1.03%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "5.93%",
-    "gicSubIndustry": ["Aerospace & Defense"],
-    "industry": [
-      "Aerospace & Defense",
-      "Aerospace/Defense - Major Diversified",
-      "Aerospace/Defense Products & Services"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "5.93%"
   },
   {
+    "industry": [
+      "Air Delivery & Freight Services",
+      "Integrated Freight & Logistics",
+      "Integrated Shipping & Logistics",
+      "Shipping",
+      "Shipping & Ports",
+      "Transportation"
+    ],
+    "gicSubIndustry": ["Airport Services"],
     "numberOfFirms": 284,
     "annualAverageCAGRLastFiveYears": "5.64%",
     "preTaxOperatingMarginUnadjusted": "5.89%",
@@ -94,18 +103,26 @@
     "ROE": "8.26%",
     "dividendPayoutRatio": "79.54%",
     "equityReinvestmentRate": "79.54%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "6.03%",
-    "gicSubIndustry": ["Airport Services"],
-    "industry": [
-      "Air Delivery & Freight Services",
-      "Integrated Freight & Logistics",
-      "Integrated Shipping & Logistics",
-      "Shipping",
-      "Shipping & Ports",
-      "Transportation"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "6.03%"
   },
   {
+    "industry": [
+      "Application Software",
+      "Data Storage",
+      "Multimedia & Graphics Software",
+      "Security Software & Services",
+      "Software & Services",
+      "Software - Application",
+      "Software - Infrastructure",
+      "Software�Application",
+      "Software�Infrastructure",
+      "Technical & System Software"
+    ],
+    "gicSubIndustry": [
+      "Data Processing & Outsourced Services",
+      "Application Software",
+      "Systems Software"
+    ],
     "numberOfFirms": 1478,
     "annualAverageCAGRLastFiveYears": "14.37%",
     "preTaxOperatingMarginUnadjusted": "19.82%",
@@ -131,26 +148,15 @@
     "ROE": "20.37%",
     "dividendPayoutRatio": "33.25%",
     "equityReinvestmentRate": "33.25%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "21.44%",
-    "gicSubIndustry": [
-      "Data Processing & Outsourced Services",
-      "Application Software",
-      "Systems Software"
-    ],
-    "industry": [
-      "Application Software",
-      "Data Storage",
-      "Multimedia & Graphics Software",
-      "Security Software & Services",
-      "Software & Services",
-      "Software - Application",
-      "Software - Infrastructure",
-      "Software�Application",
-      "Software�Infrastructure",
-      "Technical & System Software"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "21.44%"
   },
   {
+    "industry": [
+      "Automobiles & Components",
+      "Auto & Truck Dealerships",
+      "Auto Dealerships"
+    ],
+    "gicSubIndustry": ["Automotive Retail"],
     "numberOfFirms": 185,
     "annualAverageCAGRLastFiveYears": "3.50%",
     "preTaxOperatingMarginUnadjusted": "4.90%",
@@ -176,15 +182,29 @@
     "ROE": "13.99%",
     "dividendPayoutRatio": "36.42%",
     "equityReinvestmentRate": "36.42%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "4.45%",
-    "gicSubIndustry": ["Automotive Retail"],
-    "industry": [
-      "Automobiles & Components",
-      "Auto & Truck Dealerships",
-      "Auto Dealerships"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "4.45%"
   },
   {
+    "industry": [
+      "Diversified Utilities",
+      "Electric Utilities",
+      "Foreign Utilities",
+      "Gas Utilities",
+      "Utilities",
+      "Utilities - Diversified",
+      "Utilities - Independent Power Producers",
+      "Utilities - Regulated Electric",
+      "Utilities - Regulated Gas",
+      "Utilities�Diversified",
+      "Utilities�Independent Power Producers",
+      "Utilities�Regulated Electric",
+      "Utilities�Regulated Gas"
+    ],
+    "gicSubIndustry": [
+      "Electric Utilities",
+      "Gas Utilities",
+      "Multi-Utilities"
+    ],
     "numberOfFirms": 53,
     "annualAverageCAGRLastFiveYears": "2.58%",
     "preTaxOperatingMarginUnadjusted": "11.86%",
@@ -210,29 +230,22 @@
     "ROE": "5.49%",
     "dividendPayoutRatio": "122.28%",
     "equityReinvestmentRate": "122.28%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "11.79%",
-    "gicSubIndustry": [
-      "Electric Utilities",
-      "Gas Utilities",
-      "Multi-Utilities"
-    ],
-    "industry": [
-      "Diversified Utilities",
-      "Electric Utilities",
-      "Foreign Utilities",
-      "Gas Utilities",
-      "Utilities",
-      "Utilities - Diversified",
-      "Utilities - Independent Power Producers",
-      "Utilities - Regulated Electric",
-      "Utilities - Regulated Gas",
-      "Utilities�Diversified",
-      "Utilities�Independent Power Producers",
-      "Utilities�Regulated Electric",
-      "Utilities�Regulated Gas"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "11.79%"
   },
   {
+    "industry": [
+      "Diversified Communication Services",
+      "Internet Information Providers",
+      "Internet Service Providers",
+      "Telecom Services",
+      "Telecom Services - Domestic",
+      "Telecom Services - Foreign",
+      "Telecommunication Services"
+    ],
+    "gicSubIndustry": [
+      "Alternative Carriers",
+      "Integrated Telecommunication Services"
+    ],
     "numberOfFirms": 315,
     "annualAverageCAGRLastFiveYears": "9.99%",
     "preTaxOperatingMarginUnadjusted": "15.08%",
@@ -258,22 +271,15 @@
     "ROE": "8.78%",
     "dividendPayoutRatio": "65.62%",
     "equityReinvestmentRate": "65.62%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "14.95%",
-    "gicSubIndustry": [
-      "Alternative Carriers",
-      "Integrated Telecommunication Services"
-    ],
-    "industry": [
-      "Diversified Communication Services",
-      "Internet Information Providers",
-      "Internet Service Providers",
-      "Telecom Services",
-      "Telecom Services - Domestic",
-      "Telecom Services - Foreign",
-      "Telecommunication Services"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "14.95%"
   },
   {
+    "industry": [
+      "Communication Equipment",
+      "Long Distance Carriers",
+      "Networking & Communication Devices"
+    ],
+    "gicSubIndustry": ["Communications Equipment"],
     "numberOfFirms": 482,
     "annualAverageCAGRLastFiveYears": "8.73%",
     "preTaxOperatingMarginUnadjusted": "10.81%",
@@ -299,15 +305,11 @@
     "ROE": "10.42%",
     "dividendPayoutRatio": "61.55%",
     "equityReinvestmentRate": "61.55%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "11.18%",
-    "gicSubIndustry": ["Communications Equipment"],
-    "industry": [
-      "Communication Equipment",
-      "Long Distance Carriers",
-      "Networking & Communication Devices"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "11.18%"
   },
   {
+    "industry": ["Electronic Gaming & Multimedia"],
+    "gicSubIndustry": ["Interactive Home Entertainment"],
     "numberOfFirms": 339,
     "annualAverageCAGRLastFiveYears": "8.14%",
     "preTaxOperatingMarginUnadjusted": "19.78%",
@@ -333,11 +335,11 @@
     "ROE": "18.42%",
     "dividendPayoutRatio": "3.72%",
     "equityReinvestmentRate": "3.72%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "21.05%",
-    "gicSubIndustry": ["Interactive Home Entertainment"],
-    "industry": ["Electronic Gaming & Multimedia"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "21.05%"
   },
   {
+    "industry": ["Marine Shipping"],
+    "gicSubIndustry": ["Marine", "Marine Ports & Services"],
     "numberOfFirms": 353,
     "annualAverageCAGRLastFiveYears": "1.59%",
     "preTaxOperatingMarginUnadjusted": "8.18%",
@@ -363,11 +365,34 @@
     "ROE": "5.68%",
     "dividendPayoutRatio": "61.79%",
     "equityReinvestmentRate": "61.79%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "8.35%",
-    "gicSubIndustry": ["Marine", "Marine Ports & Services"],
-    "industry": ["Marine Shipping"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "8.35%"
   },
   {
+    "industry": [
+      "Cigarettes",
+      "Confectioners",
+      "Drug Stores",
+      "Drugs Wholesale",
+      "Electronics Stores",
+      "Home Furnishing Stores",
+      "Home Improvement Retail",
+      "Home Improvement Stores",
+      "Jewelry Stores",
+      "Luxury Goods",
+      "Music & Video Stores",
+      "Pharmaceutical Retailers",
+      "Specialty Retail",
+      "Specialty Retail, Other",
+      "Sporting Goods Stores",
+      "Toy & Hobby Stores",
+      "Toys & Games"
+    ],
+    "gicSubIndustry": [
+      "Apparel Retail",
+      "Computer & Electronics Retail",
+      "Specialty Stores",
+      "Homefurnishing Retail"
+    ],
     "numberOfFirms": 480,
     "annualAverageCAGRLastFiveYears": "1.51%",
     "preTaxOperatingMarginUnadjusted": "3.47%",
@@ -393,34 +418,11 @@
     "ROE": "2.29%",
     "dividendPayoutRatio": "201.73%",
     "equityReinvestmentRate": "201.73%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "3.32%",
-    "gicSubIndustry": [
-      "Apparel Retail",
-      "Computer & Electronics Retail",
-      "Specialty Stores",
-      "Homefurnishing Retail"
-    ],
-    "industry": [
-      "Cigarettes",
-      "Confectioners",
-      "Drug Stores",
-      "Drugs Wholesale",
-      "Electronics Stores",
-      "Home Furnishing Stores",
-      "Home Improvement Retail",
-      "Home Improvement Stores",
-      "Jewelry Stores",
-      "Luxury Goods",
-      "Music & Video Stores",
-      "Pharmaceutical Retailers",
-      "Specialty Retail",
-      "Specialty Retail, Other",
-      "Sporting Goods Stores",
-      "Toy & Hobby Stores",
-      "Toys & Games"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "3.32%"
   },
   {
+    "industry": ["Internet Retail"],
+    "gicSubIndustry": ["Internet & Direct Marketing Retail"],
     "numberOfFirms": 356,
     "annualAverageCAGRLastFiveYears": "13.38%",
     "preTaxOperatingMarginUnadjusted": "4.75%",
@@ -446,11 +448,17 @@
     "ROE": "14.89%",
     "dividendPayoutRatio": "5.03%",
     "equityReinvestmentRate": "5.03%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "5.38%",
-    "gicSubIndustry": ["Internet & Direct Marketing Retail"],
-    "industry": ["Internet Retail"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "5.38%"
   },
   {
+    "industry": [
+      "Food & Staples Retailing",
+      "Grocery Stores",
+      "Meat Products",
+      "Packaged Foods",
+      "Specialty Eateries"
+    ],
+    "gicSubIndustry": ["Hypermarkets & Super Centers"],
     "numberOfFirms": 171,
     "annualAverageCAGRLastFiveYears": "3.74%",
     "preTaxOperatingMarginUnadjusted": "4.31%",
@@ -476,17 +484,16 @@
     "ROE": "11.41%",
     "dividendPayoutRatio": "47.07%",
     "equityReinvestmentRate": "47.07%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "4.11%",
-    "gicSubIndustry": ["Hypermarkets & Super Centers"],
-    "industry": [
-      "Food & Staples Retailing",
-      "Grocery Stores",
-      "Meat Products",
-      "Packaged Foods",
-      "Specialty Eateries"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "4.11%"
   },
   {
+    "industry": [
+      "Department Stores",
+      "Discount Stores",
+      "Discount, Variety Stores",
+      "Retailing"
+    ],
+    "gicSubIndustry": ["Department Stores", "General Merchandise Stores"],
     "numberOfFirms": 217,
     "annualAverageCAGRLastFiveYears": "-1.14%",
     "preTaxOperatingMarginUnadjusted": "4.31%",
@@ -512,16 +519,16 @@
     "ROE": "9.99%",
     "dividendPayoutRatio": "55.81%",
     "equityReinvestmentRate": "55.81%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "3.88%",
-    "gicSubIndustry": ["Department Stores", "General Merchandise Stores"],
-    "industry": [
-      "Department Stores",
-      "Discount Stores",
-      "Discount, Variety Stores",
-      "Retailing"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "3.88%"
   },
   {
+    "industry": [
+      "Computer Distribution",
+      "Computers Wholesale",
+      "Electronics Wholesale",
+      "Medical Distribution"
+    ],
+    "gicSubIndustry": ["Trading Companies & Distributors", "Distributors"],
     "numberOfFirms": 1022,
     "annualAverageCAGRLastFiveYears": "6.62%",
     "preTaxOperatingMarginUnadjusted": "3.65%",
@@ -547,16 +554,16 @@
     "ROE": "5.73%",
     "dividendPayoutRatio": "75.55%",
     "equityReinvestmentRate": "75.55%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "3.68%",
-    "gicSubIndustry": ["Trading Companies & Distributors", "Distributors"],
-    "industry": [
-      "Computer Distribution",
-      "Computers Wholesale",
-      "Electronics Wholesale",
-      "Medical Distribution"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "3.68%"
   },
   {
+    "industry": [
+      "Insurance (General)",
+      "Insurance - Reinsurance",
+      "Insurance-Reinsurance",
+      "Insurance�Reinsurance"
+    ],
+    "gicSubIndustry": ["Reinsurance"],
     "numberOfFirms": 37,
     "annualAverageCAGRLastFiveYears": "4.29%",
     "preTaxOperatingMarginUnadjusted": "3.80%",
@@ -582,16 +589,14 @@
     "ROE": "3.34%",
     "dividendPayoutRatio": "93.49%",
     "equityReinvestmentRate": "93.49%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "3.78%",
-    "gicSubIndustry": ["Reinsurance"],
-    "industry": [
-      "Insurance (General)",
-      "Insurance - Reinsurance",
-      "Insurance-Reinsurance",
-      "Insurance�Reinsurance"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "3.78%"
   },
   {
+    "industry": [
+      "Internet Content & Information",
+      "Internet Software & Services"
+    ],
+    "gicSubIndustry": ["Interactive Media & Services"],
     "numberOfFirms": 155,
     "annualAverageCAGRLastFiveYears": "23.83%",
     "preTaxOperatingMarginUnadjusted": "3.64%",
@@ -617,14 +622,11 @@
     "ROE": "-5.64%",
     "dividendPayoutRatio": "0.32%",
     "equityReinvestmentRate": "0.32%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "4.72%",
-    "gicSubIndustry": ["Interactive Media & Services"],
-    "industry": [
-      "Internet Content & Information",
-      "Internet Software & Services"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "4.72%"
   },
   {
+    "industry": ["Media", "Wireless Communications"],
+    "gicSubIndustry": ["Wireless Telecommunication Services"],
     "numberOfFirms": 104,
     "annualAverageCAGRLastFiveYears": "1.13%",
     "preTaxOperatingMarginUnadjusted": "14.17%",
@@ -650,11 +652,16 @@
     "ROE": "8.19%",
     "dividendPayoutRatio": "77.55%",
     "equityReinvestmentRate": "77.55%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "14.07%",
-    "gicSubIndustry": ["Wireless Telecommunication Services"],
-    "industry": ["Media", "Wireless Communications"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "14.07%"
   },
   {
+    "industry": [
+      "Leisure",
+      "Recreational Goods, Other",
+      "Sporting Activities",
+      "Sporting Goods"
+    ],
+    "gicSubIndustry": ["Leisure Facilities"],
     "numberOfFirms": 331,
     "annualAverageCAGRLastFiveYears": "0.43%",
     "preTaxOperatingMarginUnadjusted": "8.05%",
@@ -680,16 +687,17 @@
     "ROE": "2.79%",
     "dividendPayoutRatio": "192.60%",
     "equityReinvestmentRate": "192.60%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "7.98%",
-    "gicSubIndustry": ["Leisure Facilities"],
-    "industry": [
-      "Leisure",
-      "Recreational Goods, Other",
-      "Sporting Activities",
-      "Sporting Goods"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "7.98%"
   },
   {
+    "industry": ["Copper", "Gold", "Other Precious Metals & Mining", "Silver"],
+    "gicSubIndustry": [
+      "Aluminum",
+      "Copper",
+      "Gold",
+      "Precious Metals & Minerals",
+      "Silver"
+    ],
     "numberOfFirms": 922,
     "annualAverageCAGRLastFiveYears": "35.80%",
     "preTaxOperatingMarginUnadjusted": "19.25%",
@@ -715,17 +723,15 @@
     "ROE": "7.86%",
     "dividendPayoutRatio": "45.15%",
     "equityReinvestmentRate": "45.15%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "19.30%",
-    "gicSubIndustry": [
-      "Aluminum",
-      "Copper",
-      "Gold",
-      "Precious Metals & Minerals",
-      "Silver"
-    ],
-    "industry": ["Copper", "Gold", "Other Precious Metals & Mining", "Silver"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "19.30%"
   },
   {
+    "industry": [
+      "Lumber, Wood Production",
+      "Lumber & Wood Production",
+      "Paper & Paper Products"
+    ],
+    "gicSubIndustry": ["Forest Products", "Paper Products"],
     "numberOfFirms": 287,
     "annualAverageCAGRLastFiveYears": "3.25%",
     "preTaxOperatingMarginUnadjusted": "7.03%",
@@ -751,15 +757,15 @@
     "ROE": "4.96%",
     "dividendPayoutRatio": "59.66%",
     "equityReinvestmentRate": "59.66%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "7.07%",
-    "gicSubIndustry": ["Forest Products", "Paper Products"],
-    "industry": [
-      "Lumber, Wood Production",
-      "Lumber & Wood Production",
-      "Paper & Paper Products"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "7.07%"
   },
   {
+    "industry": [
+      "Industrial Equipment & Components",
+      "Industrial Equipment Wholesale",
+      "Oil & Gas Equipment & Services"
+    ],
+    "gicSubIndustry": ["Oil & Gas Equipment & Services"],
     "numberOfFirms": 513,
     "annualAverageCAGRLastFiveYears": "-2.25%",
     "preTaxOperatingMarginUnadjusted": "1.27%",
@@ -785,15 +791,11 @@
     "ROE": "-12.48%",
     "dividendPayoutRatio": "0.53%",
     "equityReinvestmentRate": "0.53%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "1.38%",
-    "gicSubIndustry": ["Oil & Gas Equipment & Services"],
-    "industry": [
-      "Industrial Equipment & Components",
-      "Industrial Equipment Wholesale",
-      "Oil & Gas Equipment & Services"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "1.38%"
   },
   {
+    "industry": ["Industrial Distribution", "Oil & Gas Midstream"],
+    "gicSubIndustry": ["Oil & Gas Storage & Transportation"],
     "numberOfFirms": 204,
     "annualAverageCAGRLastFiveYears": "9.68%",
     "preTaxOperatingMarginUnadjusted": "16.79%",
@@ -819,11 +821,22 @@
     "ROE": "5.25%",
     "dividendPayoutRatio": "201.87%",
     "equityReinvestmentRate": "201.87%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "16.76%",
-    "gicSubIndustry": ["Oil & Gas Storage & Transportation"],
-    "industry": ["Industrial Distribution", "Oil & Gas Midstream"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "16.76%"
   },
   {
+    "industry": [
+      "Independent Oil & Gas",
+      "Oil & Gas Drilling",
+      "Oil & Gas Drilling & Exploration",
+      "Oil & Gas E&P",
+      "Oil & Gas Pipelines",
+      "Oil & Gas Refining & Marketing"
+    ],
+    "gicSubIndustry": [
+      "Oil & Gas Drilling",
+      "Oil & Gas Exploration & Production",
+      "Oil & Gas Refining & Marketing"
+    ],
     "numberOfFirms": 765,
     "annualAverageCAGRLastFiveYears": "6.67%",
     "preTaxOperatingMarginUnadjusted": "-7.50%",
@@ -849,22 +862,11 @@
     "ROE": "-21.04%",
     "dividendPayoutRatio": "0.83%",
     "equityReinvestmentRate": "0.83%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "-7.12%",
-    "gicSubIndustry": [
-      "Oil & Gas Drilling",
-      "Oil & Gas Exploration & Production",
-      "Oil & Gas Refining & Marketing"
-    ],
-    "industry": [
-      "Independent Oil & Gas",
-      "Oil & Gas Drilling",
-      "Oil & Gas Drilling & Exploration",
-      "Oil & Gas E&P",
-      "Oil & Gas Pipelines",
-      "Oil & Gas Refining & Marketing"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "-7.12%"
   },
   {
+    "industry": ["Major Integrated Oil & Gas", "Oil & Gas Integrated"],
+    "gicSubIndustry": ["Integrated Oil & Gas"],
     "numberOfFirms": 49,
     "annualAverageCAGRLastFiveYears": "0.74%",
     "preTaxOperatingMarginUnadjusted": "6.25%",
@@ -890,11 +892,11 @@
     "ROE": "-1.43%",
     "dividendPayoutRatio": "1.45%",
     "equityReinvestmentRate": "1.45%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "6.30%",
-    "gicSubIndustry": ["Integrated Oil & Gas"],
-    "industry": ["Major Integrated Oil & Gas", "Oil & Gas Integrated"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "6.30%"
   },
   {
+    "industry": ["Office Supplies"],
+    "gicSubIndustry": ["Office Services & Supplies"],
     "numberOfFirms": 148,
     "annualAverageCAGRLastFiveYears": "3.17%",
     "preTaxOperatingMarginUnadjusted": "6.68%",
@@ -920,11 +922,17 @@
     "ROE": "6.87%",
     "dividendPayoutRatio": "58.26%",
     "equityReinvestmentRate": "58.26%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "6.66%",
-    "gicSubIndustry": ["Office Services & Supplies"],
-    "industry": ["Office Supplies"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "6.66%"
   },
   {
+    "industry": [
+      "Basic Materials Wholesale",
+      "Industrial Metals & Minerals",
+      "Infrastructure Operations",
+      "Nonmetallic Mineral Mining",
+      "Other Industrial Metals & Mining"
+    ],
+    "gicSubIndustry": ["Diversified Metals & Mining"],
     "numberOfFirms": 1620,
     "annualAverageCAGRLastFiveYears": "15.56%",
     "preTaxOperatingMarginUnadjusted": "8.10%",
@@ -950,17 +958,14 @@
     "ROE": "3.61%",
     "dividendPayoutRatio": "179.98%",
     "equityReinvestmentRate": "179.98%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "8.16%",
-    "gicSubIndustry": ["Diversified Metals & Mining"],
-    "industry": [
-      "Basic Materials Wholesale",
-      "Industrial Metals & Minerals",
-      "Infrastructure Operations",
-      "Nonmetallic Mineral Mining",
-      "Other Industrial Metals & Mining"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "8.16%"
   },
   {
+    "industry": ["Property Management", "Real Estate Services"],
+    "gicSubIndustry": [
+      "Real Estate Operating Companies",
+      "Real Estate Services"
+    ],
     "numberOfFirms": 720,
     "annualAverageCAGRLastFiveYears": "8.04%",
     "preTaxOperatingMarginUnadjusted": "23.22%",
@@ -986,14 +991,16 @@
     "ROE": "5.08%",
     "dividendPayoutRatio": "48.89%",
     "equityReinvestmentRate": "48.89%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "24.07%",
-    "gicSubIndustry": [
-      "Real Estate Operating Companies",
-      "Real Estate Services"
-    ],
-    "industry": ["Property Management", "Real Estate Services"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "24.07%"
   },
   {
+    "industry": [
+      "Real Estate",
+      "Real Estate - General",
+      "Real Estate�Diversified",
+      "Real Estate - Diversified"
+    ],
+    "gicSubIndustry": ["Diversified Real Estate Activities"],
     "numberOfFirms": 364,
     "annualAverageCAGRLastFiveYears": "5.41%",
     "preTaxOperatingMarginUnadjusted": "16.29%",
@@ -1019,16 +1026,24 @@
     "ROE": "3.90%",
     "dividendPayoutRatio": "83.99%",
     "equityReinvestmentRate": "83.99%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "16.14%",
-    "gicSubIndustry": ["Diversified Real Estate Activities"],
-    "industry": [
-      "Real Estate",
-      "Real Estate - General",
-      "Real Estate�Diversified",
-      "Real Estate - Diversified"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "16.14%"
   },
   {
+    "industry": [
+      "Diversified Machinery",
+      "Farm & Heavy Construction Machinery",
+      "Farm & Construction Equipment",
+      "Farm & Construction Machinery",
+      "Machine Tools & Accessories",
+      "Metal Fabrication",
+      "Specialty Industrial Machinery"
+    ],
+    "gicSubIndustry": [
+      "Industrial Conglomerates",
+      "Construction Machinery & Heavy Trucks",
+      "Agricultural & Farm Machinery",
+      "Industrial Machinery"
+    ],
     "numberOfFirms": 1385,
     "annualAverageCAGRLastFiveYears": "3.57%",
     "preTaxOperatingMarginUnadjusted": "7.82%",
@@ -1054,24 +1069,15 @@
     "ROE": "7.47%",
     "dividendPayoutRatio": "56.22%",
     "equityReinvestmentRate": "56.22%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "8.01%",
-    "gicSubIndustry": [
-      "Industrial Conglomerates",
-      "Construction Machinery & Heavy Trucks",
-      "Agricultural & Farm Machinery",
-      "Industrial Machinery"
-    ],
-    "industry": [
-      "Diversified Machinery",
-      "Farm & Heavy Construction Machinery",
-      "Farm & Construction Equipment",
-      "Farm & Construction Machinery",
-      "Machine Tools & Accessories",
-      "Metal Fabrication",
-      "Specialty Industrial Machinery"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "8.01%"
   },
   {
+    "industry": [
+      "Asset Management",
+      "Diversified Investments",
+      "Mortgage Investment"
+    ],
+    "gicSubIndustry": ["Asset Management & Custody Banks"],
     "numberOfFirms": 1234,
     "annualAverageCAGRLastFiveYears": "9.61%",
     "preTaxOperatingMarginUnadjusted": "17.10%",
@@ -1097,15 +1103,21 @@
     "ROE": "7.24%",
     "dividendPayoutRatio": "67.27%",
     "equityReinvestmentRate": "67.27%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "17.02%",
-    "gicSubIndustry": ["Asset Management & Custody Banks"],
-    "industry": [
-      "Asset Management",
-      "Diversified Investments",
-      "Mortgage Investment"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "17.02%"
   },
   {
+    "industry": [
+      "Appliances",
+      "Cleaning Products",
+      "Household & Personal Products",
+      "Personal Products"
+    ],
+    "gicSubIndustry": [
+      "Household Appliances",
+      "Housewares & Specialties",
+      "Household Products",
+      "Personal Products"
+    ],
     "numberOfFirms": 568,
     "annualAverageCAGRLastFiveYears": "5.95%",
     "preTaxOperatingMarginUnadjusted": "15.82%",
@@ -1131,21 +1143,11 @@
     "ROE": "16.80%",
     "dividendPayoutRatio": "65.42%",
     "equityReinvestmentRate": "65.42%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "15.89%",
-    "gicSubIndustry": [
-      "Household Appliances",
-      "Housewares & Specialties",
-      "Household Products",
-      "Personal Products"
-    ],
-    "industry": [
-      "Appliances",
-      "Cleaning Products",
-      "Household & Personal Products",
-      "Personal Products"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "15.89%"
   },
   {
+    "industry": ["Agricultural Inputs", "Farm Products"],
+    "gicSubIndustry": ["Agricultural Products"],
     "numberOfFirms": 410,
     "annualAverageCAGRLastFiveYears": "6.19%",
     "preTaxOperatingMarginUnadjusted": "6.76%",
@@ -1171,11 +1173,21 @@
     "ROE": "9.45%",
     "dividendPayoutRatio": "40.75%",
     "equityReinvestmentRate": "40.75%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "6.88%",
-    "gicSubIndustry": ["Agricultural Products"],
-    "industry": ["Agricultural Inputs", "Farm Products"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "6.88%"
   },
   {
+    "industry": [
+      "Banks�Diversified",
+      "Conglomerates",
+      "Diversified Industrials",
+      "Media - Diversified",
+      "Other",
+      "Shell Companies"
+    ],
+    "gicSubIndustry": [
+      "Other Diversified Financial Services",
+      "Multi-Sector Holdings"
+    ],
     "numberOfFirms": 324,
     "annualAverageCAGRLastFiveYears": "5.64%",
     "preTaxOperatingMarginUnadjusted": "12.43%",
@@ -1201,21 +1213,18 @@
     "ROE": "7.74%",
     "dividendPayoutRatio": "33.96%",
     "equityReinvestmentRate": "33.96%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "12.45%",
-    "gicSubIndustry": [
-      "Other Diversified Financial Services",
-      "Multi-Sector Holdings"
-    ],
-    "industry": [
-      "Banks�Diversified",
-      "Conglomerates",
-      "Diversified Industrials",
-      "Media - Diversified",
-      "Other",
-      "Shell Companies"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "12.45%"
   },
   {
+    "industry": [
+      "Agricultural Chemicals",
+      "Scientific & Technical Instruments",
+      "Specialty Chemicals",
+      "Synthetics",
+      "Textile Industrial",
+      "Textile Manufacturing"
+    ],
+    "gicSubIndustry": ["Specialty Chemicals"],
     "numberOfFirms": 861,
     "annualAverageCAGRLastFiveYears": "5.37%",
     "preTaxOperatingMarginUnadjusted": "9.71%",
@@ -1241,18 +1250,15 @@
     "ROE": "5.33%",
     "dividendPayoutRatio": "89.61%",
     "equityReinvestmentRate": "89.61%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "9.80%",
-    "gicSubIndustry": ["Specialty Chemicals"],
-    "industry": [
-      "Agricultural Chemicals",
-      "Scientific & Technical Instruments",
-      "Specialty Chemicals",
-      "Synthetics",
-      "Textile Industrial",
-      "Textile Manufacturing"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "9.80%"
   },
   {
+    "industry": ["Aluminum", "Chemicals"],
+    "gicSubIndustry": [
+      "Commodity Chemicals",
+      "Fertilizers & Agricultural Chemicals",
+      "Industrial Gases"
+    ],
     "numberOfFirms": 844,
     "annualAverageCAGRLastFiveYears": "5.61%",
     "preTaxOperatingMarginUnadjusted": "6.49%",
@@ -1278,15 +1284,11 @@
     "ROE": "3.97%",
     "dividendPayoutRatio": "135.95%",
     "equityReinvestmentRate": "135.95%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "6.60%",
-    "gicSubIndustry": [
-      "Commodity Chemicals",
-      "Fertilizers & Agricultural Chemicals",
-      "Industrial Gases"
-    ],
-    "industry": ["Aluminum", "Chemicals"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "6.60%"
   },
   {
+    "industry": ["Auto Parts", "Auto Parts Stores", "Auto Parts Wholesale"],
+    "gicSubIndustry": ["Auto Parts & Equipment"],
     "numberOfFirms": 709,
     "annualAverageCAGRLastFiveYears": "1.85%",
     "preTaxOperatingMarginUnadjusted": "2.62%",
@@ -1312,11 +1314,15 @@
     "ROE": "-1.61%",
     "dividendPayoutRatio": "0.71%",
     "equityReinvestmentRate": "0.71%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "2.79%",
-    "gicSubIndustry": ["Auto Parts & Equipment"],
-    "industry": ["Auto Parts", "Auto Parts Stores", "Auto Parts Wholesale"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "2.79%"
   },
   {
+    "industry": [
+      "Beverages - Soft Drinks",
+      "Beverages�Non-Alcoholic",
+      "Beverages - Non-Alcoholic"
+    ],
+    "gicSubIndustry": ["Soft Drinks"],
     "numberOfFirms": 108,
     "annualAverageCAGRLastFiveYears": "6.39%",
     "preTaxOperatingMarginUnadjusted": "15.00%",
@@ -1342,15 +1348,17 @@
     "ROE": "19.34%",
     "dividendPayoutRatio": "78.48%",
     "equityReinvestmentRate": "78.48%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "15.08%",
-    "gicSubIndustry": ["Soft Drinks"],
-    "industry": [
-      "Beverages - Soft Drinks",
-      "Beverages�Non-Alcoholic",
-      "Beverages - Non-Alcoholic"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "15.08%"
   },
   {
+    "industry": [
+      "Beverages - Brewers",
+      "Beverages - Wineries & Distilleries",
+      "Beverages - Wineries & Distillers",
+      "Beverages�Brewers",
+      "Beverages�Wineries & Distilleries"
+    ],
+    "gicSubIndustry": ["Brewers", "Distillers & Vintners"],
     "numberOfFirms": 223,
     "annualAverageCAGRLastFiveYears": "7.34%",
     "preTaxOperatingMarginUnadjusted": "20.27%",
@@ -1376,17 +1384,15 @@
     "ROE": "9.14%",
     "dividendPayoutRatio": "72.96%",
     "equityReinvestmentRate": "72.96%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "20.31%",
-    "gicSubIndustry": ["Brewers", "Distillers & Vintners"],
-    "industry": [
-      "Beverages - Brewers",
-      "Beverages - Wineries & Distilleries",
-      "Beverages - Wineries & Distillers",
-      "Beverages�Brewers",
-      "Beverages�Wineries & Distilleries"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "20.31%"
   },
   {
+    "industry": [
+      "Catalog & Mail Order Houses",
+      "Manufactured Housing",
+      "Residential Construction"
+    ],
+    "gicSubIndustry": ["Homebuilding"],
     "numberOfFirms": 167,
     "annualAverageCAGRLastFiveYears": "6.43%",
     "preTaxOperatingMarginUnadjusted": "10.44%",
@@ -1412,15 +1418,11 @@
     "ROE": "13.35%",
     "dividendPayoutRatio": "21.56%",
     "equityReinvestmentRate": "21.56%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "9.42%",
-    "gicSubIndustry": ["Homebuilding"],
-    "industry": [
-      "Catalog & Mail Order Houses",
-      "Manufactured Housing",
-      "Residential Construction"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "9.42%"
   },
   {
+    "industry": ["Biotechnology", "Diagnostics & Research"],
+    "gicSubIndustry": ["Health Care Technology"],
     "numberOfFirms": 423,
     "annualAverageCAGRLastFiveYears": "15.79%",
     "preTaxOperatingMarginUnadjusted": "12.88%",
@@ -1446,11 +1448,11 @@
     "ROE": "12.88%",
     "dividendPayoutRatio": "14.17%",
     "equityReinvestmentRate": "14.17%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "13.46%",
-    "gicSubIndustry": ["Health Care Technology"],
-    "industry": ["Biotechnology", "Diagnostics & Research"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "13.46%"
   },
   {
+    "industry": ["Broadcasting", "Broadcasting - Radio", "Broadcasting - TV"],
+    "gicSubIndustry": ["Broadcasting"],
     "numberOfFirms": 146,
     "annualAverageCAGRLastFiveYears": "1.32%",
     "preTaxOperatingMarginUnadjusted": "14.79%",
@@ -1476,11 +1478,20 @@
     "ROE": "1.95%",
     "dividendPayoutRatio": "127.73%",
     "equityReinvestmentRate": "127.73%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "14.67%",
-    "gicSubIndustry": ["Broadcasting"],
-    "industry": ["Broadcasting", "Broadcasting - Radio", "Broadcasting - TV"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "14.67%"
   },
   {
+    "industry": [
+      "Diagnostic Substances",
+      "Drugs - Generic",
+      "Health Care Plans",
+      "Healthcare Plans",
+      "Medical Appliances & Equipment",
+      "Medical Devices",
+      "Medical Equipment Wholesale",
+      "Medical Instruments & Supplies"
+    ],
+    "gicSubIndustry": ["Health Care Equipment", "Health Care Supplies"],
     "numberOfFirms": 816,
     "annualAverageCAGRLastFiveYears": "12.11%",
     "preTaxOperatingMarginUnadjusted": "14.47%",
@@ -1506,20 +1517,29 @@
     "ROE": "10.56%",
     "dividendPayoutRatio": "37.17%",
     "equityReinvestmentRate": "37.17%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "14.68%",
-    "gicSubIndustry": ["Health Care Equipment", "Health Care Supplies"],
-    "industry": [
-      "Diagnostic Substances",
-      "Drugs - Generic",
-      "Health Care Plans",
-      "Healthcare Plans",
-      "Medical Appliances & Equipment",
-      "Medical Devices",
-      "Medical Equipment Wholesale",
-      "Medical Instruments & Supplies"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "14.68%"
   },
   {
+    "industry": [
+      "Capital Goods",
+      "Capital Markets",
+      "Closed-End Fund - Debt",
+      "Closed-End Fund - Equity",
+      "Closed-End Fund - Foreign",
+      "Credit Services",
+      "Diversified Financials",
+      "Financial Conglomerates",
+      "Financial Data & Stock Exchanges",
+      "Mortgage Finance",
+      "Specialty Finance"
+    ],
+    "gicSubIndustry": [
+      "Thrifts & Mortgage Finance",
+      "Specialized Finance",
+      "Consumer Finance",
+      "Diversified Capital Markets",
+      "Financial Exchanges & Data"
+    ],
     "numberOfFirms": 1096,
     "annualAverageCAGRLastFiveYears": "8.98%",
     "preTaxOperatingMarginUnadjusted": "9.17%",
@@ -1545,29 +1565,11 @@
     "ROE": "13.96%",
     "dividendPayoutRatio": "27.98%",
     "equityReinvestmentRate": "27.98%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "9.14%",
-    "gicSubIndustry": [
-      "Thrifts & Mortgage Finance",
-      "Specialized Finance",
-      "Consumer Finance",
-      "Diversified Capital Markets",
-      "Financial Exchanges & Data"
-    ],
-    "industry": [
-      "Capital Goods",
-      "Capital Markets",
-      "Closed-End Fund - Debt",
-      "Closed-End Fund - Equity",
-      "Closed-End Fund - Foreign",
-      "Credit Services",
-      "Diversified Financials",
-      "Financial Conglomerates",
-      "Financial Data & Stock Exchanges",
-      "Mortgage Finance",
-      "Specialty Finance"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "9.14%"
   },
   {
+    "industry": ["Cement"],
+    "gicSubIndustry": ["Construction Materials"],
     "numberOfFirms": 753,
     "annualAverageCAGRLastFiveYears": "3.73%",
     "preTaxOperatingMarginUnadjusted": "9.32%",
@@ -1593,11 +1595,11 @@
     "ROE": "7.99%",
     "dividendPayoutRatio": "59.34%",
     "equityReinvestmentRate": "59.34%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "9.44%",
-    "gicSubIndustry": ["Construction Materials"],
-    "industry": ["Cement"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "9.44%"
   },
   {
+    "industry": ["Chemicals - Major Diversified"],
+    "gicSubIndustry": ["Diversified Chemicals"],
     "numberOfFirms": 73,
     "annualAverageCAGRLastFiveYears": "3.34%",
     "preTaxOperatingMarginUnadjusted": "3.81%",
@@ -1623,11 +1625,11 @@
     "ROE": "-2.95%",
     "dividendPayoutRatio": "3.33%",
     "equityReinvestmentRate": "3.33%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "3.92%",
-    "gicSubIndustry": ["Diversified Chemicals"],
-    "industry": ["Chemicals - Major Diversified"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "3.92%"
   },
   {
+    "industry": ["Consumer Electronics"],
+    "gicSubIndustry": ["Consumer Electronics"],
     "numberOfFirms": 142,
     "annualAverageCAGRLastFiveYears": "0.81%",
     "preTaxOperatingMarginUnadjusted": "4.83%",
@@ -1653,11 +1655,19 @@
     "ROE": "12.12%",
     "dividendPayoutRatio": "23.66%",
     "equityReinvestmentRate": "23.66%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "5.10%",
-    "gicSubIndustry": ["Consumer Electronics"],
-    "industry": ["Consumer Electronics"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "5.10%"
   },
   {
+    "industry": [
+      "Insurance",
+      "Insurance - Diversified",
+      "Insurance - Specialty",
+      "Insurance Brokers",
+      "Insurance�Diversified",
+      "Insurance�Specialty",
+      "Surety & Title Insurance"
+    ],
+    "gicSubIndustry": ["Insurance Brokers", "Multi-line Insurance"],
     "numberOfFirms": 220,
     "annualAverageCAGRLastFiveYears": "5.63%",
     "preTaxOperatingMarginUnadjusted": "8.44%",
@@ -1683,19 +1693,18 @@
     "ROE": "7.20%",
     "dividendPayoutRatio": "46.27%",
     "equityReinvestmentRate": "46.27%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "8.45%",
-    "gicSubIndustry": ["Insurance Brokers", "Multi-line Insurance"],
-    "industry": [
-      "Insurance",
-      "Insurance - Diversified",
-      "Insurance - Specialty",
-      "Insurance Brokers",
-      "Insurance�Diversified",
-      "Insurance�Specialty",
-      "Surety & Title Insurance"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "8.45%"
   },
   {
+    "industry": [
+      "Dairy Products",
+      "Food - Major Diversified",
+      "Food Distribution",
+      "Food Beverage & Tobacco",
+      "Processed & Packaged Goods",
+      "Processing Systems & Products"
+    ],
+    "gicSubIndustry": ["Packaged Foods & Meats"],
     "numberOfFirms": 1322,
     "annualAverageCAGRLastFiveYears": "7.06%",
     "preTaxOperatingMarginUnadjusted": "9.42%",
@@ -1721,18 +1730,21 @@
     "ROE": "13.03%",
     "dividendPayoutRatio": "47.24%",
     "equityReinvestmentRate": "47.24%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "9.48%",
-    "gicSubIndustry": ["Packaged Foods & Meats"],
-    "industry": [
-      "Dairy Products",
-      "Food - Major Diversified",
-      "Food Distribution",
-      "Food Beverage & Tobacco",
-      "Processed & Packaged Goods",
-      "Processing Systems & Products"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "9.48%"
   },
   {
+    "industry": [
+      "Diversified Electronics",
+      "Electronic Components",
+      "Electronics & Computer Distribution",
+      "Electronics Distribution",
+      "Photographic Equipment & Supplies"
+    ],
+    "gicSubIndustry": [
+      "Electronic Equipment & Instruments",
+      "Electronic Components",
+      "Electronic Manufacturing Services"
+    ],
     "numberOfFirms": 1387,
     "annualAverageCAGRLastFiveYears": "5.04%",
     "preTaxOperatingMarginUnadjusted": "6.13%",
@@ -1758,21 +1770,21 @@
     "ROE": "6.81%",
     "dividendPayoutRatio": "59.84%",
     "equityReinvestmentRate": "59.84%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "6.48%",
-    "gicSubIndustry": [
-      "Electronic Equipment & Instruments",
-      "Electronic Components",
-      "Electronic Manufacturing Services"
-    ],
-    "industry": [
-      "Diversified Electronics",
-      "Electronic Components",
-      "Electronics & Computer Distribution",
-      "Electronics Distribution",
-      "Photographic Equipment & Supplies"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "6.48%"
   },
   {
+    "industry": [
+      "Data Storage Devices",
+      "Electrical Equipment & Parts",
+      "Electronic Equipment",
+      "Industrial Electrical Equipment",
+      "Technology Hardware & Equipment"
+    ],
+    "gicSubIndustry": [
+      "Electrical Components & Equipment",
+      "Heavy Electrical Equipment",
+      "Technology Distributors"
+    ],
     "numberOfFirms": 950,
     "annualAverageCAGRLastFiveYears": "6.30%",
     "preTaxOperatingMarginUnadjusted": "5.69%",
@@ -1798,21 +1810,17 @@
     "ROE": "6.63%",
     "dividendPayoutRatio": "66.75%",
     "equityReinvestmentRate": "66.75%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "5.99%",
-    "gicSubIndustry": [
-      "Electrical Components & Equipment",
-      "Heavy Electrical Equipment",
-      "Technology Distributors"
-    ],
-    "industry": [
-      "Data Storage Devices",
-      "Electrical Equipment & Parts",
-      "Electronic Equipment",
-      "Industrial Electrical Equipment",
-      "Technology Hardware & Equipment"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "5.99%"
   },
   {
+    "industry": [
+      "Computer Based Systems",
+      "Computer Hardware",
+      "Computer Systems",
+      "Personal Computers",
+      "Printed Circuit Boards"
+    ],
+    "gicSubIndustry": ["Technology Hardware, Storage & Peripherals"],
     "numberOfFirms": 337,
     "annualAverageCAGRLastFiveYears": "0.58%",
     "preTaxOperatingMarginUnadjusted": "10.06%",
@@ -1838,17 +1846,11 @@
     "ROE": "19.09%",
     "dividendPayoutRatio": "34.57%",
     "equityReinvestmentRate": "34.57%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "10.38%",
-    "gicSubIndustry": ["Technology Hardware, Storage & Peripherals"],
-    "industry": [
-      "Computer Based Systems",
-      "Computer Hardware",
-      "Computer Systems",
-      "Personal Computers",
-      "Printed Circuit Boards"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "10.38%"
   },
   {
+    "industry": ["Contract Manufacturers", "Diversified Computer Systems"],
+    "gicSubIndustry": ["IT Consulting & Other Services"],
     "numberOfFirms": 1007,
     "annualAverageCAGRLastFiveYears": "6.15%",
     "preTaxOperatingMarginUnadjusted": "6.92%",
@@ -1874,11 +1876,11 @@
     "ROE": "14.32%",
     "dividendPayoutRatio": "51.51%",
     "equityReinvestmentRate": "51.51%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "7.11%",
-    "gicSubIndustry": ["IT Consulting & Other Services"],
-    "industry": ["Contract Manufacturers", "Diversified Computer Systems"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "7.11%"
   },
   {
+    "industry": ["Education & Training Services"],
+    "gicSubIndustry": ["Education Services"],
     "numberOfFirms": 250,
     "annualAverageCAGRLastFiveYears": "12.70%",
     "preTaxOperatingMarginUnadjusted": "7.21%",
@@ -1904,11 +1906,11 @@
     "ROE": "-0.28%",
     "dividendPayoutRatio": "0.65%",
     "equityReinvestmentRate": "0.65%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "7.76%",
-    "gicSubIndustry": ["Education Services"],
-    "industry": ["Education & Training Services"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "7.76%"
   },
   {
+    "industry": ["Gambling", "Lodging", "Resorts & Casinos"],
+    "gicSubIndustry": ["Casinos & Gaming", "Hotels, Resorts & Cruise Lines"],
     "numberOfFirms": 641,
     "annualAverageCAGRLastFiveYears": "-0.95%",
     "preTaxOperatingMarginUnadjusted": "-5.75%",
@@ -1934,11 +1936,15 @@
     "ROE": "-14.75%",
     "dividendPayoutRatio": "1.38%",
     "equityReinvestmentRate": "1.38%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "-7.15%",
-    "gicSubIndustry": ["Casinos & Gaming", "Hotels, Resorts & Cruise Lines"],
-    "industry": ["Gambling", "Lodging", "Resorts & Casinos"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "-7.15%"
   },
   {
+    "industry": [
+      "Furnishings, Fixtures & Appliances",
+      "Home Furnishings & Fixtures",
+      "Housewares & Accessories"
+    ],
+    "gicSubIndustry": ["Home Furnishings"],
     "numberOfFirms": 357,
     "annualAverageCAGRLastFiveYears": "4.74%",
     "preTaxOperatingMarginUnadjusted": "7.16%",
@@ -1964,15 +1970,17 @@
     "ROE": "11.90%",
     "dividendPayoutRatio": "58.73%",
     "equityReinvestmentRate": "58.73%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "7.40%",
-    "gicSubIndustry": ["Home Furnishings"],
-    "industry": [
-      "Furnishings, Fixtures & Appliances",
-      "Home Furnishings & Fixtures",
-      "Housewares & Accessories"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "7.40%"
   },
   {
+    "industry": [
+      "Entertainment",
+      "Entertainment - Diversified",
+      "Gaming Activities",
+      "General Entertainment",
+      "Movie Production, Theaters"
+    ],
+    "gicSubIndustry": ["Movies & Entertainment"],
     "numberOfFirms": 725,
     "annualAverageCAGRLastFiveYears": "8.47%",
     "preTaxOperatingMarginUnadjusted": "7.71%",
@@ -1998,17 +2006,11 @@
     "ROE": "-1.27%",
     "dividendPayoutRatio": "0.21%",
     "equityReinvestmentRate": "0.21%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "8.04%",
-    "gicSubIndustry": ["Movies & Entertainment"],
-    "industry": [
-      "Entertainment",
-      "Entertainment - Diversified",
-      "Gaming Activities",
-      "General Entertainment",
-      "Movie Production, Theaters"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "8.04%"
   },
   {
+    "industry": ["Engineering & Construction", "Heavy Construction"],
+    "gicSubIndustry": ["Construction & Engineering"],
     "numberOfFirms": 1263,
     "annualAverageCAGRLastFiveYears": "3.73%",
     "preTaxOperatingMarginUnadjusted": "4.93%",
@@ -2034,11 +2036,18 @@
     "ROE": "7.89%",
     "dividendPayoutRatio": "62.95%",
     "equityReinvestmentRate": "62.95%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "5.21%",
-    "gicSubIndustry": ["Construction & Engineering"],
-    "industry": ["Engineering & Construction", "Heavy Construction"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "5.21%"
   },
   {
+    "industry": [
+      "Drug Delivery",
+      "Drug Manufacturers - Other",
+      "Drug Manufacturers - General",
+      "Drug Manufacturers�General",
+      "Drug Related Products",
+      "Pharmaceuticals, Biotechnology & Life Sciences"
+    ],
+    "gicSubIndustry": ["Pharmaceuticals", "Life Sciences Tools & Services"],
     "numberOfFirms": 1319,
     "annualAverageCAGRLastFiveYears": "16.98%",
     "preTaxOperatingMarginUnadjusted": "16.85%",
@@ -2064,18 +2073,15 @@
     "ROE": "10.90%",
     "dividendPayoutRatio": "82.24%",
     "equityReinvestmentRate": "82.24%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "18.09%",
-    "gicSubIndustry": ["Pharmaceuticals", "Life Sciences Tools & Services"],
-    "industry": [
-      "Drug Delivery",
-      "Drug Manufacturers - Other",
-      "Drug Manufacturers - General",
-      "Drug Manufacturers�General",
-      "Drug Related Products",
-      "Pharmaceuticals, Biotechnology & Life Sciences"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "18.09%"
   },
   {
+    "industry": [
+      "Drug Manufacturers - Major",
+      "Drug Manufacturers - Specialty & Generic",
+      "Drug Manufacturers�Specialty & Generic"
+    ],
+    "gicSubIndustry": ["Drug Retail", "Biotechnology"],
     "numberOfFirms": 1139,
     "annualAverageCAGRLastFiveYears": "24.87%",
     "preTaxOperatingMarginUnadjusted": "6.21%",
@@ -2101,15 +2107,16 @@
     "ROE": "-4.38%",
     "dividendPayoutRatio": "0.31%",
     "equityReinvestmentRate": "0.31%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "10.03%",
-    "gicSubIndustry": ["Drug Retail", "Biotechnology"],
-    "industry": [
-      "Drug Manufacturers - Major",
-      "Drug Manufacturers - Specialty & Generic",
-      "Drug Manufacturers�Specialty & Generic"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "10.03%"
   },
   {
+    "industry": [
+      "Health Information Services",
+      "Healthcare Information Services",
+      "Information & Delivery Services",
+      "Information Technology Services"
+    ],
+    "gicSubIndustry": ["Internet Services & Infrastructure"],
     "numberOfFirms": 244,
     "annualAverageCAGRLastFiveYears": "15.57%",
     "preTaxOperatingMarginUnadjusted": "20.18%",
@@ -2135,16 +2142,11 @@
     "ROE": "13.12%",
     "dividendPayoutRatio": "34.56%",
     "equityReinvestmentRate": "34.56%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "20.26%",
-    "gicSubIndustry": ["Internet Services & Infrastructure"],
-    "industry": [
-      "Health Information Services",
-      "Healthcare Information Services",
-      "Information & Delivery Services",
-      "Information Technology Services"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "20.26%"
   },
   {
+    "industry": ["Packaging & Containers"],
+    "gicSubIndustry": ["Metal & Glass Containers", "Paper Packaging"],
     "numberOfFirms": 412,
     "annualAverageCAGRLastFiveYears": "2.81%",
     "preTaxOperatingMarginUnadjusted": "8.80%",
@@ -2170,11 +2172,15 @@
     "ROE": "10.06%",
     "dividendPayoutRatio": "53.28%",
     "equityReinvestmentRate": "53.28%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "8.93%",
-    "gicSubIndustry": ["Metal & Glass Containers", "Paper Packaging"],
-    "industry": ["Packaging & Containers"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "8.93%"
   },
   {
+    "industry": [
+      "Insurance - Property & Casualty",
+      "Insurance�Property & Casualty",
+      "Property & Casualty Insurance"
+    ],
+    "gicSubIndustry": ["Property & Casualty Insurance"],
     "numberOfFirms": 229,
     "annualAverageCAGRLastFiveYears": "4.31%",
     "preTaxOperatingMarginUnadjusted": "8.34%",
@@ -2200,15 +2206,19 @@
     "ROE": "7.40%",
     "dividendPayoutRatio": "46.02%",
     "equityReinvestmentRate": "46.02%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "8.34%",
-    "gicSubIndustry": ["Property & Casualty Insurance"],
-    "industry": [
-      "Insurance - Property & Casualty",
-      "Insurance�Property & Casualty",
-      "Property & Casualty Insurance"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "8.34%"
   },
   {
+    "industry": [
+      "Hospitals",
+      "Medical Laboratories & Research",
+      "Medical Practitioners"
+    ],
+    "gicSubIndustry": [
+      "Health Care Distributors",
+      "Health Care Facilities",
+      "Managed Health Care"
+    ],
     "numberOfFirms": 216,
     "annualAverageCAGRLastFiveYears": "5.77%",
     "preTaxOperatingMarginUnadjusted": "9.26%",
@@ -2234,19 +2244,17 @@
     "ROE": "6.71%",
     "dividendPayoutRatio": "61.27%",
     "equityReinvestmentRate": "61.27%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "8.67%",
-    "gicSubIndustry": [
-      "Health Care Distributors",
-      "Health Care Facilities",
-      "Managed Health Care"
-    ],
-    "industry": [
-      "Hospitals",
-      "Medical Laboratories & Research",
-      "Medical Practitioners"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "8.67%"
   },
   {
+    "industry": [
+      "Home Health Care",
+      "Long-Term Care Facilities",
+      "Medical Care",
+      "Medical Care Facilities",
+      "Specialized Health Services"
+    ],
+    "gicSubIndustry": ["Health Care Services"],
     "numberOfFirms": 413,
     "annualAverageCAGRLastFiveYears": "12.89%",
     "preTaxOperatingMarginUnadjusted": "5.02%",
@@ -2272,17 +2280,11 @@
     "ROE": "14.37%",
     "dividendPayoutRatio": "29.27%",
     "equityReinvestmentRate": "29.27%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "4.92%",
-    "gicSubIndustry": ["Health Care Services"],
-    "industry": [
-      "Home Health Care",
-      "Long-Term Care Facilities",
-      "Medical Care",
-      "Medical Care Facilities",
-      "Specialized Health Services"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "4.92%"
   },
   {
+    "industry": ["Food Wholesale", "Wholesale, Other"],
+    "gicSubIndustry": ["Food Distributors"],
     "numberOfFirms": 155,
     "annualAverageCAGRLastFiveYears": "4.76%",
     "preTaxOperatingMarginUnadjusted": "1.88%",
@@ -2308,11 +2310,11 @@
     "ROE": "1.60%",
     "dividendPayoutRatio": "304.31%",
     "equityReinvestmentRate": "304.31%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "1.86%",
-    "gicSubIndustry": ["Food Distributors"],
-    "industry": ["Food Wholesale", "Wholesale, Other"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "1.86%"
   },
   {
+    "industry": ["Coal", "Coking Coal", "Energy", "Thermal Coal"],
+    "gicSubIndustry": ["Coal & Consumable Fuels"],
     "numberOfFirms": 222,
     "annualAverageCAGRLastFiveYears": "6.57%",
     "preTaxOperatingMarginUnadjusted": "12.18%",
@@ -2338,11 +2340,11 @@
     "ROE": "7.60%",
     "dividendPayoutRatio": "98.30%",
     "equityReinvestmentRate": "98.30%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "12.24%",
-    "gicSubIndustry": ["Coal & Consumable Fuels"],
-    "industry": ["Coal", "Coking Coal", "Energy", "Thermal Coal"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "12.24%"
   },
   {
+    "industry": ["CATV Systems", "Pay TV"],
+    "gicSubIndustry": ["Cable & Satellite"],
     "numberOfFirms": 60,
     "annualAverageCAGRLastFiveYears": "1.85%",
     "preTaxOperatingMarginUnadjusted": "18.12%",
@@ -2368,11 +2370,36 @@
     "ROE": "10.47%",
     "dividendPayoutRatio": "32.91%",
     "equityReinvestmentRate": "32.91%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "18.07%",
-    "gicSubIndustry": ["Cable & Satellite"],
-    "industry": ["CATV Systems", "Pay TV"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "18.07%"
   },
   {
+    "industry": [
+      "Business Equipment",
+      "Business Equipment & Supplies",
+      "Business Services",
+      "Business Software & Services",
+      "Commercial & Professional Services",
+      "Consulting Services",
+      "Consumer Services",
+      "General Contractors",
+      "Management Services",
+      "Personal Services",
+      "Rental & Leasing Services",
+      "Research Services",
+      "Security & Protection Services",
+      "Specialty Business Services",
+      "Staffing & Employment Services",
+      "Staffing & Outsourcing Services",
+      "Technical Services"
+    ],
+    "gicSubIndustry": [
+      "Commercial Printing",
+      "Diversified Support Services",
+      "Security & Alarm Services",
+      "Human Resource & Employment Services",
+      "Research & Consulting Services",
+      "Specialized Consumer Services"
+    ],
     "numberOfFirms": 923,
     "annualAverageCAGRLastFiveYears": "7.37%",
     "preTaxOperatingMarginUnadjusted": "7.61%",
@@ -2398,36 +2425,17 @@
     "ROE": "8.88%",
     "dividendPayoutRatio": "70.65%",
     "equityReinvestmentRate": "70.65%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "7.82%",
-    "gicSubIndustry": [
-      "Commercial Printing",
-      "Diversified Support Services",
-      "Security & Alarm Services",
-      "Human Resource & Employment Services",
-      "Research & Consulting Services",
-      "Specialized Consumer Services"
-    ],
-    "industry": [
-      "Business Equipment",
-      "Business Equipment & Supplies",
-      "Business Services",
-      "Business Software & Services",
-      "Commercial & Professional Services",
-      "Consulting Services",
-      "Consumer Services",
-      "General Contractors",
-      "Management Services",
-      "Personal Services",
-      "Rental & Leasing Services",
-      "Research Services",
-      "Security & Protection Services",
-      "Specialty Business Services",
-      "Staffing & Employment Services",
-      "Staffing & Outsourcing Services",
-      "Technical Services"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "7.82%"
   },
   {
+    "industry": [
+      "Building Materials",
+      "Building Materials Wholesale",
+      "Building Products & Equipment",
+      "General Building Materials",
+      "Materials"
+    ],
+    "gicSubIndustry": ["Building Products"],
     "numberOfFirms": 439,
     "annualAverageCAGRLastFiveYears": "1.99%",
     "preTaxOperatingMarginUnadjusted": "8.62%",
@@ -2453,17 +2461,14 @@
     "ROE": "8.69%",
     "dividendPayoutRatio": "41.47%",
     "equityReinvestmentRate": "41.47%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "8.78%",
-    "gicSubIndustry": ["Building Products"],
-    "industry": [
-      "Building Materials",
-      "Building Materials Wholesale",
-      "Building Products & Equipment",
-      "General Building Materials",
-      "Materials"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "8.78%"
   },
   {
+    "industry": [
+      "Investment Brokerage - National",
+      "Investment Brokerage - Regional"
+    ],
+    "gicSubIndustry": ["Investment Banking & Brokerage"],
     "numberOfFirms": 575,
     "annualAverageCAGRLastFiveYears": "8.36%",
     "preTaxOperatingMarginUnadjusted": "1.03%",
@@ -2489,14 +2494,11 @@
     "ROE": "10.25%",
     "dividendPayoutRatio": "51.59%",
     "equityReinvestmentRate": "51.59%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "0.89%",
-    "gicSubIndustry": ["Investment Banking & Brokerage"],
-    "industry": [
-      "Investment Brokerage - National",
-      "Investment Brokerage - Regional"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "0.89%"
   },
   {
+    "industry": ["Pollution & Treatment Controls", "Waste Management"],
+    "gicSubIndustry": ["Environmental & Facilities Services"],
     "numberOfFirms": 344,
     "annualAverageCAGRLastFiveYears": "9.85%",
     "preTaxOperatingMarginUnadjusted": "10.33%",
@@ -2522,11 +2524,28 @@
     "ROE": "5.78%",
     "dividendPayoutRatio": "93.63%",
     "equityReinvestmentRate": "93.63%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "10.45%",
-    "gicSubIndustry": ["Environmental & Facilities Services"],
-    "industry": ["Pollution & Treatment Controls", "Waste Management"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "10.45%"
   },
   {
+    "industry": [
+      "Banks - Regional - Africa",
+      "Banks - Regional - Asia",
+      "Banks - Regional - Australia",
+      "Banks - Regional - Canada",
+      "Banks - Regional - Europe",
+      "Banks - Regional - Latin America",
+      "Banks - Regional - US",
+      "Banks - Regional",
+      "Banks�Regional",
+      "Foreign Regional Banks",
+      "Regional - Mid-Atlantic Banks",
+      "Regional - Midwest Banks",
+      "Regional - Northeast Banks",
+      "Regional - Pacific Banks",
+      "Regional - Southeast Banks",
+      "Regional - Southwest  Banks"
+    ],
+    "gicSubIndustry": ["Regional Banks"],
     "numberOfFirms": 850,
     "annualAverageCAGRLastFiveYears": "7.10%",
     "preTaxOperatingMarginUnadjusted": "-0.02%",
@@ -2552,28 +2571,19 @@
     "ROE": "7.26%",
     "dividendPayoutRatio": "54.40%",
     "equityReinvestmentRate": "54.40%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "-0.21%",
-    "gicSubIndustry": ["Regional Banks"],
-    "industry": [
-      "Banks - Regional - Africa",
-      "Banks - Regional - Asia",
-      "Banks - Regional - Australia",
-      "Banks - Regional - Canada",
-      "Banks - Regional - Europe",
-      "Banks - Regional - Latin America",
-      "Banks - Regional - US",
-      "Banks - Regional",
-      "Banks�Regional",
-      "Foreign Regional Banks",
-      "Regional - Mid-Atlantic Banks",
-      "Regional - Midwest Banks",
-      "Regional - Northeast Banks",
-      "Regional - Pacific Banks",
-      "Regional - Southeast Banks",
-      "Regional - Southwest  Banks"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "-0.21%"
   },
   {
+    "industry": [
+      "Banks",
+      "Banks - Global",
+      "Banks - Diversified",
+      "Foreign Money Center Banks",
+      "Money Center Banks",
+      "Savings & Cooperative Banks",
+      "Savings & Loans"
+    ],
+    "gicSubIndustry": ["Diversified Banks"],
     "numberOfFirms": 620,
     "annualAverageCAGRLastFiveYears": "8.45%",
     "preTaxOperatingMarginUnadjusted": "0.20%",
@@ -2599,19 +2609,15 @@
     "ROE": "7.70%",
     "dividendPayoutRatio": "37.39%",
     "equityReinvestmentRate": "37.39%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "0.22%",
-    "gicSubIndustry": ["Diversified Banks"],
-    "industry": [
-      "Banks",
-      "Banks - Global",
-      "Banks - Diversified",
-      "Foreign Money Center Banks",
-      "Money Center Banks",
-      "Savings & Cooperative Banks",
-      "Savings & Loans"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "0.22%"
   },
   {
+    "industry": [
+      "Auto Manufacturers",
+      "Auto Manufacturers - Major",
+      "Recreational Vehicles"
+    ],
+    "gicSubIndustry": ["Automobile Manufacturers", "Motorcycle Manufacturers"],
     "numberOfFirms": 144,
     "annualAverageCAGRLastFiveYears": "0.90%",
     "preTaxOperatingMarginUnadjusted": "2.61%",
@@ -2637,15 +2643,11 @@
     "ROE": "1.91%",
     "dividendPayoutRatio": "121.63%",
     "equityReinvestmentRate": "121.63%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "2.71%",
-    "gicSubIndustry": ["Automobile Manufacturers", "Motorcycle Manufacturers"],
-    "industry": [
-      "Auto Manufacturers",
-      "Auto Manufacturers - Major",
-      "Recreational Vehicles"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "2.71%"
   },
   {
+    "industry": ["Solar", "Utilities - Renewable", "Utilities�Renewable"],
+    "gicSubIndustry": ["Renewable Electricity"],
     "numberOfFirms": 226,
     "annualAverageCAGRLastFiveYears": "12.06%",
     "preTaxOperatingMarginUnadjusted": "34.37%",
@@ -2671,11 +2673,22 @@
     "ROE": "7.25%",
     "dividendPayoutRatio": "107.12%",
     "equityReinvestmentRate": "107.12%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "34.26%",
-    "gicSubIndustry": ["Renewable Electricity"],
-    "industry": ["Solar", "Utilities - Renewable", "Utilities�Renewable"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "34.26%"
   },
   {
+    "industry": [
+      "Apparel Manufacturing",
+      "Apparel Retail",
+      "Apparel Stores",
+      "Consumer Durables & Apparel",
+      "Footwear & Accessories",
+      "Textile - Apparel Clothing"
+    ],
+    "gicSubIndustry": [
+      "Leisure Products",
+      "Apparel, Accessories & Luxury Goods",
+      "Textiles"
+    ],
     "numberOfFirms": 1188,
     "annualAverageCAGRLastFiveYears": "-1.94%",
     "preTaxOperatingMarginUnadjusted": "7.90%",
@@ -2701,22 +2714,18 @@
     "ROE": "2.44%",
     "dividendPayoutRatio": "171.53%",
     "equityReinvestmentRate": "171.53%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "8.03%",
-    "gicSubIndustry": [
-      "Leisure Products",
-      "Apparel, Accessories & Luxury Goods",
-      "Textiles"
-    ],
-    "industry": [
-      "Apparel Manufacturing",
-      "Apparel Retail",
-      "Apparel Stores",
-      "Consumer Durables & Apparel",
-      "Footwear & Accessories",
-      "Textile - Apparel Clothing"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "8.03%"
   },
   {
+    "industry": [
+      "Air Services, Other",
+      "Airlines",
+      "Airports & Air Services",
+      "Major Airlines",
+      "Regional Airlines",
+      "Travel Services"
+    ],
+    "gicSubIndustry": ["Air Freight & Logistics", "Airlines"],
     "numberOfFirms": 156,
     "annualAverageCAGRLastFiveYears": "-2.62%",
     "preTaxOperatingMarginUnadjusted": "-14.64%",
@@ -2742,18 +2751,11 @@
     "ROE": "-35.47%",
     "dividendPayoutRatio": "2.09%",
     "equityReinvestmentRate": "2.09%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "-15.15%",
-    "gicSubIndustry": ["Air Freight & Logistics", "Airlines"],
-    "industry": [
-      "Air Services, Other",
-      "Airlines",
-      "Airports & Air Services",
-      "Major Airlines",
-      "Regional Airlines",
-      "Travel Services"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "-15.15%"
   },
   {
+    "industry": ["Advertising Agencies", "Marketing Services"],
+    "gicSubIndustry": ["Advertising"],
     "numberOfFirms": 348,
     "annualAverageCAGRLastFiveYears": "4.97%",
     "preTaxOperatingMarginUnadjusted": "4.64%",
@@ -2779,11 +2781,16 @@
     "ROE": "-3.95%",
     "dividendPayoutRatio": "0.90%",
     "equityReinvestmentRate": "0.90%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "4.96%",
-    "gicSubIndustry": ["Advertising"],
-    "industry": ["Advertising Agencies", "Marketing Services"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "4.96%"
   },
   {
+    "industry": [
+      "Publishing",
+      "Publishing - Books",
+      "Publishing - Newspapers",
+      "Publishing - Periodicals"
+    ],
+    "gicSubIndustry": ["Publishing"],
     "numberOfFirms": 349,
     "annualAverageCAGRLastFiveYears": "-0.29%",
     "preTaxOperatingMarginUnadjusted": "5.31%",
@@ -2809,16 +2816,11 @@
     "ROE": "-0.76%",
     "dividendPayoutRatio": "0.54%",
     "equityReinvestmentRate": "0.54%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "5.29%",
-    "gicSubIndustry": ["Publishing"],
-    "industry": [
-      "Publishing",
-      "Publishing - Books",
-      "Publishing - Newspapers",
-      "Publishing - Periodicals"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "5.29%"
   },
   {
+    "industry": ["Railroads"],
+    "gicSubIndustry": ["Railroads", "Highways & Railtracks"],
     "numberOfFirms": 53,
     "annualAverageCAGRLastFiveYears": "1.76%",
     "preTaxOperatingMarginUnadjusted": "15.27%",
@@ -2844,11 +2846,15 @@
     "ROE": "5.66%",
     "dividendPayoutRatio": "78.08%",
     "equityReinvestmentRate": "78.08%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "15.62%",
-    "gicSubIndustry": ["Railroads", "Highways & Railtracks"],
-    "industry": ["Railroads"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "15.62%"
   },
   {
+    "industry": [
+      "Real Estate Development",
+      "Real Estate�Development",
+      "Real Estate - Development"
+    ],
+    "gicSubIndustry": ["Real Estate Development"],
     "numberOfFirms": 890,
     "annualAverageCAGRLastFiveYears": "6.89%",
     "preTaxOperatingMarginUnadjusted": "17.31%",
@@ -2874,15 +2880,40 @@
     "ROE": "10.44%",
     "dividendPayoutRatio": "69.21%",
     "equityReinvestmentRate": "69.21%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "17.31%",
-    "gicSubIndustry": ["Real Estate Development"],
-    "industry": [
-      "Real Estate Development",
-      "Real Estate�Development",
-      "Real Estate - Development"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "17.31%"
   },
   {
+    "industry": [
+      "REIT - Diversified",
+      "REIT - Healthcare Facilities",
+      "REIT - Hotel & Motel",
+      "REIT - Hotel/Motel",
+      "REIT - Industrial",
+      "REIT - Office",
+      "REIT - Residential",
+      "REIT - Retail",
+      "REIT�Diversified",
+      "REIT�Healthcare Facilities",
+      "REIT�Hotel & Motel",
+      "REIT�Industrial",
+      "REIT�Mortgage",
+      "REIT�Office",
+      "REIT�Residential",
+      "REIT�Retail",
+      "REIT�Specialty",
+      "REIT - Specialty",
+      "REIT - Mortgage"
+    ],
+    "gicSubIndustry": [
+      "Mortgage REITs",
+      "Diversified REITs",
+      "Industrial REITs",
+      "Hotel & Resort REITs",
+      "Office REITs",
+      "Health Care REITs",
+      "Residential REITs",
+      "Retail REITs"
+    ],
     "numberOfFirms": 799,
     "annualAverageCAGRLastFiveYears": "8.60%",
     "preTaxOperatingMarginUnadjusted": "33.19%",
@@ -2908,40 +2939,11 @@
     "ROE": "0.80%",
     "dividendPayoutRatio": "823.36%",
     "equityReinvestmentRate": "823.36%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "30.35%",
-    "gicSubIndustry": [
-      "Mortgage REITs",
-      "Diversified REITs",
-      "Industrial REITs",
-      "Hotel & Resort REITs",
-      "Office REITs",
-      "Health Care REITs",
-      "Residential REITs",
-      "Retail REITs"
-    ],
-    "industry": [
-      "REIT - Diversified",
-      "REIT - Healthcare Facilities",
-      "REIT - Hotel & Motel",
-      "REIT - Hotel/Motel",
-      "REIT - Industrial",
-      "REIT - Office",
-      "REIT - Residential",
-      "REIT - Retail",
-      "REIT�Diversified",
-      "REIT�Healthcare Facilities",
-      "REIT�Hotel & Motel",
-      "REIT�Industrial",
-      "REIT�Mortgage",
-      "REIT�Office",
-      "REIT�Residential",
-      "REIT�Retail",
-      "REIT�Specialty",
-      "REIT - Specialty",
-      "REIT - Mortgage"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "30.35%"
   },
   {
+    "industry": ["Restaurants"],
+    "gicSubIndustry": ["Restaurants"],
     "numberOfFirms": 379,
     "annualAverageCAGRLastFiveYears": "-0.53%",
     "preTaxOperatingMarginUnadjusted": "6.02%",
@@ -2967,11 +2969,11 @@
     "ROE": "5.17%",
     "dividendPayoutRatio": "459.50%",
     "equityReinvestmentRate": "459.50%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "4.03%",
-    "gicSubIndustry": ["Restaurants"],
-    "industry": ["Restaurants"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "4.03%"
   },
   {
+    "industry": ["Rubber & Plastics"],
+    "gicSubIndustry": ["Tires & Rubber"],
     "numberOfFirms": 92,
     "annualAverageCAGRLastFiveYears": "0.31%",
     "preTaxOperatingMarginUnadjusted": "5.62%",
@@ -2997,11 +2999,11 @@
     "ROE": "2.65%",
     "dividendPayoutRatio": "110.38%",
     "equityReinvestmentRate": "110.38%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "5.39%",
-    "gicSubIndustry": ["Tires & Rubber"],
-    "industry": ["Rubber & Plastics"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "5.39%"
   },
   {
+    "industry": ["Semiconductor Equipment & Materials"],
+    "gicSubIndustry": ["Semiconductor Equipment"],
     "numberOfFirms": 308,
     "annualAverageCAGRLastFiveYears": "7.15%",
     "preTaxOperatingMarginUnadjusted": "18.84%",
@@ -3027,11 +3029,18 @@
     "ROE": "21.38%",
     "dividendPayoutRatio": "31.51%",
     "equityReinvestmentRate": "31.51%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "19.69%",
-    "gicSubIndustry": ["Semiconductor Equipment"],
-    "industry": ["Semiconductor Equipment & Materials"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "19.69%"
   },
   {
+    "industry": [
+      "Semiconductor - Broad Line",
+      "Semiconductor - Integrated Circuits",
+      "Semiconductor - Specialized",
+      "Semiconductor Memory",
+      "Semiconductor- Memory Chips",
+      "Semiconductors"
+    ],
+    "gicSubIndustry": ["Semiconductors"],
     "numberOfFirms": 565,
     "annualAverageCAGRLastFiveYears": "4.55%",
     "preTaxOperatingMarginUnadjusted": "18.19%",
@@ -3057,18 +3066,11 @@
     "ROE": "16.89%",
     "dividendPayoutRatio": "44.42%",
     "equityReinvestmentRate": "44.42%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "19.15%",
-    "gicSubIndustry": ["Semiconductors"],
-    "industry": [
-      "Semiconductor - Broad Line",
-      "Semiconductor - Integrated Circuits",
-      "Semiconductor - Specialized",
-      "Semiconductor Memory",
-      "Semiconductor- Memory Chips",
-      "Semiconductors"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "19.15%"
   },
   {
+    "industry": ["Steel", "Steel & Iron"],
+    "gicSubIndustry": ["Steel"],
     "numberOfFirms": 718,
     "annualAverageCAGRLastFiveYears": "5.72%",
     "preTaxOperatingMarginUnadjusted": "4.41%",
@@ -3094,11 +3096,11 @@
     "ROE": "2.44%",
     "dividendPayoutRatio": "154.05%",
     "equityReinvestmentRate": "154.05%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "4.52%",
-    "gicSubIndustry": ["Steel"],
-    "industry": ["Steel", "Steel & Iron"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "4.52%"
   },
   {
+    "industry": ["Textile - Apparel Footwear & Accessories"],
+    "gicSubIndustry": ["Footwear"],
     "numberOfFirms": 79,
     "annualAverageCAGRLastFiveYears": "-5.90%",
     "preTaxOperatingMarginUnadjusted": "6.26%",
@@ -3124,11 +3126,11 @@
     "ROE": "9.95%",
     "dividendPayoutRatio": "65.38%",
     "equityReinvestmentRate": "65.38%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "6.16%",
-    "gicSubIndustry": ["Footwear"],
-    "industry": ["Textile - Apparel Footwear & Accessories"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "6.16%"
   },
   {
+    "industry": ["Tobacco", "Tobacco Products, Other"],
+    "gicSubIndustry": ["Tobacco"],
     "numberOfFirms": 57,
     "annualAverageCAGRLastFiveYears": "11.85%",
     "preTaxOperatingMarginUnadjusted": "32.81%",
@@ -3154,11 +3156,11 @@
     "ROE": "19.35%",
     "dividendPayoutRatio": "105.89%",
     "equityReinvestmentRate": "105.89%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "32.91%",
-    "gicSubIndustry": ["Tobacco"],
-    "industry": ["Tobacco", "Tobacco Products, Other"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "32.91%"
   },
   {
+    "industry": ["Small Tools & Accessories", "Tools & Accessories"],
+    "gicSubIndustry": ["Home Improvement Retail"],
     "numberOfFirms": 90,
     "annualAverageCAGRLastFiveYears": "2.82%",
     "preTaxOperatingMarginUnadjusted": "11.62%",
@@ -3184,11 +3186,11 @@
     "ROE": "55.16%",
     "dividendPayoutRatio": "43.42%",
     "equityReinvestmentRate": "43.42%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "11.36%",
-    "gicSubIndustry": ["Home Improvement Retail"],
-    "industry": ["Small Tools & Accessories", "Tools & Accessories"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "11.36%"
   },
   {
+    "industry": ["Truck Manufacturing", "Trucking", "Trucks & Other Vehicles"],
+    "gicSubIndustry": ["Trucking"],
     "numberOfFirms": 217,
     "annualAverageCAGRLastFiveYears": "2.54%",
     "preTaxOperatingMarginUnadjusted": "1.45%",
@@ -3214,11 +3216,11 @@
     "ROE": "-5.76%",
     "dividendPayoutRatio": "0.47%",
     "equityReinvestmentRate": "0.47%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "0.73%",
-    "gicSubIndustry": ["Trucking"],
-    "industry": ["Truck Manufacturing", "Trucking", "Trucks & Other Vehicles"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "0.73%"
   },
   {
+    "industry": ["Uranium"],
+    "gicSubIndustry": ["Independent Power Producers & Energy Traders"],
     "numberOfFirms": 553,
     "annualAverageCAGRLastFiveYears": "6.42%",
     "preTaxOperatingMarginUnadjusted": "13.38%",
@@ -3244,11 +3246,15 @@
     "ROE": "7.31%",
     "dividendPayoutRatio": "81.59%",
     "equityReinvestmentRate": "81.59%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "13.38%",
-    "gicSubIndustry": ["Independent Power Producers & Energy Traders"],
-    "industry": ["Uranium"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "13.38%"
   },
   {
+    "industry": [
+      "Utilities - Regulated Water",
+      "Utilities�Regulated Water",
+      "Water Utilities"
+    ],
+    "gicSubIndustry": ["Water Utilities"],
     "numberOfFirms": 104,
     "annualAverageCAGRLastFiveYears": "8.44%",
     "preTaxOperatingMarginUnadjusted": "26.79%",
@@ -3274,15 +3280,10 @@
     "ROE": "6.30%",
     "dividendPayoutRatio": "56.83%",
     "equityReinvestmentRate": "75.32%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "26.79%",
-    "gicSubIndustry": ["Water Utilities"],
-    "industry": [
-      "Utilities - Regulated Water",
-      "Utilities�Regulated Water",
-      "Water Utilities"
-    ]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "26.79%"
   },
   {
+    "industry": ["Total Market"],
     "numberOfFirms": 46580,
     "annualAverageCAGRLastFiveYears": "6.62%",
     "preTaxOperatingMarginUnadjusted": "8.00%",
@@ -3308,10 +3309,10 @@
     "ROE": "6.30%",
     "dividendPayoutRatio": "75.32%",
     "equityReinvestmentRate": "75.32%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "8.09%",
-    "industry": ["Total Market"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "8.09%"
   },
   {
+    "industry": ["Total Market (without financials)"],
     "numberOfFirms": 41623,
     "annualAverageCAGRLastFiveYears": "6.41%",
     "preTaxOperatingMarginUnadjusted": "8.31%",
@@ -3337,7 +3338,6 @@
     "ROE": "5.54%",
     "dividendPayoutRatio": "95.73%",
     "equityReinvestmentRate": "95.73%",
-    "preTaxOperatingMarginLeaseAndR&DAdjusted": "8.41%",
-    "industry": ["Total Market (without financials)"]
+    "preTaxOperatingMarginLeaseAndR&DAdjusted": "8.41%"
   }
 ]
