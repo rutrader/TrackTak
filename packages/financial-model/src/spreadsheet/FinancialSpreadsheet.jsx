@@ -151,7 +151,7 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
     const options = {
       exportSpreadsheetName: `${name}.xlsx`,
       textPatternFormats: {
-        million: '#,###.##,,'
+        number: '#,##0.##'
       }
     }
 
