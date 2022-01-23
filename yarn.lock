@@ -5908,7 +5908,6 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
   integrity sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
 
-<<<<<<< HEAD
 "@tracktak/hyperformula@5.0.2-beta.1":
   version "5.0.2-beta.1"
   resolved "https://npm.pkg.github.com/download/@tracktak/hyperformula/5.0.2-beta.1/553725da8851d23ea3f158f27687c9332ff7a4c4bacbc861d8dd38d33f46e497#e323d94d771aac713005f9d1219f439e4386c189"
@@ -5920,16 +5919,10 @@
     tiny-emitter "^2.1.0"
     unorm "^1.6.0"
 
-"@tracktak/powersheet@^2.0.0-beta.9":
-  version "2.0.0-beta.9"
-  resolved "https://npm.pkg.github.com/download/@tracktak/powersheet/2.0.0-beta.9/abb6edb60d623be315cacd8be0f6a2717ff30dd272331e534ed14a571282f5ce#822f685e7fce2a8f8ea9fd1c4e0b8c63fd282ff4"
-  integrity sha512-50F0IzjBaTOd4KYDtwwohTxbaR0woX4HHtGErM04UB9Gdk0cUoM39soVCqCNG131uJp27aSWnpdw0b7bx0eL2g==
-=======
-"@tracktak/powersheet@1.0.3":
-  version "1.0.3"
-  resolved "https://npm.pkg.github.com/download/@tracktak/powersheet/1.0.3/53fa85f1ee45739414d65f7bdaf0af70ea56c35eac33a89f1cc3d8712ea35b00#0a9499e5fc1404961e966bf89ac0200bb0a3b59a"
-  integrity sha512-TuX2c5zOhJl7Kl1ybes8nAnaXo/7tth5QuXCweVDCgB5ANSd+8eQ3v5eHHs4+tZzvnRSCE2oOpmMxHqkjOwfoQ==
->>>>>>> main
+"@tracktak/powersheet@^2.0.0-beta.10":
+  version "2.0.0-beta.10"
+  resolved "https://npm.pkg.github.com/download/@tracktak/powersheet/2.0.0-beta.10/ea3bdd99b4efef270b85c64d163a8d2ec78564c8eccdcd2b66d05163d2d476cc#072d4d0f1701fb3ce7ca052e8f7ac48787c455ec"
+  integrity sha512-OHR5+m3ryk+Q24/Qx7r0hzkbbYlE+xrF4nmIkNxmAKVTpwDFl/8/xffaxEdi9pNdcNRxfy1PSAq+5n1u0UBK7w==
   dependencies:
     "@material/drawer" "^13.0.0"
     a-color-picker "^1.2.1"
@@ -21185,7 +21178,7 @@ promzard@^0.3.0:
   dependencies:
     read "1"
 
-prop-types@15.7.2, prop-types@^15.0.0, prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.1, prop-types@^15.7.2:
+prop-types@15.7.2, prop-types@^15.0.0, prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -21531,14 +21524,6 @@ react-app-polyfill@^2.0.0:
     raf "^3.4.1"
     regenerator-runtime "^0.13.7"
     whatwg-fetch "^3.4.1"
-
-react-contenteditable@^3.3.6:
-  version "3.3.6"
-  resolved "https://registry.yarnpkg.com/react-contenteditable/-/react-contenteditable-3.3.6.tgz#4dac0eeaff268ca1614b52d4290d7b21f3bfb997"
-  integrity sha512-61+Anbmzggel1sP7nwvxq3d2woD3duR5R89RoLGqKan1A+nruFIcmLjw2F+qqk70AyABls0BDKzE1vqS1UIF1g==
-  dependencies:
-    fast-deep-equal "^3.1.3"
-    prop-types "^15.7.1"
 
 react-cookie-consent@^6.2.3:
   version "6.4.1"
