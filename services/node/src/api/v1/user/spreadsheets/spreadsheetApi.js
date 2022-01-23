@@ -63,3 +63,29 @@ export const deleteSpreadsheet = async id => {
     _id: new MongoDb.ObjectId(id)
   })
 }
+
+export const getSpreadsheetsInFolder = async folderId => {
+  return database.find(
+    Collections.POWERSHEET_SPREADSHEET,
+    {
+      folderId
+    },
+    {
+      projection: {
+        'sheetData.data': 0
+      }
+    }
+  )
+}
+
+export const updateSpreadsheetFolder = async (id, folderId) => {
+  return database.updateOne(
+    Collections.POWERSHEET_SPREADSHEET,
+    {
+      _id: new MongoDb.ObjectId(id)
+    },
+    {
+      $set: { folderId }
+    }
+  )
+}

@@ -13,6 +13,7 @@ import AuthenticatedHeader from './components/AuthenticatedHeader'
 import Authenticated from './components/Authenticated'
 import Pricing from './components/Pricing'
 import Templates from './components/Templates'
+import SavedSpreadsheets from './components/SavedSpreadsheets'
 
 const LayoutContainer = () => {
   return (
@@ -50,7 +51,10 @@ const Index = () => {
               <Route path='payment-success' element={<PaymentSuccess />} />
               <Route path='switching-plan' element={<SwitchingPlan />} />
               <Route path='cancel-plan' element={<CancelPlan />} />
-              <Route index element={<Dashboard />} />
+              <Route path='/' element={<Dashboard />}>
+                <Route path=':folderId' element={<SavedSpreadsheets />} />
+                <Route index element={<SavedSpreadsheets />} />
+              </Route>
             </Route>
           </Routes>
         </BrowserRouter>

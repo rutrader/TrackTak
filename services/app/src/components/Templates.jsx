@@ -13,10 +13,12 @@ import { api, utils, useAuth } from '@tracktak/common'
 import { templates } from '@tracktak/financial-model'
 import { useNavigate } from 'react-router'
 import logSpreadsheetEvent from '../shared/logSpreadsheetEvent'
+import { useSpreadsheetsMetadata } from '../hooks/useSpreadsheetsMetadata'
 
 const Templates = () => {
   const { userData, getAccessToken } = useAuth()
   const navigate = useNavigate()
+  const { folderId } = useSpreadsheetsMetadata()
 
   const navigateToSpreadsheet = (spreadsheet, name) => {
     navigate(`/${userData.name}/my-spreadsheets/${spreadsheet._id}`)
@@ -36,7 +38,11 @@ const Templates = () => {
       name,
       data: template
     }
-    const response = await api.createSpreadsheet({ sheetData }, token?.jwtToken)
+    const response = await api.createSpreadsheet(
+      { sheetData },
+      folderId,
+      token?.jwtToken
+    )
 
     navigateToSpreadsheet(response.data.spreadsheet, sheetData.name)
   }
@@ -51,7 +57,11 @@ const Templates = () => {
       }
     }
     const token = await getAccessToken()
-    const response = await api.createSpreadsheet({ sheetData }, token?.jwtToken)
+    const response = await api.createSpreadsheet(
+      { sheetData },
+      folderId,
+      token?.jwtToken
+    )
 
     navigateToSpreadsheet(response.data.spreadsheet, sheetData.name)
   }

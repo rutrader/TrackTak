@@ -3,10 +3,18 @@ import {
   createSpreadsheet,
   deleteSpreadsheet,
   getSpreadsheet,
-  updateSpreadsheet
+  updateSpreadsheet,
+  getSpreadsheetsInFolder,
+  updateSpreadsheetFolder
 } from './spreadsheetApi'
 
 const router = express.Router()
+
+router.get('/', async (req, res) => {
+  const spreadsheets = await getSpreadsheetsInFolder(req.params.id)
+
+  res.send({ spreadsheets })
+})
 
 router.post('/', async (req, res) => {
   const spreadsheet = await createSpreadsheet(
@@ -23,6 +31,15 @@ router.put('/', async (req, res) => {
     req.body._id,
     req.body.createdTimestamp
   )
+  res.send({ spreadsheet })
+})
+
+router.put('/:id', async (req, res) => {
+  const spreadsheet = await updateSpreadsheetFolder(
+    req.params.id,
+    req.body.folderId
+  )
+
   res.send({ spreadsheet })
 })
 

@@ -5,6 +5,7 @@ import portalSession from './plan/portalSession'
 import webhook from './plan/webhook'
 import spreadsheets from './spreadsheets'
 import spreadsheetsMetadata from './spreadsheets/metadata'
+import folders from './folders'
 
 const router = express.Router()
 
@@ -14,5 +15,6 @@ router.use('/plan/webhook', webhook)
 router.use('/plan', plan)
 router.use('/spreadsheets/metadata', spreadsheetsMetadata)
 router.use('/spreadsheets', spreadsheets)
+router.use('/folders', folders)
 
 export default router

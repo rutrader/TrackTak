@@ -1,4 +1,4 @@
 export const Collections = {
-  SPREADSHEET: 'spreadsheet',
+  FOLDER: 'folder',
   POWERSHEET_SPREADSHEET: 'powersheet-spreadsheet'
 }

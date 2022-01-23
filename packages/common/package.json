@@ -10,7 +10,7 @@
   "main": "./dist/index.js",
   "module": "./dist/index.module.js",
   "scripts": {
-    "build": "cross-env NODE_ENV=production parcel build --reporter @parcel/reporter-bundle-analyzer",
+    "build": "cross-env NODE_ENV=production parcel build --no-source-maps --reporter @parcel/reporter-bundle-analyzer",
     "watch:build": "parcel watch"
   },
   "dependencies": {

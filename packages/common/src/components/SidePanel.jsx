@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Box,
   Drawer,
@@ -6,27 +6,14 @@ import {
   Divider,
   Hidden,
   IconButton,
-  Typography,
-  List,
-  ListItem,
-  ListItemText,
   useTheme
 } from '@mui/material'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import { navigate } from 'gatsby'
-import { AnchorLink } from 'gatsby-plugin-anchor-links'
-import { utils } from '@tracktak/common'
 
 const drawerWidth = 240
 
-const SidePanel = ({
-  children,
-  tabs,
-  titleMenuButtons,
-  selectedTab,
-  setSeletedTab = utils.noop
-}) => {
+const SidePanel = ({ sidePanelTabs, children }) => {
   const theme = useTheme()
   const [open, setOpen] = useState(false)
   const isOnMobile = useMediaQuery(theme.breakpoints.down('sm'))
@@ -43,30 +30,6 @@ const SidePanel = ({
   useEffect(() => {
     setOpen(true)
   }, [])
-
-  const getSidePanelTabs = () => (
-    <List>
-      {tabs.map(({ title, to }, index) => {
-        return (
-          <ListItem
-            key={title}
-            // eslint-disable-next-line react/display-name
-            component={forwardRef((props, ref) => (
-              <AnchorLink {...props} gatsbyLinkProps={{ ref }} />
-            ))}
-            onAnchorLinkClick={() => {
-              setSeletedTab(index)
-              navigate(to)
-            }}
-            to={to}
-            button
-          >
-            <ListItemText primary={title} />
-          </ListItem>
-        )
-      })}
-    </List>
-  )
 
   return (
     <Box
@@ -101,7 +64,7 @@ const SidePanel = ({
             </Box>
             <Divider />
           </Hidden>
-          {getSidePanelTabs()}
+          {sidePanelTabs}
         </>
       </Drawer>
       <Hidden smUp implementation='css'>
@@ -118,23 +81,8 @@ const SidePanel = ({
           <ChevronRightIcon color='primary' />
         </IconButton>
       </Hidden>
-      <Box component='main' sx={{ width: '100%' }}>
-        <Box>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between'
-            }}
-          >
-            {tabs[selectedTab]?.title && (
-              <Typography variant='h5' gutterBottom>
-                {tabs[selectedTab].title}
-              </Typography>
-            )}
-            {titleMenuButtons}
-          </Box>
-          {children}
-        </Box>
+      <Box component='div' sx={{ width: '100%' }}>
+        {children}
       </Box>
     </Box>
   )
