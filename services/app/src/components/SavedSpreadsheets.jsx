@@ -22,23 +22,25 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove'
 import FolderIcon from '@mui/icons-material/Folder'
 import ConfirmationDialog from './ConfirmationDialog'
-import { api, useAuth, RoundButton } from '@tracktak/common'
+import { api, useAuth } from '@tracktak/common'
 import { useNavigate } from 'react-router-dom'
-import logValuationEvent from '../shared/logValuationEvent'
+import logSpreadsheetEvent from '../shared/logSpreadsheetEvent'
 import dayjs from 'dayjs'
 import { useSpreadsheetsMetadata } from '../hooks/useSpreadsheetsMetadata'
 import GridOnIcon from '@mui/icons-material/GridOn'
 import { StyledMenu } from './OptionsMenuFolder'
+import Templates from './Templates'
+import AddIcon from '@mui/icons-material/Add'
+import { Link } from 'react-router-dom'
 
 const SavedSpreadsheets = () => {
   const theme = useTheme()
   const navigate = useNavigate()
-  const { folderId, handleShowSearchTickerDialog, folders } =
-    useSpreadsheetsMetadata()
+  const { folderId, folders } = useSpreadsheetsMetadata()
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false)
   const { userData, getAccessToken } = useAuth()
   const [selectedSpreadsheet, setSelectedSpreadsheet] = useState()
-  const [spreadsheets, setSpreadsheets] = useState()
+  const [spreadsheets, setSpreadsheets] = useState([])
   const [openModalFolder, setOpenModalFolder] = useState(false)
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
@@ -60,7 +62,7 @@ const SavedSpreadsheets = () => {
   const handleRowClick = spreadsheet => {
     navigate(`/${userData.name}/my-spreadsheets/${spreadsheet._id}`)
 
-    logValuationEvent('Edit', spreadsheet.sheetData.name)
+    logSpreadsheetEvent('Edit', spreadsheet.sheetData.name)
   }
 
   const handleOnClickDelete = () => {
@@ -143,33 +145,26 @@ const SavedSpreadsheets = () => {
           Are you sure you want to delete this valuation?
         </DialogContentText>
       </ConfirmationDialog>
-      {/* No falsy check because null means the data hasn't loaded yet */}
-      {spreadsheets?.length === 0 && (
-        <Box
-          sx={{
-            marginTop: theme => theme.spacing(10)
-          }}
-          textAlign={'center'}
-        >
-          <Typography gutterBottom variant='h5'>
-            Start by creating your first valuation!
-          </Typography>
-          <RoundButton
-            variant='contained'
-            color='primary'
-            onClick={handleShowSearchTickerDialog}
-            type='button'
+      {spreadsheets.length ? (
+        <>
+          <IconButton
+            component={Link}
+            to='/templates'
             sx={{
-              mt: 2,
-              textTransform: 'none'
+              position: 'absolute',
+              right: 0,
+              top: 0,
+              padding: 0,
+              backgroundColor: theme => theme.palette.primary.light,
+              width: '40px',
+              height: '40px',
+              '&:hover': {
+                backgroundColor: theme => theme.palette.primary.dark
+              }
             }}
           >
-            Create Valuation
-          </RoundButton>
-        </Box>
-      )}
-      {spreadsheets?.length > 0 && (
-        <>
+            <AddIcon style={{ color: 'white' }} fontSize='large' />
+          </IconButton>
           <TableContainer
             sx={{
               marginTop: '20px',
@@ -246,17 +241,12 @@ const SavedSpreadsheets = () => {
             <MenuItem
               disableRipple
               disabled={moveToDisabled}
-              onClick={handleOnClickAnchorClose}
               onClick={handleOnClickOpenModal}
             >
               <DriveFileMoveIcon />
               Move to
             </MenuItem>
-            <MenuItem
-              disableRipple
-              onClick={handleOnClickAnchorClose}
-              onClick={handleOnClickDelete}
-            >
+            <MenuItem disableRipple onClick={handleOnClickDelete}>
               <DeleteIcon />
               Delete
             </MenuItem>
@@ -321,6 +311,8 @@ const SavedSpreadsheets = () => {
             </Box>
           </Modal>
         </>
+      ) : (
+        <Templates />
       )}
     </>
   )

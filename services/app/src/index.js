@@ -12,6 +12,7 @@ import LayoutFullScreen from './components/LayoutFullScreen'
 import AuthenticatedHeader from './components/AuthenticatedHeader'
 import Authenticated from './components/Authenticated'
 import Pricing from './components/Pricing'
+import Templates from './components/Templates'
 import SavedSpreadsheets from './components/SavedSpreadsheets'
 
 const LayoutContainer = () => {
@@ -50,6 +51,7 @@ const Index = () => {
               <Route path='switching-plan' element={<SwitchingPlan />} />
               <Route path='cancel-plan' element={<CancelPlan />} />
               <Route path='/' element={<Dashboard />}>
+                <Route path='templates' element={<Templates />} />
                 <Route path=':folderId' element={<SavedSpreadsheets />} />
                 <Route index element={<SavedSpreadsheets />} />
               </Route>

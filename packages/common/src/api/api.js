@@ -14,63 +14,118 @@ axios.interceptors.response.use(response => response, errorResponseHandler)
 const getAuthHeaders = accessToken => {
   return { Authorization: `Bearer ${accessToken}` }
 }
-export const getFundamentals = async (ticker, params) => {
-  return axios.get(`/api/v1/fundamentals/${ticker}`, {
-    params
-  })
-}
 
-export const getExchangeRate = async (baseCurrency, quoteCurrency, params) => {
-  return axios.get(`/api/v1/exchange-rate/${baseCurrency}/${quoteCurrency}`, {
-    params
-  })
-}
-
-export const getPrices = async (ticker, params) => {
-  return axios.get(`/api/v1/prices/${ticker}`, {
-    params
-  })
-}
-
-export const getGovernmentBond = async (code, params) => {
-  return axios.get(`/api/v1/government-bond/${code}`, {
-    params
-  })
-}
-
-export const getAutocompleteQuery = async (query, params) => {
-  return axios.get(`/api/v1/autocomplete-query/${query}`, {
-    params
-  })
-}
-
-export const getFinancialData = async id => {
-  return axios.get(`/api/v1/financial-data/${id}`)
-}
-
-export const createFinancialData = async (
-  financialData,
-  accessToken,
-  spreadsheetId
-) => {
-  return axios.post(
-    '/api/v1/financial-data/',
-    { financialData, spreadsheetId },
+export const getEODHistoricalDataFundamentals = async (ticker, params) => {
+  return axios.get(
+    `/api/v1/securities/eod-historical-data/fundamentals/${ticker}`,
     {
-      headers: getAuthHeaders(accessToken)
+      params
     }
   )
 }
 
+export const getCompanyFinancials = async (ticker, params) => {
+  return axios.get(`/api/v1/securities/stocks/financials/${ticker}`, {
+    params
+  })
+}
+
+export const getCompanyOutstandingShares = async (ticker, params) => {
+  return axios.get(`/api/v1/securities/stocks/outstanding-shares/${ticker}`, {
+    params
+  })
+}
+
+export const getCompanyPrices = async (ticker, params) => {
+  return axios.get(`/api/v1/securities/stocks/prices/${ticker}`, {
+    params
+  })
+}
+
+export const getCompanyRatios = async (ticker, params) => {
+  return axios.get(`/api/v1/securities/stocks/ratios/${ticker}`, {
+    params
+  })
+}
+
+export const getIndustryAverages = async (type, params) => {
+  return axios.get(`/api/v1/securities/stocks/industry-averages/${type}`, {
+    params
+  })
+}
+
+export const getCompanyIndustryAverage = async (ticker, params) => {
+  return axios.get(
+    `/api/v1/securities/stocks/industry-averages/company/${ticker}`,
+    {
+      params
+    }
+  )
+}
+
+export const getCreditRatingInterestSpreads = async params => {
+  return axios.get(`/api/v1/market/credit-rating-interest-spreads`, {
+    params
+  })
+}
+
+export const getEquityRiskPremiums = async params => {
+  return axios.get(`/api/v1/market/equity-risk-premiums`, {
+    params
+  })
+}
+
+export const getCountryEquityRiskPremium = async (countryISO, params) => {
+  return axios.get(`/api/v1/market/equity-risk-premiums/${countryISO}`, {
+    params
+  })
+}
+
+export const getGovernmentBond = async (countryISOMaturity, params) => {
+  return axios.get(
+    `/api/v1/securities/bonds/government/${countryISOMaturity}`,
+    {
+      params
+    }
+  )
+}
+
+export const getExchangeRate = async (baseCurrency, quoteCurrency, params) => {
+  return axios.get(
+    `/api/v1/securities/fx/exchange-rates/${baseCurrency}/${quoteCurrency}`,
+    {
+      params
+    }
+  )
+}
+
+export const getSecuritiesAutocomplete = async (query, params) => {
+  return axios.get(`/api/v1/securities/autocomplete/${query}`, {
+    params
+  })
+}
+
+export const getSpreadsheetTemplate = async (name, params) => {
+  return axios.get(`/api/v1/spreadsheet-templates/${name}`, {
+    params
+  })
+}
+
+export const getSpreadsheetsMetadata = async accessToken => {
+  return axios.get('/api/v1/user/spreadsheets/metadata', {
+    headers: getAuthHeaders(accessToken)
+  })
+}
+
 export const getFolders = async accessToken => {
-  return axios.get('/api/v1/folders', {
+  return axios.get('/api/v1/user/folders', {
     headers: getAuthHeaders(accessToken)
   })
 }
 
 export const createFolder = async (name, accessToken) => {
   return axios.post(
-    '/api/v1/folder',
+    '/api/v1/user/folders',
     { name },
     {
       headers: getAuthHeaders(accessToken)
@@ -80,7 +135,7 @@ export const createFolder = async (name, accessToken) => {
 
 export const updateFolder = async (id, name, accessToken) => {
   return axios.put(
-    `/api/v1/folder/${id}`,
+    `/api/v1/user/folders/${id}`,
     { name },
     {
       headers: getAuthHeaders(accessToken)
@@ -90,7 +145,7 @@ export const updateFolder = async (id, name, accessToken) => {
 
 export const updateSpreadsheetFolder = async (id, folderId, accessToken) => {
   return axios.put(
-    `/api/v1/spreadsheet/${id}`,
+    `/api/v1/user/spreadsheets/${id}`,
     {
       folderId
     },
@@ -101,20 +156,20 @@ export const updateSpreadsheetFolder = async (id, folderId, accessToken) => {
 }
 
 export const deleteFolder = async (id, accessToken) => {
-  return axios.delete(`/api/v1/folder/${id}`, {
+  return axios.delete(`/api/v1/user/folders/${id}`, {
     headers: getAuthHeaders(accessToken)
   })
 }
 
 export const getSpreadsheetsInFolder = async (id, accessToken) => {
-  return axios.get(`/api/v1/folder/${id}/spreadsheets`, {
+  return axios.get(`/api/v1/user/folders/${id}/spreadsheets`, {
     headers: getAuthHeaders(accessToken)
   })
 }
 
 export const createSpreadsheet = async (spreadsheet, folderId, accessToken) => {
   return axios.post(
-    '/api/v1/spreadsheets',
+    '/api/v1/user/spreadsheets',
     {
       ...spreadsheet,
       folderId
@@ -126,26 +181,32 @@ export const createSpreadsheet = async (spreadsheet, folderId, accessToken) => {
 }
 
 export const saveSpreadsheet = async (spreadsheet, accessToken) => {
-  return axios.put('/api/v1/spreadsheets', spreadsheet, {
+  return axios.put('/api/v1/user/spreadsheets', spreadsheet, {
     headers: getAuthHeaders(accessToken)
   })
 }
 
 export const getSpreadsheet = async (id, accessToken) => {
-  return axios.get(`/api/v1/spreadsheets/${id}`, {
+  return axios.get(`/api/v1/user/spreadsheets/${id}`, {
     headers: getAuthHeaders(accessToken)
   })
 }
 
 export const deleteSpreadsheet = async (id, accessToken) => {
-  return axios.delete(`/api/v1/spreadsheets/${id}`, {
+  return axios.delete(`/api/v1/user/spreadsheets/${id}`, {
     headers: getAuthHeaders(accessToken)
   })
 }
 
-export const createCheckoutSession = async (lineItems, accessToken) => {
+export const createUserPortalSession = async accessToken => {
+  return axios.post('/api/v1/user/plan/portal-session', undefined, {
+    headers: getAuthHeaders(accessToken)
+  })
+}
+
+export const createUserPlan = async (lineItems, accessToken) => {
   return axios.post(
-    '/api/v1/create-checkout-session',
+    '/api/v1/user/plan',
     {
       lineItems
     },
@@ -155,26 +216,20 @@ export const createCheckoutSession = async (lineItems, accessToken) => {
   )
 }
 
-export const createCustomerPortal = async accessToken => {
-  return axios.post('/api/v1/create-customer-portal-session', undefined, {
-    headers: getAuthHeaders(accessToken)
-  })
-}
-
-export const getPrice = async (id, accessToken) => {
-  return axios.get(`/v1/prices/${id}`, {
-    headers: getAuthHeaders(accessToken)
-  })
-}
-
 export const getCurrentPlan = async accessToken => {
-  return axios.get('/api/v1/current-plan', {
+  return axios.get('/api/v1/user/plan', {
     headers: { Authorization: `Bearer ${accessToken}` }
   })
 }
 
 export const updateCurrentPlan = async (accessToken, planUpdates) => {
-  return axios.put('/api/v1/current-plan', planUpdates, {
+  return axios.put('/api/v1/user/plan', planUpdates, {
     headers: { Authorization: `Bearer ${accessToken}` }
+  })
+}
+
+export const getPlanPrice = async (id, accessToken) => {
+  return axios.get(`/api/v1/plans/prices/${id}`, {
+    headers: getAuthHeaders(accessToken)
   })
 }

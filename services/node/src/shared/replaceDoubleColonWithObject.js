@@ -13,11 +13,11 @@ const assignNestedObject = (obj, keyPath, value) => {
 }
 
 const replaceDoubleColonWithObject = data => {
-  const newData = {}
-
   if (typeof data !== 'object') {
     return data
   }
+
+  const newData = {}
 
   Object.keys(data).forEach(key => {
     const value = data[key]

@@ -49,7 +49,7 @@ The ticker must be in dot notation, so for example: AAPL.US, RDW.LSE, PTL.AU etc
 
 ## API calls
 
-The package has a couple of API calls to our backend, this is due to the spreadsheet having an api built into it, i.e =FIN().
+The package has a couple of API calls to our backend, this is due to the spreadsheet having an api built into it, i.e =S.FIN().
 
 ## License
 

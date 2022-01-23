@@ -10,6 +10,7 @@ services:
       - 27017:27017
     volumes:
       - /data/db:/data/db
+    command: --quiet
   mongo-express:
     image: mongo-express:0.54.0
     environment:

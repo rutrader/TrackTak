@@ -3,7 +3,6 @@ import { styled, alpha } from '@mui/material/styles'
 import { Menu, MenuItem } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import { IconButton } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 

@@ -1,0 +1,1526 @@
+{
+  "STOCK.GET_COMPANY_FINANCIALS": {
+    "header": "STOCK.GET_COMPANY_FINANCIALS",
+    "headerDescription": "Fetches current or historical financial information for a public company.",
+    "type": "Stock Financials",
+    "parameters": ["ticker", "field", "[granularity]", "[fiscalDateRange]"],
+    "codeSyntaxUsage": [
+      "=STOCK.GET_COMPANY_FINANCIALS(\"AMZN\",\"revenue\")",
+      "=STOCK.GET_COMPANY_FINANCIALS(\"BP.LSE\",\"revenue\",\"quarter\")",
+      "=STOCK.GET_COMPANY_FINANCIALS(\"AAPL\",\"revenue\",,\"2017-09-30\")",
+      "=STOCK.GET_COMPANY_FINANCIALS(\"AAPL\",\"date\",,\">2017-09-30\")",
+      "=STOCK.GET_COMPANY_FINANCIALS(\"AAPL\",\"revenue\",,\"2010-01-01:2015-01-01\")"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "=STOCK.GET_COMPANY_FINANCIALS(ticker, field, [granularity], [fiscalDateRange])",
+        "values": [
+          {
+            "syntaxName": "ticker",
+            "description": "Example: \"AAPL\", \"BP.LSE\", \"KME.AU\" etc. For non-us companies you must supply the exchange as well. See the 'exchanges' section below for the list of valid exchanges that can be given here."
+          },
+          {
+            "syntaxName": "field",
+            "description": "See the 'full, income, balance, cashflow statements' section below for the list of parameters that can be given here."
+          },
+          {
+            "syntaxName": "[granularity]",
+            "description": "Accepts either \"ttm\", \"quarter\" or \"year\". Defaults to ttm (trailing twelve months) if the [fiscalDateRange] parameter is not given, else it will default to \"year\". Non-us stocks do not support \"quarter\"."
+          },
+          {
+            "syntaxName": "[fiscalDateRange]",
+            "description": "Example: \"2010-01-01\", \">2010-01-01\", \">=2010-01-01\", \"<2020-01-01\", <=2020-01-01\", \"2010-01-01:2015-01-01\" (exclusive between)."
+          }
+        ]
+      }
+    ],
+    "attributes": [
+      {
+        "header": "Exchanges",
+        "attributeNames": [
+          "US",
+          "LSE",
+          "TO",
+          "V",
+          "NEO",
+          "BE",
+          "HM",
+          "XETRA",
+          "DU",
+          "F",
+          "HA",
+          "MU",
+          "STU",
+          "LU",
+          "VI",
+          "MI",
+          "PA",
+          "BR",
+          "LS",
+          "VX",
+          "AS",
+          "SW",
+          "MC",
+          "IR",
+          "IC",
+          "NFN",
+          "RG",
+          "VS",
+          "NB",
+          "HE",
+          "OL",
+          "ST",
+          "TL",
+          "CO",
+          "TA",
+          "HK",
+          "KO",
+          "KQ",
+          "PSE",
+          "BUD",
+          "WAR",
+          "SG",
+          "BSE",
+          "SHE",
+          "SN",
+          "AT",
+          "JK",
+          "JSE",
+          "BK",
+          "SR",
+          "NSE",
+          "KAR",
+          "AU",
+          "SHG",
+          "CM",
+          "VN",
+          "KLSE",
+          "RO",
+          "SA",
+          "BA",
+          "MX",
+          "IL",
+          "ZSE",
+          "TW",
+          "LIM",
+          "MCX",
+          "TWO",
+          "IS",
+          "CN"
+        ]
+      },
+      {
+        "header": "Full Statements",
+        "attributeNames": [
+          "incomeStatement",
+          "balanceSheet",
+          "cashFlowStatement"
+        ]
+      },
+      {
+        "header": "Income Statement",
+        "attributeNames": [
+          "date",
+          "revenue",
+          "costOfRevenue",
+          "grossProfit",
+          "grossMargin",
+          "sellingGeneralAdministrative",
+          "sellingAndMarketingExpenses",
+          "researchDevelopment",
+          "effectOfAccountingCharges",
+          "operatingExpenses",
+          "operatingIncome",
+          "operatingMargin",
+          "interestIncome",
+          "interestExpense",
+          "netInterestIncome",
+          "otherIncomeExpense",
+          "incomeBeforeTax",
+          "incomeTaxExpense",
+          "effectiveTaxRate",
+          "discontinuedOperations",
+          "minorityInterest",
+          "netIncomeFromContinuingOps",
+          "netIncome",
+          "preferredStockAndOtherAdjustments",
+          "netIncomeApplicableToCommonShares",
+          "netMargin",
+          "ebit",
+          "depreciationAndAmortization",
+          "nonRecurring",
+          "reconciledDepreciation",
+          "otherItems",
+          "ebitda",
+          "currencyCode",
+          "filingDate"
+        ]
+      },
+      {
+        "header": "Balance Sheet",
+        "attributeNames": [
+          "date",
+          "cash",
+          "shortTermInvestments",
+          "cashAndShortTermInvestments",
+          "netReceivables",
+          "inventory",
+          "otherCurrentAssets",
+          "totalCurrentAssets",
+          "longTermInvestments",
+          "propertyPlantEquipment",
+          "intangibleAssets",
+          "goodWill",
+          "otherAssets",
+          "nonCurrentAssetsTotal",
+          "totalAssets",
+          "accountsPayable",
+          "shortLongTermDebt",
+          "otherCurrentLiab",
+          "totalCurrentLiabilities",
+          "longTermDebt",
+          "capitalLeaseObligations",
+          "longTermDebtAndCapitalLeases",
+          "totalDebt",
+          "deferredLongTermLiab",
+          "nonCurrentLiabilitiesOther",
+          "nonCurrentLiabilitiesTotal",
+          "totalLiab",
+          "commonStock",
+          "preferredStockTotalEquity",
+          "retainedEarnings",
+          "accumulatedOtherComprehensiveIncome",
+          "additionalPaidInCapital",
+          "treasuryStock",
+          "capitalSurpluse",
+          "otherStockholderEquity",
+          "totalStockholderEquity",
+          "noncontrollingInterestInConsolidatedEntity",
+          "totalEquity",
+          "currencyCode",
+          "filingDate"
+        ]
+      },
+      {
+        "header": "Cashflow Statement",
+        "attributeNames": [
+          "date",
+          "netIncome",
+          "depreciation",
+          "changeToAccountReceivables",
+          "changeReceivables",
+          "changeToInventory",
+          "changeToLiabilities",
+          "changeInWorkingCapital",
+          "totalCashFromOperatingActivities",
+          "investments",
+          "otherCashflowsFromInvestingActivities",
+          "totalCashflowsFromInvestingActivities",
+          "salePurchaseOfStock",
+          "netBorrowings",
+          "dividendsPaid",
+          "otherCashflowsFromFinancingActivities",
+          "totalCashFromFinancingActivities",
+          "beginPeriodCashFlow",
+          "endPeriodCashFlow",
+          "changeInCash",
+          "capitalExpenditures",
+          "freeCashFlow",
+          "currencyCode",
+          "filingDate"
+        ]
+      }
+    ]
+  },
+  "STOCK.GET_COMPANY_RATIOS": {
+    "header": "STOCK.GET_COMPANY_RATIOS",
+    "headerDescription": "Fetches current or historical ratios information for a public company.",
+    "type": "Stock Ratios",
+    "parameters": ["ticker", "[field]", "[granularity]", "[fiscalDateRange]"],
+    "codeSyntaxUsage": [
+      "=STOCK.GET_COMPANY_RATIOS(\"AMZN\",\"interestCoverage\")",
+      "=STOCK.GET_COMPANY_RATIOS(\"AMZN\",\"interestCoverage\",\"quarter\")",
+      "=STOCK.GET_COMPANY_RATIOS(\"AAPL\",\"interestCoverage\",,\"2010-09-30\")"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "=STOCK.GET_COMPANY_RATIOS(ticker, [field], [granularity], [fiscalDateRange])",
+        "values": [
+          {
+            "syntaxName": "ticker",
+            "description": "Example: \"AAPL\", \"BP.LSE\", \"KME.AU\" etc. For non-us companies you must supply the exchange as well. See the 'exchanges' section below for the list of valid exchanges that can be given here."
+          },
+          {
+            "syntaxName": "[field]",
+            "description": "Accepts \"interestCoverage\"."
+          },
+          {
+            "syntaxName": "[granularity]",
+            "description": "Accepts either \"latest\", \"quarter\" or \"year\". Defaults to latest if the [fiscalDateRange] parameter is not given, else it will default to \"year\". Non-us stocks do not support \"quarter\"."
+          },
+          {
+            "syntaxName": "[fiscalDateRange]",
+            "description": "Example: \"2010-01-01\", \">2010-01-01\", \">=2010-01-01\", \"<2020-01-01\", <=2020-01-01\", \"2010-01-01:2015-01-01\" (exclusive between)."
+          }
+        ]
+      }
+    ],
+    "attributes": [
+      {
+        "header": "Exchanges",
+        "attributeNames": [
+          "US",
+          "LSE",
+          "TO",
+          "V",
+          "NEO",
+          "BE",
+          "HM",
+          "XETRA",
+          "DU",
+          "F",
+          "HA",
+          "MU",
+          "STU",
+          "LU",
+          "VI",
+          "MI",
+          "PA",
+          "BR",
+          "LS",
+          "VX",
+          "AS",
+          "SW",
+          "MC",
+          "IR",
+          "IC",
+          "NFN",
+          "RG",
+          "VS",
+          "NB",
+          "HE",
+          "OL",
+          "ST",
+          "TL",
+          "CO",
+          "TA",
+          "HK",
+          "KO",
+          "KQ",
+          "PSE",
+          "BUD",
+          "WAR",
+          "SG",
+          "BSE",
+          "SHE",
+          "SN",
+          "AT",
+          "JK",
+          "JSE",
+          "BK",
+          "SR",
+          "NSE",
+          "KAR",
+          "AU",
+          "SHG",
+          "CM",
+          "VN",
+          "KLSE",
+          "RO",
+          "SA",
+          "BA",
+          "MX",
+          "IL",
+          "ZSE",
+          "TW",
+          "LIM",
+          "MCX",
+          "TWO",
+          "IS",
+          "CN"
+        ]
+      }
+    ]
+  },
+  "STOCK.GET_COMPANY_OUTSTANDING_SHARES": {
+    "header": "STOCK.GET_COMPANY_OUTSTANDING_SHARES",
+    "headerDescription": "Fetches current or historical outstanding shares information for a public company.",
+    "type": "Stock Outstanding Shares",
+    "parameters": ["ticker", "[field]", "[granularity]", "[fiscalDateRange]"],
+    "codeSyntaxUsage": [
+      "=STOCK.GET_COMPANY_OUTSTANDING_SHARES(\"AMZN\",\"shares\")",
+      "=STOCK.GET_COMPANY_OUTSTANDING_SHARES(\"BP.LSE\",\"shares\",\"quarter\")",
+      "=STOCK.GET_COMPANY_OUTSTANDING_SHARES(\"AAPL\",\"shares\",,\"2010-09-30\")",
+      "=STOCK.GET_COMPANY_OUTSTANDING_SHARES(\"AAPL\",\"shares\",,\">=2010-09-30\")",
+      "=STOCK.GET_COMPANY_OUTSTANDING_SHARES(\"AAPL\",\"date\",,\">=2010-09-30\")"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "=STOCK.GET_COMPANY_OUTSTANDING_SHARES(ticker, field, [granularity], [fiscalDateRange])",
+        "values": [
+          {
+            "syntaxName": "ticker",
+            "description": "Example: \"AAPL\", \"BP.LSE\", \"KME.AU\" etc. For non-us companies you must supply the exchange as well. See the 'exchanges' section below for the list of valid exchanges that can be given here."
+          },
+          {
+            "syntaxName": "[field]",
+            "description": "Accepts \"shares\" and \"date\"."
+          },
+          {
+            "syntaxName": "[granularity]",
+            "description": "Accepts either \"latest\", \"quarter\" or \"year\". Defaults to ttm (trailing twelve months) if the [fiscalDateRange] parameter is not given, else it will default to \"year\". Non-us stocks do not support \"quarter\"."
+          },
+          {
+            "syntaxName": "[fiscalDateRange]",
+            "description": "Example: \"2010-01-01\", \">2010-01-01\", \">=2010-01-01\", \"<2020-01-01\", <=2020-01-01\", \"2010-01-01:2015-01-01\" (exclusive between)."
+          }
+        ]
+      }
+    ],
+    "attributes": [
+      {
+        "header": "Exchanges",
+        "attributeNames": [
+          "US",
+          "LSE",
+          "TO",
+          "V",
+          "NEO",
+          "BE",
+          "HM",
+          "XETRA",
+          "DU",
+          "F",
+          "HA",
+          "MU",
+          "STU",
+          "LU",
+          "VI",
+          "MI",
+          "PA",
+          "BR",
+          "LS",
+          "VX",
+          "AS",
+          "SW",
+          "MC",
+          "IR",
+          "IC",
+          "NFN",
+          "RG",
+          "VS",
+          "NB",
+          "HE",
+          "OL",
+          "ST",
+          "TL",
+          "CO",
+          "TA",
+          "HK",
+          "KO",
+          "KQ",
+          "PSE",
+          "BUD",
+          "WAR",
+          "SG",
+          "BSE",
+          "SHE",
+          "SN",
+          "AT",
+          "JK",
+          "JSE",
+          "BK",
+          "SR",
+          "NSE",
+          "KAR",
+          "AU",
+          "SHG",
+          "CM",
+          "VN",
+          "KLSE",
+          "RO",
+          "SA",
+          "BA",
+          "MX",
+          "IL",
+          "ZSE",
+          "TW",
+          "LIM",
+          "MCX",
+          "TWO",
+          "IS",
+          "CN"
+        ]
+      }
+    ]
+  },
+  "STOCK.GET_COMPANY_PRICES": {
+    "header": "STOCK.GET_COMPANY_PRICES",
+    "headerDescription": "Fetches current or historical prices information for a public company.",
+    "type": "Stock Prices",
+    "parameters": ["ticker", "[field]", "[granularity]", "[fiscalDateRange]"],
+    "codeSyntaxUsage": [
+      "=STOCK.GET_COMPANY_PRICES(\"AMZN\",\"open\")",
+      "=STOCK.GET_COMPANY_PRICES(\"BP.LSE\",\"high\",\"day\")",
+      "=STOCK.GET_COMPANY_PRICES(\"AAPL\",\"week\",,\"2010-09-30\")"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "=STOCK.GET_COMPANY_PRICES(ticker, field, [granularity], [fiscalDateRange])",
+        "values": [
+          {
+            "syntaxName": "ticker",
+            "description": "Example: \"AAPL\", \"BP.LSE\", \"KME.AU\" etc. For non-us companies you must supply the exchange as well. See the 'exchanges' section below for the list of valid exchanges that can be given here."
+          },
+          {
+            "syntaxName": "[field]",
+            "description": "See the 'fields' section below for the list of parameters that can be given here."
+          },
+          {
+            "syntaxName": "[granularity]",
+            "description": "Accepts either \"day\", \"week\" or \"month\"."
+          },
+          {
+            "syntaxName": "[fiscalDateRange]",
+            "description": "Example: \"2010-01-01\", \">2010-01-01\", \">=2010-01-01\", \"<2020-01-01\", <=2020-01-01\", \"2010-01-01:2015-01-01\" (exclusive between)."
+          }
+        ]
+      }
+    ],
+    "attributes": [
+      {
+        "header": "Exchanges",
+        "attributeNames": [
+          "US",
+          "LSE",
+          "TO",
+          "V",
+          "NEO",
+          "BE",
+          "HM",
+          "XETRA",
+          "DU",
+          "F",
+          "HA",
+          "MU",
+          "STU",
+          "LU",
+          "VI",
+          "MI",
+          "PA",
+          "BR",
+          "LS",
+          "VX",
+          "AS",
+          "SW",
+          "MC",
+          "IR",
+          "IC",
+          "NFN",
+          "RG",
+          "VS",
+          "NB",
+          "HE",
+          "OL",
+          "ST",
+          "TL",
+          "CO",
+          "TA",
+          "HK",
+          "KO",
+          "KQ",
+          "PSE",
+          "BUD",
+          "WAR",
+          "SG",
+          "BSE",
+          "SHE",
+          "SN",
+          "AT",
+          "JK",
+          "JSE",
+          "BK",
+          "SR",
+          "NSE",
+          "KAR",
+          "AU",
+          "SHG",
+          "CM",
+          "VN",
+          "KLSE",
+          "RO",
+          "SA",
+          "BA",
+          "MX",
+          "IL",
+          "ZSE",
+          "TW",
+          "LIM",
+          "MCX",
+          "TWO",
+          "IS",
+          "CN"
+        ]
+      },
+      {
+        "header": "Fields",
+        "attributeNames": [
+          "date",
+          "open",
+          "high",
+          "close",
+          "adjustedClose",
+          "low",
+          "volume"
+        ]
+      }
+    ]
+  },
+  "STOCK.GET_COMPANY_INFO": {
+    "header": "STOCK.GET_COMPANY_INFO",
+    "headerDescription": "Fetches current company's background information for a public company.",
+    "type": "Stock Information",
+    "parameters": ["ticker", "field"],
+    "codeSyntaxUsage": [
+      "=STOCK.GET_COMPANY_INFO(\"AMZN\",\"code\")",
+      "=STOCK.GET_COMPANY_INFO(\"AMZN\",\"description\")",
+      "=STOCK.GET_COMPANY_INFO(\"AMZN\",\"code\")&\".\"&STOCK.GET_COMPANY_INFO(\"AMZN\",\"exchange\")"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "=STOCK.GET_COMPANY_INFO(ticker, field)",
+        "values": [
+          {
+            "syntaxName": "ticker",
+            "description": "Example: \"AAPL\", \"BP.LSE\", \"KME.AU\" etc. For non-us companies you must supply the exchange as well. See the 'exchanges' section below for the list of valid exchanges that can be given here."
+          },
+          {
+            "syntaxName": "field",
+            "description": "See the 'information' section below for the list of parameters that can be given here."
+          }
+        ]
+      }
+    ],
+    "attributes": [
+      {
+        "header": "Exchanges",
+        "attributeNames": [
+          "US",
+          "LSE",
+          "TO",
+          "V",
+          "NEO",
+          "BE",
+          "HM",
+          "XETRA",
+          "DU",
+          "F",
+          "HA",
+          "MU",
+          "STU",
+          "LU",
+          "VI",
+          "MI",
+          "PA",
+          "BR",
+          "LS",
+          "VX",
+          "AS",
+          "SW",
+          "MC",
+          "IR",
+          "IC",
+          "NFN",
+          "RG",
+          "VS",
+          "NB",
+          "HE",
+          "OL",
+          "ST",
+          "TL",
+          "CO",
+          "TA",
+          "HK",
+          "KO",
+          "KQ",
+          "PSE",
+          "BUD",
+          "WAR",
+          "SG",
+          "BSE",
+          "SHE",
+          "SN",
+          "AT",
+          "JK",
+          "JSE",
+          "BK",
+          "SR",
+          "NSE",
+          "KAR",
+          "AU",
+          "SHG",
+          "CM",
+          "VN",
+          "KLSE",
+          "RO",
+          "SA",
+          "BA",
+          "MX",
+          "IL",
+          "ZSE",
+          "TW",
+          "LIM",
+          "MCX",
+          "TWO",
+          "IS",
+          "CN"
+        ]
+      },
+      {
+        "header": "Information",
+        "attributeNames": [
+          "code",
+          "type",
+          "name",
+          "exchange",
+          "currencyCode",
+          "currencyName",
+          "currencySymbol",
+          "countryName",
+          "countryISO",
+          "ISIN",
+          "CUSIP",
+          "CIK",
+          "employerIdNumber",
+          "fiscalYearEnd",
+          "IPODate",
+          "internationalDomestic",
+          "sector",
+          "industry",
+          "gicSector",
+          "gicGroup",
+          "gicIndustry",
+          "gicSubIndustry",
+          "homeCategory",
+          "isDelisted",
+          "description",
+          "address",
+          "addressData",
+          "listings",
+          "officers",
+          "phone",
+          "webURL",
+          "logoURL",
+          "fullTimeEmployees",
+          "updatedAt",
+          "mostRecentQuarter",
+          "wallStreetTargetPrice",
+          "sharesFloat",
+          "percentInsiders",
+          "percentInstitutions",
+          "sharesShort",
+          "sharesShortPriorMonth",
+          "shortRatio",
+          "shortPercentOutstanding",
+          "shortPercentFloat"
+        ]
+      }
+    ]
+  },
+  "STOCK.GET_COMPANY_INDUSTRY_AVERAGES": {
+    "header": "STOCK.GET_COMPANY_INDUSTRY_AVERAGES",
+    "headerDescription": "Fetches current or historical industry averages information for a public company.",
+    "type": "Industry Averages",
+    "parameters": ["ticker", "[field]", "[fiscalDateRange]"],
+    "codeSyntaxUsage": [
+      "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(\"AMZN\",\"afterTaxROIC\")",
+      "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(\"AMZN\",,\">2020-09-30\")",
+      "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(\"AMZN\",\"costOfEquity\",\">2020-09-30\")"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(ticker, field, [fiscalDateRange])",
+        "values": [
+          {
+            "syntaxName": "ticker",
+            "description": "Example: \"AAPL\", \"BP.LSE\", \"KME.AU\" etc. For non-us companies you must supply the exchange as well. See the 'exchanges' section below for the list of valid exchanges that can be given here."
+          },
+          {
+            "syntaxName": "[field]",
+            "description": "See the 'industry averages' section below for the list of parameters that can be given here."
+          },
+          {
+            "syntaxName": "[fiscalDateRange]",
+            "description": "Example: \"2010-01-01\", \">2010-01-01\", \">=2010-01-01\", \"<2020-01-01\", <=2020-01-01\", \"2010-01-01:2015-01-01\" (exclusive between)."
+          }
+        ]
+      }
+    ],
+    "attributes": [
+      {
+        "header": "Exchanges",
+        "attributeNames": [
+          "US",
+          "LSE",
+          "TO",
+          "V",
+          "NEO",
+          "BE",
+          "HM",
+          "XETRA",
+          "DU",
+          "F",
+          "HA",
+          "MU",
+          "STU",
+          "LU",
+          "VI",
+          "MI",
+          "PA",
+          "BR",
+          "LS",
+          "VX",
+          "AS",
+          "SW",
+          "MC",
+          "IR",
+          "IC",
+          "NFN",
+          "RG",
+          "VS",
+          "NB",
+          "HE",
+          "OL",
+          "ST",
+          "TL",
+          "CO",
+          "TA",
+          "HK",
+          "KO",
+          "KQ",
+          "PSE",
+          "BUD",
+          "WAR",
+          "SG",
+          "BSE",
+          "SHE",
+          "SN",
+          "AT",
+          "JK",
+          "JSE",
+          "BK",
+          "SR",
+          "NSE",
+          "KAR",
+          "AU",
+          "SHG",
+          "CM",
+          "VN",
+          "KLSE",
+          "RO",
+          "SA",
+          "BA",
+          "MX",
+          "IL",
+          "ZSE",
+          "TW",
+          "LIM",
+          "MCX",
+          "TWO",
+          "IS",
+          "CN"
+        ]
+      },
+      {
+        "header": "Industry Averages",
+        "attributeNames": [
+          "numberOfFirms",
+          "annualAverageCAGRLastFiveYears",
+          "preTaxOperatingMarginUnadjusted",
+          "afterTaxROIC",
+          "averageEffectiveTaxRate",
+          "unleveredBeta",
+          "equityLeveredBeta",
+          "costOfEquity",
+          "standardDeviationInStockPrices",
+          "preTaxCostOfDebt",
+          "marketDebt/Capital",
+          "costOfCapital",
+          "sales/Capital",
+          "EV/Sales",
+          "EV/EBITDA",
+          "EV/EBIT",
+          "price/Book",
+          "trailingPE",
+          "nonCashWCAsPercentageOfRevenues",
+          "CAPEXAsAPercentageOfRevenues",
+          "netCAPEXAsAPercentageOfRevenues",
+          "reinvestmentRate",
+          "ROE",
+          "dividendPayoutRatio",
+          "equityReinvestmentRate",
+          "preTaxOperatingMarginLeaseAndR&DAdjusted",
+          "gicSubIndustry",
+          "industry"
+        ]
+      }
+    ]
+  },
+  "STOCK.GET_INDUSTRY_AVERAGES": {
+    "header": "STOCK.GET_INDUSTRY_AVERAGES",
+    "headerDescription": "Fetches current or historical industry averages.",
+    "type": "Industry Averages",
+    "parameters": ["type", "[field]", "[fiscalDateRange]"],
+    "codeSyntaxUsage": [
+      "=STOCK.GET_INDUSTRY_AVERAGES(\"US\")",
+      "=STOCK.GET_INDUSTRY_AVERAGES(\"Global\")",
+      "=STOCK.GET_INDUSTRY_AVERAGES(\"US\",\"costOfCapital\")",
+      "=STOCK.GET_INDUSTRY_AVERAGES(\"US\",,\"2020-09-30\")",
+      "=STOCK.GET_INDUSTRY_AVERAGES(\"Global\",\"numberOfFirms\",\"2020-09-30\")"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "=STOCK.GET_INDUSTRY_AVERAGES(type, [field], [fiscalDateRange])",
+        "values": [
+          {
+            "syntaxName": "type",
+            "description": "Example: \"US\", \"Global\"."
+          },
+          {
+            "syntaxName": "[field]",
+            "description": "See the 'industry averages' section below for the list of parameters that can be given here."
+          },
+          {
+            "syntaxName": "[fiscalDateRange]",
+            "description": "Example: \"2010-01-01\", \">2010-01-01\", \">=2010-01-01\", \"<2020-01-01\", <=2020-01-01\", \"2010-01-01:2015-01-01\" (exclusive between)."
+          }
+        ]
+      }
+    ],
+    "attributes": [
+      {
+        "header": "Industry Averages",
+        "attributeNames": [
+          "numberOfFirms",
+          "annualAverageCAGRLastFiveYears",
+          "preTaxOperatingMarginUnadjusted",
+          "afterTaxROIC",
+          "averageEffectiveTaxRate",
+          "unleveredBeta",
+          "equityLeveredBeta",
+          "costOfEquity",
+          "standardDeviationInStockPrices",
+          "preTaxCostOfDebt",
+          "marketDebt/Capital",
+          "costOfCapital",
+          "sales/Capital",
+          "EV/Sales",
+          "EV/EBITDA",
+          "EV/EBIT",
+          "price/Book",
+          "trailingPE",
+          "nonCashWCAsPercentageOfRevenues",
+          "CAPEXAsAPercentageOfRevenues",
+          "netCAPEXAsAPercentageOfRevenues",
+          "reinvestmentRate",
+          "ROE",
+          "dividendPayoutRatio",
+          "equityReinvestmentRate",
+          "preTaxOperatingMarginLeaseAndR&DAdjusted",
+          "gicSubIndustry",
+          "industry"
+        ]
+      }
+    ]
+  },
+  "MARKET.GET_EQUITY_RISK_PREMIUMS": {
+    "header": "MARKET.GET_EQUITY_RISK_PREMIUMS",
+    "headerDescription": "Fetches current or historical equity risk premium information for a market.",
+    "type": "Market",
+    "parameters": ["[field]", "[fiscalDateRange]"],
+    "codeSyntaxUsage": [
+      "=MARKET.GET_EQUITY_RISK_PREMIUMS()",
+      "=MARKET.GET_EQUITY_RISK_PREMIUMS(\"corporateTaxRate\")",
+      "=MARKET.GET_EQUITY_RISK_PREMIUMS(\"equityRiskPremium\",\"2010-09-09\")"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "=MARKET.GET_EQUITY_RISK_PREMIUMS([field], [fiscalDateRange])",
+        "values": [
+          {
+            "syntaxName": "[field]",
+            "description": "See the 'equity risk premiums' section below for the list of parameters that can be given here."
+          },
+          {
+            "syntaxName": "[fiscalDateRange]",
+            "description": "Example: \"2010-01-01\", \">2010-01-01\", \">=2010-01-01\", \"<2020-01-01\", <=2020-01-01\", \"2010-01-01:2015-01-01\" (exclusive between)."
+          }
+        ]
+      }
+    ],
+    "attributes": [
+      {
+        "header": "Equity Risk Premiums",
+        "attributeNames": [
+          "country",
+          "countryISO",
+          "moodysRating",
+          "equityRiskPremium",
+          "countryRiskPremium",
+          "corporateTaxRate",
+          "adjustedDefaultSpread"
+        ]
+      }
+    ]
+  },
+  "MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM": {
+    "header": "MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM",
+    "headerDescription": "Fetches current or historical equity risk premium information for a country.",
+    "type": "Market",
+    "parameters": ["countryISO", "[field]", "[fiscalDateRange]"],
+    "codeSyntaxUsage": [
+      "=MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM(\"RU\")",
+      "=MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM(\"RU\",\"corporateTaxRate\")",
+      "=MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM(\"US\",,\"2010-09-30\")",
+      "=MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM(\"US\",\"moodysRating\",\"2010-09-30\")"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "=MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM(countryISO, [field], [fiscalDateRange])",
+        "values": [
+          {
+            "syntaxName": "countryISO",
+            "description": "See the 'countryISO' section below for the list of parameters that can be given here."
+          },
+          {
+            "syntaxName": "[field]",
+            "description": "See the 'country risk premiums' section below for the list of parameters that can be given here."
+          },
+          {
+            "syntaxName": "[fiscalDateRange]",
+            "description": "Example: \"2010-01-01\", \">2010-01-01\", \">=2010-01-01\", \"<2020-01-01\", <=2020-01-01\", \"2010-01-01:2015-01-01\" (exclusive between)."
+          }
+        ]
+      }
+    ],
+    "attributes": [
+      {
+        "header": "Country ISO",
+        "attributeNames": [
+          "AL",
+          "AD",
+          "AO",
+          "AR",
+          "AM",
+          "AW",
+          "AU",
+          "AT",
+          "AZ",
+          "BS",
+          "BH",
+          "BD",
+          "BB",
+          "BY",
+          "BE",
+          "BZ",
+          "BJ",
+          "BM",
+          "BO",
+          "BA",
+          "BW",
+          "BR",
+          "BG",
+          "BF",
+          "KH",
+          "CM",
+          "CA",
+          "CV",
+          "KY",
+          "CL",
+          "CN",
+          "CO",
+          "CG",
+          "CG",
+          "CD",
+          "CK",
+          "CR",
+          "CI",
+          "HR",
+          "CU",
+          "CW",
+          "CY",
+          "CZ",
+          "DK",
+          "DO",
+          "EC",
+          "EG",
+          "SV",
+          "EE",
+          "ET",
+          "FJ",
+          "FI",
+          "FR",
+          "GA",
+          "GE",
+          "DE",
+          "GH",
+          "GR",
+          "GT",
+          "GG",
+          "HN",
+          "HK",
+          "HU",
+          "IS",
+          "IN",
+          "ID",
+          "IQ",
+          "IE",
+          "IM",
+          "IL",
+          "IT",
+          "JM",
+          "JP",
+          "JE",
+          "JO",
+          "KZ",
+          "KE",
+          "KR",
+          "KW",
+          "KG",
+          "LA",
+          "LV",
+          "LB",
+          "LI",
+          "LT",
+          "LU",
+          "MO",
+          "MK",
+          "MY",
+          "MV",
+          "ML",
+          "MT",
+          "MU",
+          "MX",
+          "MD",
+          "MN",
+          "ME",
+          "MS",
+          "MA",
+          "MZ",
+          "NA",
+          "NL",
+          "NZ",
+          "NI",
+          "NE",
+          "NG",
+          "NO",
+          "OM",
+          "PK",
+          "PA",
+          "PG",
+          "PY",
+          "PE",
+          "PH",
+          "PL",
+          "PT",
+          "QA",
+          "RO",
+          "RU",
+          "RW",
+          "VC",
+          "SA",
+          "SN",
+          "RS",
+          "SG",
+          "SX",
+          "SK",
+          "SI",
+          "SB",
+          "ZA",
+          "ES",
+          "LK",
+          "SR",
+          "SZ",
+          "SE",
+          "CH",
+          "TW",
+          "TJ",
+          "TZ",
+          "TH",
+          "TG",
+          "TT",
+          "TN",
+          "TR",
+          "TC",
+          "UG",
+          "UA",
+          "AE",
+          "UK",
+          "US",
+          "UY",
+          "UZ",
+          "VE",
+          "VN",
+          "ZM"
+        ]
+      },
+      {
+        "header": "Country Risk Premiums",
+        "attributeNames": [
+          "country",
+          "countryISO",
+          "moodysRating",
+          "equityRiskPremium",
+          "countryRiskPremium",
+          "corporateTaxRate",
+          "adjustedDefaultSpread"
+        ]
+      }
+    ]
+  },
+  "MARKET.GET_CREDIT_RATING_INTEREST_SPREADS": {
+    "header": "MARKET.GET_CREDIT_RATING_INTEREST_SPREADS",
+    "headerDescription": "Fetches current or historical credit rating information for a market.",
+    "type": "Market",
+    "parameters": ["[field]", "[fiscalDateRange]"],
+    "codeSyntaxUsage": [
+      "=MARKET.GET_CREDIT_RATING_INTEREST_SPREADS()",
+      "=MARKET.GET_CREDIT_RATING_INTEREST_SPREADS(\"rating\")",
+      "=MARKET.GET_CREDIT_RATING_INTEREST_SPREADS(\"smallFrom\",\"2010-09-09\")"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "=MARKET.GET_CREDIT_RATING_INTEREST_SPREADS([field], [fiscalDateRange])",
+        "values": [
+          {
+            "syntaxName": "[field]",
+            "description": "See the 'credit ratings' section below for the list of parameters that can be given here."
+          },
+          {
+            "syntaxName": "[fiscalDateRang]e",
+            "description": "Example: \"2010-01-01\", \">2010-01-01\", \">=2010-01-01\", \"<2020-01-01\", <=2020-01-01\", \"2010-01-01:2015-01-01\" (exclusive between)."
+          }
+        ]
+      }
+    ],
+    "attributes": [
+      {
+        "header": "Market Credit Ratings",
+        "attributeNames": [
+          "rating",
+          "spread",
+          "smallFrom",
+          "smallTo",
+          "largeFrom",
+          "largeTo"
+        ]
+      }
+    ]
+  },
+  "MARKET.RISK_FREE_RATE": {
+    "header": "MARKET.RISK_FREE_RATE",
+    "headerDescription": "Returns theoretical rate of return of an investment with zero risk.",
+    "type": "Market",
+    "parameters": ["governmentBondRate", "inflationRate"],
+    "codeSyntaxUsage": [
+      "=MARKET.RISK_FREE_RATE(1.2,0.5)",
+      "=MARKET.RISK_FREE_RATE(D4,D5)"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "=MARKET.RISK_FREE_RATE(governmentBondRate, inflationRate)",
+        "values": [
+          {
+            "syntaxName": "governmentBondRate",
+            "description": "Accepts government bond yield. Example: US 10Y Government Bond has a 1.733% yield or use tractak's function BOND.GET_COUNTRY_YIELD(\"US\",\"10yr\") to get the bond rate."
+          },
+          {
+            "syntaxName": "inflationRate",
+            "description": "Accepts inflation rate. Example: US inflation rate is 6.8% in 2021."
+          }
+        ]
+      }
+    ],
+    "attributes": []
+  },
+  "BOND.GET_COUNTRY_YIELD": {
+    "header": "BOND.GET_COUNTRY_YIELD",
+    "headerDescription": "Fetches current or historical country yield information for a bond.",
+    "type": "Bond",
+    "parameters": [
+      "countryISO",
+      "maturity",
+      "[field]",
+      "[granularity]",
+      "[fiscalDateRange]"
+    ],
+    "codeSyntaxUsage": [
+      "=BOND.GET_COUNTRY_YIELD(\"CH\",\"10yr\")",
+      "=BOND.GET_COUNTRY_YIELD(\"US\",\"10yr\",\"high\",\"week\",\"2010-09-30\")"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "=BOND.GET_COUNTRY_YIELD(countryISO, maturity, [field], [granularity], [fiscalDateRange])",
+        "values": [
+          {
+            "syntaxName": "countryISO",
+            "description": "See the 'countryISO' section below for the list of parameters that can be given here."
+          },
+          {
+            "syntaxName": "maturity",
+            "description": "Accepts \"{number}yr\" or \"m\"."
+          },
+          {
+            "syntaxName": "[field]",
+            "description": "See the 'fields' section below for the list of parameters that can be given here."
+          },
+          {
+            "syntaxName": "[granularity]",
+            "description": "Accepts either \"day\", \"week\" or \"month\"."
+          },
+          {
+            "syntaxName": "[fiscalDateRange]",
+            "description": "Example: \"2010-01-01\", \">2010-01-01\", \">=2010-01-01\", \"<2020-01-01\", <=2020-01-01\", \"2010-01-01:2015-01-01\" (exclusive between)."
+          }
+        ]
+      }
+    ],
+    "attributes": [
+      {
+        "header": "Country ISOs",
+        "attributeNames": [
+          "AU",
+          "BR",
+          "CA",
+          "CH",
+          "CN",
+          "DE",
+          "ES",
+          "FR",
+          "GR",
+          "HK",
+          "ID",
+          "IN",
+          "IT",
+          "JP",
+          "MX",
+          "NL",
+          "NZ",
+          "PT",
+          "RU",
+          "SW",
+          "UK",
+          "US"
+        ]
+      },
+      {
+        "header": "Fields",
+        "attributeNames": [
+          "date",
+          "open",
+          "high",
+          "close",
+          "adjustedClose",
+          "low",
+          "volume"
+        ]
+      }
+    ]
+  },
+  "META.SPREADSHEET_CREATION_DATE": {
+    "header": "META.SPREADSHEET_CREATION_DATE",
+    "headerDescription": "Returns the timestamp when the spreadsheet was created. This is useful for passing into other functions for the fiscalDateRange parameter if you need specific API data from that date.",
+    "type": "Spreadsheet",
+    "parameters": [],
+    "codeSyntaxUsage": ["=META.SPREADSHEET_CREATION_DATE()"],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "=META.SPREADSHEET_CREATION_DATE)",
+        "values": []
+      }
+    ],
+    "attributes": []
+  },
+  "SENSITIVITY_ANALYSIS": {
+    "header": "DATA_ANALYSIS.SENSITIVITY_ANALYSIS",
+    "headerDescription": "Determines how different values of an independent variable affect a particular dependent variable under a given set of assumptions.",
+    "type": "Data Analysis",
+    "parameters": [
+      "intersection_point",
+      "x_var",
+      "y_var",
+      "{xMin,xMax}",
+      "{yMin,yMax}"
+    ],
+    "codeSyntaxUsage": [
+      "=DATA_ANALYSIS.SENSITIVITY_ANALYSIS(B1,B2,B3,{15,20},{3,30})",
+      "=DATA_ANALYSIS.SENSITIVITY_ANALYSIS(B1,B2,B3,{C1:C5},{D1:D5})"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "DATA_ANALYSIS.SENSITIVITY_ANALYSIS(intersection_point, x_var, y_var, {rangeX}, {rangeY})",
+        "values": [
+          {
+            "syntaxName": "intersection_point",
+            "description": "The point of intersection of the two base input assumptions that links the desired output."
+          },
+          {
+            "syntaxName": "x_var",
+            "description": "1st base input assumption."
+          },
+          {
+            "syntaxName": "y_var",
+            "description": "2nd base input assumption."
+          },
+          {
+            "syntaxName": "{rangeX}",
+            "description": "Min and max of the 1st base input assumption."
+          },
+          {
+            "syntaxName": "{rangeY}",
+            "description": "Min and max of the 2nd base input assumption."
+          }
+        ]
+      }
+    ],
+    "attributes": []
+  },
+  "MONTE_CARLO_SIMULATION": {
+    "header": "DATA_ANALYSIS.MONTE_CARLO_SIMULATION",
+    "headerDescription": "Is a model used to predict the probability of different outcomes when the intervention of randomness is present.",
+    "type": "Data Analysis",
+    "parameters": ["intersection_point", "{var_assumptions}", "[iteration]"],
+    "codeSyntaxUsage": [
+      "=DATA_ANALYSIS.MONTE_CARLO_SIMULATION(B3,{B1,B2},10000)",
+      "=DATA_ANALYSIS.MONTE_CARLO_SIMULATION(A3,{A1},100)"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "DATA_ANALYSIS.MONTE_CARLO_SIMULATION(intersection_point, {var_assumptions}, [iteration])",
+        "values": [
+          {
+            "syntaxName": "intersection_point",
+            "description": "The point of intersection (forecast value) of the assumptions that links the desired output."
+          },
+          {
+            "syntaxName": "{var_assumptions}",
+            "description": "Array of assumptions."
+          },
+          {
+            "syntaxName": "[iteration]",
+            "description": "[OPTIONAL]. Sets the number of trials to run."
+          }
+        ]
+      }
+    ],
+    "attributes": []
+  },
+  "NORMAL_INVERSE_RANDOM": {
+    "header": "STATISTICS.NORMAL_INVERSE_RANDOM",
+    "headerDescription": "Defines the mean (expected value) and a standard deviation to describe the variation about the mean. Describes uncertain variables such as inflation, interest, growth rates or prices of fuel, electricity, rent and etc.",
+    "type": "Probability Distribution",
+    "parameters": ["mean", "standard_deviation"],
+    "codeSyntaxUsage": [
+      "=STATISTICS.NORMAL_INVERSE_RANDOM(B1,B2)",
+      "=STATISTICS.NORMAL_INVERSE_RANDOM(20,3)"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "STATISTICS.NORMAL_INVERSE_RANDOM(mean, standard_deviation)",
+        "values": [
+          {
+            "syntaxName": "mean",
+            "description": "Expected value that is most likely to occur."
+          },
+          {
+            "syntaxName": "standard_deviation",
+            "description": "Value that is more likely to deviate from the mean value."
+          }
+        ]
+      }
+    ],
+    "attributes": []
+  },
+  "UNIFORM_INVERSE_RANDOM": {
+    "header": "STATISTICS.UNIFORM_INVERSE_RANDOM",
+    "headerDescription": "All values have an equal chance of occurring by defining the minimum and maximum. It can be used to describe a real estate appraisal, future production costs and selling prices for new products.",
+    "type": "Probability Distribution",
+    "parameters": ["min", "max"],
+    "codeSyntaxUsage": [
+      "=STATISTICS.UNIFORM_INVERSE_RANDOM(A1,B2)",
+      "=STATISTICS.UNIFORM_INVERSE_RANDOM(2,10)"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "STATISTICS.UNIFORM_INVERSE_RANDOM(min, max)",
+        "values": [
+          {
+            "syntaxName": "min",
+            "description": "Minimum fixed value."
+          },
+          {
+            "syntaxName": "max",
+            "description": "Maximum fixed value."
+          }
+        ]
+      }
+    ],
+    "attributes": []
+  },
+  "TRIANGULAR_INVERSE_RANDOM": {
+    "header": "STATISTICS.TRIANGULAR_INVERSE_RANDOM",
+    "headerDescription": "Defines a minimum, maximum and most likely value, also referred to as peak value. It is useful with limited data in situations such as sales performance, work hours, inventory numbers, and marketing costs.",
+    "type": "Probability Distribution",
+    "parameters": ["min", "most_likely", "max"],
+    "codeSyntaxUsage": [
+      "=STATISTICS.TRIANGULAR_INVERSE_RANDOM(A1,A2,A3)",
+      "=STATISTICS.TRIANGULAR_INVERSE_RANDOM(2000,6000,7500)"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "STATISTICS.TRIANGULAR_INVERSE_RANDOM(min, most_likely, max)",
+        "values": [
+          {
+            "syntaxName": "min",
+            "description": "Minimum fixed value."
+          },
+          {
+            "syntaxName": "most_likely",
+            "description": "Most likely value to occur in this min and max range."
+          },
+          {
+            "syntaxName": "max",
+            "description": "Maximum fixed value."
+          }
+        ]
+      }
+    ],
+    "attributes": []
+  },
+  "LOGNORMAL_INVERSE_RANDOM": {
+    "header": "STATISTICS.LOGNORMAL_INVERSE_RANDOM",
+    "headerDescription": "Values are positively skewed to the right and don't go below zero but have unlimited positive potential. It is used in determining stock prices, real estate prices, pay scales, and oil reservoir size.",
+    "type": "Probability Distribution",
+    "parameters": ["mean", "standard_deviation"],
+    "codeSyntaxUsage": [
+      "=STATISTICS.LOGNORMAL_INVERSE_RANDOM(D1,D2)",
+      "=STATISTICS.LOGNORMAL_INVERSE_RANDOM(10,2)"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "STATISTICS.LOGNORMAL_INVERSE_RANDOM(mean, standard_deviation)",
+        "values": [
+          {
+            "syntaxName": "mean",
+            "description": "Mean of the Ln(x), where Ln(x) is normally distributed."
+          },
+          {
+            "syntaxName": "standard_deviation",
+            "description": "Standard deviation of the Ln(x), where Ln(x) is normally distributed."
+          }
+        ]
+      }
+    ],
+    "attributes": []
+  }
+}

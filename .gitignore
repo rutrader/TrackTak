@@ -89,7 +89,6 @@ tsconfig.tsbuildinfo
 
 # build
 dist
-out*
 build
 build.zip
 .parcel-cache

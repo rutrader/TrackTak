@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { AlwaysSparse, HyperFormula } from 'hyperformula'
+import { HyperFormula } from '@tracktak/hyperformula'
 import '@tracktak/powersheet/dist/index.css'
 import {
   Spreadsheet,
@@ -7,46 +7,33 @@ import {
   FormulaBar,
   Exporter,
   BottomBar,
-  FunctionHelper
+  FunctionHelper,
+  mapFromSerializedSheetsToSheets
 } from '@tracktak/powersheet'
-import { currencySymbolMap } from 'currency-symbol-map'
-import {
-  finTranslations,
-  getTTFinancialPlugin,
-  ttFinancialAliases,
-  ttFinancialImplementedFunctions
-} from './plugins/getTTFinancialPlugin'
-import finFunctionHelperData from './templates/finFunctionHelperData'
+import getToolbarActionGroups from './getToolbarActionGroups'
 import './FinancialSpreadsheet.css'
+import { Box } from '@mui/material'
+import plugins from './plugins'
+import { config, namedExpressions } from './hyperformulaConfig'
+import * as metaPlugin from './plugins/meta/plugin'
+import tracktakFormulaMetadataJSON from '../tracktakFormulaMetadata.json'
 
-const buildPowersheet = () => {
-  const hyperformula = HyperFormula.buildEmpty({
-    chooseAddressMappingPolicy: new AlwaysSparse(),
-    // We use our own undo/redo instead
-    undoLimit: 0,
-    licenseKey: 'gpl-v3'
-  })
+plugins.forEach(value => {
+  HyperFormula.registerFunctionPlugin(value.Plugin, value.translations)
+})
 
-  const trueArgs = ['TRUE', '=TRUE()']
-  const falseArgs = ['FALSE', '=FALSE()']
+const buildPowersheet = serializedSheets => {
+  const sheets = mapFromSerializedSheetsToSheets(serializedSheets)
+  const [hyperformula] = HyperFormula.buildFromSheets(
+    sheets,
+    config,
+    namedExpressions
+  )
 
-  if (hyperformula.isItPossibleToAddNamedExpression(...trueArgs)) {
-    hyperformula.addNamedExpression(...trueArgs)
-  }
-
-  if (hyperformula.isItPossibleToAddNamedExpression(...falseArgs)) {
-    hyperformula.addNamedExpression(...falseArgs)
-  }
-
-  const functionHelper = new FunctionHelper(finFunctionHelperData)
+  const functionHelper = new FunctionHelper()
   const toolbar = new Toolbar()
   const formulaBar = new FormulaBar()
-  const exporter = new Exporter([
-    {
-      implementedFunctions: ttFinancialImplementedFunctions,
-      aliases: ttFinancialAliases
-    }
-  ])
+  const exporter = new Exporter(plugins)
   const bottomBar = new BottomBar()
 
   const spreadsheet = new Spreadsheet({
@@ -55,66 +42,11 @@ const buildPowersheet = () => {
     formulaBar,
     exporter,
     bottomBar,
-    functionHelper,
-    hyperformulaConfig: {
-      currencySymbol: Object.values(currencySymbolMap)
-    }
+    functionHelper
   })
 
-  toolbar.setToolbarIcons([
-    {
-      elements: [
-        toolbar.iconElementsMap.undo.buttonContainer,
-        toolbar.iconElementsMap.redo.buttonContainer
-      ]
-    },
-    {
-      elements: [toolbar.buttonElementsMap.textFormatPattern.buttonContainer]
-    },
-    {
-      elements: [toolbar.buttonElementsMap.fontSize.buttonContainer]
-    },
-    {
-      elements: [
-        toolbar.iconElementsMap.bold.buttonContainer,
-        toolbar.iconElementsMap.italic.buttonContainer,
-        toolbar.iconElementsMap.underline.buttonContainer,
-        toolbar.iconElementsMap.strikeThrough.buttonContainer,
-        toolbar.iconElementsMap.fontColor.buttonContainer
-      ]
-    },
-    {
-      elements: [
-        toolbar.iconElementsMap.backgroundColor.buttonContainer,
-        toolbar.iconElementsMap.borders.buttonContainer,
-        toolbar.iconElementsMap.merge.buttonContainer
-      ]
-    },
-    {
-      elements: [
-        toolbar.iconElementsMap.horizontalTextAlign.buttonContainer,
-        toolbar.iconElementsMap.verticalTextAlign.buttonContainer,
-        toolbar.iconElementsMap.textWrap.buttonContainer
-      ]
-    },
-    {
-      elements: [
-        toolbar.iconElementsMap.freeze.buttonContainer,
-        toolbar.iconElementsMap.functions.buttonContainer,
-        toolbar.iconElementsMap.formula.buttonContainer
-      ]
-    },
-    {
-      elements: [toolbar.iconElementsMap.export.buttonContainer]
-    },
-    {
-      elements: [toolbar.iconElementsMap.autosave.buttonContainer]
-    },
-    {
-      elements: [toolbar.iconElementsMap.functionHelper.buttonContainer]
-    }
-  ])
-
+  spreadsheet.setFunctionTypeBlocklist(['Engineering'])
+  spreadsheet.setCustomFunctionMetadata(tracktakFormulaMetadataJSON)
   spreadsheet.spreadsheetEl.prepend(formulaBar.formulaBarEl)
   spreadsheet.spreadsheetEl.prepend(toolbar.toolbarEl)
   spreadsheet.spreadsheetEl.appendChild(bottomBar.bottomBarEl)
@@ -122,37 +54,28 @@ const buildPowersheet = () => {
     functionHelper.functionHelperEl
   )
 
-  spreadsheet.functionHelper.setDrawer()
+  functionHelper.setDrawerContent()
+  toolbar.setToolbarIcons(getToolbarActionGroups(toolbar))
 
   return spreadsheet
 }
 
-const FinancialSpreadsheet = ({
-  sheetData,
-  financialData,
-  saveSheetData,
-  ...props
-}) => {
+const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
   const [spreadsheet, setSpreadsheet] = useState()
   const [containerEl, setContainerEl] = useState()
-  const currencySymbol = financialData?.general?.currencySymbol
-  const name = sheetData?.name
+  const name = spreadsheetData?.sheetData.name
 
   useEffect(() => {
-    const FinancialPlugin = getTTFinancialPlugin(financialData)
+    const metaPluginInstance = metaPlugin.getPlugin(
+      new Date(spreadsheetData.createdTimestamp)
+    )
 
-    HyperFormula.registerFunctionPlugin(FinancialPlugin, finTranslations)
+    HyperFormula.registerFunctionPlugin(
+      metaPluginInstance,
+      metaPlugin.translations
+    )
 
-    spreadsheet?.hyperformula.rebuildAndRecalculate()
-    spreadsheet?.updateViewport()
-
-    return () => {
-      HyperFormula.unregisterFunctionPlugin(FinancialPlugin)
-    }
-  }, [financialData, spreadsheet])
-
-  useEffect(() => {
-    const spreadsheet = buildPowersheet()
+    const spreadsheet = buildPowersheet(spreadsheetData.sheetData.data.sheets)
 
     setSpreadsheet(spreadsheet)
 
@@ -172,9 +95,21 @@ const FinancialSpreadsheet = ({
       clickEventListener
     )
 
+    spreadsheet.setData(spreadsheetData.sheetData.data.data)
+
+    const functionHelperClosed = localStorage.getItem('functionHelperClosed')
+
+    if (functionHelperClosed !== 'true') {
+      // TODO: Figure out why setTimeout needed
+      // raise an issue with material components
+      setTimeout(() => {
+        spreadsheet.setOptions({
+          showFunctionHelper: true
+        })
+      }, 500)
+    }
+
     return () => {
-      spreadsheet?.destroy()
-      spreadsheet?.hyperformula.destroy()
       spreadsheet.functionHelper.closeButton.removeEventListener(
         'click',
         clickEventListener
@@ -183,12 +118,16 @@ const FinancialSpreadsheet = ({
         'click',
         clickEventListener
       )
+
+      HyperFormula.unregisterFunctionPlugin(metaPluginInstance)
+
+      spreadsheet.destroy()
     }
-  }, [])
+  }, [spreadsheetData])
 
   useEffect(() => {
-    const persistData = async (sheetData, done) => {
-      await saveSheetData(sheetData)
+    const persistData = async (data, done) => {
+      await saveSheetData(data)
 
       done()
     }
@@ -201,45 +140,25 @@ const FinancialSpreadsheet = ({
   }, [saveSheetData, spreadsheet])
 
   useEffect(() => {
-    if (spreadsheet && sheetData) {
-      if (containerEl) {
-        containerEl.appendChild(spreadsheet.spreadsheetEl)
-        spreadsheet.setData(sheetData.data)
-        spreadsheet.initialize()
+    if (containerEl) {
+      containerEl.appendChild(spreadsheet.spreadsheetEl)
 
-        const functionHelperClosed = localStorage.getItem(
-          'functionHelperClosed'
-        )
-
-        if (sheetData.data && functionHelperClosed !== 'true') {
-          // TODO: Figure out why setTimeout needed
-          // raise an issue with material components
-          setTimeout(() => {
-            spreadsheet?.setOptions({
-              showFunctionHelper: true
-            })
-          }, 500)
-        }
-      }
+      spreadsheet.updateSize()
     }
-  }, [containerEl, sheetData, spreadsheet])
+  }, [containerEl, spreadsheet])
 
   useEffect(() => {
     const options = {
       exportSpreadsheetName: `${name}.xlsx`,
       textPatternFormats: {
-        currency: `${currencySymbol}#,##0.##`,
-        million: '#,###.##,,',
-        'million-currency': `${currencySymbol}#,###.##,,`
+        number: '#,##0.##'
       }
     }
 
     spreadsheet?.setOptions(options)
-  }, [currencySymbol, name, spreadsheet])
+  }, [name, spreadsheet])
 
-  if (!spreadsheet) return null
-
-  return <div {...props} ref={setContainerEl} />
+  return <Box sx={sx} ref={setContainerEl} />
 }
 
 export default FinancialSpreadsheet

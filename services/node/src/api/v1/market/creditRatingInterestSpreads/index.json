@@ -1,0 +1,122 @@
+[
+  {
+    "rating": "Aaa/AAA",
+    "spread": "0.69%",
+    "smallFrom": 12.5,
+    "smallTo": "Infinity",
+    "largeFrom": 8.5,
+    "largeTo": "Infinity"
+  },
+  {
+    "rating": "Aa2/AA",
+    "spread": "0.85%",
+    "smallFrom": 9.5,
+    "smallTo": 12.499999,
+    "largeFrom": 6.5,
+    "largeTo": 8.499999
+  },
+  {
+    "rating": "A1/A+",
+    "spread": "1.07%",
+    "smallFrom": 7.5,
+    "smallTo": 9.499999,
+    "largeFrom": 5.5,
+    "largeTo": 6.499999
+  },
+  {
+    "rating": "A2/A",
+    "spread": "1.18%",
+    "smallFrom": 6,
+    "smallTo": 7.499999,
+    "largeFrom": 4.25,
+    "largeTo": 5.499999
+  },
+  {
+    "rating": "A3/A-",
+    "spread": "1.33%",
+    "smallFrom": 4.5,
+    "smallTo": 5.999999,
+    "largeFrom": 3,
+    "largeTo": 4.249999
+  },
+  {
+    "rating": "Baa2/BBB",
+    "spread": "1.71%",
+    "smallFrom": 4,
+    "smallTo": 4.499999,
+    "largeFrom": 2.5,
+    "largeTo": 2.999999
+  },
+  {
+    "rating": "Ba1/BB+",
+    "spread": "2.31%",
+    "smallFrom": 3.5,
+    "smallTo": 3.9999999,
+    "largeFrom": 2.25,
+    "largeTo": 2.49999
+  },
+  {
+    "rating": "Ba2/BB",
+    "spread": "2.77%",
+    "smallFrom": 3,
+    "smallTo": 3.499999,
+    "largeFrom": 2,
+    "largeTo": 2.2499999
+  },
+  {
+    "rating": "B1/B+",
+    "spread": "4.05%",
+    "smallFrom": 2.5,
+    "smallTo": 2.999999,
+    "largeFrom": 1.75,
+    "largeTo": 1.999999
+  },
+  {
+    "rating": "B2/B",
+    "spread": "4.86%",
+    "smallFrom": 2,
+    "smallTo": 2.499999,
+    "largeFrom": 1.5,
+    "largeTo": 1.749999
+  },
+  {
+    "rating": "B3/B-",
+    "spread": "5.94%",
+    "smallFrom": 1.5,
+    "smallTo": 1.999999,
+    "largeFrom": 1.25,
+    "largeTo": 1.499999
+  },
+  {
+    "rating": "Caa/CCC",
+    "spread": "9.46%",
+    "smallFrom": 1.25,
+    "smallTo": 1.499999,
+    "largeFrom": 0.8,
+    "largeTo": 1.249999
+  },
+  {
+    "rating": "Ca2/CC",
+    "spread": "9.97%",
+    "smallFrom": 0.8,
+    "smallTo": 1.249999,
+    "largeFrom": 0.65,
+    "largeTo": 0.799999
+  },
+  {
+    "rating": "C2/C",
+    "spread": "13.09%",
+    "smallFrom": 0.5,
+    "smallTo": 0.799999,
+    "largeFrom": 0.2,
+    "largeTo": 0.649999
+  },
+  {
+    "rating": "D2/D",
+    "spread": "17.44%",
+    "smallFrom": "-Infinity",
+    "smallTo": 0.499999,
+    "largeFrom": "-Infinity",
+    "largeTo": 0.199999
+  }
+]

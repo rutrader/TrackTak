@@ -1,0 +1,7 @@
+[
+  {
+    "templateFileName": "freeCashFlowFirmSimple.json",
+    "name": "Discounted Cash Flow Model (10 year)",
+    "description": "Prof. NYU Aswath Damodaran's discounted free cash flow to firm template with a 10 year growth projection."
+  }
+]

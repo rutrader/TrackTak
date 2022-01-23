@@ -1,6 +1,5 @@
 import {
   Box,
-  IconButton,
   Typography,
   ListItem,
   ListItemText,
@@ -8,12 +7,10 @@ import {
   Divider,
   ListItemButton
 } from '@mui/material'
-import AddIcon from '@mui/icons-material/Add'
 import React, { useState, useEffect, useCallback } from 'react'
 import { Outlet } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import { utils, useAuth, api, SidePanel } from '@tracktak/common'
-import SearchTickerDialog from './SearchTickerDialog'
 import { ProvideSpreadsheetsMetadata } from '../hooks/useSpreadsheetsMetadata'
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder'
 import SidePanelTabFolders from './SidePanelTabFolders'
@@ -25,19 +22,10 @@ const Dashboard = () => {
   const params = useParams()
   const [defaultFolderId, setDefaultFolderId] = useState()
   const { getAccessToken } = useAuth()
-  const [showSearchTickerDialog, setShowSearchTickerDialog] = useState(false)
   const [currentEditableFolderId, setCurrentEditableFolderId] = useState(null)
   const deleteDisabled = folders.length === 1
   const folderId = params.folderId ?? defaultFolderId
   const currentFolder = folders.find(folder => folder._id === folderId)
-
-  const handleShowSearchTickerDialog = () => {
-    setShowSearchTickerDialog(true)
-  }
-
-  const handleCloseSearchTickerDialog = () => {
-    setShowSearchTickerDialog(false)
-  }
 
   const fetchFolders = useCallback(async () => {
     const token = await getAccessToken()
@@ -67,7 +55,6 @@ const Dashboard = () => {
     const accessToken = token?.jwtToken
 
     await api.deleteFolder(id, accessToken)
-
     await fetchFolders()
   }
 
@@ -79,17 +66,12 @@ const Dashboard = () => {
     <ProvideSpreadsheetsMetadata
       value={{
         defaultFolderId,
-        handleShowSearchTickerDialog,
         folders
       }}
     >
       <Helmet>
         <title>{utils.getTitle('Dashboard')}</title>
       </Helmet>
-      <SearchTickerDialog
-        open={showSearchTickerDialog}
-        onClose={handleCloseSearchTickerDialog}
-      />
       <SidePanel
         sidePanelTabs={
           <Box>
@@ -129,29 +111,15 @@ const Dashboard = () => {
         <Box
           sx={{
             display: 'flex',
-            alignItems: 'center'
+            alignItems: 'center',
+            mb: 2
           }}
         >
           <Typography variant='h5' gutterBottom>
             {currentFolder?.name}
           </Typography>
-          <IconButton
-            sx={{
-              ml: 'auto',
-              padding: 0,
-              backgroundColor: theme => theme.palette.primary.light,
-              width: '40px',
-              height: '40px',
-              '&:hover': {
-                backgroundColor: theme => theme.palette.primary.dark
-              }
-            }}
-            onClick={handleShowSearchTickerDialog}
-          >
-            <AddIcon style={{ color: 'white' }} fontSize='large' />
-          </IconButton>
         </Box>
-        <Outlet />
+        {folderId && <Outlet />}
       </SidePanel>
     </ProvideSpreadsheetsMetadata>
   )
