@@ -81,7 +81,7 @@ const SidePanel = ({ sidePanelTabs, children }) => {
           <ChevronRightIcon color='primary' />
         </IconButton>
       </Hidden>
-      <Box component='div' sx={{ width: '100%' }}>
+      <Box component='div' sx={{ width: '100%', position: 'relative' }}>
         {children}
       </Box>
     </Box>

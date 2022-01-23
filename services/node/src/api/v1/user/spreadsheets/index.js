@@ -4,33 +4,25 @@ import {
   deleteSpreadsheet,
   getSpreadsheet,
   updateSpreadsheet,
-  getSpreadsheetsInFolder,
   updateSpreadsheetFolder
 } from './spreadsheetApi'
 
 const router = express.Router()
-
-router.get('/', async (req, res) => {
-  const spreadsheets = await getSpreadsheetsInFolder(req.params.id)
-
-  res.send({ spreadsheets })
-})
 
 router.post('/', async (req, res) => {
   const spreadsheet = await createSpreadsheet(
     req.body.sheetData,
     req.user.username
   )
+
+  await updateSpreadsheetFolder(spreadsheet._id, req.body.folderId)
+
   res.send({ spreadsheet })
 })
 
 router.put('/', async (req, res) => {
-  const spreadsheet = await updateSpreadsheet(
-    req.body.sheetData,
-    req.user.username,
-    req.body._id,
-    req.body.createdTimestamp
-  )
+  const spreadsheet = await updateSpreadsheet(req.body)
+
   res.send({ spreadsheet })
 })
 

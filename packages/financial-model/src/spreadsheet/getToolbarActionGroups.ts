@@ -38,8 +38,8 @@ const getToolbarElementIcons = toolbar => {
     {
       elements: [
         toolbar.iconElementsMap.freeze.buttonContainer,
-        toolbar.iconElementsMap.functions.buttonContainer,
-        toolbar.iconElementsMap.formula.buttonContainer
+        toolbar.iconElementsMap.formula.buttonContainer,
+        toolbar.iconElementsMap.functionHelper.buttonContainer
       ]
     },
     {
@@ -47,9 +47,6 @@ const getToolbarElementIcons = toolbar => {
     },
     {
       elements: [toolbar.iconElementsMap.autosave.buttonContainer]
-    },
-    {
-      elements: [toolbar.iconElementsMap.functionHelper.buttonContainer]
     }
   ]
 }

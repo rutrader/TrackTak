@@ -125,7 +125,7 @@ export const getFolders = async accessToken => {
 
 export const createFolder = async (name, accessToken) => {
   return axios.post(
-    '/api/v1/user/folder',
+    '/api/v1/user/folders',
     { name },
     {
       headers: getAuthHeaders(accessToken)
@@ -135,7 +135,7 @@ export const createFolder = async (name, accessToken) => {
 
 export const updateFolder = async (id, name, accessToken) => {
   return axios.put(
-    `/api/v1/user/folder/${id}`,
+    `/api/v1/user/folders/${id}`,
     { name },
     {
       headers: getAuthHeaders(accessToken)
@@ -145,7 +145,7 @@ export const updateFolder = async (id, name, accessToken) => {
 
 export const updateSpreadsheetFolder = async (id, folderId, accessToken) => {
   return axios.put(
-    `/api/v1/user/spreadsheet/${id}`,
+    `/api/v1/user/spreadsheets/${id}`,
     {
       folderId
     },
@@ -156,13 +156,13 @@ export const updateSpreadsheetFolder = async (id, folderId, accessToken) => {
 }
 
 export const deleteFolder = async (id, accessToken) => {
-  return axios.delete(`/api/v1/user/folder/${id}`, {
+  return axios.delete(`/api/v1/user/folders/${id}`, {
     headers: getAuthHeaders(accessToken)
   })
 }
 
 export const getSpreadsheetsInFolder = async (id, accessToken) => {
-  return axios.get(`/api/v1/user/folder/${id}/spreadsheets`, {
+  return axios.get(`/api/v1/user/folders/${id}/spreadsheets`, {
     headers: getAuthHeaders(accessToken)
   })
 }

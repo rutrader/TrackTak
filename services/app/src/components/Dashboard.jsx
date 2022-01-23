@@ -1,6 +1,5 @@
 import {
   Box,
-  IconButton,
   Typography,
   ListItem,
   ListItemText,
@@ -8,7 +7,6 @@ import {
   Divider,
   ListItemButton
 } from '@mui/material'
-import AddIcon from '@mui/icons-material/Add'
 import React, { useState, useEffect, useCallback } from 'react'
 import { Outlet } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
@@ -57,7 +55,6 @@ const Dashboard = () => {
     const accessToken = token?.jwtToken
 
     await api.deleteFolder(id, accessToken)
-
     await fetchFolders()
   }
 
@@ -75,39 +72,6 @@ const Dashboard = () => {
       <Helmet>
         <title>{utils.getTitle('Dashboard')}</title>
       </Helmet>
-      {/* {spreadsheets.length ? (
-        <>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center'
-            }}
-          >
-            <Typography variant='h5' gutterBottom>
-              My Financial Models
-            </Typography>
-            <IconButton
-              component={Link}
-              to='/templates'
-              sx={{
-                ml: 'auto',
-                padding: 0,
-                backgroundColor: theme => theme.palette.primary.light,
-                width: '40px',
-                height: '40px',
-                '&:hover': {
-                  backgroundColor: theme => theme.palette.primary.dark
-                }
-              }}
-            >
-              <AddIcon style={{ color: 'white' }} fontSize='large' />
-            </IconButton>
-          </Box>
-          <SavedSpreadsheets spreadsheets={spreadsheets} />
-        </>
-      ) : (
-        <Templates />
-      )} */}
       <SidePanel
         sidePanelTabs={
           <Box>
@@ -147,29 +111,15 @@ const Dashboard = () => {
         <Box
           sx={{
             display: 'flex',
-            alignItems: 'center'
+            alignItems: 'center',
+            mb: 2
           }}
         >
           <Typography variant='h5' gutterBottom>
             {currentFolder?.name}
           </Typography>
-          {/* <IconButton
-            sx={{
-              ml: 'auto',
-              padding: 0,
-              backgroundColor: theme => theme.palette.primary.light,
-              width: '40px',
-              height: '40px',
-              '&:hover': {
-                backgroundColor: theme => theme.palette.primary.dark
-              }
-            }}
-            onClick={handleShowSearchTickerDialog}
-          >
-            <AddIcon style={{ color: 'white' }} fontSize='large' />
-          </IconButton> */}
         </Box>
-        <Outlet />
+        {folderId && <Outlet />}
       </SidePanel>
     </ProvideSpreadsheetsMetadata>
   )

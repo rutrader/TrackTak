@@ -13,28 +13,20 @@ export const createSpreadsheet = async (sheetData, userId) => {
   return database.insert(Collections.POWERSHEET_SPREADSHEET, document)
 }
 
-export const updateSpreadsheet = async (
-  sheetData,
-  userId,
-  spreadsheetId,
-  createdTimestamp
-) => {
+export const updateSpreadsheet = async spreadsheet => {
   const document = {
-    userId,
-    sheetData,
-    lastModifiedTimestamp: new Date(),
-    createdTimestamp
+    ...spreadsheet,
+    lastModifiedTimestamp: new Date()
   }
   const query = {
-    'sheetData.name': sheetData.name,
-    userId
+    _id: spreadsheet._id
   }
 
   return database.replace(
     Collections.POWERSHEET_SPREADSHEET,
     query,
     document,
-    spreadsheetId
+    spreadsheet._id
   )
 }
 

@@ -1,4 +1,5 @@
 import express from 'express'
+import { getSpreadsheetsInFolder } from '../spreadsheets/spreadsheetApi'
 import {
   getFolders,
   getFolder,
@@ -13,7 +14,7 @@ router.get('/', async (req, res) => {
   const folders = await getFolders(req.user.username)
 
   if (folders.length === 0) {
-    const folder = await createFolder('Valuations', req.user.username)
+    const folder = await createFolder('Financial Models', req.user.username)
 
     res.send({ folders: [folder] })
 
@@ -27,6 +28,12 @@ router.get('/:id', async (req, res) => {
   const folder = await getFolder(req.params.id)
 
   res.send({ folder })
+})
+
+router.get('/:id/spreadsheets', async (req, res) => {
+  const spreadsheets = await getSpreadsheetsInFolder(req.params.id)
+
+  res.send({ spreadsheets })
 })
 
 router.post('/', async (req, res) => {

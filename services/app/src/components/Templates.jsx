@@ -8,8 +8,7 @@ import {
   CardActionArea
 } from '@mui/material'
 import React from 'react'
-import { Helmet } from 'react-helmet'
-import { api, utils, useAuth } from '@tracktak/common'
+import { api, useAuth } from '@tracktak/common'
 import { templates } from '@tracktak/financial-model'
 import { useNavigate } from 'react-router'
 import logSpreadsheetEvent from '../shared/logSpreadsheetEvent'
@@ -68,11 +67,8 @@ const Templates = () => {
 
   return (
     <>
-      <Helmet>
-        <title>{utils.getTitle('Templates')}</title>
-      </Helmet>
       <Typography textAlign='center' variant='h5' gutterBottom>
-        Select a Financial Modelling Template
+        Select a Financial Spreadsheet Template
       </Typography>
       <Box
         sx={{

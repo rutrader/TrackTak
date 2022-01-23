@@ -46,12 +46,12 @@ const Index = () => {
               }
             />
             <Route path='/' element={<LayoutContainer />}>
-              <Route path='templates' element={<Templates />} />
               <Route path='account-settings' element={<AccountSettings />} />
               <Route path='payment-success' element={<PaymentSuccess />} />
               <Route path='switching-plan' element={<SwitchingPlan />} />
               <Route path='cancel-plan' element={<CancelPlan />} />
               <Route path='/' element={<Dashboard />}>
+                <Route path='templates' element={<Templates />} />
                 <Route path=':folderId' element={<SavedSpreadsheets />} />
                 <Route index element={<SavedSpreadsheets />} />
               </Route>
