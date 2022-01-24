@@ -149,10 +149,7 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
 
   useEffect(() => {
     const options = {
-      exportSpreadsheetName: `${name}.xlsx`,
-      textPatternFormats: {
-        number: '#,##0.##'
-      }
+      exportSpreadsheetName: `${name}.xlsx`
     }
 
     spreadsheet?.setOptions(options)

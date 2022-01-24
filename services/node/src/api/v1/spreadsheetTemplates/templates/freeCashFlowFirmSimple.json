@@ -60,8 +60,7 @@
           "cellValue": null,
           "metadata": {
             "backgroundColor": "#8ff1d2",
-            "comment": "The forecasted number of years until the company’s current Operating Margin will converge on the target Operating Margin. For example, if today's year is 2021 and the year of convergence is 5 then it will converge in year 2026.",
-            "textFormatPattern": "#,##0.##"
+            "comment": "The forecasted number of years until the company’s current Operating Margin will converge on the target Operating Margin. For example, if today's year is 2021 and the year of convergence is 5 then it will converge in year 2026."
           }
         },
         "3_2": {
@@ -1748,71 +1747,61 @@
         "31_2": {
           "cellValue": "1",
           "metadata": {
-            "bold": true,
-            "textFormatPattern": "#,##0.##"
+            "bold": true
           }
         },
         "31_3": {
           "cellValue": "2",
           "metadata": {
-            "bold": true,
-            "textFormatPattern": "#,##0.##"
+            "bold": true
           }
         },
         "31_4": {
           "cellValue": "3",
           "metadata": {
-            "bold": true,
-            "textFormatPattern": "#,##0.##"
+            "bold": true
           }
         },
         "31_5": {
           "cellValue": "4",
           "metadata": {
-            "bold": true,
-            "textFormatPattern": "#,##0.##"
+            "bold": true
           }
         },
         "31_6": {
           "cellValue": "5",
           "metadata": {
-            "bold": true,
-            "textFormatPattern": "#,##0.##"
+            "bold": true
           }
         },
         "31_7": {
           "cellValue": "6",
           "metadata": {
-            "bold": true,
-            "textFormatPattern": "#,##0.##"
+            "bold": true
           }
         },
         "31_8": {
           "cellValue": "7",
           "metadata": {
-            "bold": true,
-            "textFormatPattern": "#,##0.##"
+            "bold": true
           }
         },
         "31_9": {
           "cellValue": "8",
           "metadata": {
-            "bold": true,
-            "textFormatPattern": "#,##0.##"
+            "bold": true
           }
         },
         "31_10": {
           "cellValue": "9",
           "metadata": {
-            "bold": true,
-            "textFormatPattern": "#,##0.##"
+            "bold": true
           }
         },
         "31_11": {
           "cellValue": "10",
           "metadata": {
-            "bold": true,
-            "textFormatPattern": "#,##0.##"
+            "bold": true
           }
         },
         "31_12": {
