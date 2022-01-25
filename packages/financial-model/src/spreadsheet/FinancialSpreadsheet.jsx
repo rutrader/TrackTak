@@ -19,7 +19,7 @@ import * as stockPlugin from './plugins/stock/plugin'
 import * as bondPlugin from './plugins/bond/plugin'
 import * as fxPlugin from './plugins/fx/plugin'
 import * as marketPlugin from './plugins/market/plugin'
-import * as metaPlugin from './plugins/meta/plugin'
+import * as helperPlugin from './plugins/helpers/plugin'
 
 const buildPowersheet = (sheets, plugins) => {
   const sheetsMetadata = {}
@@ -103,10 +103,10 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
         translations: marketPlugin.translations
       },
       {
-        instance: metaPlugin.getPlugin(
+        instance: helperPlugin.getPlugin(
           new Date(spreadsheetData.createdTimestamp)
         ),
-        translations: metaPlugin.translations
+        translations: helperPlugin.translations
       }
     ]
 
