@@ -6,7 +6,6 @@
           "financialsListedCurrency": "=['Helper Data'!D14]#,##0.##",
           "financialsListedCurrencyMillions": "=['Helper Data'!D14]#,###.##,,"
       },
-      "apiFrozenTimestamp": "=['Helper Data'!B17]"
   },
   "sheets": {
       "DCF Valuation": {
@@ -455,7 +454,7 @@
                   }
               },
               "13_0": {
-                  "cellValue": "=STOCK.GET_COMPANY_PRICES(B3, \"adjustedClose\")",
+                  "cellValue": "=STOCK.GET_COMPANY_PRICES(B3, \"adjustedClose\",, 'Helper Data'!$B17)",
                   "metadata": {
                       "horizontalTextAlign": "center"
                   }
@@ -490,13 +489,13 @@
                   "cellValue": "Category"
               },
               "17_1": {
-                  "cellValue": "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(B3, \"industry\")"
+                  "cellValue": "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(B3, \"industry\", 'Helper Data'!$B17)"
               },
               "18_0": {
                   "cellValue": "CAGR Past Five Years"
               },
               "18_1": {
-                  "cellValue": "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(B3, \"annualAverageCAGRLastFiveYears\")",
+                  "cellValue": "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(B3, \"annualAverageCAGRLastFiveYears\", 'Helper Data'!$B17)",
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -512,7 +511,7 @@
                   "cellValue": "Pre-tax Operating Margin (TTM)"
               },
               "19_1": {
-                  "cellValue": "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(B3,\"preTaxOperatingMarginUnadjusted\")",
+                  "cellValue": "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(B3,\"preTaxOperatingMarginUnadjusted\", 'Helper Data'!$B17)",
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -632,7 +631,7 @@
                   "cellValue": "ROIC (TTM)"
               },
               "20_1": {
-                  "cellValue": "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(B3,\"afterTaxROIC\")",
+                  "cellValue": "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(B3,\"afterTaxROIC\", 'Helper Data'!$B17)",
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -758,7 +757,7 @@
                   "cellValue": "Sales to Capital Ratio"
               },
               "21_1": {
-                  "cellValue": "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(B3,\"sales/Capital\")",
+                  "cellValue": "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(B3, \"sales/Capital\", 'Helper Data'!$B17)",
                   "metadata": {
                       "textFormatPattern": "#,##0.##"
                   }
@@ -884,7 +883,7 @@
                   "cellValue": "WACC"
               },
               "22_1": {
-                  "cellValue": "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(B3,\"costOfCapital\")",
+                  "cellValue": "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(B3,\"costOfCapital\", 'Helper Data'!$B17)",
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -1010,7 +1009,7 @@
                   "cellValue": "Unlevered Beta"
               },
               "23_1": {
-                  "cellValue": "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(B3,\"unleveredBeta\")",
+                  "cellValue": "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(B3, \"unleveredBeta\", 'Helper Data'!$B17)",
                   "metadata": {
                       "textFormatPattern": "#,##0.##"
                   }
@@ -1136,7 +1135,7 @@
                   "cellValue": "Levered Beta"
               },
               "24_1": {
-                  "cellValue": "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(B3,\"equityLeveredBeta\")",
+                  "cellValue": "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(B3, \"equityLeveredBeta\", 'Helper Data'!$B17)",
                   "metadata": {
                       "textFormatPattern": "#,##0.##"
                   }
@@ -3200,7 +3199,7 @@
                   }
               },
               "67_1": {
-                  "cellValue": "=IFERROR((B67-B66)/B67, 0)",
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -16466,7 +16465,7 @@
                   "cellValue": "10 yr gov. bond yield"
               },
               "3_3": {
-                  "cellValue": "=BOND.GET_COUNTRY_YIELD(D3,\"10yr\",\"adjustedClose\")",
+                  "cellValue": "=BOND.GET_COUNTRY_YIELD(D3,\"10yr\",\"adjustedClose\",, 'Helper Data'!$B17)",
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -16481,7 +16480,7 @@
                   "cellValue": "Unlevered Beta"
               },
               "4_1": {
-                  "cellValue": "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES('DCF Valuation'!$B$3, \"unleveredBeta\")",
+                  "cellValue": "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES('DCF Valuation'!$B$3, \"unleveredBeta\", 'Helper Data'!$B17)",
                   "metadata": {
                       "comment": "Is a measure of the market risk of the company relative to it's peers in the same industry without the impact of debt. This determines how much risk comes with owning a stock.",
                       "textFormatPattern": "#,##0.##"
@@ -16491,7 +16490,7 @@
                   "cellValue": "Country Adjusted Default Spread"
               },
               "4_3": {
-                  "cellValue": "=MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM(D3, \"adjustedDefaultSpread\")",
+                  "cellValue": "=MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM(D3, \"adjustedDefaultSpread\", 'Helper Data'!$B17)",
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -16519,7 +16518,7 @@
                   "cellValue": "Equity Risk Premium"
               },
               "6_1": {
-                  "cellValue": "=MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM(D3, \"equityRiskPremium\")",
+                  "cellValue": "=MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM(D3, \"equityRiskPremium\", 'Helper Data'!$B17)",
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -16700,7 +16699,7 @@
                   "cellValue": "Marginal Tax Rate"
               },
               "16_1": {
-                  "cellValue": "=MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM(D3, \"corporateTaxRate\")",
+                  "cellValue": "=MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM(D3, \"corporateTaxRate\", 'Helper Data'!$B17)",
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -16839,7 +16838,7 @@
                   "cellValue": "Standard deviation in stock price (volatility)"
               },
               "4_1": {
-                  "cellValue": "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES('DCF Valuation'!$B$3, \"standardDeviationInStockPrices\")",
+                  "cellValue": "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES('DCF Valuation'!$B$3, \"standardDeviationInStockPrices\", 'Helper Data'!$B17)",
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -17036,7 +17035,7 @@
                   "cellValue": "Estimated Country Default Spread"
               },
               "5_1": {
-                  "cellValue": "=MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM('Cost of Capital'!$D$3, \"adjustedDefaultSpread\")",
+                  "cellValue": "=MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM('Cost of Capital'!$D$3, \"adjustedDefaultSpread\", 'Helper Data'!$B17)",
                   "metadata": {
                       "comment": "The chance of a country defaulting on it's debts within a year.",
                       "textFormatPattern": "0.00%"
@@ -17627,7 +17626,7 @@
       "Industry Averages (US)": {
           "cells": {
               "0_0": {
-                  "cellValue": "=STOCK.GET_INDUSTRY_AVERAGES(\"US\")"
+                  "cellValue": "=STOCK.GET_INDUSTRY_AVERAGES(\"US\",, B17)"
               }
           },
           "sheetMetadata": {
@@ -17643,7 +17642,7 @@
       "Industry Averages (Global)": {
           "cells": {
               "0_0": {
-                  "cellValue": "=STOCK.GET_INDUSTRY_AVERAGES(\"Global\")"
+                  "cellValue": "=STOCK.GET_INDUSTRY_AVERAGES(\"Global\",, B17)"
               }
           },
           "sheetMetadata": {
@@ -17662,7 +17661,7 @@
                   "cellValue": "Revenue"
               },
               "0_1": {
-                  "cellValue": "=STOCK.GET_COMPANY_FINANCIALS('DCF Valuation'!$B$3, \"revenue\")/E1",
+                  "cellValue": "=STOCK.GET_COMPANY_FINANCIALS('DCF Valuation'!$B$3, \"revenue\",, B17)/E1",
                   "metadata": {
                       "textFormatPattern": ""
                   }
@@ -17680,7 +17679,7 @@
                   "cellValue": "Operating Income"
               },
               "1_1": {
-                  "cellValue": "=STOCK.GET_COMPANY_FINANCIALS('DCF Valuation'!$B$3, \"operatingIncome\")/E1",
+                  "cellValue": "=STOCK.GET_COMPANY_FINANCIALS('DCF Valuation'!$B$3, \"operatingIncome\",, B17)/E1",
                   "metadata": {
                       "textFormatPattern": ""
                   }
@@ -17689,7 +17688,7 @@
                   "cellValue": "Book Value of Equity"
               },
               "2_1": {
-                  "cellValue": "=STOCK.GET_COMPANY_FINANCIALS('DCF Valuation'!$B$3, \"totalEquity\")/E1",
+                  "cellValue": "=STOCK.GET_COMPANY_FINANCIALS('DCF Valuation'!$B$3, \"totalEquity\",, B17)/E1",
                   "metadata": {
                       "textFormatPattern": ""
                   }
@@ -17698,7 +17697,7 @@
                   "cellValue": "Book Value of Debt"
               },
               "3_1": {
-                  "cellValue": "=STOCK.GET_COMPANY_FINANCIALS('DCF Valuation'!$B$3, \"totalDebt\")/E1",
+                  "cellValue": "=STOCK.GET_COMPANY_FINANCIALS('DCF Valuation'!$B$3, \"totalDebt\",, B17)/E1",
                   "metadata": {
                       "textFormatPattern": ""
                   }
@@ -17737,7 +17736,7 @@
                   "cellValue": "Minority Interest"
               },
               "6_1": {
-                  "cellValue": "=STOCK.GET_COMPANY_FINANCIALS('DCF Valuation'!$B$3, \"noncontrollingInterestInConsolidatedEntity\")/E1",
+                  "cellValue": "=STOCK.GET_COMPANY_FINANCIALS('DCF Valuation'!$B$3, \"noncontrollingInterestInConsolidatedEntity\",, B17)/E1",
                   "metadata": {
                       "textFormatPattern": ""
                   }
@@ -17746,7 +17745,7 @@
                   "cellValue": "Cash & Short Term Investments"
               },
               "7_1": {
-                  "cellValue": "=STOCK.GET_COMPANY_FINANCIALS('DCF Valuation'!$B$3, \"cashAndShortTermInvestments\")/E1",
+                  "cellValue": "=STOCK.GET_COMPANY_FINANCIALS('DCF Valuation'!$B$3, \"cashAndShortTermInvestments\",, B17)/E1",
                   "metadata": {
                       "textFormatPattern": ""
                   }
@@ -17755,7 +17754,7 @@
                   "cellValue": "Interest Expense"
               },
               "8_1": {
-                  "cellValue": "=STOCK.GET_COMPANY_FINANCIALS('DCF Valuation'!$B$3,\"interestExpense\")/E1",
+                  "cellValue": "=STOCK.GET_COMPANY_FINANCIALS('DCF Valuation'!$B$3,\"interestExpense\",, B17)/E1",
                   "metadata": {
                       "textFormatPattern": ""
                   }
@@ -17764,7 +17763,7 @@
                   "cellValue": "Capital Lease Obligations"
               },
               "9_1": {
-                  "cellValue": "=STOCK.GET_COMPANY_FINANCIALS('DCF Valuation'!$B$3,\"capitalLeaseObligations\")/E1",
+                  "cellValue": "=STOCK.GET_COMPANY_FINANCIALS('DCF Valuation'!$B$3,\"capitalLeaseObligations\",, B17)/E1",
                   "metadata": {
                       "textFormatPattern": ""
                   }
@@ -17773,7 +17772,7 @@
                   "cellValue": "Converted Market Capitalization"
               },
               "10_1": {
-                  "cellValue": "=(STOCK.GET_COMPANY_PRICES('DCF Valuation'!$B$3,\"adjustedClose\")*B6)*B15",
+                  "cellValue": "=(STOCK.GET_COMPANY_PRICES('DCF Valuation'!$B$3,\"adjustedClose\",, B17)*B6)*B15",
                   "metadata": {
                       "textFormatPattern": "=['Helper Data'!D14]#,##0.##"
                   }
@@ -17782,7 +17781,7 @@
                   "cellValue": "Converted Share Price"
               },
               "11_1": {
-                  "cellValue": "=STOCK.GET_COMPANY_PRICES('DCF Valuation'!$B$3, \"adjustedClose\")*B15",
+                  "cellValue": "=STOCK.GET_COMPANY_PRICES('DCF Valuation'!$B$3, \"adjustedClose\",, B17)*B15",
                   "metadata": {
                       "textFormatPattern": "=['Helper Data'!D14]#,##0.##"
                   }
@@ -17803,7 +17802,7 @@
                   "cellValue": "Financials Currency Code"
               },
               "13_1": {
-                  "cellValue": "=STOCK.GET_COMPANY_FINANCIALS('DCF Valuation'!$B$3, \"currencyCode\")"
+                  "cellValue": "=STOCK.GET_COMPANY_FINANCIALS('DCF Valuation'!$B$3, \"currencyCode\",, B17)"
               },
               "13_2": {
                   "cellValue": "Financials Currency Symbol"
@@ -17815,13 +17814,13 @@
                   "cellValue": "Financials Quote Exchange Rate"
               },
               "14_1": {
-                  "cellValue": "=FX.GET_FIAT_EXCHANGE_RATE(B13, B14, \"adjustedClose\")"
+                  "cellValue": "=FX.GET_FIAT_EXCHANGE_RATE(B13, B14, \"adjustedClose\",, B17)"
               },
               "15_0": {
                   "cellValue": "Market Quote Exchange Rate"
               },
               "15_1": {
-                  "cellValue": "=FX.GET_FIAT_EXCHANGE_RATE(B14, B13, \"adjustedClose\")"
+                  "cellValue": "=FX.GET_FIAT_EXCHANGE_RATE(B14, B13, \"adjustedClose\",, B17)"
               },
               "16_0": {
                   "cellValue": "Creation Date"
