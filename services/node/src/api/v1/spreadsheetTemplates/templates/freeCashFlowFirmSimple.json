@@ -17826,7 +17826,7 @@
                   "cellValue": "Creation Date"
               },
               "16_1": {
-                  "cellValue": "=TEXT(META.SPREADSHEET_CREATION_DATE(), \"YYYY-MM-DD\")"
+                  "cellValue": "=TEXT(SPREADSHEET_CREATION_DATE(), \"YYYY-MM-DD\")"
               }
           },
           "sheetMetadata": {

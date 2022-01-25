@@ -2,7 +2,7 @@
   "STOCK.GET_COMPANY_FINANCIALS": {
     "header": "STOCK.GET_COMPANY_FINANCIALS",
     "headerDescription": "Fetches current or historical financial information for a public company.",
-    "type": "Stock Financials",
+    "type": "Stock",
     "parameters": ["ticker", "field", "[granularity]", "[fiscalDateRange]"],
     "codeSyntaxUsage": [
       "=STOCK.GET_COMPANY_FINANCIALS(\"AMZN\",\"revenue\")",
@@ -235,7 +235,7 @@
   "STOCK.GET_COMPANY_RATIOS": {
     "header": "STOCK.GET_COMPANY_RATIOS",
     "headerDescription": "Fetches current or historical ratios information for a public company.",
-    "type": "Stock Ratios",
+    "type": "Stock",
     "parameters": ["ticker", "[field]", "[granularity]", "[fiscalDateRange]"],
     "codeSyntaxUsage": [
       "=STOCK.GET_COMPANY_RATIOS(\"AMZN\",\"interestCoverage\")",
@@ -345,7 +345,7 @@
   "STOCK.GET_COMPANY_OUTSTANDING_SHARES": {
     "header": "STOCK.GET_COMPANY_OUTSTANDING_SHARES",
     "headerDescription": "Fetches current or historical outstanding shares information for a public company.",
-    "type": "Stock Outstanding Shares",
+    "type": "Stock",
     "parameters": ["ticker", "[field]", "[granularity]", "[fiscalDateRange]"],
     "codeSyntaxUsage": [
       "=STOCK.GET_COMPANY_OUTSTANDING_SHARES(\"AMZN\",\"shares\")",
@@ -457,7 +457,7 @@
   "STOCK.GET_COMPANY_PRICES": {
     "header": "STOCK.GET_COMPANY_PRICES",
     "headerDescription": "Fetches current or historical prices information for a public company.",
-    "type": "Stock Prices",
+    "type": "Stock",
     "parameters": ["ticker", "[field]", "[granularity]", "[fiscalDateRange]"],
     "codeSyntaxUsage": [
       "=STOCK.GET_COMPANY_PRICES(\"AMZN\",\"open\")",
@@ -579,7 +579,7 @@
   "STOCK.GET_COMPANY_INFO": {
     "header": "STOCK.GET_COMPANY_INFO",
     "headerDescription": "Fetches current company's background information for a public company.",
-    "type": "Stock Information",
+    "type": "Stock",
     "parameters": ["ticker", "field"],
     "codeSyntaxUsage": [
       "=STOCK.GET_COMPANY_INFO(\"AMZN\",\"code\")",
@@ -730,7 +730,7 @@
   "STOCK.GET_COMPANY_INDUSTRY_AVERAGES": {
     "header": "STOCK.GET_COMPANY_INDUSTRY_AVERAGES",
     "headerDescription": "Fetches current or historical industry averages information for a public company.",
-    "type": "Industry Averages",
+    "type": "Stock",
     "parameters": ["ticker", "[field]", "[fiscalDateRange]"],
     "codeSyntaxUsage": [
       "=STOCK.GET_COMPANY_INDUSTRY_AVERAGES(\"AMZN\",\"afterTaxROIC\")",
@@ -869,7 +869,7 @@
   "STOCK.GET_INDUSTRY_AVERAGES": {
     "header": "STOCK.GET_INDUSTRY_AVERAGES",
     "headerDescription": "Fetches current or historical industry averages.",
-    "type": "Industry Averages",
+    "type": "Stock",
     "parameters": ["type", "[field]", "[fiscalDateRange]"],
     "codeSyntaxUsage": [
       "=STOCK.GET_INDUSTRY_AVERAGES(\"US\")",
@@ -932,6 +932,221 @@
         ]
       }
     ]
+  },
+  "BOND.GET_COUNTRY_YIELD": {
+    "header": "BOND.GET_COUNTRY_YIELD",
+    "headerDescription": "Fetches current or historical country yields for a bond.",
+    "type": "Bond",
+    "parameters": [
+      "countryISO",
+      "maturity",
+      "[field]",
+      "[granularity]",
+      "[fiscalDateRange]"
+    ],
+    "codeSyntaxUsage": [
+      "=BOND.GET_COUNTRY_YIELD(\"CH\",\"10yr\")",
+      "=BOND.GET_COUNTRY_YIELD(\"US\",\"10yr\",\"high\",\"week\",\"2010-09-30\")"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "=BOND.GET_COUNTRY_YIELD(countryISO, maturity, [field], [granularity], [fiscalDateRange])",
+        "values": [
+          {
+            "syntaxName": "countryISO",
+            "description": "See the 'countryISO' section below for the list of parameters that can be given here."
+          },
+          {
+            "syntaxName": "maturity",
+            "description": "Accepts \"{number}yr\" or \"m\"."
+          },
+          {
+            "syntaxName": "[field]",
+            "description": "See the 'fields' section below for the list of parameters that can be given here."
+          },
+          {
+            "syntaxName": "[granularity]",
+            "description": "Accepts either \"day\", \"week\" or \"month\"."
+          },
+          {
+            "syntaxName": "[fiscalDateRange]",
+            "description": "Example: \"2010-01-01\", \">2010-01-01\", \">=2010-01-01\", \"<2020-01-01\", <=2020-01-01\", \"2010-01-01:2015-01-01\" (exclusive between)."
+          }
+        ]
+      }
+    ],
+    "attributes": [
+      {
+        "header": "Country ISOs",
+        "attributeNames": [
+          "AU",
+          "BR",
+          "CA",
+          "CH",
+          "CN",
+          "DE",
+          "ES",
+          "FR",
+          "GR",
+          "HK",
+          "ID",
+          "IN",
+          "IT",
+          "JP",
+          "MX",
+          "NL",
+          "NZ",
+          "PT",
+          "RU",
+          "SW",
+          "UK",
+          "US"
+        ]
+      },
+      {
+        "header": "Fields",
+        "attributeNames": [
+          "date",
+          "open",
+          "high",
+          "close",
+          "adjustedClose",
+          "low",
+          "volume"
+        ]
+      }
+    ]
+  },
+  "FX.GET_FIAT_EXCHANGE_RATE": {
+    "header": "FX.GET_FIAT_EXCHANGE_RATE",
+    "headerDescription": "Fetches current or historical foreign exchange rates for a currency pair.",
+    "type": "FX",
+    "parameters": [
+      "baseCurrency",
+      "quoteCurrency",
+      "[field]",
+      "[granularity]",
+      "[fiscalDateRange]"
+    ],
+    "codeSyntaxUsage": [
+      "=FX.GET_FIAT_EXCHANGE_RATE(\"USD\",\"EUR\")",
+      "=FX.GET_FIAT_EXCHANGE_RATE(\"USD\",\"EUR\",\"high\",\"week\",\"2010-09-30\")"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "=FX.GET_FIAT_EXCHANGE_RATE(baseCurrency, quoteCurrency, [field], [granularity], [fiscalDateRange])",
+        "values": [
+          {
+            "syntaxName": "baseCurrency",
+            "description": "Any valid currency code."
+          },
+          {
+            "syntaxName": "quoteCurrency",
+            "description": "Any valid currency code."
+          },
+          {
+            "syntaxName": "[field]",
+            "description": "See the 'fields' section below for the list of parameters that can be given here."
+          },
+          {
+            "syntaxName": "[granularity]",
+            "description": "Accepts either \"day\", \"week\" or \"month\"."
+          },
+          {
+            "syntaxName": "[fiscalDateRange]",
+            "description": "Example: \"2010-01-01\", \">2010-01-01\", \">=2010-01-01\", \"<2020-01-01\", <=2020-01-01\", \"2010-01-01:2015-01-01\" (exclusive between)."
+          }
+        ]
+      }
+    ],
+    "attributes": [
+      {
+        "header": "Fields",
+        "attributeNames": [
+          "date",
+          "open",
+          "high",
+          "close",
+          "adjustedClose",
+          "low",
+          "volume"
+        ]
+      }
+    ]
+  },
+  "SENSITIVITY_ANALYSIS": {
+    "header": "DATA_ANALYSIS.SENSITIVITY_ANALYSIS",
+    "headerDescription": "Determines how different values of an independent variable affect a particular dependent variable under a given set of assumptions.",
+    "type": "Data Analysis",
+    "parameters": [
+      "intersection_point",
+      "x_var",
+      "y_var",
+      "{xMin,xMax}",
+      "{yMin,yMax}"
+    ],
+    "codeSyntaxUsage": [
+      "=DATA_ANALYSIS.SENSITIVITY_ANALYSIS(B1,B2,B3,{15,20},{3,30})",
+      "=DATA_ANALYSIS.SENSITIVITY_ANALYSIS(B1,B2,B3,{C1:C5},{D1:D5})"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "DATA_ANALYSIS.SENSITIVITY_ANALYSIS(intersection_point, x_var, y_var, {rangeX}, {rangeY})",
+        "values": [
+          {
+            "syntaxName": "intersection_point",
+            "description": "The point of intersection of the two base input assumptions that links the desired output."
+          },
+          {
+            "syntaxName": "x_var",
+            "description": "1st base input assumption."
+          },
+          {
+            "syntaxName": "y_var",
+            "description": "2nd base input assumption."
+          },
+          {
+            "syntaxName": "{rangeX}",
+            "description": "Min and max of the 1st base input assumption."
+          },
+          {
+            "syntaxName": "{rangeY}",
+            "description": "Min and max of the 2nd base input assumption."
+          }
+        ]
+      }
+    ],
+    "attributes": []
+  },
+  "MONTE_CARLO_SIMULATION": {
+    "header": "DATA_ANALYSIS.MONTE_CARLO_SIMULATION",
+    "headerDescription": "Is a model used to predict the probability of different outcomes when the intervention of randomness is present.",
+    "type": "Data Analysis",
+    "parameters": ["intersection_point", "{var_assumptions}", "[iteration]"],
+    "codeSyntaxUsage": [
+      "=DATA_ANALYSIS.MONTE_CARLO_SIMULATION(B3,{B1,B2},10000)",
+      "=DATA_ANALYSIS.MONTE_CARLO_SIMULATION(A3,{A1},100)"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "DATA_ANALYSIS.MONTE_CARLO_SIMULATION(intersection_point, {var_assumptions}, [iteration])",
+        "values": [
+          {
+            "syntaxName": "intersection_point",
+            "description": "The point of intersection (forecast value) of the assumptions that links the desired output."
+          },
+          {
+            "syntaxName": "{var_assumptions}",
+            "description": "Array of assumptions."
+          },
+          {
+            "syntaxName": "[iteration]",
+            "description": "[OPTIONAL]. Sets the number of trials to run."
+          }
+        ]
+      }
+    ],
+    "attributes": []
   },
   "MARKET.GET_EQUITY_RISK_PREMIUMS": {
     "header": "MARKET.GET_EQUITY_RISK_PREMIUMS",
@@ -1243,178 +1458,6 @@
     ],
     "attributes": []
   },
-  "BOND.GET_COUNTRY_YIELD": {
-    "header": "BOND.GET_COUNTRY_YIELD",
-    "headerDescription": "Fetches current or historical country yield information for a bond.",
-    "type": "Bond",
-    "parameters": [
-      "countryISO",
-      "maturity",
-      "[field]",
-      "[granularity]",
-      "[fiscalDateRange]"
-    ],
-    "codeSyntaxUsage": [
-      "=BOND.GET_COUNTRY_YIELD(\"CH\",\"10yr\")",
-      "=BOND.GET_COUNTRY_YIELD(\"US\",\"10yr\",\"high\",\"week\",\"2010-09-30\")"
-    ],
-    "codeSyntaxElements": [
-      {
-        "codeSyntax": "=BOND.GET_COUNTRY_YIELD(countryISO, maturity, [field], [granularity], [fiscalDateRange])",
-        "values": [
-          {
-            "syntaxName": "countryISO",
-            "description": "See the 'countryISO' section below for the list of parameters that can be given here."
-          },
-          {
-            "syntaxName": "maturity",
-            "description": "Accepts \"{number}yr\" or \"m\"."
-          },
-          {
-            "syntaxName": "[field]",
-            "description": "See the 'fields' section below for the list of parameters that can be given here."
-          },
-          {
-            "syntaxName": "[granularity]",
-            "description": "Accepts either \"day\", \"week\" or \"month\"."
-          },
-          {
-            "syntaxName": "[fiscalDateRange]",
-            "description": "Example: \"2010-01-01\", \">2010-01-01\", \">=2010-01-01\", \"<2020-01-01\", <=2020-01-01\", \"2010-01-01:2015-01-01\" (exclusive between)."
-          }
-        ]
-      }
-    ],
-    "attributes": [
-      {
-        "header": "Country ISOs",
-        "attributeNames": [
-          "AU",
-          "BR",
-          "CA",
-          "CH",
-          "CN",
-          "DE",
-          "ES",
-          "FR",
-          "GR",
-          "HK",
-          "ID",
-          "IN",
-          "IT",
-          "JP",
-          "MX",
-          "NL",
-          "NZ",
-          "PT",
-          "RU",
-          "SW",
-          "UK",
-          "US"
-        ]
-      },
-      {
-        "header": "Fields",
-        "attributeNames": [
-          "date",
-          "open",
-          "high",
-          "close",
-          "adjustedClose",
-          "low",
-          "volume"
-        ]
-      }
-    ]
-  },
-  "META.SPREADSHEET_CREATION_DATE": {
-    "header": "META.SPREADSHEET_CREATION_DATE",
-    "headerDescription": "Returns the timestamp when the spreadsheet was created. This is useful for passing into other functions for the fiscalDateRange parameter if you need specific API data from that date.",
-    "type": "Spreadsheet",
-    "parameters": [],
-    "codeSyntaxUsage": ["=META.SPREADSHEET_CREATION_DATE()"],
-    "codeSyntaxElements": [
-      {
-        "codeSyntax": "=META.SPREADSHEET_CREATION_DATE)",
-        "values": []
-      }
-    ],
-    "attributes": []
-  },
-  "SENSITIVITY_ANALYSIS": {
-    "header": "DATA_ANALYSIS.SENSITIVITY_ANALYSIS",
-    "headerDescription": "Determines how different values of an independent variable affect a particular dependent variable under a given set of assumptions.",
-    "type": "Data Analysis",
-    "parameters": [
-      "intersection_point",
-      "x_var",
-      "y_var",
-      "{xMin,xMax}",
-      "{yMin,yMax}"
-    ],
-    "codeSyntaxUsage": [
-      "=DATA_ANALYSIS.SENSITIVITY_ANALYSIS(B1,B2,B3,{15,20},{3,30})",
-      "=DATA_ANALYSIS.SENSITIVITY_ANALYSIS(B1,B2,B3,{C1:C5},{D1:D5})"
-    ],
-    "codeSyntaxElements": [
-      {
-        "codeSyntax": "DATA_ANALYSIS.SENSITIVITY_ANALYSIS(intersection_point, x_var, y_var, {rangeX}, {rangeY})",
-        "values": [
-          {
-            "syntaxName": "intersection_point",
-            "description": "The point of intersection of the two base input assumptions that links the desired output."
-          },
-          {
-            "syntaxName": "x_var",
-            "description": "1st base input assumption."
-          },
-          {
-            "syntaxName": "y_var",
-            "description": "2nd base input assumption."
-          },
-          {
-            "syntaxName": "{rangeX}",
-            "description": "Min and max of the 1st base input assumption."
-          },
-          {
-            "syntaxName": "{rangeY}",
-            "description": "Min and max of the 2nd base input assumption."
-          }
-        ]
-      }
-    ],
-    "attributes": []
-  },
-  "MONTE_CARLO_SIMULATION": {
-    "header": "DATA_ANALYSIS.MONTE_CARLO_SIMULATION",
-    "headerDescription": "Is a model used to predict the probability of different outcomes when the intervention of randomness is present.",
-    "type": "Data Analysis",
-    "parameters": ["intersection_point", "{var_assumptions}", "[iteration]"],
-    "codeSyntaxUsage": [
-      "=DATA_ANALYSIS.MONTE_CARLO_SIMULATION(B3,{B1,B2},10000)",
-      "=DATA_ANALYSIS.MONTE_CARLO_SIMULATION(A3,{A1},100)"
-    ],
-    "codeSyntaxElements": [
-      {
-        "codeSyntax": "DATA_ANALYSIS.MONTE_CARLO_SIMULATION(intersection_point, {var_assumptions}, [iteration])",
-        "values": [
-          {
-            "syntaxName": "intersection_point",
-            "description": "The point of intersection (forecast value) of the assumptions that links the desired output."
-          },
-          {
-            "syntaxName": "{var_assumptions}",
-            "description": "Array of assumptions."
-          },
-          {
-            "syntaxName": "[iteration]",
-            "description": "[OPTIONAL]. Sets the number of trials to run."
-          }
-        ]
-      }
-    ],
-    "attributes": []
-  },
   "NORMAL_INVERSE_RANDOM": {
     "header": "STATISTICS.NORMAL_INVERSE_RANDOM",
     "headerDescription": "Defines the mean (expected value) and a standard deviation to describe the variation about the mean. Describes uncertain variables such as inflation, interest, growth rates or prices of fuel, electricity, rent and etc.",
@@ -1517,6 +1560,41 @@
           {
             "syntaxName": "standard_deviation",
             "description": "Standard deviation of the Ln(x), where Ln(x) is normally distributed."
+          }
+        ]
+      }
+    ],
+    "attributes": []
+  },
+  "SPREADSHEET_CREATION_DATE": {
+    "header": "SPREADSHEET_CREATION_DATE",
+    "headerDescription": "Returns the timestamp when the spreadsheet was created. This is useful for passing into other functions for the fiscalDateRange parameter if you need specific API data from that date.",
+    "type": "Helpers",
+    "parameters": [],
+    "codeSyntaxUsage": ["=SPREADSHEET_CREATION_DATE()"],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "=SPREADSHEET_CREATION_DATE()",
+        "values": []
+      }
+    ],
+    "attributes": []
+  },
+  "CONVERT_CURRENCY_CODE_TO_SYMBOL": {
+    "header": "CONVERT_CURRENCY_CODE_TO_SYMBOL",
+    "headerDescription": "Converts a currency code to it's matching symbol.",
+    "type": "Helpers",
+    "parameters": [
+      "currencyCode"
+    ],
+    "codeSyntaxUsage": ["=CONVERT_CURRENCY_CODE_TO_SYMBOL(currencyCode)"],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "=CONVERT_CURRENCY_CODE_TO_SYMBOL(currencyCode)",
+        "values": [
+          {
+            "syntaxName": "currencyCode",
+            "description": "Any valid currency code."
           }
         ]
       }
