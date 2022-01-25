@@ -81,133 +81,140 @@ export const translations = {
   }
 }
 
-export class Plugin extends FunctionPlugin {
-  getEquityRiskPremiums(ast, state) {
-    const metadata = this.metadata('MARKET.GET_EQUITY_RISK_PREMIUMS')
+export const getPlugin = getApiFrozenDate => {
+  class Plugin extends FunctionPlugin {
+    getEquityRiskPremiums(ast, state) {
+      const metadata = this.metadata('MARKET.GET_EQUITY_RISK_PREMIUMS')
 
-    return this.runAsyncFunction(
-      ast.args,
-      state,
-      metadata,
-      async (field, fiscalDateRange) => {
-        const isFieldValid = field
-          ? !!equityRiskPremiumFields.find(x => x === field)
-          : true
-        const isFiscalDateRangeValid = fiscalDateRange
-          ? !!fiscalDateRange.match(fiscalDateRangeRegex)
-          : true
+      return this.runAsyncFunction(
+        ast.args,
+        state,
+        metadata,
+        async (field, fiscalDateRange) => {
+          const isFieldValid = field
+            ? !!equityRiskPremiumFields.find(x => x === field)
+            : true
+          const isFiscalDateRangeValid = this.getIsFiscalDateRangeValid(date)
+          const date = fiscalDateRange ?? getApiFrozenDate()
 
-        if (!isFieldValid) {
-          return equityRiskPremiumsFieldCellError
+          if (!isFieldValid) {
+            return equityRiskPremiumsFieldCellError
+          }
+
+          if (!isFiscalDateRangeValid) {
+            return fiscalDateRangeCellError
+          }
+
+          // TODO: Handle dates for equityRiskPremiums and store in database
+          // before updating equityRiskPremiums JSON
+          const { data } = await api.getEquityRiskPremiums({
+            field,
+            fiscalDateRange: date
+          })
+
+          return getPluginAsyncValue(mapValuesToArrayOfArrays(data.value, true))
         }
+      )
+    }
 
-        if (!isFiscalDateRangeValid) {
-          return fiscalDateRangeCellError
+    getCountryEquityRiskPremium(ast, state) {
+      const metadata = this.metadata('MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM')
+
+      return this.runAsyncFunction(
+        ast.args,
+        state,
+        metadata,
+        async (countryISO, field, fiscalDateRange) => {
+          const isCountryISOValid = !!countryISOs.find(x => x === countryISO)
+          const isFieldValid = field
+            ? !!equityRiskPremiumFields.find(x => x === field)
+            : true
+          const date = fiscalDateRange ?? getApiFrozenDate()
+          const isFiscalDateRangeValid = this.getIsFiscalDateRangeValid(date)
+
+          if (!isCountryISOValid) {
+            return countryISOCellError
+          }
+
+          if (!isFieldValid) {
+            return equityRiskPremiumsFieldCellError
+          }
+
+          if (!isFiscalDateRangeValid) {
+            return fiscalDateRangeCellError
+          }
+
+          // TODO: Handle dates for equityRiskPremiums and store in database
+          // before updating equityRiskPremiums JSON
+          const { data } = await api.getCountryEquityRiskPremium(countryISO, {
+            field,
+            fiscalDateRange: date
+          })
+
+          return getPluginAsyncValue(mapValuesToArrayOfArrays(data.value))
         }
+      )
+    }
 
-        // TODO: Handle dates for equityRiskPremiums and store in database
-        // before updating equityRiskPremiums JSON
-        const { data } = await api.getEquityRiskPremiums({
-          field,
-          fiscalDateRange
-        })
+    getCreditRatingInterestSpreads(ast, state) {
+      const metadata = this.metadata(
+        'MARKET.GET_CREDIT_RATING_INTEREST_SPREADS'
+      )
 
-        return getPluginAsyncValue(mapValuesToArrayOfArrays(data.value, true))
-      }
-    )
+      return this.runAsyncFunction(
+        ast.args,
+        state,
+        metadata,
+        async (field, fiscalDateRange) => {
+          const isFieldValid = field
+            ? !!creditRatingInterestSpreadsFields.find(x => x === field)
+            : true
+          const date = fiscalDateRange ?? getApiFrozenDate()
+          const isFiscalDateRangeValid = this.getIsFiscalDateRangeValid(date)
+
+          if (!isFieldValid) {
+            return creditRatingInterestSpreadsFieldCellError
+          }
+
+          if (!isFiscalDateRangeValid) {
+            return fiscalDateRangeCellError
+          }
+
+          // TODO: Handle dates for equityRiskPremiums and store in database
+          // before updating equityRiskPremiums JSON
+          const { data } = await api.getCreditRatingInterestSpreads({
+            field,
+            fiscalDateRange: date
+          })
+
+          return getPluginAsyncValue(mapValuesToArrayOfArrays(data.value, true))
+        }
+      )
+    }
+
+    riskFreeRate(ast, state) {
+      const metadata = this.metadata('MARKET.RISK_FREE_RATE')
+
+      return this.runFunction(
+        ast.args,
+        state,
+        metadata,
+        (governmentBondRate, inflationRate) => {
+          return (1 + governmentBondRate) / (1 + inflationRate) - 1
+        }
+      )
+    }
+
+    getIsFiscalDateRangeValid(date) {
+      return date ? !!date.match(fiscalDateRangeRegex) : true
+    }
+
+    marketSize(ast, state) {
+      return inferSizeMethod(ast, state)
+    }
   }
 
-  getCountryEquityRiskPremium(ast, state) {
-    const metadata = this.metadata('MARKET.GET_COUNTRY_EQUITY_RISK_PREMIUM')
+  Plugin.implementedFunctions = implementedFunctions
 
-    return this.runAsyncFunction(
-      ast.args,
-      state,
-      metadata,
-      async (countryISO, field, fiscalDateRange) => {
-        const isCountryISOValid = !!countryISOs.find(x => x === countryISO)
-        const isFieldValid = field
-          ? !!equityRiskPremiumFields.find(x => x === field)
-          : true
-        const isFiscalDateRangeValid = fiscalDateRange
-          ? !!fiscalDateRange.match(fiscalDateRangeRegex)
-          : true
-
-        if (!isCountryISOValid) {
-          return countryISOCellError
-        }
-
-        if (!isFieldValid) {
-          return equityRiskPremiumsFieldCellError
-        }
-
-        if (!isFiscalDateRangeValid) {
-          return fiscalDateRangeCellError
-        }
-
-        // TODO: Handle dates for equityRiskPremiums and store in database
-        // before updating equityRiskPremiums JSON
-        const { data } = await api.getCountryEquityRiskPremium(countryISO, {
-          field,
-          fiscalDateRange
-        })
-
-        return getPluginAsyncValue(mapValuesToArrayOfArrays(data.value))
-      }
-    )
-  }
-
-  getCreditRatingInterestSpreads(ast, state) {
-    const metadata = this.metadata('MARKET.GET_CREDIT_RATING_INTEREST_SPREADS')
-
-    return this.runAsyncFunction(
-      ast.args,
-      state,
-      metadata,
-      async (field, fiscalDateRange) => {
-        const isFieldValid = field
-          ? !!creditRatingInterestSpreadsFields.find(x => x === field)
-          : true
-        const isFiscalDateRangeValid = fiscalDateRange
-          ? !!fiscalDateRange.match(fiscalDateRangeRegex)
-          : true
-
-        if (!isFieldValid) {
-          return creditRatingInterestSpreadsFieldCellError
-        }
-
-        if (!isFiscalDateRangeValid) {
-          return fiscalDateRangeCellError
-        }
-
-        // TODO: Handle dates for equityRiskPremiums and store in database
-        // before updating equityRiskPremiums JSON
-        const { data } = await api.getCreditRatingInterestSpreads({
-          field,
-          fiscalDateRange
-        })
-
-        return getPluginAsyncValue(mapValuesToArrayOfArrays(data.value, true))
-      }
-    )
-  }
-
-  riskFreeRate(ast, state) {
-    const metadata = this.metadata('MARKET.RISK_FREE_RATE')
-
-    return this.runFunction(
-      ast.args,
-      state,
-      metadata,
-      (governmentBondRate, inflationRate) => {
-        return (1 + governmentBondRate) / (1 + inflationRate) - 1
-      }
-    )
-  }
-
-  marketSize(ast, state) {
-    return inferSizeMethod(ast, state)
-  }
+  return Plugin
 }
-
-Plugin.implementedFunctions = implementedFunctions

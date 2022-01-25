@@ -41,69 +41,72 @@ export const translations = {
   }
 }
 
-export class Plugin extends FunctionPlugin {
-  getCountryYield(ast, state) {
-    const metadata = this.metadata('BOND.GET_COUNTRY_YIELD')
+export const getPlugin = getApiFrozenDate => {
+  class Plugin extends FunctionPlugin {
+    getCountryYield(ast, state) {
+      const metadata = this.metadata('BOND.GET_COUNTRY_YIELD')
 
-    return this.runAsyncFunction(
-      ast.args,
-      state,
-      metadata,
-      async (countryISO, maturity, field, granularity, fiscalDateRange) => {
-        const isCountryISOValid = !!countryISOs.find(x => x === countryISO)
-        const isMaturityValidValid = !!maturity.match(maturityRegex)
+      return this.runAsyncFunction(
+        ast.args,
+        state,
+        metadata,
+        async (countryISO, maturity, field, granularity, fiscalDateRange) => {
+          const isCountryISOValid = !!countryISOs.find(x => x === countryISO)
+          const isMaturityValidValid = !!maturity.match(maturityRegex)
+          const date = fiscalDateRange ?? getApiFrozenDate()
 
-        const error = validateEODParamsHasError(
-          field,
-          granularity,
-          fiscalDateRange
-        )
+          const error = validateEODParamsHasError(field, granularity, date)
 
-        if (error) {
-          return error
-        }
-
-        if (!isCountryISOValid) {
-          return countryISOCellError
-        }
-
-        if (!isMaturityValidValid) {
-          return maturityCellError
-        }
-
-        const maturityGranularity = [...maturity.matchAll(maturityRegex)][0][1]
-
-        let formattedMaturity = parseInt(maturity, 10)
-
-        if (maturityGranularity === 'yr') {
-          formattedMaturity += 'Y'
-        } else {
-          formattedMaturity += 'M'
-        }
-
-        const { data } = await api.getGovernmentBond(
-          `${countryISO}${formattedMaturity}`,
-          {
-            field,
-            granularity,
-            fiscalDateRange
+          if (error) {
+            return error
           }
-        )
-        const eodKeys = getEodKeys('percent')
 
-        const value = mapValuesToArrayOfArrays(
-          convertEODNumbersToFormattedNumbers(eodKeys, data.value),
-          true
-        )
+          if (!isCountryISOValid) {
+            return countryISOCellError
+          }
 
-        return getPluginAsyncValue(value)
-      }
-    )
+          if (!isMaturityValidValid) {
+            return maturityCellError
+          }
+
+          const maturityGranularity = [
+            ...maturity.matchAll(maturityRegex)
+          ][0][1]
+
+          let formattedMaturity = parseInt(maturity, 10)
+
+          if (maturityGranularity === 'yr') {
+            formattedMaturity += 'Y'
+          } else {
+            formattedMaturity += 'M'
+          }
+
+          const { data } = await api.getGovernmentBond(
+            `${countryISO}${formattedMaturity}`,
+            {
+              field,
+              granularity,
+              fiscalDateRange: date
+            }
+          )
+          const eodKeys = getEodKeys('percent')
+
+          const value = mapValuesToArrayOfArrays(
+            convertEODNumbersToFormattedNumbers(eodKeys, data.value),
+            true
+          )
+
+          return getPluginAsyncValue(value)
+        }
+      )
+    }
+
+    bondSize(ast, state) {
+      return inferSizeMethod(ast, state)
+    }
   }
 
-  bondSize(ast, state) {
-    return inferSizeMethod(ast, state)
-  }
+  Plugin.implementedFunctions = implementedFunctions
+
+  return Plugin
 }
-
-Plugin.implementedFunctions = implementedFunctions
