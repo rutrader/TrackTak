@@ -5,7 +5,7 @@
           "marketListedCurrency": "=['Helper Data'!D13]#,##0.##",
           "financialsListedCurrency": "=['Helper Data'!D14]#,##0.##",
           "financialsListedCurrencyMillions": "=['Helper Data'!D14]#,###.##,,"
-      },
+      }
   },
   "sheets": {
       "DCF Valuation": {
@@ -17626,7 +17626,7 @@
       "Industry Averages (US)": {
           "cells": {
               "0_0": {
-                  "cellValue": "=STOCK.GET_INDUSTRY_AVERAGES(\"US\",, B17)"
+                  "cellValue": "=STOCK.GET_INDUSTRY_AVERAGES(\"US\",, 'Helper Data'!$B17)"
               }
           },
           "sheetMetadata": {
@@ -17642,7 +17642,7 @@
       "Industry Averages (Global)": {
           "cells": {
               "0_0": {
-                  "cellValue": "=STOCK.GET_INDUSTRY_AVERAGES(\"Global\",, B17)"
+                  "cellValue": "=STOCK.GET_INDUSTRY_AVERAGES(\"Global\",, 'Helper Data'!$B17)"
               }
           },
           "sheetMetadata": {
