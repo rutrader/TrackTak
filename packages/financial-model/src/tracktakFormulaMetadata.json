@@ -1574,7 +1574,7 @@
     "codeSyntaxUsage": ["=SPREADSHEET_CREATION_DATE()"],
     "codeSyntaxElements": [
       {
-        "codeSyntax": "=SPREADSHEET_CREATION_DATE)",
+        "codeSyntax": "=SPREADSHEET_CREATION_DATE()",
         "values": []
       }
     ],
@@ -1590,7 +1590,7 @@
     "codeSyntaxUsage": ["=CONVERT_CURRENCY_CODE_TO_SYMBOL(currencyCode)"],
     "codeSyntaxElements": [
       {
-        "codeSyntax": "=CONVERT_CURRENCY_CODE_TO_SYMBOL)",
+        "codeSyntax": "=CONVERT_CURRENCY_CODE_TO_SYMBOL(currencyCode)",
         "values": [
           {
             "syntaxName": "currencyCode",
