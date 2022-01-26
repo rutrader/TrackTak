@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import {
   Box,
   Typography,
@@ -9,15 +9,16 @@ import {
   TableHead,
   TableRow,
   TableContainer,
-  ListItemIcon,
   useTheme,
   Modal,
   Button,
   MenuItem,
   Divider,
-  IconButton
+  IconButton,
+  ListItemIcon,
+  FormControl,
+  Input
 } from '@mui/material'
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import DeleteIcon from '@mui/icons-material/Delete'
 import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove'
 import FolderIcon from '@mui/icons-material/Folder'
@@ -25,13 +26,15 @@ import ConfirmationDialog from './ConfirmationDialog'
 import { api, useAuth } from '@tracktak/common'
 import { useNavigate } from 'react-router-dom'
 import logSpreadsheetEvent from '../shared/logSpreadsheetEvent'
-import dayjs from 'dayjs'
 import { useSpreadsheetsMetadata } from '../hooks/useSpreadsheetsMetadata'
-import GridOnIcon from '@mui/icons-material/GridOn'
 import { StyledMenu } from './OptionsMenuFolder'
 import Templates from './Templates'
 import AddIcon from '@mui/icons-material/Add'
 import { Link } from 'react-router-dom'
+import EditIcon from '@mui/icons-material/Edit'
+import GridOnIcon from '@mui/icons-material/GridOn'
+import dayjs from 'dayjs'
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 
 const SavedSpreadsheets = () => {
   const theme = useTheme()
@@ -41,10 +44,16 @@ const SavedSpreadsheets = () => {
   const { userData, getAccessToken } = useAuth()
   const [selectedSpreadsheet, setSelectedSpreadsheet] = useState()
   const [spreadsheets, setSpreadsheets] = useState([])
+  const [name, setName] = useState()
   const [openModalFolder, setOpenModalFolder] = useState(false)
   const [anchorEl, setAnchorEl] = useState(null)
+  const inputRef = useRef()
+  const [currentEditableSpreadsheetId, setCurrentEditableSpreadsheetId] =
+    useState(null)
   const open = Boolean(anchorEl)
   const moveToDisabled = folders.length === 1
+  const isSelectedInEditMode =
+    currentEditableSpreadsheetId === selectedSpreadsheet?._id
 
   const fetchNewSpreadsheets = useCallback(async () => {
     const token = await getAccessToken()
@@ -55,11 +64,44 @@ const SavedSpreadsheets = () => {
     setSpreadsheets(spreadsheets)
   }, [getAccessToken, setSpreadsheets, folderId])
 
-  useEffect(() => {
-    fetchNewSpreadsheets()
-  }, [fetchNewSpreadsheets])
+  const updateSpreadsheetName = async spreadsheet => {
+    const token = await getAccessToken()
+    const accessToken = token?.jwtToken
 
-  const handleRowClick = spreadsheet => {
+    await api.saveSpreadsheet(
+      {
+        ...spreadsheet,
+        sheetData: {
+          ...spreadsheet.sheetData,
+          name
+        }
+      },
+      accessToken
+    )
+    await fetchNewSpreadsheets()
+
+    setCurrentEditableSpreadsheetId(null)
+  }
+
+  const handleOnChangeEditable = e => {
+    e.preventDefault()
+
+    setName(e.target.value)
+  }
+
+  const handleOnBlurSpreadsheet = spreadsheet => async () => {
+    await updateSpreadsheetName(spreadsheet)
+  }
+
+  const handleEditedTextOnEnter = spreadsheet => async e => {
+    if (e.key === 'Enter') {
+      inputRef.current.blur()
+
+      await updateSpreadsheetName(spreadsheet)
+    }
+  }
+
+  const goToSpreadsheet = spreadsheet => {
     navigate(`/${userData.name}/my-spreadsheets/${spreadsheet._id}`)
 
     logSpreadsheetEvent('Edit', spreadsheet.sheetData.name)
@@ -67,6 +109,11 @@ const SavedSpreadsheets = () => {
 
   const handleOnClickDelete = () => {
     setShowConfirmationDialog(true)
+  }
+
+  const handleClickEditSpreadsheet = () => {
+    setCurrentEditableSpreadsheetId(selectedSpreadsheet._id)
+    setAnchorEl(null)
   }
 
   const handleOnClickAnchor = spreadsheet => e => {
@@ -125,6 +172,17 @@ const SavedSpreadsheets = () => {
     fontSize: theme.typography.table.header,
     fontWeight: 'bold'
   }
+
+  useEffect(() => {
+    // Has to be in useEffect due to re-render
+    if (inputRef.current && isSelectedInEditMode) {
+      inputRef.current.focus()
+    }
+  }, [isSelectedInEditMode, inputRef])
+
+  useEffect(() => {
+    fetchNewSpreadsheets()
+  }, [fetchNewSpreadsheets])
 
   return (
     <>
@@ -190,50 +248,71 @@ const SavedSpreadsheets = () => {
                       new Date(b.lastModifiedTimestamp) -
                       new Date(a.lastModifiedTimestamp)
                   )
-                  .map(spreadsheet => (
-                    <TableRow
-                      key={spreadsheet._id}
-                      hover
-                      onClick={() => handleRowClick(spreadsheet)}
-                    >
-                      <TableCell component='th' scope='row'>
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            alignItems: 'center'
-                          }}
-                        >
-                          <ListItemIcon>
-                            <GridOnIcon />
-                          </ListItemIcon>
-                          {spreadsheet.sheetData.name}
-                        </Box>
-                      </TableCell>
-                      <TableCell align='right'>
-                        {dayjs(spreadsheet.lastModifiedTimestamp).format(
-                          'DD MMM YY HH:mm'
-                        )}
-                      </TableCell>
-                      <TableCell align='right'>
-                        <IconButton
-                          color='primary'
-                          aria-haspopup='true'
-                          aria-expanded={open ? 'true' : undefined}
-                          variant='contained'
-                          onClick={handleOnClickAnchor(spreadsheet)}
-                        >
-                          <MoreHorizIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  .map(spreadsheet => {
+                    const isInEditMode =
+                      currentEditableSpreadsheetId === spreadsheet?._id
+                    return (
+                      <TableRow
+                        key={spreadsheet._id}
+                        hover
+                        onClick={() => {
+                          if (!isInEditMode) {
+                            goToSpreadsheet(spreadsheet)
+                          }
+                        }}
+                      >
+                        <TableCell component='th' scope='row'>
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              alignItems: 'center'
+                            }}
+                          >
+                            <ListItemIcon>
+                              <GridOnIcon />
+                            </ListItemIcon>
+                            {isInEditMode ? (
+                              <FormControl focused={isInEditMode}>
+                                <Input
+                                  inputRef={inputRef}
+                                  defaultValue={spreadsheet.sheetData.name}
+                                  onChange={handleOnChangeEditable}
+                                  onBlur={handleOnBlurSpreadsheet(spreadsheet)}
+                                  onKeyDown={handleEditedTextOnEnter(
+                                    spreadsheet
+                                  )}
+                                />
+                              </FormControl>
+                            ) : (
+                              <Box sx={{ overflow: 'hidden' }}>
+                                {spreadsheet.sheetData.name}
+                              </Box>
+                            )}
+                          </Box>
+                        </TableCell>
+                        <TableCell align='right'>
+                          {dayjs(spreadsheet.lastModifiedTimestamp).format(
+                            'DD MMM YY HH:mm'
+                          )}
+                        </TableCell>
+                        <TableCell align='right'>
+                          <IconButton
+                            color='primary'
+                            aria-haspopup='true'
+                            aria-expanded={open ? 'true' : undefined}
+                            variant='contained'
+                            onClick={handleOnClickAnchor(spreadsheet)}
+                          >
+                            <MoreHorizIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
               </TableBody>
             </Table>
           </TableContainer>
           <StyledMenu
-            MenuListProps={{
-              'aria-labelledby': 'demo-customized-button'
-            }}
             anchorEl={anchorEl}
             open={open}
             onClose={handleOnClickAnchorClose}
@@ -245,6 +324,10 @@ const SavedSpreadsheets = () => {
             >
               <DriveFileMoveIcon />
               Move to
+            </MenuItem>
+            <MenuItem disableRipple onClick={handleClickEditSpreadsheet}>
+              <EditIcon />
+              Edit
             </MenuItem>
             <MenuItem disableRipple onClick={handleOnClickDelete}>
               <DeleteIcon />
