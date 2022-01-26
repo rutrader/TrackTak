@@ -3195,7 +3195,8 @@
                   "13": 76
               },
               "colSizes": {
-                  "0": 196
+                  "0": 196,
+                  "7": 76
               },
               "mergedCells": {
                   "28_3": {
@@ -16130,15 +16131,6 @@
                       "textFormatPattern": "0.00%"
                   }
               },
-              "5_2": {
-                  "cellValue": "Operating Leases Value"
-              },
-              "5_3": {
-                  "cellValue": "='Helper Data'!$B$10",
-                  "metadata": {
-                      "textFormatPattern": ""
-                  }
-              },
               "6_0": {
                   "cellValue": "Equity Risk Premium"
               },
@@ -16303,7 +16295,7 @@
                   }
               },
               "15_4": {
-                  "cellValue": "=D11+D12+D6",
+                  "cellValue": "=D11+D12",
                   "metadata": {
                       "textFormatPattern": "=['Helper Data'!D14]#,##0.##"
                   }
