@@ -13,19 +13,28 @@ import {
 import getToolbarActionGroups from './getToolbarActionGroups'
 import './FinancialSpreadsheet.css'
 import { Box } from '@mui/material'
-import plugins from './plugins'
 import { config, namedExpressions } from './hyperformulaConfig'
-import * as metaPlugin from './plugins/meta/plugin'
 import tracktakFormulaMetadataJSON from '../tracktakFormulaMetadata.json'
+import * as stockPlugin from './plugins/stock/plugin'
+import * as bondPlugin from './plugins/bond/plugin'
+import * as fxPlugin from './plugins/fx/plugin'
+import * as marketPlugin from './plugins/market/plugin'
+import * as helperPlugin from './plugins/helpers/plugin'
 
-plugins.forEach(value => {
-  HyperFormula.registerFunctionPlugin(value.Plugin, value.translations)
-})
+const buildPowersheet = (sheets, plugins) => {
+  const sheetsMetadata = {}
 
-const buildPowersheet = serializedSheets => {
-  const sheets = mapFromSerializedSheetsToSheets(serializedSheets)
+  for (const sheetName in sheets) {
+    const { sheetMetadata } = sheets[sheetName]
+
+    sheetsMetadata[sheetName] = {
+      cells: [],
+      sheetMetadata
+    }
+  }
+
   const [hyperformula] = HyperFormula.buildFromSheets(
-    sheets,
+    sheetsMetadata,
     config,
     namedExpressions
   )
@@ -66,16 +75,62 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
   const name = spreadsheetData?.sheetData.name
 
   useEffect(() => {
-    const metaPluginInstance = metaPlugin.getPlugin(
-      new Date(spreadsheetData.createdTimestamp)
+    const getApiFrozenTimestamp = () => {
+      if (!spreadsheetData.sheetData.data.data?.apiFrozenTimestamp) {
+        return undefined
+      }
+
+      return spreadsheet.parseDynamicPattern(
+        spreadsheetData.sheetData.data.data.apiFrozenTimestamp
+      )
+    }
+
+    const plugins = [
+      {
+        instance: stockPlugin.getPlugin(getApiFrozenTimestamp),
+        translations: stockPlugin.translations
+      },
+      {
+        instance: bondPlugin.getPlugin(getApiFrozenTimestamp),
+        translations: bondPlugin.translations
+      },
+      {
+        instance: fxPlugin.getPlugin(getApiFrozenTimestamp),
+        translations: fxPlugin.translations
+      },
+      {
+        instance: marketPlugin.getPlugin(getApiFrozenTimestamp),
+        translations: marketPlugin.translations
+      },
+      {
+        instance: helperPlugin.getPlugin(
+          new Date(spreadsheetData.createdTimestamp)
+        ),
+        translations: helperPlugin.translations
+      }
+    ]
+
+    plugins.forEach(({ instance, translations }) => {
+      HyperFormula.registerFunctionPlugin(instance, translations)
+    })
+
+    const sheets = mapFromSerializedSheetsToSheets(
+      spreadsheetData.sheetData.data.sheets
     )
 
-    HyperFormula.registerFunctionPlugin(
-      metaPluginInstance,
-      metaPlugin.translations
-    )
+    const spreadsheet = buildPowersheet(sheets, plugins)
 
-    const spreadsheet = buildPowersheet(spreadsheetData.sheetData.data.sheets)
+    spreadsheet.hyperformula.batch(() => {
+      for (const sheetName in sheets) {
+        const sheet = sheets[sheetName]
+        const sheetId = spreadsheet.hyperformula.getSheetId(sheetName)
+
+        spreadsheet.hyperformula.setSheetContent(sheetId, sheet.cells)
+      }
+    })
+
+    spreadsheet.hyperformula.clearUndoStack()
+    spreadsheet.render()
 
     setSpreadsheet(spreadsheet)
 
@@ -119,7 +174,9 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
         clickEventListener
       )
 
-      HyperFormula.unregisterFunctionPlugin(metaPluginInstance)
+      plugins.forEach(({ instance }) => {
+        HyperFormula.unregisterFunctionPlugin(instance)
+      })
 
       spreadsheet.destroy()
     }

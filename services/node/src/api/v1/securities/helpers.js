@@ -34,9 +34,8 @@ export const parseFiscalDateFromRange = fiscalDateRange => {
   return [fiscalDateRange]
 }
 
-export const getFiscalDateRangeFilterPredicate = fiscalDateRange => {
-  const [fiscalDate, operator] = parseFiscalDateFromRange(fiscalDateRange)
-  const fiscalDateRangeFilterPredicate = ({ date }, i, arr) => {
+export const getFiscalDateRangeFilterPredicate = (fiscalDate, operator) => {
+  const fiscalDateRangeFilterPredicate = ({ date }, _, arr) => {
     // Handles cases such as ttm dates for financials
     const realDate = dayjs(date).isValid() ? date : arr[0].date
 
@@ -60,7 +59,9 @@ export const getFiscalDateRangeFilterPredicate = fiscalDateRange => {
       return dayjs(realDate).isBetween(fiscalDate[0], fiscalDate[1])
     }
 
-    return dayjs(realDate).isSame(fiscalDate, 'day')
+    // Get before date instead of same date as we match the nearest
+    // available one
+    return dayjs(realDate).subtract(1, 'day').isBefore(fiscalDate)
   }
 
   return fiscalDateRangeFilterPredicate

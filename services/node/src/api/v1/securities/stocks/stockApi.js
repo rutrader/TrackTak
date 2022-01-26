@@ -1,7 +1,10 @@
 import { convertOutstandingSharesObjects } from '../../../../shared/convertFundamentalsFromAPI'
 import alterFromToQuery from '../alterFromToQuery'
 import { isNil } from 'lodash-es'
-import { getFiscalDateRangeFilterPredicate } from '../helpers'
+import {
+  getFiscalDateRangeFilterPredicate,
+  parseFiscalDateFromRange
+} from '../helpers'
 import getEODQuery from './getEODQuery'
 import { getEOD, getFundamentals } from '../eodHistoricalData/eodAPI'
 import convertEODFromAPI, {
@@ -141,9 +144,12 @@ export const getFinancials = async (ticker, params) => {
   }
 
   if (fiscalDateRange) {
-    const fiscalDateRangeFilterPredicate =
-      getFiscalDateRangeFilterPredicate(fiscalDateRange)
-    const filteredStatements = statements.filter(fiscalDateRangeFilterPredicate)
+    const [fiscalDate, operator] = parseFiscalDateFromRange(fiscalDateRange)
+    const fiscalDateRangeFilterPredicate = getFiscalDateRangeFilterPredicate(
+      fiscalDate,
+      operator
+    )
+    let filteredStatements = statements.filter(fiscalDateRangeFilterPredicate)
 
     if (formattedGranularity !== 'quarterly' && filteredStatements.length > 0) {
       if (isInUS) {
@@ -158,6 +164,10 @@ export const getFinancials = async (ticker, params) => {
           getObjWithTTMDate(financials[statementKey].yearly[0])
         )
       }
+    }
+
+    if (operator === undefined) {
+      filteredStatements = [filteredStatements[0]]
     }
 
     if (isStatement) {
@@ -251,16 +261,23 @@ export const getRatios = async (ticker, params) => {
     formattedGranularity === 'latest' ? [] : ratios[formattedGranularity]
 
   if (fiscalDateRange) {
-    const fiscalDateRangeFilterPredicate =
-      getFiscalDateRangeFilterPredicate(fiscalDateRange)
-    const filteredRatios = ratioValues.filter(fiscalDateRangeFilterPredicate)
+    const [fiscalDate, operator] = parseFiscalDateFromRange(fiscalDateRange)
+    const fiscalDateRangeFilterPredicate = getFiscalDateRangeFilterPredicate(
+      fiscalDate,
+      operator
+    )
+    let filteredRatios = ratioValues.filter(fiscalDateRangeFilterPredicate)
 
-    if (formattedGranularity !== 'quarterly') {
+    if (formattedGranularity !== 'quarterly' && filteredRatios.length > 0) {
       if (isInUS) {
         filteredRatios.unshift(getObjWithLatestDate(ratios.quarterly[0]))
       } else {
         filteredRatios.unshift(getObjWithLatestDate(ratios.yearly[0]))
       }
+    }
+
+    if (operator === undefined) {
+      filteredRatios = [filteredRatios[0]]
     }
 
     if (!field) {
@@ -313,16 +330,24 @@ export const getOutstandingShares = async (ticker, params) => {
       : outstandingShares[formattedGranularity]
 
   if (fiscalDateRange) {
-    const fiscalDateRangeFilterPredicate =
-      getFiscalDateRangeFilterPredicate(fiscalDateRange)
-    const filteredShareValues = shareValues.filter(
-      fiscalDateRangeFilterPredicate
+    const [fiscalDate, operator] = parseFiscalDateFromRange(fiscalDateRange)
+    const fiscalDateRangeFilterPredicate = getFiscalDateRangeFilterPredicate(
+      fiscalDate,
+      operator
     )
+    let filteredShareValues = shareValues.filter(fiscalDateRangeFilterPredicate)
 
-    if (formattedGranularity !== 'quarterly') {
+    if (
+      formattedGranularity !== 'quarterly' &&
+      filteredShareValues.length > 0
+    ) {
       filteredShareValues.unshift(
         getObjWithLatestDate(outstandingShares.quarterly[0])
       )
+    }
+
+    if (operator === undefined) {
+      filteredShareValues = [filteredShareValues[0]]
     }
 
     if (!field) {
