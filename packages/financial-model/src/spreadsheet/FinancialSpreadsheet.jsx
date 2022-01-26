@@ -5,7 +5,6 @@ import {
   Spreadsheet,
   Toolbar,
   FormulaBar,
-  Exporter,
   BottomBar,
   FunctionHelper,
   mapFromSerializedSheetsToSheets
@@ -21,7 +20,7 @@ import * as fxPlugin from './plugins/fx/plugin'
 import * as marketPlugin from './plugins/market/plugin'
 import * as helperPlugin from './plugins/helpers/plugin'
 
-const buildPowersheet = (sheets, plugins) => {
+const buildPowersheet = sheets => {
   const sheetsMetadata = {}
 
   for (const sheetName in sheets) {
@@ -42,14 +41,12 @@ const buildPowersheet = (sheets, plugins) => {
   const functionHelper = new FunctionHelper()
   const toolbar = new Toolbar()
   const formulaBar = new FormulaBar()
-  const exporter = new Exporter(plugins)
   const bottomBar = new BottomBar()
 
   const spreadsheet = new Spreadsheet({
     hyperformula,
     toolbar,
     formulaBar,
-    exporter,
     bottomBar,
     functionHelper
   })
@@ -118,7 +115,7 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
       spreadsheetData.sheetData.data.sheets
     )
 
-    const spreadsheet = buildPowersheet(sheets, plugins)
+    const spreadsheet = buildPowersheet(sheets)
 
     spreadsheet.hyperformula.batch(() => {
       for (const sheetName in sheets) {
@@ -206,7 +203,11 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
 
   useEffect(() => {
     const options = {
-      exportSpreadsheetName: `${name}.xlsx`
+      textPatternFormats: {
+        dollar: '$#,##0.##',
+        euro: '€#,##0.##',
+        pound: '£#,##0.##'
+      }
     }
 
     spreadsheet?.setOptions(options)
