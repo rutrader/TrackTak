@@ -45,9 +45,11 @@ const Dashboard = () => {
     const res = await api.createFolder('New Folder', accessToken)
     const id = res.data.folder._id
 
-    setCurrentEditableFolderId(id)
+    navigate(`/${id}`)
 
     await fetchFolders()
+
+    setCurrentEditableFolderId(id)
   }
 
   const handleClickDelete = async id => {
@@ -55,6 +57,9 @@ const Dashboard = () => {
     const accessToken = token?.jwtToken
 
     await api.deleteFolder(id, accessToken)
+
+    navigate(`/${folders[0]._id}`)
+
     await fetchFolders()
   }
 
