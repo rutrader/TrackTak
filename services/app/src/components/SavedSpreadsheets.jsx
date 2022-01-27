@@ -73,7 +73,7 @@ const SavedSpreadsheets = () => {
         ...spreadsheet,
         sheetData: {
           ...spreadsheet.sheetData,
-          name
+          name: name ?? spreadsheet.sheetData.name
         }
       },
       accessToken
@@ -81,6 +81,7 @@ const SavedSpreadsheets = () => {
     await fetchNewSpreadsheets()
 
     setCurrentEditableSpreadsheetId(null)
+    setName(null)
   }
 
   const handleOnChangeEditable = e => {
