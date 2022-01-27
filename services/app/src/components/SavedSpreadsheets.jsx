@@ -208,7 +208,7 @@ const SavedSpreadsheets = () => {
         <>
           <IconButton
             component={Link}
-            to='/templates'
+            to={`/${folderId}/templates`}
             sx={{
               position: 'absolute',
               right: 0,
