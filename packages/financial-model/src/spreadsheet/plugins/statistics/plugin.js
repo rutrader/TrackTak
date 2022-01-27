@@ -9,7 +9,7 @@ import {
   uniformInvDistFormula
 } from '../../../statsFormulas'
 import Rand, { PRNG } from 'rand-seed'
-import { FunctionPlugin } from '@tracktak/hyperformula'
+import { FunctionPlugin, HyperFormula } from '@tracktak/hyperformula'
 
 const rand = new Rand(undefined, PRNG.mulberry32)
 
@@ -144,3 +144,5 @@ export class Plugin extends FunctionPlugin {
 }
 
 Plugin.implementedFunctions = implementedFunctions
+
+HyperFormula.registerFunctionPlugin(Plugin, translations)

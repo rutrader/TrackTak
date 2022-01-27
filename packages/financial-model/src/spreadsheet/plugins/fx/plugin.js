@@ -37,74 +37,75 @@ export const translations = {
   }
 }
 
-export class Plugin extends FunctionPlugin {
-  getFiatExchangeRate(ast, state) {
-    const metadata = this.metadata('FX.GET_FIAT_EXCHANGE_RATE')
+export const getPlugin = getApiFrozenDate => {
+  class Plugin extends FunctionPlugin {
+    getFiatExchangeRate(ast, state) {
+      const metadata = this.metadata('FX.GET_FIAT_EXCHANGE_RATE')
 
-    return this.runAsyncFunction(
-      ast.args,
-      state,
-      metadata,
-      async (
-        baseCurrency,
-        quoteCurrency,
-        field,
-        granularity,
-        fiscalDateRange
-      ) => {
-        const isBaseCurrencyValid = !!currencyCodes.find(
-          x => x === baseCurrency
-        )
-        const isQuoteCurrencyValid = !!currencyCodes.find(
-          x => x === quoteCurrency
-        )
-
-        if (!isBaseCurrencyValid) {
-          return baseCurrencyCellError
-        }
-
-        if (!isQuoteCurrencyValid) {
-          return quoteCurrencyCellError
-        }
-
-        const error = validateEODParamsHasError(
+      return this.runAsyncFunction(
+        ast.args,
+        state,
+        metadata,
+        async (
+          baseCurrency,
+          quoteCurrency,
           field,
           granularity,
           fiscalDateRange
-        )
+        ) => {
+          const isBaseCurrencyValid = !!currencyCodes.find(
+            x => x === baseCurrency
+          )
+          const isQuoteCurrencyValid = !!currencyCodes.find(
+            x => x === quoteCurrency
+          )
+          const date = fiscalDateRange ?? getApiFrozenDate()
 
-        if (error) {
-          return error
-        }
-
-        const { data } = await api.getExchangeRate(
-          baseCurrency,
-          quoteCurrency,
-          {
-            field,
-            granularity,
-            fiscalDateRange
+          if (!isBaseCurrencyValid) {
+            return baseCurrencyCellError
           }
-        )
 
-        const eodKeys = getEodKeys('number')
-        const value = mapValuesToArrayOfArrays(
-          convertEODNumbersToFormattedNumbers(
-            eodKeys,
-            data.value,
-            quoteCurrency
-          ),
-          true
-        )
+          if (!isQuoteCurrencyValid) {
+            return quoteCurrencyCellError
+          }
 
-        return getPluginAsyncValue(value)
-      }
-    )
+          const error = validateEODParamsHasError(field, granularity, date)
+
+          if (error) {
+            return error
+          }
+
+          const { data } = await api.getExchangeRate(
+            baseCurrency,
+            quoteCurrency,
+            {
+              field,
+              granularity,
+              fiscalDateRange: date
+            }
+          )
+
+          const eodKeys = getEodKeys('number')
+          const value = mapValuesToArrayOfArrays(
+            convertEODNumbersToFormattedNumbers(
+              eodKeys,
+              data.value,
+              quoteCurrency
+            ),
+            true
+          )
+
+          return getPluginAsyncValue(value)
+        }
+      )
+    }
+
+    fxSize(ast, state) {
+      return inferSizeMethod(ast, state)
+    }
   }
 
-  fxSize(ast, state) {
-    return inferSizeMethod(ast, state)
-  }
+  Plugin.implementedFunctions = implementedFunctions
+
+  return Plugin
 }
-
-Plugin.implementedFunctions = implementedFunctions
