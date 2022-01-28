@@ -90,18 +90,26 @@ const writeIndustryAverages = () => {
       return -1
     }
 
-    let localeCompareValue = Infinity
+    let currentAIndustry = a.industry[0]
+    let currentBIndustry = b.industry[0]
 
-    a.industry.forEach(aIndustry => {
-      b.industry.forEach(bIndustry => {
-        localeCompareValue = Math.min(
-          localeCompareValue,
-          aIndustry.localeCompare(bIndustry)
-        )
-      })
+    a.industry.forEach(industry => {
+      const value = currentAIndustry.localeCompare(industry)
+
+      if (value > 0) {
+        currentAIndustry = industry
+      }
     })
 
-    return localeCompareValue
+    b.industry.forEach(industry => {
+      const value = currentAIndustry.localeCompare(industry)
+
+      if (value > 0) {
+        currentBIndustry = industry
+      }
+    })
+
+    return currentAIndustry.localeCompare(currentBIndustry)
   }
 
   industryAveragesUS.sort(sort)
