@@ -3,7 +3,7 @@
     "industry": [
       "Accident & Health Insurance",
       "Insurance - Life",
-      "Insurance�Life",
+      "Insurance-Life",
       "Life Insurance"
     ],
     "gicSubIndustry": ["Life & Health Insurance"],
@@ -363,8 +363,8 @@
       "Software & Services",
       "Software - Application",
       "Software - Infrastructure",
-      "Software�Application",
-      "Software�Infrastructure",
+      "Software-Application",
+      "Software-Infrastructure",
       "Technical & System Software"
     ],
     "gicSubIndustry": [
@@ -579,7 +579,7 @@
       "Banks - Regional - Latin America",
       "Banks - Regional - US",
       "Banks - Regional",
-      "Banks�Regional",
+      "Banks-Regional",
       "Foreign Regional Banks",
       "Regional - Mid-Atlantic Banks",
       "Regional - Midwest Banks",
@@ -618,7 +618,7 @@
   },
   {
     "industry": [
-      "Banks�Diversified",
+      "Banks-Diversified",
       "Conglomerates",
       "Diversified Industrials",
       "Media - Diversified",
@@ -697,8 +697,8 @@
       "Beverages - Brewers",
       "Beverages - Wineries & Distilleries",
       "Beverages - Wineries & Distillers",
-      "Beverages�Brewers",
-      "Beverages�Wineries & Distilleries"
+      "Beverages-Brewers",
+      "Beverages-Wineries & Distilleries"
     ],
     "gicSubIndustry": ["Brewers", "Distillers & Vintners"],
     "numberOfFirms": 223,
@@ -731,7 +731,7 @@
   {
     "industry": [
       "Beverages - Soft Drinks",
-      "Beverages�Non-Alcoholic",
+      "Beverages-Non-Alcoholic",
       "Beverages - Non-Alcoholic"
     ],
     "gicSubIndustry": ["Soft Drinks"],
@@ -1655,10 +1655,10 @@
       "Utilities - Independent Power Producers",
       "Utilities - Regulated Electric",
       "Utilities - Regulated Gas",
-      "Utilities�Diversified",
-      "Utilities�Independent Power Producers",
-      "Utilities�Regulated Electric",
-      "Utilities�Regulated Gas"
+      "Utilities-Diversified",
+      "Utilities-Independent Power Producers",
+      "Utilities-Regulated Electric",
+      "Utilities-Regulated Gas"
     ],
     "gicSubIndustry": [
       "Electric Utilities",
@@ -1697,7 +1697,7 @@
       "Drug Delivery",
       "Drug Manufacturers - Other",
       "Drug Manufacturers - General",
-      "Drug Manufacturers�General",
+      "Drug Manufacturers-General",
       "Drug Related Products",
       "Pharmaceuticals, Biotechnology & Life Sciences"
     ],
@@ -1733,7 +1733,7 @@
     "industry": [
       "Drug Manufacturers - Major",
       "Drug Manufacturers - Specialty & Generic",
-      "Drug Manufacturers�Specialty & Generic"
+      "Drug Manufacturers-Specialty & Generic"
     ],
     "gicSubIndustry": ["Drug Retail", "Biotechnology"],
     "numberOfFirms": 1139,
@@ -2239,8 +2239,8 @@
       "Insurance - Diversified",
       "Insurance - Specialty",
       "Insurance Brokers",
-      "Insurance�Diversified",
-      "Insurance�Specialty",
+      "Insurance-Diversified",
+      "Insurance-Specialty",
       "Surety & Title Insurance"
     ],
     "gicSubIndustry": ["Insurance Brokers", "Multi-line Insurance"],
@@ -2274,7 +2274,7 @@
   {
     "industry": [
       "Insurance - Property & Casualty",
-      "Insurance�Property & Casualty",
+      "Insurance-Property & Casualty",
       "Property & Casualty Insurance"
     ],
     "gicSubIndustry": ["Property & Casualty Insurance"],
@@ -2309,8 +2309,7 @@
     "industry": [
       "Insurance (General)",
       "Insurance - Reinsurance",
-      "Insurance-Reinsurance",
-      "Insurance�Reinsurance"
+      "Insurance-Reinsurance"
     ],
     "gicSubIndustry": ["Reinsurance"],
     "numberOfFirms": 37,
@@ -2787,7 +2786,7 @@
     "industry": [
       "Real Estate",
       "Real Estate - General",
-      "Real Estate�Diversified",
+      "Real Estate-Diversified",
       "Real Estate - Diversified"
     ],
     "gicSubIndustry": ["Diversified Real Estate Activities"],
@@ -2821,7 +2820,7 @@
   {
     "industry": [
       "Real Estate Development",
-      "Real Estate�Development",
+      "Real Estate-Development",
       "Real Estate - Development"
     ],
     "gicSubIndustry": ["Real Estate Development"],
@@ -2862,15 +2861,15 @@
       "REIT - Office",
       "REIT - Residential",
       "REIT - Retail",
-      "REIT�Diversified",
-      "REIT�Healthcare Facilities",
-      "REIT�Hotel & Motel",
-      "REIT�Industrial",
-      "REIT�Mortgage",
-      "REIT�Office",
-      "REIT�Residential",
-      "REIT�Retail",
-      "REIT�Specialty",
+      "REIT-Diversified",
+      "REIT-Healthcare Facilities",
+      "REIT-Hotel & Motel",
+      "REIT-Industrial",
+      "REIT-Mortgage",
+      "REIT-Office",
+      "REIT-Residential",
+      "REIT-Retail",
+      "REIT-Specialty",
       "REIT - Specialty",
       "REIT - Mortgage"
     ],
@@ -3069,7 +3068,7 @@
     "preTaxOperatingMarginLeaseAndR&DAdjusted": "11.36%"
   },
   {
-    "industry": ["Solar", "Utilities - Renewable", "Utilities�Renewable"],
+    "industry": ["Solar", "Utilities - Renewable", "Utilities-Renewable"],
     "gicSubIndustry": ["Renewable Electricity"],
     "numberOfFirms": 226,
     "annualAverageCAGRLastFiveYears": "12.06%",
@@ -3251,7 +3250,7 @@
   {
     "industry": [
       "Utilities - Regulated Water",
-      "Utilities�Regulated Water",
+      "Utilities-Regulated Water",
       "Water Utilities"
     ],
     "gicSubIndustry": ["Water Utilities"],
