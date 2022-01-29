@@ -82,9 +82,16 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
       )
     }
 
+    const getStockSearchInput = () => {
+      return spreadsheet.sheets.cellEditor.currentCellText
+    }
+
     const plugins = [
       {
-        instance: stockPlugin.getPlugin(getApiFrozenTimestamp),
+        instance: stockPlugin.getPlugin(
+          getApiFrozenTimestamp,
+          getStockSearchInput
+        ),
         translations: stockPlugin.translations
       },
       {
