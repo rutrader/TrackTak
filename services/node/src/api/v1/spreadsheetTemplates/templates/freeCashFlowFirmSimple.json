@@ -42,8 +42,7 @@
               "type": "autocomplete",
               "cellContent": "=STOCK.SEARCH()"
             },
-            "backgroundColor": "#8ff1d2",
-            "comment": "Example: \"AAPL\", \"BP.LSE\", \"KME.AU\" etc. For non-us companies you must supply the exchange as well. See the 'exchanges' section in the helper panel (? icon in the toolbar) to the right for the list of valid exchanges that can be given here."
+            "backgroundColor": "#8ff1d2"
           }
         },
         "2_2": {
