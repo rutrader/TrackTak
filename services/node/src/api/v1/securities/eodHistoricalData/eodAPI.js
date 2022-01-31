@@ -8,7 +8,7 @@ import {
 } from '../../../../shared/constants'
 import convertEODResponseToArray from '../../../../shared/convertEODResponseToArray'
 import camelCaseObjects from '../../../../shared/camelCaseObjects'
-import convertPenceToGBPIfNeeded from '../../../../shared/convertPenceToGBPIfNeeded'
+import convertCurrencies from '../../../../shared/convertCurrencies'
 
 export const getFundamentals = async (ticker, query) => {
   const data = await sendReqOrGetCachedData(
@@ -22,7 +22,7 @@ export const getFundamentals = async (ticker, query) => {
 
       const convertedFundamentals = convertFundamentalsFromAPI(ticker, data)
 
-      return convertPenceToGBPIfNeeded(convertedFundamentals)
+      return convertCurrencies(convertedFundamentals)
     },
     'fundamentals',
     { ticker, query }
