@@ -117,7 +117,7 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
       }
     ]
 
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.ENABLE_DATA_ANALYSIS === 'true') {
       plugins.push({
         instance: dataAnalysisPlugin.getPlugin(getPowersheet),
         translations: dataAnalysisPlugin.translations
