@@ -1096,31 +1096,31 @@
         "values": [
           {
             "syntaxName": "intersection_point",
-            "description": "The point of intersection of the two base input assumptions that links the desired output."
+            "description": "The outcome value cell reference. We can determine how changes in variables affect the outcome value (intersection_point), for example the estimated value of a stock."
           },
           {
             "syntaxName": "x_var",
-            "description": "1st base input assumption."
+            "description": "1st input variable cell reference. Example: Cost of Capital (WACC)."
           },
           {
             "syntaxName": "y_var",
-            "description": "2nd base input assumption."
+            "description": "2nd input variable cell reference. Example: Growth Rates."
           },
           {
             "syntaxName": "xMin",
-            "description": "Min of the 1st base input assumption."
+            "description": "Min of the 1st input variable. Example: min of WACC is 2%."
           },
           {
             "syntaxName": "xMax",
-            "description": "Max of the 1st base input assumption."
+            "description": "Max of the 1st input variable. Example: max of WACC is 10%."
           },
           {
             "syntaxName": "yMin",
-            "description": "Min of the 2nd base input assumption."
+            "description": "Min of the 2nd input variable. Example: min of growth rate is 1%."
           },
           {
             "syntaxName": "yMax",
-            "description": "Max of the 2nd base input assumption."
+            "description": "Max of the 2nd input variable. Example: max of growth rate is 6%."
           }
         ]
       }
@@ -1593,9 +1593,7 @@
     "header": "CONVERT_CURRENCY_CODE_TO_SYMBOL",
     "headerDescription": "Converts a currency code to it's matching symbol.",
     "type": "Helpers",
-    "parameters": [
-      "currencyCode"
-    ],
+    "parameters": ["currencyCode"],
     "codeSyntaxUsage": ["=CONVERT_CURRENCY_CODE_TO_SYMBOL(currencyCode)"],
     "codeSyntaxElements": [
       {
