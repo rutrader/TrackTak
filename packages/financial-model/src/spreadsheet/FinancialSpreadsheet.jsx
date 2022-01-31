@@ -110,16 +110,19 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
         translations: marketPlugin.translations
       },
       {
-        instance: dataAnalysisPlugin.getPlugin(getPowersheet),
-        translations: dataAnalysisPlugin.translations
-      },
-      {
         instance: helperPlugin.getPlugin(
           new Date(spreadsheetData.createdTimestamp)
         ),
         translations: helperPlugin.translations
       }
     ]
+
+    if (process.env.NODE_ENV === 'development') {
+      plugins.push({
+        instance: dataAnalysisPlugin.getPlugin(getPowersheet),
+        translations: dataAnalysisPlugin.translations
+      })
+    }
 
     plugins.forEach(({ instance, translations }) => {
       HyperFormula.registerFunctionPlugin(instance, translations)
