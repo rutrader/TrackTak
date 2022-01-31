@@ -19,6 +19,7 @@ import * as bondPlugin from './plugins/bond/plugin'
 import * as fxPlugin from './plugins/fx/plugin'
 import * as marketPlugin from './plugins/market/plugin'
 import * as helperPlugin from './plugins/helpers/plugin'
+import * as dataAnalysisPlugin from './plugins/dataAnalysis/plugin'
 
 const buildPowersheet = sheets => {
   const sheetsMetadata = {}
@@ -86,6 +87,8 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
       return spreadsheet.sheets.cellEditor.currentCellText
     }
 
+    const getPowersheet = () => spreadsheet
+
     const plugins = [
       {
         instance: stockPlugin.getPlugin(
@@ -105,6 +108,10 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
       {
         instance: marketPlugin.getPlugin(getApiFrozenTimestamp),
         translations: marketPlugin.translations
+      },
+      {
+        instance: dataAnalysisPlugin.getPlugin(getPowersheet),
+        translations: dataAnalysisPlugin.translations
       },
       {
         instance: helperPlugin.getPlugin(
