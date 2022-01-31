@@ -36,7 +36,7 @@
                   "cellValue": "Stock Ticker To Value"
               },
               "2_1": {
-                  "cellValue": "AGFX.LSE",
+                  "cellValue": null,
                   "metadata": {
                       "cellDataType": {
                           "type": "autocomplete",
@@ -49,7 +49,7 @@
                   "cellValue": "CAGR in Years 1-5"
               },
               "2_4": {
-                  "cellValue": 0.15,
+                  "cellValue": null,
                   "metadata": {
                       "backgroundColor": "#8ff1d2",
                       "comment": "Compound Annual Growth Rate - look at: a. Revenue growth in your company in recent years b. Your company's revenues, relative to the overall market size and larger players in the sector.",
@@ -60,7 +60,7 @@
                   "cellValue": "Year of Convergence"
               },
               "2_7": {
-                  "cellValue": "2",
+                  "cellValue": null,
                   "metadata": {
                       "backgroundColor": "#8ff1d2",
                       "comment": "The forecasted number of years until the company’s current Operating Margin will converge on the target Operating Margin. For example, if today's year is 2021 and the year of convergence is 5 then it will converge in year 2026."
@@ -70,7 +70,7 @@
                   "cellValue": "Operating Target Margin in Year 10"
               },
               "3_4": {
-                  "cellValue": 0.11,
+                  "cellValue": null,
                   "metadata": {
                       "backgroundColor": "#8ff1d2",
                       "comment": "Start by looking at your company's current pre-tax operating margin but also look at the average for your industry.",
@@ -81,7 +81,7 @@
                   "cellValue": "Sales to Capital Ratio"
               },
               "3_7": {
-                  "cellValue": "2",
+                  "cellValue": "=B22",
                   "metadata": {
                       "backgroundColor": "#8ff1d2",
                       "comment": "The efficiency of how much the company has to reinvest the business to grow. The formula is Revenue / Invested Capital. The higher the number the more efficient the company is. The default value is set to the industry average as this is usually a good starting point. You should also look at the previous years sales to capital ratio's in the above table to fine tune this value. In the DCF output we compute how much the company is going to reinvest to keep the business growing in future years. The higher you set this number, the more efficiently the business is growing and the higher the value of your growth.",
@@ -526,26 +526,31 @@
                   }
               },
               "19_6": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "19_7": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "19_8": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "19_9": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "19_10": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
@@ -668,26 +673,31 @@
                   }
               },
               "20_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "20_7": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "20_8": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "20_9": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "20_10": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -810,26 +820,31 @@
                   }
               },
               "21_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "21_7": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "21_8": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "21_9": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "21_10": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -952,26 +967,31 @@
                   }
               },
               "22_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "22_7": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "22_8": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "22_9": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "22_10": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -1094,26 +1114,31 @@
                   }
               },
               "23_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "23_7": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "23_8": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "23_9": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "23_10": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -1237,26 +1262,31 @@
                   }
               },
               "24_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "24_7": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "24_8": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "24_9": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "24_10": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -1371,26 +1401,31 @@
                   }
               },
               "25_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "25_7": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "25_8": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "25_9": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "25_10": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -1505,26 +1540,31 @@
                   }
               },
               "26_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "26_7": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "26_8": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "26_9": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "26_10": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -3115,13 +3155,6 @@
                       "textFormatPattern": "0.00%"
                   }
               },
-              "50_3": {
-                  "cellValue": "Sensitivity Analysis",
-                  "metadata": {
-                      "bold": true,
-                      "fontSize": 14
-                  }
-              },
               "51_0": {
                   "cellValue": "Terminal Value",
                   "metadata": {
@@ -3133,9 +3166,6 @@
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,##0.##"
                   }
-              },
-              "51_3": {
-                  "cellValue": "=DATA_ANALYSIS.SENSITIVITY_ANALYSIS(B67, E3, E4, 10%, 20%, 7%, 14%)"
               },
               "52_0": {
                   "cellValue": "PV (Terminal Value)",
@@ -3513,10 +3543,6 @@
                   "23_3": {
                       "width": 2,
                       "height": 1
-                  },
-                  "50_3": {
-                      "height": 1,
-                      "width": 2
                   }
               },
               "frozenRow": 3
@@ -3540,31 +3566,37 @@
                   }
               },
               "1_1": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "1_2": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "1_3": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "1_4": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "1_5": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "1_6": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
@@ -3690,36 +3722,43 @@
                   }
               },
               "2_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "2_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "2_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "2_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "2_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "2_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "2_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -3845,36 +3884,43 @@
                   }
               },
               "3_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "3_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "3_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "3_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "3_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "3_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "3_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -4000,36 +4046,43 @@
                   }
               },
               "4_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "4_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "4_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "4_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "4_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "4_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "4_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -4155,36 +4208,43 @@
                   }
               },
               "5_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "5_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "5_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "5_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "5_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "5_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "5_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -4310,36 +4370,43 @@
                   }
               },
               "6_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "6_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "6_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "6_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "6_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "6_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "6_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -4465,36 +4532,43 @@
                   }
               },
               "7_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "7_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "7_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "7_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "7_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "7_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "7_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -4620,36 +4694,43 @@
                   }
               },
               "8_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "8_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "8_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "8_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "8_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "8_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "8_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -4775,36 +4856,43 @@
                   }
               },
               "9_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "9_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "9_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "9_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "9_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "9_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "9_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -4930,36 +5018,43 @@
                   }
               },
               "10_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "10_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "10_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "10_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "10_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "10_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "10_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -5085,36 +5180,43 @@
                   }
               },
               "11_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "11_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "11_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "11_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "11_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "11_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "11_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -5240,36 +5342,43 @@
                   }
               },
               "12_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "12_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "12_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "12_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "12_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "12_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "12_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -5395,36 +5504,43 @@
                   }
               },
               "13_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "13_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "13_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "13_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "13_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "13_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "13_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -5550,36 +5666,43 @@
                   }
               },
               "14_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "14_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "14_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "14_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "14_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "14_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "14_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -5705,36 +5828,43 @@
                   }
               },
               "15_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "15_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "15_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "15_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "15_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "15_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "15_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -5860,36 +5990,43 @@
                   }
               },
               "16_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "16_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "16_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "16_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "16_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "16_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "16_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -6015,36 +6152,43 @@
                   }
               },
               "17_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "17_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "17_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "17_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "17_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "17_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "17_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -6170,36 +6314,43 @@
                   }
               },
               "18_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "18_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "18_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "18_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "18_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "18_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "18_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -6325,36 +6476,43 @@
                   }
               },
               "19_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "19_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "19_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "19_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "19_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "19_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "19_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -6480,36 +6638,43 @@
                   }
               },
               "20_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "20_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "20_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "20_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "20_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "20_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "20_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -6635,36 +6800,43 @@
                   }
               },
               "21_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "21_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "21_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "21_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "21_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "21_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "21_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -6790,36 +6962,43 @@
                   }
               },
               "22_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "22_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "22_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "22_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "22_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "22_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "22_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -6945,36 +7124,43 @@
                   }
               },
               "23_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "23_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "23_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "23_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "23_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "23_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "23_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -7100,36 +7286,43 @@
                   }
               },
               "24_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "24_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "24_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "24_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "24_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "24_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "24_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -7255,36 +7448,43 @@
                   }
               },
               "25_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "25_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "25_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "25_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "25_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "25_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "25_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -7410,36 +7610,43 @@
                   }
               },
               "26_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "26_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "26_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "26_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "26_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "26_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
               },
               "26_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -7565,36 +7772,43 @@
                   }
               },
               "27_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "27_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "27_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "27_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "27_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "27_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "27_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -7720,36 +7934,43 @@
                   }
               },
               "28_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "28_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "28_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "28_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "28_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "28_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "28_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -7875,36 +8096,43 @@
                   }
               },
               "29_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "29_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "29_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "29_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "29_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "29_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "29_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -8030,36 +8258,43 @@
                   }
               },
               "30_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "30_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "30_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "30_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "30_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "30_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "30_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -8185,36 +8420,43 @@
                   }
               },
               "31_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "31_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "31_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "31_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "31_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "31_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "31_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -8340,36 +8582,43 @@
                   }
               },
               "32_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "32_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "#,###.##,,"
                   }
               },
               "32_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "#,###.##,,"
                   }
               },
               "32_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "#,###.##,,"
                   }
               },
               "32_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "#,###.##,,"
                   }
               },
               "32_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "#,###.##,,"
                   }
               },
               "32_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "#,###.##,,"
                   }
@@ -8495,6 +8744,7 @@
                   }
               },
               "33_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
@@ -8515,31 +8765,37 @@
                   }
               },
               "36_1": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "36_2": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "36_3": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "36_4": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "36_5": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "36_6": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
@@ -8665,36 +8921,43 @@
                   }
               },
               "37_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "37_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "37_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "37_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "37_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "37_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "37_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -8820,36 +9083,43 @@
                   }
               },
               "38_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "38_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "38_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "38_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "38_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "38_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "38_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -8975,36 +9245,43 @@
                   }
               },
               "39_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "39_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "39_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "39_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "39_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "39_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "39_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -9130,36 +9407,43 @@
                   }
               },
               "40_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "40_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "40_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "40_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "40_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "40_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "40_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -9285,36 +9569,43 @@
                   }
               },
               "41_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "41_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "41_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "41_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "41_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "41_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "41_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -9440,36 +9731,43 @@
                   }
               },
               "42_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "42_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "42_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "42_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "42_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "42_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "42_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -9595,36 +9893,43 @@
                   }
               },
               "43_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "43_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "43_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "43_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "43_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "43_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "43_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -9750,36 +10055,43 @@
                   }
               },
               "44_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "44_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "44_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "44_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "44_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "44_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "44_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -9905,36 +10217,43 @@
                   }
               },
               "45_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "45_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "45_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "45_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "45_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "45_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "45_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -10060,36 +10379,43 @@
                   }
               },
               "46_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "46_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "46_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "46_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "46_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "46_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "46_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -10215,36 +10541,43 @@
                   }
               },
               "47_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "47_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "47_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "47_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "47_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "47_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "47_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -10370,36 +10703,43 @@
                   }
               },
               "48_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "48_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "48_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "48_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "48_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "48_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "48_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -10525,36 +10865,43 @@
                   }
               },
               "49_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "49_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "49_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "49_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "49_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "49_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "49_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -10680,36 +11027,43 @@
                   }
               },
               "50_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "50_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "50_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "50_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "50_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "50_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "50_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -10835,36 +11189,43 @@
                   }
               },
               "51_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "51_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "51_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "51_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "51_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "51_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "51_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -10990,36 +11351,43 @@
                   }
               },
               "52_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "52_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "52_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "52_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "52_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "52_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "52_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -11145,36 +11513,43 @@
                   }
               },
               "53_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "53_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "53_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "53_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "53_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "53_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "53_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -11300,36 +11675,43 @@
                   }
               },
               "54_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "54_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "54_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "54_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "54_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "54_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "54_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -11455,36 +11837,43 @@
                   }
               },
               "55_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "55_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "55_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "55_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "55_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "55_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "55_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -11610,36 +11999,43 @@
                   }
               },
               "56_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "56_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "56_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "56_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "56_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "56_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "56_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -11765,36 +12161,43 @@
                   }
               },
               "57_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "57_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "57_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "57_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "57_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "57_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "57_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -11920,36 +12323,43 @@
                   }
               },
               "58_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "58_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "58_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "58_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "58_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "58_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "58_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -12075,36 +12485,43 @@
                   }
               },
               "59_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "59_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "59_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "59_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "59_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "59_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "59_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -12230,36 +12647,43 @@
                   }
               },
               "60_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "60_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "60_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "60_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "60_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "60_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "60_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -12385,36 +12809,43 @@
                   }
               },
               "61_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "61_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "61_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "61_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "61_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "61_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "61_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -12540,36 +12971,43 @@
                   }
               },
               "62_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "62_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "62_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "62_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "62_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "62_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "62_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -12695,36 +13133,43 @@
                   }
               },
               "63_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "63_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "63_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "63_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "63_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "63_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "63_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -12850,36 +13295,43 @@
                   }
               },
               "64_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "64_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "64_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "64_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "64_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "64_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "64_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -13005,36 +13457,43 @@
                   }
               },
               "65_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "65_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "65_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "65_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "65_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "65_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "65_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -13160,36 +13619,43 @@
                   }
               },
               "66_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "66_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "66_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "66_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "66_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "66_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "66_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -13315,36 +13781,43 @@
                   }
               },
               "67_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "67_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "67_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "67_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "67_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "67_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "67_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -13470,36 +13943,43 @@
                   }
               },
               "68_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "68_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "68_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "68_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "68_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "68_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "68_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -13625,36 +14105,43 @@
                   }
               },
               "69_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "69_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "69_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "69_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "69_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "69_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "69_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -13780,36 +14267,43 @@
                   }
               },
               "70_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "70_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "70_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "70_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "70_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "70_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "70_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -13935,36 +14429,43 @@
                   }
               },
               "71_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "71_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "71_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "71_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "71_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "71_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "71_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -14090,36 +14591,43 @@
                   }
               },
               "72_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "72_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "72_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "72_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "72_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "72_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "72_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -14245,36 +14753,43 @@
                   }
               },
               "73_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "73_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "73_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "73_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "73_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "73_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "73_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -14400,11 +14915,13 @@
                   }
               },
               "74_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "75_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
@@ -14425,31 +14942,37 @@
                   }
               },
               "78_1": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "78_2": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "78_3": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "78_4": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "78_5": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "78_6": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
@@ -14575,36 +15098,43 @@
                   }
               },
               "79_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "79_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "79_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "79_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "79_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "79_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "79_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -14730,36 +15260,43 @@
                   }
               },
               "80_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "80_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "80_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "80_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "80_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "80_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "80_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -14885,36 +15422,43 @@
                   }
               },
               "81_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "81_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "81_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "81_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "81_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "81_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "81_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -15040,36 +15584,43 @@
                   }
               },
               "82_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "82_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "82_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "82_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "82_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "82_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "82_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -15195,36 +15746,43 @@
                   }
               },
               "83_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "83_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "83_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "83_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "83_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "83_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "83_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -15350,36 +15908,43 @@
                   }
               },
               "84_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "84_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "84_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "84_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "84_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "84_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "84_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -15505,36 +16070,43 @@
                   }
               },
               "85_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "85_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "85_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "85_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "85_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "85_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "85_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -15660,36 +16232,43 @@
                   }
               },
               "86_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "86_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "86_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "86_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "86_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "86_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "86_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -15815,36 +16394,43 @@
                   }
               },
               "87_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "87_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "87_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "87_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "87_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "87_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "87_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -15970,36 +16556,43 @@
                   }
               },
               "88_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "88_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "88_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "88_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "88_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "88_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "88_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -16125,36 +16718,43 @@
                   }
               },
               "89_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "89_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "89_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "89_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "89_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "89_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "89_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -16280,36 +16880,43 @@
                   }
               },
               "90_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "90_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "90_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "90_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "90_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "90_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "90_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -16435,36 +17042,43 @@
                   }
               },
               "91_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "91_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "91_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "91_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "91_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "91_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "91_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -16590,36 +17204,43 @@
                   }
               },
               "92_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "92_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "92_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "92_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "92_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "92_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "92_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -16745,36 +17366,43 @@
                   }
               },
               "93_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "93_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "93_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "93_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "93_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "93_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "93_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -16900,36 +17528,43 @@
                   }
               },
               "94_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "94_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "94_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "94_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "94_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "94_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "94_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -17055,36 +17690,43 @@
                   }
               },
               "95_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "95_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "95_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "95_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "95_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "95_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "95_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -17210,36 +17852,43 @@
                   }
               },
               "96_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "96_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "96_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "96_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "96_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "96_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "96_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -17365,36 +18014,43 @@
                   }
               },
               "97_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "97_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "97_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "97_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "97_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "97_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "97_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -17520,36 +18176,43 @@
                   }
               },
               "98_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "98_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "98_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "98_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "98_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "98_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "98_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -17675,36 +18338,43 @@
                   }
               },
               "99_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "99_1": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "99_2": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "99_3": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "99_4": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "99_5": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
               },
               "99_6": {
+                  "cellValue": null,
                   "metadata": {
                       "textFormatPattern": "=\"['Helper Data'!D14]\"#,###.##,,"
                   }
@@ -17830,11 +18500,13 @@
                   }
               },
               "100_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
               },
               "101_0": {
+                  "cellValue": null,
                   "metadata": {
                       "bold": true
                   }
@@ -18206,7 +18878,8 @@
               "colSizes": {
                   "0": 280,
                   "1": 150,
-                  "2": 281
+                  "2": 281,
+                  "3": 368
               },
               "mergedCells": {
                   "0_0": {

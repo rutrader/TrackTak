@@ -61,6 +61,8 @@ const getLowerUpperHalves = (midPoint, minPoint) => {
   return { truncateLowerHalfPoint, truncateUpperHalfPoint }
 }
 
+// TODO: Add doesNotNeedArgumentsToBeComputed for each cell reference argument
+// in hyperformula
 export const implementedFunctions = {
   'DATA_ANALYSIS.SENSITIVITY_ANALYSIS': {
     method: 'sensitivityAnalysis',
@@ -135,6 +137,11 @@ export const getPlugin = getPowersheet => {
       const yVarCellReference = ast.args[2].reference.toSimpleCellAddress(
         state.formulaAddress
       )
+      const { sheet: xSheet, row: xRow, col: xCol } = xVarCellReference
+      const { sheet: ySheet, row: yRow, col: yCol } = yVarCellReference
+
+      const xSheetName = hyperformula.getSheetName(xSheet)
+      const ySheetName = hyperformula.getSheetName(ySheet)
 
       return this.runAsyncFunction(
         ast.args,
@@ -181,65 +188,43 @@ export const getPlugin = getPowersheet => {
             yMax
           ]
 
-          const cellPrecedents = hyperformula.getAllCellPrecedents(
-            state.formulaAddress
+          const sheets = this.getSheetsFromAddress(
+            state.formulaAddress,
+            hyperformula
           )
-
-          const [hfInstance, promise] = HyperFormula.buildEmpty(
-            config,
-            namedExpressions
-          )
-
-          await promise
-
-          const sheetNames = hyperformula.getSheetNames()
-
-          sheetNames.forEach(sheetName => {
-            const sheetId = hyperformula.getSheetId(sheetName)
-            const sheetMetadata = hyperformula.getSheetMetadata(sheetId)
-
-            hfInstance.addSheet(sheetName, sheetMetadata)
-          })
-
-          await hfInstance.batch(() => {
-            cellPrecedents.forEach(address => {
-              if (isSimpleCellAddress(address)) {
-                const cell = hyperformula.getCellSerialized(address)
-
-                // Stops namedExpressions being set
-                if (address.sheet >= 0) {
-                  hfInstance.setCellContents(address, cell)
-                }
-              }
-            })
-          })[1]
 
           const allPromises = []
 
           for (const xValue of xRangeValues) {
-            const xPromise = hfInstance.setCellContents(xVarCellReference, {
+            sheets[xSheetName].cells[xRow][xCol] = {
+              ...sheets[xSheetName].cells[xRow][xCol],
               cellValue: xValue
-            })[1]
+            }
 
             const rowPromise = new Promise((resolve, reject) => {
               const promises = yRangeValues.map(yValue => {
-                const yPromise = hfInstance.setCellContents(yVarCellReference, {
+                sheets[ySheetName].cells[yRow][yCol] = {
+                  ...sheets[ySheetName].cells[yRow][yCol],
                   cellValue: yValue
-                })[1]
+                }
 
-                const valuePromise = new Promise((resolve, reject) => {
-                  Promise.all([xPromise, yPromise])
+                const [offscreenHyperformulaInstance, enginePromise] =
+                  HyperFormula.buildFromSheets(sheets, config, namedExpressions)
+
+                const promise = new Promise((resolve, reject) => {
+                  enginePromise
                     .then(() => {
-                      const intersectionPointValue = hfInstance.getCellValue(
-                        intersectionCellReference
-                      ).cellValue
+                      const intersectionPointValue =
+                        offscreenHyperformulaInstance.getCellValue(
+                          intersectionCellReference
+                        ).cellValue
 
                       resolve(intersectionPointValue)
                     })
                     .catch(reject)
                 })
 
-                return valuePromise
+                return promise
               })
 
               Promise.all(promises).then(resolve).catch(reject)
@@ -369,8 +354,48 @@ export const getPlugin = getPowersheet => {
       )
     }
 
+    getSheetsFromAddress(address, hyperformula) {
+      const cellPrecedents = hyperformula.getAllCellPrecedents(address)
+
+      const sheetNames = hyperformula.getSheetNames()
+      const sheets = {}
+
+      sheetNames.forEach(sheetName => {
+        const sheetId = hyperformula.getSheetId(sheetName)
+        const sheetMetadata = hyperformula.getSheetMetadata(sheetId)
+
+        sheets[sheetName] = {
+          cells: [],
+          sheetMetadata
+        }
+      })
+
+      cellPrecedents.forEach(address => {
+        if (isSimpleCellAddress(address)) {
+          const sheetName = hyperformula.getSheetName(address.sheet)
+
+          if (sheets[sheetName]) {
+            // cellArray addresses do not contain values
+            let cell = hyperformula.isCellPartOfArray(address)
+              ? hyperformula.getCellValue(address)
+              : hyperformula.getCellSerialized(address)
+
+            const cells = sheets[sheetName].cells
+
+            if (!cells[address.row]) {
+              cells[address.row] = []
+            }
+
+            cells[address.row][address.col] = cell
+          }
+        }
+      })
+
+      return sheets
+    }
+
     dataAnalysisSensitivitySize() {
-      return new ArraySize(7, 7)
+      return new ArraySize(6, 6)
     }
 
     dataAnalysisMonteCarloSize() {
