@@ -1,3 +1,7 @@
+.powersheet-autocomplete-list li[data-value="AUTOCOMPLETE.STOCK_SEARCH"]{
+  display: none;
+}
+
 .powersheet-toolbar-group:nth-child(8) {
   margin-left: auto;
 }

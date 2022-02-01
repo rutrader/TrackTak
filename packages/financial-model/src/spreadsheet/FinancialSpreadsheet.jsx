@@ -19,6 +19,7 @@ import * as bondPlugin from './plugins/bond/plugin'
 import * as fxPlugin from './plugins/fx/plugin'
 import * as marketPlugin from './plugins/market/plugin'
 import * as helperPlugin from './plugins/helpers/plugin'
+import * as autocompletePlugin from './plugins/autocomplete/plugin'
 
 const buildPowersheet = sheets => {
   const sheetsMetadata = {}
@@ -82,16 +83,13 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
       )
     }
 
-    const getStockSearchInput = () => {
+    const getAutocompleteInput = () => {
       return spreadsheet.sheets.cellEditor.currentCellText
     }
 
     const plugins = [
       {
-        instance: stockPlugin.getPlugin(
-          getApiFrozenTimestamp,
-          getStockSearchInput
-        ),
+        instance: stockPlugin.getPlugin(getApiFrozenTimestamp),
         translations: stockPlugin.translations
       },
       {
@@ -111,6 +109,10 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
           new Date(spreadsheetData.createdTimestamp)
         ),
         translations: helperPlugin.translations
+      },
+      {
+        instance: autocompletePlugin.getPlugin(getAutocompleteInput),
+        translations: autocompletePlugin.translations
       }
     ]
 

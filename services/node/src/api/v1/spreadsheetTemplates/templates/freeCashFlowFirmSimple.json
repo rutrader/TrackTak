@@ -40,7 +40,7 @@
           "metadata": {
             "cellDataType": {
               "type": "autocomplete",
-              "cellContent": "=STOCK.SEARCH()"
+              "cellContent": "=AUTOCOMPLETE.STOCK_SEARCH()"
             },
             "backgroundColor": "#8ff1d2"
           }
