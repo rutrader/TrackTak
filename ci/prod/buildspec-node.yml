@@ -5,8 +5,11 @@ phases:
     on-failure: ABORT
     commands:
       - echo "Build Node"
+      - echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" > .npmrc
+      - echo "@tracktak:registry=https://npm.pkg.github.com/" >> .npmrc
 artifacts:
   files:
     - 'src/**/*'
     - 'package.json'
+    - '.npmrc'
   base-directory: 'services/node'
