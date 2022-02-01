@@ -19,6 +19,7 @@ import * as bondPlugin from './plugins/bond/plugin'
 import * as fxPlugin from './plugins/fx/plugin'
 import * as marketPlugin from './plugins/market/plugin'
 import * as helperPlugin from './plugins/helpers/plugin'
+import * as dataAnalysisPlugin from './plugins/dataAnalysis/plugin'
 
 const buildPowersheet = sheets => {
   const sheetsMetadata = {}
@@ -82,9 +83,18 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
       )
     }
 
+    const getStockSearchInput = () => {
+      return spreadsheet.sheets.cellEditor.currentCellText
+    }
+
+    const getPowersheet = () => spreadsheet
+
     const plugins = [
       {
-        instance: stockPlugin.getPlugin(getApiFrozenTimestamp),
+        instance: stockPlugin.getPlugin(
+          getApiFrozenTimestamp,
+          getStockSearchInput
+        ),
         translations: stockPlugin.translations
       },
       {
@@ -106,6 +116,13 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
         translations: helperPlugin.translations
       }
     ]
+
+    if (process.env.ENABLE_DATA_ANALYSIS === 'true') {
+      plugins.push({
+        instance: dataAnalysisPlugin.getPlugin(getPowersheet),
+        translations: dataAnalysisPlugin.translations
+      })
+    }
 
     plugins.forEach(({ instance, translations }) => {
       HyperFormula.registerFunctionPlugin(instance, translations)

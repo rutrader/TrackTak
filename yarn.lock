@@ -5908,10 +5908,10 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
   integrity sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
 
-"@tracktak/hyperformula@5.0.2-beta.1":
-  version "5.0.2-beta.1"
-  resolved "https://npm.pkg.github.com/download/@tracktak/hyperformula/5.0.2-beta.1/553725da8851d23ea3f158f27687c9332ff7a4c4bacbc861d8dd38d33f46e497#e323d94d771aac713005f9d1219f439e4386c189"
-  integrity sha512-C3zreuACyomMZPxh+DNPWK6r390XTgqRtEULxIJUsBNMTyXQDp0t8GGc87zdQ+Q5uCgukD+5ztgG5hblt4CuHA==
+"@tracktak/hyperformula@5.1.0":
+  version "5.1.0"
+  resolved "https://npm.pkg.github.com/download/@tracktak/hyperformula/5.1.0/39012a198fbee45f25434ea0a66e85fe2259bbdf3e4da643599ba4da03eeb281#46e42beb71a88cc1acb073c54481fa305333063b"
+  integrity sha512-9715iIJyllfexdJ3dCEBeSHGDdiTmPpnGf1MjWB5fOpwu6mNNLeD+NVSniqNNjn/5ie/YioAoqPe2ZZnEXBkjw==
   dependencies:
     chevrotain "^6.5.0"
     core-js "^3.6.4"
@@ -5919,10 +5919,10 @@
     tiny-emitter "^2.1.0"
     unorm "^1.6.0"
 
-"@tracktak/powersheet@^2.0.0-beta.14":
-  version "2.0.0-beta.14"
-  resolved "https://npm.pkg.github.com/download/@tracktak/powersheet/2.0.0-beta.14/3e7c38bcd6fd3330a5d18e782c4c1340a29b09a0f0c67d527d8308fe16c29292#70919b1e6407e717f11ad27241c1a39407ae6b61"
-  integrity sha512-YkHjcdsSVnk5NYNs2wQ4BCN/cvTs3quwMRiw6GBoYNoLiSEQcildIrcWL6Zq4m+azuShUtLOPbZa2hDcrpJMdw==
+"@tracktak/powersheet@^2.0.2":
+  version "2.0.2"
+  resolved "https://npm.pkg.github.com/download/@tracktak/powersheet/2.0.2/b4c5d7fbcfd0af1060076d19faea59f0d5a356d45bbfda0789c525a18298c8ac#8b52bc4ab4d7f314982b72ab8de20c66d93fa3e9"
+  integrity sha512-cewMhpQPKFQJgrfl+TTUWYxSVNEKtcQOtyY6gxvhKD+jMsA+DCSlvj0TT5GhnVoPxOocwq8v1T/V3ZphMyZecA==
   dependencies:
     "@material/drawer" "^13.0.0"
     a-color-picker "^1.2.1"
@@ -5930,6 +5930,7 @@
     konva "^8.2.2"
     lodash "^4.17.21"
     material-components-web "^13.0.0"
+    number-precision "^1.5.1"
     numfmt "^2.1.0"
     sass "^1.36.0"
     tiny-typed-emitter "^2.1.0"
@@ -18907,6 +18908,11 @@ number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
   integrity sha1-CXtgK1NCKlIsGvuHkDGDNpQaAR0=
+
+number-precision@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/number-precision/-/number-precision-1.5.1.tgz#ea343990409d873464074353fcb30ac105a90e61"
+  integrity sha512-JdTfhUHd1aUL4svSaJXlv3CKNz92js2z0+HS/9AX8euw+akompBz/QEZ7e3y7eTuJxvRqXBZP6mapUlTtLoTsA==
 
 numfmt@^2.1.0:
   version "2.1.0"

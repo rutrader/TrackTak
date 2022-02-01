@@ -20,16 +20,6 @@ export const yMaxValueCellError = new CellError(
   'yMax value is not valid. Max value cannot be less than yVar value or equal.'
 )
 
-export const xMinMaxValuesCellError = new CellError(
-  ErrorType.VALUE,
-  'Required two min and max values. Must be {xMin,xMax}.'
-)
-
-export const yMinMaxValuesCellError = new CellError(
-  ErrorType.VALUE,
-  'Required two min and max values. Must be {yMin,yMax}.'
-)
-
 export const varAssumptionValuesCellError = new CellError(
   ErrorType.VALUE,
   'varAssumption(s) are not valid. The parameter varAssumption accepts a single array. Must be {assumption1,assumption2,...etc.}.'

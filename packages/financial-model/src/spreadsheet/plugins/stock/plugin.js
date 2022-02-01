@@ -137,6 +137,13 @@ export const implementedFunctions = {
       { argumentType: ArgumentTypes.STRING, optionalArg: true },
       { argumentType: ArgumentTypes.STRING, optionalArg: true }
     ]
+  },
+  'STOCK.SEARCH': {
+    method: 'search',
+    arraySizeMethod: 'stockSize',
+    isAsyncMethod: true,
+    inferReturnType: true,
+    parameters: []
   }
 }
 
@@ -149,11 +156,13 @@ export const translations = {
     'STOCK.GET_COMPANY_PRICES': 'STOCK.GET_COMPANY_PRICES',
     'STOCK.GET_COMPANY_INFO': 'STOCK.GET_COMPANY_INFO',
     'STOCK.GET_INDUSTRY_AVERAGES': 'STOCK.GET_INDUSTRY_AVERAGES',
-    'STOCK.GET_COMPANY_INDUSTRY_AVERAGES': 'STOCK.GET_COMPANY_INDUSTRY_AVERAGES'
+    'STOCK.GET_COMPANY_INDUSTRY_AVERAGES':
+      'STOCK.GET_COMPANY_INDUSTRY_AVERAGES',
+    'STOCK.SEARCH': 'STOCK.SEARCH'
   }
 }
 
-export const getPlugin = getApiFrozenDate => {
+export const getPlugin = (getApiFrozenDate, getStockSearchInput) => {
   class Plugin extends FunctionPlugin {
     getCompanyFinancials(ast, state) {
       const metadata = this.metadata('STOCK.GET_COMPANY_FINANCIALS')
@@ -470,6 +479,28 @@ export const getPlugin = getApiFrozenDate => {
           return getPluginAsyncValue(mapValuesToArrayOfArrays(data.value))
         }
       )
+    }
+
+    search(ast, state) {
+      const metadata = this.metadata('STOCK.SEARCH')
+
+      return this.runAsyncFunction(ast.args, state, metadata, async () => {
+        const { data } = await api.getSecuritiesAutocomplete(
+          getStockSearchInput(),
+          {
+            type: 'stock'
+          }
+        )
+
+        return data.value.map(({ name, code, exchange }) => {
+          const ticker = `${code}.${exchange}`
+
+          return {
+            label: `${name} (${ticker})`,
+            value: ticker
+          }
+        })
+      })
     }
 
     stockSize(ast, state) {

@@ -3,7 +3,7 @@ import getValueFromString from './getValueFromString'
 import replaceDoubleColonWithObject from './replaceDoubleColonWithObject'
 import * as financialStatementKeys from './financialStatementKeys'
 import camelCaseObjects from './camelCaseObjects'
-import convertPenceToGBPIfNeeded from './convertPenceToGBPIfNeeded'
+import convertCurrencies from './convertCurrencies'
 
 const dateSortComparer = (a, b) => b.date.localeCompare(a.date)
 
@@ -32,7 +32,7 @@ const convertBalanceSheet = ({
   const newBalanceSheet = {
     date,
     filingDate,
-    currencyCode: currencySymbol,
+    currencyCode: convertCurrencies(currencySymbol),
     ...balanceSheet
   }
 
@@ -100,7 +100,7 @@ const convertIncomeStatement = ({
   const newIncomeStatement = {
     date,
     filingDate,
-    currencyCode: currencySymbol,
+    currencyCode: convertCurrencies(currencySymbol),
     revenue: getValueFromString(totalRevenue),
     otherIncomeExpense: getValueFromString(totalOtherIncomeExpenseNet),
     operatingExpenses: getValueFromString(totalOperatingExpenses),
@@ -142,7 +142,7 @@ const convertCashFlowStatement = ({
   const newCashFlowStatement = {
     date,
     filingDate,
-    currencyCode: currencySymbol,
+    currencyCode: convertCurrencies(currencySymbol),
     ...cashFlowStatement
   }
 
@@ -228,15 +228,19 @@ const convertFundamentalsFromAPI = (ticker, data) => {
     newFundamentalsData = camelCaseObjects(fundamentalsData)
 
     if (newFundamentalsData.general) {
-      newFundamentalsData.general.currencyCode = convertPenceToGBPIfNeeded(
+      newFundamentalsData.general.currencyCode = convertCurrencies(
         newFundamentalsData.general.currencyCode
       )
 
-      newFundamentalsData.general.currencySymbol = convertPenceToGBPIfNeeded(
+      newFundamentalsData.general.currencySymbol = convertCurrencies(
         newFundamentalsData.general.currencySymbol
       )
 
-      newFundamentalsData.general.currencyName = convertPenceToGBPIfNeeded(
+      if (newFundamentalsData.general.currencySymbol === 'ILS') {
+        newFundamentalsData.general.currencySymbol = '₪'
+      }
+
+      newFundamentalsData.general.currencyName = convertCurrencies(
         newFundamentalsData.general.currencyName
       )
     }
@@ -270,21 +274,23 @@ const convertFundamentalsFromAPI = (ticker, data) => {
       const financials = newFundamentalsData.financials
       const incomeStatement = {
         ...financials.incomeStatement,
-        currencyCode: financials.incomeStatement.currencySymbol
+        currencyCode: convertCurrencies(
+          financials.incomeStatement.currencySymbol
+        )
       }
 
       delete incomeStatement.currencySymbol
 
       const balanceSheet = {
         ...financials.balanceSheet,
-        currencyCode: financials.balanceSheet.currencySymbol
+        currencyCode: convertCurrencies(financials.balanceSheet.currencySymbol)
       }
 
       delete balanceSheet.currencySymbol
 
       const cashFlowStatement = {
         ...financials.cashFlow,
-        currencyCode: financials.cashFlow.currencySymbol
+        currencyCode: convertCurrencies(financials.cashFlow.currencySymbol)
       }
 
       delete cashFlowStatement.currencySymbol

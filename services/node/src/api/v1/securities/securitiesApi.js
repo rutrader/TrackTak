@@ -5,6 +5,7 @@ import {
   MEDIUM_PLUS_CAP_PRICE_THRESHOLD
 } from '../../../shared/constants'
 import { sendReqOrGetCachedData } from '../../../cache'
+import camelCaseObjects from '../../../shared/camelCaseObjects'
 
 export const getSecuritiesAutocomplete = async (queryString, query) => {
   const data = await sendReqOrGetCachedData(
@@ -16,8 +17,10 @@ export const getSecuritiesAutocomplete = async (queryString, query) => {
         }
       })
 
+      const arrayValues = camelCaseObjects(data)
+
       if (process.env.PREMIUM_ENABLED === 'true') {
-        return data
+        return arrayValues
           .filter(datum => {
             return datum.Exchange !== 'TSE'
           })
@@ -28,7 +31,7 @@ export const getSecuritiesAutocomplete = async (queryString, query) => {
               datum.Exchange === 'US'
           }))
       } else {
-        return data.filter(datum => {
+        return arrayValues.filter(datum => {
           return datum.Exchange !== 'TSE'
         })
       }
