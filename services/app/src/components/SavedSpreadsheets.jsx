@@ -67,12 +67,13 @@ const SavedSpreadsheets = () => {
   const updateSpreadsheetName = async spreadsheet => {
     const token = await getAccessToken()
     const accessToken = token?.jwtToken
+    const response = await api.getSpreadsheet(spreadsheet._id, token?.jwtToken)
 
     await api.saveSpreadsheet(
       {
-        ...spreadsheet,
+        ...response.data.spreadsheet,
         sheetData: {
-          ...spreadsheet.sheetData,
+          ...response.data.spreadsheet.sheetData,
           name: name ?? spreadsheet.sheetData.name
         }
       },
