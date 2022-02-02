@@ -1,7 +1,42 @@
-.powersheet-autocomplete-list li[data-value="AUTOCOMPLETE.STOCK_SEARCH"]{
+.powersheet-autocomplete-list li[data-value='AUTOCOMPLETE.STOCK_SEARCH'] {
   display: none;
 }
 
 .powersheet-toolbar-group:nth-child(8) {
   margin-left: auto;
+}
+
+.tippy-box[data-theme='new-feature'] {
+  background-color: #6240c8;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.tippy-box[data-theme~='new-feature'][data-placement^='bottom']
+  > .tippy-arrow::before {
+  border-bottom-color: #6240c8;
+}
+
+.tippy-box[data-theme~='new-feature'][data-placement^='left']
+  > .tippy-arrow::before {
+  border-left-color: #6240c8;
+}
+
+.tippy-box[data-theme~='new-feature'][data-placement^='top']
+  > .tippy-arrow::before {
+  border-top-color: #6240c8;
+}
+
+.tippy-box[data-theme~='new-feature'][data-placement^='right']
+  > .tippy-arrow::before {
+  border-right-color: #6240c8;
+}
+
+.tippy-new-feature {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
 }
