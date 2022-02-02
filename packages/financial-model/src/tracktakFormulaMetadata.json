@@ -1074,59 +1074,59 @@
       }
     ]
   },
-  // "DATA_ANALYSIS.SENSITIVITY_ANALYSIS": {
-  //   "header": "DATA_ANALYSIS.SENSITIVITY_ANALYSIS",
-  //   "headerDescription": "Determines how different values of an independent variable affect a particular dependent variable under a given set of assumptions.",
-  //   "type": "Data Analysis",
-  //   "parameters": [
-  //     "intersection_point",
-  //     "x_var",
-  //     "y_var",
-  //     "xMin",
-  //     "xMax",
-  //     "yMin",
-  //     "yMax"
-  //   ],
-  //   "codeSyntaxUsage": [
-  //     "=DATA_ANALYSIS.SENSITIVITY_ANALYSIS(B1,B2,B3,15,20,3,30)"
-  //   ],
-  //   "codeSyntaxElements": [
-  //     {
-  //       "codeSyntax": "DATA_ANALYSIS.SENSITIVITY_ANALYSIS(intersection_point, x_var, y_var, {rangeX}, {rangeY})",
-  //       "values": [
-  //         {
-  //           "syntaxName": "intersection_point",
-  //           "description": "The outcome value cell reference. We can determine how changes in variables affect the outcome value (intersection_point), for example the estimated value of a stock."
-  //         },
-  //         {
-  //           "syntaxName": "x_var",
-  //           "description": "1st input variable cell reference. Example: Cost of Capital (WACC)."
-  //         },
-  //         {
-  //           "syntaxName": "y_var",
-  //           "description": "2nd input variable cell reference. Example: Growth Rates."
-  //         },
-  //         {
-  //           "syntaxName": "xMin",
-  //           "description": "Min of the 1st input variable. Example: min of WACC is 2%."
-  //         },
-  //         {
-  //           "syntaxName": "xMax",
-  //           "description": "Max of the 1st input variable. Example: max of WACC is 10%."
-  //         },
-  //         {
-  //           "syntaxName": "yMin",
-  //           "description": "Min of the 2nd input variable. Example: min of growth rate is 1%."
-  //         },
-  //         {
-  //           "syntaxName": "yMax",
-  //           "description": "Max of the 2nd input variable. Example: max of growth rate is 6%."
-  //         }
-  //       ]
-  //     }
-  //   ],
-  //   "attributes": []
-  // },
+  "DATA_ANALYSIS.SENSITIVITY_ANALYSIS": {
+    "header": "DATA_ANALYSIS.SENSITIVITY_ANALYSIS",
+    "headerDescription": "Determines how different values of an independent variable affect a particular dependent variable under a given set of assumptions.",
+    "type": "Data Analysis",
+    "parameters": [
+      "intersection_point",
+      "x_var",
+      "y_var",
+      "xMin",
+      "xMax",
+      "yMin",
+      "yMax"
+    ],
+    "codeSyntaxUsage": [
+      "=DATA_ANALYSIS.SENSITIVITY_ANALYSIS(B1,B2,B3,15,20,3,30)"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "DATA_ANALYSIS.SENSITIVITY_ANALYSIS(intersection_point, x_var, y_var, {rangeX}, {rangeY})",
+        "values": [
+          {
+            "syntaxName": "intersection_point",
+            "description": "The outcome value cell reference. We can determine how changes in variables affect the outcome value (intersection_point), for example the estimated value of a stock."
+          },
+          {
+            "syntaxName": "x_var",
+            "description": "1st input variable cell reference. Example: Cost of Capital (WACC)."
+          },
+          {
+            "syntaxName": "y_var",
+            "description": "2nd input variable cell reference. Example: Growth Rates."
+          },
+          {
+            "syntaxName": "xMin",
+            "description": "Min of the 1st input variable. Example: min of WACC is 2%."
+          },
+          {
+            "syntaxName": "xMax",
+            "description": "Max of the 1st input variable. Example: max of WACC is 10%."
+          },
+          {
+            "syntaxName": "yMin",
+            "description": "Min of the 2nd input variable. Example: min of growth rate is 1%."
+          },
+          {
+            "syntaxName": "yMax",
+            "description": "Max of the 2nd input variable. Example: max of growth rate is 6%."
+          }
+        ]
+      }
+    ],
+    "attributes": []
+  },
   // "DATA_ANALYSIS.MONTE_CARLO_SIMULATION": {
   //   "header": "DATA_ANALYSIS.MONTE_CARLO_SIMULATION",
   //   "headerDescription": "Is a model used to predict the probability of different outcomes when the intervention of randomness is present.",

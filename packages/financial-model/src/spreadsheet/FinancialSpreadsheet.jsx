@@ -119,12 +119,10 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
       }
     ]
 
-    if (process.env.ENABLE_DATA_ANALYSIS === 'true') {
-      plugins.push({
-        instance: dataAnalysisPlugin.getPlugin(getPowersheet),
-        translations: dataAnalysisPlugin.translations
-      })
-    }
+    plugins.push({
+      instance: dataAnalysisPlugin.getPlugin(getPowersheet),
+      translations: dataAnalysisPlugin.translations
+    })
 
     plugins.forEach(({ instance, translations }) => {
       HyperFormula.registerFunctionPlugin(instance, translations)
