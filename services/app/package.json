@@ -18,8 +18,9 @@
     "@emotion/styled": "^11.3.0",
     "@mui/icons-material": "^5.1.0",
     "@mui/material": "^5.1.0",
-    "@parcel/reporter-bundle-analyzer": "^2.0.1",
-    "@parcel/transformer-react-refresh-wrap": "^2.0.1",
+    "@parcel/reporter-bundle-analyzer": "^2.2.1",
+    "@parcel/transformer-react-refresh-wrap": "^2.2.1",
+    "@parcel/core": "^2.2.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -27,7 +28,7 @@
     "@tracktak/financial-model": "*",
     "cross-env": "^7.0.3",
     "dayjs": "^1.10.7",
-    "parcel": "^2.0.1",
+    "parcel": "^2.2.1",
     "parcel-config-pwa-manifest": "^0.1.0",
     "react": "^17.0.2",
     "react-contenteditable": "^3.3.6",
@@ -42,7 +43,8 @@
     "production": [
       ">0.2%",
       "not dead",
-      "not op_mini all"
+      "not op_mini all",
+      "not ios_saf < 13"
     ],
     "development": [
       "last 1 chrome version",
