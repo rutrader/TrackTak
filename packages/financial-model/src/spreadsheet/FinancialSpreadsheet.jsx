@@ -180,7 +180,7 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
       }
     })
 
-    if (functionHelperClosed !== 'true') {
+    if (functionHelperClosed === 'true') {
       instance.destroy()
     }
 
