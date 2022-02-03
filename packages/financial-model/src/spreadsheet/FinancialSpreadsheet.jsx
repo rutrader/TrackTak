@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import tippy, { sticky } from 'tippy.js'
 import { HyperFormula } from '@tracktak/hyperformula'
 import { mapFromSerializedSheetsToSheets } from '@tracktak/powersheet'
 import { Box } from '@mui/material'
@@ -63,9 +64,46 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
 
     setSpreadsheet(spreadsheet)
 
+    const tippyEl = document.createElement('div')
+    tippyEl.classList.add('tippy-new-feature')
+    const functionHelperButton =
+      spreadsheet.toolbar.iconElementsMap.functionHelper.button
+
+    const text = document.createElement('div')
+    text.textContent = 'New Formulas!'
+
+    functionHelperButton.appendChild(tippyEl)
+    functionHelperButton.appendChild(text)
+
+    const functionHelperClosed = localStorage.getItem('functionHelperClosed')
+
+    const instance = tippy(tippyEl, {
+      placement: 'top-start',
+      theme: 'new-feature',
+      offset: [0, 0],
+      content: text,
+      arrow: true,
+      interactive: false,
+      sticky: true,
+      plugins: [sticky],
+      showOnCreate: true,
+      hideOnClick: false,
+      onHide: () => {
+        return false
+      }
+    })
+
+    if (functionHelperClosed === 'true') {
+      instance.destroy()
+    }
+
     const clickEventListener = () => {
       if (spreadsheet.functionHelper.drawer.open) {
         localStorage.setItem('functionHelperClosed', 'true')
+      }
+
+      if (!instance.state.isDestroyed) {
+        instance.destroy()
       }
     }
 
@@ -80,8 +118,6 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
     )
 
     spreadsheet.setData(spreadsheetData.sheetData.data.data)
-
-    const functionHelperClosed = localStorage.getItem('functionHelperClosed')
 
     if (functionHelperClosed !== 'true') {
       // TODO: Figure out why setTimeout needed
@@ -108,6 +144,10 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
       })
 
       spreadsheet.destroy()
+
+      if (!instance.state.isDestroyed) {
+        instance.destroy()
+      }
     }
   }, [spreadsheetData])
 
