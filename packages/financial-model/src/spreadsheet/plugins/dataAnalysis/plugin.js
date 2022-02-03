@@ -26,7 +26,6 @@ import {
   medianFormula,
   skewnessFormula
 } from '../../../statsFormulas'
-import { isSimpleCellAddress } from '@tracktak/hyperformula/es/Cell'
 import { wrap } from 'comlink'
 
 const sensitivityAnalysisWorker = wrap(
@@ -337,23 +336,21 @@ export const getPlugin = dataGetter => {
       })
 
       cellPrecedents.forEach(address => {
-        if (isSimpleCellAddress(address)) {
-          const sheetName = hyperformula.getSheetName(address.sheet)
+        const sheetName = hyperformula.getSheetName(address.sheet)
 
-          if (sheets[sheetName]) {
-            // cellArray addresses do not contain values
-            let cell = hyperformula.isCellPartOfArray(address)
-              ? hyperformula.getCellValue(address)
-              : hyperformula.getCellSerialized(address)
+        if (sheets[sheetName]) {
+          // cellArray addresses do not contain values
+          let cell = hyperformula.isCellPartOfArray(address)
+            ? hyperformula.getCellValue(address)
+            : hyperformula.getCellSerialized(address)
 
-            const cells = sheets[sheetName].cells
+          const cells = sheets[sheetName].cells
 
-            if (!cells[address.row]) {
-              cells[address.row] = []
-            }
-
-            cells[address.row][address.col] = cell
+          if (!cells[address.row]) {
+            cells[address.row] = []
           }
+
+          cells[address.row][address.col] = cell
         }
       })
 
