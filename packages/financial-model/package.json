@@ -30,7 +30,7 @@
     "dayjs": "^1.9.7",
     "rand-seed": "1.0.1",
     "comlink": "^4.3.1",
-    "@tracktak/hyperformula": "5.1.1",
+    "@tracktak/hyperformula": "5.1.2",
     "iso-3166-1-alpha-2": "^1.0.0",
     "lodash-es": "^4.17.21",
     "@mui/material": "^5.1.0",
