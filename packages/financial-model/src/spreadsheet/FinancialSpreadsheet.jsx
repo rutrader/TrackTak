@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import tippy, { sticky } from 'tippy.js'
 import { HyperFormula } from '@tracktak/hyperformula'
 import { mapFromSerializedSheetsToSheets } from '@tracktak/powersheet'
 import { Box } from '@mui/material'
@@ -66,7 +65,6 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
     setSpreadsheet(spreadsheet)
 
     const tippyEl = document.createElement('div')
-<<<<<<< HEAD
 
     const functionHelperButton =
       spreadsheet.toolbar.iconElementsMap.functionHelper.button
@@ -79,38 +77,6 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
 
     if (functionHelperClosed !== 'true') {
       newFeatureTooltip = getNewFeatureTooltip(tippyEl, 'New Formulas!')
-=======
-    tippyEl.classList.add('tippy-new-feature')
-    const functionHelperButton =
-      spreadsheet.toolbar.iconElementsMap.functionHelper.button
-
-    const text = document.createElement('div')
-    text.textContent = 'New Formulas!'
-
-    functionHelperButton.appendChild(tippyEl)
-    functionHelperButton.appendChild(text)
-
-    const functionHelperClosed = localStorage.getItem('functionHelperClosed')
-
-    const instance = tippy(tippyEl, {
-      placement: 'top-start',
-      theme: 'new-feature',
-      offset: [0, 0],
-      content: text,
-      arrow: true,
-      interactive: false,
-      sticky: true,
-      plugins: [sticky],
-      showOnCreate: true,
-      hideOnClick: false,
-      onHide: () => {
-        return false
-      }
-    })
-
-    if (functionHelperClosed === 'true') {
-      instance.destroy()
->>>>>>> main
     }
 
     const clickEventListener = () => {
@@ -118,13 +84,8 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
         localStorage.setItem('functionHelperClosed', 'true')
       }
 
-<<<<<<< HEAD
       if (newFeatureTooltip && !newFeatureTooltip.state.isDestroyed) {
         newFeatureTooltip.destroy()
-=======
-      if (!instance.state.isDestroyed) {
-        instance.destroy()
->>>>>>> main
       }
     }
 
@@ -166,13 +127,8 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
 
       spreadsheet.destroy()
 
-<<<<<<< HEAD
       if (newFeatureTooltip && !newFeatureTooltip.state.isDestroyed) {
         newFeatureTooltip.destroy()
-=======
-      if (!instance.state.isDestroyed) {
-        instance.destroy()
->>>>>>> main
       }
     }
   }, [spreadsheetData])
