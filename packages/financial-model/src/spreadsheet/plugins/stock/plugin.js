@@ -5,7 +5,7 @@ import {
   industryTypeCellError,
   tickerCellError
 } from './cellErrors'
-import { api } from '@tracktak/common'
+import * as api from '@tracktak/common/src/api/api'
 import {
   financialFields,
   industryAverageFields,
@@ -153,7 +153,7 @@ export const translations = {
   }
 }
 
-export const getPlugin = getApiFrozenDate => {
+export const getPlugin = dataGetter => {
   class Plugin extends FunctionPlugin {
     getCompanyFinancials(ast, state) {
       const metadata = this.metadata('STOCK.GET_COMPANY_FINANCIALS')
@@ -165,7 +165,7 @@ export const getPlugin = getApiFrozenDate => {
         async (ticker, field, defaultGranularity, fiscalDateRange) => {
           const isTickerValid = !!ticker.match(tickerRegex)
           const isFieldValid = !!financialFields.find(x => x === field)
-          const date = fiscalDateRange ?? getApiFrozenDate()
+          const date = fiscalDateRange ?? dataGetter.apiFrozenTimestamp
           const granularity = defaultGranularity
             ? defaultGranularity
             : date
@@ -222,7 +222,7 @@ export const getPlugin = getApiFrozenDate => {
           const isFieldValid = field
             ? !!ratioFields.find(x => x === field)
             : true
-          const date = fiscalDateRange ?? getApiFrozenDate()
+          const date = fiscalDateRange ?? dataGetter.apiFrozenTimestamp
           const granularity = defaultGranularity
             ? defaultGranularity
             : date
@@ -271,7 +271,7 @@ export const getPlugin = getApiFrozenDate => {
         metadata,
         async (ticker, field, granularity, fiscalDateRange) => {
           const isTickerValid = !!ticker.match(tickerRegex)
-          const date = fiscalDateRange ?? getApiFrozenDate()
+          const date = fiscalDateRange ?? dataGetter.apiFrozenTimestamp
 
           const error = validateEODParamsHasError(field, granularity, date)
 
@@ -353,7 +353,7 @@ export const getPlugin = getApiFrozenDate => {
           const isFieldValid = field
             ? !!industryAverageFields.find(x => x === field)
             : true
-          const date = fiscalDateRange ?? getApiFrozenDate()
+          const date = fiscalDateRange ?? dataGetter.apiFrozenTimestamp
           const isFiscalDateRangeValid = this.getIsFiscalDateRangeValid(date)
 
           if (!isTypeValid) {
@@ -392,7 +392,7 @@ export const getPlugin = getApiFrozenDate => {
           const isFieldValid = field
             ? !!industryAverageFields.find(x => x === field)
             : true
-          const date = fiscalDateRange ?? getApiFrozenDate()
+          const date = fiscalDateRange ?? dataGetter.apiFrozenTimestamp
           const isFiscalDateRangeValid = this.getIsFiscalDateRangeValid(date)
 
           if (!isTickerValid) {
@@ -431,7 +431,7 @@ export const getPlugin = getApiFrozenDate => {
           const isFieldValid = field
             ? !!outstandingSharesFields.find(x => x === field)
             : true
-          const date = fiscalDateRange ?? getApiFrozenDate()
+          const date = fiscalDateRange ?? dataGetter.apiFrozenTimestamp
           const granularity = defaultGranularity
             ? defaultGranularity
             : date

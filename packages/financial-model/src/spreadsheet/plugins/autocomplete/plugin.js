@@ -1,5 +1,5 @@
 import { FunctionPlugin } from '@tracktak/hyperformula'
-import { api } from '@tracktak/common'
+import * as api from '@tracktak/common/src/api/api'
 import { inferSizeMethod } from '../helpers'
 
 export const implementedFunctions = {
@@ -18,14 +18,14 @@ export const translations = {
   }
 }
 
-export const getPlugin = getAutocompleteInput => {
+export const getPlugin = dataGetter => {
   class Plugin extends FunctionPlugin {
     stockSearch(ast, state) {
       const metadata = this.metadata('AUTOCOMPLETE.STOCK_SEARCH')
 
       return this.runAsyncFunction(ast.args, state, metadata, async () => {
         const { data } = await api.getSecuritiesAutocomplete(
-          getAutocompleteInput(),
+          dataGetter().currentCellText,
           {
             type: 'stock'
           }

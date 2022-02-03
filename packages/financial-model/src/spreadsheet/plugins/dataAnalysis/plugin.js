@@ -26,28 +26,23 @@ import {
   medianFormula,
   skewnessFormula
 } from '../../../statsFormulas'
-import { isSimpleCellAddress } from '@tracktak/hyperformula/es/Cell'
+import { wrap } from 'comlink'
 
-export const standardizedMoment = (arr, n) => {
-  const mu = mean(arr)
-  const sigma = stdev(arr)
-  const length = arr.length
-  let skewSum = 0
+const sensitivityAnalysisWorker = wrap(
+  new Worker(new URL('sensitivityAnalysisWorker.js', import.meta.url), {
+    type: 'module'
+  })
+)
 
-  for (let i = 0; i < length; i++) skewSum += Math.pow((arr[i] - mu) / sigma, n)
-
-  return skewSum / arr.length
-}
-
-export const coefficientOfVariationFormula = arrVector => {
+const coefficientOfVariationFormula = arrVector => {
   return stdev(arrVector) / mean(arrVector)
 }
 
-export const stDevErrorOfMeanFormula = arr => {
+const stDevErrorOfMeanFormula = arr => {
   return stdev(arr) / Math.sqrt(arr.length)
 }
 
-export const getConfidenceInterval = arr => {
+const getConfidenceInterval = arr => {
   return confidenceIntervalFormula(stDevErrorOfMeanFormula(arr), 1.96)
 }
 
@@ -120,11 +115,11 @@ export const translations = {
   }
 }
 
-export const getPlugin = getPowersheet => {
+export const getPlugin = dataGetter => {
   class Plugin extends FunctionPlugin {
     sensitivityAnalysis(ast, state) {
-      const powersheet = getPowersheet()
-      const hyperformula = powersheet.hyperformula
+      const spreadsheet = dataGetter().spreadsheet
+      const hyperformula = spreadsheet.hyperformula
       const metadata = this.metadata('DATA_ANALYSIS.SENSITIVITY_ANALYSIS')
 
       const intersectionCellReference =
@@ -133,15 +128,11 @@ export const getPlugin = getPowersheet => {
       const xVarCellReference = ast.args[1].reference.toSimpleCellAddress(
         state.formulaAddress
       )
-
       const yVarCellReference = ast.args[2].reference.toSimpleCellAddress(
         state.formulaAddress
       )
-      const { sheet: xSheet, row: xRow, col: xCol } = xVarCellReference
-      const { sheet: ySheet, row: yRow, col: yCol } = yVarCellReference
-
-      const xSheetName = hyperformula.getSheetName(xSheet)
-      const ySheetName = hyperformula.getSheetName(ySheet)
+      const xSheetName = hyperformula.getSheetName(xVarCellReference.sheet)
+      const ySheetName = hyperformula.getSheetName(yVarCellReference.sheet)
 
       return this.runAsyncFunction(
         ast.args,
@@ -193,47 +184,21 @@ export const getPlugin = getPowersheet => {
             hyperformula
           )
 
-          const allPromises = []
+          const { apiFrozenTimestamp, spreadsheetCreationDate } = dataGetter()
 
-          for (const xValue of xRangeValues) {
-            sheets[xSheetName].cells[xRow][xCol] = {
-              ...sheets[xSheetName].cells[xRow][xCol],
-              cellValue: xValue
-            }
-
-            const rowPromise = new Promise((resolve, reject) => {
-              const promises = yRangeValues.map(yValue => {
-                sheets[ySheetName].cells[yRow][yCol] = {
-                  ...sheets[ySheetName].cells[yRow][yCol],
-                  cellValue: yValue
-                }
-
-                const [offscreenHyperformulaInstance, enginePromise] =
-                  HyperFormula.buildFromSheets(sheets, config, namedExpressions)
-
-                const promise = new Promise((resolve, reject) => {
-                  enginePromise
-                    .then(() => {
-                      const intersectionPointValue =
-                        offscreenHyperformulaInstance.getCellValue(
-                          intersectionCellReference
-                        ).cellValue
-
-                      resolve(intersectionPointValue)
-                    })
-                    .catch(reject)
-                })
-
-                return promise
-              })
-
-              Promise.all(promises).then(resolve).catch(reject)
-            })
-
-            allPromises.push(rowPromise)
-          }
-
-          const intersectionPointValues = await Promise.all(allPromises)
+          const intersectionPointValues =
+            await sensitivityAnalysisWorker.sensitivityAnalysis(
+              intersectionCellReference,
+              sheets,
+              apiFrozenTimestamp,
+              spreadsheetCreationDate,
+              xVarCellReference,
+              yVarCellReference,
+              xRangeValues,
+              yRangeValues,
+              xSheetName,
+              ySheetName
+            )
 
           intersectionPointValues.unshift(xRangeValues)
           intersectionPointValues[0].unshift('')
@@ -371,23 +336,21 @@ export const getPlugin = getPowersheet => {
       })
 
       cellPrecedents.forEach(address => {
-        if (isSimpleCellAddress(address)) {
-          const sheetName = hyperformula.getSheetName(address.sheet)
+        const sheetName = hyperformula.getSheetName(address.sheet)
 
-          if (sheets[sheetName]) {
-            // cellArray addresses do not contain values
-            let cell = hyperformula.isCellPartOfArray(address)
-              ? hyperformula.getCellValue(address)
-              : hyperformula.getCellSerialized(address)
+        if (sheets[sheetName]) {
+          // cellArray addresses do not contain values
+          let cell = hyperformula.isCellPartOfArray(address)
+            ? hyperformula.getCellValue(address)
+            : hyperformula.getCellSerialized(address)
 
-            const cells = sheets[sheetName].cells
+          const cells = sheets[sheetName].cells
 
-            if (!cells[address.row]) {
-              cells[address.row] = []
-            }
-
-            cells[address.row][address.col] = cell
+          if (!cells[address.row]) {
+            cells[address.row] = []
           }
+
+          cells[address.row][address.col] = cell
         }
       })
 

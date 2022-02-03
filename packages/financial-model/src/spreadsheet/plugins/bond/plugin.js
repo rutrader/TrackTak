@@ -1,6 +1,6 @@
 import { FunctionPlugin } from '@tracktak/hyperformula'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
-import { api } from '@tracktak/common'
+import * as api from '@tracktak/common/src/api/api'
 import {
   convertEODNumbersToFormattedNumbers,
   getPluginAsyncValue,
@@ -41,7 +41,7 @@ export const translations = {
   }
 }
 
-export const getPlugin = getApiFrozenDate => {
+export const getPlugin = dataGetter => {
   class Plugin extends FunctionPlugin {
     getCountryYield(ast, state) {
       const metadata = this.metadata('BOND.GET_COUNTRY_YIELD')
@@ -53,7 +53,7 @@ export const getPlugin = getApiFrozenDate => {
         async (countryISO, maturity, field, granularity, fiscalDateRange) => {
           const isCountryISOValid = !!countryISOs.find(x => x === countryISO)
           const isMaturityValidValid = !!maturity.match(maturityRegex)
-          const date = fiscalDateRange ?? getApiFrozenDate()
+          const date = fiscalDateRange ?? dataGetter().apiFrozenTimestamp
 
           const error = validateEODParamsHasError(field, granularity, date)
 

@@ -1,6 +1,6 @@
 import { FunctionPlugin } from '@tracktak/hyperformula'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
-import { api } from '@tracktak/common'
+import * as api from '@tracktak/common/src/api/api'
 import currencyCodes from './currencyCodes'
 import { baseCurrencyCellError, quoteCurrencyCellError } from './cellErrors'
 import { getEodKeys, validateEODParamsHasError } from '../eod'
@@ -37,7 +37,7 @@ export const translations = {
   }
 }
 
-export const getPlugin = getApiFrozenDate => {
+export const getPlugin = dataGetter => {
   class Plugin extends FunctionPlugin {
     getFiatExchangeRate(ast, state) {
       const metadata = this.metadata('FX.GET_FIAT_EXCHANGE_RATE')
@@ -59,7 +59,7 @@ export const getPlugin = getApiFrozenDate => {
           const isQuoteCurrencyValid = !!currencyCodes.find(
             x => x === quoteCurrency
           )
-          const date = fiscalDateRange ?? getApiFrozenDate()
+          const date = fiscalDateRange ?? dataGetter().apiFrozenTimestamp
 
           if (!isBaseCurrencyValid) {
             return baseCurrencyCellError

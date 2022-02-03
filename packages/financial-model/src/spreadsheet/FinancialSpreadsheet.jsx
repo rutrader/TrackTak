@@ -1,73 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import tippy, { sticky } from 'tippy.js'
 import { HyperFormula } from '@tracktak/hyperformula'
-import '@tracktak/powersheet/dist/index.css'
-import {
-  Spreadsheet,
-  Toolbar,
-  FormulaBar,
-  BottomBar,
-  FunctionHelper,
-  mapFromSerializedSheetsToSheets
-} from '@tracktak/powersheet'
-import getToolbarActionGroups from './getToolbarActionGroups'
-import './FinancialSpreadsheet.css'
+import { mapFromSerializedSheetsToSheets } from '@tracktak/powersheet'
 import { Box } from '@mui/material'
-import { config, namedExpressions } from './hyperformulaConfig'
-import tracktakFormulaMetadataJSON from '../tracktakFormulaMetadata.json'
-import * as stockPlugin from './plugins/stock/plugin'
-import * as bondPlugin from './plugins/bond/plugin'
-import * as fxPlugin from './plugins/fx/plugin'
-import * as marketPlugin from './plugins/market/plugin'
-import * as helperPlugin from './plugins/helpers/plugin'
+import buildPowersheet from './buildPowersheet'
+import registerSharedFunctions from './registerSharedFunctions'
 import * as autocompletePlugin from './plugins/autocomplete/plugin'
 import * as dataAnalysisPlugin from './plugins/dataAnalysis/plugin'
-
-const buildPowersheet = sheets => {
-  const sheetsMetadata = {}
-
-  for (const sheetName in sheets) {
-    const { sheetMetadata } = sheets[sheetName]
-
-    sheetsMetadata[sheetName] = {
-      cells: [],
-      sheetMetadata
-    }
-  }
-
-  const [hyperformula] = HyperFormula.buildFromSheets(
-    sheetsMetadata,
-    config,
-    namedExpressions
-  )
-
-  const functionHelper = new FunctionHelper()
-  const toolbar = new Toolbar()
-  const formulaBar = new FormulaBar()
-  const bottomBar = new BottomBar()
-
-  const spreadsheet = new Spreadsheet({
-    hyperformula,
-    toolbar,
-    formulaBar,
-    bottomBar,
-    functionHelper
-  })
-
-  spreadsheet.setFunctionTypeBlocklist(['Engineering'])
-  spreadsheet.setCustomFunctionMetadata(tracktakFormulaMetadataJSON)
-  spreadsheet.spreadsheetEl.prepend(formulaBar.formulaBarEl)
-  spreadsheet.spreadsheetEl.prepend(toolbar.toolbarEl)
-  spreadsheet.spreadsheetEl.appendChild(bottomBar.bottomBarEl)
-  spreadsheet.sheets.sheetElContainer.appendChild(
-    functionHelper.functionHelperEl
-  )
-
-  functionHelper.setDrawerContent()
-  toolbar.setToolbarIcons(getToolbarActionGroups(toolbar))
-
-  return spreadsheet
-}
+import getNewFeatureTooltip from './getNewFeatureTooltip'
 
 const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
   const [spreadsheet, setSpreadsheet] = useState()
@@ -75,65 +14,39 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
   const name = spreadsheetData?.sheetData.name
 
   useEffect(() => {
-    const getApiFrozenTimestamp = () => {
+    const dataGetter = () => {
+      let apiFrozenTimestamp
+
       if (!spreadsheetData.sheetData.data.data?.apiFrozenTimestamp) {
-        return undefined
+        apiFrozenTimestamp = undefined
+      } else {
+        apiFrozenTimestamp = spreadsheet.parseDynamicPattern(
+          spreadsheetData.sheetData.data.data.apiFrozenTimestamp
+        )
       }
 
-      return spreadsheet.parseDynamicPattern(
-        spreadsheetData.sheetData.data.data.apiFrozenTimestamp
-      )
-    }
-
-    const getAutocompleteInput = () => {
-      return spreadsheet.sheets.cellEditor.currentCellText
-    }
-
-    const getPowersheet = () => spreadsheet
-
-    const plugins = [
-      {
-        instance: stockPlugin.getPlugin(getApiFrozenTimestamp),
-        translations: stockPlugin.translations
-      },
-      {
-        instance: bondPlugin.getPlugin(getApiFrozenTimestamp),
-        translations: bondPlugin.translations
-      },
-      {
-        instance: fxPlugin.getPlugin(getApiFrozenTimestamp),
-        translations: fxPlugin.translations
-      },
-      {
-        instance: marketPlugin.getPlugin(getApiFrozenTimestamp),
-        translations: marketPlugin.translations
-      },
-      {
-        instance: helperPlugin.getPlugin(
-          new Date(spreadsheetData.createdTimestamp)
-        ),
-        translations: helperPlugin.translations
-      },
-      {
-        instance: autocompletePlugin.getPlugin(getAutocompleteInput),
-        translations: autocompletePlugin.translations
+      return {
+        apiFrozenTimestamp,
+        spreadsheetCreationDate: new Date(spreadsheetData.createdTimestamp),
+        currentCellText: spreadsheet.sheets.cellEditor.currentCellText,
+        spreadsheet
       }
-    ]
-
-    if (process.env.ENABLE_DATA_ANALYSIS === 'true') {
-      plugins.push({
-        instance: dataAnalysisPlugin.getPlugin(getPowersheet),
-        translations: dataAnalysisPlugin.translations
-      })
     }
-
-    plugins.forEach(({ instance, translations }) => {
-      HyperFormula.registerFunctionPlugin(instance, translations)
-    })
 
     const sheets = mapFromSerializedSheetsToSheets(
       spreadsheetData.sheetData.data.sheets
     )
+
+    const powersheetPlugins = [autocompletePlugin, dataAnalysisPlugin]
+
+    powersheetPlugins.forEach(({ getPlugin, translations }) => {
+      HyperFormula.registerFunctionPlugin(getPlugin(dataGetter), translations)
+    })
+
+    const allPlugins = [
+      ...powersheetPlugins,
+      ...registerSharedFunctions(dataGetter)
+    ]
 
     const spreadsheet = buildPowersheet(sheets)
 
@@ -152,36 +65,18 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
     setSpreadsheet(spreadsheet)
 
     const tippyEl = document.createElement('div')
-    tippyEl.classList.add('tippy-new-feature')
+
     const functionHelperButton =
       spreadsheet.toolbar.iconElementsMap.functionHelper.button
 
-    const text = document.createElement('div')
-    text.textContent = 'New Formulas!'
-
     functionHelperButton.appendChild(tippyEl)
-    functionHelperButton.appendChild(text)
 
     const functionHelperClosed = localStorage.getItem('functionHelperClosed')
 
-    const instance = tippy(tippyEl, {
-      placement: 'top-start',
-      theme: 'new-feature',
-      offset: [0, 0],
-      content: text,
-      arrow: true,
-      interactive: false,
-      sticky: true,
-      plugins: [sticky],
-      showOnCreate: true,
-      hideOnClick: false,
-      onHide: () => {
-        return false
-      }
-    })
+    let newFeatureTooltip
 
-    if (functionHelperClosed === 'true') {
-      instance.destroy()
+    if (functionHelperClosed !== 'true') {
+      newFeatureTooltip = getNewFeatureTooltip(tippyEl, 'New Formulas!')
     }
 
     const clickEventListener = () => {
@@ -189,8 +84,8 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
         localStorage.setItem('functionHelperClosed', 'true')
       }
 
-      if (!instance.state.isDestroyed) {
-        instance.destroy()
+      if (newFeatureTooltip && !newFeatureTooltip.state.isDestroyed) {
+        newFeatureTooltip.destroy()
       }
     }
 
@@ -226,14 +121,14 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
         clickEventListener
       )
 
-      plugins.forEach(({ instance }) => {
+      allPlugins.forEach(({ instance }) => {
         HyperFormula.unregisterFunctionPlugin(instance)
       })
 
       spreadsheet.destroy()
 
-      if (!instance.state.isDestroyed) {
-        instance.destroy()
+      if (newFeatureTooltip && !newFeatureTooltip.state.isDestroyed) {
+        newFeatureTooltip.destroy()
       }
     }
   }, [spreadsheetData])
