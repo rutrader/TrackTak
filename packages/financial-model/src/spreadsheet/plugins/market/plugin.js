@@ -1,6 +1,6 @@
 import { FunctionPlugin } from '@tracktak/hyperformula'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
-import { api } from '@tracktak/common'
+import * as api from '@tracktak/common/src/api/api'
 import {
   getPluginAsyncValue,
   inferSizeMethod,
@@ -81,7 +81,7 @@ export const translations = {
   }
 }
 
-export const getPlugin = getApiFrozenDate => {
+export const getPlugin = dataGetter => {
   class Plugin extends FunctionPlugin {
     getEquityRiskPremiums(ast, state) {
       const metadata = this.metadata('MARKET.GET_EQUITY_RISK_PREMIUMS')
@@ -95,7 +95,7 @@ export const getPlugin = getApiFrozenDate => {
             ? !!equityRiskPremiumFields.find(x => x === field)
             : true
           const isFiscalDateRangeValid = this.getIsFiscalDateRangeValid(date)
-          const date = fiscalDateRange ?? getApiFrozenDate()
+          const date = fiscalDateRange ?? dataGetter().apiFrozenTimestamp
 
           if (!isFieldValid) {
             return equityRiskPremiumsFieldCellError
@@ -129,7 +129,7 @@ export const getPlugin = getApiFrozenDate => {
           const isFieldValid = field
             ? !!equityRiskPremiumFields.find(x => x === field)
             : true
-          const date = fiscalDateRange ?? getApiFrozenDate()
+          const date = fiscalDateRange ?? dataGetter().apiFrozenTimestamp
           const isFiscalDateRangeValid = this.getIsFiscalDateRangeValid(date)
 
           if (!isCountryISOValid) {
@@ -169,7 +169,7 @@ export const getPlugin = getApiFrozenDate => {
           const isFieldValid = field
             ? !!creditRatingInterestSpreadsFields.find(x => x === field)
             : true
-          const date = fiscalDateRange ?? getApiFrozenDate()
+          const date = fiscalDateRange ?? dataGetter().apiFrozenTimestamp
           const isFiscalDateRangeValid = this.getIsFiscalDateRangeValid(date)
 
           if (!isFieldValid) {

@@ -1,10 +1,24 @@
-import { standardizedMoment } from './spreadsheet/plugins/dataAnalysis/plugin'
 import {
   minCellError,
   maxCellError,
   mostLikelyMaxCellError,
   mostLikelyMinCellError
 } from './spreadsheet/plugins/statistics/cellErrors'
+import {
+  mean,
+  stdev
+} from '@tracktak/hyperformula/es/interpreter/plugin/3rdparty/jstat/jstat'
+
+export const standardizedMoment = (arr, n) => {
+  const mu = mean(arr)
+  const sigma = stdev(arr)
+  const length = arr.length
+  let skewSum = 0
+
+  for (let i = 0; i < length; i++) skewSum += Math.pow((arr[i] - mu) / sigma, n)
+
+  return skewSum / arr.length
+}
 
 export const triangularInvFormula = (random, lowerBound, upperBound, mode) => {
   if (upperBound <= lowerBound) {

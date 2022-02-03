@@ -27,7 +27,7 @@ export const translations = {
   }
 }
 
-export const getPlugin = creationDate => {
+export const getPlugin = dataGetter => {
   class Plugin extends FunctionPlugin {
     convertCurrencyCodeToSymbol(ast, state) {
       const metadata = this.metadata('CONVERT_CURRENCY_CODE_TO_SYMBOL')
@@ -47,7 +47,7 @@ export const getPlugin = creationDate => {
       const metadata = this.metadata('SPREADSHEET_CREATION_DATE')
 
       return this.runFunction(ast.args, state, metadata, () => {
-        const date = creationDate
+        const date = dataGetter().spreadsheetCreationDate
 
         return (
           timeToNumber({
