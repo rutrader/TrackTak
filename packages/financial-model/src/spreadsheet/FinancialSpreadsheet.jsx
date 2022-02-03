@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import tippy, { sticky } from 'tippy.js'
 import { HyperFormula } from '@tracktak/hyperformula'
 import { mapFromSerializedSheetsToSheets } from '@tracktak/powersheet'
 import { Box } from '@mui/material'
@@ -7,6 +6,7 @@ import buildPowersheet from './buildPowersheet'
 import registerSharedFunctions from './registerSharedFunctions'
 import * as autocompletePlugin from './plugins/autocomplete/plugin'
 import * as dataAnalysisPlugin from './plugins/dataAnalysis/plugin'
+import getNewFeatureTooltip from './getNewFeatureTooltip'
 
 const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
   const [spreadsheet, setSpreadsheet] = useState()
@@ -65,36 +65,18 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
     setSpreadsheet(spreadsheet)
 
     const tippyEl = document.createElement('div')
-    tippyEl.classList.add('tippy-new-feature')
+
     const functionHelperButton =
       spreadsheet.toolbar.iconElementsMap.functionHelper.button
 
-    const text = document.createElement('div')
-    text.textContent = 'New Formulas!'
-
     functionHelperButton.appendChild(tippyEl)
-    functionHelperButton.appendChild(text)
 
     const functionHelperClosed = localStorage.getItem('functionHelperClosed')
 
-    const instance = tippy(tippyEl, {
-      placement: 'top-start',
-      theme: 'new-feature',
-      offset: [0, 0],
-      content: text,
-      arrow: true,
-      interactive: false,
-      sticky: true,
-      plugins: [sticky],
-      showOnCreate: true,
-      hideOnClick: false,
-      onHide: () => {
-        return false
-      }
-    })
+    let newFeatureTooltip
 
-    if (functionHelperClosed === 'true') {
-      instance.destroy()
+    if (functionHelperClosed !== 'true') {
+      newFeatureTooltip = getNewFeatureTooltip(tippyEl, 'New Formulas!')
     }
 
     const clickEventListener = () => {
@@ -102,8 +84,8 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
         localStorage.setItem('functionHelperClosed', 'true')
       }
 
-      if (!instance.state.isDestroyed) {
-        instance.destroy()
+      if (newFeatureTooltip && !newFeatureTooltip.state.isDestroyed) {
+        newFeatureTooltip.destroy()
       }
     }
 
@@ -145,8 +127,8 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
 
       spreadsheet.destroy()
 
-      if (!instance.state.isDestroyed) {
-        instance.destroy()
+      if (newFeatureTooltip && !newFeatureTooltip.state.isDestroyed) {
+        newFeatureTooltip.destroy()
       }
     }
   }, [spreadsheetData])
