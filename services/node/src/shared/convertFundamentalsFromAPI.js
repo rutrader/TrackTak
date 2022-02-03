@@ -302,7 +302,7 @@ const convertFundamentalsFromAPI = (ticker, data) => {
           Object.keys(incomeStatement.quarterly).forEach(key => {
             const datum = incomeStatement.quarterly[key]
 
-            if (isNil(datum.totalRevenue)) {
+            if (isNil(datum.totalRevenue) || isNil(datum.currencySymbol)) {
               quarterlyDatesRemoved[key] = datum.date
             } else {
               quarterly.push(convertIncomeStatement(datum))
@@ -318,7 +318,7 @@ const convertFundamentalsFromAPI = (ticker, data) => {
           Object.keys(incomeStatement.yearly).forEach(key => {
             const datum = incomeStatement.yearly[key]
 
-            if (isNil(datum.totalRevenue)) {
+            if (isNil(datum.totalRevenue) || isNil(datum.currencySymbol)) {
               yearlyDatesRemoved[key] = datum.date
             } else {
               yearly.push(convertIncomeStatement(datum))
