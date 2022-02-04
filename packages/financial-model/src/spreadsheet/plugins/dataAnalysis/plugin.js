@@ -1,19 +1,15 @@
-import {
-  FunctionPlugin,
-  HyperFormula,
-  SimpleRangeValue
-} from '@tracktak/hyperformula'
+import { FunctionPlugin, SimpleRangeValue } from '@tracktak/hyperformula'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
-import { ArraySize } from '@tracktak/hyperformula/es/ArraySize'
 import {
   xMaxValueCellError,
   xMinValueCellError,
   yMaxValueCellError,
   yMinValueCellError,
-  varAssumptionValuesCellError
+  varAssumptionsCellError,
+  varCellReferencesCellError,
+  varAssumptionReferencesMatchCellError
 } from './cellErrors'
 import truncateDecimal from '../../shared/truncateDecimal'
-import { config, namedExpressions } from '../../hyperformulaConfig'
 import {
   mean,
   stdev,
@@ -27,9 +23,16 @@ import {
   skewnessFormula
 } from '../../../statsFormulas'
 import { wrap } from 'comlink'
+import { inferSizeMethod } from '../helpers'
 
 const sensitivityAnalysisWorker = wrap(
   new Worker(new URL('sensitivityAnalysisWorker.js', import.meta.url), {
+    type: 'module'
+  })
+)
+
+const monteCarloWorker = wrap(
+  new Worker(new URL('monteCarloWorker.js', import.meta.url), {
     type: 'module'
   })
 )
@@ -61,7 +64,7 @@ const getLowerUpperHalves = (midPoint, minPoint) => {
 export const implementedFunctions = {
   'DATA_ANALYSIS.SENSITIVITY_ANALYSIS': {
     method: 'sensitivityAnalysis',
-    arraySizeMethod: 'dataAnalysisSensitivitySize',
+    arraySizeMethod: 'dataAnalysisSize',
     inferReturnType: true,
     isAsyncMethod: true,
     parameters: [
@@ -90,10 +93,15 @@ export const implementedFunctions = {
   },
   'DATA_ANALYSIS.MONTE_CARLO_SIMULATION': {
     method: 'monteCarloSimulation',
-    arraySizeMethod: 'dataAnalysisMonteCarloSize',
+    arraySizeMethod: 'dataAnalysisSize',
+    inferReturnType: true,
+    isAsyncMethod: true,
     parameters: [
       {
         argumentType: ArgumentTypes.NUMBER
+      },
+      {
+        argumentType: ArgumentTypes.RANGE
       },
       {
         argumentType: ArgumentTypes.RANGE
@@ -118,8 +126,7 @@ export const translations = {
 export const getPlugin = dataGetter => {
   class Plugin extends FunctionPlugin {
     sensitivityAnalysis(ast, state) {
-      const spreadsheet = dataGetter().spreadsheet
-      const hyperformula = spreadsheet.hyperformula
+      const hyperformula = dataGetter().spreadsheet.hyperformula
       const metadata = this.metadata('DATA_ANALYSIS.SENSITIVITY_ANALYSIS')
 
       const intersectionCellReference =
@@ -214,87 +221,112 @@ export const getPlugin = dataGetter => {
     }
 
     monteCarloSimulation(ast, state) {
+      const hyperformula = dataGetter().spreadsheet.hyperformula
       const metadata = this.metadata('DATA_ANALYSIS.MONTE_CARLO_SIMULATION')
 
-      const intersectionCellAddress = ast.args[0].reference.toSimpleCellAddress(
-        state.formulaAddress
-      )
+      const intersectionCellReference =
+        ast.args[0].reference.toSimpleCellAddress(state.formulaAddress)
 
-      const varAssumptionCellAddresses = ast.args[1].args.map(arr => {
-        return arr.map(({ reference }) =>
-          reference.toSimpleCellAddress(state.formulaAddress)
-        )
-      })[0]
-
-      return this.runFunction(
+      return this.runAsyncFunction(
         ast.args,
         state,
         metadata,
-        (_, varAssumption, iteration) => {
-          const sheets = this.serialization.getAllSheetsSerialized()
-          HyperFormula.unregisterFunction(
-            'DATA_ANALYSIS.MONTE_CARLO_SIMULATION'
-          )
+        async (_, __, ___, iteration) => {
+          const varCellReferences = ast.args[1].args.map(arr => {
+            return arr.map(({ reference }) =>
+              reference.toSimpleCellAddress(state.formulaAddress)
+            )
+          })[0]
 
-          const hfInstance = HyperFormula.buildFromSheets(
-            sheets,
-            config,
-            namedExpressions
-          )[0]
+          const varAssumptionCellReferences = ast.args[2].args.map(arr => {
+            return arr.map(({ reference }) =>
+              reference.toSimpleCellAddress(state.formulaAddress)
+            )
+          })[0]
 
-          const varAssumptionData = varAssumption.rawData()
+          const isVarCellReferencesValid = ast.args[1].args.length === 1
+          const isVarAssumptionValid = ast.args[2].args.length === 1
+          const varCellReferenceAssumptionsMatch =
+            ast.args[1].args[0].length === ast.args[2].args[0].length
 
-          const isVarAssumptionValid = varAssumptionData.length === 1
+          if (!isVarCellReferencesValid) {
+            return varCellReferencesCellError
+          }
 
           if (!isVarAssumptionValid) {
-            return varAssumptionValuesCellError
+            return varAssumptionsCellError
           }
 
-          const output = []
-
-          for (let i = 1; i <= iteration; i++) {
-            varAssumptionCellAddresses.forEach(cellAddress => {
-              const cellValue = hfInstance.getCellFormula(cellAddress).cellValue
-
-              hfInstance.setCellContents(cellAddress, { cellValue })
-            })
-
-            const intersectionValue = hfInstance.dependencyGraph.getScalarValue(
-              intersectionCellAddress
-            ).cellValue
-
-            output.push(intersectionValue)
+          if (!varCellReferenceAssumptionsMatch) {
+            return varAssumptionReferencesMatchCellError
           }
+
+          const varAssumptionFormulaAddresses = varCellReferences.map(
+            (address, i) => {
+              const varAssumptionAddress = varAssumptionCellReferences[i]
+
+              return {
+                formula:
+                  hyperformula.getCellFormula(varAssumptionAddress).cellValue,
+                varAssumptionAddress,
+                address
+              }
+            }
+          )
+
+          const sheets = this.getSheetsFromAddress(
+            state.formulaAddress,
+            hyperformula
+          )
+
+          const { apiFrozenTimestamp, spreadsheetCreationDate } = dataGetter()
+
+          console.time('monte')
+
+          const intersectionPointValues =
+            await monteCarloWorker.monteCarloSimulation(
+              intersectionCellReference,
+              sheets,
+              apiFrozenTimestamp,
+              spreadsheetCreationDate,
+              varAssumptionFormulaAddresses,
+              iteration
+            )
+
+          console.timeEnd('monte')
 
           const n = 11
           const percentiles = Array.from(
             Array(n),
             (_, number) => number / 10
           ).map(percent => {
-            return [percent * 100 + '%', percentile(output, percent, false)]
+            return [
+              percent * 100 + '%',
+              percentile(intersectionPointValues, percent, false)
+            ]
           })
 
-          const trialsOutput = output.length
-          const meanOutput = mean(output)
-          const medianOutput = medianFormula(output)
-          const min = Math.min(...output)
-          const max = Math.max(...output)
-          const stddevOutput = stdev(output)
-          const varianceOutput = variance(output)
-          const skewnessOutput = skewnessFormula(output)
-          const kurtosisOutput = kurtosisFormula(output)
-          const coefficientOfVariationOutput =
-            coefficientOfVariationFormula(output)
-          const stDevErrorOfMeanOutput = stDevErrorOfMeanFormula(output)
-          const upperLimitOutput = mean(output) + getConfidenceInterval(output)
-          const lowerLimitOutput = mean(output) - getConfidenceInterval(output)
-
-          hfInstance.destroy()
-
-          HyperFormula.registerFunction(
-            'DATA_ANALYSIS.MONTE_CARLO_SIMULATION',
-            Plugin
+          const trialsOutput = intersectionPointValues.length
+          const meanOutput = mean(intersectionPointValues)
+          const medianOutput = medianFormula(intersectionPointValues)
+          const min = Math.min(...intersectionPointValues)
+          const max = Math.max(...intersectionPointValues)
+          const stddevOutput = stdev(intersectionPointValues)
+          const varianceOutput = variance(intersectionPointValues)
+          const skewnessOutput = skewnessFormula(intersectionPointValues)
+          const kurtosisOutput = kurtosisFormula(intersectionPointValues)
+          const coefficientOfVariationOutput = coefficientOfVariationFormula(
+            intersectionPointValues
           )
+          const stDevErrorOfMeanOutput = stDevErrorOfMeanFormula(
+            intersectionPointValues
+          )
+          const upperLimitOutput =
+            mean(intersectionPointValues) +
+            getConfidenceInterval(intersectionPointValues)
+          const lowerLimitOutput =
+            mean(intersectionPointValues) -
+            getConfidenceInterval(intersectionPointValues)
 
           return SimpleRangeValue.onlyValues([
             ['Statistic', 'Forecast values'],
@@ -357,12 +389,8 @@ export const getPlugin = dataGetter => {
       return sheets
     }
 
-    dataAnalysisSensitivitySize() {
-      return new ArraySize(6, 6)
-    }
-
-    dataAnalysisMonteCarloSize() {
-      return new ArraySize(27, 27)
+    dataAnalysisSize(ast, state) {
+      return inferSizeMethod(ast, state)
     }
   }
 

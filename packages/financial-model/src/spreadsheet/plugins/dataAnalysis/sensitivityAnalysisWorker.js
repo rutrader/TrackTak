@@ -4,7 +4,7 @@ import { config, namedExpressions } from '../../hyperformulaConfig'
 import registerSharedFunctions from '../../registerSharedFunctions'
 import { expose } from 'comlink'
 
-const pluginWorker = {
+const sensitivityAnalysisWorker = {
   sensitivityAnalysis: (
     intersectionCellReference,
     sheets,
@@ -75,4 +75,4 @@ const pluginWorker = {
   }
 }
 
-expose(pluginWorker)
+expose(sensitivityAnalysisWorker)
