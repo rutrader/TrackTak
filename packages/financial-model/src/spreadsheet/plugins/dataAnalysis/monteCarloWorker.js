@@ -5,7 +5,7 @@ import registerSharedFunctions from '../../registerSharedFunctions'
 import { expose } from 'comlink'
 
 const monteCarloWorker = {
-  monteCarloSimulation: (
+  monteCarloSimulation: async (
     intersectionCellReference,
     sheets,
     apiFrozenTimestamp,
@@ -22,67 +22,44 @@ const monteCarloWorker = {
 
     registerSharedFunctions(dataGetter)
 
-    const allPromises = []
+    const [offscreenHyperformulaInstance, enginePromise] =
+      HyperFormula.buildFromSheets(sheets, offScreenConfig, namedExpressions)
+
+    await enginePromise
+
+    const intersectionPointValues = []
 
     for (let i = 1; i <= iteration; i++) {
-      // TODO: Fix issue where we can't use buildEmpty
-      // and then set cause not resolving cells
-      const [offscreenHyperformulaInstance, enginePromise] =
-        HyperFormula.buildFromSheets(sheets, offScreenConfig, namedExpressions)
+      for (const {
+        address,
+        varAssumptionAddress,
+        formula
+      } of varAssumptionFormulaAddresses) {
+        const [cellValue, formulaPromise] =
+          offscreenHyperformulaInstance.calculateFormula(
+            formula,
+            varAssumptionAddress.sheet
+          )
 
-      const batchPromise = offscreenHyperformulaInstance.batch(() => {
-        varAssumptionFormulaAddresses.forEach(
-          ({ address, varAssumptionAddress, formula }) => {
-            const [cellValue, formulaPromise] =
-              offscreenHyperformulaInstance.calculateFormula(
-                formula,
-                varAssumptionAddress.sheet
-              )
+        if (formulaPromise) {
+          await formulaPromise
+        }
 
-            if (formulaPromise) {
-              const promise = new Promise((resolve, reject) => {
-                formulaPromise
-                  .then(cellValue => {
-                    offscreenHyperformulaInstance.setCellContents(address, {
-                      cellValue
-                    })
+        await offscreenHyperformulaInstance.setCellContents(address, {
+          cellValue
+        })[1]
+      }
 
-                    resolve()
-                  })
-                  .catch(reject)
-              })
+      const intersectionPointValue = offscreenHyperformulaInstance.getCellValue(
+        intersectionCellReference
+      ).cellValue
 
-              return promise
-            }
-
-            offscreenHyperformulaInstance.setCellContents(address, {
-              cellValue
-            })
-
-            return Promise.resolve()
-          }
-        )
-      })[1]
-
-      const promise = new Promise((resolve, reject) => {
-        Promise.all([batchPromise, enginePromise])
-          .then(() => {
-            const intersectionPointValue =
-              offscreenHyperformulaInstance.getCellValue(
-                intersectionCellReference
-              ).cellValue
-
-            offscreenHyperformulaInstance.destroy()
-
-            resolve(intersectionPointValue)
-          })
-          .catch(reject)
-      })
-
-      allPromises.push(promise)
+      intersectionPointValues.push(intersectionPointValue)
     }
 
-    return Promise.all(allPromises)
+    offscreenHyperformulaInstance.destroy()
+
+    return intersectionPointValues
   }
 }
 

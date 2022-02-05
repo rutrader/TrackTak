@@ -24,6 +24,7 @@ import {
 } from '../../../statsFormulas'
 import { wrap } from 'comlink'
 import { inferSizeMethod } from '../helpers'
+import { isSimpleCellAddress } from '@tracktak/hyperformula/es/Cell'
 
 const sensitivityAnalysisWorker = wrap(
   new Worker(new URL('sensitivityAnalysisWorker.js', import.meta.url), {
@@ -281,8 +282,6 @@ export const getPlugin = dataGetter => {
 
           const { apiFrozenTimestamp, spreadsheetCreationDate } = dataGetter()
 
-          console.time('monte')
-
           const intersectionPointValues =
             await monteCarloWorker.monteCarloSimulation(
               intersectionCellReference,
@@ -292,8 +291,6 @@ export const getPlugin = dataGetter => {
               varAssumptionFormulaAddresses,
               iteration
             )
-
-          console.timeEnd('monte')
 
           const n = 11
           const percentiles = Array.from(
@@ -368,21 +365,23 @@ export const getPlugin = dataGetter => {
       })
 
       cellPrecedents.forEach(address => {
-        const sheetName = hyperformula.getSheetName(address.sheet)
+        if (isSimpleCellAddress(address)) {
+          const sheetName = hyperformula.getSheetName(address.sheet)
 
-        if (sheets[sheetName]) {
-          // cellArray addresses do not contain values
-          let cell = hyperformula.isCellPartOfArray(address)
-            ? hyperformula.getCellValue(address)
-            : hyperformula.getCellSerialized(address)
+          if (sheets[sheetName]) {
+            // cellArray addresses do not contain values
+            let cell = hyperformula.isCellPartOfArray(address)
+              ? hyperformula.getCellValue(address)
+              : hyperformula.getCellSerialized(address)
 
-          const cells = sheets[sheetName].cells
+            const cells = sheets[sheetName].cells
 
-          if (!cells[address.row]) {
-            cells[address.row] = []
+            if (!cells[address.row]) {
+              cells[address.row] = []
+            }
+
+            cells[address.row][address.col] = cell
           }
-
-          cells[address.row][address.col] = cell
         }
       })
 
