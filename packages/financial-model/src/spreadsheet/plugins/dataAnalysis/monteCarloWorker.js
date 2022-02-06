@@ -1,4 +1,3 @@
-import 'regenerator-runtime/runtime'
 import { CachedGraphType, HyperFormula } from '@tracktak/hyperformula'
 import { offScreenConfig, namedExpressions } from '../../hyperformulaConfig'
 import registerSharedFunctions from '../../registerSharedFunctions'

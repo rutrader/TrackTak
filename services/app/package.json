@@ -39,19 +39,11 @@
     "react-router-dom": "^6.0.2",
     "redux": "^4.1.2"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all",
-      "not ios_saf < 13"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
+  "browserslist": [
+    "defaults",
+    "not IE 11",
+    "maintained node versions"
+  ],
   "pwaManifest": {
     "name": "tracktak.com app",
     "shortName": "financial modelling | tracktak.com",
