@@ -1,5 +1,5 @@
 import 'regenerator-runtime/runtime'
-import { HyperFormula } from '@tracktak/hyperformula'
+import { CachedGraphType, HyperFormula } from '@tracktak/hyperformula'
 import { offScreenConfig, namedExpressions } from '../../hyperformulaConfig'
 import registerSharedFunctions from '../../registerSharedFunctions'
 import { expose } from 'comlink'
@@ -20,16 +20,20 @@ const monteCarloWorker = {
       }
     }
 
-    registerSharedFunctions(dataGetter)
+    const plugins = registerSharedFunctions(dataGetter)
 
     const [offscreenHyperformulaInstance, enginePromise] =
       HyperFormula.buildFromSheets(sheets, offScreenConfig, namedExpressions)
 
     await enginePromise
 
+    offscreenHyperformulaInstance.useCachedGraph(CachedGraphType.SUB_GRAPH)
+
     const intersectionPointValues = []
 
     for (let i = 1; i <= iteration; i++) {
+      offscreenHyperformulaInstance.suspendEvaluation()
+
       for (const {
         address,
         varAssumptionAddress,
@@ -50,6 +54,8 @@ const monteCarloWorker = {
         })[1]
       }
 
+      offscreenHyperformulaInstance.resumeEvaluation()
+
       const intersectionPointValue = offscreenHyperformulaInstance.getCellValue(
         intersectionCellReference
       ).cellValue
@@ -58,6 +64,10 @@ const monteCarloWorker = {
     }
 
     offscreenHyperformulaInstance.destroy()
+
+    plugins.forEach(({ plugin }) => {
+      HyperFormula.unregisterFunctionPlugin(plugin)
+    })
 
     return intersectionPointValues
   }

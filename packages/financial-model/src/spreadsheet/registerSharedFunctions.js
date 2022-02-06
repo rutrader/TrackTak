@@ -13,16 +13,21 @@ const registerSharedFunctions = dataGetter => {
     fxPlugin,
     marketPlugin,
     helperPlugin
-  ]
-
-  plugins.forEach(({ getPlugin, translations }) => {
-    HyperFormula.registerFunctionPlugin(getPlugin(dataGetter), translations)
+  ].map(({ getPlugin, translations }) => {
+    return {
+      plugin: getPlugin(dataGetter),
+      translations
+    }
   })
 
-  HyperFormula.registerFunctionPlugin(
-    statisticsPlugin.Plugin,
-    statisticsPlugin.translations
-  )
+  plugins.push({
+    plugin: statisticsPlugin.Plugin,
+    translations: statisticsPlugin.translations
+  })
+
+  plugins.forEach(({ plugin, translations }) => {
+    HyperFormula.registerFunctionPlugin(plugin, translations)
+  })
 
   return plugins
 }

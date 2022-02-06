@@ -1,5 +1,5 @@
 import 'regenerator-runtime/runtime'
-import { HyperFormula } from '@tracktak/hyperformula'
+import { CachedGraphType, HyperFormula } from '@tracktak/hyperformula'
 import { config, namedExpressions } from '../../hyperformulaConfig'
 import registerSharedFunctions from '../../registerSharedFunctions'
 import { expose } from 'comlink'
@@ -41,10 +41,14 @@ const sensitivityAnalysisWorker = {
 
     await enginePromise
 
+    offscreenHyperformulaInstance.useCachedGraph(CachedGraphType.SUB_GRAPH)
+
     const intersectionPointValues = []
 
     for (const xValue of xRangeValues) {
       const intersectionPointValuesRow = []
+
+      offscreenHyperformulaInstance.suspendEvaluation()
 
       await offscreenHyperformulaInstance.setCellContents(xAddress, {
         cellValue: xValue
@@ -54,6 +58,8 @@ const sensitivityAnalysisWorker = {
         await offscreenHyperformulaInstance.setCellContents(yAddress, {
           cellValue: yValue
         })[1]
+
+        offscreenHyperformulaInstance.resumeEvaluation()
 
         const intersectionPointValue =
           offscreenHyperformulaInstance.getCellValue(
