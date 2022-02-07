@@ -1,4 +1,8 @@
-import { CachedGraphType, HyperFormula } from '@tracktak/hyperformula'
+import {
+  CachedGraphType,
+  DetailedCellError,
+  HyperFormula
+} from '@tracktak/hyperformula'
 import { offScreenConfig, namedExpressions } from '../../hyperformulaConfig'
 import registerSharedFunctions from '../../registerSharedFunctions'
 import { expose } from 'comlink'
@@ -38,7 +42,7 @@ const monteCarloWorker = {
         varAssumptionAddress,
         formula
       } of varAssumptionFormulaAddresses) {
-        const [cellValue, formulaPromise] =
+        let [cellValue, formulaPromise] =
           offscreenHyperformulaInstance.calculateFormula(
             formula,
             varAssumptionAddress.sheet
@@ -46,6 +50,10 @@ const monteCarloWorker = {
 
         if (formulaPromise) {
           await formulaPromise
+        }
+
+        if (cellValue instanceof DetailedCellError) {
+          return cellValue
         }
 
         await offscreenHyperformulaInstance.setCellContents(address, {

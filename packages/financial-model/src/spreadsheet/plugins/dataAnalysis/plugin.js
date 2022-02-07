@@ -1,4 +1,8 @@
-import { FunctionPlugin, SimpleRangeValue } from '@tracktak/hyperformula'
+import {
+  CellError,
+  FunctionPlugin,
+  SimpleRangeValue
+} from '@tracktak/hyperformula'
 import { ArgumentTypes } from '@tracktak/hyperformula/es/interpreter/plugin/FunctionPlugin'
 import {
   xMaxValueCellError,
@@ -130,23 +134,23 @@ export const getPlugin = dataGetter => {
       const hyperformula = dataGetter().spreadsheet.hyperformula
       const metadata = this.metadata('DATA_ANALYSIS.SENSITIVITY_ANALYSIS')
 
-      const intersectionCellReference =
-        ast.args[0].reference.toSimpleCellAddress(state.formulaAddress)
-
-      const xVarCellReference = ast.args[1].reference.toSimpleCellAddress(
-        state.formulaAddress
-      )
-      const yVarCellReference = ast.args[2].reference.toSimpleCellAddress(
-        state.formulaAddress
-      )
-      const xSheetName = hyperformula.getSheetName(xVarCellReference.sheet)
-      const ySheetName = hyperformula.getSheetName(yVarCellReference.sheet)
-
       return this.runAsyncFunction(
         ast.args,
         state,
         metadata,
         async (_, xVar, yVar, xMin, xMax, yMin, yMax) => {
+          const intersectionCellReference =
+            ast.args[0].reference.toSimpleCellAddress(state.formulaAddress)
+
+          const xVarCellReference = ast.args[1].reference.toSimpleCellAddress(
+            state.formulaAddress
+          )
+          const yVarCellReference = ast.args[2].reference.toSimpleCellAddress(
+            state.formulaAddress
+          )
+          const xSheetName = hyperformula.getSheetName(xVarCellReference.sheet)
+          const ySheetName = hyperformula.getSheetName(yVarCellReference.sheet)
+
           const isXMinValid = xVar > xMin
           const isXMaxValid = xVar < xMax
 
@@ -292,6 +296,12 @@ export const getPlugin = dataGetter => {
               iteration
             )
 
+          if (!Array.isArray(intersectionPointValues)) {
+            const { type, message } = intersectionPointValues
+
+            return new CellError(type, message)
+          }
+
           const n = 11
           const percentiles = Array.from(
             Array(n),
@@ -325,8 +335,8 @@ export const getPlugin = dataGetter => {
             mean(intersectionPointValues) -
             getConfidenceInterval(intersectionPointValues)
 
-          return SimpleRangeValue.onlyValues([
-            ['Statistic', 'Forecast values'],
+          const values = [
+            ['', 'Output Info'],
             ['Trials', trialsOutput],
             ['Mean', meanOutput],
             ['Median', medianOutput],
@@ -339,11 +349,16 @@ export const getPlugin = dataGetter => {
             ['Coeff. of Variation', coefficientOfVariationOutput],
             ['Mean Standard Error', stDevErrorOfMeanOutput],
             ['@95% Upper Limit', upperLimitOutput],
-            ['@95% Lower Limit', lowerLimitOutput],
-            [''],
-            ['Percentile', 'Forecast values'],
-            ...percentiles
-          ])
+            ['@95% Lower Limit', lowerLimitOutput]
+          ]
+
+          percentiles.unshift(['Percentile', 'Forecasted values'])
+
+          percentiles.forEach((arr, i) => {
+            values[i] = [...values[i], ...arr]
+          })
+
+          return SimpleRangeValue.onlyValues(values)
         }
       )
     }
