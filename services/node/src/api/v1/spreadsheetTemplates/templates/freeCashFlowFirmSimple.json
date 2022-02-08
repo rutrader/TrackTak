@@ -469,10 +469,7 @@
                   }
               },
               "14_0": {
-                  "cellValue": "Shares Outstanding",
-                  "metadata": {
-                      "textFormatPattern": ""
-                  }
+                  "cellValue": "Shares Outstanding"
               },
               "14_1": {
                   "cellValue": "='Helper Data'!$B$6",
@@ -19452,7 +19449,7 @@
                   "cellValue": "D2/D"
               },
               "11_5": {
-                  "cellValue": "17.44%\r",
+                  "cellValue": "17.44%",
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -19485,7 +19482,7 @@
                   "cellValue": "C2/C"
               },
               "12_5": {
-                  "cellValue": "13.09%\r",
+                  "cellValue": "13.09%",
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -19518,7 +19515,7 @@
                   "cellValue": "Ca2/CC"
               },
               "13_5": {
-                  "cellValue": "9.97%\r",
+                  "cellValue": "9.97%",
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -19551,7 +19548,7 @@
                   "cellValue": "Caa/CCC"
               },
               "14_5": {
-                  "cellValue": "9.46%\r",
+                  "cellValue": "9.46%",
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -19584,7 +19581,7 @@
                   "cellValue": "B3/B-"
               },
               "15_5": {
-                  "cellValue": "5.94%\r",
+                  "cellValue": "5.94%",
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -19617,7 +19614,7 @@
                   "cellValue": "B2/B"
               },
               "16_5": {
-                  "cellValue": "4.86%\r",
+                  "cellValue": "4.86%",
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -19650,7 +19647,7 @@
                   "cellValue": "B1/B+"
               },
               "17_5": {
-                  "cellValue": "4.05%\r",
+                  "cellValue": "4.05%",
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -19683,7 +19680,7 @@
                   "cellValue": "Ba2/BB"
               },
               "18_5": {
-                  "cellValue": "2.77%\r",
+                  "cellValue": "2.77%",
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -19716,7 +19713,7 @@
                   "cellValue": "Ba1/BB+"
               },
               "19_5": {
-                  "cellValue": "2.31%\r",
+                  "cellValue": "2.31%",
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -19749,7 +19746,7 @@
                   "cellValue": "Baa2/BBB"
               },
               "20_5": {
-                  "cellValue": "1.71%\r",
+                  "cellValue": "1.71%",
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -19782,7 +19779,7 @@
                   "cellValue": "A3/A-"
               },
               "21_5": {
-                  "cellValue": "1.33%\r",
+                  "cellValue": "1.33%",
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -19815,7 +19812,7 @@
                   "cellValue": "A2/A"
               },
               "22_5": {
-                  "cellValue": "1.18%\r",
+                  "cellValue": "1.18%",
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -19848,7 +19845,7 @@
                   "cellValue": "A1/A+"
               },
               "23_5": {
-                  "cellValue": "1.07%\r",
+                  "cellValue": "1.07%",
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -19881,7 +19878,7 @@
                   "cellValue": "Aa2/AA"
               },
               "24_5": {
-                  "cellValue": "0.85%\r",
+                  "cellValue": "0.85%",
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
@@ -19908,7 +19905,7 @@
                   "cellValue": "Aaa/AAA"
               },
               "25_5": {
-                  "cellValue": "0.69%\r",
+                  "cellValue": "0.69%",
                   "metadata": {
                       "textFormatPattern": "0.00%"
                   }
