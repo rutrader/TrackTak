@@ -43,6 +43,9 @@ const getToolbarElementIcons = toolbar => {
       ]
     },
     {
+      elements: [toolbar.iconElementsMap.export.buttonContainer]
+    },
+    {
       elements: [toolbar.iconElementsMap.autosave.buttonContainer]
     }
   ]

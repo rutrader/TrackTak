@@ -48,7 +48,7 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
       ...registerSharedFunctions(dataGetter)
     ]
 
-    const spreadsheet = buildPowersheet(sheets)
+    const spreadsheet = buildPowersheet(sheets, allPlugins)
 
     spreadsheet.hyperformula.batch(() => {
       for (const sheetName in sheets) {
@@ -151,16 +151,16 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
     if (containerEl) {
       containerEl.appendChild(spreadsheet.spreadsheetEl)
 
-      const tippyNewTagEl = document.createElement('div')
+      // const tippyNewTagEl = document.createElement('div')
 
-      const sensitivityAnalysisId = document.getElementById(
-        'DATA_ANALYSIS.SENSITIVITY_ANALYSIS'
-      )
-      sensitivityAnalysisId.classList.add('tippy-new-tag')
+      // const sensitivityAnalysisId = document.getElementById(
+      //   'DATA_ANALYSIS.SENSITIVITY_ANALYSIS'
+      // )
+      // sensitivityAnalysisId.classList.add('tippy-new-tag')
 
-      sensitivityAnalysisId.appendChild(tippyNewTagEl)
+      // sensitivityAnalysisId.appendChild(tippyNewTagEl)
 
-      getNewFeatureTooltip(tippyNewTagEl, 'New!', { placement: 'top-end' })
+      // getNewFeatureTooltip(tippyNewTagEl, 'New!', { placement: 'top-end' })
 
       spreadsheet.updateSize()
     }

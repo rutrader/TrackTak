@@ -6,13 +6,14 @@ import {
   Toolbar,
   FormulaBar,
   BottomBar,
-  FunctionHelper
+  FunctionHelper,
+  Exporter
 } from '@tracktak/powersheet'
 import getToolbarActionGroups from './getToolbarActionGroups'
 import { config, namedExpressions } from './hyperformulaConfig'
 import tracktakFormulaMetadataJSON from '../tracktakFormulaMetadata.json'
 
-const buildPowersheet = sheets => {
+const buildPowersheet = (sheets, plugins) => {
   const sheetsMetadata = {}
 
   for (const sheetName in sheets) {
@@ -29,7 +30,7 @@ const buildPowersheet = sheets => {
     config,
     namedExpressions
   )
-
+  const exporter = new Exporter(plugins)
   const functionHelper = new FunctionHelper()
   const toolbar = new Toolbar()
   const formulaBar = new FormulaBar()
@@ -37,6 +38,7 @@ const buildPowersheet = sheets => {
 
   const spreadsheet = new Spreadsheet({
     hyperformula,
+    exporter,
     toolbar,
     formulaBar,
     bottomBar,
