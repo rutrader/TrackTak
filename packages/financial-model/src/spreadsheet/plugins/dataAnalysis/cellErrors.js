@@ -25,6 +25,16 @@ export const intersectionCellReferenceError = new CellError(
   'intersectionCellReference is not valid. This parameter accepts a cell reference type. E.g. A1'
 )
 
+export const xVarCellReferencesCellError = new CellError(
+  ErrorType.VALUE,
+  'xVar is not valid. This parameter accepts a cell reference type. E.g. A1'
+)
+
+export const yVarCellReferencesCellError = new CellError(
+  ErrorType.VALUE,
+  'yVar is not valid. This parameter accepts a cell reference type. E.g. A1'
+)
+
 export const varCellReferencesCellError = new CellError(
   ErrorType.VALUE,
   'varCellReferences are not valid. This parameter accepts a single array of type cell references. E.g. {A1,A2,...etc.}.'

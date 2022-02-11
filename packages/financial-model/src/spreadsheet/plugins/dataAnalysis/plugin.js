@@ -13,7 +13,9 @@ import {
   varCellReferencesCellError,
   varAssumptionReferencesMatchCellError,
   intersectionCellReferenceError,
-  getVarAssumptionNotValidTypeError
+  getVarAssumptionNotValidTypeError,
+  xVarCellReferencesCellError,
+  yVarCellReferencesCellError
 } from './cellErrors'
 import truncateDecimal from '../../shared/truncateDecimal'
 import {
@@ -141,6 +143,25 @@ export const getPlugin = dataGetter => {
         state,
         metadata,
         async (_, xVar, yVar, xMin, xMax, yMin, yMax) => {
+          const isIntersectionCellReferenceValid =
+            ast.args[0].type === 'CELL_REFERENCE'
+
+          const isXVarCellReferenceValid = ast.args[1].type === 'CELL_REFERENCE'
+
+          const isYVarCellReferenceValid = ast.args[2].type === 'CELL_REFERENCE'
+
+          if (!isIntersectionCellReferenceValid) {
+            return intersectionCellReferenceError
+          }
+
+          if (!isXVarCellReferenceValid) {
+            return xVarCellReferencesCellError
+          }
+
+          if (!isYVarCellReferenceValid) {
+            return yVarCellReferencesCellError
+          }
+
           const intersectionCellReference =
             ast.args[0].reference.toSimpleCellAddress(state.formulaAddress)
 
