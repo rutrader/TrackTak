@@ -37,14 +37,6 @@ const monteCarloWorker = {
     this.varAssumptionsInstance.useCachedGraph(CachedGraphType.SUB_GRAPH)
     this.calculationInstance.useCachedGraph(CachedGraphType.SUB_GRAPH)
   },
-  destroy() {
-    this.varAssumptionsInstance.destroy()
-    this.calculationInstance.destroy()
-
-    this.plugins.forEach(({ plugin }) => {
-      HyperFormula.unregisterFunctionPlugin(plugin)
-    })
-  },
   async calculate(
     intersectionCellReference,
     varAssumptionFormulaAddresses,
