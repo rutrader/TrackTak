@@ -1079,9 +1079,9 @@
     "headerDescription": "Determines how different values of an independent variable affect a particular dependent variable under a given set of assumptions.",
     "type": "Data Analysis",
     "parameters": [
-      "intersection_point",
-      "x_var",
-      "y_var",
+      "intersectionPoint",
+      "xVar",
+      "yVar",
       "xMin",
       "xMax",
       "yMin",
@@ -1092,19 +1092,19 @@
     ],
     "codeSyntaxElements": [
       {
-        "codeSyntax": "DATA_ANALYSIS.SENSITIVITY_ANALYSIS(intersection_point, x_var, y_var, xMin, xMax, yMin, yMax)",
+        "codeSyntax": "DATA_ANALYSIS.SENSITIVITY_ANALYSIS(intersectionPoint, xVar, yVar, xMin, xMax, yMin, yMax)",
         "values": [
           {
-            "syntaxName": "intersection_point",
-            "description": "The outcome value. This must be a cell reference and not a scalar value. We can determine how changes in variables affect the outcome value (intersection_point), for example the estimated value of a stock."
+            "syntaxName": "intersectionPoint",
+            "description": "The outcome value. This must be a cell reference. We can determine how changes in variables affect the outcome value (intersection_point). Example: Estimated Price per Share (A1)."
           },
           {
-            "syntaxName": "x_var",
-            "description": "1st input variable. This must be a cell reference and not a scalar value. Example: Cost of Capital (WACC) cell."
+            "syntaxName": "xVar",
+            "description": "1st input variable. This must be a cell reference. Example: Cost of Capital (WACC) cell (A2)."
           },
           {
-            "syntaxName": "y_var",
-            "description": "2nd input variable. This must be a cell reference and not a scalar value. Example: Growth Rates cell."
+            "syntaxName": "yVar",
+            "description": "2nd input variable. This must be a cell reference. Example: Growth Rates cell (A3)."
           },
           {
             "syntaxName": "xMin",
@@ -1131,30 +1131,30 @@
     "header": "DATA_ANALYSIS.MONTE_CARLO_SIMULATION",
     "headerDescription": "Is a model used to predict the probability of different outcomes when the intervention of randomness is present.",
     "type": "Data Analysis",
-    "parameters": ["intersection_point", "{cell_references}", "{var_assumptions}", "[iteration]"],
+    "parameters": ["intersectionPoint", "{cellReferences}", "{varAssumptions}", "[iteration]"],
     "codeSyntaxUsage": [
-      "=DATA_ANALYSIS.MONTE_CARLO_SIMULATION(B3,{B1,B2})",
-      "=DATA_ANALYSIS.MONTE_CARLO_SIMULATION(A3,{A1},100)"
+      "=DATA_ANALYSIS.MONTE_CARLO_SIMULATION(B3,{A1, A2}, {B1, B2})",
+      "=DATA_ANALYSIS.MONTE_CARLO_SIMULATION(A3,{A1, A2}, {B1, B2}, 1000)"
     ],
     "codeSyntaxElements": [
       {
-        "codeSyntax": "DATA_ANALYSIS.MONTE_CARLO_SIMULATION(intersection_point, {cell_references}, {var_assumptions}, [iteration])",
+        "codeSyntax": "DATA_ANALYSIS.MONTE_CARLO_SIMULATION(intersectionPoint, {cellReferences}, {varAssumptions}, [iteration])",
         "values": [
           {
-            "syntaxName": "intersection_point",
-            "description": "The point of intersection (forecast value) of the assumptions that links the desired output."
+            "syntaxName": "intersectionPoint",
+            "description": "The outcome value. This must be a cell reference. We can determine how changes in variables affect the outcome value (intersection_point). Example: Estimated Price per Share (A1)."
           },
           {
-            "syntaxName": "{cell_references}",
-            "description": "Array of cell references."
+            "syntaxName": "{cellReferences}",
+            "description": "Array of cell references. These are the cells that will be replaced in each iteration by the varAssumptions. Example: Cost of Capital (WACC) and Growth Rates cell {A2, A3}."
           },
           {
-            "syntaxName": "{var_assumptions}",
-            "description": "Array of assumptions."
+            "syntaxName": "{varAssumptions}",
+            "description": "Array of cell references that must contain formulas. These are the formulas that will replace the matching {cellReferences}. You will probably want the =STATISTICS.* formulas for these values. Example: {B2, B3} which contain the values =STATISTICS.NORMAL_INVERSE_RANDOM() and =STATISTICS.TRIANGULAR_INVERSE_RANDOM() respectively."
           },
           {
             "syntaxName": "[iteration]",
-            "description": "[OPTIONAL]. Sets the number of trials to run."
+            "description": "[OPTIONAL]. Sets the number of trials to run. Defaults to 10,000."
           }
         ]
       }
@@ -1451,8 +1451,7 @@
     "type": "Market",
     "parameters": ["governmentBondRate", "inflationRate"],
     "codeSyntaxUsage": [
-      "=MARKET.RISK_FREE_RATE(1.2,0.5)",
-      "=MARKET.RISK_FREE_RATE(D4,D5)"
+      "=MARKET.RISK_FREE_RATE(1.2,0.5)"
     ],
     "codeSyntaxElements": [
       {
@@ -1475,21 +1474,20 @@
     "header": "STATISTICS.NORMAL_INVERSE_RANDOM",
     "headerDescription": "Defines the mean (expected value) and a standard deviation to describe the variation about the mean. Describes uncertain variables such as inflation, interest, growth rates or prices of fuel, electricity, rent and etc.",
     "type": "Statistics",
-    "parameters": ["mean", "standard_deviation"],
+    "parameters": ["mean", "standardDeviation"],
     "codeSyntaxUsage": [
-      "=STATISTICS.NORMAL_INVERSE_RANDOM(B1,B2)",
       "=STATISTICS.NORMAL_INVERSE_RANDOM(20,3)"
     ],
     "codeSyntaxElements": [
       {
-        "codeSyntax": "STATISTICS.NORMAL_INVERSE_RANDOM(mean, standard_deviation)",
+        "codeSyntax": "STATISTICS.NORMAL_INVERSE_RANDOM(mean, standardDeviation)",
         "values": [
           {
             "syntaxName": "mean",
             "description": "Expected value that is most likely to occur."
           },
           {
-            "syntaxName": "standard_deviation",
+            "syntaxName": "standardDeviation",
             "description": "Value that is more likely to deviate from the mean value."
           }
         ]
@@ -1503,7 +1501,6 @@
     "type": "Statistics",
     "parameters": ["min", "max"],
     "codeSyntaxUsage": [
-      "=STATISTICS.UNIFORM_INVERSE_RANDOM(A1,B2)",
       "=STATISTICS.UNIFORM_INVERSE_RANDOM(2,10)"
     ],
     "codeSyntaxElements": [
@@ -1527,21 +1524,20 @@
     "header": "STATISTICS.TRIANGULAR_INVERSE_RANDOM",
     "headerDescription": "Defines a minimum, maximum and most likely value, also referred to as peak value. It is useful with limited data in situations such as sales performance, work hours, inventory numbers, and marketing costs.",
     "type": "Statistics",
-    "parameters": ["min", "most_likely", "max"],
+    "parameters": ["min", "mostLikely", "max"],
     "codeSyntaxUsage": [
-      "=STATISTICS.TRIANGULAR_INVERSE_RANDOM(A1,A2,A3)",
       "=STATISTICS.TRIANGULAR_INVERSE_RANDOM(2000,6000,7500)"
     ],
     "codeSyntaxElements": [
       {
-        "codeSyntax": "STATISTICS.TRIANGULAR_INVERSE_RANDOM(min, most_likely, max)",
+        "codeSyntax": "STATISTICS.TRIANGULAR_INVERSE_RANDOM(min, mostLikely, max)",
         "values": [
           {
             "syntaxName": "min",
             "description": "Minimum fixed value."
           },
           {
-            "syntaxName": "most_likely",
+            "syntaxName": "mostLikely",
             "description": "Most likely value to occur in this min and max range."
           },
           {
@@ -1557,21 +1553,20 @@
     "header": "STATISTICS.LOGNORMAL_INVERSE_RANDOM",
     "headerDescription": "Values are positively skewed to the right and don't go below zero but have unlimited positive potential. It is used in determining stock prices, real estate prices, pay scales, and oil reservoir size.",
     "type": "Statistics",
-    "parameters": ["mean", "standard_deviation"],
+    "parameters": ["mean", "standardDeviation"],
     "codeSyntaxUsage": [
-      "=STATISTICS.LOGNORMAL_INVERSE_RANDOM(D1,D2)",
       "=STATISTICS.LOGNORMAL_INVERSE_RANDOM(10,2)"
     ],
     "codeSyntaxElements": [
       {
-        "codeSyntax": "STATISTICS.LOGNORMAL_INVERSE_RANDOM(mean, standard_deviation)",
+        "codeSyntax": "STATISTICS.LOGNORMAL_INVERSE_RANDOM(mean, standardDeviation)",
         "values": [
           {
             "syntaxName": "mean",
             "description": "Mean of the Ln(x), where Ln(x) is normally distributed."
           },
           {
-            "syntaxName": "standard_deviation",
+            "syntaxName": "standardDeviation",
             "description": "Standard deviation of the Ln(x), where Ln(x) is normally distributed."
           }
         ]
@@ -1598,7 +1593,9 @@
     "headerDescription": "Converts a currency code to it's matching symbol.",
     "type": "Helpers",
     "parameters": ["currencyCode"],
-    "codeSyntaxUsage": ["=CONVERT_CURRENCY_CODE_TO_SYMBOL(currencyCode)"],
+    "codeSyntaxUsage": [
+      "=CONVERT_CURRENCY_CODE_TO_SYMBOL(\"USD\")"
+    ],
     "codeSyntaxElements": [
       {
         "codeSyntax": "=CONVERT_CURRENCY_CODE_TO_SYMBOL(currencyCode)",
