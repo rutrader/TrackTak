@@ -397,7 +397,7 @@ export const getPlugin = dataGetter => {
           if (!Array.isArray(intersectionPointValues)) {
             const { type, message } = intersectionPointValues
 
-            monteCarloWorker.destroy()
+            await monteCarloWorker.destroy()
 
             return new CellError(type, message)
           }
@@ -410,7 +410,7 @@ export const getPlugin = dataGetter => {
           if (hasFinishedRecalculating) {
             this.addressIntersectionPointValuesMap.delete(state.formulaAddress)
 
-            monteCarloWorker.destroy()
+            await monteCarloWorker.destroy()
           }
 
           const n = 11

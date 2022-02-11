@@ -8,6 +8,7 @@ import registerSharedFunctions from '../../registerSharedFunctions'
 import { expose } from 'comlink'
 
 // TODO: Try running this with GPU instead, maybe it's even faster
+// TODO: How to handle multiple monte carlo's in the same sheet?
 const monteCarloWorker = {
   async setup(sheets, apiFrozenTimestamp, spreadsheetCreationDate) {
     const dataGetter = () => {
