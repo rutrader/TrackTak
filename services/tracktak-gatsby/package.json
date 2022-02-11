@@ -12,7 +12,8 @@
   "browserslist": [
     "defaults",
     "not IE 11",
-    "maintained node versions"
+    "maintained node versions",
+    "not ios_saf < 13"
   ],
   "dependencies": {
     "@babel/core": "^7.12.3",
