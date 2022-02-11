@@ -380,6 +380,12 @@ export const getPlugin = dataGetter => {
             remainingIteration
           )
 
+          if (!Array.isArray(intersectionPointValues)) {
+            const { type, message } = intersectionPointValues
+
+            return new CellError(type, message)
+          }
+
           if (totalIntersectionPointValues !== undefined) {
             totalIntersectionPointValues = [
               ...intersectionPointValues,
@@ -394,14 +400,6 @@ export const getPlugin = dataGetter => {
             totalIntersectionPointValues
           )
 
-          if (!Array.isArray(intersectionPointValues)) {
-            const { type, message } = intersectionPointValues
-
-            await monteCarloWorker.destroy()
-
-            return new CellError(type, message)
-          }
-
           const hasFinishedRecalculating =
             totalIntersectionPointValues.length >= iteration
 
@@ -409,8 +407,6 @@ export const getPlugin = dataGetter => {
 
           if (hasFinishedRecalculating) {
             this.addressIntersectionPointValuesMap.delete(state.formulaAddress)
-
-            await monteCarloWorker.destroy()
           }
 
           const n = 11
