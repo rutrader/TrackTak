@@ -134,6 +134,12 @@ export const translations = {
 
 export const getPlugin = dataGetter => {
   class Plugin extends FunctionPlugin {
+    constructor(interpreter, cellContentParser) {
+      super(interpreter, cellContentParser)
+
+      this.addressIntersectionPointValuesMap = new Map()
+    }
+
     sensitivityAnalysis(ast, state) {
       const hyperformula = dataGetter().spreadsheet.hyperformula
       const metadata = this.metadata('DATA_ANALYSIS.SENSITIVITY_ANALYSIS')
@@ -222,7 +228,7 @@ export const getPlugin = dataGetter => {
           const { apiFrozenTimestamp, spreadsheetCreationDate } = dataGetter()
 
           const intersectionPointValues =
-            await sensitivityAnalysisWorker.sensitivityAnalysis(
+            await sensitivityAnalysisWorker.calculate(
               intersectionCellReference,
               sheets,
               apiFrozenTimestamp,
@@ -345,26 +351,67 @@ export const getPlugin = dataGetter => {
 
           const { chunked } = ast.asyncPromise
           const { apiFrozenTimestamp, spreadsheetCreationDate } = dataGetter()
-          const chunkedIterator = 3334
 
-          const intersectionPointValues =
-            await monteCarloWorker.monteCarloSimulation(
-              intersectionCellReference,
+          let totalIntersectionPointValues =
+            this.addressIntersectionPointValuesMap.get(state.formulaAddress)
+
+          if (totalIntersectionPointValues === undefined) {
+            await monteCarloWorker.setup(
               sheets,
               apiFrozenTimestamp,
-              spreadsheetCreationDate,
-              varAssumptionFormulaAddresses,
-              chunkedIterator
+              spreadsheetCreationDate
             )
+          }
+
+          let remainingIteration = 3334
+
+          const overflow =
+            (totalIntersectionPointValues?.length ?? 0) +
+            remainingIteration -
+            iteration
+
+          if (overflow > 0) {
+            remainingIteration -= overflow
+          }
+
+          const intersectionPointValues = await monteCarloWorker.calculate(
+            intersectionCellReference,
+            varAssumptionFormulaAddresses,
+            remainingIteration
+          )
+
+          if (totalIntersectionPointValues !== undefined) {
+            totalIntersectionPointValues = [
+              ...intersectionPointValues,
+              ...totalIntersectionPointValues
+            ]
+          } else {
+            totalIntersectionPointValues = intersectionPointValues
+          }
+
+          this.addressIntersectionPointValuesMap.set(
+            state.formulaAddress,
+            totalIntersectionPointValues
+          )
 
           if (!Array.isArray(intersectionPointValues)) {
             const { type, message } = intersectionPointValues
 
+            monteCarloWorker.destroy()
+
             return new CellError(type, message)
           }
 
-          chunked.chunkedIterator += chunkedIterator
-          chunked.isChunked = chunked.chunkedIterator < iteration
+          const hasFinishedRecalculating =
+            totalIntersectionPointValues.length >= iteration
+
+          chunked.isChunked = !hasFinishedRecalculating
+
+          if (hasFinishedRecalculating) {
+            this.addressIntersectionPointValuesMap.delete(state.formulaAddress)
+
+            monteCarloWorker.destroy()
+          }
 
           const n = 11
           const percentiles = Array.from(
@@ -373,31 +420,31 @@ export const getPlugin = dataGetter => {
           ).map(percent => {
             return [
               percent * 100 + '%',
-              percentile(intersectionPointValues, percent, false)
+              percentile(totalIntersectionPointValues, percent, false)
             ]
           })
 
           const trialsOutput = iteration
-          const meanOutput = mean(intersectionPointValues)
-          const medianOutput = medianFormula(intersectionPointValues)
-          const min = Math.min(...intersectionPointValues)
-          const max = Math.max(...intersectionPointValues)
-          const stddevOutput = stdev(intersectionPointValues)
-          const varianceOutput = variance(intersectionPointValues)
-          const skewnessOutput = skewnessFormula(intersectionPointValues)
-          const kurtosisOutput = kurtosisFormula(intersectionPointValues)
+          const meanOutput = mean(totalIntersectionPointValues)
+          const medianOutput = medianFormula(totalIntersectionPointValues)
+          const min = Math.min(...totalIntersectionPointValues)
+          const max = Math.max(...totalIntersectionPointValues)
+          const stddevOutput = stdev(totalIntersectionPointValues)
+          const varianceOutput = variance(totalIntersectionPointValues)
+          const skewnessOutput = skewnessFormula(totalIntersectionPointValues)
+          const kurtosisOutput = kurtosisFormula(totalIntersectionPointValues)
           const coefficientOfVariationOutput = coefficientOfVariationFormula(
-            intersectionPointValues
+            totalIntersectionPointValues
           )
           const stDevErrorOfMeanOutput = stDevErrorOfMeanFormula(
-            intersectionPointValues
+            totalIntersectionPointValues
           )
           const upperLimitOutput =
-            mean(intersectionPointValues) +
-            getConfidenceInterval(intersectionPointValues)
+            mean(totalIntersectionPointValues) +
+            getConfidenceInterval(totalIntersectionPointValues)
           const lowerLimitOutput =
-            mean(intersectionPointValues) -
-            getConfidenceInterval(intersectionPointValues)
+            mean(totalIntersectionPointValues) -
+            getConfidenceInterval(totalIntersectionPointValues)
 
           const values = [
             ['', 'Output Info'],

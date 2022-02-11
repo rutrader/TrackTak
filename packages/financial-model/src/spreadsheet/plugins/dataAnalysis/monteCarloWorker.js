@@ -7,15 +7,9 @@ import { offScreenConfig, namedExpressions } from '../../hyperformulaConfig'
 import registerSharedFunctions from '../../registerSharedFunctions'
 import { expose } from 'comlink'
 
+// TODO: Try running this with GPU instead, maybe it's even faster
 const monteCarloWorker = {
-  monteCarloSimulation: async (
-    intersectionCellReference,
-    sheets,
-    apiFrozenTimestamp,
-    spreadsheetCreationDate,
-    varAssumptionFormulaAddresses,
-    iteration
-  ) => {
+  async setup(sheets, apiFrozenTimestamp, spreadsheetCreationDate) {
     const dataGetter = () => {
       return {
         apiFrozenTimestamp,
@@ -23,19 +17,42 @@ const monteCarloWorker = {
       }
     }
 
-    const plugins = registerSharedFunctions(dataGetter)
+    this.plugins = registerSharedFunctions(dataGetter)
 
-    const [offscreenHyperformulaInstance, enginePromise] =
+    const [varAssumptionsInstance, varAssumptionsInstancePromise] =
       HyperFormula.buildFromSheets(sheets, offScreenConfig, namedExpressions)
 
-    await enginePromise
+    const [calculationInstance, calculationInstancePromise] =
+      HyperFormula.buildFromSheets(sheets, offScreenConfig, namedExpressions)
 
-    offscreenHyperformulaInstance.useCachedGraph(CachedGraphType.SUB_GRAPH)
+    this.varAssumptionsInstance = varAssumptionsInstance
+    this.calculationInstance = calculationInstance
 
+    await Promise.all([
+      varAssumptionsInstancePromise,
+      calculationInstancePromise
+    ])
+
+    this.varAssumptionsInstance.useCachedGraph(CachedGraphType.SUB_GRAPH)
+    this.calculationInstance.useCachedGraph(CachedGraphType.SUB_GRAPH)
+  },
+  destroy() {
+    this.varAssumptionsInstance.destroy()
+    this.calculationInstance.destroy()
+
+    this.plugins.forEach(({ plugin }) => {
+      HyperFormula.unregisterFunctionPlugin(plugin)
+    })
+  },
+  async calculate(
+    intersectionCellReference,
+    varAssumptionFormulaAddresses,
+    iteration
+  ) {
     const intersectionPointValues = []
 
     for (let i = 1; i <= iteration; i++) {
-      offscreenHyperformulaInstance.suspendEvaluation()
+      this.calculationInstance.suspendEvaluation()
 
       for (const {
         address,
@@ -43,7 +60,10 @@ const monteCarloWorker = {
         cellFormula
       } of varAssumptionFormulaAddresses) {
         let [cellValue, formulaPromise] =
-          offscreenHyperformulaInstance.calculateFormula(
+          // We must use a second hyperformula instance here
+          // because otherwise cellReferences in the formula
+          // will have different values each iteration
+          this.varAssumptionsInstance.calculateFormula(
             cellFormula,
             varAssumptionAddress.sheet
           )
@@ -56,25 +76,19 @@ const monteCarloWorker = {
           return cellValue
         }
 
-        await offscreenHyperformulaInstance.setCellContents(address, {
+        await this.calculationInstance.setCellContents(address, {
           cellValue
         })[1]
       }
 
-      offscreenHyperformulaInstance.resumeEvaluation()
+      this.calculationInstance.resumeEvaluation()
 
-      const intersectionPointValue = offscreenHyperformulaInstance.getCellValue(
+      const intersectionPointValue = this.calculationInstance.getCellValue(
         intersectionCellReference
       ).cellValue
 
       intersectionPointValues.push(intersectionPointValue)
     }
-
-    offscreenHyperformulaInstance.destroy()
-
-    plugins.forEach(({ plugin }) => {
-      HyperFormula.unregisterFunctionPlugin(plugin)
-    })
 
     return intersectionPointValues
   }

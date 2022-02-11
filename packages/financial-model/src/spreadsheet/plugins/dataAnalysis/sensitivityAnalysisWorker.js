@@ -4,7 +4,7 @@ import registerSharedFunctions from '../../registerSharedFunctions'
 import { expose } from 'comlink'
 
 const sensitivityAnalysisWorker = {
-  sensitivityAnalysis: async (
+  calculate: async (
     intersectionCellReference,
     sheets,
     apiFrozenTimestamp,

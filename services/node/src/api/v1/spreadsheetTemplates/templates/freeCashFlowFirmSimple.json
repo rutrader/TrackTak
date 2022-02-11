@@ -3145,7 +3145,7 @@
                   "metadata": {
                       "bold": true,
                       "fontSize": 14,
-                      "comment": "These input values are for the sensitivity analysis function in cell D56. \n\nBy default we have set the x,y values to the CAGR & Operating margin inputs. \n\nHowever you can easily change these in cell D56."
+                      "comment": "These input values are for the sensitivity analysis function in cell E56. \n\nBy default we have set the x,y values to the CAGR & Operating margin inputs. \n\nHowever you can easily change these in cell E56."
                   }
               },
               "50_0": {
@@ -3912,6 +3912,12 @@
                       "bold": true
                   }
               },
+              "78_4": {
+                "cellValue": null,
+                "metadata": {
+                  "textFormatPattern": "#,##0.00"
+                }
+              },
               "78_6": {
                   "cellValue": null,
                   "metadata": {
@@ -3924,6 +3930,12 @@
                       "bold": true
                   }
               },
+              "79_4": {
+                "cellValue": null,
+                "metadata": {
+                  "textFormatPattern": "#,##0.00"
+                }
+              },
               "79_6": {
                   "cellValue": null,
                   "metadata": {
@@ -3935,6 +3947,12 @@
                   "metadata": {
                       "bold": true
                   }
+              },
+              "80_4": {
+                "cellValue": null,
+                "metadata": {
+                  "textFormatPattern": "#,##0.00"
+                }
               },
               "80_6": {
                   "cellValue": null,
