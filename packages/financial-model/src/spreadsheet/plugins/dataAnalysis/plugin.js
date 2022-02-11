@@ -229,14 +229,14 @@ export const getPlugin = dataGetter => {
       const hyperformula = dataGetter().spreadsheet.hyperformula
       const metadata = this.metadata('DATA_ANALYSIS.MONTE_CARLO_SIMULATION')
 
-      const intersectionCellReference =
-        ast.args[0].reference.toSimpleCellAddress(state.formulaAddress)
-
       return this.runAsyncFunction(
         ast.args,
         state,
         metadata,
         async (_, __, ___, iteration) => {
+          const intersectionCellReference =
+            ast.args[0].reference.toSimpleCellAddress(state.formulaAddress)
+
           const varCellReferences = ast.args[1].args.map(arr => {
             return arr.map(({ reference }) =>
               reference.toSimpleCellAddress(state.formulaAddress)
@@ -284,7 +284,9 @@ export const getPlugin = dataGetter => {
             hyperformula
           )
 
+          const { chunked } = ast.asyncPromise
           const { apiFrozenTimestamp, spreadsheetCreationDate } = dataGetter()
+          const chunkedIterator = 3334
 
           const intersectionPointValues =
             await monteCarloWorker.monteCarloSimulation(
@@ -293,7 +295,7 @@ export const getPlugin = dataGetter => {
               apiFrozenTimestamp,
               spreadsheetCreationDate,
               varAssumptionFormulaAddresses,
-              iteration
+              chunkedIterator
             )
 
           if (!Array.isArray(intersectionPointValues)) {
@@ -301,6 +303,9 @@ export const getPlugin = dataGetter => {
 
             return new CellError(type, message)
           }
+
+          chunked.chunkedIterator += chunkedIterator
+          chunked.isChunked = chunked.chunkedIterator < iteration
 
           const n = 11
           const percentiles = Array.from(
@@ -313,7 +318,7 @@ export const getPlugin = dataGetter => {
             ]
           })
 
-          const trialsOutput = intersectionPointValues.length
+          const trialsOutput = iteration
           const meanOutput = mean(intersectionPointValues)
           const medianOutput = medianFormula(intersectionPointValues)
           const min = Math.min(...intersectionPointValues)
