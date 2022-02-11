@@ -1,6 +1,6 @@
 import tippy, { sticky } from 'tippy.js'
 
-const getNewFeatureTooltip = (tippyEl, textContent) => {
+const getNewFeatureTooltip = (tippyEl, textContent, props) => {
   tippyEl.classList.add('tippy-new-feature')
 
   const text = document.createElement('div')
@@ -20,7 +20,8 @@ const getNewFeatureTooltip = (tippyEl, textContent) => {
     hideOnClick: false,
     onHide: () => {
       return false
-    }
+    },
+    ...props
   })
 
   return instance
