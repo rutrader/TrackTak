@@ -37,10 +37,17 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
       spreadsheetData.sheetData.data.sheets
     )
 
-    const powersheetPlugins = [autocompletePlugin, dataAnalysisPlugin]
+    const powersheetPlugins = [autocompletePlugin, dataAnalysisPlugin].map(
+      ({ getPlugin, translations }) => {
+        return {
+          plugin: getPlugin(dataGetter),
+          translations
+        }
+      }
+    )
 
-    powersheetPlugins.forEach(({ getPlugin, translations }) => {
-      HyperFormula.registerFunctionPlugin(getPlugin(dataGetter), translations)
+    powersheetPlugins.forEach(({ plugin, translations }) => {
+      HyperFormula.registerFunctionPlugin(plugin, translations)
     })
 
     const allPlugins = [
@@ -121,8 +128,8 @@ const FinancialSpreadsheet = ({ spreadsheetData, saveSheetData, sx }) => {
         clickEventListener
       )
 
-      allPlugins.forEach(({ instance }) => {
-        HyperFormula.unregisterFunctionPlugin(instance)
+      allPlugins.forEach(({ plugin }) => {
+        HyperFormula.unregisterFunctionPlugin(plugin)
       })
 
       spreadsheet.destroy()

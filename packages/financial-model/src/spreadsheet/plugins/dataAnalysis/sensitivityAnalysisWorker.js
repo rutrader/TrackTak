@@ -1,11 +1,10 @@
-import 'regenerator-runtime/runtime'
-import { HyperFormula } from '@tracktak/hyperformula'
+import { CachedGraphType, HyperFormula } from '@tracktak/hyperformula'
 import { config, namedExpressions } from '../../hyperformulaConfig'
 import registerSharedFunctions from '../../registerSharedFunctions'
 import { expose } from 'comlink'
 
-const pluginWorker = {
-  sensitivityAnalysis: (
+const sensitivityAnalysisWorker = {
+  sensitivityAnalysis: async (
     intersectionCellReference,
     sheets,
     apiFrozenTimestamp,
@@ -13,12 +12,19 @@ const pluginWorker = {
     xVarCellReference,
     yVarCellReference,
     xRangeValues,
-    yRangeValues,
-    xSheetName,
-    ySheetName
+    yRangeValues
   ) => {
-    const { row: xRow, col: xCol } = xVarCellReference
-    const { row: yRow, col: yCol } = yVarCellReference
+    const xAddress = {
+      sheet: xVarCellReference.sheet,
+      row: xVarCellReference.row,
+      col: xVarCellReference.col
+    }
+
+    const yAddress = {
+      sheet: yVarCellReference.sheet,
+      row: yVarCellReference.row,
+      col: yVarCellReference.col
+    }
 
     const dataGetter = () => {
       return {
@@ -29,50 +35,44 @@ const pluginWorker = {
 
     registerSharedFunctions(dataGetter)
 
-    const allPromises = []
+    const [offscreenHyperformulaInstance, enginePromise] =
+      HyperFormula.buildFromSheets(sheets, config, namedExpressions)
+
+    await enginePromise
+
+    offscreenHyperformulaInstance.useCachedGraph(CachedGraphType.SUB_GRAPH)
+
+    const intersectionPointValues = []
 
     for (const xValue of xRangeValues) {
-      sheets[xSheetName].cells[xRow][xCol] = {
-        ...sheets[xSheetName].cells[xRow][xCol],
+      const intersectionPointValuesRow = []
+
+      offscreenHyperformulaInstance.suspendEvaluation()
+
+      await offscreenHyperformulaInstance.setCellContents(xAddress, {
         cellValue: xValue
+      })[1]
+
+      for (const yValue of yRangeValues) {
+        await offscreenHyperformulaInstance.setCellContents(yAddress, {
+          cellValue: yValue
+        })[1]
+
+        offscreenHyperformulaInstance.resumeEvaluation()
+
+        const intersectionPointValue =
+          offscreenHyperformulaInstance.getCellValue(
+            intersectionCellReference
+          ).cellValue
+
+        intersectionPointValuesRow.push(intersectionPointValue)
       }
 
-      const rowPromise = new Promise((resolve, reject) => {
-        const promises = yRangeValues.map(yValue => {
-          sheets[ySheetName].cells[yRow][yCol] = {
-            ...sheets[ySheetName].cells[yRow][yCol],
-            cellValue: yValue
-          }
-
-          const promise = new Promise((resolve, reject) => {
-            const [offscreenHyperformulaInstance, enginePromise] =
-              HyperFormula.buildFromSheets(sheets, config, namedExpressions)
-
-            enginePromise
-              .then(() => {
-                const intersectionPointValue =
-                  offscreenHyperformulaInstance.getCellValue(
-                    intersectionCellReference
-                  ).cellValue
-
-                offscreenHyperformulaInstance.destroy()
-
-                resolve(intersectionPointValue)
-              })
-              .catch(reject)
-          })
-
-          return promise
-        })
-
-        Promise.all(promises).then(resolve).catch(reject)
-      })
-
-      allPromises.push(rowPromise)
+      intersectionPointValues.push(intersectionPointValuesRow)
     }
 
-    return Promise.all(allPromises)
+    return intersectionPointValues
   }
 }
 
-expose(pluginWorker)
+expose(sensitivityAnalysisWorker)

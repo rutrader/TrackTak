@@ -1,4 +1,7 @@
-import { AlwaysSparse } from '@tracktak/hyperformula'
+import {
+  AlwaysSparse,
+  DenseSparseChooseBasedOnThreshold
+} from '@tracktak/hyperformula'
 import { currencySymbolMap } from 'currency-symbol-map'
 
 const trueNamedExpression = {
@@ -18,4 +21,10 @@ export const config = {
   timeoutTime: 10000,
   licenseKey: 'gpl-v3',
   currencySymbol: Object.values(currencySymbolMap)
+}
+
+export const offScreenConfig = {
+  ...config,
+  chooseAddressMappingPolicy: new DenseSparseChooseBasedOnThreshold(),
+  undoLimit: 0
 }

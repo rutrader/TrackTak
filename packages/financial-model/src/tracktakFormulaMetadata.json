@@ -1092,19 +1092,19 @@
     ],
     "codeSyntaxElements": [
       {
-        "codeSyntax": "DATA_ANALYSIS.SENSITIVITY_ANALYSIS(intersection_point, x_var, y_var, {rangeX}, {rangeY})",
+        "codeSyntax": "DATA_ANALYSIS.SENSITIVITY_ANALYSIS(intersection_point, x_var, y_var, xMin, xMax, yMin, yMax)",
         "values": [
           {
             "syntaxName": "intersection_point",
-            "description": "The outcome value cell reference. We can determine how changes in variables affect the outcome value (intersection_point), for example the estimated value of a stock."
+            "description": "The outcome value. This must be a cell reference and not a scalar value. We can determine how changes in variables affect the outcome value (intersection_point), for example the estimated value of a stock."
           },
           {
             "syntaxName": "x_var",
-            "description": "1st input variable cell reference. Example: Cost of Capital (WACC)."
+            "description": "1st input variable. This must be a cell reference and not a scalar value. Example: Cost of Capital (WACC) cell."
           },
           {
             "syntaxName": "y_var",
-            "description": "2nd input variable cell reference. Example: Growth Rates."
+            "description": "2nd input variable. This must be a cell reference and not a scalar value. Example: Growth Rates cell."
           },
           {
             "syntaxName": "xMin",
@@ -1127,36 +1127,40 @@
     ],
     "attributes": []
   },
-  // "DATA_ANALYSIS.MONTE_CARLO_SIMULATION": {
-  //   "header": "DATA_ANALYSIS.MONTE_CARLO_SIMULATION",
-  //   "headerDescription": "Is a model used to predict the probability of different outcomes when the intervention of randomness is present.",
-  //   "type": "Data Analysis",
-  //   "parameters": ["intersection_point", "{var_assumptions}", "[iteration]"],
-  //   "codeSyntaxUsage": [
-  //     "=DATA_ANALYSIS.MONTE_CARLO_SIMULATION(B3,{B1,B2},10000)",
-  //     "=DATA_ANALYSIS.MONTE_CARLO_SIMULATION(A3,{A1},100)"
-  //   ],
-  //   "codeSyntaxElements": [
-  //     {
-  //       "codeSyntax": "DATA_ANALYSIS.MONTE_CARLO_SIMULATION(intersection_point, {var_assumptions}, [iteration])",
-  //       "values": [
-  //         {
-  //           "syntaxName": "intersection_point",
-  //           "description": "The point of intersection (forecast value) of the assumptions that links the desired output."
-  //         },
-  //         {
-  //           "syntaxName": "{var_assumptions}",
-  //           "description": "Array of assumptions."
-  //         },
-  //         {
-  //           "syntaxName": "[iteration]",
-  //           "description": "[OPTIONAL]. Sets the number of trials to run."
-  //         }
-  //       ]
-  //     }
-  //   ],
-  //   "attributes": []
-  // },
+  "DATA_ANALYSIS.MONTE_CARLO_SIMULATION": {
+    "header": "DATA_ANALYSIS.MONTE_CARLO_SIMULATION",
+    "headerDescription": "Is a model used to predict the probability of different outcomes when the intervention of randomness is present.",
+    "type": "Data Analysis",
+    "parameters": ["intersection_point", "{cell_references}", "{var_assumptions}", "[iteration]"],
+    "codeSyntaxUsage": [
+      "=DATA_ANALYSIS.MONTE_CARLO_SIMULATION(B3,{B1,B2})",
+      "=DATA_ANALYSIS.MONTE_CARLO_SIMULATION(A3,{A1},100)"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "DATA_ANALYSIS.MONTE_CARLO_SIMULATION(intersection_point, {cell_references}, {var_assumptions}, [iteration])",
+        "values": [
+          {
+            "syntaxName": "intersection_point",
+            "description": "The point of intersection (forecast value) of the assumptions that links the desired output."
+          },
+          {
+            "syntaxName": "{cell_references}",
+            "description": "Array of cell references."
+          },
+          {
+            "syntaxName": "{var_assumptions}",
+            "description": "Array of assumptions."
+          },
+          {
+            "syntaxName": "[iteration]",
+            "description": "[OPTIONAL]. Sets the number of trials to run."
+          }
+        ]
+      }
+    ],
+    "attributes": []
+  },
   "MARKET.GET_EQUITY_RISK_PREMIUMS": {
     "header": "MARKET.GET_EQUITY_RISK_PREMIUMS",
     "headerDescription": "Fetches current or historical equity risk premium information for a market.",
@@ -1467,114 +1471,114 @@
     ],
     "attributes": []
   },
-  // "STATISTICS.NORMAL_INVERSE_RANDOM": {
-  //   "header": "STATISTICS.NORMAL_INVERSE_RANDOM",
-  //   "headerDescription": "Defines the mean (expected value) and a standard deviation to describe the variation about the mean. Describes uncertain variables such as inflation, interest, growth rates or prices of fuel, electricity, rent and etc.",
-  //   "type": "Probability Distribution",
-  //   "parameters": ["mean", "standard_deviation"],
-  //   "codeSyntaxUsage": [
-  //     "=STATISTICS.NORMAL_INVERSE_RANDOM(B1,B2)",
-  //     "=STATISTICS.NORMAL_INVERSE_RANDOM(20,3)"
-  //   ],
-  //   "codeSyntaxElements": [
-  //     {
-  //       "codeSyntax": "STATISTICS.NORMAL_INVERSE_RANDOM(mean, standard_deviation)",
-  //       "values": [
-  //         {
-  //           "syntaxName": "mean",
-  //           "description": "Expected value that is most likely to occur."
-  //         },
-  //         {
-  //           "syntaxName": "standard_deviation",
-  //           "description": "Value that is more likely to deviate from the mean value."
-  //         }
-  //       ]
-  //     }
-  //   ],
-  //   "attributes": []
-  // },
-  // "STATISTICS.UNIFORM_INVERSE_RANDOM": {
-  //   "header": "STATISTICS.UNIFORM_INVERSE_RANDOM",
-  //   "headerDescription": "All values have an equal chance of occurring by defining the minimum and maximum. It can be used to describe a real estate appraisal, future production costs and selling prices for new products.",
-  //   "type": "Probability Distribution",
-  //   "parameters": ["min", "max"],
-  //   "codeSyntaxUsage": [
-  //     "=STATISTICS.UNIFORM_INVERSE_RANDOM(A1,B2)",
-  //     "=STATISTICS.UNIFORM_INVERSE_RANDOM(2,10)"
-  //   ],
-  //   "codeSyntaxElements": [
-  //     {
-  //       "codeSyntax": "STATISTICS.UNIFORM_INVERSE_RANDOM(min, max)",
-  //       "values": [
-  //         {
-  //           "syntaxName": "min",
-  //           "description": "Minimum fixed value."
-  //         },
-  //         {
-  //           "syntaxName": "max",
-  //           "description": "Maximum fixed value."
-  //         }
-  //       ]
-  //     }
-  //   ],
-  //   "attributes": []
-  // },
-  // "STATISTICS.TRIANGULAR_INVERSE_RANDOM": {
-  //   "header": "STATISTICS.TRIANGULAR_INVERSE_RANDOM",
-  //   "headerDescription": "Defines a minimum, maximum and most likely value, also referred to as peak value. It is useful with limited data in situations such as sales performance, work hours, inventory numbers, and marketing costs.",
-  //   "type": "Probability Distribution",
-  //   "parameters": ["min", "most_likely", "max"],
-  //   "codeSyntaxUsage": [
-  //     "=STATISTICS.TRIANGULAR_INVERSE_RANDOM(A1,A2,A3)",
-  //     "=STATISTICS.TRIANGULAR_INVERSE_RANDOM(2000,6000,7500)"
-  //   ],
-  //   "codeSyntaxElements": [
-  //     {
-  //       "codeSyntax": "STATISTICS.TRIANGULAR_INVERSE_RANDOM(min, most_likely, max)",
-  //       "values": [
-  //         {
-  //           "syntaxName": "min",
-  //           "description": "Minimum fixed value."
-  //         },
-  //         {
-  //           "syntaxName": "most_likely",
-  //           "description": "Most likely value to occur in this min and max range."
-  //         },
-  //         {
-  //           "syntaxName": "max",
-  //           "description": "Maximum fixed value."
-  //         }
-  //       ]
-  //     }
-  //   ],
-  //   "attributes": []
-  // },
-  // "STATISTICS.LOGNORMAL_INVERSE_RANDOM": {
-  //   "header": "STATISTICS.LOGNORMAL_INVERSE_RANDOM",
-  //   "headerDescription": "Values are positively skewed to the right and don't go below zero but have unlimited positive potential. It is used in determining stock prices, real estate prices, pay scales, and oil reservoir size.",
-  //   "type": "Probability Distribution",
-  //   "parameters": ["mean", "standard_deviation"],
-  //   "codeSyntaxUsage": [
-  //     "=STATISTICS.LOGNORMAL_INVERSE_RANDOM(D1,D2)",
-  //     "=STATISTICS.LOGNORMAL_INVERSE_RANDOM(10,2)"
-  //   ],
-  //   "codeSyntaxElements": [
-  //     {
-  //       "codeSyntax": "STATISTICS.LOGNORMAL_INVERSE_RANDOM(mean, standard_deviation)",
-  //       "values": [
-  //         {
-  //           "syntaxName": "mean",
-  //           "description": "Mean of the Ln(x), where Ln(x) is normally distributed."
-  //         },
-  //         {
-  //           "syntaxName": "standard_deviation",
-  //           "description": "Standard deviation of the Ln(x), where Ln(x) is normally distributed."
-  //         }
-  //       ]
-  //     }
-  //   ],
-  //   "attributes": []
-  // },
+  "STATISTICS.NORMAL_INVERSE_RANDOM": {
+    "header": "STATISTICS.NORMAL_INVERSE_RANDOM",
+    "headerDescription": "Defines the mean (expected value) and a standard deviation to describe the variation about the mean. Describes uncertain variables such as inflation, interest, growth rates or prices of fuel, electricity, rent and etc.",
+    "type": "Statistics",
+    "parameters": ["mean", "standard_deviation"],
+    "codeSyntaxUsage": [
+      "=STATISTICS.NORMAL_INVERSE_RANDOM(B1,B2)",
+      "=STATISTICS.NORMAL_INVERSE_RANDOM(20,3)"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "STATISTICS.NORMAL_INVERSE_RANDOM(mean, standard_deviation)",
+        "values": [
+          {
+            "syntaxName": "mean",
+            "description": "Expected value that is most likely to occur."
+          },
+          {
+            "syntaxName": "standard_deviation",
+            "description": "Value that is more likely to deviate from the mean value."
+          }
+        ]
+      }
+    ],
+    "attributes": []
+  },
+  "STATISTICS.UNIFORM_INVERSE_RANDOM": {
+    "header": "STATISTICS.UNIFORM_INVERSE_RANDOM",
+    "headerDescription": "All values have an equal chance of occurring by defining the minimum and maximum. It can be used to describe a real estate appraisal, future production costs and selling prices for new products.",
+    "type": "Statistics",
+    "parameters": ["min", "max"],
+    "codeSyntaxUsage": [
+      "=STATISTICS.UNIFORM_INVERSE_RANDOM(A1,B2)",
+      "=STATISTICS.UNIFORM_INVERSE_RANDOM(2,10)"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "STATISTICS.UNIFORM_INVERSE_RANDOM(min, max)",
+        "values": [
+          {
+            "syntaxName": "min",
+            "description": "Minimum fixed value."
+          },
+          {
+            "syntaxName": "max",
+            "description": "Maximum fixed value."
+          }
+        ]
+      }
+    ],
+    "attributes": []
+  },
+  "STATISTICS.TRIANGULAR_INVERSE_RANDOM": {
+    "header": "STATISTICS.TRIANGULAR_INVERSE_RANDOM",
+    "headerDescription": "Defines a minimum, maximum and most likely value, also referred to as peak value. It is useful with limited data in situations such as sales performance, work hours, inventory numbers, and marketing costs.",
+    "type": "Statistics",
+    "parameters": ["min", "most_likely", "max"],
+    "codeSyntaxUsage": [
+      "=STATISTICS.TRIANGULAR_INVERSE_RANDOM(A1,A2,A3)",
+      "=STATISTICS.TRIANGULAR_INVERSE_RANDOM(2000,6000,7500)"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "STATISTICS.TRIANGULAR_INVERSE_RANDOM(min, most_likely, max)",
+        "values": [
+          {
+            "syntaxName": "min",
+            "description": "Minimum fixed value."
+          },
+          {
+            "syntaxName": "most_likely",
+            "description": "Most likely value to occur in this min and max range."
+          },
+          {
+            "syntaxName": "max",
+            "description": "Maximum fixed value."
+          }
+        ]
+      }
+    ],
+    "attributes": []
+  },
+  "STATISTICS.LOGNORMAL_INVERSE_RANDOM": {
+    "header": "STATISTICS.LOGNORMAL_INVERSE_RANDOM",
+    "headerDescription": "Values are positively skewed to the right and don't go below zero but have unlimited positive potential. It is used in determining stock prices, real estate prices, pay scales, and oil reservoir size.",
+    "type": "Statistics",
+    "parameters": ["mean", "standard_deviation"],
+    "codeSyntaxUsage": [
+      "=STATISTICS.LOGNORMAL_INVERSE_RANDOM(D1,D2)",
+      "=STATISTICS.LOGNORMAL_INVERSE_RANDOM(10,2)"
+    ],
+    "codeSyntaxElements": [
+      {
+        "codeSyntax": "STATISTICS.LOGNORMAL_INVERSE_RANDOM(mean, standard_deviation)",
+        "values": [
+          {
+            "syntaxName": "mean",
+            "description": "Mean of the Ln(x), where Ln(x) is normally distributed."
+          },
+          {
+            "syntaxName": "standard_deviation",
+            "description": "Standard deviation of the Ln(x), where Ln(x) is normally distributed."
+          }
+        ]
+      }
+    ],
+    "attributes": []
+  },
   "SPREADSHEET_CREATION_DATE": {
     "header": "SPREADSHEET_CREATION_DATE",
     "headerDescription": "Returns the timestamp when the spreadsheet was created. This is useful for passing into other functions for the fiscalDateRange parameter if you need specific API data from that date.",

@@ -5921,20 +5921,20 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
   integrity sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
 
-"@tracktak/hyperformula@5.1.3":
-  version "5.1.3"
-  resolved "https://npm.pkg.github.com/download/@tracktak/hyperformula/5.1.3/d119093cb25d6f4f6f71659193542a4fdaf915c8e224ea079b3df553f43ae0be#038abca9743154e0df24c914a9bbc209c54c109a"
-  integrity sha512-84jofG6rUTFt3XyT/s5YWWO0rrrZilJGS8d/014ivZPb7pKINXTG5w8tsZjGnCaU4zKFSGeSyW0HeMHNMpOvpQ==
+"@tracktak/hyperformula@5.1.4-beta.0":
+  version "5.1.4-beta.0"
+  resolved "https://npm.pkg.github.com/download/@tracktak/hyperformula/5.1.4-beta.0/b2b5e6c420a3bdda360aafcf3bec6ebaa1a5690824b5a1ced83dde015d2fa442#60ad21d6975a64180496cdf160c7ac12e30ebb98"
+  integrity sha512-SGqGMGljepVrk1OEQIlzAZ4LVASrn0m9whHW91XP/7mF5Jfq4ziDGoEh/tQo+Qt+VTSlYGXvJStoq+th60jSBA==
   dependencies:
     chevrotain "^6.5.0"
     core-js "^3.6.4"
     tiny-emitter "^2.1.0"
     unorm "^1.6.0"
 
-"@tracktak/powersheet@^2.2.2":
-  version "2.2.2"
-  resolved "https://npm.pkg.github.com/download/@tracktak/powersheet/2.2.2/ce654eae8fbccfeae33131acf6fd39f8959b6a453a82bdb16b6dc56c554e6f0d#cfa9d087ba2bc0bd05a45e8f4c9f590dde357c11"
-  integrity sha512-UWvzE00/wUoBG1R6fWUStgNaAq8aONoYM5mv+QQ2XQV33Z/RlnrLFZMPLXTvBYsuGyqYkeeP2CTggnDHx9KRng==
+"@tracktak/powersheet@^2.2.3-beta.0":
+  version "2.2.3-beta.0"
+  resolved "https://npm.pkg.github.com/download/@tracktak/powersheet/2.2.3-beta.0/e493327c675e268fdd1c95b5967fae5f32d0fe29e592c5c9f80f72c51c5b0ffb#55494094d84bed8704ab328dcbb737d11d0e2b6b"
+  integrity sha512-s6TT/I6UfV+SYIGOh25tz+32Z64f/vb6IhFdb0Yxc2irG/EHWYoZj7QCEpaU2mjknFqkwtWiBkehqqabAWQhkw==
   dependencies:
     "@material/drawer" "^13.0.0"
     a-color-picker "^1.2.1"
