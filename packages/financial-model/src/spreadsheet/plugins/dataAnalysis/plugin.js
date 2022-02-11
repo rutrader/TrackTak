@@ -11,7 +11,9 @@ import {
   yMinValueCellError,
   varAssumptionsCellError,
   varCellReferencesCellError,
-  varAssumptionReferencesMatchCellError
+  varAssumptionReferencesMatchCellError,
+  intersectionCellReferenceError,
+  getVarAssumptionNotValidTypeError
 } from './cellErrors'
 import truncateDecimal from '../../shared/truncateDecimal'
 import {
@@ -234,6 +236,37 @@ export const getPlugin = dataGetter => {
         state,
         metadata,
         async (_, __, ___, iteration) => {
+          const isIntersectionCellReferenceValid =
+            ast.args[0].type === 'CELL_REFERENCE'
+          const isVarCellReferencesValid =
+            ast.args[1].args.length === 1 &&
+            ast.args[1].args.every(arr =>
+              arr.every(x => x.type === 'CELL_REFERENCE')
+            )
+          const isVarAssumptionValid =
+            ast.args[2].args.length === 1 &&
+            ast.args[2].args.every(arr =>
+              arr.every(x => x.type === 'CELL_REFERENCE')
+            )
+          const varCellReferenceAssumptionsMatch =
+            ast.args[1].args[0].length === ast.args[2].args[0].length
+
+          if (!isIntersectionCellReferenceValid) {
+            return intersectionCellReferenceError
+          }
+
+          if (!isVarCellReferencesValid) {
+            return varCellReferencesCellError
+          }
+
+          if (!isVarAssumptionValid) {
+            return varAssumptionsCellError
+          }
+
+          if (!varCellReferenceAssumptionsMatch) {
+            return varAssumptionReferencesMatchCellError
+          }
+
           const intersectionCellReference =
             ast.args[0].reference.toSimpleCellAddress(state.formulaAddress)
 
@@ -249,35 +282,40 @@ export const getPlugin = dataGetter => {
             )
           })[0]
 
-          const isVarCellReferencesValid = ast.args[1].args.length === 1
-          const isVarAssumptionValid = ast.args[2].args.length === 1
-          const varCellReferenceAssumptionsMatch =
-            ast.args[1].args[0].length === ast.args[2].args[0].length
+          const varAssumptionFormulaAddresses = []
 
-          if (!isVarCellReferencesValid) {
-            return varCellReferencesCellError
-          }
+          for (let index = 0; index < varCellReferences.length; index++) {
+            const address = varCellReferences[index]
 
-          if (!isVarAssumptionValid) {
-            return varAssumptionsCellError
-          }
+            const varAssumptionAddress = varAssumptionCellReferences[index]
+            const cellSerialized =
+              hyperformula.getCellSerialized(varAssumptionAddress).cellValue
 
-          if (!varCellReferenceAssumptionsMatch) {
-            return varAssumptionReferencesMatchCellError
-          }
+            const addressString = hyperformula.simpleCellAddressToString(
+              varAssumptionAddress,
+              varAssumptionAddress.sheet
+            )
 
-          const varAssumptionFormulaAddresses = varCellReferences.map(
-            (address, i) => {
-              const varAssumptionAddress = varAssumptionCellReferences[i]
-
-              return {
-                formula:
-                  hyperformula.getCellFormula(varAssumptionAddress).cellValue,
-                varAssumptionAddress,
-                address
-              }
+            if (typeof cellSerialized !== 'string') {
+              return getVarAssumptionNotValidTypeError(
+                addressString,
+                cellSerialized
+              )
             }
-          )
+
+            if (!hyperformula.validateFormula(cellSerialized)) {
+              return getVarAssumptionNotValidTypeError(
+                addressString,
+                cellSerialized
+              )
+            }
+
+            varAssumptionFormulaAddresses.push({
+              cellFormula: cellSerialized,
+              varAssumptionAddress,
+              address
+            })
+          }
 
           const sheets = this.getSheetsFromAddress(
             state.formulaAddress,

@@ -40,11 +40,11 @@ const monteCarloWorker = {
       for (const {
         address,
         varAssumptionAddress,
-        formula
+        cellFormula
       } of varAssumptionFormulaAddresses) {
         let [cellValue, formulaPromise] =
           offscreenHyperformulaInstance.calculateFormula(
-            formula,
+            cellFormula,
             varAssumptionAddress.sheet
           )
 

@@ -20,17 +20,28 @@ export const yMaxValueCellError = new CellError(
   'yMax value is not valid. Max value cannot be less than yVar value or equal.'
 )
 
+export const intersectionCellReferenceError = new CellError(
+  ErrorType.VALUE,
+  'intersectionCellReference is not valid. This parameter accepts a cell reference type. E.g. A1'
+)
+
 export const varCellReferencesCellError = new CellError(
   ErrorType.VALUE,
-  'varCellReferences(s) are not valid. The parameter varCellReferences accepts a single array. Must be {cell1,cell2,...etc.}.'
+  'varCellReferences are not valid. This parameter accepts a single array of type cell references. E.g. {A1,A2,...etc.}.'
 )
 
 export const varAssumptionsCellError = new CellError(
   ErrorType.VALUE,
-  'varAssumption(s) are not valid. The parameter varAssumption accepts a single array. Must be {assumption1,assumption2,...etc.}.'
+  'varAssumptions are not valid. This parameter accepts a single array of type cell references. E.g. {A1,A2,...etc.}.'
 )
 
 export const varAssumptionReferencesMatchCellError = new CellError(
   ErrorType.VALUE,
-  'varCellReferences(s) length is not the same as varAssumption(s). The number of arguments passed into varCellReferences(s) and varAssumption(s) must be the same.'
+  'varCellReferences length is not the same as varAssumptions. The number of arguments passed into varCellReferences and varAssumptions must be the same.'
 )
+
+export const getVarAssumptionNotValidTypeError = (addressString, value) =>
+  new CellError(
+    ErrorType.VALUE,
+    `varAssumption value ${value} in cell address ${addressString} is not a valid formula. E.g. =STATISTICS.NORMAL_INVERSE_RANDOM(20%, 2%)`
+  )
